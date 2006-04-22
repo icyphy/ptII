@@ -1,4 +1,4 @@
-/*
+/* Tree representation of XML starting from an element.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -14,11 +14,11 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
@@ -27,84 +27,53 @@
  */
 package ptolemy.backtrack.xmlparser;
 
+import java.io.PrintStream;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
+//////////////////////////////////////////////////////////////////////////
+//// ConfigXmlTree
 /**
- * @author tfeng
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
+   Tree representation of XML starting from an element.
+
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class ConfigXmlTree {
+    
+    /** Construct a node in the tree with no child.
+     * 
+     *  @param elementName The XML element name of the node.
+     */
     public ConfigXmlTree(String elementName) {
-        this.elementName = elementName;
+        this._elementName = elementName;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Add a child to this node. This child will be added after the existing
+     *  children.
+     *  
+     *  @param child The child to be added.
+     */
     public void addChild(ConfigXmlTree child) {
-        tree.add(child);
-        child.setParent(this);
+        _children.add(child);
+        child._setParent(this);
     }
 
-    protected void setElementName(String elementName) {
-        this.elementName = elementName;
-    }
-
-    public void setParent(ConfigXmlTree parent) {
-        this.parent = parent;
-    }
-
-    public String getAttribute(String name) {
-        return (String) attributes.get(name);
-    }
-
-    public boolean hasAttribute(String name) {
-        return attributes.get(name) != null;
-    }
-
-    public Enumeration getAttributeNames() {
-        return attributes.keys();
-    }
-
-    public boolean isLeaf() {
-        return tree.isEmpty();
-    }
-
-    public void setAttribute(String name, String value) {
-        if (value != null) {
-            attributes.put(name, value);
-        }
-    }
-
-    public String getElementName() {
-        return elementName;
-    }
-
-    public ConfigXmlTree getParent() {
-        return parent;
-    }
-
-    public void startTraverseChildren() {
-        iterator = tree.iterator();
-    }
-
-    public boolean hasMoreChildren() {
-        return iterator.hasNext();
-    }
-
-    public ConfigXmlTree nextChild() {
-        return (ConfigXmlTree) iterator.next();
-    }
-
-    public void dump() {
-        dump(0);
-    }
-
+    /** Clone the sub-tree starting from this node, and return the clone result.
+     * 
+     *  @return A clone of the sub-tree.
+     */
     public Object clone() {
         ConfigXmlTree newTree = new ConfigXmlTree(getElementName());
-        newTree.attributes = (Hashtable) attributes.clone();
+        newTree._attributes = (Hashtable) _attributes.clone();
         startTraverseChildren();
 
         while (hasMoreChildren()) {
@@ -114,25 +83,166 @@ public class ConfigXmlTree {
         return newTree;
     }
 
-    protected void dump(int indent) {
-        dumpString(indent, getElementName());
+    /** Print the content of the sub-tree starting from this node to the given
+     *  output stream in a text format.
+     *  
+     *  @param stream The stream to be printed to.
+     */
+    public void dump(PrintStream stream) {
+        _dump(0, stream);
+    }
+
+    /** Get the value of the attribute with the given name.
+     * 
+     *  @param name The attribute name.
+     *  @return The value of the attribute, or null if not found.
+     */
+    public String getAttribute(String name) {
+        return (String) _attributes.get(name);
+    }
+
+    /** Get the names of all the attributes of this XML element.
+     * 
+     *  @return The enumeration of attribute names. 
+     */
+    public Enumeration getAttributeNames() {
+        return _attributes.keys();
+    }
+
+    /** Get the name of this XML element.
+     * 
+     *  @return The element name.
+     */
+    public String getElementName() {
+        return _elementName;
+    }
+
+    /** Get the parent of this node.
+     * 
+     *  @return The parent, or null.
+     */
+    public ConfigXmlTree getParent() {
+        return _parent;
+    }
+
+    /** Test whether this node has an attribute with the given name.
+     * 
+     *  @param name The attribute name.
+     *  @return true if this node has an attribute with the name; false, 
+     *   otherwise.
+     */
+    public boolean hasAttribute(String name) {
+        return _attributes.get(name) != null;
+    }
+
+    /** Test whether there are more children to traverse.
+     * 
+     *  @return true if there are more children to traverse; false, otherwise.
+     *  @see {@link #nextChild()}
+     *  @see {@link #startTraverseChildren()}
+     */
+    public boolean hasMoreChildren() {
+        return _iterator.hasNext();
+    }
+
+    /** Test whether this node is a leaf in the XML tree.
+     * 
+     *  @return true if this node is a leaf; false, otherwise.
+     */
+    public boolean isLeaf() {
+        return _children.isEmpty();
+    }
+
+    /** Return the next child to be traversed.
+     * 
+     *  @return The next child.
+     *  @see {@link #hasMoreChildren()}
+     *  @see {@link #startTraverseChildren()};
+     */
+    public ConfigXmlTree nextChild() {
+        return (ConfigXmlTree) _iterator.next();
+    }
+
+    /** Set the value of the attribute with the given name. Create the attribute
+     *  if it does not exist yet.
+     *  
+     *  @param name The attribute name.
+     *  @param value The attribute value.
+     */
+    public void setAttribute(String name, String value) {
+        if (value != null) {
+            _attributes.put(name, value);
+        }
+    }
+
+    /** Start traversing the children of this node by initializing the internal
+     *  iterator.
+     *  
+     *  @see {@link #hasMoreChildren()}
+     *  @see {@link #nextChild()}
+     */
+    public void startTraverseChildren() {
+        _iterator = _children.iterator();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
+
+    /** Print the content of the sub-tree starting from this node to the given
+     *  output stream in a text format. The sub-tree is indented with the
+     *  specified amount.
+     *  
+     *  @param indent The amount of indentation.
+     *  @param stream The stream to be printed to.
+     */
+    protected void _dump(int indent, PrintStream stream) {
+        _dumpString(indent, getElementName(), stream);
 
         Enumeration attrenu = getAttributeNames();
 
         while (attrenu.hasMoreElements()) {
             String attr = (String) attrenu.nextElement();
-            dumpString(indent + 2, "+A " + attr + " = " + getAttribute(attr));
+            _dumpString(indent + 2, "+A " + attr + " = " + getAttribute(attr), 
+                    stream);
         }
 
         startTraverseChildren();
 
         while (hasMoreChildren()) {
             ConfigXmlTree child = nextChild();
-            child.dump(indent + 2);
+            child._dump(indent + 2, stream);
         }
     }
 
-    private void dumpString(int indent, String s) {
+    /** Set the name of this XML element.
+     * 
+     *  @param elementName The element name.
+     */
+    protected void _setElementName(String elementName) {
+        this._elementName = elementName;
+    }
+
+    /** Set the parent of this XML node. This method does not update the
+     *  parent's children list. To add this node to be one of the parent's
+     *  children, use {@link #addChild(ConfigXmlTree)} of the parent.
+     *  
+     *  @param parent The parent node.
+     */
+    protected void _setParent(ConfigXmlTree parent) {
+        this._parent = parent;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private methods                     ////
+
+    /** Print a string to the given output stream in a text format. The string
+     *  is indented with the specified amount.
+     * 
+     *  @param indent The amount of indentation.
+     *  @param s The string to be printed.
+     *  @param stream The stream to be printed to.
+     */
+    private void _dumpString(int indent, String s, PrintStream stream) {
         StringBuffer buf = new StringBuffer(indent
                 + ((s == null) ? 0 : s.length()));
 
@@ -141,16 +251,30 @@ public class ConfigXmlTree {
         }
 
         buf.append(s);
-        System.out.println(buf);
+        stream.println(buf);
     }
 
-    private Iterator iterator;
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
-    private String elementName;
+    /** The hash table of attributes from their names to their values.
+     */
+    private Hashtable _attributes = new Hashtable();
 
-    private Vector tree = new Vector();
+    /** The list of children.
+     */
+    private Vector _children = new Vector();
 
-    private ConfigXmlTree parent;
+    /** The name of this XML element.
+     */
+    private String _elementName;
 
-    private Hashtable attributes = new Hashtable();
+    /** The iterator used to iterate the children of this node.
+     */
+    private Iterator _iterator;
+
+    /** The parent of this node. null if this node is the root node of the XML
+     *  document.
+     */
+    private ConfigXmlTree _parent;
 }

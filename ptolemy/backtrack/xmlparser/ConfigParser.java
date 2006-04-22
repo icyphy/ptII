@@ -178,7 +178,7 @@ public class ConfigParser {
 
         // Manually modify the resulting tree.
         if (backtrackingElement) {
-            _xmlTree.setElementName("entity");
+            _xmlTree._setElementName("entity");
             _xmlTree.setAttribute("name", "Backtracking");
             _xmlTree.setAttribute("class", "ptolemy.moml.EntityLibrary");
         }
