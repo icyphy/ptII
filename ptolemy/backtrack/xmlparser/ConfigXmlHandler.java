@@ -100,26 +100,26 @@ class ConfigXmlHandler extends XmlHandler {
         boolean keep =
                 _includedClasses == null
                     // If null, every element is kept.
-                || !currentTree.isLeaf()
+                || !getCurrentTree().isLeaf()
                     // If not leaf, at least a descendant is kept.
-                || (currentTree.hasAttribute("class") && _includedClasses
-                        .contains(currentTree.getAttribute("class")));
+                || (getCurrentTree().hasAttribute("class") && _includedClasses
+                        .contains(getCurrentTree().getAttribute("class")));
                     // A match in the set.
 
         if (keep) {
-            String className = currentTree.getAttribute("class");
+            String className = getCurrentTree().getAttribute("class");
 
             if (_REMOVED_ELEMENT_SET.contains(elementName)
                     || (className != null) && _REMOVED_CLASS_SET.contains(
                             className)) {
                 // Omit this "input" element.
-                currentTree.startTraverseChildren();
+                getCurrentTree().startTraverseChildren();
 
-                while (currentTree.hasMoreChildren()) {
-                    currentTree.getParent().addChild(currentTree.nextChild());
+                while (getCurrentTree().hasMoreChildren()) {
+                    getCurrentTree().getParent().addChild(getCurrentTree().nextChild());
                 }
             } else {
-                currentTree.getParent().addChild(currentTree);
+                getCurrentTree().getParent().addChild(getCurrentTree());
             }
         }
 
@@ -138,11 +138,11 @@ class ConfigXmlHandler extends XmlHandler {
         if (target.equals("moml")) {
             StringReader dataReader = new StringReader(data);
             XmlParser newParser = new XmlParser();
-            ConfigXmlHandler newHandler = new ConfigXmlHandler(currentTree,
-                    systemId, _includedClasses);
+            ConfigXmlHandler newHandler = new ConfigXmlHandler(getCurrentTree(),
+                    getSystemId(), _includedClasses);
             newHandler.addExcludedFiles(_excludedFiles);
             newParser.setHandler(newHandler);
-            newParser.parse(systemId, null, dataReader);
+            newParser.parse(getSystemId(), null, dataReader);
             dataReader.close();
         }
     }
@@ -158,14 +158,14 @@ class ConfigXmlHandler extends XmlHandler {
         super.startElement(elementName);
 
         if (elementName.equals("input")) {
-            String fileName = currentTree.getAttribute("source");
+            String fileName = getCurrentTree().getAttribute("source");
 
             try {
                 String newName = PathFinder.getPtolemyPath() + fileName;
                 File newFile = new File(newName);
 
                 if (!newFile.exists()) {
-                    File oldFile = new File(systemId);
+                    File oldFile = new File(getSystemId());
                     newName = oldFile.getParent() + "/" + fileName;
                     newFile = new File(newName);
                 }
@@ -173,7 +173,7 @@ class ConfigXmlHandler extends XmlHandler {
                 String canonicalPath = newFile.getCanonicalPath();
 
                 if (!_excludedFiles.contains(canonicalPath)) {
-                    ConfigParser subparser = new ConfigParser(currentTree);
+                    ConfigParser subparser = new ConfigParser(getCurrentTree());
                     subparser.addExcludedFiles(_excludedFiles);
                     subparser.parseConfigFile(newName, _includedClasses, false);
                 }
