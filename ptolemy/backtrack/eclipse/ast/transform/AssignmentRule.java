@@ -55,6 +55,7 @@ public class AssignmentRule extends TransformRule {
     /** Execute actions after the AST is traversed. (Not necessary for
      *  this rule.)
      *
+     *  @param analyzer The type analyzer.
      *  @param root The root of the AST.
      */
     public void afterTraverse(TypeAnalyzer analyzer, CompilationUnit root) {

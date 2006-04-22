@@ -77,6 +77,7 @@ public class PackageRule extends TransformRule {
      *  no longer accessible. It is the user's responsibility to ensure that
      *  those cases do not happen.
      *
+     *  @param analyzer The type analyzer.
      *  @param root The root of the AST.
      */
     public void afterTraverse(TypeAnalyzer analyzer, CompilationUnit root) {

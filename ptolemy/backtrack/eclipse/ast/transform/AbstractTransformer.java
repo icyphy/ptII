@@ -162,7 +162,7 @@ public abstract class AbstractTransformer {
      *  otherwise, the its full name is returned.
      *
      *  @param c The class.
-     *  @param loader The class loader used to test importation conflicts.
+     *  @param state The state of the type analyzer.
      *  @param root The root of the AST. If there is no conflict and the class
      *   has not been imported yet, a new {@link ImportDeclaration} is added to
      *   it.
@@ -178,7 +178,7 @@ public abstract class AbstractTransformer {
      *  otherwise, the its full name is returned.
      *
      *  @param name The full class name.
-     *  @param loader The class loader used to test importation conflicts.
+     *  @param state The state of the type analyzer.
      *  @param root The root of the AST. If there is no conflict and the class
      *   has not been imported yet, a new {@link ImportDeclaration} is added to
      *   it.
@@ -397,7 +397,7 @@ public abstract class AbstractTransformer {
      *
      *  @param name The full class name. It must not be the name of an array
      *   type.
-     *  @param loader The class loader used to test importation conflicts.
+     *  @param state The state of the type analyzer.
      *  @param root The root of the AST. If there is no conflict and the class
      *   has not been imported yet, a new {@link ImportDeclaration} is added to
      *   it.
