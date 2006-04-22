@@ -168,7 +168,7 @@ public class PathFinder {
 
     /** Set the Ptolemy path.
      *
-     *  @param path
+     *  @param path The Ptolemy path.
      *  @see #getPtolemyPath()
      */
     public static void setPtolemyPath(String path) {

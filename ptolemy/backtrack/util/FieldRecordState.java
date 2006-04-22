@@ -50,6 +50,11 @@ import ptolemy.backtrack.util.FieldRecord.RecordList;
 public class FieldRecordState {
     ///////////////////////////////////////////////////////////////////
     ////                       constructor                         ////
+
+    /** Construct a field record.
+     * 
+     *  @param dimensions The number of dimensions of this field.
+     */
     protected FieldRecordState(int dimensions) {
         _records = new RecordList[dimensions + 1];
     }

@@ -769,6 +769,19 @@ public class FieldRecord {
         }
     }
 
+    /** Restore the old value at the timestamp to the field.
+     *  <p>
+     *  The given timestamp refers to the time when the field still possesses
+     *  its old value. If the timestamp is increased at an assignment, the old
+     *  value at that timestamp refers to the value of the field before
+     *  assignment.
+     *
+     *  @param current The current value of the field.
+     *  @param timestamp The timestamp.
+     *  @param trim If <tt>true</tt>, any values newer than the restored value
+     *   are deleted from the record.
+     *  @return The old value to be assigned back to the field.
+     */
     public Object restore(Object current, long timestamp, boolean trim) {
         int indices = _getTopState()._getRecords().length;
 
@@ -1253,7 +1266,7 @@ public class FieldRecord {
 
     /** Add a record to the list at the given index.
      *
-     *  @param indices The index.
+     *  @param index The index.
      *  @param record The record.
      */
     protected void _addRecord(int index, Record record) {

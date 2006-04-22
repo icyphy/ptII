@@ -44,7 +44,7 @@ package ptolemy.backtrack.eclipse.ast;
 public class ASTException extends Exception {
     /** Construct an AST exception with a message.
      *
-     *  @param errorMessage The message.
+     *  @param message The message.
      */
     public ASTException(String message) {
         super(message);

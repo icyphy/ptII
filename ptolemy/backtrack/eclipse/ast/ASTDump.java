@@ -81,11 +81,13 @@ public class ASTDump extends ASTVisitor {
      *  output.
      *
      *  @param args The names of Java source files.
+     *  @exception Exception If any error occurs.
      */
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
-            System.err.println("USAGE: java ptolemy.backtrack.eclipse.ast.ASTDump"
-                    + " [.java files...]");
+            System.err.println(
+                    "USAGE: java ptolemy.backtrack.eclipse.ast.ASTDump" +
+                    " [.java files...]");
         } else {
             Writer writer = new OutputStreamWriter(System.out);
 
