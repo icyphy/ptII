@@ -1,4 +1,4 @@
-/*
+/* Action to trigger the help center of the Eclipse backtracking plugin.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -38,59 +38,53 @@ import org.eclipse.ui.help.WorkbenchHelp;
 //// HelpAction
 
 /**
+   Action to trigger the help center of the Eclipse backtracking plugin.
 
-
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class HelpAction implements IWorkbenchWindowActionDelegate {
-    private IWorkbenchWindow window;
 
-    /**
-     * The constructor.
+    /** Dispose of system resources allocated for this actions.
      */
-    public HelpAction() {
+    public void dispose() {
     }
 
-    /**
-     * The action has been activated. The argument of the
-     * method represents the 'real' action sitting
-     * in the workbench UI.
-     * @see IWorkbenchWindowActionDelegate#run
+    /** Initialize the action with a window as its parent.
+     * 
+     *  @param window The parent window.
+     */
+    public void init(IWorkbenchWindow window) {
+        _window = window;
+    }
+
+    /** Activate the action and show the Eclipse help center. The help center
+     *  shows the Eclipse backtracking plugin documentation, whose table of
+     *  contents page is "ptolemy/backtrack/eclipse/plugin/doc/toc.xml".
+     * 
+     *  @param action The action proxy (not used in this method).
      */
     public void run(IAction action) {
         WorkbenchHelp.displayHelpResource(HELP_RESOURCE);
     }
 
-    /**
-     * Selection in the workbench has been changed. We
-     * can change the state of the 'real' action here
-     * if we want, but this can only happen after
-     * the delegate has been created.
-     * @see IWorkbenchWindowActionDelegate#selectionChanged
+    /** Handle the change of selection.
+     * 
+     *  @param action The action proxy (not used in this method).
+     *  @param selection The new selection (not used in this method).
      */
     public void selectionChanged(IAction action, ISelection selection) {
     }
 
-    /**
-     * We can use this method to dispose of any system
-     * resources we previously allocated.
-     * @see IWorkbenchWindowActionDelegate#dispose
+    /** The table of contents of the Eclipse backtracking plugin help.
      */
-    public void dispose() {
-    }
+    public static final String HELP_RESOURCE =
+        "/ptolemy.backtrack/ptolemy/backtrack/eclipse/plugin/doc/toc.xml";
 
-    /**
-     * We will cache window object in order to
-     * be able to provide parent shell for the message dialog.
-     * @see IWorkbenchWindowActionDelegate#init
+    /** The parent window.
      */
-    public void init(IWorkbenchWindow window) {
-        this.window = window;
-    }
-
-    public static final String HELP_RESOURCE = "/ptolemy.backtrack/ptolemy/backtrack/plugin/doc/toc.xml";
+    private IWorkbenchWindow _window;
 }
