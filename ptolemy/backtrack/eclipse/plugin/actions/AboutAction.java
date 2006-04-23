@@ -1,4 +1,4 @@
-/*
+/* Action to trigger the About dialog of the Eclipse backtracking plugin.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -39,58 +39,47 @@ import ptolemy.backtrack.eclipse.plugin.dialogs.AboutDialog;
 //// AboutAction
 
 /**
+   Action to trigger the About dialog of the Eclipse backtracking plugin.
 
-
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class AboutAction implements IWorkbenchWindowActionDelegate {
-    private IWorkbenchWindow window;
-
-    /**
-     * The constructor.
-     */
-    public AboutAction() {
-    }
-
-    /**
-     * The action has been activated. The argument of the
-     * method represents the 'real' action sitting
-     * in the workbench UI.
-     * @see IWorkbenchWindowActionDelegate#run
-     */
-    public void run(IAction action) {
-        AboutDialog dialog = new AboutDialog(window.getShell());
-        dialog.open();
-    }
-
-    /**
-     * Selection in the workbench has been changed. We
-     * can change the state of the 'real' action here
-     * if we want, but this can only happen after
-     * the delegate has been created.
-     * @see IWorkbenchWindowActionDelegate#selectionChanged
-     */
-    public void selectionChanged(IAction action, ISelection selection) {
-    }
-
-    /**
-     * We can use this method to dispose of any system
-     * resources we previously allocated.
-     * @see IWorkbenchWindowActionDelegate#dispose
+    
+    /** Dispose of system resources allocated in the About dialog.
      */
     public void dispose() {
     }
 
-    /**
-     * We will cache window object in order to
-     * be able to provide parent shell for the message dialog.
-     * @see IWorkbenchWindowActionDelegate#init
+    /** Initialize the action with a window as its parent.
+     * 
+     *  @param window The parent window.
      */
     public void init(IWorkbenchWindow window) {
-        this.window = window;
+        _window = window;
     }
+
+    /** Activate the action and pop up the About dialog.
+     * 
+     *  @param action The action proxy (not used in this method).
+     */
+    public void run(IAction action) {
+        AboutDialog dialog = new AboutDialog(_window.getShell());
+        dialog.open();
+    }
+
+    /** Handle the change of selection.
+     * 
+     *  @param action The action proxy (not used in this method).
+     *  @param selection The new selection (not used in this method).
+     */
+    public void selectionChanged(IAction action, ISelection selection) {
+    }
+
+    /** The parent window.
+     */
+    private IWorkbenchWindow _window;
 }
