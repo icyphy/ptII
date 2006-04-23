@@ -1,4 +1,4 @@
-/*
+/* Action to trigger the Options dialog of the Eclipse backtracking plugin.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -42,30 +42,32 @@ import ptolemy.backtrack.eclipse.plugin.preferences.PreferenceConstants;
 //// OptionsAction
 
 /**
+   Action to trigger the Options dialog of the Eclipse backtracking plugin.
 
-
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class OptionsAction implements IWorkbenchWindowActionDelegate {
-    /**
-     *
+    
+    /** Dispose of system resources allocated for this actions.
      */
     public void dispose() {
     }
 
-    /**
-     *  @param window
+    /** Initialize the action with a window as its parent.
+     * 
+     *  @param window The parent window.
      */
     public void init(IWorkbenchWindow window) {
         _window = window;
     }
 
-    /**
-     *  @param action
+    /** Activate the action and pop up the Options dialog.
+     * 
+     *  @param action The action proxy (not used in this method).
      */
     public void run(IAction action) {
         IPreferenceNode node = _window.getWorkbench().getPreferenceManager()
@@ -78,12 +80,15 @@ public class OptionsAction implements IWorkbenchWindowActionDelegate {
         dialog.open();
     }
 
-    /**
-     *  @param action
-     *  @param selection
+    /** Handle the change of selection.
+     * 
+     *  @param action The action proxy (not used in this method).
+     *  @param selection The new selection (not used in this method).
      */
     public void selectionChanged(IAction action, ISelection selection) {
     }
 
+    /** The parent window.
+     */
     private IWorkbenchWindow _window;
 }
