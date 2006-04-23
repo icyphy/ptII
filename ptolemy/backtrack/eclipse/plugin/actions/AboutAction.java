@@ -49,7 +49,7 @@ import ptolemy.backtrack.eclipse.plugin.dialogs.AboutDialog;
 */
 public class AboutAction implements IWorkbenchWindowActionDelegate {
     
-    /** Dispose of system resources allocated in the About dialog.
+    /** Dispose of system resources allocated for this actions.
      */
     public void dispose() {
     }
