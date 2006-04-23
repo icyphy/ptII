@@ -1,4 +1,4 @@
-/*
+/* Action to trigger Java source batch transformation.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -57,36 +57,45 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 
+//////////////////////////////////////////////////////////////////////////
+//// RefactorAction
 /**
- * Our sample action implements workbench action delegate.
- * The action proxy will be created by the workbench and
- * shown in the UI. When the user tries to use the action,
- * this delegate will be created and execution will be
- * delegated to it.
- * @see IWorkbenchWindowActionDelegate
- */
-public class RefactorAction implements IWorkbenchWindowActionDelegate {
-    private IWorkbenchWindow window;
+   Action to trigger Java source batch transformation. When triggered, the
+   source transformer will be invoked to transform all the source files listed
+   in the preferences, and place the generated class in the correct packages.
 
-    /**
-     * The constructor.
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
+public class RefactorAction implements IWorkbenchWindowActionDelegate {
+
+    /** Dispose of system resources allocated for this actions.
      */
-    public RefactorAction() {
+    public void dispose() {
     }
 
-    /**
-     * The action has been activated. The argument of the
-     * method represents the 'real' action sitting
-     * in the workbench UI.
-     * @see IWorkbenchWindowActionDelegate#run
+    /** Initialize the action with a window as its parent.
+     * 
+     *  @param window The parent window.
+     */
+    public void init(IWorkbenchWindow window) {
+        _window = window;
+    }
+
+    /** Activate the action and transform the listed Java source files.
+     * 
+     *  @param action The action proxy (not used in this method).
      */
     public void run(IAction action) {
-        if (!Environment.setupTransformerArguments(window.getShell(), true,
+        if (!Environment.setupTransformerArguments(_window.getShell(), true,
                 false)) {
             return;
         }
 
-        String sourceList = Environment.getSourceList(window.getShell());
+        String sourceList = Environment.getSourceList(_window.getShell());
 
         if (sourceList == null) {
             return;
@@ -96,10 +105,12 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         OutputConsole console = EclipsePlugin.getDefault().getConsole();
         IDocument document = console.getDocument();
 
+        // Clear the document.
         try {
             document.replace(0, document.getLength(), "");
         } catch (Exception e) {
-            e.printStackTrace();
+            EclipsePlugin.getStandardDisplay().asyncExec(
+                    new ErrorDialogRunnable(e));
         }
 
         console.show();
@@ -131,40 +142,44 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
                 new AsyncPrintStream(errorStream)).start();
     }
 
-    /**
-     * Selection in the workbench has been changed. We
-     * can change the state of the 'real' action here
-     * if we want, but this can only happen after
-     * the delegate has been created.
-     * @see IWorkbenchWindowActionDelegate#selectionChanged
+    /** Handle the change of selection.
+     * 
+     *  @param action The action proxy (not used in this method).
+     *  @param selection The new selection (not used in this method).
      */
     public void selectionChanged(IAction action, ISelection selection) {
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// TransformThread
     /**
-     * We can use this method to dispose of any system
-     * resources we previously allocated.
-     * @see IWorkbenchWindowActionDelegate#dispose
-     */
-    public void dispose() {
-    }
-
-    /**
-     * We will cache window object in order to
-     * be able to provide parent shell for the message dialog.
-     * @see IWorkbenchWindowActionDelegate#init
-     */
-    public void init(IWorkbenchWindow window) {
-        this.window = window;
-    }
-
+       The thread to execute the transformation.
+    
+       @author Thomas Feng
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (tfeng)
+       @Pt.AcceptedRating Red (tfeng)
+    */
     private class TransformThread extends Thread {
+        
+        /** Construct a thread to execute the transformation.
+         * 
+         *  @param args The command-line arguments to the transformer's main
+         *   function ({@link Transformer#main(String[])}).
+         *  @param output The stream where the normal console output is sent, or
+         *   null if the output is ignored.
+         *  @param error The stream where the error messages are sent, or null
+         *   if the error messages are ignored.
+         */
         TransformThread(String[] args, PrintStream output, PrintStream error) {
             _args = args;
             _output = output;
             _error = error;
         }
 
+        /** Execute the transformation in the thread.
+         */
         public void run() {
             PrintStream oldErr = null;
 
@@ -203,131 +218,272 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
             }
         }
 
+        /** The command-line arguments to the transformer's main function
+         *  ({@link Transformer#main(String[])}).
+         */
         private String[] _args;
 
+        /** The stream where the error messages are sent.
+         */
         private PrintStream _error;
 
+        /** The stream where the normal console output is sent.
+         */
         private PrintStream _output;
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// AsyncPrintStream
+    /**
+       The subclass of PrintStream that asynchronously sends the output to the
+       Eclipse console.
+    
+       @author Thomas Feng
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (tfeng)
+       @Pt.AcceptedRating Red (tfeng)
+    */
     private class AsyncPrintStream extends PrintStream {
+        
+        /** Construct a stream that asynchronously sends the output to the given
+         *  stream of the Eclipse console.
+         *  
+         *  @param stream The stream of the Eclipse console.
+         */
         AsyncPrintStream(MessageConsoleStream stream) {
-            // Just construct with a dummy output stream (never used).
+            // Just construct with a dummy output stream for the superclass,
+            // which is never used.
             super(new ByteArrayOutputStream(), true);
             _stream = stream;
         }
 
+        /** Check whether there is an IO error. This method always returns
+         *  false.
+         *  
+         *  @param true if there is an error; false, otherwise.
+         */
         public boolean checkError() {
             return false;
         }
 
+        /** Close the print stream.
+         */
         public void close() {
         }
 
+        /** Flush the output. This is asynchronously done in the background.
+         */
         public void flush() {
             _display.syncExec(new PrintRunnable(null, PrintRunnable.FLUSH));
         }
 
-        public void write(int b) {
-            print((char) b);
-        }
-
-        public void write(byte[] buffer, int offset, int length) {
-            print(new String(buffer, offset, length));
-        }
-
+        /** Print a boolean value to the stream.
+         * 
+         *  @param b The boolean value.
+         */
         public void print(boolean b) {
             print(Boolean.toString(b));
         }
 
+        /** Print a char to the stream.
+         * 
+         *  @param c The char to write.
+         */
         public void print(char c) {
             print(Character.toString(c));
         }
 
+        /** Print an integer to the stream.
+         * 
+         *  @param i The integer to write.
+         */
         public void print(int i) {
             print(Integer.toString(i));
         }
 
+        /** Print a long value to the stream.
+         * 
+         *  @param l The long value to write.
+         */
         public void print(long l) {
             print(Long.toString(l));
         }
 
+        /** Print a float value to the stream.
+         * 
+         *  @param f The float value to write.
+         */
         public void print(float f) {
             print(Float.toString(f));
         }
 
+        /** Print a double value to the stream.
+         * 
+         *  @param d The double value to write.
+         */
         public void print(double d) {
             print(Double.toString(d));
         }
 
+        /** Print an array of chars to the stream.
+         * 
+         *  @param s The array of chars to write.
+         */
         public void print(char[] s) {
             print(new String(s));
         }
 
+        /** Print a string to the stream.
+         * 
+         *  @param s The string to write.
+         */
         public void print(String s) {
             _display.syncExec(new PrintRunnable(s, PrintRunnable.PRINT));
         }
 
-        public void print(Object obj) {
-            print(obj.toString());
+        /** Print the string representation of an object to the stream.
+         * 
+         *  @param object The object.
+         */
+        public void print(Object object) {
+            print(object.toString());
         }
 
+        /** Print an empty line to the stream.
+         */
         public void println() {
             println("");
         }
 
+        /** Print a boolean value to the stream, and append a new line
+         *  character.
+         * 
+         *  @param b The boolean value.
+         */
         public void println(boolean b) {
             println(Boolean.toString(b));
         }
 
+        /** Print a char to the stream, and append a new line character.
+         * 
+         *  @param c The char to write.
+         */
         public void println(char c) {
             println(Character.toString(c));
         }
 
+        /** Print an integer to the stream, and append a new line character.
+         * 
+         *  @param i The integer to write.
+         */
         public void println(int i) {
             println(Integer.toString(i));
         }
 
+        /** Print a long value to the stream, and append a new line character.
+         * 
+         *  @param l The long value to write.
+         */
         public void println(long l) {
             println(Long.toString(l));
         }
 
+        /** Print a float value to the stream, and append a new line character.
+         * 
+         *  @param f The float value to write.
+         */
         public void println(float f) {
             println(Float.toString(f));
         }
 
+        /** Print a double value to the stream, and append a new line character.
+         * 
+         *  @param d The double value to write.
+         */
         public void println(double d) {
             println(Double.toString(d));
         }
 
+        /** Print an array of chars to the stream, and append a new line
+         *  character.
+         * 
+         *  @param s The array of chars to write.
+         */
         public void println(char[] s) {
             println(new String(s));
         }
 
+        /** Print a string to the stream, and append a new line character.
+         * 
+         *  @param s The string to write.
+         */
         public void println(String s) {
             _display.syncExec(new PrintRunnable(s, PrintRunnable.PRINTLN));
         }
 
-        public void println(Object o) {
-            println(o.toString());
+        /** Print the string representation of an object to the stream, and
+         *  append a new line character.
+         * 
+         *  @param object The object.
+         */
+        public void println(Object object) {
+            println(object.toString());
         }
 
+        /** Write a char in the integer to the stream.
+         * 
+         *  @param i The integer representation of the char.
+         */
+        public void write(int i) {
+            print((char) i);
+        }
+
+        /** Write a part of the byte buffer to the stream.
+         * 
+         *  @param buffer The buffer.
+         *  @param offset The starting offset.
+         *  @param length The length.
+         */
+        public void write(byte[] buffer, int offset, int length) {
+            print(new String(buffer, offset, length));
+        }
+
+        /** Eclipse's standard display object.
+         */
         private Display _display = EclipsePlugin.getStandardDisplay();
 
+        /** The stream of the Eclipse console.
+         */
         private MessageConsoleStream _stream;
 
+        //////////////////////////////////////////////////////////////////////////
+        //// PrintRunnable
+        /**
+           The runnable object to execute asynchronously with the Eclipse GUI
+           thread. It produces output to the Eclipse console.
+        
+           @author Thomas Feng
+           @version $Id$
+           @since Ptolemy II 5.1
+           @Pt.ProposedRating Red (tfeng)
+           @Pt.AcceptedRating Red (tfeng)
+        */
         private class PrintRunnable implements Runnable {
-            static final int FLUSH = 0;
 
-            static final int PRINT = 1;
-
-            static final int PRINTLN = 2;
-
+            /** Construct a runnable to print the output to the Eclipse console.
+             * 
+             *  @param s The string to print.
+             *  @param operation The operation ({@link #FLUSH}, {@link #PRINT}
+             *   or {@link #PRINTLN}).
+             */
             PrintRunnable(String s, int operation) {
                 _s = s;
                 _operation = operation;
             }
 
+            /** Print the output.
+             */
             public void run() {
                 switch (_operation) {
                 case PRINT:
@@ -337,7 +493,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
                     _stream.println(_s);
                 }
 
-                // Flush every time, does not work for 3.0.
+                // Flush every time, does not work with Eclipse 3.0.
 
                 /*try {
                  _stream.flush();
@@ -345,22 +501,62 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
                  }*/
             }
 
+            /** The operation to flush the output.
+             */
+            public static final int FLUSH = 0;
+
+            /** The operation to print a string.
+             */
+            public static final int PRINT = 1;
+
+            /** The operation to print a string with a new line charactor.
+             */
+            public static final int PRINTLN = 2;
+
+            /** The string to print.
+             */
             private String _s;
 
+            /** The operation to perform.
+             */
             private int _operation;
         }
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// ErrorDialogRunnable
+    /**
+       The runnable object to asynchronously pop up an error dialog.
+    
+       @author Thomas Feng
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (tfeng)
+       @Pt.AcceptedRating Red (tfeng)
+    */
     private class ErrorDialogRunnable implements Runnable {
+        
+        /** Construct an error dialog with a cause.
+         * 
+         *  @param t The cause of the error.
+         */
         ErrorDialogRunnable(Throwable t) {
             _t = t;
         }
 
+        /** Open the error dialog.
+         */
         public void run() {
-            MessageDialog.openError(window.getShell(), "Error in Refactoring",
+            MessageDialog.openError(_window.getShell(), "Error in Refactoring",
                     _t.getMessage());
         }
 
+        /** The cause of the error.
+         */
         private Throwable _t;
     }
+
+    /** The parent window.
+     */
+    private IWorkbenchWindow _window;
 }
