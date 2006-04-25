@@ -61,7 +61,7 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();        
+        StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
         code.append(_generateRandomNumber());
         return processCode(code.toString());

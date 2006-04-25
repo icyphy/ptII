@@ -16,13 +16,13 @@
 	$ref(output) = Array_new($val(outputArrayLength), 0);
 	
 	for ($actorSymbol(i) = 0; $actorSymbol(i) < $val(destinationPosition); $actorSymbol(i)++) {
-		//$ref(output).payload.Array->elements[$actorSymbol(i)] = zero;
+		$ref(output).payload.Array->elements[$actorSymbol(i)] = $tokenFunc(Array_get($ref(input), 0)::zero());
 	}
 	for (; $actorSymbol(i) < $val(destinationPosition) + $val(extractLength); $actorSymbol(i)++) {
 		$ref(output).payload.Array->elements[$actorSymbol(i)] = Array_get($ref(input), $val(sourcePosition) + $actorSymbol(i) - $val(destinationPosition));
 	}
 	for (; i < $val(outputArrayLength); i++) {
-		//$ref(output).payload.Array->elements[$actorSymbol(i)] = zero;
+		$ref(output).payload.Array->elements[$actorSymbol(i)] = $tokenFunc(Array_get($ref(input), 0)::zero());
 	}
 /**/
 

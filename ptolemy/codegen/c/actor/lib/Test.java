@@ -96,6 +96,31 @@ public class Test extends CCodeGeneratorHelper {
         return processCode(_codeStream.toString());
     }
 
+    /** 
+     * Generate the preinitialize code. Declare temporary variables.
+     * @return The preinitialize code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        // Automatically append the "preinitBlock" by default.
+        super.generatePreinitializeCode();
+
+        ptolemy.actor.lib.Test actor = 
+            (ptolemy.actor.lib.Test) getComponent();
+
+        if (actor.input.getWidth() > 1) {
+            ArrayList args = new ArrayList();
+            args.add(new Integer(0));
+            for (int i = 0; i < actor.input.getWidth(); i++) {
+                args.set(0, new Integer(i));
+                _codeStream.appendCodeBlock("TokenPreinitBlock", args);
+            }
+        }
+
+        return processCode(_codeStream.toString());
+    }
+
     /**
      * Get the files needed by the code generated for the
      * Test actor.

@@ -26,10 +26,10 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -50,7 +50,31 @@ public class ThrowException extends Sink {
     public ThrowException(ptolemy.actor.lib.ThrowException actor) {
         super(actor);
     }
+    
+    /**
+     * Generate fire code.
+     * Read the <code>fireBlock</code> from ThrowException.c,
+     * replace macros with their values and return the processed code string.
+     * @return The processed code string.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String  generateFireCode() throws IllegalActionException {
+        super.generateFireCode();
 
+        ptolemy.actor.lib.Synchronizer actor = 
+            (ptolemy.actor.lib.Synchronizer) getComponent();
+
+        ArrayList args = new ArrayList();
+        args.add(new Integer(0));
+        
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            args.set(0, new Integer(i));
+            _codeStream.appendCodeBlock("fireBlock", args);
+        }
+        return processCode(_codeStream.toString());
+    }
+    
     /**
      * Get the files needed by the code generated for the
      * ThrowException actor.

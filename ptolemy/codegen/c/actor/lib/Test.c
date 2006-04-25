@@ -5,6 +5,10 @@
     int $actorSymbol(numberOfTokensSeen) = -1;
 /**/
 
+/*** TokenPreinitBlock($channel)***/
+	Token $actorSymbol(correctValuesThisFiring_$channel);
+/**/
+
 /***IntBlock($channel)***/
         $actorSymbol(numberOfTokensSeen)++;
 
@@ -26,7 +30,7 @@
     	}    
 
         /* $channel of $actorSymbol() */
-        Token $actorSymbol(correctValuesThisFiring)_$channel =
+        $actorSymbol(correctValuesThisFiring_$channel) =
                $ref(correctValues, $actorSymbol(numberOfTokensSeen));
                
         if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
@@ -63,7 +67,7 @@
     	}    
 
         /* $channel of $actorSymbol() */
-        Token $actorSymbol(correctValuesThisFiring)_$channel =
+        $actorSymbol(correctValuesThisFiring_$channel) =
                 $ref(correctValues, $actorSymbol(numberOfTokensSeen));
         if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
                 && fabs($ref(input#$channel)
@@ -97,7 +101,7 @@
 	        $actorSymbol(numberOfTokensSeen)++;
     	}    
         /* $channel of $actorSymbol() */
-        Token $actorSymbol(correctValuesThisFiring)_$channel =
+        $actorSymbol(correctValuesThisFiring_$channel) =
                 $ref(correctValues, $actorSymbol(numberOfTokensSeen));
         if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
                 && ((!Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean
@@ -130,7 +134,7 @@
 	        $actorSymbol(numberOfTokensSeen)++;
     	}    
         /* $channel of $actorSymbol() */
-        Token $actorSymbol(correctValuesThisFiring)_$channel =
+        $actorSymbol(correctValuesThisFiring_$channel) =
                $ref(correctValues, $actorSymbol(numberOfTokensSeen));
 		if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 	                && (strcmp((char *)$ref(input#$channel),
@@ -162,7 +166,7 @@
 	        $actorSymbol(numberOfTokensSeen)++;
     	}    
         /* $channel of $actorSymbol() */
-        Token $actorSymbol(correctValuesThisFiring)_$channel =
+        $actorSymbol(correctValuesThisFiring_$channel) =
                Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen));
 		if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 	                && !$tokenFunc($ref(input#$channel)::equals(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel))).payload.Boolean) {

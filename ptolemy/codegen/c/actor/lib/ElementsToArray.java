@@ -30,6 +30,7 @@ package ptolemy.codegen.c.actor.lib;
 import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.ArrayType;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -60,47 +61,26 @@ public class ElementsToArray extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        ptolemy.actor.lib.ElementsToArray actor = (ptolemy.actor.lib.ElementsToArray) getComponent();
-
+        super.generateFireCode();
+        ptolemy.actor.lib.ElementsToArray actor = 
+            (ptolemy.actor.lib.ElementsToArray) getComponent();
+        
         ArrayList args = new ArrayList();
-        args.add("");
-        String type = codeGenType(actor.input.getType());
+        args.add(new Integer(0));
+        String type = codeGenType(
+                ((ArrayType) actor.output.getType()).getElementType());
+        
         args.add(type);
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, new Integer(i));
             String codeBlock;
             if (isPrimitive(type)) {
-                if (isPrimitive(actor.output.getType())) {
-                    codeBlock = "primitiveToPrimitiveFireBlock";
-                } else {
-                    codeBlock = "primitiveToTokenFireBlock";
-                }
+                codeBlock = "primitiveFireBlock";
             } else {
                 codeBlock = "tokenFireBlock";
             }
-            code.append(_generateBlockCode(codeBlock, args));
+            _codeStream.appendCodeBlock(codeBlock, args);
         }
-        return processCode(code.toString());
-    }
-
-    /**
-     * Generate initialize code.
-     * This method reads the <code>initBlock</code> from ElementsToArray.c,
-     * replaces macros with their values and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-
-        ArrayList args = new ArrayList();
-        ptolemy.actor.lib.ElementsToArray actor = (ptolemy.actor.lib.ElementsToArray) getComponent();
-        args.add(new Integer(actor.input.getWidth()));
-        code.append(_generateBlockCode("initBlock", args));
-        return processCode(code.toString());
+        return processCode(_codeStream.toString());
     }
 }

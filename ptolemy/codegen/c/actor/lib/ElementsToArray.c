@@ -1,17 +1,24 @@
-/*** initBlock ($size)***/
-    $ref(output) = $new(Array($size,0));
+/***preinitBlock ***/
+	Token $actorSymbol(valueArray);
 /**/
 
-
-
-/*** primitiveToPrimitiveFireBlock($channel, $type) ***/
-    $ref(output).payload.Array->elements[$channel] = $ref(input#$channel);
+/*** initBlock ***/
+    $actorSymbol(valueArray) = $new(Array($size(input), 0));
 /**/
 
-/*** primitiveToTokenFireBlock($channel, $type) ***/
-    $ref(output).payload.Array->elements[$channel] = $new($type($ref(input#$channel)));
+/*** primitiveFireBlock($channel, $type) ***/
+    $actorSymbol(valueArray).payload.Array->elements[$channel] = $new($type($ref(input#$channel)));
+	$ref(output) = $actorSymbol(valueArray);
 /**/
 
 /*** tokenFireBlock($channel, $type)***/
-    $ref(output).payload.Array->elements[$channel] = $ref(input#$channel);
+	$actorSymbol(valueArray).payload.Array->elements[$channel] = ($ref(input#$channel).type == TYPE_$type) ?
+	    $ref(input#$channel) : 
+	    $typeFunc(TYPE_$type::convert($ref(input#$channel)));	
+	    
+	$ref(output) = $actorSymbol(valueArray);
+/**/
+
+/*** wrapupBlock ***/
+	Array_delete($actorSymbol(valueArray));
 /**/
