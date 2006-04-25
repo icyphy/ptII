@@ -251,10 +251,8 @@ public class SDFDirector extends Director {
                             + compositeActorHelper.getReference("@" + name
                                     + "," + k));
                     code.append(" =\n");
-                    code
-                            .append(_INDENT4
-                                    + compositeActorHelper.getReference(name
-                                            + "," + k));
+                    code.append(_INDENT4 +
+                            compositeActorHelper.getReference(name + "," + k));
                     code.append(";\n");
                 }
             }
@@ -382,6 +380,7 @@ public class SDFDirector extends Director {
 
         Iterator outputPorts = container.outputPortList().iterator();
         while (outputPorts.hasNext()) {
+         
             IOPort outputPort = (IOPort) outputPorts.next();
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 int readTokens = 0;

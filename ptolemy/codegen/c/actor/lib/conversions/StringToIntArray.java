@@ -28,7 +28,11 @@
  */
 package ptolemy.codegen.c.actor.lib.conversions;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.conversions.StringToIntArray.
@@ -47,4 +51,18 @@ public class StringToIntArray extends CCodeGeneratorHelper {
     public StringToIntArray(ptolemy.actor.lib.conversions.StringToIntArray actor) {
         super(actor);
     }
-}
+    
+    /**
+     * Get the files needed by the code generated for the
+     * StringToIntArray actor.
+     * @return A set of Strings that are names of the header files
+     *  needed by the code generated for the StringSubstring actor.
+     * @exception IllegalActionException Not Thrown in this subclass.
+     */
+    public Set getHeaderFiles() throws IllegalActionException {
+        Set files = new HashSet();
+        files.addAll(super.getHeaderFiles());
+        files.add("<string.h>");
+        files.add("<stddef.h>");
+        return files;
+    }}

@@ -43,6 +43,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.ObjectToken;
@@ -138,8 +139,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         Actor actor = (Actor) _component;
 
-        List sourcePorts = actor.outputPortList();
-
+        ArrayList sourcePorts = new ArrayList(); 
+        sourcePorts.addAll(actor.outputPortList());
+        
         if (actor instanceof CompositeActor) {
             sourcePorts.addAll(actor.inputPortList());
         }
@@ -375,7 +377,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 while (sinkChannels.hasNext()) {
                     Channel sink = (Channel) sinkChannels.next();
-                    code.append(_generateTypeConvertMethod(source, sink));
+                    code.append(_generateTypeConvertStatements(source, sink));
                 }
             }
         }
@@ -1229,6 +1231,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 return 1;
             }
+        } else {
+            IOPort port = getPort(name);
+            if (port != null) {
+                return port.getWidth();
+            }
         }
 
         throw new IllegalActionException(_component, "Attribute not found: "
@@ -1661,7 +1668,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /**
-     * Generate the type conversion statement for the two given channels.
+     * Generate the type conversion statements for the two given channels.
      * @param source The given source channel.
      * @param sink The given sink channel.
      * @return The type convert statement for assigning the converted source
@@ -1669,29 +1676,62 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException If there is a problem getting the
      * helpers for the ports or if the conversion cannot be handled.
      */
-    protected String _generateTypeConvertMethod(Channel source, Channel sink)
+    protected String _generateTypeConvertStatements(Channel source, Channel sink)
             throws IllegalActionException {
 
+        String statements = "";
+
+        int rate = DFUtilities.getTokenConsumptionRate(source.port);
+
+        for (int offset = 0; offset < rate ||
+                (offset == 0 && rate == 0); offset++) {
+            
+            statements += 
+                _generateTypeConvertStatement(source, sink, offset);
+        }
+        return processCode(statements);
+    }
+
+    /**
+     * Generate the type conversion statement for the particular offset of
+     * the two given channels. This assumes that the offset is the same for
+     * both channel. Advancing the offset of one has to advance the offset of
+     * the other.
+     * @param source The given source channel.
+     * @param sink The given sink channel.
+     * @param offset The given offset.
+     * @return The type convert statement for assigning the converted source
+     *  variable to the sink variable with the given offset. 
+     * @exception IllegalActionException If there is a problem getting the
+     * helpers for the ports or if the conversion cannot be handled.
+     */
+    protected String _generateTypeConvertStatement(Channel source,
+            Channel sink, int offset) throws IllegalActionException {
+        
         // The references are associated with their own helper, so we need
-        // to find the associated helper.    	
+        // to find the associated helper.       
         String sourcePortChannel = source.port.getName() + "#"
-                + source.channelNumber;
+                + source.channelNumber + ", " + offset;
         String sourceRef = ((CodeGeneratorHelper) _getHelper(source.port
                 .getContainer())).getReference(sourcePortChannel);
 
-        String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber;
+        String sinkPortChannel = sink.port.getName() + "#"
+                + sink.channelNumber + ", " + offset;
+        
         // For composite actor, generate a variable corresponding to 
         // the inside receiver of an output port.
         if (sink.port.getContainer() instanceof CompositeActor
-                && sink.port.isOutput()) {
+                && sink.port.isInput()) {
             sinkPortChannel = "@" + sinkPortChannel;
         }
         String sinkRef = ((CodeGeneratorHelper) _getHelper(sink.port
                 .getContainer())).getReference(sinkPortChannel);
+        
         // When the sink port is contained by a modal controller, it is 
         // possible that the port is both input and output port. we need
         // to pay special attention. Directly calling getReference() will
         // treat it as output port and this is not correct.
+        // FIXME: what about offset?
         if (sink.port.getContainer() instanceof ModalController) {
             sinkRef = generateName(sink.port);
             if (sink.port.isMultiport()) {
@@ -1734,9 +1774,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
             }
         }
-        return processCode(sinkRef + " = " + result + ";\n");
+        return sinkRef + " = " + result + ";\n";            
     }
-
+    
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.
      *  @return The code generator helper.

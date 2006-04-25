@@ -436,6 +436,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         Set includingFiles = compositeActorHelper.getHeaderFiles();
 
         includingFiles.add("<stdarg.h>");
+        includingFiles.add("<stdio.h>");
         Iterator files = includingFiles.iterator();
 
         while (files.hasNext()) {
@@ -573,6 +574,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         HashSet functions = new HashSet();
         functions.add("delete");
         functions.add("toString");
+        functions.add("convert");
         functions.addAll(_typeFuncUsed);
         functions.addAll(_tokenFuncUsed);
 
@@ -581,11 +583,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         types.add("String");
         types.add("Boolean");
         types.addAll(_newTypesUsed);
-
-        // The constructor of Array requires calling the convert function.  
-        if (types.contains("Array")) {
-            functions.add("convert");
-        }
 
         Object[] typesArray = types.toArray();
         CodeStream[] typeStreams = new CodeStream[types.size()];

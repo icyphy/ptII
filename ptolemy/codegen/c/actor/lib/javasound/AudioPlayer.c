@@ -5,30 +5,27 @@
 // while invoking putsample() in the fire code wait the semaphore.
 
 /***sharedBlock ***/
-    struct $actorClass(sample) {
+    struct AudioPlayer_sample {
         Uint8 *data;            /* Pointer to wave data */
         Uint32 dataPosition;    /* Position of the next data to be mixed */
         Uint32 dataLength;      /* Length of wave data */
     };
     
     // FIXME: how should we determine the buffer size??
-    #define $actorClass(BUFFER_SIZE) 8192   // ~50 KB buffer size
-
-    // FIXME: what should we set the audio buffer size in samples equals to??
-    #define $actorClass(SAMPLE_BUFFER_SIZE) 8192
+    #define AudioPlayer_BUFFER_SIZE 8192   // ~50 KB buffer size
     
-    double $actorClass(clip) (double num) {
+    double AudioPlayer_clip (double num) {
         return num > 1.0 ? 1.0 : num < -1.0 ? -1.0 : num;
     }
+    
+    //#define AudioPlayer_DEBUG 1
 /**/
 
 /*** preinitBlock_8 ***/
     int $actorSymbol(i), $actorSymbol(j);
     Uint8 $actorSymbol(convertedSample);    
     
-    //const int _debug = 0;
-        
-    struct $actorClass(sample) $actorSymbol(sounds)[$val(channels)];
+    struct AudioPlayer_sample $actorSymbol(sounds)[$val(channels)];
         
     SDL_sem *$actorSymbol(sem);
     SDL_AudioSpec $actorSymbol(fmt);
@@ -41,9 +38,9 @@
         int _resetSize = 0;
         Uint32 amount;
     
-        //if (_debug) {
-        //    fprintf(stdout, "*******************************mixaudio running (data_length= %d), (len= %d)\n", $actorSymbol(sounds)[0].dataLength, len);
-        //}
+		#ifdef AudioPlayer_DEBUG
+            fprintf(stdout, "*******************************mixaudio running (data_length= %d), (len= %d)\n", $actorSymbol(sounds)[0].dataLength, len);
+		#endif
     
         // mixing sound data into output stream
         for ( i=0; i<$val(channels); i++ ) {
@@ -79,8 +76,10 @@
     // Wait for the semaphore, lock out the callback and put sample into
     // the sound data buffer.
     void $actorSymbol(putSample) (Uint8 data, int channel) {
-        //if (_debug) 
-        //    fprintf(stdout, "putSample running (data= %d), (sem= %d)\n", data, SDL_SemValue($actorSymbol(sem)));
+        #ifdef AudioPlayer_DEBUG 
+            fprintf(stdout, "putSample running (data= %d), (sem= %d)\n", data, SDL_SemValue($actorSymbol(sem)));
+        #endif
+            
         /////////////// LOCK //////////////////////////////
         if (SDL_SemWait($actorSymbol(sem)) != 0) {
             fprintf(stderr, "Error waiting for semaphore: %s\n",SDL_GetError());
@@ -91,9 +90,10 @@
     
         $actorSymbol(sounds)[channel].data[$actorSymbol(sounds)[channel].dataLength] = data;
 
-        //if (_debug) {
-        //    fprintf(stdout, "putSample locked audio, (data= %d), (sound.data= %d)\n", data, $actorSymbol(sounds)[channel].data[sounds[channel].dataLength]);
-        //}
+        #ifdef AudioPlayer_DEBUG
+            fprintf(stdout, "putSample locked audio, (data= %d), (sound.data= %d)\n", data, $actorSymbol(sounds)[channel].data[$actorSymbol(sounds)[channel].dataLength]);
+		#endif
+
         $actorSymbol(sounds)[channel].dataLength++;
     
         SDL_UnlockAudio();
@@ -110,7 +110,7 @@
     
     //const int _debug = 0;
         
-    struct $actorClass(sample) $actorSymbol(sounds)[$val(channels)];
+    struct AudioPlayer_sample $actorSymbol(sounds)[$val(channels)];
         
     SDL_sem *$actorSymbol(sem);
     SDL_AudioSpec $actorSymbol(fmt);
@@ -123,10 +123,10 @@
         int _resetSize = 0;
         Uint32 amount;
     
-        //if (_debug) {
-        //    fprintf(stdout, "*******************************mixaudio running (data_length= %d), (len= %d)\n", sounds[0].dataLength, len);
-        //}
-    
+        #ifdef AudioPlayer_DEBUG
+            fprintf(stdout, "*******************************mixaudio running (data_length= %d), (len= %d)\n", sounds[0].dataLength, len);
+		#endif
+		    
         // mixing sound data into output stream
         for ( i=0; i<$val(channels); i++ ) {
             while ($actorSymbol(sounds)[i].dataLength > $actorSymbol(sounds)[i].dataPosition) {
@@ -160,8 +160,11 @@
     // Wait for the semaphore, lock out the callback and put sample into
     // the sound data buffer.
     void $actorSymbol(putSample) (Uint16 data, int channel) {
-        //if (_debug) 
-        //    fprintf(stdout, "putSample running (data= %d), (sem= %d)\n", data, SDL_SemValue(sem));
+        
+        #ifdef AudioPlayer_DEBUG 
+            fprintf(stdout, "putSample running (data= %d), (sem= %d)\n", data, SDL_SemValue(sem));
+        #endif
+        
         /////////////// LOCK //////////////////////////////
         if (SDL_SemWait($actorSymbol(sem)) != 0) {
             fprintf(stderr, "Error waiting for semaphore: %s\n",SDL_GetError());
@@ -171,15 +174,18 @@
         SDL_LockAudio();
 
         $actorSymbol(sounds)[channel].data[$actorSymbol(sounds)[channel].dataLength] = (Uint8) data;    
-        //if (_debug) {
-        //    fprintf(stdout, "putSample locked audio, (data= %d), (sound.data= %d)\n", data >> 8, sounds[channel].data[sounds[channel].dataLength]);
-        //}
+
+        #ifdef AudioPlayer_DEBUG
+            fprintf(stdout, "putSample locked audio, (data= %d), (sound.data= %d)\n", data >> 8, $actorSymbol(sounds)[channel].data[$actorSymbol(sounds)[channel].dataLength]);
+        #endif
+
         $actorSymbol(sounds)[channel].dataLength++;
         $actorSymbol(sounds)[channel].data[$actorSymbol(sounds)[channel].dataLength] = (Uint8) (data >> 8);
 
-        //if (_debug) {
-        //    fprintf(stdout, "putSample locked audio, (data= %d), (sound.data= %d)\n", data, sounds[channel].data[sounds[channel].dataLength]);
-        //}
+        #ifdef AudioPlayer_DEBUG
+            fprintf(stdout, "putSample locked audio, (data= %d), (sound.data= %d)\n", data, $actorSymbol(sounds)[channel].data[$actorSymbol(sounds)[channel].dataLength]);
+        #endif
+
         $actorSymbol(sounds)[channel].dataLength++;
     
         SDL_UnlockAudio();
@@ -194,7 +200,7 @@
         exit(1);
     }
 
-    if (($actorSymbol(sem) = SDL_CreateSemaphore($actorClass(BUFFER_SIZE))) == NULL) {
+    if (($actorSymbol(sem) = SDL_CreateSemaphore(AudioPlayer_BUFFER_SIZE)) == NULL) {
         fprintf(stderr, "Error creating semaphor: %s\n",SDL_GetError());
         exit(1);
     }
@@ -203,7 +209,7 @@
     $actorSymbol(fmt).freq = $val(sampleRate);
     $actorSymbol(fmt).format = AUDIO_U$val(bitsPerSample);
     $actorSymbol(fmt).channels = $val(channels);
-    $actorSymbol(fmt).samples = $actorClass(SAMPLE_BUFFER_SIZE);    
+    $actorSymbol(fmt).samples = AudioPlayer_BUFFER_SIZE;    
     $actorSymbol(fmt).callback = $actorSymbol(mixaudio);
     $actorSymbol(fmt).userdata = NULL;
 
@@ -213,7 +219,7 @@
         exit(1);
     }
     for ( $actorSymbol(i)=0; $actorSymbol(i)<$val(channels); ++$actorSymbol(i) ) {
-        $actorSymbol(sounds)[$actorSymbol(i)].data = (Uint8*) malloc($actorClass(BUFFER_SIZE));
+        $actorSymbol(sounds)[$actorSymbol(i)].data = (Uint8*) malloc(AudioPlayer_BUFFER_SIZE);
         $actorSymbol(sounds)[$actorSymbol(i)].dataPosition = 0;
         $actorSymbol(sounds)[$actorSymbol(i)].dataLength = 0;
     }
@@ -229,8 +235,8 @@
         // Input range [-1.0, 1.0] --> output range [0, 255]
         
         //Use the following line if RINT() is not defined
-        //$actorSymbol(convertedSample) = floor(($actorClass(clip)($ref(input#$channel)) * 127) + 128); //128 = 2^7
-        $actorSymbol(convertedSample) = rint(($actorClass(clip)($ref(input#$channel)) * 127) + 128); //128 = 2^7
+        //$actorSymbol(convertedSample) = floor((AudioPlayer_clip($ref(input#$channel)) * 127) + 128); //128 = 2^7
+        $actorSymbol(convertedSample) = rint((AudioPlayer_clip($ref(input#$channel)) * 127) + 128); //128 = 2^7
         $actorSymbol(putSample) ($actorSymbol(convertedSample), $actorSymbol(j));
     }
 /**/
@@ -244,8 +250,8 @@
         // Input range [-1.0, 1.0] --> output range [0, 65535]
 
         //Use the following line if RINT() is not defined
-        //$actorSymbol(convertedSample) = floor(($actorClass(clip)($ref(input#$channel)) * 32767) + 32768); //32768 = 2^15
-        $actorSymbol(convertedSample) = rint(($actorClass(clip)($ref(input#$channel)) * 32767) + 32768); //32768 = 2^15
+        //$actorSymbol(convertedSample) = floor((AudioPlayer_clip($ref(input#$channel)) * 32767) + 32768); //32768 = 2^15
+        $actorSymbol(convertedSample) = rint((AudioPlayer_clip($ref(input#$channel)) * 32767) + 32768); //32768 = 2^15
         $actorSymbol(putSample) ($actorSymbol(convertedSample), $actorSymbol(j));
     }
 /**/

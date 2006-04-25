@@ -45,13 +45,6 @@ Token Int_toString(Token this, ...) {
 }
 /**/
 
-/***toExpressionBlock***/
-Token Int_toExpression(Token this, ...) {
-	return Int_toString(this);
-}
-/**/
-
-
 /***addBlock***/
 Token Int_add(Token this, ...) {
     va_list argp; 
@@ -77,11 +70,31 @@ Token Int_substract(Token this, ...) {
 /***multiplyBlock***/
 Token Int_multiply(Token this, ...) {
     va_list argp; 
+	Token result;
+	Token otherToken;
+
     va_start(argp, this);
-	Token otherToken = va_arg(argp, Token);	
+	otherToken = va_arg(argp, Token);	
+
+    switch (otherToken.type) {
+    	case TYPE_Int:
+    		result = Int_new(this.payload.Int * otherToken.payload.Int);
+    		break;
+    		
+        #ifdef TYPE_Double
+            case TYPE_Double:
+                result = Double_new(this.payload.Int * otherToken.payload.Double);
+                break;
+        #endif
+
+        // FIXME: not finished
+        default:
+            fprintf(stderr, "Int_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
+            exit(1);
+    }
 
     va_end(argp);
-	return Int_new(this.payload.Int * otherToken.payload.Int);
+	return result;
 }
 /**/
 

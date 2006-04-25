@@ -1,8 +1,7 @@
 /*** sharedBlock ***/
 // Match string against the extended regular expression in
 // pattern, treating errors as no match.
-boolean match(const char *string, char *pattern)
-{
+boolean match(const char *string, char *pattern) {
     int status;
     regex_t re;
 

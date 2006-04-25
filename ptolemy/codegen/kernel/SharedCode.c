@@ -39,13 +39,24 @@ char* InttoString (int i) {
 
 char* LongtoString (long l) {
     char* string = (char*) malloc(sizeof(char) * 22);
-    sprintf((char*) string, "%d", l);
+    sprintf(string, "%d", l);
     return string;       
 }
 
 char* DoubletoString (double d) {
-    char* string = (char*) malloc(sizeof(char) * 12);
-    sprintf((char*) string, "%g", d);
+	int index;
+	char* string = (char*) malloc(sizeof(char) * 20);
+    sprintf(string, "%.14g", d);
+
+	if (strrchr(string, '.') == NULL) {
+		index = strlen(string);
+		if (index > 10) {
+	        string = (char*) realloc(string, sizeof(char) * 22);
+		}
+		string[index] = '.';
+		string[index + 1] = '0';
+		string[index + 2] = '\0';
+	}
     return string;       
 }
 

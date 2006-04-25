@@ -48,12 +48,6 @@ Token Boolean_toString(Token this, ...) {
 }
 /**/
 
-/***toExpressionBlock***/
-Token Boolean_toExpression(Token this, ...) {
-	return Boolean_toString(this);
-}
-/**/
-
 /***addBlock***/
 Token Boolean_add(Token this, ...) {
     va_list argp; 

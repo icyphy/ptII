@@ -28,7 +28,10 @@
  */
 package ptolemy.codegen.c.actor.lib.conversions;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.conversions.TokenToExpression.
@@ -47,5 +50,30 @@ public class TokenToExpression extends CCodeGeneratorHelper {
     public TokenToExpression(
             ptolemy.actor.lib.conversions.TokenToExpression actor) {
         super(actor);
+    }
+    
+    /**
+     * Generate fire code.
+     * Read the <code>fireBlock</code> from TokenToExpression.c,
+     * replace macros with their values and append the processed code
+     * block to the given code buffer.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+        super.generateFireCode();
+
+        ptolemy.actor.lib.conversions.TokenToExpression actor = 
+            (ptolemy.actor.lib.conversions.TokenToExpression) getComponent();
+
+        if (isPrimitive(actor.input.getType())) {
+            ArrayList args = new ArrayList();
+            args.add(codeGenType(actor.input.getType()));
+            _codeStream.appendCodeBlock("FireBlock", args);            
+        } else {
+            _codeStream.appendCodeBlock("TokenFireBlock");
+        }
+        return processCode(_codeStream.toString());
     }
 }

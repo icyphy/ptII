@@ -15,7 +15,7 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 60.0]">
         </property>

@@ -1,12 +1,22 @@
 /*** preinitBlock ***/
-    int $actorSymbol(i);
-    int $actorSymbol(length);
+	unsigned char* $actorSymbol(byteValues);
+	int $actorSymbol(i);
+	int $actorSymbol(length);
 /**/
 
-/*** fireBlock ***/
-    $actorSymbol(length) = strlen($ref(input));
-    $ref(output) = (char*) malloc($actorSymbol(length) * sizeof(char));
-    for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(length); $actorSymbol(i)++) {
-        $ref(output)[$actorSymbol(i)] = $ref(input)[$actorSymbol(i)];
-    }
+/*** initBlock ***/
+	$actorSymbol(byteValues) = NULL;
+/**/
+
+/*** fireBlock***/
+	$actorSymbol(length) = strlen($ref(input));
+	$actorSymbol(byteValues) = (unsigned char*) realloc($actorSymbol(byteValues), sizeof(unsigned char) * $actorSymbol(length));
+	for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(length); $actorSymbol(i)++) {
+		$actorSymbol(byteValues)[$actorSymbol(i)] = $ref(input)[$actorSymbol(i)];
+	}
+	$ref(output) = $actorSymbol(byteValues);
+/**/
+
+/*** wrapupBlock ***/
+	free($actorSymbol(byteValues));
 /**/

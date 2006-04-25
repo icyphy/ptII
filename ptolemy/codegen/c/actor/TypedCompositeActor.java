@@ -72,6 +72,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      * @see ptolemy.codegen.kernel.CodeGeneratorHelper#analyzeTypeConvert
      */
     public void analyzeTypeConvert() throws IllegalActionException {
+        super.analyzeTypeConvert();
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
 
@@ -194,7 +195,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer initializeCode = new StringBuffer();
-
+        //initializeCode.append(super.generateInitializeCode());
+        
         // Reset the offset for all of the contained actors' input ports.
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
@@ -335,6 +337,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        //code.append(super.generateWrapupCode());
         Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         code.append(directorHelper.generateWrapupCode());

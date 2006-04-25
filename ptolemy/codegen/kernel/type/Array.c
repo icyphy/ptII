@@ -141,12 +141,6 @@ Token Array_toString(Token this, ...) {
 }
 /**/
 
-/***toExpressionBlock***/
-Token Array_toExpression(Token this, ...) {
-	return Array_toString(this);
-}
-/**/
-
 /***addBlock***/
 // Assume the given otherToken is array type.
 // Return a new Array token.

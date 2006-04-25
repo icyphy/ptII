@@ -27,6 +27,10 @@ Token Double_equals(Token this, ...) {
     Token otherToken; 
     va_start(argp, this);
 	otherToken = va_arg(argp, Token);
+	
+	if (otherToken.type != TYPE_Double) {
+		otherToken = Double_convert(otherToken);
+	}
 
     va_end(argp);
     
@@ -47,17 +51,12 @@ Token Double_toString(Token this, ...) {
 }
 /**/
 
-/***toExpressionBlock***/
-Token Double_toExpression(Token this, ...) {
-	return Double_toString(this);
-}
-/**/
-
 /***addBlock***/
 Token Double_add(Token this, ...) {
     va_list argp; 
+    Token otherToken;    
     va_start(argp, this);
-	Token otherToken = va_arg(argp, Token);	
+	otherToken = va_arg(argp, Token);	
 
     va_end(argp);
 	return Double_new(this.payload.Double + otherToken.payload.Double);
@@ -67,8 +66,10 @@ Token Double_add(Token this, ...) {
 /***substractBlock***/
 Token Double_substract(Token this, ...) {
     va_list argp; 
+    Token otherToken;
+    
     va_start(argp, this);
-	Token otherToken = va_arg(argp, Token);	
+	otherToken = va_arg(argp, Token);	
 
     va_end(argp);
 	return Double_new(this.payload.Double - otherToken.payload.Double);
@@ -78,19 +79,40 @@ Token Double_substract(Token this, ...) {
 /***multiplyBlock***/
 Token Double_multiply(Token this, ...) {
     va_list argp; 
+    Token result;
+    Token otherToken;
+    
     va_start(argp, this);
-	Token otherToken = va_arg(argp, Token);	
+	otherToken = va_arg(argp, Token);	
+
+    switch (otherToken.type) {
+    	case TYPE_Double:
+    		result = Double_new(this.payload.Double * otherToken.payload.Double);
+    		break;
+        #ifdef TYPE_Int
+            case TYPE_Int:
+                result = Double_new(this.payload.Double * otherToken.payload.Int);
+	    		break;
+        #endif
+
+        // FIXME: not finished
+        default:
+            fprintf(stderr, "Double_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
+			exit(1);
+    }
 
     va_end(argp);
-	return Double_new(this.payload.Double * otherToken.payload.Double);
+	return result;
 }
 /**/
 
 /***divideBlock***/
 Token Double_divide(Token this, ...) {
     va_list argp; 
+    Token otherToken;
+    
     va_start(argp, this);
-	Token otherToken = va_arg(argp, Token);	
+	otherToken = va_arg(argp, Token);	
 
     va_end(argp);
 	return Double_new(this.payload.Double / otherToken.payload.Double);

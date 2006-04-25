@@ -46,15 +46,7 @@ Token String_print(Token this, ...) {
 /***toStringBlock***/
 Token String_toString(Token this, ...) {
 	// Guarrantee to return a new string.
-	char* result = (char*) malloc(sizeof(char) * (1 + strlen(this.payload.String)));
-	strcpy(result, this.payload.String);
-	return String_new(result);
-}
-/**/
-
-/***toExpressionBlock***/
-Token String_toExpression(Token this, ...) {
-	char* result = (char*) malloc((5 + strlen(this.payload.String)) * sizeof(char));
+	char* result = (char*) malloc(sizeof(char) * (3 + strlen(this.payload.String)));
 	sprintf(result, "\"%s\"", this.payload.String);
 	return String_new(result);
 }
@@ -138,7 +130,7 @@ Token String_convert(Token token, ...) {
 
         #ifdef TYPE_Double
             case TYPE_Double:
-                stringPointer = InttoString(token.payload.Double);
+                stringPointer = DoubletoString(token.payload.Double);
                 break;
         #endif
 

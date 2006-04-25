@@ -1,3 +1,8 @@
+/***preinitBlock***/
+	char* string;
+	int length;
+/**/
+
 /*** IntPrintBlock($name, $channel) ***/
     printf("$name: %d\n", $ref(input#$channel));
 /**/
@@ -15,5 +20,12 @@
 /**/
 
 /*** TokenPrintBlock($name, $channel) ***/
-    printf("$name: %s\n", $tokenFunc($ref(input#$channel)::toString()).payload.String);
+	string = $tokenFunc($ref(input#$channel)::toString()).payload.String;
+	length = strlen(string);
+	if (length > 1 && string[0] == '\"' && string[length - 1] == '\"') {
+		string[length - 1] = '\0';
+	    printf("$name: %s\n", string + 1);
+	} else {
+	    printf("$name: %s\n", string);
+	}
 /**/

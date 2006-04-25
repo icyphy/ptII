@@ -24,13 +24,9 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.c.actor.lib;
-
-import java.util.HashSet;
-import java.util.Set;
+package ptolemy.codegen.c.domains.sdf.lib;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.domains.sdf.lib.CountTrues. 
@@ -49,95 +45,5 @@ public class CountTrues extends CCodeGeneratorHelper {
      */
     public CountTrues(ptolemy.domains.sdf.lib.CountTrues actor) {
         super(actor);
-    }
-
-    /**
-     * Generate fire code.
-     * Read the <code>fireBlock</code> from CountTrues.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String  generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
-   }
-
-    /**
-     * Generate initialize code.
-     * Read the  from CountTrues.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
-
-        return code.toString();
-    }
-   
-    /**
-     * Generate preinitialize code.
-     * Reads the <code>preinitBlock</code> from CountTrues.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-        code.append(_generateBlockCode("preinitBlock"));
-        return code.toString();
-    }
-
-    /**
-     * Generate shared code.
-     * Read the  from CountTrues.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public Set getSharedCode() throws IllegalActionException {
-        Set sharedCode = new HashSet();
-        sharedCode.addAll(super.getHeaderFiles());
-
-        return sharedCode;
-    }
-
-    /**
-     * Generate wrap up code.
-     * Read the  from CountTrues.c, 
-     * replace macros with their values and and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateWrapupCode());
-        
-        return code.toString();
-    }
-
-    /**
-     * Get the files needed by the code generated for the
-     * CountTrues actor.
-     * @return A set of Strings that are names of the header files
-     *  needed by the code generated for the CountTrues actor.
-     * @exception IllegalActionException Not Thrown in this subclass.
-     */
-    public Set getHeaderFiles() throws IllegalActionException {
-        Set files = new HashSet();
-        files.addAll(super.getHeaderFiles());
-        files.add("<stdio.h>");
-
-        return files;
     }
 }

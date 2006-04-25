@@ -62,7 +62,8 @@ public class StringToUnsignedByteArray extends CCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
-        files.add("\"string.h\"");
+        files.add("<string.h>");
+        files.add("<stddef.h>");
         return files;
     }
 }
