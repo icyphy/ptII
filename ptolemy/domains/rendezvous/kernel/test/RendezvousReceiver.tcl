@@ -44,6 +44,13 @@ if {[info procs enumToObjects] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+set toplevel [java::new ptolemy.actor.CompositeActor]
+set dir [java::new ptolemy.domains.rendezvous.kernel.RendezvousDirector]
+$toplevel setDirector $dir
+$toplevel setDirector $dir
+set sink [java::new ptolemy.domains.rendezvous.kernel.test.TestSink $toplevel "sink"]
+set port [$sink getPort "input"]
+
 ######################################################################
 ####
 #
@@ -64,3 +71,65 @@ test RendezvousReceiver-2.1 {Constructors and Containers} {
 	    [$val3 equals $port]
 } {1 1 1}
 
+
+######################################################################
+####
+#
+test RendezvousReceiver-2.2 {Check for correct IOPort container in new receiver} {
+    set rec [java::new ptolemy.domains.rendezvous.kernel.RendezvousReceiver $port]
+    list [ $port equals [$rec getContainer]]
+} {1}
+
+######################################################################
+####
+#
+test RendezvousReceiver-3.1 {hasRoom} {
+    # hasroom() and hasRoom(int) always returns true
+    list [$rcvr1 hasRoom] \
+	[$rcvr1 hasRoom -1] [$rcvr1 hasRoom 0] [$rcvr1 hasRoom 1]
+} {1 1 1 1}
+
+######################################################################
+####
+#
+test RendezvousReceiver-4.1 {Put and get token when only one token} {
+    #$rec setCapacity 1
+    catch {$rec put [java::new {ptolemy.data.IntToken int} 2]} errMsg
+    #set tok [java::cast ptolemy.data.IntToken [$rec get]]
+    #list [$tok intValue ]
+    list $errMsg
+} {{ptolemy.actor.process.TerminateProcessException: RendezvousReceiver: trying to rendezvous with a receiver with no director => terminate.}}
+
+######################################################################
+####
+#
+# Call the various boundary* methods on the receiver
+proc describeBoundary {receiver} {
+    return [list [$receiver isConnectedToBoundary] [$receiver isConnectedToBoundaryInside] [$receiver isConnectedToBoundaryOutside] [$receiver isConsumerReceiver] [$receiver isOutsideBoundary] [$receiver isProducerReceiver]]
+}
+
+######################################################################
+####
+#
+test RendezvousReceiver-4.2 {isConnectedToBoundary} {
+    list [describeBoundary $rcvr1] \
+	[describeBoundary $rcvr2] \
+	[describeBoundary $rcvr3]
+} {{0 0 0 0 0 0} {0 0 0 0 0 0} {0 0 0 0 0 0}}
+
+######################################################################
+####
+#
+test RendezvousReceiver-5.1 {isReadBlocked} {
+    catch { $rcvr1 isReadBlocked} errMsg
+    list $errMsg
+} {{ptolemy.actor.process.TerminateProcessException: RendezvousReceiver: trying to rendezvous with a receiver with no director => terminate.}}
+
+
+######################################################################
+####
+#
+test RendezvousReceiver-6.1 {isWriteBlocked} {
+    catch { $rcvr1 isWriteBlocked} errMsg
+    list $errMsg
+} {{ptolemy.actor.process.TerminateProcessException: RendezvousReceiver: trying to rendezvous with a receiver with no director => terminate.}}

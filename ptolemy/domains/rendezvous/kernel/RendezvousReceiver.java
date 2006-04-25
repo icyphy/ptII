@@ -161,31 +161,6 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Get from all receivers in the getReceivers array, and put the tokens
-     * received to all receivers in putReceivers array. The put and get are to
-     * be accomplished simultaneously in a rendezvous. This method does not
-     * return until both the get and put are complete.
-     *
-     * @param getReceivers The receivers, which are assumed to all be
-     * instances of RendezvousReceiver, to get tokens from.
-     * @param putReceivers The receivers, which are assumed to all be
-     * instances of RendezvousReceiver, to put tokens to.
-     * @param director The director, on which this method
-     * synchronizes.
-     * @exception IllegalActionException If the token is not
-     * acceptable to one of the ports (e.g., wrong type).
-     * @exception TerminateProcessException If the actor to which this
-     * receiver belongs is to be terminated.
-     * @deprecated No longer needed by the Barrier.
-     */
-    public static void getFromAllPutToAll(Receiver[][] getReceivers,
-            Receiver[][] putReceivers, RendezvousDirector director)
-            throws IllegalActionException, TerminateProcessException {
-        _getOrPutTokens(getReceivers, putReceivers, director, null, null,
-                GET_FROM_ALL_PUT_TO_ALL);
-    }
-
-    /**
      * Get from any receiver in the specified array. This method does
      * not return until one of the gets is complete.
      *  
@@ -345,7 +320,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
     /**
      * This class serves as an example of a ConsumerReceiver and hence this
-     * method returns true.
+     * method returns true if this port is connected to a boundary.
+     * @see #isConnectedToBoundary
      */
     public boolean isConsumerReceiver() {
         if (isConnectedToBoundary()) {
@@ -691,47 +667,47 @@ public class RendezvousReceiver extends AbstractReceiver implements
             // is an error so terminate the process.
             throw new TerminateProcessException(
                     "RendezvousReceiver: trying to "
-                            + " rendezvous with a receiver with no "
+                            + "rendezvous with a receiver with no "
                             + "director => terminate.");
         }
     }
 
-    /**
-     * Return whether a getFromAny() is pending on this receiver.
-     *
-     * @return True if a getFromAny() is pending on this receiver.
-     */
-    protected boolean _isConditionalReceiveWaiting() {
-        return (_getWaiting != null) && _getConditional;
-    }
+//     /**
+//      * Return whether a getFromAny() is pending on this receiver.
+//      *
+//      * @return True if a getFromAny() is pending on this receiver.
+//      */
+//     protected boolean _isConditionalReceiveWaiting() {
+//         return (_getWaiting != null) && _getConditional;
+//     }
 
-    /**
-     * Return whether a putToAny() is pending on this receiver.
-     *
-     * @return True if a putToAny() is pending on this receiver.
-     */
-    protected boolean _isConditionalSendWaiting() {
-        return (_putWaiting != null) && _putConditional;
-    }
+//     /**
+//      * Return whether a putToAny() is pending on this receiver.
+//      *
+//      * @return True if a putToAny() is pending on this receiver.
+//      */
+//     protected boolean _isConditionalSendWaiting() {
+//         return (_putWaiting != null) && _putConditional;
+//     }
 
-    /**
-     * Return whether a get() is waiting to rendezvous at this receiver.
-     *
-     * @return True if a get() is waiting to rendezvous.
-     */
-    protected boolean _isGetWaiting() {
-        return _getWaiting != null;
-    }
+//     /**
+//      * Return whether a get() is waiting to rendezvous at this receiver.
+//      *
+//      * @return True if a get() is waiting to rendezvous.
+//      */
+//     protected boolean _isGetWaiting() {
+//         return _getWaiting != null;
+//     }
 
-    /**
-     * Flag indicating whether or not a put() is waiting to rendezvous at this
-     * receiver.
-     *
-     * @return True if a put() is waiting to rendezvous.
-     */
-    protected boolean _isPutWaiting() {
-        return _putWaiting != null;
-    }
+//     /**
+//      * Flag indicating whether or not a put() is waiting to rendezvous at this
+//      * receiver.
+//      *
+//      * @return True if a put() is waiting to rendezvous.
+//      */
+//     protected boolean _isPutWaiting() {
+//         return _putWaiting != null;
+//     }
 
     /**
      * Get the receivers that are ready to form a rendezvous according to the
