@@ -1,0 +1,7 @@
+# configure.in for test project
+
+AC_INIT(Scheduler.cpp)
+AM_INIT_AUTOMAKE(PDEtest, 1.0)
+AC_PROG_CXX
+AC_OUTPUT(Makefile)
+
