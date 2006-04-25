@@ -1281,8 +1281,6 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @version $Id: RendezvousReceiver.java,v 1.18 2005/11/03 21:27:29 tfeng
      *          Exp $
      * @since Ptolemy II 5.1
-     * @Pt.ProposedRating Red (tfeng)
-     * @Pt.AcceptedRating Red (tfeng)
      */
     private static class TopologicalSort {
 
