@@ -1680,7 +1680,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _handler = handler;
     }
 
-    /** Set the icon loader for all MoMLParsers
+    /** Set the icon loader for all MoMLParsers.
      *  @param loader The IconLoader for all MoMLParsers.
      */
       public static void setIconLoader(IconLoader loader) {

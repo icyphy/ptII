@@ -199,6 +199,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @param variable the given variable.
      * @param expression The string expression of the given variable.
      * @return The given expression.
+     * @exception IllegalActionException Not thrown in this base class.
+     * Derived classes would throw this exception if there is a problem
+     * constraining the type of the parameter expression.
      */
     public String constraintType(Variable variable, String expression)
             throws IllegalActionException {
@@ -1234,6 +1237,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     /** Return the translated token instance function invocation string.
      *  @param functionString The string within the $tokenFunc() macro.
+     *  @param isStatic True if the method is static.   
      *  @return The translated type function invocation string.
      *  @exception IllegalActionException The given function string is
      *   not well-formed.
