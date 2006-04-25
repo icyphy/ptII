@@ -22,3 +22,4 @@ template <class T> T Token<T>::getValue(void) {
 
 typedef Token<int> INTTOKEN;
 #endif 
+
