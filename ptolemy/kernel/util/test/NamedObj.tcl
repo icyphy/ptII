@@ -473,6 +473,18 @@ test NamedObj-11.1 {Test exportMoML} {
 </entity>
 }
 
+test NamedObj-11.1.1 {Test exportMoMLPlain} {
+    # Uses 11.1 above
+    # No header even though there is no container
+    $a exportMoMLPlain    	
+} {    <entity name="A" class="ptolemy.kernel.util.NamedObj">
+        <property name="A1" class="ptolemy.kernel.util.Attribute">
+            <property name="A2" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+    </entity>
+}
+
 test NamedObj-11.1.1 {Test exportMoML(String)} {
     set n [java::new ptolemy.kernel.util.Workspace]
     set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
