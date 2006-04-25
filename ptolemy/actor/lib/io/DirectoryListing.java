@@ -133,8 +133,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
     ////                     ports and parameters                  ////
 
     /** The directory name or URL from which to read.  This is a string with
-     *  any form accepted by FileParameter.
-     *  @see FileParameter
+     *  any form accepted by {@link ptolemy.actor.parameters.FilePortParameter}.
      */
     public FilePortParameter directoryOrURL;
 
