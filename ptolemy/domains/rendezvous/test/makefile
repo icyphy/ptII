@@ -87,6 +87,7 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+	(cd ..; ls -Rl)
 	$(JTCLSH) alljtests.tcl
 
 # Get the rest of the rules
