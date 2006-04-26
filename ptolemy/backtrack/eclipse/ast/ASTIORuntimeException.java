@@ -28,6 +28,8 @@
  */
 package ptolemy.backtrack.eclipse.ast;
 
+import java.io.IOException;
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTIORuntimeException
 

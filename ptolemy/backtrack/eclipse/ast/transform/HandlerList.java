@@ -27,6 +27,7 @@
  */
 package ptolemy.backtrack.eclipse.ast.transform;
 
+import ptolemy.backtrack.eclipse.ast.TypeAnalyzer;
 import ptolemy.backtrack.eclipse.ast.transform.AssignmentHandler;
 import ptolemy.backtrack.eclipse.ast.transform.ClassHandler;
 

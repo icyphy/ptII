@@ -32,6 +32,7 @@ import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SuperConstructorInvocation;
 
+import ptolemy.backtrack.eclipse.ast.TypeAnalyzer;
 import ptolemy.backtrack.eclipse.ast.TypeAnalyzerState;
 
 //////////////////////////////////////////////////////////////////////////

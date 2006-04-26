@@ -33,6 +33,7 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
+import ptolemy.backtrack.eclipse.ast.TypeAnalyzer;
 import ptolemy.backtrack.eclipse.ast.TypeAnalyzerState;
 
 //////////////////////////////////////////////////////////////////////////

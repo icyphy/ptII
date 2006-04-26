@@ -65,7 +65,7 @@ public abstract class TransformRule {
      *
      *  @param analyzer The type analyzer.
      *  @param root The root of the AST.
-     *  @see #afterTraverse(CompilationUnit)
+     *  @see #afterTraverse(TypeAnalyzer, CompilationUnit)
      */
     public abstract void beforeTraverse(TypeAnalyzer analyzer,
             CompilationUnit root);
