@@ -49,7 +49,7 @@ import java.util.Set;
    @Pt.ProposedRating Red (tfeng)
    @Pt.AcceptedRating Red (tfeng)
 */
-class ConfigXmlHandler extends XmlHandler {
+public class ConfigXmlHandler extends XmlHandler {
 
     /** Construct an XML handler.
      * 
