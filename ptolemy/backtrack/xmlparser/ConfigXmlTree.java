@@ -139,8 +139,8 @@ public class ConfigXmlTree {
     /** Test whether there are more children to traverse.
      * 
      *  @return true if there are more children to traverse; false, otherwise.
-     *  @see {@link #nextChild()}
-     *  @see {@link #startTraverseChildren()}
+     *  @see #nextChild()
+     *  @see #startTraverseChildren()
      */
     public boolean hasMoreChildren() {
         return _iterator.hasNext();
@@ -157,8 +157,8 @@ public class ConfigXmlTree {
     /** Return the next child to be traversed.
      * 
      *  @return The next child.
-     *  @see {@link #hasMoreChildren()}
-     *  @see {@link #startTraverseChildren()};
+     *  @see #hasMoreChildren()
+     *  @see #startTraverseChildren()
      */
     public ConfigXmlTree nextChild() {
         return (ConfigXmlTree) _iterator.next();
@@ -180,8 +180,8 @@ public class ConfigXmlTree {
     /** Start traversing the children of this node by initializing the internal
      *  iterator.
      *  
-     *  @see {@link #hasMoreChildren()}
-     *  @see {@link #nextChild()}
+     *  @see #hasMoreChildren()
+     *  @see #nextChild()
      */
     public void startTraverseChildren() {
         _iterator = _children.iterator();

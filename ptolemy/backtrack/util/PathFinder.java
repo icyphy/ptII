@@ -27,6 +27,7 @@
  */
 package ptolemy.backtrack.util;
 
+import ptolemy.backtrack.eclipse.ast.LocalClassLoader;
 import ptolemy.util.StringUtilities;
 
 import java.io.File;

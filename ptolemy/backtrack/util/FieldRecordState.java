@@ -27,6 +27,7 @@
  */
 package ptolemy.backtrack.util;
 
+import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord.RecordList;
 
 //////////////////////////////////////////////////////////////////////////

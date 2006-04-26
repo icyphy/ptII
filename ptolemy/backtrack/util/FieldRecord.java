@@ -35,7 +35,7 @@ import java.util.Stack;
 
 /**
  The records (or change history) of a field in a class. In a Java program
- refactored with {@link ptolemy.backtrack.ast.Transformer} to support
+ refactored with {@link ptolemy.backtrack.eclipse.ast.Transformer} to support
  backtracking, every change on a field by means of assignment is recorded.
  The old value of the field is stored in a <tt>FieldRecord</tt>. Every
  entry in the record includes the information of the timestamp (see {@link
@@ -100,7 +100,7 @@ public class FieldRecord {
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
-     *  @see #add(int[], boolean, int)
+     *  @see #add(int[], boolean, long)
      */
     public void add(boolean value, long timestamp) {
         _addRecord(0, new Record(null, new Boolean(value), timestamp));
@@ -134,7 +134,7 @@ public class FieldRecord {
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
-     *  @see #add(int[], byte, int)
+     *  @see #add(int[], byte, long)
      */
     public void add(byte value, long timestamp) {
         _addRecord(0, new Record(null, new Byte(value), timestamp));
@@ -168,7 +168,7 @@ public class FieldRecord {
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
-     *  @see #add(int[], char, int)
+     *  @see #add(int[], char, long)
      */
     public void add(char value, long timestamp) {
         _addRecord(0, new Record(null, new Character(value), timestamp));
@@ -202,7 +202,7 @@ public class FieldRecord {
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
-     *  @see #add(int[], double, int)
+     *  @see #add(int[], double, long)
      */
     public void add(double value, long timestamp) {
         _addRecord(0, new Record(null, new Double(value), timestamp));
@@ -236,7 +236,7 @@ public class FieldRecord {
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
-     *  @see #add(int[], float, int)
+     *  @see #add(int[], float, long)
      */
     public void add(float value, long timestamp) {
         _addRecord(0, new Record(null, new Float(value), timestamp));
@@ -270,7 +270,7 @@ public class FieldRecord {
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
-     *  @see #add(int[], int, int)
+     *  @see #add(int[], int, long)
      */
     public void add(int value, long timestamp) {
         _addRecord(0, new Record(null, new Integer(value), timestamp));
@@ -304,7 +304,7 @@ public class FieldRecord {
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
-     *  @see #add(int[], long, int)
+     *  @see #add(int[], long, long)
      */
     public void add(long value, long timestamp) {
         _addRecord(0, new Record(null, new Long(value), timestamp));
@@ -338,7 +338,7 @@ public class FieldRecord {
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
-     *  @see #add(int[], short, int)
+     *  @see #add(int[], short, long)
      */
     public void add(short value, long timestamp) {
         _addRecord(0, new Record(null, new Short(value), timestamp));
@@ -372,7 +372,7 @@ public class FieldRecord {
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
-     *  @see #add(int[], Object, int)
+     *  @see #add(int[], Object, long)
      */
     public void add(Object value, long timestamp) {
         _addRecord(0, new Record(null, value, timestamp));
@@ -848,7 +848,7 @@ public class FieldRecord {
      @since Ptolemy II 5.1
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
-     @see {@link FieldRecord#iterator()}
+     @see FieldRecord#iterator()
      */
     public class CombinedIterator implements Iterator {
         /** Test if there are more elements.
@@ -1224,7 +1224,7 @@ public class FieldRecord {
          *  record list is also set to this one.
          *
          *  @param next The next record list.
-         *  @see #_setPrevious(RecordList)
+         *  @see #_setPrevious(ptolemy.backtrack.util.FieldRecord.RecordList)
          */
         protected void _setNext(RecordList next) {
             _next = next;
@@ -1238,7 +1238,7 @@ public class FieldRecord {
          *  next record list is also set to this one.
          *
          *  @param previous The previous record list.
-         *  @see #_setNext(RecordList)
+         *  @see #_setNext(ptolemy.backtrack.util.FieldRecord.RecordList)
          */
         protected void _setPrevious(RecordList previous) {
             _previous = previous;
