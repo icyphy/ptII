@@ -132,6 +132,7 @@ public class ConfigXmlHandler extends XmlHandler {
      *  @param target The target (the name at the start of the processing
      *   instruction).
      *  @param data The data, if any (the rest of the processing instruction).
+     *  @exception Exception If the MoML parser throws an exception.
      */
     public void processingInstruction(String target, String data)
             throws Exception {
