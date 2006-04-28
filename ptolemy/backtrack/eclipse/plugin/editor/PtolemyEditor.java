@@ -1,4 +1,4 @@
-/* Editor with Ptolemy syntax highlighting.
+/* Editor with Ptolemy semantic highlighting.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -44,8 +44,8 @@ import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 //// PtolemyEditor
 
 /**
-   Editor with Ptolemy syntax highlighting. Ptolemy syntax highlighting is added
-   to Eclipse's Java syntax highlighting as an extension.
+   Editor with Ptolemy semantic highlighting. Ptolemy syntax highlighting is
+   added to Eclipse's Java syntax highlighting as an extension.
 
    @author Thomas Feng
    @version $Id$
@@ -82,8 +82,8 @@ public class PtolemyEditor extends CompilationUnitEditor {
         }
     }
 
-    /** Create the controls for this editor, and install the syntax highlighting
-     *  handler.
+    /** Create the controls for this editor, and install the semantic
+     *  highlighting handler.
      * 
      *  @param parent The parent of the editor.
      */
@@ -137,7 +137,7 @@ public class PtolemyEditor extends CompilationUnitEditor {
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    /** Install the syntax highlighting handler.
+    /** Install the semantic highlighting handler.
      * 
      *  @param colorManager The color manager with the color settings.
      */

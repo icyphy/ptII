@@ -1,4 +1,4 @@
-/* Multi-page editor with Ptolemy syntax highlighting and transformation tab.
+/* Multi-page editor with Ptolemy semantic highlighting and transformation tab.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -73,9 +73,9 @@ import ptolemy.backtrack.util.Strings;
 //////////////////////////////////////////////////////////////////////////
 //// MultiPageCompilationUnitEditor
 /**
-   Multi-page editor with Ptolemy syntax highlighting and transformation tab.
+   Multi-page editor with Ptolemy semantic highlighting and transformation tab.
    This editor is the main user interface in the Eclipse plugin. It extends
-   Eclipse's Java editor, with Ptolemy syntax highlighting added. It also
+   Eclipse's Java editor, with Ptolemy semantic highlighting added. It also
    creates two tabs in the editor: the "Raw" tab provides an ordinary Java
    editing environment to the user; the "Preview" tab shows the preview of
    backtracking transformation.
