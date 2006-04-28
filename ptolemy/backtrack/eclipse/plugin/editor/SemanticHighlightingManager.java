@@ -1,4 +1,4 @@
-/*
+/* Manager of the semantic highlightings.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -41,19 +41,33 @@ import org.eclipse.jface.preference.IPreferenceStore;
 //// SemanticHighlightingManager
 
 /**
+   Manager of the semantic highlightings.
 
-
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class SemanticHighlightingManager {
-    public boolean isEnabled() {
-        return true;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Enable Ptolemy semantic highlighting.
+     */
+    public void enable() {
+        _initializeHighlightings();
     }
 
+    /** Initialize Ptolemy semantic highlighting and enable it.
+     * 
+     *  @param editor The editor to which semantic highlighting is to be
+     *   installed.
+     *  @param sourceViewer The source viewer.
+     *  @param colorManager The color manager.
+     *  @param preferenceStore The Eclipse preference store.
+     */
     public void install(JavaEditor editor, JavaSourceViewer sourceViewer,
             IColorManager colorManager, IPreferenceStore preferenceStore) {
         final String JAVA_PARTITIONING = "___java_partitioning";
@@ -79,26 +93,52 @@ public class SemanticHighlightingManager {
         }
     }
 
-    public void enable() {
-        _initializeHighlightings();
+    /** Return whether semantic highlighting is enabled.
+     * 
+     *  @return true if semantic highlighting is enabled.
+     */
+    public boolean isEnabled() {
+        return true;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
+
+    /** Initialize semantic highlightings.
+     */
     protected void _initializeHighlightings() {
         _semanticHighlightings = SemanticHighlightings
                 .getSemanticHighlightings();
     }
 
-    private JavaEditor _editor;
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
-    private JavaSourceViewer _sourceViewer;
-
-    private IPreferenceStore _preferenceStore;
-
+    /** The color manager.
+     */
     private IColorManager _colorManager;
 
+    /** The source viewer configuration.
+     */
     private JavaSourceViewerConfiguration _configuration;
 
+    /** The editor.
+     */
+    private JavaEditor _editor;
+
+    /** The Eclipse preference store.
+     */
+    private IPreferenceStore _preferenceStore;
+
+    /** The source code presentation reconciler.
+     */
     private JavaPresentationReconciler _presentationReconciler;
 
+    /** The semantic highlightings.
+     */
     private SemanticHighlighting[] _semanticHighlightings;
+
+    /** The source viewer.
+     */
+    private JavaSourceViewer _sourceViewer;
 }
