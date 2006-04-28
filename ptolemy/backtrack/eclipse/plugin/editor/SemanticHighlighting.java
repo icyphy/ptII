@@ -1,4 +1,4 @@
-/*
+/* Abstract superclass of Ptolemy semantic highlighting.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -31,20 +31,39 @@ package ptolemy.backtrack.eclipse.plugin.editor;
 //// SemanticHighlighting
 
 /**
+   Abstract superclass of Ptolemy semantic highlighting.
 
-
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+   @see SemanticHighlightings
+*/
 public abstract class SemanticHighlighting {
+
+    /** Test whether a semantic token can be consumed.
+     * 
+     *  @param token The token to be tested.
+     *  @return true if the token can be consumed.
+     */
+    public abstract boolean consumes(SemanticToken token);
+    
+    /** Get the key of the bold face preference.
+     * 
+     *  @return The key for the bold face preference.
+     */
     public abstract String getBoldPreferenceKey();
 
+    /** Get the key of the color preference.
+     * 
+     *  @return The key of the color preference.
+     */
     public abstract String getColorPreferenceKey();
 
+    /** Get the key of the italic font preference.
+     * 
+     *  @return The key of the italic font preference.
+     */
     public abstract String getItalicPreferenceKey();
-
-    public abstract boolean consumes(SemanticToken token);
 }
