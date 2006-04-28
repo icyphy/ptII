@@ -9,7 +9,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Unboxing12 {
     private Token _stateToken;
 
-    //private Token[] _resultArray;
+    private Token[] _resultArray;
 
     protected int _firingCountLimit;
 
@@ -37,7 +37,7 @@ public class Unboxing12 {
 
     public Unboxing12() throws IllegalActionException {
         _stateToken = null;
-        //_resultArray = new Token[1];
+        _resultArray = new Token[1];
 
         IntToken inttoken = new IntToken(0);
         BaseType.IntType inttype = BaseType.INT;

@@ -50,6 +50,7 @@ import soot.jimple.spark.SparkTransformer;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Edge;
 import soot.options.SparkOptions;
+import soot.PhaseOptions;
 
 //////////////////////////////////////////////////////////////////////////
 //// CallGraphPruner
@@ -83,6 +84,7 @@ public class CallGraphPruner {
         sootOptions.put("simulate-natives", "false");
         sootOptions.put("enabled", "true");
         sootOptions.put("verbose", "true");
+        PhaseOptions.v().setPhaseOption("cg", "verbose:true");
 
         sootOptions.put("propagator", "worklist");
         sootOptions.put("set-impl", "double");
@@ -102,6 +104,7 @@ public class CallGraphPruner {
         // Set entry points for call graph. The default entry points lead to
         // excessive code size.
         Scene.v().setEntryPoints(_getCallGraphEntryPoints(source));
+        System.out.println("CallGraphPruner: about to transform cg.spark");
         SparkTransformer.v().transform("cg.spark", sootOptions);
 
         _growTree(source);
@@ -208,7 +211,12 @@ public class CallGraphPruner {
         // Just pick the compulsory nodes that are methods but are not
         // overridden.
         LinkedList entryPoints = new LinkedList();
-        Iterator nodes = _getCompulsoryNodes().iterator();
+        LinkedList allNodes = _getCompulsoryNodes();
+        source = Scene.v().getSootClass("java.lang.Object");
+        allNodes.add(source);
+
+        //Iterator nodes = _getCompulsoryNodes().iterator();
+        Iterator nodes = allNodes.iterator();
 
         while (nodes.hasNext()) {
             Object node = nodes.next();
@@ -291,17 +299,30 @@ public class CallGraphPruner {
         compulsoryNodes.add(source);
 
         // See https://svn.sable.mcgill.ca/wiki/index.php/ClassResolver
-        Scene.v().tryLoadClass("java.lang.ref.WeakReference", SootClass.DANGLING);
-        source = Scene.v().getSootClass("java.lang.ref.WeakReference");
-        compulsoryNodes.add(source);
+        Scene.v().tryLoadClass("java.lang.ref.WeakReference", SootClass.HIERARCHY);
+        //source = Scene.v().getSootClass("java.lang.ref.WeakReference");
+        //Scene.v().addClass(source);
 
-        Scene.v().tryLoadClass("sun.reflect.LangReflectAccess", SootClass.DANGLING);
-        source = Scene.v().getSootClass("sun.reflect.LangReflectAccess");
-        compulsoryNodes.add(source);
+        Scene.v().tryLoadClass("sun.reflect.LangReflectAccess", SootClass.HIERARCHY);
+        //source = Scene.v().getSootClass("sun.reflect.LangReflectAccess");
+        //Scene.v().addClass(source);
 
-        Scene.v().tryLoadClass("java.util.AbstractSet", SootClass.SIGNATURES);
-        source = Scene.v().getSootClass("java.util.AbstractSet");
-        compulsoryNodes.add(source);
+        Scene.v().tryLoadClass("sun.net.spi.nameservice.NameService", SootClass.HIERARCHY);
+        //source = Scene.v().getSootClass("sun.net.spi.nameservice.NameService");
+        //Scene.v().addClass(source);
+
+        Scene.v().tryLoadClass("java.text.BreakIterator", SootClass.HIERARCHY);
+        //source = Scene.v().getSootClass("java.text.BreakIterator");
+        //Scene.v().addClass(source);
+
+        Scene.v().tryLoadClass("java.util.AbstractSet", SootClass.HIERARCHY);
+//         Scene.v().tryLoadClass("java.net.URLStreamHandler",  SootClass.HIERARCHY);
+//         Scene.v().tryLoadClass("java.net.URLStreamHandlerFactory",  SootClass.HIERARCHY);
+//         Scene.v().tryLoadClass("java.lang.VirtualMachineError",  SootClass.HIERARCHY);      
+//         Scene.v().tryLoadClass("java.net.URLClassLoader",  SootClass.HIERARCHY);      
+//         Scene.v().tryLoadClass("java.util.Collections$SynchronizedCollection",  SootClass.HIERARCHY);      
+        //source = Scene.v().getSootClass("java.util.AbstractSet");
+        //Scene.v().addClass(source);
 
         return compulsoryNodes;
     }
@@ -427,7 +448,13 @@ public class CallGraphPruner {
         roots.addAll(source.getFields());
         roots.addAll(_getCompulsoryNodes());
         roots.add(source);
-        roots.addAll(Scene.v().getSootClass("java.lang.Object").getMethods());
+        //Iterator methods = Scene.v().getSootClass("java.lang.Object").getMethods().iterator();
+        //while(methods.hasNext()) {
+        //    SootMethod method = (SootMethod) methods.next(); 
+        //    System.out.println("CallGraphPruner: " + method);
+        //    roots.add(method);
+        //}
+        //roots.addAll(Scene.v().getSootClass("java.lang.Object").getMethods());
 
         return roots;
     }

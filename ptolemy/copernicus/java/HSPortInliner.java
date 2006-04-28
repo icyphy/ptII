@@ -28,9 +28,12 @@ package ptolemy.copernicus.java;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -99,7 +102,7 @@ public class HSPortInliner implements PortInliner {
     public HSPortInliner(SootClass modelClass, CompositeActor model, Map options) {
         _modelClass = modelClass;
         _model = model;
-        //_options = options;
+        _options = options;
     }
 
     /** Initialize the inliner.  Create one place buffers for each relation.
@@ -107,8 +110,8 @@ public class HSPortInliner implements PortInliner {
     public void initialize() {
         // Some maps we use for storing the association between a port
         // and the fields that we are replacing it with.
-        //_portToTypeNameToBufferField = new HashMap();
-        //_portToTypeNameToInsideBufferField = new HashMap();
+        _portToTypeNameToBufferField = new HashMap();
+        _portToTypeNameToInsideBufferField = new HashMap();
 
         _createBuffers();
     }
@@ -335,62 +338,62 @@ public class HSPortInliner implements PortInliner {
     // buffer at the given index.  If the given typeLocal is not null,
     // then convert the given input token to the given type using the given
     // temporary variables.
-    //    private static List _createBufferStoreInstructions(Local bufferLocal,
-    //            Local indexLocal, Local inputTokenLocal, Local typeLocal,
-    //            Local tokenLocal, Local outputTokenLocal) {
-    //        List list = new LinkedList();
-    //
-    //        // Convert the type, if we need to.
-    //        if (typeLocal != null) {
-    //            list.add(Jimple.v().newAssignStmt(
-    //                    tokenLocal,
-    //                    Jimple.v().newInterfaceInvokeExpr(typeLocal,
-    //                            PtolemyUtilities.typeConvertMethod.makeRef(),
-    //                            inputTokenLocal)));
-    //
-    //            list.add(Jimple.v().newAssignStmt(
-    //                    outputTokenLocal,
-    //                    Jimple.v().newCastExpr(tokenLocal,
-    //                            outputTokenLocal.getType())));
-    //
-    //            // store the converted token.
-    //            list.add(Jimple.v().newAssignStmt(
-    //                    Jimple.v().newArrayRef(bufferLocal, indexLocal),
-    //                    outputTokenLocal));
-    //        } else {
-    //            list.add(Jimple.v().newAssignStmt(
-    //                    Jimple.v().newArrayRef(bufferLocal, indexLocal),
-    //                    inputTokenLocal));
-    //        }
-    //
-    //        return list;
-    //    }
+    private static List _createBufferStoreInstructions(Local bufferLocal,
+            Local indexLocal, Local inputTokenLocal, Local typeLocal,
+            Local tokenLocal, Local outputTokenLocal) {
+        List list = new LinkedList();
+
+        // Convert the type, if we need to.
+        if (typeLocal != null) {
+            list.add(Jimple.v().newAssignStmt(
+                    tokenLocal,
+                    Jimple.v().newInterfaceInvokeExpr(typeLocal,
+                            PtolemyUtilities.typeConvertMethod.makeRef(),
+                            inputTokenLocal)));
+
+            list.add(Jimple.v().newAssignStmt(
+                    outputTokenLocal,
+                    Jimple.v().newCastExpr(tokenLocal,
+                            outputTokenLocal.getType())));
+
+            // store the converted token.
+            list.add(Jimple.v().newAssignStmt(
+                    Jimple.v().newArrayRef(bufferLocal, indexLocal),
+                    outputTokenLocal));
+        } else {
+            list.add(Jimple.v().newAssignStmt(
+                    Jimple.v().newArrayRef(bufferLocal, indexLocal),
+                    inputTokenLocal));
+        }
+
+        return list;
+    }
 
     // Create instructions to update the given index.
-    //    private static List _createIndexUpdateInstructions(Local indexLocal,
-    //            Local indexArrayLocal, Value channelValue, Value bufferSizeValue) {
-    //        // Now update the index into the buffer.
-    //        List list = new LinkedList();
-    //
-    //        // If the buffer is size one, then the below code is a noop.
-    //        if (bufferSizeValue.equals(IntConstant.v(1))) {
-    //            return list;
-    //        }
-    //
-    //        // increment the position.
-    //        list.add(Jimple.v().newAssignStmt(indexLocal,
-    //                Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
-    //
-    //        // wrap around.
-    //        list.add(Jimple.v().newAssignStmt(indexLocal,
-    //                Jimple.v().newRemExpr(indexLocal, bufferSizeValue)));
-    //
-    //        // store back.
-    //        list.add(Jimple.v().newAssignStmt(
-    //                Jimple.v().newArrayRef(indexArrayLocal, channelValue),
-    //                indexLocal));
-    //        return list;
-    //    }
+    private static List _createIndexUpdateInstructions(Local indexLocal,
+            Local indexArrayLocal, Value channelValue, Value bufferSizeValue) {
+        // Now update the index into the buffer.
+        List list = new LinkedList();
+
+        // If the buffer is size one, then the below code is a noop.
+        if (bufferSizeValue.equals(IntConstant.v(1))) {
+            return list;
+        }
+
+        // increment the position.
+        list.add(Jimple.v().newAssignStmt(indexLocal,
+                Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
+
+        // wrap around.
+        list.add(Jimple.v().newAssignStmt(indexLocal,
+                Jimple.v().newRemExpr(indexLocal, bufferSizeValue)));
+
+        // store back.
+        list.add(Jimple.v().newAssignStmt(
+                Jimple.v().newArrayRef(indexArrayLocal, channelValue),
+                indexLocal));
+        return list;
+    }
 
     /** Insert code into the given body before the given unit that
      *  will retrieve the communication buffer associated with the
@@ -441,79 +444,79 @@ public class HSPortInliner implements PortInliner {
 
     // Return a set of ptolemy.data.type.Type objects representing the
     // types of ports that the given output port is connected to.
-    //    private Set _getConnectedTypeList(TypedIOPort port) {
-    //        if (!port.isOutput()) {
-    //            throw new RuntimeException("Can only get the connected types for"
-    //                    + " an output port!");
-    //        }
-    //
-    //        // Loop through all of the sink ports...
-    //        // Note that we would like to just put the types in the
-    //        // Map, but types don't implement hashCode properly.
-    //        Map typeMap = new HashMap();
-    //
-    //        // FIXME: This needs to be changed to handle hierarchy.
-    //        List portList = port.sinkPortList();
-    //
-    //        for (Iterator ports = portList.iterator(); ports.hasNext();) {
-    //            TypedIOPort remotePort = (TypedIOPort) ports.next();
-    //            ptolemy.data.type.Type type = remotePort.getType();
-    //            typeMap.put(type.toString(), type);
-    //        }
-    //
-    //        // Construct the set of types.
-    //        HashSet set = new HashSet();
-    //
-    //        for (Iterator types = typeMap.keySet().iterator(); types.hasNext();) {
-    //            set.add(typeMap.get(types.next()));
-    //        }
-    //
-    //        return set;
-    //    }
+    private Set _getConnectedTypeList(TypedIOPort port) {
+        if (!port.isOutput()) {
+            throw new RuntimeException("Can only get the connected types for"
+                    + " an output port!");
+        }
+
+        // Loop through all of the sink ports...
+        // Note that we would like to just put the types in the
+        // Map, but types don't implement hashCode properly.
+        Map typeMap = new HashMap();
+
+        // FIXME: This needs to be changed to handle hierarchy.
+        List portList = port.sinkPortList();
+
+        for (Iterator ports = portList.iterator(); ports.hasNext();) {
+            TypedIOPort remotePort = (TypedIOPort) ports.next();
+            ptolemy.data.type.Type type = remotePort.getType();
+            typeMap.put(type.toString(), type);
+        }
+
+        // Construct the set of types.
+        HashSet set = new HashSet();
+
+        for (Iterator types = typeMap.keySet().iterator(); types.hasNext();) {
+            set.add(typeMap.get(types.next()));
+        }
+
+        return set;
+    }
 
     // Return a set of ptolemy.data.type.Type objects representing the
     // types of ports that the given input port is connected to.
-    //    private Set _getConnectedTypeListInside(TypedIOPort port) {
-    //        if (!port.isInput()) {
-    //            throw new RuntimeException("Can only get the inside connected"
-    //                    + " types for an input port!");
-    //        }
-    //
-    //        // Loop through all of the connected ports...
-    //        // Note that we would like to just put the types in the
-    //        // Map, but types don't implement hashCode properly.
-    //        Map typeMap = new HashMap();
-    //
-    //        // FIXME: This needs to be changed to handle hierarchy.
-    //        List portList = port.insideSinkPortList();
-    //
-    //        for (Iterator ports = portList.iterator(); ports.hasNext();) {
-    //            TypedIOPort remotePort = (TypedIOPort) ports.next();
-    //            ptolemy.data.type.Type type = remotePort.getType();
-    //            typeMap.put(type.toString(), type);
-    //        }
-    //
-    //        // Construct the set of types.
-    //        HashSet set = new HashSet();
-    //
-    //        for (Iterator types = typeMap.keySet().iterator(); types.hasNext();) {
-    //            set.add(typeMap.get(types.next()));
-    //        }
-    //
-    //        return set;
-    //    }
+    private Set _getConnectedTypeListInside(TypedIOPort port) {
+        if (!port.isInput()) {
+            throw new RuntimeException("Can only get the inside connected"
+                    + " types for an input port!");
+        }
+
+        // Loop through all of the connected ports...
+        // Note that we would like to just put the types in the
+        // Map, but types don't implement hashCode properly.
+        Map typeMap = new HashMap();
+
+        // FIXME: This needs to be changed to handle hierarchy.
+        List portList = port.insideSinkPortList();
+
+        for (Iterator ports = portList.iterator(); ports.hasNext();) {
+            TypedIOPort remotePort = (TypedIOPort) ports.next();
+            ptolemy.data.type.Type type = remotePort.getType();
+            typeMap.put(type.toString(), type);
+        }
+
+        // Construct the set of types.
+        HashSet set = new HashSet();
+
+        for (Iterator types = typeMap.keySet().iterator(); types.hasNext();) {
+            set.add(typeMap.get(types.next()));
+        }
+
+        return set;
+    }
 
     private CompositeActor _model;
 
     private SootClass _modelClass;
 
-    //private Map _options;
+    private Map _options;
 
-    //private Map _portToTypeNameToBufferField;
+    private Map _portToTypeNameToBufferField;
 
-    //private Map _portToIndexArrayField;
+    private Map _portToIndexArrayField;
 
-    //private Map _portToTypeNameToInsideBufferField;
+    private Map _portToTypeNameToInsideBufferField;
 
-    //private Map _portToInsideIndexArrayField;
+    private Map _portToInsideIndexArrayField;
 }

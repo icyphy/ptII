@@ -1186,7 +1186,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         FunctionType functionType = (FunctionType) node.getType();
 
-        ASTPtRootNode cloneTree = node.getExpressionTree(); //.clone();
+        ASTPtRootNode cloneTree = (ASTPtRootNode) node.getExpressionTree(); //.clone();
 
         //         ParseTreeSpecializer specializer = new ParseTreeSpecializer();
         //         cloneTree = specializer.specialize(node.getExpressionTree(),
@@ -1695,8 +1695,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         _body.getLocals().add(baseLocal);
 
         if (cachedMethod instanceof CachedMethod.BaseConvertCachedMethod) {
-            //RefType tempBaseType = PtolemyUtilities
-            //        .getSootTypeForTokenType(argTypes[0]);
+            RefType tempBaseType = PtolemyUtilities
+                    .getSootTypeForTokenType(argTypes[0]);
             Local tempBaseLocal = _convertTokenArgToJavaArg(originalBaseLocal,
                     argTypes[0],
                     ((CachedMethod.BaseConvertCachedMethod) cachedMethod)
@@ -1994,7 +1994,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren == 2, node, "The number of child nodes must be two");
 
-        Token operator = node.getOperator();
+        Token operator = (Token) node.getOperator();
         Local leftLocal = (Local) _nodeToLocal.get(node.jjtGetChild(0));
         Local rightLocal = (Local) _nodeToLocal.get(node.jjtGetChild(1));
 
@@ -2095,7 +2095,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         _assert(numChildren == 2, node, "The number of child nodes must be two");
 
         Type scalarType = RefType.v("ptolemy.data.ScalarToken");
-        Token operator = node.getOperator();
+        Token operator = (Token) node.getOperator();
         Local tokenLocal = (Local) _nodeToLocal.get(node.jjtGetChild(0));
         Local bitsLocal = (Local) _nodeToLocal.get(node.jjtGetChild(1));
         Local resultLocal = Jimple.v().newLocal("tokenResult",

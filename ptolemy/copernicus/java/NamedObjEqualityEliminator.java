@@ -251,7 +251,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements
 
         if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
-            Value value = stmt.getRightOp();
+            Value value = (Value) stmt.getRightOp();
 
             if (value instanceof Local) {
                 return getNamedObjValue(method, (Local) value, stmt, localDefs,

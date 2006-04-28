@@ -36,6 +36,7 @@ import soot.Modifier;
 import soot.RefType;
 import soot.SootClass;
 import soot.SootMethod;
+import soot.Type;
 import soot.VoidType;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
@@ -57,10 +58,9 @@ public class EntitySootClass extends SootClass {
         super(name, modifier);
         setSuperclass(superClass);
 
-        /* Type stringType = */RefType.v("java.lang.String");
-        /* Type compositeEntityType = */RefType
-                .v("ptolemy.kernel.CompositeEntity");
-        /* Type workspaceType = */RefType.v("ptolemy.kernel.util.Workspace");
+        Type stringType = RefType.v("java.lang.String");
+        Type compositeEntityType = RefType.v("ptolemy.kernel.CompositeEntity");
+        Type workspaceType = RefType.v("ptolemy.kernel.util.Workspace");
 
         _initMethod = new SootMethod("__CGInit", new LinkedList(),
                 VoidType.v(), Modifier.PUBLIC);

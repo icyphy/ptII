@@ -334,7 +334,7 @@ public class SDFPortInliner implements PortInliner {
      */
     public void inlineGet(JimpleBody body, Stmt stmt, ValueBox box,
             InvokeExpr expr, TypedIOPort port) {
-        //SootClass theClass = body.getMethod().getDeclaringClass();
+        SootClass theClass = body.getMethod().getDeclaringClass();
 
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
@@ -492,7 +492,7 @@ public class SDFPortInliner implements PortInliner {
      */
     public void inlineGetInside(JimpleBody body, Stmt stmt, ValueBox box,
             InvokeExpr expr, TypedIOPort port) {
-        //SootClass theClass = body.getMethod().getDeclaringClass();
+        SootClass theClass = body.getMethod().getDeclaringClass();
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
         body.getLocals().add(bufferLocal);
@@ -648,7 +648,7 @@ public class SDFPortInliner implements PortInliner {
      */
     public void inlineSend(JimpleBody body, Stmt stmt, InvokeExpr expr,
             TypedIOPort port) {
-        //SootClass theClass = body.getMethod().getDeclaringClass();
+        SootClass theClass = body.getMethod().getDeclaringClass();
 
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
@@ -831,7 +831,7 @@ public class SDFPortInliner implements PortInliner {
      */
     public void inlineSendInside(JimpleBody body, Stmt stmt, InvokeExpr expr,
             TypedIOPort port) {
-        //SootClass theClass = body.getMethod().getDeclaringClass();
+        SootClass theClass = body.getMethod().getDeclaringClass();
 
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
@@ -1071,7 +1071,8 @@ public class SDFPortInliner implements PortInliner {
                         initBody.getLocals().add(arrayLocal);
 
                         // Create the new buffer
-                        Stmt insertPoint = initBody.getFirstNonIdentityStmt();
+                        Stmt insertPoint = (Stmt) initBody
+                                .getFirstNonIdentityStmt();
 
                         // This *should* be the statment after the constructor.
                         insertPoint = (Stmt) initUnits.getSuccOf(insertPoint);
@@ -1173,7 +1174,8 @@ public class SDFPortInliner implements PortInliner {
                 // multiple types.  Create a reference to the
                 // port for each type that the port may reference.
                 if (port.isInput()) {
-                    ptolemy.data.type.Type type = port.getType();
+                    ptolemy.data.type.Type type = (ptolemy.data.type.Type) port
+                            .getType();
 
                     _createPortBufferReference(entityClass, port, type,
                             typeNameToBufferField);
@@ -1427,7 +1429,8 @@ public class SDFPortInliner implements PortInliner {
                                 type, typeNameToInsideBufferField);
                     }
                 } else if (port.isOutput()) {
-                    ptolemy.data.type.Type type = port.getType();
+                    ptolemy.data.type.Type type = (ptolemy.data.type.Type) port
+                            .getType();
 
                     _createPortInsideBufferReference(_modelClass, port, type,
                             typeNameToInsideBufferField);

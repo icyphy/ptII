@@ -128,12 +128,12 @@ public class TokenConstructorAnalysis {
 
     private Unit _findConstructor(Local local, Unit location,
             LocalDefs localDefs) {
-        //NewExpr newExpr = null;
+        NewExpr newExpr = null;
         List definitionList = localDefs.getDefsOfAt(local, location);
 
         if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
-            Value value = stmt.getRightOp();
+            Value value = (Value) stmt.getRightOp();
 
             if (value instanceof NewExpr) {
                 return stmt;

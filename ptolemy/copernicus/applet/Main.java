@@ -77,7 +77,7 @@ public class Main extends KernelMain {
         _outputDirectory = attribute.getParameter("outputDirectory");
         _targetPackage = attribute.getParameter("targetPackage");
         _templateDirectory = attribute.getParameter("templateDirectory");
-        //_watchDogTimeout = attribute.getParameter("watchDogTimeout");
+        _watchDogTimeout = attribute.getParameter("watchDogTimeout");
 
         //String sootArgs = attribute.getParameter("sootArgs");
         return new String[0];
@@ -93,5 +93,5 @@ public class Main extends KernelMain {
 
     private static String _templateDirectory = "ptolemy/copernicus/java";
 
-    //private static String _watchDogTimeout = "unsetParameter";
+    private static String _watchDogTimeout = "unsetParameter";
 }

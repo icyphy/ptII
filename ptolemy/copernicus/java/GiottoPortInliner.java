@@ -685,7 +685,8 @@ public class GiottoPortInliner implements PortInliner {
                 // multiple types.  Create a reference to the
                 // port for each type that the port may reference.
                 if (port.isInput()) {
-                    ptolemy.data.type.Type type = port.getType();
+                    ptolemy.data.type.Type type = (ptolemy.data.type.Type) port
+                            .getType();
 
                     _createPortBufferReference(entityClass, port, type,
                             typeNameToBufferField);
@@ -801,7 +802,8 @@ public class GiottoPortInliner implements PortInliner {
                             typeNameToInsideBufferField);
                 }
             } else if (port.isOutput()) {
-                ptolemy.data.type.Type type = port.getType();
+                ptolemy.data.type.Type type = (ptolemy.data.type.Type) port
+                        .getType();
 
                 _createPortInsideBufferReference(_modelClass, port, type,
                         typeNameToInsideBufferField);

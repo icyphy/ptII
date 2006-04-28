@@ -37,6 +37,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.data.type.Typeable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
@@ -359,7 +360,7 @@ public class InlinePortTransformer extends SceneTransformer implements
                         }
                     }
 
-                    //boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
+                    boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
 
                     if (SootUtilities.derivesFrom(type.getSootClass(),
                             PtolemyUtilities.componentPortClass)) {
@@ -376,10 +377,10 @@ public class InlinePortTransformer extends SceneTransformer implements
 
                         // If we do this, then we have to get rid of
                         // the ports.
-                        //if (port instanceof Typeable) {
-                        PtolemyUtilities.inlineTypeableMethods(body, stmt, box,
-                                r, port);
-                        //}
+                        if (port instanceof Typeable) {
+                            PtolemyUtilities.inlineTypeableMethods(body, stmt,
+                                    box, r, (Typeable) port);
+                        }
 
                         // Inline namedObj methods on the attribute.
                         if (r.getMethod().getSubSignature().equals(
@@ -678,7 +679,7 @@ public class InlinePortTransformer extends SceneTransformer implements
                         }
                     }
 
-                    //boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
+                    boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
 
                     if (SootUtilities.derivesFrom(type.getSootClass(),
                             PtolemyUtilities.componentPortClass)) {
@@ -715,7 +716,7 @@ public class InlinePortTransformer extends SceneTransformer implements
                             box.setValue(StringConstant.v(port.getName()));
                         }
 
-                        //String methodName = r.getMethod().getName();
+                        String methodName = r.getMethod().getName();
 
                         //   if (port.getWidth() == 0 &&
                         //                                     (methodName.equals("hasToken") ||
@@ -843,7 +844,7 @@ public class InlinePortTransformer extends SceneTransformer implements
 
         if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
-            Value value = stmt.getRightOp();
+            Value value = (Value) stmt.getRightOp();
 
             if (value instanceof Local) {
                 return getPortValue(method, (Local) value, stmt, localDefs,

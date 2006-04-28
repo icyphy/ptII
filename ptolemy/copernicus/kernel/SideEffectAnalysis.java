@@ -26,6 +26,7 @@
  */
 package ptolemy.copernicus.kernel;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -104,11 +105,11 @@ public class SideEffectAnalysis {
         }
     }
 
-    //    private void _addMethod(Collection set) {
-    //        for (Iterator i = set.iterator(); i.hasNext();) {
-    //            _addMethod((SootMethod) i.next());
-    //        }
-    //    }
+    private void _addMethod(Collection set) {
+        for (Iterator i = set.iterator(); i.hasNext();) {
+            _addMethod((SootMethod) i.next());
+        }
+    }
 
     private void _addMethod(SootMethod method) {
         // System.out.println("adding method " + method);
@@ -144,7 +145,7 @@ public class SideEffectAnalysis {
      *  to, or null if the side effects are unknown.
      */
     public Set getSideEffects(SootMethod method) {
-        EffectFlow flow = _getEffectFlow(method);
+        EffectFlow flow = (EffectFlow) _getEffectFlow(method);
 
         if (flow == null) {
             if (_debug) {
@@ -166,8 +167,8 @@ public class SideEffectAnalysis {
      *  i.e. it assigns to any fields or arrays.
      */
     public boolean hasSideEffects(SootMethod method) {
-        EffectFlow flow = _getEffectFlow(method);
-        EffectFlow flow2 = _getEffectFlow(method);
+        EffectFlow flow = (EffectFlow) _getEffectFlow(method);
+        EffectFlow flow2 = (EffectFlow) _getEffectFlow(method);
 
         if (flow == null) {
             if (_debug) {
@@ -185,7 +186,7 @@ public class SideEffectAnalysis {
      *  on the given field.  i.e. it assigns to the given field.
      */
     public boolean hasSideEffects(SootMethod method, SootField field) {
-        EffectFlow flow = _getEffectFlow(method);
+        EffectFlow flow = (EffectFlow) _getEffectFlow(method);
 
         if (flow == null) {
             if (_debug) {

@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
@@ -407,7 +408,7 @@ public class ModelTransformer extends SceneTransformer implements
             String className = port.getClass().getName();
 
             // FIXME: what about subclasses of TypedIOPort?
-            //String portName = port.getName(context);
+            String portName = port.getName(context);
             String fieldName = getFieldNameForPort(port, context);
             RefType portType = RefType.v(className);
             Local portLocal = Jimple.v().newLocal("port", portType);
@@ -1259,7 +1260,7 @@ public class ModelTransformer extends SceneTransformer implements
                     continue;
                 }
 
-                InvokeExpr r = stmt.getInvokeExpr();
+                InvokeExpr r = (InvokeExpr) stmt.getInvokeExpr();
                 SootMethod targetMethod = r.getMethod();
 
                 // Don't inline obviously recursive methods.
@@ -1399,7 +1400,7 @@ public class ModelTransformer extends SceneTransformer implements
 
         // Some indexes, to make it easier to resolve an actor object,
         // given the objects class, and vice versa.
-        //_entityToFieldMap = new HashMap();
+        _entityToFieldMap = new HashMap();
         _fieldToEntityMap = new HashMap();
 
         _classToObjectMap = new HashMap();
@@ -1519,7 +1520,7 @@ public class ModelTransformer extends SceneTransformer implements
 
             //System.out.println("ModelTransformer: port: " + port);
             String className = port.getClass().getName();
-            //String portName = port.getName(context);
+            String portName = port.getName(context);
             String fieldName = getFieldNameForPort(port, context);
             RefType portType = RefType.v(className);
             Local portLocal = Jimple.v().newLocal("port", portType);
@@ -1955,53 +1956,53 @@ public class ModelTransformer extends SceneTransformer implements
         return deferredObject;
     }
 
-    //    private static void _createEntityInstanceFields(SootClass actorClass,
-    //            ComponentEntity actor, Map options) {
-    //        // Create a static field in the actor class.  This field
-    //        // will reference the singleton instance of the actor class.
-    //        SootField field = new SootField("_CGInstance", RefType.v(actorClass),
-    //                Modifier.PUBLIC | Modifier.STATIC);
-    //        actorClass.addField(field);
-    //
-    //        field.addTag(new ValueTag(actor));
-    //        _entityToFieldMap.put(actor, field);
-    //        _fieldToEntityMap.put(field, actor);
-    //
-    //        // Add code to the end of each class initializer to set the
-    //        // instance field.
-    //        for (Iterator methods = actorClass.getMethods().iterator(); methods
-    //                .hasNext();) {
-    //            SootMethod method = (SootMethod) methods.next();
-    //
-    //            if (method.getName().equals("<init>")) {
-    //                JimpleBody body = (JimpleBody) method.getActiveBody();
-    //                body.getUnits()
-    //                        .insertBefore(
-    //                                Jimple.v().newAssignStmt(
-    //                                        Jimple.v().newStaticFieldRef(
-    //                                                field.makeRef()),
-    //                                        body.getThisLocal()),
-    //                                body.getUnits().getLast());
-    //            }
-    //        }
-    //
-    //        _classToObjectMap.put(actorClass, actor);
-    //
-    //        // Loop over all the actor instance classes and get
-    //        // fields for ports.
-    //        if (actor instanceof CompositeActor) {
-    //            // Then recurse
-    //            CompositeEntity model = (CompositeEntity) actor;
-    //
-    //            for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
-    //                ComponentEntity entity = (ComponentEntity) i.next();
-    //                String className = getInstanceClassName(entity, options);
-    //                SootClass entityClass = Scene.v()
-    //                        .loadClassAndSupport(className);
-    //                _createEntityInstanceFields(entityClass, entity, options);
-    //            }
-    //        }
-    //    }
+    private static void _createEntityInstanceFields(SootClass actorClass,
+            ComponentEntity actor, Map options) {
+        // Create a static field in the actor class.  This field
+        // will reference the singleton instance of the actor class.
+        SootField field = new SootField("_CGInstance", RefType.v(actorClass),
+                Modifier.PUBLIC | Modifier.STATIC);
+        actorClass.addField(field);
+
+        field.addTag(new ValueTag(actor));
+        _entityToFieldMap.put(actor, field);
+        _fieldToEntityMap.put(field, actor);
+
+        // Add code to the end of each class initializer to set the
+        // instance field.
+        for (Iterator methods = actorClass.getMethods().iterator(); methods
+                .hasNext();) {
+            SootMethod method = (SootMethod) methods.next();
+
+            if (method.getName().equals("<init>")) {
+                JimpleBody body = (JimpleBody) method.getActiveBody();
+                body.getUnits()
+                        .insertBefore(
+                                Jimple.v().newAssignStmt(
+                                        Jimple.v().newStaticFieldRef(
+                                                field.makeRef()),
+                                        body.getThisLocal()),
+                                body.getUnits().getLast());
+            }
+        }
+
+        _classToObjectMap.put(actorClass, actor);
+
+        // Loop over all the actor instance classes and get
+        // fields for ports.
+        if (actor instanceof CompositeActor) {
+            // Then recurse
+            CompositeEntity model = (CompositeEntity) actor;
+
+            for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
+                ComponentEntity entity = (ComponentEntity) i.next();
+                String className = getInstanceClassName(entity, options);
+                SootClass entityClass = Scene.v()
+                        .loadClassAndSupport(className);
+                _createEntityInstanceFields(entityClass, entity, options);
+            }
+        }
+    }
 
     private static void _createActorsIn(CompositeActor model,
             HashMap objectNameToCreatorName, String phaseName,
@@ -2072,17 +2073,17 @@ public class ModelTransformer extends SceneTransformer implements
                 _createCompositeActor(composite, newClassName, options);
             } else if (entity instanceof Expression) {
                 AtomicActorCreator creator = new ExpressionCreator();
-                creator.createAtomicActor(entity, newClassName, constAnalysis,
-                        options);
+                creator.createAtomicActor((Expression) entity, newClassName,
+                        constAnalysis, options);
             } else if (entity instanceof FSMActor) {
                 FSMCreator creator = new FSMCreator();
-                creator.createAtomicActor(entity, newClassName, constAnalysis,
-                        options);
+                creator.createAtomicActor((FSMActor) entity, newClassName,
+                        constAnalysis, options);
             } else {
                 // Must be an atomicActor.
                 GenericAtomicActorCreator creator = new GenericAtomicActorCreator();
-                creator.createAtomicActor(entity, newClassName, constAnalysis,
-                        options);
+                creator.createAtomicActor((AtomicActor) entity, newClassName,
+                        constAnalysis, options);
             }
 
             SootClass entityClass = Scene.v().loadClassAndSupport(newClassName);
@@ -2284,7 +2285,7 @@ public class ModelTransformer extends SceneTransformer implements
     ////                         private variables                 ////
     private static CompositeActor _model;
 
-    //private static Map _entityToFieldMap = new HashMap();
+    private static Map _entityToFieldMap = new HashMap();
 
     private static Map _fieldToEntityMap = new HashMap();
 

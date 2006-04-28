@@ -386,7 +386,8 @@ public class FSMCreator implements AtomicActorCreator {
                                 RefType.v(PtolemyUtilities.entityClass));
                         body.getLocals().add(entityLocal);
 
-                        NamedObj containerModel = entity.getContainer();
+                        NamedObj containerModel = (NamedObj) entity
+                                .getContainer();
                         String deepName = ((NamedObj) refinement)
                                 .getName(containerModel);
 
@@ -626,7 +627,7 @@ public class FSMCreator implements AtomicActorCreator {
                             .getToken();
 
                     if (resetToken.booleanValue()) {
-                        refinements = transition.destinationState()
+                        refinements = ((State) transition.destinationState())
                                 .getRefinement();
                     }
                 } catch (Exception ex) {
@@ -645,7 +646,8 @@ public class FSMCreator implements AtomicActorCreator {
                                 RefType.v(PtolemyUtilities.entityClass));
                         body.getLocals().add(entityLocal);
 
-                        NamedObj containerModel = entity.getContainer();
+                        NamedObj containerModel = (NamedObj) entity
+                                .getContainer();
                         String deepName = ((NamedObj) refinement)
                                 .getName(containerModel);
 
@@ -783,8 +785,9 @@ public class FSMCreator implements AtomicActorCreator {
                     // Get a ref to the parameter through the container,
                     // since the parameter we are assigning to may be
                     // above us in the hierarchy.
-                    NamedObj containerModel = entity.getContainer();
-                    String deepName = destination.getName(containerModel);
+                    NamedObj containerModel = (NamedObj) entity.getContainer();
+                    String deepName = ((NamedObj) destination)
+                            .getName(containerModel);
 
                     body.getUnits().add(
                             Jimple.v().newAssignStmt(

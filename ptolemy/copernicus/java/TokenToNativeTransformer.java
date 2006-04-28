@@ -886,7 +886,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                     while (boxes.hasNext()) {
                         ValueBox box = (ValueBox) boxes.next();
-                        //Value value = box.getValue();
+                        Value value = box.getValue();
 
                         doneSomething |= _inlineTypeMethodsIn(method, body,
                                 unit, box, localDefs, localUses, depth,
@@ -1134,7 +1134,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                 continue;
             }
 
-            RefType type = PtolemyUtilities.getBaseTokenType(fieldType);
+            RefType type = (RefType) PtolemyUtilities
+                    .getBaseTokenType(fieldType);
             SootClass fieldClass = type.getSootClass();
 
             if (!SootUtilities.derivesFrom(fieldClass,
@@ -1377,7 +1378,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                 if (unit instanceof InvokeStmt) {
                     // Handle java.lang.arraycopy
-                    InvokeExpr r = ((InvokeStmt) unit).getInvokeExpr();
+                    InvokeExpr r = (InvokeExpr) ((InvokeStmt) unit)
+                            .getInvokeExpr();
 
                     if (r.getMethod().equals(PtolemyUtilities.arraycopyMethod)) {
                         if (debug) {
@@ -1407,10 +1409,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                             {
                                 List argumentList = new LinkedList();
-                                argumentList.add(localToIsNotNullLocal
+                                argumentList.add((Local) localToIsNotNullLocal
                                         .get(toLocal));
                                 argumentList.add(r.getArg(1));
-                                argumentList.add(localToIsNotNullLocal
+                                argumentList.add((Local) localToIsNotNullLocal
                                         .get(fromLocal));
                                 argumentList.add(r.getArg(3));
                                 argumentList.add(r.getArg(4));
@@ -1467,7 +1469,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                     }
                 } else if (unit instanceof AssignStmt) {
                     AssignStmt stmt = (AssignStmt) unit;
-                    //Type assignmentType = stmt.getLeftOp().getType();
+                    Type assignmentType = stmt.getLeftOp().getType();
 
                     if (stmt.getLeftOp() instanceof Local
                             && stmt.getRightOp() instanceof LengthExpr) {
@@ -2219,7 +2221,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                 System.out.println("handling as new object");
                             }
 
-                            //NewExpr newExpr = (NewExpr) stmt.getRightOp();
+                            NewExpr newExpr = (NewExpr) stmt.getRightOp();
 
                             // We have an assignment from one local token to another.
                             Map map = (Map) localToFieldToLocal.get(stmt

@@ -208,8 +208,8 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             return;
         }
 
-        SootClass checkClass = checkRef.getSootClass();
-        SootClass opClass = opRef.getSootClass();
+        SootClass checkClass = ((RefType) checkRef).getSootClass();
+        SootClass opClass = ((RefType) opRef).getSootClass();
 
         if (debug) {
             System.out.println("checkClass = " + checkClass);
@@ -334,8 +334,8 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             return;
         }
 
-        SootClass checkClass = checkRef.getSootClass();
-        SootClass opClass = opRef.getSootClass();
+        SootClass checkClass = ((RefType) checkRef).getSootClass();
+        SootClass opClass = ((RefType) opRef).getSootClass();
 
         if (debug) {
             System.out.println("castClass = " + checkClass);

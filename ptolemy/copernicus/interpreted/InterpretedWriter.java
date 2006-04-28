@@ -114,7 +114,7 @@ public class InterpretedWriter extends SceneTransformer implements
 
         // If the targetPackage is foo.bar, and the model is Bif,
         // the we will do mkdir $PTII/foo/bar/Bif/
-        // _targetPackage = PhaseOptions.getString(options, "targetPackage");
+        _targetPackage = PhaseOptions.getString(options, "targetPackage");
 
         _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
 
@@ -161,5 +161,5 @@ public class InterpretedWriter extends SceneTransformer implements
     // with the same name as the model.  So if the _targetPackage
     // is foo.bar, and the model is MyModel, we will create the code
     // in foo.bar.MyModel.
-    //private String _targetPackage;
+    private String _targetPackage;
 }

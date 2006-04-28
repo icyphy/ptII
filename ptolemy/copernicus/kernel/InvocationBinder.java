@@ -25,6 +25,7 @@
 package ptolemy.copernicus.kernel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -74,7 +75,7 @@ public class InvocationBinder extends SceneTransformer {
 
         Filter instanceInvokesFilter = new Filter(new InstanceInvokeEdgesPred());
         String modifierOptions = "unsafe";
-        //HashMap instanceToStaticMap = new HashMap();
+        HashMap instanceToStaticMap = new HashMap();
 
         Scene.v().setCallGraph(new CallGraph());
         CallGraph cg = Scene.v().getCallGraph();
@@ -114,7 +115,7 @@ public class InvocationBinder extends SceneTransformer {
                         continue;
                     }
 
-                    InvokeExpr ie = s.getInvokeExpr();
+                    InvokeExpr ie = (InvokeExpr) s.getInvokeExpr();
 
                     if (ie instanceof StaticInvokeExpr
                             || ie instanceof SpecialInvokeExpr) {

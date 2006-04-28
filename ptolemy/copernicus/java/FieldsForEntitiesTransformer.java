@@ -282,7 +282,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
         //         System.out.println("theClass = " + theClass);
         //         System.out.println("object = " + correspondingObject);
         if (!correspondingObject.equals(_model)) {
-            NamedObj container = correspondingObject.getContainer();
+            NamedObj container = (NamedObj) correspondingObject.getContainer();
             SootClass containerClass = ModelTransformer
                     .getClassForObject(container);
 
@@ -345,8 +345,8 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
             System.out.println("replacing entity calls in " + theClass);
         }
 
-        //NamedObj correspondingObject = ModelTransformer
-        //        .getObjectForClass(theClass);
+        NamedObj correspondingObject = ModelTransformer
+                .getObjectForClass(theClass);
 
         // Replace calls to entity method with field references.
         for (Iterator methods = theClass.getMethods().iterator(); methods
@@ -372,7 +372,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
                     continue;
                 }
 
-                ValueBox box = unit.getInvokeExprBox();
+                ValueBox box = (ValueBox) unit.getInvokeExprBox();
                 Value value = box.getValue();
 
                 if (value instanceof InstanceInvokeExpr) {
@@ -439,7 +439,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
         // FIXME: This is not enough.
         RefType type = (RefType) baseLocal.getType();
         SootClass theClass = type.getSootClass();
-        NamedObj object = ModelTransformer.getObjectForClass(type
+        NamedObj object = (NamedObj) ModelTransformer.getObjectForClass(type
                 .getSootClass());
 
         if (object != null) {
@@ -457,7 +457,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
             DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
             FieldRef ref = (FieldRef) stmt.getRightOp();
             SootField field = ref.getField();
-            Entity entity = ModelTransformer.getEntityForField(field);
+            Entity entity = (Entity) ModelTransformer.getEntityForField(field);
             Entity container = (Entity) entity.getContainer();
             return getLocalReferenceForEntity(container, sourceClass, body
                     .getThisLocal(), body, unit, _options);
@@ -495,14 +495,14 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
             LocalDefs localDefs) {
         // FIXME: This is not enough.
         RefType type = (RefType) baseLocal.getType();
-        NamedObj object = ModelTransformer
-                .getActorForClass(type.getSootClass());
+        NamedObj object = (NamedObj) ModelTransformer.getActorForClass(type
+                .getSootClass());
         Entity entity;
 
         if (object != null) {
             // Then we are dealing with a getEntity call on one of the
             // classes we are generating.
-            entity = ((CompositeEntity) object).getEntity(name);
+            entity = (Entity) ((CompositeEntity) object).getEntity(name);
         } else {
             DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
             FieldRef ref = (FieldRef) stmt.getRightOp();
@@ -533,7 +533,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
 
         if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
-            Value value = stmt.getRightOp();
+            Value value = (Value) stmt.getRightOp();
 
             if (value instanceof CastExpr) {
                 return _getFieldDef((Local) ((CastExpr) value).getOp(), stmt,

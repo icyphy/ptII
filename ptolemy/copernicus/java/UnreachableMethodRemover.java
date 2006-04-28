@@ -200,7 +200,7 @@ public class UnreachableMethodRemover extends SceneTransformer implements
             SootMethod method = (SootMethod) methods.next();
 
             try {
-                SootMethod classMethod = theClass.getMethod(method
+                SootMethod classMethod = theClass.getMethod((String) method
                         .getSubSignature());
                 forcedReachableMethodSet.add(classMethod);
             } catch (Exception ex) {

@@ -938,7 +938,7 @@ public class PtolemyUtilities {
 
         if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
-            Value value = stmt.getRightOp();
+            Value value = (Value) stmt.getRightOp();
 
             if (value instanceof Local) {
                 return getTypeValue(method, (Local) value, stmt, localDefs,

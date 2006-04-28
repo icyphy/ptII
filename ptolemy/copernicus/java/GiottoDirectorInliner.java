@@ -148,9 +148,9 @@ public class GiottoDirectorInliner implements DirectorInliner {
                     entity, options);
             SootClass entityClass = Scene.v().loadClassAndSupport(
                     entityClassName);
-            //String fieldName = ModelTransformer.getFieldNameForEntity(entity,
-            //model);
-            //SootField field = modelClass.getFieldByName(fieldName);
+            String fieldName = ModelTransformer.getFieldNameForEntity(entity,
+                    model);
+            SootField field = modelClass.getFieldByName(fieldName);
 
             String taskClassName = entityClassName + "_Task";
             SootClass taskInterface = Scene.v().loadClassAndSupport(
@@ -622,7 +622,7 @@ public class GiottoDirectorInliner implements DirectorInliner {
             Stmt insertPoint = body.getFirstNonIdentityStmt();
 
             Chain units = body.getUnits();
-            //Local thisLocal = body.getThisLocal();
+            Local thisLocal = body.getThisLocal();
 
             Local prefireReturnsLocal = Jimple.v().newLocal("preReturns",
                     BooleanType.v());
@@ -851,7 +851,7 @@ public class GiottoDirectorInliner implements DirectorInliner {
             Stmt insertPoint = body.getFirstNonIdentityStmt();
 
             Chain units = body.getUnits();
-            //Local thisLocal = body.getThisLocal();
+            Local thisLocal = body.getThisLocal();
 
             Local postfireReturnsLocal = Jimple.v().newLocal("postfireReturns",
                     BooleanType.v());

@@ -116,7 +116,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        //int localCount = 0;
+        int localCount = 0;
         System.out.println("FieldsForAttributesTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
@@ -156,7 +156,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements
                     continue;
                 }
 
-                ValueBox box = unit.getInvokeExprBox();
+                ValueBox box = (ValueBox) unit.getInvokeExprBox();
                 Value value = box.getValue();
 
                 if (value instanceof InstanceInvokeExpr) {
@@ -301,7 +301,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements
 
         if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
-            Value value = stmt.getRightOp();
+            Value value = (Value) stmt.getRightOp();
 
             if (value instanceof CastExpr) {
                 return _getFieldDef((Local) ((CastExpr) value).getOp(), stmt,

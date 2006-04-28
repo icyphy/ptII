@@ -99,7 +99,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             body.getUnits().add(Jimple.v().newReturnVoidStmt());
         }
 
-        SootClass theClass = entityInstanceClass;
+        SootClass theClass = (SootClass) entityInstanceClass;
         SootClass superClass = theClass.getSuperclass();
 
         while ((superClass != PtolemyUtilities.objectClass)
@@ -264,7 +264,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                     continue;
                 }
 
-                InvokeExpr r = stmt.getInvokeExpr();
+                InvokeExpr r = (InvokeExpr) stmt.getInvokeExpr();
 
                 // This is steve...
                 // This is steve gacking at the ugliest code
