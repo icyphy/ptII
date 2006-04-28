@@ -28,6 +28,7 @@
 package ptolemy.backtrack.eclipse.plugin.editor;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
@@ -89,6 +90,15 @@ public class PtolemyEditor extends CompilationUnitEditor {
         super.createPartControl(parent);
         _installSemanticHighlighting(JavaPlugin.getDefault().getJavaTextTools()
                 .getColorManager());
+    }
+    
+    /** Get the Java element wrapped by this editors input. This method is the
+     *  same as the overridden method in the superclass. It is made public.
+     *  
+     *  @return The Java element wrapped by this editors input.
+     */
+    public IJavaElement getInputJavaElement() {
+        return super.getInputJavaElement();
     }
 
     /** Notify all the reconsiling listeners after reconciliation is performed.
