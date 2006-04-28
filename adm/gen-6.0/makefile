@@ -364,6 +364,7 @@ PTII_SRC_TO_BE_REMOVED = \
 		bin/mescal.bat \
 		bin/moml.bat \
 		bin/obfuscate.bat \
+		bin/ptcg \
 		bin/ptexecute.bat \
 		bin/ptjacl.bat \
 		bin/ptjaclapp.bat \
@@ -744,7 +745,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|jni |lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|ptolemy.hsif|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
 		src_jar/viptos$(VIPTOS_VERSION)/doc/makefile \
 		| sed 's/codeDocHyVisual.jar codeDocVisualSense.jar//' \
-	        | sed 's@^all:.*$$@all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html #codeDoc/ptolemy/actor/lib/RampIdx.xml@' \
+	        | sed 's@^all:.*$$@all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html@' \
 		| sed 's@^codeDoc/tree.html:@codeDocFull/tree.html:@' \
 		> src_jar/viptos$(VIPTOS_VERSION)/doc/makefile.tmp
         # Add a codeDoc/tree.html rule at the bottom
@@ -811,10 +812,9 @@ nightly: ptclean ptbuild \
 	glimpse \
 	findchanges \
 	ChangeLog \
-	jnlp
-
-#	remote4
-#	remote5
+	jnlp \
+	remote4 \
+	remote5
 
 #	remote2
 #	remote6
@@ -1685,11 +1685,12 @@ remotealldone:
 # except for the deep codegen
 
 # Host to run on
-REMOTE4HOST = source
+REMOTE4HOST = bennett
 
 # Remote location of Ptolemy II tree for testing
 #REMOTE4HOME = /vol/$(REMOTE4HOST)/$(REMOTE4HOST)2/ptII
-REMOTE4HOME = /export/home1/bldmastr/pttmp/remote4
+#REMOTE4HOME = /export/home1/bldmastr/pttmp/remote4
+REMOTE4HOME = /export/home2/ptII/remote4
 REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
 
 # Log file to save the results in
@@ -1720,7 +1721,7 @@ remote4: $(PTII_FULL) $(GENLOGDIR)
 #		 >& $(REMOTE4LOG)" &
 	if [ ! -d $(GENLOGDIR) ]; then mkdir $(GENLOGDIR); fi
 	-(cd $(GENDIR); cp $(REMOTE4LOG) $(REMOTE4LOG).old)
-	cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+	cd $(GENDIR); $(MAKE) -k EMAILTO=$(EMAILTO) \
 		remote4nuke remote4ptiidist remote4configure \
 		remote4distclean remote4build \
 		remote4javatest \
@@ -1802,11 +1803,12 @@ remote4javatest:
 # except for the shallow codegen
 
 # Host to run on
-REMOTE5HOST = source
+REMOTE5HOST = bennett
 
 # Directory to build in
 #REMOTE5HOME = /vol/$(REMOTE5HOST)/$(REMOTE5HOST)1/ptIIsrc
-REMOTE5HOME = /export/home1/bldmastr/pttmp/remote5
+#REMOTE5HOME = /export/home1/bldmastr/pttmp/remote5
+REMOTE5HOME = /export/home2/ptII/remote5
 
 REMOTE5PTIIDIST = $(REMOTE5HOME)/ptII$(VERSION)
 
