@@ -74,6 +74,7 @@ public class PtolemyEditor extends CompilationUnitEditor {
      *  notified.
      *  
      *  @param listener The reconciling listener to be added.
+     *  @see #removeJavaReconcileListener(IJavaReconcilingListener)
      */
     public void addJavaReconcileListener(IJavaReconcilingListener listener) {
         synchronized (_reconcilingListeners) {
@@ -123,7 +124,9 @@ public class PtolemyEditor extends CompilationUnitEditor {
 
     /** Remove a reconciling listener from the list of reconciling listeners
      *  to be notified.
+     *  
      *  @param listener The reconciling listener to be removed.
+     *  @see #addJavaReconcileListener(IJavaReconcilingListener)
      */
     public void removeJavaReconcileListener(IJavaReconcilingListener listener) {
         synchronized (_reconcilingListeners) {
