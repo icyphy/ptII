@@ -12,7 +12,7 @@ if [ $USER != ptII ]; then
 fi
 
 ADMDIR=/users/ptII/adm
-cd $ADMDIR/gen-4.1
+cd $ADMDIR/gen-6.0
 
 # Make sure that only ptII can write to the log files
 chmod g-w $ADMDIR/test
