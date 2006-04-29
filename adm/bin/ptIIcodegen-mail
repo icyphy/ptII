@@ -25,7 +25,7 @@ fi
 # ptII/adm/bin/ptIInightly
 # ptII/adm/gen-xxx/makefile
 # buildmaster/web/adm/makefile
-GENVERSION=gen-4.1
+GENVERSION=gen-6.0
 GENDIR=$ADMDIR/$GENVERSION
 cd $GENDIR
 
@@ -40,16 +40,18 @@ echo "" >> $mailmsg
 echo "Summary" >> $mailmsg
 echo "-------" >> $mailmsg
 echo "Deep codegen test results:" >> $mailmsg
+echo "$GENDIR/logs/remote4.out" >> $mailmsg
 egrep '^Failed:' $GENDIR/logs/remote4.out >> $mailmsg
 echo "" >> $mailmsg
 echo "Shallow codegen test results:" >> $mailmsg
+echo "$GENDIR/logs/remote5.out" >> $mailmsg
 egrep '^Failed:' $GENDIR/logs/remote5.out >> $mailmsg
 echo "" >> $mailmsg
 echo "To get the copernicus/java logs, do:" >> $mailmsg
-echo "    scp maury:/users/ptII/adm/$GENVERSION/logs/remote4.out.old /tmp" >> $mailmsg
+echo "    scp `hostname`:$GENDIR/logs/remote4.out.old /tmp" >> $mailmsg
 echo "" >> $mailmsg
 echo "To get the copernicus/shallow logs, do:" >> $mailmsg
-echo "    scp maury:/users/ptII/adm/$GENVERSION/logs/remote5.out.old /tmp" >> $mailmsg
+echo "    scp `hostname`:$GENDIR/logs/remote5.out.old /tmp" >> $mailmsg
 
 echo "" >> $mailmsg
 echo "The output below consists of the names of the models"  >> $mailmsg
