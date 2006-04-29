@@ -32,6 +32,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import ptolemy.actor.gui.EditParametersDialog;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -91,11 +92,20 @@ public class CustomizeDocumentationAction extends FigureAction {
                 };
                 target.requestChange(request);
             } else {
-                DocAttribute attribute = (DocAttribute) docAttributeList.get(0);
-                // In case parameters or ports have been added since the
-                // DocAttribute was constructed, refresh it.
-                attribute.refreshParametersAndPorts();
-                _editDocAttribute(getFrame(), attribute, target);
+                // In case there is more than one such attribute, get the last one.
+                final DocAttribute attribute = (DocAttribute)
+                        docAttributeList.get(docAttributeList.size() - 1);
+                // Do the update in a change request because it may modify
+                // the DocAttribute parameter.
+                ChangeRequest request = new ChangeRequest(this, "Customize documentation.") {
+                    protected void _execute() throws Exception {
+                        // In case parameters or ports have been added since the
+                        // DocAttribute was constructed, refresh it.
+                        attribute.refreshParametersAndPorts();
+                        _editDocAttribute(getFrame(), attribute, target);
+                    }
+                };
+                target.requestChange(request);
             }
         }
     }

@@ -28,6 +28,8 @@
 package ptolemy.vergil.basic;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.gui.style.TextStyle;
 import ptolemy.actor.parameters.ParameterPort;
@@ -37,6 +39,7 @@ import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -152,10 +155,72 @@ public class DocAttribute extends SingletonAttribute {
      *  parameter with the same name appended with either " (port)"
      *  or " (parameter)".  For parameters, only those that are
      *  settable are shown, and only if the visibility is "FULL".
+     *  This method also removes any parameters that have no
+     *  corresponding parameter or port in the container.
+     *  Since this method modifies the model by adding or
+     *  removing parameters to this attribute, it should be
+     *  called from inside a change request.
      */
     public void refreshParametersAndPorts() {
         NamedObj container = getContainer();
-        Iterator parameters = container.attributeList(Settable.class)
+
+        // Remove any parameters that are no longer relevant.
+        // Operate on a copy of the attribute list to avoid
+        // ConcurrentModificationException.
+        List copy = new LinkedList(attributeList());
+        Iterator parameters = copy.iterator();
+        while (parameters.hasNext()) {
+            Attribute attribute = (Attribute) parameters.next();
+            String name = attribute.getName();
+            int n = name.indexOf(" (parameter)");
+            if (n >= 0) {
+                // Attribute is a parameter.
+                name = name.substring(0, n);
+                if (container.getAttribute(name) == null) {
+                    // Entry is obsolete.  Delete it.
+                    try {
+                        attribute.setContainer(null);
+                    } catch (KernelException ex) {
+                        // Should not occur.
+                        throw new InternalErrorException(ex);
+                    }
+                }
+            } else {
+                n = name.indexOf(" (port-parameter)");
+                if (n >= 0) {
+                    // Attribute is a port parameter.
+                    name = name.substring(0, n);
+                    if (!(container instanceof Entity)
+                            || ((Entity)container).getPort(name) == null) {
+                        // Entry is obsolete.  Delete it.
+                        try {
+                            attribute.setContainer(null);
+                        } catch (KernelException ex) {
+                            // Should not occur.
+                            throw new InternalErrorException(ex);
+                        }
+                    }
+                } else {
+                    n = name.indexOf(" (port)");
+                    if (n >= 0) {
+                        // Attribute is a port parameter.
+                        name = name.substring(0, n);
+                        if (!(container instanceof Entity)
+                                || ((Entity)container).getPort(name) == null) {
+                            // Entry is obsolete.  Delete it.
+                            try {
+                                attribute.setContainer(null);
+                            } catch (KernelException ex) {
+                                // Should not occur.
+                                throw new InternalErrorException(ex);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        parameters = container.attributeList(Settable.class)
                 .iterator();
         while (parameters.hasNext()) {
             NamedObj attribute = (NamedObj) parameters.next();
@@ -174,7 +239,7 @@ public class DocAttribute extends SingletonAttribute {
                 }
             }
         }
-
+        
         if (container instanceof Entity) {
             Iterator ports = ((Entity) container).portList().iterator();
             while (ports.hasNext()) {
