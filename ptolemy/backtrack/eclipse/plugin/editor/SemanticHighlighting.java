@@ -60,6 +60,12 @@ public abstract class SemanticHighlighting {
      *  @return The key of the color preference.
      */
     public abstract String getColorPreferenceKey();
+    
+    /** Get the key of the enabled preference.
+     * 
+     *  @return The key of the enabled preference.
+     */
+    public abstract String getEnabledPreferenceKey();
 
     /** Get the key of the italic font preference.
      * 
