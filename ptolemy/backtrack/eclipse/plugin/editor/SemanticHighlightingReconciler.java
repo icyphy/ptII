@@ -563,8 +563,7 @@ public class SemanticHighlightingReconciler implements
      */
     private void _disposeHighlightings() {
         for (int i = 0, n = _semanticHighlightings.length; i < n; i++) {
-            _removeColor(SemanticHighlightings
-                    .getColorPreferenceKey(_semanticHighlightings[i]));
+            _removeColor(_semanticHighlightings[i].getColorPreferenceKey());
         }
 
         _semanticHighlightings = null;
@@ -621,8 +620,7 @@ public class SemanticHighlightingReconciler implements
         for (int i = 0, n = _semanticHighlightings.length; i < n; i++) {
             SemanticHighlighting semanticHighlighting = _semanticHighlightings[i];
 
-            String colorKey = SemanticHighlightings
-                    .getColorPreferenceKey(semanticHighlighting);
+            String colorKey = semanticHighlighting.getColorPreferenceKey();
 
             if (colorKey.equals(event.getProperty())) {
                 _adaptToTextForegroundChange(_highlightings[i], event);
@@ -630,8 +628,7 @@ public class SemanticHighlightingReconciler implements
                 continue;
             }
 
-            String boldKey = SemanticHighlightings
-                    .getBoldPreferenceKey(semanticHighlighting);
+            String boldKey = semanticHighlighting.getBoldPreferenceKey();
 
             if (boldKey.equals(event.getProperty())) {
                 _adaptToTextStyleChange(_highlightings[i], event, SWT.BOLD);
@@ -639,8 +636,7 @@ public class SemanticHighlightingReconciler implements
                 continue;
             }
 
-            String italicKey = SemanticHighlightings
-                    .getItalicPreferenceKey(semanticHighlighting);
+            String italicKey = semanticHighlighting.getItalicPreferenceKey();
 
             if (italicKey.equals(event.getProperty())) {
                 _adaptToTextStyleChange(_highlightings[i], event, SWT.ITALIC);
@@ -648,8 +644,7 @@ public class SemanticHighlightingReconciler implements
                 continue;
             }
 
-            String enabledKey = SemanticHighlightings
-                    .getEnabledPreferenceKey(semanticHighlighting);
+            String enabledKey = semanticHighlighting.getEnabledPreferenceKey();
 
             if (enabledKey.equals(event.getProperty())) {
                 _adaptToEnablementChange(_highlightings[i], event);
@@ -668,25 +663,21 @@ public class SemanticHighlightingReconciler implements
 
         for (int i = 0, n = _semanticHighlightings.length; i < n; i++) {
             SemanticHighlighting semanticHighlighting = _semanticHighlightings[i];
-            String colorKey = SemanticHighlightings
-                    .getColorPreferenceKey(semanticHighlighting);
+            String colorKey = semanticHighlighting.getColorPreferenceKey();
             _addColor(colorKey);
 
-            String boldKey = SemanticHighlightings
-                    .getBoldPreferenceKey(semanticHighlighting);
+            String boldKey = semanticHighlighting.getBoldPreferenceKey();
             int style = _preferenceStore.getBoolean(boldKey) ? SWT.BOLD
                     : SWT.NORMAL;
 
-            String italicKey = SemanticHighlightings
-                    .getItalicPreferenceKey(semanticHighlighting);
+            String italicKey = semanticHighlighting.getItalicPreferenceKey();
 
             if (_preferenceStore.getBoolean(italicKey)) {
                 style |= SWT.ITALIC;
             }
 
             boolean isEnabled = _preferenceStore
-                    .getBoolean(SemanticHighlightings
-                            .getEnabledPreferenceKey(semanticHighlighting));
+                    .getBoolean(semanticHighlighting.getEnabledPreferenceKey());
 
             _highlightings[i] = new HighlightingStyle(new TextAttribute(
                     _colorManager.getColor(PreferenceConverter.getColor(
