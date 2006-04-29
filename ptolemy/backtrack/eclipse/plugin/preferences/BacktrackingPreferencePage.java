@@ -1,4 +1,4 @@
-/*
+/* The class to create the backtracking preference page.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -27,28 +27,6 @@
  */
 package ptolemy.backtrack.eclipse.plugin.preferences;
 
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.BooleanFieldEditor;
-import org.eclipse.jface.preference.FileFieldEditor;
-import org.eclipse.jface.preference.ListEditor;
-import org.eclipse.jface.preference.PathEditor;
-import org.eclipse.jface.preference.StringFieldEditor;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.List;
-
-import org.eclipse.ui.IWorkbenchPreferencePage;
-
-import ptolemy.backtrack.eclipse.plugin.util.Environment;
-import ptolemy.backtrack.eclipse.plugin.util.SaveFileFieldEditor;
-import ptolemy.backtrack.eclipse.plugin.widgets.DirectoryFieldEditor;
-import ptolemy.backtrack.util.Strings;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -57,24 +35,55 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.FileFieldEditor;
+import org.eclipse.jface.preference.ListEditor;
+import org.eclipse.jface.preference.PathEditor;
+import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.ui.IWorkbenchPreferencePage;
+
+import ptolemy.backtrack.eclipse.plugin.util.SaveFileFieldEditor;
+import ptolemy.backtrack.eclipse.plugin.widgets.DirectoryFieldEditor;
+import ptolemy.backtrack.util.Strings;
+
 //////////////////////////////////////////////////////////////////////////
 //// BacktrackingPreferencePage
 
 /**
+   The class to create the backtracking preference page.
 
-
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class BacktrackingPreferencePage extends SectionPreferencePage implements
         IWorkbenchPreferencePage {
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Construct a backtracking preference page.
+     */
     public BacktrackingPreferencePage() {
         super("Ptolemy II backtracking settings.");
     }
 
+    /** Create the contents of the preference page with the parent as its
+     *  container.
+     *  
+     *  @param parent The parent container.
+     *  @return The parent itself.
+     */
     public Control createContents(Composite parent) {
         super.createContents(parent);
 
@@ -90,41 +99,32 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
         return parent;
     }
 
+    /** Set whether the backtracking preference page is visible.
+     * 
+     *  @param visible Whether the backtracking preference page is visible.
+     */
     public void setVisible(boolean visible) {
         if (visible) {
             _updateSources();
-            _checkEnabled();
         }
 
         super.setVisible(visible);
     }
 
-    private void _checkEnabled() {
-        String PTII = Environment.getPtolemyHome();
-        boolean formEnabled = PTII != null;
+    ///////////////////////////////////////////////////////////////////
+    ////                       private methods                     ////
 
-        /*Iterator fieldsIter = getFields().iterator();
-         while (fieldsIter.hasNext()) {
-         FieldEditor editor = (FieldEditor)fieldsIter.next();
-         if (formEnabled && editor == _configuration) {
-         IPreferenceStore store = EclipsePlugin.getDefault()
-         .getPreferenceStore();
-         editor.setEnabled(store.getBoolean(
-         PreferenceConstants.BACKTRACK_GENERATE_CONFIGURATION),
-         _getParent(editor));
-         } else
-         editor.setEnabled(formEnabled, _getParent(editor));
-         }*/
-    }
-
+    /** Create the first section named "Sources for Batch Refactoring" in the
+     *  preference page.
+     */
     private void _createSection1() {
         Composite composite = _createSection(
                 "Sources for Batch Refactoring",
-                "Set the sources of refactoring. A source list file stores "
-                        + "the complete list of Java source files to be refactored. "
-                        + "A single Java source file name is written on each line of "
-                        + "the source list. The source file names may use paths "
-                        + "relative to the path where the source list file is in.");
+                "Set the sources of refactoring. A source list file stores " +
+                "the complete list of Java source files to be refactored. " +
+                "A single Java source file name is written on each line of " +
+                "the source list. The source file names may use paths " +
+                "relative to the path where the source list file is in.");
 
         Composite currentComposite = _newComposite(composite);
         _sourceList = new FileFieldEditor(
@@ -179,8 +179,8 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
                 String sourceList = _sourceList.getStringValue();
                 String sourceListPath = new File(sourceList).getParent();
                 FileDialog dialog = new FileDialog(getShell());
-                dialog
-                        .setText("Please choose a file to be added to the source list");
+                dialog.setText(
+                        "Please choose a file to be added to the source list");
                 dialog.setFilterPath(sourceListPath);
                 dialog.setFilterExtensions(new String[] { "*.java" });
 
@@ -199,12 +199,6 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
 
             protected String[] parseString(String stringList) {
                 return Strings.decodeFileNames(stringList);
-            }
-
-            protected void doLoad() {
-            }
-
-            protected void doLoadDefault() {
             }
 
             protected void doStore() {
@@ -231,7 +225,7 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
         };
         gridData = new GridData();
         gridData.widthHint = 0;
-        gridData.heightHint = LIST_HEIGHT;
+        gridData.heightHint = _LIST_HEIGHT;
         gridData.horizontalAlignment = SWT.FILL;
         gridData.grabExcessHorizontalSpace = true;
         _sources.getListControl(currentComposite).setLayoutData(gridData);
@@ -239,14 +233,16 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
         addField(_sources);
     }
 
+    /** Create the second section named "Location" in the preference page.
+     */
     private void _createSection2() {
         Composite composite = _createSection(
                 "Location",
-                "Set the location to store the refactored Java code. The "
-                        + "location of the output files is defined by the root of the "
-                        + "classes, and packages where the classes are in. A prefix "
-                        + "may be added to existing package declarations at the time "
-                        + "of refactoring.");
+                "Set the location to store the refactored Java code. The " +
+                "location of the output files is defined by the root of the " +
+                "classes, and packages where the classes are in. A prefix " +
+                "may be added to existing package declarations at the time " +
+                "of refactoring.");
 
         Composite currentComposite = _newComposite(composite);
         _root = new DirectoryFieldEditor(PreferenceConstants.BACKTRACK_ROOT,
@@ -268,12 +264,15 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
         addField(_prefix);
     }
 
+    /** Create the third section named "Extra Class Paths" in the preference
+     *  page.
+     */
     private void _createSection3() {
         Composite composite = _createSection(
                 "Extra Class Paths",
-                "Add class paths to locate classes in name resolving. The "
-                        + "directories of the projects in the current workspace are "
-                        + "added automatically and need not be specified explicitly.");
+                "Add class paths to locate classes in name resolving. The " +
+                "directories of the projects in the current workspace are " +
+                "added automatically and need not be specified explicitly.");
 
         Composite currentComposite = _newComposite(composite);
         _extraClassPaths = new PathEditor(
@@ -283,7 +282,7 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
 
         GridData gridData = new GridData();
         gridData.widthHint = 0;
-        gridData.heightHint = LIST_HEIGHT;
+        gridData.heightHint = _LIST_HEIGHT;
         gridData.horizontalAlignment = SWT.FILL;
         gridData.grabExcessHorizontalSpace = true;
         _extraClassPaths.getListControl(currentComposite).setLayoutData(
@@ -292,12 +291,15 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
         addField(_extraClassPaths);
     }
 
+    /** Create the fourth section called "Actor Library Configuration" in the
+     *  preference page.
+     */
     private void _createSection4() {
         Composite composite = _createSection(
                 "Actor Library Configuration",
-                "Set the file name of the XML configuration to be generated."
-                        + "This configuration can be linked to the Ptolemy II actor "
-                        + "library.");
+                "Set the file name of the XML configuration to be generated." +
+                "This configuration can be linked to the Ptolemy II actor " +
+                "library.");
 
         Group group = _newGroup(composite, "Configuration");
 
@@ -334,6 +336,8 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
         addField(_configuration);
     }
 
+    /** Create the fifth section named "Miscellaneous" in the preference page.
+     */
     private void _createSection5() {
         Composite composite = _createSection("Miscellaneous",
                 "Set other options.");
@@ -346,6 +350,10 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
         addField(_overwrite);
     }
 
+    /** Update the source files to be refactored in the list.
+     * 
+     *  @return true if the update is successful; false, otherwise.
+     */
     private boolean _updateSources() {
         String fileName = _sourceList.getStringValue();
         List list = _sources.getListControl(_getParent(_sources));
@@ -383,24 +391,46 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
         }
     }
 
-    private static final int LIST_HEIGHT = 100;
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
-    private boolean _sourcesModified = false;
+    /** Height of the source list.
+     */
+    private static final int _LIST_HEIGHT = 100;
 
-    /* Controls */
-    private FileFieldEditor _sourceList;
-
-    private ListEditor _sources;
-
-    private DirectoryFieldEditor _root;
-
-    private StringFieldEditor _prefix;
-
-    private PathEditor _extraClassPaths;
-
-    private BooleanFieldEditor _generateConfiguration;
-
+    /** Editor for the configuration file to be generated.
+     */
     private FileFieldEditor _configuration;
 
+    /** Editor for extra class paths.
+     */
+    private PathEditor _extraClassPaths;
+
+    /** Check box for whether to generate a configuration.
+     */
+    private BooleanFieldEditor _generateConfiguration;
+
+    /** Check box for whether to overwrite existing files.
+     */
     private BooleanFieldEditor _overwrite;
+
+    /** Editor for the class prefix.
+     */
+    private StringFieldEditor _prefix;
+
+    /** Selector for the root directory.
+     */
+    private DirectoryFieldEditor _root;
+
+    /** Editor for the source list file.
+     */
+    private FileFieldEditor _sourceList;
+
+    /** List of the source files to be refactored.
+     */
+    private ListEditor _sources;
+
+    /** Whether the sources list file is modified.
+     */
+    private boolean _sourcesModified = false;
 }
