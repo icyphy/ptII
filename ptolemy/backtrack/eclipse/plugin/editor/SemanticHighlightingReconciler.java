@@ -849,7 +849,7 @@ public class SemanticHighlightingReconciler implements
          *   visit.
          */
         public boolean visit(SimpleName node) {
-            _token.update(node);
+            _token._update(node);
 
             for (int i = 0, n = _jobSemanticHighlightings.length; i < n; i++) {
                 SemanticHighlighting semanticHighlighting = _jobSemanticHighlightings[i];
@@ -867,7 +867,7 @@ public class SemanticHighlightingReconciler implements
                 }
             }
 
-            _token.clear();
+            _token._clear();
             return false;
         }
 
