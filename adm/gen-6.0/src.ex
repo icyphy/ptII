@@ -34,6 +34,7 @@ bin/ptinvoke
 bin/copernicus
 bin/copernicusjhdl
 bin/decompile
+bin/ptcg
 bin/ptjini
 bin/emachine
 bin/giottoc
