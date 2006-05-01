@@ -673,7 +673,7 @@ public class TableauFrame extends Top {
 
     /** Return the default icon image, or null if there is none.  Note
      *  that Frame.setIconImage(null) will set the image to the
-     *  default platform dependent image for us.  If the configuration
+     *  default platform dependent image.  If the configuration
      *  contains a FileAttribute called _applicationIcon, then the
      *  value of the _applicationIcon is used.  Otherwise, the default
      *  value is ptolemy/actor/gui/PtolemyIISmallIcon.gif, which
@@ -692,12 +692,14 @@ public class TableauFrame extends Top {
                     url = iconAttribute.asURL();
                 } 
             } catch (Throwable ex) {
+                // Ignore, we will set url to the default.
+            }
+            if (url == null) {
                 // Note that PtolemyIISmallIcon.gif is also in doc/img.
                 // We place a duplicate copy here to make it easy to ship
                 // jar files that contain all the appropriate images.
                 url = getClass().getResource(
-                    "/ptolemy/actor/gui/PtolemyIISmallIcon.gif");
-
+                        "/ptolemy/actor/gui/PtolemyIISmallIcon.gif");
             }
             if (url == null) {
                 return null;
@@ -711,6 +713,8 @@ public class TableauFrame extends Top {
             // the Swing Event thread.  Nandita suggested using this as
             // a workaround:
             // setIconImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+            // Another thing to check for is whether the icon is in the
+            // same directory as TableauFrame.class
             Toolkit tk = Toolkit.getDefaultToolkit();
             _defaultIconImage = tk.createImage(url);
         }
