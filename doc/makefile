@@ -456,7 +456,6 @@ $(VERGIL_DOCS): javahtml.awk
 mainVergil.htm: main.htm
 	sed -e 's@" target="_top">@#in_browser">@' \
 	    -e 's@body.htm" target="body">@main.htm">@' \
-	    -e 's@^<link .*>@@' \
 		main.htm > $@
 
 mainVergilPtiny.htm: mainVergil.htm
@@ -490,7 +489,6 @@ whatsnewVergil.htm: whatsnew.htm
 	sed -e 's@\(demo/[^/]*/[^/]*\).htm@\1.xml@g' \
 	    -e 's@<a href="\([^"]*/domains/[^/]*/doc/\)body.htm" target="[^"]*">\([^<]*\)</a>@<a href="\1main.htm">\2</a>@' \
             -e 's@<body .*>@<body>@' \
-            -e 's@^<link .*>@@' \
 		< whatsnew.htm > whatsnewVergil.htm
 
 # Files that are derived from other files, such as ptII$(PTVERSION).release.htm
