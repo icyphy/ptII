@@ -218,8 +218,12 @@ public class GenerateCopyrights {
 
         String aelfredCopyright = _findURL("com/microstar/xml/README.txt");
 
+        String defaultCSS = _findURL("doc/default.css");
         StringBuffer htmlBuffer = new StringBuffer();
         htmlBuffer.append("<html>\n<head>\n<title>Copyrights</title>\n"
+                + "<link href=\""
+                + defaultCSS + "\" rel=\"stylesheet\""
+                + "type=\"text/css\">\n"
                 + "</head>\n<body>\n" + "<h1>" + applicationName + "</h1>\n"
                 + "The primary copyright for the " + applicationName
                 + " System can be\n" + "found in <a href=\""
