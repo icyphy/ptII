@@ -497,6 +497,7 @@ whatsnewVergil.htm: whatsnew.htm
 DERIVED_FILES = \
 	mainVergil.htm \
 	mainVergilPtiny.htm \
+	mainVergilPtinyKepler.htm \
 	ptII$(PTVERSION).releaseVergil.htm \
 	ptII$(PTVERSION).releaseHyVisual.htm \
 	troubleshootingVergil.htm \
