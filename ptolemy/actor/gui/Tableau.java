@@ -357,11 +357,15 @@ public class Tableau extends CompositeEntity {
                 // calling pack before setVisible() does not have the
                 // same effect as calling pack() within show().
                 // Calling it after, however, is not sufficient.
-                // We have to call it both before and after! Ugh!
-                // If this call to pack is put before the call to
-                // setVisible(true), then the HTML welcome window
-                // when Vergil starts up is the wrong size.
-                frame.pack();
+
+                // We used to have to call pack() both before and
+                // after setVisible() because the the HTML welcome
+                // window that appears when vergil starts up was the
+                // wrong size.  However, if we call pack() twice, then
+                // under Java 1.5, the View XML window is too large, 
+                // the horizontal scrollbar ends up off the screen.
+
+                //frame.pack();
             }
 
             // Deiconify the window.
