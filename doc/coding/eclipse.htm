@@ -3,6 +3,7 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <title>Setting up Ptolemy II and Eclipse</title>
+<link href="../default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <h1>Setting up Ptolemy II and Eclipse</h1>
@@ -51,17 +52,12 @@ then the Target should read:
 The maximum memory size will now be 256 megabytes when you restart
 Eclipse.
 <p>
-<li>
-Ptolemy II uses some features of Java 1.4.
-Set Eclipse to use Java 1.4 source code compliance.
-<ol>
-<li> Window-&gt;Preferences-&gt;Java-&gt;Compiler-&gt;Compliance and Classfiles
-<li> Uncheck "Use default compliance settings".
-<li> Set both "Generated .class files compatibility" and
-     "Source compatibility" to 1.4.
-<li> Click OK.
-</ol>
-<p>
+<li>Eclipse requires some customization to build Ptolemy II
+and to keep the Ptolemy II coding style.  In the steps below, we
+outline changes to be made in the Eclipse Preferences window,
+which is invoked via Window -&gt; Preferences.  For each of the
+changes, hit "Apply".  When all the changes are done, hit
+"OK", which will close the Eclipse Preferences Window.
 
 <li>
 By default, Eclipse rebuilds a project when any change is made
@@ -70,9 +66,10 @@ is first checked out, and during normal usage, can be annoying because
 of the pauses it creates. We suggest disabling this feature as
 follows:
 <ol>
-<li> Select Window -&gt; Preferences.
-<li> General -&;gt; Workspace
+<li> While still in the preferences window (Window -&gt; Preferences).
+<li> General -&gt; Workspace
 <li> Deselect "Build automatically."
+<li> Click Apply. 
 </ol>
 <p>
 <li>
@@ -91,30 +88,46 @@ to format comments.  We hope to change this policy in the future.
 
 <br>We handle these changes together:
  <ol>
-  <li> Select Window-&gt;Preferences in the menu.
+  <li> While still in the preferences window (Window -&gt; Preferences).
+
   <li> Expand the Java tree, select "Code Style" -&gt; "Formatter"
   <li> Under "Select a profile" select "Java Conventions" and then 
        Click on "Show".  We use Java Conventions over the "Eclipse"
        setting because the Eclipse style uses tabs
-  <li> Under the "Indentation" tab, verify that the Tab policy to "Spaces only"
+  <li> Under the "Indentation" tab, in Eclipse 3.2 and later, change
+       the Tab policy to "Spaces only".  In Eclipse 3.1.2 and earlier,
+       verify that the Tab policy is "Spaces only".
   <li> Under the "New Lines" tab, select "at end of file"
   <li> Under the "Comments" tab, <b>unselect</b> "Enable comment formatting"
   <li> Click OK.
 
   <li> You will be prompted to save the style with a new name, we
 suggest "Ptolemy II", but you can select any name. 
+  <li> Click Apply
  </ol>
+
+<li>
+Ptolemy II uses some features of Java 1.4.
+Set Eclipse to use Java 1.4 source code compliance.
+<ol>
+ <li> While still in the preferences window (Window -&gt; Preferences).
+ <li> Expand the Java tree, select "Compiler" -&gt; "JDK Compliance:"
+ <li> Uncheck "Use default compliance settings".
+ <li> Set both "Generated .class files compatibility" and
+      "Source compatibility" to 1.4.
+ <li> Click Apply. 
+</ol>
 
 <li> Eclipse has very good compiler error/warning.  One of the
 warnings complains if a Serializable class does not have
 serialVersionUID declared.  Since this warning is only useful
 if you are tightly managing serialization, we turn it off:
  <ol>
-  <li> Select Window-&gt;Preferences in the menu.
+  <li> While still in the preferences window (Window -&gt; Preferences).
   <li> Expand the Java tree, select "Compiler" -&gt; "Errors/Warning"
   <li> Under "Potential programming problems", change
   "Serializable class without serialVersionUID" to "Ignore"
-  <li> Click OK
+  <li> Click Apply.  If you are prompted for a full rebuild, click OK.
  </ol>
 
 <li> By default, Eclipse checks in <CODE>makefile</CODE>s,
@@ -124,7 +137,7 @@ checked out on a platform that has a different line ending.
 
  <br>The solution: set your file associations properly:
  <ol>
-  <li> Select Window-&gt;Preferences in the menu.
+  <li> While still in the preferences window (Window -&gt; Preferences).
   <li> Expand Team-&gt;File Content
   <li> Click on "Add Extension" and enter "*.tcl" in the "Enter
   File Extension" window, then click "OK" in the "Enter File Extension"  
@@ -137,7 +150,9 @@ checked out on a platform that has a different line ending.
   <li> Click on "Add Name" and add "makefile", select
 	"makefile" and click on the "Change" button to
 	change the Content to "ASCII Text"
+  <li> Click Apply
  </ol>
+<li> Click OK to apply all of the above changes.
 </menu>
 
 </ol>
