@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.cont.kernel;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.sched.FixedPointScheduler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -91,7 +90,7 @@ public class ContScheduler extends FixedPointScheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public ContScheduler(Director container, String name)
+    public ContScheduler(ContDirector container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

@@ -29,19 +29,12 @@ package ptolemy.actor.sched;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.sched.Firing;
-import ptolemy.actor.sched.NotSchedulableException;
-import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.Scheduler;
-import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixedPointScheduler
@@ -49,7 +42,8 @@ import ptolemy.util.MessageHandler;
 /**
  A scheduler for the FixedPointDirector.  This scheduler constructs
  a static schedule for a model by performing a topological sort on the port 
- dependency graph of that model.  
+ dependency graph of that model.  The schedule may mention an actor more
+ than once if the depdencies require it.
  
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
@@ -70,7 +64,7 @@ public class FixedPointScheduler extends Scheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public FixedPointScheduler(Director container, String name)
+    public FixedPointScheduler(FixedPointDirector container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -85,27 +79,28 @@ public class FixedPointScheduler extends Scheduler {
      *
      *  @return A schedule.
      *  @exception NotSchedulableException If the model is not
-     *   schedulable.
+     *   schedulable because of a dependency loop, or because there
+     *   is no containing director, or because the containing director
+     *   has no container.
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
 
         if (director == null) {
-            throw new NotSchedulableException(this, "FixedPointScheduler "
-                    + "cannot schedule graph without a director.");
+            throw new NotSchedulableException(this, "No director.");
         }
 
         CompositeActor compositeActor = (CompositeActor) (director
                 .getContainer());
 
         if (compositeActor == null) {
-            throw new NotSchedulableException(this, "FixedPointScheduler "
-                    + "cannot schedule graph without container.");
+            throw new NotSchedulableException(this, "No container.");
         }
 
         Schedule schedule = new Schedule();
 
-        FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) compositeActor
+        FunctionDependencyOfCompositeActor functionDependency
+                = (FunctionDependencyOfCompositeActor) compositeActor
                 .getFunctionDependency();
 
         Object[] cycleNodes = functionDependency.getCycleNodes();
@@ -122,7 +117,8 @@ public class FixedPointScheduler extends Scheduler {
                             .getFullName());
                 }
             }
-            MessageHandler.error("There are strict cycle loops in the model:"
+            throw new NotSchedulableException(director,
+                    "There are dependency loops in the model:"
                     + names.toString() + "\n"
                     + " The results may contain unknowns.  This "
                     + "scheduler cannot handle this model.");
@@ -147,7 +143,7 @@ public class FixedPointScheduler extends Scheduler {
             IOPort ioPort = (IOPort) sort[i];
 
             // If this ioPort is an input but has no connections, ignore it.
-            if (ioPort.isInput() && (ioPort.numLinks() == 0)) {
+            if (ioPort.isInput() && (ioPort.numberOfSources() == 0)) {
                 continue;
             }
 

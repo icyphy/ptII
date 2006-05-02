@@ -35,13 +35,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfFSMActor
 
-/** An instance of FunctionDependencyOfFSMActor describes the function
+/**
+ An instance of FunctionDependencyOfFSMActor describes the function
  dependency relation between the externally visible ports of an FSM
- actor.
- <p>
- This class makes a conservative approximation of the dependency
+ actor. This class makes a conservative approximation of the dependency
  relation by assuming that all the output ports depend on all the
  input ports.
+ <p>
+ NOTE: In principle, we could be smarter about this and check
+ guard and action expressions to determine whether particular outputs
+ do actually depend on particular inputs. This analysis, however,
+ would be fairly complex, so we use a conservative approximation
+ instead.
 
  @see FunctionDependency
  @author Haiyang Zheng
@@ -52,15 +57,15 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class FunctionDependencyOfFSMActor extends FunctionDependency {
     /** Construct a FunctionDependencyOfFSMActor in the given actor.
+     *  The name of this attribute will always be "_functionDependency".
      *  @param fsmActor The associated FSM actor.
-     *  @param name The name of the FunctionDependency.
      *  @exception IllegalActionException If the name has a period in it, or
      *   the attribute is not compatible with the specified container.
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public FunctionDependencyOfFSMActor(FSMActor fsmActor, String name)
+    public FunctionDependencyOfFSMActor(FSMActor fsmActor)
             throws IllegalActionException, NameDuplicationException {
-        super(fsmActor, name);
+        super(fsmActor);
     }
 }

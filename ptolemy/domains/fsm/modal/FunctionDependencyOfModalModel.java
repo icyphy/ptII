@@ -48,8 +48,6 @@ import ptolemy.util.MessageHandler;
  FIXME: two design choices can be chosen here. 1. dynamic configuration.
  2. conservation approximation.
 
- FIXME: FSMAtomicActor needs a better design.
-
  @see ptolemy.actor.util.FunctionDependencyOfCompositeActor
  @author Haiyang Zheng
  @version $Id$
@@ -60,17 +58,17 @@ import ptolemy.util.MessageHandler;
 public class FunctionDependencyOfModalModel extends
         FunctionDependencyOfCompositeActor {
     /** Construct a FunctionDependency in the given actor.
+     *  The name of this attribute is always "_functionDependency".
      *  @param compositeActor The associated actor.
-     *  @param name The name of the FunctionDependency.
      *  @exception NameDuplicationException If the container already contains
      *  an entity with the specified name.
      *  @exception IllegalActionException If the name has a period in it, or
      *  the attribute is not compatible with the specified container.
      */
-    public FunctionDependencyOfModalModel(CompositeActor compositeActor,
-            String name) throws IllegalActionException,
+    public FunctionDependencyOfModalModel(CompositeActor compositeActor)
+            throws IllegalActionException,
             NameDuplicationException {
-        super(compositeActor, name);
+        super(compositeActor);
     }
 
     ///////////////////////////////////////////////////////////////////

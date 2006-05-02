@@ -32,6 +32,7 @@ import java.util.Iterator;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.util.FunctionDependency;
+import ptolemy.actor.util.FunctionDependencyOfAtomicActor;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -311,24 +312,21 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
      *  Otherwise, they are independent.
      */
     public FunctionDependency getFunctionDependency() {
-        FunctionDependency functionDependency = (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
-
-        if (functionDependency == null) {
+        if (_functionDependency == null) {
             try {
-                functionDependency = new FunctionDependencyOfModalModel(this,
-                        FunctionDependency.UniqueName);
+                _functionDependency = new FunctionDependencyOfModalModel(this);
             } catch (NameDuplicationException e) {
                 // This should not happen.
-                throw new InternalErrorException("Failed to construct a"
-                        + "function dependency object for " + getName());
+                throw new InternalErrorException("Failed to construct a "
+                        + "function dependency object for " + getFullName());
             } catch (IllegalActionException e) {
                 // This should not happen.
-                throw new InternalErrorException("Failed to construct a"
-                        + "function dependency object for " + getName());
+                throw new InternalErrorException("Failed to construct a "
+                        + "function dependency object for " + getFullName());
             }
         }
 
-        return functionDependency;
+        return _functionDependency;
     }
 
     /** Get the FSM controller.
@@ -488,4 +486,10 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                 + "<circle cx=\"15\" cy=\"0\""
                 + " r=\"5\" style=\"fill:white\"/>\n" + "</svg>\n");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The function dependency, if it is present. */
+    private FunctionDependency _functionDependency;
 }

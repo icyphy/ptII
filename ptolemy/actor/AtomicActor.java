@@ -34,6 +34,7 @@ import java.util.List;
 
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.actor.util.FunctionDependencyOfAtomicActor;
+import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -189,26 +190,21 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @see ptolemy.actor.util.FunctionDependency
      */
     public FunctionDependency getFunctionDependency() {
-        // If the functionDependency object is not constructed,
-        // construct a FunctionDependencyOfAtomicActor object.
-        FunctionDependency functionDependency = (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
-
-        if (functionDependency == null) {
+        if (_functionDependency == null) {
             try {
-                functionDependency = new FunctionDependencyOfAtomicActor(this,
-                        FunctionDependency.UniqueName);
+                _functionDependency = new FunctionDependencyOfAtomicActor(this);
             } catch (NameDuplicationException e) {
                 // This should not happen.
-                throw new InternalErrorException("Failed to construct a"
-                        + "function dependency object for " + getName());
+                throw new InternalErrorException("Failed to construct a "
+                        + "function dependency object for " + getFullName());
             } catch (IllegalActionException e) {
                 // This should not happen.
-                throw new InternalErrorException("Failed to construct a"
-                        + "function dependency object for " + getName());
+                throw new InternalErrorException("Failed to construct a "
+                        + "function dependency object for " + getFullName());
             }
         }
 
-        return functionDependency;
+        return _functionDependency;
     }
 
     /** Return the Manager responsible for execution of this actor,
@@ -660,4 +656,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     private transient long _outputPortsVersion = -1;
 
     private transient List _cachedOutputPorts;
+    
+    /** The function dependency, if it is present. */
+    private FunctionDependency _functionDependency;
 }

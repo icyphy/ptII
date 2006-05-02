@@ -49,13 +49,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependenceOfCompositeActor
 
-/** An instance of FunctionDependencyOfCompositeActor describes the function
- dependency between the outputs and inputs of a composite actor. In
- particular, which outputs depend on which inputs. An output is depend on
- an input if the token sent through an output port depends on the token
- received from the input port in the same iteration.
-
- <p> This class provides both an abstracted view, which gives the function
+/**
+ An instance of this class describes the dependency that data at an output port
+ has on data at an input port in a firing of the container (an opaque composite actor).
+ In particular, an output port does not depend on an input port if the fire() method
+ of the container produces outputs on the output port or asserts that no outputs
+ will be produced on the output port in this iteration
+ without knowing anything about the input port (what data are there,
+ or even whether there are data). An actor that has one or more output ports that does
+ not depend on one or more input ports is said to be non-strict.
+ <p>
+ This class provides both an abstracted view, which gives the function
  dependency the output ports of a composite actor have on input ports, and
  a detailed view from which the abstract view is constructed.
  The detailed view is a graph where the nodes correspond
@@ -68,7 +72,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  for composition.
  <p>
  The detailed view may reveal dependency loops, which in many domains
- means that the model cannot be executed.
+ means that the model cannot be scheduled.
  To check whether there are such loops, use the getCycleNodes() method.
  The method returns an array of IOPorts in such loops, or an empty
  array if there are no such loops.
@@ -82,18 +86,18 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     /** Construct a FunctionDependency for the given actor.
+     *  The name of this attribute is always "_functionDependency".
      *  @param compositeActor The composite actor with which this function
      *  dependency is associated.
-     *  @param name The name for this attribute.
      *  @exception IllegalActionException If the name has a period in it, or
      *   the attribute is not compatible with the specified container.
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public FunctionDependencyOfCompositeActor(CompositeActor compositeActor,
-            String name) throws IllegalActionException,
+    public FunctionDependencyOfCompositeActor(CompositeActor compositeActor)
+            throws IllegalActionException,
             NameDuplicationException {
-        super(compositeActor, name);
+        super(compositeActor);
     }
 
     ///////////////////////////////////////////////////////////////////

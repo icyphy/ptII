@@ -39,25 +39,27 @@ import ptolemy.actor.IOPort;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Node;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependency
 
-/** A FunctionDependency is an abstract class that describes the
- function dependency that output ports of an associated actor
- have on its input ports.  The associated actor is specified by
- the constructor argument and cannot be changed once this object
- is constructed.
- <p>
- An output port has a function dependency on an input port if
- in its fire method, it sends tokens on the output port that
- depend on tokens gotten from the input port.
+/**
+ This is an abstract base class that
+ describes the dependency that data at an output port
+ has on data at an input port in a firing of the container, which is an entity.
+ In particular, an output port does not depend on an input port if the fire() method
+ of the container produces outputs on the output port or asserts that no outputs
+ will be produced on the output port in this iteration
+ without knowing anything about the input port (what data are there,
+ or even whether there are data). 
+ The container is specified by the constructor argument and cannot be changed 
+ once this object is constructed.
  <p>
  This class uses a graph to describe the function dependency,
  where the nodes of the graph correspond to the ports and an edge
@@ -82,32 +84,21 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (eal)
  */
-public abstract class FunctionDependency extends Attribute {
+public abstract class FunctionDependency extends SingletonAttribute {
     /** Construct a FunctionDependency object for the given actor.
+     *  The name of this attribute is always "_functionDependency".
      *  @param container The container.
-     *  @param name The name of this attribute.
      *  @exception IllegalActionException If the name has a period in it, or
      *   the attribute is not compatible with the specified container.
-     *  @exception NameDuplicationException If the container already contains
-     *   an entity with the specified name.
+     *  @exception NameDuplicationException If the container already has an
+     *   attribute with this name, and the class of that container is not
+     *   SingletonAttribute.
      */
-    public FunctionDependency(Entity container, String name)
+    public FunctionDependency(Entity container)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-
-        // NOTE:
-        // Only actors have function dependencies.
-        // Other entities, such as a State, do not.
+        super(container, "_functionDependency");
         setPersistent(false);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public fields                     ////
-
-    /** A final and static string variable for this attribute. It should
-     *  not be modified.
-     */
-    public final static String UniqueName = "FUNCTIONDEPENDENCY";
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

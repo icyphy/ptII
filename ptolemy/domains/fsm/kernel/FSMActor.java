@@ -345,35 +345,21 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @return A FunctionDependency object of an FSM actor.
      */
     public FunctionDependency getFunctionDependency() {
-        FunctionDependency functionDependency = (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
-
-        if (functionDependency == null) {
+        if (_functionDependency == null) {
             try {
-                TypedActor[] refinements = _currentState.getRefinement();
-
-                if ((refinements == null) || (refinements.length < 1)) {
-                    functionDependency = new FunctionDependencyOfFSMActor(this,
-                            FunctionDependency.UniqueName);
-                } else {
-                    //Throw an exception that in order to use refinements,
-                    //a modal model has to be used.
-                    MessageHandler.error("FSMActor does not "
-                            + "contain refinements, use ModalModel instead.");
-                }
-            } catch (IllegalActionException e) {
-                // FIXME: how to deal the IllegalActionException possibly
-                // thrown by the getRefinement method?
-                // Similar things happen in the _getEntities method
-                // in FunctionDependencyOfModalModel
-                MessageHandler.error("Invalid refinements.", e);
+                _functionDependency = new FunctionDependencyOfFSMActor(this);
             } catch (NameDuplicationException e) {
                 // This should not happen.
-                throw new InternalErrorException("Failed to construct a"
-                        + "function dependency object for " + getName());
+                throw new InternalErrorException("Failed to construct a "
+                        + "function dependency object for " + getFullName());
+            } catch (IllegalActionException e) {
+                // This should not happen.
+                throw new InternalErrorException("Failed to construct a "
+                        + "function dependency object for " + getFullName());
             }
         }
 
-        return functionDependency;
+        return _functionDependency;
     }
 
     /** Return the Manager responsible for execution of this actor,
@@ -1613,6 +1599,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     // The set of names of final states.
     private HashSet _finalStateNames;
+
+    /** The function dependency, if it is present. */
+    private FunctionDependency _functionDependency;
 
     // A flag indicating whether this is at the beginning
     // of one iteration (firing). Normally it is set to true.

@@ -402,24 +402,21 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @see ptolemy.actor.util.FunctionDependency
      */
     public FunctionDependency getFunctionDependency() {
-        FunctionDependency functionDependency = (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
-
-        if (functionDependency == null) {
+        if (_functionDependency == null) {
             try {
-                functionDependency = new FunctionDependencyOfCompositeActor(
-                        this, FunctionDependency.UniqueName);
+                _functionDependency = new FunctionDependencyOfCompositeActor(this);
             } catch (NameDuplicationException e) {
                 // This should not happen.
-                throw new InternalErrorException("Failed to construct a"
-                        + "function dependency object for " + getName());
+                throw new InternalErrorException("Failed to construct a "
+                        + "function dependency object for " + getFullName());
             } catch (IllegalActionException e) {
                 // This should not happen.
-                throw new InternalErrorException("Failed to construct a"
-                        + "function dependency object for " + getName());
+                throw new InternalErrorException("Failed to construct a "
+                        + "function dependency object for " + getFullName());
             }
         }
 
-        return functionDependency;
+        return _functionDependency;
     }
 
     /** Get the manager responsible for execution of this composite actor.
@@ -1314,4 +1311,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     private transient long _outputPortsVersion = -1;
 
     private transient List _cachedOutputPorts;
+    
+    /** The function dependency, if it is present. */
+    private FunctionDependency _functionDependency;
 }

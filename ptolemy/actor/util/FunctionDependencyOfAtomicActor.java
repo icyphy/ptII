@@ -39,23 +39,26 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// FunctionDependencyOfAtomicActor
 
 /**
- An instance of FunctionDependencyOfAtomicActor describes the function
- dependency between the inputs and outputs of an atomic actor.
+ An instance of this class describes the dependency that data at an output port
+ has on data at an input port in a firing of the container (an atomic actor).
+ In particular, an output port does not depend on an input port if the fire() method
+ of the container produces outputs on the output port or asserts that no outputs
+ will be produced on the output port in this iteration
+ without knowing anything about the input port (what data are there,
+ or even whether there are data). An actor that has one or more output ports that does
+ not depend on one or more input ports is said to be non-strict.
+ <p>
  By default, each output port of an atomic actor depends on all input
- ports of the actor, meaning that the token sent through an output
- depends on all the tokens received from the input ports.
- For some atomic actors, such as the TimedDelay actor, an output in
- a firing does not depend on an input port.
- (See {@link FunctionDependency} for the definition of dependency.)
- Such actors should override the pruneDependencies() method of
+ ports of the actor. To change this, an actor should
+ override the pruneDependencies() method of
  AtomicActor to remove dependencies between these ports.
  For example, {@link ptolemy.domains.de.lib.TimedDelay}
- declares that its <i>output</i> port is independent of its <i>input</i>
+ declares that its <i>output</i> port is not dependent of its <i>input</i>
  port by defining this method:
  <pre>
  public void pruneDependencies() {
- super.pruneDependencies();
- removeDependency(input, output);
+    super.pruneDependencies();
+    removeDependency(input, output);
  }
  </pre>
 
@@ -71,16 +74,16 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class FunctionDependencyOfAtomicActor extends FunctionDependency {
     /** Construct a FunctionDependencyOfAtomicActor in the given actor.
+     *  The name of this attribute is always "_functionDependency".
      *  @param atomicActor The atomic actor.
-     *  @param name The name for this attribute.
      *  @exception IllegalActionException If the name has a period in it, or
      *   the attribute is not compatible with the specified container.
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public FunctionDependencyOfAtomicActor(AtomicActor atomicActor, String name)
+    public FunctionDependencyOfAtomicActor(AtomicActor atomicActor)
             throws IllegalActionException, NameDuplicationException {
-        super(atomicActor, name);
+        super(atomicActor);
     }
 
     ///////////////////////////////////////////////////////////////////
