@@ -36,6 +36,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.PopupMouseFilter;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.toolbox.ConfigureAction;
@@ -59,6 +60,7 @@ import diva.canvas.toolbox.SVGUtilities;
 import diva.graph.BasicEdgeController;
 import diva.graph.EdgeRenderer;
 import diva.graph.GraphController;
+import diva.graph.GraphEvent;
 import diva.gui.toolbox.MenuCreator;
 
 //////////////////////////////////////////////////////////////////////////
@@ -286,18 +288,28 @@ public class LinkController extends BasicEdgeController {
         public void connectorDropped(ConnectorEvent evt) {
             Connector c = evt.getConnector();
             Figure f = evt.getTarget();
-            Object edge = c.getUserObject();
+            Link link = (Link)c.getUserObject();
             Object node = (f == null) ? null : f.getUserObject();
             ActorGraphModel model = (ActorGraphModel) getController()
                     .getGraphModel();
 
             switch (evt.getEnd()) {
             case ConnectorEvent.HEAD_END:
-                model.getLinkModel().setHead(edge, node);
+                if (node == link.getTail()) {
+                    MessageHandler.error("Cannot link both ends to the same object.");
+                    // FIXME: The panner needs to repaint.  How to get it to do that?
+                    return;
+                }
+                model.getLinkModel().setHead(link, node);
                 break;
 
             case ConnectorEvent.TAIL_END:
-                model.getLinkModel().setTail(edge, node);
+                if (node == link.getHead()) {
+                    MessageHandler.error("Cannot link both ends to the same object.");
+                    // FIXME: The panner needs to repaint.  How to get it to do that?
+                    return;
+                }
+                model.getLinkModel().setTail(link, node);
                 break;
 
             default:
@@ -308,8 +320,6 @@ public class LinkController extends BasicEdgeController {
             // Set the width correctly, so we know whether or not it
             // is connected.  Note that this happens *after* the model
             // is modified.
-            Link link = (Link) edge;
-
             if ((link.getHead() != null) && (link.getTail() != null)) {
                 ((ManhattanConnector) c).setLineWidth((float) 2.0);
             } else {
