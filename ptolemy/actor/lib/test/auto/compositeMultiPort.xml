@@ -13,7 +13,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates a problem where the width of the&#10;input multiport is not properly transmitted.&#10;&#10;The composite actor for the upper model has a relation&#10;that sets the width to two and works just fine.&#10;&#10;The composite actor for the lower model does not have&#10;a relation and thus the input multiport appears to&#10;have a width one and thus the test fails.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates two ways to set the width&#10;of an inner connection.&#10;&#10;The composite actor for the upper model has a relation&#10;that sets the width to two and works just fine.&#10;&#10;The composite actor for the lower model does not have&#10;a relation but the width of the inner connection has&#10;been set to 0, thus the width is properly inferred.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 20.0]">
         </property>
@@ -140,7 +140,7 @@
             </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </relation>
         <link port="port" relation="relation"/>
