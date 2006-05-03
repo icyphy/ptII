@@ -36,6 +36,7 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -85,13 +86,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
     /** Construct a blank viewer.
      */
     public HTMLViewer() {
-        getContentPane().setLayout(
-                new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        pane.setContentType("text/html");
-        pane.setEditable(false);
-        pane.addHyperlinkListener(this);
-        _scroller = new JScrollPane(pane);
-        _addMainPane();
+        _init();
     }
     
     /** Construct an empty top-level frame managed by the specified
@@ -102,13 +97,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
      */
     public HTMLViewer(Tableau tableau) {
         super(tableau);
-        getContentPane().setLayout(
-                new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        pane.setContentType("text/html");
-        pane.setEditable(false);
-        pane.addHyperlinkListener(this);
-        _scroller = new JScrollPane(pane);
-        _addMainPane();
+        _init();
     }
 
 
@@ -389,6 +378,33 @@ public class HTMLViewer extends TableauFrame implements Printable,
 
     /** The main scroll pane. */
     protected JScrollPane _scroller;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Initialize the HTMLViewer.
+     */
+    private void _init() {
+        getContentPane().setLayout(
+                new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        pane.setContentType("text/html");
+        pane.setEditable(false);
+        pane.addHyperlinkListener(this);
+        
+        // http://mindprod.com/jgloss/antialiasing.html says that in 
+        // java 1.5, this will turn on anti-aliased fonts
+        try {
+            // We use reflection so that this compiles everywhere.
+            Class swingUtilities = Class.forName("com.sun.java.swing.SwingUtilities2");
+            Field propertyField = swingUtilities.getDeclaredField("AA_TEXT_PROPERTY_KEY");
+            pane.putClientProperty(propertyField.get(null),                 Boolean.TRUE );
+        } catch (Exception ex) {
+            // Ignore, we just wont have anti-aliased fonts then.
+        }
+
+        _scroller = new JScrollPane(pane);
+        _addMainPane();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
