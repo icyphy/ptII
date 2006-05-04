@@ -1,6 +1,7 @@
 /***constantsBlock***/
 #define MISSING 0
 #define boolean unsigned char
+#define NaN nanf(0)
 #define false 0
 #define true 1
 /**/
