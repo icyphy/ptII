@@ -35,7 +35,6 @@ import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -93,7 +92,7 @@ public class Accumulator extends CCodeGeneratorHelper {
             args.set(0, new Integer(i));
             _codeStream.appendCodeBlock(type + "FireBlock", args);
         }
-        _codeStream.append(_generateBlockCode("sendBlock"));
+        _codeStream.appendCodeBlock("sendBlock");
 
         return processCode(_codeStream.toString());
     }

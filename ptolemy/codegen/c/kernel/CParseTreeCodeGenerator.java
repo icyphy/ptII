@@ -30,7 +30,6 @@ package ptolemy.codegen.c.kernel;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.ArrayToken;
@@ -238,7 +237,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      */
     public /*static*/ String escapeForTargetLanguage(String string) {
         string = StringUtilities.substitute(string, "\\", "\\\\");
-
         //string = StringUtilities.substitute(string, "\\{", "\\\\{");
         //string = StringUtilities.substitute(string, "\\}", "\\\\}");
         //string = StringUtilities.substitute(string, "\\(", "\\\\(");

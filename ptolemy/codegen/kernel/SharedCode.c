@@ -61,7 +61,7 @@ char* DoubletoString (double d) {
     return string;       
 }
 
-char* BooleantoString (char b) {
+char* BooleantoString (boolean b) {
 	return (b) ? strdup("true") : strdup("false");
 }
 

@@ -1,3 +1,3 @@
 /***fireBlock***/
-    $ref(output) = $val(value);
+    $ref(output) = $val(($cgType(output)) value);
 /**/

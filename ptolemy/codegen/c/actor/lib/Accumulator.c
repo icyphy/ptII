@@ -27,12 +27,12 @@ static boolean $actorSymbol(resetTemp);
 /**/
 
 /***StringFireBlock($channel)***/
-    $actorSymbol(sum) = (char*) realloc($actorSymbol(state), sizeof(char) * (strlen($actorSymbol(state)) + strlen($ref(($cgType(output)) input#$channel)) + 1) );
-	strcat($actorSymbol(state),  $ref(($cgType(output)) input#$channel));
+    $actorSymbol(sum) = (char*) realloc($actorSymbol(sum), sizeof(char) * (strlen($actorSymbol(sum)) + strlen($ref(($cgType(output)) input#$channel)) + 1) );
+	strcat($actorSymbol(sum),  $ref(($cgType(output)) input#$channel));
 /**/
 
 /***TokenFireBlock($channel)***/
-	$actorSymbol(sum) = $tokenFunc($ref(output)::add($ref(($cgType(output)) input#$channel)));
+	$actorSymbol(sum) = $tokenFunc($actorSymbol(sum)::add($ref(($cgType(output)) input#$channel)));
 /**/
 
 /***sendBlock***/
@@ -44,7 +44,7 @@ static boolean $actorSymbol(resetTemp);
 /**/
 
 /***readReset($channel)***/
-    $actorSymbol(resetTemp) = $actorSymbol(resetTemp) || $ref(reset#$channel);
+    $actorSymbol(resetTemp) |= $ref(reset#$channel);
 /**/
 
 /***ifReset***/
