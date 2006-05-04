@@ -95,7 +95,7 @@ public class ValueIcon extends XMLIcon {
         Nameable container = getContainer();
 
         if (container instanceof Settable) {
-            String name = container.getName();
+            String name = container.getDisplayName();
             String value = ((Settable) container).getExpression();
             LabelFigure label = new LabelFigure(name + ": " + value,
                     _labelFont, 1.0, SwingConstants.SOUTH_WEST);

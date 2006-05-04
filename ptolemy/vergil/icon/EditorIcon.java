@@ -301,7 +301,7 @@ public class EditorIcon extends Attribute {
         // NOTE: backward compatibility problem...
         // Old style annotations now have labels...
         if (!_isPropertySet(container, "_hideName")) {
-            String name = container.getName();
+            String name = container.getDisplayName();
 
             // Do not add a label figure if the name is null.
             if ((name != null) && !name.equals("")) {

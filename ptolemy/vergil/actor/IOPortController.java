@@ -382,6 +382,10 @@ public class IOPortController extends AttributeController {
                 // change. NOTE: This is copied below.
                 public String getToolTipText() {
                     String tipText = port.getName();
+                    String displayName = port.getDisplayName();
+                    if (!tipText.equals(displayName)) {
+                        tipText = displayName + " (" + tipText + ")";
+                    }
                     StringAttribute _explAttr = (StringAttribute) (port
                             .getAttribute("_explanation"));
 
@@ -401,7 +405,12 @@ public class IOPortController extends AttributeController {
             };
             // Have to do this also, or the AWT doesn't display any
             // tooltip at all.
-            figure.setToolTipText(port.getName());
+            String tipText = port.getName();
+            String displayName = port.getDisplayName();
+            if (!tipText.equals(displayName)) {
+                tipText = displayName + " (" + tipText + ")";
+            }
+            figure.setToolTipText(tipText);
 
             double normal = CanvasUtilities.getNormal(direction);
 
@@ -422,6 +431,10 @@ public class IOPortController extends AttributeController {
                             // change. NOTE: This is copied from above.
                             public String getToolTipText() {
                                 String tipText = port.getName();
+                                String displayName = port.getDisplayName();
+                                if (!tipText.equals(displayName)) {
+                                    tipText = displayName + " (" + tipText + ")";
+                                }
                                 StringAttribute _explAttr = (StringAttribute) (port
                                         .getAttribute("_explanation"));
 

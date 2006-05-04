@@ -244,7 +244,12 @@ public class LinkController extends BasicEdgeController {
             Relation relation = link.getRelation();
 
             if (relation != null) {
-                connector.setToolTipText(relation.getName());
+                String tipText = relation.getName();
+                String displayName = relation.getDisplayName();
+                if (!tipText.equals(displayName)) {
+                    tipText = displayName + " (" + tipText + ")";
+                }
+                connector.setToolTipText(tipText);
 
                 // FIXME: This isn't quite right for relation groups.
                 StringAttribute _colorAttr = (StringAttribute) (relation

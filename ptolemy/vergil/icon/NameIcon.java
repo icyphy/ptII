@@ -106,7 +106,7 @@ public class NameIcon extends EditorIcon {
         String name = "No Name";
         NamedObj container = getContainer();
         if (container != null) {
-            name = container.getName();
+            name = container.getDisplayName();
         }
 
         double width = 60;
@@ -137,7 +137,7 @@ public class NameIcon extends EditorIcon {
         String name = "No Name";
         NamedObj container = getContainer();
         if (container != null) {
-            name = container.getName();
+            name = container.getDisplayName();
         }
         LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
                 SwingConstants.CENTER);

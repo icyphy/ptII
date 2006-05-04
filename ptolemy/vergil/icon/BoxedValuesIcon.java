@@ -181,7 +181,7 @@ public class BoxedValuesIcon extends XMLIcon {
                     continue;
                 }
 
-                String name = settable.getName();
+                String name = settable.getDisplayName();
                 String value = settable.getExpression();
                 String line = name + ": " + value;
                 String truncated = line;

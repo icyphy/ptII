@@ -572,7 +572,7 @@ public abstract class ActorController extends AttributeController {
                     }
 
                     if (show) {
-                        toShow = port.getName();
+                        toShow = port.getDisplayName();
                     }
                 }
                 // In addition, if the port contains an attribute
