@@ -62,12 +62,7 @@ char* DoubletoString (double d) {
 }
 
 char* BooleantoString (char b) {
-    char* string = (char*) malloc(sizeof(char) * 6);
-    if (b) {
-        strcpy(string, "true");
-    } else {
-        strcpy(string, "false");
-    }
+	return (b) ? strdup("true") : strdup("false");
 }
 
 /**/
