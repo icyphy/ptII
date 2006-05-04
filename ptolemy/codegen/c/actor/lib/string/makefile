@@ -55,7 +55,6 @@ JSRCS = \
 	StringIndexOf.java \
 	StringLength.java \
 	StringMatches.java \
-	StringReplace.java \
 	StringSubstring.java
 
 OTHER_FILES_TO_BE_JARED = \
