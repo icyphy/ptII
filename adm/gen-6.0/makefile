@@ -813,6 +813,8 @@ nightly: ptclean ptbuild \
 	findchanges \
 	ChangeLog \
 	jnlp \
+	remote4nuke \
+	remote5nuke \
 	remote4 \
 	remote5
 
@@ -1831,7 +1833,7 @@ remote5: $(PTII_FULL) $(GENLOGDIR)
 #		 >& $(REMOTE5LOG)" &
 	if [ ! -d $(GENLOGDIR) ]; then mkdir $(GENLOGDIR); fi
 	-(cd $(GENDIR); cp $(REMOTE5LOG) $(REMOTE5LOG).old)
-	cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+	cd $(GENDIR); $(MAKE) -k EMAILTO=$(EMAILTO) \
 		remote5nuke remote5ptiidist remote5configure \
 		remote5build \
 		remote5shallowtest \
