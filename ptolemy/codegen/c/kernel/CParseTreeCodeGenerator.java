@@ -222,10 +222,13 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
     /** Given a string, escape special characters as necessary.
      *  For C, we do:   
      *  <pre>
+     *  \\ becomes \\\\
+     *  which means:
      *  \{ becomes \\{
      *  \} becomes \\}
      *  \( becomes \\(
      *  \) becomes \\)
+     *  and
      *  newline becomes \n
      *  </pre>
      *  @param string The string to escape.
@@ -234,10 +237,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      */
     public /*static*/ String escapeForTargetLanguage(String string) {
         string = StringUtilities.substitute(string, "\\", "\\\\");
-        string = StringUtilities.substitute(string, "\\{", "\\\\{");
-        string = StringUtilities.substitute(string, "\\}", "\\\\}");
-        string = StringUtilities.substitute(string, "\\(", "\\\\(");
-        string = StringUtilities.substitute(string, "\\)", "\\\\)");
         string = StringUtilities.substitute(string, "\n", "\\n");
         return string;
     }
