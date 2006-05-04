@@ -229,6 +229,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      *  \( becomes \\(
      *  \) becomes \\)
      *  and
+     *  \\" becomes \"
      *  newline becomes \n
      *  </pre>
      *  @param string The string to escape.
@@ -244,7 +245,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         //string = StringUtilities.substitute(string, "\\)", "\\\\)");
         //string = StringUtilities.substitute(string, "\\\"", "\\\\\"");
         string = StringUtilities.substitute(string, "\\\\\"", "\\\"");
-        //string = StringUtilities.substitute(string, "\n", "\\n");
+        string = StringUtilities.substitute(string, "\n", "\\n");
 
         return string;
     }
