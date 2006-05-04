@@ -187,7 +187,7 @@ public class DEReceiver extends AbstractReceiver {
                 if (actor != null) {
                     Director dir;
 
-                    if ((port.isOutput()) && (actor instanceof CompositeActor)
+                    if (!port.isInput() && (actor instanceof CompositeActor)
                             && ((CompositeActor) actor).isOpaque()) {
                         dir = actor.getDirector();
                     } else {
