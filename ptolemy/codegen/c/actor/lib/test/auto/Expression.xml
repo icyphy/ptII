@@ -22,6 +22,12 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{329.0, 263.5}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: In the Expression actor, we multiply the results&#10;by 10000.0, call floor() and then divide by 10000.0&#10;to handle rounding differences between Java and C.&#10;Without this hack, the difference between the two is&#10;the last digit.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 130.0]">
+        </property>
+    </property>
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="{1, 2.3}">
         </property>
@@ -53,17 +59,17 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;2.8977211670364&quot;, &quot;{1.0, 2.3}&quot;, &quot;{\&quot;1\&quot;, \&quot;2.3\&quot;, \&quot;c\&quot;}&quot;}, {&quot;1.1794393385773&quot;, &quot;{1.0, 2.3}&quot;, &quot;{\&quot;1\&quot;, \&quot;2.3\&quot;, \&quot;c\&quot;}&quot;}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;2.8977&quot;, &quot;{1.0, 2.3}&quot;, &quot;{\&quot;1\&quot;, \&quot;2.3\&quot;, \&quot;c\&quot;}&quot;}, {&quot;1.1794&quot;, &quot;{1.0, 2.3}&quot;, &quot;{\&quot;1\&quot;, \&quot;2.3\&quot;, \&quot;c\&quot;}&quot;}}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 355.0]">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(2*3.5)+sin(pi)-(e*(iteration + 1))-1+input+2.33428482395444">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="floor(((2*3.5)+sin(pi)-(e*(iteration + 1))-1+input+2.33428482395444)*10000.0)/10000.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
