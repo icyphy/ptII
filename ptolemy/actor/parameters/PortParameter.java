@@ -315,6 +315,32 @@ public class PortParameter extends Parameter {
         setUnknown(false);
     }
 
+    /** Set the display name, and propagate the name change to the
+     *  associated port.
+     *  Increment the version of the workspace.
+     *  This method is write-synchronized on the workspace.
+     *  @param name The new display name.
+     *  @exception IllegalActionException If the name contains a period.
+     *  @exception NameDuplicationException If the container already
+     *   contains an attribute with the proposed name.
+     */
+    public void setDisplayName(String name) {
+        if (_settingName) {
+            return;
+        }
+        super.setDisplayName(name);
+        if (_port != null) {
+            try {
+                _settingName = true;
+                _port._settingName = true;
+                _port.setDisplayName(name);
+            } finally {
+                _settingName = false;
+                _port._settingName = false;
+            }
+        }
+    }
+
     /** Set or change the name, and propagate the name change to the
      *  associated port.  If a null argument is given, then the
      *  name is set to an empty string.

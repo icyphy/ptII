@@ -306,6 +306,15 @@ public final class Workspace implements Nameable, Serializable {
         return null;
     }
 
+    /** Return a name to present to the user, which is the
+     *  same as what is returned by getName().
+     *  @return The name.
+     *  @see #getName()
+     */
+    public String getDisplayName() {
+        return getName();
+    }
+
     /** Get the full name.
      *  @return The name of the workspace.
      */

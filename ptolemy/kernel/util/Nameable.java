@@ -69,6 +69,11 @@ public interface Nameable {
      */
     public NamedObj getContainer();
 
+    /** Return a name to present to the user.
+     *  @return A name to present to the user.
+     */
+    public String getDisplayName();
+
     /** Return the full name, which reflects the container object, if there
      *  is one. For example the implementation in NamedObj concatenates the
      *  full name of the container objects with the name of the this object,

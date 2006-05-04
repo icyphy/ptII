@@ -151,8 +151,30 @@ public class ParameterPort extends TypedIOPort {
         return _parameter;
     }
 
+    /** Set the display name, and propagate the name change to the
+     *  associated parameter.
+     *  Increment the version of the workspace.
+     *  This method is write-synchronized on the workspace.
+     *  @param name The new display name.
+     *  @exception IllegalActionException If the name contains a period.
+     *  @exception NameDuplicationException If the container already
+     *   contains an attribute with the proposed name.
+     */
+    public void setDisplayName(String name) {
+        if (_settingName || (_parameter == null)) {
+            super.setDisplayName(name);
+        } else {
+            try {
+                _settingName = true;
+                _parameter.setDisplayName(name);
+            } finally {
+                _settingName = false;
+            }
+        }
+    }
+
     /** Set the name, and propagate the name change to the
-     *  associated port.  If a null argument is given, then the
+     *  associated parameter.  If a null argument is given, then the
      *  name is set to an empty string.
      *  Increment the version of the workspace.
      *  This method is write-synchronized on the workspace.

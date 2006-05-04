@@ -1048,6 +1048,19 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         }
     }
 
+    /** Return a name to present to the user. If setDisplayName(String)
+     *  has been called, then return the name specified there, and
+     *  otherwise return the name returned by getName().
+     *  @return A name to present to the user.
+     *  @see #setDisplayName(String)
+     */
+    public String getDisplayName() {
+        if (_displayName != null) {
+            return _displayName;
+        }
+        return getName();
+    }
+
     /** Get the MoML element name. This defaults to "entity"
      *  but can be set to something else by subclasses.
      *  @return The MoML element name for this object.
@@ -1713,6 +1726,14 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         // Setting override to null indicates that no override has
         // occurred.
         _override = null;
+    }
+
+    /** Set a name to present to the user.
+     *  @param name A name to present to the user.
+     *  @see #getDisplayName()
+     */
+    public void setDisplayName(String name) {
+        _displayName = name;
     }
 
     /** Set the model error handler.
@@ -2917,15 +2938,18 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     private transient boolean _deferChangeRequests = false;
 
+    // Variable indicating at what level above this object is derived.
+    // Integer.MAX_VALUE indicates that it is not derived.
+    private int _derivedLevel = Integer.MAX_VALUE;
+
+    /** The display name, if set. */
+    private String _displayName;
+
     // Cached value of the full name.
     private String _fullNameCache;
 
     // Version of the workspace when cache last updated.
     private long _fullNameVersion = -1;
-
-    // Variable indicating at what level above this object is derived.
-    // Integer.MAX_VALUE indicates that it is not derived.
-    private int _derivedLevel = Integer.MAX_VALUE;
 
     // The model error handler, if there is one.
     private ModelErrorHandler _modelErrorHandler = null;
