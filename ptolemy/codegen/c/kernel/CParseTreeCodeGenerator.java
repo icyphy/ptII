@@ -238,6 +238,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         string = StringUtilities.substitute(string, "\\(", "\\\\(");
         string = StringUtilities.substitute(string, "\\)", "\\\\)");
         string = StringUtilities.substitute(string, "\n", "\\n");
+        string = StringUtilities.substitute(string, "\\", "\\\\");
         return string;
     }
 
