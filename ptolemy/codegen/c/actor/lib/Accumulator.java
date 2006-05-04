@@ -30,8 +30,11 @@
 package ptolemy.codegen.c.actor.lib;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -63,46 +66,90 @@ public class Accumulator extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        super.generateFireCode();
 
         ptolemy.actor.lib.Accumulator actor = (ptolemy.actor.lib.Accumulator) getComponent();
+
+        ArrayList args = new ArrayList();
+        args.add(new Integer(0));
+        String type = codeGenType(actor.output.getType());
+        
         if (actor.reset.getWidth() > 0) {
-            code.append(_generateBlockCode("initReset"));
-            for (int i = 1; i < actor.input.getWidth(); i++) {
-                ArrayList args = new ArrayList();
-                args.add(new Integer(i));
-                code.append(_generateBlockCode("readReset", args));
+            _codeStream.appendCodeBlock("initReset");
+            for (int i = 1; i < actor.reset.getWidth(); i++) {
+                args.set(0, new Integer(i));
+                _codeStream.appendCodeBlock("readReset", args);
             }
-            code.append(_generateBlockCode("initSum"));
+            _codeStream.appendCodeBlock("ifReset");
+            
+            _codeStream.appendCodeBlock(
+                (type.equals("String")) ? "StringInitSum" : "InitSum");
         }
 
+        if (!isPrimitive(type)) {
+            type = "Token";
+        }
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            ArrayList args = new ArrayList();
-            args.add(new Integer(i));
-            code.append(_generateBlockCode("readInput", args));
+            args.set(0, new Integer(i));
+            _codeStream.appendCodeBlock(type + "FireBlock", args);
         }
+        _codeStream.append(_generateBlockCode("sendBlock"));
 
-        code.append(_generateBlockCode("sendBlock"));
-        return code.toString();
+        return processCode(_codeStream.toString());
+    }
+    
+    /** Generate the initialize code. 
+     *  The method reads in <code>initBlock</code> from Accumulator.c,
+     *  replaces macros with their values and returns the processed code
+     *  block.
+     *  @return The initialize code.
+     *  @exception IllegalActionException If the code stream encounters an
+     *   error in processing the specified code block(s).
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        super.generateInitializeCode();
+
+        ptolemy.actor.lib.Accumulator actor = 
+            (ptolemy.actor.lib.Accumulator) getComponent();
+
+        _codeStream.appendCodeBlock(
+                (actor.output.getType() == BaseType.STRING) ? 
+                        "StringInitSum" : "InitSum");
+
+        return processCode(_codeStream.toString());
     }
 
     /** Generate the preinitialize code. 
+     *  The method reads in <code>preinitBlock</code> from Accumulator.c,
+     *  replaces macros with their values and returns the processed code
+     *  block.
      *  @return The preinitialize code.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If the code stream encounters an
+     *   error in processing the specified code block(s).
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
+        super.generatePreinitializeCode();
 
         ptolemy.actor.lib.Accumulator actor = (ptolemy.actor.lib.Accumulator) getComponent();
-        Type type = actor.input.getType();
-        code.append("static " + type.toString() + " $actorSymbol(sum);\n");
 
         if (actor.reset.getWidth() > 0) {
-            code.append("static unsigned char $actorSymbol(resetTemp);\n");
+            _codeStream.appendCodeBlock("preinitReset");            
         }
 
-        return processCode(code.toString());
+        return processCode(_codeStream.toString());
+    }
+    
+    /**
+     * Get the files needed by the code generated for the
+     * Accumulator actor.
+     * @return A set of Strings that are names of the header files
+     *  needed by the code generated for the StringCompare actor.
+     * @exception IllegalActionException Not Thrown in this subclass.
+     */
+    public Set getHeaderFiles() throws IllegalActionException {
+        Set files = new HashSet();
+        files.addAll(super.getHeaderFiles());
+        files.add("<string.h>");
+        return files;
     }
 }

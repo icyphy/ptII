@@ -10,3 +10,6 @@
     $ref(output, $channel) = $ref(input#$channel);
 /**/
 
+/*** fireBlock($channel, $type) ***/
+    $ref(output, $channel) = $ref(($type) input#$channel);
+/**/

@@ -17,7 +17,7 @@
 	
 	$actorSymbol(length) = 0;
 	for ($actorSymbol(i) = 0; $actorSymbol(i) < $size(input); $actorSymbol(i)++) {
-		$actorSymbol(length) += $ref(input).payload.Array->size;
+		$actorSymbol(length) += $ref(input#$actorSymbol(i)).payload.Array->size;
 	}
 	
 	$ref(output) = $new(Array($actorSymbol(length), 0));

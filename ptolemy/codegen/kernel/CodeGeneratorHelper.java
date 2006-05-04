@@ -180,6 +180,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
         String result = ptType == BaseType.INT ? "Int"
+                : ptType == BaseType.LONG ? "Long"
                 : ptType == BaseType.STRING ? "String"
                         : ptType == BaseType.DOUBLE ? "Double"
                                 : ptType == BaseType.BOOLEAN ? "Boolean"
@@ -192,22 +193,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     "Cannot resolved codegen type from Ptolemy type: " + ptType);
         }
         return result;
-    }
-
-    /**
-     * Constraint the type of the given expression. Sub classes would override
-     * this method to constraint the type of the parameter expression.
-     * In this base, return the given expression.
-     * @param variable the given variable.
-     * @param expression The string expression of the given variable.
-     * @return The given expression.
-     * @exception IllegalActionException Not thrown in this base class.
-     * Derived classes would throw this exception if there is a problem
-     * constraining the type of the parameter expression.
-     */
-    public String constraintType(Variable variable, String expression)
-            throws IllegalActionException {
-        return expression;
     }
 
     /** Generate code for declaring read and write offset variables if needed.
@@ -703,11 +688,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String getParameterValue(String name, NamedObj container)
             throws IllegalActionException {
+        name = processCode(name);
+
         StringTokenizer tokenizer = new StringTokenizer(name, ",");
 
         String attributeName = tokenizer.nextToken().trim();
         String offset = null;
-
+        String castType = null;
+        
         if (tokenizer.hasMoreTokens()) {
             offset = tokenizer.nextToken().trim();
 
@@ -718,6 +706,20 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
         }
 
+        // Get the cast type (if any), so we can add the proper convert method.
+        StringTokenizer tokenizer2 = new StringTokenizer(attributeName, "()", false);
+        if (tokenizer2.countTokens() != 1 && tokenizer2.countTokens() != 2) {
+            throw new IllegalActionException(_component, 
+                    "Invalid cast type: " + attributeName);
+        }
+
+        if (tokenizer2.countTokens() == 2) {  
+            castType = tokenizer2.nextToken().trim();
+            attributeName = tokenizer2.nextToken().trim();
+        }
+
+
+        
         Attribute attribute = ModelScope.getScopedVariable(null, container,
                 attributeName);
 
@@ -742,7 +744,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
                 if (variable.isStringMode()) {
-                    return "\"" + parseTreeCodeGenerator.escapeForTargetLanguage(variable.getExpression()) + "\"";
+                    return _generateTypeConvertMethod(
+                            "\"" + parseTreeCodeGenerator.escapeForTargetLanguage(variable.getExpression()) + "\"",
+                            castType, "String");
                 }
 
                 PtParser parser = new PtParser();
@@ -750,8 +754,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 parseTreeCodeGenerator.evaluateParseTree(parseTree,
                         new HelperScope(variable));
                 
-                return constraintType(variable, processCode(
-                        parseTreeCodeGenerator.generateFireCode()));
+                return _generateTypeConvertMethod(
+                        processCode(parseTreeCodeGenerator.generateFireCode()),
+                        castType, codeGenType(variable.getType()));
 
             } else if (attribute instanceof Settable) {
                 return ((Settable) attribute).getExpression();
@@ -768,8 +773,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 Token token = ((Parameter) attribute).getToken();
 
                 if (token instanceof ArrayToken) {
-                    return (((ArrayToken) token).getElement(new Integer(offset)
-                            .intValue())).toString();
+                    Token element = ((ArrayToken) token).getElement(
+                            new Integer(offset).intValue());
+                    
+                    return _generateTypeConvertMethod(element.toString(),
+                            castType, codeGenType(element.getType()));
                 }
 
                 throw new IllegalActionException(_component, attributeName
@@ -835,6 +843,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public String getReference(String name) throws IllegalActionException {
         name = processCode(name);
 
+        String castType = null;
+        String refType = null;
+        
         StringBuffer result = new StringBuffer();
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
 
@@ -846,6 +857,18 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         // Get the referenced name.
         String refName = tokenizer.nextToken().trim();
+
+        // Get the cast type (if any), so we can add the proper convert method.        
+        StringTokenizer tokenizer2 = new StringTokenizer(refName, "()", false);
+        if (tokenizer2.countTokens() != 1 && tokenizer2.countTokens() != 2) {
+            throw new IllegalActionException(_component, 
+                    "Invalid cast type: " + refName);
+        }
+
+        if (tokenizer2.countTokens() == 2) {  
+            castType = tokenizer2.nextToken().trim();
+            refName = tokenizer2.nextToken().trim();
+        }
 
         boolean forComposite = false;
 
@@ -866,12 +889,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             refName = refName.substring(1);
         }
 
-        IOPort port = getPort(refName);
+        TypedIOPort port = getPort(refName);
         
         String[] channelAndOffset = _getChannelAndOffset(name);
 
         if (port != null) {
-
+            refType = codeGenType(port.getType()); 
+            
             int channelNumber = 0;
             if (!channelAndOffset[0].equals("")) {
                 channelNumber = (new Integer(channelAndOffset[0])).intValue();
@@ -899,7 +923,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     result.append(generateName(_component));
                     result.append("_");
                     result.append(port.getName());
-                    return result.toString();
+                    return _generateTypeConvertMethod(
+                            result.toString(), castType, refType);
                 }
 
                 Channel sourceChannel = new Channel(port, channelNumber);
@@ -1002,7 +1027,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     }
                 }
 
-                return result.toString(); //
+                return _generateTypeConvertMethod(
+                        result.toString(), castType, refType);
             }
 
             // Note that if the width is 0, then we have no connection to
@@ -1067,7 +1093,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     result.append("[" + temp + "]");
                 }
 
-                return result.toString();
+                return _generateTypeConvertMethod(
+                        result.toString(), castType, refType);
             }
         }
 
@@ -1079,6 +1106,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             //it will be referenced but not declared.
             if (attribute instanceof Parameter) {
                 _referencedParameters.add(attribute);
+                refType = codeGenType(((Parameter) attribute).getType());
             }
 
             result.append(generateVariableName(attribute));
@@ -1101,7 +1129,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
             }
 
-            return result.toString();
+            return _generateTypeConvertMethod(
+                    result.toString(), castType, refType);
         }
 
         throw new IllegalActionException(_component, "Reference not found: "
@@ -1400,13 +1429,27 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 if (macro.equals("ref")) {
                     result.append(getReference(name));
-                } else if (macro.equals("type")) {
+                } else if (macro.equals("targetType")) {
                     TypedIOPort port = getPort(name);
                     if (port == null) { 
                         throw new IllegalActionException(name + 
                         " is not a port. $type macro takes in a port.");
                     }
-                    result.append("TYPE_" + codeGenType(port.getType()));
+                    result.append(cType(port.getType()));
+                    
+                } else if (macro.equals("type") || macro.equals("cgType")) {
+
+                    TypedIOPort port = getPort(name);
+                    
+                    if (port == null) { 
+                        throw new IllegalActionException(name + 
+                        " is not a port. $type macro takes in a port.");
+                    }
+                    if (macro.equals("type")) {
+                        result.append("TYPE_");
+                    }
+                    result.append(codeGenType(port.getType()));
+                    
                 } else if (macro.equals("val")) {
                     result.append(getParameterValue(name, _component));
                 } else if (macro.equals("size")) {
@@ -1692,6 +1735,37 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return processCode(statements);
     }
 
+    /**
+     * Generate expression that evaluates to a result of equivalent
+     * value with the cast type.
+     * @param ref The given variable expression.
+     * @param castType The given cast type.
+     * @param refType The given type of the variable.
+     * @return The variable expression that evaluates to a result of
+     *  equivalent value with the cast type.
+     * @throws IllegalActionException 
+     */
+    private String _generateTypeConvertMethod (String ref, String castType,
+            String refType) throws IllegalActionException {
+        
+        if (castType == null || refType == null || castType.equals(refType)) {
+            return ref;
+        }
+
+        if (isPrimitive(castType)) {
+            ref = refType + "to" + castType + "(" + ref + ")";             
+        } else if (isPrimitive(refType)) {
+            ref = "$new(" + refType +
+            "(" + ref + "))";
+        }
+        
+        if (!castType.equals("Token")  && !isPrimitive(castType)) {
+            ref = "$typeFunc(TYPE_" + castType + "::convert(" + ref + "))";
+        }
+        
+        return processCode(ref);
+    }
+    
     /**
      * Generate the type conversion statement for the particular offset of
      * the two given channels. This assumes that the offset is the same for

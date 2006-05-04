@@ -970,7 +970,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      * A static list of all macros supported by the code generator. 
      */
     protected static final List _macros = Arrays.asList(new String[] { 
-            "ref", "val", "size", "type", "tokenFunc", "typeFunc",
+            "ref", "val", "size", "type", "targetType", "cgType", "tokenFunc", "typeFunc",
             "actorSymbol", "actorClass", "new" });
 
     /** 

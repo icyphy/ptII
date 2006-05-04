@@ -1,67 +1,56 @@
-/***preinitBlock ($declaredType)***/
-static $declaredType $actorSymbol(sum);
+/***preinitBlock ***/
+static $targetType(output) $actorSymbol(sum);
 /**/
 
-/***CommonInitBlock***/
-    $actorSymbol(sum) = $val(init);
+/***preinitReset ***/
+static boolean $actorSymbol(resetTemp);
 /**/
 
-/***StringInitBlock***/
-    $actorSymbol(sum) = strdup($val(init));
+/***InitSum***/
+    $actorSymbol(sum) = $val(($cgType(output)) init);
 /**/
 
-/***IntFireBlock***/
+/***StringInitSum***/
+    $actorSymbol(sum) = strdup($val(($cgType(output)) init));
+/**/
+
+/***IntFireBlock($channel) ***/
+    $actorSymbol(sum) += $ref(($cgType(output)) input#$channel);
+/**/
+
+/***DoubleFireBlock($channel) ***/
+    $actorSymbol(sum) += $ref(($cgType(output)) input#$channel);
+/**/
+
+/***BooleanFireBlock($channel) ***/
+    $actorSymbol(sum) |= $ref(($cgType(output)) input#$channel);
+/**/
+
+/***StringFireBlock($channel)***/
+    $actorSymbol(sum) = (char*) realloc($actorSymbol(state), sizeof(char) * (strlen($actorSymbol(state)) + strlen($ref(($cgType(output)) input#$channel)) + 1) );
+	strcat($actorSymbol(state),  $ref(($cgType(output)) input#$channel));
+/**/
+
+/***TokenFireBlock($channel)***/
+	$actorSymbol(sum) = $tokenFunc($ref(output)::add($ref(($cgType(output)) input#$channel)));
+/**/
+
+/***sendBlock***/
     $ref(output) = $actorSymbol(sum);
-    $actorSymbol(state) += $val(step);
 /**/
-
-/***DoubleFireBlock***/
-    $ref(output) = $actorSymbol(sum);
-    $actorSymbol(state) += $val(step);
-/**/
-
-/***BooleanFireBlock***/
-    $ref(output) = $actorSymbol(state);
-    $actorSymbol(state) |= $val(step);
-/**/
-
-/***StringFireBlock***/
-    $ref(output) = (char*) realloc($ref(output), sizeof(char) * (strlen($actorSymbol(state)) + 1) );
-	strcpy($ref(output), $actorSymbol(state));
-    $actorSymbol(state) = (char*) realloc($actorSymbol(state), sizeof(char) * (strlen($actorSymbol(state)) + strlen($val(step)) + 1) );
-	strcat($actorSymbol(state),  $val(step));
-/**/
-
-/***TokenFireBlock***/
-    $ref(output) = $actorSymbol(state);
-	$actorSymbol(state) = $tokenFunc($ref(output)::add($val(step)));
-/**/
-
-
-
-
-
-
-
 
 /***initReset***/
     $actorSymbol(resetTemp) = $ref(reset#0);
 /**/
 
-/***readReset($arg)***/
-    $actorSymbol(resetTemp) = $actorSymbol(resetTemp) || $ref(reset#$arg);
+/***readReset($channel)***/
+    $actorSymbol(resetTemp) = $actorSymbol(resetTemp) || $ref(reset#$channel);
 /**/
 
-/***initSum***/
-    if ($actorSymbol(resetTemp)) {
-        $actorSymbol(sum) = $val(init);
-    } 	
+/***ifReset***/
+    if ($actorSymbol(resetTemp))
 /**/
 
-/***readInput($arg)***/
-    $actorSymbol(sum) += $ref(input#$arg);
-/**/
-
-/***sendBlock***/
-    $ref(output) = $actorSymbol(sum);
+/***StringWrapupBlock***/
+    free($actorSymbol(sum));
 /**/

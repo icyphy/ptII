@@ -1,0 +1,118 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Rician" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 55.0}">
+        </property>
+    </property>
+    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 60.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 35, 815, 695}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 577]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 288.5}">
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{1.675834546888, 2.0359662568037, 343153.3309511665, 432490.4962755561, 0.6113328039304}, {1.2573100948051, 2.1006601881647, 341651.6226335345, 432488.2982216049, 0.6113328039304}, {2.0001471099619, 2.9127482130089, 344547.9929123885, 432489.03296745976, 0.6113328039304}, {1.8830969063003, 2.5754622313288, 341663.4245755825, 432490.83765903884, 0.6113328039304}, {0.4995763920485, 2.7247681748757, 342324.91807682, 432489.20730675414, 0.6113328039304}, {1.0544231190106, 2.4255975094021, 342633.604758913, 432491.26526944496, 0.6113328039304}, {1.0463750974044, 2.6805885824206, 343349.2619134267, 432491.78535242524, 0.6113328039304}, {1.1357610503693, 1.2474542887309, 342712.944373981, 432488.3118009337, 0.6113328039304}, {0.1898428011668, 1.864420608487, 345283.0805408269, 432489.5008054288, 0.6113328039304}, {0.7572884735223, 2.7531030383908, 342292.63825975335, 432491.47179083736, 0.6113328039304}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 315.0]">
+        </property>
+    </entity>
+    <entity name="Rician" class="ptolemy.actor.lib.Rician">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create an array of rician random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{185, 175}">
+        </property>
+    </entity>
+    <entity name="Rician2" class="ptolemy.actor.lib.Rician">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="34321421431">
+        </property>
+        <property name="xMean" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="yMean" class="ptolemy.data.expr.Parameter" value="0.343">
+        </property>
+        <doc>Create an array of rician random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 245.0]">
+        </property>
+    </entity>
+    <entity name="Rician3" class="ptolemy.actor.lib.Rician">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="4323">
+        </property>
+        <property name="yMean" class="ptolemy.data.expr.Parameter" value="-343214.0">
+        </property>
+        <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="1432.432412">
+        </property>
+        <doc>Create an array of rician random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="Rician4" class="ptolemy.actor.lib.Rician">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="3413413">
+        </property>
+        <property name="xMean" class="ptolemy.data.expr.Parameter" value="-432490.0">
+        </property>
+        <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="-1.0">
+        </property>
+        <doc>Create an array of rician random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 380.0]">
+        </property>
+    </entity>
+    <entity name="Rician5" class="ptolemy.actor.lib.Rician">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="xMean" class="ptolemy.data.expr.Parameter" value="0.432413">
+        </property>
+        <property name="yMean" class="ptolemy.data.expr.Parameter" value="0.4321421">
+        </property>
+        <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <doc>Create an array of rician random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 455.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Test.input" relation="relation"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Test.input" relation="relation5"/>
+    <link port="Rician.output" relation="relation"/>
+    <link port="Rician2.output" relation="relation2"/>
+    <link port="Rician3.output" relation="relation3"/>
+    <link port="Rician4.output" relation="relation4"/>
+    <link port="Rician5.output" relation="relation5"/>
+</entity>

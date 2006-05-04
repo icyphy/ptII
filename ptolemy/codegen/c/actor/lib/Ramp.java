@@ -32,7 +32,6 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -64,10 +63,13 @@ public class Ramp extends CCodeGeneratorHelper {
 
         ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
 
+        ArrayList args = new ArrayList();
+        args.add(codeGenType(actor.output.getType()));
+        
         if (actor.output.getType() == BaseType.STRING) {
             _codeStream.appendCodeBlock("StringInitBlock");            
         } else {
-            _codeStream.appendCodeBlock("CommonInitBlock");                        
+            _codeStream.appendCodeBlock("CommonInitBlock", args);                        
         }
         
         return processCode(_codeStream.toString());
@@ -107,34 +109,5 @@ public class Ramp extends CCodeGeneratorHelper {
 
         _codeStream.appendCodeBlock(type + "FireBlock");
         return processCode(_codeStream.toString());
-    }
-
-    /**
-     * Constrain the type of the "init" and "step" parameters to equal
-     * to the type of the output port.
-     * @param variable The given parameter.
-     * @param expression The string expression of the given variable.
-     * @return A string that is a method call that constrains the variable.
-     * @exception IllegalActionException If there is a problem 
-     * getting the type.
-     */
-    public String constraintType (Variable variable, String expression)
-            throws IllegalActionException {
-        ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
-
-        if ("init".equals(variable.getName()) || 
-            "step".equals(variable.getName())) {
-
-            Type outputType = actor.output.getType();
-            if (variable.getType() != outputType) {
-                if (isPrimitive(outputType)) {
-
-                    return codeGenType(variable.getType()) + "to" +
-                           codeGenType(outputType) +
-                           "(" + expression + ")";
-                }
-            }
-        }
-        return expression;
     }
 }

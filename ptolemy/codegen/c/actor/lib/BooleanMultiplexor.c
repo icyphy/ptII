@@ -1,7 +1,7 @@
-/*** fireBlock ***/
+/*** fireBlock ($type)***/
     if ($ref(select)) {
-        $ref(output) = $ref(trueInput);
+        $ref(output) = $ref(($type) trueInput);
     } else {
-        $ref(output) = $ref(falseInput);
+        $ref(output) = $ref(($type) falseInput);
     }
 /**/

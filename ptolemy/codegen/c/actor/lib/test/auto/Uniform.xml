@@ -1,0 +1,119 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Uniform" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 55.0}">
+        </property>
+    </property>
+    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 60.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 35, 815, 695}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 577]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 288.5}">
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0.7310573691489, 0.3173676926916, 10.5473292021231, 1.4630105262175}, {0.0709920347519, 0.8718074669325, 10.6700585611676, 0.4465400814944}, {0.0671200093905, 0.7846811267374, 10.5099526527689, 0.4312658293826}, {0.7681569840781, 0.808712700858, 10.6491705034601, 1.7135135789467}, {0.2273346610714, 0.51623532263, 10.058855351889, 0.7525630654783}, {0.6603196166875, 0.6508680688459, 10.782492501689, 0.5916513756816}, {0.8066735575571, 0.7361574688778, 10.6133403480364, 1.82819087308}, {0.0298176767165, 0.8549739507458, 10.2111099129521, 0.5093968080074}, {0.8111701180818, 0.8639676797508, 10.1237084488321, 0.942216297861}, {0.9454162249694, 0.5724218665994, 10.9063597359694, 1.9325028154049}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[428.3333282470703, 284.99998474121094]">
+        </property>
+    </entity>
+    <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="UniformIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <doc>Create a sequence of uniformly distributed random numbers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="Uniform2" class="ptolemy.actor.lib.Uniform">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="-321321">
+        </property>
+        <property name="lowerBound" class="ptolemy.data.expr.Parameter" value="0.312312321312313">
+        </property>
+        <property name="UniformIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <doc>Create a sequence of uniformly distributed random numbers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 275.0]">
+        </property>
+    </entity>
+    <entity name="Uniform3" class="ptolemy.actor.lib.Uniform">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="3213213213213">
+        </property>
+        <property name="lowerBound" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="upperBound" class="ptolemy.data.expr.Parameter" value="11.0">
+        </property>
+        <property name="UniformIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <doc>Create a sequence of uniformly distributed random numbers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 355.0]">
+        </property>
+    </entity>
+    <entity name="Uniform4" class="ptolemy.actor.lib.Uniform">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="30">
+        </property>
+        <property name="upperBound" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="UniformIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <doc>Create a sequence of uniformly distributed random numbers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 440.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Test.input" relation="relation"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Uniform.output" relation="relation"/>
+    <link port="Uniform2.output" relation="relation2"/>
+    <link port="Uniform3.output" relation="relation3"/>
+    <link port="Uniform4.output" relation="relation4"/>
+</entity>

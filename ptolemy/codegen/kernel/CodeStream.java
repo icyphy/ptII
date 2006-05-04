@@ -30,18 +30,12 @@ package ptolemy.codegen.kernel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
 
-import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
@@ -79,10 +73,11 @@ import ptolemy.util.FileUtilities;
  *     }
  * </pre>
  * Parameter substitution takes place before macro substitution processed
- * by the codegen kernel. CodeStream do not support method overriding, so
- * each code block name within the same .c helper file have to be unique.
+ * by the codegen kernel. CodeStream supports overriding superclass code
+ * blocks. It also supports overloading code blocks with different number
+ * of parameters.
  *
- * @author Man-Kit
+ * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Yellow (mankit)
@@ -405,8 +400,11 @@ public class CodeStream {
     }
 
     /**
-     * Read the given helper .c file and construct the code block table and
-     * parameter table.
+     * Read the code blocks associated with this helper and construct the code
+     * block and parameter table. If there is a pre-specified file path to
+     * read from, it only reads code block from the specified file only.
+     * Otherwise, it recursively searches code blocks from super classes'
+     * helpers.
      * @param mayNotExist Indicate if the file is required to exist.
      * @param filePath The given .c file to read from.
      * @exception IllegalActionException If an error occurs when parsing the
@@ -433,6 +431,11 @@ public class CodeStream {
         }
     }
 
+    /**
+     * 
+     * @param mayNotExist Indicate if the file is required to exist.
+     * @throws IllegalActionException
+     */
     private void _constructCodeTableHelper(boolean mayNotExist)
         throws IllegalActionException {
         BufferedReader reader = null;    

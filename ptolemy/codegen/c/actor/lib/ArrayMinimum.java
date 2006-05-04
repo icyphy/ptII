@@ -26,10 +26,10 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.ArrayType;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -50,37 +50,6 @@ public class ArrayMinimum extends CCodeGeneratorHelper {
     public ArrayMinimum(ptolemy.actor.lib.ArrayMinimum actor) {
         super(actor);
     }
-
-    /**
-     * Generate fire code.
-     * Read the <code>fireBlock</code> from ArrayMinimum.c,
-     * replace macros with their values and append the processed code              
-     * block to the given code buffer.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String  generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
-   }
-
-    /**
-     * Generate initialize code.
-     * Read the  from ArrayMinimum.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
-
-        return code.toString();
-    }
    
     /**
      * Generate preinitialize code.
@@ -91,55 +60,15 @@ public class ArrayMinimum extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-        code.append(_generateBlockCode("preinitBlock"));
-        return code.toString();
-    }
-
-    /**
-     * Generate shared code.
-     * Read the  from ArrayMinimum.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public Set getSharedCode() throws IllegalActionException {
-        Set sharedCode = new HashSet();
-        sharedCode.addAll(super.getHeaderFiles());
-
-        return sharedCode;
-    }
-
-    /**
-     * Generate wrap up code.
-     * Read the  from ArrayMinimum.c, 
-     * replace macros with their values and append the processed code block
-     * to the given code buffer.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateWrapupCode());
+        super.generatePreinitializeCode();
+        ptolemy.actor.lib.ArrayMinimum actor =
+            (ptolemy.actor.lib.ArrayMinimum) getComponent();
         
-        return code.toString();
-    }
+        ArrayList args = new ArrayList();
+        args.add(cType(
+                ((ArrayType) actor.input.getType()).getElementType()));
 
-    /**
-     * Get the files needed by the code generated for the
-     * ArrayMinimum actor.
-     * @return A set of Strings that are names of the header files
-     *  needed by the code generated for the ArrayMinimum actor.
-     * @exception IllegalActionException Not Thrown in this subclass.
-     */
-    public Set getHeaderFiles() throws IllegalActionException {
-        Set files = new HashSet();
-        files.addAll(super.getHeaderFiles());
-        files.add("<stdio.h>");
-
-        return files;
+        _codeStream.appendCodeBlock("preinitBlock", args);
+        return processCode(_codeStream.toString());
     }
 }
