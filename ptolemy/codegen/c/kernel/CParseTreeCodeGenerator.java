@@ -233,12 +233,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      *  @see ptolemy.util.StringUtilities#escapeForXML(String)
      */
     public /*static*/ String escapeForTargetLanguage(String string) {
+        string = StringUtilities.substitute(string, "\\", "\\\\");
         string = StringUtilities.substitute(string, "\\{", "\\\\{");
         string = StringUtilities.substitute(string, "\\}", "\\\\}");
         string = StringUtilities.substitute(string, "\\(", "\\\\(");
         string = StringUtilities.substitute(string, "\\)", "\\\\)");
         string = StringUtilities.substitute(string, "\n", "\\n");
-        string = StringUtilities.substitute(string, "\\", "\\\\");
         return string;
     }
 
