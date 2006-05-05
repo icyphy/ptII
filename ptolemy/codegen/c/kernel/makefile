@@ -48,7 +48,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	CCodeGeneratorHelper.java \
-	CParseTreeEvaluator.java \
 	CParseTreeCodeGenerator.java
 
 
