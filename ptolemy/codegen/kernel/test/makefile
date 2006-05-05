@@ -52,6 +52,7 @@ JSRCS = \
 JSIMPLE_TESTS = \
 	CodeGenerator.tcl \
 	CodeGeneratorHelper.tcl \
+	CodeGeneratorUtilities.tcl \
 	CodeStream.tcl \
 	Director.tcl \
 	StaticSchedulingCodeGenerator.tcl
@@ -64,6 +65,7 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	substitute.in \
 	testCodeBlock.c \
 	testCodeBlockBadArg.c \
 	testCodeBlockNoArg.c
