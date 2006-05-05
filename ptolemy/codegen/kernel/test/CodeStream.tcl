@@ -41,6 +41,10 @@ if {[info procs sdfModel] == "" } then {
     source [file join $PTII util testsuite models.tcl]
 }
 
+if {[info procs jdkCapture] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
+}
+
 #####
 test CodeStream-1.1 {Constructor that takes a CodeGeneratorHelper} {
     set model [sdfModel]
@@ -117,3 +121,86 @@ test CodeStream-3.3 {appendCodeBlock: wrong number of args} {
 } {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: initBlock($, $).
 }}
 
+#####
+test CodeStream-3.4 {appendCodeBlock: arg name does not start with $} {
+    set codeStream3_4 [java::new ptolemy.codegen.kernel.CodeStream \
+		"file:./testCodeBlockBadArg.c"]
+
+    set args [java::new java.util.ArrayList]
+    $args add [java::call Integer toString 3]
+    catch {$codeStream3_4 appendCodeBlock "initBlock" $args false} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: initBlock($) in file:./testCodeBlockBadArg.c problems replacing "doesNotStartWithDollar" with "3"
+Because:
+Parameter "doesNotStartWithDollar" is not well-formed.
+Parameter name for code block needs to starts with '$'}}
+
+#####
+test CodeStream-3.5 {appendCodeBlock initBlock} {
+    set fileTestBlock [java::new java.io.File testCodeBlock.c]
+    set codeStream3_5 [java::new ptolemy.codegen.kernel.CodeStream \
+			[[$fileTestBlock toURL] toString]]
+
+    catch {$codeStream3_5 appendCodeBlock "initBlock"} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: initBlock -- is a code block that is appended by default.}}
+
+#####
+test CodeStream-4.0 {appendCodeBlock(nameExpression)} {
+    set codeStream4_0 [java::new ptolemy.codegen.kernel.CodeStream \
+		"file:./testCodeBlockNoArg.c"]
+
+    $codeStream4_0 appendCodeBlock "myBlock"
+    # Increase code coverage of if (_declarations) block	
+    $codeStream4_0 appendCodeBlock "myOtherBlock"
+    list [$codeStream4_0 toString] \
+	[$codeStream4_0 description]
+
+} {{
+    // myBlock
+
+    // myOtherBlock
+} {myBlock:
+
+    // myBlock
+
+-------------------------------
+
+myOtherBlock:
+
+    // myOtherBlock
+
+-------------------------------
+
+}}
+
+
+
+#####
+test CodeStream-10.0 {main} {
+    set args [java::new {String[]} 1 "file:./testCodeBlock.c"]
+    jdkCapture {
+	java::call ptolemy.codegen.kernel.CodeStream main $args
+    } results
+    list $results
+} {{
+----------Result-----------------------
+
+initBlock($arg):
+
+    if ($ref(input) != $arg) {
+        $ref(output) = $arg;
+    }
+
+-------------------------------
+
+
+
+----------Result-----------------------
+
+
+    if ($ref(input) != 3) {
+        $ref(output) = 3;
+    }
+
+}}
