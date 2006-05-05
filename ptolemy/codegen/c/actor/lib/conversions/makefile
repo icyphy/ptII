@@ -55,9 +55,7 @@ JSRCS = \
 	PolarToCartesian.java \
 	Round.java \
 	StringToIntArray.java \
-	StringToUnsignedByteArray.java \
-	TokenToExpression.java \
-	UnsignedByteArrayToString.java
+	TokenToExpression.java
 
 OTHER_FILES_TO_BE_JARED = \
 	BooleanToAnything.c \
@@ -65,9 +63,7 @@ OTHER_FILES_TO_BE_JARED = \
 	PolarToCartesian.c \
 	Round.c \
 	StringToIntArray.c \
-	StringToUnsignedByteArray.c \
 	TokenToExpression.c \
-	UnsignedByteArrayToString.c \
 	conversions.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
