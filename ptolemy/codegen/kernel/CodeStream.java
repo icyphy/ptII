@@ -53,9 +53,9 @@ import ptolemy.util.FileUtilities;
  * substitution, so the user is responsible for declaring unique parameter
  * names. For example, a code block is declared to be the following:
  * <pre>
- *     &#47;*** initBlock (arg) ***&#47;
- *         if ($ref(input) != arg) {
- *             $ref(output) = arg;
+ *     &#47;*** initBlock ($arg) ***&#47;
+ *         if ($ref(input) != $arg) {
+ *             $ref(output) = $arg;
  *         }
  *     &#47;**&#47;
  * </pre>
