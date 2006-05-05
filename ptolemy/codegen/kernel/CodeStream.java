@@ -29,6 +29,7 @@
 package ptolemy.codegen.kernel;
 
 import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -97,8 +98,11 @@ public class CodeStream {
 
     /**
      * Construct a new code stream, given a specified file path of the
-     * helper .c file.
+     * helper .c file as a URL suitable for
+     * {@link ptolemy.util.FileUtilities#openForReading(String, URI, ClassLoader)},
+     *  for example "file:./test/testCodeBlock.c".
      * @param path The given file path.
+     * .c file 
      */
     public CodeStream(String path) {
         _filePath = path;
@@ -235,11 +239,11 @@ public class CodeStream {
                 codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
                         _checkParameterName(parameters.get(i).toString()),
                         replaceString));
-            } catch (IllegalArgumentException ex) {
+            } catch (Exception ex) {
                 throw new IllegalActionException(null, ex, signature + " in "
-                    + _declarations.getFilePath(signature)
-                    + " problems replacing \"" + parameters.get(i).toString()
-                    + "\" with \"" + replaceString + "\"");
+                        + _declarations.getFilePath(signature)
+                        + " problems replacing \"" + parameters.get(i).toString()
+                        + "\" with \"" + replaceString + "\"");
             }
         }
 
@@ -322,29 +326,30 @@ public class CodeStream {
     }
 
     /**
-     * Simple stand alone test method. This method prompts the user for
-     * the path of the helper .c file, parse and print all code blocks in
-     * the helper .c file.
-     * @param args Command-line arguments.
+     * Simple stand alone test method. Parse a helper .c file, and print
+     * all the code blocks.
+     * @param args Command-line arguments, the first of which names a 
+     * .c file as a URL , for example file:./test/testCodeBlock.c.
      * @exception IOException If an error occurs when reading user inputs.
      * @exception IllegalActionException If an error occurs during parsing
      *  the helper .c file.
      */
      public static void main(String[] args) throws IOException,
              IllegalActionException {
-         //BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-         //System.out.println("----------Testing-------------------------------");
-         //System.out.print("please input file path: ");
-         //String filePath = in.readLine();
-         String filePath = "D:\\Eclipse_Workspace\\ptII\\ptolemy\\codegen\\c\\actor\\lib\\RandomSource.c";
-         CodeStream code = new CodeStream(filePath);
+         try {
+             CodeStream code = new CodeStream(args[0]);
          
-         System.out.println("\n----------Result------------------------------");
-         System.out.println(code.description());
-         System.out.println("\n----------Result------------------------------\n");
+             System.out.println("\n----------Result-----------------------\n");
+             System.out.println(code.description());
+             System.out.println("\n----------Result-----------------------\n");
          
-         code.appendCodeBlocks(".*shared.*");
-         System.out.println(code);
+             ArrayList codeBlockArgs = new ArrayList();
+             codeBlockArgs.add(Integer.toString(3));
+             code.appendCodeBlock("initBlock", codeBlockArgs, false);
+             System.out.println(code);
+         } catch (Exception ex) {
+             ex.printStackTrace();
+         }
      }
          
     /**
