@@ -100,3 +100,11 @@ test Director-7.1 {getComponent()} {
     [$cgDirector getComponent] toString
 } {ptolemy.domains.sdf.kernel.SDFDirector {.top.}}
 
+
+#####
+test Director-2.1 {generateMainEntryCode, generateMainExitCode} {
+    list [$cgDirector generateMainEntryCode] \
+	[$cgDirector generateMainExitCode] 
+} {{    /* main entry code */
+} {    /* main exit code */
+}}

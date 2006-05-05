@@ -68,3 +68,15 @@ test StaticSchedulingCodeGenerator-1.2 {no director} {
   in .<Unnamed Object>.sscc1_2
 Because:
 ptolemy.codegen.c.kernel.CompositeEntity}}
+
+
+#####
+test StaticSchedulingCodeGenerator-2.1 {generateMainEntryCode, generateMainExitCode} {
+    set compositeEntity [java::new ptolemy.kernel.CompositeEntity] 
+    set sscc [java::new ptolemy.codegen.kernel.StaticSchedulingCodeGenerator \
+		  $compositeEntity "sscc2_1"]
+    list [$sscc generateMainEntryCode] \
+	[$sscc generateMainExitCode] 
+} {{    /* main entry code */
+} {    /* main exit code */
+}}
