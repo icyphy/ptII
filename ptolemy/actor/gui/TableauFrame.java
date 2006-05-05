@@ -52,7 +52,6 @@ import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;

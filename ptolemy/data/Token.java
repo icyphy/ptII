@@ -30,12 +30,10 @@
 package ptolemy.data;
 
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
 
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Token

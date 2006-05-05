@@ -32,7 +32,6 @@ import java.util.Iterator;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.util.FunctionDependency;
-import ptolemy.actor.util.FunctionDependencyOfAtomicActor;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.fsm.kernel.FSMActor;
