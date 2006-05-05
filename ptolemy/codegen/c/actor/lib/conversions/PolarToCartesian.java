@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (mankit)
- * @Pt.AcceptedRating Gree (mankit)
+ * @Pt.AcceptedRating Green (mankit)
  */
 public class PolarToCartesian extends CCodeGeneratorHelper {
     /**
