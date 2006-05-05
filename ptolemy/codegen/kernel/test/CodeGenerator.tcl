@@ -81,4 +81,8 @@ test CodeGenerator-4.1 {setExecuteCommands, getExecuteCommands} {
     list [$executeCommands equals $executeCommands2]
 } {1}
 
-
+#####
+test CodeGenerator-5.1 {getCodeFileName} {
+    # Trivial test to increase code coverage.
+    $codeGenerator getCodeFileName
+} {}
