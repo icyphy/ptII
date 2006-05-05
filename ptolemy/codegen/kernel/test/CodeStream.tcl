@@ -68,3 +68,52 @@ test CodeStream-1.2 {Constructor that takes a String} {
 #    $codeStream append $codeStream2
 #    $codeStream toString
 #} {Test 1.1Test 1.2}
+
+#####
+test CodeStream-3.1 {appendCodeBlock} {
+    $codeStream appendCodeBlock "foo" [java::new java.util.ArrayList] true
+    catch {$codeStream appendCodeBlock "foo" [java::new java.util.ArrayList] false} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: foo().
+}}
+
+#####
+test CodeStream-3.2 {appendCodeBlock} {
+    set fileTestBlock [java::new java.io.File testCodeBlock.c]
+    set codeStream3_2 [java::new ptolemy.codegen.kernel.CodeStream \
+			[[$fileTestBlock toURL] toString]]
+
+    set args [java::new java.util.ArrayList]
+    $args add [java::call Integer toString 3]
+    $codeStream3_2 appendCodeBlock "initBlock" $args false
+    list [$codeStream3_2 toString] \
+	[$codeStream3_2 description]
+} {{
+    if ($ref(input) != 3) {
+        $ref(output) = 3;
+    }
+} {initBlock($arg):
+
+    if ($ref(input) != $arg) {
+        $ref(output) = $arg;
+    }
+
+-------------------------------
+
+}}
+
+
+#####
+test CodeStream-3.3 {appendCodeBlock: wrong number of args} {
+    set fileTestBlock [java::new java.io.File testCodeBlock.c]
+    set codeStream3_3 [java::new ptolemy.codegen.kernel.CodeStream \
+			[[$fileTestBlock toURL] toString]]
+
+    set args [java::new java.util.ArrayList]
+    $args add [java::call Integer toString 3]
+    $args add [java::call Integer toString 4]
+    catch {$codeStream3_3 appendCodeBlock "initBlock" $args false} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: initBlock($, $).
+}}
+
