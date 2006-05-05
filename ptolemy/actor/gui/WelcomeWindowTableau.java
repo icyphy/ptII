@@ -25,13 +25,9 @@
  */
 package ptolemy.actor.gui;
 
-import java.io.IOException;
-import java.net.URL;
-
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// WelcomeWindowTableau

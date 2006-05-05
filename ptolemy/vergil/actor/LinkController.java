@@ -60,7 +60,6 @@ import diva.canvas.toolbox.SVGUtilities;
 import diva.graph.BasicEdgeController;
 import diva.graph.EdgeRenderer;
 import diva.graph.GraphController;
-import diva.graph.GraphEvent;
 import diva.gui.toolbox.MenuCreator;
 
 //////////////////////////////////////////////////////////////////////////

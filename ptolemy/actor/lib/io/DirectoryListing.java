@@ -48,7 +48,6 @@ import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
