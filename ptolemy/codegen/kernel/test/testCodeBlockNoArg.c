@@ -1,0 +1,7 @@
+/*** myBlock ***/
+    // myBlock
+/**/
+
+/*** myOtherBlock ***/
+    // myOtherBlock
+/**/
