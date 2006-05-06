@@ -209,7 +209,7 @@ public class Expression extends CCodeGeneratorHelper {
     /**
      * Variable scope class customized for the CParseTreeCodeGenerator.
      */
-    private class VariableScope extends ModelScope {
+    protected class VariableScope extends ModelScope {
         /**
          * Constructor of a VariableScope.
          * @param actor The named ptolemy actor.
