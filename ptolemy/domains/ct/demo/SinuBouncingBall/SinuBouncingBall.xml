@@ -22,10 +22,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 82.5]">
         </property>
     </property>
+    <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 87.5]">
+        </property>
+    </property>
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="./sinu-ball.pdf">
+    </property>
     <property name="lambda" class="ptolemy.data.expr.Parameter" value="0.9">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="_icon" class="ptolemy.kernel.util.Attribute">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
             </property>
         </property>
@@ -36,15 +42,15 @@
       </svg>
     </configure>
         </property>
-        <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 92.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 55.0]">
         </property>
     </property>
     <property name="length" class="ptolemy.data.expr.Parameter" value="2.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="_icon" class="ptolemy.kernel.util.Attribute">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
             </property>
         </property>
@@ -55,16 +61,10 @@
       </svg>
     </configure>
         </property>
-        <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 72.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 75.0]">
         </property>
-    </property>
-    <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 87.5]">
-        </property>
-    </property>
-    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="C:\hyzheng\ptII_duplicate\ptolemy\domains\ct\demo\SinuBouncingBall\sinu-ball.pdf">
     </property>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.kernel.util.Attribute">
@@ -496,17 +496,35 @@
             <entity name="x" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialx">
                 </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 360.0]">
                 </property>
             </entity>
             <entity name="z_dot" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialz_dot">
                 </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 250.0]">
                 </property>
             </entity>
             <entity name="z" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialz">
+                </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 250.0]">
                 </property>
@@ -516,11 +534,23 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 250.0]">
                 </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
             </entity>
             <entity name="z position" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in + z_offset">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 250.0]">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
                 </property>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -531,6 +561,12 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 430.0]">
                 </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -539,6 +575,12 @@
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in + x_offset">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 360.0]">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
                 </property>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -550,9 +592,21 @@
                 <doc>Create a constant sequence</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 360.0]">
                 </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
             </entity>
             <entity name="x2" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialy">
+                </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 430.0]">
                 </property>
@@ -563,9 +617,21 @@
                 <doc>Create a constant sequence.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 430.0]">
                 </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
             </entity>
             <entity name="y_dot" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialy_dot">
+                </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 430.0]">
                 </property>
@@ -872,11 +938,23 @@
             <entity name="y_dot" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialy_dot">
                 </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 390.0]">
                 </property>
             </entity>
             <entity name="y" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialy">
+                </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 455.0]">
                 </property>
@@ -884,11 +962,23 @@
             <entity name="z_dot" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialz_dot">
                 </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 250.0]">
                 </property>
             </entity>
             <entity name="z2" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialz">
+                </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 250.0]">
                 </property>
@@ -897,6 +987,12 @@
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in + z_offset">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 250.0]">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
                 </property>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -907,6 +1003,12 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 455.0]">
                 </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -916,6 +1018,12 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 570.0]">
                 </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -924,6 +1032,12 @@
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(2*cos(y)*(-g+sin(y)*y_dot^2))/(3+cos(2*y))">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 380.0]">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
                 </property>
                 <port name="y" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
@@ -941,6 +1055,12 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 305.0]">
                 </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
                 <port name="y" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -955,6 +1075,12 @@
             <entity name="x" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialx">
                 </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 570.0]">
                 </property>
             </entity>
@@ -963,6 +1089,12 @@
                 </property>
                 <doc>Create a constant sequence</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 570.0]">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
