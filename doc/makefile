@@ -358,7 +358,6 @@ ALL1_4PACKAGES =	$(COMPACKAGES) \
 			ptolemy.codegen.c.actor.lib.string \
 			ptolemy.codegen.c.domains.fsm.kernel \
 			ptolemy.codegen.c.domains.fsm.modal \
-			ptolemy.codegen.c.domains.giotto.kernel \
 			ptolemy.codegen.c.domains.hdf.kernel \
 			ptolemy.codegen.c.domains.sdf.kernel \
 			ptolemy.codegen.c.domains.sdf.lib \
