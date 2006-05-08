@@ -1,4 +1,4 @@
-/*
+/* A field editor for a directory.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -49,39 +49,63 @@ import java.io.File;
 //// DirectoryFieldEditor
 
 /**
+   A field editor for a directory.
 
-
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class DirectoryFieldEditor extends
         org.eclipse.jface.preference.DirectoryFieldEditor {
-    public DirectoryFieldEditor() {
-    }
 
-    public DirectoryFieldEditor(String name, String labelText, Composite parent) {
-        super(name, labelText, parent);
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                        constructors                       ////
 
-    public boolean canBeEmpty() {
-        return _canBeEmpty;
-    }
-
-    public boolean workspaceOnly() {
-        return _workspaceOnly;
-    }
-
-    public void setCanBeEmpty(boolean canBeEmpty) {
+    /** Construct a directory field editor with no name and no parent.
+     * 
+     *  @param canBeEmpty Whether the file name can be left empty.
+     */
+    public DirectoryFieldEditor(boolean canBeEmpty) {
         _canBeEmpty = canBeEmpty;
     }
 
+    /** Construct a directory field editor.
+     * 
+     *  @param name The name of this editor.
+     *  @param labelText The label.
+     *  @param parent The parent.
+     *  @param canBeEmpty Whether the file name can be left empty.
+     */
+    public DirectoryFieldEditor(String name, String labelText, Composite parent,
+            boolean canBeEmpty) {
+        super(name, labelText, parent);
+        _canBeEmpty = canBeEmpty;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Set whether this directory field editor should only show the directories
+     *  in the current workspace.
+     *  
+     *  @param workspaceOnly Whether to show only the directories in the current
+     *   workspace.
+     */
     public void setWorkspaceOnly(boolean workspaceOnly) {
         _workspaceOnly = workspaceOnly;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+    /** Pop up the directory selection dialog after the change button is
+     *  pressed, and retrieve the name of the selected directory.
+     * 
+     *  @return The name of the selected directory, or null if the operation is
+     *   canceled.
+     */
     protected String changePressed() {
         String folderName = getTextControl().getText();
         IContainer container;
@@ -122,6 +146,10 @@ public class DirectoryFieldEditor extends
         }
     }
 
+    /** Check whether the current state of this directory editor is valid.
+     * 
+     *  @return true if the field editor's value is valid; false, otherwise.
+     */
     protected boolean doCheckState() {
         String folderName = getTextControl().getText();
 
@@ -149,7 +177,14 @@ public class DirectoryFieldEditor extends
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
+
+    /** Whether the field editor can be left empty.
+     */
     private boolean _canBeEmpty = false;
 
+    /** The allowed file extensions.
+     */
     private boolean _workspaceOnly = true;
 }
