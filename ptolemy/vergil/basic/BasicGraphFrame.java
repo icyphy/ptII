@@ -106,6 +106,7 @@ import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.IconLoader;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
@@ -810,8 +811,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             MoMLChangeRequest request = null;
             request = new MoMLChangeRequest(this, container, moml.toString());
             request.setUndoable(true);
-
+            
+            
             container.requestChange(request);
+            NamedObj newObject = ( (CompositeEntity)container).getEntity(compositeActorName);
+            // Kepler wants a different icon.
+            IconLoader _iconLoader = MoMLParser.getIconLoader();
+            if (_iconLoader != null) {
+                _iconLoader.loadIconForClass(
+                                "ptolemy.actor.TypedCompositeActor", newObject);
+            }
         } catch (Throwable throwable) {
             MessageHandler.error("Creating hierarchy failed", throwable);
         }
