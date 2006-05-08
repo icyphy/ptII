@@ -1135,7 +1135,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         return _handler;
     }
 
-    /** Get the List of MoMLFilters used to translate names.
+    /** get the icon loader for all MoMLParsers.
+     *  @return The IconLoader for all MoMLParsers.
+     */
+      public static IconLoader getIconLoader() {
+         return _iconLoader ;
+     }
+      
+      /** Get the List of MoMLFilters used to translate names.
      *  Note that this method is static.  The returned MoMLFilters
      *  will filter all MoML for any instances of this class.
      *  @return The MoMLFilters currently filtering.
@@ -1682,6 +1689,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     /** Set the icon loader for all MoMLParsers.
      *  @param loader The IconLoader for all MoMLParsers.
+     *  @see #getIconLoader()
      */
       public static void setIconLoader(IconLoader loader) {
          _iconLoader = loader;
