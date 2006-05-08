@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.backtrack.eclipse.plugin.util;
+package ptolemy.backtrack.eclipse.plugin.widgets;
 
 import org.eclipse.jface.preference.FileFieldEditor;
 

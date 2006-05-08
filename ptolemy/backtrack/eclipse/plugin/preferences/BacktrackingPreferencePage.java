@@ -50,8 +50,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import ptolemy.backtrack.eclipse.plugin.util.SaveFileFieldEditor;
 import ptolemy.backtrack.eclipse.plugin.widgets.DirectoryFieldEditor;
+import ptolemy.backtrack.eclipse.plugin.widgets.SaveFileFieldEditor;
 import ptolemy.backtrack.util.Strings;
 
 //////////////////////////////////////////////////////////////////////////
