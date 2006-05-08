@@ -246,8 +246,7 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
 
         Composite currentComposite = _newComposite(composite);
         _root = new DirectoryFieldEditor(PreferenceConstants.BACKTRACK_ROOT,
-                "&Root of refactoring:", currentComposite);
-        _root.setCanBeEmpty(true);
+                "&Root of refactoring:", currentComposite, true);
 
         GridData gridData = new GridData();
         gridData.widthHint = 0;

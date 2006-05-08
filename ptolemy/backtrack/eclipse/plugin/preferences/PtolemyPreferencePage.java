@@ -76,7 +76,7 @@ public class PtolemyPreferencePage extends FieldEditorPreferencePage implements
 
         DirectoryFieldEditor directoryFieldEditor = new DirectoryFieldEditor(
                 PreferenceConstants.PTII, "&Ptolemy home:",
-                getFieldEditorParent()) {
+                getFieldEditorParent(), true) {
             protected void fireValueChanged(String property, Object oldValue,
                     Object newValue) {
                 if ((property == VALUE) && isValid()) {
@@ -98,7 +98,6 @@ public class PtolemyPreferencePage extends FieldEditorPreferencePage implements
         };
 
         directoryFieldEditor.setWorkspaceOnly(false);
-        directoryFieldEditor.setCanBeEmpty(true);
         addField(directoryFieldEditor);
 
         Label space = new Label(parent, 0);
