@@ -1,4 +1,4 @@
-/*
+/* A field editor for a file to be saved to.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -39,25 +39,81 @@ import java.io.File;
 //// SaveFileFieldEditor
 
 /**
+   A field editor for a file to be saved to. 
 
-
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class SaveFileFieldEditor extends FileFieldEditor {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        constructors                       ////
+
+    /** Construct a save file field editor with no name and no parent.
+     *  
+     *  @param canBeEmpty Whether the file name can be left empty.
+     */
     public SaveFileFieldEditor(boolean canBeEmpty) {
         _canBeEmpty = canBeEmpty;
     }
 
+    /** Construct a save file field editor.
+     * 
+     *  @param name The name of this editor.
+     *  @param labelText The label.
+     *  @param parent The parent.
+     *  @param canBeEmpty Whether the file name can be left empty.
+     */
     public SaveFileFieldEditor(String name, String labelText, Composite parent,
             boolean canBeEmpty) {
         super(name, labelText, parent);
         _canBeEmpty = canBeEmpty;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Set the allowed extensions.
+     * 
+     *  @param extensions The extensions.
+     */
+    public void setFileExtensions(String[] extensions) {
+        _extensions = extensions;
+        super.setFileExtensions(extensions);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+    /** Pop up the file selection dialog after the change button is pressed, and
+     *  retrieve the name of the selected file.
+     * 
+     *  @return The name of the selected file, or null if the operation is
+     *   canceled.
+     */
+    protected String changePressed() {
+        File file = new File(getTextControl().getText());
+
+        if (!file.exists()) {
+            file = null;
+        }
+
+        File newFile = _getFile(file);
+
+        if (newFile == null) {
+            return null;
+        }
+
+        return newFile.getAbsolutePath();
+    }
+
+    /** Check whether the current state of this field editor is valid.
+     * 
+     *  @return true if the field editor's value is valid; false, otherwise.
+     */
     protected boolean checkState() {
         String name = getTextControl().getText();
 
@@ -76,22 +132,17 @@ public class SaveFileFieldEditor extends FileFieldEditor {
         return !file.isDirectory();
     }
 
-    protected String changePressed() {
-        File file = new File(getTextControl().getText());
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
 
-        if (!file.exists()) {
-            file = null;
-        }
-
-        File newFile = _getFile(file);
-
-        if (newFile == null) {
-            return null;
-        }
-
-        return newFile.getAbsolutePath();
-    }
-
+    /** Pop up the file selection dialog, and return the file object of the
+     *  selected file.
+     *  
+     *  @param startingDirectory The directory that the file selection dialog
+     *   shows initially.
+     *  @return The file object of the selected file, or null if the dialog is
+     *   canceled.
+     */
     private File _getFile(File startingDirectory) {
         FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
 
@@ -116,12 +167,14 @@ public class SaveFileFieldEditor extends FileFieldEditor {
         return null;
     }
 
-    public void setFileExtensions(String[] extensions) {
-        _extensions = extensions;
-        super.setFileExtensions(extensions);
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
-    private String[] _extensions;
-
+    /** Whether the field editor can be left empty.
+     */
     private boolean _canBeEmpty;
+
+    /** The allowed file extensions.
+     */
+    private String[] _extensions;
 }
