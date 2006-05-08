@@ -344,7 +344,7 @@ public class Autocorrelation extends SDFTransformer {
     // type. The result of the function is the same as the input type
     // if is not Int or IntMatrix; otherwise, the result is Double
     // or DoubleMatrix, respectively.
-    private class FunctionTerm extends MonotonicFunction {
+    private static class FunctionTerm extends MonotonicFunction {
         // The constructor takes a port argument so that the clone()
         // method can construct an instance of this class for the
         // input port on the clone.

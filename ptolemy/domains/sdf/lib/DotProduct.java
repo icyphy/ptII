@@ -258,7 +258,7 @@ public class DotProduct extends TypedAtomicActor {
      *     UNKNOWN                                     otherwise
      *  This function's value determinese the output port type.
      */
-    private class PortFunction extends MonotonicFunction {
+    private static class PortFunction extends MonotonicFunction {
         private PortFunction(TypedIOPort port1, TypedIOPort port2) {
             _port1 = port1;
             _port2 = port2;
