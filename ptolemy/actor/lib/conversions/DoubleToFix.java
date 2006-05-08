@@ -32,6 +32,7 @@ import ptolemy.data.FixToken;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.FixType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -93,7 +94,7 @@ public class DoubleToFix extends Converter {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
-        output.setTypeEquals(BaseType.FIX);
+        output.setTypeEquals(BaseType.UNSIZED_FIX);
 
         precision = new Parameter(this, "precision");
         precision.setTypeEquals(BaseType.INT_MATRIX);
@@ -138,6 +139,7 @@ public class DoubleToFix extends Converter {
 
             Precision precision = new Precision(token.getElementAt(0, 0), token
                     .getElementAt(0, 1));
+            output.setTypeEquals(new FixType(precision));
             _quantization = _quantization.setPrecision(precision);
         } else if (attribute == rounding) {
             Rounding r = Rounding.getName(rounding.getExpression());

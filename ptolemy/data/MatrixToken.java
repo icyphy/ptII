@@ -33,6 +33,7 @@ import java.util.Set;
 
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.FixType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.data.type.UnsizedMatrixType;
@@ -309,7 +310,7 @@ public abstract class MatrixToken extends Token {
             token = new DoubleMatrixToken(tokens, rows, columns);
         } else if (type.equals(BaseType.COMPLEX)) {
             token = new ComplexMatrixToken(tokens, rows, columns);
-        } else if (type.equals(BaseType.FIX)) {
+        } else if (type.equals(BaseType.UNSIZED_FIX) || type instanceof FixType) {
             token = new FixMatrixToken(tokens, rows, columns);
         } else {
             throw new IllegalActionException("Unrecognized type " + type

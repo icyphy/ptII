@@ -156,7 +156,7 @@ test FixToDouble-3.3 {Test rescaling to other Precision with modulo \
 
 } {0.0 -1.0 -2.0 1.0 1.0 0.5 0.0 -0.5 -1.0 -2.0 1.0 0.0}
 
-test FixToDouble-3.3 {Test rescaling to other Precision with grow \
+test FixToDouble-3.4 {Test rescaling to other Precision with grow \
 	 overflow} {
 
     set overflow [java::field $conver overflow ]
@@ -167,7 +167,7 @@ test FixToDouble-3.3 {Test rescaling to other Precision with grow \
 
 } {4.0 3.0 2.0 1.0 1.0 0.5 0.0 -0.5 -1.0 -2.0 -3.0 -4.0}
 
-test FixToDouble-3.4 {Test rescaling to other Precision with floor \
+test FixToDouble-3.5 {Test rescaling to other Precision with floor \
 	 rounding} {
 
     set rounding [java::field $conver rounding ]

@@ -142,7 +142,9 @@ public abstract class UnsizedMatrixType extends StructuredType implements
             matrixType = BaseType.DOUBLE_MATRIX;
         } else if (elementType.equals(BaseType.COMPLEX)) {
             matrixType = BaseType.COMPLEX_MATRIX;
-        } else if (elementType.equals(BaseType.FIX)) {
+        } else if (elementType instanceof FixType) {
+            matrixType = BaseType.FIX_MATRIX;
+        } else if (elementType.equals(BaseType.UNSIZED_FIX)) {
             matrixType = BaseType.FIX_MATRIX;
         } else {
             throw new IllegalActionException("Type " + elementType
@@ -306,7 +308,7 @@ public abstract class UnsizedMatrixType extends StructuredType implements
     /** The fix matrix data type. */
     public static class FixMatrixType extends UnsizedMatrixType {
         public FixMatrixType() {
-            super(FixMatrixToken.class, BaseType.FIX, "[fixedpoint]");
+            super(FixMatrixToken.class, BaseType.UNSIZED_FIX, "[fixedpoint]");
         }
 
         public Token convert(Token token) throws IllegalActionException {

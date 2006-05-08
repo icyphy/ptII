@@ -32,6 +32,7 @@ import ptolemy.data.FixToken;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.FixType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -92,8 +93,8 @@ public class FixToFix extends Converter {
     public FixToFix(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        input.setTypeEquals(BaseType.FIX);
-        output.setTypeEquals(BaseType.FIX);
+        input.setTypeEquals(BaseType.UNSIZED_FIX);
+        output.setTypeEquals(BaseType.UNSIZED_FIX);
 
         precision = new Parameter(this, "precision");
         precision.setTypeEquals(BaseType.INT_MATRIX);
@@ -140,12 +141,22 @@ public class FixToFix extends Converter {
             Precision precision = new Precision(token.getElementAt(0, 0), token
                     .getElementAt(0, 1));
             _quantization = _quantization.setPrecision(precision);
+            if(_quantization.getOverflow() == Overflow.GROW) {
+                output.setTypeEquals(BaseType.UNSIZED_FIX);
+            } else {
+                output.setTypeEquals(new FixType(_quantization.getPrecision()));
+            }
         } else if (attribute == rounding) {
             Rounding r = Rounding.getName(rounding.getExpression());
             _quantization = _quantization.setRounding(r);
         } else if (attribute == overflow) {
             Overflow o = Overflow.forName(overflow.getExpression());
             _quantization = _quantization.setOverflow(o);
+            if(_quantization.getOverflow() == Overflow.GROW) {
+                output.setTypeEquals(BaseType.UNSIZED_FIX);
+            } else {
+                output.setTypeEquals(new FixType(_quantization.getPrecision()));
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -180,6 +191,6 @@ public class FixToFix extends Converter {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The quantization of the output.
-    private FixPointQuantization _quantization = new FixPointQuantization(null,
-            Overflow.SATURATE, Rounding.NEAREST);
+    private FixPointQuantization _quantization = new FixPointQuantization(
+            new Precision(0,0), Overflow.SATURATE, Rounding.NEAREST);
 }

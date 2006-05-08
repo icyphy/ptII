@@ -528,7 +528,8 @@ public class TypeLattice {
             _basicLattice.addNodeWeight(BaseType.COMPLEX_MATRIX);
             _basicLattice.addNodeWeight(BaseType.DOUBLE);
             _basicLattice.addNodeWeight(BaseType.DOUBLE_MATRIX);
-            _basicLattice.addNodeWeight(BaseType.FIX);
+            _basicLattice.addNodeWeight(BaseType.UNSIZED_FIX);
+            _basicLattice.addNodeWeight(BaseType.SIZED_FIX);
             _basicLattice.addNodeWeight(BaseType.FIX_MATRIX);
             _basicLattice.addNodeWeight(BaseType.INT);
             _basicLattice.addNodeWeight(BaseType.INT_MATRIX);
@@ -566,9 +567,10 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.LONG_MATRIX, BaseType.NUMERICAL);
             _basicLattice.addEdge(BaseType.COMPLEX_MATRIX, BaseType.NUMERICAL);
 
-            _basicLattice.addEdge(BaseType.FIX, BaseType.FIX_MATRIX);
-            _basicLattice.addEdge(BaseType.FIX, BaseType.SCALAR);
-            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.FIX);
+            _basicLattice.addEdge(BaseType.UNSIZED_FIX, BaseType.FIX_MATRIX);
+            _basicLattice.addEdge(BaseType.SIZED_FIX, BaseType.UNSIZED_FIX);
+            _basicLattice.addEdge(BaseType.UNSIZED_FIX, BaseType.SCALAR);
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.SIZED_FIX);
             _basicLattice.addEdge(BaseType.LONG, BaseType.SCALAR);
             _basicLattice.addEdge(BaseType.LONG, BaseType.LONG_MATRIX);
             _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.LONG_MATRIX);

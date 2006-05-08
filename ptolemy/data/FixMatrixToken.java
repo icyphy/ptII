@@ -140,6 +140,9 @@ public class FixMatrixToken extends MatrixToken {
             if (token instanceof ScalarToken) {
                 _value[i / columns][i % columns] = ((ScalarToken) token)
                         .fixValue();
+            } else if (token instanceof FixToken) {
+                _value[i / columns][i % columns] = ((FixToken) token)
+                        .fixValue();
             } else {
                 throw new IllegalActionException("FixMatrixToken: Element " + i
                         + " in the array with value " + token
@@ -278,10 +281,10 @@ public class FixMatrixToken extends MatrixToken {
 
     /** Return the Type of the tokens contained in this matrix token.
      *  This must be a type representing a scalar token.
-     *  @return BaseType.FIX.
+     *  @return BaseType.UNSIZED_FIX.
      */
     public Type getElementType() {
-        return BaseType.FIX;
+        return BaseType.UNSIZED_FIX;
     }
 
     /** Return the number of rows in the matrix.
@@ -595,7 +598,7 @@ public class FixMatrixToken extends MatrixToken {
                 if ((_precision != null) && !_precision.equals(precision)) {
                     throw new IllegalActionException(
                             "Attempt to create a FixMatrixToken"
-                                    + " with unequal precisions.");
+                                    + " with unequal precisions: " + _precision + " and " + precision);
                 }
 
                 _precision = precision;

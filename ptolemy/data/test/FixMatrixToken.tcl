@@ -79,6 +79,11 @@ test FixMatrixToken-2.7 {Test matrixToArray} {
     $array toString
 } {{fix(1.0,8,4), fix(0.0,8,4), fix(0.0,8,4), fix(1.0,8,4)}}
 
+test FixMatrixToken-2.8 {Test arrayToMatrix} {
+    set token [java::call ptolemy.data.MatrixToken arrayToMatrix [$array arrayValue] 2 2]
+    $token toString
+} {[fix(1.0,8,4), fix(0.0,8,4); fix(0.0,8,4), fix(1.0,8,4)]}
+
 ######################################################################
 ####
 # 

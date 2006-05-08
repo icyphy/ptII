@@ -65,7 +65,7 @@ public class FixToDouble extends Converter {
     public FixToDouble(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        input.setTypeEquals(BaseType.FIX);
+        input.setTypeEquals(BaseType.UNSIZED_FIX);
         output.setTypeEquals(BaseType.DOUBLE);
     }
 

@@ -28,9 +28,13 @@ package ptolemy.data.expr;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
 
+import ptolemy.math.Precision;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.FixType;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
@@ -193,6 +197,32 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             //  _setType(node,
             //     ((ASTPtRootNode) node.jjtGetChild(0 + 1)).getType());
             //  return;
+        }
+        
+        // A hack, because the result of the 'fix' function is
+        // dependent on its arguments, which should be constant.
+        if ((functionName.compareTo("fix") == 0) && (argCount == 3)) {
+            ASTPtRootNode lengthNode = ((ASTPtRootNode) node
+                    .jjtGetChild(1 + 1));
+            ASTPtRootNode integerBitsNode = ((ASTPtRootNode) node
+                    .jjtGetChild(2 + 1));
+            ParseTreeEvaluator parseTreeEvaluator = new ParseTreeEvaluator();
+
+            try {
+                ptolemy.data.Token length = parseTreeEvaluator.evaluateParseTree(
+                        lengthNode, _scope);
+
+                ptolemy.data.Token integerBits = parseTreeEvaluator.evaluateParseTree(
+                        integerBitsNode, _scope);
+                _setType(node, new FixType(
+                                 new Precision(
+                                         ((ScalarToken)length).intValue(), 
+                                         ((ScalarToken)integerBits).intValue())));
+                return;
+            } catch (Exception ex) {
+                // Do nothing... rely on the regular method resolution
+                // to generate the right type.
+            } 
         }
 
         if (functionName.compareTo("eval") == 0) {
@@ -456,7 +486,24 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
 
-        _setType(node, (Type) TypeLattice.lattice().leastUpperBound(childTypes));
+        List lexicalTokenList = node.getLexicalTokenList();
+        int numChildren = node.jjtGetNumChildren();
+
+        Type resultType = childTypes[0];
+        for (int i = 1; i < numChildren; i++) {
+            Token operator = (Token) lexicalTokenList.get(i - 1);
+            Type nextType = childTypes[i];
+            if (operator.kind == PtParserConstants.MULTIPLY) {
+                resultType = resultType.multiply(nextType);
+            } else if (operator.kind == PtParserConstants.DIVIDE) {
+                resultType = resultType.divide(nextType);
+            } else if (operator.kind == PtParserConstants.MODULO) {
+                resultType = resultType.modulo(nextType);
+            } else {
+                _assert(false, node, "Invalid operation");
+            }
+        }
+        _setType(node, resultType);
     }
 
     /** Set the type of the given node to be a record token that
@@ -510,7 +557,22 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
 
-        _setType(node, (Type) TypeLattice.lattice().leastUpperBound(childTypes));
+        List lexicalTokenList = node.getLexicalTokenList();
+        int numChildren = node.jjtGetNumChildren();
+
+        Type resultType = childTypes[0];
+        for (int i = 1; i < numChildren; i++) {
+            Token operator = (Token) lexicalTokenList.get(i - 1);
+            Type nextType = childTypes[i];
+            if (operator.kind == PtParserConstants.PLUS) {
+                resultType = resultType.add(nextType);
+            } else if (operator.kind == PtParserConstants.MINUS) {
+                resultType = resultType.subtract(nextType);
+            } else {
+                _assert(false, node, "Invalid operation");
+            }
+        }
+        _setType(node, resultType);
     }
 
     /** Set the type of the given node to be the type of the
@@ -522,7 +584,11 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
         Type baseType = childTypes[0];
-        _setType(node, baseType);
+        if(node.isMinus()) {
+            _setType(node, baseType.zero().subtract(baseType));
+        } else {
+            _setType(node, baseType);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -32,6 +32,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.FixType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
@@ -60,7 +61,7 @@ import ptolemy.math.Rounding;
  @Pt.ProposedRating Yellow (kienhuis)
  @Pt.AcceptedRating Yellow (kienhuis)
  */
-public class FixToken extends ScalarToken {
+public class FixToken extends ScalarToken { // implements BitwiseOperationToken {
 
     /** Construct a token with integer 0.
      *  This method calls the {@link ptolemy.math.FixPoint#FixPoint(int)}
@@ -217,7 +218,8 @@ public class FixToken extends ScalarToken {
      *  @return BaseType.FIX.
      */
     public Type getType() {
-        return BaseType.FIX;
+        return new FixType(_value.getPrecision());
+        //        return BaseType.FIX;
     }
 
     /** Return a hash code value for this value. This method returns the
@@ -248,9 +250,9 @@ public class FixToken extends ScalarToken {
      *  @param quant The quantization specification.
      *  @return A new FixToken containing the result.
      */
-    public final Token quantize(Quantization quant) {
+    public final FixToken quantize(Quantization quant) {
         //FIXME: Move this to ScalarToken.
-        ScalarToken result = _quantize(quant);
+        FixToken result = _quantize(quant);
         result._unitCategoryExponents = this._copyOfCategoryExponents();
         return result;
     }
@@ -458,7 +460,7 @@ public class FixToken extends ScalarToken {
      *  @param quant The quantization specification.
      *  @return A new FixToken containing the result.
      */
-    protected ScalarToken _quantize(Quantization quant) {
+    protected FixToken _quantize(Quantization quant) {
         FixPoint result = _value.quantize(quant);
         return new FixToken(result);
     }

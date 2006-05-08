@@ -134,6 +134,38 @@ test FixToken-3.4 {Test Divide} {
    list [$res toString]
 } {fix(-2.09228515625,16,4)}
 
+test FixToken-3.5 {Test Addition with different precision} {
+    set p2 [java::new ptolemy.math.Precision "(16/8)" ]
+    set c31 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } 3.2334454232 $p0 ]
+    set c32 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } -1.5454325   $p2 ]
+    set pa [java::new ptolemy.data.FixToken $c31 ]
+    set pb [java::new ptolemy.data.FixToken $c32 ]
+    set res [$pa add $pb]    
+
+    list [$pa toString] [$pb toString] [$res toString]
+
+} {fix(3.2333984375,16,4) fix(-1.54541015625,16,4) fix(1.68798828125,16,4)}
+
+test FixToken-3.6 {Test Subtraction with different precision} {
+    set res [$pa subtract $pb]   
+
+    list [$res toString]
+} {fix(4.77880859375,16,4)}
+
+test FixToken-3.7 {Test Multiply with different precision} {
+    set res [$pa multiply $pb]   
+
+    list [$res toString]
+} {fix(-4.996926784515380859375,32,8)}
+
+test FixToken-3.8 {Test Divide with different precisions} {    
+   set res [$pa divide $pb]    	
+
+   list [$res toString]
+} {fix(-2.09228515625,16,4)}
+
 ######################################################################
 
 test FixToken-4.0 {Test fixValue} {
@@ -611,5 +643,13 @@ test FixToken-13.7 {Test convert from StringToken} {
     catch {set result [[java::call ptolemy.data.FixToken convert $t] toString]} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type fix because the type of the token is higher or incomparable with the given type.}}
+    
+test FixToken-14.0 {Test getType} {
+    set t [java::new {ptolemy.data.FixToken java.lang.String} "fix(1.0,8,4)"]
+    set msg {}
+    set result {}
+    catch {set result [[$t getType] toString]} msg
+    list $msg
+} {fixedpoint(8,4)}
     
 

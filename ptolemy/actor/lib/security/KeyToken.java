@@ -158,6 +158,17 @@ public class KeyToken extends Token {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
+        /** Return a new type which represents the type that results from
+         *  adding a token of this type and a token of the given argument
+         *  type.
+         *  @param rightArgumentType The type to add to this type.
+         *  @return A new type, or BaseType.GENERAL, if the operation does
+         *  not make sense for the given types.
+         */
+        public Type add(Type rightArgumentType) {
+            return this;
+        }
+
         /** Return this, that is, return the reference to this object.
          *  @return A KeyType
          */
@@ -182,7 +193,18 @@ public class KeyToken extends Token {
             }
         }
 
-        /** Return the class for tokens that this basetype represents.
+        /** Return a new type which represents the type that results from
+         *  dividing a token of this type and a token of the given
+         *  argument type.
+         *  @param rightArgumentType The type to add to this type.
+         *  @return A new type, or BaseType.GENERAL, if the operation does
+         *  not make sense for the given types.
+         */
+        public Type divide(Type rightArgumentType) {
+            return this;
+        }
+
+         /** Return the class for tokens that this basetype represents.
          */
         public Class getTokenClass() {
             return KeyToken.class;
@@ -232,11 +254,62 @@ public class KeyToken extends Token {
             return this == type;
         }
 
+        /** Return a new type which represents the type that results from
+         *  moduloing a token of this type and a token of the given
+         *  argument type.
+         *  @param rightArgumentType The type to add to this type.
+         *  @return A new type, or BaseType.GENERAL, if the operation does
+         *  not make sense for the given types.
+         */
+        public Type modulo(Type rightArgumentType) {
+            return this;
+        }
+        
+        /** Return a new type which represents the type that results from
+         *  multiplying a token of this type and a token of the given
+         *  argument type.
+         *  @param rightArgumentType The type to add to this type.
+         *  @return A new type, or BaseType.GENERAL, if the operation does
+         *  not make sense for the given types.
+         */
+        public Type multiply(Type rightArgumentType) {
+            return this;
+        }
+
+        /** Return the type of the multiplicative identity for elements of
+         *  this type.
+         *  @return A new type, or BaseType.GENERAL, if the operation does
+         *  not make sense for the given types.
+         */
+        public Type one() {
+            return this;
+        }
+        
+        /** Return a new type which represents the type that results from
+         *  subtracting a token of this type and a token of the given
+         *  argument type.
+         *  @param rightArgumentType The type to add to this type.
+         *  @return A new type, or BaseType.GENERAL, if the operation does
+         *  not make sense for the given types.
+         */
+        public Type subtract(Type rightArgumentType) {
+            return this;
+        }
+
         /** Return the string representation of this type.
          *  @return A String.
          */
         public String toString() {
             return "Key";
+        }
+
+        /** Return the type of the additive identity for elements of
+         *  this type.
+         *  @return A new type, or BaseType.GENERAL, if the operation does
+         *  not make sense for the given types.
+         */
+        public Type zero() {
+            return this;
         }
     }
 

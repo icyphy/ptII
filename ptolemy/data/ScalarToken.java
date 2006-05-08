@@ -68,7 +68,7 @@ import ptolemy.math.FixPoint;
  @author Yuhong Xiong, Mudit Goel, Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 0.2
-2 @Pt.ProposedRating Green (neuendor)
+ @Pt.ProposedRating Green (neuendor)
  @Pt.AcceptedRating Green (yuhong)
  */
 public abstract class ScalarToken extends Token implements
@@ -115,7 +115,7 @@ public abstract class ScalarToken extends Token implements
     public final Token add(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
             return _doAdd(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken) getType().convert(
@@ -386,7 +386,7 @@ public abstract class ScalarToken extends Token implements
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
             return _doDivide(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken) getType().convert(
@@ -537,7 +537,7 @@ public abstract class ScalarToken extends Token implements
         // exceptions because of type conversion issues.
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
             return _doIsCloseTo(rightArgument, epsilon);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken) getType().convert(
@@ -580,7 +580,7 @@ public abstract class ScalarToken extends Token implements
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
             return _doIsEqualTo(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken) getType().convert(
@@ -750,7 +750,7 @@ public abstract class ScalarToken extends Token implements
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
             return _doModulo(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken) getType().convert(
@@ -836,7 +836,7 @@ public abstract class ScalarToken extends Token implements
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
             return _doMultiply(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken) getType().convert(
@@ -1004,7 +1004,7 @@ public abstract class ScalarToken extends Token implements
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
             return _doSubtract(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken) getType().convert(

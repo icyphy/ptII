@@ -44,6 +44,16 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (cxh)
  */
 public interface Type {
+
+    /** Return a new type which represents the type that results from
+     *  adding a token of this type and a token of the given argument
+     *  type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type add(Type rightArgumentType);
+
     /** Return a deep clone of this type.
      *  @return A Type.
      *  @exception CloneNotSupportedException If an instance cannot be cloned.
@@ -58,6 +68,15 @@ public interface Type {
      *   cannot be done.
      */
     public Token convert(Token token) throws IllegalActionException;
+
+    /** Return a new type which represents the type that results from
+     *  dividing a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type divide(Type rightArgumentType);
 
     /** Determine if the argument represents the same type as this object.
      *  @param object A Type.
@@ -117,10 +136,51 @@ public interface Type {
      */
     public boolean isSubstitutionInstance(Type type);
 
+    /** Return a new type which represents the type that results from
+     *  moduloing a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type modulo(Type rightArgumentType);
+
+    /** Return a new type which represents the type that results from
+     *  multiplying a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type multiply(Type rightArgumentType);
+
+    /** Return the type of the multiplicative identity for elements of
+     *  this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type one();
+
+    /** Return a new type which represents the type that results from
+     *  subtracting a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type subtract(Type rightArgumentType);
+
     /** Return the string representation of this type.
      *  @return A String.
      */
     public String toString();
+
+    /** Return the type of the additive identity for elements of
+     *  this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type zero();
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////

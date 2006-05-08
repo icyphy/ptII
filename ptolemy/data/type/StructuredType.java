@@ -54,11 +54,33 @@ public abstract class StructuredType implements Type {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a new type which represents the type that results from
+     *  adding a token of this type and a token of the given argument
+     *  type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type add(Type rightArgumentType) {
+        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+    }
+
     /** Return a deep copy of this StructuredType.
      *  @return A StructuredType.
      *  @exception CloneNotSupportedException Not thrown in this base class.
      */
     abstract public Object clone() throws CloneNotSupportedException;
+
+    /** Return a new type which represents the type that results from
+     *  dividing a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type divide(Type rightArgumentType) {
+        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+    }
 
     /** Return the depth of a structured type. The depth of a 
      *  structured type is the number of times a structured type 
@@ -92,8 +114,50 @@ public abstract class StructuredType implements Type {
      */
     public abstract void initialize(Type type);
 
+    /** Return a new type which represents the type that results from
+     *  moduloing a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type modulo(Type rightArgumentType) {
+        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+    }
+
+    /** Return a new type which represents the type that results from
+     *  multiplying a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type multiply(Type rightArgumentType) {
+        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+    }
+
+    /** Return the type of the multiplicative identity for elements of
+     *  this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type one() {
+        return this;
+    }
+
+    /** Return a new type which represents the type that results from
+     *  subtracting a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type subtract(Type rightArgumentType) {
+        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+    }
+
     /** Update this StructuredType to the specified Structured Type.
-     ** The specified type must have depth less than the MAXDEPTHBOUND, and
+     *  The specified type must have depth less than the MAXDEPTHBOUND, and
      *  have the same structure as this type.
      *  This method will only update the component type that is
      *  BaseType.UNKNOWN, and leave the constant part of this type intact.
@@ -110,6 +174,15 @@ public abstract class StructuredType implements Type {
                     + " the bound " + MAXDEPTHBOUND
                     + " , set up for detecting infinite iterations: "
                     + newType.toString());
+    }
+
+    /** Return the type of the additive identity for elements of
+     *  this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type zero() {
+        return this;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -49,6 +49,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.FixType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -283,7 +284,7 @@ public class ConversionUtilities {
             } else if (tokenClass.equals(Complex.class)) {
                 return BaseType.COMPLEX;
             } else if (tokenClass.equals(FixPoint.class)) {
-                return BaseType.FIX;
+                return BaseType.UNSIZED_FIX;
             } else if (tokenClass.equals(String.class)) {
                 return BaseType.STRING;
             } else if (tokenClass.equals(Class.forName("[[Z"))) {
@@ -476,7 +477,9 @@ public class ConversionUtilities {
                 return Boolean.TYPE;
             } else if (type.equals(BaseType.COMPLEX)) {
                 return ptolemy.math.Complex.class;
-            } else if (type.equals(BaseType.FIX)) {
+            } else if (type.equals(BaseType.UNSIZED_FIX)) {
+                return ptolemy.math.FixPoint.class;
+            } else if (type instanceof FixType) {
                 return ptolemy.math.FixPoint.class;
             } else if (type.equals(BaseType.BOOLEAN)) {
                 return Class.forName("[[Lptolemy.math.FixPoint;");

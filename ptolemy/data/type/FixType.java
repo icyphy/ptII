@@ -31,9 +31,14 @@ import java.io.Serializable;
 
 import ptolemy.data.FixToken;
 import ptolemy.data.Token;
+import ptolemy.math.Precision;
+import ptolemy.math.Overflow;
+import ptolemy.math.Rounding;
+import ptolemy.math.FixPointQuantization;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import java.lang.Math;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixType
@@ -50,13 +55,34 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.AcceptedRating Red
  */
 public class FixType extends StructuredType implements Serializable {
+    /** Construct a new fix type, with no integer bits and no
+     * fractional bits.  This (rather useless) type represents the
+     * bottom of the FixPoint type lattice.
+     */
+    public FixType() {
+        _precision = new Precision(0,0);
+    }
+
     /** Construct a new fix type.
      */
-    private FixType() {
+    public FixType(Precision precision) {
+        _precision = precision;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return a new type which represents the type that results from
+     *  adding a token of this type and a token of the given argument
+     *  type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type add(Type rightArgumentType) {
+        // FIXME...  deal with precisions correctly.
+        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+    }
 
     /** Return this, that is, return the reference to this object.
      *  @return A FixType.
@@ -73,12 +99,34 @@ public class FixType extends StructuredType implements Serializable {
      *   be done.
      */
     public Token convert(Token token) throws IllegalActionException {
-        if (token instanceof FixToken) {
-            return token;
+        if (token.getType() instanceof FixType && 
+                (_compare((FixType)token.getType()) == CPO.SAME ||
+                        _compare((FixType)token.getType()) == CPO.HIGHER)) {
+                        
+            // The overflow and rounding modes could be anything here,
+            // since the above check should ensure that rounding and
+            // overflow will never occur.
+            return ((FixToken)token).quantize(
+                    new FixPointQuantization(
+                            getPrecision(), 
+                            Overflow.GROW, 
+                            Rounding.HALF_EVEN));
         }
 
         throw new IllegalActionException(Token.notSupportedConversionMessage(
                 token, toString()));
+    }
+
+    /** Return a new type which represents the type that results from
+     *  dividing a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type divide(Type rightArgumentType) {
+        // FIXME...  deal with precisions correctly.
+        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Determine if the argument represents the same FixType as this
@@ -90,8 +138,19 @@ public class FixType extends StructuredType implements Serializable {
         if (!(object instanceof FixType)) {
             return false;
         }
+        Precision precision = ((FixType)object).getPrecision();
+        if (!(precision.equals(_precision))) {
+            return false;
+        }
 
         return true;
+    }
+
+    /** Return the precision associated with this FixType.
+     *  @return A Precision.
+     */
+    public Precision getPrecision() {
+        return _precision;
     }
 
     /** Return the class for tokens that this type represents.
@@ -157,15 +216,71 @@ public class FixType extends StructuredType implements Serializable {
         }
     }
 
+    /** Return a new type which represents the type that results from
+     *  moduloing a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type modulo(Type rightArgumentType) {
+        // FIXME...  deal with precisions correctly.
+        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+    }
+
+    /** Return a new type which represents the type that results from
+     *  multiplying a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type multiply(Type rightArgumentType) {
+        if(rightArgumentType instanceof FixType) {
+            Precision precision = ((FixType)rightArgumentType).getPrecision();
+            int fractionBits = 
+                precision.getFractionBitLength() +
+                _precision.getFractionBitLength();
+            int integerBits =
+                precision.getIntegerBitLength() +
+                _precision.getIntegerBitLength();
+            FixType returnType = new FixType(new Precision(fractionBits + integerBits, integerBits));
+            return returnType;
+        } else {
+            return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+        }
+    }
+
+    /** Return the type of the multiplicative identity for elements of
+     *  this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type one() {
+        // FIXME...  deal with precisions correctly.  
+        return this;
+    }
+
+    /** Return a new type which represents the type that results from
+     *  subtracting a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type subtract(Type rightArgumentType) {
+        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+    }
+
     /** Return the string representation of this type.
      *  @return A String.
      */
     public String toString() {
-        return "fixedpoint";
+        return "fixedpoint" + _precision.toString(Precision.EXPRESSION_LANGUAGE);
     }
 
     /** Update this StructuredType to the specified Structured Type.
-     ** The specified type must have the same structure as this type.
+     *  The specified type must have the same structure as this type.
      *  This method will only update the component type that is
      *  BaseType.UNKNOWN, and leave the constant part of this type intact.
      *  @param newType A StructuredType.
@@ -176,9 +291,19 @@ public class FixType extends StructuredType implements Serializable {
             throws IllegalActionException {
         if (newType._getRepresentative() != _getRepresentative()) {
             throw new InternalErrorException(
-                    "UnsizedMatrixType.updateType: Cannot "
+                    "FixType.updateType: Cannot "
                             + "updateType the element type to " + newType + ".");
         }
+    }
+
+    /** Return the type of the additive identity for elements of
+     *  this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type zero() {
+        // FIXME...  deal with precisions correctly.
+        return this;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -204,13 +329,22 @@ public class FixType extends StructuredType implements Serializable {
      *   not the same structured type as this one.
      */
     protected int _compare(StructuredType type) {
-        return CPO.SAME;
-
-        //         if (equals(type)) {
-        //             return CPO.SAME;
-        //         } else {
-        //             return CPO.LOWER;
-        //         }
+        if (!(type instanceof FixType)) {
+            throw new IllegalArgumentException("FixType._compare: "
+                    + "The argument is not a FixType.");
+        }
+        Precision precision = ((FixType)type).getPrecision();
+        if (_precision.equals(precision)) {
+            return CPO.SAME;
+        } else if(_precision.getFractionBitLength() <= precision.getFractionBitLength() &&
+                _precision.getIntegerBitLength() <= precision.getIntegerBitLength()) {
+            return CPO.LOWER;
+        } else if(_precision.getFractionBitLength() >= precision.getFractionBitLength() &&
+                _precision.getIntegerBitLength() >= precision.getIntegerBitLength()) {
+            return CPO.HIGHER;
+        } else {
+            return CPO.INCOMPARABLE;
+        }                
     }
 
     /** Return a static instance of this structured type. The return
@@ -218,7 +352,7 @@ public class FixType extends StructuredType implements Serializable {
      *  @return a StructuredType.
      */
     protected StructuredType _getRepresentative() {
-        return this;
+        return FixType.BOTTOM;
     }
 
     /** Return the greatest lower bound of this type with the specified
@@ -230,7 +364,18 @@ public class FixType extends StructuredType implements Serializable {
      *   not the same structured type as this one.
      */
     protected StructuredType _greatestLowerBound(StructuredType type) {
-        return this;
+        if (!(type instanceof FixType)) {
+            throw new IllegalArgumentException("FixType._greatestLowerBound: "
+                    + "The argument is not a FixType.");
+        }
+        Precision precision = ((FixType)type).getPrecision();
+        int fractionBits = 
+            Math.min(precision.getFractionBitLength(),
+                    _precision.getFractionBitLength());
+        int integerBits =
+            Math.min(precision.getIntegerBitLength(),
+                    _precision.getIntegerBitLength());
+        return new FixType(new Precision(fractionBits + integerBits, integerBits));
     }
 
     /** Return the least upper bound of this type with the specified
@@ -242,18 +387,24 @@ public class FixType extends StructuredType implements Serializable {
      *   not the same structured type as this one.
      */
     protected StructuredType _leastUpperBound(StructuredType type) {
-        return this;
-
-        //         if (equals(type)) {
-        //             return this;
-        //         } else {
-        //             return type;
-        //         }
+        if (!(type instanceof FixType)) {
+            throw new IllegalArgumentException("FixType._greatestLowerBound: "
+                    + "The argument is not a FixType.");
+        }
+        Precision precision = ((FixType)type).getPrecision();
+        int fractionBits = 
+            Math.max(precision.getFractionBitLength(),
+                    _precision.getFractionBitLength());
+        int integerBits =
+            Math.max(precision.getIntegerBitLength(),
+                    _precision.getIntegerBitLength());
+        FixType returnType = new FixType(new Precision(fractionBits + integerBits, integerBits));
+        return returnType;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    //  private Precision _precision;
+    private Precision _precision;
     //  private Quantization _quantization;
     //  private Rounding _rounding;
 }

@@ -36,6 +36,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.EventToken;
+import ptolemy.data.FixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.Numerical;
@@ -66,6 +67,17 @@ public abstract class BaseType implements Type, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a new type which represents the type that results from
+     *  adding a token of this type and a token of the given argument
+     *  type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type add(Type rightArgumentType) {
+        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+    }
+
     /** Return this, that is, return the reference to this object.
      *  @return A BaseType.
      */
@@ -81,6 +93,17 @@ public abstract class BaseType implements Type, Serializable {
      *   be done.
      */
     public abstract Token convert(Token t) throws IllegalActionException;
+
+    /** Return a new type which represents the type that results from
+     *  dividing a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type divide(Type rightArgumentType) {
+        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+    }
 
     /** Determine if the argument represents the same BaseType as this
      *  object.
@@ -139,6 +162,28 @@ public abstract class BaseType implements Type, Serializable {
         return super.hashCode();
     }
 
+    /** Return a new type which represents the type that results from
+     *  moduloing a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type modulo(Type rightArgumentType) {
+        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+    }
+
+    /** Return a new type which represents the type that results from
+     *  multiplying a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type multiply(Type rightArgumentType) {
+        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+    }
+
     /** Test if the argument type is compatible with this type. The method
      *  returns true if this type is UNKNOWN, since any type is a substitution
      *  instance of it. If this type is not UNKNOWN, this method returns true
@@ -194,11 +239,40 @@ public abstract class BaseType implements Type, Serializable {
         return (this == UNKNOWN) || (this == type);
     }
 
+    /** Return the type of the multiplicative identity for elements of
+     *  this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type one() {
+        return this;
+    }
+
+    /** Return a new type which represents the type that results from
+     *  subtracting a token of this type and a token of the given
+     *  argument type.
+     *  @param rightArgumentType The type to add to this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type subtract(Type rightArgumentType) {
+        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+    }
+
     /** Return the string representation of this type.
      *  @return A String.
      */
     public String toString() {
         return _name;
+    }
+
+    /** Return the type of the additive identity for elements of
+     *  this type.
+     *  @return A new type, or BaseType.GENERAL, if the operation does
+     *  not make sense for the given types.
+     */
+    public Type zero() {
+        return this;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -313,16 +387,31 @@ public abstract class BaseType implements Type, Serializable {
     public static final UnsizedMatrixType.DoubleMatrixType DOUBLE_MATRIX = new UnsizedMatrixType.DoubleMatrixType();
 
     /** The fix data type */
-    //   public static class FixType extends BaseType {
-    //         private FixType() {
-    //             super(FixToken.class, "fixedpoint");
-    //         }
-    //         public Token convert(Token t) throws IllegalActionException {
-    //             return FixToken.convert(t);
-    //         }
-    //     }
-    /** The fix data type. */
-    public static final FixType FIX = FixType.BOTTOM; //new FixType();
+    public static class UnsizedFixType extends BaseType {
+        private UnsizedFixType() {
+            super(FixToken.class, "fixedpoint");
+        }
+        public Token convert(Token t) throws IllegalActionException {
+            if(t instanceof FixToken) {
+                return t;
+            } else {
+                throw new IllegalActionException(
+                        "Cannot convert token "
+                        + t + " to type fixed point.");
+            }
+        }
+    }
+
+    /** An alias for the unsized fix data type, provided for backward
+     * compatibility with the previous versions of Ptolemy.
+     */
+    public static final UnsizedFixType FIX = new UnsizedFixType();
+
+    /** The unsized fix data type. */
+    public static final UnsizedFixType UNSIZED_FIX = FIX;
+
+    /** The fix data type, with a precision specified. */
+    public static final FixType SIZED_FIX = FixType.BOTTOM;
 
     /** The fix matrix data type. */
     public static final UnsizedMatrixType.FixMatrixType FIX_MATRIX = new UnsizedMatrixType.FixMatrixType();
