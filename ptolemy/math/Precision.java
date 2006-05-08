@@ -199,7 +199,7 @@ public class Precision implements Cloneable, Serializable {
                     + "Precision. Sign must be 0 or 1");
         }
 
-        if (length <= 0) {
+        if (length < 0) {
             throw new IllegalArgumentException("Incorrect definition of "
                     + "Precision. Do not use negative total length ");
         }
@@ -794,6 +794,13 @@ public class Precision implements Cloneable, Serializable {
         }
     }
 
+    public static class ExpressionLanguagePrecisionFormat extends LengthIntegerPrecisionFormat {
+        public String printPrecisionFormat(Precision p) {
+            return "(" + p.getNumberOfBits() + ","
+                    + p.getIntegerBitLength() + ")";
+        }
+    }
+
     /** Defines a Precision string format using the LENGTHeEXPONENT
      * precision format. The LENGTH value specifies the length
      * of the format in bits and the EXPONENT specifies the
@@ -967,6 +974,11 @@ public class Precision implements Cloneable, Serializable {
      * static LengthIntegerPrecisionFormat object.
      */
     public final static PrecisionFormat LENGTH_INTEGER = new LengthIntegerPrecisionFormat();
+
+    /**
+     * static ExpressionLanguagePrecisionFormat object.
+     */
+    public final static PrecisionFormat EXPRESSION_LANGUAGE = new ExpressionLanguagePrecisionFormat();
 
     /**
      * static VHDLPrecisionFormat object.
