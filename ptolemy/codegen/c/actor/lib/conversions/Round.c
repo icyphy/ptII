@@ -3,7 +3,7 @@
 /**/
 
 /*** floorBlock ***/
-    $ref(output) = ceil($ref(input));
+    $ref(output) = floor($ref(input));
 /**/
 
 /*** roundBlock ***/

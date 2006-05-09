@@ -1,22 +1,21 @@
 /*** preinitBlock ***/
-	int* $actorSymbol(intValues);
 	int $actorSymbol(i);
 	int $actorSymbol(length);
-/**/
-
-/*** initBlock ***/
-	$actorSymbol(intValues) = NULL;
+	boolean $actorSymbol(doDelete) = false;
+	Token $actorSymbol(intArray);
 /**/
 
 /*** fireBlock***/
-	$actorSymbol(length) = strlen($ref(input));
-	$actorSymbol(intValues) = (int*) realloc($actorSymbol(intValues), sizeof(int) * $actorSymbol(length));
-	for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(length); $actorSymbol(i)++) {
-		$actorSymbol(intValues)[$actorSymbol(i)] = $ref(input)[$actorSymbol(i)];
+	if ($actorSymbol(doDelete)) {
+		Array_delete($actorSymbol(intArray));
+	} else {
+		$actorSymbol(doDelete) = true;
 	}
-	$ref(output) = $actorSymbol(intValues);
-/**/
-
-/*** wrapupBlock ***/
-	free($actorSymbol(intValues));
+	
+	$actorSymbol(length) = strlen($ref(input));
+	$actorSymbol(intArray) = $new(Array($actorSymbol(length), 0));
+	for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(length); $actorSymbol(i)++) {
+		$actorSymbol(intArray).payload.Array->elements[$actorSymbol(i)] = $new(Int((int) $ref(input)[$actorSymbol(i)]));
+	}
+	$ref(output) = $actorSymbol(intArray);
 /**/
