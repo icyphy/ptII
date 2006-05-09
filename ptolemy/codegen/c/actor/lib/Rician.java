@@ -65,7 +65,7 @@ public class Rician extends RandomSource {
         // shared code blocks.
         Set sharedCode = new LinkedHashSet();
         sharedCode.addAll(super.getSharedCode());
-        
+
         // gaussianBlock is from the RandomSource parent class.
         sharedCode.add(_generateBlockCode("gaussianBlock"));
         return sharedCode;
@@ -84,15 +84,14 @@ public class Rician extends RandomSource {
         files.add("<math.h>");
         return files;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Generate code for producing a new random number.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected String _generateRandomNumber()
-            throws IllegalActionException {
+    protected String _generateRandomNumber() throws IllegalActionException {
         return _generateBlockCode("randomBlock");
     }
 }

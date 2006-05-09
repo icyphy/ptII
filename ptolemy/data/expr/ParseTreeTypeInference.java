@@ -26,11 +26,10 @@
 package ptolemy.data.expr;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.List;
 
-import ptolemy.math.Precision;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -44,6 +43,7 @@ import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.math.Precision;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeTypeInference

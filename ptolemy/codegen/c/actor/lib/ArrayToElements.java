@@ -49,6 +49,7 @@ public class ArrayToElements extends CCodeGeneratorHelper {
     public ArrayToElements(ptolemy.actor.lib.ArrayToElements actor) {
         super(actor);
     }
+
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from ArrayToElements.c,
@@ -66,13 +67,13 @@ public class ArrayToElements extends CCodeGeneratorHelper {
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
 
-        boolean isOutputPrimitive = isPrimitive(actor.output.getType()); 
+        boolean isOutputPrimitive = isPrimitive(actor.output.getType());
         for (int i = 0; i < actor.output.getWidth(); i++) {
             args.set(0, new Integer(i));
             if (isOutputPrimitive) {
                 _codeStream.appendCodeBlock("PrimitiveFireBlock", args);
             } else {
-                _codeStream.appendCodeBlock("TokenFireBlock", args);                
+                _codeStream.appendCodeBlock("TokenFireBlock", args);
             }
         }
         return processCode(_codeStream.toString());

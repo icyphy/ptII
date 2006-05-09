@@ -50,7 +50,7 @@ public class ArrayMinimum extends CCodeGeneratorHelper {
     public ArrayMinimum(ptolemy.actor.lib.ArrayMinimum actor) {
         super(actor);
     }
-   
+
     /**
      * Generate preinitialize code.
      * Reads the <code>preinitBlock</code> from ArrayMinimum.c,
@@ -61,12 +61,10 @@ public class ArrayMinimum extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-        ptolemy.actor.lib.ArrayMinimum actor =
-            (ptolemy.actor.lib.ArrayMinimum) getComponent();
-        
+        ptolemy.actor.lib.ArrayMinimum actor = (ptolemy.actor.lib.ArrayMinimum) getComponent();
+
         ArrayList args = new ArrayList();
-        args.add(cType(
-                ((ArrayType) actor.input.getType()).getElementType()));
+        args.add(cType(((ArrayType) actor.input.getType()).getElementType()));
 
         _codeStream.appendCodeBlock("preinitBlock", args);
         return processCode(_codeStream.toString());

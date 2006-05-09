@@ -34,7 +34,6 @@ import java.util.List;
 
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.actor.util.FunctionDependencyOfAtomicActor;
-import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;

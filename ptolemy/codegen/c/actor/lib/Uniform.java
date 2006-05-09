@@ -47,12 +47,11 @@ public class Uniform extends RandomSource {
     public Uniform(ptolemy.actor.lib.Uniform actor) {
         super(actor);
     }
-    
+
     /** Generate code for producing a new random number.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected String _generateRandomNumber()
-            throws IllegalActionException {
+    protected String _generateRandomNumber() throws IllegalActionException {
         return _generateBlockCode("randomBlock");
     }
 }

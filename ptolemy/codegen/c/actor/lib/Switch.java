@@ -40,7 +40,6 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
 //FIXME: this helper requires the code generator to support 
 //variable channel index reference.
-
 public class Switch extends CCodeGeneratorHelper {
 
     /**

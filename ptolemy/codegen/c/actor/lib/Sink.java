@@ -26,11 +26,7 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.actor.lib.Sink. 

@@ -38,6 +38,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
+import javax.swing.JComponent;
+import javax.swing.ToolTipManager;
+
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Singleton;
@@ -54,8 +57,6 @@ import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.util.UserObjectContainer;
-import javax.swing.ToolTipManager;
-import javax.swing.JComponent;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorDropTarget

@@ -26,8 +26,6 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
-import java.util.ArrayList;
-
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -49,6 +47,7 @@ public class ArrayElement extends CCodeGeneratorHelper {
     public ArrayElement(ptolemy.actor.lib.ArrayElement actor) {
         super(actor);
     }
+
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Accumulator.c,
@@ -61,11 +60,10 @@ public class ArrayElement extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.ArrayElement actor = 
-            (ptolemy.actor.lib.ArrayElement) getComponent();
+        ptolemy.actor.lib.ArrayElement actor = (ptolemy.actor.lib.ArrayElement) getComponent();
 
         if (isPrimitive(actor.output.getType())) {
-            _codeStream.appendCodeBlock("PrimitiveFireBlock");            
+            _codeStream.appendCodeBlock("PrimitiveFireBlock");
         } else {
             _codeStream.appendCodeBlock("TokenFireBlock");
         }

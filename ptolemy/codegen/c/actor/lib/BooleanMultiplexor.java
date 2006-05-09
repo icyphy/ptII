@@ -27,8 +27,6 @@
 package ptolemy.codegen.c.actor.lib;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
@@ -51,7 +49,7 @@ public class BooleanMultiplexor extends CCodeGeneratorHelper {
     public BooleanMultiplexor(ptolemy.actor.lib.BooleanMultiplexor actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * Read the <code>fireBlock</code> from Commutator.c,
@@ -64,8 +62,7 @@ public class BooleanMultiplexor extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.BooleanMultiplexor actor = 
-            (ptolemy.actor.lib.BooleanMultiplexor) getComponent();
+        ptolemy.actor.lib.BooleanMultiplexor actor = (ptolemy.actor.lib.BooleanMultiplexor) getComponent();
 
         ArrayList args = new ArrayList();
         args.add(codeGenType(actor.output.getType()));

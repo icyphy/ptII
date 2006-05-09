@@ -67,15 +67,14 @@ public class AddSubtract extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.AddSubtract actor = 
-            (ptolemy.actor.lib.AddSubtract) getComponent();
+        ptolemy.actor.lib.AddSubtract actor = (ptolemy.actor.lib.AddSubtract) getComponent();
 
-        Type type = actor.output.getType(); 
+        Type type = actor.output.getType();
         boolean minusOnly = actor.plus.getWidth() == 0;
 
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
-        
+
         if (type == BaseType.STRING) {
             _codeStream.appendCodeBlock("StringPreFireBlock");
             for (int i = 0; i < actor.plus.getWidth(); i++) {
@@ -86,9 +85,8 @@ public class AddSubtract extends CCodeGeneratorHelper {
         } else {
             String blockType = isPrimitive(type) ? "" : "Token";
             String blockPort = (minusOnly) ? "Minus" : "";
-            
-            _codeStream.appendCodeBlock(
-                    blockType + blockPort + "PreFireBlock");
+
+            _codeStream.appendCodeBlock(blockType + blockPort + "PreFireBlock");
         }
 
         String blockType = isPrimitive(type) ? codeGenType(type) : "Token";
@@ -104,10 +102,10 @@ public class AddSubtract extends CCodeGeneratorHelper {
         }
 
         _codeStream.appendCodeBlock("PostFireBlock");
-        
+
         return processCode(_codeStream.toString());
     }
-    
+
     /**
      * Generate preinitialize code.
      * Read the <code>preinitBlock</code> from AddSubtract.c,
@@ -120,15 +118,14 @@ public class AddSubtract extends CCodeGeneratorHelper {
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
 
-        ptolemy.actor.lib.AddSubtract actor = 
-            (ptolemy.actor.lib.AddSubtract) getComponent();
+        ptolemy.actor.lib.AddSubtract actor = (ptolemy.actor.lib.AddSubtract) getComponent();
 
         ArrayList args = new ArrayList();
-        
+
         Type type = actor.output.getType();
         args.add(cType(type));
         _codeStream.appendCodeBlock("preinitBlock", args);
-        
+
         return processCode(_codeStream.toString());
     }
 }

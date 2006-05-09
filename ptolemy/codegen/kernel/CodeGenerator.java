@@ -437,7 +437,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         includingFiles.add("<stdarg.h>");
         includingFiles.add("<stdio.h>");
-        includingFiles.add("<string.h>");        
+        includingFiles.add("<string.h>");
         Iterator files = includingFiles.iterator();
 
         while (files.hasNext()) {
@@ -662,7 +662,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Generate function type and token table.
         code.append(_generateFunctionTable(typesArray, functionsArray));
 
-
         for (int i = 0; i < typesArray.length; i++) {
             typeStreams[i].clear();
             typeStreams[i].appendCodeBlock("newBlock");
@@ -693,14 +692,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     private Object _generateFunctionTable(Object[] types, Object[] functions) {
-        StringBuffer code = new StringBuffer(); 
+        StringBuffer code = new StringBuffer();
 
         if (functions.length > 0 && types.length > 0) {
             // FIXME: This is C specific and should be moved elsewhere
             code.append("#define NUM_TYPE " + types.length + "\n");
             code.append("#define NUM_FUNC " + functions.length + "\n");
-            code.append("Token (*functionTable[NUM_TYPE][NUM_FUNC])" +
-                    "(Token, ...)= {\n");
+            code.append("Token (*functionTable[NUM_TYPE][NUM_FUNC])"
+                    + "(Token, ...)= {\n");
 
             for (int i = 0; i < types.length; i++) {
                 code.append("\t");
@@ -971,9 +970,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** 
      * A static list of all macros supported by the code generator. 
      */
-    protected static final List _macros = Arrays.asList(new String[] { 
-            "ref", "val", "size", "type", "targetType", "cgType", "tokenFunc", "typeFunc",
-            "actorSymbol", "actorClass", "new" });
+    protected static final List _macros = Arrays.asList(new String[] { "ref",
+            "val", "size", "type", "targetType", "cgType", "tokenFunc",
+            "typeFunc", "actorSymbol", "actorClass", "new" });
 
     /** 
      * A static list of all primitive types supported by the code generator. 

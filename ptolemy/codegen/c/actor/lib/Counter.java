@@ -28,8 +28,6 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
-import java.util.ArrayList;
-
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -50,7 +48,7 @@ public class Counter extends CCodeGeneratorHelper {
     public Counter(ptolemy.actor.lib.Counter actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * If both the increment and decrement ports are connected, the counter
@@ -66,12 +64,11 @@ public class Counter extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.Counter actor = 
-            (ptolemy.actor.lib.Counter) getComponent();
+        ptolemy.actor.lib.Counter actor = (ptolemy.actor.lib.Counter) getComponent();
 
         boolean doDecrement = actor.decrement.getWidth() > 0;
         boolean doIncrement = actor.increment.getWidth() > 0;
-        
+
         if (doDecrement && !doIncrement) {
             _codeStream.appendCodeBlock("decrementBlock");
         } else if (!doDecrement && doIncrement) {

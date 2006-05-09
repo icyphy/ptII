@@ -66,7 +66,8 @@ public class CodeGeneratorUtilities {
      *  @exception IllegalActionException If there is a problem getting the
      *  Variables.   
      */
-    public static HashMap newMap(NamedObj namedObj) throws IllegalActionException {
+    public static HashMap newMap(NamedObj namedObj)
+            throws IllegalActionException {
 
         HashMap substituteMap = new HashMap();
         Iterator attributes = namedObj.attributeList().iterator();

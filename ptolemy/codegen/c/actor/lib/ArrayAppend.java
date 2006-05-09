@@ -46,10 +46,10 @@ public class ArrayAppend extends CCodeGeneratorHelper {
      * Constructor method for the ArrayAppend helper.
      * @param actor The associated actor.
      */
-    public ArrayAppend(ptolemy.actor.lib.ArrayAppend actor) {        
+    public ArrayAppend(ptolemy.actor.lib.ArrayAppend actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from ArrayAppend.c,
@@ -73,7 +73,7 @@ public class ArrayAppend extends CCodeGeneratorHelper {
             _codeStream.appendCodeBlock("getTotalLength", args);
         }
         _codeStream.appendCodeBlock("allocNewArray");
-            
+
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, new Integer(i));
             _codeStream.appendCodeBlock("fillArray", args);

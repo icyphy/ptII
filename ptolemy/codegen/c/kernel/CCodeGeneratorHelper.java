@@ -27,14 +27,10 @@
  */
 package ptolemy.codegen.c.kernel;
 
-import java.util.ArrayList;
-import java.util.Set;
-
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// CCodeGeneratorHelper

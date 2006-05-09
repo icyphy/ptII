@@ -78,19 +78,18 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        ptolemy.actor.lib.RandomSource actor = 
-            (ptolemy.actor.lib.RandomSource) getComponent();
+        ptolemy.actor.lib.RandomSource actor = (ptolemy.actor.lib.RandomSource) getComponent();
 
         long seedValue = ((LongToken) (actor.seed.getToken())).longValue();
 
         if (seedValue == 0) {
-            
+
             ArrayList args = new ArrayList();
             args.add(new Integer(actor.hashCode()));
 
             _codeStream.appendCodeBlock("setSeedBlock0", args);
-            
-        } else {    // Use fixed seed.
+
+        } else { // Use fixed seed.
             _codeStream.appendCodeBlock("setSeedBlock1");
         }
 
@@ -116,6 +115,6 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
      *  @exception IllegalActionException Not thrown in this base class.
      *  @return The code that produces a new random number.
      */
-    protected abstract String _generateRandomNumber() 
-        throws IllegalActionException;
+    protected abstract String _generateRandomNumber()
+            throws IllegalActionException;
 }

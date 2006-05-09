@@ -48,8 +48,8 @@ public class Scale extends CCodeGeneratorHelper {
      */
     public Scale(ptolemy.actor.lib.Scale actor) {
         super(actor);
-    }   
-    
+    }
+
     /**
      * Generate fire code for the Scale actor.
      * @return The generated code.
@@ -59,11 +59,10 @@ public class Scale extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.Scale actor = 
-            (ptolemy.actor.lib.Scale) getComponent();
-        
+        ptolemy.actor.lib.Scale actor = (ptolemy.actor.lib.Scale) getComponent();
+
         String type = isPrimitive(actor.input.getType()) ? "" : "Token";
-            
+
         _codeStream.appendCodeBlock(type + "FireBlock");
         return processCode(_codeStream.toString());
     }

@@ -63,8 +63,7 @@ public class Distributor extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.Distributor actor = 
-            (ptolemy.actor.lib.Distributor) getComponent();
+        ptolemy.actor.lib.Distributor actor = (ptolemy.actor.lib.Distributor) getComponent();
 
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
@@ -74,17 +73,16 @@ public class Distributor extends CCodeGeneratorHelper {
             args.set(0, new Integer(i));
 
             String codeBlock = "";
-            if (isPrimitive(inputType) && 
-                    !isPrimitive(actor.output.getType())) {
+            if (isPrimitive(inputType) && !isPrimitive(actor.output.getType())) {
                 codeBlock = "toTokenBlock";
             } else {
                 if (actor.output.getType() == BaseType.STRING) {
                     if (inputType == BaseType.INT) {
                         codeBlock = "IntToStringBlock";
                     } else if (inputType == BaseType.DOUBLE) {
-                        codeBlock = "DoubleToStringBlock";                        
+                        codeBlock = "DoubleToStringBlock";
                     } else if (inputType == BaseType.LONG) {
-                        codeBlock = "LongToStringBlock";                        
+                        codeBlock = "LongToStringBlock";
                     } else if (inputType == BaseType.BOOLEAN) {
                         codeBlock = "BooleanToStringBlock";
                     } else {
@@ -92,7 +90,7 @@ public class Distributor extends CCodeGeneratorHelper {
                                 "Unhandled input type to string");
                     }
                 } else {
-                    codeBlock = "assignBlock";                    
+                    codeBlock = "assignBlock";
                 }
             }
             _codeStream.appendCodeBlock(codeBlock, args);

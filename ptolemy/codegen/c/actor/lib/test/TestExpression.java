@@ -26,9 +26,6 @@
  */
 package ptolemy.codegen.c.actor.lib.test;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ptolemy.codegen.c.actor.lib.Expression;
 
 /**

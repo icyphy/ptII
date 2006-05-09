@@ -85,15 +85,14 @@ public class Gaussian extends RandomSource {
         files.add("<math.h>");
         return files;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Generate code for producing a new random number.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected String _generateRandomNumber()
-            throws IllegalActionException {
+    protected String _generateRandomNumber() throws IllegalActionException {
         return _generateBlockCode("randomBlock");
     }
 }

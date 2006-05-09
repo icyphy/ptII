@@ -31,14 +31,13 @@ import java.io.Serializable;
 
 import ptolemy.data.FixToken;
 import ptolemy.data.Token;
-import ptolemy.math.Precision;
-import ptolemy.math.Overflow;
-import ptolemy.math.Rounding;
-import ptolemy.math.FixPointQuantization;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import java.lang.Math;
+import ptolemy.math.FixPointQuantization;
+import ptolemy.math.Overflow;
+import ptolemy.math.Precision;
+import ptolemy.math.Rounding;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixType

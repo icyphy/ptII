@@ -33,7 +33,6 @@ import java.io.Serializable;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Type;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////

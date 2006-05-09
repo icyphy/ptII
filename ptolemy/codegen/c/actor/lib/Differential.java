@@ -64,15 +64,14 @@ public class Differential extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.Differential actor = 
-            (ptolemy.actor.lib.Differential) getComponent();
+        ptolemy.actor.lib.Differential actor = (ptolemy.actor.lib.Differential) getComponent();
 
         if (isPrimitive(actor.output.getType())) {
             _codeStream.appendCodeBlock("CommonFireBlock");
         } else {
-            _codeStream.appendCodeBlock("TokenFireBlock");            
+            _codeStream.appendCodeBlock("TokenFireBlock");
         }
-        
+
         return processCode(_codeStream.toString());
     }
 
@@ -88,19 +87,18 @@ public class Differential extends CCodeGeneratorHelper {
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
 
-        ptolemy.actor.lib.Differential actor = 
-            (ptolemy.actor.lib.Differential) getComponent();
+        ptolemy.actor.lib.Differential actor = (ptolemy.actor.lib.Differential) getComponent();
 
         ArrayList args = new ArrayList();
-        
+
         Type type = actor.output.getType();
         if (isPrimitive(type)) {
             args.add(cType(type));
             _codeStream.appendCodeBlock("CommonPreinitBlock", args);
         } else {
-            _codeStream.appendCodeBlock("TokenPreinitBlock");            
+            _codeStream.appendCodeBlock("TokenPreinitBlock");
         }
-        
+
         return processCode(_codeStream.toString());
     }
 }

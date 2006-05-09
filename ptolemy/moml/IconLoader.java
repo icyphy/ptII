@@ -27,7 +27,6 @@
  */
 package ptolemy.moml;
 
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 

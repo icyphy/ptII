@@ -72,7 +72,7 @@ public class Accumulator extends CCodeGeneratorHelper {
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
         String type = codeGenType(actor.output.getType());
-        
+
         if (actor.reset.getWidth() > 0) {
             _codeStream.appendCodeBlock("initReset");
             for (int i = 1; i < actor.reset.getWidth(); i++) {
@@ -80,9 +80,10 @@ public class Accumulator extends CCodeGeneratorHelper {
                 _codeStream.appendCodeBlock("readReset", args);
             }
             _codeStream.appendCodeBlock("ifReset");
-            
-            _codeStream.appendCodeBlock(
-                (type.equals("String")) ? "StringInitSum" : "InitSum");
+
+            _codeStream
+                    .appendCodeBlock((type.equals("String")) ? "StringInitSum"
+                            : "InitSum");
         }
 
         if (!isPrimitive(type)) {
@@ -96,7 +97,7 @@ public class Accumulator extends CCodeGeneratorHelper {
 
         return processCode(_codeStream.toString());
     }
-    
+
     /** Generate the initialize code. 
      *  The method reads in <code>initBlock</code> from Accumulator.c,
      *  replaces macros with their values and returns the processed code
@@ -108,12 +109,11 @@ public class Accumulator extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        ptolemy.actor.lib.Accumulator actor = 
-            (ptolemy.actor.lib.Accumulator) getComponent();
+        ptolemy.actor.lib.Accumulator actor = (ptolemy.actor.lib.Accumulator) getComponent();
 
-        _codeStream.appendCodeBlock(
-                (actor.output.getType() == BaseType.STRING) ? 
-                        "StringInitSum" : "InitSum");
+        _codeStream
+                .appendCodeBlock((actor.output.getType() == BaseType.STRING) ? "StringInitSum"
+                        : "InitSum");
 
         return processCode(_codeStream.toString());
     }
@@ -132,12 +132,12 @@ public class Accumulator extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Accumulator actor = (ptolemy.actor.lib.Accumulator) getComponent();
 
         if (actor.reset.getWidth() > 0) {
-            _codeStream.appendCodeBlock("preinitReset");            
+            _codeStream.appendCodeBlock("preinitReset");
         }
 
         return processCode(_codeStream.toString());
     }
-    
+
     /**
      * Get the files needed by the code generated for the
      * Accumulator actor.

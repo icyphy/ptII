@@ -51,7 +51,7 @@ public class StringToIntArray extends CCodeGeneratorHelper {
     public StringToIntArray(ptolemy.actor.lib.conversions.StringToIntArray actor) {
         super(actor);
     }
-    
+
     /**
      * Get the files needed by the code generated for the
      * StringToIntArray actor.
@@ -65,4 +65,5 @@ public class StringToIntArray extends CCodeGeneratorHelper {
         files.add("<string.h>");
         files.add("<stddef.h>");
         return files;
-    }}
+    }
+}

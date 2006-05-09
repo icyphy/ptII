@@ -46,15 +46,14 @@ public class DiscreteRandomSource extends RandomSource {
     public DiscreteRandomSource(ptolemy.actor.lib.DiscreteRandomSource actor) {
         super(actor);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Generate code for producing a new random number.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected String _generateRandomNumber()
-            throws IllegalActionException {
+    protected String _generateRandomNumber() throws IllegalActionException {
         return _generateBlockCode("randomBlock");
     }
 }

@@ -30,7 +30,6 @@ package ptolemy.codegen.c.actor.lib;
 import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -67,27 +66,26 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.MultiplyDivide actor = 
-            (ptolemy.actor.lib.MultiplyDivide) getComponent();
+        ptolemy.actor.lib.MultiplyDivide actor = (ptolemy.actor.lib.MultiplyDivide) getComponent();
 
-        Type type = actor.output.getType(); 
+        Type type = actor.output.getType();
         boolean divideOnly = actor.multiply.getWidth() == 0;
 
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
-        
+
         String blockType = isPrimitive(type) ? "" : "Token";
-        
+
         if (!divideOnly) {
             _codeStream.appendCodeBlock("SetNumeratorBlock");
         } else {
-            _codeStream.appendCodeBlock(blockType + "SetNumeratorOneBlock");            
+            _codeStream.appendCodeBlock(blockType + "SetNumeratorOneBlock");
         }
-        
+
         if (actor.divide.getWidth() > 0) {
             _codeStream.appendCodeBlock("SetDenominatorBlock");
         }
-        
+
         for (int i = 1; i < actor.multiply.getWidth(); i++) {
             args.set(0, new Integer(i));
             _codeStream.appendCodeBlock(blockType + "MultiplyBlock", args);
@@ -103,11 +101,10 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
         } else {
             _codeStream.appendCodeBlock(blockType + "OutputBlock");
         }
-        
+
         return processCode(_codeStream.toString());
     }
-    
-    
+
     /**
      * Generate preinitialize code.
      * Read the <code>preinitBlock</code> from MultiplyDivide.c,
@@ -120,15 +117,14 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
 
-        ptolemy.actor.lib.MultiplyDivide actor = 
-            (ptolemy.actor.lib.MultiplyDivide) getComponent();
+        ptolemy.actor.lib.MultiplyDivide actor = (ptolemy.actor.lib.MultiplyDivide) getComponent();
 
         ArrayList args = new ArrayList();
-        
+
         Type type = actor.output.getType();
         args.add(cType(type));
         _codeStream.appendCodeBlock("preinitBlock", args);
-        
+
         return processCode(_codeStream.toString());
     }
 }

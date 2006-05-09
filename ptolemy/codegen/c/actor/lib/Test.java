@@ -106,8 +106,7 @@ public class Test extends CCodeGeneratorHelper {
         // Automatically append the "preinitBlock" by default.
         super.generatePreinitializeCode();
 
-        ptolemy.actor.lib.Test actor = 
-            (ptolemy.actor.lib.Test) getComponent();
+        ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
 
         if (actor.input.getWidth() > 1) {
             ArrayList args = new ArrayList();

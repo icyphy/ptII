@@ -50,7 +50,7 @@ public class ArrayMaximum extends CCodeGeneratorHelper {
     public ArrayMaximum(ptolemy.actor.lib.ArrayMaximum actor) {
         super(actor);
     }
-   
+
     /**
      * Generate preinitialize code.
      * Reads the <code>preinitBlock</code> from ArrayMaximum.c,
@@ -61,12 +61,10 @@ public class ArrayMaximum extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-        ptolemy.actor.lib.ArrayMaximum actor =
-            (ptolemy.actor.lib.ArrayMaximum) getComponent();
-        
+        ptolemy.actor.lib.ArrayMaximum actor = (ptolemy.actor.lib.ArrayMaximum) getComponent();
+
         ArrayList args = new ArrayList();
-        args.add(cType(
-                ((ArrayType) actor.input.getType()).getElementType()));
+        args.add(cType(((ArrayType) actor.input.getType()).getElementType()));
 
         _codeStream.appendCodeBlock("preinitBlock", args);
         return processCode(_codeStream.toString());

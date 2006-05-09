@@ -32,12 +32,6 @@
 
 package diva.util.java2d.svg;
 
-import diva.util.java2d.PaintedObject;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -45,6 +39,9 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 
 import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.swing.svg.GVTTreeBuilderAdapter;
@@ -52,6 +49,8 @@ import org.apache.batik.swing.svg.GVTTreeBuilderEvent;
 import org.apache.batik.swing.svg.JSVGComponent;
 import org.w3c.dom.Document;
 import org.w3c.dom.svg.SVGDocument;
+
+import diva.util.java2d.PaintedObject;
 
 
 /** A utility class that paints a rendering of an SVG document
