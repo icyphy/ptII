@@ -26,7 +26,10 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.actor.lib.ArrayToElements. 
@@ -45,5 +48,33 @@ public class ArrayToElements extends CCodeGeneratorHelper {
      */
     public ArrayToElements(ptolemy.actor.lib.ArrayToElements actor) {
         super(actor);
+    }
+    /**
+     * Generate fire code.
+     * The method reads in <code>fireBlock</code> from ArrayToElements.c,
+     * replaces macros with their values and returns the processed code
+     * block.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+        super.generateFireCode();
+
+        ptolemy.actor.lib.ArrayToElements actor = (ptolemy.actor.lib.ArrayToElements) getComponent();
+
+        ArrayList args = new ArrayList();
+        args.add(new Integer(0));
+
+        boolean isOutputPrimitive = isPrimitive(actor.output.getType()); 
+        for (int i = 0; i < actor.output.getWidth(); i++) {
+            args.set(0, new Integer(i));
+            if (isOutputPrimitive) {
+                _codeStream.appendCodeBlock("PrimitiveFireBlock", args);
+            } else {
+                _codeStream.appendCodeBlock("TokenFireBlock", args);                
+            }
+        }
+        return processCode(_codeStream.toString());
     }
 }

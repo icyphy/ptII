@@ -455,7 +455,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             code.append(cType(((TypedIOPort) channel.port).getType()));
             code.append(" " + _getTypeConvertReference(channel));
 
-            int bufferSize = getBufferSize(channel.port);
+            int bufferSize = 
+                Math.max(DFUtilities.getTokenProductionRate(channel.port), 
+                        DFUtilities.getTokenConsumptionRate(channel.port));
 
             if (bufferSize > 1) {
                 code.append("[" + bufferSize + "]");
@@ -826,6 +828,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
     }
 
+    
     /** Return the reference to the specified parameter or port of the
      *  associated actor. For a parameter, the returned string is in
      *  the form "fullName_parameterName". For a port, the returned string
@@ -841,6 +844,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *   exist or does not have a value.
      */
     public String getReference(String name) throws IllegalActionException {
+        boolean isWrite = false;
+        return getReference(name, isWrite);
+    }
+    
+    public String getReference(String name, boolean isWrite) 
+            throws IllegalActionException {
         name = processCode(name);
 
         String castType = null;
@@ -953,10 +962,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     // Type convert.
                     if (typeConvertSinks.contains(channel)) {
                         if (!hasTypeConvertReference) {
-                            result
-                                    .append(_getTypeConvertReference(sourceChannel));
-                            sinkPort = port;
-                            sinkChannelNumber = channelNumber;
+                            result.append(
+                                    _getTypeConvertReference(sourceChannel));
                             hasTypeConvertReference = true;
                         }
                     } else {
@@ -967,64 +974,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         }
                     }
 
-                    if (!channelAndOffset[1].equals("")
-                            && (getBufferSize(sinkPort) > 1)) {
-                        // Specified offset.
-
-                        String temp = "";
-
-                        Object offsetObject = getWriteOffset(sinkPort,
-                                sinkChannelNumber);
-
-                        if (offsetObject instanceof Integer) {
-
-                            int offset = ((Integer) offsetObject).intValue()
-                                    + (new Integer(channelAndOffset[1]))
-                                            .intValue();
-
-                            offset %= getBufferSize(sinkPort, sinkChannelNumber);
-                            temp = new Integer(offset).toString();
-                            /*
-                             int divisor = getBufferSize(sinkPort,
-                             sinkChannelNumber);
-                             temp = "("
-                             + getWriteOffset(sinkPort,
-                             sinkChannelNumber) + " + "
-                             + channelAndOffset[1] + ")%" + divisor;
-                             */
-
-                        } else {
-                            int modulo = getBufferSize(sinkPort,
-                                    sinkChannelNumber) - 1;
-                            temp = "("
-                                    + (String) getWriteOffset(sinkPort,
-                                            sinkChannelNumber) + " + "
-                                    + channelAndOffset[1] + ")&" + modulo;
-                        }
-
-                        result.append("[" + temp + "]");
-
-                    } else if (getBufferSize(sinkPort) > 1) {
-                        // Did not specify offset, so the receiver buffer
-                        // size is 1. This is multiple firing.
-                        String temp = "";
-
-                        Object offsetObject = getWriteOffset(sinkPort,
-                                sinkChannelNumber);
-
-                        if (offsetObject instanceof Integer) {
-                            int offset = ((Integer) offsetObject).intValue();
-                            offset %= getBufferSize(sinkPort, sinkChannelNumber);
-                            temp = new Integer(offset).toString();
-                        } else {
-                            int modulo = getBufferSize(sinkPort,
-                                    sinkChannelNumber) - 1;
-                            temp = (String) getWriteOffset(sinkPort,
-                                    sinkChannelNumber)
-                                    + "&" + modulo;
-                        }
-                        result.append("[" + temp + "]");
-                    }
+                    result.append(generateOffset(channelAndOffset[1],
+                            sinkPort, sinkChannelNumber, true));
+                    
                 }
 
                 return _generateTypeConvertMethod(
@@ -1039,6 +991,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             if ((port.isInput() && !forComposite && port.getWidth() > 0)
                     || (port.isOutput() && forComposite)) {
+                         
                 result.append(generateName(port));
 
                 //if (!channelAndOffset[0].equals("")) {
@@ -1046,52 +999,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     // Channel number specified. This must be a multiport.
                     result.append("[" + channelAndOffset[0] + "]");
                 }
-
-                if (!channelAndOffset[1].equals("")
-                        && (getBufferSize(port) > 1)) {
-                    String temp = "";
-
-                    if (getReadOffset(port, channelNumber) instanceof Integer) {
-                        int offset = ((Integer) getReadOffset(port,
-                                channelNumber)).intValue();
-                        offset = offset
-                                + (new Integer(channelAndOffset[1])).intValue();
-                        offset = offset % getBufferSize(port, channelNumber);
-                        temp = new Integer(offset).toString();
-                    } else {
-                        // Note: This assumes the director helper will increase
-                        // the buffer size of the channel to the power of two.
-                        // Otherwise, use "%" instead.
-                        // FIXME: We haven't check if modulo is 0. But this
-                        // should never happen. For offsets that need to be
-                        // represented by string expression,
-                        // getBufferSize(port, channelNumber) will always
-                        // return a value at least 2.
-                        int modulo = getBufferSize(port, channelNumber) - 1;
-                        temp = (String) getReadOffset(port, channelNumber);
-                        temp = "(" + temp + " + " + channelAndOffset[1] + ")&"
-                                + modulo;
-                    }
-
-                    result.append("[" + temp + "]");
-                } else if (getBufferSize(port) > 1) {
-                    // Did not specify offset, so the receiver buffer
-                    // size is 1. This is multiple firing.
-                    String temp = "";
-
-                    if (getReadOffset(port, channelNumber) instanceof Integer) {
-                        int offset = ((Integer) getReadOffset(port,
-                                channelNumber)).intValue();
-                        offset = offset % getBufferSize(port, channelNumber);
-                        temp = new Integer(offset).toString();
-                    } else {
-                        int modulo = getBufferSize(port, channelNumber) - 1;
-                        temp = (String) getReadOffset(port, channelNumber);
-                        temp = temp + "&" + modulo;
-                    }
-
-                    result.append("[" + temp + "]");
-                }
+                                
+                result.append(generateOffset(channelAndOffset[1], 
+                        port, channelNumber, isWrite));
 
                 return _generateTypeConvertMethod(
                         result.toString(), castType, refType);
@@ -1135,6 +1045,95 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         throw new IllegalActionException(_component, "Reference not found: "
                 + name);
+    }
+
+
+    /**
+     * 
+     * @param offsetString The specified offset from the user.
+     * @param port The referenced port.
+     * @param channel The referenced port channel.
+     * @param isWrite Whether to generate the write or read offset.
+     * @return The expression that represents the offset in the generated code.
+     * @throws IllegalActionException If there is problems getting the port
+     *  buffer size or the offset in the channel and offset map.
+     */
+    public String generateOffset(
+        String offsetString, IOPort port, int channel, boolean isWrite) 
+           throws IllegalActionException {
+        
+        // if the max buffer size of the port is not larger than 1,
+        // offset is not needed.
+        if (!(getBufferSize(port) > 1)) {
+            return "";
+        }
+        
+        String result = new String();
+        Object offsetObject;
+        String temp;
+
+        // Get the offset index.
+        if (isWrite) {
+            offsetObject = getWriteOffset(port, channel);
+        } else {
+            offsetObject = getReadOffset(port, channel);            
+        }
+        
+        if (!offsetString.equals("")) {
+            // Specified offset.
+
+            if (offsetObject instanceof Integer) {
+
+                int offset = ((Integer) offsetObject).intValue()
+                        + (new Integer(offsetString))
+                                .intValue();
+
+                offset %= getBufferSize(port, channel);
+                temp = new Integer(offset).toString();
+                /*
+                 int divisor = getBufferSize(sinkPort,
+                 sinkChannelNumber);
+                 temp = "("
+                 + getWriteOffset(sinkPort,
+                 sinkChannelNumber) + " + "
+                 + channelAndOffset[1] + ")%" + divisor;
+                 */
+
+            } else {
+                // Note: This assumes the director helper will increase
+                // the buffer size of the channel to the power of two.
+                // Otherwise, use "%" instead.
+                // FIXME: We haven't check if modulo is 0. But this
+                // should never happen. For offsets that need to be
+                // represented by string expression,
+                // getBufferSize(port, channelNumber) will always
+                // return a value at least 2.
+                int modulo = getBufferSize(port, channel) - 1;
+                temp = "(" + (String) offsetObject + " + "
+                        + offsetString + ")&" + modulo;
+            }
+
+            result += "[" + temp + "]";
+
+        } else {
+            // Did not specify offset, so the receiver buffer
+            // size is 1. This is multiple firing.
+
+            if (offsetObject instanceof Integer) {
+                int offset = ((Integer) offsetObject).intValue();
+
+                offset %= getBufferSize(port, channel);
+                
+                temp = new Integer(offset).toString();
+            } else {
+                
+                int modulo = getBufferSize(port, channel) - 1;
+
+                temp = (String) offsetObject + "&" + modulo;
+            }
+            result += "[" + temp + "]";
+        }
+        return result;
     }
 
     /**
@@ -1724,7 +1723,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         String statements = "";
 
-        int rate = DFUtilities.getTokenConsumptionRate(source.port);
+        int rate = Math.max(DFUtilities.getTokenProductionRate(source.port), 
+                DFUtilities.getTokenConsumptionRate(source.port));
 
         for (int offset = 0; offset < rate ||
                 (offset == 0 && rate == 0); offset++) {
@@ -1799,7 +1799,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             sinkPortChannel = "@" + sinkPortChannel;
         }
         String sinkRef = ((CodeGeneratorHelper) _getHelper(sink.port
-                .getContainer())).getReference(sinkPortChannel);
+                .getContainer())).getReference(sinkPortChannel, true);
         
         // When the sink port is contained by a modal controller, it is 
         // possible that the port is both input and output port. we need

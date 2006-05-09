@@ -11,11 +11,10 @@ Token String_new(char* s);
 Token String_new(char* s) {
     Token result;
     result.type = TYPE_String;
-    result.payload.String = s;
+    result.payload.String = strdup(s);
     return result;
 }
 /**/
-
 
 /***deleteBlock***/
 Token String_delete(Token token, ...) {   
@@ -106,6 +105,11 @@ Token String_one(Token this, ...) {
 }
 /**/
 
+/***cloneBlock***/
+Token String_clone(Token this, ...) {
+	return String_new(this.payload.String);
+}
+/**/
 
 
 

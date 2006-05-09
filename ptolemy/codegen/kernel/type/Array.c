@@ -59,9 +59,12 @@ Token Array_new(int size, int given, ...) {
 /***deleteBlock***/
 Token Array_delete(Token token, ...) { 
 	int i;  
+    Token element;
+    
     // Delete each elements.
     for (i = 0; i < token.payload.Array->size; i++) {
-        functionTable[Array_get(token, i).type][FUNC_delete](Array_get(token, i));
+    	element = Array_get(token, i);
+        functionTable[element.type][FUNC_delete](element);
     }
     free(token.payload.Array->elements);
     free(token.payload.Array);
@@ -283,7 +286,20 @@ Token Array_one(Token token, ...) {
 /**/
 
 
-
+/***cloneBlock***/
+Token Array_clone(Token token, ...) {
+	Token result;
+	Token element;
+	int i;
+	
+	result = Array_new(token.payload.Array->size, 0);
+	for (i = 0; i < token.payload.Array->size; i++) {
+		element = Array_get(token, i);
+		result.payload.Array->elements[i] = functionTable[element.type][FUNC_clone](element);
+	}
+	return result;	
+}
+/**/
 
 
 

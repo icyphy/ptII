@@ -6,16 +6,11 @@
     $actorSymbol(valueArray) = $new(Array($size(input), 0));
 /**/
 
-/*** primitiveFireBlock($channel, $type) ***/
-    $actorSymbol(valueArray).payload.Array->elements[$channel] = $new($type($ref(input#$channel)));
-	$ref(output) = $actorSymbol(valueArray);
+/*** fillArray($channel) ***/
+    $actorSymbol(valueArray).payload.Array->elements[$channel] = $ref((Token) input#$channel);
 /**/
 
-/*** tokenFireBlock($channel, $type)***/
-	$actorSymbol(valueArray).payload.Array->elements[$channel] = ($ref(input#$channel).type == TYPE_$type) ?
-	    $ref(input#$channel) : 
-	    $typeFunc(TYPE_$type::convert($ref(input#$channel)));	
-	    
+/*** sendOutput ***/
 	$ref(output) = $actorSymbol(valueArray);
 /**/
 

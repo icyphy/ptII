@@ -128,6 +128,11 @@ Token Int_one(Token token, ...) {
 }
 /**/
 
+/***cloneBlock***/
+Token Int_clone(Token this, ...) {
+	return this;
+}
+/**/
 
 ---------------- static functions -----------------------
 

@@ -98,6 +98,11 @@ Token Boolean_one(Token token, ...) {
 /**/
 
 
+/***cloneBlock***/
+Token Boolean_clone(Token this, ...) {
+	return this;
+}
+/**/
 
 
 --------------------- static functions ------------------------------

@@ -437,6 +437,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         includingFiles.add("<stdarg.h>");
         includingFiles.add("<stdio.h>");
+        includingFiles.add("<string.h>");        
         Iterator files = includingFiles.iterator();
 
         while (files.hasNext()) {
@@ -574,6 +575,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         HashSet functions = new HashSet();
         functions.add("delete");
         functions.add("toString");
+        //functions.add("print");
         functions.add("convert");
         functions.addAll(_typeFuncUsed);
         functions.addAll(_tokenFuncUsed);

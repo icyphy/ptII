@@ -139,6 +139,11 @@ Token Double_one(Token token, ...) {
 /**/
 
 
+/***cloneBlock***/
+Token Double_clone(Token this, ...) {
+	return this;
+}
+/**/
 
 
 

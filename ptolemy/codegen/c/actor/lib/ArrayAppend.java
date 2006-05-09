@@ -26,7 +26,10 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.actor.lib.ArrayAppend. 
@@ -43,8 +46,41 @@ public class ArrayAppend extends CCodeGeneratorHelper {
      * Constructor method for the ArrayAppend helper.
      * @param actor The associated actor.
      */
-    public ArrayAppend(ptolemy.actor.lib.ArrayAppend actor) {
-        
+    public ArrayAppend(ptolemy.actor.lib.ArrayAppend actor) {        
         super(actor);
+    }
+    
+    /**
+     * Generate fire code.
+     * The method reads in <code>fireBlock</code> from ArrayAppend.c,
+     * replaces macros with their values and returns the processed code
+     * block.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+        super.generateFireCode();
+
+        ptolemy.actor.lib.ArrayAppend actor = (ptolemy.actor.lib.ArrayAppend) getComponent();
+
+        _codeStream.appendCodeBlock("preFire");
+
+        ArrayList args = new ArrayList();
+        args.add(new Integer(0));
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            args.set(0, new Integer(i));
+            _codeStream.appendCodeBlock("getTotalLength", args);
+        }
+        _codeStream.appendCodeBlock("allocNewArray");
+            
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            args.set(0, new Integer(i));
+            _codeStream.appendCodeBlock("fillArray", args);
+        }
+
+        _codeStream.appendCodeBlock("doDelete");
+
+        return processCode(_codeStream.toString());
     }
 }

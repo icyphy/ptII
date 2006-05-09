@@ -1,10 +1,7 @@
-/*** preinitBlock ***/
-	int $actorSymbol(i);
+/*** TokenFireBlock($channel) ***/
+	$ref(output#$channel) = Array_get($ref(input), $actorSymbol(i));
 /**/
 
-/*** fireBlock ***/
-	for ($actorSymbol(i) = 0; $actorSymbol(i) < $ref(input).payload.Array->size; $actorSymbol(i)++) {
-		$ref(output, $actorSymbol(i)) = $ref(input, $actorSymbol(i));
-	}
+/*** PrimitiveFireBlock($channel) ***/
+	$ref(output#$channel) = Array_get($ref(input), $channel).payload.$cgType(output);
 /**/
-

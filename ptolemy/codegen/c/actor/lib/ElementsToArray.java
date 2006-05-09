@@ -30,7 +30,6 @@ package ptolemy.codegen.c.actor.lib;
 import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.data.type.ArrayType;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -67,20 +66,12 @@ public class ElementsToArray extends CCodeGeneratorHelper {
         
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
-        String type = codeGenType(
-                ((ArrayType) actor.output.getType()).getElementType());
         
-        args.add(type);
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, new Integer(i));
-            String codeBlock;
-            if (isPrimitive(type)) {
-                codeBlock = "primitiveFireBlock";
-            } else {
-                codeBlock = "tokenFireBlock";
-            }
-            _codeStream.appendCodeBlock(codeBlock, args);
+            _codeStream.appendCodeBlock("fillArray", args);
         }
+        _codeStream.appendCodeBlock("sendOutput");
         return processCode(_codeStream.toString());
     }
 }
