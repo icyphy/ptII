@@ -63,6 +63,7 @@ public class FixType extends StructuredType implements Serializable {
     }
 
     /** Construct a new fix type.
+     *  @param precision The precision.
      */
     public FixType(Precision precision) {
         _precision = precision;

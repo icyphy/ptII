@@ -386,7 +386,7 @@ public abstract class BaseType implements Type, Serializable {
     /** The double matrix data type. */
     public static final UnsizedMatrixType.DoubleMatrixType DOUBLE_MATRIX = new UnsizedMatrixType.DoubleMatrixType();
 
-    /** The fix data type */
+    /** The fix data type. */
     public static class UnsizedFixType extends BaseType {
         private UnsizedFixType() {
             super(FixToken.class, "fixedpoint");

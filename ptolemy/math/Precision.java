@@ -794,7 +794,11 @@ public class Precision implements Cloneable, Serializable {
         }
     }
 
+    /** Precision format for use with the Expression Language. */
     public static class ExpressionLanguagePrecisionFormat extends LengthIntegerPrecisionFormat {
+        /** Regular expression for ExpressionLanguagePrecisionFormat.
+         *  For example: (3,2).
+         */
         public String printPrecisionFormat(Precision p) {
             return "(" + p.getNumberOfBits() + ","
                     + p.getIntegerBitLength() + ")";

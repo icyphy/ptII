@@ -297,7 +297,8 @@ public class Environment {
      *  @param shell The shell.
      *  @param config Whether to generate MoML configuration.
      *  @param alwaysOverwrite Whether to overwrite existing files.
-     *  @return
+     *  @return false if the Refactoring root cannot be found, true
+     *  otherwise.   
      */
     public static boolean setupTransformerArguments(Shell shell,
             boolean config, boolean alwaysOverwrite) {
