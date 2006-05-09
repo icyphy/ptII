@@ -112,6 +112,16 @@ public class Scene2DToken extends Token {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
+        /** Return a new type which represents the type that results from
+         *  adding a token of this type and a token of the given argument
+         *  type.
+         *  @param rightArgumentType The type to add to this type.
+         *  @return This type.
+         */
+        public Type add(Type rightArgumentType) {
+            return this;
+        }
+
         /** Return this, that is, return the reference to this object.
          *  @return A BaseType.
          */
@@ -134,6 +144,16 @@ public class Scene2DToken extends Token {
                         + token
                         + " into a scene graph token, which is not possible.");
             }
+        }
+
+        /** Return a new type which represents the type that results from
+         *  dividing a token of this type and a token of the given
+         *  argument type.
+         *  @param rightArgumentType The type to add to this type.
+         *  @return This type.
+         */
+        public Type divide(Type rightArgumentType) {
+            return this;
         }
 
         /** Return the class for tokens that this basetype represents.
@@ -196,11 +216,57 @@ public class Scene2DToken extends Token {
             return this == type;
         }
 
+        /** Return a new type which represents the type that results from
+         *  moduloing a token of this type and a token of the given
+         *  argument type.
+         *  @param rightArgumentType The type to add to this type.
+         *  @return This type.
+         */
+        public Type modulo(Type rightArgumentType) {
+            return this;
+        }
+
+        /** Return a new type which represents the type that results from
+         *  multiplying a token of this type and a token of the given
+         *  argument type.
+         *  @param rightArgumentType The type to add to this type.
+         *  @return This type.
+         */
+        public Type multiply(Type rightArgumentType) {
+            return this;
+        }
+
+        /** Return the type of the multiplicative identity for elements of
+         *  this type.
+         *  @return This type.
+         */
+        public Type one() {
+            return this;
+        }
+
+        /** Return a new type which represents the type that results from
+         *  subtracting a token of this type and a token of the given
+         *  argument type.
+         *  @param rightArgumentType The type to add to this type.
+         *  @return This type.
+         */
+        public Type subtract(Type rightArgumentType) {
+            return this;
+        }
+
         /** Return the string representation of this type.
          *  @return A String.
          */
         public String toString() {
             return "scene2D";
+        }
+
+        /** Return the type of the additive identity for elements of
+         *  this type.
+         *  @return Return this type.
+         */
+        public Type zero() {
+            return this;
         }
     }
 
