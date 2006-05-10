@@ -1054,13 +1054,21 @@ if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
     so we need not find Eclipse.])
 else
     AC_MSG_CHECKING([for Eclipse installation])
+    # Use changequote to protect the square brackets in sed
+changequote(<<, >>)dnl
+    # We cd to *clipse so that we get the case right in the jar files.
+    TMP_ECLIPSE_DIR="`cd c:/Program\ Files/*clipse; pwd | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+changequote([, ])dnl
     AC_ARG_WITH(eclipse, [  --with-eclipse=ECLIPSE_DIR     use Eclipse from ECLIPSE_DIR,
                           defaults to c:/Program Files/Eclipse],
 	ECLIPSE_DIR=$withval,
-	ECLIPSE_DIR=c:/Program\ Files/Eclipse)
+	ECLIPSE_DIR=$TMP_ECLIPSE_DIR)
+
+    # Remove /cygdrive	
+
 
     if test ! -d "$ECLIPSE_DIR"; then
-	AC_MSG_WARN([Failed to find Eclipse])
+	AC_MSG_WARN([Failed to find Eclipse in $ECLIPSE_DIR])
 	AC_MSG_CHECKING([for $PTII/vendors/eclipse])
 	if test -d  "$PTII/vendors/eclipse"; then
 	   ECLIPSE_DIR="$PTII/vendors/eclipse"
@@ -1072,7 +1080,7 @@ else
 	# jars="jdt.core osgi resources runtime" 
 	# jdt.core core.runtime_ are needed to build backtrack
 	# osgi_ and resources_ are needed to run the tests in backtrack
-	jars="jdt.core core.runtime_ osgi_ core.resources_ equinox.common equinox.preferences core.jobs core.contenttype"
+	jars="jdt.core_ core.runtime_ osgi_ core.resources_ equinox.common equinox.preferences core.jobs core.contenttype"
 	eclipsejarpath=
 	for jar in $jars
 	do
