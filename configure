@@ -4452,18 +4452,24 @@ echo "${ECHO_T}$PTII/ptolemy/backtrack/eclipse is not present,
 else
     echo "$as_me:$LINENO: checking for Eclipse installation" >&5
 echo $ECHO_N "checking for Eclipse installation... $ECHO_C" >&6
+    # Use changequote to protect the square brackets in sed
+    # We cd to *clipse so that we get the case right in the jar files.
+    TMP_ECLIPSE_DIR="`cd c:/Program\ Files/*clipse; pwd | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 
 # Check whether --with-eclipse or --without-eclipse was given.
 if test "${with_eclipse+set}" = set; then
   withval="$with_eclipse"
   ECLIPSE_DIR=$withval
 else
-  ECLIPSE_DIR=c:/Program\ Files/Eclipse
+  ECLIPSE_DIR=$TMP_ECLIPSE_DIR
 fi;
 
+    # Remove /cygdrive
+
+
     if test ! -d "$ECLIPSE_DIR"; then
-	{ echo "$as_me:$LINENO: WARNING: Failed to find Eclipse" >&5
-echo "$as_me: WARNING: Failed to find Eclipse" >&2;}
+	{ echo "$as_me:$LINENO: WARNING: Failed to find Eclipse in $ECLIPSE_DIR" >&5
+echo "$as_me: WARNING: Failed to find Eclipse in $ECLIPSE_DIR" >&2;}
 	echo "$as_me:$LINENO: checking for $PTII/vendors/eclipse" >&5
 echo $ECHO_N "checking for $PTII/vendors/eclipse... $ECHO_C" >&6
 	if test -d  "$PTII/vendors/eclipse"; then
@@ -4478,7 +4484,7 @@ echo $ECHO_N "checking for jars used by backtracking... $ECHO_C" >&6
 	# jars="jdt.core osgi resources runtime"
 	# jdt.core core.runtime_ are needed to build backtrack
 	# osgi_ and resources_ are needed to run the tests in backtrack
-	jars="jdt.core core.runtime_ osgi_ core.resources_"
+	jars="jdt.core_ core.runtime_ osgi_ core.resources_ equinox.common equinox.preferences core.jobs core.contenttype"
 	eclipsejarpath=
 	for jar in $jars
 	do
@@ -8582,9 +8588,10 @@ for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
   # 1. Remove the extension, and $U if already installed.
   ac_i=`echo "$ac_i" |
 	 sed 's/\$U\././;s/\.o$//;s/\.obj$//'`
-  # 2. Add them.
-  ac_libobjs="$ac_libobjs $ac_i\$U.$ac_objext"
-  ac_ltlibobjs="$ac_ltlibobjs $ac_i"'$U.lo'
+  # 2. Prepend LIBOBJDIR.  When used with automake>=1.10 LIBOBJDIR
+  #    will be set to the directory where LIBOBJS objects are built.
+  ac_libobjs="$ac_libobjs \${LIBOBJDIR}$ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs \${LIBOBJDIR}$ac_i"'$U.lo'
 done
 LIBOBJS=$ac_libobjs
 
