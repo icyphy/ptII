@@ -141,6 +141,9 @@ LEJOS_DIR = @LEJOS_DIR@
 
 ########## You should not have to change anything below this line ######
 
+# All Eclipse jar files, used by $PTII/doc
+PTBACKTRACK_ECLIPSE_ALL_JARS =	@PTBACKTRACK_ECLIPSE_ALL_JARS@
+
 # Set to eclipse and used in ptolemy/backtrack/makefile if Eclipse was found
 PTBACKTRACK_ECLIPSE_DIR =	@PTBACKTRACK_ECLIPSE_DIR@
 

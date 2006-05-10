@@ -1102,7 +1102,16 @@ changequote([, ])dnl
 		break
 	    fi
 	done	
-	if test ! -z "$eclipsejarpath"; then 
+
+	# Get all the jar files for use with javadoc in $PTII/doc
+	PTBACKTRACK_ECLIPSE_ALL_JARS=
+	eclipsejars=`(cd "$ECLIPSE_DIR/plugins"; $FIND . -name "*.jar")`
+	for jar in $eclipsejars
+        do
+	    PTBACKTRACK_ECLIPSE_ALL_JARS="$PTBACKTRACK_ECLIPSE_ALL_JARS$CLASSPATHSEPARATOR$ECLIPSE_DIR/plugins/$jar"
+        done
+
+        if test ! -z "$eclipsejarpath"; then 
 	    AC_MSG_RESULT([ok])
 	    # Set to eclipse and used in
 	    # $PTII/ptolemy/backtrack/makefile if Eclipse jar files were found
@@ -3199,6 +3208,9 @@ AC_SUBST(MATLAB_LIBDIR)
 # Set to $PTII/lib if $PTII/lib/mapss.jar was found and used
 # in $PTII/bin/ptinvoke.in
 AC_SUBST(PSDF_DIR)
+
+# All Eclipse jar files, used by $PTII/doc
+AC_SUBST(PTBACKTRACK_ECLIPSE_ALL_JARS)
 
 # Set to backtrack if Eclipse was found
 AC_SUBST(PTBACKTRACK_ECLIPSE_DIR)
