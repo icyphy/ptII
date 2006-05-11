@@ -180,8 +180,15 @@ test PtParser-2.8 {Construct a Parser, try long format specifiers} {
     set root [ $p {generateParseTree String} "0X1dL"]
     set res4  [ $root evaluateParseTree ]
 
-    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4  toString]
-} {29L 29L 29L 29L}
+    set root [ $p {generateParseTree String} "\"...\" + 10L + \"...\""]
+    set res5  [ $root evaluateParseTree ]
+
+    set root [ $p {generateParseTree String} "100L + 10L + 1L"]
+    set res6  [ $root evaluateParseTree ]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] \
+	[$res4  toString] [$res5  toString] [$res6  toString]
+} {29L 29L 29L 29L {"...10L..."} 111L}
 
 ######################################################################
 ####
