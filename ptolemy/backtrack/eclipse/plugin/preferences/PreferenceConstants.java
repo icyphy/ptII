@@ -28,7 +28,7 @@
 package ptolemy.backtrack.eclipse.plugin.preferences;
 
 /**
- * Constant definitions for plug-in preferences
+ * Constant definitions for plug-in preferences.
  */
 public class PreferenceConstants {
     public static final String PTII_PREFERENCE_ID =
