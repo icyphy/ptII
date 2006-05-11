@@ -52,7 +52,8 @@ import ptolemy.util.StringUtilities;
 /** Generate actor/demo index files.
  For each actor that is listed in a file, generate a html file that
  lists the models in which the actor appears.
- 
+
+ <p>For details, see $PTII/vergil/actor/docViewerHelp.htm
  
  @author Christopher Brooks
  @version $Id$
@@ -162,6 +163,15 @@ public class ActorIndex {
                 String outputFileName = outputDirectory + File.separator
                         + actorClassName.replace('.', File.separatorChar)
                         + "Idx.htm";
+
+
+                // Make directories if necessary
+                File outputDirectoryFile = new File(new File(outputFileName).getParent());
+                if (!outputDirectoryFile.exists()) {
+                    System.out.println("Creating " + outputDirectoryFile);
+                    outputDirectoryFile.mkdirs();
+                }
+
                 System.out.println("Writing " + outputFileName);
                 writer = new BufferedWriter(new FileWriter(outputFileName));
 
