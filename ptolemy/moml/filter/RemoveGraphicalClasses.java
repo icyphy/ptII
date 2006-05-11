@@ -57,7 +57,14 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses = new HashMap();
     }
 
-    /** If the attributeValue is "ptolemy.vergil.icon.ValueIcon",
+    /** Filter for graphical classes and return new values if
+     *  a graphical class is found. 
+     *  An internal HashMap maps names of graphical entities to
+     *  new names.  The HashMap can also map a graphical entity
+     *  to null, which means the entity is removed from the model.
+     *  All class attributeValues that start with "ptolemy.domains.gr"
+     *  are deemed to be graphical elements and null is always returned.
+     *  For example, if the attributeValue is "ptolemy.vergil.icon.ValueIcon",
      *  or "ptolemy.vergil.basic.NodeControllerFactory"
      *  then return "ptolemy.kernel.util.Attribute"; if the attributeValue
      *  is "ptolemy.vergil.icon.AttributeValueIcon" or
@@ -79,13 +86,16 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // " X connection to foo:0 broken (explicit kill or server shutdown)."
         // Try uncommenting the next lines to see what is being
         // expanding before the error:
-        // System.out.println("filterAttributeValue: " + container + "\t"
+        //System.out.println("filterAttributeValue: " + container + "\t"
         //   +  attributeName + "\t" + attributeValue);
         if (attributeValue == null) {
             return null;
-        } else if (_graphicalClasses.containsKey(attributeValue)) {
+        } else if (_graphicalClasses.containsKey(attributeValue)) { 
             MoMLParser.setModified(true);
             return (String) _graphicalClasses.get(attributeValue);
+        } else if (attributeValue.startsWith("ptolemy.domains.gr")) {
+            MoMLParser.setModified(true);
+            return null;
         }
 
         return attributeValue;
@@ -254,5 +264,6 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // Sinewave has a DocViewerFactory, which we need to remove
         _graphicalClasses.put("ptolemy.vergil.basic.DocViewerFactory",
                 "ptolemy.kernel.util.Attribute");
+
     }
 }
