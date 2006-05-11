@@ -1057,7 +1057,7 @@ else
     # Use changequote to protect the square brackets in sed
 
     # We cd to *clipse so that we get the case right in the jar files.
-    if test -d "c:/Program\ Files/*clipse"; then
+    if test -d "c:/Program Files/Eclipse" -o -d "c:/Program Files/eclipse"; then
 changequote(<<, >>)dnl
        TMP_ECLIPSE_DIR="`cd c:/Program\ Files/*clipse; pwd | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 changequote([, ])dnl
@@ -1108,15 +1108,23 @@ changequote([, ])dnl
 	    fi
 	done	
 
-	# Get all the jar files for use with javadoc in $PTII/doc
-	PTBACKTRACK_ECLIPSE_ALL_JARS=
-        if test -d "$ECLIPSE_DIR"; then
-	    eclipsejars=`(cd "$ECLIPSE_DIR/plugins"; $FIND . -name "*.jar")`
-	    for jar in $eclipsejars
-            do
-	        PTBACKTRACK_ECLIPSE_ALL_JARS="$PTBACKTRACK_ECLIPSE_ALL_JARS$CLASSPATHSEPARATOR$ECLIPSE_DIR/plugins/$jar"
-            done
-        fi
+	# Get the plugin jar files for use with javadoc in $PTII/doc
+	AC_MSG_CHECKING([for jars used by eclipse plugin])
+	docjars="eclipse.core.commands_ eclipse.equinox.registry_ eclipse.jface_ eclipse.jface.text_ eclipse.swt.win32.win32.x86_ eclipse.ui.workbench_ eclipse.ui.workbench.texteditor_ eclipse.ui.console_ eclipse.ui.editors_ eclipse.text_ eclipse.ui.forms_ eclipse.ui.ide_ eclipse.jdt.ui_"
+	PTBACKTRACK_ECLIPSE_DOC_JARS=
+	for jar in $docjars
+	do
+	    echo $ECHO_N "$jar "
+	    jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
+   	    if test -f "$jarpath"; then
+	        # Keep track of the jars so we can use them while building
+		# with make.
+	        PTBACKTRACK_ECLIPSE_DOC_JARS="$PTBACKTRACK_ECLIPSE_DOC_JARS$CLASSPATHSEPARATOR$jarpath"
+ 	    else   
+		AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
+		break
+	    fi
+	done	
 
         if test ! -z "$eclipsejarpath"; then 
 	    AC_MSG_RESULT([ok])
@@ -3216,11 +3224,11 @@ AC_SUBST(MATLAB_LIBDIR)
 # in $PTII/bin/ptinvoke.in
 AC_SUBST(PSDF_DIR)
 
-# All Eclipse jar files, used by $PTII/doc
-AC_SUBST(PTBACKTRACK_ECLIPSE_ALL_JARS)
-
 # Set to backtrack if Eclipse was found
 AC_SUBST(PTBACKTRACK_ECLIPSE_DIR)
+
+# Plugin Eclipse jar files, used by $PTII/doc
+AC_SUBST(PTBACKTRACK_ECLIPSE_DOC_JARS)
 
 # Eclipse jar files used by ptolemy/backtrack 
 AC_SUBST(PTBACKTRACK_ECLIPSE_JARS)
