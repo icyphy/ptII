@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/ct/kernel
 
-DIRS = 		util solver test
+DIRS = 		solver test
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -49,8 +49,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		solver/solver.jar \
-		util/util.jar
+		solver/solver.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
