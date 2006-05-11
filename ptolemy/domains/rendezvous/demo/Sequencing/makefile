@@ -51,7 +51,8 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	Sequencing.xml
 
-EXTRA_SRCS =	$(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(OTHER_FILES_TO_BE_JARED) \
+	Sequencing.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -71,9 +72,10 @@ all: jclass $(PTCLASSJAR)
 
 install: all
 
-demo: demo_ptolemy demo_vergil
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer Sequencing.htm
+demo: demo_applet demo_ptolemy demo_vergil
+
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer Sequencing.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" Sequencing.xml
