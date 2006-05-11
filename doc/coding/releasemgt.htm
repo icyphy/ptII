@@ -22,6 +22,14 @@ This page describes how we release software.
 <li>Add any new models to <code>$PTII/ptolemy/configs/doc/completeDemos.htm</code>
 
 <li>If necessary create applets for new demos
+ <br>Run
+<pre>
+cd $PTII/ptolemy/configs/doc
+make check_applets
+</pre>
+Note that not all the applets listed are missing.  Some of them
+use the serial port, JAI, JMF etc.
+ <p>To add an applet:
 <pre>
 cd $PTII/ptolemy/domains/wireless/demo/SmartParking
 $PTII/bin/copernicus -codeGenerator applet -targetPath ptolemy/domains/wireless/demo/SmartParking SmartParking.xml
