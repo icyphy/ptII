@@ -251,7 +251,7 @@ public class Expression extends TypedAtomicActor {
                     + "which will not be read, instead the "
                     + "variable \"time\" will be read.");
         }
-        if (getPort("iterations") != null) {
+        if (getPort("iteration") != null) {
             throw new IllegalActionException(this, 
                     "This actor has a port named \"iteration\", "
                     + "which will not be read, instead the "
