@@ -52,6 +52,7 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.HTMLViewer;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
@@ -183,6 +184,33 @@ public class DocViewer extends HTMLViewer {
      *  The main content pane is added after the top content.
      */
     protected void _addMainPane() {
+    }
+
+    /** Display the help file given by the configuration, or if there is
+     *  none, then the file specified by the public variable helpFile.
+     *  To specify a default help file in the configuration, create
+     *  a FileParameter named "_helpDocViewer" whose value is the name of the
+     *  file.  If the specified file fails to open, then invoke the
+     *  _help() method of the superclass.
+     *  @see FileParameter
+     */
+    protected void _help() {
+        try {
+            Configuration configuration = getConfiguration();
+            FileParameter helpAttribute = (FileParameter) configuration
+                    .getAttribute("_helpDocViewer", FileParameter.class);
+            URL doc;
+
+            if (helpAttribute != null) {
+                doc = helpAttribute.asURL();
+            } else {
+                doc = getClass().getClassLoader().getResource(helpFile);
+            }
+
+            configuration.openModel(null, doc, doc.toExternalForm());
+        } catch (Exception ex) {
+            super._help();
+        }
     }
 
     /** Override the base class to do nothing.
@@ -551,6 +579,12 @@ public class DocViewer extends HTMLViewer {
             String className, URL url) throws ClassNotFoundException {
         _configuration = configuration;
         _target = target;
+
+        // Override the default value of the help file as defined in
+        // TableauFrame.  This is the name of the default file to open
+        // when Help is invoked.  This file should be relative to the
+        // home installation directory.
+        helpFile = "ptolemy/vergil/actor/docViewerHelp.htm";
 
         // Start by creating a doc manager.
         final DocManager manager;
