@@ -734,16 +734,6 @@ public class RendezvousReceiver extends AbstractReceiver implements
         }
     }
 
-    /**
-     * Return a string describing the status of the receiver.
-     *
-     * @return A string describing the status of the specified receiver.
-     */
-    protected String _status() {
-        // TODO: Should be implemented when used.
-        return null;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                          private methods                  ////
 
