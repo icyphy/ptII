@@ -1055,10 +1055,15 @@ if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
 else
     AC_MSG_CHECKING([for Eclipse installation])
     # Use changequote to protect the square brackets in sed
-changequote(<<, >>)dnl
+
     # We cd to *clipse so that we get the case right in the jar files.
-    TMP_ECLIPSE_DIR="`cd c:/Program\ Files/*clipse; pwd | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+    if test -d "c:/Program\ Files/*clipse"; then
+changequote(<<, >>)dnl
+       TMP_ECLIPSE_DIR="`cd c:/Program\ Files/*clipse; pwd | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 changequote([, ])dnl
+    else 
+       TMP_ECLIPSE_DIR="c:/Program\ Files/eclipse"
+    fi
     AC_ARG_WITH(eclipse, [  --with-eclipse=ECLIPSE_DIR     use Eclipse from ECLIPSE_DIR,
                           defaults to c:/Program Files/Eclipse],
 	ECLIPSE_DIR=$withval,
@@ -1105,11 +1110,13 @@ changequote([, ])dnl
 
 	# Get all the jar files for use with javadoc in $PTII/doc
 	PTBACKTRACK_ECLIPSE_ALL_JARS=
-	eclipsejars=`(cd "$ECLIPSE_DIR/plugins"; $FIND . -name "*.jar")`
-	for jar in $eclipsejars
-        do
-	    PTBACKTRACK_ECLIPSE_ALL_JARS="$PTBACKTRACK_ECLIPSE_ALL_JARS$CLASSPATHSEPARATOR$ECLIPSE_DIR/plugins/$jar"
-        done
+        if test -d "$ECLIPSE_DIR"; then
+	    eclipsejars=`(cd "$ECLIPSE_DIR/plugins"; $FIND . -name "*.jar")`
+	    for jar in $eclipsejars
+            do
+	        PTBACKTRACK_ECLIPSE_ALL_JARS="$PTBACKTRACK_ECLIPSE_ALL_JARS$CLASSPATHSEPARATOR$ECLIPSE_DIR/plugins/$jar"
+            done
+        fi
 
         if test ! -z "$eclipsejarpath"; then 
 	    AC_MSG_RESULT([ok])
