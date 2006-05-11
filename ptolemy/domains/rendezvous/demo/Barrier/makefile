@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2005 The Regents of the University of California.
+# @Copyright (c) 2005-2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -51,7 +51,8 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	Barrier.xml
 
-EXTRA_SRCS =	$(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(OTHER_FILES_TO_BE_JARED) \
+	Barrier.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -73,7 +74,7 @@ install: all
 
 demo: demo_ptolemy demo_vergil
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer Eye.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer Barrier.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" Barrier.xml
