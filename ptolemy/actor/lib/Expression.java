@@ -245,6 +245,18 @@ public class Expression extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        if (getPort("time") != null) {
+            throw new IllegalActionException(this, 
+                    "This actor has a port named \"time\", "
+                    + "which will not be read, instead the "
+                    + "variable \"time\" will be read.");
+        }
+        if (getPort("iterations") != null) {
+            throw new IllegalActionException(this, 
+                    "This actor has a port named \"iteration\", "
+                    + "which will not be read, instead the "
+                    + "variable \"iteration\" will be read.");
+        }
         _iterationCount = 1;
     }
 
