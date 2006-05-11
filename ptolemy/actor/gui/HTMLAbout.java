@@ -315,13 +315,13 @@ public class HTMLAbout {
     /** Generate a file that contains urls of models.
      *  @param args The optional name of the file containing the demos
      *  followed by the optional name of the output file.  The default
-     *  demo file is ptolemy/configs/doc/demos.htm, the default
+     *  demo file is ptolemy/configs/doc/completeDemos.htm, the default
      *  output file is models.txt.
      *  @exception If there is a problem reading the demo file or writing
      *  the model file.
      */
     public static void main(String[] args) throws IOException {
-        String demoFileName = "ptolemy/configs/doc/demos.htm";
+        String demoFileName = "ptolemy/configs/doc/completeDemos.htm";
         String outputFileName = "models.txt";
 
         if (args.length > 2) {
