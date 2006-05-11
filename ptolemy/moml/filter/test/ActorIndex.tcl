@@ -51,4 +51,7 @@ test ActorIndex-1.1 {Run the ActorIndex on some test files } {
 
     set args [java::new {String[]} 3 [list testNamedObjs.txt testModels.txt codeDoc]]
     java::call ptolemy.moml.filter.ActorIndex main $args
-} {}
+    list \
+        [file exists codeDoc/ptolemy/actor/lib/gui/SequencePlotterIdx.htm] \
+        [file exists codeDoc/ptolemy/actor/lib/MultiplyDivideIdx.htm]
+} {1 1}
