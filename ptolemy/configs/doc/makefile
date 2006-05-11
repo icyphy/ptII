@@ -136,5 +136,9 @@ update: $(DERIVED_FILES)
 update_clean: 
 	rm -f $(DERIVED_FILES)
 
+check_applets:
+	echo "These applets might be missing:"
+	ls `grep .xml completeDemos.htm | gawk -F \" '{print $$2}' | sed 's/.xml/.htm/'` 2>&1 | grep "No such file" | awk '{print $$1}'
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
