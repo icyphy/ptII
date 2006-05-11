@@ -54,7 +54,7 @@ invariants or the expressions to be integrated, they are mapped into inputs of t
 @since HyVisual 2.2
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-                         xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
+                         xmlns:xalan="http://xml.apache.org/xslt" version="2.0">
 
 	<!-- index every node via attribute _id -->
 	<xsl:key name="nodeID" match="*" use="@_id"/>
