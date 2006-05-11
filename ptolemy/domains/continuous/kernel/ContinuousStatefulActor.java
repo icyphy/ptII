@@ -26,12 +26,12 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.cont.kernel;
+package ptolemy.domains.continuous.kernel;
 
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// ContStatefulActor
+//// ContinuousStatefulActor
 
 /**
  Interface for actors that have states. The state of the actor can be
@@ -51,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Green (liuj)
  @Pt.AcceptedRating Green (yuhong)
  */
-public interface ContStatefulActor {
+public interface ContinuousStatefulActor {
     /** Implementations of this method should go to the marked state.
      *  If there's no marked state, throws an exception.
      *  @exception IllegalActionException If there were no marked state.

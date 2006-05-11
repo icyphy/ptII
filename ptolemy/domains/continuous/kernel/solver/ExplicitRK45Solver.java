@@ -1,6 +1,6 @@
-/* Explicit variable step size Runge-Kutta 2(3) ODE solver.
+/* Explicit variable step size Runge-Kutta 4(5) ODE solver.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 2004-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,13 +25,13 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.cont.kernel.solver;
+package ptolemy.domains.continuous.kernel.solver;
 
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
-import ptolemy.domains.cont.kernel.ContDirector;
-import ptolemy.domains.cont.kernel.ContIntegrator;
-import ptolemy.domains.cont.kernel.ContODESolver;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
+import ptolemy.domains.continuous.kernel.ContinuousIntegrator;
+import ptolemy.domains.continuous.kernel.ContinuousODESolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -39,50 +39,64 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// ExplicitRK23Solver
+//// ExplicitRK45Solver
 
 /**
- This class implements the Explicit Runge-Kutta 2(3) ODE solving method.
+ This class implements a fourth-order Runge-Kutta ODE solving method.
+ The algorithm was introduced in "A Variable Order Runge-Kutta
+ Method for Initial Value Problems with Rapidly Varying Right-Hand Sides"
+ by J. R. Cash and Alan H. Karp, ACM Transactions on Mathematical Software,
+ vol 16, pp. 201-222, 1990. For completeness, a brief explanation of the
+ algorithm is explained below.
+ <p>
  For an ODE of the form:
  <pre>
- dx/dt = f(x, t), x(0) = x0
+ dx(t)/dt = f(x(t), t), x(0) = x0
  </pre>
  it does the following:
  <pre>
  K0 = f(x(n), tn);
- K1 = f(x(n)+0.5*h*K0, tn+0.5*h);
- K2 = f(x(n)+0.75*h*K1, tn+0.75*h);
- x(n+1) = x(n)+(2/9)*h*K0+(1/3)*h*K0+(4/9)*h*K2;
+ K1 = f(x(n) + 0.2*K0*h, tn + 0.2*h);
+ K2 = f(x(n) + (3.0/40*K0 + 9.0/40*K1)*h, tn + 0.3*h);
+ K3 = f(x(n) + (0.3*K0 - 0.9*K1 + 1.2*K2)*h, tn + 0.6*h);
+ K4 = f(x(n) + (-11/54*K0 + 5.0/2*K1 -70/27*K2 + 35/27*K3)*h, tn + 1.0*h);
+ K5 = f(x(n) + (1631/55296*K0 + 175/512*K1 + 575/13824*K2 + 3544275/110592*K3
+ + 253/4096*K4)*h, tn + 7/8*h);
+ x(n+1) = x(n)+(37/378*K0 + 250/621*K2 + 125.0/594*K3 + 512.0/1771*K5)*h;
  </pre>,
  and error control:
  <pre>
- K3 = f(x(n+1), tn+h);
- LTE = h*[(-5.0/72.0)*K0 + (1.0/12.0)*K1 + (1.0/9.0)*K2 + (-1.0/8.0)*K3]
+ LTE = [(37.0/378 - 2825.0/27648)*K0 + (250.0/621 - 18575.0/48384)*K2 +
+ (125.0/594 - 13525.0/55296)*K3 + (0.0 - 277.0/14336)*K4 +
+ (512.0/1771 - 0.25)*K5]*h.
  </pre>
  <P>
- If the LTE is less than the error tolerance, then this step is considered
- successful, and the next integration step is predicted as:
+ If the LTE is less than the error tolerance, then this step size h is
+ considered successful, and the next integration step size h' is predicted as:
  <pre>
- h' = 0.8*Math.pow((ErrorTolerance/LTE), 1.0/3.0)
+ h' = h * Math.pow((ErrorTolerance/LTE), 1.0/5.0)
  </pre>
- This is a second order method, but uses a third order procedure to estimate
+ This is a fourth order method, but uses a fifth order procedure to estimate
  the local truncation error.
+ <p>
+ It takes 6 steps for this solver to resolve a state with an integration
+ step size. A round counter is used to record which step this solver performs.
 
- @author  Jie Liu, Haiyang Zheng
+ @author  Haiyang Zheng
  @version $Id$
- @since Ptolemy II 0.2
+ @since Ptolemy II 4.1
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (hyzheng)
  */
-public class ExplicitRK23Solver extends ContODESolver {
+public class ExplicitRK45Solver extends ContinuousODESolver {
     // NOTE: this constructor is necessary for the director to instantiate
     // an instance of a solver.
     /** Construct a solver in the default workspace.
      *  The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     *  The name of the solver is set to "CT_Runge_Kutta_2_3_Solver".
+     *  The name of the solver is set to "CT_Runge_Kutta_4_5_Solver".
      */
-    public ExplicitRK23Solver() {
+    public ExplicitRK45Solver() {
         this(null);
     }
 
@@ -90,11 +104,11 @@ public class ExplicitRK23Solver extends ContODESolver {
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  The name of the solver is set to "CT_Runge_Kutta_2_3_Solver".
+     *  The name of the solver is set to "CT_Runge_Kutta_4_5_Solver".
      *
      *  @param workspace Object for synchronization and version tracking.
      */
-    public ExplicitRK23Solver(Workspace workspace) {
+    public ExplicitRK45Solver(Workspace workspace) {
         super(workspace);
 
         try {
@@ -113,7 +127,7 @@ public class ExplicitRK23Solver extends ContODESolver {
      *  continuous actors throw it from their fire() methods.
      */
     public void fire() throws IllegalActionException {
-        ContDirector director = (ContDirector) getContainer();
+        ContinuousDirector director = (ContinuousDirector) getContainer();
         double currentStepSize = director.getCurrentStepSize();
 
         if (currentStepSize == 0) {
@@ -145,12 +159,12 @@ public class ExplicitRK23Solver extends ContODESolver {
         return 0;
     }
 
-    /** Return 4 to indicate that four auxiliary variables are
+    /** Return 7 to indicate that 7 auxiliary variables are
      *  needed by this solver.
-     *  @return 4.
+     *  @return 7.
      */
     public final int getIntegratorAuxVariableCount() {
-        return 4;
+        return 7;
     }
 
     /** Fire the given integrator. This method performs the ODE solving
@@ -159,12 +173,12 @@ public class ExplicitRK23Solver extends ContODESolver {
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or can not send output.
      */
-    public void integratorFire(ContIntegrator integrator)
+    public void integratorFire(ContinuousIntegrator integrator)
             throws IllegalActionException {
-        ContDirector director = (ContDirector) getContainer();
+        ContinuousDirector director = (ContinuousDirector) getContainer();
         int r = _getRoundCount();
         double xn = integrator.getState();
-        double outvalue;
+        double outputValue;
         double h = director.getCurrentStepSize();
         double[] k = integrator.getAuxVariables();
 
@@ -174,24 +188,51 @@ public class ExplicitRK23Solver extends ContODESolver {
             // Get the derivative at t;
             double k0 = integrator.getTentativeDerivative();
             integrator.setAuxVariables(0, k0);
-            outvalue = xn + (h * k0 * _B[0][0]);
+            outputValue = xn + (h * k0 * _B[0][0]);
             break;
 
         case 1:
 
-            double k1 = integrator.getTentativeDerivative();
+            double k1 = ((DoubleToken) integrator.input.get(0)).doubleValue();
             integrator.setAuxVariables(1, k1);
-            outvalue = xn + (h * ((k[0] * _B[1][0]) + (k1 * _B[1][1])));
+            outputValue = xn + (h * ((k[0] * _B[1][0]) + (k1 * _B[1][1])));
             break;
 
         case 2:
 
-            double k2 = integrator.getTentativeDerivative();
+            double k2 = ((DoubleToken) integrator.input.get(0)).doubleValue();
             integrator.setAuxVariables(2, k2);
-            outvalue = xn
-                    + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) 
-                            + (k2 * _B[2][2])));
-            integrator.setTentativeState(outvalue);
+            outputValue = xn
+                    + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) + (k2 * _B[2][2])));
+            break;
+
+        case 3:
+
+            double k3 = ((DoubleToken) integrator.input.get(0)).doubleValue();
+            integrator.setAuxVariables(3, k3);
+            outputValue = xn
+                    + (h * ((k[0] * _B[3][0]) + (k[1] * _B[3][1])
+                            + (k[2] * _B[3][2]) + (k3 * _B[3][3])));
+            break;
+
+        case 4:
+
+            double k4 = ((DoubleToken) integrator.input.get(0)).doubleValue();
+            integrator.setAuxVariables(4, k4);
+            outputValue = xn
+                    + (h * ((k[0] * _B[4][0]) + (k[1] * _B[4][1])
+                            + (k[2] * _B[4][2]) + (k[3] * _B[4][3]) + (k4 * _B[4][4])));
+            break;
+
+        case 5:
+
+            double k5 = ((DoubleToken) integrator.input.get(0)).doubleValue();
+            integrator.setAuxVariables(5, k5);
+            outputValue = xn
+                    + (h * ((k[0] * _B[5][0]) + (k[1] * _B[5][1])
+                            + (k[2] * _B[5][2]) + (k[3] * _B[5][3])
+                            + (k[4] * _B[5][4]) + (k5 * _B[5][5])));
+            integrator.setTentativeState(outputValue);
             break;
 
         default:
@@ -199,7 +240,7 @@ public class ExplicitRK23Solver extends ContODESolver {
                     "execution sequence out of range.");
         }
 
-        integrator.output.broadcast(new DoubleToken(outvalue));
+        integrator.output.broadcast(new DoubleToken(outputValue));
     }
 
     /** Return true if the integration is accurate for the given
@@ -209,64 +250,70 @@ public class ExplicitRK23Solver extends ContODESolver {
      *  @param integrator The integrator of that calls this method.
      *  @return True if the integration is successful.
      */
-    public boolean integratorIsAccurate(ContIntegrator integrator) {
-        ContDirector director = (ContDirector) getContainer();
+    public boolean integratorIsAccurate(ContinuousIntegrator integrator) {
+        ContinuousDirector director = (ContinuousDirector) getContainer();
         double tolerance = director.getErrorTolerance();
         double h = director.getCurrentStepSize();
-        double f = integrator.getTentativeDerivative();
-        
-        // FIXME: check the equation for error calculation... It is a 
-        // little bit strange comparing to that of the RK45 solver.
         double[] k = integrator.getAuxVariables();
         double error = h
-        * Math.abs((k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2])
-                + (f * _E[3]));
-        
-        //k[3] is Local Truncation Error
-        integrator.setAuxVariables(3, error);
-        _debug("Integrator: " + integrator.getName()
-                + " local truncation error = " + error);
-        
-        if (error < tolerance) {
+                * Math.abs((k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2])
+                        + (k[3] * _E[3]) + (k[4] * _E[4]) + (k[5] * _E[5]));
+
+        //store the Local Truncation Error into k[6]
+        integrator.setAuxVariables(6, error);
+
+        if (_debugging) {
             _debug("Integrator: " + integrator.getName()
-                    + " report a success.");
+                    + " local truncation error = " + error);
+        }
+
+        if (error < tolerance) {
+            if (_debugging) {
+                _debug("Integrator: " + integrator.getName()
+                        + " report a success.");
+            }
+
             return true;
         } else {
-            _debug("Integrator: " + integrator.getName()
-                    + " reports a failure.");
+            if (_debugging) {
+                _debug("Integrator: " + integrator.getName()
+                        + " reports a failure.");
+            }
+
             return false;
         }
     }
 
-    /** Provide the predictedStepSize() method for the integrators
-     *  under this solver. It uses the algorithm in the class comments
+    /** Predict the next step size for the integrators executed under this
+     *  solver. It uses the algorithm in the class comments
      *  to predict the next step size based on the current estimation
      *  of the local truncation error.
      *
-     *  @param integrator The integrator of that calls this method.
+     *  @param integrator The integrator that calls this method.
      *  @return The next step size suggested by the given integrator.
      */
-    public double integratorPredictedStepSize(ContIntegrator integrator) {
-        ContDirector director = (ContDirector) getContainer();
-        double error = (integrator.getAuxVariables())[3];
+    public double integratorPredictedStepSize(ContinuousIntegrator integrator) {
+        ContinuousDirector director = (ContinuousDirector) getContainer();
+        double error = (integrator.getAuxVariables())[6];
         double h = director.getCurrentStepSize();
         double tolerance = director.getErrorTolerance();
         double newh = 5.0 * h;
 
         if (error > director.getValueResolution()) {
-            newh = h
-                    * Math.max(0.5, 0.8 * Math.pow((tolerance / error),
-                            1.0 / _order));
+            newh = h * Math.pow((tolerance / error), 1.0 / _order);
         }
 
-        _debug("integrator: " + integrator.getName()
-                + " suggests next step size = " + newh);
+        if (_debugging) {
+            _debug("integrator: " + integrator.getName()
+                    + " suggests next step size = " + newh);
+        }
+
         return newh;
     }
 
     /** Return the number of firings required to resolve a state.
      *  The number is the same as the order of this solver.
-     *  For this solver, the values is 3.
+     *  For this solver, the value is 5.
      *  @return The number of firings required to resolve a state.
      */
     public int NumberOfFiringsRequired() {
@@ -275,20 +322,29 @@ public class ExplicitRK23Solver extends ContODESolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The name of the solver
-    private static final String _DEFAULT_NAME = "CT_Runge_Kutta_2_3_Solver";
 
-    // The ratio of time increments within one integration step.
-    private static final double[] _timeInc = { 0.5, 0.75, 1.0 };
+    /** The name of the solver */
+    private static final String _DEFAULT_NAME = "CT_Runge_Kutta_4_5_Solver";
 
-    // B coefficients
-    private static final double[][] _B = { { 0.5 }, { 0, 0.75 },
-            { 2.0 / 9.0, 1.0 / 3.0, 4.0 / 9.0 } };
+    /** The ratio of time increments within one integration step. */
+    private static final double[] _timeInc = { 0.2, 0.3, 0.6, 1.0, 0.875, 1.0 };
 
-    // E coefficients
-    private static final double[] _E = { -5.0 / 72.0, 1.0 / 12.0, 1.0 / 9.0,
-            -1.0 / 8.0 };
+    /** B coefficients */
+    private static final double[][] _B = {
+            { 0.2 },
+            { 3.0 / 40, 9.0 / 40 },
+            { 0.3, -0.9, 1.2 },
+            { -11.0 / 54, 5.0 / 2, -70.0 / 27, 35.0 / 27 },
+            { 1631.0 / 55296, 175.0 / 512, 575.0 / 13824, 44275.0 / 110592,
+                    253.0 / 4096 },
+            { 37.0 / 378, 0.0, 250.0 / 621, 125.0 / 594, 0.0, 512.0 / 1771 } };
 
-    // The order of the algorithm.
-    private static final int _order = 3;
+    /** E coefficients */
+    private static final double[] _E = { (37.0 / 378) - (2825.0 / 27648), 0.0,
+            (250.0 / 621) - (18575.0 / 48384),
+            (125.0 / 594) - (13525.0 / 55296), 0.0 - (277.0 / 14336),
+            (512.0 / 1771) - 0.25 };
+
+    /** The order of the algorithm. */
+    private static final int _order = 5;
 }

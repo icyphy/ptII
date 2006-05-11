@@ -25,10 +25,10 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.cont.kernel;
+package ptolemy.domains.continuous.kernel;
 
 //////////////////////////////////////////////////////////////////////////
-//// ContStepSizeControlActor
+//// ContinuousStepSizeControlActor
 
 /**
  Interface for actors that control integration step sizes for handling
@@ -72,7 +72,7 @@ package ptolemy.domains.cont.kernel;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (hyzheng)
  */
-public interface ContStepSizeControlActor {
+public interface ContinuousStepSizeControlActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

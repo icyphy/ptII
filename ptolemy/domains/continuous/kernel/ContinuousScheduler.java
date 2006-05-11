@@ -25,14 +25,14 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.cont.kernel;
+package ptolemy.domains.continuous.kernel;
 
 import ptolemy.actor.sched.FixedPointScheduler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// ContScheduler
+//// ContinuousScheduler
 
 /**
  The Static scheduler for the CT domain.
@@ -75,7 +75,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (hyzheng)
  @see ptolemy.actor.sched.Scheduler
  */
-public class ContScheduler extends FixedPointScheduler {
+public class ContinuousScheduler extends FixedPointScheduler {
 
     /** Construct a scheduler in the given container with the given name.
      *  The container argument must not be null, or a
@@ -90,11 +90,11 @@ public class ContScheduler extends FixedPointScheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public ContScheduler(ContDirector container, String name)
+    public ContinuousScheduler(ContinuousDirector container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
     
-    // FIXME: add two special schedules: ContStepSizeControlActor 
-    // and ContStatefulActor 
+    // FIXME: add two special schedules: ContinuousStepSizeControlActor 
+    // and ContinuousStatefulActor 
 }

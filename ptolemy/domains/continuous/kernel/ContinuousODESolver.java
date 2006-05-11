@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.cont.kernel;
+package ptolemy.domains.continuous.kernel;
 
 import ptolemy.domains.ct.kernel.CTMultiSolverDirector;
 import ptolemy.kernel.util.IllegalActionException;
@@ -90,7 +90,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (hyzheng)
  */
-public abstract class ContODESolver extends NamedObj {
+public abstract class ContinuousODESolver extends NamedObj {
     /** Construct a solver in the given workspace with a null string name.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
@@ -98,7 +98,7 @@ public abstract class ContODESolver extends NamedObj {
      *
      *  @param workspace Object for synchronization and version tracking
      */
-    public ContODESolver(Workspace workspace) {
+    public ContinuousODESolver(Workspace workspace) {
         super(workspace);
     }
 
@@ -147,7 +147,7 @@ public abstract class ContODESolver extends NamedObj {
      *  @param integrator The integrator that calls this method.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public abstract void integratorFire(ContIntegrator integrator)
+    public abstract void integratorFire(ContinuousIntegrator integrator)
             throws IllegalActionException;
 
     /** Return true if the current integration step is accurate from the
@@ -157,14 +157,14 @@ public abstract class ContODESolver extends NamedObj {
      *  @param integrator The integrator that calls this method.
      *  @return True if the integrator finds the step accurate.
      */
-    public abstract boolean integratorIsAccurate(ContIntegrator integrator);
+    public abstract boolean integratorIsAccurate(ContinuousIntegrator integrator);
 
     /** The predictedStepSize() method of the integrator delegates to this
      *  method. Derived classes need to implement the details.
      *  @param integrator The integrator that calls this method.
      *  @return The suggested next step size by the given integrator.
      */
-    public abstract double integratorPredictedStepSize(ContIntegrator integrator);
+    public abstract double integratorPredictedStepSize(ContinuousIntegrator integrator);
 
     /** Return true if the states of the system have been resolved
      *  successfully.
@@ -208,7 +208,7 @@ public abstract class ContODESolver extends NamedObj {
      *  according to the ODESolver parameters.
      *  @param director The CT director that contains this solver.
      */
-    protected void _makeSolverOf(ContDirector director) {
+    protected void _makeSolverOf(ContinuousDirector director) {
         _director = director;
 
         if (director != null) {
@@ -256,7 +256,7 @@ public abstract class ContODESolver extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The Cont director that contains this solver.
-    private ContDirector _director = null;
+    private ContinuousDirector _director = null;
 
     // The flag indicating whether the fixed point of states has been reached.
     // The default value is false.

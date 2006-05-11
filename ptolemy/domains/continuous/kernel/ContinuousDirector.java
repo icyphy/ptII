@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.cont.kernel;
+package ptolemy.domains.continuous.kernel;
 
 import java.util.Iterator;
 
@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
-//// ContDirector
+//// ContinuousDirector
 
 /**
  The continuous time (cont) domain is a timed domain that supports
@@ -114,7 +114,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class ContDirector extends FixedPointDirector implements
+public class ContinuousDirector extends FixedPointDirector implements
         TimedDirector {
 
     /** Construct a director in the given container with the given name.
@@ -129,11 +129,11 @@ public class ContDirector extends FixedPointDirector implements
      *  @exception NameDuplicationException If the name collides with
      *   a property in the container.
      */
-    public ContDirector(CompositeEntity container, String name)
+    public ContinuousDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initParameters();
-        setScheduler(new ContScheduler(this, "scheduler"));
+        setScheduler(new ContinuousScheduler(this, "scheduler"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -203,7 +203,7 @@ public class ContDirector extends FixedPointDirector implements
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        _debug("Updating ContDirector parameter: ", attribute.getName());
+        _debug("Updating ContinuousDirector parameter: ", attribute.getName());
 
         if (attribute == startTime) {
             double startTimeValue = ((DoubleToken) startTime.getToken())
@@ -280,7 +280,7 @@ public class ContDirector extends FixedPointDirector implements
 
             if (newSolverClassName.trim().startsWith(_solverClasspath)) {
                 // The old solver name is a parameter starts with
-                // "ptolemy.domains.cont.kernel.solver."
+                // "ptolemy.domains.continuous.kernel.solver."
                 _ODESolverClassName = newSolverClassName;
             } else {
                 _ODESolverClassName = _solverClasspath + newSolverClassName;
@@ -364,9 +364,9 @@ public class ContDirector extends FixedPointDirector implements
                 Iterator firingIterator = schedule.firingIterator();
                 while (firingIterator.hasNext() && !_stopRequested) {
                     Actor actor = ((Firing) firingIterator.next()).getActor();
-                    if (actor instanceof ContStatefulActor) {
+                    if (actor instanceof ContinuousStatefulActor) {
                         _debug("Restoring states of " + actor);
-                        ((ContStatefulActor) actor).goToMarkedState();
+                        ((ContinuousStatefulActor) actor).goToMarkedState();
                     }
                 }
             }
@@ -402,7 +402,7 @@ public class ContDirector extends FixedPointDirector implements
     /** Return the ODE solver used to resolve states by the director.
      *  @return The ODE solver used to resolve states by the director.
      */
-    public final ContODESolver getODESolver() {
+    public final ContinuousODESolver getODESolver() {
         // This method is final for performance reason.
         return _ODESolver;
     }
@@ -695,9 +695,9 @@ public class ContDirector extends FixedPointDirector implements
     }
 
     /** Return an array of suggested ModalModel directors  to use
-     *  with ContDirector. The default director is HSFSMDirector, which
+     *  with ContinuousDirector. The default director is HSFSMDirector, which
      *  is used in hybrid system. FSMDirector could also be used
-     *  with ContDirector in some simple cases.
+     *  with ContinuousDirector in some simple cases.
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
@@ -759,7 +759,7 @@ public class ContDirector extends FixedPointDirector implements
             iterations.setVisibility(Settable.NONE);
 
             _ODESolverClassName = 
-                "ptolemy.domains.cont.kernel.solver.ExplicitRK45Solver";
+                "ptolemy.domains.continuous.kernel.solver.ExplicitRK45Solver";
             ODESolver = new Parameter(this, "ODESolver", new StringToken(
             "ExplicitRK45Solver"));
             ODESolver.setTypeEquals(BaseType.STRING);
@@ -787,15 +787,15 @@ public class ContDirector extends FixedPointDirector implements
      *  @return a new ODE solver.
      *  @exception IllegalActionException If the solver can not be created.
      */
-    protected final ContODESolver _instantiateODESolver(String className)
+    protected final ContinuousODESolver _instantiateODESolver(String className)
             throws IllegalActionException {
         _debug("instantiating solver..." + className);
 
-        ContODESolver newSolver;
+        ContinuousODESolver newSolver;
         
         try {
             Class solver = Class.forName(className);
-            newSolver = (ContODESolver) solver.newInstance();
+            newSolver = (ContinuousODESolver) solver.newInstance();
         } catch (ClassNotFoundException e) {
             throw new IllegalActionException(this, "ODESolver: " + className
                     + " is not found.");
@@ -830,9 +830,9 @@ public class ContDirector extends FixedPointDirector implements
         Iterator firingIterator = schedule.firingIterator();
         while (firingIterator.hasNext() && !_stopRequested) {
             Actor actor = ((Firing) firingIterator.next()).getActor();
-            if (actor instanceof ContStatefulActor) {
+            if (actor instanceof ContinuousStatefulActor) {
                 _debug("Saving states of " + actor);
-                ((ContStatefulActor) actor).markState();
+                ((ContinuousStatefulActor) actor).markState();
             }
         }
 
@@ -889,10 +889,10 @@ public class ContDirector extends FixedPointDirector implements
             Iterator firingIterator = schedule.firingIterator();
             while (firingIterator.hasNext() && !_stopRequested) {
                 Actor actor = ((Firing) firingIterator.next()).getActor();
-                if (actor instanceof ContStepSizeControlActor) {
+                if (actor instanceof ContinuousStepSizeControlActor) {
                     _debug("Saving states of " + actor);
                     double suggestedStepSize = 
-                        ((ContStepSizeControlActor) actor).predictedStepSize();
+                        ((ContinuousStepSizeControlActor) actor).predictedStepSize();
                         if (predictedStep > suggestedStepSize) {
                             predictedStep = suggestedStepSize;
                         }
@@ -911,7 +911,7 @@ public class ContDirector extends FixedPointDirector implements
      *  @param solver The solver to set.
      *  @exception  IllegalActionException Not thrown in this base class.
      */
-    protected final void _setODESolver(ContODESolver solver)
+    protected final void _setODESolver(ContinuousODESolver solver)
             throws IllegalActionException {
         _ODESolver = solver;
     }
@@ -962,7 +962,7 @@ public class ContDirector extends FixedPointDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Initialize the local variables of this ContDirector. This is called in
+    // Initialize the local variables of this ContinuousDirector. This is called in
     // the preinitialize method.
     // NOTE: Time objects are not initialized here. They are initialized at
     // the end of the preinitialize method of this director.
@@ -1024,9 +1024,9 @@ public class ContDirector extends FixedPointDirector implements
             // of events in the special isOutputAccurate() method.
             // FIXME: may generate StepSizeControlActor set for more 
             // efficient execution.
-            if (actor instanceof ContStepSizeControlActor) {
+            if (actor instanceof ContinuousStepSizeControlActor) {
                 boolean thisAccurate = 
-                    ((ContStepSizeControlActor) actor).isStepSizeAccurate();
+                    ((ContinuousStepSizeControlActor) actor).isStepSizeAccurate();
                 _debug("  Checking output step size control actor: "
                         + actor.getName() + ", which returns " + thisAccurate);
                 accurate = accurate && thisAccurate;
@@ -1081,9 +1081,9 @@ public class ContDirector extends FixedPointDirector implements
         Iterator firingIterator = schedule.firingIterator();
         while (firingIterator.hasNext() && !_stopRequested) {
             Actor actor = ((Firing) firingIterator.next()).getActor();
-            if (actor instanceof ContStepSizeControlActor) {
+            if (actor instanceof ContinuousStepSizeControlActor) {
                 refinedStep = Math.min(refinedStep, 
-                        ((ContStepSizeControlActor) actor).refinedStepSize());
+                        ((ContinuousStepSizeControlActor) actor).refinedStepSize());
             }
         }
     
@@ -1121,7 +1121,7 @@ public class ContDirector extends FixedPointDirector implements
     // NOTE: all the following private variables are initialized
     // in the _initializeLocalVariables() method before their usage.
     // Current ODE solver.
-    private ContODESolver _ODESolver = null;
+    private ContinuousODESolver _ODESolver = null;
 
     // Simulation step sizes.
     private double _currentStepSize;
@@ -1152,7 +1152,7 @@ public class ContDirector extends FixedPointDirector implements
     private String _ODESolverClassName;
     
     private static String _solverClasspath = 
-        "ptolemy.domains.cont.kernel.solver.";
+        "ptolemy.domains.continuous.kernel.solver.";
     
     // Local copies of parameters.
     private Time _startTime;

@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.cont.kernel;
+package ptolemy.domains.continuous.kernel;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
-//// ContIntegrator
+//// ContinuousIntegrator
 
 /**
  The integrator in the continuous-time (cont) domain.
@@ -108,8 +108,8 @@ import ptolemy.kernel.util.StringAttribute;
  @see ODESolver
  @see CTDirector
  */
-public class ContIntegrator extends TypedAtomicActor implements 
-    ContStatefulActor, ContStepSizeControlActor {
+public class ContinuousIntegrator extends TypedAtomicActor implements 
+    ContinuousStatefulActor, ContinuousStepSizeControlActor {
 
     /** Construct an integrator with the specified name and a container.
      *  The integrator is in the same workspace as the container.
@@ -119,7 +119,7 @@ public class ContIntegrator extends TypedAtomicActor implements
      *  @exception IllegalActionException If ports can not be created, or
      *   thrown by the super class.
      */
-    public ContIntegrator(CompositeEntity container, String name)
+    public ContinuousIntegrator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
@@ -202,7 +202,7 @@ public class ContIntegrator extends TypedAtomicActor implements
      *  of the solver.
      */
     public void fire() throws IllegalActionException {
-        ContDirector dir = (ContDirector) getDirector();
+        ContinuousDirector dir = (ContinuousDirector) getDirector();
         if (input.isKnown()) {
             if (input.hasToken(0)) {
                 double currentDerivative = 
@@ -335,13 +335,13 @@ public class ContIntegrator extends TypedAtomicActor implements
      *  parameter does not contain a valid token.
      */
     public void initialize() throws IllegalActionException {
-        ContDirector dir = (ContDirector) getDirector();
+        ContinuousDirector dir = (ContinuousDirector) getDirector();
 
         if (dir == null) {
             throw new IllegalActionException(this, " no director available");
         }
 
-        ContODESolver solver = dir.getODESolver();
+        ContinuousODESolver solver = dir.getODESolver();
 
         if (solver == null) {
             throw new IllegalActionException(this, " no ODE solver available");
@@ -377,7 +377,7 @@ public class ContIntegrator extends TypedAtomicActor implements
                     + " it is a result of divide-by-zero.");
         }
 
-        ContODESolver solver = ((ContDirector) getDirector()).getODESolver();
+        ContinuousODESolver solver = ((ContinuousDirector) getDirector()).getODESolver();
         _successful = solver.integratorIsAccurate(this);
         return _successful;
     }
@@ -428,7 +428,7 @@ public class ContIntegrator extends TypedAtomicActor implements
      *  @return The predicteded next step size.
      */
     public double predictedStepSize() {
-        ContODESolver solver = ((ContDirector) getDirector()).getODESolver();
+        ContinuousODESolver solver = ((ContinuousDirector) getDirector()).getODESolver();
         return solver.integratorPredictedStepSize(this);
     }
 
@@ -444,13 +444,13 @@ public class ContIntegrator extends TypedAtomicActor implements
      *  the director has no ODE solver.
      */
     public boolean prefire() throws IllegalActionException {
-        ContDirector dir = (ContDirector) getDirector();
+        ContinuousDirector dir = (ContinuousDirector) getDirector();
 
         if (dir == null) {
             throw new IllegalActionException(this, " does not have a director.");
         }
 
-        ContODESolver solver = dir.getODESolver();
+        ContinuousODESolver solver = dir.getODESolver();
 
         if (solver == null) {
             throw new IllegalActionException(this,
@@ -489,7 +489,7 @@ public class ContIntegrator extends TypedAtomicActor implements
      *  @return The refined step size.
      */
     public double refinedStepSize() {
-        double step = ((ContDirector) getDirector()).getCurrentStepSize();
+        double step = ((ContinuousDirector) getDirector()).getCurrentStepSize();
 
         if (_successful) {
             return step;
@@ -600,7 +600,7 @@ public class ContIntegrator extends TypedAtomicActor implements
          *  integrator.
          *  @param container The container that contains this history object.
          */
-        public History(ContIntegrator container) {
+        public History(ContinuousIntegrator container) {
             _container = container;
             _entries = new LinkedList();
             _capacity = 0;
@@ -663,7 +663,7 @@ public class ContIntegrator extends TypedAtomicActor implements
                 }
 
                 _entries.addFirst(entry);
-                _stepsize = ((ContDirector) _container.getDirector())
+                _stepsize = ((ContinuousDirector) _container.getDirector())
                         .getCurrentStepSize();
             } else {
                 throw new IllegalActionException(getContainer(),
@@ -686,7 +686,7 @@ public class ContIntegrator extends TypedAtomicActor implements
          */
         public void rebalance(double currentStepSize)
                 throws IllegalActionException {
-            double timeResolution = ((ContDirector) _container.getDirector())
+            double timeResolution = ((ContinuousDirector) _container.getDirector())
                     .getTimeResolution();
 
             if (Math.abs(currentStepSize - _stepsize) > timeResolution) {
@@ -795,7 +795,7 @@ public class ContIntegrator extends TypedAtomicActor implements
         ///////////////////////////////////////////////////////////////
         ////                        private variables               ////
         // The container.
-        ContIntegrator _container;
+        ContinuousIntegrator _container;
 
         // The linked list storing the entries
         LinkedList _entries;
