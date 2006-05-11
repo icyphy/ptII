@@ -179,6 +179,8 @@ recompileDemo:
 		ptolemy.actor.gui.CompositeActorApplication \
 		-class $(DECOMPILERTARGETPACKAGE).CG$(MODEL)
 
+tests:: jclass
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 

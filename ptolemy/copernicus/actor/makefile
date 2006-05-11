@@ -132,6 +132,8 @@ demo2:
 	@echo "because the code generator removes the graphical annotations."
 	$(ROOT)/bin/vergil $(ROOT)/ptolemy/actor/lib/test/auto/Sinewave.xml
 
+tests:: jclass
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 
