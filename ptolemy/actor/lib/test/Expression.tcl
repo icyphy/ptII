@@ -84,6 +84,37 @@ test Expression-3.1 {run with a simple expression} {
     enumToTokenValues [$rec getRecord 0]
 } {6 7 8}
 
+test Expression-3.2 {run with a simple expression} {
+    set expression [java::field $expr expression]
+    # In SDF, time is 0.0
+    $expression setExpression "time + 5"
+    $m execute
+    enumToTokenValues [$rec getRecord 0]
+} {5.0 5.0 5.0}
+
+test Expression-3.3 {run with a simple expression "time" in a DE model} {
+    set e3 [deModel 5.0]
+    set expression3 [java::new ptolemy.actor.lib.Expression $e3 expression3]
+    set rec3 [java::new ptolemy.actor.lib.Recorder $e3 rec3]
+
+    # This is DE, so we need a clock as a trigger
+    set clock3 [java::new ptolemy.actor.lib.Clock $e3 clock3]   
+    set in3 [java::new ptolemy.actor.TypedIOPort $expression3 in1 true false]
+    set r3 [$e3 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $clock3] output] \
+            $in3]
+    $e3 connect \
+            [java::field $expression3 output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec3] input]
+    set expression3_3 [java::field $expression3 expression]
+    $expression3_3 setExpression "time"
+    set manager3 [$e3 getManager]
+    $manager3 addExecutionListener \
+            [java::new ptolemy.actor.StreamExecutionListener]
+    $manager3 execute
+    enumToTokenValues [$rec3 getRecord 0]
+} {0.0 1.0 2.0 3.0 4.0 5.0}
+
 # FIXME: The following test fails because of limitations in the
 # type system.  When types can propagate through expressions.
 # test Expression-4.1 {run with a simple expression} {
@@ -150,3 +181,6 @@ test Expression-8.2 {port named "iteration" is verboten} {
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: This actor has a port named "iteration", which will not be read, instead the variable "iteration" will be read.
   in .top.expr8}}
+
+
+
