@@ -1,4 +1,4 @@
-# Makefile for the Continuous Time domain kernel
+# Makefile for the Continuous Time domain kernel solver
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/continuous/kernel
+ME =		ptolemy/domains/continuous/kernel/solver
 
-DIRS = 		solver
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,24 +43,12 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		solver/solver.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	solver
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	ContinuousDirector.java \
-	ContinuousIntegrator.java \
-	ContinuousODESolver.java \
-	ContinuousScheduler.java \
-	ContinuousStatefulActor.java \
-	ContinuousStepSizeControlActor.java
-
+	ExplicitRK23Solver.java \
+	ExplicitRK45Solver.java
 
 EXTRA_SRCS =	$(JSRCS)
 
