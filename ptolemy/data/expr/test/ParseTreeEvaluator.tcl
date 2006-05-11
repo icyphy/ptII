@@ -172,8 +172,9 @@ test ParseTreeEvaluator-2.8 {Test long format specifiers} {
     list [evaluate "29l"] \
             [evaluate "035L"] \
             [evaluate "0x1Dl"] \
-            [evaluate "0X1dL"]
-} {29L 29L 29L 29L}
+            [evaluate "0X1dL"] \
+            [evaluate "\"...\" + 10L + \"...\""]
+} {29L 29L 29L 29L {"...10L..."}}
 
 ######################################################################
 ####
