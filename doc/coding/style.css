@@ -1,5 +1,8 @@
 BODY {
-   background: #faf0e6
+   background: #ffffff;
+   font-family: Arial, Helvetica, sans-serif;
+   font-size: 11pt;
+   font-weight: strong;
 }
 A.link {
 	color: blue;
@@ -28,7 +31,7 @@ H1.FM1Heading, H2.FM1Heading, H3.FM1Heading, H4.FM1Heading, H5.FM1Heading, H6.FM
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.FM1HeadingTOC {
 	display: block;
@@ -45,7 +48,7 @@ LI.FM1HeadingTOC {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 H1.FM2Heading, H2.FM2Heading, H3.FM2Heading, H4.FM2Heading, H5.FM2Heading, H6.FM2Heading {
 	display: block;
@@ -62,7 +65,7 @@ H1.FM2Heading, H2.FM2Heading, H3.FM2Heading, H4.FM2Heading, H5.FM2Heading, H6.FM
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.FM2HeadingTOC {
 	display: block;
@@ -79,7 +82,7 @@ LI.FM2HeadingTOC {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 H1.FM3Heading, H2.FM3Heading, H3.FM3Heading, H4.FM3Heading, H5.FM3Heading, H6.FM3Heading {
 	display: block;
@@ -96,7 +99,7 @@ H1.FM3Heading, H2.FM3Heading, H3.FM3Heading, H4.FM3Heading, H5.FM3Heading, H6.FM
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.FM3HeadingTOC {
 	display: block;
@@ -113,7 +116,7 @@ LI.FM3HeadingTOC {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.FM4Heading {
 	display: block;
@@ -130,7 +133,7 @@ P.FM4Heading {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.A2Heading {
 	display: block;
@@ -147,7 +150,7 @@ LI.A2Heading {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.A2HeadingTOC {
 	display: block;
@@ -164,7 +167,7 @@ P.A2HeadingTOC {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.A3Heading {
 	display: block;
@@ -181,7 +184,7 @@ LI.A3Heading {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.Affiliation {
 	display: block;
@@ -198,7 +201,7 @@ P.Affiliation {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.AHeading {
 	display: block;
@@ -215,7 +218,7 @@ LI.AHeading {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.Appendix {
 	display: block;
@@ -232,7 +235,7 @@ LI.Appendix {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.AppendixTOC {
 	display: block;
@@ -249,7 +252,7 @@ LI.AppendixTOC {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.Author {
 	display: block;
@@ -266,7 +269,7 @@ P.Author {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.Body {
 	display: block;
@@ -283,7 +286,7 @@ P.Body {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.Bulleted {
 	display: block;
@@ -300,7 +303,7 @@ LI.Bulleted {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.CellBody {
 	display: block;
@@ -317,7 +320,7 @@ P.CellBody {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.CellHeading {
 	display: block;
@@ -334,7 +337,7 @@ P.CellHeading {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.Code {
 	display: block;
@@ -385,7 +388,7 @@ P.ContentsTitle {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.Equation {
 	display: block;
@@ -402,7 +405,7 @@ LI.Equation {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.Figure {
 	display: block;
@@ -419,7 +422,7 @@ LI.Figure {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.FirstBody {
 	display: block;
@@ -436,7 +439,7 @@ P.FirstBody {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.Footnote {
 	display: block;
@@ -453,7 +456,7 @@ P.Footnote {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.GroupTitlesIX {
 	display: block;
@@ -470,7 +473,7 @@ P.GroupTitlesIX {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.header-right {
 	display: block;
@@ -487,7 +490,7 @@ P.header-right {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.Heading {
 	display: block;
@@ -504,7 +507,7 @@ P.Heading {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.Indented {
 	display: block;
@@ -521,7 +524,7 @@ P.Indented {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.LBody {
 	display: block;
@@ -538,7 +541,7 @@ P.LBody {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.Level1IX {
 	display: block;
@@ -555,7 +558,7 @@ P.Level1IX {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.Level2IX {
 	display: block;
@@ -572,7 +575,7 @@ P.Level2IX {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.Mapping-Table-Cell {
 	display: block;
@@ -589,7 +592,7 @@ P.Mapping-Table-Cell {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.Mapping-Table-Title {
 	display: block;
@@ -606,7 +609,7 @@ P.Mapping-Table-Title {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.Note {
 	display: block;
@@ -623,7 +626,7 @@ P.Note {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.Numbered {
 	display: block;
@@ -640,7 +643,7 @@ LI.Numbered {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.Numbered1 {
 	display: block;
@@ -657,7 +660,7 @@ LI.Numbered1 {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.Quote {
 	display: block;
@@ -674,7 +677,7 @@ P.Quote {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.Reference {
 	display: block;
@@ -691,7 +694,7 @@ LI.Reference {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 P.right-footer {
 	display: block;
@@ -708,7 +711,7 @@ P.right-footer {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 LI.TableTitle {
 	display: block;
@@ -725,7 +728,7 @@ LI.TableTitle {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 H1.Title, H2.Title, H3.Title, H4.Title, H5.Title, H6.Title {
 	display: block;
@@ -742,7 +745,7 @@ H1.Title, H2.Title, H3.Title, H4.Title, H5.Title, H6.Title {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: uppercase;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 EM.bold {
 	font-weight: Bold;
@@ -772,7 +775,7 @@ EM.Figure {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 EM.Huge {
 	font-size: 150.000000pt;
@@ -782,7 +785,7 @@ EM.Huge {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 EM.SFigure {
 	font-size: 8.000000pt;
@@ -792,7 +795,7 @@ EM.SFigure {
 	text-decoration: none;
 	vertical-align: baseline;
 	text-transform: none;
-	font-family: "Times New Roman";
+	font-family: Arial, Helvetica, sans-serif;
 }
 EM.Symbol {
 	font-family: "Symbol";
