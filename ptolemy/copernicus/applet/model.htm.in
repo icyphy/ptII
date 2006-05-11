@@ -58,7 +58,7 @@ applet is displayed on a XGA screen-->
             <PARAM NAME = "progressbar" VALUE = "true"> \
             <PARAM NAME = "scriptable" VALUE = "false" > \
             <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@" > \
-	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
+	    <PARAM NAME = "background" VALUE = "#ffffff" > \
 	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters, topParameters" > \
 	    <PARAM NAME = "orientation" VALUE = "vertical" > \
 	    <PARAM NAME = "modelURL" VALUE = "@sanitizedModelName@.xml" > \
@@ -75,7 +75,7 @@ applet is displayed on a XGA screen-->
             archive = "@modelJarFiles@" \
             width = "@appletWidth@" \
             height = "@appletHeight@" \
-            NAME = "@sanitizedModelName@" background = "#faf0e6" controls = "buttons, directorParameters, topParameters" orientation = "vertical" modelURL = "@sanitizedModelName@.xml"  \
+            NAME = "@sanitizedModelName@" background = "#ffffff" controls = "buttons, directorParameters, topParameters" orientation = "vertical" modelURL = "@sanitizedModelName@.xml"  \
             progressbar = "true" \
             scriptable = "false" \
             pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
@@ -94,7 +94,7 @@ applet is displayed on a XGA screen-->
             height = "@appletHeight@" \
             > \
             <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@" > \
-	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
+	    <PARAM NAME = "background" VALUE = "#ffffff" > \
 	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters, topParameters" > \
 	    <PARAM NAME = "orientation" VALUE = "vertical" > \
 	    <PARAM NAME = "modelURL" VALUE = "@sanitizedModelName@.xml" > \
