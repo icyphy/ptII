@@ -108,6 +108,11 @@ public class ActorIndex {
             NamedObjClassesSeen namedObjClassesSeen = new NamedObjClassesSeen(
                     classesToBeIndexed);
             parser.addMoMLFilter(namedObjClassesSeen);
+            // Add a filter to remove the graphical classes
+            // This is safe to do because our NamedObjClassesSeen filter
+            // runs before we then remove the graphical classes.
+            parser.addMoMLFilter(new RemoveGraphicalClasses());
+
             while ((modelName = modelReader.readLine()) != null) {
                 // Reset the list of classes seen, read the model
                 // The filter updates the classesToBeIndexed hashMap
