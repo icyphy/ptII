@@ -71,6 +71,7 @@ UI_FILES_TO_BE_JARED = \
 	acks.htm \
 	authors.htm \
 	codegen.htm \
+	copernicus.htm \
 	default.css \
 	expressions.htm \
 	expressionsa2.htm \
@@ -552,7 +553,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/csp/lib/*.java \
 			../ptolemy/domains/ct/kernel/*.java \
 			../ptolemy/domains/ct/kernel/solver/*.java \
-			../ptolemy/domains/ct/kernel/util/*.java \
 			../ptolemy/domains/ct/lib/*.java \
 			../ptolemy/domains/dde/kernel/*.java \
 			../ptolemy/domains/dde/lib/*.java \
