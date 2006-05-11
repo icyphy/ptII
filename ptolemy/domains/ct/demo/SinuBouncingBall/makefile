@@ -51,7 +51,7 @@ OTHER_FILES_TO_BE_JARED = \
 	sinu-ball.pdf
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
 	SinuBouncingBall.xml
 
 # Sources that may or may not be present, but if they are present, we don't
