@@ -17,12 +17,16 @@
  and other classes in vergil.actor and the
  <a href="../../../doc/codeDoc/doc/doclets/PtDoclets.htm">PtDoclet</a> doclet.
 
+
 <h2>How the Indexer works</h2>
-The indexer reads in two files:
+The indexer is run by running <code>make</code> in <code>$PTII/doc</code>.
+This rule runs 
+ <a href="../../../doc/codeDoc/ptolemy/moml/filter/ActorIndex.html">ptolemy.moml.filter.ActorIndex</a>, which read in two files:
 <dl>
 <dt> <a href="../../../doc/codeDoc/allNamedObjs.txt"><code>$PTII/doc/codeDoc/allNamedObjs.txt</code></a>
 <dd>All the NamedObj files that were seen while running the doclet defined in
-<a href="../../../doc/doclets/PtDoclet.java"><code>$PTII/doc/doclets/PtDoclet.java</code></a>
+<a href="../../../doc/doclets/PtDoclet.java"><code>$PTII/doc/doclets/PtDoclet.java</code></a>.  This doclet is run while running
+<code>make</code> in <code>$PTII/doc</code>.
 
 <dt> <a href="../../configs/doc/models.txt"><code>$PTII/ptolemy/configs/doc/models.txt</code></a>
 <dd> The names of all the demonstrations in
@@ -35,6 +39,8 @@ make
 That rule runs 
  <a href="../../../doc/codeDoc/ptolemy/actor/gui/HTMLAbout.html">HTMLAbout.main()</a>
 which creates <code>models.txt</code>.
+<br>Note: <code>models.txt</code> need only be updated if
+<a href="../../configs/doc/completeDemos.htm"><code>$PTII/ptolemy/configs/doc/completeDemos.htm</code></a> changes.
 </dl>
 
  <a href="../../../doc/codeDoc/moml/filter/ActorIndex.html">ptolemy.moml.filter.ActorIndex</a> reads these two files and creates <code>.idx</code>
