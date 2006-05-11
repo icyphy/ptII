@@ -50,11 +50,15 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	CountTrues.java \
+	DotProduct.java \
 	Repeat.java \
 	SampleDelay.java \
 	VariableRecursiveLattice.java
 
 OTHER_FILES_TO_BE_JARED = \
+	CountTrues.c \
+	DotProduct.c \
 	SampleDelay.c \
 	VariableRecursiveLattice.c \
 	sdfentities.xml

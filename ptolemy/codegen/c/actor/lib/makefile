@@ -64,13 +64,28 @@ JSRCS = \
 	AbsoluteValue.java \
 	Accumulator.java \
 	AddSubtract.java \
+	ArrayAppend.java \
+	ArrayAverage.java \
+	ArrayElement.java \
+	ArrayExtract.java \
+	ArrayLength.java \
+	ArrayLevelCrossing.java \
+	ArrayMaximum.java \
+	ArrayMinimum.java \
+	ArrayPeakSearch.java \
+	ArraySort.java \
+	ArrayToElements.java \
 	Average.java \
 	Bernoulli.java \
+	BooleanMultiplexor.java \
+	BooleanSelect.java \
+	BooleanSwitch.java \
 	Commutator.java \
 	Const.java \
 	Counter.java \
 	Differential.java \
 	Discard.java \
+	DiscreteRandomSource.java \
 	Distributor.java \
 	ElementsToArray.java \
 	Exit.java \
@@ -88,10 +103,18 @@ JSRCS = \
 	Ramp.java \
 	RandomSource.java \
 	Remainder.java \
+	Rician.java \
 	Scale.java \
+	Select.java \
 	Sequence.java \
+	Sink.java \
+	Stop.java \
 	StringConst.java \
+	Switch.java \
+	Synchronizer.java \
 	Test.java \
+	ThrowException.java \
+	ThrowModelError.java \
 	TrigFunction.java \
 	UnaryMathFunction.java \
 	Uniform.java
@@ -100,12 +123,27 @@ OTHER_FILES_TO_BE_JARED = \
 	AbsoluteValue.c \
 	Accumulator.c \
 	AddSubtract.c \
+	ArrayAppend.c \
+	ArrayAverage.c \
+	ArrayElement.c \
+	ArrayExtract.c \
+	ArrayLength.c \
+	ArrayLevelCrossing.c \
+	ArrayMaximum.c \
+	ArrayMinimum.c \
+	ArrayPeakSearch.c \
+	ArraySort.c \
+	ArrayToElements.c \
 	Average.c \
 	Bernoulli.c \
+	BooleanMultiplexor.c \
+	BooleanSelect.c \
+	BooleanSwitch.c \
 	Commutator.c \
 	Const.c \
 	Counter.c \
 	Differential.c \
+	DiscreteRandomSource.c \
 	Distributor.c \
 	ElementsToArray.c \
 	ElementsToArray_new.c \
@@ -124,10 +162,18 @@ OTHER_FILES_TO_BE_JARED = \
 	Ramp.c \
 	RandomSource.c \
 	Remainder.c \
+	Rician.c \
 	Scale.c \
+	Select.c \
 	Sequence.c \
+	Sink.c \
+	Stop.c \
 	StringConst.c \
+	Switch.c \
+	Synchronizer.c \
 	Test.c \
+	ThrowException.c \
+	ThrowModelError.c \
 	TrigFunction.c \
 	UnaryMathFunction.c \
 	Uniform.c \
