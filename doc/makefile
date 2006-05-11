@@ -423,9 +423,7 @@ KRUFT = \
 	codeDocVisualSense.jar \
 	docConfig.jar
 
-all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html codeDoc/ptolemy/actor/lib/Ramp.xml codeDocHyVisual/doc/codeDoc/tree.html codeDocVisualSense/doc/codeDoc/tree.html codeDocViptos/doc/codeDoc/tree.html
-
-#	codeDoc/ptolemy/actor/lib/RampIdx.xml
+all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html codeDoc/ptolemy/actor/lib/Ramp.xml codeDocHyVisual/doc/codeDoc/tree.html codeDocVisualSense/doc/codeDoc/tree.html codeDocViptos/doc/codeDoc/tree.html codeDoc/ptolemy/actor/lib/RampIdx.xml
 
 install: all jars codeDoc.jar codeDocHyVisual.jar codeDocVisualSense.jar
 
@@ -517,9 +515,8 @@ update_clean:
 	rm -f $(DERIVED_FILES)
 
 # Run javadoc, the doclet and create the Actor/Demo index 
-docs: codeDoc/tree.html codeDoc/ptolemy/actor/lib/Ramp.xml
-
-#		codeDoc/ptolemy/actor/lib/RampIdx.xml	
+docs: codeDoc/tree.html codeDoc/ptolemy/actor/lib/Ramp.xml \
+		codeDoc/ptolemy/actor/lib/RampIdx.xml	
 
 javadocs: codeDoc/tree.html
 codeDoc/tree.html:	../ptolemy/plot/*.java \
@@ -661,9 +658,13 @@ codeDoc/ptolemy/actor/lib/Ramp.xml:
 			$(PTDOCLET) \
 			$(PTDOCPACKAGES) )
 
+# Create the actor index.  See $PTII/ptolemy/vergil/basic/docViewerHelp.htm
 indexActors: codeDoc/ptolemy/actor/lib/RampIdx.xml
 codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt
-	"$(JAVA)" -classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+	@echo "# Create the actor index."  
+	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
+	"$(JAVA)" -Xmx256m \
+		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDoc/allNamedObjs.txt \
 		$(PTII)/ptolemy/configs/doc/models.txt codeDoc
