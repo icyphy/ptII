@@ -101,7 +101,8 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	'FunctionToken$$Function.class' \
-	'ActorToken$$ActorType.class'
+	'ActorToken$$ActorType.class' \
+	'Token.$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

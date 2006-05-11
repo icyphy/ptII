@@ -259,7 +259,8 @@ OPTIONAL_FILES = \
 	'TokenTableau$$Factory.class' \
 	'UnitConstraintsDialog$$1.class' \
 	'UnitConstraintsDialog$$UnitsTableModel.class' \
-	'UnitSolverDialog$$SolutionListModel.class'
+	'UnitSolverDialog$$SolutionListModel.class' \
+	'WelcomeWindow$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
