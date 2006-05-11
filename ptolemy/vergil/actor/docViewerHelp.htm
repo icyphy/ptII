@@ -13,15 +13,32 @@
  the actor and select Documentation -&gt; Get Documentation.
 
 <p> This functionality is implemented using
- <a
- href="../../../doc/codeDoc/ptolemy/vergil/actor/DocTableau.html">DocTableau</a>
+ <a href="../../../doc/codeDoc/ptolemy/vergil/actor/DocTableau.html">DocTableau</a>
  and other classes in vergil.actor and the
  <a href="../../../doc/codeDoc/doc/doclets/PtDoclets.htm">PtDoclet</a> doclet.
 
 <h2>How the Indexer works</h2>
-<code>$PTII/doc/makefile</code> contains a <code>indexActors</code>
-rule that 
+The indexer reads in two files:
+<dl>
+<dt> <a href="../../../doc/codeDoc/allNamedObjs.txt"><code>$PTII/doc/codeDoc/allNamedObjs.txt</code></a>
+<dd>All the NamedObj files that were seen while running the doclet defined in
+<a href="../../../doc/doclets/PtDoclet.java"><code>$PTII/doc/doclets/PtDoclet.java</code></a>
 
+<dt> <a href="../../configs/doc/models.txt"><code>$PTII/ptolemy/configs/doc/models.txt</code></a>
+<dd> The names of all the demonstrations in
+<a href="../../configs/doc/completeDemos.htm"><code>$PTII/ptolemy/configs/doc/completeDemos.htm</code></a>.
+<br>This file is created by running 
+<pre>
+cd $PTII/ptolemy/configs
+make
+</pre>
+That rule runs 
+ <a href="../../../doc/codeDoc/ptolemy/actor/gui/HTMLAbout.html">HTMLAbout.main()</a>
+which creates <code>models.txt</code>.
+</dl>
+
+ <a href="../../../doc/codeDoc/moml/filter/ActorIndex.html">ptolemy.moml.filter.ActorIndex</a> reads these two files and creates <code>.idx</code>
+files in <code>$PTII/doc/codeDoc</code>.
 
 </body>
 </head>
