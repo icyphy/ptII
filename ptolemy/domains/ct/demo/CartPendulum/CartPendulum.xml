@@ -4,13 +4,13 @@
 <entity name="CartPendulum" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 51, 678, 372}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 51, 581, 365}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[463, 254]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[366, 247]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{231.5, 127.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{183.0, 123.5}">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="40">
@@ -19,13 +19,13 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.5, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
     <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/ct/demo/CartPendulum/cartpendulum.pdf">
     </property>
     <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 60.0]">
         </property>
     </property>
     <property name="M" class="ptolemy.data.expr.Parameter" value="10">
@@ -44,7 +44,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 55.0]">
         </property>
     </property>
     <property name="m" class="ptolemy.data.expr.Parameter" value="5">
@@ -63,7 +63,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 75.0]">
         </property>
     </property>
     <property name="length" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -82,7 +82,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 95.0]">
         </property>
     </property>
     <property name="lambda" class="ptolemy.data.expr.Parameter" value="0.9">
@@ -101,13 +101,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 115.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An inverted pendulum on a cart.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 15.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
