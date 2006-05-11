@@ -117,3 +117,36 @@ test Expression-7.1 {run with two inputs} {
     $m execute
     enumToTokenValues [$rec getRecord 0]
 } {0.0 2.0 4.0}
+
+test Expression-8.1 {port named "time" is verboten} {
+    set e8 [sdfModel 3]
+    set ramp8 [java::new ptolemy.actor.lib.Ramp $e8 ramp8]   
+    set expr8 [java::new ptolemy.actor.lib.Expression $e8 expr8]
+    set time [java::new ptolemy.actor.TypedIOPort $expr8 time true false]
+    set r1 [$e8 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $ramp8] output] \
+            $time]
+    set expression [java::field $expr8 expression]
+    $expression setExpression "time + time"
+    set m8 [$e8 getManager]
+    catch {$m8 execute} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: This actor has a port named "time", which will not be read, instead the variable "time" will be read.
+  in .top.expr8}}
+
+
+test Expression-8.2 {port named "iteration" is verboten} {
+    set e8 [sdfModel 3]
+    set ramp8 [java::new ptolemy.actor.lib.Ramp $e8 ramp8]   
+    set expr8 [java::new ptolemy.actor.lib.Expression $e8 expr8]
+    set iteration [java::new ptolemy.actor.TypedIOPort $expr8 iteration true false]
+    set r1 [$e8 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $ramp8] output] \
+            $iteration]
+    set expression [java::field $expr8 expression]
+    $expression setExpression "iteration + iteration"
+    set m8 [$e8 getManager]
+    catch {$m8 execute} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: This actor has a port named "iteration", which will not be read, instead the variable "iteration" will be read.
+  in .top.expr8}}
