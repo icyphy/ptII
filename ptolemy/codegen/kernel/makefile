@@ -79,7 +79,9 @@ OPTIONAL_FILES = \
 	doc \
 	'CodeGeneratorHelper$$1.class' \
 	'CodeGeneratorHelper$$Channel.class' \
-	'CodeGeneratorHelper$$HelperScope.class'
+	'CodeGeneratorHelper$$HelperScope.class' \
+	'CodeStream$$CodeBlockTable.class' \
+	'CodeStream$$Signature.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
