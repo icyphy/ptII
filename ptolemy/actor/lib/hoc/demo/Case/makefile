@@ -51,9 +51,8 @@ OTHER_FILES_TO_BE_JARED = \
 	Case.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
-
-#	Case.htm \
+	$(OTHER_FILES_TO_BE_JARED) \
+	Case.htm
 #	CaseVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -74,10 +73,10 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_ptolemy demo_vergil #demo_applet demo_vergil_applet 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer Case.htm
-#
+demo: demo_ptolemy demo_vergil demo_applet #demo_vergil_applet 
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer Case.htm
+
 #demo_vergil_applet:
 #	CLASSPATH="$(CLASSPATH)" appletviewer CaseVergil.htm
 
