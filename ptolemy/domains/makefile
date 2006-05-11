@@ -44,8 +44,9 @@ EXPERIMENTAL_DOMAINS = \
 #   Java 3D was found
 # PTTINYOS_DIR is set by configure in $PTII/mk/ptII.mk to ptinyos if
 #   TinyOS is found. 
-# The tm domain uses java.util.Timer, so it requires JDK 1.3
-DOMAINS =	ci csp ct dde ddf de fsm pn sdf dt \
+# PTCONTINUOUS_DIR is set to continuous if we want to compile that domain.
+PTCONTINUOUS_DIR = continuous
+DOMAINS =	ci $(PTCONTINUOUS_DIR) csp ct dde ddf de fsm pn sdf dt \
 	    giotto petrinet rendezvous \
 		$(PTPSDF_DIR) $(PTTINYOS_DIR) \
 		sr tm $(PTJAVA3D_DIR) wireless
