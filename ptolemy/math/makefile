@@ -110,6 +110,7 @@ OPTIONAL_FILES = \
 	'Overflow$$ToZero.class' \
 	'Overflow$$Trap.class' \
 	'Overflow$$Unknown.class' \
+	'Precision$$ExpressionLanguagePrecisionFormat.class' \
 	'Precision$$IntegerFractionPrecisionFormat.class' \
 	'Precision$$LengthExponentPrecisionFormat.class' \
 	'Precision$$LengthIntegerPrecisionFormat.class' \
