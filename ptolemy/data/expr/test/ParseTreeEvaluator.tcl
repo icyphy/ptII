@@ -70,6 +70,17 @@ proc evaluatePtClose {expression results} {
     ptclose [evaluateTree $root] $results
 }
 
+proc parseTreeTraceTest {expression} {
+    set ptParser [java::new ptolemy.data.expr.PtParser]
+    set parseTree [$ptParser generateParseTree $expression ]
+
+    set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
+    set tree [$evaluator traceParseTreeEvaluation \
+		$parseTree [java::null]]
+    return [list \
+		$tree]
+}
+
 ######################################################################
 ####
 #
@@ -173,8 +184,9 @@ test ParseTreeEvaluator-2.8 {Test long format specifiers} {
             [evaluate "035L"] \
             [evaluate "0x1Dl"] \
             [evaluate "0X1dL"] \
-            [evaluate "\"...\" + 10L + \"...\""]
-} {29L 29L 29L 29L {"...10L..."}}
+            [evaluate "\"...\" + 10L + \"...\""] \
+            [evaluate "100L + 10L + 1L"]
+} {29L 29L 29L 29L {"...10L..."} 111L
 
 ######################################################################
 ####
