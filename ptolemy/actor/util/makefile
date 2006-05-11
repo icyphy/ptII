@@ -71,8 +71,11 @@ JSRCS = \
 	FunctionDependency.java \
 	FunctionDependencyOfAtomicActor.java \
 	FunctionDependencyOfCompositeActor.java \
+	FuzzyDoubleComparator.java \
+	GeneralComparator.java \
 	Time.java \
-	TimedEvent.java
+	TimedEvent.java \
+	TotallyOrderedSet.java
 
 EXTRA_SRCS =	$(JSRCS)
 

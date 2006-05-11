@@ -50,13 +50,13 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####  Generally used comparator.
 #
-set comparator [java::new ptolemy.domains.ct.kernel.util.FuzzyDoubleComparator]
+set comparator [java::new ptolemy.actor.util.FuzzyDoubleComparator]
 
 ######################################################################
 ####
 #
 test TotallyOrderedSet-2.1 {Construct an empty set and check size} {
-    set toset [java::new ptolemy.domains.ct.kernel.util.TotallyOrderedSet \
+    set toset [java::new ptolemy.actor.util.TotallyOrderedSet \
             $comparator]
     list [$toset size]
 } {0}
@@ -71,7 +71,7 @@ test TotallyOrderedSet-2.2 {Construct an empty set and check emptiness} {
 #
 test TotallyOrderedSet-3.1 {get the comparator} {
     #Note: use the above setup.
-    set comp [java::cast ptolemy.domains.ct.kernel.util.FuzzyDoubleComparator \
+    set comp [java::cast ptolemy.actor.util.FuzzyDoubleComparator \
 	    [$toset getComparator]]
     list [$comp getThreshold]
 } {1e-10}

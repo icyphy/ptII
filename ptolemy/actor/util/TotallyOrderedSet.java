@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.ct.kernel.util;
+package ptolemy.actor.util;
 
 import java.util.Collections;
 import java.util.Comparator;

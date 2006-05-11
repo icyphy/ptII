@@ -52,13 +52,13 @@ if {[string compare test [info procs test]] == 1} then {
 #### Constructor and default threshold
 #
 test FuzzyDoubleComparator-2.1 {Construct a FuzzyDoubleComparator} {
-    set fdc [java::new ptolemy.domains.ct.kernel.util.FuzzyDoubleComparator]
+    set fdc [java::new ptolemy.actor.util.FuzzyDoubleComparator]
     list [$fdc getThreshold]
 } {1e-10}
 
 test FuzzyDoubleComparator-2.2 {Construct with threshold} {
     set fdc [java::new \
-	    ptolemy.domains.ct.kernel.util.FuzzyDoubleComparator 1e-7]
+	    ptolemy.actor.util.FuzzyDoubleComparator 1e-7]
     list [$fdc getThreshold]
 } {1e-07}
 

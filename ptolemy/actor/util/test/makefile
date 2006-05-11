@@ -54,7 +54,9 @@ JSIMPLE_TESTS = \
 	ConstVariableModelAnalysis.tcl \
 	FIFOQueue.tcl \
 	FreeVariableModelAnalysis.tcl \
-	TimedEvent.tcl
+	FuzzyDoubleComparator.tcl \
+	TimedEvent.tcl \
+	TotallyOrderedSet.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
