@@ -98,14 +98,14 @@ public class DocBuilder extends Attribute {
         super(container, name);
         cleanFirst = new Parameter(this, "cleanFirst");
         cleanFirst.setTypeEquals(BaseType.BOOLEAN);
-        cleanFirst.setExpression("true");
+        cleanFirst.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
     /** If true, then clean before building documentation.  The default
-     *  value is true.
+     *  value is false.
      */ 
     public Parameter cleanFirst; 
 
