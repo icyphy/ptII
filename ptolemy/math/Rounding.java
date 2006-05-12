@@ -454,7 +454,6 @@ public abstract class Rounding implements Cloneable, Serializable {
     public static class RoundCeiling extends Rounding {
         private RoundCeiling() {
             super("ceiling");
-            _addRounding(this, "truncate");
         }
 
         public BigInteger round(BigDecimal dec) {
