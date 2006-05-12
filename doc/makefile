@@ -350,6 +350,7 @@ ALL1_4PACKAGES = \
 	$(THALESPACKAGES) \
 	$(VIPTOSPACKAGES) \
 	$(VISUALSENSEPACKAGES) \
+	doc.doclets \
 	jni \
 	ptolemy.plot \
 	ptolemy.plot.plotml \
@@ -671,7 +672,7 @@ codeDoc/allNamedObjs.txt: codeDoc/ptolemy/actor/lib/Ramp.xml
 indexActors: codeDoc/ptolemy/actor/lib/RampIdx.xml
 codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt
 	@echo "# Create the actor index."  
-	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
+	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
@@ -709,12 +710,15 @@ codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 			$(HYVISUALPACKAGES) )
 
 # All the namedObjs for which we have documentation.
-codeDocHyVisual/doc/codeDoc/allNamedObjs.txt: codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
+codeDocHyVisual/doc/codeDoc/allNamedObjs.txt: \
+		codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Build the index of actors 
-codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/codeDoc/allNamedObjs.txt
+codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
+		codeDocHyVisual/doc/codeDoc/allNamedObjs.txt
+		$(PTII)/ptolemy/configs/hyvisual/hyvisualModels.txt: \
 	@echo "# Create the actor index."  
-	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
+	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
@@ -722,6 +726,9 @@ codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/c
 		$(PTII)/ptolemy/configs/hyvisual/hyvisualModels.txt \
 		codeDocHyVisual/doc/codeDoc
 
+$(PTII)/ptolemy/configs/hyvisual/hyvisualModels.txt: \
+		$(PTII)/ptolemy/configs/hyvisual/intro.htm
+	(cd $(PTII)/ptolemy/configs/hyvisual; make hyvisualModels.txt)
 
 #############################################################################
 # Viptos
@@ -747,7 +754,7 @@ codeDocViptos/doc/codeDoc/tree.html:
 codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" -J-Xmx512m \
-			-d doc/codeDocViptos \
+			-d doc/codeDocViptos/doc/codeDoc \
 			$(PTDOCLET) \
 	$(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
 
@@ -755,7 +762,9 @@ codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 codeDocViptos/doc/codeDoc/allNamedObjs.txt: codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Build the index of actors 
-codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocViptos/doc/codeDoc/allNamedObjs.txt
+codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
+		codeDocViptos/doc/codeDoc/allNamedObjs.txt
+		$(PTII)/ptolemy/configs/viptos/viptosModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
@@ -764,6 +773,10 @@ codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocViptos/doc/codeD
 		codeDocViptos/doc/codeDoc/allNamedObjs.txt \
 		$(PTII)/ptolemy/configs/viptos/viptosModels.txt \
 		codeDocViptos/doc/codeDoc
+
+$(PTII)/ptolemy/configs/viptos/viptosModels.txt: \
+		$(PTII)/ptolemy/configs/viptos/intro.htm
+	(cd $(PTII)/ptolemy/configs/viptos; make viptosModels.txt)
 
 #############################################################################
 # VisualSense
@@ -797,15 +810,21 @@ codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 codeDocVisualSense/doc/codeDoc/allNamedObjs.txt: codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Build the index of actors 
-codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocVisualSense/doc/codeDoc/allNamedObjs.txt
+codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
+		codeDocVisualSense/doc/codeDoc/allNamedObjs.txt
+		$(PTII)/ptolemy/configs/visualsense/visualsenseModels.txt
 	@echo "# Create the actor index."  
-	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
+	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDocVisualSense/doc/codeDoc/allNamedObjs.txt \
 		$(PTII)/ptolemy/configs/visualsense/visualsenseModels.txt \
 		codeDocVisualSense/doc/codeDoc
+
+$(PTII)/ptolemy/configs/visualsense/visualsenseModels.txt: \
+		$(PTII)/ptolemy/configs/visualsense/intro.htm
+	(cd $(PTII)/ptolemy/configs/visualsense; make visualsenseModels.txt)
 
 #############################################################################
 # Doccheck
