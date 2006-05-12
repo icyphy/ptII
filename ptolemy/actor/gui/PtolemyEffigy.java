@@ -386,7 +386,18 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 String dtdStart = "<!DOCTYPE";
                 String dtdEnd = "PUBLIC \"-//UC Berkeley//DTD MoML";
                 String dtdEndRegExp = ".*" + dtdEnd + ".*";
-                InputStream stream = input.openStream();
+                InputStream stream = null;
+                try {
+                    stream = input.openStream();
+                } catch (IOException ex) {
+                    // If we are running under Web Start, we
+                    // might have a URL that refers to another
+                    // jar file.
+                    URL anotherURL = ClassUtilities
+                        .jarURLEntryResource(input.toString());
+                    stream = anotherURL.openStream();
+                }
+
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(stream));
                 int lineCount = 0;
