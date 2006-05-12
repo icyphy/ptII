@@ -134,8 +134,8 @@ VERGIL_DOCS = \
 
 # Include these jars in PTAUXALLJAR
 PTAUXALLJARS = \
-		coding/codingConfig.jar \
-		img/img.jar
+	coding/codingConfig.jar \
+	img/img.jar
 
 # After Ptolemy II 2.0, usingVergil is no longer a part of docConfig.jar
 #		design/usingVergil/usingVergil.jar 
@@ -155,7 +155,7 @@ OTHER_FILES_TO_BE_JARED = \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	\
+MISC_FILES = \
 	$(DIRS) \
 	$(VERGIL_DOCS) \
 	img \
@@ -163,15 +163,16 @@ MISC_FILES =	\
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	\
+OPTIONAL_FILES = \
 	codeDoc \
 	codeDoc.jar \
 	codeDocPtiny \
 	uml
 
 # Packages under the com package
-COMPACKAGES =		com.JLex \
-			com.microstar.xml
+COMPACKAGES = \
+	com.JLex \
+	com.microstar.xml
 
 # Java packages for copernicus 
 
@@ -182,13 +183,13 @@ COMPACKAGES =		com.JLex \
 # http://developer.java.sun.com/developer/bugParade/bugs/4507380.html
 # So, we expand the ptolemy.copernicus.java package
 COPERNICUSPACKAGES = \
-			ptolemy.copernicus.applet \
-			ptolemy.copernicus.c \
-			ptolemy.copernicus.gui \
-			ptolemy.copernicus.kernel \
-			ptolemy/copernicus/java/*.java \
-			$(JHDLPACKAGE) \
-			ptolemy.copernicus.shallow
+	ptolemy.copernicus.applet \
+	ptolemy.copernicus.c \
+	ptolemy.copernicus.gui \
+	ptolemy.copernicus.kernel \
+	ptolemy/copernicus/java/*.java \
+	$(JHDLPACKAGE) \
+	ptolemy.copernicus.shallow
 
 # Packages used by Diva
 DIVAPACKAGES = \
@@ -219,45 +220,49 @@ DIVAPACKAGES = \
 
 # Experimental packages that are not shipped
 EXPERIMENTALPACKAGES = \
-			ptolemy.domains.rtp.kernel \
-			ptolemy.domains.rtp.lib
+	ptolemy.domains.rtp.kernel \
+	ptolemy.domains.rtp.lib
 
 
 # Packages used by HyVisual
 HYVISUALPACKAGES = \
-			$(PTCOLT_PACKAGES) \
-			ptolemy.actor.lib.javasound \
-			ptolemy.actor.lib \
-			ptolemy.actor.lib.comm \
-			ptolemy.actor.lib.conversions \
-			ptolemy.actor.lib.gui \
-			ptolemy.actor.lib.image \
-			ptolemy.actor.lib.io \
-			ptolemy.actor.lib.logic \
-			ptolemy.actor.lib.python \
-			ptolemy.actor.lib.security \
-			ptolemy.actor.lib.string \
-			ptolemy.actor.lib.xslt \
-			ptolemy.actor.parameters \
-			ptolemy.domains.continuous.kernel \
-			ptolemy.domains.continuous.kernel.solver \
-			ptolemy.domains.ct.kernel \
-			ptolemy.domains.ct.kernel.solver \
-			ptolemy.domains.ct.lib \
-			ptolemy.domains.de.kernel \
-			ptolemy.domains.de.lib \
-			ptolemy.domains.fsm.kernel \
-			ptolemy.domains.fsm.modal \
-			ptolemy.domains.sdf.kernel \
-			ptolemy.domains.sdf.lib \
-			ptolemy.domains.sdf.lib.vq \
-			ptolemy.hsif \
-			ptolemy.matlab \
-			ptolemy.media.javasound \
-			ptolemy.util \
-			ptolemy.vergil.fsm.modal
+	$(PTCOLT_PACKAGES) \
+	ptolemy.actor.lib.javasound \
+	ptolemy.actor.lib \
+	ptolemy.actor.lib.comm \
+	ptolemy.actor.lib.conversions \
+	ptolemy.actor.lib.gui \
+	ptolemy.actor.lib.image \
+	ptolemy.actor.lib.io \
+	ptolemy.actor.lib.logic \
+	ptolemy.actor.lib.python \
+	ptolemy.actor.lib.security \
+	ptolemy.actor.lib.string \
+	ptolemy.actor.lib.xslt \
+	ptolemy.actor.parameters \
+	ptolemy.domains.continuous.kernel \
+	ptolemy.domains.continuous.kernel.solver \
+	ptolemy.domains.ct.kernel \
+	ptolemy.domains.ct.kernel.solver \
+	ptolemy.domains.ct.lib \
+	ptolemy.domains.de.kernel \
+	ptolemy.domains.de.lib \
+	ptolemy.domains.fsm.kernel \
+	ptolemy.domains.fsm.modal \
+	ptolemy.domains.sdf.kernel \
+	ptolemy.domains.sdf.lib \
+	ptolemy.domains.sdf.lib.vq \
+	ptolemy.hsif \
+	ptolemy.matlab \
+	ptolemy.media.javasound \
+	ptolemy.util \
+	ptolemy.vergil.fsm.modal
 
-
+# All the HyVisual generated documentation
+HYVISUAL_DOCS = \
+	codeDocHyVisual/doc/codeDoc/tree.html \
+	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
+	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
 
 
 # Currently, there are no .java files in fsm.lib
@@ -265,10 +270,10 @@ HYVISUALPACKAGES = \
 
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
-			$(HYVISUALPACKAGES) \
-			ptolemy.domains.csp.kernel \
-			ptolemy.domains.csp.lib \
-			ptolemy.domains.pn.kernel
+	$(HYVISUALPACKAGES) \
+	ptolemy.domains.csp.kernel \
+	ptolemy.domains.csp.lib \
+	ptolemy.domains.pn.kernel
 
 # Packages for the SUPERB classes
 #SUPERBPACKAGES = \
@@ -280,32 +285,44 @@ THALESPACKAGES = \
 	thales.vergil \
 	thales.vergil.navigable
 
-# Packages used by VisualSense
+# All the Viptos generated documentation
+VIPTOS_DOCS = \
+	codeDocViptos/doc/codeDoc/tree.html \
+	codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
+	codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
+
+# Packages used by Viptsos
 VIPTOSPACKAGES = \
-			ptolemy.domains.ptinyos.gui \
-			ptolemy.domains.ptinyos.kernel \
-			ptolemy.domains.ptinyos.lib \
-			ptolemy.domains.ptinyos.util.nc2moml \
-			ptolemy.domains.ptinyos.util.ncapp2moml \
+	ptolemy.domains.ptinyos.gui \
+	ptolemy.domains.ptinyos.kernel \
+	ptolemy.domains.ptinyos.lib \
+	ptolemy.domains.ptinyos.util.nc2moml \
+	ptolemy.domains.ptinyos.util.ncapp2moml \
 
 # Packages used by VisualSense
 VISUALSENSEPACKAGES = \
-			ptolemy.domains.wireless.kernel \
-			ptolemy.domains.wireless.lib
+	ptolemy.domains.wireless.kernel \
+	ptolemy.domains.wireless.lib
 
-#			ptolemy.domains.wireless.lib.network \
-#			ptolemy.domains.wireless.lib.network.mac
+# All the VisualSense generated documentation
+VISUALSENSE_DOCS = \
+	codeDocVisualSense/doc/codeDoc/tree.html \
+	codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
+	codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
+
+#	ptolemy.domains.wireless.lib.network \
+#	ptolemy.domains.wireless.lib.network.mac
 
 
 # PTBACKTRACK_ECLPISE_PACKAGES is set by configure
 PTBACKTRACK_PACKAGES = \
-			ptolemy.backtrack \
-			ptolemy.backtrack.manual.ptolemy.domains.ct.kernel \
-			ptolemy.backtrack.manual.ptolemy.actor.lib \
-			ptolemy.backtrack.ui \
-			ptolemy.backtrack.util \
-			ptolemy.backtrack.xmlparser \
-			$(PTBACKTRACK_ECLIPSE_PACKAGES) 
+	ptolemy.backtrack \
+	ptolemy.backtrack.manual.ptolemy.domains.ct.kernel \
+	ptolemy.backtrack.manual.ptolemy.actor.lib \
+	ptolemy.backtrack.ui \
+	ptolemy.backtrack.util \
+	ptolemy.backtrack.xmlparser \
+	$(PTBACKTRACK_ECLIPSE_PACKAGES) 
 
 # Exclude ptolemy.backtrack.automatic.*, to fix these we would need
 # to modify the Eclipse transformer so that we can get comments from
@@ -314,107 +331,116 @@ PTBACKTRACK_PACKAGES = \
 #			ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib \
 
 # All the Java 1.4 packages
-ALL1_4PACKAGES =	$(COMPACKAGES) \
-			$(COPERNICUSPACKAGES) \
-			$(DIVAPACKAGES) \
-			$(EXPERIMENTALPACKAGES) \
-			$(PTBACKTRACK_PACKAGES) \
-			$(PTCOMM_PACKAGES) \
-			$(PTDISTRIBUTED_PACKAGES) \
-			$(PTGR_PACKAGES) \
-			$(PTINYPACKAGES) \
-			$(PTJAI_PACKAGES) \
-			$(PTJMF_PACKAGES) \
-			$(PTJOYSTICK_PACKAGES) \
-			$(PTQUICKTIME_PACKAGES) \
-			$(PTX10_PACKAGES) \
-			$(SUPERBPACKAGES) \
-			$(THALESPACKAGES) \
-			$(VIPTOSPACKAGES) \
-			$(VISUALSENSEPACKAGES) \
-			jni \
-			ptolemy.plot \
-			ptolemy.plot.plotml \
-			ptolemy.plot.compat \
-			ptolemy.kernel \
-			ptolemy.kernel.attributes \
-			ptolemy.kernel.undo \
-			ptolemy.kernel.util \
-			ptolemy.actor \
-			ptolemy.actor.gui \
-			ptolemy.actor.gui.style \
-			ptolemy.actor.process \
-			ptolemy.actor.lib.hoc \
-			ptolemy.actor.lib.net \
-			ptolemy.actor.sched \
-			ptolemy.actor.util \
-			ptolemy.codegen.c.actor \
-			ptolemy.codegen.c.actor.lib \
-			ptolemy.codegen.c.actor.lib.comm \
-			ptolemy.codegen.c.actor.lib.conversions \
-			ptolemy.codegen.c.actor.lib.gui \
-			ptolemy.codegen.c.actor.lib.hoc \
-			ptolemy.codegen.c.actor.lib.io \
-			ptolemy.codegen.c.actor.lib.javasound \
-			ptolemy.codegen.c.actor.lib.logic \
-			ptolemy.codegen.c.actor.lib.string \
-			ptolemy.codegen.c.domains.fsm.kernel \
-			ptolemy.codegen.c.domains.fsm.modal \
-			ptolemy.codegen.c.domains.hdf.kernel \
-			ptolemy.codegen.c.domains.sdf.kernel \
-			ptolemy.codegen.c.domains.sdf.lib \
-			ptolemy.codegen.c.kernel \
-			ptolemy.codegen.gui \
-			ptolemy.codegen.kernel \
-			ptolemy.domains.ci.kernel \
-			ptolemy.domains.ci.lib \
-			ptolemy.domains.dde.kernel \
-			ptolemy.domains.dde.lib \
-			ptolemy.domains.ddf.kernel \
-			ptolemy.domains.ddf.lib \
-			ptolemy.domains.dt.kernel \
-			ptolemy.domains.giotto.kernel \
-			ptolemy.domains.hdf.kernel \
-			ptolemy.domains.petrinet.kernel \
-			ptolemy.domains.psdf.kernel \
-			ptolemy.domains.rendezvous.kernel \
-			ptolemy.domains.rendezvous.lib \
-			ptolemy.domains.sr.kernel \
-			ptolemy.domains.sr.lib \
-			ptolemy.domains.tm.kernel \
-			ptolemy.domains.tm.lib \
-			ptolemy.data \
-			ptolemy.data.expr \
-			ptolemy.data.type \
-			ptolemy.data.unit \
-			ptolemy.graph \
-			ptolemy.graph.analysis \
-			ptolemy.gui \
-			ptolemy.math \
-			ptolemy.media \
-			ptolemy.moml \
-			ptolemy.moml.filter \
-			ptolemy.ptp.lib \
-			ptolemy.vergil \
-			ptolemy.vergil.actor \
-			ptolemy.vergil.actor.lib \
-			ptolemy.vergil.basic \
-			ptolemy.vergil.debugger \
-			ptolemy.vergil.icon \
-			ptolemy.vergil.fsm \
-			ptolemy.vergil.fsm.ia \
-			ptolemy.vergil.kernel \
-			ptolemy.vergil.kernel.attributes \
-			ptolemy.vergil.toolbox \
-			ptolemy.vergil.tree \
-			util.testsuite
+ALL1_4PACKAGES = \
+	$(COMPACKAGES) \
+	$(COPERNICUSPACKAGES) \
+	$(DIVAPACKAGES) \
+	$(EXPERIMENTALPACKAGES) \
+	$(PTBACKTRACK_PACKAGES) \
+	$(PTCOMM_PACKAGES) \
+	$(PTDISTRIBUTED_PACKAGES) \
+	$(PTGR_PACKAGES) \
+	$(PTINYPACKAGES) \
+	$(PTJAI_PACKAGES) \
+	$(PTJMF_PACKAGES) \
+	$(PTJOYSTICK_PACKAGES) \
+	$(PTQUICKTIME_PACKAGES) \
+	$(PTX10_PACKAGES) \
+	$(SUPERBPACKAGES) \
+	$(THALESPACKAGES) \
+	$(VIPTOSPACKAGES) \
+	$(VISUALSENSEPACKAGES) \
+	jni \
+	ptolemy.plot \
+	ptolemy.plot.plotml \
+	ptolemy.plot.compat \
+	ptolemy.kernel \
+	ptolemy.kernel.attributes \
+	ptolemy.kernel.undo \
+	ptolemy.kernel.util \
+	ptolemy.actor \
+	ptolemy.actor.gui \
+	ptolemy.actor.gui.style \
+	ptolemy.actor.process \
+	ptolemy.actor.lib.hoc \
+	ptolemy.actor.lib.net \
+	ptolemy.actor.sched \
+	ptolemy.actor.util \
+	ptolemy.codegen.c.actor \
+	ptolemy.codegen.c.actor.lib \
+	ptolemy.codegen.c.actor.lib.comm \
+	ptolemy.codegen.c.actor.lib.conversions \
+	ptolemy.codegen.c.actor.lib.gui \
+	ptolemy.codegen.c.actor.lib.hoc \
+	ptolemy.codegen.c.actor.lib.io \
+	ptolemy.codegen.c.actor.lib.javasound \
+	ptolemy.codegen.c.actor.lib.logic \
+	ptolemy.codegen.c.actor.lib.string \
+	ptolemy.codegen.c.domains.fsm.kernel \
+	ptolemy.codegen.c.domains.fsm.modal \
+	ptolemy.codegen.c.domains.hdf.kernel \
+	ptolemy.codegen.c.domains.sdf.kernel \
+	ptolemy.codegen.c.domains.sdf.lib \
+	ptolemy.codegen.c.kernel \
+	ptolemy.codegen.gui \
+	ptolemy.codegen.kernel \
+	ptolemy.domains.ci.kernel \
+	ptolemy.domains.ci.lib \
+	ptolemy.domains.dde.kernel \
+	ptolemy.domains.dde.lib \
+	ptolemy.domains.ddf.kernel \
+	ptolemy.domains.ddf.lib \
+	ptolemy.domains.dt.kernel \
+	ptolemy.domains.giotto.kernel \
+	ptolemy.domains.hdf.kernel \
+	ptolemy.domains.petrinet.kernel \
+	ptolemy.domains.psdf.kernel \
+	ptolemy.domains.rendezvous.kernel \
+	ptolemy.domains.rendezvous.lib \
+	ptolemy.domains.sr.kernel \
+	ptolemy.domains.sr.lib \
+	ptolemy.domains.tm.kernel \
+	ptolemy.domains.tm.lib \
+	ptolemy.data \
+	ptolemy.data.expr \
+	ptolemy.data.type \
+	ptolemy.data.unit \
+	ptolemy.graph \
+	ptolemy.graph.analysis \
+	ptolemy.gui \
+	ptolemy.math \
+	ptolemy.media \
+	ptolemy.moml \
+	ptolemy.moml.filter \
+	ptolemy.ptp.lib \
+	ptolemy.vergil \
+	ptolemy.vergil.actor \
+	ptolemy.vergil.actor.lib \
+	ptolemy.vergil.basic \
+	ptolemy.vergil.debugger \
+	ptolemy.vergil.icon \
+	ptolemy.vergil.fsm \
+	ptolemy.vergil.fsm.ia \
+	ptolemy.vergil.kernel \
+	ptolemy.vergil.kernel.attributes \
+	ptolemy.vergil.toolbox \
+	ptolemy.vergil.tree \
+	util.testsuite
 
 # All the packages
-ALLPACKAGES =		$(ALL1_4PACKAGES) \
-			ptolemy.caltrop \
-			ptolemy.caltrop.actors \
-			ptolemy.caltrop.ddi \
-			ptolemy.caltrop.util
+ALLPACKAGES = \
+	$(ALL1_4PACKAGES) \
+	ptolemy.caltrop \
+	ptolemy.caltrop.actors \
+	ptolemy.caltrop.ddi \
+	ptolemy.caltrop.util
+
+# All the Vergil "full"  generated documentation
+FULL_DOCS = \
+	codeDoc/tree.html \
+	codeDoc/ptolemy/actor/lib/Ramp.xml \
+	codeDoc/ptolemy/actor/lib/RampIdx.xml
+
 
 # 'make clean' removes files listed in $(KRUFT)
 KRUFT = \
@@ -423,13 +449,15 @@ KRUFT = \
 	codeDocVisualSense.jar \
 	docConfig.jar
 
-all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html codeDoc/ptolemy/actor/lib/Ramp.xml codeDocHyVisual/doc/codeDoc/tree.html codeDocVisualSense/doc/codeDoc/tree.html codeDocViptos/doc/codeDoc/tree.html codeDoc/ptolemy/actor/lib/RampIdx.xml
+all: suball whatsnew.htm whatsnewVergil.htm
+	@echo "   To build the javadoc and actor indexes for the full version,"
+	@echo "   run \"make docs\""
+	@echo "   To build the javadoc and actor indexes for all versions,"
+	@echo "   run \"make install\""
 
-install: all jars codeDoc.jar codeDocHyVisual.jar codeDocVisualSense.jar
-
-codeDoc.jar:
-	"$(JAR)" $(JARFLAGS) -cvf $@ -C $(ROOT) doc/codeDoc
-
+# Building the jar files also builds javadoc, PtDoclet and actor indices
+install: all jars codeDoc.jar \
+		codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar
 
 # Build with all common packages
 all_packages:
@@ -442,6 +470,9 @@ all_packages:
 	  PTJOYSTICK_PACKAGES=ptolemy.actor.lib.joystick \
 	  PTQUICKTIME_PACKAGES=ptolemy.domains.gr.lib.quicktime \
 	  PTX10_PACKAGES=ptolemy.actor.lib.x10 codeDoc/tree.html
+
+#############################################################################
+# Make derived versions of .htm files for Vergil
 
 # Vergil gets special versions of the html files because the JDK1.3 Java
 # HTML viewer is not very functional.
@@ -515,10 +546,24 @@ update_clean:
 	rm -f $(DERIVED_FILES)
 
 # Run javadoc, the doclet and create the Actor/Demo index 
-docs: codeDoc/tree.html codeDoc/ptolemy/actor/lib/Ramp.xml \
-		codeDoc/ptolemy/actor/lib/RampIdx.xml	
+docs: $(FULL_DOCS)
 
-javadocs: codeDoc/tree.html
+codeDocPtiny/tree.html:
+	if [ ! -d codeDocPtiny ]; then mkdir -p codeDocPtiny; fi
+	@echo "If this fails because of memory problems, try"
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
+	-(cd ..; CLASSPATH=".$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(PTINYPACKAGES) )
+
+
+#############################################################################
+# Full Default Vergil
+
+javadocs: full_docs
+full_docs: $(FULL_DOCS)
+
+codeDoc.jar: $(FULL_DOCS)
+	"$(JAR)" $(JARFLAGS) -cvf $@ -C $(ROOT) doc/codeDoc
+
 codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/plot/compat/*.java \
 			../ptolemy/plot/plotml/*.java \
@@ -601,18 +646,49 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m $(JDOCBREAKITERATOR)"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
 
-codeDocPtiny/tree.html:
-	if [ ! -d codeDocPtiny ]; then mkdir -p codeDocPtiny; fi
-	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
-	-(cd ..; CLASSPATH=".$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(PTINYPACKAGES) )
 
+# PtDoc, the XML format
+PTDOCPACKAGES = $(ALL1_4PACKAGES)
+# Comment out the above line and uncomment this line for testing.
+#PTDOCPACKAGES = ptolemy.actor.lib
+
+# The ptdoc doclet (does not work yet) 
+PTDOCLET = -doclet doc.doclets.PtDoclet
+# Path relative to $PTII
+PTDOCFLAGS = -d doc/codeDoc
+ptdoc: codeDoc/ptolemy/actor/lib/Ramp.xml	
+codeDoc/ptolemy/actor/lib/Ramp.xml:
+	-(cd ..; CLASSPATH="$(CLASSPATH)" \
+		"$(JAVADOC)" -J-Xmx512m \
+			$(PTDOCFLAGS) \
+			$(PTDOCLET) \
+			$(PTDOCPACKAGES) )
+
+# All the namedObjs for which we have documentation.
+codeDoc/allNamedObjs.txt: codeDoc/ptolemy/actor/lib/Ramp.xml
+
+# Create the actor index.  See $PTII/ptolemy/vergil/basic/docViewerHelp.htm
+indexActors: codeDoc/ptolemy/actor/lib/RampIdx.xml
+codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt
+	@echo "# Create the actor index."  
+	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
+	"$(JAVA)" -Xmx256m \
+		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+		ptolemy.moml.filter.ActorIndex \
+		codeDoc/allNamedObjs.txt \
+		$(PTII)/ptolemy/configs/doc/models.txt codeDoc
+
+
+
+#############################################################################
+# HyVisual
+
+hyvisual_docs: $(HYVISUAL_DOCS)
 
 # Note that we change into the codeDocHyVisual directory
-
 # so that the jar file is created with a subset of the full set of docs
 # so that we can use this smaller jar file instead of the full codeDoc.jar
-codeDocHyVisual.jar: codeDocHyVisual/doc/codeDoc/tree.html
+codeDocHyVisual.jar: $(HYVISUAL_DOCS)
 	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocHyVisual doc/codeDoc
 
 # We do something crafty here and create a tree of html files
@@ -623,6 +699,116 @@ codeDocHyVisual/doc/codeDoc/tree.html:
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) )
+
+# Rules to build for HyVisual
+codeDocHyVisual/ptolemy/actor/lib/Ramp.xml:
+	-(cd ..; CLASSPATH="$(CLASSPATH)" \
+		"$(JAVADOC)" -J-Xmx512m \
+			-d doc/codeDocHyVisual \
+			$(PTDOCLET) \
+			$(HYVISUALPACKAGES) )
+
+# All the namedObjs for which we have documentation.
+codeDocHyVisual/allNamedObjs.txt: codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
+
+# Build the index of actors 
+codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/allNamedObjs.txt
+	@echo "# Create the actor index."  
+	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
+	"$(JAVA)" -Xmx256m \
+		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+		ptolemy.moml.filter.ActorIndex \
+		codeDocHyVisual/allNamedObjs.txt \
+		$(PTII)/ptolemy/configs/hyvisual/hyvisualModels.txt \
+		codeDocHyVisual/doc/codeDoc
+
+
+#############################################################################
+# Viptos
+
+viptos_docs: $(VIPTOS_DOCS)
+
+# Note that we change into the codeDocViptos directory
+# so that the jar file is created with a subset of the full set of docs
+# so that we can use this smaller jar file instead of the full codeDoc.jar
+codeDocViptos.jar: $(VIPTOS_DOCS)
+	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocViptos doc/codeDoc
+
+# We do something crafty here and create a tree of html files
+# that we can substitute in for the usual doc/codeDoc tree in the
+# Viptos webstart
+codeDocViptos/doc/codeDoc/tree.html:
+	if [ ! -d codeDocViptos ]; then mkdir -p codeDocViptos; fi
+	@echo "If this fails because of memory problems, try"
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
+	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocViptos/doc/codeDoc $(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
+
+# Run PtDoclet
+codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
+	-(cd ..; CLASSPATH="$(CLASSPATH)" \
+		"$(JAVADOC)" -J-Xmx512m \
+			-d doc/codeDocViptos \
+			$(PTDOCLET) \
+	$(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
+
+# All the namedObjs for which we have documentation.
+codeDocViptos/allNamedObjs.txt: codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
+
+# Build the index of actors 
+codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocViptos/allNamedObjs.txt
+	@echo "# Create the actor index."  
+	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
+	"$(JAVA)" -Xmx256m \
+		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+		ptolemy.moml.filter.ActorIndex \
+		codeDoc/allNamedObjs.txt \
+		$(PTII)/ptolemy/configs/viptos/viptosModels.txt \
+		codeDocViptos/doc/codeDoc
+
+#############################################################################
+# VisualSense
+
+visualsense_docs: $(VISUALSENSE_DOCS)
+
+# Note that we change into the codeDocVisualSense directory
+# so that the jar file is created with a subset of the full set of docs
+# so that we can use this smaller jar file instead of the full codeDoc.jar
+codeDocVisualSense.jar: $(VISUALSENSE_DOCS)
+	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocVisualSense doc/codeDoc
+
+# We do something crafty here and create a tree of html files
+# that we can substitute in for the usual doc/codeDoc tree in the
+# VisualSense webstart
+codeDocVisualSense/doc/codeDoc/tree.html:
+	if [ ! -d codeDocVisualSense ]; then mkdir -p codeDocVisualSense; fi
+	@echo "If this fails because of memory problems, try"
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
+	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocVisualSense/doc/codeDoc $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
+
+# Run PtDoclet
+codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
+	-(cd ..; CLASSPATH="$(CLASSPATH)" \
+		"$(JAVADOC)" -J-Xmx512m \
+			-d doc/codeDocVisualSense/doc/codeDoc \
+			$(PTDOCLET) \
+		$(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
+
+# All the namedObjs for which we have documentation.
+codeDocVisualSense/allNamedObjs.txt: codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
+
+# Build the index of actors 
+codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocVisualSense/allNamedObjs.txt
+	@echo "# Create the actor index."  
+	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
+	"$(JAVA)" -Xmx256m \
+		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+		ptolemy.moml.filter.ActorIndex \
+		codeDocVisualSense/allNamedObjs.txt \
+		$(PTII)/ptolemy/configs/visualsense/visualsenseModels.txt \
+		codeDocVisualSense/doc/codeDoc
+
+#############################################################################
+# Doccheck
 
 # Doccheck is a doclet that checks for bugs
 # Location of the doccheck jar file, available from
@@ -640,70 +826,6 @@ doccheck/index.html:
 			$(JDOCCHECKDOCLET) \
 			-d doc/doccheck $(ALLPACKAGES) )
 
-
-# PtDoc, the XML format
-PTDOCPACKAGES = $(ALL1_4PACKAGES)
-# Comment out the above line and uncomment this line for testing.
-#PTDOCPACKAGES = ptolemy.actor.lib
-
-# The ptdoc doclet (does not work yet) 
-PTDOCLET = -doclet doc.doclets.PtDoclet
-# Path relatvie to $PTII
-PTDOCFLAGS = -d doc/codeDoc
-ptdoc: codeDoc/ptolemy/actor/lib/Ramp.xml	
-codeDoc/ptolemy/actor/lib/Ramp.xml:
-	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" -J-Xmx512m \
-			$(PTDOCFLAGS) \
-			$(PTDOCLET) \
-			$(PTDOCPACKAGES) )
-
-# Create the actor index.  See $PTII/ptolemy/vergil/basic/docViewerHelp.htm
-indexActors: codeDoc/ptolemy/actor/lib/RampIdx.xml
-codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt
-	@echo "# Create the actor index."  
-	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
-	"$(JAVA)" -Xmx256m \
-		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
-		ptolemy.moml.filter.ActorIndex \
-		codeDoc/allNamedObjs.txt \
-		$(PTII)/ptolemy/configs/doc/models.txt codeDoc
-
-codeDoc/allNamedObjs.txt: codeDoc/ptolemy/actor/lib/Ramp.xml
-
-# Note that we change into the codeDocViptos directory
-# so that the jar file is created with a subset of the full set of docs
-# so that we can use this smaller jar file instead of the full codeDoc.jar
-codeDocViptos.jar: codeDocViptos/doc/codeDoc/tree.html
-	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocViptos doc/codeDoc
-
-# We do something crafty here and create a tree of html files
-# that we can substitute in for the usual doc/codeDoc tree in the
-# Viptos webstart
-codeDocViptos/doc/codeDoc/tree.html:
-	if [ ! -d codeDocViptos ]; then mkdir -p codeDocViptos; fi
-	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
-	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocViptos/doc/codeDoc $(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
-
-
-
-
-# Note that we change into the codeDocVisualSense directory
-
-# so that the jar file is created with a subset of the full set of docs
-# so that we can use this smaller jar file instead of the full codeDoc.jar
-codeDocVisualSense.jar: codeDocVisualSense/doc/codeDoc/tree.html
-	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocVisualSense doc/codeDoc
-
-# We do something crafty here and create a tree of html files
-# that we can substitute in for the usual doc/codeDoc tree in the
-# VisualSense webstart
-codeDocVisualSense/doc/codeDoc/tree.html:
-	if [ ! -d codeDocVisualSense ]; then mkdir -p codeDocVisualSense; fi
-	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
-	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocVisualSense/doc/codeDoc $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
-
+#############################################################################
 # We don't include common.mk since we don't use the compiler here
-include $(ROOT)/mk/ptno-compile.mk
+include $(ROOT)/mk/ptcommon.mk
