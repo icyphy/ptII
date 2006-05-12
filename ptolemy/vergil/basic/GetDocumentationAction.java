@@ -38,6 +38,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.DocBuilder;
 import ptolemy.vergil.actor.DocBuilderEffigy;
@@ -102,8 +103,11 @@ public class GetDocumentationAction extends FigureAction {
             // No doc attribute. Try for a doc file.
             String className = target.getClass().getName();
             try {
-                String docName = "doc/codeDoc/" + className.replace('.', '/') + ".xml";
-                String docClassName = "doc.codeDoc." + className;
+                String docName = "doc/codeDoc"
+                    + "/"
+                    + className.replace('.', '/') + ".xml";
+                String docClassName = "doc.codeDoc."
+                    + className;
                 URL toRead = getClass().getClassLoader().getResource(docName);
                 if (toRead == null) {
                     // No doc file either.
@@ -230,3 +234,4 @@ public class GetDocumentationAction extends FigureAction {
     /** The configuration. */
     protected Configuration _configuration;
 }
+
