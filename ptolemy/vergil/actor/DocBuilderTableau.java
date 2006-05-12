@@ -126,27 +126,23 @@ public class DocBuilderTableau extends Tableau {
          *   tableau for the effigy, but something goes wrong.
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
-            //            if (effigy instanceof Effigy) {
-                // Indicate to the effigy that this factory contains effigies
-                // offering multiple views of the effigy data.
-                effigy.setTableauFactory(this);
+            // Indicate to the effigy that this factory contains effigies
+            // offering multiple views of the effigy data.
+            effigy.setTableauFactory(this);
 
-                // First see whether the effigy already contains an
-                // DocBuilderTableau.
-                DocBuilderTableau tableau = (DocBuilderTableau) effigy
-                        .getEntity("DocBuilderTableau");
+            // First see whether the effigy already contains an
+            // DocBuilderTableau.
+            DocBuilderTableau tableau = (DocBuilderTableau) effigy
+                .getEntity("DocBuilderTableau");
 
-                if (tableau == null) {
-                    tableau = new DocBuilderTableau(effigy, "DocBuilderTableau");
-                }
-                // Don't call show() here.  If show() is called here,
-                // then you can't set the size of the window after
-                // createTableau() returns.  This will affect how
-                // centering works.
-                return tableau;
-                //} else {
-                //return null;
-                //}
+            if (tableau == null) {
+                tableau = new DocBuilderTableau(effigy, "DocBuilderTableau");
+            }
+            // Don't call show() here.  If show() is called here,
+            // then you can't set the size of the window after
+            // createTableau() returns.  This will affect how
+            // centering works.
+            return tableau;
         }
     }
 }
