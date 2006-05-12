@@ -37,7 +37,6 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.vergil.basic.DocAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// DocBuilderEffigy
@@ -124,8 +123,8 @@ public class DocBuilderEffigy extends PtolemyEffigy {
                         if (contents.startsWith(dtd)) {
                             // This is a doc file.
                             reader.close();
-                            DocBuilderEffigy effigy = new DocBuilderEffigy(container,
-                                    container.uniqueName("effigy"));
+                            DocBuilderEffigy effigy = new DocBuilderEffigy(
+                                    container, container.uniqueName("effigy"));
                             return effigy;
                         }
                     }

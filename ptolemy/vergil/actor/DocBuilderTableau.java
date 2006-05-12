@@ -26,10 +26,6 @@
  */
 package ptolemy.vergil.actor;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.Tableau;
@@ -37,7 +33,6 @@ import ptolemy.actor.gui.TableauFactory;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.basic.DocAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// DocBuilderTableau
@@ -76,10 +71,8 @@ public class DocBuilderTableau extends Tableau {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try {
-            DocBuilder docBuilder = new DocBuilder(container,
-                    "myDocBuilder");
-            DocBuilderGUI frame = new DocBuilderGUI(docBuilder,
-                    this);
+            DocBuilder docBuilder = new DocBuilder(container, "myDocBuilder");
+            DocBuilderGUI frame = new DocBuilderGUI(docBuilder, this);
             setFrame(frame);
             frame.setTableau(this);
         } catch (Exception ex) {
@@ -133,7 +126,7 @@ public class DocBuilderTableau extends Tableau {
             // First see whether the effigy already contains an
             // DocBuilderTableau.
             DocBuilderTableau tableau = (DocBuilderTableau) effigy
-                .getEntity("DocBuilderTableau");
+                    .getEntity("DocBuilderTableau");
 
             if (tableau == null) {
                 tableau = new DocBuilderTableau(effigy, "DocBuilderTableau");

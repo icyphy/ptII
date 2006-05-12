@@ -39,7 +39,6 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -57,13 +56,11 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.HTMLViewer;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
@@ -637,8 +634,8 @@ public class DocViewer extends HTMLViewer {
         if (url != null) {
             setBase(url);
         } else {
-            String javaDocDirectory = "doc.codeDoc"
-                + _applicationName + "." + className;
+            String javaDocDirectory = "doc.codeDoc" + _applicationName + "."
+                    + className;
             int lastDot = javaDocDirectory.lastIndexOf(".");
             javaDocDirectory = javaDocDirectory.substring(0, lastDot);
             URL base = getClass().getClassLoader().getResource(
@@ -960,8 +957,8 @@ public class DocViewer extends HTMLViewer {
         authorPane.getCaret().setDot(0);
 
         // Populate the "See Also" window.
-        seeAlsoPane.setText(_HTML_HEADER
-                + manager.getSeeAlso(_applicationName) + _HTML_TAIL);
+        seeAlsoPane.setText(_HTML_HEADER + manager.getSeeAlso(_applicationName)
+                + _HTML_TAIL);
         // Set the view to the start of the text.
         seeAlsoPane.getCaret().setDot(0);
     }
@@ -1044,8 +1041,8 @@ public class DocViewer extends HTMLViewer {
         public void actionPerformed(ActionEvent e) {
             try {
                 Effigy effigy = (Effigy) getTableau().getContainer();
-                Tableau tableau =
-                        new DocBuilderTableau(effigy, "DocBuilderTableau");
+                Tableau tableau = new DocBuilderTableau(effigy,
+                        "DocBuilderTableau");
                 tableau.show();
             } catch (Throwable throwable) {
                 MessageHandler.error("Cannot create build", throwable);

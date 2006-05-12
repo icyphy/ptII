@@ -32,7 +32,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.net.URL;
 
 import javax.swing.BorderFactory;
@@ -58,7 +57,7 @@ import ptolemy.util.MessageHandler;
 //// DocBuilderGUI
 
 /**
-  A PtolemyFrame that builds the Java and Actor documentation.
+ A PtolemyFrame that builds the Java and Actor documentation.
 
  @author Christopher Brooks
  @version $Id$
@@ -95,10 +94,9 @@ public class DocBuilderGUI extends PtolemyFrame {
 
         JTextArea messageArea = new JTextArea(
                 "NOTE: Use this tool to build the Java"
-                + " and Actor Documentation"
-                + (_applicationName != null ?
-                        "for " + _applicationName : "")
-                + ".");
+                        + " and Actor Documentation"
+                        + (_applicationName != null ? "for " + _applicationName
+                                : "") + ".");
         messageArea.setEditable(false);
         messageArea.setBorder(BorderFactory.createEtchedBorder());
         messageArea.setLineWrap(true);
@@ -114,7 +112,7 @@ public class DocBuilderGUI extends PtolemyFrame {
 
                     // FIXME: Help should bring this up as well.
                     URL infoURL = Thread.currentThread()
-                        .getContextClassLoader().getResource(infoFile);
+                            .getContextClassLoader().getResource(infoFile);
                     configuration.openModel(null, infoURL, infoURL
                             .toExternalForm());
                 } catch (Exception ex) {
@@ -159,8 +157,7 @@ public class DocBuilderGUI extends PtolemyFrame {
 
         // Create a JTextAreaExec without Start and Cancel buttons.
         final JTextAreaExec exec = new JTextAreaExec("Documentation Builder"
-                + "Commands",
-                false);
+                + "Commands", false);
 
         // We handle the applicationName specially so that we create
         // only the docs for the app we are running.
@@ -208,8 +205,8 @@ public class DocBuilderGUI extends PtolemyFrame {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     exec.updateStatusBar("// Starting Doc Building"
-                            + (_applicationName != null ?
-                                    "for " + _applicationName : ""));
+                            + (_applicationName != null ? "for "
+                                    + _applicationName : ""));
 
                     docBuilder.buildDocs();
 
@@ -225,5 +222,5 @@ public class DocBuilderGUI extends PtolemyFrame {
      *  StringAttribute in configuration.xml.
      *  If null, then use the default documentation in doc/codeDoc. 
      */
-     private String _applicationName;
+    private String _applicationName;
 }
