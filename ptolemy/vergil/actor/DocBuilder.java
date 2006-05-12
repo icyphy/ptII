@@ -75,7 +75,7 @@ import ptolemy.util.StringUtilities;
 /** Build Documentation for Java and Actors.
  *
  *  <p>This class sets the commands that build the Java classes.
- *
+ *  
  *  @author Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 6.0
@@ -83,6 +83,10 @@ import ptolemy.util.StringUtilities;
  *  @Pt.AcceptedRating Yellow (eal)
  */
 public class DocBuilder extends Attribute {
+
+    // In principle, this class should be usable from both within a UI
+    // and without a UI.
+
     /** Create a new instance of the DocBuilder.
      *  @param container The container.
      *  @param name The name of the code generator.
@@ -94,7 +98,18 @@ public class DocBuilder extends Attribute {
     public DocBuilder(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        cleanFirst = new Parameter(this, "cleanFirst");
+        cleanFirst.setTypeEquals(BaseType.BOOLEAN);
+        cleanFirst.setExpression("true");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     parameters                            ////
+
+    /** If true, then clean before building documentation.  The default
+     *  value is true.
+     */ 
+    public Parameter cleanFirst; 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -124,6 +139,14 @@ public class DocBuilder extends Attribute {
         return _executeCommands;
     }
 
+    /** Set the application name.
+     * We handle the applicationName specially so that we create
+     * only the docs for the app we are running.
+     */
+    public void setApplicationName(String applicationName) {
+        _applicationName = applicationName;
+    }
+
     /** Set the command executor, which can be either non-graphical
      *  or graphical.  The initial default is non-graphical, which
      *  means that stderr and stdout from subcommands is written
@@ -147,8 +170,29 @@ public class DocBuilder extends Attribute {
     private int _executeCommands() throws IllegalActionException {
 
         List commands = new LinkedList();
-        commands.add("make ");
 
+        if (_applicationName == null) {
+            if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {
+                commands.add("rm -rf codeDoc");
+            }
+            commands.add("make codeDoc/tree.html");
+            commands.add("make codeDoc/ptolemy/actor/lib/Ramp.xml");
+            commands.add("make codeDoc/ptolemy/actor/lib/RampIdx.xml");
+        } else {
+            if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {
+                commands.add("rm -rf codeDoc" + _applicationName);
+            }
+            commands.add("make codeDoc" + _applicationName
+                    + "/doc/codeDoc/tree.html");
+            commands.add("make APPLICATION=" + _applicationName
+                    + " \"PTDOCFLAGS=-d doc/codeDoc" + _applicationName
+                    + "/doc/codeDoc" 
+                    + " codeDoc" + _applicationName
+                    + "/ptolemy/actor/lib/Ramp.xml");
+            commands.add("make APPLICATION=" + _applicationName
+                    + " codeDoc" + _applicationName
+                    + "/ptolemy/actor/lib/RampIdx.xml");
+        }
         if (commands.size() == 0) {
             return -1;
         }
@@ -176,6 +220,12 @@ public class DocBuilder extends Attribute {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** The name of the application, usually from the _applicationName
+     *  StringAttribute in configuration.xml.
+     *  If null, then use the default documentation in doc/codeDoc. 
+     */
+    private String _applicationName;
 
     /** The object that actually executes the commands.
      */   

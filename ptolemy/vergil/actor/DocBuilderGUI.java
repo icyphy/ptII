@@ -51,6 +51,7 @@ import ptolemy.gui.JTextAreaExec;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
@@ -87,6 +88,8 @@ public class DocBuilderGUI extends PtolemyFrame {
             throw new InternalErrorException("Cannot get an effigy!");
         }
 
+        // FIXME: Add a checkbutton for cleaning
+
         // Caveats panel.
         JPanel caveatsPanel = new JPanel();
         caveatsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
@@ -94,7 +97,10 @@ public class DocBuilderGUI extends PtolemyFrame {
 
         JTextArea messageArea = new JTextArea(
                 "NOTE: Use this tool to build the Java"
-                + " and Actor Documentation");
+                + " and Actor Documentation"
+                + (_applicationName != null ?
+                        "for " + _applicationName : "")
+                + ".");
         messageArea.setEditable(false);
         messageArea.setBorder(BorderFactory.createEtchedBorder());
         messageArea.setLineWrap(true);
@@ -158,6 +164,22 @@ public class DocBuilderGUI extends PtolemyFrame {
                 + "Commands",
                 false);
 
+        // We handle the applicationName specially so that we create
+        // only the docs for the app we are running.
+        Configuration configuration = getConfiguration();
+        try {
+            StringAttribute applicationNameAttribute = (StringAttribute) configuration
+                    .getAttribute("_applicationName", StringAttribute.class);
+
+            if (applicationNameAttribute != null) {
+                _applicationName = applicationNameAttribute.getExpression();
+            }
+        } catch (Throwable throwable) {
+            // Ignore and use the default applicationName
+        }
+
+        docBuilder.setApplicationName(_applicationName);
+
         // If we execute any commands, print the output in the text area.
         docBuilder.setExecuteCommands(exec);
 
@@ -187,15 +209,23 @@ public class DocBuilderGUI extends PtolemyFrame {
         goButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 try {
-                    exec.updateStatusBar("// Starting Doc Building");
+                    exec.updateStatusBar("// Starting Doc Building"
+                            + (_applicationName != null ?
+                                    "for " + _applicationName : ""));
 
                     docBuilder.buildDocs();
 
-                    exec.updateStatusBar("// Doc Building complete.");
+                    exec.updateStatusBar(" ");
                 } catch (Exception ex) {
                     MessageHandler.error("Doc Building failed.", ex);
                 }
             }
         });
     }
+
+    /** The name of the application, usually from the _applicationName
+     *  StringAttribute in configuration.xml.
+     *  If null, then use the default documentation in doc/codeDoc. 
+     */
+     private String _applicationName;
 }
