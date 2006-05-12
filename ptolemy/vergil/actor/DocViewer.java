@@ -30,16 +30,22 @@ package ptolemy.vergil.actor;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JEditorPane;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -50,11 +56,14 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.HTMLViewer;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
@@ -66,6 +75,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphFrame;
@@ -586,6 +596,20 @@ public class DocViewer extends HTMLViewer {
         // home installation directory.
         helpFile = "ptolemy/vergil/actor/docViewerHelp.htm";
 
+        // We handle the applicationName specially so that we open
+        // only the docs for the app we are running.
+        try {
+            StringAttribute applicationNameAttribute = (StringAttribute) configuration
+                    .getAttribute("_applicationName", StringAttribute.class);
+
+            if (applicationNameAttribute != null) {
+                _applicationName = applicationNameAttribute.getExpression();
+            }
+        } catch (Throwable throwable) {
+            // Ignore and use the default applicationName: "",
+            // which means we look in doc.codeDoc.
+        }
+
         // Start by creating a doc manager.
         final DocManager manager;
         if (target != null) {
@@ -613,7 +637,8 @@ public class DocViewer extends HTMLViewer {
         if (url != null) {
             setBase(url);
         } else {
-            String javaDocDirectory = "doc.codeDoc." + className;
+            String javaDocDirectory = "doc.codeDoc"
+                + _applicationName + "." + className;
             int lastDot = javaDocDirectory.lastIndexOf(".");
             javaDocDirectory = javaDocDirectory.substring(0, lastDot);
             URL base = getClass().getClassLoader().getResource(
@@ -940,8 +965,33 @@ public class DocViewer extends HTMLViewer {
         seeAlsoPane.getCaret().setDot(0);
     }
 
+    /** Add a Build menu item.
+     */
+    protected void _addMenus() {
+        super._addMenus();
+
+        Tableau tableau = getTableau();
+        if (tableau != null) {
+            Effigy tableauContainer = (Effigy) tableau.getContainer();
+            if (tableauContainer != null) {
+                JMenu buildMenu = new JMenu("Build");
+                buildMenu.setMnemonic(KeyEvent.VK_B);
+                _menubar.add(buildMenu);
+
+                BuildMenuListener buildMenuListener = new BuildMenuListener();
+                String name = "Build docs";
+                JMenuItem item = new JMenuItem(name);
+                item.setActionCommand(name);
+                item.setMnemonic(name.charAt(0));
+                item.addActionListener(buildMenuListener);
+                buildMenu.add(item);
+            }
+        }
+    }
+
     /** Populate the window displaying ports and parameters.
-     *  @param target The target object whose ports and parameters will be described.
+     *  @param target The target object whose ports and parameters
+     *  will be described.
      *  @param manager The doc manager.
      */
     private void _populatePortsAndParametersTable(NamedObj target,
@@ -986,7 +1036,31 @@ public class DocViewer extends HTMLViewer {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private inner class               ////
+
+    /** Listener for build menu commands. */
+    private class BuildMenuListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            try {
+                Effigy effigy = (Effigy) getTableau().getContainer();
+                Tableau tableau =
+                        new DocBuilderTableau(effigy, "DocBuilderTableau");
+                tableau.show();
+            } catch (Throwable throwable) {
+                MessageHandler.error("Cannot create build", throwable);
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** The name of the application, usually from the _applicationName
+     *  StringAttribute in configuration.xml.
+     *  If the value is the empty string, then use the default
+     *  documentation in doc/codeDoc.
+     */
+    private String _applicationName = "";
 
     /** Author window width. */
     private static int _AUTHOR_WINDOW_WIDTH = 350;
@@ -1063,5 +1137,4 @@ public class DocViewer extends HTMLViewer {
     private static String _tableOpening = "<table cellspacing=2 cellpadding=2>\n";
 
     private static String _tableClosing = "</table>";
-
 }
