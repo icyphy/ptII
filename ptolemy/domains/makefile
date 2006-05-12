@@ -100,6 +100,7 @@ PTCLASSALLJARS = \
 		de/de.jar \
 		fsm/fsm.jar \
 		pn/pn.jar \
+	        rendezvous/rendezvous.jar \
 		sdf/sdf.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
