@@ -308,4 +308,5 @@ test RemoveGraphicalClasses-1.5 {clear} {
 This filter is used by the nightly build, and
 can be used to run applets so that files like
 diva.jar do not need to be downloaded.
-The following actors are affected:}
+The following actors are affected:
+}
