@@ -701,7 +701,7 @@ codeDocHyVisual/doc/codeDoc/tree.html:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) )
 
 # Rules to build for HyVisual
-codeDocHyVisual/ptolemy/actor/lib/Ramp.xml:
+codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" -J-Xmx512m \
 			-d doc/codeDocHyVisual \
