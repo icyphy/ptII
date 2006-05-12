@@ -88,8 +88,6 @@ public class DocBuilderGUI extends PtolemyFrame {
             throw new InternalErrorException("Cannot get an effigy!");
         }
 
-        // FIXME: Add a checkbutton for cleaning
-
         // Caveats panel.
         JPanel caveatsPanel = new JPanel();
         caveatsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));

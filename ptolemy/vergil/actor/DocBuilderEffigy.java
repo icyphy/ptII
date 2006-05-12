@@ -1,4 +1,4 @@
-/* A representative of a DocBuilder file.
+/* A representative of a DocBuilder
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -43,13 +43,13 @@ import ptolemy.vergil.basic.DocAttribute;
 //// DocBuilderEffigy
 
 /**
- An effigy for a doc file.
+ An effigy for a DocBuilder
 
- @author Edward A. Lee
+ @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 5.2
- @Pt.ProposedRating Red (neuendor)
- @Pt.AcceptedRating Red (neuendor)
+ @since Ptolemy II 6.0
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class DocBuilderEffigy extends PtolemyEffigy {
 
@@ -63,31 +63,6 @@ public class DocBuilderEffigy extends PtolemyEffigy {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Get the DocAttribute represented by this effigy, if any.
-     *  @return The DocAttribute represented by this effigy.
-     *  @see #setDocAttribute(DocAttribute)
-     */
-    public DocAttribute getDocAttribute() {
-        return _docAttribute;
-    }
-
-    /** Set the DocAttribute represented by this effigy, if any.
-     *  @param docAttribute The DocAttribute represented by this effigy.
-     *  @see #getDocAttribute()
-     */
-    public void setDocAttribute(DocAttribute docAttribute) {
-        _docAttribute = docAttribute;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The doc attribute represented by this effigy, if any. */
-    private DocAttribute _docAttribute;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -119,20 +94,13 @@ public class DocBuilderEffigy extends PtolemyEffigy {
             return false;
         }
 
-        /** Create a new effigy in the given container by reading the
-         *  specified URL. If the specified URL is null, or
-         *  if the URL does not end with extension ".xml", or
-         *  if it does end with ".xml" but the file does not contain
-         *  a line that starts with the string
-         *  "<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML"
-         *  within the first five lines, then return null.
+        /** Create a new effigy in the given container.
          *  @param container The container for the effigy.
          *  @param base The base for relative file references, or null if
          *   there are no relative file references.  This is ignored in this
          *   class.
-         *  @param input The input URL.
-         *  @return A new instance of DocBuilderEffigy, or null if the URL
-         *   does not have a doc file.
+         *  @param input The input URL, which is ignored.
+         *  @return A new instance of DocBuilderEffigy.
          *  @exception Exception If the URL cannot be read.
          */
         public Effigy createEffigy(CompositeEntity container, URL base,

@@ -1,4 +1,4 @@
-/* Build Documentation for Java and Actors
+/* Build documentation for Java and Actors
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -162,8 +162,7 @@ public class DocBuilder extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Execute the compile and run commands in the
-     *  <i>codeDirectory</i> directory.
+    /** Build the documentation. 
      *  @return The return value of the last subprocess that was executed
      *  or -1 if no commands were executed.
      */
