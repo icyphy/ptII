@@ -960,7 +960,8 @@ public class DocViewer extends HTMLViewer {
         authorPane.getCaret().setDot(0);
 
         // Populate the "See Also" window.
-        seeAlsoPane.setText(_HTML_HEADER + manager.getSeeAlso() + _HTML_TAIL);
+        seeAlsoPane.setText(_HTML_HEADER
+                + manager.getSeeAlso(_applicationName) + _HTML_TAIL);
         // Set the view to the start of the text.
         seeAlsoPane.getCaret().setDot(0);
     }

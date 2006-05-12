@@ -522,9 +522,14 @@ public class DocManager extends HandlerBase {
     /** Return "see also" information. This includes a link
      *  to the javadoc documentation, the source code, and the
      *  superclass information.
+     *  @param applicationName The name of the application,
+     *  for example "HyVisual".  This value is used to look up
+     *  application specific examples.  If this parameter is
+     *  null or the empty string, then the default examples are
+     *  used
      *  @return The "see also" information.
      */
-    public String getSeeAlso() {
+    public String getSeeAlso(String applicationName) {
         StringBuffer result = new StringBuffer();
 
         // See whether there is Javadoc, and link to it if there is.
@@ -653,7 +658,12 @@ public class DocManager extends HandlerBase {
 
         try {
             URL toRead = getClass().getClassLoader().getResource(
-                    "doc/codeDoc/" + className.replace('.', '/') + "Idx.htm");
+                    "doc/codeDoc"
+                    + (applicationName == null
+                            || applicationName.equals("") ?
+                            "/" : applicationName + "/doc/codeDoc/")
+
+                    + className.replace('.', '/') + "Idx.htm");
             if (toRead != null) {
                 result.append("<li><a href=\"" + toRead.toExternalForm()
                         + "\">Demo Usage</a></li>");

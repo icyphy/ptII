@@ -76,6 +76,16 @@ public class GetDocumentationAction extends FigureAction {
     ////                         public methods                    ////
 
     /** Perform the action by opening documentation for the target.
+     *  In the default situation, the documentation is in doc.codeDoc.
+     *  However, if we have a custom application like HyVisual,
+     *  VisualSense or Viptos, then we create the docs in
+     *  doc.codeDoc<i>ApplicationName</i>.doc.codeDoc.  However, this
+     *  directory gets jar up and shipped with these apps when we ship
+     *  windows installers and the docs are found at doc.codeDoc
+     *  again.  So, if _applicationName is set, we look in
+     *  doc.codeDoc<i>_applicationName</i>.doc.codeDoc.  If that is
+     *  not found, we look in doc.codeDoc.  If that is not found,
+     *  we bring up {@link ptolemy.vergil.actor.DocBuilderGUI}.
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
@@ -91,6 +101,21 @@ public class GetDocumentationAction extends FigureAction {
             return;
         }
 
+        // We handle the applicationName specially so that we open
+        // only the docs for the app we are running.
+        try {
+            StringAttribute applicationNameAttribute =
+                (StringAttribute) _configuration
+                .getAttribute("_applicationName", StringAttribute.class);
+
+            if (applicationNameAttribute != null) {
+                _applicationName = applicationNameAttribute.getExpression();
+            }
+        } catch (Throwable throwable) {
+            // Ignore and use the default applicationName: "",
+            // which means we look in doc.codeDoc.
+        }
+
         // If the object contains
         // an attribute named of class DocAttribute or if there
         // is a doc file for the object in the standard place,
@@ -103,18 +128,28 @@ public class GetDocumentationAction extends FigureAction {
             // No doc attribute. Try for a doc file.
             String className = target.getClass().getName();
             try {
+                // If _applicationName is not "", then look in
+                // doc/codeDoc_applicationName/doc/codeDoc.
                 String docName = "doc/codeDoc"
-                    + "/"
+                    + (_applicationName.equals("") ?
+                        "/" : _applicationName + "/doc/codeDoc/")
                     + className.replace('.', '/') + ".xml";
-                String docClassName = "doc.codeDoc."
+
+                String docClassName = "doc.codeDoc." 
+                    + (_applicationName.equals("") ?
+                        "." : _applicationName + ".doc.codeDoc.")
                     + className;
+
                 URL toRead = getClass().getClassLoader().getResource(docName);
+
                 if (toRead == null) {
-                    // No doc file either.
-                    // For backward compatibility, open the
-                    // Javadoc file, as before.
-                    toRead = getClass().getClassLoader().getResource(
-                            docName.replace('.', '/') + ".html");
+
+                    // Try looking in the documentation for vergil.
+                    docName = "doc/codeDoc/" + className.replace('.', '/')
+                        + ".xml";
+                    docClassName = "doc.codeDoc." + className;
+
+                    toRead = getClass().getClassLoader().getResource(docName);
                 }
                 if (toRead != null) {
                     _configuration.openModel(null, toRead, toRead
@@ -124,53 +159,57 @@ public class GetDocumentationAction extends FigureAction {
                             + " or " + docName + " as a resource");
                 }
             } catch (Exception ex) {
+                // Try to open the DocBuilderGUI
                 try {
-                // Need to create an effigy and tableau.
-                Effigy context = Configuration.findEffigy(target);
-                if (context == null) {
-                    context = Configuration.findEffigy(target.getContainer());
+                    // Need to create an effigy and tableau.
+                    Effigy context = Configuration.findEffigy(target);
                     if (context == null) {
-                        MessageHandler.error("Cannot find an effigy for "
-                                + target.getFullName());
+                        context = Configuration.findEffigy(target.getContainer());
+                        if (context == null) {
+                            MessageHandler.error("Cannot find an effigy for "
+                                    + target.getFullName());
+                        }
                     }
-                }
-                ComponentEntity effigy = context.getEntity("DocBuilderEffigy");
-                if (effigy == null) {
-                    try {
-                        effigy = new DocBuilderEffigy(context, "DocBuilderEffigy");
-                    } catch (KernelException exception) {
-                        throw new InternalErrorException(exception);
+                    ComponentEntity effigy = context.getEntity("DocBuilderEffigy");
+                    if (effigy == null) {
+                        try {
+                            effigy = new DocBuilderEffigy(context,
+                                    "DocBuilderEffigy");
+                        } catch (KernelException exception) {
+                            throw new InternalErrorException(exception);
+                        }
                     }
-                }
-                if (!(effigy instanceof DocBuilderEffigy)) {
-                    MessageHandler.error("Found an effigy named DocBuilderEffigy that "
-                        + "is not an instance of DocBuilderEffigy!");
-                }
-                //((DocEffigy) effigy).setDocAttribute(docAttribute);
-                ComponentEntity tableau = ((Effigy) effigy).getEntity("DocBuilderTableau");
-                if (tableau == null) {
-                    try {
-                        tableau = new DocBuilderTableau((DocBuilderEffigy) effigy, "DocBuilderTableau");
-                    ((DocBuilderTableau) tableau).setTitle("Documentation for "
-                            + target.getFullName());
-                    } catch (KernelException exception) {
-                        throw new InternalErrorException(exception);
+                    if (!(effigy instanceof DocBuilderEffigy)) {
+                        MessageHandler.error("Found an effigy named "
+                                + "DocBuilderEffigy that "
+                                + "is not an instance of DocBuilderEffigy!");
+                        }
+                    //((DocEffigy) effigy).setDocAttribute(docAttribute);
+                    ComponentEntity tableau = ((Effigy) effigy).getEntity("DocBuilderTableau");
+                    if (tableau == null) {
+                        try {
+                            tableau = new DocBuilderTableau(
+                                    (DocBuilderEffigy) effigy,
+                                    "DocBuilderTableau");
+                            ((DocBuilderTableau) tableau).setTitle(
+                                    "Documentation for "
+                                    + target.getFullName());
+                        } catch (KernelException exception) {
+                            throw new InternalErrorException(exception);
+                        }
                     }
-                }
-                if (!(tableau instanceof DocBuilderTableau)) {
-                MessageHandler.error("Found a tableau named DocBuilderTableau that "
-                        + "is not an instance of DocBuilderTableau!");
-                }
-                // FIXME: Tell the user what to do here.
-                ((DocBuilderTableau) tableau).show();
-                //DocBuilderGUI docBuilderGUI = new DocBuilderGUI(
-                //        new DocBuilder(target, "myDocBuilder"), (Tableau)null);
-
-                //docBuilderGUI.show();
+                    if (!(tableau instanceof DocBuilderTableau)) {
+                        MessageHandler.error("Found a tableau named "
+                                + "DocBuilderTableau that "
+                                + "is not an instance of DocBuilderTableau!");
+                    }
+                    // FIXME: Tell the user what to do here.
+                    ((DocBuilderTableau) tableau).show();
                 } catch (Throwable throwable) {
                     MessageHandler.error("Cannot find documentation for "
                         + className + "\nTry Running \"make\" in ptII/doc."
-                        + "\nor installing the documentation component.", throwable);
+                        + "\nor installing the documentation component.",
+                            throwable);
                 }
             }
         } else {
@@ -233,5 +272,16 @@ public class GetDocumentationAction extends FigureAction {
 
     /** The configuration. */
     protected Configuration _configuration;
-}
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The name of the application, usually from the _applicationName
+     *  StringAttribute in configuration.xml.
+     *  If the value is the empty string, then use the default
+     *  documentation in doc/codeDoc.
+     */
+    private String _applicationName = "";
+
+}
