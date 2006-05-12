@@ -704,21 +704,21 @@ codeDocHyVisual/doc/codeDoc/tree.html:
 codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" -J-Xmx512m \
-			-d doc/codeDocHyVisual \
+			-d doc/codeDocHyVisual/doc/codeDoc \
 			$(PTDOCLET) \
 			$(HYVISUALPACKAGES) )
 
 # All the namedObjs for which we have documentation.
-codeDocHyVisual/allNamedObjs.txt: codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
+codeDocHyVisual/doc/codeDoc/allNamedObjs.txt: codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Build the index of actors 
-codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/allNamedObjs.txt
+codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/codeDoc/allNamedObjs.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
-		codeDocHyVisual/allNamedObjs.txt \
+		codeDocHyVisual/doc/codeDoc/allNamedObjs.txt \
 		$(PTII)/ptolemy/configs/hyvisual/hyvisualModels.txt \
 		codeDocHyVisual/doc/codeDoc
 
@@ -752,16 +752,16 @@ codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	$(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
 
 # All the namedObjs for which we have documentation.
-codeDocViptos/allNamedObjs.txt: codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
+codeDocViptos/doc/codeDoc/allNamedObjs.txt: codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Build the index of actors 
-codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocViptos/allNamedObjs.txt
+codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocViptos/doc/codeDoc/allNamedObjs.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
-		codeDoc/allNamedObjs.txt \
+		codeDocViptos/doc/codeDoc/allNamedObjs.txt \
 		$(PTII)/ptolemy/configs/viptos/viptosModels.txt \
 		codeDocViptos/doc/codeDoc
 
@@ -794,16 +794,16 @@ codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 		$(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
 
 # All the namedObjs for which we have documentation.
-codeDocVisualSense/allNamedObjs.txt: codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
+codeDocVisualSense/doc/codeDoc/allNamedObjs.txt: codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Build the index of actors 
-codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocVisualSense/allNamedObjs.txt
+codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocVisualSense/doc/codeDoc/allNamedObjs.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
-		codeDocVisualSense/allNamedObjs.txt \
+		codeDocVisualSense/doc/codeDoc/allNamedObjs.txt \
 		$(PTII)/ptolemy/configs/visualsense/visualsenseModels.txt \
 		codeDocVisualSense/doc/codeDoc
 
