@@ -68,6 +68,7 @@ OTHER_FILES_TO_BE_JARED = \
 	library.xml \
 	makefile \
 	viptos.gif \
+	viptosModels.txt \
 	welcomeWindow.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -82,11 +83,18 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass $(DERIVED_FILES)
+all: jclass viptosModels.txt
 	@echo "nothing need be done for make all in this directory"
 
 install: all jars
 	@echo "nothing need be done for make install in this directory"
+
+# viptosModels.txt contains a list of model file names
+# Use AUXCLASSPATH so that we work under codecoverage with JavaScope
+viptosModels.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class intro.htm
+	"$(JAVA)" "-Dptolemy.ptII.dir=$(PTII)" \
+		-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH)" \
+		ptolemy.actor.gui.HTMLAbout intro.htm $@
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
