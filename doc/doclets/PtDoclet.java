@@ -107,7 +107,6 @@ public class PtDoclet {
                                 + ",it starts up X11 and interferes with the "
                                 + "nightly build");
                     }
-                    System.out.println("About to call forName " + className);
                     theClass = Class.forName(className);
                 } catch (Throwable ex) {
                     // Might be an inner class.
@@ -118,7 +117,6 @@ public class PtDoclet {
                                 lastDotIndex)
                                 + "$" + className.substring(lastDotIndex + 1);
                         try {
-                    System.out.println("About to call forName2 " + innerClassName);
                             theClass = Class.forName(innerClassName);
                         } catch (Throwable ex2) {
                             // FIXME: Use the doclet error handling mechanism
@@ -287,11 +285,8 @@ public class PtDoclet {
                             + ",it starts up X11 and interferes with the "
                             + "nightly build");
                 }
-                    System.out.println("About to call forName3 " + className);
                 Class type = Class.forName(className);
-                    System.out.println("After call forName3 " + className);
                 if (fieldBaseClass.isAssignableFrom(type)) {
-                    System.out.println("After isAssignable " + className);
                     documentation
                             .append("    <!--"
                                     + className
