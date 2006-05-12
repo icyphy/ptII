@@ -30,6 +30,11 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
+# Add isLessThanOrEqual
+# add intersection
+# Change test to allow "0 length" precision (no data)
+
+
 # Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
 # Load up the test definitions.
@@ -348,20 +353,20 @@ test Precision-6.0 {equals} {
 (5e-2) equals (0.7) 0 }}
 
 ####################################################################
-test Precision-7.0 {matchThePoint} {
+test Precision-7.0 {union} {
 
-    set matchThePoint {ptolemy.math.Precision matchThePoint}
+    set union {ptolemy.math.Precision union}
 
     list "
-[$p0 toString] [$p1 toString] [[$p0 matchThePoint $p0 $p1] toString]
-[$p1 toString] [$p2 toString] [[$p1 matchThePoint $p1 $p2] toString]
-[$p2 toString] [$p3 toString] [[$p2 matchThePoint $p2 $p3] toString]
-[$p3 toString] [$p4 toString] [[$p3 matchThePoint $p3 $p4] toString]
-[$p4 toString] [$p5 toString] [[$p4 matchThePoint $p4 $p5] toString]
-[$p5 toString] [$p6 toString] [[$p5 matchThePoint $p5 $p6] toString]
-[$p6 toString] [$p7 toString] [[$p6 matchThePoint $p6 $p7] toString]
-[$p5 toString] [$p11 toString] [[$p5 matchThePoint $p5 $p11] toString]
-[$p4 toString] [$p4 toString] [[$p4 matchThePoint $p4 $p4] toString] "
+[$p0 toString] [$p1 toString] [[$p0 union $p0 $p1] toString]
+[$p1 toString] [$p2 toString] [[$p1 union $p1 $p2] toString]
+[$p2 toString] [$p3 toString] [[$p2 union $p2 $p3] toString]
+[$p3 toString] [$p4 toString] [[$p3 union $p3 $p4] toString]
+[$p4 toString] [$p5 toString] [[$p4 union $p4 $p5] toString]
+[$p5 toString] [$p6 toString] [[$p5 union $p5 $p6] toString]
+[$p6 toString] [$p7 toString] [[$p6 union $p6 $p7] toString]
+[$p5 toString] [$p11 toString] [[$p5 union $p5 $p11] toString]
+[$p4 toString] [$p4 toString] [[$p4 union $p4 $p4] toString] "
 } {{
 (3.2) (0.7) (3.7)
 (0.7) (-2.12) (0.12)

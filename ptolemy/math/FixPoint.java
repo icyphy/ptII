@@ -197,6 +197,84 @@ public class FixPoint implements Cloneable, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+
+    /** Determines the Precision of an add operation between two
+     *  FixPoint values.
+     *
+     *  The Precision of the result of an add between two FixPoint
+     *  values is the Precision union of the two arguments plus
+     *  one (to allow for bit growth).
+     */
+    public static Precision addPrecision(Precision leftArgument,
+            Precision rightArgument) {
+        Precision union = Precision.union(leftArgument,rightArgument);
+        Precision newPrecision = new Precision(union.getSign(),
+                union.getNumberOfBits() + 1, union.getExponent());
+        return newPrecision;
+    }
+    /** Determines the Precision of an subtract operation between two
+     *  FixPoint values.
+     *
+     *  The subtract precision will increment by one and always
+     *  be signed.
+     */
+    public static Precision subtractPrecision(Precision leftArgument,
+            Precision rightArgument) {
+        Precision union = Precision.union(leftArgument,rightArgument);
+        int length = union.getNumberOfBits() + 1;
+        Precision newPrecision = new Precision(1,
+                length, union.getExponent());
+        return newPrecision;
+    }
+    /** Determines the Precision of an multiply operation between
+     *  two FixPoint values.
+     *
+     *  The resulting Precision of a multiply between two FixPoint
+     *  arguments is as follows: the integer location is the sum
+     *  of the integer locations of the two arguments and the 
+     *  fractional location is the sum of the fractional locations
+     *  of the two arguments.
+     */
+    public static Precision multiplyPrecision(Precision leftArgument,
+            Precision rightArgument) {
+        int sign = ((leftArgument.getSign() == 1) || 
+                (rightArgument.getSign() == 1)) ? 1
+                : 0;
+        int fractionBits = 
+            leftArgument.getFractionBitLength() +
+            rightArgument.getFractionBitLength();
+        int integerBits =
+            leftArgument.getIntegerBitLength() +
+            rightArgument.getIntegerBitLength();
+        Precision newPrecision = new Precision(sign,
+                fractionBits + integerBits, -fractionBits);
+        return newPrecision;
+    }
+    /** Determines the Precision of a divide operation between
+     *  two FixPoint values.
+     *
+     *  It is not possible to represent the result of an arbitrary
+     *  divide with a finite precision. As such, this precision
+     *  conversion rule is lossless. The rule for divide is as
+     *  follows:
+     *  - Integer part = left argument integer + right argment fraction
+     *  - Fraction part = max(left fractional bits, right fractional bits)
+     */
+    public static Precision dividePrecision(Precision leftArgument,
+            Precision rightArgument) {
+        int sign = ((leftArgument.getSign() == 1) || 
+                (rightArgument.getSign() == 1)) ? 1
+                : 0;
+        int integerBits =
+            leftArgument.getIntegerBitLength() +
+            rightArgument.getFractionBitLength();
+        int fractionBits = Math.max(leftArgument.getFractionBitLength(),
+            rightArgument.getFractionBitLength());
+        Precision newPrecision = new Precision(sign,
+                sign + fractionBits + integerBits, integerBits);
+        return newPrecision;
+    }       
+    
     /** Return a FixPoint with a value equal to the absolute
      *  value of this FixPoint. The operation is lossless and
      *  the Precision of the result is the same Precision as
@@ -233,6 +311,7 @@ public class FixPoint implements Cloneable, Serializable {
         BigInteger newValue = thisValue.add(thatValue);
 
         // Create new precision
+        /*
         int sign = _determineSign(_precision, arg._precision);
         int new_bits = newValue.bitLength() + sign;
         int max_bits = Math.max(_precision.getNumberOfBits(), arg._precision
@@ -240,7 +319,8 @@ public class FixPoint implements Cloneable, Serializable {
         int bits = (new_bits > max_bits ? new_bits : max_bits);
 
         Precision newPrecision = new Precision(sign, bits, minExponent);
-
+        */
+        Precision newPrecision = addPrecision(_precision,arg._precision);
         return new FixPoint(newValue, newPrecision);
     }
 
@@ -280,31 +360,25 @@ public class FixPoint implements Cloneable, Serializable {
      *  this FixPoint by the argument. The operation is <b>not</b>
      *  lossless.
      *  <p>
-     *  The fractional precision of the result is equal to the maximum of
-     *  the fractional precision of the divisor and dividend. Thus when a
-     *  number with 3 fractional bits is divided by a FixPoint with 4
-     *  fractional bits, the resulting FixPoint will be rounded to 4
-     *  fractional bits.
-     *  <p>
-     *  The integer precision annotation of the result is equal to the
-     *  maximum of the integer precision annotations of the inputs!
      *
      *  @param arg The FixPoint.divisor.
      *  @return The FixPoint quotient.
-     *  @deprecated Use divide(FixPoint arg, Quantization quant).
      *  @exception IllegalArgumentException If division by zero and
      *  infinity not quantizable.
      */
     public FixPoint divide(FixPoint arg) throws IllegalArgumentException {
 
+        /*
         int minExponent = Math.min(_precision.getExponent(), arg._precision
                 .getExponent());
         int sign = _determineSign(_precision, arg._precision);
         int maxLength = Math.max(_precision.getNumberOfBits(), arg._precision
                 .getNumberOfBits());
-
         Precision netPrecision = new Precision(sign, maxLength, minExponent);
-        Quantization netQuantization = new FixPointQuantization(netPrecision,
+        */
+        Precision newPrecision = dividePrecision(this._precision,
+                arg._precision);
+        Quantization netQuantization = new FixPointQuantization(newPrecision,
                 Overflow.TRAP, Rounding.NEAREST);
         return divide(arg, netQuantization);
     }
@@ -478,6 +552,8 @@ public class FixPoint implements Cloneable, Serializable {
 
         // 1. Create FixPoint value with "worst case" precision
         BigInteger newValue = _value.multiply(arg._value);
+
+        /*
         int new_sign = _determineSign(_precision, arg._precision);
         int new_exponent = _precision.getExponent()
                 + arg._precision.getExponent();
@@ -490,10 +566,16 @@ public class FixPoint implements Cloneable, Serializable {
 
         // 3. Determine "Growth" precision for result. This will be the
         //    "maximium" of the precision of the arguments and the result.
-        Precision newPrecision = Precision.matchThePoint(_precision,
-                arg._precision);
-        newPrecision = Precision.matchThePoint(newPrecision, newVal._precision);
+        Precision newPrecision =
+            Precision.union(_precision, arg._precision);
+        newPrecision = Precision.union(newPrecision, newVal._precision);
+        */
+        
+        Precision newPrecision = multiplyPrecision(_precision,arg._precision);
+        FixPoint newVal = new FixPoint(newValue, newPrecision);
 
+        
+        
         // 4. Requantize the result with the new precision (this
         //    precision should be adequate and will not cause overflow
         //    or rounding.
@@ -574,6 +656,7 @@ public class FixPoint implements Cloneable, Serializable {
         // Perform the subtraction
         BigInteger newValue = thisValue.subtract(thatValue);
 
+        /*
         // Create new precision
         int sign = _determineSign(_precision, arg._precision);
         // If the sign of the subtract is negative and both arguments
@@ -587,6 +670,8 @@ public class FixPoint implements Cloneable, Serializable {
         int bits = (new_bits > max_bits ? new_bits : max_bits);
 
         Precision newPrecision = new Precision(sign, bits, minExponent);
+        */
+        Precision newPrecision = subtractPrecision(_precision,arg._precision);
         return new FixPoint(newValue, newPrecision);
     }
 
@@ -738,6 +823,8 @@ public class FixPoint implements Cloneable, Serializable {
      *  @param precision The precision to represent the new unscalled value.
      *  @throws ArithmeticException when precision is not sufficient
      *  to represent integerValue.
+     *  
+     *  Note that this is package scope
      */
     FixPoint(BigInteger unscaledIntegerValue, Precision precision) {
         if (Overflow.isOutOfRange(unscaledIntegerValue, precision))

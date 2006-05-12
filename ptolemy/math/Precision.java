@@ -405,7 +405,7 @@ public class Precision implements Cloneable, Serializable {
      *  @param precisionB Another precision
      *  @return A precision at least as precise as the two arguments.
      */
-    public static Precision matchThePoint(Precision precisionA,
+    public static Precision union(Precision precisionA,
             Precision precisionB) {
 
         int minExponent = (precisionA._exponent < precisionB._exponent) ? precisionA._exponent
