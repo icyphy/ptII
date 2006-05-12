@@ -285,7 +285,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
     }
 
     /** Predict the next step size for the integrators executed under this
-     *  solver. It uses the algorithm in the class comments
+     *  solver. This uses the algorithm in the class comments
      *  to predict the next step size based on the current estimation
      *  of the local truncation error.
      *

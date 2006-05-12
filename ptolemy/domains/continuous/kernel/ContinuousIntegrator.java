@@ -423,11 +423,11 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         return true;
     }
 
-    /** Return the predicted next step size. This method delegates to
+    /** Return the suggested next step size. This method delegates to
      *  the integratorPredictedStepSize() method of the current ODESolver.
-     *  @return The predicteded next step size.
+     *  @return The suggested next step size.
      */
-    public double predictedStepSize() {
+    public double suggestedStepSize() {
         ContinuousODESolver solver = ((ContinuousDirector) getDirector()).getODESolver();
         return solver.integratorPredictedStepSize(this);
     }
