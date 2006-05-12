@@ -43,7 +43,23 @@ import ptolemy.kernel.util.Nameable;
  A scheduler for the FixedPointDirector.  This scheduler constructs
  a static schedule for a model by performing a topological sort on the port 
  dependency graph of that model.  The schedule may mention an actor more
- than once if the depdencies require it.
+ than once if the dependencies require it.
+ <p>
+ FIXME: This scheduler is currently very inefficient.  An actor will
+ be mentioned in the schedule as many times as it has ports. E.g., if
+ it has three ports, it will appear in the schedule three times.
+ Some of these appearances in the schedule will be redundant (e.g.,
+ a firing will occur after another firing even though
+ there is no new information at the input ports), and
+ some could be postponed and consolidated with a later appearance.
+ Conjecture: The optimal schedule fires every actor as late
+ as possible, i.e. not before the firing is essential for the
+ schedule to proceed. This seems to be what the DE run-time
+ scheduler does.  Another way to state this is that the actor
+ should not be fired until there is no other actor firing possible
+ that could provide it with new information. Note that a firing
+ of an actor can provide new information to itself, if there
+ is a self loop from one of its output ports to an input port.
  
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
@@ -143,7 +159,10 @@ public class FixedPointScheduler extends Scheduler {
             IOPort ioPort = (IOPort) sort[i];
 
             // If this ioPort is an input but has no connections, ignore it.
-            if (ioPort.isInput() && (ioPort.numberOfSources() == 0)) {
+            // NOTE: In case we ever support ports that are both input
+            // and output, we do want to list a port if it is an output,
+            // regardless of whether it is also an unconnected input.
+            if (!ioPort.isOutput() && (ioPort.numberOfSources() == 0)) {
                 continue;
             }
 

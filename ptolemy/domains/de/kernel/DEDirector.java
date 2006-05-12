@@ -1277,7 +1277,7 @@ public class DEDirector extends Director implements TimedDirector {
             // The reason to include the depths of input ports for calculation
             // is to reduce unnecessary number of firings. In particular,
             // if an actor receives a trigger event that has the same tag as
-            // one of its pure event, one firing is sufficient.
+            // one of its pure events, one firing is sufficient.
 
             int depth = -1;
             Iterator inputs = actor.inputPortList().iterator();
@@ -1372,18 +1372,19 @@ public class DEDirector extends Director implements TimedDirector {
 
         // Allocate a new hash table with the size equal to the
         // number of IO ports sorted.
-        // This composite actor is set to the highest depth
-        // (the lowest priority).
         _portToDepth = new Hashtable(numberOfPorts);
 
-        // assign depths to ports based on the topological sorting result.
         LinkedList ports = new LinkedList();
 
+        // Assign depths to ports based on the topological sorting result.
         for (int i = 0; i <= (numberOfPorts - 1); i++) {
             IOPort ioPort = (IOPort) sort[i];
             ports.add(ioPort);
             int depth = i;
             Actor portContainer = (Actor) ioPort.getContainer();
+            // The ports of the composite actor that contains
+            // this director are set to the highest depth
+            // (the lowest priority).
             if (ioPort.isOutput() && portContainer.equals(getContainer())) {
                 depth += numberOfPorts;
             }
