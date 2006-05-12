@@ -64,6 +64,10 @@ JSRCS = \
 	ActorInstanceController.java \
 	ActorViewerGraphController.java \
 	ClassDefinitionController.java \
+	DocBuilder.java \
+	DocBuilderEffigy.java \
+	DocBuilderGUI.java \
+	DocBuilderTableau.java \
 	DocEffigy.java \
 	DocManager.java \
 	DocTableau.java \
