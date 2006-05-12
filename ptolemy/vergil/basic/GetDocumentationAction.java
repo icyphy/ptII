@@ -120,7 +120,6 @@ public class GetDocumentationAction extends FigureAction {
                             + " or " + docName + " as a resource");
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
                 try {
                 // Need to create an effigy and tableau.
                 Effigy context = Configuration.findEffigy(target);
