@@ -80,19 +80,20 @@ public class DocBuilderTableau extends Tableau {
     public DocBuilderTableau(Effigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        if (!(container instanceof DocBuilderEffigy)) {
-            throw new IllegalActionException(container,
-                    "Needs to be an instance of DocBuilderEffigy to contain a DocBuilderTableau.");
-        }
-        DocAttribute docAttribute = ((DocBuilderEffigy) container).getDocAttribute();
-        if (docAttribute != null) {
-            // Have a doc attribute.
-            DocViewer frame = new DocViewer(docAttribute.getContainer(),
-                    (Configuration) container.toplevel());
-            setFrame(frame);
-            frame.setTableau(this);
-        } else {
-            // No doc attribute. Find the URL of the enclosing effigy.
+
+//         if (!(container instanceof DocBuilderEffigy)) {
+//             throw new IllegalActionException(container,
+//                     "Needs to be an instance of DocBuilderEffigy to contain a DocBuilderTableau.");
+//         }
+//         DocAttribute docAttribute = ((DocBuilderEffigy) container).getDocAttribute();
+//         if (docAttribute != null) {
+//             // Have a doc attribute.
+//             DocViewer frame = new DocViewer(docAttribute.getContainer(),
+//                     (Configuration) container.toplevel());
+//             setFrame(frame);
+//             frame.setTableau(this);
+//         } else {
+//             // No doc attribute. Find the URL of the enclosing effigy.
             try {
                 // URL effigyURL = container.uri.getURL();
                 DocBuilder docBuilder = new DocBuilder(container,
@@ -105,7 +106,7 @@ public class DocBuilderTableau extends Tableau {
                 throw new IllegalActionException(this, container, ex,
                         "Malformed URL");
             }
-        }
+//        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -146,7 +147,7 @@ public class DocBuilderTableau extends Tableau {
          *   tableau for the effigy, but something goes wrong.
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
-            if (effigy instanceof DocBuilderEffigy) {
+            //            if (effigy instanceof Effigy) {
                 // Indicate to the effigy that this factory contains effigies
                 // offering multiple views of the effigy data.
                 effigy.setTableauFactory(this);
@@ -164,9 +165,9 @@ public class DocBuilderTableau extends Tableau {
                 // createTableau() returns.  This will affect how
                 // centering works.
                 return tableau;
-            } else {
-                return null;
-            }
+                //} else {
+                //return null;
+                //}
         }
     }
 }
