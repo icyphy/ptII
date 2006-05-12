@@ -44,8 +44,6 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.codegen.c.actor.TypedCompositeActor;
-import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
