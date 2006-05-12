@@ -33,11 +33,16 @@ import java.util.List;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.actor.DocBuilder;
+import ptolemy.vergil.actor.DocBuilderEffigy;
+import ptolemy.vergil.actor.DocBuilderGUI;
+import ptolemy.vergil.actor.DocBuilderTableau;
 import ptolemy.vergil.actor.DocEffigy;
 import ptolemy.vergil.actor.DocTableau;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -97,13 +102,13 @@ public class GetDocumentationAction extends FigureAction {
             // No doc attribute. Try for a doc file.
             String className = target.getClass().getName();
             try {
-                URL toRead = getClass().getClassLoader().getResource(
-                        "doc/codeDoc/" + className.replace('.', '/') + ".xml");
+                String docName = "doc/codeDoc/" + className.replace('.', '/') + ".xml";
+                String docClassName = "doc.codeDoc." + className;
+                URL toRead = getClass().getClassLoader().getResource(docName);
                 if (toRead == null) {
                     // No doc file either.
                     // For backward compatibility, open the
                     // Javadoc file, as before.
-                    String docName = "doc.codeDoc." + className;
                     toRead = getClass().getClassLoader().getResource(
                             docName.replace('.', '/') + ".html");
                 }
@@ -111,14 +116,59 @@ public class GetDocumentationAction extends FigureAction {
                     _configuration.openModel(null, toRead, toRead
                             .toExternalForm());
                 } else {
-                    MessageHandler.error("Cannot find documentation for "
-                            + className + "\nTry Running \"make\" in ptII/doc,"
-                            + "\nor installing the documentation component.");
+                    throw new Exception("Could not get " + docClassName
+                            + " or " + docName + " as a resource");
                 }
             } catch (Exception ex) {
-                MessageHandler.error("Cannot find documentation for "
+                ex.printStackTrace();
+                try {
+                // Need to create an effigy and tableau.
+                Effigy context = Configuration.findEffigy(target);
+                if (context == null) {
+                    context = Configuration.findEffigy(target.getContainer());
+                    if (context == null) {
+                        MessageHandler.error("Cannot find an effigy for "
+                                + target.getFullName());
+                    }
+                }
+                ComponentEntity effigy = context.getEntity("DocBuilderEffigy");
+                if (effigy == null) {
+                    try {
+                        effigy = new DocBuilderEffigy(context, "DocBuilderEffigy");
+                    } catch (KernelException exception) {
+                        throw new InternalErrorException(exception);
+                    }
+                }
+                if (!(effigy instanceof DocBuilderEffigy)) {
+                    MessageHandler.error("Found an effigy named DocBuilderEffigy that "
+                        + "is not an instance of DocBuilderEffigy!");
+                }
+                //((DocEffigy) effigy).setDocAttribute(docAttribute);
+                ComponentEntity tableau = ((Effigy) effigy).getEntity("DocBuilderTableau");
+                if (tableau == null) {
+                    try {
+                        tableau = new DocBuilderTableau((DocBuilderEffigy) effigy, "DocBuilderTableau");
+                    ((DocBuilderTableau) tableau).setTitle("Documentation for "
+                            + target.getFullName());
+                    } catch (KernelException exception) {
+                        throw new InternalErrorException(exception);
+                    }
+                }
+                if (!(tableau instanceof DocBuilderTableau)) {
+                MessageHandler.error("Found a tableau named DocBuilderTableau that "
+                        + "is not an instance of DocBuilderTableau!");
+                }
+                // FIXME: Tell the user what to do here.
+                ((DocBuilderTableau) tableau).show();
+                //DocBuilderGUI docBuilderGUI = new DocBuilderGUI(
+                //        new DocBuilder(target, "myDocBuilder"), (Tableau)null);
+
+                //docBuilderGUI.show();
+                } catch (Throwable throwable) {
+                    MessageHandler.error("Cannot find documentation for "
                         + className + "\nTry Running \"make\" in ptII/doc."
-                        + "\nor installing the documentation component.", ex);
+                        + "\nor installing the documentation component.", throwable);
+                }
             }
         } else {
             // Have a doc attribute. Use that.
