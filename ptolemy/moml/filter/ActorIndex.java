@@ -168,22 +168,6 @@ public class ActorIndex {
                         + "Idx.htm";
 
 
-                // Make directories if necessary
-                File outputDirectoryFile = new File(new File(outputFileName).getParent());
-                if (!outputDirectoryFile.exists()) {
-                    System.out.println("Creating " + outputDirectoryFile);
-                    outputDirectoryFile.mkdirs();
-                }
-
-                System.out.println("Writing " + outputFileName);
-                writer = new BufferedWriter(new FileWriter(outputFileName));
-
-                writer.write("<html>\n<head>\n<title>Index for "
-                        + actorClassName + "</title>\n</head>\n<body>\n"
-                        + "<h2>" + actorClassName + "</h2>\n"
-                        + "Below are demonstration models that use "
-                        + actorClassName + "\n<ul>\n");
-
                 // Determine the relative path to $PTII from this
                 // file.  We need this so that we can link to the models.
                 String canonicalOutputFileName = new File(outputFileName)
@@ -223,6 +207,26 @@ public class ActorIndex {
                     relativePath = relativePath.substring(0, relativePath
                             .length() - 3);
                 }
+
+                // Make directories if necessary
+                File outputDirectoryFile = new File(new File(outputFileName).getParent());
+                if (!outputDirectoryFile.exists()) {
+                    System.out.println("Creating " + outputDirectoryFile);
+                    outputDirectoryFile.mkdirs();
+                }
+
+                System.out.println("Writing " + outputFileName);
+                writer = new BufferedWriter(new FileWriter(outputFileName));
+
+                writer.write("<html>\n<head>\n<title>Index for "
+                        + actorClassName + "</title>\n"
+                        + "<link href=\"" + relativePath + "doc/default.css\""
+                        + "rel=\"stylesheet\" type=\"text/css\">\n"
+                        + "</head>\n<body>\n"
+                        + "<h2>" + actorClassName + "</h2>\n"
+                        + "Below are demonstration models that use "
+                        + actorClassName + "\n<ul>\n");
+
 
                 // Loop through all the models that use this actor
                 Iterator models = ((Set) entry.getValue()).iterator();
