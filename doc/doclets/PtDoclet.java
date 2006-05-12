@@ -100,6 +100,14 @@ public class PtDoclet {
                 //System.out.println(className);
                 Class theClass = null;
                 try {
+                    if (className.equals("ptolemy.vergil.toolbox.PtolemyTransferable")
+                            || className.equals("ptolemy.vergil.toolbox.GraphicElement")
+                        ) {
+                        throw new Exception("Skipping " + className
+                                + ",it starts up X11 and interferes with the "
+                                + "nightly build");
+                    }
+                    System.out.println("About to call forName " + className);
                     theClass = Class.forName(className);
                 } catch (Throwable ex) {
                     // Might be an inner class.
@@ -110,6 +118,7 @@ public class PtDoclet {
                                 lastDotIndex)
                                 + "$" + className.substring(lastDotIndex + 1);
                         try {
+                    System.out.println("About to call forName2 " + innerClassName);
                             theClass = Class.forName(innerClassName);
                         } catch (Throwable ex2) {
                             // FIXME: Use the doclet error handling mechanism
@@ -271,8 +280,18 @@ public class PtDoclet {
             //System.out.println(element + ": Processing " + className);
 
             try {
+                if (className.equals("javax.media.j3d.Canvas3D")
+                        || className.equals("com.sun.j3d.utils.universe.SimpleUniverse")
+                    ) {
+                    throw new Exception("Skipping " + className
+                            + ",it starts up X11 and interferes with the "
+                            + "nightly build");
+                }
+                    System.out.println("About to call forName3 " + className);
                 Class type = Class.forName(className);
+                    System.out.println("After call forName3 " + className);
                 if (fieldBaseClass.isAssignableFrom(type)) {
+                    System.out.println("After isAssignable " + className);
                     documentation
                             .append("    <!--"
                                     + className
