@@ -299,3 +299,13 @@ test RemoveGraphicalClasses-1.4 {Try a configuration has a class that we are goi
 </entity>
 }}
 
+test RemoveGraphicalClasses-1.5 {clear} {
+    # This removes the graphical classes for all subsequent runs
+    set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
+    $filter clear
+    $filter toString
+} {ptolemy.moml.filter.RemoveGraphicalClasses: Remove or replace classes that are graphical.
+This filter is used by the nightly build, and
+can be used to run applets so that files like
+diva.jar do not need to be downloaded.
+The following actors are affected:}
