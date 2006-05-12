@@ -68,6 +68,7 @@ OTHER_FILES_TO_BE_JARED = \
 	flowcontrol.xml \
 	help.htm \
         hyvisualEffigies.xml \
+	hyvisualModels.txt \
 	hyvisualPlanet.gif \
         hyvisualRefinements.xml \
 	io.xml \
@@ -96,6 +97,13 @@ all: jclass $(DERIVED_FILES)
 
 install: all jars
 	@echo "nothing need be done for make install in this directory"
+
+# hyvisualModels.txt contains a list of model file names
+# Use AUXCLASSPATH so that we work under codecoverage with JavaScope
+hyvisualModels.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class intro.htm
+	"$(JAVA)" "-Dptolemy.ptII.dir=$(PTII)" \
+		-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH)" \
+		ptolemy.actor.gui.HTMLAbout intro.htm $@
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
