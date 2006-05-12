@@ -55,3 +55,11 @@ test ActorIndex-1.1 {Run the ActorIndex on some test files } {
         [file exists codeDoc/ptolemy/actor/lib/gui/SequencePlotterIdx.htm] \
         [file exists codeDoc/ptolemy/actor/lib/MultiplyDivideIdx.htm]
 } {1 1}
+
+######################################################################
+####
+#
+test ActorIndex-2.1 {toString} {
+    set filter [java::new ptolemy.moml.filter.NamedObjClassesSeen [java::new java.util.HashMap]]
+    $filter toString
+} {ptolemy.moml.filter.NamedObjClassesSeen: Create a Set of classes that have been parsed thus far. The classes extend NamedObj. This filter does not modify the model. }
