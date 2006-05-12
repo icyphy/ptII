@@ -16,8 +16,6 @@
   <!--property name="Code Generator"
             class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/-->
   <!-- FIXME: does this belong in the View menu? -->
-  <property name="Doc Builder"
-            class="ptolemy.vergil.actor.DocBuilderTableau$Factory"/>
   <property name="JVM Properties"
             class="ptolemy.actor.gui.JVMTableau$Factory"/>
   <!-- FIXME: Tcl Shell does not belong in the View menu, nor in basic.
