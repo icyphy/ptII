@@ -63,7 +63,7 @@ do
     # Use ls -lg because Cygwin ls -l includes the group and
     # Under Cygwin, group names could have spaces: "Domain Users"
     # Solaris 8 /usr/ucb/ls -l does not
-    otherjarssizes="$otherjarssizes `/bin/ls -l $basedirectory/$file | awk '{for (i=3;i<NF;i++) {if ($i ~ /^[0-9]*$/) {print $i; exit}}}'`
+    otherjarssizes="$otherjarssizes `/bin/ls -l $basedirectory/$file | awk '{for (i=3;i<NF;i++) {if ($i ~ /^[0-9]*$/) {print $i; exit}}}'`"
 
     # Determine what packages are in the jar file
     echo "$file"
