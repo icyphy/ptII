@@ -96,6 +96,8 @@ public class RemoveProperties implements MoMLFilter {
      */
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue) {
+        //System.out.println("RemoveProperties.filterAttributeValue: " + container + "\t"
+        //   +  attributeName + "\t" + attributeValue);
         if (attributeValue == null) {
             // attributeValue == null is fairly common, so we check for
             // that first.

@@ -93,7 +93,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         } else if (_graphicalClasses.containsKey(attributeValue)) { 
             MoMLParser.setModified(true);
             return (String) _graphicalClasses.get(attributeValue);
-        } else if (attributeValue.startsWith("ptolemy.domains.gr")) {
+        } else if (_removeGR && attributeValue.startsWith("ptolemy.domains.gr")) {
             MoMLParser.setModified(true);
             return null;
         }
@@ -138,6 +138,15 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // ptolemy.copernicus.kernel.KernelMain call this method
         // so as to filter out the GeneratorAttribute
         _graphicalClasses.put(className, replacement);
+    }
+
+    /** Set to true if we should removed classes that start with
+     *  ptolemy.domains.gr.
+     *  @param removeGR True if we should remove classes that start
+     *  with ptolemy.domains.gr.
+     */
+    public void setRemoveGR(boolean removeGR) {
+        _removeGR = removeGR;
     }
 
     /** Return a string that describes what the filter does.
@@ -266,4 +275,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
 
     }
+
+    /** True if we should remove the GR domain. */
+    private boolean _removeGR = false;
 }
