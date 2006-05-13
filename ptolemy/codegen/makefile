@@ -54,6 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	c/c.jar \
+	gui/gui.jar \
 	kernel/kernel.jar
 
 # Keep this list alphabetized.
