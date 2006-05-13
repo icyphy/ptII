@@ -53,6 +53,7 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	ApplyFFT/ApplyFFT.jar \
+	Case/Case.jar \
 	DFTSubSet/DFTSubSet.jar \
 	HocDE/HocDE.jar \
 	IterateOverArray/IterateOverArray.jar \
