@@ -188,10 +188,12 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/colt/colt.jar \
 	ptolemy/actor/lib/colt/demo/demo.jar \
 	ptolemy/actor/lib/comm/demo/demo.jar \
+	ptolemy/actor/lib/hoc/demo/demo.jar \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
         ptolemy/actor/lib/python/python.jar \
         ptolemy/actor/lib/python/demo/demo.jar \
         ptolemy/actor/lib/security/demo/demo.jar \
+	ptolemy/codegen/codegen.jar \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
 	ptolemy/domains/csp/demo/demo.jar \
@@ -258,7 +260,6 @@ FULL_ONLY_JNLP_JARS = \
 	doc/design/design.jar \
 	doc/img/img.jar \
 	$(PTJACL_JARS) \
-	ptolemy/actor/lib/hoc/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
 	ptolemy/actor/lib/jai/jai.jar \
