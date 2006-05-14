@@ -70,13 +70,16 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
         IWorkbenchPreferencePage {
     
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                        constructors                       ////
 
     /** Construct a backtracking preference page.
      */
     public BacktrackingPreferencePage() {
         super("Ptolemy II backtracking settings.");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
 
     /** Create the contents of the preference page with the parent as its
      *  container.

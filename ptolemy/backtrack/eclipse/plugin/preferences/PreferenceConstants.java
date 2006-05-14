@@ -1,4 +1,4 @@
-/*
+/* A set of keys as preference indices.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -27,46 +27,109 @@
  */
 package ptolemy.backtrack.eclipse.plugin.preferences;
 
+//////////////////////////////////////////////////////////////////////////
+//// PreferenceConstants
 /**
- * Constant definitions for plug-in preferences.
- */
+   A set of keys as preference indices.
+
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class PreferenceConstants {
-    public static final String PTII_PREFERENCE_ID =
-        "ptolemy.backtrack.eclipse.plugin.preferences.PtolemyPreferencePage";
-
-    public static final String PTII = "ptolemy.PTII";
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                        backtracking                       ////
-    public static final String BACKTRACK_SOURCE_LIST = "ptolemy.backtrackSourceList";
 
-    public static final String BACKTRACK_SOURCES = "ptolemy.backtrackSources";
+    /** Configuration preference.
+     */
+    public static final String BACKTRACK_CONFIGURATION =
+        "ptolemy.backtrackConfiguration";
 
-    public static final String BACKTRACK_EXTRA_CLASSPATHS = "ptolemy.backtrackExtraClassPaths";
+    /** Extra classpath.
+     */
+    public static final String BACKTRACK_EXTRA_CLASSPATHS =
+        "ptolemy.backtrackExtraClassPaths";
 
-    public static final String BACKTRACK_ROOT = "ptolemy.backtrackingRoot";
+    /** Whether to generate configuration.
+     */
+    public static final String BACKTRACK_GENERATE_CONFIGURATION =
+        "ptolemy.backtrackGenerateConfiguration";
 
-    public static final String BACKTRACK_PREFIX = "ptolemy.backtrackPrefix";
+    /** Whether to overwrite exiting files.
+     */
+    public static final String BACKTRACK_OVERWRITE =
+        "ptolemy.backtrackOverwrite";
 
-    public static final String BACKTRACK_OVERWRITE = "ptolemy.backtrackOverwrite";
+    /** Package prefix.
+     */
+    public static final String BACKTRACK_PREFIX =
+        "ptolemy.backtrackPrefix";
 
-    public static final String BACKTRACK_GENERATE_CONFIGURATION = "ptolemy.backtrackGenerateConfiguration";
+    /** Root path.
+     */
+    public static final String BACKTRACK_ROOT =
+        "ptolemy.backtrackingRoot";
 
-    public static final String BACKTRACK_CONFIGURATION = "ptolemy.backtrackConfiguration";
+    /** Backtracking source files.
+     */
+    public static final String BACKTRACK_SOURCES =
+        "ptolemy.backtrackSources";
+
+    /** Backtracking source list.
+     */
+    public static final String BACKTRACK_SOURCE_LIST =
+        "ptolemy.backtrackSourceList";
 
     ///////////////////////////////////////////////////////////////////
     ////                           editor                          ////
-    public static final String EDITOR_HIGHLIGHTING_ENABLED = "ptolemy.editorHighlightingEnabled";
+    
+    /** Whether special methods should have bold face.
+     */
+    public static final String EDITOR_ACTOR_METHOD_BOLD =
+        "ptolemy.editorActorMethodBold";
 
-    public static final String EDITOR_STATE_BOLD = "ptolemy.editorStateBold";
+    /** Color for special methods.
+     */
+    public static final String EDITOR_ACTOR_METHOD_COLOR =
+        "ptolemy.editorActorMethodColor";
 
-    public static final String EDITOR_STATE_COLOR = "ptolemy.editorStateColor";
+    /** Whether special methods should be italic.
+     */
+    public static final String EDITOR_ACTOR_METHOD_ITALIC =
+        "ptolemy.editorActorMethodItalic";
 
-    public static final String EDITOR_STATE_ITALIC = "ptolemy.editorStateItalic";
+    /** Whether semantic highlighting is enabled.
+     */
+    public static final String EDITOR_HIGHLIGHTING_ENABLED =
+        "ptolemy.editorHighlightingEnabled";
 
-    public static final String EDITOR_ACTOR_METHOD_BOLD = "ptolemy.editorActorMethodBold";
+    /** Whether state variables should have bold face.
+     */
+    public static final String EDITOR_STATE_BOLD =
+        "ptolemy.editorStateBold";
 
-    public static final String EDITOR_ACTOR_METHOD_COLOR = "ptolemy.editorActorMethodColor";
+    /** Color for state variables.
+     */
+    public static final String EDITOR_STATE_COLOR =
+        "ptolemy.editorStateColor";
 
-    public static final String EDITOR_ACTOR_METHOD_ITALIC = "ptolemy.editorActorMethodItalic";
+    /** Whether state variables should be italic.
+     */
+    public static final String EDITOR_STATE_ITALIC =
+        "ptolemy.editorStateItalic";
+
+    ///////////////////////////////////////////////////////////////////
+    ////                            PTII                           ////
+
+    /** PTII path.
+     */
+    public static final String PTII = "ptolemy.PTII";
+
+    /** ID of the backtracking preferences.
+     */
+    public static final String PTII_PREFERENCE_ID =
+        "ptolemy.backtrack.eclipse.plugin.preferences.PtolemyPreferencePage";
 }

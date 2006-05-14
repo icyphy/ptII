@@ -1,4 +1,4 @@
-/*
+/* The class to create the Ptolemy preference page.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -44,32 +44,36 @@ import ptolemy.backtrack.eclipse.plugin.widgets.DirectoryFieldEditor;
 
 import java.io.File;
 
+//////////////////////////////////////////////////////////////////////////
+//// PtolemyPreferencePage
 /**
- * This class represents a preference page that
- * is contributed to the Preferences dialog. By
- * subclassing <samp>FieldEditorPreferencePage</samp>, we
- * can use the field support built into JFace that allows
- * us to create a page that is small and knows how to
- * save, restore and apply itself.
- * <p>
- * This page is used to modify preferences only. They
- * are stored in the preference store that belongs to
- * the main plug-in class. That way, preferences can
- * be accessed directly via the preference store.
- */
+   The class to create the Ptolemy preference page.
+
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class PtolemyPreferencePage extends FieldEditorPreferencePage implements
         IWorkbenchPreferencePage {
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        constructors                       ////
+
+    /** Construct a Ptolemy preference page.
+     */
     public PtolemyPreferencePage() {
         super(GRID);
         setPreferenceStore(EclipsePlugin.getDefault().getPreferenceStore());
         setDescription("General settings for Ptolemy II.");
     }
 
-    /**
-     * Creates the field editors. Field editors are abstractions of
-     * the common GUI blocks needed to manipulate various types
-     * of preferences. Each field editor knows how to save and
-     * restore itself.
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Create the contents in the Ptolemy preference. A field editor will be
+     *  created for the path of Ptolemy home. 
      */
     public void createFieldEditors() {
         Composite parent = getFieldEditorParent();
@@ -117,6 +121,11 @@ public class PtolemyPreferencePage extends FieldEditorPreferencePage implements
         logo.setImage(descriptor.createImage());
     }
 
+    /** Initialize. This method is inherited from the abstract superclass, and
+     *  does nothing.
+     *  
+     *  @param workbench The workbench.
+     */
     public void init(IWorkbench workbench) {
     }
 }

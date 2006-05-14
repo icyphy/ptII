@@ -1,4 +1,4 @@
-/*
+/* The class to create the editor preference page.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -44,20 +44,35 @@ import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 //// EditorPreferencePage
 
 /**
+   The class to create the editor preference page.
 
-
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class EditorPreferencePage extends SectionPreferencePage implements
         IWorkbenchPreferencePage {
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        constructors                       ////
+
+    /** Construct an editor preference page.
+     */
     public EditorPreferencePage() {
         super("Ptolemy II Java editor settings.");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Create the contents of the preference page with the parent as its
+     *  container.
+     *  
+     *  @param parent The parent container.
+     *  @return The parent itself.
+     */
     public Control createContents(Composite parent) {
         super.createContents(parent);
 
@@ -69,13 +84,25 @@ public class EditorPreferencePage extends SectionPreferencePage implements
         return parent;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       private methods                     ////
+
+    /** Enable the color selectors if a check box is checked, or disable it
+     *  otherwise.
+     */
+    private void _checkEnabled() {
+        _colorGroup.setEnabled(_highlightingEnabled.getBooleanValue());
+    }
+
+    /** Create the semantic highlighting section.
+     */
     private void _createHighlightingSection() {
         Composite composite = _createSection(
                 "Ptolemy Semantic Highlighting",
-                "Configure the semantic highlighting for Ptolemy source "
-                        + "files. The semantic highlighting, in addition to Java "
-                        + "semantic highlighting, colors different Ptolemy semantic "
-                        + "elements in the source files.");
+                "Configure the semantic highlighting for Ptolemy source " +
+                "files. The semantic highlighting, in addition to Java " +
+                "semantic highlighting, colors different Ptolemy semantic " +
+                "elements in the source files.");
 
         Composite currentComposite = _newComposite(composite);
         _highlightingEnabled = new BooleanFieldEditor(
@@ -106,7 +133,8 @@ public class EditorPreferencePage extends SectionPreferencePage implements
 
         //currentComposite = _newComposite(currentLine);
         BooleanFieldEditor bold = new BooleanFieldEditor(
-                PreferenceConstants.EDITOR_STATE_BOLD, "Bold", currentComposite);
+                PreferenceConstants.EDITOR_STATE_BOLD, "Bold",
+                currentComposite);
         addField(bold);
 
         BooleanFieldEditor italic = new BooleanFieldEditor(
@@ -131,17 +159,20 @@ public class EditorPreferencePage extends SectionPreferencePage implements
 
         IPreferenceStore store = EclipsePlugin.getDefault()
                 .getPreferenceStore();
-        _setEnabled(_colorGroup, store
-                .getBoolean(PreferenceConstants.EDITOR_HIGHLIGHTING_ENABLED));
+        _setEnabled(_colorGroup, store.getBoolean(
+                PreferenceConstants.EDITOR_HIGHLIGHTING_ENABLED));
 
         currentComposite.setLayout(new GridLayout(4, false));
     }
 
-    private void _checkEnabled() {
-        _colorGroup.setEnabled(_highlightingEnabled.getBooleanValue());
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
+    /** Whether semantic highlighting is enabled.
+     */
     private BooleanFieldEditor _highlightingEnabled;
 
+    /** The group of color selectors.
+     */
     private Group _colorGroup;
 }

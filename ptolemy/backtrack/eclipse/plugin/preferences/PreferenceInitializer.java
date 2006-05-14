@@ -1,4 +1,4 @@
-/*
+/* Initializer for the default values of backtracking preferences.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -42,28 +42,34 @@ import org.eclipse.swt.graphics.RGB;
 
 import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 
+//////////////////////////////////////////////////////////////////////////
+//// PreferenceInitializer
 /**
- * Class used to initialize default preference values.
- */
+   Initializer for the default values of backtracking preferences.
+
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
+    
+    /** Initialize backtracking preferences with default values.
      */
     public void initializeDefaultPreferences() {
-        IPreferenceStore store = EclipsePlugin.getDefault()
-                .getPreferenceStore();
+        IPreferenceStore store =
+            EclipsePlugin.getDefault().getPreferenceStore();
 
-        IProject ptIIProject = ResourcesPlugin.getWorkspace().getRoot()
-                .getProject("ptII");
+        IProject ptIIProject =
+            ResourcesPlugin.getWorkspace().getRoot().getProject("ptII");
 
         if (ptIIProject.exists()) {
-            store.setDefault(PreferenceConstants.PTII, ptIIProject
-                    .getLocation().toOSString());
+            store.setDefault(PreferenceConstants.PTII,
+                    ptIIProject.getLocation().toOSString());
 
-            IFile sourceList = ptIIProject
-                    .getFile("ptolemy/backtrack/automatic/source.lst");
+            IFile sourceList = ptIIProject.getFile(
+                    "ptolemy/backtrack/automatic/source.lst");
 
             if (sourceList.exists()) {
                 store.setDefault(PreferenceConstants.BACKTRACK_SOURCE_LIST,
@@ -72,14 +78,14 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
                 store.setDefault(PreferenceConstants.BACKTRACK_SOURCE_LIST, "");
             }
 
-            store.setDefault(PreferenceConstants.BACKTRACK_ROOT, ptIIProject
-                    .getFullPath().toOSString());
+            store.setDefault(PreferenceConstants.BACKTRACK_ROOT,
+                    ptIIProject.getFullPath().toOSString());
 
             store.setDefault(
                     PreferenceConstants.BACKTRACK_GENERATE_CONFIGURATION, true);
 
-            IFile configuration = ptIIProject
-                    .getFile("ptolemy/backtrack/automatic/ptolemy/configs/output.xml");
+            IFile configuration = ptIIProject.getFile(
+                    "ptolemy/backtrack/automatic/ptolemy/configs/output.xml");
             store.setDefault(PreferenceConstants.BACKTRACK_CONFIGURATION,
                     configuration.getLocation().toOSString());
         } else {
@@ -89,10 +95,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
             store.setDefault(PreferenceConstants.BACKTRACK_ROOT, "");
 
-            store
-                    .setDefault(
-                            PreferenceConstants.BACKTRACK_GENERATE_CONFIGURATION,
-                            false);
+            store.setDefault(
+                    PreferenceConstants.BACKTRACK_GENERATE_CONFIGURATION,
+                    false);
 
             store.setDefault(PreferenceConstants.BACKTRACK_CONFIGURATION, "");
         }
@@ -130,8 +135,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         store.setDefault(PreferenceConstants.EDITOR_STATE_ITALIC, false);
 
         PreferenceConverter.setDefault(store,
-                PreferenceConstants.EDITOR_ACTOR_METHOD_COLOR, new RGB(255, 0,
-                        0));
+                PreferenceConstants.EDITOR_ACTOR_METHOD_COLOR,
+                new RGB(255, 0, 0));
         store.setDefault(PreferenceConstants.EDITOR_ACTOR_METHOD_BOLD, true);
         store.setDefault(PreferenceConstants.EDITOR_ACTOR_METHOD_ITALIC, false);
     }

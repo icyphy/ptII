@@ -1,4 +1,4 @@
-/*
+/* The superclass for preference pages with multiple sections.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -28,8 +28,6 @@
 package ptolemy.backtrack.eclipse.plugin.preferences;
 
 import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -55,33 +53,78 @@ import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 //// SectionPreferencePage
 
 /**
+   The superclass for preference pages with multiple sections.
 
-
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class SectionPreferencePage extends FieldEditorPreferencePage implements
         IWorkbenchPreferencePage {
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        constructors                       ////
+
+    /** Construct a preference page with multiple sections and with a page
+     *  description.
+     *  
+     *  @param description The description.
+     */
     public SectionPreferencePage(String description) {
         super(GRID);
         setPreferenceStore(EclipsePlugin.getDefault().getPreferenceStore());
         setDescription(description);
     }
 
-    protected void createFieldEditors() {
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Create the contents of the preference page with the parent as its
+     *  container.
+     *  
+     *  @param parent The parent container.
+     *  @return The parent itself.
+     */
+    public Control createContents(Composite parent) {
+        _toolkit = new FormToolkit(getShell().getDisplay());
+
+        _form = _toolkit.createScrolledForm(parent);
+        _form.setLayoutData(new GridData(GridData.FILL_BOTH));
+        _form.setBackground(parent.getBackground());
+
+        _form.getBody().setLayout(new TableWrapLayout());
+
+        return parent;
     }
 
-    protected Composite _createSection(String text, String description) {
+    /** Initialize. This method is inherited from the abstract superclass, and
+     *  does nothing.
+     *  
+     *  @param workbench The workbench.
+     */
+    public void init(IWorkbench workbench) {
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+    /** Create a section in this page with a title and a section description.
+     * 
+     *  @param title The title.
+     *  @param description The description.
+     *  @return The container that can contain all the controls in the created
+     *   section.
+     */
+    protected Composite _createSection(String title, String description) {
         Section section = _toolkit.createSection(_form.getBody(),
                 Section.DESCRIPTION | Section.TWISTIE | Section.CLIENT_INDENT);
         TableWrapData data = new TableWrapData();
         data.grabHorizontal = true;
         section.setLayoutData(data);
         section.setBackground(null);
-        section.setText(text);
+        section.setText(title);
         section.setDescription(description);
         section.addExpansionListener(new ExpansionAdapter() {
             public void expansionStateChanged(ExpansionEvent e) {
@@ -95,42 +138,32 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
         return composite;
     }
 
-    public void init(IWorkbench workbench) {
-    }
-
+    /** Given a field editor, return its parent.
+     * 
+     *  @param editor The field editor.
+     *  @return The parent.
+     *  @see #_setParent(FieldEditor, Composite)
+     */
     protected Composite _getParent(FieldEditor editor) {
         return (Composite) _composites.get(editor);
     }
 
-    protected void _setParent(FieldEditor editor, Composite parent) {
-        _composites.put(editor, parent);
-    }
-
-    public Control createContents(Composite parent) {
-        _toolkit = new FormToolkit(getShell().getDisplay());
-
-        _form = _toolkit.createScrolledForm(parent);
-        _form.setLayoutData(new GridData(GridData.FILL_BOTH));
-        _form.setBackground(parent.getBackground());
-
-        _form.getBody().setLayout(new TableWrapLayout());
-
-        return parent;
-    }
-
-    protected void addField(FieldEditor editor) {
-        _fields.add(editor);
-        super.addField(editor);
-    }
-
-    protected List getFields() {
-        return _fields;
-    }
-
+    /** Create a new container with the given parent.
+     * 
+     *  @param parent The parent container.
+     *  @return The new container.
+     */
     protected Composite _newComposite(Composite parent) {
         return _newComposite(parent, 1);
     }
 
+    /** Create a new container with the given composite container as its parent,
+     *  and use a grid layout with the specified number of columns.
+     * 
+     *  @param parent The parent container.
+     *  @param column The number of columns in the grid layout.
+     *  @return The new container.
+     */
     protected Composite _newComposite(Composite parent, int column) {
         Composite composite = new Composite(parent, SWT.NULL);
         composite.setBackground(null);
@@ -145,17 +178,28 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
         return composite;
     }
 
-    protected Group _newGroup(Composite parent, String text) {
+    /** Create a new group with the given parent and the given title.
+     * 
+     *  @param parent The parent container.
+     *  @param title The title.
+     *  @return The new group.
+     */
+    protected Group _newGroup(Composite parent, String title) {
         Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
         group.setBackground(null);
 
         GridLayout layout = new GridLayout(1, true);
         group.setLayout(layout);
         group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        group.setText(text);
+        group.setText(title);
         return group;
     }
 
+    /** Set whether a container and all its children are enabled.
+     * 
+     *  @param composite The container.
+     *  @param enabled Whether the container and all its children are enabled.
+     */
     protected static void _setEnabled(Composite composite, boolean enabled) {
         composite.setEnabled(enabled);
 
@@ -172,11 +216,36 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
         }
     }
 
-    protected FormToolkit _toolkit;
+    /** Set the parent of a field editor.
+     * 
+     *  @param editor The field editor.
+     *  @param parent The parent.
+     *  @see #_getParent(FieldEditor)
+     */
+    protected void _setParent(FieldEditor editor, Composite parent) {
+        _composites.put(editor, parent);
+    }
 
-    protected ScrolledForm _form;
+    /** Create field editors. This method is inherited from the abstract
+     *  superclass, and does nothing.
+     */
+    protected void createFieldEditors() {
+    }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
+
+    /** The hash table that records the parent-children relation for all the
+     *  sections. The keys are field editor objects; the values are their
+     *  parents.
+     */
     private Hashtable _composites = new Hashtable();
 
-    private List _fields = new LinkedList();
+    /** The main form.
+     */
+    private ScrolledForm _form;
+
+    /** The toolkit used to create the main form.
+     */
+    private FormToolkit _toolkit;
 }
