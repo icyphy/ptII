@@ -671,7 +671,7 @@ For more help, choose Help from the upper menu bar.</text>
                 <xsl:variable name="counts" select="count(//DNHA/HybridAutomaton/IntegerVariable[@name=$varName]|//DNHA/HybridAutomaton/RealVariable[@name=$varName]|//DNHA/HybridAutomaton/BooleanVariable[@name=$varName])"/>
                 <xsl:if test="$counts!=0">
                     <xsl:element name="link">
-                        <xsl:attribute name="port"><xsl:value-of select="concat($name, '.', $varName)"/></xsl:attribute>
+                        <xsl:attribute name="port"><xsl:value-of select="string-join(($name, '.', $varName), ' ')"/></xsl:attribute>
                         <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
                     </xsl:element>
                 </xsl:if>
