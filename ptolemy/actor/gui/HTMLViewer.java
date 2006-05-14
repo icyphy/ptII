@@ -45,8 +45,12 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
+import javax.swing.text.html.StyleSheet;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.Style;
 
 import ptolemy.gui.Top;
 import ptolemy.util.MessageHandler;
@@ -194,7 +198,6 @@ public class HTMLViewer extends TableauFrame implements Printable,
                     // If the target is "_blank" or "_top", then we want to open
                     // in a new window, so we defer to the below.
                     HTMLDocument doc = (HTMLDocument) pane.getDocument();
-
                     try {
                         doc.processHTMLFrameHyperlinkEvent(frameHyperlinkEvent);
                     } catch (Exception ex) {
@@ -391,6 +394,18 @@ public class HTMLViewer extends TableauFrame implements Printable,
         pane.setEditable(false);
         pane.addHyperlinkListener(this);
         
+
+        if (_styleSheetURL != null) {
+            // If _styleSheetURL is non-null, we set the style sheet
+            // once and only once.  If try to do this in a static initializer,
+            // then the styles are wrong.
+            HTMLDocument doc = (HTMLDocument) pane.getDocument();
+            StyleSheet styleSheet = doc.getStyleSheet();
+            styleSheet.importStyleSheet(_styleSheetURL);
+            new HTMLEditorKit().setStyleSheet(styleSheet);
+            _styleSheetURL = null;
+        }
+
         // http://mindprod.com/jgloss/antialiasing.html says that in 
         // java 1.5, this will turn on anti-aliased fonts
         try {
@@ -411,4 +426,42 @@ public class HTMLViewer extends TableauFrame implements Printable,
 
     /** The base as specified by setBase(). */
     private URL _base;
+
+    /** The url that refers to $PTII/doc/default.css. */
+    private static URL _styleSheetURL;
+    static {
+        try {
+            Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
+            _styleSheetURL = refClass.getClassLoader().getResource("doc/default.css");
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            // Ignore, we just use the wrong style sheets.
+        }
+
+    }
+
+//     static {
+//         try {
+//             // We might be in the Swing Event thread, so
+//             // Thread.currentThread().getContextClassLoader()
+//             // .getResource(entry) probably will not work.
+//             Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
+//             URL styleSheetURL = refClass.getClassLoader()
+//                 .getResource("doc/default.css");
+//             if (styleSheetURL != null) {
+//                 System.out.println("HTMLViewer: reading stylesheet "
+//                         + styleSheetURL + "Instead of " + HTMLEditorKit.DEFAULT_CSS);
+
+//                 StyleSheet styleSheet = htmlEditorKit.getStyleSheet();
+//                 styleSheet.importStyleSheet(styleSheetURL);
+//                 htmlEditorKit.setStyleSheet(styleSheet);
+//             } else {
+//                 System.out.println("Failed to read doc/default.css, so "
+//                         + " the wrong style sheets will be used.");
+//             }
+//         } catch (Throwable ex) {
+//             // Ignore, we just use the wrong style sheets.
+//             ex.printStackTrace();
+//         }
+//    }
 }
