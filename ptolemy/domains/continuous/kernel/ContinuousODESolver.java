@@ -36,9 +36,7 @@ import ptolemy.kernel.util.Workspace;
 //// ODESolver
 
 /**
- Abstract base class for ODE solvers. The key methods for the class
- are {@link #fireDynamicActors} and {@link
- #fireStateTransitionActors}.  CT directors call these methods to
+ Abstract base class for ODE solvers. CT directors call these methods to
  resolve the initial states in a future time in the continuous phase
  of execution of a complete iteration. See {@link
  CTMultiSolverDirector} for explanation of initial states and phases
