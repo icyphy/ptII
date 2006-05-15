@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MatlabWirelessSoundDetection" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 2, 1022, 762}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 2, 1015, 751}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 644]">
     </property>
@@ -29,8 +29,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -47,12 +45,6 @@ the sound and their current location.</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
       </svg>
     </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 515.0">
         </property>
@@ -79,10 +71,6 @@ with estimated locations.</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 70.0">
         </property>
     </property>
@@ -103,10 +91,6 @@ the implementation.</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 280.0">
         </property>
     </property>
@@ -125,10 +109,6 @@ GraphicalLocator)</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 515.0">
         </property>
     </property>
@@ -144,10 +124,6 @@ GraphicalLocator)</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
       </svg>
     </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 370.0">
         </property>
@@ -166,10 +142,6 @@ GraphicalLocator)</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 435.0">
         </property>
     </property>
@@ -186,33 +158,7 @@ GraphicalLocator)</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 615.0]">
-        </property>
-    </property>
-    <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="660.0, 625.0">
-        </property>
-    </property>
-    <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="660.0, 620.0">
-        </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="10.0">
-        </property>
-    </property>
-    <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="760.0, 620.0">
-        </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
     </property>
     <property name="annotation8" class="ptolemy.kernel.util.Attribute">
@@ -228,70 +174,20 @@ GraphicalLocator)</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="660.0, 620.0">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{403.5, 322.0}">
-    </property>
-    <property name="annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-        </property>
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses Matlab in a trivial&#10;fashion to show how Matlab can be integrated&#10;into a model.&#10;Right Click on the Triangulator icon and&#10;select &quot;Open Actor&quot; to see the Matlab &#10;Expression actor.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 15.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.0, 322.0}">
     </property>
     <entity name="SoundSource" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_hideName" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="circle1" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="20">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.0, 0.0}">
-                </property>
-            </property>
-            <property name="circle2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.0, 0.0}">
-                </property>
-            </property>
-            <property name="circle3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.0, 0.0}">
-                </property>
-            </property>
-            <property name="circle4" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="soundRange*2">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="soundRange*2">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.0, 0.0}">
-                </property>
-            </property>
-        </property>
         <property name="soundRange" class="ptolemy.data.expr.Parameter" value="300">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_icon" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
@@ -300,7 +196,7 @@ GraphicalLocator)</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 35.0">
             </property>
@@ -320,8 +216,6 @@ GraphicalLocator)</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-            </property>
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -335,10 +229,6 @@ GraphicalLocator)</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
       </svg>
     </configure>
-            </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 65.0">
             </property>
@@ -355,10 +245,6 @@ GraphicalLocator)</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
       </svg>
     </configure>
-            </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 175.0">
             </property>
@@ -388,25 +274,15 @@ GraphicalLocator)</text></svg></configure>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 130.0">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-            </property>
         </entity>
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="_location">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 265.0">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-            </property>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[sin(x)*200 + 300, sin(y)*200 + 300]">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 265.0">
             </property>
@@ -427,8 +303,6 @@ GraphicalLocator)</text></svg></configure>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 245.0">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-            </property>
         </entity>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
             <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -438,8 +312,6 @@ GraphicalLocator)</text></svg></configure>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 255.0">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-            </property>
         </entity>
         <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
             <property name="init" class="ptolemy.data.expr.Parameter" value="PI/2.0">
@@ -448,8 +320,6 @@ GraphicalLocator)</text></svg></configure>
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 330.0">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -553,32 +423,10 @@ GraphicalLocator)</text></svg></configure>
     <entity name="WirelessTriangulator" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_hideName" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="circle1" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="30">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.0, 0.5}">
-                </property>
-            </property>
-            <property name="circle2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.0, 0.5}">
-                </property>
-            </property>
-        </property>
         <property name="soundPropagationSpeed" class="ptolemy.data.expr.Parameter" value="344.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_icon" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
@@ -587,7 +435,7 @@ GraphicalLocator)</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 35.0">
             </property>
@@ -606,8 +454,6 @@ GraphicalLocator)</text></svg></configure>
             <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 50.0">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={86, 99, 879, 549}, maximized=false}">
@@ -629,10 +475,6 @@ has Y increasing upwards.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 295.0]">
             </property>
         </property>
@@ -641,7 +483,7 @@ has Y increasing upwards.</text></svg></configure>
         <property name="timeWindow" class="ptolemy.data.expr.Parameter" value="0.2">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_icon" class="ptolemy.kernel.util.Attribute">
                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                 </property>
             </property>
@@ -652,7 +494,7 @@ has Y increasing upwards.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 55.0">
             </property>
@@ -671,10 +513,6 @@ location can be found, then plot that location.</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
       </svg>
     </configure>
-            </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 80.0">
             </property>
@@ -700,10 +538,6 @@ definition from a .m file.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 290.0]">
             </property>
         </property>
@@ -724,8 +558,6 @@ definition from a .m file.</text></svg></configure>
             <property name="timeWindow" class="ptolemy.data.expr.Parameter" value="timeWindow">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 260.0">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -777,12 +609,6 @@ definition from a .m file.</text></svg></configure>
         </entity>
         <entity name="MatlabExpression" class="ptolemy.matlab.Expression">
             <property name="expression" class="ptolemy.data.expr.StringParameter" value="output=MatlabWirelessSoundDetection(input);">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 270.0]">
             </property>
