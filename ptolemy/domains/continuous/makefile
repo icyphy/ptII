@@ -1,7 +1,7 @@
 # Makefile for Java Ptolemy Continuous Time Domain
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
+# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2006 The Regents of the University of California.
 # All rights reserved.
@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/domains/cont
+ME =		ptolemy/domains/continuous
 
 DIRS =		kernel
 
@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	cont
+PTPACKAGE = 	continuous
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
@@ -56,7 +56,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =  kernel lib doc test
+MISC_FILES =  kernel
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
