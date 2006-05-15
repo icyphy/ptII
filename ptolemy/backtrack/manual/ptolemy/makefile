@@ -33,7 +33,7 @@
 
 ME =		ptolemy/backtrack/manual/ptolemy
 
-DIRS =		domains
+DIRS =		actor configs domains
 
 # Root of the Java directory
 ROOT =		../../../..
