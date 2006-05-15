@@ -76,7 +76,10 @@ JSRCS = \
 	VergilErrorHandler.java \
 	VergilInitializer.java
 
+OTHER_FILES_TO_BE_JARED =
+
 EXTRA_SRCS =	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
 	TODO.txt \
 	Vergil.htm \
 	Vergil.properties \
