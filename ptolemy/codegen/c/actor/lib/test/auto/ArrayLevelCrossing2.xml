@@ -1,0 +1,201 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ArrayLevelCrossing2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 245, 815, 509}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <entity name="ArrayLevelCrossing" class="ptolemy.actor.lib.ArrayLevelCrossing">
+        <property name="start" class="ptolemy.actor.parameters.PortParameter" value="0">
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="forwards" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="threshold" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="above" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.StringParameter" value="relative linear">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 140.0">
+        </property>
+        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="array" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0, 0.75, 0.5, 0.25, 0.0, -0.25, -0.5, -0.75, -1.0}">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 105.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{-1, 5, 6, 11}}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 140.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ArrayLevelCrossing2" class="ptolemy.actor.lib.ArrayLevelCrossing">
+        <property name="start" class="ptolemy.actor.parameters.PortParameter" value="0">
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="forwards" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="threshold" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="above" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.StringParameter" value="relative linear">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 205.0">
+        </property>
+        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="array" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ArrayLevelCrossing3" class="ptolemy.actor.lib.ArrayLevelCrossing">
+        <property name="start" class="ptolemy.actor.parameters.PortParameter" value="8">
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="forwards" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="threshold" class="ptolemy.data.expr.Parameter" value="6.0">
+        </property>
+        <property name="above" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.StringParameter" value="relative amplitude decibels">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 270.0">
+        </property>
+        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="array" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ArrayLevelCrossing4" class="ptolemy.actor.lib.ArrayLevelCrossing">
+        <property name="start" class="ptolemy.actor.parameters.PortParameter" value="8">
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="forwards" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="threshold" class="ptolemy.data.expr.Parameter" value="3.1">
+        </property>
+        <property name="above" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.StringParameter" value="relative power decibels">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 335.0">
+        </property>
+        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="array" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="300.0, 105.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ArrayLevelCrossing.array" relation="relation"/>
+    <link port="ArrayLevelCrossing.output" relation="relation2"/>
+    <link port="Const.output" relation="relation"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Test.input" relation="relation5"/>
+    <link port="ArrayLevelCrossing2.array" relation="relation"/>
+    <link port="ArrayLevelCrossing2.output" relation="relation3"/>
+    <link port="ArrayLevelCrossing3.array" relation="relation"/>
+    <link port="ArrayLevelCrossing3.output" relation="relation4"/>
+    <link port="ArrayLevelCrossing4.array" relation="relation"/>
+    <link port="ArrayLevelCrossing4.output" relation="relation5"/>
+</entity>
