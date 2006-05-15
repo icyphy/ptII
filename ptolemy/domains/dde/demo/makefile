@@ -42,6 +42,17 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	demo
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	HelloWorld/HelloWorld.jar \
+	LocalZeno/LocalZeno.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS =	index.htm
 
