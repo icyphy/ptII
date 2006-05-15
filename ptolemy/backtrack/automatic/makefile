@@ -31,6 +31,10 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
+###############################################################################
+# WARNING: This makefile requires GNU make, it will NOT work with Solaris make#
+###############################################################################
+
 ME =		ptolemy/backtrack/automatic
 
 DIRS =		
@@ -43,6 +47,10 @@ CLASSPATH =	$(ROOT)$(PTBACKTRACK_ECLIPSE_JARS)
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
+
+# Used to build jar files
+PTPACKAGE = 	automatic
+PTCLASSJAR =
 
 # Keep this list alphabetized.
 JSRCS = 
@@ -57,9 +65,15 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+
 # Backtrack.tcl runs "make backtrack" so that we can run the
 # tests from inside Eclipse
 all: transform build
+
+# FIXME: Running make install reruns the transformer and recompiles
+# The dependencies should be set up so that the transform step is run
+# only if necessary
+install: all jars $(PTPACKAGE).jar
 
 transform:
 	@echo Transform the source files in "source.lst".
@@ -99,6 +113,20 @@ ptolemy_makefile:
 	@echo "all: jclass" >> ptolemy/makefile
 	@echo "install: jclass \$$(PTCLASSJAR)" >> ptolemy/makefile
 	@echo "include \$$(ROOT)/mk/ptcommon.mk" >> ptolemy/makefile
+
+automatic.jar: $(JSRCS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
+	rm -rf $(PTJAR_TMPDIR) $@
+	mkdir $(PTJAR_TMPDIR)
+	# Copy any class files from this directory
+	mkdir -p $(PTJAR_TMPDIR)/$(ME)
+	"$(JAR)" -c `find . -name "*.class"` | (cd $(PTJAR_TMPDIR)/$(ME); "$(JAR)" -x)
+	-cp $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	$(JAR_INDEX)
+	rm -rf $(PTJAR_TMPDIR)
+
 
 # Remove the ptolemy directory 
 # It is generated during the testing, and should not be preserved.
