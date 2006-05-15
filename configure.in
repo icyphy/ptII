@@ -1058,6 +1058,7 @@ else
 
     # We cd to *clipse so that we get the case right in the jar files.
     if test -d "c:/Program Files/Eclipse" -o -d "c:/Program Files/eclipse"; then
+    # Remove /cygdrive	
 changequote(<<, >>)dnl
        TMP_ECLIPSE_DIR="`cd c:/Program\ Files/*clipse; pwd | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 changequote([, ])dnl
@@ -1069,24 +1070,26 @@ changequote([, ])dnl
 	ECLIPSE_DIR=$withval,
 	ECLIPSE_DIR=$TMP_ECLIPSE_DIR)
 
-    # Remove /cygdrive	
-
 
     if test ! -d "$ECLIPSE_DIR"; then
 	AC_MSG_WARN([Failed to find Eclipse in $ECLIPSE_DIR])
 	AC_MSG_CHECKING([for $PTII/vendors/eclipse])
-        AC_PATH_PROG(PTECLIPSE, eclipse)
    	if test -d  "$PTII/vendors/eclipse"; then
-	   ECLIPSE_DIR="$PTII/vendors/eclipse"
+	    AC_MSG_RESULT([ok])
+	    ECLIPSE_DIR="$PTII/vendors/eclipse"
         else
-           if test "${PTECLIPSE:-none}" != "none"; then
-	      ECLIPSE_DIR=`dirname $PTECLIPSE`
+	    AC_MSG_WARN([Failed to find Eclipse in $PTII/vendors/eclipse])
+            AC_PATH_PROG(PTECLIPSE, eclipse)
+            if test "${PTECLIPSE:-none}" != "none"; then
+            # Remove /cygdrive	
+changequote(<<, >>)dnl
+	    ECLIPSE_DIR=`dirname $PTECLIPSE | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`
+changequote([, ])dnl
 	   fi   
         fi
     fi 
     if test -d "$ECLIPSE_DIR"; then
-	AC_MSG_RESULT([$ECLIPSE_DIR])
-	AC_MSG_CHECKING([for jars used by backtracking])
+	AC_MSG_CHECKING([for jars used by backtracking in $ECLIPSE_DIR)
 	# jars="jdt.core osgi resources runtime" 
 	# jdt.core core.runtime_ are needed to build backtrack
 	# osgi_ and resources_ are needed to run the tests in backtrack
