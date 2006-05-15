@@ -1217,7 +1217,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             remoteReceivers = port.deepGetReceivers();
         }
 
-        if (remoteReceivers.length == 0) {
+        if (remoteReceivers.length <= channelNumber || channelNumber < 0) {
             // This is an escape method. This class will not call this
             // method if the output port does not have a remote receiver.
             return sinkChannels;
