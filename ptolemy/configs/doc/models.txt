@@ -82,7 +82,6 @@ $CLASSPATH/ptolemy/caltrop/demo/FunctionClosures/FunctionClosures.xml
 $CLASSPATH/ptolemy/domains/dt/demo/Eye/Eye.xml
 $CLASSPATH/ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.xml
-$CLASSPATH/ptolemy/domains/dde/demo/HelloWorld/HelloWorld.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/Case/Case.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Barrier/Barrier.xml
 $CLASSPATH/ptolemy/domains/sr/demo/TokenRing/TokenRing.xml
