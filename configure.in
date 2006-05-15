@@ -1085,11 +1085,11 @@ changequote([, ])dnl
 changequote(<<, >>)dnl
 	    ECLIPSE_DIR=`dirname $PTECLIPSE | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`
 changequote([, ])dnl
-	   fi   
+	    fi   
         fi
     fi 
     if test -d "$ECLIPSE_DIR"; then
-	AC_MSG_CHECKING([for jars used by backtracking in $ECLIPSE_DIR)
+	AC_MSG_CHECKING([for jars used by backtracking in $ECLIPSE_DIR])
 	# jars="jdt.core osgi resources runtime" 
 	# jdt.core core.runtime_ are needed to build backtrack
 	# osgi_ and resources_ are needed to run the tests in backtrack
