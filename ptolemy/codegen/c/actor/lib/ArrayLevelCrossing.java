@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -61,71 +62,28 @@ public class ArrayLevelCrossing extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
-    }
+        super.generateFireCode();
+        ptolemy.actor.lib.ArrayLevelCrossing actor = 
+            (ptolemy.actor.lib.ArrayLevelCrossing) getComponent();
+        
+        if (((BooleanToken) actor.forwards.getToken()).booleanValue()) {
+            _codeStream.appendCodeBlock("forwardBlock");
+        }
 
-    /**
-     * Generate initialize code.
-     * Read the  from ArrayLevelCrossing.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
+        String scaleValue = actor.scale.stringValue();
+        String aboveValue = ((BooleanToken) actor.above.getToken())
+        .booleanValue() ? "above" : "notAbove";
 
-        return code.toString();
-    }
+        if (scaleValue.equals("relative amplitude decibels")) {
+            _codeStream.appendCodeBlock("amplitude_" + aboveValue);
+        } else if (scaleValue.equals("relative power decibels")) {
+            _codeStream.appendCodeBlock("power_" + aboveValue);
+        } else if (scaleValue.equals("relative linear")) {
+            _codeStream.appendCodeBlock("linear_" + aboveValue);
+        }
+        _codeStream.appendCodeBlock("findCrossing_" + aboveValue);
 
-    /**
-     * Generate preinitialize code.
-     * Reads the <code>preinitBlock</code> from ArrayLevelCrossing.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-        code.append(_generateBlockCode("preinitBlock"));
-        return code.toString();
-    }
-
-    /**
-     * Generate shared code.
-     * Read the  from ArrayLevelCrossing.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public Set getSharedCode() throws IllegalActionException {
-        Set sharedCode = new HashSet();
-        sharedCode.addAll(super.getHeaderFiles());
-
-        return sharedCode;
-    }
-
-    /**
-     * Generate wrap up code.
-     * Read the  from ArrayLevelCrossing.c, 
-     * replace macros with their values and append the processed code block
-     * to the given code buffer.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateWrapupCode());
-
-        return code.toString();
+        return processCode(_codeStream.toString());
     }
 
     /**
@@ -138,8 +96,8 @@ public class ArrayLevelCrossing extends CCodeGeneratorHelper {
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
         files.addAll(super.getHeaderFiles());
+        files.add("<math.h>");
         files.add("<stdio.h>");
-
         return files;
     }
 }
