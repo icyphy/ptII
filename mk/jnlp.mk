@@ -75,10 +75,10 @@ NATIVE_SIGNED_LIB_JARS = \
 	lib/matlabSunOS.jar
 
 # Not all hosts have matlab
-#MATLAB_JARS = \
-#	ptolemy/matlab/matlab.jar \
-#	ptolemy/matlab/demo/demo.jar \
-#	lib/matlab.jar
+MATLAB_JARS = \
+	ptolemy/matlab/matlab.jar \
+	ptolemy/matlab/demo/demo.jar \
+	lib/matlab.jar
 
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
@@ -274,11 +274,13 @@ FULL_ONLY_JNLP_JARS = \
 	vendors/misc/x10/tjx10p-12/lib/x10.jar \
 	lib/ptCal.jar \
 	lib/saxon8.jar \
+	lib/java_cup.jar \
 	ptolemy/caltrop/caltrop.jar \
 	ptolemy/caltrop/demo/demo.jar \
 	ptolemy/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
+	ptolemy/domains/dde/demo/demo.jar \
 	ptolemy/domains/ddf/demo/demo.jar \
 	ptolemy/domains/dt/demo/demo.jar \
 	ptolemy/domains/dt/doc/doc.jar \
@@ -296,6 +298,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/sr/doc/doc.jar \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
+	ptolemy/backtrack/backtrack.jar \
+	ptolemy/backtrack/demo/demo.jar \
 	$(WIRELESS_JARS)
 
 FULL_MAIN_JAR = \
