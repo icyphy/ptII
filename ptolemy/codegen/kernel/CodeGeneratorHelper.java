@@ -1802,6 +1802,17 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     protected String _generateTypeConvertStatement(Channel source,
             Channel sink, int offset) throws IllegalActionException {
 
+        Type sourceType = ((TypedIOPort) source.port).getType();
+        Type sinkType = ((TypedIOPort) sink.port).getType();
+
+        // In a modal model, a refinement may have an output port which is
+        // not connected inside, in this case the type of the port is 
+        // unknown and there is no need to generate type conversion code
+        // because there is no token transferred from the port.
+        if (sourceType == BaseType.UNKNOWN) {
+            return "";
+        }
+
         // The references are associated with their own helper, so we need
         // to find the associated helper.       
         String sourcePortChannel = source.port.getName() + "#"
@@ -1831,17 +1842,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             if (sink.port.isMultiport()) {
                 sinkRef = sinkRef + "[" + sink.channelNumber + "]";
             }
-        }
-
-        Type sourceType = ((TypedIOPort) source.port).getType();
-        Type sinkType = ((TypedIOPort) sink.port).getType();
-
-        // In a modal model, a refinement may have an output port which is
-        // not connected inside, in this case the type of the port is 
-        // unknown and there is no need to generate type conversion code
-        // because there is no token transferred from the port.
-        if (sourceType == BaseType.UNKNOWN) {
-            return "";
         }
 
         String result = sourceRef;
