@@ -763,7 +763,7 @@ codeDocViptos/doc/codeDoc/allNamedObjs.txt: codeDocViptos/doc/codeDoc/ptolemy/ac
 
 # Build the index of actors 
 codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
-		codeDocViptos/doc/codeDoc/allNamedObjs.txt
+		codeDocViptos/doc/codeDoc/allNamedObjs.txt \
 		$(PTII)/ptolemy/configs/viptos/viptosModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
@@ -811,7 +811,7 @@ codeDocVisualSense/doc/codeDoc/allNamedObjs.txt: codeDocVisualSense/doc/codeDoc/
 
 # Build the index of actors 
 codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
-		codeDocVisualSense/doc/codeDoc/allNamedObjs.txt
+		codeDocVisualSense/doc/codeDoc/allNamedObjs.txt \
 		$(PTII)/ptolemy/configs/visualsense/visualsenseModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
