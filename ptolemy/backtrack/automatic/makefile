@@ -38,7 +38,7 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(PTBACKTRACK_ECLIPSE_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -64,9 +64,9 @@ all: transform build
 transform:
 	@echo Transform the source files in "source.lst".
 	@rm -rf ptolemy
-	@"$(JAVA)" \
+	"$(JAVA)" \
 	  -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)$(AUXCLASSPATH)" \
-	  ptolemy.backtrack.ast.Transformer \
+	  ptolemy.backtrack.eclipse.ast.Transformer \
 	  -prefix ptolemy.backtrack.automatic \
 	  -output "$(ROOT)" \
 	  -config ptolemy/configs/output.xml \
