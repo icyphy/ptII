@@ -1095,7 +1095,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         if (!offsetString.equals("")) {
             // Specified offset.
 
-            if (offsetObject instanceof Integer) {
+            if (offsetObject instanceof Integer && _isInteger(offsetString)) {
 
                 int offset = ((Integer) offsetObject).intValue()
                         + (new Integer(offsetString)).intValue();
@@ -1120,9 +1120,18 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 // represented by string expression,
                 // getBufferSize(port, channelNumber) will always
                 // return a value at least 2.
+
+                /*
+                 * FIXME: The following pointer math does not give the correct
+                 * result. Maybe the original author wanted to optimize by
+                 * avoiding the "%" operator.   
                 int modulo = getBufferSize(port, channel) - 1;
-                temp = "(" + (String) offsetObject + " + " + offsetString
-                        + ")&" + modulo;
+                temp = "(" + offsetObject.toString() + " + " + 
+                    offsetString + ")&" + modulo;
+                */
+                int modulo = getBufferSize(port, channel);
+                temp = "(" + offsetObject.toString() + " + " + 
+                    offsetString + ")%" + modulo;
             }
 
             result += "[" + temp + "]";
@@ -2227,6 +2236,22 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             return ((List) _portConversions.get(source));
         }
         return new ArrayList();
+    }
+
+    /**
+     * Return true if the given string can be parse as an integer; otherwise,
+     * return false. 
+     * @param numberString The given number string.
+     * @return True if the given string can be parse as an integer; otherwise,
+     *  return false.
+     */
+    private boolean _isInteger(String numberString) {
+        try {
+            Integer.parseInt(numberString);
+            return true;
+        } catch (NumberFormatException ex) {
+            return false;            
+        }
     }
 
     /**
