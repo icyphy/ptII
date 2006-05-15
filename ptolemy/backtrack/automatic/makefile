@@ -51,7 +51,7 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	automatic
 PTCLASSJAR =
-
+OTHER_JARS =	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = 
 
@@ -88,7 +88,7 @@ transform:
 build: ptolemy_makefile
 	$(MAKE) -C ptolemy
 
-ptolemy_makefile:
+ptolemy_makefile: 
 	@echo "Generating ptolemy/makefile..."
 	@echo "ME = $(ME)/ptolemy" > ptolemy/makefile
 	@echo "DIRS =" >> ptolemy/makefile
@@ -113,7 +113,7 @@ ptolemy_makefile:
 	@echo "install: jclass \$$(PTCLASSJAR)" >> ptolemy/makefile
 	@echo "include \$$(ROOT)/mk/ptcommon.mk" >> ptolemy/makefile
 
-automatic.jar: $(JSRCS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
+automatic.jar: $(JSRCS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED) all
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy any class files from this directory
