@@ -84,7 +84,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 
-install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
+install: all jars $(PTPACKAGE).jar
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
