@@ -65,7 +65,6 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 # Backtrack.tcl runs "make backtrack" so that we can run the
 # tests from inside Eclipse
 all: transform build
@@ -127,10 +126,7 @@ automatic.jar: $(JSRCS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	$(JAR_INDEX)
 	rm -rf $(PTJAR_TMPDIR)
 
-
-# Remove the ptolemy directory 
-# It is generated during the testing, and should not be preserved.
-KRUFT = ptolemy
+KRUFT = automatic.jar
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
