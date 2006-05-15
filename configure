@@ -4525,16 +4525,12 @@ fi
             if test "${PTECLIPSE:-none}" != "none"; then
             # Remove /cygdrive
 	    ECLIPSE_DIR=`dirname $PTECLIPSE | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`
-	    echo "$as_me:$LINENO: result: $ECLIPSE_DIR" >&5
-echo "${ECHO_T}$ECLIPSE_DIR" >&6
-	   fi
+	    fi
         fi
     fi
     if test -d "$ECLIPSE_DIR"; then
-	echo "$as_me:$LINENO: result: $ECLIPSE_DIR" >&5
-echo "${ECHO_T}$ECLIPSE_DIR" >&6
-	echo "$as_me:$LINENO: checking for jars used by backtracking" >&5
-echo $ECHO_N "checking for jars used by backtracking... $ECHO_C" >&6
+	echo "$as_me:$LINENO: checking for jars used by backtracking in $ECLIPSE_DIR" >&5
+echo $ECHO_N "checking for jars used by backtracking in $ECLIPSE_DIR... $ECHO_C" >&6
 	# jars="jdt.core osgi resources runtime"
 	# jdt.core core.runtime_ are needed to build backtrack
 	# osgi_ and resources_ are needed to run the tests in backtrack
