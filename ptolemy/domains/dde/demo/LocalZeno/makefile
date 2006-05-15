@@ -58,7 +58,12 @@ JSRCS = \
 	LocalZenoUtilities.java \
 	ZenoDelay.java
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
+OTHER_FILES_TO_BE_JARED = \
+	LocalZeno.xml \
+
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
 	LocalZeno.htm \
 	LocalZeno.xml \
 	LocalZenoTest.xml
