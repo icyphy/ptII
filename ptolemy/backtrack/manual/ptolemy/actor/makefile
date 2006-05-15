@@ -1,4 +1,4 @@
-# Makefile for Ptolemy backtracking package
+# Makefile for Ptolemy backtracking actor package
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
@@ -31,9 +31,9 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/backtrack/manual/ptolemy/domains
+ME =		ptolemy/backtrack/manual/ptolemy/actor
 
-DIRS =		ct
+DIRS =		lib
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -45,14 +45,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	domains
+PTPACKAGE = 	actor
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		ct/ct.jar
+		lib/lib.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
+
 
 # Keep this list alphabetized.
 JSRCS = 

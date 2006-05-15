@@ -46,7 +46,16 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	ptolemy
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		actor/actor.jar \
+		configs/configs.jar \
+		domains/domains.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 
 # Keep this list alphabetized.
 JSRCS = 

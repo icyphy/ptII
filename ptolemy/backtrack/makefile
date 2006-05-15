@@ -48,7 +48,16 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	backtrack
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		automatic/automatic.jar \
+		manual/manual.jar \
+	        util/util.jar \
+		xmlparser/xmlparser.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = Checkpoint.java \

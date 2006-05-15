@@ -46,7 +46,13 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	ct
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		kernel/kernel.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = 

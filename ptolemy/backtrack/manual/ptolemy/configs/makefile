@@ -1,4 +1,4 @@
-# Makefile for Ptolemy backtracking package
+# Makefile for Ptolemy backtracking configs directory
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
@@ -31,9 +31,9 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/backtrack/manual/ptolemy/domains
+ME =		ptolemy/backtrack/manual/ptolemy/configs
 
-DIRS =		ct
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -45,19 +45,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	domains
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		ct/ct.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	configs
+PTCLASSJAR =    $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = 
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	backtrack.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
