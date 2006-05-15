@@ -103,7 +103,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 
-install: all $(PTCLASSJAR)
+install: all jars
 
 demo: all
 
