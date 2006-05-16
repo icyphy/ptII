@@ -107,7 +107,6 @@ JSRCS = \
 	Sink.java \
 	Stop.java \
 	StringConst.java \
-	Switch.java \
 	Synchronizer.java \
 	Test.java \
 	ThrowException.java \
@@ -163,7 +162,6 @@ OTHER_FILES_TO_BE_JARED = \
 	Sink.c \
 	Stop.c \
 	StringConst.c \
-	Switch.c \
 	Synchronizer.c \
 	Test.c \
 	ThrowException.c \
