@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -61,10 +62,29 @@ public class ArrayPeakSearch extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
+        super.generateFireCode();
+        ptolemy.actor.lib.ArrayPeakSearch actor = 
+            (ptolemy.actor.lib.ArrayPeakSearch) getComponent();
+        
+        String scaleValue = actor.scale.stringValue();
+
+        if (!scaleValue.equals("absolute")) {
+            if (scaleValue.equals("relative amplitude decibels")) {
+            } else if (scaleValue.equals("relative power decibels")) {
+            } else if (scaleValue.equals("relative linear")) {
+            }
+        }
+        
+        if (scaleValue.equals("relative amplitude decibels")) {
+            _codeStream.appendCodeBlock("amplitude_" + aboveValue);
+        } else if (scaleValue.equals("relative power decibels")) {
+            _codeStream.appendCodeBlock("power_" + aboveValue);
+        } else if (scaleValue.equals("relative linear")) {
+            _codeStream.appendCodeBlock("linear_" + aboveValue);
+        }
+        _codeStream.appendCodeBlock("findCrossing_" + aboveValue);
+
+        return processCode(_codeStream.toString());
     }
 
     /**
