@@ -77,17 +77,6 @@
 /**/
 
 
-
-
-
-
-
-
-
-
-
-
-
 /***NumericFireBlock***/
 	$ref(output) = $ref(plus#0);
 	for ($actorSymbol(i) = 1; $actorSymbol(i) < $size(plus); $actorSymbol(i)++) {
