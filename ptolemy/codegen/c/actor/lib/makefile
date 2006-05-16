@@ -72,8 +72,6 @@ JSRCS = \
 	ArrayLevelCrossing.java \
 	ArrayMaximum.java \
 	ArrayMinimum.java \
-	ArrayPeakSearch.java \
-	ArraySort.java \
 	ArrayToElements.java \
 	Average.java \
 	Bernoulli.java \
@@ -131,8 +129,6 @@ OTHER_FILES_TO_BE_JARED = \
 	ArrayLevelCrossing.c \
 	ArrayMaximum.c \
 	ArrayMinimum.c \
-	ArrayPeakSearch.c \
-	ArraySort.c \
 	ArrayToElements.c \
 	Average.c \
 	Bernoulli.c \
