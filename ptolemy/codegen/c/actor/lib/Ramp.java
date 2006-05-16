@@ -1,4 +1,5 @@
 /* A helper class for ptolemy.actor.lib.Ramp
+
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -41,11 +42,12 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Green (zgang)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class Ramp extends CCodeGeneratorHelper {
-    /** Constructor method for the Ramp helper.
+    /** 
+     *  Construct the Ramp helper.
      *  @param actor the associated actor
      */
     public Ramp(ptolemy.actor.lib.Ramp actor) {
