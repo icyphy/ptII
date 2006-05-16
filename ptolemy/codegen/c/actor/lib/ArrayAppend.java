@@ -1,5 +1,6 @@
 /* A code generation helper class for actor.lib.ArrayAppend
- @Copyright (c) 2005 The Regents of the University of California.
+
+ @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,13 +38,13 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (mankit) 
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Green (mankit) 
+ @Pt.AcceptedRating Green (cxh)
  */
 public class ArrayAppend extends CCodeGeneratorHelper {
 
     /**
-     * Constructor method for the ArrayAppend helper.
+     * Construct an ArrayAppend helper.
      * @param actor The associated actor.
      */
     public ArrayAppend(ptolemy.actor.lib.ArrayAppend actor) {
@@ -52,7 +53,7 @@ public class ArrayAppend extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.
-     * The method reads in <code>fireBlock</code> from ArrayAppend.c,
+     * The method reads in the <code>fireBlock</code> from ArrayAppend.c,
      * replaces macros with their values and returns the processed code
      * block.
      * @return The generated code.
@@ -63,8 +64,6 @@ public class ArrayAppend extends CCodeGeneratorHelper {
         super.generateFireCode();
 
         ptolemy.actor.lib.ArrayAppend actor = (ptolemy.actor.lib.ArrayAppend) getComponent();
-
-        _codeStream.appendCodeBlock("preFire");
 
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
