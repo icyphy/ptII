@@ -1,5 +1,6 @@
 /* A code generation helper class for actor.lib.ArrayLevelCrossing
- @Copyright (c) 2005 The Regents of the University of California.
+
+ @Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,13 +40,13 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (mankit) 
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Green (mankit) 
+ @Pt.AcceptedRating Green (cxh)
  */
 public class ArrayLevelCrossing extends CCodeGeneratorHelper {
 
     /**
-     * Constructor method for the ArrayLevelCrossing helper.
+     * Construct an ArrayLevelCrossing helper.
      * @param actor The associated actor.
      */
     public ArrayLevelCrossing(ptolemy.actor.lib.ArrayLevelCrossing actor) {
@@ -55,7 +56,7 @@ public class ArrayLevelCrossing extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * Read the <code>fireBlock</code> from ArrayLevelCrossing.c,
-     * replace macros with their values and append the processed code              
+     * replace macros with their values and append the processed code
      * block to the given code buffer.
      * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
@@ -72,7 +73,7 @@ public class ArrayLevelCrossing extends CCodeGeneratorHelper {
 
         String scaleValue = actor.scale.stringValue();
         String aboveValue = ((BooleanToken) actor.above.getToken())
-        .booleanValue() ? "above" : "notAbove";
+            .booleanValue() ? "above" : "notAbove";
 
         if (scaleValue.equals("relative amplitude decibels")) {
             _codeStream.appendCodeBlock("amplitude_" + aboveValue);

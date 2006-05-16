@@ -1,5 +1,6 @@
 /* A code generation helper class for actor.lib.ArrayMaximum
- @Copyright (c) 2005 The Regents of the University of California.
+
+ @Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -38,13 +39,13 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (mankit) 
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Green (mankit) 
+ @Pt.AcceptedRating Green (cxh)
  */
 public class ArrayMaximum extends CCodeGeneratorHelper {
 
     /**
-     * Constructor method for the ArrayMaximum helper.
+     * Construct an ArrayMaximum helper.
      * @param actor The associated actor.
      */
     public ArrayMaximum(ptolemy.actor.lib.ArrayMaximum actor) {
@@ -53,7 +54,7 @@ public class ArrayMaximum extends CCodeGeneratorHelper {
 
     /**
      * Generate preinitialize code.
-     * Reads the <code>preinitBlock</code> from ArrayMaximum.c,
+     * Read the <code>preinitBlock</code> from ArrayMaximum.c,
      * replace macros with their values and return the processed code string.
      * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
