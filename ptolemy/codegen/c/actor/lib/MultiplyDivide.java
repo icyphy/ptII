@@ -42,8 +42,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit (Jackie) Leung, Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (mankit)  TODO:  $ref(something#i) to specify variables for different channels would make the code cleaner
- @Pt.AcceptedRating Red (cxh)
+ @Pt.ProposedRating Green (mankit)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class MultiplyDivide extends CCodeGeneratorHelper {
     /**
@@ -57,8 +57,7 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * The method generate code that loops through each
-     * INPUT [multi-ports] and combine (multiply or divide) them.
-     * The result code is put into the given code buffer.
+     * input multiport and combine (multiply or divide) them.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
@@ -108,8 +107,8 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
     /**
      * Generate preinitialize code.
      * Read the <code>preinitBlock</code> from MultiplyDivide.c,
-     * replace macros with their values and append the processed code
-     * block to the given code buffer.
+     * replace macros with their values and return the processed code
+     * block.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
