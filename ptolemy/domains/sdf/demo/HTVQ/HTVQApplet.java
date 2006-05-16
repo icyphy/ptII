@@ -32,7 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import ptolemy.actor.gui.MoMLApplet;
-import ptolemy.actor.lib.gui.Display;
+import ptolemy.actor.lib.gui.SequencePlotter;
 import ptolemy.domains.sdf.lib.vq.ImageDisplay;
 import ptolemy.kernel.CompositeEntity;
 
@@ -89,7 +89,7 @@ public class HTVQApplet extends MoMLApplet {
         // Display actor puts the text at the right of the
         // applet window. Text Area size is set to be 7*10 (row* column)
         // in order to fit well with the image size.
-        Display prn = (Display) toplevel.getEntity("Display");
+        SequencePlotter prn = (SequencePlotter) toplevel.getEntity("Signal To Noise Ratio");
 
         // To control the position, we put this in its own panel.
         JPanel textPanel = new JPanel();
