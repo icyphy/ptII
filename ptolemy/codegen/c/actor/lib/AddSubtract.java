@@ -43,12 +43,12 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit (Jackie) Leung, Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (mankit) TODO: need $ref(something#i) to specify variables for different channels
- @Pt.AcceptedRating Red (eal)
+ @Pt.ProposedRating Yellow (mankit) Pending FIXME in AddSubtract.c: need to deallocate Tokens
+ @Pt.AcceptedRating Yellow (cxh)
  */
 public class AddSubtract extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the AddSubtract helper.
+     * Construct an AddSubtract helper.
      * @param actor the associated actor
      */
     public AddSubtract(ptolemy.actor.lib.AddSubtract actor) {
@@ -56,10 +56,9 @@ public class AddSubtract extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate fire code
-     * The method generate code that loops through each
-     * INPUT [multi-ports] and combine (add or subtract) them.
-     * The result code is put into the given code buffer
+     * Generate fire code.
+     * The method generates code that loops through each
+     * input [multi-ports] and combines (add or subtract) them.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
@@ -109,8 +108,8 @@ public class AddSubtract extends CCodeGeneratorHelper {
     /**
      * Generate preinitialize code.
      * Read the <code>preinitBlock</code> from AddSubtract.c,
-     * replace macros with their values and append the processed code
-     * block to the given code buffer.
+     * replace macros with their values and returns the processed code
+     * block.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
