@@ -103,7 +103,6 @@ JSRCS = \
 	Remainder.java \
 	Rician.java \
 	Scale.java \
-	Select.java \
 	Sequence.java \
 	Sink.java \
 	Stop.java \
@@ -160,7 +159,6 @@ OTHER_FILES_TO_BE_JARED = \
 	Remainder.c \
 	Rician.c \
 	Scale.c \
-	Select.c \
 	Sequence.c \
 	Sink.c \
 	Stop.c \
