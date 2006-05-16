@@ -71,9 +71,6 @@ public class DotProduct extends CCodeGeneratorHelper {
         if (actor.input1.getType() instanceof ArrayType) {
             args.add(codeGenType(((ArrayType) actor.input1.getType())
                     .getElementType()));
-        } else if (actor.input1.getType() instanceof UnsizedMatrixType) {
-            args.add(codeGenType(((UnsizedMatrixType) actor.input1.getType())
-                    .getElementType()));
         } else {
             throw new IllegalActionException("Unhandled type for input1: ("
                     + actor.input1.getType() + ")");
@@ -81,9 +78,6 @@ public class DotProduct extends CCodeGeneratorHelper {
 
         if (actor.input2.getType() instanceof ArrayType) {
             args.add(codeGenType(((ArrayType) actor.input2.getType())
-                    .getElementType()));
-        } else if (actor.input2.getType() instanceof UnsizedMatrixType) {
-            args.add(codeGenType(((UnsizedMatrixType) actor.input2.getType())
                     .getElementType()));
         } else {
             throw new IllegalActionException("Unhandled type for input2: ("
