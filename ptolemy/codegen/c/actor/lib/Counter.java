@@ -1,4 +1,5 @@
-/*
+/* A code generation helper class for actor.lib.Commutator
+
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
 
@@ -42,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class Counter extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the Counter helper.
+     * Construct the Counter helper.
      * @param actor the associated actor
      */
     public Counter(ptolemy.actor.lib.Counter actor) {
@@ -52,11 +53,11 @@ public class Counter extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * If both the increment and decrement ports are connected, the counter
-     * is offseted. Otherwise, if either the increment port or decrement port
+     * is offset. Otherwise, if either the increment port or decrement port
      * is connected, read in the <code>incrementBlock</code> or 
      * <code>decrementBlock</code> from Counter.c respectively. Replace macros
-     * with their values and append the processed code block to the given code
-     * buffer.
+     * with their values and return the processed code block.
+     *
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).

@@ -1,4 +1,5 @@
-/*
+/* A code generation helper class for actor.lib.Differential
+
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
 
@@ -40,12 +41,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (cxh)
  */
 public class Differential extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the Differential helper.
+     * Constructor the Differential helper.
      * @param actor the associated actor
      */
     public Differential(ptolemy.actor.lib.Differential actor) {
@@ -55,8 +56,8 @@ public class Differential extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * Read the <code>fireBlock</code> from Differential.c,
-     * replace macros with their values and append the processed code
-     * block to the given code buffer.
+     * replace macros with their values and return the processed code
+     * block.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
@@ -78,8 +79,8 @@ public class Differential extends CCodeGeneratorHelper {
     /**
      * Generate preinitialize code.
      * Read the <code>preinitBlock</code> from Differential.c,
-     * replace macros with their values and append the processed code
-     * block to the given code buffer.
+     * replace macros with their values and return the processed code
+     * block.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
