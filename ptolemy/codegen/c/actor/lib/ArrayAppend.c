@@ -8,7 +8,7 @@
 	$actorSymbol(doDelete) = false;
 /**/
 
-/*** preFire ***/
+/*** fireBlock ***/
 	if ($actorSymbol(doDelete)) {
 		Array_delete($ref(output));
 	}	
