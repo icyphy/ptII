@@ -171,25 +171,26 @@ public class MoMLApplet extends PtolemyApplet {
 
         // FIXME: if we call _createModel twice, then we will add
         // this filter twice.  We reset the filter list here,
-        // though we will lose any other filters
+        // though we will lose any other filters.
         parser.setMoMLFilters(null);
 
         parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
-        if (filterGraphicalClasses) {
-            // Filter out graphical classes so that we do not require diva.jar
-            parser.addMoMLFilter(new RemoveGraphicalClasses());
+        RemoveGraphicalClasses removeNonAppletClasses = new RemoveGraphicalClasses();
+        // If filterGraphicalClasses is true, then we filter out
+        // graphical classes so that we do not require diva.jar.  If
+        // it is false, then we clear the filter.  In both cases we
+        // add some classes that are always filtered.
+        if (!filterGraphicalClasses) {
+            removeNonAppletClasses.clear();
         }
 
         // Exclude the code generator 
-        RemoveGraphicalClasses removeNonAppletClasses = new RemoveGraphicalClasses();
-        removeNonAppletClasses.clear();
         removeNonAppletClasses.put("ptolemy.codegen.kernel.StaticSchedulingCodeGenerator",
                 null);
         removeNonAppletClasses.put("ptolemy.vergil.kernel.attributes.DocumentationAttribute",
                 null);
         parser.addMoMLFilter(removeNonAppletClasses);
-
 
         URL docBase = getDocumentBase();
         URL xmlFile = new URL(docBase, _modelURL);
