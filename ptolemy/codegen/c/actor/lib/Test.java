@@ -1,4 +1,5 @@
 /* A helper class for ptolemy.actor.lib.Test
+
  Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -43,12 +44,12 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (eal)
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class Test extends CCodeGeneratorHelper {
-    /** Construct a C code generator Test actor that contains
-     *  a standard actor.lib.Test actor.
+    /** 
+     *  Construct a Test helper.
      *  @param actor The master Test actor.
      */
     public Test(ptolemy.actor.lib.Test actor) {
@@ -61,8 +62,8 @@ public class Test extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Test.c,
-     * replaces macros with their values and appends the processed code
-     * block to the given code buffer.
+     * replaces macros with their values and returns the processed code
+     * block.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).

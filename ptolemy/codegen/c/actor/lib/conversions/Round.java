@@ -40,12 +40,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (cxh)
  */
 public class Round extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the Round helper.
+     * Constructor the Round helper.
      * @param actor the associated actor.
      */
     public Round(ptolemy.actor.lib.conversions.Round actor) {
@@ -53,11 +53,12 @@ public class Round extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate fire code
+     * Generate fire code.
      * The method reads in <code>ceilBlock</code>, <code>floorBlock</code>,
      * <code>roundBlock</code>, or <code>truncateBlock</code> from Round.c
-     * depending on the function parameter specified, and appends to the
-     * given code buffer.
+     * depending on the function parameter specified, and
+     * replace macros with their values and return the processed code
+     * block.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
