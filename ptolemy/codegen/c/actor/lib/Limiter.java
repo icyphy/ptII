@@ -1,4 +1,5 @@
-/*
+/* A helper class for actor.lib.Limiter
+
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
 
@@ -36,12 +37,12 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (cxh)
  */
 public class Limiter extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the Limiter helper.
+     * Constructor the Limiter helper.
      * @param actor the associated actor
      */
     public Limiter(ptolemy.actor.lib.Limiter actor) {

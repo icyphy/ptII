@@ -40,12 +40,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Yellow (cxh)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (cxh)
  */
 public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the GradientAdaptiveLattice helper.
+     * Constructor the GradientAdaptiveLattice helper.
      * @param actor the associated actor.
      */
     public GradientAdaptiveLattice(

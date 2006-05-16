@@ -1,4 +1,5 @@
 /* A code generation helper class for actor.lib.DiscreteRandomSource
+
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -34,8 +35,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (mankit) Expression parser has problems if params are not of the same type.
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Green (mankit)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class DiscreteRandomSource extends RandomSource {
 

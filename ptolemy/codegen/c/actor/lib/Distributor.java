@@ -1,4 +1,5 @@
 /* A code generation helper class for actor.lib.Distributor
+
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -36,11 +37,11 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * A code generation helper class for ptolemy.actor.lib.Distributor.
  *
- * @author Christopher Brooks
+ * @author Man-Kit Leung, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (cxh)
  */
 public class Distributor extends CCodeGeneratorHelper {
     /**
