@@ -216,6 +216,34 @@ public class GetDocumentationAction extends FigureAction {
                 toRead = 
                     Class.forName("ptolemy.vergil.basic.GetDocumentationAction").getClassLoader().getResource(docName);
             }
+            if (toRead == null) {
+                // If the class does not extend NamedObj, try to open
+                // the javadoc .html
+                Class targetClass = Class.forName(className);
+                if (!_namedObjClass.isAssignableFrom(targetClass)) {
+                    // Look in the Application specific codeDoc directory.
+                    docName = "doc/codeDoc"
+                        + (applicationName.equals("") ?
+                                "/" : applicationName + "/doc/codeDoc/")
+                        + className.replace('.', '/') + ".html";
+
+                    docClassName = "doc.codeDoc." 
+                        + (applicationName.equals("") ?
+                                "." : applicationName + ".doc.codeDoc.")
+                        + className;
+                    toRead = 
+                        Class.forName("ptolemy.vergil.basic.GetDocumentationAction").getClassLoader().getResource(docName);
+                    if (toRead == null) {
+                        // Try looking in the documentation for vergil.
+                        docName = "doc/codeDoc/" + className.replace('.', '/')
+                            + ".html";
+                        docClassName = "doc.codeDoc." + className;
+                        
+                        toRead = 
+                    Class.forName("ptolemy.vergil.basic.GetDocumentationAction").getClassLoader().getResource(docName);
+                    }
+                }
+            }
             if (toRead != null) {
                 configuration.openModel(null, toRead, toRead
                         .toExternalForm());
@@ -300,4 +328,12 @@ public class GetDocumentationAction extends FigureAction {
      */
     private String _applicationName = "";
 
+    private static Class _namedObjClass;
+    static {
+        try {
+            _namedObjClass = Class.forName("ptolemy.kernel.util.NamedObj");
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 }
