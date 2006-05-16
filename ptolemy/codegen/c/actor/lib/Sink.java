@@ -37,7 +37,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  @Pt.ProposedRating Red (mankit) 
  @Pt.AcceptedRating Red (mankit)
  */
-public class Sink extends CCodeGeneratorHelper {
+public abstract class Sink extends CCodeGeneratorHelper {
 
     /**
      * Constructor method for the Sink helper.
