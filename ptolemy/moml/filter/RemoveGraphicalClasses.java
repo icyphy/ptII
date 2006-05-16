@@ -273,6 +273,9 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // Sinewave has a DocViewerFactory, which we need to remove
         _graphicalClasses.put("ptolemy.vergil.basic.DocViewerFactory",
                 "ptolemy.kernel.util.Attribute");
+        // Sinewave has a DocAttribute, which we need to remove
+        _graphicalClasses.put("ptolemy.vergil.basic.DocAttribute",
+                "ptolemy.kernel.util.Attribute");
 
     }
 
