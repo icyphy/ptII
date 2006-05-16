@@ -39,11 +39,12 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (mankit) TODO: handle ArrayToken as input
- @Pt.AcceptedRating Red (zgang)
+ @Pt.ProposedRating Green (mankit)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class Scale extends CCodeGeneratorHelper {
-    /** Construct a helper with the given ptolemy.actor.lib.Scale actor.
+    /** 
+     *  Construct a Scale helper.
      *  @param actor The given ptolemy.actor.lib.Scale actor.
      */
     public Scale(ptolemy.actor.lib.Scale actor) {

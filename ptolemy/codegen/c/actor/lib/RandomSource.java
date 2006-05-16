@@ -44,11 +44,12 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (zgang)
- @Pt.AcceptedRating Red (zgang)
+ @Pt.ProposedRating Green (zgang)
+ @Pt.AcceptedRating Green (cxh)
  */
 public abstract class RandomSource extends CCodeGeneratorHelper {
-    /** Constructor method for the RandomSource helper.
+    /** 
+     *  Construct the RandomSource helper.
      *  @param actor the associated actor.
      */
     public RandomSource(ptolemy.actor.lib.RandomSource actor) {
