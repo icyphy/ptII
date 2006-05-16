@@ -36,12 +36,12 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (cxh)
  */
 public class StringConst extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the StringConst helper.
+     * Constructor the StringConst helper.
      * @param actor the associated actor.
      */
     public StringConst(ptolemy.actor.lib.StringConst actor) {

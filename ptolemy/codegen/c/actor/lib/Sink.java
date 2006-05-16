@@ -1,4 +1,5 @@
 /* A code generation helper class for actor.lib.Sink
+
  @Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -31,11 +32,14 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 /**
  A code generation helper class for ptolemy.actor.lib.Sink. 
 
+ This class is present in the code generator hierarchy so that
+ we can use reflection.
+
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (mankit) 
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Green (mankit) 
+ @Pt.AcceptedRating Green (cxh)
  */
 public abstract class Sink extends CCodeGeneratorHelper {
 

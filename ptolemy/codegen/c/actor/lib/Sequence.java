@@ -39,8 +39,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit Leung, Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (eal)
+ @Pt.ProposedRating Green (mankit)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class Sequence extends CCodeGeneratorHelper {
     /**
