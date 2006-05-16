@@ -244,7 +244,7 @@ integer matrices</text>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={184, 413, 519, 200}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 145]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 105]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 130.0]">
         </property>
@@ -252,9 +252,17 @@ integer matrices</text>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>SequencePlotter</title>
+<title>Power Signal to Noise Ratio (PSNR)</title>
 <xRange min="0.0" max="99.0"/>
+<xTicks> 
+  <tick label="20" position="20.0"/>
+  <tick label="40" position="40.0"/>
+  <tick label="60" position="60.0"/>
+  <tick label="80" position="80.0"/>
+</xTicks>
 <yRange min="21.572860280838203" max="22.009860108312406"/>
+<xLabel>Frame #</xLabel>
+<yLabel>PSNR</yLabel>
 </plot>?>
         </configure>
     </entity>

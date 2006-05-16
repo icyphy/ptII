@@ -58,43 +58,54 @@ public class HTVQApplet extends MoMLApplet {
         super._createView();
 
         JPanel displayPanel = new JPanel();
-        getContentPane().add(displayPanel, BorderLayout.SOUTH);
+        displayPanel.setLayout(new BorderLayout());
 
         // So that the background color comes through...
         displayPanel.setBackground(null);
 
+
         JPanel originalPanel = new JPanel();
-        displayPanel.add(originalPanel, BorderLayout.WEST);
-
         JPanel compressedPanel = new JPanel();
-        displayPanel.add(compressedPanel, BorderLayout.CENTER);
 
-        JPanel prnPanel = new JPanel();
+//         JPanel prnPanel = new JPanel();
 
-        // So the background shows through.
-        prnPanel.setBackground(null);
-        prnPanel.setLayout(new BorderLayout());
-        prnPanel.add(new JLabel("SNR (dB)"), BorderLayout.NORTH);
-        displayPanel.add(prnPanel, BorderLayout.EAST);
+//         // So the background shows through.
+//         prnPanel.setBackground(null);
+//         prnPanel.setLayout(new BorderLayout());
+//         prnPanel.add(new JLabel("SNR (dB)"), BorderLayout.NORTH);
+//         displayPanel.add(prnPanel, BorderLayout.SOUTH);
 
         CompositeEntity toplevel = (CompositeEntity) _toplevel;
         ImageDisplay consumer = (ImageDisplay) toplevel.getEntity("Compressed");
+        compressedPanel.add(new JLabel("Compressed"), BorderLayout.NORTH);
         consumer.place(compressedPanel);
+        displayPanel.add(compressedPanel, BorderLayout.EAST);
         consumer.setBackground(null);
 
         ImageDisplay original = (ImageDisplay) toplevel.getEntity("Original");
+        originalPanel.add(new JLabel("Original"), BorderLayout.NORTH);
         original.place(originalPanel);
+        displayPanel.add(originalPanel, BorderLayout.WEST);
         original.setBackground(null);
 
-        // Display actor puts the text at the right of the
-        // applet window. Text Area size is set to be 7*10 (row* column)
-        // in order to fit well with the image size.
-        SequencePlotter prn = (SequencePlotter) toplevel.getEntity("Signal To Noise Ratio");
+        SequencePlotter plot = (SequencePlotter) toplevel.getEntity("Signal To Noise Ratio");
+
+        JPanel plotPanel = new JPanel();
+        plot.place(plotPanel);
+        plotPanel.setBackground(null);
+
+        JPanel appletPanel = new JPanel();
+        appletPanel.setLayout(new BorderLayout());
+        appletPanel.setBackground(null);
+        appletPanel.add(displayPanel, BorderLayout.NORTH);
+        appletPanel.add(plotPanel, BorderLayout.SOUTH);
+
+        getContentPane().add(appletPanel, BorderLayout.NORTH);
 
         // To control the position, we put this in its own panel.
-        JPanel textPanel = new JPanel();
-        prnPanel.add(textPanel, BorderLayout.SOUTH);
-        prn.place(textPanel);
-        textPanel.setBackground(null);
+//         JPanel textPanel = new JPanel();
+//         prnPanel.add(textPanel, BorderLayout.SOUTH);
+//         prn.place(textPanel);
+//         textPanel.setBackground(null);
     }
 }
