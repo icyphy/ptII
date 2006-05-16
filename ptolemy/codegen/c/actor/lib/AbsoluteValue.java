@@ -26,10 +26,6 @@
 
 
  */
-/*
- * Created on Feb 21, 2005
- *
- */
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
@@ -43,8 +39,8 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Yellow (cxh)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (cxh)
  *
  */
 public class AbsoluteValue extends CCodeGeneratorHelper {
