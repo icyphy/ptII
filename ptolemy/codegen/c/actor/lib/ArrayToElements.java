@@ -1,5 +1,6 @@
 /* A code generation helper class for actor.lib.ArrayToElements
- @Copyright (c) 2005 The Regents of the University of California.
+
+ @Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,13 +38,13 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (mankit) 
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Green (mankit) 
+ @Pt.AcceptedRating Green (cxh)
  */
 public class ArrayToElements extends CCodeGeneratorHelper {
 
     /**
-     * Constructor method for the ArrayToElements helper.
+     * Constructor an ArrayToElements helper.
      * @param actor The associated actor.
      */
     public ArrayToElements(ptolemy.actor.lib.ArrayToElements actor) {

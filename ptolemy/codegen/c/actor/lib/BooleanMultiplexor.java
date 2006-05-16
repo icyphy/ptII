@@ -1,4 +1,5 @@
 /* A code generation helper class for actor.lib.BooleanMultiplexor
+
  @Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -37,8 +38,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (mankit) 
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Green (mankit) 
+ @Pt.AcceptedRating Green (cxh)
  */
 public class BooleanMultiplexor extends CCodeGeneratorHelper {
 
@@ -52,9 +53,9 @@ public class BooleanMultiplexor extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.
-     * Read the <code>fireBlock</code> from Commutator.c,
-     * replace macros with their values and append the processed code
-     * block to the given code buffer.
+     * Read the <code>fireBlock</code> from BooleanMultiplexor.c,
+     * replace macros with their values and return the processed code
+     * block.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
