@@ -47,12 +47,11 @@ CT-ModalModel-CTEmbedded.
 @since HyVisual 2.2
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-                         xmlns:xalan="http://xml.apache.org/xslt" version="2.0">
+                         xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
 
 	<!-- DOCTYPE element includes public ID and system ID -->
-	<xsl:output doctype-system="http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"
-		    doctype-public="-//UC Berkeley//DTD MoML 1//EN"/>
-	<xsl:output method="xml" indent="yes"/>
+	<xsl:output omit-xml-declaration="no" method="xml" doctype-system="http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"
+		    doctype-public="-//UC Berkeley//DTD MoML 1//EN" indent="yes" />
 	
 	<!-- index every node via attribute _id -->
 	<xsl:key name="nodeID" match="*" use="@_id"/>
@@ -622,6 +621,9 @@ For more help, choose Help from the upper menu bar.</text>
                     <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
                 </xsl:element>
             </xsl:for-each>
+            <!--
+            <xsl:value-of select="concat('This state contains ', count(../../AlgEquation[descendant::VarRef/@var=$varID]), ' ', $varID)"/>
+            -->
             <xsl:for-each select="../../AlgEquation/AExpr[descendant::VarRef/@var=$varID]">
                 <xsl:variable name="outputName"><xsl:value-of select="key('nodeID',../VarRef/@var)/@name"/></xsl:variable>
                 <xsl:variable name="expressionName"><xsl:value-of select="concat($outputName, 'AlgEquation')"/></xsl:variable>
@@ -669,9 +671,14 @@ For more help, choose Help from the upper menu bar.</text>
             <xsl:for-each select="descendant::VarRef">
                 <xsl:variable name="varName" select="key('nodeID',@var)/@name"/>
                 <xsl:variable name="counts" select="count(//DNHA/HybridAutomaton/IntegerVariable[@name=$varName]|//DNHA/HybridAutomaton/RealVariable[@name=$varName]|//DNHA/HybridAutomaton/BooleanVariable[@name=$varName])"/>
+
+		<xsl:value-of select="$varName"/>
+		<xsl:value-of select="' BBB '"/>
+		<xsl:value-of select="$counts"/>
+
                 <xsl:if test="$counts!=0">
                     <xsl:element name="link">
-                        <xsl:attribute name="port"><xsl:value-of select="string-join(($name, '.', $varName), ' ')"/></xsl:attribute>
+                        <xsl:attribute name="port"><xsl:value-of select="concat($name, '.', $varName)"/></xsl:attribute>
                         <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
                     </xsl:element>
                 </xsl:if>
@@ -970,6 +977,12 @@ For more help, choose Help from the upper menu bar.</text>
         <xsl:for-each select="descendant::VarRef">
             <xsl:variable name="varName" select="key('nodeID',@var)/@name"/>
             <xsl:variable name="counts" select="count(//DNHA/HybridAutomaton/IntegerVariable[@name=$varName]|//DNHA/HybridAutomaton/RealVariable[@name=$varName]|//DNHA/HybridAutomaton/BooleanVariable[@name=$varName])"/>
+
+	    <!--
+	    <xsl:value-of select="$varName"/>
+            <xsl:value-of select="' AAA '"/>
+            <xsl:value-of select="$counts"/>
+	    -->
 
             <xsl:if test="$counts!=0">
                 <xsl:element name="port">
