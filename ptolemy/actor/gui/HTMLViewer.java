@@ -54,6 +54,7 @@ import javax.swing.text.Style;
 
 import ptolemy.gui.Top;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.basic.GetDocumentationAction;
 
 //////////////////////////////////////////////////////////////////////////
 //// HTMLViewer
@@ -75,6 +76,14 @@ import ptolemy.util.MessageHandler;
  Ptolemy II configuration will be expanded by and the MoML of the
  configuration will be returned.  This is a good way to test the
  configuration.
+
+ <p>If the URL starts with <code>ptdoc:</code>, then the Ptolemy
+documentation is opened.  For example <code>
+<pre>
+&lt; a href="ptdoc:ptolemy.actor.gui.HTMLViewer"&gt;HTMLViewer&lt;/a&gt;
+</pre>
+will open the Ptolemy documentation for this class.  For details see
+{@link ptolemy.vergil.basic.GetDocumentationAction}.
 
  <p>This class supports printing and will save the text to a .html file.
  The url that is viewed can be changed by calling the <i>setPage</i> method.
@@ -143,12 +152,26 @@ public class HTMLViewer extends TableauFrame implements Printable,
                 try {
                     newURL = HTMLAbout.hyperlinkUpdate(event,
                             getConfiguration());
+
                 } catch (Throwable throwable) {
                     MessageHandler.error("Problem processing '"
                             + event.getDescription() + "'.", throwable);
                 }
             }
 
+            if (event.getDescription().startsWith("ptdoc:")) {
+                // Process "about:" hyperlinks
+                try {
+                    GetDocumentationAction.getDocumentation(
+                            getConfiguration(),
+                            "" /*FIXME: need application name. */,
+                            event.getDescription().substring(6),
+                            getEffigy());
+                } catch (Throwable throwable) {
+                    MessageHandler.error("Problem processing '"
+                            + event.getDescription() + "'.", throwable);
+                }
+            }
             // NOTE: It would be nice to use target="_browser" or some
             // such, but this doesn't work. Targets aren't
             // seen unless the link is inside a frame,
