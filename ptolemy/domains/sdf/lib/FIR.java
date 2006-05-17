@@ -31,8 +31,10 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.Type;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MonotonicFunction;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -135,10 +137,7 @@ public class FIR extends SDFTransformer {
         output_tokenProductionRate.setExpression("interpolation");
 
         // Set type constraints.
-        ArrayType paramType = (ArrayType) taps.getType();
-        InequalityTerm elementTerm = paramType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
-        output.setTypeAtLeast(input);
+        _initTypeConstraints();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -232,10 +231,7 @@ public class FIR extends SDFTransformer {
         FIR newObject = (FIR) (super.clone(workspace));
 
         // Set the type constraints.
-        ArrayType paramType = (ArrayType) newObject.taps.getType();
-        InequalityTerm elementTerm = paramType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
-        newObject.output.setTypeAtLeast(newObject.input);
+        newObject._initTypeConstraints();
         return newObject;
     }
 
@@ -260,7 +256,8 @@ public class FIR extends SDFTransformer {
 
             // Note explicit type conversion, which is required to generate
             // code.
-            _data[_mostRecent] = output.getType().convert(input.get(0));
+            //            _data[_mostRecent] = output.getType().convert(input.get(0));
+            _data[_mostRecent] = input.get(0);
         }
 
         // Interpolate once for each input consumed
@@ -336,6 +333,11 @@ public class FIR extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    // Initialize the type constraints for this actor.
+    protected void _initTypeConstraints() {
+        output.setTypeAtLeast(new OutputTypeFunction());
+    }
 
     /** Reinitialize local variables in response to changes in attributes.
      *  @exception IllegalActionException If there is a problem reinitializing.
@@ -429,4 +431,64 @@ public class FIR extends SDFTransformer {
     private Token _tapItem;
 
     private Token _dataItem;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    // This class implements a monotonic function of the input port
+    // type.  The result type of this actor is generally the input type,
+    // unless the input type is a FixType, in which case the output
+    // type will ba a FixType with (in most cases) a different precision.
+    private class OutputTypeFunction extends MonotonicFunction {
+        
+        ///////////////////////////////////////////////////////////////
+        ////                       public inner methods            ////
+
+        /** Return the function result.
+         *  @return A Type.
+         */
+        public Object getValue() {
+            Type inputType = input.getType();
+            Type tapsElementType = ((ArrayType)taps.getType()).getElementType();
+            Type productType = inputType.multiply(tapsElementType);
+            Type outputType = productType;
+
+            int phaseLength = _taps.length / _interpolationValue;
+            
+            if ((_taps.length % _interpolationValue) != 0) {
+                phaseLength++;
+            }
+            for (int i = 0; i < phaseLength; i++) {
+                outputType = outputType.add(productType);
+            }
+            return outputType;
+        }
+
+        /** Return the variables in this term. If the type of the input port
+         *  is a variable, return a one element array containing the
+         *  InequalityTerm of that port; otherwise, return an array of zero
+         *  length.
+         *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+            ArrayType paramType = (ArrayType) taps.getType();
+            InequalityTerm elementTerm = paramType.getElementTypeTerm();
+            if (input.getTypeTerm().isSettable() && 
+                    elementTerm.isSettable()) {
+                InequalityTerm[] variable = new InequalityTerm[2];
+                variable[0] = input.getTypeTerm();
+                variable[1] = elementTerm;
+                return variable;
+            } else if (elementTerm.isSettable()) {
+                InequalityTerm[] variable = new InequalityTerm[1];
+                variable[0] = elementTerm;
+                return variable;
+            } else if (input.getTypeTerm().isSettable()) {
+                InequalityTerm[] variable = new InequalityTerm[1];
+                variable[0] = input.getTypeTerm();
+                return variable;
+            } else {
+                return new InequalityTerm[0];
+            }
+        }
+    }
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FixFIR" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -80,11 +80,11 @@ using double precision.</text>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 145.0]">
         </property>
     </entity>
     <entity name="FixToDouble" class="ptolemy.actor.lib.conversions.FixToDouble">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 145.0]">
         </property>
     </entity>
     <entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -207,7 +207,7 @@ centered at zero frequency.</text>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 145.0]">
         </property>
     </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
