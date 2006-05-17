@@ -30,7 +30,6 @@ package ptolemy.domains.continuous.kernel;
 import ptolemy.domains.ct.kernel.CTMultiSolverDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ODESolver

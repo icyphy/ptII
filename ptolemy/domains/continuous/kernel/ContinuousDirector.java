@@ -901,56 +901,11 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
     }
 
-<<<<<<< ContinuousDirector.java
-    /** Set the suggested step size for next integration. The suggested step 
-     *  size is the minimum of suggestions from all step size control actors,
-     *  and it never exceeds 10 times of the current step size.
-     *  If there are no step size control actors at all, then return
-     *  5 times of the current step size. However, the suggested step size
-     *  never exceeds the maximum step size.
-     *  @exception IllegalActionException If the scheduler throws it.
-     */
-    protected void _predictNextStepSize() throws IllegalActionException {
-        double predictedStep = _currentStepSize;
-    
-        if (predictedStep == 0.0) {
-            // The current step size is 0.0. Predict a positive value to let
-            // time advance.
-            predictedStep = _initStepSize;
-        } else {
-            predictedStep = 10.0 * _currentStepSize;
-    
-            // FIXME: may generate ContinuousStepSizeControlActor set for more 
-            // efficient execution.
-            Schedule schedule = getScheduler().getSchedule();
-            Iterator firingIterator = schedule.firingIterator();
-            while (firingIterator.hasNext() && !_stopRequested) {
-                Actor actor = ((Firing) firingIterator.next()).getActor();
-                if (actor instanceof ContinuousStepSizeControlActor) {
-                    double suggestedStepSize = 
-                        ((ContinuousStepSizeControlActor) actor)
-                            .suggestedStepSize();
-                        if (predictedStep > suggestedStepSize) {
-                            predictedStep = suggestedStepSize;
-                        }
-                }
-            }
-    
-            if (predictedStep > _maxStepSize) {
-                _setCurrentStepSize(_maxStepSize);
-            } else {
-                _setCurrentStepSize(predictedStep);
-            }
-        }
-    }
-
     /** Expose the debug method to the package. */
     protected void _reportDebugMessage(String message) {
         _debug(message);
     }
-    
-=======
->>>>>>> 1.4
+
     /** Set the current phase of execution as a discrete phase. The value
      *  set can be returned by the isDiscretePhase() method.
      *  @param discrete True if this is the discrete phase.

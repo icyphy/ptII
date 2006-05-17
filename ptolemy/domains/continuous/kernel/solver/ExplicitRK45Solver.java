@@ -291,9 +291,6 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The name of the solver */
-    private static final String _DEFAULT_NAME = "CT_Runge_Kutta_4_5_Solver";
-
     /** The ratio of time increments within one integration step. */
     private static final double[] _timeInc = { 0.2, 0.3, 0.6, 1.0, 0.875, 1.0 };
 
