@@ -45,6 +45,7 @@ import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeConstant;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 /**
  * A code generation helper class for ptolemy.actor.lib.Expression.
@@ -258,6 +259,7 @@ public class Expression extends CCodeGeneratorHelper {
                  */
             } catch (IllegalActionException ex) {
                 // Not thrown here.
+                throw new InternalErrorException(ex);
             }
 
             return null;
