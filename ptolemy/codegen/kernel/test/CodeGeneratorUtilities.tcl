@@ -49,3 +49,21 @@ test CodeGeneratorUtilities-1.1 {Test out subsitute(String, NamedObj)} {
 } {This is a myTestParameter, followed by
 myOtherTestParameter.
 }
+
+#####
+test CodeGeneratorUtilities-6.1 {Test out subsitute(inputFileName, substituteMap, outputFileName)} {
+    file delete -force substitute.out
+    set r1 [file exists substitute.out]
+    set substituteMap [java::new java.util.HashMap]
+    $substituteMap put "@testParameter@" "myTestParam"
+    $substituteMap put "@anotherTestParameter@" "myOtherTestParam"
+    java::call ptolemy.codegen.kernel.CodeGeneratorUtilities \
+	substitute ptolemy/codegen/kernel/test/substitute.in $substituteMap \
+	substitute.out
+    set fin [open substitute.out r ]
+    set r2 [read $fin]
+    close $fin
+    list $r1 $r2
+} {0 {This is a myTestParam, followed by
+myOtherTestParam.
+}}
