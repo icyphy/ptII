@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// DocBuilderEffigy
 
 /**
- An effigy for a DocBuilder
+ An effigy for a DocBuilder.
 
  @author Christopher Brooks
  @version $Id$

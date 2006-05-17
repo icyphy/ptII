@@ -434,6 +434,9 @@ public class FixType extends StructuredType implements Serializable {
         return returnType;
     }
 
+    /** Check the precision.
+     *  If the number of bits is greater than 128, throw an exception.
+     */
     protected void _checkPrecision() {
         if(_precision.getNumberOfBits() > 128) {
             throw new RuntimeException(

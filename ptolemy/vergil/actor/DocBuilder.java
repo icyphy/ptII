@@ -116,6 +116,8 @@ public class DocBuilder extends Attribute {
     /** Set the application name.
      * We handle the applicationName specially so that we create
      * only the docs for the app we are running.
+     * @param applicationName The name of the application, for example
+     * "HyVisual".
      */
     public void setApplicationName(String applicationName) {
         _applicationName = applicationName;

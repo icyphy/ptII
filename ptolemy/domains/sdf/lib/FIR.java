@@ -334,7 +334,7 @@ public class FIR extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    // Initialize the type constraints for this actor.
+    /** Initialize the type constraints for this actor. */
     protected void _initTypeConstraints() {
         output.setTypeAtLeast(new OutputTypeFunction());
     }
