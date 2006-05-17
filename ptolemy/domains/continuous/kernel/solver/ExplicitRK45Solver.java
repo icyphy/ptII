@@ -299,7 +299,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
         double tolerance = director.getErrorTolerance();
         double newh = 5.0 * h;
 
-        if (error > director.getValueResolution()) {
+        if (error > tolerance) {
             newh = h * Math.pow((tolerance / error), 1.0 / _order);
         }
 

@@ -254,11 +254,6 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public Parameter synchronizeToRealTime;
 
-    /** Value resolution in looking for a fixed-point state resolution.
-     *  The default value is 1e-6, and the type is double.
-     */
-    public Parameter valueResolution;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -273,15 +268,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             throws IllegalActionException {
         _debug("Updating ContinuousDirector parameter: ", attribute.getName());
 
-        if (attribute == initStepSize) {
-            double value = ((DoubleToken) initStepSize.getToken())
-                    .doubleValue();
-            if (value < 0.0) {
-                throw new IllegalActionException(this,
-                        "Cannot set a negative step size.");
-            }
-            _initStepSize = value;
-        } else if (attribute == errorTolerance) {
+        if (attribute == errorTolerance) {
             double value = ((DoubleToken) errorTolerance.getToken())
                     .doubleValue();
             if (value < 0.0) {
@@ -289,23 +276,14 @@ public class ContinuousDirector extends FixedPointDirector implements
                         "Cannot set a negative error tolerance.");
             }
             _errorTolerance = value;
-        } else if (attribute == maxStepSize) {
-            double value = ((DoubleToken) maxStepSize.getToken()).doubleValue();
+        } else if (attribute == initStepSize) {
+            double value = ((DoubleToken) initStepSize.getToken())
+            .doubleValue();
             if (value < 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot set a negative step size.");
+                    "Cannot set a negative step size.");
             }
-            _maxStepSize = value;
-        } else if (attribute == valueResolution) {
-            double value = ((DoubleToken) valueResolution.getToken())
-                    .doubleValue();
-
-            if (value < 0.0) {
-                throw new IllegalActionException(this,
-                        "Cannot set a negative value resolution.");
-            }
-
-            _valueResolution = value;
+            _initStepSize = value;
         } else if (attribute == maxIterations) {
             int value = ((IntToken) maxIterations.getToken()).intValue();
 
@@ -313,16 +291,20 @@ public class ContinuousDirector extends FixedPointDirector implements
                 throw new IllegalActionException(this,
                         "Cannot set a zero or negative iteration number.");
             }
-
             _maxIterations = value;
+        } else if (attribute == maxStepSize) {
+            double value = ((DoubleToken) maxStepSize.getToken()).doubleValue();
+            if (value < 0.0) {
+                throw new IllegalActionException(this,
+                        "Cannot set a negative step size.");
+            }
+            _maxStepSize = value;
         } else {
             super.attributeChanged(attribute);
         }
     }
 
-    /** Override the fire() method of the super class. This method is
-     *  abstract in this abstract base class. The derived classes need to
-     *  override this method for concrete implementation.
+    /** FIXME
      */
     public void fire() throws IllegalActionException {
         
@@ -330,15 +312,12 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Find an appropriate step size, which may be refined later.
         ////////////////////////////////////////////////////////////
 
-        // Choose a suggested step size, which is a guess.
-        setCurrentStepSize(getSuggestedNextStepSize());
-        
         // Refine the correct step size for the continuous phase execution
         // with respect to the breakpoint table.
-        setCurrentStepSize(_refinedStepWRTBreakpoints());
+        _refinedStepWRTBreakpoints();
         
         _debug("execute the system from " + getModelTime()
-                + " with a step size " + getCurrentStepSize());
+                + " with a step size " + _currentStepSize);
 
         // Resolve the initial states at a future time
         // (the current time plus the current step size).
@@ -378,9 +357,9 @@ public class ContinuousDirector extends FixedPointDirector implements
             } else {
                 // If any step size control actor is unsatisfied with the 
                 // current step size, refine the step size to a smaller one.
-                setCurrentStepSize(_refinedStepSize());
+                _setCurrentStepSize(_refinedStepSize());
                 _debug("Refine the current step size"
-                        + " with a smaller one " + getCurrentStepSize());
+                        + " with a smaller one " + _currentStepSize);
                 
                 // Restore the saved state of the stateful actors, 
                 // including the save starting time of this integration.
@@ -427,17 +406,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         _breakpoints.insert(time);
     }
 
-    /** Return the ODE solver used to resolve states by the director.
-     *  @return The ODE solver used to resolve states by the director.
-     */
-    public final ContinuousODESolver getODESolver() {
-        // This method is final for performance reason.
-        return _ODESolver;
-    }
-
     /** Return the current integration step size.
      *  @return The current integration step size.
-     *  @see #setCurrentStepSize
      */
     public double getCurrentStepSize() {
         return _currentStepSize;
@@ -472,20 +442,11 @@ public class ContinuousDirector extends FixedPointDirector implements
         return _maxIterations;
     }
 
-    /** Return the maximum step size used in variable step size
-     *  ODE solvers.
-     *  @return The maximum step size.
-     */
-    public final double getMaxStepSize() {
-        // This method is final for performance reason.
-        return _maxStepSize;
-    }
-
     /** Return the current iteration begin time plus the current step size.
      *  @return The iteration begin time plus the current step size.
      */
     public Time getModelNextIterationTime() {
-        return getIterationBeginTime().add(getCurrentStepSize());
+        return getIterationBeginTime().add(_currentStepSize);
     }
 
     /** Return the start time, which is the value of the
@@ -508,30 +469,6 @@ public class ContinuousDirector extends FixedPointDirector implements
     public final Time getModelStopTime() {
         // This method is final for performance reason.
         return _stopTime;
-    }
-
-    /** Return the suggested next step size. The suggested step size is
-     *  the minimum step size that all the step-size-control actors suggested
-     *  at the end of last integration step. It is the prediction
-     *  of the new step size.
-     *  @return The suggested next step size.
-     *  @see #setSuggestedNextStepSize
-     */
-    public final double getSuggestedNextStepSize() {
-        // This method is final for performance reason.
-        return _suggestedNextStepSize;
-    }
-
-    /** Return the value resolution, used for testing if an implicit method
-     *  has reached the fixed point. Two values that are differed less than
-     *  this accuracy are considered identical in the fixed-point
-     *  calculation.
-     *
-     *  @return The value resolution for finding fixed point.
-     */
-    public final double getValueResolution() {
-        // This method is final for performance reason.
-        return _valueResolution;
     }
 
     /** Initialize model after type resolution.
@@ -559,6 +496,8 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @return True if this is the discrete phase of execution.
      */
     public boolean isDiscretePhase() {
+        // FIXME: this may not be necessary. We can check whether the 
+        // integration step size is 0.        
         return _discretePhase;
     }
 
@@ -591,8 +530,8 @@ public class ContinuousDirector extends FixedPointDirector implements
                     "Current time exceeds the specified stopTime.");
         }
 
-        // predict the next step size.
-        setSuggestedNextStepSize(_predictNextStepSize());
+        // set the suggested step size for next integration.
+        _predictNextStepSize();
 
         if (_isEmbedded() && (_breakpoints.size() > 0)) {
             Time time = (Time) _breakpoints.removeFirst();
@@ -670,17 +609,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Instantiate a new ODE solver, using the class name given
         // by ODESolver.
         String solverClassName = ((StringToken) ODESolver.getToken()).stringValue().trim();
-        _ODESolver = _instantiateODESolver(solverClassName);
-    }
-
-    /** Set the current step size. Only CT directors can call this method.
-     *  Solvers and actors must not call this method.
-     *  @param stepSize The step size to be set.
-     *  @see #getCurrentStepSize
-     */
-    public void setCurrentStepSize(double stepSize) {
-        _debug("----- Setting the current step size to " + stepSize);
-        _currentStepSize = stepSize;
+        _ODESolver = _instantiateODESolver(_solverClasspath + solverClassName);
     }
 
     /** Set a new value to the current time of the model, where the new
@@ -698,20 +627,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
     
         _currentTime = newTime;
-    }
-
-    /** Set the suggested next step size. If the argument is larger than
-     *  the maximum step size, then set the suggested next step size to
-     *  the maximum step size.
-     *  @param stepsize The suggested next step size.
-     *  @see #getSuggestedNextStepSize
-     */
-    public void setSuggestedNextStepSize(double stepsize) {
-        if (stepsize > getMaxStepSize()) {
-            _suggestedNextStepSize = getMaxStepSize();
-        } else {
-            _suggestedNextStepSize = stepsize;
-        }
     }
 
     /** Return an array of suggested ModalModel directors  to use
@@ -733,6 +648,14 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Return the ODE solver used to resolve states by the director.
+     *  @return The ODE solver used to resolve states by the director.
+     */
+    protected final ContinuousODESolver _getODESolver() {
+        // This method is final for performance reason.
+        return _ODESolver;
+    }
 
     /** Create and initialize all parameters to their default values.
      *  This is called by the constructor.
@@ -762,10 +685,6 @@ public class ContinuousDirector extends FixedPointDirector implements
             errorTolerance = new Parameter(this, "errorTolerance");
             errorTolerance.setExpression("1e-4");
             errorTolerance.setTypeEquals(BaseType.DOUBLE);
-
-            valueResolution = new Parameter(this, "valueResolution");
-            valueResolution.setExpression("1e-6");
-            valueResolution.setTypeEquals(BaseType.DOUBLE);
 
             synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
             synchronizeToRealTime.setExpression("false");
@@ -885,25 +804,23 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
     }
 
-    /** Predict the next step size. If the current integration step is accurate,
-     *  estimate the step size for the next iteration. The predicted step size
-     *  is the minimum of predictions from all step size control actors,
+    /** Set the suggested step size for next integration. The suggested step 
+     *  size is the minimum of suggestions from all step size control actors,
      *  and it never exceeds 10 times of the current step size.
-     *  If there are no step-size control actors at all, then return
-     *  the current step size times 5. However, it never exceeds the maximum
-     *  step size.
-     *  @return the prediced next step size.
+     *  If there are no step size control actors at all, then return
+     *  5 times of the current step size. However, the suggested step size
+     *  never exceeds the maximum step size.
      *  @exception IllegalActionException If the scheduler throws it.
      */
-    protected double _predictNextStepSize() throws IllegalActionException {
-        double predictedStep = getCurrentStepSize();
+    protected void _predictNextStepSize() throws IllegalActionException {
+        double predictedStep = _currentStepSize;
     
         if (predictedStep == 0.0) {
             // The current step size is 0.0. Predict a positive value to let
             // time advance.
             predictedStep = _initStepSize;
         } else {
-            predictedStep = 10.0 * getCurrentStepSize();
+            predictedStep = 10.0 * _currentStepSize;
     
             // FIXME: may generate ContinuousStepSizeControlActor set for more 
             // efficient execution.
@@ -912,21 +829,21 @@ public class ContinuousDirector extends FixedPointDirector implements
             while (firingIterator.hasNext() && !_stopRequested) {
                 Actor actor = ((Firing) firingIterator.next()).getActor();
                 if (actor instanceof ContinuousStepSizeControlActor) {
-                    _debug("Saving states of " + actor);
                     double suggestedStepSize = 
-                        ((ContinuousStepSizeControlActor) actor).suggestedStepSize();
+                        ((ContinuousStepSizeControlActor) actor)
+                            .suggestedStepSize();
                         if (predictedStep > suggestedStepSize) {
                             predictedStep = suggestedStepSize;
                         }
                 }
             }
     
-            if (predictedStep > getMaxStepSize()) {
-                predictedStep = getMaxStepSize();
+            if (predictedStep > _maxStepSize) {
+                _setCurrentStepSize(_maxStepSize);
+            } else {
+                _setCurrentStepSize(predictedStep);
             }
         }
-    
-        return predictedStep;
     }
 
     /** Set the current phase of execution as a discrete phase. The value
@@ -954,11 +871,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     private void _initializeLocalVariables() throws IllegalActionException {
         _maxIterations = ((IntToken) maxIterations.getToken()).intValue();
         _maxStepSize = ((DoubleToken) maxStepSize.getToken()).doubleValue();
-        _valueResolution = ((DoubleToken) valueResolution.getToken())
-                .doubleValue();
-    
         _currentStepSize = _initStepSize;
-        _suggestedNextStepSize = _initStepSize;
     
         // A simulation always starts with a discrete phase execution.
         _discretePhase = true;
@@ -984,7 +897,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     
         // FIXME: During the initialize() method, the step size is 0.
         // No step size refinement is needed. What is a better solution?
-        if (getCurrentStepSize() == 0) {
+        if (_currentStepSize == 0) {
             return true;
         }
     
@@ -1024,8 +937,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     // breakpoint is the end time of the current iteration.
     // NOTE: if the current time is a breakpoint, that breakpoint is
     // removed. Otherwise, the breakpoint table is left unmodified.
-    private double _refinedStepWRTBreakpoints() {
-        double currentStepSize = getCurrentStepSize();
+    private void _refinedStepWRTBreakpoints() {
         if (!_breakpoints.isEmpty()) {
             Time point = ((Time) _breakpoints.first());
             _debug("The first breakpoint is at " + point);
@@ -1034,11 +946,10 @@ public class ContinuousDirector extends FixedPointDirector implements
             if (maximumAllowedStepSize == 0.0) {
                 _breakpoints.removeFirst();
             }
-            if (currentStepSize > maximumAllowedStepSize) {
-                currentStepSize = maximumAllowedStepSize;
+            if (_currentStepSize > maximumAllowedStepSize) {
+                _currentStepSize = maximumAllowedStepSize;
             }
         }
-        return currentStepSize;
     }
 
     /** Return the refined step size, which is the minimum of the
@@ -1056,7 +967,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         _debug("Refining the current step size WRT step size control actors:");
     
         double timeResolution = getTimeResolution();
-        double refinedStep = getCurrentStepSize();
+        double refinedStep = _currentStepSize;
     
         // FIXME: may generate StepSizeControlActor set for more 
         // efficient execution.
@@ -1096,19 +1007,29 @@ public class ContinuousDirector extends FixedPointDirector implements
         return refinedStep;
     }
 
+    /** Set the current step size. Only CT directors can call this method.
+     *  Solvers and actors must not call this method.
+     *  @param stepSize The step size to be set.
+     *  @see #_currentStepSize
+     */
+    private void _setCurrentStepSize(double stepSize) {
+        _debug("----- Setting the current step size to " + stepSize);
+        _currentStepSize = stepSize;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    // A table for breakpoints.
+    /** A table for breakpoints. */
     private TotallyOrderedSet _breakpoints;
 
-    // Simulation step sizes.
+    /** Simulation step sizes. */
     private double _currentStepSize;
 
-    // Indicate that this is the discrete phase.
+    /** Indicate that this is the discrete phase. */
     private boolean _discretePhase;
 
-    // the error tolerance for state resolution
+    /** the error tolerance for state resolution */
     private double _errorTolerance;
 
     /** A cache of the value of initStepSize. */
@@ -1117,8 +1038,10 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** The current time at the start of the current integration step. */
     private Time _iterationBeginTime;
 
+    /** The maximum iterations for implicit ODE solver to resolve states. */
     private int _maxIterations;
 
+    /** The maximum step size used for intergration. */
     private double _maxStepSize;
 
     /** The ODE solver, which is an instance of the class given by
@@ -1136,9 +1059,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** The cached value of the stopTime parameter. */
     private Time _stopTime;
 
-    private double _suggestedNextStepSize;
-
+    /** The local flag variable indicating whether the we have tried
+     *  the time resolution as the integration step size. */
     private boolean _triedTheMinimumStepSize = false;
-
-    private double _valueResolution;
 }

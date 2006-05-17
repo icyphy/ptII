@@ -220,7 +220,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             }
             output.broadcast(new DoubleToken(getTentativeState()));
         } else if (!output.isKnown()) {
-            dir.getODESolver().integratorFire(this);
+            dir._getODESolver().integratorFire(this);
         }
     }
 
@@ -341,7 +341,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             throw new IllegalActionException(this, " no director available");
         }
 
-        ContinuousODESolver solver = dir.getODESolver();
+        ContinuousODESolver solver = dir._getODESolver();
 
         if (solver == null) {
             throw new IllegalActionException(this, " no ODE solver available");
@@ -377,7 +377,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                     + " it is a result of divide-by-zero.");
         }
 
-        ContinuousODESolver solver = ((ContinuousDirector) getDirector()).getODESolver();
+        ContinuousODESolver solver = ((ContinuousDirector) getDirector())._getODESolver();
         _successful = solver.integratorIsAccurate(this);
         return _successful;
     }
@@ -428,7 +428,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  @return The suggested next step size.
      */
     public double suggestedStepSize() {
-        ContinuousODESolver solver = ((ContinuousDirector) getDirector()).getODESolver();
+        ContinuousODESolver solver = ((ContinuousDirector) getDirector())._getODESolver();
         return solver.integratorPredictedStepSize(this);
     }
 
@@ -450,7 +450,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             throw new IllegalActionException(this, " does not have a director.");
         }
 
-        ContinuousODESolver solver = dir.getODESolver();
+        ContinuousODESolver solver = dir._getODESolver();
 
         if (solver == null) {
             throw new IllegalActionException(this,
