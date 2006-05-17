@@ -50,7 +50,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	ExpressionReader.java \
 	ExpressionWriter.java \
 	FileReader.java \
 	LineReader.java \
