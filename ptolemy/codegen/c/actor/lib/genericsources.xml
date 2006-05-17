@@ -14,6 +14,14 @@
       <property name="displayWidth" value="60"/>
    </property>
 </entity>
+
+<entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+<doc>Create a constant sequence with a string value.</doc>
+   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+      <property name="attributeName" value="value"/>
+      <property name="displayWidth" value="80"/>
+   </property>
+</entity>
       </group>
     ?>
   </configure>
