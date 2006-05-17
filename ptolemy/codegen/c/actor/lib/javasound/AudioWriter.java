@@ -43,12 +43,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (cxh)
- * @Pt.AcceptedRating Red (cxh)
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Yellow (cxh)
  */
 public class AudioWriter extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the AudioWriter helper.
+     * Construct an AudioWriter helper.
      * @param actor the associated actor.
      */
     public AudioWriter(ptolemy.actor.lib.javasound.AudioWriter actor) {
@@ -57,8 +57,8 @@ public class AudioWriter extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.
-     * The method reads in <code>writeSoundFile</code> from AudioWriter.c
-     * and appends to the given code buffer.
+     * The method reads in <code>writeSoundFile</code> from AudioWriter.c,
+     * Replace macros with their values and return the processed code block.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
