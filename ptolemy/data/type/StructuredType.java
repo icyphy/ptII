@@ -167,13 +167,13 @@ public abstract class StructuredType implements Type {
      */
     public void updateType(StructuredType newType)
             throws IllegalActionException {
-
         if (newType.depth() >= MAXDEPTHBOUND)
-            throw new IllegalActionException("Infinite iterations in type"
-                    + " resolution. The structured type has depth larger than"
-                    + " the bound " + MAXDEPTHBOUND
-                    + " , set up for detecting infinite iterations: "
-                    + newType.toString());
+            throw new IllegalActionException(
+                    "Large type structure detected during type resolution." + 
+                    "  The structured type " + newType.toString() +
+                    " has depth larger than the bound " + MAXDEPTHBOUND
+                    + ".  This may be an indicator of type constraints " +
+                    "in a model with no finite solution.");
     }
 
     /** Return the type of the additive identity for elements of

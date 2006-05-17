@@ -319,6 +319,7 @@ public class FixType extends StructuredType implements Serializable {
      */
     public void updateType(StructuredType newType)
             throws IllegalActionException {
+        super.updateType(newType);
         if (newType._getRepresentative() != _getRepresentative()) {
             throw new InternalErrorException(
                     "FixType.updateType: Cannot "
@@ -429,9 +430,23 @@ public class FixType extends StructuredType implements Serializable {
             Math.max(precision.getIntegerBitLength(),
                     _precision.getIntegerBitLength());
         FixType returnType = new FixType(new Precision(fractionBits + integerBits, integerBits));
+        returnType._checkPrecision();
         return returnType;
     }
 
+    protected void _checkPrecision() {
+        if(_precision.getNumberOfBits() > 128) {
+            throw new RuntimeException(
+                    "Large fixed point type detected during type resolution." + 
+                    "  The structured type " + this +
+                    " has depth larger than the bound " + 128 +
+                    ".  This may be an indicator of type constraints " +
+                    "in a model with no finite solution, which may occur " +
+                    "if there is a feedback loop that requires an " +
+                    "explicit FixToFix conversion actor.");
+        }
+    }
+                                        
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Precision _precision;

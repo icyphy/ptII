@@ -114,13 +114,13 @@ test FixToken-3.1 {Test Addition} {
 
     list [$pa toString] [$pb toString] [$res toString]
 
-} {fix(3.2333984375,16,4) fix(-1.54541015625,16,4) fix(1.68798828125,16,4)}
+} {fix(3.2333984375,16,4) fix(-1.54541015625,16,4) fix(1.68798828125,17,5)}
 
 test FixToken-3.2 {Test Subtraction} {
     set res [$pa subtract $pb]   
 
     list [$res toString]
-} {fix(4.77880859375,16,4)}
+} {fix(4.77880859375,17,5)}
 
 test FixToken-3.3 {Test Multiply} {
     set res [$pa multiply $pb]   
@@ -132,7 +132,7 @@ test FixToken-3.4 {Test Divide} {
    set res [$pa divide $pb]    	
 
    list [$res toString]
-} {fix(-2.09228515625,16,4)}
+} {fix(-2.092254638671875,34,18)}
 
 test FixToken-3.5 {Test Addition with different precision} {
     set p2 [java::new ptolemy.math.Precision "(16/8)" ]
@@ -146,25 +146,25 @@ test FixToken-3.5 {Test Addition with different precision} {
 
     list [$pa toString] [$pb toString] [$res toString]
 
-} {fix(3.2333984375,16,4) fix(-1.54541015625,16,4) fix(1.68798828125,16,4)}
+} {fix(3.2333984375,16,4) fix(-1.546875,16,8) fix(1.6865234375,21,9)}
 
 test FixToken-3.6 {Test Subtraction with different precision} {
     set res [$pa subtract $pb]   
 
     list [$res toString]
-} {fix(4.77880859375,16,4)}
+} {fix(4.7802734375,21,9)}
 
 test FixToken-3.7 {Test Multiply with different precision} {
     set res [$pa multiply $pb]   
 
     list [$res toString]
-} {fix(-4.996926784515380859375,32,8)}
+} {fix(-5.0016632080078125,32,12)}
 
 test FixToken-3.8 {Test Divide with different precisions} {    
    set res [$pa divide $pb]    	
 
    list [$res toString]
-} {fix(-2.09228515625,16,4)}
+} {fix(-2.09027767181396484375,34,14)}
 
 ######################################################################
 

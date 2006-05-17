@@ -42,6 +42,7 @@ import ptolemy.data.ObjectToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.UnsignedByteToken;
+import ptolemy.data.UnsizedFixToken;
 import ptolemy.data.XMLToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -223,7 +224,7 @@ public class Constants {
         _types.put("boolean", BooleanToken.FALSE);
         _types.put("complex", new ComplexToken(new Complex(0.0, 0.0)));
         _types.put("double", new DoubleToken(0.0));
-        _types.put("fixedpoint", new FixToken(0.0, 2, 1));
+        _types.put("fixedpoint", new UnsizedFixToken());
         _types.put("general", new GeneralToken());
         _types.put("int", new IntToken(0));
         _types.put("long", new LongToken(0));

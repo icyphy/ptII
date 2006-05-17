@@ -215,11 +215,10 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
     }
 
     /** Return the type of this token.
-     *  @return BaseType.FIX.
+     *  @return an instance of FixType;
      */
     public Type getType() {
         return new FixType(_value.getPrecision());
-        //        return BaseType.FIX;
     }
 
     /** Return a hash code value for this value. This method returns the
