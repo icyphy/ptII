@@ -1,4 +1,4 @@
-/* A code generation helper class for ptolemy.actor.lib.AddSubtract
+/* A code generation helper class for ptolemy.domains.sdf.lib.Repeast
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -40,8 +40,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Ye Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (eal)
+ @Pt.ProposedRating Green (zhouye)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class Repeat extends CCodeGeneratorHelper {
     /** Construct a helper with the given ptolemy.actor.lib.Scale actor.

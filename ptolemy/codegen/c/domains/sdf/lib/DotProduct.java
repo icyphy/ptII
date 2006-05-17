@@ -1,4 +1,5 @@
 /* A code generation helper class for domains.sdf.lib.DotProduct
+
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -45,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class DotProduct extends CCodeGeneratorHelper {
 
     /**
-     * Constructor method for the DotProduct helper.
+     * Construct a DotProduct helper.
      * @param actor The associated actor.
      */
     public DotProduct(ptolemy.domains.sdf.lib.DotProduct actor) {
@@ -55,8 +56,8 @@ public class DotProduct extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * Read the <code>fireBlock</code> from DotProduct.c,
-     * replace macros with their values and append the processed code              
-     * block to the given code buffer.
+     * replace macros with their values and return the processed code
+     * block.
      * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).

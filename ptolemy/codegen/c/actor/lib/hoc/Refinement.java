@@ -38,8 +38,8 @@ import ptolemy.codegen.c.actor.TypedCompositeActor;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.2
- @Pt.ProposedRating Red (zgang)
- @Pt.AcceptedRating Red (zgang)
+ @Pt.ProposedRating Green (zgang)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class Refinement extends TypedCompositeActor {
     /** Construct the code generator helper associated
