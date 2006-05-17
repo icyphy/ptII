@@ -357,7 +357,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             } else {
                 // If any step size control actor is unsatisfied with the 
                 // current step size, refine the step size to a smaller one.
-                _setCurrentStepSize(_refinedStepSize());
+                _setCurrentStepSize(refinedStepSize());
                 _debug("Refine the current step size"
                         + " with a smaller one " + _currentStepSize);
                 
@@ -531,7 +531,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
 
         // set the suggested step size for next integration.
-        _predictNextStepSize();
+        _setCurrentStepSize(suggestedStepSize());
 
         if (_isEmbedded() && (_breakpoints.size() > 0)) {
             Time time = (Time) _breakpoints.removeFirst();
@@ -612,6 +612,61 @@ public class ContinuousDirector extends FixedPointDirector implements
         _ODESolver = _instantiateODESolver(_solverClasspath + solverClassName);
     }
 
+    /** Return the refined step size, which is the minimum of the
+     *  current step size and the suggested step size of all actors that
+     *  implement ContinuousStepSizeControlActor. If these actors
+     *  request a step size smaller than the time resolution, then
+     *  the first time this happens this method returns the time resolution.
+     *  If it happens again on the next call to this method, then this
+     *  method throws an exception.
+     *  @return The refined step size.
+     *  @exception IllegalActionException If the scheduler throws it or the
+     *  refined step size is less than the time resolution.
+     */
+    public double refinedStepSize() throws IllegalActionException {
+        _debug("Refining the current step size WRT step size control actors:");
+    
+        double timeResolution = getTimeResolution();
+        double refinedStep = _currentStepSize;
+    
+        // FIXME: may generate StepSizeControlActor set for more 
+        // efficient execution.
+        Schedule schedule = getScheduler().getSchedule();
+        Iterator firingIterator = schedule.firingIterator();
+        while (firingIterator.hasNext() && !_stopRequested) {
+            Actor actor = ((Firing) firingIterator.next()).getActor();
+            if (actor instanceof ContinuousStepSizeControlActor) {
+                refinedStep = Math.min(refinedStep, 
+                        ((ContinuousStepSizeControlActor) actor).refinedStepSize());
+            }
+        }
+    
+        // If the requested step size is smaller than the time
+        // resolution, then set the step size to the time resolution.
+        // Set a flag indicating that we have done that so that if
+        // the step size is still too large, we throw an exception.
+        if (refinedStep < timeResolution) {
+            if (!_triedTheMinimumStepSize) {
+                // First time requested step size is less than time resolution
+                _debug("The requested step size is less than the"
+                        + " time resolution; try setting the step size"
+                        + " to the time resolution.");
+                refinedStep = timeResolution;
+                _triedTheMinimumStepSize = true;
+            } else {
+                _debug("The requested step size is less than the"
+                        + " time resolution, but we already tried setting"
+                        + " it to the time resolution and that failed.");
+                throw new IllegalActionException(this,
+                        "The refined step size is less than the time "
+                                + "resolution, at time " + getModelTime());
+            }
+        } else {
+            _triedTheMinimumStepSize = false;
+        }
+        return refinedStep;
+    }
+
     /** Set a new value to the current time of the model, where the new
      *  time can be earlier than the current time to support rollback.
      *  This overrides the setCurrentTime() in the Director base class.
@@ -644,6 +699,45 @@ public class ContinuousDirector extends FixedPointDirector implements
         defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.HSFSMDirector";
         defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
+    }
+
+    /** Set the suggested step size for next integration. The suggested step 
+     *  size is the minimum of suggestions from all step size control actors,
+     *  and it never exceeds 10 times of the current step size.
+     *  If there are no step size control actors at all, then return
+     *  5 times of the current step size. However, the suggested step size
+     *  never exceeds the maximum step size.
+     *  @exception IllegalActionException If the scheduler throws it.
+     */
+    public double suggestedStepSize() throws IllegalActionException {
+        double suggestedStep = _currentStepSize;
+        if (suggestedStep == 0.0) {
+            // The current step size is 0.0. Predict a positive value to let
+            // time advance.
+            suggestedStep = _initStepSize;
+        } else {
+            suggestedStep = 10.0 * _currentStepSize;
+            // FIXME: may generate ContinuousStepSizeControlActor set for more 
+            // efficient execution.
+            Schedule schedule = getScheduler().getSchedule();
+            Iterator firingIterator = schedule.firingIterator();
+            while (firingIterator.hasNext() && !_stopRequested) {
+                Actor actor = ((Firing) firingIterator.next()).getActor();
+                if (actor instanceof ContinuousStepSizeControlActor) {
+                    double suggestedStepSize = 
+                        ((ContinuousStepSizeControlActor) actor)
+                            .suggestedStepSize();
+                        if (suggestedStep > suggestedStepSize) {
+                            suggestedStep = suggestedStepSize;
+                        }
+                }
+            }
+    
+            if (suggestedStep > _maxStepSize) {
+                suggestedStep = _maxStepSize;
+            }
+        }
+        return suggestedStep;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -804,48 +898,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
     }
 
-    /** Set the suggested step size for next integration. The suggested step 
-     *  size is the minimum of suggestions from all step size control actors,
-     *  and it never exceeds 10 times of the current step size.
-     *  If there are no step size control actors at all, then return
-     *  5 times of the current step size. However, the suggested step size
-     *  never exceeds the maximum step size.
-     *  @exception IllegalActionException If the scheduler throws it.
-     */
-    protected void _predictNextStepSize() throws IllegalActionException {
-        double predictedStep = _currentStepSize;
-    
-        if (predictedStep == 0.0) {
-            // The current step size is 0.0. Predict a positive value to let
-            // time advance.
-            predictedStep = _initStepSize;
-        } else {
-            predictedStep = 10.0 * _currentStepSize;
-    
-            // FIXME: may generate ContinuousStepSizeControlActor set for more 
-            // efficient execution.
-            Schedule schedule = getScheduler().getSchedule();
-            Iterator firingIterator = schedule.firingIterator();
-            while (firingIterator.hasNext() && !_stopRequested) {
-                Actor actor = ((Firing) firingIterator.next()).getActor();
-                if (actor instanceof ContinuousStepSizeControlActor) {
-                    double suggestedStepSize = 
-                        ((ContinuousStepSizeControlActor) actor)
-                            .suggestedStepSize();
-                        if (predictedStep > suggestedStepSize) {
-                            predictedStep = suggestedStepSize;
-                        }
-                }
-            }
-    
-            if (predictedStep > _maxStepSize) {
-                _setCurrentStepSize(_maxStepSize);
-            } else {
-                _setCurrentStepSize(predictedStep);
-            }
-        }
-    }
-
     /** Set the current phase of execution as a discrete phase. The value
      *  set can be returned by the isDiscretePhase() method.
      *  @param discrete True if this is the discrete phase.
@@ -950,61 +1002,6 @@ public class ContinuousDirector extends FixedPointDirector implements
                 _currentStepSize = maximumAllowedStepSize;
             }
         }
-    }
-
-    /** Return the refined step size, which is the minimum of the
-     *  current step size and the suggested step size of all actors that
-     *  implement ContinuousStepSizeControlActor. If these actors
-     *  request a step size smaller than the time resolution, then
-     *  the first time this happens this method returns the time resolution.
-     *  If it happens again on the next call to this method, then this
-     *  method throws an exception.
-     *  @return The refined step size.
-     *  @exception IllegalActionException If the scheduler throws it or the
-     *  refined step size is less than the time resolution.
-     */
-    private double _refinedStepSize() throws IllegalActionException {
-        _debug("Refining the current step size WRT step size control actors:");
-    
-        double timeResolution = getTimeResolution();
-        double refinedStep = _currentStepSize;
-    
-        // FIXME: may generate StepSizeControlActor set for more 
-        // efficient execution.
-        Schedule schedule = getScheduler().getSchedule();
-        Iterator firingIterator = schedule.firingIterator();
-        while (firingIterator.hasNext() && !_stopRequested) {
-            Actor actor = ((Firing) firingIterator.next()).getActor();
-            if (actor instanceof ContinuousStepSizeControlActor) {
-                refinedStep = Math.min(refinedStep, 
-                        ((ContinuousStepSizeControlActor) actor).refinedStepSize());
-            }
-        }
-    
-        // If the requested step size is smaller than the time
-        // resolution, then set the step size to the time resolution.
-        // Set a flag indicating that we have done that so that if
-        // the step size is still too large, we throw an exception.
-        if (refinedStep < timeResolution) {
-            if (!_triedTheMinimumStepSize) {
-                // First time requested step size is less than time resolution
-                _debug("The requested step size is less than the"
-                        + " time resolution; try setting the step size"
-                        + " to the time resolution.");
-                refinedStep = timeResolution;
-                _triedTheMinimumStepSize = true;
-            } else {
-                _debug("The requested step size is less than the"
-                        + " time resolution, but we already tried setting"
-                        + " it to the time resolution and that failed.");
-                throw new IllegalActionException(this,
-                        "The refined step size is less than the time "
-                                + "resolution, at time " + getModelTime());
-            }
-        } else {
-            _triedTheMinimumStepSize = false;
-        }
-        return refinedStep;
     }
 
     /** Set the current step size. Only CT directors can call this method.
