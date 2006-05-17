@@ -10,6 +10,10 @@
 <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
 </entity>
 
+<entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+<doc>Create a sequence of tokens with increasing value</doc>
+</entity>
+
 <entity name="Sequence" class="ptolemy.actor.lib.Sequence"/>
 
 
