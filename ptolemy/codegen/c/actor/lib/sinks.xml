@@ -4,4 +4,5 @@
 <entity name="Sinks" class="ptolemy.moml.EntityLibrary">
   <doc>Domain-polymorphic sinks</doc>
   <input source="ptolemy/codegen/c/actor/lib/genericsinks.xml"/>
+  <input source="ptolemy/codegen/c/actor/lib/sequencesinks.xml"/>
 </entity>
