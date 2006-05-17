@@ -6,6 +6,7 @@
     <?moml
       <group>
         <doc>Actors that stop execution of the model.</doc>
+        <entity name="Exit" class="ptolemy.actor.lib.Exit"/>
         <entity name="Stop" class="ptolemy.actor.lib.Stop"/>
         <entity name="ThrowException"
 	class="ptolemy.actor.lib.ThrowException"/>
