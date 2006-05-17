@@ -197,7 +197,6 @@ public class FixPoint implements Cloneable, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Determines the Precision of an add operation between two
      *  FixPoint values.
      *
@@ -212,6 +211,7 @@ public class FixPoint implements Cloneable, Serializable {
                 union.getNumberOfBits() + 1, union.getExponent());
         return newPrecision;
     }
+
     /** Determines the Precision of an subtract operation between two
      *  FixPoint values.
      *
@@ -226,6 +226,7 @@ public class FixPoint implements Cloneable, Serializable {
                 length, union.getExponent());
         return newPrecision;
     }
+
     /** Determines the Precision of an multiply operation between
      *  two FixPoint values.
      *
@@ -250,6 +251,7 @@ public class FixPoint implements Cloneable, Serializable {
                 fractionBits + integerBits, -fractionBits);
         return newPrecision;
     }
+
     /** Determines the Precision of a divide operation between
      *  two FixPoint values.
      *
@@ -257,8 +259,8 @@ public class FixPoint implements Cloneable, Serializable {
      *  divide with a finite precision. As such, this precision
      *  conversion rule is lossless. The rule for divide is as
      *  follows:
-     *  - Integer part = left argument integer + right argment fraction
-     *  - Fraction part = max(left fractional bits, right fractional bits)
+     *  - Integer part = left integer bits + right fraction bits + sign
+     *  - Fraction part = left fractional bits + right integer bits + 1 - sign
      */
     public static Precision dividePrecision(Precision leftArgument,
             Precision rightArgument) {
@@ -267,11 +269,12 @@ public class FixPoint implements Cloneable, Serializable {
                 : 0;
         int integerBits =
             leftArgument.getIntegerBitLength() +
-            rightArgument.getFractionBitLength();
-        int fractionBits = Math.max(leftArgument.getFractionBitLength(),
-            rightArgument.getFractionBitLength());
+            rightArgument.getFractionBitLength() + sign;
+        int fractionBits = 
+            leftArgument.getFractionBitLength() +
+            rightArgument.getIntegerBitLength() + 1 - sign;
         Precision newPrecision = new Precision(sign,
-                sign + fractionBits + integerBits, integerBits);
+                sign + fractionBits + integerBits, -fractionBits);
         return newPrecision;
     }       
     
