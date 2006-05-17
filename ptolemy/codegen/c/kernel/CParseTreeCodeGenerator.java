@@ -570,10 +570,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             }
         }
 
-        // If not a special function, then reflect the name of the function.
-        ptolemy.data.Token result = _functionCall(node.getFunctionName(),
-                argTypes, argValues);
-        _evaluatedChildToken = (result);
         _fireCode.append(")");
     }
 
@@ -956,11 +952,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             argTypes[i] = token.getType();
         }
 
-        ptolemy.data.Token result = _methodCall(node.getMethodName(), argTypes,
-                argValues);
-
         _fireCode.append("->" + node.getMethodName() + "()");
-        _evaluatedChildToken = (result);
     }
 
     /** Evaluate the power operator on the children of the specified node.
@@ -1508,60 +1500,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             throw new IllegalActionException("The index (" + rowIndex + ","
                     + columnIndex + ") is out of bounds on the matrix '"
                     + value + "'.");
-        }
-    }
-
-    /** Evaluate the specified function.  The function must be defined
-     *  as one of the registered functions with PtParser.
-     *  @param functionName The function name.
-     *  @param argTypes An array of argument types.
-     *  @param argValues An array of argument values.
-     *  @return the resulting token.
-     *  @exception IllegalActionException If an parse error occurs.
-     */
-    protected ptolemy.data.Token _functionCall(String functionName,
-            Type[] argTypes, Object[] argValues) throws IllegalActionException {
-        CachedMethod method = CachedMethod.findMethod(functionName, argTypes,
-                CachedMethod.FUNCTION);
-
-        if (method.isValid()) {
-            if (_trace != null) {
-                _trace("Invoking " + method.methodDescription());
-                _trace("as " + method);
-            }
-
-            ptolemy.data.Token result = method.invoke(argValues);
-            return result;
-        } else {
-            throw new IllegalActionException("No function found matching "
-                    + method.toString());
-        }
-    }
-
-    /** Evaluate the specified method.  The object on which the method
-     *  is evaluated should be the first argument.
-     *  @param methodName The method name.
-     *  @param argTypes An array of argument types.
-     *  @param argValues An array of argument values.
-     *  @return the resulting token.
-     *  @exception IllegalActionException If an parse error occurs.
-     */
-    protected ptolemy.data.Token _methodCall(String methodName,
-            Type[] argTypes, Object[] argValues) throws IllegalActionException {
-        CachedMethod method = CachedMethod.findMethod(methodName, argTypes,
-                CachedMethod.METHOD);
-
-        if (method.isValid()) {
-            if (_trace != null) {
-                _trace("Invoking " + method.methodDescription());
-                _trace("as " + method);
-            }
-
-            ptolemy.data.Token result = method.invoke(argValues);
-            return result;
-        } else {
-            throw new IllegalActionException("No method found matching "
-                    + method.toString());
         }
     }
 
