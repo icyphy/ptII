@@ -1130,6 +1130,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/giotto \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/hdf \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/ \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ddf \
