@@ -30,7 +30,9 @@ package ptolemy.codegen.c.actor.lib;
 import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -70,6 +72,18 @@ public class Ramp extends CCodeGeneratorHelper {
             _codeStream.appendCodeBlock("StringInitBlock");
         } else {
             _codeStream.appendCodeBlock("CommonInitBlock", args);
+            if (actor.output.getType() instanceof ArrayType) {
+                Type elementType = 
+                    ((ArrayType) actor.output.getType()).getElementType();
+                
+                args.set(0, "TYPE_" + codeGenType(elementType));
+                if (!actor.step.getType().equals(actor.output.getType())) {
+                    _codeStream.appendCodeBlock("ArrayConvertStepBlock", args);                    
+                }
+                if (!actor.init.getType().equals(actor.output.getType())) {                    
+                    _codeStream.appendCodeBlock("ArrayConvertInitBlock", args);                    
+                }                
+            }
         }
 
         return processCode(_codeStream.toString());

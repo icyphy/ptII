@@ -2,6 +2,15 @@
 static $declaredType $actorSymbol(state);
 /**/
 
+/*** ArrayConvertInitBlock($elementType) ***/
+	$actorSymbol(state) = $typeFunc(TYPE_Array::convert($actorSymbol(state), $elementType));
+/**/
+
+/*** ArrayConvertStepBlock($elementType) ***/
+	$ref(step) = $typeFunc(TYPE_Array::convert($ref(step), $elementType));
+/**/
+
+
 /***CommonInitBlock($type)***/
     $actorSymbol(state) = $val(($type)init);
 /**/
