@@ -1,4 +1,5 @@
-/*
+/* A code generation helper class for actor.lib.logic.FileReader
+
  @Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
 
@@ -42,12 +43,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Jackie Leung
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (mankit)
  */
 public class FileReader extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the LineReader helper.
+     * Construct the LineReader helper.
      * @param actor the associated actor.
      */
     public FileReader(ptolemy.actor.lib.io.FileReader actor) {
