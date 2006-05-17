@@ -1,18 +1,36 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Compare" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+<entity name="Comparator" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="SDF7" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="73.0, 23.0">
         </property>
+    </property>
+    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen">
+        </property>
+        <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 40.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="Comparator0" class="ptolemy.actor.lib.logic.Comparator">
         <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
@@ -31,15 +49,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 111.0">
         </property>
-        <port name="left" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="right" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Pulse1" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -52,13 +61,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="144.0, 105.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Pulse2" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -71,13 +73,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="141.0, 176.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="8:Comparator0" class="ptolemy.actor.lib.logic.Comparator">
         <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
@@ -96,15 +91,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="313.0, 187.0">
         </property>
-        <port name="left" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="right" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="9:Comparator0" class="ptolemy.actor.lib.logic.Comparator">
         <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
@@ -123,15 +109,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="313.0, 268.0">
         </property>
-        <port name="left" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="right" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="10:Comparator0" class="ptolemy.actor.lib.logic.Comparator">
         <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
@@ -150,15 +127,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="316.0, 344.0">
         </property>
-        <port name="left" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="right" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Test11" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, false, false}">
@@ -167,10 +135,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="434.0, 112.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="13:Test11" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, false}">
@@ -179,10 +143,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="433.0, 185.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="14:Test11" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, true}">
@@ -191,10 +151,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="434.0, 264.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="15:Test11" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true, true}">
@@ -203,17 +159,13 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="432.0, 345.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="219.0, 110.0">
+        <vertex name="vertex1" value="219.0, 110.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="230.0, 166.0">
+        <vertex name="vertex1" value="230.0, 166.0">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">

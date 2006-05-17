@@ -36,6 +36,18 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
+    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen">
+        </property>
+        <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 95.0}">
+        </property>
+    </property>
     <entity name="logic" class="ptolemy.actor.lib.logic.LogicalNot">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{420.0, 126.0625}">
         </property>
