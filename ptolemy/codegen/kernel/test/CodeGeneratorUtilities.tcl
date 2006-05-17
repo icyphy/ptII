@@ -38,7 +38,15 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 #####
-test CodeGeneratorUtilities-1.1 {Test out subsitute(String, NamedObj)} {
+test CodeGeneratorUtilities-1.1 {openAsFileOrURL} {
+    # Increase Code Coverage
+    catch { java::call ptolemy.codegen.kernel.CodeGeneratorUtilities \
+	openAsFileOrURL "DoesNotExist"} errMsg
+    list $errMsg
+} {{java.io.FileNotFoundException: DoesNotExist (The system cannot find the file specified)}}
+
+#####
+test CodeGeneratorUtilities-2.1 {Test out subsitute(String, NamedObj)} {
     set namedObj [java::new ptolemy.kernel.util.NamedObj myNamedObj]
     set p1 [java::new ptolemy.data.expr.Parameter $namedObj \
 	testParameter [java::new ptolemy.data.StringToken "myTestParameter"]]
@@ -49,6 +57,14 @@ test CodeGeneratorUtilities-1.1 {Test out subsitute(String, NamedObj)} {
 } {This is a myTestParameter, followed by
 myOtherTestParameter.
 }
+
+#####
+test CodeGeneratorUtilities-2.2 {Test out subsitute(String, NamedObj)} {
+    # Uses 2.1 above
+    catch { java::call ptolemy.codegen.kernel.CodeGeneratorUtilities \
+		substitute NotAFile $namedObj } errMsg
+    list $errMsg
+} {{java.io.FileNotFoundException: Failed to find 'NotAFile' as a resource}}
 
 #####
 test CodeGeneratorUtilities-6.1 {Test out subsitute(inputFileName, substituteMap, outputFileName)} {
