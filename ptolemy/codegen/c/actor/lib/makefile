@@ -178,6 +178,7 @@ OTHER_FILES_TO_BE_JARED = \
 	genericsources.xml \
 	math.xml \
 	random.xml \
+	sequencesinks.xml \
 	sequencesources.xml \
 	signalprocessing.xml \
 	sinks.xml \
