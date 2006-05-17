@@ -1454,7 +1454,6 @@ public class DEDirector extends Director implements TimedDirector {
                     depthNeedsAdjusted = true;
                 }
 
-                // If the port is a parameter port, adjustment is necessary.
                 // If depth needs adjusted:
                 if (depthNeedsAdjusted) {
                     List inputPorts = portContainer.inputPortList();
