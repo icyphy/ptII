@@ -39,12 +39,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (cxh)
  */
 public class TokenToExpression extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the TokenToExpression helper.
+     * Construct the TokenToExpression helper.
      * @param actor the associated actor.
      */
     public TokenToExpression(
@@ -55,8 +55,8 @@ public class TokenToExpression extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * Read the <code>fireBlock</code> from TokenToExpression.c,
-     * replace macros with their values and append the processed code
-     * block to the given code buffer.
+     * replace macros with their values and return the processed code
+     * block.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).

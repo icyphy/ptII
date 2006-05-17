@@ -1,4 +1,5 @@
 /* A code generation helper class for actor.lib.string.StringSubstring
+
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -38,13 +39,13 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (mankit) 
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Green (mankit) 
+ @Pt.AcceptedRating Green (cxh)
  */
 public class StringSubstring extends CCodeGeneratorHelper {
 
     /**
-     * Constructor method for the StringSubstring helper.
+     * Construct the StringSubstring helper.
      * @param actor The associated actor.
      */
     public StringSubstring(ptolemy.actor.lib.string.StringSubstring actor) {

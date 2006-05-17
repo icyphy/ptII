@@ -1,4 +1,5 @@
 /* A code generation helper class for actor.lib.logic.isPresent
+
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -37,13 +38,13 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (mankit) 
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Green (mankit) 
+ @Pt.AcceptedRating Green (cxh)
  */
 public class IsPresent extends CCodeGeneratorHelper {
 
     /**
-     * Constructor method for the isPresent helper.
+     * Construct the isPresent helper.
      * @param actor The associated actor.
      */
     public IsPresent(ptolemy.actor.lib.logic.IsPresent actor) {
@@ -53,8 +54,8 @@ public class IsPresent extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * Read the <code>fireBlock</code> from isPresent.c,
-     * replace macros with their values and append the processed code              
-     * block to the given code buffer.
+     * replace macros with their values and return the processed code
+     * block.
      * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).

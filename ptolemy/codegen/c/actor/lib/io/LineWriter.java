@@ -1,4 +1,5 @@
-/*
+/* A code generation helper class for actor.lib.io.LineWriter
+
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
 
@@ -38,15 +39,15 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * A helper class for ptolemy.actor.lib.io.LineWriter.
  *
- * @author Jackie
+ * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (cxh)
  */
 public class LineWriter extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the LineWriter helper.
+     * Construct the LineWriter helper.
      * @param actor the associated actor.
      */
     public LineWriter(ptolemy.actor.lib.io.LineWriter actor) {
@@ -56,7 +57,7 @@ public class LineWriter extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * The method reads in <code>writeLine</code> from LineWriter.c,
-     * replaces macros with their values and appends to the given code buffer.
+     * replaces macros with their values and returns the code buffer.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).

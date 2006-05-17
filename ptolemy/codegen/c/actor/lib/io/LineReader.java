@@ -1,4 +1,4 @@
-/*
+/* A code generation helper class for actor.lib.logic.LineReader
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
 
@@ -41,12 +41,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Jackie
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (cxh)
  */
 public class LineReader extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the LineReader helper.
+     * Construct the LineReader helper.
      * @param actor the associated actor.
      */
     public LineReader(ptolemy.actor.lib.io.LineReader actor) {
@@ -72,7 +72,6 @@ public class LineReader extends CCodeGeneratorHelper {
         int skipLines = Integer.parseInt(actor.numberOfLinesToSkip
                 .getExpression());
 
-        // FIXME: How do we fix the file path parameter of the actor?? 
         String fileNameString = actor.fileOrURL.getExpression();
 
         if (fileNameString.equals("System.in")) {
@@ -97,7 +96,7 @@ public class LineReader extends CCodeGeneratorHelper {
     /**
      * Generate wrap up code.
      * This method reads the <code>wrapUpBlock</code> from LineReader.c,
-     * replaces macros with their values and appends to the given code buffer.
+     * replaces macros with their values and returns the processed code string.
      * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).

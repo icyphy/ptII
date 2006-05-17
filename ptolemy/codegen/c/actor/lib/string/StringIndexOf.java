@@ -41,13 +41,12 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (mankit) 
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Green (mankit) 
+ @Pt.AcceptedRating Green (cxh)
  */
 public class StringIndexOf extends CCodeGeneratorHelper {
-
     /**
-     * Constructor method for the StringIndexOf helper.
+     * Construct the StringIndexOf helper.
      * @param actor The associated actor.
      */
     public StringIndexOf(ptolemy.actor.lib.string.StringIndexOf actor) {
@@ -56,8 +55,8 @@ public class StringIndexOf extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.  Read the <code>fireBlock</code> from
-     * StringIndexOf.c, replace macros with their values and append
-     * the processed code block to the given code buffer.
+     * StringIndexOf.c, replace macros with their values and return
+     * the processed code block.
      * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
@@ -68,8 +67,6 @@ public class StringIndexOf extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
         ArrayList args = new ArrayList();
-        //int startIndexValue = ((IntToken) startIndex.getToken()).intValue();
-        //args.add(new Integer(startIndexValue));
         if (((BooleanToken) actor.searchForwards.getToken()).booleanValue()) {
             args.add(new Integer(1));
         } else {
