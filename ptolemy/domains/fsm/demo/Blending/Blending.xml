@@ -55,7 +55,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
         <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 400.0]">
         </property>
     </property>
     <entity name="BlendingController" class="ptolemy.actor.TypedCompositeActor">
@@ -727,8 +727,8 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
 <title>Control - SequencePlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="99.0"/>
+<yRange min="-1.0" max="1.0"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
         </configure>
@@ -755,8 +755,8 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
 <title>Input - SequencePlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="99.0"/>
+<yRange min="-7.984213827426177" max="7.984213827426176"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
         </configure>
