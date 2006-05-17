@@ -58,7 +58,8 @@ JSRCS = \
 	StringSubstring.java
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS:%.java=%.c)
+	$(JSRCS:%.java=%.c) \
+	string.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
