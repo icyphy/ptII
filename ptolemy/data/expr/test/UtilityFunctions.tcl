@@ -47,7 +47,61 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test UtilityFunctions-1.0 {Check readFile method} {
+test UtilityFunctions-1.3.1 {Check find(ArrayToken)} {
+
+    # 2nd element is true
+    set arrayToken1 [java::new {ptolemy.data.ArrayToken String} "{false, true, false}"]
+    set r1 [java::call ptolemy.data.expr.UtilityFunctions find $arrayToken1]
+
+    # No elements are true
+    set arrayToken2 [java::new {ptolemy.data.ArrayToken String} "{false}"]
+    set r2 [java::call ptolemy.data.expr.UtilityFunctions find $arrayToken2]
+
+    # Empty array has no type, which is an error
+    set valArray [java::new {ptolemy.data.Token[]} 0 ]
+    set arrayTokenWrong [java::new {ptolemy.data.ArrayToken} $valArray]
+    catch {java::call ptolemy.data.expr.UtilityFunctions find $arrayTokenWrong} errMsg
+
+    # Create an empty ArrayToken with type boolean
+    set arrayToken3 [java::new {ptolemy.data.ArrayToken} 	[java::field ptolemy.data.BooleanToken TRUE]]
+    set r3 [java::call ptolemy.data.expr.UtilityFunctions find $arrayToken3]
+
+    list [$r1 toString] [$r2 toString] $errMsg [$r3 toString]
+} {{{1}} {{}} {ptolemy.kernel.util.IllegalActionException: The argument must be an array of boolean tokens.} {{}}}
+
+######################################################################
+####
+# 
+test UtilityFunctions-1.3.2 {Check find(ArrayToken, Token)} {
+
+    # Search for 1
+    set arrayToken1 [java::new {ptolemy.data.ArrayToken String} "{0, 1, 2, 3}"]
+    set intToken1 [java::field ptolemy.data.IntToken ONE]
+    set r1 [java::call ptolemy.data.expr.UtilityFunctions \
+	find $arrayToken1 $intToken1]
+
+    # No elements are true
+    set intToken42 [java::new ptolemy.data.IntToken 42]
+    set r2 [java::call ptolemy.data.expr.UtilityFunctions \
+	find $arrayToken1 $intToken42]
+
+    # Empty array has no type, which is ok here
+    set valArray [java::new {ptolemy.data.Token[]} 0 ]
+    set r3 [java::call ptolemy.data.expr.UtilityFunctions \
+	find $arrayTokenWrong $intToken1]
+
+    # Create an empty ArrayToken with type Int
+    set arrayToken3 [java::new {ptolemy.data.ArrayToken} 	[java::field ptolemy.data.IntToken ONE]]
+    set r4 [java::call ptolemy.data.expr.UtilityFunctions find \
+	$arrayToken3 $intToken1]
+
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
+} {{{1}} {{}} {{}} {{}}}
+
+######################################################################
+####
+# 
+test UtilityFunctions-1.5 {Check readFile method} {
     set parser [java::new ptolemy.data.expr.PtParser]
     
     set tree [$parser generateParseTree "readFile(\"message.txt\")"]
