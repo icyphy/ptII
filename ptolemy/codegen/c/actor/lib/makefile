@@ -170,6 +170,7 @@ OTHER_FILES_TO_BE_JARED = \
 	UnaryMathFunction.c \
 	Uniform.c \
 	array.xml \
+	booleanflowcontrol.xml \
 	executioncontrol.xml \
 	flowcontrol.xml \
 	genericsinks.xml \
