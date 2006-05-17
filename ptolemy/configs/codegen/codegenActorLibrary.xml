@@ -24,6 +24,7 @@
       <configure>
         <?moml
           <group>
+            <input source="ptolemy/codegen/codegen.xml"/>
             <input source="ptolemy/codegen/c/actor/lib/test.xml"/>
           </group>
         ?>
