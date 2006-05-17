@@ -1,4 +1,5 @@
 /* A code generation helper class for actor.lib.logic.LineReader
+
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
 
