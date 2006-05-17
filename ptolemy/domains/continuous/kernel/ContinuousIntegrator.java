@@ -32,6 +32,7 @@ import java.util.LinkedList;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -123,9 +124,9 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        impulseInput = new TypedIOPort(this, "impulseInput", true, false);
-        impulseInput.setTypeEquals(BaseType.DOUBLE);
-        StringAttribute cardinality = new StringAttribute(impulseInput,
+        impulse = new TypedIOPort(this, "impulse", true, false);
+        impulse.setTypeEquals(BaseType.DOUBLE);
+        StringAttribute cardinality = new StringAttribute(impulse,
                 "_cardinal");
         cardinality.setExpression("SOUTH");
 
@@ -135,7 +136,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        initialState = new Parameter(this, "initialState", new DoubleToken(0.0));
+        initialState = new PortParameter(this, "initialState", new DoubleToken(0.0));
         initialState.setTypeEquals(BaseType.DOUBLE);
         _history = new History(this);
     }
@@ -145,7 +146,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     /** The impulse input port. This is a single port of type double.
      */
-    public TypedIOPort impulseInput;
+    public TypedIOPort impulse;
 
     /** The input port. This is a single port of type double.
      */
@@ -157,7 +158,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     /** The initial state of type DoubleToken. The default value is 0.0.
      */
-    public Parameter initialState;
+    public PortParameter initialState;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -194,12 +195,18 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         output.send(0, new DoubleToken(_tentativeState));
     }
 
-    /** If the step size is bigger than 0, delegate to the integratorFire() 
-     *  method of the current ODE solver. If the step size is 0, assign the
-     *  double value of the ImpulseInput port to the current state. 
-     *
+    /** If the value at the <i>input</i> port is known, perform integration;
+     *  if the <i>impulse</i> port is known and has data, then add the
+     *  value provided to the state; if the <i>initialState</i> port
+     *  is known and has data, then reset the state to the provided
+     *  value. If both <i>impulse</i> and <i>initialState</i> have
+     *  data, then <i>initialState</i> dominates. Note that the signals
+     *  provided at these two ports are required to be purely discrete.
+     *  This is enforced by throwing an exception if the current step
+     *  size is greater than zero when they have input data.
      *  @exception IllegalActionException If thrown by integratorFire()
-     *  of the solver.
+     *   of the solver, or if data is present at either <i>impulse</i>
+     *   or <i>initialState</i> and the step size is greater than zero.
      */
     public void fire() throws IllegalActionException {
         ContinuousDirector dir = (ContinuousDirector) getDirector();
@@ -210,16 +217,19 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                 setTentativeDerivative(currentDerivative);
             }
         }
-        if (dir.getCurrentStepSize() == 0) {
-            if (impulseInput.isKnown()) {
-                if (impulseInput.hasToken(0)) {
-                    double currentState = 
-                        ((DoubleToken) impulseInput.get(0)).doubleValue();
-                    setTentativeState(currentState);
-                }
+        // NOTE: 
+        if (impulse.hasToken(0)) {
+            if (dir.getCurrentStepSize() != 0) {
+                throw new IllegalActionException(this,
+                "Signal at the impulse port is not purely discrete.");
             }
-            output.broadcast(new DoubleToken(getTentativeState()));
-        } else if (!output.isKnown()) {
+            double currentState = getState()
+                    + ((DoubleToken) impulse.get(0)).doubleValue();
+            setTentativeState(currentState);
+        }
+
+        output.broadcast(new DoubleToken(getTentativeState()));
+        if (!output.isKnown()) {
             dir._getODESolver().integratorFire(this);
         }
     }

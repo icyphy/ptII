@@ -88,28 +88,11 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (hyzheng)
  */
-public abstract class ContinuousODESolver extends NamedObj {
-    /** Construct a solver in the given workspace with a null string name.
-     *  If the workspace argument is null, use the default workspace.
-     *  The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *
-     *  @param workspace Object for synchronization and version tracking
-     */
-    public ContinuousODESolver(Workspace workspace) {
-        super(workspace);
-    }
+public abstract class ContinuousODESolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire actors. Derived classes may advance the model time. The
-     *  amount of time increment depends on the solving algorithms.
-     *  @exception IllegalActionException If schedule can not be found or
-     *  actors throw it from their fire() methods.
-     */
-    public abstract void fire() throws IllegalActionException; 
-    
     /** Return the amount of history information needed by this solver.
      *  Some solvers need history information from each integrator.
      *  The derived class should implement this method to return the
@@ -177,29 +160,34 @@ public abstract class ContinuousODESolver extends NamedObj {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Return the number of the round counter.
-     *  @return The number of the round counter.
+    
+    /** Report a debug message via the director.
+     *  @param message The message.
      */
-    protected int _getRoundCount() {
-        return _roundCount;
+    protected void _debug(String message) {
+        _director._reportDebugMessage(message);
     }
 
-    /** Increase the round counter by one. In general, the round counter
-     *  will be increased for each time the state transition actors are fired.
+    /** Increment the round and return the time increment associated
+     *  with the round.
+     *  @return The time increment associated with the next round.
      */
-    protected void _incrementRoundCount() {
-        _roundCount++;
+    protected abstract double _incrementRound() throws IllegalActionException; 
+    
+    /** Return true if debugging is turned on in the director.
+     *  @return True if debugging is turned on.
+     */
+    protected final boolean _isDebugging() {
+        return _director._isDebugging();
     }
 
-    /** Return true if all integrators agree that the current states have
-     *  converged to a fixed point.
-     *  @return Return true if all integrators agree that the current states
-     *  have converged to a fixed point.
+    /** Return true if the current integration step is finished. For example,
+     *  solvers with a fixed number of rounds in an integration step will
+     *  return true when that number of rounds are complete. Solvers that
+     *  iterate to a solution will return true when the solution is found.
+     *  @return Return true if the solver has finished an integration step.
      */
-    protected boolean _isConverged() {
-        return _isConverged;
-    }
+    protected abstract boolean _isStepFinished();
 
     /** Make this solver the solver of the given Director. This method
      *  should only be called by CT directors, when they instantiate solvers
@@ -208,58 +196,17 @@ public abstract class ContinuousODESolver extends NamedObj {
      */
     protected void _makeSolverOf(ContinuousDirector director) {
         _director = director;
-
-        if (director != null) {
-            workspace().remove(this);
-        }
     }
 
-    /** Reset the round counter to 0. This method is called when either the
-     *  fixed-point solution of states has been found or the current integration
-     *  fails to find the fixed-point solution within the maximum number of
-     *  rounds.
+    /** Reset the solver, indicating to it that we are starting an
+     *  integration step. This method sets a flag indicating that
+     *  we have not converged to a solution.
      */
-    protected void _resetRoundCount() {
-        _roundCount = 0;
-    }
-
-    /** Set a flag to indicate whether the fixed point of states has been
-     *  reached. Solvers and CT directors may call this method to
-     *  change the convergence.
-     *  <p>
-     *  This method should not be called by individual integrators.
-     *  If an integrator thinks the states have not converged, it should call
-     *  the _voteForConverged() method, which influences the convergence of the
-     *  solver.
-     *  @param converged The flag setting.
-     *  @see #_voteForConverged
-     */
-    protected void _setConverged(boolean converged) {
-        _isConverged = converged;
-    }
-
-    /** An integrator calls this method to vote whether a fixed point has been
-     *  reached. The final result is the logic <i>and</i> of votes from all
-     *  integrators. This method is particularly designed for integrators and
-     *  it should be called from the integratorFire() method.
-     *  Solvers and CT directors should use _setConverged() instead.
-     *  @param converged True if vote for convergence.
-     *  @see #integratorFire
-     *  @see #_setConverged
-     */
-    protected void _voteForConverged(boolean converged) {
-        _setConverged(converged && _isConverged());
-    }
+    protected abstract void _reset();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The Cont director that contains this solver.
+
+    /** The Cont director that contains this solver. */
     private ContinuousDirector _director = null;
-
-    // The flag indicating whether the fixed point of states has been reached.
-    // The default value is false.
-    private boolean _isConverged = false;
-
-    // The round counter.
-    private int _roundCount = 0;
 }

@@ -27,16 +27,12 @@
  */
 package ptolemy.domains.continuous.kernel.solver;
 
-import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.domains.continuous.kernel.ContinuousIntegrator;
 import ptolemy.domains.continuous.kernel.ContinuousODESolver;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExplicitRK23Solver
@@ -75,67 +71,9 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Green (hyzheng)
  */
 public class ExplicitRK23Solver extends ContinuousODESolver {
-    // NOTE: this constructor is necessary for the director to instantiate
-    // an instance of a solver.
-    /** Construct a solver in the default workspace.
-     *  The solver is added to the list of objects in
-     *  the workspace. Increment the version number of the workspace.
-     *  The name of the solver is set to "CT_Runge_Kutta_2_3_Solver".
-     */
-    public ExplicitRK23Solver() {
-        this(null);
-    }
-
-    /** Construct a solver in the given workspace.
-     *  If the workspace argument is null, use the default workspace.
-     *  The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  The name of the solver is set to "CT_Runge_Kutta_2_3_Solver".
-     *
-     *  @param workspace Object for synchronization and version tracking.
-     */
-    public ExplicitRK23Solver(Workspace workspace) {
-        super(workspace);
-
-        try {
-            setName(_DEFAULT_NAME);
-        } catch (KernelException ex) {
-            throw new InternalErrorException(ex);
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Fire all continuous actors. Derived classes may advance the model time.
-     *  The amount of time increment depends on the solving algorithms.
-     *  @exception IllegalActionException If schedule can not be found or
-     *  continuous actors throw it from their fire() methods.
-     */
-    public void fire() throws IllegalActionException {
-        ContinuousDirector director = (ContinuousDirector) getContainer();
-        double currentStepSize = director.getCurrentStepSize();
-
-        if (currentStepSize == 0) {
-            _resetRoundCount();
-            _setConverged(true);
-            return;
-        }
-
-        // NOTE: why is the current model time changed here?
-        // Some state transition actors may be some functions
-        // defined on the current time, such as the CurrentTime actor.
-        Time iterationBeginTime = director.getIterationBeginTime();
-        director.setModelTime(iterationBeginTime.add(currentStepSize
-                * _timeInc[_getRoundCount()]));
-
-        _incrementRoundCount();
-
-        if (_getRoundCount() == _timeInc.length) {
-            _resetRoundCount();
-            _setConverged(true);
-        }
-    }
 
     /** Return 0 to indicate that no history information is needed
      *  by this solver.
@@ -162,7 +100,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
     public void integratorFire(ContinuousIntegrator integrator)
             throws IllegalActionException {
         ContinuousDirector director = (ContinuousDirector) getContainer();
-        int r = _getRoundCount();
+        int r = _roundCount;
         double xn = integrator.getState();
         double outvalue;
         double h = director.getCurrentStepSize();
@@ -195,8 +133,8 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
             break;
 
         default:
-            throw new InvalidStateException(this,
-                    "execution sequence out of range.");
+            throw new InvalidStateException(
+                    "Execution sequence out of range.");
         }
 
         integrator.output.broadcast(new DoubleToken(outvalue));
@@ -272,23 +210,57 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
     public int NumberOfFiringsRequired() {
         return _order;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
+
+    /** Increment the round and return the time increment associated
+     *  with the round.
+     *  @return The time increment associated with the next round.
+     */
+    protected double _incrementRound() { 
+        double result = _timeInc[_roundCount];
+        _roundCount++;
+        return result;
+    }
+    
+    /** Return true if the current integration step is finished. For example,
+     *  solvers with a fixed number of rounds in an integration step will
+     *  return true when that number of rounds are complete. Solvers that
+     *  iterate to a solution will return true when the solution is found.
+     *  @return Return true if the solver has finished an integration step.
+     */
+    protected boolean _isStepFinished() {
+        return _roundCount == _timeInc.length;
+    }
+
+    /** Reset the solver, indicating to it that we are starting an
+     *  integration step. This method resets the round counter.
+     */
+    protected void _reset() {
+        _roundCount = 0;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The name of the solver
+
+    /** The name of the solver. */
     private static final String _DEFAULT_NAME = "CT_Runge_Kutta_2_3_Solver";
 
-    // The ratio of time increments within one integration step.
+    /** The ratio of time increments within one integration step. */
     private static final double[] _timeInc = { 0.5, 0.75, 1.0 };
 
-    // B coefficients
+    /** B coefficients. */
     private static final double[][] _B = { { 0.5 }, { 0, 0.75 },
             { 2.0 / 9.0, 1.0 / 3.0, 4.0 / 9.0 } };
 
-    // E coefficients
+    /** E coefficients. */
     private static final double[] _E = { -5.0 / 72.0, 1.0 / 12.0, 1.0 / 9.0,
             -1.0 / 8.0 };
 
-    // The order of the algorithm.
+    /** The order of the algorithm. */
     private static final int _order = 3;
+    
+    /** The round counter. */
+    private int _roundCount = 0;
 }

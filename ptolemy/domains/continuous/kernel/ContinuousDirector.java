@@ -219,11 +219,15 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public Parameter initStepSize;
 
-    /** The maximum number of iterations that an implicit
-     *  ODE solver will use to resolve the states of integrators.
+    /** The maximum number of rounds that an
+     *  ODE solver can use to resolve the states of integrators.
+     *  Many solvers, such as RK 2-3 and RK 4-5, use a fixed number
+     *  of rounds (3 and 6, respectively). Implicit ODE solvers use
+     *  however many rounds it takes to converge to a solution within
+     *  a specified accuracy (given by <i>errorTolerance</i>).
      *  An example of an implicit solver is the BackwardsEuler solver.
+     *  This parameter limits the number of rounds.
      *  The default value is 20, and the type is int.
-     *  FIXME: Currently, this package implements no implicit solvers.
      */
     public Parameter maxIterations;
 
@@ -308,51 +312,42 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public void fire() throws IllegalActionException {
         
-        ////////////////////////////////////////////////////////////
-        // Find an appropriate step size, which may be refined later.
-        ////////////////////////////////////////////////////////////
-
-        // Refine the correct step size for the continuous phase execution
-        // with respect to the breakpoint table.
-        _refinedStepWRTBreakpoints();
+        // Make sure time does not pass a breakpoint.
+        _refineStepWRTBreakpoints();
         
-        _debug("execute the system from " + getModelTime()
-                + " with a step size " + _currentStepSize);
+        if (_debugging) {
+            _debug("Execute the system from "
+                    + getModelTime()
+                    + " with a step size "
+                    + _currentStepSize
+                    + ".");
+        }
 
-        // Resolve the initial states at a future time
-        // (the current time plus the current step size).
+        // Iterate until we conclude that the step size is acceptable.
         while (!_stopRequested) {
+            // Some solvers take multiple rounds to perform an integration step.
+            // Tell the solver we are starting an integration step.
+            _ODESolver._reset();
 
-            ////////////////////////////////////////////////////////////
-            // Resolve states with the chosen step size.
-            ////////////////////////////////////////////////////////////
-
-            // Reset the round counts and the convergencies to false.
-            // NOTE: some solvers have their convergencies depending on
-            // the round counts. For example, it takes 3 rounds for a
-            // RK-23 solver to solve states.
-            // FIXME: the following statement may not be necessary since
-            // the ODE solvers reset the round count in their fire() methods.
-            _ODESolver._resetRoundCount();
-            _ODESolver._setConverged(false);
-
-            // repeating resolving states until states converge, or the
-            // maximum iterations for finding states have been reached.
-            // FIXME: this design does not support hierarchical execution yet.
-            while (!_ODESolver._isConverged() && _ODESolver.resolvedStates()) {
-                _ODESolver.fire();
-//                _ODESolver._incrementRoundCount();
+            // Iterate until the solver is done with the integration step
+            // or we reach the maximum number of iterations.
+            // If the step size is zero, then we take only one round.
+            int iterations = 0;
+            while (!_ODESolver._isStepFinished() && iterations < _maxIterations) {
+                if (_currentStepSize > 0) {
+                    Time iterationBeginTime = getIterationBeginTime();
+                    setModelTime(
+                            iterationBeginTime.add(_currentStepSize
+                                    * _ODESolver._incrementRound()));
+                }
                 _resetAllReceivers();
                 super.prefire();
                 super.fire();
+                if (_currentStepSize == 0) break;
             }
-            
-            ////////////////////////////////////////////////////////////
-            // Refine the step size if necessary.
-            ////////////////////////////////////////////////////////////
-
-            if (_isStepSizeAccurate()) {
-                // all actors agree with the current step size
+            if (_isStepSizeAccurate() && iterations < _maxIterations) {
+                // All actors agree with the current step size.
+                // The integration step is finished.
                 break;
             } else {
                 // If any step size control actor is unsatisfied with the 
@@ -846,6 +841,14 @@ public class ContinuousDirector extends FixedPointDirector implements
         return newSolver;
     }
 
+    /** Return true if debugging is turned on.
+     *  This exposes whether debugging is happening to the package.
+     *  @return True if debugging is turned on.
+     */
+    protected final boolean _isDebugging() {
+        return _debugging;
+    }
+
     /** The current states are marked as a known good checkpoint.
      *  <p>
      *  If the <i>synchronizeToRealTime</i> parameter is <i>true</i>,
@@ -898,6 +901,56 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
     }
 
+<<<<<<< ContinuousDirector.java
+    /** Set the suggested step size for next integration. The suggested step 
+     *  size is the minimum of suggestions from all step size control actors,
+     *  and it never exceeds 10 times of the current step size.
+     *  If there are no step size control actors at all, then return
+     *  5 times of the current step size. However, the suggested step size
+     *  never exceeds the maximum step size.
+     *  @exception IllegalActionException If the scheduler throws it.
+     */
+    protected void _predictNextStepSize() throws IllegalActionException {
+        double predictedStep = _currentStepSize;
+    
+        if (predictedStep == 0.0) {
+            // The current step size is 0.0. Predict a positive value to let
+            // time advance.
+            predictedStep = _initStepSize;
+        } else {
+            predictedStep = 10.0 * _currentStepSize;
+    
+            // FIXME: may generate ContinuousStepSizeControlActor set for more 
+            // efficient execution.
+            Schedule schedule = getScheduler().getSchedule();
+            Iterator firingIterator = schedule.firingIterator();
+            while (firingIterator.hasNext() && !_stopRequested) {
+                Actor actor = ((Firing) firingIterator.next()).getActor();
+                if (actor instanceof ContinuousStepSizeControlActor) {
+                    double suggestedStepSize = 
+                        ((ContinuousStepSizeControlActor) actor)
+                            .suggestedStepSize();
+                        if (predictedStep > suggestedStepSize) {
+                            predictedStep = suggestedStepSize;
+                        }
+                }
+            }
+    
+            if (predictedStep > _maxStepSize) {
+                _setCurrentStepSize(_maxStepSize);
+            } else {
+                _setCurrentStepSize(predictedStep);
+            }
+        }
+    }
+
+    /** Expose the debug method to the package. */
+    protected void _reportDebugMessage(String message) {
+        _debug(message);
+    }
+    
+=======
+>>>>>>> 1.4
     /** Set the current phase of execution as a discrete phase. The value
      *  set can be returned by the isDiscretePhase() method.
      *  @param discrete True if this is the discrete phase.
@@ -983,18 +1036,17 @@ public class ContinuousDirector extends FixedPointDirector implements
         return accurate;
     }
 
-    // Return the refined step size with respect to the breakpoints.
-    // If the current time plus the current step size exceeds the
-    // time of the next breakpoint, reduce the step size such that the next
-    // breakpoint is the end time of the current iteration.
-    // NOTE: if the current time is a breakpoint, that breakpoint is
-    // removed. Otherwise, the breakpoint table is left unmodified.
-    private void _refinedStepWRTBreakpoints() {
+    /** Modify the current step size so that current model time plus the
+     *  step size does not exceed the time of the next breakpoint.
+     *  NOTE: if the current time is a breakpoint, that breakpoint is
+     *  removed. Otherwise, the breakpoint table is left unmodified.
+     */
+    private void _refineStepWRTBreakpoints() {
         if (!_breakpoints.isEmpty()) {
             Time point = ((Time) _breakpoints.first());
             _debug("The first breakpoint is at " + point);
-            double maximumAllowedStepSize = 
-                point.subtract(getModelTime()).getDoubleValue();
+            double maximumAllowedStepSize
+                    = point.subtract(getModelTime()).getDoubleValue();
             if (maximumAllowedStepSize == 0.0) {
                 _breakpoints.removeFirst();
             }
