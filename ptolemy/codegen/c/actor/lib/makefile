@@ -172,6 +172,7 @@ OTHER_FILES_TO_BE_JARED = \
 	array.xml \
 	booleanflowcontrol.xml \
 	executioncontrol.xml \
+	filtering.xml \
 	flowcontrol.xml \
 	genericsinks.xml \
 	genericsources.xml \
