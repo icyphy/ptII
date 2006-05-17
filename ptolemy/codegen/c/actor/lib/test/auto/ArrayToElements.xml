@@ -29,11 +29,11 @@
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;0.1234&quot;, &quot;abc&quot;, &quot;0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;1&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;2&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;3&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;4&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;5&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;6&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;7&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;8&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;9&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;10&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;11&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;12&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;13&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;14&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;15&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;16&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;17&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;18&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;19&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;20&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;21&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;22&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;23&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;24&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;25&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;26&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;27&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;28&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;29&quot;, &quot;1.0&quot;}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;0.1234&quot;, &quot;abc&quot;, &quot;0&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;1&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;2&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;3&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;4&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;5&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;6&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;7&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;8&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;9&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;10&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;11&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;12&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;13&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;14&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;15&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;16&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;17&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;18&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;19&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;20&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;21&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;22&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;23&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;24&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;25&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;26&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;27&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;28&quot;, &quot;1.0&quot;, &quot;1.0&quot;}, {&quot;0.1234&quot;, &quot;abc&quot;, &quot;29&quot;, &quot;1.0&quot;, &quot;1.0&quot;}}">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 225.0]">
         </property>
     </entity>
     <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
@@ -92,6 +92,27 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 335.0]">
         </property>
     </entity>
+    <entity name="ArrayToElements3" class="ptolemy.actor.lib.ArrayToElements">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 430.0]">
+        </property>
+    </entity>
+    <entity name="Const4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{{1}, {1}, {2.4}}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 430.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToElements4" class="ptolemy.actor.lib.ArrayToElements">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 430.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -128,10 +149,23 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <link port="Test.input" relation="relation"/>
     <link port="Test.input" relation="relation7"/>
     <link port="Test.input" relation="relation2"/>
     <link port="Test.input" relation="relation9"/>
+    <link port="Test.input" relation="relation12"/>
     <link port="ArrayToElements.input" relation="relation3"/>
     <link port="ArrayToElements.output" relation="relation"/>
     <link port="ArrayToElements.output" relation="relation7"/>
@@ -146,4 +180,9 @@
     <link port="ArrayToElements2.input" relation="relation8"/>
     <link port="ArrayToElements2.output" relation="relation9"/>
     <link port="Const.output" relation="relation8"/>
+    <link port="ArrayToElements3.input" relation="relation10"/>
+    <link port="ArrayToElements3.output" relation="relation11"/>
+    <link port="Const4.output" relation="relation10"/>
+    <link port="ArrayToElements4.input" relation="relation11"/>
+    <link port="ArrayToElements4.output" relation="relation12"/>
 </entity>

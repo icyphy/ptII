@@ -4,7 +4,7 @@
 <entity name="Differential" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, -6, 1032, 776}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 658]">
     </property>
@@ -29,11 +29,11 @@
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543, 3.225443543}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;1.0&quot;, &quot;{1.0, 2.0}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}, {&quot;3.225443543&quot;, &quot;{1.2, 3.1}&quot;}}">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{340.0, 220.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 225.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -49,6 +49,23 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 220.0]">
         </property>
     </entity>
+    <entity name="Differential2" class="ptolemy.actor.lib.Differential">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="{1,2}">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="{1.2, 3.1}">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 330}">
+        </property>
+    </entity>
+    <entity name="TokenToExpression" class="ptolemy.actor.lib.conversions.TokenToExpression">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 330.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -57,8 +74,26 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <link port="Test.input" relation="relation2"/>
+    <link port="Test.input" relation="relation4"/>
     <link port="Ramp.output" relation="relation"/>
     <link port="Differential.input" relation="relation"/>
     <link port="Differential.output" relation="relation2"/>
+    <link port="Differential2.input" relation="relation3"/>
+    <link port="Differential2.output" relation="relation5"/>
+    <link port="Ramp2.output" relation="relation3"/>
+    <link port="TokenToExpression.input" relation="relation5"/>
+    <link port="TokenToExpression.output" relation="relation4"/>
 </entity>
