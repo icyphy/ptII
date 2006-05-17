@@ -17,4 +17,16 @@
   <input source="ptolemy/codegen/c/actor/lib/signalprocessing.xml"/>
   <!-- input source="ptolemy/actor/lib/string/string.xml"/-->
   <input source="ptolemy/configs/codegen/codegenDomains.xml"/>
+
+    <!-- Optional packages that may or may not be present  -->
+    <!-- Alphabetize these  -->
+    <entity name="MoreLibraries" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/codegen/c/actor/lib/test.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
 </group>
