@@ -42,8 +42,8 @@ test CodeGeneratorUtilities-1.1 {openAsFileOrURL} {
     # Increase Code Coverage
     catch { java::call ptolemy.codegen.kernel.CodeGeneratorUtilities \
 	openAsFileOrURL "DoesNotExist"} errMsg
-    list $errMsg
-} {{java.io.FileNotFoundException: DoesNotExist (The system cannot find the file specified)}}
+    list [string range $errMsg 0 42]
+} {{java.io.FileNotFoundException: DoesNotExist}}
 
 #####
 test CodeGeneratorUtilities-2.1 {Test out subsitute(String, NamedObj)} {
