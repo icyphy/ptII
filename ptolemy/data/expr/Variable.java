@@ -1395,8 +1395,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *   be parsed or cannot be evaluated, or if a dependency loop is found.
      */
     protected void _evaluate() throws IllegalActionException {
-        if ((_currentExpression == null) || 
-                (!isStringMode() && _currentExpression.trim().equals(""))) {
+        if ((_currentExpression == null)
+                || (isStringMode() ? _currentExpression.equals("")
+                        : _currentExpression.trim().equals(""))) {
             _setToken(null);
             return;
         }
