@@ -285,7 +285,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String includeFiles = generateIncludeFiles();
         String preinitializeCode = generatePreinitializeCode();
         String initializeCode = generateInitializeCode();
+        CodeStream.setIndentLevel(2);
         String bodyCode = generateBodyCode();
+        CodeStream.setIndentLevel(0);
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         String mainEntryCode = compositeActorHelper.generateMainEntryCode();
         String mainExitCode = compositeActorHelper.generateMainExitCode();
@@ -295,6 +297,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
         String wrapupCode = generateWrapupCode();
 
+        // Generating variable declarations needs to happen after buffer
+        // sizes are set(?).
         String variableDeclareCode = generateVariableDeclaration();
         String variableInitCode = generateVariableInitialization();
         // generate type resolution code has to be after 

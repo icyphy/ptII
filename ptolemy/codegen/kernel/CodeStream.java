@@ -222,7 +222,8 @@ public class CodeStream {
      * Append the specific code block with an array of arguments and
      * substitute each argument with the parameters of the code block in
      * the order listed in the given arguments array list.
-     * The code block is not indented.
+     * The initial default level of indention is 0.  To change the
+     * the level of indentation, call {@link #setIndentLevel(int)}.
      * @param blockName The name of the code block.
      * @param arguments The user-specified arguments for the code block,
      * @param mayNotExist Indicate if it is okay not to find the code block.
@@ -234,7 +235,7 @@ public class CodeStream {
     public void appendCodeBlock(String blockName, ArrayList arguments,
             boolean mayNotExist) 
             throws IllegalActionException {            
-        appendCodeBlock(blockName, arguments, mayNotExist, 0);
+        appendCodeBlock(blockName, arguments, mayNotExist, _indentLevel);
     }
 
     /**
@@ -425,6 +426,14 @@ public class CodeStream {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    /** Set the indent level
+     *  @param indentLevel The indent level, where 0 means no indentation,
+     *  1 means indent one level (probably 4 spaces).
+     */
+    public static void setIndentLevel(int indentLevel) {
+        _indentLevel = indentLevel;
     }
 
     /**
@@ -901,6 +910,9 @@ public class CodeStream {
      */
     private static final String _HEADEREND = "***/";
 
+    /** The indent level. */
+    private static int _indentLevel = 0;
+
     /**
      * The code block table that stores the code blocks information,
      * like the code body (StringBuffer), signatures, .c helper class
@@ -931,7 +943,6 @@ public class CodeStream {
     private StringBuffer _stream = new StringBuffer();
 
     /** The end of line character. */
-
     private static String _lineSeparator;
     static {
         _lineSeparator = System.getProperty("line.separator");
