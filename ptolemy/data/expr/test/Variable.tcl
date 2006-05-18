@@ -531,3 +531,12 @@ test Variable-14.0 {Test getFreeIdentifiers} {
     set result3 [$var getFreeIdentifiers]
     list [listToStrings $result2] [listToStrings $result3]
 } {{} a}
+
+
+test Variable-14.1 {Check string with only spaces evaluation} {
+	set var [java::new ptolemy.data.expr.Variable]
+    $var setStringMode true
+    $var setExpression "           "
+    $var invalidate
+    [$var getToken] toString
+} {"           "}
