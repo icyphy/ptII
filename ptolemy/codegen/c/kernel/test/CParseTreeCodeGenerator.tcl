@@ -136,9 +136,7 @@ test CParseTreeCodeGenerator-13.1 {visitMethodCallNode} {
     Entering node ptolemy.data.expr.ASTPtLeafNode
     Node ptolemy.data.expr.ASTPtLeafNode evaluated to 6
   Node ptolemy.data.expr.ASTPtMatrixConstructNode evaluated to [1, 2; 3, 4; 5, 6]
-  Invoking public abstract int ptolemy.data.MatrixToken.getRowCount()
-  as [int].getRowCount()
-Node ptolemy.data.expr.ASTPtMethodCallNode evaluated to 3
+Node ptolemy.data.expr.ASTPtMethodCallNode evaluated to [1, 2; 3, 4; 5, 6]
 } {((Token*) $new(Matrix(3, 2, $new(Int(1)), TYPE_Int, $new(Int(2)), TYPE_Int, $new(Int(3)), TYPE_Int, $new(Int(4)), TYPE_Int, $new(Int(5)), TYPE_Int, $new(Int(6)), TYPE_Int)))->getRowCount()}}
 
 test CParseTreeCodeGenerator-14.1 {visitPowerNode} {
@@ -179,9 +177,7 @@ test CParseTreeCodeGenerator-16.2 {visitFunctionApplicationNode} {
     Entering node ptolemy.data.expr.ASTPtLeafNode
     Node ptolemy.data.expr.ASTPtLeafNode evaluated to 3
   Node ptolemy.data.expr.ASTPtArrayConstructNode evaluated to {0, 2, 3}
-  Invoking public static ptolemy.data.ArrayToken ptolemy.data.expr.UtilityFunctions.map(ptolemy.data.FunctionToken,ptolemy.data.ArrayToken) throws ptolemy.kernel.util.IllegalActionException
-  as map((function(a0:int) int), {int})
-Node ptolemy.data.expr.ASTPtFunctionApplicationNode evaluated to {3, 5, 6}
+Node ptolemy.data.expr.ASTPtFunctionApplicationNode evaluated to {0, 2, 3}
 } {map(, $new(Array(3, 3, $new(Int(0)), $new(Int(2)), $new(Int(3)), TYPE_Int)))}}
 
 test CParseTreeCodeGenerator-16.3 {visitFunctionApplicationNode} {
