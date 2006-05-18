@@ -15,7 +15,7 @@ struct token {                  // Base type for tokens.
     char type;         // TYPE field has to be the first field.
     union typeMembers {
         // type member declarations [i.e. Type1Token Type1;]
-$types                 
+        $types                 
     } payload;
 };
 /**/
@@ -45,24 +45,24 @@ char* LongtoString (long l) {
 }
 
 char* DoubletoString (double d) {
-	int index;
-	char* string = (char*) malloc(sizeof(char) * 20);
+    int index;
+    char* string = (char*) malloc(sizeof(char) * 20);
     sprintf(string, "%.14g", d);
 
-	if (strrchr(string, '.') == NULL) {
-		index = strlen(string);
-		if (index > 10) {
-	        string = (char*) realloc(string, sizeof(char) * 22);
-		}
-		string[index] = '.';
-		string[index + 1] = '0';
-		string[index + 2] = '\0';
-	}
+    if (strrchr(string, '.') == NULL) {
+        index = strlen(string);
+        if (index > 10) {
+            string = (char*) realloc(string, sizeof(char) * 22);
+        }
+        string[index] = '.';
+        string[index + 1] = '0';
+        string[index + 2] = '\0';
+    }
     return string;       
 }
 
 char* BooleantoString (boolean b) {
-	return (b) ? strdup("true") : strdup("false");
+    return (b) ? strdup("true") : strdup("false");
 }
 
 /**/

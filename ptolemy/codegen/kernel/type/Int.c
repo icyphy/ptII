@@ -22,10 +22,10 @@ Token Int_equals(Token this, ...) {
     va_list argp; 
     Token otherToken; 
     va_start(argp, this);
-	otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token);
 
     va_end(argp);
-	return Boolean_new(this.payload.Int == otherToken.payload.Int);
+    return Boolean_new(this.payload.Int == otherToken.payload.Int);
 }
 /**/
 
@@ -41,7 +41,7 @@ Token Int_print(Token this, ...) {
 
 /***toStringBlock***/
 Token Int_toString(Token this, ...) {
-	return String_new(InttoString(this.payload.Int));
+    return String_new(InttoString(this.payload.Int));
 }
 /**/
 
@@ -49,10 +49,10 @@ Token Int_toString(Token this, ...) {
 Token Int_add(Token this, ...) {
     va_list argp; 
     va_start(argp, this);
-	Token otherToken = va_arg(argp, Token);
+    Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-	return Int_new(this.payload.Int + otherToken.payload.Int);
+    return Int_new(this.payload.Int + otherToken.payload.Int);
 }
 /**/
 
@@ -60,41 +60,41 @@ Token Int_add(Token this, ...) {
 Token Int_substract(Token this, ...) {
     va_list argp; 
     va_start(argp, this);
-	Token otherToken = va_arg(argp, Token);	
+    Token otherToken = va_arg(argp, Token);	
 
     va_end(argp);
-	return Int_new(this.payload.Int - otherToken.payload.Int);
+    return Int_new(this.payload.Int - otherToken.payload.Int);
 }
 /**/
 
 /***multiplyBlock***/
 Token Int_multiply(Token this, ...) {
     va_list argp; 
-	Token result;
-	Token otherToken;
+    Token result;
+    Token otherToken;
 
     va_start(argp, this);
-	otherToken = va_arg(argp, Token);	
+    otherToken = va_arg(argp, Token);	
 
     switch (otherToken.type) {
-    	case TYPE_Int:
-    		result = Int_new(this.payload.Int * otherToken.payload.Int);
-    		break;
+    case TYPE_Int:
+        result = Int_new(this.payload.Int * otherToken.payload.Int);
+        break;
     		
-        #ifdef TYPE_Double
-            case TYPE_Double:
-                result = Double_new(this.payload.Int * otherToken.payload.Double);
-                break;
-        #endif
+#ifdef TYPE_Double
+    case TYPE_Double:
+        result = Double_new(this.payload.Int * otherToken.payload.Double);
+        break;
+#endif
 
         // FIXME: not finished
-        default:
-            fprintf(stderr, "Int_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
-            exit(1);
+    default:
+        fprintf(stderr, "Int_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
+        exit(1);
     }
 
     va_end(argp);
-	return result;
+    return result;
 }
 /**/
 
@@ -102,35 +102,35 @@ Token Int_multiply(Token this, ...) {
 Token Int_divide(Token this, ...) {
     va_list argp; 
     va_start(argp, this);
-	Token otherToken = va_arg(argp, Token);	
+    Token otherToken = va_arg(argp, Token);	
 
     va_end(argp);
-	return Int_new(this.payload.Int / otherToken.payload.Int);
+    return Int_new(this.payload.Int / otherToken.payload.Int);
 }
 /**/
 
 /***negateBlock***/
 Token Int_negate(Token this, ...) {
-	this.payload.Int = -this.payload.Int;
-	return this;
+    this.payload.Int = -this.payload.Int;
+    return this;
 }
 /**/
 
 /***zeroBlock***/
 Token Int_zero(Token token, ...) {
-	return Int_new(0);
+    return Int_new(0);
 }
 /**/
 
 /***oneBlock***/
 Token Int_one(Token token, ...) {
-	return Int_new(1);
+    return Int_new(1);
 }
 /**/
 
 /***cloneBlock***/
 Token Int_clone(Token this, ...) {
-	return this;
+    return this;
 }
 /**/
 
@@ -140,16 +140,16 @@ Token Int_clone(Token this, ...) {
 Token Int_convert(Token token, ...) {
     switch (token.type) {
 
-		#ifdef TYPE_Double
-		    case TYPE_Double:
-		        token.payload.Int = DoubletoInt(token.payload.Double);
-		        break;
-		#endif
+#ifdef TYPE_Double
+    case TYPE_Double:
+        token.payload.Int = DoubletoInt(token.payload.Double);
+        break;
+#endif
 	
-	    // FIXME: not finished
-	    default: 
-	        fprintf(stderr, "Int_convert(): Conversion from an unsupported type. (%d)\n", token.type);
-	        break;
+        // FIXME: not finished
+    default: 
+        fprintf(stderr, "Int_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+        break;
     }    
     token.type = TYPE_Int;
     return token;
