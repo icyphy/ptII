@@ -1,26 +1,57 @@
+/*** sharedBlock ***/
+char* myStrtrim(char* result, char *str) {
+	int length;
+	if (!str) return;
+	char *end = str + strlen(str);
+	
+	while(end-- > str)	{
+		if(!strchr(" \t\n\r", *end))
+			break;
+	}
+
+	if (end - str + 1 != 0) {
+		while(*str)	{
+			if(!strchr(" \t\n\r", *str))
+				break;
+			++str;
+		}
+	}
+
+	length = end - str + 1;
+	result = (char*) realloc(result, sizeof(char) * (length + 1));	
+	strncpy(result, str, length);
+	result[length] = '\0';
+	return result;
+}
+/**/
+
 /*** preinitBlock ***/
 int $actorSymbol(i);
+char* $actorSymbol(string) = NULL;
 /**/
 
 /*** toLowerCaseBlock ***/
-$ref(output) = (char*) malloc (sizeof(char) * (1 + strlen($ref(input))));
+$actorSymbol(string) = (char*) realloc ($actorSymbol(string), sizeof(char) * (1 + strlen($ref(input))));
 for($actorSymbol(i) = 0; $ref(input)[ $actorSymbol(i) ]; $actorSymbol(i)++) {
-    $ref(output)[$actorSymbol(i)] = tolower($ref(input)[ $actorSymbol(i) ]);
+	$actorSymbol(string)[$actorSymbol(i)] = tolower($ref(input)[ $actorSymbol(i) ]);
 }
-$ref(output)[$actorSymbol(i)] = '\0';
+$actorSymbol(string)[$actorSymbol(i)] = '\0';
+$ref(output) = $actorSymbol(string);
 /**/
 
 /*** toUpperCaseBlock ***/
-$ref(output) = (char*) malloc (sizeof(char) * (1 + strlen($ref(input))));
+$actorSymbol(string) = (char*) realloc ($actorSymbol(string), sizeof(char) * (1 + strlen($ref(input))));
 for($actorSymbol(i) = 0; $ref(input)[ $actorSymbol(i) ]; $actorSymbol(i)++) {
-    $ref(output)[$actorSymbol(i)] = toupper($ref(input)[ $actorSymbol(i) ]);
+	$actorSymbol(string)[$actorSymbol(i)] = toupper($ref(input)[ $actorSymbol(i) ]);
 }
-$ref(output)[$actorSymbol(i)] = '\0';
+$actorSymbol(string)[$actorSymbol(i)] = '\0';
+$ref(output) = $actorSymbol(string);
 /**/
 
 /*** trimBlock ***/
-$ref(output) = (char*) malloc (sizeof(char) * (1 + strlen($ref(input))));
+$ref(output) = myStrtrim($actorSymbol(string), $ref(input));
+/**/
 
-// FIXME: strtrim() is not a standard c function.
-strtrim($ref(output));
+/*** wrapupBlock ***/
+free($actorSymbol(string));
 /**/
