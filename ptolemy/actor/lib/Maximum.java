@@ -129,18 +129,32 @@ public class Maximum extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         ScalarToken result = null;
+        ScalarToken resultMagnitude = null;
+        ScalarToken inMagnitude = null;
         int channelNum = -1;
 
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 ScalarToken in = (ScalarToken) input.get(i);
 
+                if (in.getType() == BaseType.COMPLEX) {
+                    // If we have a complex, we use the absolute value
+                    // for comparison, but save output the initial input
+                    // for output at the end.
+                    inMagnitude = in.absolute();
+                } else {
+                    inMagnitude = in;
+                }
+                       
                 if (result == null) {
                     result = in;
+                    resultMagnitude = inMagnitude;
                     channelNum = i;
                 } else {
-                    if (result.isLessThan(in).booleanValue() == true) {
+                    if (inMagnitude.isGreaterThan(resultMagnitude).booleanValue()
+                            == true) {
                         result = in;
+                        resultMagnitude = inMagnitude;
                         channelNum = i;
                     }
                 }
