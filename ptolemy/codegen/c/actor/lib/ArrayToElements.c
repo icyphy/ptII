@@ -1,5 +1,5 @@
 /*** TokenFireBlock($channel) ***/
-$ref(output#$channel) = Array_get($ref(input), $actorSymbol(i));
+	$ref(output#$channel) = Array_get($ref(input), $channel);
 /**/
 
 /*** PrimitiveFireBlock($channel) ***/

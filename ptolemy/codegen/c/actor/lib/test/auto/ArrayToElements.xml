@@ -97,7 +97,7 @@
         </property>
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{{1}, {1}, {2.4}}">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{{1.0}, {1.0}, {2.4}}">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
