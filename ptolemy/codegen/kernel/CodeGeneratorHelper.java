@@ -236,7 +236,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         _codeStream.append(_codeGenerator.comment(2, "fire " + composite
                 + getComponent().getName()));
 
-        _codeStream.appendCodeBlock(_defaultBlocks[2], true); // fireBlock
+        // Indent to level 2
+        _codeStream.appendCodeBlock(_defaultBlocks[2], true, 2); // fireBlock
         return processCode(_codeStream.toString());
     }
 
@@ -268,7 +269,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         _codeStream.clear();
         _codeStream.append(_codeGenerator.comment(1, "initialize "
                 + getComponent().getName()));
-        _codeStream.appendCodeBlock(_defaultBlocks[1], true); // initBlock
+        // Indent to level 1
+        _codeStream.appendCodeBlock(_defaultBlocks[1], true, 1); // initBlock
         return processCode(_codeStream.toString());
     }
 

@@ -39,6 +39,7 @@ import java.util.LinkedList;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.StringUtilities;
 
 /**
  * Read and process code blocks from the helper .c file. Helper .c files
@@ -165,6 +166,24 @@ public class CodeStream {
     }
 
     /**
+     * Append the code block specified the given block name. This method
+     * invokes appendCodeBlock(String, ArrayList) with no arguments by
+     * passing an empty array list of argments. The requested
+     * code block is required to exist.
+     * @see #appendCodeBlock(String, ArrayList, boolean)
+     * @param blockName The given code block name.
+     * @param mayNotExist Indicate if it is okay not to find the code block.
+     *  if the code block has parameters.
+     * @param indentLevel The level of indention.
+     * @exception IllegalActionException If 
+     *  appendCodeBlock(String, ArrayList, boolean) throws the exception.
+     */
+    public void appendCodeBlock(String blockName, boolean mayNotExist,
+            int indentLevel) throws IllegalActionException {
+        appendCodeBlock(blockName, new ArrayList(), mayNotExist, indentLevel);
+    }
+
+    /**
      * Append the specific code block with an array of arguments and
      * substitute each argument with the parameters of the code block in
      * the order listed in the given arguments array list. The requested
@@ -184,7 +203,26 @@ public class CodeStream {
     /**
      * Append the specific code block with an array of arguments and
      * substitute each argument with the parameters of the code block in
+     * the order listed in the given arguments array list. The requested
+     * code block is required to exist.
+     * @see #appendCodeBlock(String, ArrayList, boolean)
+     * @param blockName The name of the code block.
+     * @param arguments The user-specified arguments for the code block,
+     *  if the code block has parameters.
+     * @param indentLevel The level of indention.
+     * @exception IllegalActionException If 
+     *  appendCodeBlock(String, ArrayList, boolean) throws the exception.
+     */
+    public void appendCodeBlock(String blockName, ArrayList arguments, int indentLevel)
+            throws IllegalActionException {
+        appendCodeBlock(blockName, arguments, false, indentLevel);
+    }
+
+    /**
+     * Append the specific code block with an array of arguments and
+     * substitute each argument with the parameters of the code block in
      * the order listed in the given arguments array list.
+     * The code block is not indented.
      * @param blockName The name of the code block.
      * @param arguments The user-specified arguments for the code block,
      * @param mayNotExist Indicate if it is okay not to find the code block.
@@ -194,7 +232,27 @@ public class CodeStream {
      *  be found, or if the numbers of arguments and parameters do not match.
      */
     public void appendCodeBlock(String blockName, ArrayList arguments,
-            boolean mayNotExist) throws IllegalActionException {
+            boolean mayNotExist) 
+            throws IllegalActionException {            
+        appendCodeBlock(blockName, arguments, mayNotExist, 0);
+    }
+
+    /**
+     * Append the specific code block with an array of arguments and
+     * substitute each argument with the parameters of the code block in
+     * the order listed in the given arguments array list.
+     * @param blockName The name of the code block.
+     * @param arguments The user-specified arguments for the code block,
+     * @param mayNotExist Indicate if it is okay not to find the code block.
+     *  if the code block has parameters.
+     * @param indentLevel The level of indention.
+     * @exception IllegalActionException If _constructCodeTable() throws
+     *  the exception, or if the requested code block is required but cannot 
+     *  be found, or if the numbers of arguments and parameters do not match.
+     */
+    public void appendCodeBlock(String blockName, ArrayList arguments,
+            boolean mayNotExist, int indentLevel)
+            throws IllegalActionException {
         if (!mayNotExist && arguments.size() == 0) {
             // That means this is a request by the user. This check prevents
             // user from appending duplicate code blocks that are already
@@ -249,11 +307,27 @@ public class CodeStream {
             }
         }
 
+        if (indentLevel > 0) {
+            String indent = StringUtilities.getIndentPrefix(indentLevel);
+            // For every line.separator, substitute line.separator + indent.
+            String tmpString = StringUtilities.substitute(
+                    codeBlock.toString(),
+                    _lineSeparator,
+                    _lineSeparator + indent);
+            if (tmpString.endsWith(_lineSeparator + indent)) {
+                // Chop off the last indent
+                tmpString = tmpString.substring(0,
+                        tmpString.length() - indent.length());
+            }
+            // Insert the initial indent.
+            codeBlock = new StringBuffer(indent + tmpString);
+                                                 
+        }
         _stream.append(codeBlock);
     }
 
     /**
-     * Append multiple code blocks whose names match the given egular
+     * Append multiple code blocks whose names match the given regular
      * expression.
      * @param nameExpression The given regular expression for the block names.
      * @exception IllegalActionException If _constructCodeTable() throws
@@ -855,4 +929,11 @@ public class CodeStream {
      * The content of this CodeStream.
      */
     private StringBuffer _stream = new StringBuffer();
+
+    /** The end of line character. */
+
+    private static String _lineSeparator;
+    static {
+        _lineSeparator = System.getProperty("line.separator");
+    }
 }
