@@ -453,6 +453,9 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  the director has no ODE solver.
      */
     public boolean prefire() throws IllegalActionException {
+        
+        // FIXME: should this happen in the initialize or preinitialize method? 
+        
         ContinuousDirector dir = (ContinuousDirector) getDirector();
 
         if (dir == null) {
