@@ -92,7 +92,7 @@ public class Test extends CCodeGeneratorHelper {
                 inputType = "Token";
             }
             _codeStream.appendCodeBlock(inputType + "Block" + multiChannel,
-                    args, 2);
+                    args);
         }
         return processCode(_codeStream.toString());
     }
