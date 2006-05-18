@@ -66,7 +66,7 @@ public class IsPresent extends CCodeGeneratorHelper {
 
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
-        for (int i = 0; i < actor.input.getWidth(); i++) {
+        for (int i = 0; i < actor.output.getWidth(); i++) {
             args.set(0, new Integer(i));
             _codeStream.appendCodeBlock("outputBlock", args);
         }
