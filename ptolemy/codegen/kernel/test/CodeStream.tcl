@@ -75,8 +75,8 @@ test CodeStream-1.2 {Constructor that takes a String} {
 
 #####
 test CodeStream-3.1 {appendCodeBlock} {
-    $codeStream appendCodeBlock "foo" [java::new java.util.ArrayList] true
-    catch {$codeStream appendCodeBlock "foo" [java::new java.util.ArrayList] false} errMsg
+    $codeStream appendCodeBlock "foo" [java::new java.util.ArrayList] true 0
+    catch {$codeStream appendCodeBlock "foo" [java::new java.util.ArrayList] false 0} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: foo().
 }}
@@ -89,7 +89,7 @@ test CodeStream-3.2 {appendCodeBlock} {
 
     set args [java::new java.util.ArrayList]
     $args add [java::call Integer toString 3]
-    $codeStream3_2 appendCodeBlock "initBlock" $args false
+    $codeStream3_2 appendCodeBlock "initBlock" $args false 0
     list [$codeStream3_2 toString] \
 	[$codeStream3_2 description]
 } {{
@@ -116,7 +116,7 @@ test CodeStream-3.3 {appendCodeBlock: wrong number of args} {
     set args [java::new java.util.ArrayList]
     $args add [java::call Integer toString 3]
     $args add [java::call Integer toString 4]
-    catch {$codeStream3_3 appendCodeBlock "initBlock" $args false} errMsg
+    catch {$codeStream3_3 appendCodeBlock "initBlock" $args false 0} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: initBlock($, $).
 }}
@@ -128,7 +128,7 @@ test CodeStream-3.4 {appendCodeBlock: arg name does not start with $} {
 
     set args [java::new java.util.ArrayList]
     $args add [java::call Integer toString 3]
-    catch {$codeStream3_4 appendCodeBlock "initBlock" $args false} errMsg
+    catch {$codeStream3_4 appendCodeBlock "initBlock" $args false 0} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: initBlock($) in file:./testCodeBlockBadArg.c problems replacing "doesNotStartWithDollar" with "3"
 Because:
