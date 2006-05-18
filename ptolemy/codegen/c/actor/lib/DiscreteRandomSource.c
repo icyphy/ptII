@@ -20,6 +20,10 @@
 	}
 /**/
 
+/*** initBlock ***/
+	// convert all the values to type double.
+	$ref(values) = $typeFunc(TYPE_Array::convert($ref(values), TYPE_Double));
+/**/
 
 /*** randomBlock ***/
 	$ref(output) = DiscreteRandomSource_rand(&$actorSymbol(seed), $ref(pmf), $ref(values));

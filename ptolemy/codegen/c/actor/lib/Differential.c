@@ -5,10 +5,10 @@
 
 /***CommonFireBlock***/
     $actorSymbol(_currentInput) = $ref(input);
-    if ($actorSymbol(_lastInput) != 0) {
-	    $ref(output) = $actorSymbol(_currentInput) - $actorSymbol(_lastInput);
-    } else {
+    if ($actorSymbol(_lastInput) == 0) {
 	    $ref(output) = $actorSymbol(_currentInput);
+    } else {
+	    $ref(output) = $actorSymbol(_currentInput) - $actorSymbol(_lastInput);
     }
     $actorSymbol(_lastInput) = $actorSymbol(_currentInput);
 /**/
@@ -16,16 +16,18 @@
 
 
 /***TokenPreinitBlock***/
-    Token $actorSymbol(_currentInput) = (Token) NULL;
-    Token $actorSymbol(_lastInput) = (Token) NULL;
+    Token $actorSymbol(_currentInput);
+    Token $actorSymbol(_lastInput);
+    boolean $actorSymbol(isFirst) = true;
 /**/
 
 /***TokenFireBlock***/
     $actorSymbol(_currentInput) = $ref(input);
-    if ($actorSymbol(_lastInput) != NULL) {
-	    $ref(output) = $tokenFunc($actorSymbol(_currentInput)::substract($actorSymbol(_lastInput)));
-    } else {
+    if ($actorSymbol(isFirst)) {
 	    $ref(output) = $actorSymbol(_currentInput);
+    	$actorSymbol(isFirst) = false;
+    } else {
+	    $ref(output) = $tokenFunc($actorSymbol(_currentInput)::substract($actorSymbol(_lastInput)));
     }
     $actorSymbol(_lastInput) = $actorSymbol(_currentInput);
 /**/
