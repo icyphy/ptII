@@ -1,19 +1,19 @@
 /***preinitBlock ***/
-	Token $actorSymbol(valueArray);
+Token $actorSymbol(valueArray);
 /**/
 
 /*** initBlock ***/
-    $actorSymbol(valueArray) = $new(Array($size(input), 0));
+$actorSymbol(valueArray) = $new(Array($size(input), 0));
 /**/
 
 /*** fillArray($channel) ***/
-    $actorSymbol(valueArray).payload.Array->elements[$channel] = $ref((Token) input#$channel);
+$actorSymbol(valueArray).payload.Array->elements[$channel] = $ref((Token) input#$channel);
 /**/
 
 /*** sendOutput ***/
-	$ref(output) = $actorSymbol(valueArray);
+$ref(output) = $actorSymbol(valueArray);
 /**/
 
 /*** wrapupBlock ***/
-	Array_delete($actorSymbol(valueArray));
+Array_delete($actorSymbol(valueArray));
 /**/

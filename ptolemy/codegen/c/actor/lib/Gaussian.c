@@ -3,11 +3,11 @@
 // generates the same list of random numbers as the java.util.Random object.
 
 /*** preinitBlock ***/
-    double $actorSymbol(seed);
-    boolean $actorSymbol(haveNextNextGaussian) = false;
-    double $actorSymbol(nextNextGaussian);
+double $actorSymbol(seed);
+boolean $actorSymbol(haveNextNextGaussian) = false;
+double $actorSymbol(nextNextGaussian);
 /**/
 
 /*** randomBlock ***/
-    $ref(output) = (RandomSource_nextGaussian(&$actorSymbol(seed), &$actorSymbol(haveNextNextGaussian), &$actorSymbol(nextNextGaussian)) * $val(standardDeviation)) + $val(mean);
+$ref(output) = (RandomSource_nextGaussian(&$actorSymbol(seed), &$actorSymbol(haveNextNextGaussian), &$actorSymbol(nextNextGaussian)) * $val(standardDeviation)) + $val(mean);
 /**/

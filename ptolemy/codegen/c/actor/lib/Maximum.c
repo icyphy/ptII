@@ -1,24 +1,24 @@
 /*** preinitBlock ***/
-    int $actorSymbol(maximumTemp);
-    int $actorSymbol(channelTemp);
+int $actorSymbol(maximumTemp);
+int $actorSymbol(channelTemp);
 /**/
 
 /*** fireInitBlock***/
-    $actorSymbol(maximumTemp) = $ref(input#0);
-    $actorSymbol(channelTemp) = 0;
+$actorSymbol(maximumTemp) = $ref(input#0);
+$actorSymbol(channelTemp) = 0;
 /**/
 
 /*** findBlock($arg) ***/
-    if ($ref(input#$arg) > $actorSymbol(maximumTemp)) {
-        $actorSymbol(maximumTemp) = $ref(input#$arg);
-        $actorSymbol(channelTemp) = $arg;
-    }
+if ($ref(input#$arg) > $actorSymbol(maximumTemp)) {
+    $actorSymbol(maximumTemp) = $ref(input#$arg);
+    $actorSymbol(channelTemp) = $arg;
+}
 /**/
 
 /*** sendBlock1($arg)***/
-    $ref(maximumValue#$arg) = $actorSymbol(maximumTemp);
+$ref(maximumValue#$arg) = $actorSymbol(maximumTemp);
 /**/
 
 /*** sendBlock2($arg)***/
-    $ref(channelNumber#$arg) = $actorSymbol(channelTemp);
+$ref(channelNumber#$arg) = $actorSymbol(channelTemp);
 /**/

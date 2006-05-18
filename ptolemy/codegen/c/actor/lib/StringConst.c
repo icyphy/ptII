@@ -1,3 +1,3 @@
 /*** initBlock ***/
-    $ref(output) = $val(value);
+$ref(output) = $val(value);
 /**/

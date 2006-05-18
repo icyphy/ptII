@@ -1,4 +1,4 @@
 /*** fireBlock ***/
-	$ref(output) = strlen($ref(input));
+$ref(output) = strlen($ref(input));
 /**/
 

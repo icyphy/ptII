@@ -1,83 +1,83 @@
 /*** preinitBlock ***/
-	int $actorSymbol(inputSize);
-	int $actorSymbol(increment);
-	double $actorSymbol(reference);
-	double $actorSymbol(thresholdValue);
-	int $actorSymbol(i);
-	double $actorSymbol(currentValue);
+int $actorSymbol(inputSize);
+int $actorSymbol(increment);
+double $actorSymbol(reference);
+double $actorSymbol(thresholdValue);
+int $actorSymbol(i);
+double $actorSymbol(currentValue);
 /**/
 
 /*** fireBlock ***/
-    $actorSymbol(inputSize) = $ref(array).payload.Array->size;
-    if (($ref(start) >= $actorSymbol(inputSize)) || ($ref(start) < 0)) {
-    	// error;
-    	fprintf(stderr, "start is out of range: %d", $ref(start));
-    	exit(1);
-    }
-    $actorSymbol(reference) = Array_get($ref(array), $ref(start)).payload.Double;
-    $actorSymbol(thresholdValue) = $val(threshold);
-    $actorSymbol(increment) = -1;
+$actorSymbol(inputSize) = $ref(array).payload.Array->size;
+if (($ref(start) >= $actorSymbol(inputSize)) || ($ref(start) < 0)) {
+    // error;
+    fprintf(stderr, "start is out of range: %d", $ref(start));
+    exit(1);
+}
+$actorSymbol(reference) = Array_get($ref(array), $ref(start)).payload.Double;
+$actorSymbol(thresholdValue) = $val(threshold);
+$actorSymbol(increment) = -1;
 /**/
 
 /***forwardBlock***/
-    $actorSymbol(increment) = 1;
+$actorSymbol(increment) = 1;
 /**/
 
 
 
 /***amplitude_above***/
-    $actorSymbol(thresholdValue) = $actorSymbol(reference) * pow(10.0, ($actorSymbol(thresholdValue) / 20));
+$actorSymbol(thresholdValue) = $actorSymbol(reference) * pow(10.0, ($actorSymbol(thresholdValue) / 20));
 /**/
 
 /***amplitude_notAbove***/
-    $actorSymbol(thresholdValue) = $actorSymbol(reference) * pow(10.0, (-$actorSymbol(thresholdValue) / 20));
+$actorSymbol(thresholdValue) = $actorSymbol(reference) * pow(10.0, (-$actorSymbol(thresholdValue) / 20));
 /**/
 
 /***power_above***/
-    $actorSymbol(thresholdValue) = $actorSymbol(reference) * pow(10.0, ($actorSymbol(thresholdValue) / 10));
+$actorSymbol(thresholdValue) = $actorSymbol(reference) * pow(10.0, ($actorSymbol(thresholdValue) / 10));
 /**/
 
 /***power_notAbove***/
-    $actorSymbol(thresholdValue) = $actorSymbol(reference) * pow(10.0, (-$actorSymbol(thresholdValue) / 10));
+$actorSymbol(thresholdValue) = $actorSymbol(reference) * pow(10.0, (-$actorSymbol(thresholdValue) / 10));
 /**/
 
 /***linear_above***/
-    $actorSymbol(thresholdValue) += $actorSymbol(reference);
+$actorSymbol(thresholdValue) += $actorSymbol(reference);
 /**/
 
 /***linear_notAbove***/
-	$actorSymbol(thresholdValue) = $actorSymbol(reference) - $actorSymbol(thresholdValue);
+$actorSymbol(thresholdValue) = $actorSymbol(reference) - $actorSymbol(thresholdValue);
 /**/
 
 
 
 
 /***findCrossing_above***/
-    // Default output if we don't find a crossing.
-	$ref(output) = -1;
-    for ($actorSymbol(i) = $ref(start); ($actorSymbol(i) < $actorSymbol(inputSize)) && ($actorSymbol(i) >= 0); $actorSymbol(i) += $actorSymbol(increment)) {
-        $actorSymbol(currentValue) = Array_get($ref(array), $actorSymbol(i)).payload.Double;
+// Default output if we don't find a crossing.
+$ref(output) = -1;
+for ($actorSymbol(i) = $ref(start); ($actorSymbol(i) < $actorSymbol(inputSize)) && ($actorSymbol(i) >= 0); $actorSymbol(i) += $actorSymbol(increment)) {
+    $actorSymbol(currentValue) = Array_get($ref(array), $actorSymbol(i)).payload.Double;
 
-        // Searching for values above the threshold.
-        if ($actorSymbol(currentValue) > $actorSymbol(thresholdValue)) {
-            $ref(output) = $actorSymbol(i);
-            break;
-        }
+    // Searching for values above the threshold.
+    if ($actorSymbol(currentValue) > $actorSymbol(thresholdValue)) {
+        $ref(output) = $actorSymbol(i);
+        break;
     }
+}
 /**/
 
 /***findCrossing_notAbove***/
-    // Default output if we don't find a crossing.
-	$ref(output) = -1;
-    for ($actorSymbol(i) = $ref(start); ($actorSymbol(i) < $actorSymbol(inputSize)) && ($actorSymbol(i) >= 0); $actorSymbol(i) += $actorSymbol(increment)) {
-        $actorSymbol(currentValue) = Array_get($ref(array), $actorSymbol(i)).payload.Double;
+// Default output if we don't find a crossing.
+$ref(output) = -1;
+for ($actorSymbol(i) = $ref(start); ($actorSymbol(i) < $actorSymbol(inputSize)) && ($actorSymbol(i) >= 0); $actorSymbol(i) += $actorSymbol(increment)) {
+    $actorSymbol(currentValue) = Array_get($ref(array), $actorSymbol(i)).payload.Double;
 
-        // Searching for values below the threshold.
-        if ($actorSymbol(currentValue) < $actorSymbol(thresholdValue)) {
-            $ref(output) = $actorSymbol(i);
-            break;
-        }
+    // Searching for values below the threshold.
+    if ($actorSymbol(currentValue) < $actorSymbol(thresholdValue)) {
+        $ref(output) = $actorSymbol(i);
+        break;
     }
+}
 /**/
 
 

@@ -1,3 +1,3 @@
 /***fireBlock***/
-    $ref(output) = $ref(input);
+$ref(output) = $ref(input);
 /**/

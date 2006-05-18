@@ -19,10 +19,10 @@ double RandomSource_nextDouble(double* seed) {
 /*** gaussianBlock ***/
 
 double RandomSource_nextGaussian(double* seed, boolean* haveNextNextGaussian, double* nextNextGaussian) {
-	double multiplier;
-	double v1;
-	double v2;
-	double s;
+    double multiplier;
+    double v1;
+    double v2;
+    double s;
 	
     if (*haveNextNextGaussian) {
         *haveNextNextGaussian = false;
@@ -44,17 +44,17 @@ double RandomSource_nextGaussian(double* seed, boolean* haveNextNextGaussian, do
 /**/
 
 /*** setSeedBlock0($hashCode) ***/
-    $actorSymbol(seed) = $actorSymbol(seed) = time (NULL) + $hashCode;
+$actorSymbol(seed) = $actorSymbol(seed) = time (NULL) + $hashCode;
 /**/
 
 /*** setSeedBlock1 ***/
-    /* see documentation from http://java.sun.com/j2se/1.4.2/docs/api/java/util/Random.html#setSeed(long) */
-    //this.seed = (seed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
-    $actorSymbol(seed) = ((long long) $val(seed) ^ 0x5DEECE66DLL)  & ((1LL << 48) - 1);
+/* see documentation from http://java.sun.com/j2se/1.4.2/docs/api/java/util/Random.html#setSeed(long) */
+//this.seed = (seed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
+$actorSymbol(seed) = ((long long) $val(seed) ^ 0x5DEECE66DLL)  & ((1LL << 48) - 1);
 /**/
 
 /*** preinitBlock ***/
-    double $actorSymbol(seed);
+double $actorSymbol(seed);
 /**/
 
 

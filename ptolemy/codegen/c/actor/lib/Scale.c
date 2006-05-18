@@ -1,20 +1,20 @@
 /***FireBlock***/
-	// primitive is commutative.
-    $ref(output) = $val(factor) * $ref(input);
+// primitive is commutative.
+$ref(output) = $val(factor) * $ref(input);
 /**/
 
 /***TokenFireBlock***/
-	if ($ref(scaleOnLeft)) {
-	    $ref(output) = Scale_scaleOnLeft($ref(input), (double) $val(factor));
-	} else {
-	    $ref(output) = Scale_scaleOnRight($ref(input), (double) $val(factor));
-	}	
+if ($ref(scaleOnLeft)) {
+    $ref(output) = Scale_scaleOnLeft($ref(input), (double) $val(factor));
+} else {
+    $ref(output) = Scale_scaleOnRight($ref(input), (double) $val(factor));
+}	
 /**/
 
 /***sharedScaleOnLeftBlock***/
 Token Scale_scaleOnLeft(Token input, double factor) {
-	int i;
-	Token result;
+    int i;
+    Token result;
 
     if (input.type == TYPE_Array) {
     	result = $new(Array(input.payload.Array->size, 0));
@@ -32,8 +32,8 @@ Token Scale_scaleOnLeft(Token input, double factor) {
 
 /***sharedScaleOnRightBlock***/
 Token Scale_scaleOnRight(Token input, double factor) {
-	int i;
-	Token result;
+    int i;
+    Token result;
 
     if (input.type == TYPE_Array) {
     	result = $new(Array(input.payload.Array->size, 0));

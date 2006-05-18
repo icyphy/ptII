@@ -1,7 +1,7 @@
 /***incrementBlock***/
-    $ref(output)++;
+$ref(output)++;
 /**/
 
 /***decrementBlock***/
-    $ref(output)--;
+$ref(output)--;
 /**/

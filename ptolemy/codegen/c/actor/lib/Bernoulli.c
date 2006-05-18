@@ -3,10 +3,10 @@
 // generates the same list of random numbers as the java.util.Random object.
 
 /***randomBlock***/
-    if (RandomSource_nextDouble(&$actorSymbol(seed)) < $val(trueProbability)) {
-        $ref(output) = true;
-    } else {
-        $ref(output) = false;	
-    } 	
+if (RandomSource_nextDouble(&$actorSymbol(seed)) < $val(trueProbability)) {
+    $ref(output) = true;
+} else {
+    $ref(output) = false;	
+} 	
 /**/
 

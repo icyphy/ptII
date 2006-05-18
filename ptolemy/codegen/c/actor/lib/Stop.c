@@ -1,10 +1,10 @@
 /*** preinitBlock ***/
-	int $actorSymbol(i);
+int $actorSymbol(i);
 /**/
 
 /*** fireBlock($channel) ***/
-	if ($ref(input#$channel)) {
-        exit(0);
-    }
+if ($ref(input#$channel)) {
+    exit(0);
+}
 /**/
 

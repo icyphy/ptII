@@ -1,11 +1,11 @@
 /*** preinitBlock ***/
-	int $actorSymbol(i);
+int $actorSymbol(i);
 /**/
 
 /*** fireBlock($channel) ***/
-	if ($ref(input#$channel)) {
-		fprintf(stderr, $val(message));
-        exit(1);
-    }
+if ($ref(input#$channel)) {
+    fprintf(stderr, $val(message));
+    exit(1);
+}
 /**/
 

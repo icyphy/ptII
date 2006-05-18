@@ -1,4 +1,4 @@
 /*** wrapupBlock ***/
-    /** Non-zero indicates a problem.*/
-    exit(0);
+/** Non-zero indicates a problem.*/
+exit(0);
 /**/

@@ -18,6 +18,6 @@ boolean match(const char *string, char *pattern) {
 /**/
 
 /*** fireBlock ***/
-	$ref(output) = match($ref(matchString), $ref(pattern));
+$ref(output) = match($ref(matchString), $ref(pattern));
 /**/
 
