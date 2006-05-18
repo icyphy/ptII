@@ -284,8 +284,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String sharedCode = generateSharedCode();
         String includeFiles = generateIncludeFiles();
         String preinitializeCode = generatePreinitializeCode();
-        String initializeCode = generateInitializeCode();
         CodeStream.setIndentLevel(2);
+        String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
         CodeStream.setIndentLevel(0);
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
