@@ -365,7 +365,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 while (sinkChannels.hasNext()) {
                     Channel sink = (Channel) sinkChannels.next();
-                    code.append(_generateTypeConvertStatements(source, sink));
+                    code.append(CodeStream.indent(_generateTypeConvertStatements(source, sink)));
                 }
             }
         }

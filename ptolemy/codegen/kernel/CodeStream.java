@@ -309,20 +309,7 @@ public class CodeStream {
         }
 
         if (indentLevel > 0) {
-            String indent = StringUtilities.getIndentPrefix(indentLevel);
-            // For every line.separator, substitute line.separator + indent.
-            String tmpString = StringUtilities.substitute(
-                    codeBlock.toString(),
-                    _lineSeparator,
-                    _lineSeparator + indent);
-            if (tmpString.endsWith(_lineSeparator + indent)) {
-                // Chop off the last indent
-                tmpString = tmpString.substring(0,
-                        tmpString.length() - indent.length());
-            }
-            // Insert the initial indent.
-            codeBlock = new StringBuffer(indent + tmpString);
-                                                 
+            codeBlock = new StringBuffer(indent(indentLevel, codeBlock.toString()));
         }
         _stream.append(codeBlock);
     }
@@ -399,6 +386,39 @@ public class CodeStream {
         }
 
         return buffer.toString();
+    }
+
+    /** Indent the string to the default indent level.
+     * @param indentLevel The level of indention.
+     * @return The indented string.
+     */
+    public static String indent(String inputString) {
+        return indent(_indentLevel, inputString);
+    }
+
+    /** Indent the string to the specified indent level.
+     * @param indentLevel The level of indention.
+     * @param inputString The string to be indented
+     * @return The indented string.
+     */
+    public static String indent(int indentLevel, String inputString) {
+        if (indentLevel <= 0) {
+            return inputString;
+        }
+
+        String indent = StringUtilities.getIndentPrefix(indentLevel);
+        // For every line.separator, substitute line.separator + indent.
+        String tmpString = StringUtilities.substitute(
+                inputString,
+                _lineSeparator,
+                _lineSeparator + indent);
+        if (tmpString.endsWith(_lineSeparator + indent)) {
+            // Chop off the last indent
+            tmpString = tmpString.substring(0,
+                    tmpString.length() - indent.length());
+        }
+        // Insert the initial indent.
+        return indent + tmpString;
     }
 
     /**
