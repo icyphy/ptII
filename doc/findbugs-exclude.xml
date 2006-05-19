@@ -1,0 +1,4 @@
+<Match classregex=".*" >
+       <! -- Exclude Serializable warnings -->
+       <BugCode name="Se" />
+</Match>
