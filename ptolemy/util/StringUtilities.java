@@ -116,14 +116,14 @@ public class StringUtilities {
         StringTokenizer tokenizer = new StringTokenizer(string, LINE_SEPARATOR,
                 true);
 
-        // If there are more than 30 lines and 30 newlines, return
-        // truncate after the first 60 lines and newlines.
+        // If there are more than 42 lines and 42 newlines, return
+        // truncate after the first 42 lines and newlines.
         // This is necessary so that we can deal with very long lines
         // of text without spaces.
-        if (tokenizer.countTokens() > 60) {
+        if (tokenizer.countTokens() > 42) {
             StringBuffer results = new StringBuffer();
 
-            for (int i = 0; (i < 60) && tokenizer.hasMoreTokens(); i++) {
+            for (int i = 0; (i < 42) && tokenizer.hasMoreTokens(); i++) {
                 results.append(tokenizer.nextToken());
             }
 
