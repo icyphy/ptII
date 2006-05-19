@@ -1,4 +1,9 @@
-<Match classregex=".*" >
-       <! -- Exclude Serializable warnings -->
+<FindBugsFilter>
+    <Match classregex="ptolemy.data..*Parser.*"/>
+    <Match classregex="ptolemy.data.unit.UParser"/>
+    <Match classregex="ptolemy.data.unit.UParserTokenManager"/>
+    <Match classregex=".*" >
+       <!-- Exclude Serializable warnings -->
        <BugCode name="Se" />
-</Match>
+    </Match>
+</FindBugsFilter>
