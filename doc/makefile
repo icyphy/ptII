@@ -845,6 +845,43 @@ doccheck/index.html:
 			$(JDOCCHECKDOCLET) \
 			-d doc/doccheck $(ALLPACKAGES) )
 
+#############
+# FindBugs : http://findbugs.sourceforge.net
+#
+
+# Location of the FindBugs sources
+FINDBUGS=$(PTII)/vendors/findbugs-1.0.0-rc1
+
+findbugs: findbugs.htm findbugs.xml
+
+ptII.fb:
+	echo "[Jar files]" > ptII.fb
+	echo "[Source dirs]" >> ptII.fb
+	echo $(PTII) >> ptII.fb
+	echo "[Aux classpath entries]" >> ptII.fb
+	for file in `ls $(PTII)/lib/*.jar`; do \
+	echo "$$file" >> ptII.fb; \
+	done
+
+findbugs.htm:  ptII.fb
+	@if [ -f $(FINDBUGS)/bin/findbugs ]; then \
+	    echo "Invoking findbugs program, please wait."; \
+	    $(FINDBUGS)/bin/findbugs -textui -html:fancy.xsl \
+		-project ptII.fb $(PTII) > $@; \
+	else \
+	    echo "BTW - FindBugs program not found, skipping."; \
+	fi
+
+
+findbugs.xml:  ptII.fb
+	@if [ -f $(FINDBUGS)/bin/findbugs ]; then \
+	    echo "Invoking findbugs program, please wait."; \
+	    $(FINDBUGS)/bin/findbugs -textui -xml \
+		-project ptII.fb $(PTII) > $@; \
+	else \
+	    echo "BTW - FindBugs program not found, skipping."; \
+	fi
+
 #############################################################################
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptcommon.mk
