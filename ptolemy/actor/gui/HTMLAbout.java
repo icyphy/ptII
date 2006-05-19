@@ -47,6 +47,7 @@ import ptolemy.actor.Manager;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.FileUtilities;
@@ -93,7 +94,7 @@ public class HTMLAbout {
     public static String about(Configuration configuration) {
         // Use an explicit version here - the name of the whatsNew file
         // does not changes as quickly as the version.
-        String version = "6.0";
+        String version = VersionAttribute.majorCurrentVersion();
 
         String applicationName = "Ptolemy II";
 
