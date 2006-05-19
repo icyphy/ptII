@@ -862,6 +862,12 @@ ptII.fb:
 	for file in `ls $(PTII)/lib/*.jar`; do \
 	echo "$$file" >> ptII.fb; \
 	done
+	if [ -d "$(JXTA_DIR)" ]; then \
+		for file in `ls $(JXTA_DIR)/*.jar`; do \
+		echo "$$file" >> ptII.fb; \
+		done; \
+	fi
+	echo $(TOOLS_JAR) >> ptII.fb 
 
 findbugs.htm:  ptII.fb
 	@if [ -f $(FINDBUGS)/bin/findbugs ]; then \
