@@ -389,7 +389,7 @@ public class CodeStream {
     }
 
     /** Indent the string to the default indent level.
-     * @param indentLevel The level of indention.
+     * @param inputString The string to be indented.
      * @return The indented string.
      */
     public static String indent(String inputString) {
@@ -448,7 +448,7 @@ public class CodeStream {
         }
     }
 
-    /** Set the indent level
+    /** Set the indent level.
      *  @param indentLevel The indent level, where 0 means no indentation,
      *  1 means indent one level (probably 4 spaces).
      */
