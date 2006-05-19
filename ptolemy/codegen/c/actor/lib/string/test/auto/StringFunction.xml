@@ -23,11 +23,11 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.5, 264.0}">
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot; ( PTOLEMY RESEARCH ) &quot;, &quot;( Ptolemy Research )&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot; ( ptolemy research ) &quot;}, {&quot; ( PTOLEMY RESEARCH ) &quot;, &quot;( Ptolemy Research )&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot; ( ptolemy research ) &quot;}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot; ( PTOLEMY RESEARCH ) &quot;, &quot;( Ptolemy Research )&quot;, &quot;&quot;, &quot;                  &quot;, &quot;                  &quot;, &quot; ( ptolemy research ) &quot;}, {&quot; ( PTOLEMY RESEARCH ) &quot;, &quot;( Ptolemy Research )&quot;, &quot;&quot;, &quot;                  &quot;, &quot;                  &quot;, &quot; ( ptolemy research ) &quot;}}">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 305.0]">
         </property>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
