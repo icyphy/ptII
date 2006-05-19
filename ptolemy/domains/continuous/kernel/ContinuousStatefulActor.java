@@ -1,5 +1,4 @@
-/* An interface for actors that can remembers their state and go back
- to the state that is remembered.
+/* An interface for actors that have tentative and committed state.
 
  Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
@@ -34,32 +33,16 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ContinuousStatefulActor
 
 /**
- Interface for actors that have states. The state of the actor can be
- marked (saved). The saved state can be restored so that an actor can go
- back to its previously marked state. This feature is used for rolling
- back the simulation when needed, which is essential when embedding
- CT subsystem in a discrete event system.
- <P>
- The interface defines two methods, markState() and goToMarkedState().
- If the markState() method is called, the current state of the actor,
- for example values of the local variables, should be remembered. When the
- goToMarkedState() method is called after that, the marked states
- should be restored.
- @author  Jie Liu
+ Interface for actors that have tentative state that can be rolled back.
+ @author  Haiyang Zheng and Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.2
- @Pt.ProposedRating Green (liuj)
- @Pt.AcceptedRating Green (yuhong)
+ @since Ptolemy II 6.0
+ @Pt.ProposedRating Green (hyzheng)
+ @Pt.AcceptedRating Green (eal)
  */
 public interface ContinuousStatefulActor {
-    /** Implementations of this method should go to the marked state.
-     *  If there's no marked state, throws an exception.
-     *  @exception IllegalActionException If there were no marked state.
+    
+    /** Roll back to committed state.
      */
-    public void goToMarkedState() throws IllegalActionException;
-
-    /** Implementations of this method should mark the current state
-     *  of the actor.
-     */
-    public void markState();
+    public void rollBackToCommittedState();
 }

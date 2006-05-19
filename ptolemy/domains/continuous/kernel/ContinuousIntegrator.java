@@ -27,9 +27,7 @@
  */
 package ptolemy.domains.continuous.kernel;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-
+import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
@@ -39,7 +37,6 @@ import ptolemy.domains.hs.kernel.ODESolver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
@@ -84,8 +81,6 @@ import ptolemy.kernel.util.StringAttribute;
  <I>tentative state</I>: This is the value of the state variable
  which has not been confirmed. It is a starting point for other actors
  to estimate the accuracy of this integration step.
- <I>history</I>: The previous states and their derivatives. History may
- be used for interpolations by multistep integration methods.
  <P>
  For different ODE solving methods, the functionality
  of an integrator may be different. The delegation and strategy design
@@ -111,7 +106,7 @@ import ptolemy.kernel.util.StringAttribute;
  @see ODESolver
  */
 public class ContinuousIntegrator extends TypedAtomicActor implements 
-    ContinuousStatefulActor, ContinuousStepSizeControlActor {
+         ContinuousStatefulActor, ContinuousStepSizeControlActor {
 
     /** Construct an integrator with the specified name and a container.
      *  The integrator is in the same workspace as the container.
@@ -139,7 +134,6 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
         initialState = new PortParameter(this, "initialState", new DoubleToken(0.0));
         initialState.setTypeEquals(BaseType.DOUBLE);
-        _history = new History(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -181,12 +175,6 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         }
     }
 
-    /** Clear the history information.
-     */
-    public void clearHistory() {
-        _history.clear();
-    }
-
     /** If the value at the <i>derivative</i> port is known, and the current 
      *  step size is bigger than 0, perform an integration.
      *  <p> 
@@ -198,8 +186,9 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  provided at these two ports are required to be purely discrete.
      *  This is enforced by throwing an exception if the current step
      *  size is greater than zero when they have input data.
-     *  @exception IllegalActionException If thrown by integratorFire()
-     *   of the solver, or if data is present at either <i>impulse</i>
+     *  @exception IllegalActionException If the input is infinite or
+     *   not a number, or if thrown by the solver,
+     *   or if data is present at either <i>impulse</i>
      *   or <i>initialState</i> and the step size is greater than zero.
      */
     public void fire() throws IllegalActionException {
@@ -215,7 +204,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                 "Signal at the impulse port is not purely discrete.");
             }
             double currentState = getState()
-            + ((DoubleToken) impulse.get(0)).doubleValue();
+                    + ((DoubleToken) impulse.get(0)).doubleValue();
             setTentativeState(currentState);
         }
         // The input from the initialState port overwrites the input from 
@@ -234,16 +223,17 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             state.broadcast(new DoubleToken(getTentativeState()));
         }
 
-        if (derivative.isKnown()) {
-            if (derivative.hasToken(0)) {
-                double currentDerivative = 
-                    ((DoubleToken) derivative.get(0)).doubleValue();
-                setTentativeDerivative(currentDerivative);
-                if (stepSize > 0) {
-                    // The following method changes the tentative state but 
-                    // should not expose the tentative state.
-                    dir._getODESolver().integratorIntegrate(this);
-                }
+        if (derivative.isKnown() && derivative.hasToken(0)) {
+            double currentDerivative = getDerivative();
+            if (Double.isNaN(currentDerivative) || Double.isInfinite(currentDerivative)) {
+                throw new IllegalActionException(this,
+                        "The provided derivative input is invalid: "
+                        + currentDerivative);
+            }
+            if (stepSize > 0) {
+                // The following method changes the tentative state but 
+                // should not expose the tentative state.
+                dir._getODESolver().integratorIntegrate(this);
             }
         }
     }
@@ -260,103 +250,35 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         return _auxVariables;
     }
 
-    /** Return the derivative of the latest updated resolved state.
-     *  @return The derivative of the latest updated resolved state.
+    /** Get the current value of the derivative input port.
+     *  @return The current value at the derivative input port.
+     * @throws IllegalActionException If reading the input throws it.
      */
-    public final double getDerivative() {
-        return _derivative;
+    public double getDerivative() throws NoTokenException, IllegalActionException {
+        return ((DoubleToken) derivative.get(0)).doubleValue();
     }
-
-    /** Return the history information of the last index-th step.
-     *  The returned history array has length 2, where the first
-     *  element is the history state, and the second element is
-     *  the corresponding derivative.
-     *  The index starts from 0. If the current time is t(n),
-     *  then getHistory(0) gives the
-     *  state and derivative of time t(n-1), and getHistory(1)
-     *  corresponds to time t(n-2).
-     *  The history information is equidistant in time, and the
-     *  distance is the current step size.
-     *  If the step sizes are changed during the execution,
-     *  the history information will be self-adjusted.
-     *  If the index is less than 0 or grater than
-     *  the history capacity, a runtime IndexOutOfBoundsException
-     *  will be thrown.
-     *
-     *  @param index The index.
-     *  @return The history array at the index point.
-     */
-    public double[] getHistory(int index) {
-        return _history.getEntry(index);
-    }
-
-    /** Return the history capacity.
-     *  @return The maximum capacity of the history information.
-     *  @see #setHistoryCapacity
-     */
-    public final int getHistoryCapacity() {
-        return _history.getCapacity();
-    }
-
     /** Return the state of the integrator. The returned state is the
-     *  latest confirmed state. If the history capacity is bigger than 0,
-     *  the same state can be retrieved from getHistory(0)[0]. However,
-     *  this method is more efficient.
-     *
-     *  @return A double number as the state of the integrator.
+     *  latest confirmed state.
+     *  @return The state of the integrator.
      */
     public final double getState() {
         return _state;
     }
 
-    /** Return the tentative derivative.
-     *  @return the tentative derivative.
-     *  @see #setTentativeDerivative
-     */
-    public double getTentativeDerivative() {
-        return _tentativeDerivative;
-    }
-
     /** Return the tentative state.
-     *  @return the tentative state.
+     *  @return The tentative state.
      *  @see #setTentativeState
      */
     public double getTentativeState() {
         return _tentativeState;
     }
 
-    /** Return the number of valid history entries. This number is
-     *  always less than or equal to the history capacity.
-     *  @return The number of valid history entries.
-     */
-    public final int getValidHistoryCount() {
-        return _history.getValidEntryCount();
-    }
-
-    /** Go to the marked state. After calling the markState() method,
-     *  calling this method will bring the integrator back to the
-     *  marked state. This method is used for rollbacking the execution
-     *  to a previous time point. Note that derivative is not stored.
-     *  Therefore, when states are restored, they need to be propagated
-     *  through state transition actors such that the derivatives are
-     *  restored (reconstructed) too.
-     */
-    public void goToMarkedState() {
-        _derivative = _storedDerivative;
-        setTentativeDerivative(_storedDerivative);
-        _state = _storedState;
-        setTentativeState(_storedState);
-    }
-
-    /** Initialize the integrator. Check for the existence of director and ODE
-     *  solver. Update initial state parameter. Set the initial state to
-     *  the tentative state and the state. Set tentative derivative to 0.0.
-     *  Clear the history.
-     *
-     *  @exception IllegalActionException If there's no director,
-     *  or, the director is not a CT director, or the director has
-     *  no ODE solver, or thrown in the super class, or the initialState
-     *  parameter does not contain a valid token.
+    /** Initialize the integrator. Check for the existence of a director and
+     *  an ODE solver. Set the state to the value given by <i>initialState</i>.
+     *  @exception IllegalActionException If there is no director,
+     *   or the director has no ODE solver, or the initialState
+     *   parameter does not contain a valid token, or the superclass
+     *   throws it.
      */
     public void initialize() throws IllegalActionException {
         ContinuousDirector dir = (ContinuousDirector) getDirector();
@@ -373,16 +295,17 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
         super.initialize();
         _tentativeState = ((DoubleToken) initialState.getToken()).doubleValue();
-        _tentativeDerivative = 0.0;
         _state = _tentativeState;
-        _derivative = _tentativeDerivative;
 
         if (_debugging) {
-            _debug(getName(), " initialize: initial state = " + _tentativeState
-                    + " derivative = " + _tentativeDerivative);
+            _debug("Initialize: initial state = " + _tentativeState);
         }
 
-        _history.clear();
+        // The number of auxiliary variables that are used depends on the solver.
+        int n = solver.getIntegratorAuxVariableCount();
+        if ((_auxVariables == null) || (_auxVariables.length != n)) {
+            _auxVariables = new double[n];
+        }
     }
 
     /** Return true if the state is resolved successfully.
@@ -391,18 +314,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  @return True if the state is resolved successfully.
      */
     public boolean isStepSizeAccurate() {
-        // We check the validity of the input
-        // If it is NaN, or Infinity, an exception is thrown.
-        double f_dot = getTentativeDerivative();
-        
-        if (Double.isNaN(f_dot) || Double.isInfinite(f_dot)) {
-            throw new InternalErrorException("The input of " + getName()
-                    + " is not valid because"
-                    + " it is a result of divide-by-zero.");
-        }
-
         ContinuousODESolver solver = 
-            ((ContinuousDirector) getDirector())._getODESolver();
+                ((ContinuousDirector) getDirector())._getODESolver();
         _successful = solver.integratorIsAccurate(this);
         return _successful;
     }
@@ -417,34 +330,15 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         return false;
     }
 
-    /** Mark and remember the current state. This remembered state can be
-     *  retrieved by the goToMarkedState() method. The marked state
-     *  may be used for rolling back the execution to a previous time point.
-     *  Note that the derivative is not saved.
-     */
-    public void markState() {
-        _storedState = getState();
-        _storedDerivative = getDerivative();
-    }
-
-    /** Update the state and its derivative, and push them into history if
-     *  the history capacity is bigger than 0.
+    /** Update the state. This commits the tentative state.
      *  @return True always.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
         _state = _tentativeState;
-        _derivative = _tentativeDerivative;
-
         if (_debugging) {
-            _debug("Saving the following into history: state: " + _state
-                    + " derivative: " + _derivative);
+            _debug("Commiting the state: " + _state);
         }
-
-        if (getHistoryCapacity() > 0) {
-            _history.pushEntry(_tentativeState, _tentativeDerivative);
-        }
-
         return true;
     }
 
@@ -457,54 +351,12 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         return solver.integratorSuggestedStepSize(this);
     }
 
-    /** Setup the integrator to operate with the current ODE solver.
-     *  This method checks whether there are enough auxiliary variables
-     *  in the integrator for the current ODE solver. If not, create
-     *  more auxiliary variables.
-     *  <p>
-     *  This method also adjusts the history information w.r.t. the
-     *  current ODE solver and the current step size.
-     *  <p>
-     *  Return true if both the <i>impulse</i> port and <i>initialState</i> 
-     *  port are known. 
-     *  @return True if both the <i>impulse</i> port and <i>initialState</i> 
-     *  port are known. 
-     *  @exception IllegalActionException If there's no director or
-     *  the director has no ODE solver.
+    /** Return true if the <i>impulse</i> port and <i>initialState</i> 
+     *  port are known and the superclass returns true.
+     *  @return True if the integrator is ready to fire. 
+     *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        
-        // FIXME: should this happen in the initialize or preinitialize method? 
-        // The question is whether changing the ODE solver will trigger the 
-        // model to reinitialize?
-        
-        ContinuousDirector dir = (ContinuousDirector) getDirector();
-
-        if (dir == null) {
-            throw new IllegalActionException(this, " does not have a director.");
-        }
-
-        ContinuousODESolver solver = dir._getODESolver();
-
-        if (solver == null) {
-            throw new IllegalActionException(this,
-                    " does not have an ODE solver.");
-        }
-
-        int n = solver.getIntegratorAuxVariableCount();
-
-        if ((_auxVariables == null) || (_auxVariables.length != n)) {
-            _auxVariables = new double[n];
-        }
-
-        if (getHistoryCapacity() != solver.getAmountOfHistoryInformation()) {
-            setHistoryCapacity(solver.getAmountOfHistoryInformation());
-        }
-
-        if (getValidHistoryCount() >= 2) {
-            _history.rebalance(dir.getCurrentStepSize());
-        }
-
         return derivative.isKnown() && initialState.isKnown() && super.prefire();
     }
 
@@ -532,6 +384,13 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         }
     }
 
+    /** Roll back to committed state. This resets the tentative state
+     *  to the current state.
+     */
+    public void rollBackToCommittedState() {
+        _tentativeState = _state;
+    }
+
     /** Set the value of an auxiliary variable. The index indicates which
      *  auxiliary variable in the auxVariables array. If the index is out of
      *  the bound of the auxiliary variable array, an InvalidStateException
@@ -553,322 +412,32 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         }
     }
 
-    /** Set history capacity. This will typically be set by the ODE solvers
-     *  that uses the history. If the argument is less than 0,
-     *  the capacity is set to 0.
-     *  @param cap The capacity.
-     *  @see #getHistoryCapacity
-     */
-    public final void setHistoryCapacity(int cap) {
-        _history.setCapacity(cap);
-    }
-
-    /** Set the tentative derivative, dx/dt. Tentative derivative
-     *  is the derivative of the state that the ODE solver resolved
-     *  in one step. This may not be the final derivative due to
-     *  error control or event detection.
-     *  @param value The value to be set.
-     *  @see #getTentativeDerivative
-     */
-    public final void setTentativeDerivative(double value) {
-        _tentativeDerivative = value;
-    }
-
     /** Set the tentative state. Tentative state is the state that
-     *  the ODE solver resolved in one step. It may not
+     *  the ODE solver resolved in one step. This may not
      *  be the final state due to error control or event detection.
      *  @param value The value to be set.
-     *  @see #getTentativeState
+     *  @see #getTentativeState()
      */
     public final void setTentativeState(double value) {
         _tentativeState = value;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The history of states and their derivative.
-     *  This variable is needed by Linear Multistep (LMS) methods,
-     *  like Trapezoidal rule and backward differential formula.
-     *  This variable is protected so that derived classes may
-     *  access it directly.
-     */
-    protected History _history;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Auxiliary variable array.
+    
+    /** Auxiliary variable array. This is used by the solver to
+     *  record intermediate values in a multi-step solver algorithm.
+     */
     private double[] _auxVariables;
 
-    // Derivative.
-    private double _derivative;
-
-    // State.
+    /** The state of the integrator. */
     private double _state;
 
-    // The derivative stored, may be used for rollback execution.
-    private double _storedDerivative;
-
-    // The state stored, may be used for rollback execution.
-    private double _storedState;
-
-    // Indicate whether the latest step is successful from this
-    // integrator's point of view.
+    /** Indicate whether the latest step is successful from this
+     *  integrator's point of view.
+     */
     private boolean _successful = false;
 
-    // Tentative derivative;
-    private double _tentativeDerivative;
-
-    // Tentative state;
+    /** The tentative state. */
     private double _tentativeState;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                           Inner Class                     ////
-
-    /** The history information, state and derivatives, at equidistance
-     *  past time points. This inner class is protected so that it can be
-     *  tested.
-     */
-    protected class History {
-        /** Construct a history object and associate it with the given
-         *  integrator.
-         *  @param container The container that contains this history object.
-         */
-        public History(ContinuousIntegrator container) {
-            _container = container;
-            _entries = new LinkedList();
-            _capacity = 0;
-            _stepsize = 0.0;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                         public methods                ////
-
-        /** Remove all history information.
-         */
-        public void clear() {
-            _entries.clear();
-        }
-
-        /** Return the maximum capacity.
-         *  @return The capacity.
-         *  @see #setCapacity
-         */
-        public int getCapacity() {
-            return _capacity;
-        }
-
-        /** Return the number of valid entries.
-         *  @return The number of valid history entries.
-         */
-        public int getValidEntryCount() {
-            return _entries.size();
-        }
-
-        /** Return the index-th entry in the history.
-         *  The index starts from 0. If the current time index is n,
-         *  then calling this method with argument 0 will return
-         *  the history of time index n-1.
-         *  @param index The index of the entry.
-         *  @return The double matrix storing the index-th state and
-         *         its derivative in history.
-         */
-        public double[] getEntry(int index) {
-            return ((DoubleDouble) _entries.get(index)).toArray();
-        }
-
-        /** Push the new state-derivative pair into the history.
-         *  If the number of entries exceeds the capacity
-         *  after the pushing , then the oldest entry will be lost.
-         *  @param state The state.
-         *  @param derivative THe derivative of the state.
-         *  @exception IllegalActionException If the capacity
-         *  of history is less than or equal to zero.
-         */
-        public void pushEntry(double state, double derivative)
-                throws IllegalActionException {
-            if (_capacity > 0) {
-                DoubleDouble entry = new DoubleDouble(state, derivative);
-
-                if (_entries.size() >= _capacity) {
-                    // the history list has achieved its capacity,
-                    // so remove the oldest entry.
-                    _entries.removeLast();
-                }
-
-                _entries.addFirst(entry);
-                _stepsize = ((ContinuousDirector) _container.getDirector())
-                        .getCurrentStepSize();
-            } else {
-                throw new IllegalActionException(getContainer(),
-                        "The history capacity is less than or equal to 0.");
-            }
-        }
-
-        /** Rebalance the history information
-         *  with respect to the current step size, such that the information
-         *  in the history list are equally distanced, and the
-         *  distance is the current step size.
-         *  If the current step size is less than the history step size
-         *  used in the history list, then a 4-th order Hermite
-         *  interpolation is used for every two consecutive points.
-         *  If the current step size is larger than the history step size,
-         *  then a linear extrapolation is used.
-         *  @param currentStepSize The current step size.
-         *  @exception IllegalActionException If the director has an invalid
-         *   time resolution parameter.
-         */
-        public void rebalance(double currentStepSize)
-                throws IllegalActionException {
-            double timeResolution = ((ContinuousDirector) _container.getDirector())
-                    .getTimeResolution();
-
-            if (Math.abs(currentStepSize - _stepsize) > timeResolution) {
-                double[][] history = toDoubleArray();
-                int size = _entries.size();
-
-                for (int i = 0; i < (size - 1); i++) {
-                    _entries.removeLast();
-                }
-
-                double ratio = currentStepSize / _stepsize;
-
-                for (int i = 1; i < size; i++) {
-                    double[] newEntry;
-                    int bin = (int) Math.floor(i * ratio);
-
-                    if (bin < size) {
-                        // Interpolation as much as possible.
-                        double remainder = (i * ratio) - bin;
-                        newEntry = _Hermite(history[bin + 1], history[bin],
-                                1 - remainder);
-                    } else {
-                        // Extrapolation
-                        newEntry = _extrapolation(history[size - 2],
-                                history[size - 1], (i * ratio) - size + 1);
-                    }
-
-                    _entries
-                            .addLast(new DoubleDouble(newEntry[0], newEntry[1]));
-                }
-
-                _stepsize = currentStepSize;
-            }
-        }
-
-        /** Set the history capacity. The entries exceed the capacity
-         *  will be lost. If the argument is less than 0, it is set
-         *  to 0.
-         *  @param capacity The new capacity.
-         *  @see #getCapacity
-         */
-        public void setCapacity(int capacity) {
-            _capacity = (capacity > 0) ? capacity : 0;
-
-            while (_entries.size() > capacity) {
-                _entries.removeLast();
-            }
-        }
-
-        /** Return the history information in an array format. The
-         *  entries are ordered in their backward chronological order.
-         *  @return The content of the history information in a double
-         *      array format.
-         */
-        public double[][] toDoubleArray() {
-            double[][] array = new double[_entries.size()][2];
-            Iterator objs = _entries.iterator();
-            int i = 0;
-
-            while (objs.hasNext()) {
-                DoubleDouble entry = (DoubleDouble) objs.next();
-                array[i++] = entry.toArray();
-            }
-
-            return array;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                        private methods                ////
-        // Hermite interpolation.
-        // @param p1 Point 1, state and derivative.
-        // @param p2 Point 2, state and derivative.
-        // @param s The interpolation point.
-        // @return The Hermite interpolation of the arguments.
-        private double[] _Hermite(double[] p1, double[] p2, double s) {
-            double s3 = s * s * s;
-            double s2 = s * s;
-            double h1 = (2 * s3) - (3 * s2) + 1;
-            double h2 = (-2 * s3) + (3 * s2);
-            double h3 = s3 - (2 * s2) + s;
-            double h4 = s3 - s2;
-            double g1 = (6 * s2) - (6 * s);
-            double g2 = (-6 * s2) + (6 * s);
-            double g3 = (3 * s2) - (4 * s) + 1;
-            double g4 = (3 * s2) - (2 * s);
-            double[] result = new double[2];
-            result[0] = (h1 * p1[0]) + (h2 * p2[0]) + (h3 * p1[1])
-                    + (h4 * p2[1]);
-            result[1] = (g1 * p1[0]) + (g2 * p2[0]) + (g3 * p1[1])
-                    + (g4 * p2[1]);
-            return result;
-        }
-
-        // Linear extrapolation.
-        // @param p1 Point1, state and derivative.
-        // @param p2 Point2, state and derivative.
-        // @param s The extrapolation ration.
-        // @return The extrapolation of the arguments.
-        private double[] _extrapolation(double[] p1, double[] p2, double s) {
-            double[] result = new double[2];
-            result[0] = p2[0] - ((p1[0] - p2[0]) * s);
-            result[1] = p2[1] - ((p1[1] - p2[1]) * s);
-            return result;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                        private variables               ////
-        // The container.
-        ContinuousIntegrator _container;
-
-        // The linked list storing the entries
-        LinkedList _entries;
-
-        // The capacity.
-        int _capacity;
-
-        // The step size that the entries are based on.
-        double _stepsize;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                           Inner Class                     ////
-
-    /** A data structure for storing two double numbers.
-     */
-    private class DoubleDouble {
-        /** construct the Double pair.
-         *  @param first The first double value in a DoubleDouble object.
-         *  @param second The second double value in a DoubleDouble object.
-         */
-        public DoubleDouble(double first, double second) {
-            _data[0] = first;
-            _data[1] = second;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                         public methods                ////
-
-        /** Return the data as a double array.
-         *  @return A double array representation of this object.
-         */
-        public double[] toArray() {
-            return _data;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                        private variables               ////
-        // The data as a form of a double array of two elements
-        private double[] _data = new double[2];
-    }
 }

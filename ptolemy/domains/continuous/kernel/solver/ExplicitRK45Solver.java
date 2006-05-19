@@ -87,14 +87,6 @@ public class ExplicitRK45Solver extends ExplicitODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return 0 to indicate that no history information is needed
-     *  by this solver.
-     *  @return 0.
-     */
-    public final int getAmountOfHistoryInformation() {
-        return 0;
-    }
-
     /** Return 7 to indicate that 7 auxiliary variables are
      *  needed by this solver.
      *  @return 7.
@@ -120,7 +112,7 @@ public class ExplicitRK45Solver extends ExplicitODESolver {
         case 0:
 
             // Get the derivative at t;
-            double k0 = integrator.getTentativeDerivative();
+            double k0 = integrator.getDerivative();
             integrator.setAuxVariables(0, k0);
             outputValue = xn + (h * k0 * _B[0][0]);
             break;

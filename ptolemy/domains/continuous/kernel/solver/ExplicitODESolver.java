@@ -47,12 +47,17 @@ public abstract class ExplicitODESolver extends ContinuousODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
+    /** Return the time increment for the specified round.
+     *  @param round The round.
+     */
+    protected abstract double _getTimeIncrement(int round);
+    
     /** Increment the round and return the time increment associated
      *  with the round.
      *  @return The time increment associated with the next round.
      */
     protected final double _incrementRound() { 
-        double result = _timeInc[_roundCount];
+        double result = _getTimeIncrement(_roundCount);
         _roundCount++;
         return result;
     }
@@ -64,7 +69,7 @@ public abstract class ExplicitODESolver extends ContinuousODESolver {
      *  @return Return true if the solver has finished an integration step.
      */
     protected final boolean _isStepFinished() {
-        return _roundCount == _timeInc.length;
+        return _roundCount == _timeIncrements.length;
     }
 
     /** Reset the solver, indicating to it that we are starting an
@@ -76,9 +81,6 @@ public abstract class ExplicitODESolver extends ContinuousODESolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
-
-    /** The ratio of time increments within one integration step. */
-    protected double[] _timeInc;
 
     /** The round counter. */
     protected int _roundCount = 0;

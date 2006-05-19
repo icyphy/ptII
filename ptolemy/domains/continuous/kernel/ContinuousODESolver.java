@@ -66,16 +66,6 @@ public abstract class ContinuousODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the amount of history information needed by this solver.
-     *  Some solvers need history information from each integrator.
-     *  The derived class should implement this method to return the
-     *  number of history information needed so that the integrator can
-     *  prepare for that in advance. In particular, if a solver needs no
-     *  history information, this method returns 0.
-     *  @return The amount of history information needed.
-     */
-    public abstract int getAmountOfHistoryInformation();
-
     /** Return the number of auxiliary variables that an integrator should
      *  provide when solving the ODE. Auxiliary variables are variables
      *  in integrators to store integrator-dependent intermediate results

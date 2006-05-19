@@ -28,7 +28,9 @@
 package ptolemy.domains.continuous.kernel.solver;
 
 import ptolemy.domains.continuous.kernel.ContinuousIntegrator;
+import ptolemy.domains.continuous.kernel.ContinuousODESolver;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -67,25 +69,18 @@ import ptolemy.kernel.util.InvalidStateException;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (hyzheng)
  */
-public class ExplicitRK23Solver extends ExplicitODESolver{
+public class ExplicitRK23Solver extends ContinuousODESolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return 0 to indicate that no history information is needed
-     *  by this solver.
-     *  @return 0.
-     */
-    public final int getAmountOfHistoryInformation() {
-        return 0;
-    }
-
-    /** Return 4 to indicate that four auxiliary variables are
-     *  needed by this solver.
-     *  @return 4.
+    /** Return the number of time increments plus one (to store the
+     *  truncation error).
+     *  @return The number of time increments plus one.
      */
     public final int getIntegratorAuxVariableCount() {
-        return 4;
+        // Allow one for the truncation error.
+        return _TIME_INCREMENTS.length + 1;
     }
 
     /** Fire the given integrator. This method performs the ODE solving
@@ -105,21 +100,21 @@ public class ExplicitRK23Solver extends ExplicitODESolver{
         case 0:
 
             // Get the derivative at t;
-            double k0 = integrator.getTentativeDerivative();
+            double k0 = integrator.getDerivative();
             integrator.setAuxVariables(0, k0);
             outvalue = xn + (h * k0 * _B[0][0]);
             break;
 
         case 1:
 
-            double k1 = integrator.getTentativeDerivative();
+            double k1 = integrator.getDerivative();
             integrator.setAuxVariables(1, k1);
             outvalue = xn + (h * ((k[0] * _B[1][0]) + (k1 * _B[1][1])));
             break;
 
         case 2:
 
-            double k2 = integrator.getTentativeDerivative();
+            double k2 = integrator.getDerivative();
             integrator.setAuxVariables(2, k2);
             outvalue = xn
                     + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) 
@@ -144,11 +139,17 @@ public class ExplicitRK23Solver extends ExplicitODESolver{
     public boolean integratorIsAccurate(ContinuousIntegrator integrator) {
         double tolerance = _director.getErrorTolerance();
         double h = _director.getCurrentStepSize();
-        double f = integrator.getTentativeDerivative();
+        // FIXME: The current input at the derivative is not actually x(n+1)!
+        double f;
+        try {
+            f = integrator.getDerivative();
+        } catch (IllegalActionException e) {
+            // This should not occur because input has been previously read.
+            throw new InternalErrorException(e);
+        }
         double[] k = integrator.getAuxVariables();
-        double error = h
-        * Math.abs((k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2])
-                + (f * _E[3]));
+        double error = h * Math.abs(
+                (k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2]) + (f * _E[3]));
         
         //k[3] is Local Truncation Error
         integrator.setAuxVariables(3, error);
@@ -198,10 +199,40 @@ public class ExplicitRK23Solver extends ExplicitODESolver{
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+    /** Increment the round and return the time increment associated
+     *  with the round.
+     *  @return The time increment associated with the next round.
+     */
+    protected final double _incrementRound() { 
+        double result = _TIME_INCREMENTS[_roundCount];
+        _roundCount++;
+        return result;
+    }
+    
+    /** Return true if the current integration step is finished. For example,
+     *  solvers with a fixed number of rounds in an integration step will
+     *  return true when that number of rounds are complete. Solvers that
+     *  iterate to a solution will return true when the solution is found.
+     *  @return Return true if the solver has finished an integration step.
+     */
+    protected final boolean _isStepFinished() {
+        return _roundCount == _TIME_INCREMENTS.length;
+    }
+
+    /** Reset the solver, indicating to it that we are starting an
+     *  integration step. This method resets the round counter.
+     */
+    protected final void _reset() {
+        _roundCount = 0;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
 
     /** The ratio of time increments within one integration step. */
-    protected static final double[] _timeInc = { 0.5, 0.75, 1.0 };
+    protected static final double[] _TIME_INCREMENTS = { 0.5, 0.75, 1.0 };
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
@@ -213,7 +244,13 @@ public class ExplicitRK23Solver extends ExplicitODESolver{
     /** E coefficients. */
     private static final double[] _E = { -5.0 / 72.0, 1.0 / 12.0, 1.0 / 9.0,
             -1.0 / 8.0 };
+    
+    /** The most recently calculated truncation error. */
+    private double _error;
 
     /** The order of the algorithm. */
     private static final int _order = 3;
+    
+    /** The round counter. */
+    private int _roundCount = 0;
 }

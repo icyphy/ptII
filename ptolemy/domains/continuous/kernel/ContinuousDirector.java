@@ -134,8 +134,10 @@ import ptolemy.kernel.util.Settable;
  with only a few samples. The default value is 1.0.
  
  <LI> <i>maxIterations</i>:
- The maximum number of iterations that an implicit
- ODE solver will use to resolve the states of integrators.
+ The maximum number of iterations that an
+ ODE solver can use to resolve the states of integrators.
+ Implicit solvers, for example, iterate until they converge,
+ and this parameter bounds the number of iterations.
  An example of an implicit solver is the BackwardsEuler solver.
  The default value is 20, and the type is int.
  FIXME: Currently, this package implements no implicit solvers.
@@ -157,11 +159,6 @@ import ptolemy.kernel.util.Settable;
  integration step is considered to have failed, and should be restarted with
  a reduced step size. The default value is 1e-4.
  
- <LI> <i>valueResolution</i>:
- This is used to control the convergence of fixed point iterations.
- If in two successive iterations the difference of the state variables
- is less than this resolution, then the fixed point is considered to have
- reached. The default value is 1e-6.
  </UL>
  <P>
  This director maintains a breakpoint table to record all predictable
@@ -240,6 +237,9 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  This is a string that defaults to "ExplicitRK45Solver".
      *  Solvers are all required to be in package
      *  "ptolemy.domains.continuous.kernel.solver".
+     *  If a solver is changed during execution, the
+     *  change does not take effect until the next execution
+     *  of the model.
      */
     public Parameter ODESolver;
 
@@ -310,10 +310,20 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
     }
 
-    /** Perform an intergration step. The intergration step size is adjusted
-     *  such that the model time plus the intergration step size does not
-     *  exceed the next breakpoint time and there is no discrete event 
-     *  happening during the intergration.
+    /** Perform an integration step. This invokes prefire() and fire() of
+     *  actors (possibly repeatedly) and advances time by one step.
+     *  There are two nested iterative procedures followed.
+     *  The outer one iterates until a suitable step size is
+     *  found. The inner one iterates until a fixed point is
+     *  found at each time point.
+     *  That is, if the solver is a variable step-size solver, then the
+     *  integration step may be repeated until all actors indicate
+     *  that the chosen step size is acceptable (the outer iteration).
+     *  For the inner iteration, at the current time
+     *  and (for multistep solvers) at times between the current
+     *  time and current time plus the step size, actors may be
+     *  repeatedly prefired and fired until a fixed point is reached,
+     *  that is, until all signal values are known.
      */
     public void fire() throws IllegalActionException {
         
@@ -328,7 +338,8 @@ public class ContinuousDirector extends FixedPointDirector implements
                     + ".");
         }
 
-        // Iterate until we conclude that the step size is acceptable.
+        // Iterate until we conclude that the step size is acceptable
+        // or we exceed the maximum allowable number of iterations.
         while (!_stopRequested) {
             // Some solvers take multiple rounds to perform an integration step.
             // Tell the solver we are starting an integration step by resetting
@@ -347,8 +358,12 @@ public class ContinuousDirector extends FixedPointDirector implements
                             * _ODESolver._incrementRound()));
                 }
                 // Resolve the fixed point at the new time.
-                super.prefire();
-                super.fire();
+                // Note that prefire resets all receivers to unknown,
+                // and fire() iterates to a fixed point where all signals
+                // become known.
+                if (super.prefire()) {
+                    super.fire();
+                }
                 // Increase the iteration counts.
                 iterations++;
                 // If the step size is zero, then one iteration is sufficient.
@@ -364,14 +379,15 @@ public class ContinuousDirector extends FixedPointDirector implements
                 _setCurrentStepSize(refinedStepSize());
 
                 if (_debugging) {
-                    _debug("Refine the current step size to a smaller one " 
+                    _debug("Refine the current step size to: " 
                             + _currentStepSize);
                 }
+                // Restore model time to the start of the integration step.
+                setModelTime(_iterationBeginTime);
+                
                 
                 // Restore the saved state of the stateful actors, 
                 // including the save starting time of this integration.
-                setModelTime(_iterationBeginTime);
-                
                 // FIXME: may generate a StatefulActor set for more 
                 // efficient execution.
                 Schedule schedule = getScheduler().getSchedule();
@@ -380,7 +396,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                     Actor actor = ((Firing) firingIterator.next()).getActor();
                     if (actor instanceof ContinuousStatefulActor) {
                         _debug("Restoring states of " + actor);
-                        ((ContinuousStatefulActor) actor).goToMarkedState();
+                        ((ContinuousStatefulActor) actor).rollBackToCommittedState();
                     }
                 }
             }
@@ -554,8 +570,8 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  be granted, or the super class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        // postfire all continuous actors to commit their states.
-        _markStates();
+        // Postfire all actors.
+        boolean result = super.postfire();
 
         // If the current time is equal to the stop time, return false.
         // Check, however, to make sure that the breakpoints table
@@ -574,9 +590,12 @@ public class ContinuousDirector extends FixedPointDirector implements
                     "Current time exceeds the specified stopTime.");
         }
 
-        // set the suggested step size for next integration.
+        // Set the suggested step size for next integration step.
         _setCurrentStepSize(suggestedStepSize());
 
+        // If this director is enclosed within an opaque composite
+        // actor, then request that the enclosing director refire
+        // the composite actor containing this director.
         if (_isEmbedded() && (_breakpoints.size() > 0)) {
             Time time = (Time) _breakpoints.removeFirst();
             CompositeActor container = (CompositeActor) getContainer();
@@ -588,15 +607,12 @@ public class ContinuousDirector extends FixedPointDirector implements
             long realTime = System.currentTimeMillis() - _timeBase;
             long simulationTime = (long) ((getModelTime().subtract(
                     getModelStartTime()).getDoubleValue()) * 1000);
-            if (_debugging) {
-                _debug("real time " + realTime 
-                        + " and simulation time " + simulationTime);
-            }
             long timeDifference = simulationTime - realTime;
+            // If the time difference is large enough, go to sleep.
             if (timeDifference > 20) {
                 try {
                     if (_debugging) {
-                        _debug("Sleep for " + timeDifference + "ms");
+                        _debug("Sleep for " + timeDifference + "ms.");
                     }
                     Thread.sleep(timeDifference - 20);
                 } catch (Exception e) {
@@ -611,7 +627,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             }
         }
         
-        return super.postfire();
+        return result;
     }
 
     /** Call the prefire() method of the super class and return its value.
@@ -899,30 +915,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         return _debugging;
     }
 
-    /** The current states are marked as a known good checkpoint.
-     *
-     *  @exception IllegalActionException If the synchronizeToRealTime
-     *  parameter does not have a valid token, or the sleep is interrupted,
-     *  or there is not a schedule, or any of the actors in the schedule can
-     *  not be postfired.
-     */
-    protected void _markStates() throws IllegalActionException {
-        // Mark the current state of the stateful actors.
-        // FIXME: may generate StatefulActor set for more 
-        // efficient execution.
-        Schedule schedule = getScheduler().getSchedule();
-        Iterator firingIterator = schedule.firingIterator();
-        while (firingIterator.hasNext() && !_stopRequested) {
-            Actor actor = ((Firing) firingIterator.next()).getActor();
-            if (actor instanceof ContinuousStatefulActor) {
-                if (_debugging) {
-                    _debug("Saving states of " + actor);
-                }
-                ((ContinuousStatefulActor) actor).markState();
-            }
-        }
-    }
-
     /** Expose the debug method to the package. */
     protected void _reportDebugMessage(String message) {
         _debug(message);
@@ -1019,7 +1011,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** The maximum iterations for implicit ODE solver to resolve states. */
     private int _maxIterations;
 
-    /** The maximum step size used for intergration. */
+    /** The maximum step size used for integration. */
     private double _maxStepSize;
 
     /** The ODE solver, which is an instance of the class given by

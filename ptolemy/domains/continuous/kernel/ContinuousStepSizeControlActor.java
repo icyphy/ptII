@@ -27,6 +27,8 @@
  */
 package ptolemy.domains.continuous.kernel;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousStepSizeControlActor
 
