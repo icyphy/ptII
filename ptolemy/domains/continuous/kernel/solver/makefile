@@ -47,6 +47,7 @@ PTPACKAGE = 	solver
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	ExplicitODESolver.java \
 	ExplicitRK23Solver.java \
 	ExplicitRK45Solver.java
 

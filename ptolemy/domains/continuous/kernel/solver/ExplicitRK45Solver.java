@@ -28,9 +28,7 @@
 package ptolemy.domains.continuous.kernel.solver;
 
 import ptolemy.data.DoubleToken;
-import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.domains.continuous.kernel.ContinuousIntegrator;
-import ptolemy.domains.continuous.kernel.ContinuousODESolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 
@@ -76,15 +74,15 @@ import ptolemy.kernel.util.InvalidStateException;
  the local truncation error.
  <p>
  It takes 6 steps for this solver to resolve a state with an integration
- step size. A round counter is used to record which step this solver performs.
+ step size.
 
- @author  Haiyang Zheng
+ @author  Haiyang Zheng, Edward A. Lee
  @version $Id$
- @since Ptolemy II 4.1
+ @since Ptolemy II 6.0
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (hyzheng)
  */
-public class ExplicitRK45Solver extends ContinuousODESolver {
+public class ExplicitRK45Solver extends ExplicitODESolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -113,14 +111,12 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
      */
     public void integratorFire(ContinuousIntegrator integrator)
             throws IllegalActionException {
-        ContinuousDirector director = (ContinuousDirector) getContainer();
-        int r = _roundCount;
         double xn = integrator.getState();
         double outputValue;
-        double h = director.getCurrentStepSize();
+        double h = _director.getCurrentStepSize();
         double[] k = integrator.getAuxVariables();
 
-        switch (r) {
+        switch (_roundCount) {
         case 0:
 
             // Get the derivative at t;
@@ -131,14 +127,14 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
 
         case 1:
 
-            double k1 = ((DoubleToken) integrator.input.get(0)).doubleValue();
+            double k1 = ((DoubleToken) integrator.derivative.get(0)).doubleValue();
             integrator.setAuxVariables(1, k1);
             outputValue = xn + (h * ((k[0] * _B[1][0]) + (k1 * _B[1][1])));
             break;
 
         case 2:
 
-            double k2 = ((DoubleToken) integrator.input.get(0)).doubleValue();
+            double k2 = ((DoubleToken) integrator.derivative.get(0)).doubleValue();
             integrator.setAuxVariables(2, k2);
             outputValue = xn
                     + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) + (k2 * _B[2][2])));
@@ -146,7 +142,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
 
         case 3:
 
-            double k3 = ((DoubleToken) integrator.input.get(0)).doubleValue();
+            double k3 = ((DoubleToken) integrator.derivative.get(0)).doubleValue();
             integrator.setAuxVariables(3, k3);
             outputValue = xn
                     + (h * ((k[0] * _B[3][0]) + (k[1] * _B[3][1])
@@ -155,7 +151,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
 
         case 4:
 
-            double k4 = ((DoubleToken) integrator.input.get(0)).doubleValue();
+            double k4 = ((DoubleToken) integrator.derivative.get(0)).doubleValue();
             integrator.setAuxVariables(4, k4);
             outputValue = xn
                     + (h * ((k[0] * _B[4][0]) + (k[1] * _B[4][1])
@@ -164,7 +160,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
 
         case 5:
 
-            double k5 = ((DoubleToken) integrator.input.get(0)).doubleValue();
+            double k5 = ((DoubleToken) integrator.derivative.get(0)).doubleValue();
             integrator.setAuxVariables(5, k5);
             outputValue = xn
                     + (h * ((k[0] * _B[5][0]) + (k[1] * _B[5][1])
@@ -178,7 +174,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
                     "Execution sequence out of range.");
         }
 
-        integrator.output.broadcast(new DoubleToken(outputValue));
+        integrator.state.broadcast(new DoubleToken(outputValue));
     }
 
     /** Return true if the integration is accurate for the given
@@ -189,9 +185,8 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
      *  @return True if the integration is successful.
      */
     public boolean integratorIsAccurate(ContinuousIntegrator integrator) {
-        ContinuousDirector director = (ContinuousDirector) getContainer();
-        double tolerance = director.getErrorTolerance();
-        double h = director.getCurrentStepSize();
+        double tolerance = _director.getErrorTolerance();
+        double h = _director.getCurrentStepSize();
         double[] k = integrator.getAuxVariables();
         double error = h
                 * Math.abs((k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2])
@@ -230,11 +225,10 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
      *  @param integrator The integrator that calls this method.
      *  @return The next step size suggested by the given integrator.
      */
-    public double integratorPredictedStepSize(ContinuousIntegrator integrator) {
-        ContinuousDirector director = (ContinuousDirector) getContainer();
+    public double integratorSuggestedStepSize(ContinuousIntegrator integrator) {
         double error = (integrator.getAuxVariables())[6];
-        double h = director.getCurrentStepSize();
-        double tolerance = director.getErrorTolerance();
+        double h = _director.getCurrentStepSize();
+        double tolerance = _director.getErrorTolerance();
         double newh = 5.0 * h;
 
         if (error > tolerance) {
@@ -249,50 +243,11 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
         return newh;
     }
 
-    /** Return the number of firings required to resolve a state.
-     *  The number is the same as the order of this solver.
-     *  For this solver, the value is 5.
-     *  @return The number of firings required to resolve a state.
-     */
-    public int NumberOfFiringsRequired() {
-        return _order;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-    
-    /** Increment the round and return the time increment associated
-     *  with the round.
-     *  @return The time increment associated with the next round.
-     */
-    protected double _incrementRound() { 
-        double result = _timeInc[_roundCount];
-        _roundCount++;
-        return result;
-    }
-
-    /** Return true if the current integration step is finished. For example,
-     *  solvers with a fixed number of rounds in an integration step will
-     *  return true when that number of rounds are complete. Solvers that
-     *  iterate to a solution will return true when the solution is found.
-     *  @return Return true if the solver has finished an integration step.
-     */
-    protected boolean _isStepFinished() {
-        return _roundCount == _timeInc.length;
-    }
-
-    /** Reset the solver, indicating to it that we are starting an
-     *  integration step. This method resets the round counter.
-     */
-    protected void _reset() {
-        _roundCount = 0;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The ratio of time increments within one integration step. */
-    private static final double[] _timeInc = { 0.2, 0.3, 0.6, 1.0, 0.875, 1.0 };
+    protected static final double[] _timeInc = { 0.2, 0.3, 0.6, 1.0, 0.875, 1.0 };
 
     /** B coefficients */
     private static final double[][] _B = {
@@ -312,7 +267,4 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
 
     /** The order of the algorithm. */
     private static final int _order = 5;
-    
-    /** The round counter. */
-    private int _roundCount = 0;
 }

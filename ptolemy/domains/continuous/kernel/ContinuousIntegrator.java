@@ -1,4 +1,4 @@
-/* An integrator for the continuous-time domain.
+/* An integrator for the continuous domain.
 
  Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
@@ -35,7 +35,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.hs.kernel.ODESolver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -49,27 +48,34 @@ import ptolemy.kernel.util.StringAttribute;
 //// ContinuousIntegrator
 
 /**
- The integrator in the continuous-time (cont) domain.
- An integrator has one input port and one output port. Conceptually,
- the input is the derivative of the output w.r.t. time. So an ordinary
- differential equation (ODE) dx/dt = f(x, t) can be built by:
+ The integrator in the continuous domain.
+ An integrator has two input ports and one output port. The <i>derivative</i> 
+ port receives the derivative of the output w.r.t. time. The <i>impulse</i> 
+ port receives a delta function. So an ordinary differential equation (ODE), 
+ dx/dt = f(x, t) + d(g(t))/dt, can be built by:
  <P>
  <pre>
- <pre>               +---------------+
- <pre>        dx/dt  |               |   x
- <pre>    +--------->|   Integrator  |---------+----->
- <pre>    |          |               |         |
- <pre>    |          +---------------+         |
- <pre>    |                                    |
- <pre>    |             |---------|            |
- <pre>    +-------------| f(x, t) |<-----------+
- <pre>                  |---------|
+ <pre>    |------|       +---------------+
+ <pre>    | g(t) |------>|               |   x
+ <pre>    |------|       |   Integrator  |---------+----->
+ <pre>        +--------->|               |         |
+ <pre>        |   dx/dt  +---------------+         |
+ <pre>        |                                    |
+ <pre>        |             |---------|            |
+ <pre>        +-------------| f(x, t) |<-----------+
+ <pre>                      |---------|
  </pre></pre></pre></pre></pre></pre></pre></pre></pre></pre>
-
  <P>
- An integrator can emit a token (a state) at a time
- without knowing the input at that time. An integrator is a step size control
- actor that can control the accuracy of the ODE solution by adjusting step
+ An integrator also has a port parameter called <i>initialState</i>. This 
+ parameter provides the initial state for integration during the initialization 
+ stage of the simulation, and it can be changed by receiving inputs from the 
+ corresponding parameter port. The default value of the parameter is 0.0 of 
+ type double.
+ <P>
+ An integrator can generate an output (its current state) at a time
+ when the derivative input is unknown, but the impulse input and initialState
+ ports must be known. An integrator is a step size control
+ actor that controls the accuracy of the ODE solution by adjusting step
  sizes. An integrator has memory, which is its state.
  <P>
  To help solving the ODE, a set of internal variables are used:<BR>
@@ -79,7 +85,7 @@ import ptolemy.kernel.util.StringAttribute;
  which has not been confirmed. It is a starting point for other actors
  to estimate the accuracy of this integration step.
  <I>history</I>: The previous states and their derivatives. History may
- be used by multistep integration methods.
+ be used for interpolations by multistep integration methods.
  <P>
  For different ODE solving methods, the functionality
  of an integrator may be different. The delegation and strategy design
@@ -87,26 +93,22 @@ import ptolemy.kernel.util.StringAttribute;
  concrete ODE solver classes. Some solver-dependent methods of integrators
  delegate to the concrete ODE solvers.
  <P>
- An integrator has one parameter: the <i>initialState</i>. At the
- initialization stage of the simulation, the state of the integrator is
- set to the initial state. Changes of the <i>initialState</i> made during
- execution cause the state to be reset to the specified value.
- The default value of the parameter is 0.0 of type double.
- <P>
  An integrator can possibly have several auxiliary variables for the
  the ODE solvers to use. The number of the auxiliary variables is checked
  before each iteration. The ODE solver class provides the number of
  variables needed for that particular solver.
  The auxiliary variables can be set and get by setAuxVariables()
  and getAuxVariables() methods.
-
+ <p>
+ This class is based on the CTBaseIntegrator by Jie Liu and Haiyang Zheng,
+ but it has more ports and provides more functionalities.
+ 
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.2
+ @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (yuhong)
  @see ODESolver
- @see CTDirector
  */
 public class ContinuousIntegrator extends TypedAtomicActor implements 
     ContinuousStatefulActor, ContinuousStepSizeControlActor {
@@ -129,11 +131,11 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                 "_cardinal");
         cardinality.setExpression("SOUTH");
 
-        input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(BaseType.DOUBLE);
+        derivative = new TypedIOPort(this, "derivative", true, false);
+        derivative.setTypeEquals(BaseType.DOUBLE);
 
-        output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(BaseType.DOUBLE);
+        state = new TypedIOPort(this, "state", false, true);
+        state.setTypeEquals(BaseType.DOUBLE);
 
         initialState = new PortParameter(this, "initialState", new DoubleToken(0.0));
         initialState.setTypeEquals(BaseType.DOUBLE);
@@ -147,13 +149,13 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      */
     public TypedIOPort impulse;
 
-    /** The input port. This is a single port of type double.
+    /** The derivative port. This is a single port of type double.
      */
-    public TypedIOPort input;
+    public TypedIOPort derivative;
 
-    /** The output port. This is a single port of type double.
+    /** The state port. This is a single port of type double.
      */
-    public TypedIOPort output;
+    public TypedIOPort state;
 
     /** The initial state of type DoubleToken. The default value is 0.0.
      */
@@ -185,17 +187,10 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         _history.clear();
     }
 
-    /** Emit the tentative output, which is the current state of the
-     *  integrator.
-     *  @exception IllegalActionException If the data transfer can not be
-     *  completed.
-     */
-    public void emitCurrentStates() throws IllegalActionException {
-        output.send(0, new DoubleToken(_tentativeState));
-    }
-
-    /** If the value at the <i>input</i> port is known, perform integration;
-     *  if the <i>impulse</i> port is known and has data, then add the
+    /** If the value at the <i>derivative</i> port is known, and the current 
+     *  step size is bigger than 0, perform an integration.
+     *  <p> 
+     *  If the <i>impulse</i> port is known and has data, then add the
      *  value provided to the state; if the <i>initialState</i> port
      *  is known and has data, then reset the state to the provided
      *  value. If both <i>impulse</i> and <i>initialState</i> have
@@ -209,16 +204,22 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      */
     public void fire() throws IllegalActionException {
         ContinuousDirector dir = (ContinuousDirector) getDirector();
-        if (input.isKnown()) {
-            if (input.hasToken(0)) {
+        double stepSize = dir.getCurrentStepSize();
+
+        if (derivative.isKnown()) {
+            if (derivative.hasToken(0)) {
                 double currentDerivative = 
-                    ((DoubleToken) input.get(0)).doubleValue();
+                    ((DoubleToken) derivative.get(0)).doubleValue();
                 setTentativeDerivative(currentDerivative);
+                if (stepSize > 0) {
+                    // The following method changes the tentative state.
+                    dir._getODESolver().integratorFire(this);
+                }
             }
         }
-        // NOTE: 
+        
         if (impulse.hasToken(0)) {
-            if (dir.getCurrentStepSize() != 0) {
+            if (stepSize != 0) {
                 throw new IllegalActionException(this,
                 "Signal at the impulse port is not purely discrete.");
             }
@@ -226,10 +227,20 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                     + ((DoubleToken) impulse.get(0)).doubleValue();
             setTentativeState(currentState);
         }
+        // The input from the initialState port overwrites the input from 
+        // the impulse port.
+        if (initialState.getPort().hasToken(0)) {
+            if (stepSize != 0) {
+                throw new IllegalActionException(this,
+                "Signal at the initialState port is not purely discrete.");
+            }
+            double currentState =
+                    ((DoubleToken) initialState.getPort().get(0)).doubleValue();
+            setTentativeState(currentState);
+        }
 
-        output.broadcast(new DoubleToken(getTentativeState()));
-        if (!output.isKnown()) {
-            dir._getODESolver().integratorFire(this);
+        if (!state.isKnown()) {
+            state.broadcast(new DoubleToken(getTentativeState()));
         }
     }
 
@@ -386,7 +397,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                     + " it is a result of divide-by-zero.");
         }
 
-        ContinuousODESolver solver = ((ContinuousDirector) getDirector())._getODESolver();
+        ContinuousODESolver solver = 
+            ((ContinuousDirector) getDirector())._getODESolver();
         _successful = solver.integratorIsAccurate(this);
         return _successful;
     }
@@ -438,7 +450,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      */
     public double suggestedStepSize() {
         ContinuousODESolver solver = ((ContinuousDirector) getDirector())._getODESolver();
-        return solver.integratorPredictedStepSize(this);
+        return solver.integratorSuggestedStepSize(this);
     }
 
     /** Setup the integrator to operate with the current ODE solver.
@@ -448,13 +460,19 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  <p>
      *  This method also adjusts the history information w.r.t. the
      *  current ODE solver and the current step size.
-     *  @return True always.
+     *  <p>
+     *  Return true if both the <i>impulse</i> port and <i>initialState</i> 
+     *  port are known. 
+     *  @return True if both the <i>impulse</i> port and <i>initialState</i> 
+     *  port are known. 
      *  @exception IllegalActionException If there's no director or
      *  the director has no ODE solver.
      */
     public boolean prefire() throws IllegalActionException {
         
         // FIXME: should this happen in the initialize or preinitialize method? 
+        // The question is whether changing the ODE solver will trigger the 
+        // model to reinitialize?
         
         ContinuousDirector dir = (ContinuousDirector) getDirector();
 
@@ -483,7 +501,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             _history.rebalance(dir.getCurrentStepSize());
         }
 
-        return true;
+        return derivative.isKnown() && initialState.isKnown() && super.prefire();
     }
 
     /** Override the base class to declare that the <i>output</i>
@@ -491,7 +509,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      */
     public void pruneDependencies() {
         super.pruneDependencies();
-        removeDependency(input, output);
+        removeDependency(derivative, state);
     }
 
     /** Return the estimation of the refined next step size.
