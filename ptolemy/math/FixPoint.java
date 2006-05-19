@@ -860,21 +860,6 @@ public class FixPoint implements Cloneable, Serializable {
         }
     }
 
-    /**
-     * Determine the resulting sign when performing an operation between
-     * two different Precision formats. If either Precision format is signed,
-     * the Precision of the result should be signed. Otherwise, the
-     * Precision of hte result is unsigned.
-     *
-     * @param arg
-     * @return
-     */
-    private static int _determineSign(Precision arg1, Precision arg2) {
-        if (arg1.isSigned() || arg2.isSigned())
-            return 1;
-        return 0;
-    }
-
     /** Initialize the _value and _precision of this object from
      *  a BigDecimal value.
      *
