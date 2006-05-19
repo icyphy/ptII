@@ -767,7 +767,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // the previous, then this will revert to not being an
                 // override when the model is next opened.
                 // Cf. What is done with parameter values.
-                if (!_currentCharData.equals(previousValue)) {
+                if (!_currentCharData.toString().equals(previousValue)) {
                     if (previous != null) {
                         String newString = _currentCharData.toString();
 
