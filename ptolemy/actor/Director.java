@@ -774,8 +774,8 @@ public class Director extends Attribute implements Executable {
      *   one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        if (_debugging && _verbose) {
-            _debug("Preinitializing ...");
+        if (_debugging) {
+            _debug(getFullName(), "Preinitializing ...");
         }
 
         // preinitialize protected variables.
@@ -784,7 +784,6 @@ public class Director extends Attribute implements Executable {
 
         // validate all settable attributes.
         Iterator attributes = attributeList(Settable.class).iterator();
-
         while (attributes.hasNext()) {
             Settable attribute = (Settable) attributes.next();
             attribute.validate();
@@ -792,25 +791,20 @@ public class Director extends Attribute implements Executable {
 
         // preinitialize all the contained actors.
         Nameable container = getContainer();
-
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
                     .iterator();
-
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
-
                 if (_debugging) {
-                    _debug("Invoking preinitialize(): ", ((NamedObj) actor)
-                            .getFullName());
+                    _debug("Invoking preinitialize(): ", 
+                            ((NamedObj) actor).getFullName());
                 }
-
                 actor.preinitialize();
             }
         }
-
         if (_debugging) {
-            _debug("Finished preinitialize().");
+            _debug(getFullName(), "Finished preinitialize().");
         }
     }
 
