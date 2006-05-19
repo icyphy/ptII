@@ -1186,7 +1186,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     private static final int PUT_TO_ANY = 10; // 1010
 
     /** Flag for the "get from all and put to all" operation. */
-    private static final int GET_FROM_ALL_PUT_TO_ALL = 12; // 1100
+    //private static final int GET_FROM_ALL_PUT_TO_ALL = 12; // 1100
 
     /** Flag for the "get from any and put to all" operation. */
     private static final int GET_FROM_ANY_PUT_TO_ALL = 13; // 1101
