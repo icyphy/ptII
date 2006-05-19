@@ -231,6 +231,17 @@ public class VersionAttribute extends StringAttribute implements Comparable {
         return _tupleList.iterator();
     }
 
+    /** Return the major version, which consists of the first two
+     *  tuples.  Thus, if the version is 6.0.1-beta, then this 
+     *  method will return "6.0".
+     *  @return The major version.
+     */
+    public static String majorCurrentVersion() {
+        Iterator versionTuples = CURRENT_VERSION.iterator();
+        return (String) versionTuples.next() + "." 
+        + (String) versionTuples.next();
+    }
+
     /** Set the value of the string attribute and notify the container
      *  of the value of this attribute by calling attributeChanged().
      *  Notify any value listeners of this attribute.

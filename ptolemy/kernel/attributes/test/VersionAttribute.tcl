@@ -103,3 +103,7 @@ test VersionAttribute-3.0 {clone: This used to throw an exception because of Nam
     #list [$vaClone toString] [$vaCurrentVersion equals $vaCloneCurrentVersion]
     list {}
 } {{}}
+
+test VersionAttribute-3.0 {majorCurrentVersion} {
+    java::call ptolemy.kernel.attributes.VersionAttribute majorCurrentVersion
+} {6.0}
