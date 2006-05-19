@@ -145,9 +145,6 @@ public class ExplicitRK23Solver extends ExplicitODESolver{
         double tolerance = _director.getErrorTolerance();
         double h = _director.getCurrentStepSize();
         double f = integrator.getTentativeDerivative();
-        
-        // FIXME: check the equation for error calculation... It is a 
-        // little bit strange comparing to that of the RK45 solver.
         double[] k = integrator.getAuxVariables();
         double error = h
         * Math.abs((k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2])
@@ -155,16 +152,22 @@ public class ExplicitRK23Solver extends ExplicitODESolver{
         
         //k[3] is Local Truncation Error
         integrator.setAuxVariables(3, error);
-        _debug("Integrator: " + integrator.getName()
-                + " local truncation error = " + error);
+        if (_isDebugging()) {
+            _debug("Integrator: " + integrator.getName()
+                    + " local truncation error = " + error);
+        }
         
         if (error < tolerance) {
-            _debug("Integrator: " + integrator.getName()
-                    + " report a success.");
+            if (_isDebugging()) {
+                _debug("Integrator: " + integrator.getName()
+                        + " report a success.");
+            }
             return true;
         } else {
-            _debug("Integrator: " + integrator.getName()
-                    + " reports a failure.");
+            if (_isDebugging()) {
+                _debug("Integrator: " + integrator.getName()
+                        + " reports a failure.");
+            }
             return false;
         }
     }

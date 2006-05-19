@@ -198,20 +198,17 @@ public class ExplicitRK45Solver extends ExplicitODESolver {
             _debug("Integrator: " + integrator.getName()
                     + " local truncation error = " + error);
         }
-
         if (error < tolerance) {
             if (_isDebugging()) {
                 _debug("Integrator: " + integrator.getName()
                         + " report a success.");
             }
-
             return true;
         } else {
             if (_isDebugging()) {
                 _debug("Integrator: " + integrator.getName()
                         + " reports a failure.");
             }
-
             return false;
         }
     }
