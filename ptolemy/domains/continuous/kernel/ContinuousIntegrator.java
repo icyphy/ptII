@@ -206,25 +206,16 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         ContinuousDirector dir = (ContinuousDirector) getDirector();
         double stepSize = dir.getCurrentStepSize();
 
-        if (derivative.isKnown()) {
-            if (derivative.hasToken(0)) {
-                double currentDerivative = 
-                    ((DoubleToken) derivative.get(0)).doubleValue();
-                setTentativeDerivative(currentDerivative);
-                if (stepSize > 0) {
-                    // The following method changes the tentative state.
-                    dir._getODESolver().integratorFire(this);
-                }
-            }
-        }
-        
+        // The state at the current model time depends on the inputs from both
+        // impulse and initialState ports (causal relation), but not on the
+        // derivative at the current model time.
         if (impulse.hasToken(0)) {
             if (stepSize != 0) {
                 throw new IllegalActionException(this,
                 "Signal at the impulse port is not purely discrete.");
             }
             double currentState = getState()
-                    + ((DoubleToken) impulse.get(0)).doubleValue();
+            + ((DoubleToken) impulse.get(0)).doubleValue();
             setTentativeState(currentState);
         }
         // The input from the initialState port overwrites the input from 
@@ -235,12 +226,25 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                 "Signal at the initialState port is not purely discrete.");
             }
             double currentState =
-                    ((DoubleToken) initialState.getPort().get(0)).doubleValue();
+                ((DoubleToken) initialState.getPort().get(0)).doubleValue();
             setTentativeState(currentState);
         }
-
+        
         if (!state.isKnown()) {
             state.broadcast(new DoubleToken(getTentativeState()));
+        }
+
+        if (derivative.isKnown()) {
+            if (derivative.hasToken(0)) {
+                double currentDerivative = 
+                    ((DoubleToken) derivative.get(0)).doubleValue();
+                setTentativeDerivative(currentDerivative);
+                if (stepSize > 0) {
+                    // The following method changes the tentative state but 
+                    // should not expose the tentative state.
+                    dir._getODESolver().integratorIntegrate(this);
+                }
+            }
         }
     }
 

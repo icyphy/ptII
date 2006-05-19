@@ -104,12 +104,12 @@ public class ExplicitRK45Solver extends ExplicitODESolver {
     }
 
     /** Fire the given integrator. This method performs the ODE solving
-     *  algorithm described in the class comment.
+     *  algorithm described in the class comment. 
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or can not send output.
      */
-    public void integratorFire(ContinuousIntegrator integrator)
+    public void integratorIntegrate(ContinuousIntegrator integrator)
             throws IllegalActionException {
         double xn = integrator.getState();
         double outputValue;
@@ -166,7 +166,6 @@ public class ExplicitRK45Solver extends ExplicitODESolver {
                     + (h * ((k[0] * _B[5][0]) + (k[1] * _B[5][1])
                             + (k[2] * _B[5][2]) + (k[3] * _B[5][3])
                             + (k[4] * _B[5][4]) + (k5 * _B[5][5])));
-            integrator.setTentativeState(outputValue);
             break;
 
         default:
@@ -174,7 +173,7 @@ public class ExplicitRK45Solver extends ExplicitODESolver {
                     "Execution sequence out of range.");
         }
 
-        integrator.state.broadcast(new DoubleToken(outputValue));
+        integrator.setTentativeState(outputValue);
     }
 
     /** Return true if the integration is accurate for the given

@@ -90,11 +90,11 @@ public abstract class ContinuousODESolver {
 
     /** Perform one integration step. The fire() method of integrators
      *  delegates to this method. Derived classes need to implement
-     *  the details.
+     *  the details. This method does not produce any outputs.
      *  @param integrator The integrator that calls this method.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public abstract void integratorFire(ContinuousIntegrator integrator)
+    public abstract void integratorIntegrate(ContinuousIntegrator integrator)
             throws IllegalActionException;
 
     /** Return true if the current integration step is accurate from the

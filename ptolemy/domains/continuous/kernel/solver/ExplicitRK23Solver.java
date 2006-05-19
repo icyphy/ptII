@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.continuous.kernel.solver;
 
-import ptolemy.data.DoubleToken;
 import ptolemy.domains.continuous.kernel.ContinuousIntegrator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -95,7 +94,7 @@ public class ExplicitRK23Solver extends ExplicitODESolver{
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or can not send output.
      */
-    public void integratorFire(ContinuousIntegrator integrator)
+    public void integratorIntegrate(ContinuousIntegrator integrator)
             throws IllegalActionException {
         double outvalue;
         double xn = integrator.getState();
@@ -125,7 +124,6 @@ public class ExplicitRK23Solver extends ExplicitODESolver{
             outvalue = xn
                     + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) 
                             + (k2 * _B[2][2])));
-            integrator.setTentativeState(outvalue);
             break;
 
         default:
@@ -133,7 +131,7 @@ public class ExplicitRK23Solver extends ExplicitODESolver{
                     "Execution sequence out of range.");
         }
 
-        integrator.state.broadcast(new DoubleToken(outvalue));
+        integrator.setTentativeState(outvalue);
     }
 
     /** Return true if the integration is accurate for the given
