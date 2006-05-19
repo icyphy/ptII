@@ -2330,7 +2330,7 @@ softwalls.tar.gz: softwalls
 FINDBUGS=$(PTII)/vendors/findbugs-1.0.0-rc1
 
 # Tree to test
-PTFB = $(PTIIADM)/gen-$(MAJOR_VERSION)/src/ptII$(VERSION)
+PTFB = $(PTIIADM)/gen-$(MAJOR_VERSION)/test/ptII$(VERSION)
 
 ptII.fb: $(PTFB)
 	echo "[Jar files]" > ptII.fb
@@ -2341,4 +2341,4 @@ ptII.fb: $(PTFB)
 	echo "$$file" >> ptII.fb; \
 	done
 findbugs.xml:  ptII.fb
-	$(FINDBUGS)/bin/findbugs -textui -html -project ptII.fb $(PTFB) 
+	$(FINDBUGS)/bin/findbugs -textui -xml -project ptII.fb $(PTFB) > $@
