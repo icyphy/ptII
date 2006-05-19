@@ -45,12 +45,10 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 import javax.swing.text.html.StyleSheet;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.Style;
 
 import ptolemy.gui.Top;
 import ptolemy.util.MessageHandler;

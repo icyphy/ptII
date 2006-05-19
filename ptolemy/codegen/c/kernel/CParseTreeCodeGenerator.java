@@ -60,7 +60,6 @@ import ptolemy.data.expr.ASTPtShiftNode;
 import ptolemy.data.expr.ASTPtSumNode;
 import ptolemy.data.expr.ASTPtUnaryNode;
 import ptolemy.data.expr.AbstractParseTreeVisitor;
-import ptolemy.data.expr.CachedMethod;
 import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.ExpressionFunction;
 import ptolemy.data.expr.MatlabUtilities;

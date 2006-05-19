@@ -33,16 +33,13 @@ import java.util.List;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.actor.DocBuilder;
 import ptolemy.vergil.actor.DocBuilderEffigy;
-import ptolemy.vergil.actor.DocBuilderGUI;
 import ptolemy.vergil.actor.DocBuilderTableau;
 import ptolemy.vergil.actor.DocEffigy;
 import ptolemy.vergil.actor.DocTableau;

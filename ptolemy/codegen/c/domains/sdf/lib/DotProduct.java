@@ -31,7 +31,6 @@ import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
