@@ -948,6 +948,7 @@ bldmastrcoverage:
 		remote1ChangeLog \
 		remote1doc \
 		remote1doccheck \
+		remote1findbugs \
 		remote1jnlp
 
 #		remote4
@@ -1335,6 +1336,15 @@ remote1doccheck:
 	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST)/doc; rm -rf doccheck; \
 		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k doccheck)
+
+remote1findbugs:
+	@echo "#"
+	@echo "# Now generating findbugs files in $(REMOTE1PTIIDIST)/doc"
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
+	(cd $(REMOTE1PTIIDIST)/doc; rm -rf findbugs.*; \
+		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k findbugs)
 
 # Build jnlp installers
 remote1jnlp:
