@@ -2324,3 +2324,21 @@ softwalls.tar.gz: softwalls
 	rm -f softwalls.tar.gz softwalls.tar
 	(cd softwalls; tar -cf ../softwalls.tar .)
 	gzip -9 softwalls.tar
+#############
+# FindBugs : http://findbugs.sourceforge.net
+#
+FINDBUGS=$(PTII)/vendors/findbugs-1.0.0-rc1
+
+# Tree to test
+PTFB = $(PTIIADM)/gen-$(MAJOR_VERSION)/src/ptII$(VERSION)
+
+ptII.fb: $(PTFB)
+	echo "[Jar files]" > ptII.fb
+	echo "[Source dirs]" >> ptII.fb
+	echo $(PTFB) >> ptII.fb
+	echo "[Aux classpath entries]" >> ptII.fb
+	for file in `ls $(PTFB)/lib/*.jar`; do \
+	echo "$$file" >> ptII.fb; \
+	done
+findbugs.xml:  ptII.fb
+	$(FINDBUGS)/bin/findbugs -textui -html -project ptII.fb $(PTFB) 
