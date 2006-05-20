@@ -29,6 +29,7 @@ package ptolemy.domains.continuous.kernel.solver;
 
 import ptolemy.data.DoubleToken;
 import ptolemy.domains.continuous.kernel.ContinuousIntegrator;
+import ptolemy.domains.continuous.kernel.ContinuousODESolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 
@@ -82,7 +83,7 @@ import ptolemy.kernel.util.InvalidStateException;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (hyzheng)
  */
-public class ExplicitRK45Solver extends ExplicitODESolver {
+public class ExplicitRK45Solver extends ContinuousODESolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -232,10 +233,40 @@ public class ExplicitRK45Solver extends ExplicitODESolver {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+    /** Increment the round and return the time increment associated
+     *  with the round.
+     *  @return The time increment associated with the next round.
+     */
+    protected final double _incrementRound() { 
+        double result = _TIME_INCREMENTS[_roundCount];
+        _roundCount++;
+        return result;
+    }
+    
+    /** Return true if the current integration step is finished. For example,
+     *  solvers with a fixed number of rounds in an integration step will
+     *  return true when that number of rounds are complete. Solvers that
+     *  iterate to a solution will return true when the solution is found.
+     *  @return Return true if the solver has finished an integration step.
+     */
+    protected final boolean _isStepFinished() {
+        return _roundCount == _TIME_INCREMENTS.length;
+    }
+
+    /** Reset the solver, indicating to it that we are starting an
+     *  integration step. This method resets the round counter.
+     */
+    protected final void _reset() {
+        _roundCount = 0;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The ratio of time increments within one integration step. */
-    protected static final double[] _timeInc = { 0.2, 0.3, 0.6, 1.0, 0.875, 1.0 };
+    protected static final double[] _TIME_INCREMENTS = { 0.2, 0.3, 0.6, 1.0, 0.875, 1.0 };
 
     /** B coefficients */
     private static final double[][] _B = {
@@ -255,4 +286,7 @@ public class ExplicitRK45Solver extends ExplicitODESolver {
 
     /** The order of the algorithm. */
     private static final int _order = 5;
+
+    /** The round counter. */
+    private int _roundCount = 0;
 }

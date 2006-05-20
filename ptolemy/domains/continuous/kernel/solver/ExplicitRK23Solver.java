@@ -245,9 +245,6 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
     private static final double[] _E = { -5.0 / 72.0, 1.0 / 12.0, 1.0 / 9.0,
             -1.0 / 8.0 };
     
-    /** The most recently calculated truncation error. */
-    private double _error;
-
     /** The order of the algorithm. */
     private static final int _order = 3;
     
