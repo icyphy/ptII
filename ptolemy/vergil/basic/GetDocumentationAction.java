@@ -27,12 +27,22 @@
  */
 package ptolemy.vergil.basic;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.io.InputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.data.expr.Parameter;
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.Query;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -177,7 +187,20 @@ public class GetDocumentationAction extends FigureAction {
         }
     }
 
-    /** Get the documentation for a particular NamedObj.
+    /** Get the documentation for a particular class.  If the
+     *  documentation is not found, pop up a dialog and ask the user
+     *  if they would like to build the documentation, use the website
+     *  documentation or cancel.  The location of the website
+     *  documentation is set by the _remoteDocumentationBase attribute
+     *  in the configuration.  That attribute, if present, should be a
+     *  parameter that whose value is a string that represents the URL
+     *  where the documentation may be found.  If the
+     *  _remoteDocumentationAttribution attribute is not set, then the
+     *  location of the website documentation defaults to
+     *  <code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII/<i>Major.Version</i>,
+     *  where <code><i>Major.Version</i> is the value returned by
+     *  {@link ptolemy.kernel.attributes.VersionAttribute#getMajorVersion}.
+     *
      *  @param configuration The configuration.
      *  @param applicationName The name of the application, usually
      *  from the _applicationName StringAttribute in
@@ -189,104 +212,235 @@ public class GetDocumentationAction extends FigureAction {
     public static void getDocumentation(Configuration configuration,
             String applicationName, String className, Effigy context) {
         try {
-            // If applicationName is not "", then look in
-            // doc/codeDoc_applicationName/doc/codeDoc.
-            String docName = "doc/codeDoc"
+            // We search first on the local machine and then ask
+            // the user and then possibly look on the remote machine.
+            // So, we define the strings in an array for ease of reuse.
+
+            String docNames [] = {
+                "doc/codeDoc"
                 + (applicationName.equals("") ?
                         "/" : applicationName + "/doc/codeDoc/")
-                + className.replace('.', '/') + ".xml";
+                + className.replace('.', '/') + ".xml",
 
-            String docClassName = "doc.codeDoc." 
+                "doc/codeDoc/" + className.replace('.', '/')
+                + ".xml",
+
+                "doc/codeDoc"
+                + (applicationName.equals("") ?
+                        "/" : applicationName + "/doc/codeDoc/")
+                + className.replace('.', '/') + ".html",
+
+                "doc/codeDoc/" + className.replace('.', '/')
+                + ".html"
+            };
+
+            // We could use these to print out a list of places
+            // were we searched, but we don't right now.
+            String docClassNames [] = {
+                "doc.codeDoc." 
                 + (applicationName.equals("") ?
                         "." : applicationName + ".doc.codeDoc.")
-                + className;
+                + className,
 
-            URL toRead = Class.forName("ptolemy.vergil.basic.GetDocumentationAction").getClassLoader().getResource(docName);
+                "doc.codeDoc." + className,
 
-            if (toRead == null) {
+                "doc.codeDoc." 
+                + (applicationName.equals("") ?
+                        "." : applicationName + ".doc.codeDoc.")
+                + className,
 
-                // Try looking in the documentation for vergil.
-                docName = "doc/codeDoc/" + className.replace('.', '/')
-                    + ".xml";
-                docClassName = "doc.codeDoc." + className;
+                "doc.codeDoc." + className
 
-                toRead = 
-                    Class.forName("ptolemy.vergil.basic.GetDocumentationAction").getClassLoader().getResource(docName);
+            };
+
+            // We look for the documentation relative to this classLoader.
+            ClassLoader referenceClassLoader = Class.forName("ptolemy.vergil.basic.GetDocumentationAction").getClassLoader();
+
+            // If applicationName is not "", then look in
+            // doc/codeDoc_applicationName/doc/codeDoc.
+            URL toRead = referenceClassLoader.getResource(docNames[0]);
+
+            if (toRead == null
+                    && applicationName != null
+                    && !applicationName.equals("")) {
+                // applicationName was set, try looking in the
+                // documentation for vergil.
+                toRead = referenceClassLoader.getResource(docNames[1]);
+            }
+
+            // Deterimine the maximum index in docNames[] that we will
+            // search if we search on the remote host.  If the class
+            // we are looking for is assignable from NamedObj and
+            // applicationName is non-null, then the value is 3, which
+            // means search all names.  If the class is assignable
+            // from NamedObj and the applicationName is null or "",
+            // then the value is 2.  If the class is not assignable
+            // from NamedObj . . .  otherwise the value is 0, which
+            // means try the first entry.
+
+            int maximumDocNamesIndex = 0;  // Used for remote searches.
+            if (applicationName != null && !applicationName.equals("")) {
+                maximumDocNamesIndex = 1; 
             }
             if (toRead == null) {
                 // If the class does not extend NamedObj, try to open
                 // the javadoc .html
                 Class targetClass = Class.forName(className);
                 if (!_namedObjClass.isAssignableFrom(targetClass)) {
-                    // Look in the Application specific codeDoc directory.
-                    docName = "doc/codeDoc"
-                        + (applicationName.equals("") ?
-                                "/" : applicationName + "/doc/codeDoc/")
-                        + className.replace('.', '/') + ".html";
 
-                    docClassName = "doc.codeDoc." 
-                        + (applicationName.equals("") ?
-                                "." : applicationName + ".doc.codeDoc.")
-                        + className;
-                    toRead = 
-                        Class.forName("ptolemy.vergil.basic.GetDocumentationAction").getClassLoader().getResource(docName);
+                    if (applicationName != null
+                            && !applicationName.equals("")) {
+                        maximumDocNamesIndex = 3;  // Used for remote searches.
+                    } else {
+                        maximumDocNamesIndex = 2;  
+                    }
+
+                    // Look in the Application specific codeDoc directory.
+                    toRead = referenceClassLoader.getResource(docNames[2]);
                     if (toRead == null) {
                         // Try looking in the documentation for vergil.
-                        docName = "doc/codeDoc/" + className.replace('.', '/')
-                            + ".html";
-                        docClassName = "doc.codeDoc." + className;
-                        
-                        toRead = 
-                    Class.forName("ptolemy.vergil.basic.GetDocumentationAction").getClassLoader().getResource(docName);
+                        toRead = referenceClassLoader.getResource(docNames[3]);
                     }
                 }
             }
+
+            if (toRead == null && _remoteDocumentationURLBase != null) {
+                // Try searching on a remote host.
+
+                // Loop through each docNames[i] and try to open
+                // a stream.  Stop if once we open a stream.
+                for (int i = 0; i <= maximumDocNamesIndex; i++) {
+                    if (i > 0 && docNames[i].equals(docNames[i-1])) {
+                        // applicationName is not set, docNames[0] and [1]
+                        // are the same, so skip.
+                        continue;
+                    }
+                    toRead = new URL(_remoteDocumentationURLBase
+                            + docNames[i]);
+                    if (toRead != null) {
+                        InputStream toReadStream = null;
+                        try {
+                            toReadStream = toRead.openStream();
+                        } catch (IOException ex) {
+                            toRead = null;
+                        } finally {
+                            if (toReadStream != null) {
+                                try {
+                                    toReadStream.close();
+                                } catch (IOException ex2) {
+                                    // Ignore.
+                                }
+                            }
+                        }
+                        if (toRead != null) {
+                            break;
+                        }
+                    }
+                }
+            }
+
             if (toRead != null) {
+                _lastClassName = null;
                 configuration.openModel(null, toRead, toRead
                         .toExternalForm());
             } else {
-                throw new Exception("Could not get " + docClassName
-                        + " or " + docName + " as a resource");
+                throw new Exception("Could not get " + docClassNames[0]
+                        + " or " + docNames[0] + " as a resource."
+                        + ( _remoteDocumentationURLBase != null ?
+                                " Also tried looking on \""
+                                + _remoteDocumentationURLBase + "\"."
+                                : ""));
             }
         } catch (Exception ex) {
             // Try to open the DocBuilderGUI
             try {
-                // Need to create an effigy and tableau.
-                ComponentEntity effigy = context.getEntity("DocBuilderEffigy");
-                if (effigy == null) {
-                    try {
-                        effigy = new DocBuilderEffigy(context,
-                                "DocBuilderEffigy");
-                    } catch (KernelException exception) {
-                        throw new InternalErrorException(exception);
+                // Pop up a query an prompt the user
+                String message =  "The documentation was not found.\n"
+                    + (_lastClassName != null &&
+                            _remoteDocumentationURLBase != null
+                            ? "We looked in \"" 
+                            + _remoteDocumentationURLBase
+                            + "\" but did not find anything.\n"
+                            : "")
+                    + "You may\n"
+                    + "1) Build the documentation, which requires "
+                    + "configure and make, or\n"
+                    + "2) Use the documentation from the website, or\n"
+                    + "3) Cancel";
+                Object[] options = {"Build", "Use Website", "Cancel"};
+                int selected = JOptionPane.showOptionDialog(null,
+                        message,
+                        "Choose Documentation Source",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null, options, options[0]);
+                switch (selected) {
+                case 2 :
+                    // Cancel
+                    return;
+                case 1 :
+                    // Use Website
+                    Parameter remoteDocumentationURLBaseParameter =
+                        (Parameter) configuration
+                        .getAttribute("_remoteDocumentationURLBase",
+                        Parameter.class);
+                    if (remoteDocumentationURLBaseParameter != null) {
+                        _remoteDocumentationURLBase = 
+                            remoteDocumentationURLBaseParameter.getExpression();
+                    } else {
+                        _remoteDocumentationURLBase = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII"
+                            + VersionAttribute.majorCurrentVersion()
+                            + "/ptII/";
                     }
-                }
-                if (!(effigy instanceof DocBuilderEffigy)) {
-                    MessageHandler.error("Found an effigy named "
-                            + "DocBuilderEffigy that "
-                            + "is not an instance of DocBuilderEffigy!");
-                }
-                //((DocEffigy) effigy).setDocAttribute(docAttribute);
-                ComponentEntity tableau = ((Effigy) effigy).getEntity("DocBuilderTableau");
-                if (tableau == null) {
-                    try {
-                        tableau = new DocBuilderTableau(
-                                (DocBuilderEffigy) effigy,
-                                "DocBuilderTableau");
-                        ((DocBuilderTableau) tableau).setTitle(
-                                "Documentation for "
-                                + className);
-                    } catch (KernelException exception) {
-                        throw new InternalErrorException(exception);
+                    _lastClassName = className;
+                    getDocumentation(configuration,
+                            applicationName, className, context);
+                    break;
+                case 0:
+                    // Build
+                    // Need to create an effigy and tableau.
+                    ComponentEntity effigy = context.getEntity("DocBuilderEffigy");
+                    if (effigy == null) {
+                        try {
+                            effigy = new DocBuilderEffigy(context,
+                                    "DocBuilderEffigy");
+                        } catch (KernelException exception) {
+                            throw new InternalErrorException(exception);
+                        }
                     }
+                    if (!(effigy instanceof DocBuilderEffigy)) {
+                        MessageHandler.error("Found an effigy named "
+                                + "DocBuilderEffigy that "
+                                + "is not an instance of DocBuilderEffigy!");
+                    }
+                    //((DocEffigy) effigy).setDocAttribute(docAttribute);
+                    ComponentEntity tableau = ((Effigy) effigy).getEntity("DocBuilderTableau");
+                    if (tableau == null) {
+                        try {
+                            tableau = new DocBuilderTableau(
+                                    (DocBuilderEffigy) effigy,
+                                    "DocBuilderTableau");
+                            ((DocBuilderTableau) tableau).setTitle(
+                                    "Documentation for "
+                                    + className);
+                        } catch (KernelException exception) {
+                            throw new InternalErrorException(exception);
+                        }
+                    }
+                    if (!(tableau instanceof DocBuilderTableau)) {
+                        MessageHandler.error("Found a tableau named "
+                                + "DocBuilderTableau that "
+                                + "is not an instance of DocBuilderTableau!");
+                    }
+                    // FIXME: Tell the user what to do here.
+                    ((DocBuilderTableau) tableau).show();
+                    //break;;
+                default: 
+                    throw new InternalErrorException("Unknown return value \""
+                            + selected 
+                            + "\" from Choose Documentation Source window.");
+                    //break;
                 }
-                if (!(tableau instanceof DocBuilderTableau)) {
-                    MessageHandler.error("Found a tableau named "
-                            + "DocBuilderTableau that "
-                            + "is not an instance of DocBuilderTableau!");
-                }
-                // FIXME: Tell the user what to do here.
-                ((DocBuilderTableau) tableau).show();
             } catch (Throwable throwable) {
                 MessageHandler.error("Cannot find documentation for "
                         + className + "\nTry Running \"make\" in ptII/doc."
@@ -325,6 +479,22 @@ public class GetDocumentationAction extends FigureAction {
      */
     private String _applicationName = "";
 
+    /** The name of the last class for which we looked.  If the user
+     *  looks again for the same class and gets an error and
+     *  _remoteDocumentation is set, we print a little more information
+     */
+    private static String _lastClassName = null;
+
+    /** The remote URL were we look for the documentation.
+     *  Set from the _remoteDocumentationURLBase parameter in
+     *  the configuration.
+     */   
+    private static String _remoteDocumentationURLBase = null;
+
+    /** The NamedObj class, used to check to see if the class we are
+     *  looking for is assignable from NamedObj.  If it is not, we look
+     *  for the codeDoc .html file.
+     */
     private static Class _namedObjClass;
     static {
         try {
