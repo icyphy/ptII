@@ -52,7 +52,7 @@ PTINYOS_DIR =   $(PTII)/ptolemy/domains/ptinyos
 PTINYOS_CLASSPATH = $(PTINYOS_DIR)/lib/jdom.jar$(CLASSPATHSEPARATOR)$(PTINYOS_DIR)/lib/nesc.jar
 
 
-CLASSPATH = .$(CLASSPATHSEPARATOR)$(PTBACKTRACK_ECLIPSE_JARS)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_ECLIPSE_DOC_JARS)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)$(CLASSPATHSEPARATOR)$(COMMAPI_DIR)/comm.jar$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CALTROP_JARS)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JAI_JARS)$(CLASSPATHSEPARATOR)$(JINI_JARS)$(CLASSPATHSEPARATOR)$(JMF_JARS)$(CLASSPATHSEPARATOR)$(JSCLASSPATH)$(CLASSPATHSEPARATOR)$(JOYSTICK_JAR)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(QTJAVA_ZIP)$(CLASSPATHSEPARATOR)$(PSDF_DIR)/mapss.jar$(CLASSPATHSEPARATOR)$(PTINYOS_CLASSPATH)$(CLASSPATHSEPARATOR)$(X10_JAR)
+CLASSPATH = .$(CLASSPATHSEPARATOR)$(PTBACKTRACK_ECLIPSE_JARS)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_ECLIPSE_DOC_JARS)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)$(CLASSPATHSEPARATOR)$(COMMAPI_DIR)/comm.jar$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CALTROP_JARS)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JAI_JARS)$(CLASSPATHSEPARATOR)$(JINI_JARS)$(CLASSPATHSEPARATOR)$(JMF_JARS)$(CLASSPATHSEPARATOR)$(JSCLASSPATH)$(CLASSPATHSEPARATOR)$(JOYSTICK_JAR)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(TOOLS_JAR)$(CLASSPATHSEPARATOR)$(QTJAVA_ZIP)$(CLASSPATHSEPARATOR)$(PSDF_DIR)/mapss.jar$(CLASSPATHSEPARATOR)$(PTINYOS_CLASSPATH)$(CLASSPATHSEPARATOR)$(X10_JAR)
 
 
 # Used to build jar files
@@ -869,21 +869,25 @@ ptII.fb:
 	fi
 	echo $(TOOLS_JAR) >> ptII.fb 
 
-findbugs.htm:  ptII.fb
+FINDBUGS_ARGS = -textui -exclude findbugs-exclude.xml -project ptII.fb
+
+findbugs.htm:  ptII.fb findbugs-exclude.xml makefile
 	@if [ -f $(FINDBUGS)/bin/findbugs ]; then \
 	    echo "Invoking findbugs program, please wait."; \
-	    $(FINDBUGS)/bin/findbugs -textui -html:fancy.xsl \
-		-project ptII.fb $(PTII) > $@; \
+	    $(FINDBUGS)/bin/findbugs \
+		$(FINDBUGS_ARGS) \
+		-html:fancy.xsl $(PTII) > $@; \
 	else \
 	    echo "BTW - FindBugs program not found, skipping."; \
 	fi
 
 
-findbugs.xml:  ptII.fb
+findbugs.xml:  ptII.fb findbugs-exclude.xml makefile
 	@if [ -f $(FINDBUGS)/bin/findbugs ]; then \
 	    echo "Invoking findbugs program, please wait."; \
-	    $(FINDBUGS)/bin/findbugs -textui -xml \
-		-project ptII.fb $(PTII) > $@; \
+	    $(FINDBUGS)/bin/findbugs \
+		$(FINDBUGS_ARGS) \
+		-xml $(PTII) > $@; \
 	else \
 	    echo "BTW - FindBugs program not found, skipping."; \
 	fi
