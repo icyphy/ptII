@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.continuous.kernel.solver;
 
-import ptolemy.data.DoubleToken;
 import ptolemy.domains.continuous.kernel.ContinuousIntegrator;
 import ptolemy.domains.continuous.kernel.ContinuousODESolver;
 import ptolemy.kernel.util.IllegalActionException;
@@ -55,8 +54,7 @@ import ptolemy.kernel.util.InvalidStateException;
  K2 = f(x(n) + (3.0/40*K0 + 9.0/40*K1)*h, tn + 0.3*h);
  K3 = f(x(n) + (0.3*K0 - 0.9*K1 + 1.2*K2)*h, tn + 0.6*h);
  K4 = f(x(n) + (-11/54*K0 + 5.0/2*K1 -70/27*K2 + 35/27*K3)*h, tn + 1.0*h);
- K5 = f(x(n) + (1631/55296*K0 + 175/512*K1 + 575/13824*K2 + 3544275/110592*K3
- + 253/4096*K4)*h, tn + 7/8*h);
+ K5 = f(x(n) + (1631/55296*K0 + 175/512*K1 + 575/13824*K2 + 3544275/110592*K3 + 253/4096*K4)*h, tn + 7/8*h);
  x(n+1) = x(n)+(37/378*K0 + 250/621*K2 + 125.0/594*K3 + 512.0/1771*K5)*h;
  </pre>,
  and error control:
@@ -108,57 +106,39 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
         double outputValue;
         double h = _director.getCurrentStepSize();
         double[] k = integrator.getAuxVariables();
+        integrator.setAuxVariables(_roundCount, integrator.getDerivative());
 
         switch (_roundCount) {
         case 0:
-
-            // Get the derivative at t;
-            double k0 = integrator.getDerivative();
-            integrator.setAuxVariables(0, k0);
-            outputValue = xn + (h * k0 * _B[0][0]);
+            outputValue = xn + (h * k[0] * _B[0][0]);
             break;
 
         case 1:
-
-            double k1 = ((DoubleToken) integrator.derivative.get(0)).doubleValue();
-            integrator.setAuxVariables(1, k1);
-            outputValue = xn + (h * ((k[0] * _B[1][0]) + (k1 * _B[1][1])));
+            outputValue = xn + (h * ((k[0] * _B[1][0]) + (k[1] * _B[1][1])));
             break;
 
         case 2:
-
-            double k2 = ((DoubleToken) integrator.derivative.get(0)).doubleValue();
-            integrator.setAuxVariables(2, k2);
             outputValue = xn
-                    + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) + (k2 * _B[2][2])));
+                    + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) + (k[2] * _B[2][2])));
             break;
 
         case 3:
-
-            double k3 = ((DoubleToken) integrator.derivative.get(0)).doubleValue();
-            integrator.setAuxVariables(3, k3);
             outputValue = xn
                     + (h * ((k[0] * _B[3][0]) + (k[1] * _B[3][1])
-                            + (k[2] * _B[3][2]) + (k3 * _B[3][3])));
+                            + (k[2] * _B[3][2]) + (k[3] * _B[3][3])));
             break;
 
         case 4:
-
-            double k4 = ((DoubleToken) integrator.derivative.get(0)).doubleValue();
-            integrator.setAuxVariables(4, k4);
             outputValue = xn
                     + (h * ((k[0] * _B[4][0]) + (k[1] * _B[4][1])
-                            + (k[2] * _B[4][2]) + (k[3] * _B[4][3]) + (k4 * _B[4][4])));
+                            + (k[2] * _B[4][2]) + (k[3] * _B[4][3]) + (k[4] * _B[4][4])));
             break;
 
         case 5:
-
-            double k5 = ((DoubleToken) integrator.derivative.get(0)).doubleValue();
-            integrator.setAuxVariables(5, k5);
             outputValue = xn
                     + (h * ((k[0] * _B[5][0]) + (k[1] * _B[5][1])
                             + (k[2] * _B[5][2]) + (k[3] * _B[5][3])
-                            + (k[4] * _B[5][4]) + (k5 * _B[5][5])));
+                            + (k[4] * _B[5][4]) + (k[5] * _B[5][5])));
             break;
 
         default:

@@ -30,7 +30,6 @@ package ptolemy.domains.continuous.kernel.solver;
 import ptolemy.domains.continuous.kernel.ContinuousIntegrator;
 import ptolemy.domains.continuous.kernel.ContinuousODESolver;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -79,8 +78,9 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
      *  @return The number of time increments plus one.
      */
     public final int getIntegratorAuxVariableCount() {
-        // Allow one for the truncation error.
-        return _TIME_INCREMENTS.length + 1;
+        // Allow one for the truncation error and one
+        // for establishing the derivative at the end of the iteration
+        return _TIME_INCREMENTS.length + 2;
     }
 
     /** Fire the given integrator. This method performs the ODE solving
@@ -95,30 +95,27 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
         double xn = integrator.getState();
         double h = _director.getCurrentStepSize();
         double[] k = integrator.getAuxVariables();
+        integrator.setAuxVariables(_roundCount, integrator.getDerivative());
 
         switch (_roundCount) {
         case 0:
-
-            // Get the derivative at t;
-            double k0 = integrator.getDerivative();
-            integrator.setAuxVariables(0, k0);
-            outvalue = xn + (h * k0 * _B[0][0]);
+            outvalue = xn + (h * k[0] * _B[0][0]);
             break;
 
         case 1:
-
-            double k1 = integrator.getDerivative();
-            integrator.setAuxVariables(1, k1);
-            outvalue = xn + (h * ((k[0] * _B[1][0]) + (k1 * _B[1][1])));
+            outvalue = xn + (h * ((k[0] * _B[1][0]) + (k[1] * _B[1][1])));
             break;
 
         case 2:
-
-            double k2 = integrator.getDerivative();
-            integrator.setAuxVariables(2, k2);
             outvalue = xn
-                    + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) 
-                            + (k2 * _B[2][2])));
+                + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) 
+                        + (k[2] * _B[2][2])));
+            break;
+
+        case 3:
+            outvalue = xn
+                + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) 
+                        + (k[2] * _B[2][2])));
             break;
 
         default:
@@ -139,20 +136,12 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
     public boolean integratorIsAccurate(ContinuousIntegrator integrator) {
         double tolerance = _director.getErrorTolerance();
         double h = _director.getCurrentStepSize();
-        // FIXME: The current input at the derivative is not actually x(n+1)!
-        double f;
-        try {
-            f = integrator.getDerivative();
-        } catch (IllegalActionException e) {
-            // This should not occur because input has been previously read.
-            throw new InternalErrorException(e);
-        }
         double[] k = integrator.getAuxVariables();
         double error = h * Math.abs(
-                (k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2]) + (f * _E[3]));
+                (k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2]) + (k[3] * _E[3]));
         
-        //k[3] is Local Truncation Error
-        integrator.setAuxVariables(3, error);
+        //k[4] is Local Truncation Error
+        integrator.setAuxVariables(4, error);
         if (_isDebugging()) {
             _debug("Integrator: " + integrator.getName()
                     + " local truncation error = " + error);
