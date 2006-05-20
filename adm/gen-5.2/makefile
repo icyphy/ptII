@@ -1261,14 +1261,15 @@ remote1distjsrestore:
 # Remove the JavaScope instrumentation
 remote1doc:
 	@echo "#"
-	@echo "# Now running make in $(REMOTE1PTIIDIST)/doc"
+	@echo "# remote1doc rule"
+	@echo "# Now running make install in $(REMOTE1PTIIDIST)/doc"
 	@echo "# on `hostname`"
 	@echo "# We run make in the doc directory early so that"
 	@echo "# the website link checker will find files in doc/codeDoc"
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE))
+	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE) install)
 
 # Remove the JavaScope instrumentation
 remote1build:
