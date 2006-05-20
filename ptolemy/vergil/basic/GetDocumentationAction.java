@@ -199,7 +199,7 @@ public class GetDocumentationAction extends FigureAction {
      *  location of the website documentation defaults to
      *  <code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII/<i>Major.Version</i>,
      *  where <code><i>Major.Version</i> is the value returned by
-     *  {@link ptolemy.kernel.attributes.VersionAttribute#getMajorVersion}.
+     *  {@link ptolemy.kernel.attributes.VersionAttribute#majorCurrentVersion()}.
      *
      *  @param configuration The configuration.
      *  @param applicationName The name of the application, usually

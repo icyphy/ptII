@@ -72,7 +72,7 @@ public class DocBuilderGUI extends PtolemyFrame {
      *  call setVisible(true) to make the frame appear.  This is
      *  typically accomplished by calling show() on enclosing tableau.
      *
-     *  @param docBuild The doc builder object associated with this builder.
+     *  @param docBuilder The doc builder object associated with this builder.
      *  @param tableau The tableau responsible for this frame.
      *  @exception IllegalActionException If the model rejects the
      *   configuration attribute.
