@@ -206,8 +206,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     }
 
     /** Initialize the director and all deeply contained actors by calling
-     *  the super.initialize() method. Reset all private variables and set
-     *  all the receivers to status unknown.
+     *  the super.initialize() method. Reset all private variables.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -218,8 +217,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         _actorsFinishedFiring = new HashSet();
         _actorsPostfired = new HashSet();
         _cachedAllInputsKnown = new HashSet();
-
-        _resetAllReceivers();
 
         _cachedFunctionalProperty = true;
         _functionalPropertyVersion = -1;
@@ -303,13 +300,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                 }
             }
         }
-
-        // Reset all the receivers, which sets their status to unknown.
-        // We do this here rather than in prefire() because prefire()
-        // may be invoked more than once in an iteration, during fixed
-        // point convergence.
-        _resetAllReceivers();
-        
         if (_debugging) {
             _debug(this.getFullName()
                     + "Iteration " + _currentIteration
@@ -329,7 +319,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         return super.postfire();
     }
 
-    /** Initialize the firing of the director by resetting state variables.
+    /** Initialize the firing of the director by resetting state variables
+     *  and reset all receivers to unknown.
      *  @return True always.
      *  @exception IllegalActionException If thrown by the parent class.
      */
@@ -339,6 +330,9 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         _actorsPostfired.clear();
         _cachedAllInputsKnown.clear();
         _lastNumberOfKnownReceivers = -1;
+        
+        _resetAllReceivers();
+        
         return super.prefire();
     }
 
