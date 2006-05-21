@@ -29,6 +29,9 @@ package ptolemy.vergil.basic;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -49,6 +52,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.actor.DocApplicationSpecializer;
 import ptolemy.vergil.actor.DocBuilderEffigy;
 import ptolemy.vergil.actor.DocBuilderTableau;
 import ptolemy.vergil.actor.DocEffigy;
@@ -187,10 +191,15 @@ public class GetDocumentationAction extends FigureAction {
         }
     }
 
-    /** Get the documentation for a particular class.  If the
-     *  documentation is not found, pop up a dialog and ask the user
-     *  if they would like to build the documentation, use the website
-     *  documentation or cancel.  The location of the website
+    /** Get the documentation for a particular class.  
+     *  <p>If the configuration has a parameter _docApplicationSpecializer
+     *  and that parameter names a class that that implements the
+     *  DocApplicationSpecializer interface, then we call
+     *  docClassNameToURL().
+     *
+     *  <p>If the documentation is not found, pop up a dialog and ask the
+     *  user if they would like to build the documentation, use the
+     *  website documentation or cancel.  The location of the website
      *  documentation is set by the _remoteDocumentationBase attribute
      *  in the configuration.  That attribute, if present, should be a
      *  parameter that whose value is a string that represents the URL
@@ -211,7 +220,36 @@ public class GetDocumentationAction extends FigureAction {
      */
     public static void getDocumentation(Configuration configuration,
             String applicationName, String className, Effigy context) {
+
         try {
+
+            URL toRead = null;
+
+            // If the configuration has a parameter _docApplicationSpecializer
+            // and that parameter names a class that that implements the
+            // DocApplicationSpecializer interface, then we call
+            // docClassNameToURL(). 
+            
+            Parameter docApplicationSpecializerParameter =
+                (Parameter) configuration
+                .getAttribute("_docApplicationSpecializer",
+                        Parameter.class);
+            if (docApplicationSpecializerParameter != null) {
+                String docApplicationSpecializerClassName = 
+                    docApplicationSpecializerParameter.getExpression();
+
+                try {
+                    Class docApplicationSpecializerClass = Class
+                        .forName(docApplicationSpecializerClassName);
+                    DocApplicationSpecializer docApplicationSpecializer = (DocApplicationSpecializer) docApplicationSpecializerClass.newInstance();
+                    toRead = docApplicationSpecializer.docClassNameToURL(className);
+                } catch (Throwable throwable) {
+                    throw new Exception("Failed to call doc application initializer "
+                        + "class \"" + docApplicationSpecializerClassName
+                        + "\" on class \"" + className + "\".");
+                }
+            }
+
             // We search first on the local machine and then ask
             // the user and then possibly look on the remote machine.
             // So, we define the strings in an array for ease of reuse.
@@ -253,12 +291,17 @@ public class GetDocumentationAction extends FigureAction {
 
             };
 
-            // We look for the documentation relative to this classLoader.
+            // We look for the documentation relative to this classLoader.n
             ClassLoader referenceClassLoader = Class.forName("ptolemy.vergil.basic.GetDocumentationAction").getClassLoader();
+
+            // Rather than using a deeply nested set of if/else's, we
+            // just keep checking toRead == null.
 
             // If applicationName is not "", then look in
             // doc/codeDoc_applicationName/doc/codeDoc.
-            URL toRead = referenceClassLoader.getResource(docNames[0]);
+            if (toRead == null) {
+                toRead = referenceClassLoader.getResource(docNames[0]);
+            }
 
             if (toRead == null
                     && applicationName != null
