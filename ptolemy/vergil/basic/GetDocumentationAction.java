@@ -200,11 +200,11 @@ public class GetDocumentationAction extends FigureAction {
      *  <p>If the documentation is not found, pop up a dialog and ask the
      *  user if they would like to build the documentation, use the
      *  website documentation or cancel.  The location of the website
-     *  documentation is set by the _remoteDocumentationBase attribute
+     *  documentation is set by the _remoteDocumentationURLBase attribute
      *  in the configuration.  That attribute, if present, should be a
      *  parameter that whose value is a string that represents the URL
      *  where the documentation may be found.  If the
-     *  _remoteDocumentationAttribution attribute is not set, then the
+     *  _remoteDocumentationURLBase attribute is not set, then the
      *  location of the website documentation defaults to
      *  <code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII/<i>Major.Version</i>,
      *  where <code><i>Major.Version</i> is the value returned by
@@ -242,7 +242,7 @@ public class GetDocumentationAction extends FigureAction {
                     Class docApplicationSpecializerClass = Class
                         .forName(docApplicationSpecializerClassName);
                     DocApplicationSpecializer docApplicationSpecializer = (DocApplicationSpecializer) docApplicationSpecializerClass.newInstance();
-                    toRead = docApplicationSpecializer.docClassNameToURL(className);
+                    toRead = docApplicationSpecializer.docClassNameToURL(_remoteDocumentationURLBase, className);
                 } catch (Throwable throwable) {
                     throw new Exception("Failed to call doc application initializer "
                         + "class \"" + docApplicationSpecializerClassName
