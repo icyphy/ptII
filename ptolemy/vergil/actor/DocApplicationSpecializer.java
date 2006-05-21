@@ -51,10 +51,15 @@ public interface DocApplicationSpecializer {
 
     /** Given a dot separated class name, return the URL of the
      *  documentation.
+     *  @param remoteDocumentationURLBase If non-null, the URL of the
+     *  documentation.  Usually, this is set by reading the 
+     *  _remoteDocumentationBase parameter from the configuration in the
+     *  caller.
      *  @param className The dot separated class name.
      *  @return The URL of the documentation, if any.  If no documentation
      *  was found, return null.
      */
-    public URL docClassNameToURL(String className);
+    public URL docClassNameToURL(String remoteDocumentationURLBase, 
+            String className);
 
 }
