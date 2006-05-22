@@ -56,10 +56,15 @@ public interface DocApplicationSpecializer {
      *  _remoteDocumentationBase parameter from the configuration in the
      *  caller.
      *  @param className The dot separated class name.
+     *  @param lookForPtDoc True if we should look for ptdoc .xml files.
+     *  @param lookForJavadoc True if we should look for javadoc files. 
+     *  @param lookForSource True if we should look for source files.
+     *  @param lookForActorIndex True if we should look for the actor index.
      *  @return The URL of the documentation, if any.  If no documentation
      *  was found, return null.
      */
     public URL docClassNameToURL(String remoteDocumentationURLBase, 
-            String className);
-
+            String className,
+            boolean lookForPtDoc, boolean lookForJavadoc,
+            boolean lookForSource, boolean lookForActorIndex);
 }
