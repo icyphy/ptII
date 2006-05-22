@@ -56,6 +56,7 @@ import ptolemy.vergil.actor.DocApplicationSpecializer;
 import ptolemy.vergil.actor.DocBuilderEffigy;
 import ptolemy.vergil.actor.DocBuilderTableau;
 import ptolemy.vergil.actor.DocEffigy;
+import ptolemy.vergil.actor.DocManager;
 import ptolemy.vergil.actor.DocTableau;
 import ptolemy.vergil.toolbox.FigureAction;
 
@@ -112,21 +113,6 @@ public class GetDocumentationAction extends FigureAction {
             return;
         }
 
-        // We handle the applicationName specially so that we open
-        // only the docs for the app we are running.
-        try {
-            StringAttribute applicationNameAttribute =
-                (StringAttribute) _configuration
-                .getAttribute("_applicationName", StringAttribute.class);
-
-            if (applicationNameAttribute != null) {
-                _applicationName = applicationNameAttribute.getExpression();
-            }
-        } catch (Throwable throwable) {
-            // Ignore and use the default applicationName: "",
-            // which means we look in doc.codeDoc.
-        }
-
         // If the object contains
         // an attribute named of class DocAttribute or if there
         // is a doc file for the object in the standard place,
@@ -146,7 +132,7 @@ public class GetDocumentationAction extends FigureAction {
                             + target.getFullName());
                 }
             }
-            getDocumentation(_configuration, _applicationName, className, context);
+            getDocumentation(_configuration, className, context);
         } else {
             // Have a doc attribute. Use that.
             DocAttribute docAttribute = (DocAttribute) docAttributes
@@ -211,204 +197,61 @@ public class GetDocumentationAction extends FigureAction {
      *  {@link ptolemy.kernel.attributes.VersionAttribute#majorCurrentVersion()}.
      *
      *  @param configuration The configuration.
-     *  @param applicationName The name of the application, usually
-     *  from the _applicationName StringAttribute in
-     *  configuration.xml.  If the value is the empty string, then use
-     *  the default documentation in doc/codeDoc.
      *  @param className The dot separated fully qualified name of the class.
      *  @param context The context.
      */
     public static void getDocumentation(Configuration configuration,
-            String applicationName, String className, Effigy context) {
-
+            String className, Effigy context) {
         try {
 
-            URL toRead = null;
-
-            // If the configuration has a parameter _docApplicationSpecializer
-            // and that parameter names a class that that implements the
-            // DocApplicationSpecializer interface, then we call
-            // docClassNameToURL(). 
+            // Look for the PtDoc .xml file or the javadoc.
+            // Don't look for the source or the index.
+            URL toRead = DocManager.docClassNameToURL(configuration,
+                    className, true, true, false, false);
             
-            Parameter docApplicationSpecializerParameter =
-                (Parameter) configuration
-                .getAttribute("_docApplicationSpecializer",
-                        Parameter.class);
-            if (docApplicationSpecializerParameter != null) {
-                String docApplicationSpecializerClassName = 
-                    docApplicationSpecializerParameter.getExpression();
-
-                try {
-                    Class docApplicationSpecializerClass = Class
-                        .forName(docApplicationSpecializerClassName);
-                    DocApplicationSpecializer docApplicationSpecializer = (DocApplicationSpecializer) docApplicationSpecializerClass.newInstance();
-                    toRead = docApplicationSpecializer.docClassNameToURL(_remoteDocumentationURLBase, className);
-                } catch (Throwable throwable) {
-                    throw new Exception("Failed to call doc application initializer "
-                        + "class \"" + docApplicationSpecializerClassName
-                        + "\" on class \"" + className + "\".");
-                }
-            }
-
-            // We search first on the local machine and then ask
-            // the user and then possibly look on the remote machine.
-            // So, we define the strings in an array for ease of reuse.
-
-            String docNames [] = {
-                "doc/codeDoc"
-                + (applicationName.equals("") ?
-                        "/" : applicationName + "/doc/codeDoc/")
-                + className.replace('.', '/') + ".xml",
-
-                "doc/codeDoc/" + className.replace('.', '/')
-                + ".xml",
-
-                "doc/codeDoc"
-                + (applicationName.equals("") ?
-                        "/" : applicationName + "/doc/codeDoc/")
-                + className.replace('.', '/') + ".html",
-
-                "doc/codeDoc/" + className.replace('.', '/')
-                + ".html"
-            };
-
-            // We could use these to print out a list of places
-            // were we searched, but we don't right now.
-            String docClassNames [] = {
-                "doc.codeDoc." 
-                + (applicationName.equals("") ?
-                        "." : applicationName + ".doc.codeDoc.")
-                + className,
-
-                "doc.codeDoc." + className,
-
-                "doc.codeDoc." 
-                + (applicationName.equals("") ?
-                        "." : applicationName + ".doc.codeDoc.")
-                + className,
-
-                "doc.codeDoc." + className
-
-            };
-
-            // We look for the documentation relative to this classLoader.n
-            ClassLoader referenceClassLoader = Class.forName("ptolemy.vergil.basic.GetDocumentationAction").getClassLoader();
-
-            // Rather than using a deeply nested set of if/else's, we
-            // just keep checking toRead == null.
-
-            // If applicationName is not "", then look in
-            // doc/codeDoc_applicationName/doc/codeDoc.
-            if (toRead == null) {
-                toRead = referenceClassLoader.getResource(docNames[0]);
-            }
-
-            if (toRead == null
-                    && applicationName != null
-                    && !applicationName.equals("")) {
-                // applicationName was set, try looking in the
-                // documentation for vergil.
-                toRead = referenceClassLoader.getResource(docNames[1]);
-            }
-
-            // Deterimine the maximum index in docNames[] that we will
-            // search if we search on the remote host.  If the class
-            // we are looking for is assignable from NamedObj and
-            // applicationName is non-null, then the value is 3, which
-            // means search all names.  If the class is assignable
-            // from NamedObj and the applicationName is null or "",
-            // then the value is 2.  If the class is not assignable
-            // from NamedObj . . .  otherwise the value is 0, which
-            // means try the first entry.
-
-            int maximumDocNamesIndex = 0;  // Used for remote searches.
-            if (applicationName != null && !applicationName.equals("")) {
-                maximumDocNamesIndex = 1; 
-            }
-            if (toRead == null) {
-                // If the class does not extend NamedObj, try to open
-                // the javadoc .html
-                Class targetClass = Class.forName(className);
-                if (!_namedObjClass.isAssignableFrom(targetClass)) {
-
-                    if (applicationName != null
-                            && !applicationName.equals("")) {
-                        maximumDocNamesIndex = 3;  // Used for remote searches.
-                    } else {
-                        maximumDocNamesIndex = 2;  
-                    }
-
-                    // Look in the Application specific codeDoc directory.
-                    toRead = referenceClassLoader.getResource(docNames[2]);
-                    if (toRead == null) {
-                        // Try looking in the documentation for vergil.
-                        toRead = referenceClassLoader.getResource(docNames[3]);
-                    }
-                }
-            }
-
-            if (toRead == null && _remoteDocumentationURLBase != null) {
-                // Try searching on a remote host.
-
-                // Loop through each docNames[i] and try to open
-                // a stream.  Stop if once we open a stream.
-                for (int i = 0; i <= maximumDocNamesIndex; i++) {
-                    if (i > 0 && docNames[i].equals(docNames[i-1])) {
-                        // applicationName is not set, docNames[0] and [1]
-                        // are the same, so skip.
-                        continue;
-                    }
-                    toRead = new URL(_remoteDocumentationURLBase
-                            + docNames[i]);
-                    if (toRead != null) {
-                        InputStream toReadStream = null;
-                        try {
-                            toReadStream = toRead.openStream();
-                        } catch (IOException ex) {
-                            toRead = null;
-                        } finally {
-                            if (toReadStream != null) {
-                                try {
-                                    toReadStream.close();
-                                } catch (IOException ex2) {
-                                    // Ignore.
-                                }
-                            }
-                        }
-                        if (toRead != null) {
-                            break;
-                        }
-                    }
-                }
-            }
-
             if (toRead != null) {
                 _lastClassName = null;
                 configuration.openModel(null, toRead, toRead
                         .toExternalForm());
             } else {
-                throw new Exception("Could not get " + docClassNames[0]
-                        + " or " + docNames[0] + " as a resource."
-                        + ( _remoteDocumentationURLBase != null ?
-                                " Also tried looking on \""
-                                + _remoteDocumentationURLBase + "\"."
+                throw new Exception("Could not get find documentation for "
+                        + className + "."
+                        + ( DocManager.getRemoteDocumentationURLBase() != null
+                                ? " Also tried looking on \""
+                                + DocManager.getRemoteDocumentationURLBase()
+                                + "\"."
                                 : ""));
             }
         } catch (Exception ex) {
             // Try to open the DocBuilderGUI
             try {
+                Parameter remoteDocumentationURLBaseParameter =
+                    (Parameter) configuration
+                    .getAttribute("_remoteDocumentationURLBase",
+                            Parameter.class);
+                String tentativeRemoteDocumentationURLBase = null;
+                if (remoteDocumentationURLBaseParameter != null) {
+                    tentativeRemoteDocumentationURLBase = 
+                            remoteDocumentationURLBaseParameter.getExpression();
+                } else {
+                    tentativeRemoteDocumentationURLBase = 
+                            "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII"
+                            + VersionAttribute.majorCurrentVersion()
+                            + "/ptII/";
+                }
                 // Pop up a query an prompt the user
                 String message =  "The documentation was not found.\n"
                     + (_lastClassName != null &&
-                            _remoteDocumentationURLBase != null
-                            ? "We looked in \"" 
-                            + _remoteDocumentationURLBase
+                        DocManager.getRemoteDocumentationURLBase() != null
+                            ? " We looked in \""
+                            + DocManager.getRemoteDocumentationURLBase()
                             + "\" but did not find anything.\n"
                             : "")
                     + "You may\n"
                     + "1) Build the documentation, which requires "
                     + "configure and make, or\n"
-                    + "2) Use the documentation from the website, or\n"
+                    + "2) Use the documentation from the website at \""
+                    + tentativeRemoteDocumentationURLBase + "\" or\n"
                     + "3) Cancel";
                 Object[] options = {"Build", "Use Website", "Cancel"};
                 int selected = JOptionPane.showOptionDialog(null,
@@ -423,21 +266,9 @@ public class GetDocumentationAction extends FigureAction {
                     return;
                 case 1 :
                     // Use Website
-                    Parameter remoteDocumentationURLBaseParameter =
-                        (Parameter) configuration
-                        .getAttribute("_remoteDocumentationURLBase",
-                        Parameter.class);
-                    if (remoteDocumentationURLBaseParameter != null) {
-                        _remoteDocumentationURLBase = 
-                            remoteDocumentationURLBaseParameter.getExpression();
-                    } else {
-                        _remoteDocumentationURLBase = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII"
-                            + VersionAttribute.majorCurrentVersion()
-                            + "/ptII/";
-                    }
+                    DocManager.setRemoteDocumentationURLBase(tentativeRemoteDocumentationURLBase);
                     _lastClassName = className;
-                    getDocumentation(configuration,
-                            applicationName, className, context);
+                    getDocumentation(configuration, className, context);
                     break;
                 case 0:
                     // Build
@@ -515,35 +346,9 @@ public class GetDocumentationAction extends FigureAction {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The name of the application, usually from the _applicationName
-     *  StringAttribute in configuration.xml.
-     *  If the value is the empty string, then use the default
-     *  documentation in doc/codeDoc.
-     */
-    private String _applicationName = "";
-
     /** The name of the last class for which we looked.  If the user
      *  looks again for the same class and gets an error and
-     *  _remoteDocumentation is set, we print a little more information
+     *  remoteDocumentationURLBase is set, we print a little more information.
      */
     private static String _lastClassName = null;
-
-    /** The remote URL were we look for the documentation.
-     *  Set from the _remoteDocumentationURLBase parameter in
-     *  the configuration.
-     */   
-    private static String _remoteDocumentationURLBase = null;
-
-    /** The NamedObj class, used to check to see if the class we are
-     *  looking for is assignable from NamedObj.  If it is not, we look
-     *  for the codeDoc .html file.
-     */
-    private static Class _namedObjClass;
-    static {
-        try {
-            _namedObjClass = Class.forName("ptolemy.kernel.util.NamedObj");
-        } catch (ClassNotFoundException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
 }

@@ -610,11 +610,12 @@ public class DocViewer extends HTMLViewer {
         // Start by creating a doc manager.
         final DocManager manager;
         if (target != null) {
-            manager = new DocManager(target);
+            manager = new DocManager(_configuration, target);
         } else if (className != null) {
-            manager = new DocManager(Class.forName(className));
+            manager = new DocManager(_configuration,
+                    Class.forName(className));
         } else if (url != null) {
-            manager = new DocManager(url);
+            manager = new DocManager(_configuration, url);
         } else {
             throw new InternalErrorException(
                     "Need to specify one of target, className, or url!");
@@ -957,7 +958,7 @@ public class DocViewer extends HTMLViewer {
         authorPane.getCaret().setDot(0);
 
         // Populate the "See Also" window.
-        seeAlsoPane.setText(_HTML_HEADER + manager.getSeeAlso(_applicationName)
+        seeAlsoPane.setText(_HTML_HEADER + manager.getSeeAlso()
                 + _HTML_TAIL);
         // Set the view to the start of the text.
         seeAlsoPane.getCaret().setDot(0);

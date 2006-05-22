@@ -158,11 +158,10 @@ public class HTMLViewer extends TableauFrame implements Printable,
             }
 
             if (event.getDescription().startsWith("ptdoc:")) {
-                // Process "about:" hyperlinks
+                // Process "ptdoc:" hyperlinks
                 try {
                     GetDocumentationAction.getDocumentation(
                             getConfiguration(),
-                            "" /*FIXME: need application name. */,
                             event.getDescription().substring(6),
                             getEffigy());
                 } catch (Throwable throwable) {
