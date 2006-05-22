@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -39,6 +40,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.ExecuteCommands;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
@@ -90,6 +92,16 @@ public class DocBuilder extends Attribute {
 
     
     /** Build the Java class and Actor documentation.
+     *  The default is to run make in <code>$PTII/doc</code>.
+     *
+     *  However, if the configuration set by {@link
+     *  #setConfiguration(Configuration) then the configuration is
+     *  searched for a _docApplicationSpecializer parameter.  If that
+     *  parameter exists it is assumed to name a class that implements
+     *  the {@link DocApplicationSpecializer} interface and the {@link
+     *  DocApplicationSpecializer#buildCommands()} method which returuns
+     *  the commands to invoke.
+     *
      *  @return The return value of the last subprocess that was executed.
      *  or -1 if no commands were executed.     
      *  @exception IllegalActionException If there is a problem building
@@ -113,16 +125,14 @@ public class DocBuilder extends Attribute {
         return _executeCommands;
     }
 
-    /** Set the application name.
-     * We handle the applicationName specially so that we create
-     * only the docs for the app we are running.
-     * @param applicationName The name of the application, for example
-     * "HyVisual".
+    /** Set the configuration.
+     *  @param configuration The configuration in which we look up the
+     *  _applicationName and _docApplicationSpecializer parameters.
      */
-    public void setApplicationName(String applicationName) {
-        _applicationName = applicationName;
+    public void setConfiguration(Configuration configuration) {
+        _configuration = configuration;
     }
-
+    
     /** Set the command executor, which can be either non-graphical
      *  or graphical.  The initial default is non-graphical, which
      *  means that stderr and stdout from subcommands is written
@@ -144,38 +154,79 @@ public class DocBuilder extends Attribute {
      */
     private int _executeCommands() throws IllegalActionException {
 
-        List commands = new LinkedList();
+        List commands = null;
+        // Search for a _docApplicationSpecializer in the configuration.
+        Parameter docApplicationSpecializerParameter = null;
+        if (_configuration != null) {
+            docApplicationSpecializerParameter =
+                (Parameter) _configuration
+                .getAttribute("_docApplicationSpecializer",
+                        Parameter.class);
+        }
+        if (docApplicationSpecializerParameter != null) {
+            String docApplicationSpecializerClassName = 
+                docApplicationSpecializerParameter.getExpression();
 
-        if (_applicationName == null) {
-            if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {
-                commands.add("rm -rf codeDoc");
+            try {
+                Class docApplicationSpecializerClass = Class
+                    .forName(docApplicationSpecializerClassName);
+                DocApplicationSpecializer docApplicationSpecializer = (DocApplicationSpecializer) docApplicationSpecializerClass.newInstance();
+                commands = docApplicationSpecializer.buildCommands(_executeCommands);
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(
+                        "Failed to call doc application initializer "
+                        + "class \"" + docApplicationSpecializerClassName
+                        + "\" buildCommands() method");
             }
-            commands.add("make codeDoc/tree.html");
-            commands.add("make codeDoc/ptolemy/actor/lib/Ramp.xml");
-            commands.add("make codeDoc/ptolemy/actor/lib/RampIdx.xml");
         } else {
-            if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {
-                commands.add("rm -rf codeDoc" + _applicationName);
-            }
-            commands.add("make codeDoc" + _applicationName
-                    + "/doc/codeDoc/tree.html");
-            commands.add("make APPLICATION=" + _applicationName
-                    + " \"PTDOCFLAGS=-d doc/codeDoc" + _applicationName
-                    + "/doc/codeDoc" 
-                    + " codeDoc" + _applicationName
-                    + "/ptolemy/actor/lib/Ramp.xml");
-            commands.add("make APPLICATION=" + _applicationName
-                    + " codeDoc" + _applicationName
-                    + "/ptolemy/actor/lib/RampIdx.xml");
-        }
-        if (commands.size() == 0) {
-            return -1;
-        }
+            commands = new LinkedList();
+            String applicationName = null;
 
-        _executeCommands.setCommands(commands);
-        File ptII = new File(StringUtilities.getProperty("ptolemy.ptII.dir")
-                + "/doc");
-        _executeCommands.setWorkingDirectory(ptII);
+            try {
+                StringAttribute applicationNameAttribute =
+                    (StringAttribute) _configuration
+                    .getAttribute("_applicationName", StringAttribute.class);
+
+                if (applicationNameAttribute != null) {
+                    applicationName = applicationNameAttribute.getExpression();
+                }
+            } catch (Throwable throwable) {
+                // Ignore and use the default applicationName: "",
+                // which means we look in doc.codeDoc.
+            }
+
+            if (applicationName == null) {
+                if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {
+                    commands.add("rm -rf codeDoc");
+                }
+                commands.add("make codeDoc/tree.html");
+                commands.add("make codeDoc/ptolemy/actor/lib/Ramp.xml");
+                commands.add("make codeDoc/ptolemy/actor/lib/RampIdx.xml");
+            } else {
+                if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {
+                    commands.add("rm -rf codeDoc" + applicationName);
+                }
+                commands.add("make codeDoc" + applicationName
+                        + "/doc/codeDoc/tree.html");
+                commands.add("make APPLICATION=" + applicationName
+                        + " \"PTDOCFLAGS=-d doc/codeDoc" + applicationName
+                        + "/doc/codeDoc" 
+                        + " codeDoc" + applicationName
+                        + "/ptolemy/actor/lib/Ramp.xml");
+                commands.add("make APPLICATION=" + applicationName
+                        + " codeDoc" + applicationName
+                        + "/ptolemy/actor/lib/RampIdx.xml");
+            }
+            if (commands.size() == 0) {
+                return -1;
+            }
+
+            _executeCommands.setCommands(commands);
+            File ptII = new File(StringUtilities.getProperty("ptolemy.ptII.dir")
+                    + "/doc");
+            _executeCommands.setWorkingDirectory(ptII);
+
+        }
 
         try {
             // FIXME: need to put this output in to the UI, if any. 
@@ -196,11 +247,10 @@ public class DocBuilder extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The name of the application, usually from the _applicationName
-     *  StringAttribute in configuration.xml.
-     *  If null, then use the default documentation in doc/codeDoc. 
+    /** The configuration in which we look up the
+     *  _applicationName and _docApplicationSpecializer parameters.
      */
-    private String _applicationName;
+    private Configuration _configuration;
 
     /** The object that actually executes the commands.
      */   

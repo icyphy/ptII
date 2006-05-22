@@ -26,16 +26,25 @@
 package ptolemy.vergil.actor;
 
 import java.net.URL;
+import java.util.List;
+
+import ptolemy.util.ExecuteCommands;
 
 //////////////////////////////////////////////////////////////////////////
 //// DocApplicationSpecializer
 
 /**
- An interface used to convert class names to URLs.  If an application
- would like more control over how documentation is found, then the
- application can implement this interface and set the
- _docApplicationSpecializer parameter in the configuration to name
- the implementation class
+ An interface that specializes the documentation system to the application.
+
+ The docClassNameToURL() method used by {@link DocManager} and other
+ classes to convert class names to URLs.  The buildCommands() method
+ is used by {@link DocBuilder} to set up the build environment to
+ build the documentation system if necessary.
+
+ <p>If an application would like more control over how documentation
+ is found and built, then the application can implement this interface and set
+ the _docApplicationSpecializer parameter in the configuration to name
+ the implementation class.
 
  @author Christopher Brooks
  @version $Id$
@@ -67,4 +76,12 @@ public interface DocApplicationSpecializer {
             String className,
             boolean lookForPtDoc, boolean lookForJavadoc,
             boolean lookForSource, boolean lookForActorIndex);
+
+    /** Set up the commands necessary to build the documentation.
+     *  @param executeCommands  The command execution environment necessary
+     *  to build the documentation.
+     *  @return A List of Strings, where each String represents the a
+     *  command to be executed.
+     */
+    public List buildCommands(ExecuteCommands executeCommands);
 }

@@ -93,6 +93,21 @@ public class DocBuilderGUI extends PtolemyFrame {
         caveatsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
         caveatsPanel.setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
 
+        // We handle the applicationName specially so that we create
+        // only the docs for the app we are running.
+        Configuration configuration = getConfiguration();
+
+        try {
+            StringAttribute applicationNameAttribute = (StringAttribute) configuration
+                    .getAttribute("_applicationName", StringAttribute.class);
+
+            if (applicationNameAttribute != null) {
+                _applicationName = applicationNameAttribute.getExpression();
+            }
+        } catch (Throwable throwable) {
+            // Ignore and use the default applicationName
+        }
+
         JTextArea messageArea = new JTextArea(
                 "NOTE: Use this tool to build the Java"
                         + " and Actor Documentation"
@@ -160,21 +175,7 @@ public class DocBuilderGUI extends PtolemyFrame {
         final JTextAreaExec exec = new JTextAreaExec("Documentation Builder"
                 + "Commands", false);
 
-        // We handle the applicationName specially so that we create
-        // only the docs for the app we are running.
-        Configuration configuration = getConfiguration();
-        try {
-            StringAttribute applicationNameAttribute = (StringAttribute) configuration
-                    .getAttribute("_applicationName", StringAttribute.class);
-
-            if (applicationNameAttribute != null) {
-                _applicationName = applicationNameAttribute.getExpression();
-            }
-        } catch (Throwable throwable) {
-            // Ignore and use the default applicationName
-        }
-
-        docBuilder.setApplicationName(_applicationName);
+        docBuilder.setConfiguration(configuration);
 
         // If we execute any commands, print the output in the text area.
         docBuilder.setExecuteCommands(exec);
@@ -206,7 +207,7 @@ public class DocBuilderGUI extends PtolemyFrame {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     exec.updateStatusBar("// Starting Doc Building"
-                            + (_applicationName != null ? "for "
+                            + (_applicationName != null ? " for "
                                     + _applicationName : ""));
 
                     docBuilder.buildDocs();
