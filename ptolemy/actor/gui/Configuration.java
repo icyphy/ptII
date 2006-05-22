@@ -232,6 +232,10 @@ public class Configuration extends CompositeEntity {
                 // you try to open a model and you get a text editor.
                 // ex.printStackTrace();
                 // Remove the effigy.  We were unable to open a tableau for it.
+                
+                // If we have a link to a missing .htm file, we want to
+                // avoid popping up two MessageHandlers.
+                boolean calledMessageHandler = false;
                 try {
                     if (effigy.getContainer() instanceof ModelDirectory) {
                         // This is the master.
@@ -246,17 +250,30 @@ public class Configuration extends CompositeEntity {
                             MessageHandler.error("Failed to open "
                                     + ((PtolemyEffigy) effigy).getModel()
                                             .getFullName(), ex);
+                            calledMessageHandler = true;
                         } else {
                             // Opening a link to a non-existant .htm file
                             // might get us to here because the effigy is
-                            // not a PtolemyEffigy
+                            // not a PtolemyEffigy.
+                            //
+                            // Note that because we call MessageHandler here,
+                            // this means that putting a try/catch around
+                            // configuration.openModel() does not do much good
+                            // if a .htm file is not found because the
+                            // MessageHandler pops up before we return
+                            // from the exception. 
+                            
                             MessageHandler
-                                    .error("Failed to open " + effigy, ex);
+                                    .error("Failed to open "
+                                            + effigy.identifier.getExpression()
+                                            , ex);
+                            calledMessageHandler = true;
                         }
                     }
 
                     effigy.setContainer(null);
                 } catch (Throwable throwable) {
+                    calledMessageHandler = false;
                     throw new InternalErrorException(this, throwable, null);
                 }
 
@@ -291,8 +308,10 @@ public class Configuration extends CompositeEntity {
                 // Note that we can't rethrow the exception here
                 // because removing the effigy may result in
                 // the application exiting.
-                MessageHandler.error("Failed to open tableau for "
-                        + effigy.identifier.getExpression(), ex);
+                if (!calledMessageHandler) {
+                    MessageHandler.error("Failed to open tableau for "
+                            + effigy.identifier.getExpression(), ex);
+                }
             }
         }
 
