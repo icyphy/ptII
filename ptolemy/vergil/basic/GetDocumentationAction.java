@@ -308,7 +308,7 @@ public class GetDocumentationAction extends FigureAction {
                     }
                     // FIXME: Tell the user what to do here.
                     ((DocBuilderTableau) tableau).show();
-                    //break;;
+                    break;
                 default: 
                     throw new InternalErrorException("Unknown return value \""
                             + selected 
