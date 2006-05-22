@@ -334,11 +334,6 @@ public class DocManager extends HandlerBase {
             String className, 
             boolean lookForPtDoc, boolean lookForJavadoc,
             boolean lookForSource, boolean lookForActorIndex) {
-        System.out.println("DocManager: " + className + ": " 
-                + lookForPtDoc + ", " + lookForJavadoc + ", "
-                + lookForSource + ", " + lookForActorIndex);
-
-
         URL toRead = null;
         try {
             // If the configuration has a parameter _docApplicationSpecializer
@@ -509,7 +504,6 @@ public class DocManager extends HandlerBase {
             ex.printStackTrace();
             return null;
         }
-        System.out.println("DocManager: returning " +  toRead);
         return toRead;
     }
 
