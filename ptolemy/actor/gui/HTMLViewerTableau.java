@@ -39,6 +39,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.ClassUtilities;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -155,7 +156,8 @@ public class HTMLViewerTableau extends Tableau {
          *  create a tableau and return null.  It is the
          *  responsibility of callers of this method to check the
          *  return value and call show().
-         *
+         *  <p>If the URL contains $CLASSPATH, then we look in the
+         *  classpath for the URL.
          *  @param effigy The effigy.
          *  @return A HTML viewer tableau, or null if one cannot be
          *    found or created.
@@ -201,14 +203,25 @@ public class HTMLViewerTableau extends Tableau {
 
                     if (anotherURL == null) {
                         try {
+                            // Search relative to to $PTII in a jar URL
                             anotherURL = _absolutePTIIURLToJarURL(urlString);
                         } catch (Throwable throwable) {
                             // Ignore: failed
                         }
                     }
 
+                    if (anotherURL == null && 
+                            urlString.indexOf("$CLASSPATH") != -1) {
+                        // The URL contains $CLASSPATH
+                        String classpathString = urlString.substring(
+                                urlString.indexOf("$CLASSPATH"));
+                        anotherURL = FileUtilities.nameToURL(classpathString, null, null);
+                    }
+
                     if (anotherURL == null) {
-                        throw io;
+                        IOException io2 = new IOException("---");
+                        io2.initCause(io);
+                        throw io2;
                     }
 
                     // Try to set the title bar?
