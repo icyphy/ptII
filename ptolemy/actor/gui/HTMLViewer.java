@@ -252,10 +252,19 @@ public class HTMLViewer extends TableauFrame implements Printable,
                     // target...
                     if (configuration != null) {
                         if (useBrowser && (BrowserEffigy.staticFactory != null)) {
+                            // Note that openModel will call MessageHandler
+                            // if there are problems, so there is no point
+                            // putting a try/catch block here.  
                             configuration.openModel(newURL, newURL, newURL
                                     .toExternalForm(),
                                     BrowserEffigy.staticFactory);
                         } else {
+                            // Note that openModel will call MessageHandler
+                            // if there are problems, so there is no point
+                            // putting a try/catch block here.
+                            // then if the newURL is not found, we could
+                            // try looking for the link relative to the
+                            // classpath.
                             configuration.openModel(newURL, newURL, newURL
                                     .toExternalForm());
                         }
