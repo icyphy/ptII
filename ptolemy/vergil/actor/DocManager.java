@@ -232,7 +232,7 @@ public class DocManager extends HandlerBase {
     /** Construct a manager to handle documentation for the specified target
      *  class.
      *  @param configuration The configuration in which to look up the
-     *  _docAppliationSpecializer and _applicationName parameters
+     *  _docApplicationSpecializer and _applicationName parameters
      *  @param targetClass The class to be documented.
      */
     public DocManager(Configuration configuration, Class targetClass) {
