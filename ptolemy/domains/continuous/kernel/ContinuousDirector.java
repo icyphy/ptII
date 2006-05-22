@@ -352,10 +352,10 @@ public class ContinuousDirector extends FixedPointDirector implements
             while (!_ODESolver._isStepFinished() && iterations < _maxIterations) {
                 // Time needs to be advanced first such that the derivatives
                 // of the integrators can be calculated correctly.
-                if (_currentStepSize > 0) {
-                    setModelTime(
-                            _iterationBeginTime.add(_currentStepSize
-                            * _ODESolver._incrementRound()));
+                double timeIncrement = _ODESolver._incrementRound();
+                if (_currentStepSize > 0 && timeIncrement > 0) {
+                    setModelTime(_iterationBeginTime.add(
+                            _currentStepSize * timeIncrement));
                 }
                 // Resolve the fixed point at the new time.
                 // Note that prefire resets all receivers to unknown,

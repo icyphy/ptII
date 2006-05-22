@@ -86,12 +86,13 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return 7 to indicate that 7 auxiliary variables are
-     *  needed by this solver.
-     *  @return 7.
+    /** Return the number of time increments plus one (to store the
+     *  truncation error).
+     *  @return The number of time increments plus one.
      */
     public final int getIntegratorAuxVariableCount() {
-        return 7;
+        // Allow one for the truncation error
+        return _TIME_INCREMENTS.length + 1;
     }
 
     /** Fire the given integrator. This method performs the ODE solving
@@ -141,6 +142,10 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
                             + (k[4] * _B[5][4]) + (k[5] * _B[5][5])));
             break;
 
+        case 6:
+            outputValue = integrator.getTentativeState();
+            break;
+
         default:
             throw new InvalidStateException(
                     "Execution sequence out of range.");
@@ -164,8 +169,8 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
                 * Math.abs((k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2])
                         + (k[3] * _E[3]) + (k[4] * _E[4]) + (k[5] * _E[5]));
 
-        //store the Local Truncation Error into k[6]
-        integrator.setAuxVariables(6, error);
+        //store the Local Truncation Error into k[7]
+        integrator.setAuxVariables(7, error);
 
         if (_isDebugging()) {
             _debug("Integrator: " + integrator.getName()
@@ -246,7 +251,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
     ////                         private variables                 ////
 
     /** The ratio of time increments within one integration step. */
-    protected static final double[] _TIME_INCREMENTS = { 0.2, 0.3, 0.6, 1.0, 0.875, 1.0 };
+    protected static final double[] _TIME_INCREMENTS = { 0.2, 0.3, 0.6, 1.0, 0.875, 1.0, 0.0 };
 
     /** B coefficients */
     private static final double[][] _B = {
@@ -254,8 +259,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
             { 3.0 / 40, 9.0 / 40 },
             { 0.3, -0.9, 1.2 },
             { -11.0 / 54, 5.0 / 2, -70.0 / 27, 35.0 / 27 },
-            { 1631.0 / 55296, 175.0 / 512, 575.0 / 13824, 44275.0 / 110592,
-                    253.0 / 4096 },
+            { 1631.0 / 55296, 175.0 / 512, 575.0 / 13824, 44275.0 / 110592, 253.0 / 4096 },
             { 37.0 / 378, 0.0, 250.0 / 621, 125.0 / 594, 0.0, 512.0 / 1771 } };
 
     /** E coefficients */

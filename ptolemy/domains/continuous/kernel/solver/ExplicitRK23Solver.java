@@ -47,10 +47,10 @@ import ptolemy.kernel.util.InvalidStateException;
  K1 = f(x(n)+0.5*h*K0, tn+0.5*h);
  K2 = f(x(n)+0.75*h*K1, tn+0.75*h);
  x(n+1) = x(n)+(2/9)*h*K0+(1/3)*h*K0+(4/9)*h*K2;
+ K3 = f(x(n+1), tn+h);
  </pre>,
  and error control:
  <pre>
- K3 = f(x(n+1), tn+h);
  LTE = h*[(-5.0/72.0)*K0 + (1.0/12.0)*K1 + (1.0/9.0)*K2 + (-1.0/8.0)*K3]
  </pre>
  <P>
@@ -78,9 +78,8 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
      *  @return The number of time increments plus one.
      */
     public final int getIntegratorAuxVariableCount() {
-        // Allow one for the truncation error and one
-        // for establishing the derivative at the end of the iteration
-        return _TIME_INCREMENTS.length + 2;
+        // Allow one for the truncation error
+        return _TIME_INCREMENTS.length + 1;
     }
 
     /** Fire the given integrator. This method performs the ODE solving
@@ -91,7 +90,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
      */
     public void integratorIntegrate(ContinuousIntegrator integrator)
             throws IllegalActionException {
-        double outvalue;
+        double outputValue;
         double xn = integrator.getState();
         double h = _director.getCurrentStepSize();
         double[] k = integrator.getAuxVariables();
@@ -99,23 +98,21 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
 
         switch (_roundCount) {
         case 0:
-            outvalue = xn + (h * k[0] * _B[0][0]);
+            outputValue = xn + (h * k[0] * _B[0][0]);
             break;
 
         case 1:
-            outvalue = xn + (h * ((k[0] * _B[1][0]) + (k[1] * _B[1][1])));
+            outputValue = xn + (h * ((k[0] * _B[1][0]) + (k[1] * _B[1][1])));
             break;
 
         case 2:
-            outvalue = xn
+            outputValue = xn
                 + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) 
                         + (k[2] * _B[2][2])));
             break;
 
         case 3:
-            outvalue = xn
-                + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) 
-                        + (k[2] * _B[2][2])));
+            outputValue = integrator.getTentativeState();
             break;
 
         default:
@@ -123,7 +120,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
                     "Execution sequence out of range.");
         }
 
-        integrator.setTentativeState(outvalue);
+        integrator.setTentativeState(outputValue);
     }
 
     /** Return true if the integration is accurate for the given
@@ -221,13 +218,15 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
     ////                     protected variables                   ////
 
     /** The ratio of time increments within one integration step. */
-    protected static final double[] _TIME_INCREMENTS = { 0.5, 0.75, 1.0 };
+    protected static final double[] _TIME_INCREMENTS = { 0.5, 0.75, 1.0, 0.0 };
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
 
     /** B coefficients. */
-    private static final double[][] _B = { { 0.5 }, { 0, 0.75 },
+    private static final double[][] _B = { 
+            { 0.5 }, 
+            { 0, 0.75 },
             { 2.0 / 9.0, 1.0 / 3.0, 4.0 / 9.0 } };
 
     /** E coefficients. */
