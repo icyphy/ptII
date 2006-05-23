@@ -44,12 +44,18 @@ import com.sun.javadoc.Tag;
 
 /** Generate PtDoc output.
  *  See ptolemy/vergil/basic/DocML_1.dtd for the dtd. 
+ *
  *  <p>If javadoc is called with -d <i>directoryName</i>, then 
  *  documentation will be generated in <i>directoryName</i>.
- *  This doclet writes the names of all the classes for which documentation
- *  was generated in a file called allNamedObjs.txt
-
- *  @author Christopher Brooks, Edward A. Lee
+ *  If the KEPLER property is set, then for a class named 
+ *  <code>foo.bar.Baz</code>, the generated file is named
+ *  <code>Baz.doc.xml</code>.  If the KEPLER property is not
+ *  set, then the generated file is named <code>foo/bar/Baz.xml</code>.
+ *
+ *  <p>This doclet writes the names of all the classes for which
+ *  documentation was generated in a file called allNamedObjs.txt
+ *
+ *  @author Christopher Brooks, Edward A. Lee, Contributor: Nandita Mangal
  *  @version $Id$
  *  @since Ptolemy II 5.2
  */
@@ -163,6 +169,31 @@ public class PtDoclet {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+   /** Process customTags and return text that contains links to the
+     *  javadoc output.
+     *  @param programElementDoc The class for which we are generating
+     *  documentation.
+     */
+    private static String _customTagCommentText(ProgramElementDoc
+            programElementDoc) {
+
+        // Process the comment as an array of tags.  Doc.commentText()
+        // should do this, but it does not.
+        String documentation = "";
+
+        Tag tag[] = programElementDoc.tags("UserLevelDocumentation");
+        StringBuffer  textTag = new StringBuffer();
+        for(int k = 0; k <tag.length; k++) {
+            textTag.append(tag[k].text());
+        }				
+        
+        if (textTag.toString().length() > 0) {
+            documentation = "<UserLevelDocumentation>" + StringUtilities.escapeForXML(textTag.toString()) +"</UserLevelDocumentation>";
+        }
+
+        return documentation;
+    }
+
     /** Process inlineTags and return text that contains links to the
      *  javadoc output.
      *  @param programElementDoc The class for which we are generating
@@ -246,16 +277,21 @@ public class PtDoclet {
                 + StringUtilities.escapeForXML(_inlineTagCommentText(classDoc))
                 + "  </description>\n");
 
+        Tag [] tags = null;	
         // Handle other class tags.
         String[] classTags = { "author", "version", "since",
-                "Pt.ProposedRating", "Pt.AcceptedRating" };
+                               "Pt.ProposedRating", "Pt.AcceptedRating",
+                               "UserLevelDocumentation"};
         for (int j = 0; j < classTags.length; j++) {
-            Tag[] tags = classDoc.tags(classTags[j]);
-            // FIXME: This uses just the first tag.
+            tags = classDoc.tags(classTags[j]);
             if (tags.length > 0) {
+                StringBuffer textTag = new StringBuffer();
+                for(int k = 0; k < tags.length; k++) {
+                    textTag.append(tags[k].text());
+                }				
                 documentation.append("  <" + classTags[j] + ">"
-                        + StringUtilities.escapeForXML(tags[0].text()) + "</"
-                        + classTags[j] + ">\n");
+                        + StringUtilities.escapeForXML(textTag.toString())
+                        + "</" + classTags[j] + ">\n");
             }
         }
         return documentation;
@@ -416,6 +452,13 @@ public class PtDoclet {
             throws IOException {
         String fileBaseName = className.replace('.', File.separatorChar)
                 + ".xml";
+
+        if (StringUtilities.getProperty("KEPLER") != "") {
+            // If we are running in Kepler, the put the output somewhere else.
+            fileBaseName = className.substring(className.lastIndexOf('.') + 1)
+                + ".doc.xml";
+        }
+
         String fileName = null;
         if (_outputDirectory != null) {
             fileName = _outputDirectory + File.separator + fileBaseName;
