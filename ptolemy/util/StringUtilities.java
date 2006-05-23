@@ -214,6 +214,7 @@ public class StringUtilities {
      *  </dl>
      *  @param propertyName The name of property.
      *  @return A String containing the string value of the property.
+     *  If the property is not found, then we return the empty string.
      */
     public static String getProperty(String propertyName) {
         // NOTE: getProperty() will probably fail in applets, which
