@@ -43,6 +43,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -241,7 +242,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  change does not take effect until the next execution
      *  of the model.
      */
-    public Parameter ODESolver;
+    public StringParameter ODESolver;
 
     /** Starting time of the simulation. The default value is 0.0,
      *  and the type is double.
@@ -846,8 +847,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             timeResolution.setVisibility(Settable.FULL);
             iterations.setVisibility(Settable.NONE);
 
-            ODESolver = new Parameter(this, "ODESolver");
-            ODESolver.setTypeEquals(BaseType.STRING);
+            ODESolver = new StringParameter(this, "ODESolver");
             ODESolver.setExpression("ExplicitRK45Solver");
             ODESolver.addChoice(new StringToken("ExplicitRK23Solver")
                     .toString());
