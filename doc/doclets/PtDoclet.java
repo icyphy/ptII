@@ -470,8 +470,7 @@ public class PtDoclet {
         if (!directoryFile.exists()) {
             directoryFile.mkdirs();
         }
-        System.out.println("Creating " + System.getProperty("user.dir")
-                + File.separator + fileName);
+        System.out.println("Creating " + fileName);
 
         FileWriter writer = new FileWriter(fileName);
         try {
