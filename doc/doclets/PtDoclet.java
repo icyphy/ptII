@@ -93,6 +93,8 @@ public class PtDoclet {
 
             Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
             Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
+            // The expression in the Expression actor is a StringAttribute.
+            Class stringAttributeClass = Class.forName("ptolemy.kernel.util.StringAttribute");
 
             ClassDoc[] classes = root.classes();
             for (int i = 0; i < classes.length; i++) {
@@ -144,6 +146,8 @@ public class PtDoclet {
                         typedIOPortClass, "port"));
                 documentation.append(_generateFieldDocumentation(classes[i],
                         parameterClass, "property"));
+                documentation.append(_generateFieldDocumentation(classes[i],
+                        stringAttributeClass, "property"));
                 documentation.append("</doc>\n");
                 _writeDoc(className, documentation.toString());
                 allNamedObjsWriter.write(className + "\n");
