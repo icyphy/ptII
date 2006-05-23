@@ -351,24 +351,27 @@ public class ContinuousDirector extends FixedPointDirector implements
             // or the maximum number of iterations is reached.
             int iterations = 0;
             while (!_ODESolver._isStepFinished() && iterations < _maxIterations) {
-                // Time needs to be advanced first such that the derivatives
-                // of the integrators can be calculated correctly.
+                // Resolve the fixed point at the current time.
+                // Note that prefire resets all receivers to unknown,
+                // and fire() iterates to a fixed point where all signals
+                // become known.
+                // Although super.prefire() is called in the prefire() method,
+                // super.prefire() is called again here, because it may take 
+                // several iterations to complete an integration step. 
+                if (super.prefire()) {
+                    super.fire();
+                }
+                // If the step size is zero, then one iteration is sufficient.
+                if (_currentStepSize == 0) break;
+                // Advance time such that the derivatives of the integrators 
+                // can be calculated correctly for next iteration.
                 double timeIncrement = _ODESolver._incrementRound();
                 if (_currentStepSize > 0 && timeIncrement > 0) {
                     setModelTime(_iterationBeginTime.add(
                             _currentStepSize * timeIncrement));
                 }
-                // Resolve the fixed point at the new time.
-                // Note that prefire resets all receivers to unknown,
-                // and fire() iterates to a fixed point where all signals
-                // become known.
-                if (super.prefire()) {
-                    super.fire();
-                }
                 // Increase the iteration counts.
                 iterations++;
-                // If the step size is zero, then one iteration is sufficient.
-                if (_currentStepSize == 0) break;
             }
             if (isStepSizeAccurate() && iterations < _maxIterations) {
                 // All actors agree with the current step size.
@@ -499,6 +502,12 @@ public class ContinuousDirector extends FixedPointDirector implements
     public void initialize() throws IllegalActionException {
         // set current time and initialize actors.
         super.initialize();
+
+        // register the start time as a breakpoint.
+        if (_debugging) {
+            _debug("Set the start time as a breakpoint: " + getModelStartTime());
+        }
+        fireAt((Actor) getContainer(), getModelStartTime());
 
         // register the stop time as a breakpoint.
         if (_debugging) {
@@ -849,10 +858,8 @@ public class ContinuousDirector extends FixedPointDirector implements
 
             ODESolver = new StringParameter(this, "ODESolver");
             ODESolver.setExpression("ExplicitRK45Solver");
-            ODESolver.addChoice(new StringToken("ExplicitRK23Solver")
-                    .toString());
-            ODESolver.addChoice(new StringToken("ExplicitRK45Solver")
-                    .toString());
+            ODESolver.addChoice("ExplicitRK23Solver");
+            ODESolver.addChoice("ExplicitRK45Solver");
             /* FIXME: These solvers are currently not implemented in this package.
             ODESolver.addChoice(new StringToken("BackwardEulerSolver")
                     .toString());

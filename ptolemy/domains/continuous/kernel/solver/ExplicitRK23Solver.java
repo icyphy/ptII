@@ -137,8 +137,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
         double error = h * Math.abs(
                 (k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2]) + (k[3] * _E[3]));
         
-        //k[4] is Local Truncation Error
-        integrator.setAuxVariables(4, error);
+        integrator.setAuxVariables(_ERROR_INDEX, error);
         if (_isDebugging()) {
             _debug("Integrator: " + integrator.getName()
                     + " local truncation error = " + error);
@@ -168,7 +167,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
      *  @return The next step size suggested by the given integrator.
      */
     public double integratorSuggestedStepSize(ContinuousIntegrator integrator) {
-        double error = (integrator.getAuxVariables())[3];
+        double error = (integrator.getAuxVariables())[_ERROR_INDEX];
         double h = _director.getCurrentStepSize();
         double tolerance = _director.getErrorTolerance();
         double newh = 5.0 * h;
@@ -176,7 +175,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
         if (error > tolerance) {
             newh = h
                     * Math.max(0.5, 0.8 * Math.pow((tolerance / error),
-                            1.0 / _order));
+                            1.0 / _ORDER));
         }
 
         _debug("integrator: " + integrator.getName()
@@ -196,7 +195,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
         _roundCount++;
         return result;
     }
-    
+
     /** Return true if the current integration step is finished. For example,
      *  solvers with a fixed number of rounds in an integration step will
      *  return true when that number of rounds are complete. Solvers that
@@ -233,8 +232,11 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
     private static final double[] _E = { -5.0 / 72.0, 1.0 / 12.0, 1.0 / 9.0,
             -1.0 / 8.0 };
     
+    /** The index of the error stored in the auxiliary variables. */
+    private static final int _ERROR_INDEX = 4;
+    
     /** The order of the algorithm. */
-    private static final int _order = 3;
+    private static final int _ORDER = 3;
     
     /** The round counter. */
     private int _roundCount = 0;

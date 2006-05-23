@@ -169,8 +169,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
                 * Math.abs((k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2])
                         + (k[3] * _E[3]) + (k[4] * _E[4]) + (k[5] * _E[5]));
 
-        //store the Local Truncation Error into k[7]
-        integrator.setAuxVariables(7, error);
+        integrator.setAuxVariables(_ERROR_INDEX, error);
 
         if (_isDebugging()) {
             _debug("Integrator: " + integrator.getName()
@@ -200,13 +199,13 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
      *  @return The next step size suggested by the given integrator.
      */
     public double integratorSuggestedStepSize(ContinuousIntegrator integrator) {
-        double error = (integrator.getAuxVariables())[6];
+        double error = (integrator.getAuxVariables())[_ERROR_INDEX];
         double h = _director.getCurrentStepSize();
         double tolerance = _director.getErrorTolerance();
         double newh = 5.0 * h;
 
         if (error > tolerance) {
-            newh = h * Math.pow((tolerance / error), 1.0 / _order);
+            newh = h * Math.pow((tolerance / error), 1.0 / _ORDER);
         }
 
         if (_isDebugging()) {
@@ -229,7 +228,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
         _roundCount++;
         return result;
     }
-    
+
     /** Return true if the current integration step is finished. For example,
      *  solvers with a fixed number of rounds in an integration step will
      *  return true when that number of rounds are complete. Solvers that
@@ -268,9 +267,12 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
             (125.0 / 594) - (13525.0 / 55296), 0.0 - (277.0 / 14336),
             (512.0 / 1771) - 0.25 };
 
+    /** The index of the error stored in the auxiliary variables. */
+    private static final int _ERROR_INDEX = 7;
+    
     /** The order of the algorithm. */
-    private static final int _order = 5;
-
+    private static final int _ORDER = 5;
+    
     /** The round counter. */
     private int _roundCount = 0;
 }
