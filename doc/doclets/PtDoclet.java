@@ -286,7 +286,7 @@ public class PtDoclet {
             tags = classDoc.tags(classTags[j]);
             if (tags.length > 0) {
                 StringBuffer textTag = new StringBuffer();
-                for(int k = 0; k < tags.length; k++) {
+                for (int k = 0; k < tags.length; k++) {
                     textTag.append(tags[k].text());
                 }				
                 documentation.append("  <" + classTags[j] + ">"
@@ -338,6 +338,7 @@ public class PtDoclet {
                                     + "\">"
                                     + StringUtilities
                                             .escapeForXML(_inlineTagCommentText(fields[i]))
+				    + _customTagCommentText(fields[i])
                                     + "</" + element + ">\n");
                 }
             } catch (ClassNotFoundException ex) {
