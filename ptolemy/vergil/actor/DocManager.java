@@ -145,7 +145,7 @@ public class DocManager extends HandlerBase {
 
     /** Construct a manager to handle documentation for the specified target.
      *  @param configuration The configuration in which to look up the
-     *  _docAppliationSpecializer and _applicationName parameters
+     *  _docApplicationSpecializer and _applicationName parameters
      *  @param target The object to be documented.
      */
     public DocManager(Configuration configuration, NamedObj target) {
@@ -789,7 +789,6 @@ public class DocManager extends HandlerBase {
         } else {
             className = _target.getClassName();
         }
-        String docName = "doc.codeDoc." + className;
         if (_isInstanceDoc) {
             // Create a link to the class documentation,
             // if there is some. First not that the superclass
@@ -842,7 +841,6 @@ public class DocManager extends HandlerBase {
             // base class.
             try {
                 String baseClassName = _targetClass.getSuperclass().getName();
-                docName = "doc.codeDoc." + baseClassName;
                 URL toRead = docClassNameToURL(_configuration, baseClassName,
                         true, true, true, false);
 
