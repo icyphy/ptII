@@ -376,7 +376,7 @@ public class DocViewer extends HTMLViewer {
                 // Skip this one.
                 continue;
             }
-            String portName = "<i>" + port.getName() + "</i>";
+            String portName = "<i>" + port.getDisplayName() + "</i>";
             String doc = manager.getPortDoc(port.getName());
             if (doc == null) {
                 doc = "No port description.";
@@ -522,7 +522,7 @@ public class DocViewer extends HTMLViewer {
             if (parameter.getVisibility() == Settable.FULL) {
                 parameters.append(_tr);
                 parameters.append(_td);
-                parameters.append("<i>" + parameter.getName() + "</i>");
+                parameters.append("<i>" + parameter.getDisplayName() + "</i>");
                 parameters.append(_tde);
                 parameters.append(_td);
                 parameters.append(doc);
