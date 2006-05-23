@@ -244,7 +244,7 @@ public class DocManager extends HandlerBase {
 
     /** Construct a manager for documentation at the specified URL.
      *  @param configuration The configuration in which to look up the
-     *  _docAppliationSpecializer and _applicationName parameters
+     *  _docApplicationSpecializer and _applicationName parameters
      *  @param url The URL.
      */
     public DocManager(Configuration configuration, URL url) {
@@ -297,7 +297,7 @@ public class DocManager extends HandlerBase {
      *  _docApplicationSpecializer and that parameter names a class
      *  that that implements the {@link DocApplicationSpecializer}
      *  interface, then we pass the class name to 
-     *  {@link DocApplicationSpecializer#docClassNameToURL(String, String)}
+     *  {@link DocApplicationSpecializer#docClassNameToURL(String, String, boolean, boolean, boolean, boolean)}
      *  and if a non-null is returned from docClassNameToURL(), we
      *  return that value.
      *  
@@ -722,7 +722,7 @@ public class DocManager extends HandlerBase {
      *  {@link
      *  ptolemy.kernel.attributes.VersionAttribute#majorCurrentVersion()}.
      *  @return The URL location of the website documentation.
-     *  @see #setRemoteDocumentationURLBase();
+     *  @see #setRemoteDocumentationURLBase(String)
      */
     public static String getRemoteDocumentationURLBase() {
         return _remoteDocumentationURLBase;
@@ -771,8 +771,6 @@ public class DocManager extends HandlerBase {
     /** Return "see also" information. This includes a link
      *  to the javadoc documentation, the source code, and the
      *  superclass information.
-     *  @param configuration The configuration in which to look up the
-     *  _docAppliationSpecializer and _applicationName parameters
      *  @return The "see also" information.
      */
     public String getSeeAlso() {
@@ -1273,7 +1271,7 @@ public class DocManager extends HandlerBase {
     private String _className;
 
     /**  The configuration in which to look up the
-     *  _docAppliationSpecializer and _applicationName parameters.
+     *  _docApplicationSpecializer and _applicationName parameters.
      */
     private Configuration _configuration;
 
