@@ -42,13 +42,13 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{fix(5.0,29,21), fix(5.0,29,21), fix(0.0,29,21), fix(0.0,29,21)}, {fix(6.0,29,21), fix(4.0,29,21), fix(5.0,29,21), fix(0.0,29,21)}, {fix(7.0,29,21), fix(3.0,29,21), fix(10.0,29,21), fix(0.0,29,21)}, {fix(8.0,29,21), fix(2.0,29,21), fix(15.0,29,21), fix(0.0,29,21)}, {fix(9.0,29,21), fix(1.0,29,21), fix(20.0,29,21), fix(0.0,29,21)}, {fix(10.0,29,21), fix(0.0,29,21), fix(25.0,29,21), fix(0.0,29,21)}, {fix(11.0,29,21), fix(-1.0,29,21), fix(30.0,29,21), fix(0.0,29,21)}, {fix(12.0,29,21), fix(-2.0,29,21), fix(35.0,29,21), fix(0.0,29,21)}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{fix(5.0,18,10), fix(5.0,18,10), fix(0.0,18,10), fix(0.0,18,10)}, {fix(6.0,18,10), fix(4.0,18,10), fix(5.0,18,10), fix(0.19921875,18,10)}, {fix(7.0,18,10), fix(3.0,18,10), fix(10.0,18,10), fix(0.3984375,18,10)}, {fix(8.0,18,10), fix(2.0,18,10), fix(15.0,18,10), fix(0.6015625,18,10)}, {fix(9.0,18,10), fix(1.0,18,10), fix(20.0,18,10), fix(0.80078125,18,10)}, {fix(10.0,18,10), fix(0.0,18,10), fix(25.0,18,10), fix(1.0,18,10)}, {fix(11.0,18,10), fix(-1.0,18,10), fix(30.0,18,10), fix(1.19921875,18,10)}, {fix(12.0,18,10), fix(-2.0,18,10), fix(35.0,18,10), fix(1.3984375,18,10)}}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{510.0, 185.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 185.0]">
         </property>
     </entity>
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
