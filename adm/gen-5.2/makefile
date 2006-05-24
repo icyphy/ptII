@@ -1159,6 +1159,7 @@ JSALLDIRS = \
 NONJSALLCOREDIRS = \
 	ptolemy/copernicus/kernel \
 	ptolemy/copernicus/java \
+	ptolemy/copernicus/gui
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
