@@ -140,9 +140,9 @@ test Maximum-2.6 {check types} {
 test Maximum-2.7 {test complex} {
     $values setExpression {{-2+i, -1-i, 0+0i, 3+3i, 5+4i}}
     $value setExpression {4}
-    catch {[$e0 getManager] execute} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: isLessThan operation not supported between ptolemy.data.ComplexToken '-2.0 + 1.0i' and ptolemy.data.ComplexToken '4.0 + 0.0i' because complex numbers cannot be compared.}}
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {{4.0 + 0.0i} {4.0 + 0.0i} {4.0 + 0.0i} {3.0 + 3.0i} {5.0 + 4.0i}}
 
 ######################################################################
 #### Check types of above model
