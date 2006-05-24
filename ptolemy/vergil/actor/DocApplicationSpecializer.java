@@ -49,7 +49,6 @@ import ptolemy.util.ExecuteCommands;
  @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 6.0
- @see PortSite
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

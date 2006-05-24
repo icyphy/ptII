@@ -95,7 +95,7 @@ public class DocBuilder extends Attribute {
      *  The default is to run make in <code>$PTII/doc</code>.
      *
      *  However, if the configuration set by {@link
-     *  #setConfiguration(Configuration) then the configuration is
+     *  #setConfiguration(Configuration)} then the configuration is
      *  searched for a _docApplicationSpecializer parameter.  If that
      *  parameter exists it is assumed to name a class that implements
      *  the {@link DocApplicationSpecializer} interface and the {@link
