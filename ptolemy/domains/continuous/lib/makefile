@@ -1,9 +1,10 @@
-# Makefile for Java Ptolemy Continuous Time Domain
+# Makefile for Ptolemy II Continuous Actors
+#
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2006 The Regents of the University of California.
+# @Copyright (c) 1997-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,14 +28,13 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/domains/continuous
+ME =		ptolemy/domains/continuous/lib
 
-DIRS =		kernel
+DIRS =		test
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,30 +43,36 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	continuous
+PTPACKAGE = 	lib
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		kernel/kernel.jar \
-		lib/lib.jar
+JSRCS = \
+	Integrator.java 
+	
+OTHER_FILES_TO_BE_JARED = \
+	continuousentities.xml \
+	dynamics.xml \
+	integral.gif \
+	IntegratorIcon.xml 
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =  kernel
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
 	doc
 
+JCLASS = $(JSRCS:%.java=%.class)
+
+
 all: jclass
-install: jclass jars
+install: jclass $(PTCLASSJAR)
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
