@@ -45,6 +45,13 @@ import com.sun.javadoc.Tag;
 /** Generate PtDoc output.
  *  See ptolemy/vergil/basic/DocML_1.dtd for the dtd. 
  *
+ *  <p>If javadoc is called with -d <i>directoryName</i>, then 
+ *  documentation will be generated in <i>directoryName</i>.
+ *  If the KEPLER property is set, then for a class named 
+ *  <code>foo.bar.Baz</code>, the generated file is named
+ *  <code>Baz.doc.xml</code>.  If the KEPLER property is not
+ *  set, then the generated file is named <code>foo/bar/Baz.xml</code>.
+ *
  *  <p>This doclet writes the names of all the classes for which
  *  documentation was generated in a file called allNamedObjs.txt
  *
@@ -76,6 +83,12 @@ public class PtDoclet {
      */
     public static boolean start(RootDoc root) throws IOException,
             ClassNotFoundException {
+	System.out.println("Ptolemy version of PtDoc, with Kepler extensions");
+        if (StringUtilities.getProperty("KEPLER") != "") {
+	    System.out.println("PtDoclet: KEPLER = "
+			       + StringUtilities.getProperty("KEPLER"));
+        }
+
         _outputDirectory = _getOutputDirectory(root.options());
         // We cache the names of all actors for which we generate text.
         FileWriter allNamedObjsWriter = null;
@@ -181,9 +194,7 @@ public class PtDoclet {
         }				
         
         if (textTag.toString().length() > 0) {
-            documentation = "<UserLevelDocumentation>"
-                + StringUtilities.escapeForXML(textTag.toString())
-                + "</UserLevelDocumentation>";
+            documentation = "<UserLevelDocumentation>" + StringUtilities.escapeForXML(textTag.toString()) +"</UserLevelDocumentation>";
         }
 
         return documentation;
@@ -448,6 +459,12 @@ public class PtDoclet {
             throws IOException {
         String fileBaseName = className.replace('.', File.separatorChar)
                 + ".xml";
+
+        if (StringUtilities.getProperty("KEPLER") != "") {
+            // If we are running in Kepler, the put the output somewhere else.
+            fileBaseName = className.substring(className.lastIndexOf('.') + 1)
+                + ".doc.xml";
+        }
 
         String fileName = null;
         if (_outputDirectory != null) {
