@@ -162,7 +162,7 @@ test Expression-8.1 {port named "time" is verboten} {
     set m8 [$e8 getManager]
     catch {$m8 execute} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: This actor has a port named "time", which will not be read, instead the variable "time" will be read.
+} {{ptolemy.kernel.util.IllegalActionException: This actor has a port named "time", which will not be read, instead the reserved system variable "time" will be read. Delete the "time" port to avoid this message.
   in .top.expr8}}
 
 
@@ -179,7 +179,7 @@ test Expression-8.2 {port named "iteration" is verboten} {
     set m8 [$e8 getManager]
     catch {$m8 execute} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: This actor has a port named "iteration", which will not be read, instead the variable "iteration" will be read.
+} {{ptolemy.kernel.util.IllegalActionException: This actor has a port named "iteration", which will not be read, instead the reserved system variable "iteration" will be read. Delete the "iteration" port to avoid this message.
   in .top.expr8}}
 
 
