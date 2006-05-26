@@ -389,7 +389,6 @@ public class ContinuousDirector extends FixedPointDirector implements
                 // Restore model time to the start of the integration step.
                 setModelTime(_iterationBeginTime);
                 
-                
                 // Restore the saved state of the stateful actors, 
                 // including the save starting time of this integration.
                 // FIXME: may generate a StatefulActor set for more 
