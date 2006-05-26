@@ -1,4 +1,4 @@
-/* The integrator in the CT domain.
+/* The integrator in the continuous domain.
 
  Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
@@ -36,69 +36,67 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Integrator
 
 /**
- An integrator in the continuous time (CT) domain.
- This actor has one input port and one output port. Conceptually,
- the input is the derivative of the output w.r.t. time. So an ordinary
- differential equation dx/dt = f(x, t) can be built by:
- <P>
- <pre>
- <pre>               +---------------+
- <pre>        dx/dt  |               |   x
- <pre>    +--------->|   Integrator  |---------+----->
- <pre>    |          |               |         |
- <pre>    |          +---------------+         |
- <pre>    |                                    |
- <pre>    |             |---------|            |
- <pre>    +-------------| f(x, t) |<-----------+
- <pre>                  |---------|
- </pre></pre></pre></pre></pre></pre></pre></pre></pre></pre>
+The integrator in the continuous domain.
+The <i>derivative</i> port receives the derivative of the state of the integrator
+with respect to time. The <i>state</i> output port shows the state of the
+integrator. So an ordinary differential equation (ODE), 
+dx/dt = f(x, t), can be built as follows:
+<P>
+<pre>
+               +---------------+
+        dx/dt  |               |   x
+    +--------->|   Integrator  |---------+----->
+    |          |               |         |
+    |          +----^-----^----+         |
+    |                                    |
+    |             |---------|            |
+    +-------------| f(x, t) |<-----------+
+                  |---------|
+</pre>
+<P>
+An integrator also has a port-parameter called <i>initialState</i>. The 
+parameter provides the initial state for integration during the initialization 
+stage of execution. If during execution an input token is provided on
+the port, then the state of the integrator will be reset at that time
+to the value of the token. The default value of the parameter is 0.0.
+<P>
+An integrator also has an input port named <i>impulse</i>.
+When present, a token at the <i>impulse</i> input
+port is interpreted as the weight of a Dirac delta function.
+It cause an instantaneous increment or decrement to the state.
+<P>
+An integrator can generate an output (its current state) before
+the derivative input is known, and hence can be used in feedback
+loops like that above without creating a causality loop.
+The <i>impulse</i> and <i>initialState</i> inputs
+ports must be known, however, before an output can be produced.
+The effect of data at these inputs on the output is instantaneous.
+<P>
+For different ODE solving methods, the functionality
+of an integrator may be different. The delegation and strategy design
+patterns are used in this class, the abstract ODESolver class, and the
+concrete ODE solver classes. Some solver-dependent methods of integrators
+delegate to the concrete ODE solvers.
+<P>
+An integrator can possibly have several auxiliary variables for the
+the ODE solvers to use. The ODE solver class provides the number of
+variables needed for that particular solver.
+The auxiliary variables can be set and get by setAuxVariables()
+and getAuxVariables() methods.
+<p>
+This class is based on the CTIntegrator by Jie Liu.
 
- <P>
- An integrator
- is a dynamic actor that can emit a token (the state) without knowing the
- input. An integrator is a step size control actor that can control
- the accuracy of the ODE solution by adjusting step sizes.
- An integrator has memory, which is its state.
- <P>
- An integrator has one parameter: the <i>initialState</i>. At the
- initialization stage of the simulation, the state of the integrator is
- set to the initial state. Changes of the <i>initialState</i> parameter
- are ignored after the execution starts, unless the initialize() method
- is called again. The default value of the parameter is 0.0 of type
- DoubleToken.
- <P>
- To help solving the ODE, a set of variables are used:<BR>
- <I>state</I>: This is the value of the state variable at a time point,
- which has beed confirmed by all the step size control actors.
- <I>tentative state</I>: This is the value of the state variable
- which has not been confirmed. It is a starting point for other actors
- to estimate the accuracy of this integration step.
- <I>history</I>: The previous states and their derivatives. History may
- be used by multistep methods.
- <P>
- For different ODE solving methods, the functionality
- of an integrator may be different. The delegation and strategy design
- patterns are used in this class, ODESolver class, and the concrete
- ODE solver classes. Some solver-dependent methods of integrators are
- delegated to the ODE solvers.
- <P>
- An integrator can possibly have several auxiliary variables for the
- the ODE solvers to use. The number of the auxiliary variables is checked
- before each iteration. The ODE solver class provides the number of
- variables needed for that particular solver.
- The auxiliary variables can be set and get by setAuxVariables()
- and getAuxVariables() methods.
- <P>
- This is a wrapper for the CTBaseIntegrator class.
-
- @author Jie Liu
+ @author Haiyang Zheng and Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.3
- @Pt.ProposedRating Red (liuj)
- @Pt.AcceptedRating Red (cxh)
- @see ptolemy.domains.ct.kernel.CTBaseIntegrator
+ @since Ptolemy II 6.0
+ @Pt.ProposedRating Green (hyzheng)
+ @Pt.AcceptedRating Green (eal)
  */
 public class Integrator extends ContinuousIntegrator {
+    
+    // NOTE: This is simply a wrapper for ContinuousIntegrator to make
+    // it appear in the lib package.
+    
     /** Construct an integrator.
      * @see ptolemy.domains.ct.kernel.CTBaseIntegrator
      * @param container The container.
