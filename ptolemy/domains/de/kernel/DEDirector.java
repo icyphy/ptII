@@ -2048,8 +2048,9 @@ public class DEDirector extends Director implements TimedDirector {
      */
     private boolean _exceedStopTime = false;
 
-    // A local boolean variable indicating whether this director is in
-    // initialization phase execution.
+    /** A local boolean variable indicating whether this director is in
+     * initialization phase execution.
+     */
     private boolean _isInitializing = false;
 
     /**
