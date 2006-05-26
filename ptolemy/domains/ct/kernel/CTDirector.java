@@ -580,7 +580,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      */
     public boolean postfire() throws IllegalActionException {
         if (!_isTopLevel() && (getBreakPoints().size() > 0)) {
-            Time time = (Time) getBreakPoints().removeFirst();
+            Time time = (Time) getBreakPoints().first();
             CompositeActor container = (CompositeActor) getContainer();
             container.getExecutiveDirector().fireAt(container, time);
         }
