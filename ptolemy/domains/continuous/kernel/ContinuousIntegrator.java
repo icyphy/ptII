@@ -33,7 +33,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.hs.kernel.ODESolver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -46,64 +45,61 @@ import ptolemy.kernel.util.StringAttribute;
 
 /**
  The integrator in the continuous domain.
- An integrator has two input ports and one output port. The <i>derivative</i> 
- port receives the derivative of the output w.r.t. time. The <i>impulse</i> 
- port receives a delta function. So an ordinary differential equation (ODE), 
- dx/dt = f(x, t) + d(g(t))/dt, can be built by:
+ The <i>derivative</i> port receives the derivative of the state of the integrator
+ with respect to time. The <i>state</i> output port shows the state of the
+ integrator. So an ordinary differential equation (ODE), 
+ dx/dt = f(x, t), can be built as follows:
  <P>
  <pre>
- <pre>    |------|       +---------------+
- <pre>    | g(t) |------>|               |   x
- <pre>    |------|       |   Integrator  |---------+----->
- <pre>        +--------->|               |         |
- <pre>        |   dx/dt  +---------------+         |
- <pre>        |                                    |
- <pre>        |             |---------|            |
- <pre>        +-------------| f(x, t) |<-----------+
- <pre>                      |---------|
- </pre></pre></pre></pre></pre></pre></pre></pre></pre></pre>
+                +---------------+
+         dx/dt  |               |   x
+     +--------->|   Integrator  |---------+----->
+     |          |               |         |
+     |          +----^-----^----+         |
+     |                                    |
+     |             |---------|            |
+     +-------------| f(x, t) |<-----------+
+                   |---------|
+ </pre>
  <P>
- An integrator also has a port parameter called <i>initialState</i>. This 
+ An integrator also has a port-parameter called <i>initialState</i>. The 
  parameter provides the initial state for integration during the initialization 
- stage of the simulation, and it can be changed by receiving inputs from the 
- corresponding parameter port. The default value of the parameter is 0.0 of 
- type double.
+ stage of execution. If during execution an input token is provided on
+ the port, then the state of the integrator will be reset at that time
+ to the value of the token. The default value of the parameter is 0.0.
  <P>
- An integrator can generate an output (its current state) at a time
- when the derivative input is unknown, but the impulse input and initialState
- ports must be known. An integrator is a step size control
- actor that controls the accuracy of the ODE solution by adjusting step
- sizes. An integrator has memory, which is its state.
+ An integrator also has an input port named <i>impulse</i>.
+ When present, a token at the <i>impulse</i> input
+ port is interpreted as the weight of a Dirac delta function.
+ It cause an instantaneous increment or decrement to the state.
  <P>
- To help solving the ODE, a set of internal variables are used:<BR>
- <I>state</I>: This is the value of the state variable at a time point,
- which has beed confirmed by all the step size control actors.
- <I>tentative state</I>: This is the value of the state variable
- which has not been confirmed. It is a starting point for other actors
- to estimate the accuracy of this integration step.
+ An integrator can generate an output (its current state) before
+ the derivative input is known, and hence can be used in feedback
+ loops like that above without creating a causality loop.
+ The <i>impulse</i> and <i>initialState</i> inputs
+ ports must be known, however, before an output can be produced.
+ The effect of data at these inputs on the output is instantaneous.
  <P>
  For different ODE solving methods, the functionality
  of an integrator may be different. The delegation and strategy design
- patterns are used in this class, basic abstract ODESolver class, and the
+ patterns are used in this class, the abstract ODESolver class, and the
  concrete ODE solver classes. Some solver-dependent methods of integrators
  delegate to the concrete ODE solvers.
  <P>
  An integrator can possibly have several auxiliary variables for the
- the ODE solvers to use. The number of the auxiliary variables is checked
- before each iteration. The ODE solver class provides the number of
+ the ODE solvers to use. The ODE solver class provides the number of
  variables needed for that particular solver.
  The auxiliary variables can be set and get by setAuxVariables()
  and getAuxVariables() methods.
  <p>
  This class is based on the CTBaseIntegrator by Jie Liu and Haiyang Zheng,
- but it has more ports and provides more functionalities.
+ but it has more ports and provides more functionality.
  
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (yuhong)
- @see ODESolver
  */
 public class ContinuousIntegrator extends TypedAtomicActor implements 
          ContinuousStatefulActor, ContinuousStepSizeControlActor {
@@ -122,8 +118,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
         impulse = new TypedIOPort(this, "impulse", true, false);
         impulse.setTypeEquals(BaseType.DOUBLE);
-        StringAttribute cardinality = new StringAttribute(impulse,
-                "_cardinal");
+        StringAttribute cardinality = new StringAttribute(impulse, "_cardinal");
         cardinality.setExpression("SOUTH");
 
         derivative = new TypedIOPort(this, "derivative", true, false);
@@ -134,6 +129,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
         initialState = new PortParameter(this, "initialState", new DoubleToken(0.0));
         initialState.setTypeEquals(BaseType.DOUBLE);
+        cardinality = new StringAttribute(initialState.getPort(), "_cardinal");
+        cardinality.setExpression("SOUTH");
     }
 
     ///////////////////////////////////////////////////////////////////
