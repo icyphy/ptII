@@ -589,19 +589,25 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Postfire all actors.
         boolean result = super.postfire();
 
+        Time modelTime = getModelTime();
+        
         // If the current time is equal to the stop time, return false.
         // Check, however, to make sure that the breakpoints table
         // does not contain the current model time, which would mean
         // that more events may be generated at this time.
-        if (getModelTime().equals(getModelStopTime())
-                && !_breakpoints.contains(getModelTime())) {
-            return false;
+        if (modelTime.equals(getModelStopTime())) {
+            SuperdenseTime nextBreakpoint = 
+                (SuperdenseTime) _breakpoints.first();
+            if (nextBreakpoint == null || 
+                    nextBreakpoint.timestamp().compareTo(modelTime) > 0) {
+                return false;
+            }
         }
         
         // If time exceeds the stop time, then either we failed
         // to execute at the stop time, or the return value of
         // false was ignored. Either condition is a bug.
-        if (getModelTime().compareTo(getModelStopTime()) > 0) {
+        if (modelTime.compareTo(getModelStopTime()) > 0) {
             throw new IllegalActionException(this,
                     "Current time exceeds the specified stopTime.");
         }
@@ -623,7 +629,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Synchronize to real time if necessary.
         if (((BooleanToken) synchronizeToRealTime.getToken()).booleanValue()) {
             long realTime = System.currentTimeMillis() - _timeBase;
-            long simulationTime = (long) ((getModelTime().subtract(
+            long simulationTime = (long) ((modelTime.subtract(
                     getModelStartTime()).getDoubleValue()) * 1000);
             long timeDifference = simulationTime - realTime;
             // If the time difference is large enough, go to sleep.
@@ -640,7 +646,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             } else {
                 if (_debugging) {
                     _debug("Warning: cannot achieve real-time performance"
-                            + " at simulation time " + getModelTime());
+                            + " at simulation time " + modelTime);
                 }
             }
         }
