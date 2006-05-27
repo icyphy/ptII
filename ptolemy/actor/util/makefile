@@ -73,6 +73,7 @@ JSRCS = \
 	FunctionDependencyOfCompositeActor.java \
 	FuzzyDoubleComparator.java \
 	GeneralComparator.java \
+	SuperdenseTime.java \
 	Time.java \
 	TimedEvent.java \
 	TotallyOrderedSet.java
