@@ -221,6 +221,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         _cachedFunctionalProperty = true;
         _functionalPropertyVersion = -1;
         _numberOfActorsFired = 0;
+        
+        _index = 0;
     }
 
     /** Return true if all the controlled actors' isFireFunctional()
@@ -428,6 +430,9 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** The current index of the model. */
+    protected int _index;
 
     /** List of all receivers this director has created. */
     protected List _receivers = new LinkedList();
