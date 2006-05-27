@@ -233,7 +233,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
             -1.0 / 8.0 };
     
     /** The index of the error stored in the auxiliary variables. */
-    private static final int _ERROR_INDEX = 4;
+    private static final int _ERROR_INDEX = _TIME_INCREMENTS.length;
     
     /** The order of the algorithm. */
     private static final int _ORDER = 3;
