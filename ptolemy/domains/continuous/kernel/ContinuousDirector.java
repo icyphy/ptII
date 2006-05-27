@@ -36,6 +36,7 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.GeneralComparator;
+import ptolemy.actor.util.SuperdenseTime;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TotallyOrderedSet;
 import ptolemy.data.BooleanToken;
@@ -421,13 +422,19 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
         // Check if the request time is earlier than the current time.
         Time currentTime = getModelTime();
-        if (time.compareTo(currentTime) < 0) {
+        int index = 1;
+
+        int comparisonResult = time.compareTo(currentTime); 
+        if (comparisonResult < 0) {
             throw new IllegalActionException(actor, 
                     "Requested time: " + time 
                     + " is earlier than the current time: " + currentTime);
+        } else if (comparisonResult == 0) {
+            index = _index + 1;
         }
-        // Insert the time object as a breakpoint into the breakpoint table.
-        _breakpoints.insert(time);
+        // Insert a superdense time object as a breakpoint into the 
+        // breakpoint table.
+        _breakpoints.insert(new SuperdenseTime(time, index));
     }
 
     /** Return the current integration step size.
@@ -606,9 +613,11 @@ public class ContinuousDirector extends FixedPointDirector implements
         // actor, then request that the enclosing director refire
         // the composite actor containing this director.
         if (_isEmbedded() && (_breakpoints.size() > 0)) {
-            Time time = (Time) _breakpoints.removeFirst();
+            SuperdenseTime nextBreakpoint = 
+                (SuperdenseTime) _breakpoints.first();
             CompositeActor container = (CompositeActor) getContainer();
-            container.getExecutiveDirector().fireAt(container, time);
+            container.getExecutiveDirector().fireAt(
+                    container, nextBreakpoint.timestamp());
         }
 
         // Synchronize to real time if necessary.
@@ -970,15 +979,23 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  step size does not exceed the time of the next breakpoint.
      *  NOTE: if the current time is a breakpoint, that breakpoint is
      *  removed. Otherwise, the breakpoint table is left unmodified.
+     *  If the current time is a breakpoint, the index is updated by the
+     *  removed breakpoint. Otherwise, the index is reset to 0.
      */
     private void _refineStepWRTBreakpoints() {
         if (!_breakpoints.isEmpty()) {
-            Time point = ((Time) _breakpoints.first());
-            _debug("The first breakpoint is at " + point);
-            double maximumAllowedStepSize
-                    = point.subtract(getModelTime()).getDoubleValue();
+            SuperdenseTime nextBreakpoint = 
+                (SuperdenseTime) _breakpoints.first();
+            if (_debugging){
+                _debug("The first breakpoint is at " + nextBreakpoint);
+            }
+            double maximumAllowedStepSize = nextBreakpoint.timestamp()
+                .subtract(getModelTime()).getDoubleValue();
             if (maximumAllowedStepSize == 0.0) {
+                _index = nextBreakpoint.index();
                 _breakpoints.removeFirst();
+            } else {
+                _index = 0;
             }
             if (_currentStepSize > maximumAllowedStepSize) {
                 _currentStepSize = maximumAllowedStepSize;
@@ -992,7 +1009,9 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @see #_currentStepSize
      */
     private void _setCurrentStepSize(double stepSize) {
-        _debug("----- Setting the current step size to " + stepSize);
+        if (_debugging) {
+            _debug("----- Setting the current step size to " + stepSize);
+        }
         _currentStepSize = stepSize;
     }
     
