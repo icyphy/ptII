@@ -52,8 +52,7 @@ import ptolemy.kernel.util.Workspace;
  a finite <i>numberOfCycles</i>. The numberOfCycles has a default value
  as -1, indicating infinite length of executions. If numberOfCycles is
  a positive number, once the specified number of cycles has been completed,
- then this actor returns false from the postfire method. FIXME: is this
- the desired behavior?
+ then this actor returns false from the postfire method.
  <p>
  At the beginning of each time interval of length given by <i>period</i>,
  this actor initiates a sequence of output events with values given by
