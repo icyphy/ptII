@@ -202,6 +202,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
 
         // Guarantee to stop at the iteration end time.
+        // FIXME: This is actually done in postfire() with the commited iteration end time,
+        // so it is not needed here.
         fireAt((CompositeActor) getContainer(), getIterationEndTime());
 
         _continuousPhaseExecution();
@@ -233,9 +235,14 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      */
     public boolean postfire() throws IllegalActionException {
         if (!_isTopLevel()) {
-            // Because this director runs ahead of time, this director has to
-            // register the current time as a breakpoint such that the executive
-            // director will fire the container again at the current time.
+            // If this director is not at the top level, then the enclosing
+            // director's notion of current time is that of the start time
+            // of the integration period.  This director has locally set
+            // time to be t + h, where h is the step size.
+            // To ensure that the enclosing director fires this composite
+            // again at t + h, we insert t + h into the breakpoint table.
+            // This will cause the superclass (in its postfire() method)
+            // to call fireAt() on the enclosing (executive) director.
             getBreakPoints().insert(getModelTime());
         }
 
@@ -281,6 +288,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             _outsideTime = executiveDirector.getModelTime();
 
             Time localTime = getModelTime();
+            // FIXME: If the executive director is FSMDirector,
+            // then this isn't the right director to be asking.
+            // We want the enclosing director two or more levels up.
+            // Perhaps what we really want is the minimum of the
+            // return value of getModelNextIterationTime() all the
+            // way up the hierarchy?
             Time outsideNextIterationTime = executiveDirector
                     .getModelNextIterationTime();
 
