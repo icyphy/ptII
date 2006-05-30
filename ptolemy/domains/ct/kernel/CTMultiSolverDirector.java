@@ -940,7 +940,11 @@ public class CTMultiSolverDirector extends CTDirector {
         // which are event generators, modal models need to register the
         // current time as a breakpoint if there is an enabled transitioin
         // at the current time.
-        while (hasCurrentEvent()) {
+        
+        boolean eventExists = hasCurrentEvent();
+        boolean cachedEventStatus = eventExists;
+        
+        while (eventExists) {
             if (_debugging) {
                 _debug("Iterate all actors once in the following order:");
                 _debug("  ---> " + getName(),
@@ -982,6 +986,29 @@ public class CTMultiSolverDirector extends CTDirector {
             if (_stopRequested) {
                 break;
             }
+            
+            // To check whether a discrete phase of execution reaches a 
+            // fixed point. The hasCurrentEvent() method has be called to 
+            // check the existence of events at the end of each iteration. 
+            // Only if this method returns false for two consecutive 
+            // iterations, will we claim that a fixed point has been reached.
+
+            if (cachedEventStatus || hasCurrentEvent()) {
+                cachedEventStatus = hasCurrentEvent();
+            } else {
+                eventExists = false;
+            }
+
+            // The more intuitive logic is shown below.
+            // if (hasCurrentEvent()) {
+            //     cachedEventStatus = true;
+            // } else {
+            //     if (cachedEventStatus) {
+            //         cachedEventStatus = false;
+            //     } else {
+            //         eventExists = false;
+            //     }
+            // }
         }
 
         // When we jump out of the previous loop, the _propagateResolvedStates()
