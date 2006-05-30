@@ -505,6 +505,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
             double result = Double.POSITIVE_INFINITY;
             boolean givenByRefinement = false;
 
+            // There may be multiple refinements.
+            // Return the minimum.
             for (int i = 0; i < actors.length; ++i) {
                 if (actors[i].getDirector() != this) {
                     // The refinement has a local director.
