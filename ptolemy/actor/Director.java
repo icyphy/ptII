@@ -279,7 +279,7 @@ public class Director extends Attribute implements Executable {
         }
     }
 
-    /** Schedule a firing of the given actor at the given absolute
+    /** Request a firing of the given actor at the given absolute
      *  time.  This method is only intended to be called from within
      *  main simulation thread.  Actors that create their own
      *  asynchronous threads should used the fireAtCurrentTime()
@@ -299,7 +299,7 @@ public class Director extends Attribute implements Executable {
         fireAt(actor, new Time(this, time));
     }
 
-    /** Schedule a firing of the given actor at the given absolute
+    /** Request a firing of the given actor at the given absolute
      *  time.  This method is only intended to be called from within
      *  main simulation thread.  Actors that create their own
      *  asynchronous threads should used the fireAtCurrentTime()
@@ -320,7 +320,7 @@ public class Director extends Attribute implements Executable {
         // to run Tcl Blend test script on this class.
     }
 
-    /** Schedule a firing of the given actor as soon as possible.  If
+    /** Request a firing of the given actor as soon as possible.  If
      *  this method is called from within the main simulation thread,
      *  then this will result in the actor being fired at the current
      *  time.  This method may also be invoked from a thread other
@@ -373,21 +373,36 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Return the next time of interest in the model being executed by
-     *  this director. This method is useful for domains that perform
+     *  this director or the director of any enclosing model up the
+     *  hierarchy. If this director is at the top level, then this
+     *  default implementation simply returns the current time, since
+     *  this director does not advance time. If this director is not
+     *  at the top level, then return whatever the enclosing director
+     *  returns.
+     *  <p>
+     *  This method is useful for domains that perform
      *  speculative execution (such as CT).  Such a domain in a hierarchical
      *  model (i.e. CT inside DE) uses this method to determine how far
-     *  into the future to execute.
+     *  into the future to execute. This is simply an optimization that
+     *  reduces the likelihood of having to roll back.
      *  <p>
-     *  In this base class, we return the current time.
      *  Derived classes should override this method to provide an appropriate
-     *  value, if possible.
-     *  <p>
-     *  Note that this method is not made abstract to facilitate the use
-     *  of the test suite.
+     *  value, if possible. For example, the DEDirector class returns the
+     *  time value of the next event in the event queue.
      *  @return The time of the next iteration.
      *  @see #getModelTime()
      */
     public Time getModelNextIterationTime() {
+        NamedObj container = getContainer();
+        // NOTE: the container may not be a composite actor.
+        // For example, the container may be an entity as a library,
+        // where the director is already at the top level.
+        if (container instanceof CompositeActor) {
+            Director executiveDirector = ((CompositeActor) container).getExecutiveDirector();
+            if (executiveDirector != null) {
+                return executiveDirector.getModelNextIterationTime();
+            }
+        }
         return _currentTime;
     }
 
