@@ -478,58 +478,6 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         return list;
     }
 
-    /** Return the next iteration time provided by the refinement of the
-     *  current state of the mode controller. If the refinement does not
-     *  provide this, return that given by the superclass.
-     *  @return The time of the next iteration.
-     *  @deprecated As of Ptolemy II 4.1, replaced by
-     *  {@link #getModelNextIterationTime}
-     */
-    public double getNextIterationTime() {
-        return getModelNextIterationTime().getDoubleValue();
-    }
-
-    /** Return the next iteration time provided by the refinement of the
-     *  current state of the mode controller. If the refinement does not
-     *  provide this, return that given by the superclass.
-     *  @return The time of the next iteration.
-     */
-    public Time getModelNextIterationTime() {
-        try {
-            Actor[] actors = getController().currentState().getRefinement();
-
-            if ((actors == null) || (actors.length == 0)) {
-                return super.getModelNextIterationTime();
-            }
-
-            double result = Double.POSITIVE_INFINITY;
-            boolean givenByRefinement = false;
-
-            // There may be multiple refinements.
-            // Return the minimum.
-            for (int i = 0; i < actors.length; ++i) {
-                if (actors[i].getDirector() != this) {
-                    // The refinement has a local director.
-                    result = Math.min(result, actors[i].getDirector()
-                            .getModelNextIterationTime().getDoubleValue());
-                    givenByRefinement = true;
-                }
-            }
-
-            if (givenByRefinement) {
-                return new Time(this, result);
-            } else {
-                return super.getModelNextIterationTime();
-            }
-        } catch (IllegalActionException ex) {
-            // No mode controller or refinement can be found,
-            // return whatever given by the superclass.
-            // Ignore the IllegalActionException here.
-        }
-
-        return super.getModelNextIterationTime();
-    }
-
     /** Return true if the model errors are handled. Otherwise, return false
      *  and the model errors are passed to the higher level in hierarchy.
      *  <p>

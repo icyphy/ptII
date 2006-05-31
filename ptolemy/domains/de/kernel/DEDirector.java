@@ -695,23 +695,6 @@ public class DEDirector extends Director implements TimedDirector {
         return _stopTime;
     }
 
-    /** Return the timestamp of the next event in the queue.
-     *  The next iteration time, for example, is used to estimate the
-     *  run-ahead time, when a continuous time composite actor is embedded
-     *  in a DE model.
-     *  <p>
-     *  When the timestamp is very big (e.g. bigger than the maximum double),
-     *  the double representation loses the specified time resolution.
-     *  To avoid this loss, use the {@link #getModelNextIterationTime()}
-     *  instead.
-     *  @return The time value of the next event in the event queue.
-     *  @deprecated As Ptolemy II 4.1, use {@link #getModelNextIterationTime()}
-     *  instead.
-     */
-    public double getNextIterationTime() {
-        return getModelNextIterationTime().getDoubleValue();
-    }
-
     /** Return the system time at which the model begins executing.
      *  That is, the system time (in milliseconds) when the initialize()
      *  method of the director is called.

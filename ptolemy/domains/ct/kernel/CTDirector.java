@@ -503,15 +503,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         return _stopTime;
     }
 
-    /** Return the current iteration begin time plus the current step size.
-     *  @return The iteration begin time plus the current step size.
-     *  @deprecated As of Ptolemy II 4.1, replaced by
-     *  {@link #getModelNextIterationTime}
-     */
-    public double getNextIterationTime() {
-        return getModelNextIterationTime().getDoubleValue();
-    }
-
     /** Return the suggested next step size. The suggested step size is
      *  the minimum step size that all the step-size-control actors suggested
      *  at the end of last integration step. It is the prediction

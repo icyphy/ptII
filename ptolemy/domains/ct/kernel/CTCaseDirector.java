@@ -163,15 +163,6 @@ public class CTCaseDirector extends CaseDirector implements
         }
     }
 
-    /** Return the next iteration time obtained from the executive director.
-     *  @return The next iteration time.
-     */
-    public Time getModelNextIterationTime() {
-        CompositeActor cont = (CompositeActor) getContainer();
-        Director execDir = cont.getExecutiveDirector();
-        return execDir.getModelNextIterationTime();
-    }
-
     /** Return the current time obtained from the executive director, if
      *  there is one, and otherwise return the local view of current time.
      *  @return The current time.

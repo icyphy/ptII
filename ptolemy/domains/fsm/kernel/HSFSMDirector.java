@@ -411,15 +411,6 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
         }
     }
 
-    /** Return the next iteration time obtained from the executive director.
-     *  @return The next iteration time.
-     */
-    public Time getModelNextIterationTime() {
-        CompositeActor cont = (CompositeActor) getContainer();
-        Director execDir = cont.getExecutiveDirector();
-        return execDir.getModelNextIterationTime();
-    }
-
     /** Return the current time obtained from the executive director, if
      *  there is one, and otherwise return the local view of current time.
      *  @return The current time.
@@ -433,15 +424,6 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
         } else {
             return super.getModelTime();
         }
-    }
-
-    /** Return the next iteration time obtained from the executive director.
-     *  @return The next iteration time.
-     *  @deprecated As of Ptolemy II 5.1, replaced by
-     *  {@link #getModelNextIterationTime}
-     */
-    public double getNextIterationTime() {
-        return getModelNextIterationTime().getDoubleValue();
     }
 
     /** Restore the states of all the enabled refinements to the

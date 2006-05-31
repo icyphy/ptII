@@ -203,6 +203,12 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @return The current "time"
      */
     public Time getModelTime() {
+        // FIXME: This is bogus... It violates the time semantics
+        // of Ptolemy II, where time coherence is guaranteed by the
+        // hierarchy. The top level advances time, not lower levels.
+        // The tree structure of a hierarchy ensures coherence.
+        // This hack only works if there is exactly one "inside director."
+        // See the Pendulum demo for a model that depends on this.
         if (_pseudoTimeEnabled == true) {
             return _insideDirector.getModelTime();
         } else {
@@ -217,18 +223,13 @@ public class GRDirector extends StaticSchedulingDirector {
      *
      *  @return The maximum value for type double.
      */
-    public double getNextIterationTime() {
-        return getModelNextIterationTime().getDoubleValue();
-    }
-
-    /** Return maximum value for type double. Since the GR domain is not a
-     *  timed domain, so this method does not return any meaningful value.
-     *  However, this method is implemented so that GR will work within
-     *  timed domains.
-     *
-     *  @return The maximum value for type double.
-     */
     public Time getModelNextIterationTime() {
+        // FIXME: This is bogus... It violates the time semantics
+        // of Ptolemy II, where time coherence is guaranteed by the
+        // hierarchy. The top level advances time, not lower levels.
+        // The tree structure of a hierarchy ensures coherence.
+        // This hack only works if there is exactly one "inside director."
+        // See the Pendulum demo for a model that depends on this.
         try {
             return new Time(this, Double.POSITIVE_INFINITY);
         } catch (IllegalActionException e) {

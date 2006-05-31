@@ -288,12 +288,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             _outsideTime = executiveDirector.getModelTime();
 
             Time localTime = getModelTime();
-            // FIXME: If the executive director is FSMDirector,
-            // then this isn't the right director to be asking.
-            // We want the enclosing director two or more levels up.
-            // Perhaps what we really want is the minimum of the
-            // return value of getModelNextIterationTime() all the
-            // way up the hierarchy?
+            // As an optimization, we try to keep the step size
+            // bounded by the time to the next event in the
+            // enclosing model.
             Time outsideNextIterationTime = executiveDirector
                     .getModelNextIterationTime();
 
@@ -324,9 +321,15 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                         "Outside time is later than the local time. "
                                 + "This should never happen.");
             } else if (_outsideTime.compareTo(localTime) < 0) {
-                // FIXME: get a concrete example that illustrates how this
-                // can happen.
                 // Outside time less than the local time. Rollback!
+                // NOTE: This can happen, for example, if the CT model is
+                // inside a DE model, and it has advanced its time too
+                // far into the future. For example, if it was previously
+                // fired at time 0.0 and it advanced its local time
+                // to 0.1, but later it gets fired again at time 0.05.
+                // In that case, it has to restart the integration
+                // from time 0.0 and ensure that it doesn't progress
+                // its local time past 0.05.
                 if (_debugging) {
                     _debug(getName() + " rollback from: " + localTime + " to: "
                             + _knownGoodTime + "due to outside time "
@@ -336,7 +339,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 // The local time is set backwards to a known good time.
                 _rollback();
 
-                // restore the derivatives by propogating the restored states.
+                // restore the derivatives by propagating the restored states.
                 _propagateResolvedStates();
 
                 // NOTE: At this time, new inputs are not transferred yet.

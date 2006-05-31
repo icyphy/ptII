@@ -325,14 +325,6 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     }
 
     /** Return the time value of the next iteration.
-     *
-     *  @return The time of the next iteration.
-     */
-    public double getNextIterationTime() {
-        return getModelNextIterationTime().getDoubleValue();
-    }
-
-    /** Return the time value of the next iteration.
      *  @return The time of the next iteration.
      */
     public Time getModelNextIterationTime() {
