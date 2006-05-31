@@ -627,6 +627,22 @@ public class FSMDirector extends Director implements ModelErrorHandler,
             getContainer().requestChange(request);
         }
 
+        if (_enabledTransition != null) {
+            CompositeActor container = (CompositeActor) getContainer();
+            Director executiveDirector = container.getExecutiveDirector();
+            // If the top level of the model is modal model, the director
+            // is null. We do not request to be fired again since no one in
+            // the upper level of hierarchy will do that.
+            if (executiveDirector != null) {
+                if (_debugging) {
+                    _debug(executiveDirector.getFullName()
+                            + " requests refiring at " + getModelTime());
+                }
+                // Handle transient states.
+                executiveDirector.fireAt(container, getModelTime());
+            }
+        }
+        
         return result && !_stopRequested;
     }
 
