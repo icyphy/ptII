@@ -171,6 +171,10 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
             _tentativeState = ((DoubleToken) initialState.getToken())
                     .doubleValue();
             _state = _tentativeState;
+            // _storted states are also udpated here because
+            // a committed transition is guaranteed to be 
+            // a permanent change and there is no way to roll track.
+            _storedState = _state;
         } else {
             super.attributeChanged(attribute);
         }
