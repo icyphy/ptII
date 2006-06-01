@@ -1650,8 +1650,10 @@ public class CTMultiSolverDirector extends CTDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Iterate all the actors inside a given schedule, by prefiring,
-    // firing and postfiring them.
+    
+    /** Iterate all the actors inside a given schedule, by prefiring,
+     *  firing and postfiring them.
+     */
     private void _iterateSchedule(ScheduleElement schedule)
             throws IllegalActionException {
         Iterator actors = schedule.actorIterator();
@@ -1682,6 +1684,9 @@ public class CTMultiSolverDirector extends CTDirector {
         }
     }
 
+    /** Adjust step size so that the first breakpoint is not in the middle 
+     *  of this step. Return the refined step size.
+     */
     private double _refinedStepWRTBreakpoints() {
         double refinedStepSize = getCurrentStepSize();
 
@@ -1692,8 +1697,6 @@ public class CTMultiSolverDirector extends CTDirector {
                         + breakpoints.first());
             }
 
-            // Adjust step size so that the first breakpoint is
-            // not in the middle of this step.
             // NOTE: the breakpoint table is not changed.
             Time nextBreakpoint = ((Time) breakpoints.first());
             double maximAllowedStepSize = 
@@ -1713,18 +1716,18 @@ public class CTMultiSolverDirector extends CTDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    // The breakpoint solver.
+    /** The breakpoint solver. */
     private ODESolver _breakpointSolver;
 
-    // The classname of the breakpoint ODE solver
+    /** The classname of the breakpoint ODE solver. */
     private String _breakpointSolverClassName;
 
-    // The normal solver.
+    /** The normal solver. */
     private ODESolver _normalSolver;
 
-    // The classname of the normal ODE solver.
+    /** The classname of the normal ODE solver. */
     private String _normalSolverClassName;
 
-    // The classpath for solvers.
+    /** The classpath for solvers. */
     private static String _solverClasspath = "ptolemy.domains.ct.kernel.solver.";
 }
