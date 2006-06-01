@@ -98,9 +98,9 @@ public class DocBuilder extends Attribute {
      *  #setConfiguration(Configuration)} then the configuration is
      *  searched for a _docApplicationSpecializer parameter.  If that
      *  parameter exists it is assumed to name a class that implements
-     *  the {@link DocApplicationSpecializer} interface and the {@link
-     *  DocApplicationSpecializer#buildCommands()} method which returuns
-     *  the commands to invoke.
+     *  the {@link DocApplicationSpecializer} interface and the 
+     *  {@link DocApplicationSpecializer#buildCommands(ExecuteCommands)}
+     *  method which returuns the commands to invoke.
      *
      *  @return The return value of the last subprocess that was executed.
      *  or -1 if no commands were executed.     
