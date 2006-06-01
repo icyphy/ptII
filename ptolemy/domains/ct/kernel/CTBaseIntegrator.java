@@ -303,6 +303,9 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
      *  restored (reconstructed) too.
      */
     public void goToMarkedState() {
+        if (_debugging) {
+            _debug(getName() + " restoring states to " + _storedState);
+        }
         _state = _storedState;
         setTentativeState(_storedState);
     }
@@ -385,6 +388,9 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
      */
     public void markState() {
         _storedState = getState();
+        if (_debugging) {
+            _debug(getName() + " saving state " + _storedState);
+        }
     }
 
     /** Update the state and its derivative, and push them into history if
