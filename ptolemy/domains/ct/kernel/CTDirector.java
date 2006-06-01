@@ -443,13 +443,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         return _iterationBeginTime;
     }
 
-    /** Return the end time of the current iteration.
-     *  @return The end time of the current iteration.
-     */
-    public Time getIterationEndTime() {
-        return _iterationEndTime;
-    }
-
     /** Return the maximum number of iterations in a fixed point
      *  calculation. If the iteration has exceeded this number
      *  and the fixed point is still not found, then the algorithm
@@ -740,7 +733,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         _startTime = new Time(this, _startTimeValue);
         _stopTime = new Time(this, _stopTimeValue);
         _iterationBeginTime = _startTime;
-        _iterationEndTime = _stopTime;
     }
 
     /** Set the current step size. Only CT directors can call this method.
@@ -910,24 +902,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         _iterationBeginTime = time;
     }
 
-    /** Set the iteration end time. The iteration end time is
-     *  the stop time for the current integration. This variable is used
-     *  to ensure an iteration ends at an expected time.
-     *  <p>
-     *  If the argument is earlier than the current time, then an
-     *  InvalidStateException will be thrown.
-     *  @param time The iteration end time.
-     */
-    protected final void _setIterationEndTime(Time time) {
-        if (time.compareTo(getModelTime()) < 0) {
-            throw new InvalidStateException(this, " Iteration end time" + time
-                    + " is earlier than" + " the current time."
-                    + getModelTime());
-        }
-
-        _iterationEndTime = time;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -1010,9 +984,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
     // This variable is used when the integration step is failed, and need
     // to be restarte with another step size.
     private Time _iterationBeginTime;
-
-    // the iteration end time.
-    private Time _iterationEndTime;
 
     private int _maxIterations;
 

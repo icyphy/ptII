@@ -197,14 +197,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
         // If the current step size is 0.0, there is no need to perform
         // a continuous phase of execution.
-        if (getIterationEndTime().equals(getIterationBeginTime())) {
+        if (getSuggestedNextStepSize() == 0) {
             return;
         }
-
-        // Guarantee to stop at the iteration end time.
-        // FIXME: This is actually done in postfire() with the commited iteration end time,
-        // so it is not needed here.
-        fireAt((CompositeActor) getContainer(), getIterationEndTime());
 
         _continuousPhaseExecution();
     }
@@ -243,7 +238,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // again at t + h, we insert t + h into the breakpoint table.
             // This will cause the superclass (in its postfire() method)
             // to call fireAt() on the enclosing (executive) director.
-            getBreakPoints().insert(getModelTime());
+            fireAt((CompositeActor) getContainer(), getModelTime());
         }
 
         return super.postfire();
@@ -271,6 +266,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  due to possible event generated during the iteration.
      *  In particular, when the first event is detected, say at t5 and t5 < t4,
      *  then the iteration ends at t5.
+     *  <p> 
+     *  This method updates the suggested step size.
+     *  
      *  @return true Always.
      *  @exception IllegalActionException If the local time is
      *       less than the current time of the executive director,
@@ -379,28 +377,26 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                                 + " Inferred run length = " + aheadLength);
             }
 
-            double timeResolution = getTimeResolution();
-
-            if (aheadLength < timeResolution) {
+            if (aheadLength < getTimeResolution()) {
                 // This is a zero step size iteration.
                 // TESTIT: simultaneous events from the outside model drives
                 // a CT subsystem.
-                _setIterationEndTime(_outsideTime);
-
                 if (_debugging) {
                     _debug("This is an iteration with the step size as 0.");
                 }
-            } else if (aheadLength < _runAheadLength) {
-                _setIterationEndTime(outsideNextIterationTime);
-            } else {
-                // aheadLength > _runAheadLength parameter.
-                _setIterationEndTime(_outsideTime.add(_runAheadLength));
+                aheadLength = 0;
+            } else if (aheadLength > _runAheadLength) {
+                aheadLength = _runAheadLength;
             }
 
+            if (aheadLength < getSuggestedNextStepSize()) {
+                setSuggestedNextStepSize(aheadLength);
+            }
+            
             // Now it is safe to execute the continuous part.
             if (_debugging) {
-                _debug(getName(), "Iteration end time = "
-                        + getIterationEndTime(), " <-- end of prefire.");
+                _debug(getName(), "The suggested step size is set to "
+                        + getSuggestedNextStepSize());
             }
 
             return true;

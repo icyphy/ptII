@@ -1304,12 +1304,11 @@ public class CTMultiSolverDirector extends CTDirector {
             }
         }
 
-        if (_debugging && _verbose) {
+        if (_debugging) {
             _debug(getFullName(), "refine step with respect to output to"
                     + refinedStep);
         }
 
-        _setIterationEndTime(getModelTime().add(refinedStep));
         return refinedStep;
     }
 
@@ -1338,7 +1337,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     .next();
             double size = actor.refinedStepSize();
 
-            if (_debugging && _verbose) {
+            if (_debugging) {
                 _debug(((NamedObj) actor).getName(), "refines step size to "
                         + size);
             }
@@ -1353,7 +1352,6 @@ public class CTMultiSolverDirector extends CTDirector {
                             + getModelTime());
         }
 
-        _setIterationEndTime(getModelTime().add(refinedStep));
         return refinedStep;
     }
 
@@ -1575,7 +1573,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     actor.goToMarkedState();
                 }
 
-                if (_debugging && _verbose) {
+                if (_debugging) {
                     _debug("Execute the system from " + getModelTime()
                             + " with a smaller step size"
                             + getCurrentStepSize());
@@ -1684,46 +1682,37 @@ public class CTMultiSolverDirector extends CTDirector {
         }
     }
 
-    // Return the refined step size with respect to the breakpoints.
-    // If the current time plus the current step size exceeds the
-    // time of the next breakpoint, reduce the step size such that the next
-    // breakpoint is the end time of the current iteration.
     private double _refinedStepWRTBreakpoints() {
-        double currentStepSize = getCurrentStepSize();
-        Time iterationEndTime = getModelTime().add(currentStepSize);
-        _setIterationEndTime(iterationEndTime);
+        double refinedStepSize = getCurrentStepSize();
 
-        TotallyOrderedSet breakPoints = getBreakPoints();
-
-        if ((breakPoints != null) && !breakPoints.isEmpty()) {
+        TotallyOrderedSet breakpoints = getBreakPoints();
+        if ((breakpoints != null) && !breakpoints.isEmpty()) {
             if (_debugging && _verbose) {
                 _debug("The first breakpoint in the breakpoint list is at "
-                        + breakPoints.first());
+                        + breakpoints.first());
             }
 
             // Adjust step size so that the first breakpoint is
             // not in the middle of this step.
             // NOTE: the breakpoint table is not changed.
-            Time point = ((Time) breakPoints.first());
+            Time nextBreakpoint = ((Time) breakpoints.first());
+            double maximAllowedStepSize = 
+                nextBreakpoint.subtract(getModelTime()).getDoubleValue();
 
-            if (iterationEndTime.compareTo(point) > 0) {
-                currentStepSize = point.subtract(getModelTime())
-                        .getDoubleValue();
-
-                if (_debugging && _verbose) {
+            if (maximAllowedStepSize < refinedStepSize) {
+                refinedStepSize = maximAllowedStepSize;
+                if (_debugging) {
                     _debug("Refining the current step size w.r.t. "
-                            + "the next breakpoint to " + currentStepSize);
+                            + "the next breakpoint to " + maximAllowedStepSize);
                 }
-
-                _setIterationEndTime(point);
             }
         }
-
-        return currentStepSize;
+        return refinedStepSize;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
     // The breakpoint solver.
     private ODESolver _breakpointSolver;
 
