@@ -328,6 +328,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 // In that case, it has to restart the integration
                 // from time 0.0 and ensure that it doesn't progress
                 // its local time past 0.05.
+                // An example is to have two interacting CT subsystems 
+                // embedded inside a DE model, where one system (called A) 
+                // produces an event at time 0.1 and the other one (called B) 
+                // produces an event at time 0.05. A may integrate with a step
+                // size of 0.1 but it has to roll back and use a step size 0.05
+                // such that the event produced by B can be handled.
                 if (_debugging) {
                     _debug(getName() + " rollback from: " + localTime + " to: "
                             + _knownGoodTime + "due to outside time "
@@ -413,35 +419,30 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  in this process. If the current time is greater than or equal
      *  to the outside time, then do nothing.
      *  @exception IllegalActionException If thrown from the execution
-     *  methods from any actor.
+     *   methods from any actor, or the local time of this director is
+     *   already ahead of the outside time.
      */
     protected void _catchUp() throws IllegalActionException {
         Time outsideTime = _getOutsideTime();
         Time localTime = getModelTime();
+        
+        double stepsize = outsideTime.subtract(localTime).getDoubleValue();
 
-        if (localTime.compareTo(outsideTime) >= 0) {
+        if (stepsize == 0) {
             return;
+        } else if (stepsize < 0) {
+            throw new IllegalActionException(this, 
+                    "Local time, " + localTime 
+                    + " is already ahead of the out side time, " 
+                    + outsideTime + ", which in incorrect.");
         }
 
         _setIterationBeginTime(localTime);
-
-        while (!localTime.equals(outsideTime)) {
-            setCurrentStepSize(getSuggestedNextStepSize());
-
-            if (_debugging) {
-                _debug("Catch up: ending..."
-                        + (localTime.add(getCurrentStepSize())));
-            }
-
-            _resolveInitialStates();
-
-            if (_debugging) {
-                _debug("Catch up one step: current time is" + localTime);
-            }
-        }
-
+        setCurrentStepSize(stepsize);
+        _resolveInitialStates();
+        
         if (_debugging) {
-            _debug(getFullName() + " Catch up time" + localTime);
+            _debug("Catch up one step: current time is" + localTime);
         }
     }
 
