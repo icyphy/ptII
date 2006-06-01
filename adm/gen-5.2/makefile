@@ -1042,6 +1042,9 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/corba \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/corba/util \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous/kernel/solver \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/kernel \
