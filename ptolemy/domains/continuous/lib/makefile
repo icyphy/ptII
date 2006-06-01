@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/continuous/lib
 
-DIRS =		test
+DIRS =		#test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -49,7 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	Integrator.java 
-	
+
 OTHER_FILES_TO_BE_JARED = \
 	continuousentities.xml \
 	dynamics.xml \
@@ -60,7 +60,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+MISC_FILES =	#test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
