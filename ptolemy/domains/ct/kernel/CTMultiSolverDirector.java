@@ -295,7 +295,8 @@ public class CTMultiSolverDirector extends CTDirector {
      *  actors are repeatedly iterated. The discrete phase of execution
      *  stops only when no event generators generate any more events. At the
      *  ending of the execution, the system states are resolved,
-     *  which are called the final states at t_0. The solver for the discrete
+     *  which are called the final states at t_0. These states are marked as
+     *  known good states for roll back purpose. The solver for the discrete
      *  phase of execution is a breakpoint ODE solver.
      *  <P>
      *  The way we find the fixed point is based on the synchronous reactive
@@ -360,6 +361,9 @@ public class CTMultiSolverDirector extends CTDirector {
         // semantics.
         _discretePhaseExecution();
 
+        // Mark the current state of the stateful actors.
+        _markStates();
+    
         // If the current time is the stop time, then the fire method
         // should immediately return because no further execution is necessary.
         // NOTE: the final states at the model stop time are resolved before
@@ -773,8 +777,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
     /** Call the postfire() method on all continuous actors in the schedule.
      *  For a correct CT simulation, the state of a continuous actor can only
-     *  change at this stage of an iteration. Meanwhile, the current states
-     *  are marked as a known good checkpoint.
+     *  change at this stage of an iteration. 
      *  <p>
      *  If the <i>synchronizeToRealTime</i> parameter is <i>true</i>,
      *  then this method will block execution until the real time catches
@@ -837,19 +840,6 @@ public class CTMultiSolverDirector extends CTDirector {
             _postfireReturns = _postfireReturns && postfireReturns;
         }
 
-        // Mark the current state of the stateful actors.
-        actors = schedule.get(CTSchedule.STATEFUL_ACTORS).actorIterator();
-
-        while (actors.hasNext()) {
-            CTStatefulActor actor = (CTStatefulActor) actors.next();
-
-            if (_debugging) {
-                _debug("Postfire " + actor);
-            }
-
-            actor.markState();
-        }
-
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
     }
 
@@ -877,6 +867,12 @@ public class CTMultiSolverDirector extends CTDirector {
     protected void _continuousPhaseExecution() throws IllegalActionException {
         if (_debugging) {
             _debug("\n !!! continuous phase execution at " + getModelTime());
+        }
+
+        // If the current step size is 0.0, there is no need to perform
+        // a continuous phase of execution.
+        if (getSuggestedNextStepSize() == 0) {
+            return;
         }
 
         // Choose a suggested step size, which is a guess.
@@ -1681,6 +1677,26 @@ public class CTMultiSolverDirector extends CTDirector {
 
                 _postfireReturns = actor.postfire() && _postfireReturns;
             }
+        }
+    }
+
+    /** Mark the current state as the known good state. Call the
+     *  markStates() method on all CTStatefulActors. 
+     *  @exception IllegalActionException If thrown by the scheduler.
+     */
+    private void _markStates() throws IllegalActionException {
+        CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
+        Iterator actors = schedule.get(CTSchedule.STATEFUL_ACTORS)
+                .actorIterator();
+    
+        while (actors.hasNext()) {
+            CTStatefulActor actor = (CTStatefulActor) actors.next();
+    
+            if (_debugging) {
+                _debug("Save State..." + ((Nameable) actor).getName());
+            }
+    
+            actor.markState();
         }
     }
 

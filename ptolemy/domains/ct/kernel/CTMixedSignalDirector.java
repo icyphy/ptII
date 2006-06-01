@@ -168,40 +168,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         return true;
     }
 
-    /** Execute the directed model for one iteration.
-     *  <p>
-     *  If this director serves as a top-level director, this method behaves
-     *  just like that is defined in the super class, CTMultiSolverDirector.
-     *  <p>
-     *  Otherwise, this method keeps advancing time and executing the
-     *  model until the iteration time one of the following conditions
-     *  is satisfied. 1) The iteration end time computed in the
-     *  prefire() method is reached. 2) An event is generated.
-     *  It saves the state of the system at the current time of the executive
-     *  director as the "known good" state, and runs ahead of that time.
-     *  The "known good" state is used for roll back.
-     *  @exception IllegalActionException If thrown by the ODE solver,
-     *       or the prefire() or the fire() methods of an actor.
+    /** Record the current model time as a known good time for roll back
+     *  and call the super.fire() method.
+     *  @exception IllegalActionException If thrown by the super class.
      */
     public void fire() throws IllegalActionException {
-        if (_isTopLevel()) {
-            super.fire();
-            return;
-        }
-
-        _discretePhaseExecution();
-
-        // Mark the FINAL states of the current model time for
-        // possible roll back in the future.
-        _markStates();
-
-        // If the current step size is 0.0, there is no need to perform
-        // a continuous phase of execution.
-        if (getSuggestedNextStepSize() == 0) {
-            return;
-        }
-
-        _continuousPhaseExecution();
+        _knownGoodTime = getModelTime();
+        super.fire();
     }
 
     /** Initialize the execution. If this director is not at the top level,
@@ -495,29 +468,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
 
         return _isTop;
-    }
-
-    /** Mark the current state as the known good state. Call the
-     *  markStates() method on all CTStatefulActors. Save the current time
-     *  as the "known good" time.
-     *  @exception IllegalActionException If thrown by the scheduler.
-     */
-    protected void _markStates() throws IllegalActionException {
-        CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
-        Iterator actors = schedule.get(CTSchedule.STATEFUL_ACTORS)
-                .actorIterator();
-
-        while (actors.hasNext()) {
-            CTStatefulActor actor = (CTStatefulActor) actors.next();
-
-            if (_debugging) {
-                _debug("Save State..." + ((Nameable) actor).getName());
-            }
-
-            actor.markState();
-        }
-
-        _knownGoodTime = getModelTime();
     }
 
     /** Rollback the system to a "known good" state. All the actors with
