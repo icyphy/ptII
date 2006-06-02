@@ -30,6 +30,7 @@ package ptolemy.actor.lib.io.comm;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.Enumeration;
 
 import javax.comm.CommPortIdentifier;
@@ -574,7 +575,39 @@ public class SerialComm extends TypedAtomicActor implements
     // it makes the 'try' block in fire() have an exception whose
     // message is the word "null".
     static {
-        // FIXME: this will not work under anything but Windows
-        new com.sun.comm.Win32Driver().initialize();
+        // Try different platforms.
+        try {
+            
+            //new com.sun.comm.Win32Driver().initialize();
+
+            Class driverClass = Class.forName("com.sun.comm.Win32Driver");
+            Object driver = driverClass.newInstance();
+            Method initialize = driverClass.getMethod("initialize", (Class[])null);
+            initialize.invoke(driver, (Object [])null);
+        } catch (Throwable throwable) {
+            try {
+                Class driverClass = Class.forName("com.sun.comm.LinuxDriver");
+                Object driver = driverClass.newInstance();
+                Method initialize = driverClass.getMethod("initialize", (Class[])null);
+                initialize.invoke(driver, (Object [])null);
+            } catch (Throwable throwable2) {
+                try {
+                    Class driverClass = Class.forName("com.sun.comm.SolarisDriver");
+                    Object driver = driverClass.newInstance();
+                    Method initialize = driverClass.getMethod("initialize", (Class[])null);
+                    initialize.invoke(driver, (Object [])null);
+                } catch (Throwable throwable3) {
+                    ExceptionInInitializerError error = new ExceptionInInitializerError(
+                            "Failed to "
+                            + "instantiate com.sun.comm.XXXDriver, tried "
+                            + "Win32, Linux and Solaris for XXX"
+                            + throwable + "\n"
+                            + throwable2 + "\n"
+                            + throwable3);
+                    error.initCause(throwable);
+                    throw error;
+                }
+            }
+        }
     }
 }
