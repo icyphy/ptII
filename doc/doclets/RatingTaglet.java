@@ -50,6 +50,8 @@ import com.sun.tools.doclets.Taglet;
 public class RatingTaglet implements Taglet {
     /** Create a new RatingTaglet that deals with tags of the given name that
      *  has the given tagName as a string.
+     *  @param name The name of the taglet.
+     *  @param tagName The tagName.
      */
     public RatingTaglet(String name, String tagName) {
         _name = name;
@@ -140,6 +142,7 @@ public class RatingTaglet implements Taglet {
      * Given the <code>Tag</code> representation of this custom
      * tag, return its string representation.
      * @param tag the <code>Tag</code> representation of this custom tag.
+     * @return The string representation.
      */
     public String toString(Tag tag) {
         String color = tag.text();
@@ -163,6 +166,7 @@ public class RatingTaglet implements Taglet {
      * Given an array of <code>Tag</code>s representing this custom
      * tag, return its string representation.
      * @param tags  the array of <code>Tag</code>s representing of this custom tag.
+     * @return The string representation.
      */
     public String toString(Tag[] tags) {
         if (tags.length == 0) {

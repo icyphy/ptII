@@ -717,7 +717,7 @@ public class DocManager extends HandlerBase {
      *  documentation may be found.  If the
      *  _remoteDocumentationURLBase attribute is not set, then the
      *  location of the website documentation defaults to
-     *  <code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII/<i>Major.Version</i>,
+     *  <code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII/<i>Major.Version</i></code>,
      *  where <code><i>Major.Version</i> is the value returned by
      *  {@link
      *  ptolemy.kernel.attributes.VersionAttribute#majorCurrentVersion()}.
@@ -1060,6 +1060,7 @@ public class DocManager extends HandlerBase {
     /** Set the location of the remote documentation.
      *  @param remoteDocumentationURLBase The remote location of the class
      *  documentation.
+     *  @see #getRemoteDocumentationURLBase()
      */ 
     public static void setRemoteDocumentationURLBase(
             String remoteDocumentationURLBase) {
