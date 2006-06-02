@@ -44,6 +44,7 @@ This FAQ can be found at:
 	<li> <a href="#simulink"><b>2.2 How are Ptolemy II and Matlab/Simulink different?</b></a>
 
 	<li> <a href="#metropolis"><b>2.3 What is the relationship between Ptolemy and Metropolis?</b></a>
+	<li> <a href="#kepler"><b>2.4 What is the relationship between Ptolemy and Kepler?</b></a>
 	</menu>
 
 <li> <a href="#ptolemy II faq: installation"><b>3. Installation questions</b></a>
@@ -337,6 +338,9 @@ Technologies, Inc. (* Smyth is now with Altio).
  <dd> 
 
 
+<dt> <a name="metropolis"><b>2.3 What is the relationship between Ptolemy and Metropolis?</b></a>
+ <dd> 
+
 Ptolemy (<a href="http://ptolemy.eecs.berkeley.edu" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu</CODE></a>)
 and Metropolis (<a href="http://embedded.eecs.berkeley.edu/metropolis/" target="_top"><CODE>http://embedded.eecs.berkeley.edu/metropolis/</CODE></a>) 
 are separate research projects at Berkeley,
@@ -429,9 +433,43 @@ system level quantitative constraints.
 although no director has been developed (to our knowledge) with such a
 broadly applicable mechanism.
 
-
-<dt> <a name="kepler"><b>2.3 What is the relationship between Ptolemy and Metropolis?</b></a>
+<dt> <a name="kepler"><b>2.4 What is the relationship between Ptolemy and Kepler?</b></a>
  <dd> 
+
+Ptolemy (<a href="http://ptolemy.eecs.berkeley.edu" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu</CODE></a>)
+and The Kepler Project (<a href="http://www.kepler-project.org" target="_top"><CODE>http://www.kepler-project.org/</CODE></a>) 
+are two separate projects.  The 
+<a
+href="http://kepler-project.org/Wiki.jsp?page=FAQOnKeplerCollaboration"
+target="_top">Kepler Project FAQ</a> says
+<BLOCKQUOTE>
+<B>What is the difference between Kepler and Ptolemy? </B>
+ <br>Roughly speaking, Ptolemy aims at modeling concurrent systems, studying
+system models, various models of computation, etc. as explained
+above. In constrast, Kepler aims at execution of scientific workflows
+(by end users and/or workflow engineers), inheriting modeling and
+design capabilities including the Vergil GUI and workflow scheduling
+and execution capabilities from Ptolemy.
+ <p><B>How does Kepler extend Ptolemy?</B>
+ <br>Kepler extensions to Ptolemy include an ever increasing number of
+ components (called actors in Ptolemy terminology) aimed particularly
+ at scientific applications, e.g., for remote data and metadata
+ access, data transformations, data analysis, interfacing with legacy
+ applications, web service invocation and deployment, provenance
+ tracking, etc. Target application areas include bioinformatics,
+ cheminformatics, ecoinformatics, and geoinformatics workflows among
+ others.
+ <p>Kepler also inherits from Ptolemy the actor-oriented modeling paradigm
+ that separates workflow components from the overall workflow
+ orchestration (via so-called directors), making components more
+ easily reusable. Through actor-oriented and hierarchical modeling
+ features built into Ptolemy, Kepler scientific workflows can operate
+ at very different level of granularity, from low-level "plumbing
+ workflows" that explictely move data around, start and monitor remote
+ jobs, etc. to high-level "conceptual workflows" that interlink
+ complex, domain specific data analysis steps.
+</BLOCKQUOTE>
+
 
 </dl>
 
