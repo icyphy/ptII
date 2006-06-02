@@ -1273,6 +1273,8 @@ remote1doc:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
+	@echo "Removing vendors/sun/commapi so that we can build under solaris"
+	rm $(REMOTE1PTIIDIST)/vendors/sun/commapi/*
 	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE) install)
 
 # Remove the JavaScope instrumentation
