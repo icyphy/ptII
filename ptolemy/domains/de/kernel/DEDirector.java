@@ -748,14 +748,16 @@ public class DEDirector extends Director implements TimedDirector {
      */
     public void initialize() throws IllegalActionException {
         _isInitializing = true;
-        super.initialize();
-
+        _eventQueue.clear();
+        
         // Reset the following private variables.
         _disabledActors = null;
         _exceedStopTime = false;
         _microstep = 0;
         _noMoreActorsToFire = false;
         _realStartTime = System.currentTimeMillis();
+
+        super.initialize();
 
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
             // If the event queue is not empty and the container is not at
