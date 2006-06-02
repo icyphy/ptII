@@ -368,7 +368,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 aheadLength = _runAheadLength;
             }
 
-            if (aheadLength < getSuggestedNextStepSize()) {
+            double currentSuggestedNextStepSize = getSuggestedNextStepSize();
+            if (aheadLength < currentSuggestedNextStepSize || 
+                    currentSuggestedNextStepSize == 0) {
                 setSuggestedNextStepSize(aheadLength);
             }
             
