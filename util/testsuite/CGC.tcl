@@ -37,6 +37,43 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if [ file isdirectory auto/knownFailedTests ] {
+    foreach file [glob -nocomplain auto/knownFailedTests/*.xml] {
+	# Get the name of the current directory relative to $PTII
+	set relativeFilename \
+		[java::call ptolemy.util.StringUtilities substituteFilePrefix \
+		$PTII [file join [pwd] $file] {$PTII}]
+	puts "------------------ testing $relativeFilename (Known Failure) "
+	test "Auto" "Automatic test in file $relativeFilename" {
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+            set application [createAndExecute $file]
+	    set args [java::new {String[]} 1 \
+			  [list $file]]
+
+	    set timeout 60000
+	    puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
+                  seconds at [clock format [clock seconds]]"
+	    set watchDog [java::new util.testsuite.WatchDog $timeout]
+
+	    set returnValue 0
+	    if [catch {set returnValue \
+		       [java::call ptolemy.codegen.kernel.CodeGenerator \
+			    generateCode $args]} errMsg] {
+	        $watchDog cancel
+	        error "$errMsg\n[jdkStackTrace]"
+	    } else {
+	        $watchDog cancel
+	    }
+	    list $returnValue
+	} {{}} {KNOWN_FAILURE}
+    }
+}
+
 foreach file [glob auto/*.xml] {
     set relativeFilename \
 	    [java::call ptolemy.util.StringUtilities substituteFilePrefix \
@@ -67,10 +104,6 @@ foreach file [glob auto/*.xml] {
 	}
 	list $returnValue
     } {0}
-    test "Auto-rerun CGC" "Automatic test rerun in file $file" {
-	$application rerun
-	list {}
-    } {{}}
 }
 
 # Print out stats
