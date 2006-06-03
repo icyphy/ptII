@@ -863,7 +863,7 @@ Optional Packages:
   --with-colt=DIR       use colt.jar from DIR,
                           defaults to \$PTII/vendors/misc/colt
   --with-commapi=DIR       use Java commapi from DIR,
-                          defaults to \$PTII/vendors/sun/commapi
+                          defaults to $COMMAPI_DIR_DEFAULT
   --with-tools_jar=DIR    use tools.jar from DIR,
                           defaults to \$PTJAVA_HOME/../lib/tools.jar
   --with-eclipse=ECLIPSE_DIR     use Eclipse from ECLIPSE_DIR,
@@ -4271,6 +4271,17 @@ echo "${ECHO_T}$COMMAPI_USER_DIR is not present,
     # then ${PTII} will appear in ptinvoke.
     COMMAPI_DIR='${PTII}/vendors/sun/commapi'
 else
+    # Under windows, use $PTII/vendors/sun/commapi
+    case "`uname -s`" in
+    CYGWIN*)
+	PTCYGWIN=yes
+        COMMAPI_DIR_DEFAULT="$PTII/vendors/sun/commapi"
+        ;;
+    *)  PTCYGWIN=no;
+        COMMAPI_DIR_DEFAULT="$PTJAVA_HOME/../commapi/jar"
+        ;;
+    esac
+
     echo "$as_me:$LINENO: checking for commapi directory" >&5
 echo $ECHO_N "checking for commapi directory... $ECHO_C" >&6
 
@@ -4279,7 +4290,7 @@ if test "${with_commapi+set}" = set; then
   withval="$with_commapi"
   COMMAPI_DIR=$withval
 else
-  COMMAPI_DIR=$PTII/vendors/sun/commapi
+  COMMAPI_DIR=$COMMAPI_DIR_DEFAULT
 fi;
 
     if test -f "$COMMAPI_DIR/comm.jar"; then
@@ -4318,10 +4329,6 @@ echo "$as_me: WARNING: $PTJAVA_HOME/lib/javax.comm.properties
     and place javax.comm.properties in $PTJAVA_HOME/lib" >&2;}
     fi
 
-    case "`uname -s`" in
-    CYGWIN*)	 PTCYGWIN=yes;;
-    *) PTCYGWIN=no;
-    esac
     if test $PTCYGWIN = "yes"; then
        echo "$as_me:$LINENO: checking for win32com.dll " >&5
 echo $ECHO_N "checking for win32com.dll ... $ECHO_C" >&6
@@ -8662,10 +8669,9 @@ for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
   # 1. Remove the extension, and $U if already installed.
   ac_i=`echo "$ac_i" |
 	 sed 's/\$U\././;s/\.o$//;s/\.obj$//'`
-  # 2. Prepend LIBOBJDIR.  When used with automake>=1.10 LIBOBJDIR
-  #    will be set to the directory where LIBOBJS objects are built.
-  ac_libobjs="$ac_libobjs \${LIBOBJDIR}$ac_i\$U.$ac_objext"
-  ac_ltlibobjs="$ac_ltlibobjs \${LIBOBJDIR}$ac_i"'$U.lo'
+  # 2. Add them.
+  ac_libobjs="$ac_libobjs $ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs $ac_i"'$U.lo'
 done
 LIBOBJS=$ac_libobjs
 
