@@ -915,11 +915,22 @@ if test ! -d "$COMMAPI_USER_DIR"; then
     # then ${PTII} will appear in ptinvoke.
     COMMAPI_DIR='${PTII}/vendors/sun/commapi'
 else
+    # Under windows, use $PTII/vendors/sun/commapi
+    case "`uname -s`" in
+    CYGWIN*)	 
+	PTCYGWIN=yes
+        COMMAPI_DIR_DEFAULT="$PTII/vendors/sun/commapi"
+        ;;
+    *)  PTCYGWIN=no;
+        COMMAPI_DIR_DEFAULT="$PTJAVA_HOME/../commapi/jar"
+        ;;
+    esac
+
     AC_MSG_CHECKING([for commapi directory])
     AC_ARG_WITH(commapi, [  --with-commapi=DIR       use Java commapi from DIR,
-                          defaults to \$PTII/vendors/sun/commapi],
+                          defaults to $COMMAPI_DIR_DEFAULT],
 	COMMAPI_DIR=$withval,
-	COMMAPI_DIR=$PTII/vendors/sun/commapi)
+	COMMAPI_DIR=$COMMAPI_DIR_DEFAULT)
 
     if test -f "$COMMAPI_DIR/comm.jar"; then
         AC_MSG_RESULT(ok)
@@ -946,10 +957,6 @@ else
     and place javax.comm.properties in $PTJAVA_HOME/lib])
     fi  
 
-    case "`uname -s`" in
-    CYGWIN*)	 PTCYGWIN=yes;;
-    *) PTCYGWIN=no;
-    esac
     if test $PTCYGWIN = "yes"; then
        AC_MSG_CHECKING([for win32com.dll ])
        if test -f "$PTJAVA_HOME/bin/win32com.dll"; then
