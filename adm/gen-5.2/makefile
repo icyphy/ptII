@@ -1192,6 +1192,9 @@ remote1distjsall_1:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
+	@echo "Setting up javax.comm.properties so that we can build under solaris"
+	-(cd $(REMOTE1PTIIDIST)/lib; rm javax.comm.properties; ln -s /usr/java/commapi/docs/javax.comm.properties .)
+	@echo "Removing vendors/sun/commapi so that we can build under solaris"
 	@echo "Removing $(JSDATABASE) in prep for $$x "
 	-ls -ldg $(JSDATABASE) $(JSDATABASE)/*
 	-rm -rf $(JSDATABASE)
