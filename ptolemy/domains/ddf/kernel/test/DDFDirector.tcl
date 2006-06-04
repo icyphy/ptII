@@ -122,9 +122,10 @@ test DDFDirector-5.1 {Test action methods} {
 } {{0
 1
 2
-} {Invoking preinitialize():  .E1.Ramp
+} {.E1.D3 Preinitializing ...
+Invoking preinitialize():  .E1.Ramp
 Invoking preinitialize():  .E1.Consumer
-Finished preinitialize().
+.E1.D3 Finished preinitialize().
 Called initialize().
 Invoking initialize():  .E1.Ramp
 Initializing actor: .E1.Ramp.
