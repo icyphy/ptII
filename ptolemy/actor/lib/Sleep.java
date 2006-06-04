@@ -66,7 +66,7 @@ import ptolemy.kernel.util.Workspace;
  @since Ptolemy II 1.0
 
  @Pt.ProposedRating Green (eal)
- @Pt.AcceptedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh) Review _wasSleepCalledInFireYet, esp locking
  */
 public class Sleep extends Transformer {
     /** Construct an actor with the given container and name.
@@ -131,40 +131,71 @@ public class Sleep extends Transformer {
      *  @exception IllegalActionException Not thrown in this base class
      */
     public void fire() throws IllegalActionException {
-        super.fire();
-        sleepTime.update();
+        synchronized(_wasSleepCalledInFireYet) {
+            if (!_wasSleepCalledInFireYet) {
+                _wasSleepCalledInFireYet = true;
+                super.fire();
+                sleepTime.update();
 
-        int inputWidth = input.getWidth();
-        Token[] inputs = new Token[inputWidth];
+                int inputWidth = input.getWidth();
+                Token[] inputs = new Token[inputWidth];
 
-        for (int i = 0; i < inputWidth; i++) {
-            if (input.hasToken(i)) {
-                inputs[i] = input.get(i);
-            }
-        }
+                for (int i = 0; i < inputWidth; i++) {
+                    if (input.hasToken(i)) {
+                        inputs[i] = input.get(i);
+                    }
+                }
 
-        try {
-            long sleepTimeValue = ((LongToken) sleepTime.getToken())
-                    .longValue();
+                try {
+                    long sleepTimeValue = ((LongToken) sleepTime.getToken())
+                        .longValue();
+                
+                    if (_debugging) {
+                        _debug(getName() + ": Wait for " + sleepTimeValue
+                                + " milliseconds.");
+                    }
 
-            if (_debugging) {
-                _debug(getName() + ": Wait for " + sleepTimeValue
-                        + " milliseconds.");
-            }
+                    Thread.sleep(sleepTimeValue);
+                } catch (InterruptedException e) {
+                    // Ignore...
+                }
 
-            Thread.sleep(sleepTimeValue);
-        } catch (InterruptedException e) {
-            // Ignore...
-        }
+                int outputWidth = output.getWidth();
 
-        int outputWidth = output.getWidth();
-
-        for (int i = 0; i < inputWidth; i++) {
-            if (inputs[i] != null) {
-                if (i < outputWidth) {
-                    output.send(i, inputs[i]);
+                for (int i = 0; i < inputWidth; i++) {
+                    if (inputs[i] != null) {
+                        if (i < outputWidth) {
+                            output.send(i, inputs[i]);
+                        }
+                    }
                 }
             }
         }
     }
+
+    /** Reset the flag that fire() checks so that fire() only sleeps once.
+     *  @exception IllegalActionException If the parent class throws it.
+     *  @return Whatever the superclass returns (probably true).
+     */
+    public boolean postfire() throws IllegalActionException {
+        _wasSleepCalledInFireYet = false;
+        return super.postfire();
+    }
+
+    /** Reset the flag that fire() checks so that fire() only sleeps once.
+     *  @exception IllegalActionException If the parent class throws it.
+     *  @return Whatever the superclass returns (probably true).
+     */
+    public boolean prefire() throws IllegalActionException {
+        _wasSleepCalledInFireYet = false;
+        return super.prefire();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** True if sleep was called in fire().  Thread.sleep() should only
+     *   be called once in fire().
+     */
+    private Boolean _wasSleepCalledInFireYet = false;
 }
