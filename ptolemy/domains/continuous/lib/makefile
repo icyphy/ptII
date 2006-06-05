@@ -53,6 +53,8 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	continuousentities.xml \
 	dynamics.xml \
+	eventGenerators.xml \
+	EventSource.java \
 	integral.gif \
 	IntegratorIcon.xml 
 

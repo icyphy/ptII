@@ -9,6 +9,7 @@
 <doc>Continuous actors</doc>
 
 <input source="ptolemy/domains/continuous/lib/dynamics.xml"/>
+<input source="ptolemy/domains/continuous/lib/eventgenerators.xml"/>
 
       </group>
     ?>
