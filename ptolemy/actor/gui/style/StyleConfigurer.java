@@ -36,6 +36,7 @@ import java.util.Map;
 import javax.swing.BoxLayout;
 
 import ptolemy.actor.gui.Configurer;
+import ptolemy.data.expr.Parameter;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.gui.Top;
@@ -92,21 +93,17 @@ public class StyleConfigurer extends Query implements QueryListener {
             // Note that fixing this will probably move the accept method
             // into some sort of factory object (instead of cloning
             // existing styles).
+            // NOTE: These styles need to have a container so
+            // that exportMoML() doesn't generate XML header information.
+            Parameter container = new Parameter();
             _parameterStyles = new ParameterEditorStyle[7];
-            _parameterStyles[0] = new LineStyle();
-            _parameterStyles[0].setName("Line");
-            _parameterStyles[1] = new CheckBoxStyle();
-            _parameterStyles[1].setName("Check Box");
-            _parameterStyles[2] = new ChoiceStyle();
-            _parameterStyles[2].setName("Choice");
-            _parameterStyles[3] = new EditableChoiceStyle();
-            _parameterStyles[3].setName("EditableChoice");
-            _parameterStyles[4] = new TextStyle();
-            _parameterStyles[4].setName("Text");
-            _parameterStyles[5] = new FileChooserStyle();
-            _parameterStyles[5].setName("FileChooser");
-            _parameterStyles[6] = new NotEditableLineStyle();
-            _parameterStyles[6].setName("Fixed");
+            _parameterStyles[0] = new LineStyle(container, "Line");
+            _parameterStyles[1] = new CheckBoxStyle(container, "Check Box");
+            _parameterStyles[2] = new ChoiceStyle(container, "Choice");
+            _parameterStyles[3] = new EditableChoiceStyle(container, "EditableChoice");
+            _parameterStyles[4] = new TextStyle(container, "Text");
+            _parameterStyles[5] = new FileChooserStyle(container, "FileChooser");
+            _parameterStyles[6] = new NotEditableLineStyle(container, "Fixed");
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
