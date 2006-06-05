@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BouncingBall" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
     </property>
@@ -69,7 +69,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 10.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 819, 468}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 819, 457}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -120,7 +120,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 412, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 412, 508, 348}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -136,7 +136,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="-9.598813568329362E-5" max="10.0"/>
+<yRange min="-4.9898388954321566E-5" max="10.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -161,7 +161,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <port name="position" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="65.5, 159.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 150.0]">
             </property>
         </port>
         <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen3D">
@@ -237,14 +237,14 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </property>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="137.0, 179.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 160.0]">
             </property>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 180.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 170.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -308,10 +308,8 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="95.0, 190.0">
+            <vertex name="vertex1" value="[60.0, 150.0]">
             </vertex>
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
@@ -324,17 +322,22 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="position" relation="relation"/>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="position" relation="relation9"/>
         <link port="ViewScreen.sceneGraphIn" relation="relation3"/>
         <link port="ViewScreen.sceneGraphIn" relation="relation12"/>
         <link port="Sphere3D.sceneGraphOut" relation="relation2"/>
         <link port="Translate3D.sceneGraphIn" relation="relation2"/>
         <link port="Translate3D.sceneGraphOut" relation="relation3"/>
         <link port="Translate3D.yTranslate" relation="relation6"/>
-        <link port="AddSubtract.plus" relation="relation"/>
-        <link port="AddSubtract.minus" relation="relation9"/>
+        <link port="AddSubtract.plus" relation="relation9"/>
+        <link port="AddSubtract.minus" relation="relation5"/>
         <link port="AddSubtract.output" relation="relation6"/>
-        <link port="Const.output" relation="relation9"/>
+        <link port="Const.output" relation="relation5"/>
+        <link port="Const.trigger" relation="relation9"/>
         <link port="Box3D.sceneGraphOut" relation="relation11"/>
         <link port="Translate3D10.sceneGraphIn" relation="relation11"/>
         <link port="Translate3D10.sceneGraphOut" relation="relation12"/>
@@ -475,9 +478,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="-8.5438326004543E-6">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="-3.5638147444919E-5">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="2.3584098660947">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.0812379917696">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
