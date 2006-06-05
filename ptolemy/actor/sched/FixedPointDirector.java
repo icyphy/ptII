@@ -205,6 +205,13 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         }
     }
 
+    /** Return the index of the director.
+     *  @return Index of the director.
+     */
+    public int getIndex() {
+        return _index;
+    }
+    
     /** Initialize the director and all deeply contained actors by calling
      *  the super.initialize() method. Reset all private variables.
      *  @exception IllegalActionException If the superclass throws it.
