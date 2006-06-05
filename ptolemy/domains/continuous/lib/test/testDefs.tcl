@@ -1,6 +1,6 @@
-# Makefile for Ptolemy II Continuous Actors
+# Load test bed definitions
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Author: Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -28,53 +28,29 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+#######################################################################
 
-ME =		ptolemy/domains/continuous/lib
+# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
-DIRS =		test
+if [info exist env(PTOLEMY)] {
+    set PTII $env(PTOLEMY)/tycho/java
+}
 
-# Root of the Ptolemy II directory
-ROOT =		../../../..
+if [info exist env(TYCHO)] {
+    set PTII $env(TYCHO)/java
+}
 
-CLASSPATH =	$(ROOT)
+if [info exist env(PTII)] {
+    set PTII $env(PTII)
+}
 
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
+if {![info exist PTII]} {
+    # If we are here, then we are probably running jacl and we can't
+    # read environment variables
+    set PTII [file join [pwd] .. .. .. .. ..]
+}
 
-# Used to build jar files
-PTPACKAGE = 	lib
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
-
-JSRCS = \
-	Integrator.java 
-
-OTHER_FILES_TO_BE_JARED = \
-	continuousentities.xml \
-	dynamics.xml \
-	eventGenerators.xml \
-	EventSource.java \
-	integral.gif \
-	IntegratorIcon.xml 
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	test
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
-
-JCLASS = $(JSRCS:%.java=%.class)
-
-
-all: jclass
-install: jclass $(PTCLASSJAR)
-
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+# Load up the test definitions.
+if {[string compare test [info procs test]] == 1} then {
+    source [file join $PTII util testsuite testDefs.tcl]
+} {}

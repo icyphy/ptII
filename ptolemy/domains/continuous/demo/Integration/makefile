@@ -1,9 +1,10 @@
-# Makefile for Java Ptolemy Continuous Time Domain
+# Makefile for Ptolemy II Continuous domain demo
+#
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks,
 #
 # @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2006 The Regents of the University of California.
+# @Copyright (c) 2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,14 +28,11 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/domains/continuous
+ME =		ptolemy/domains/continuous/demo/Integration
 
-DIRS =		kernel lib demo doc test
-
-# Root of Ptolemy II directory
-ROOT =		../../..
+# Root of the Java directory
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,30 +41,48 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	continuous
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTPACKAGE = 	Integration
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		kernel/kernel.jar \
-		lib/lib.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	integrator1.xml \
+	integrator2.xml \
+	integrator3.xml \
+	integrator4.xml \
+	integrator5.xml
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =  kernel lib doc test
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) 
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
+
+install: all jars
+
+demo: demo_ptolemy demo_vergil demo_applet
+
+demo_applet: $(PTCLASSJAR)
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" 	integrator1.xml integrator2.xml integrator3.xml integrator4.xml integrator5.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" integrator1.xml integrator2.xml integrator3.xml integrator4.xml integrator5.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -1,9 +1,10 @@
-# Makefile for Java Ptolemy Continuous Time Domain
+# Makefile for Ptolemy II Continuous domain demos
+#
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
 #
 # @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2006 The Regents of the University of California.
+# @Copyright (c) 1998-2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,14 +28,14 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/domains/continuous
+ME =		ptolemy/domains/continuous/demo
 
-DIRS =		kernel lib demo doc test
+# Root of the Java directory
+ROOT =		../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+DIRS =		AssemblyLine HierarchicalModel Inspection LongRuns ModalModel \
+		QueueAndServer TimingParadox SmartSender VariableDelay
 
 CLASSPATH =	$(ROOT)
 
@@ -43,30 +44,33 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	continuous
+PTPACKAGE = 	demo
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		kernel/kernel.jar \
-		lib/lib.jar
+	Integration/Integation.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =  kernel lib doc test
+# Files that are not compiled, such as .tcl and .itcl files.
+EXTRA_SRCS =	index.htm
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = 
 
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
 install: jclass jars
+
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
