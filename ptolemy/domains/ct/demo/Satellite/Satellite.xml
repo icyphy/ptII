@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Satellite" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="6.196129">
@@ -11,12 +11,12 @@
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-8">
         </property>
-        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ExplicitRK23Solver&quot;">
+        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ExplicitRK45Solver&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -1, 991, 746}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -1, 991, 735}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[776, 628]">
     </property>
@@ -287,7 +287,7 @@
         </port>
     </entity>
     <entity name="Trajectory" class="ptolemy.actor.lib.gui.XYPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={95, 66, 446, 358}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={95, 66, 446, 351}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[438, 303]">
         </property>
@@ -312,8 +312,8 @@
 <title>Satellite Trajectory</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-1.262453005393114" max="1.2"/>
-<yRange min="-0.6681192337613956" max="0.6681266069983635"/>
+<xRange min="-1.2621151587183537" max="1.2"/>
+<yRange min="-0.6678441150454416" max="0.6679569743152095"/>
 </plot>?>
         </configure>
     </entity>
