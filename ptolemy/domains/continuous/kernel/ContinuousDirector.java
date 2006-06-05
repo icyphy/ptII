@@ -612,15 +612,23 @@ public class ContinuousDirector extends FixedPointDirector implements
                     "Current time exceeds the specified stopTime.");
         }
 
+        // The update of the model time gets confimed during the fire method.
+        // Update the index in the postfire method.
+        if (_currentStepSize == 0.0) {
+            _index++;
+        } else {
+            _index = 0;
+        }
+        
         // Set the suggested step size for next integration step.
         _setCurrentStepSize(suggestedStepSize());
 
         // If this director is enclosed within an opaque composite
         // actor, then request that the enclosing director refire
         // the composite actor containing this director.
-        if (_isEmbedded() && (_breakpoints.size() > 0)) {
-            SuperdenseTime nextBreakpoint = 
-                (SuperdenseTime) _breakpoints.first();
+        SuperdenseTime nextBreakpoint = 
+            (SuperdenseTime) _breakpoints.first();
+        if (_isEmbedded() && nextBreakpoint != null) {
             CompositeActor container = (CompositeActor) getContainer();
             container.getExecutiveDirector().fireAt(
                     container, nextBreakpoint.timestamp());
@@ -995,14 +1003,18 @@ public class ContinuousDirector extends FixedPointDirector implements
             if (_debugging){
                 _debug("The first breakpoint is at " + nextBreakpoint);
             }
+            Time breakpointTime = nextBreakpoint.timestamp();
+            Time modelTime = getModelTime();
+            if (breakpointTime.compareTo(modelTime) == 0 && 
+                    nextBreakpoint.index() == _index) {
+                if (_debugging){
+                    _debug("The current superdense tiime is a breakpoint, "
+                            + nextBreakpoint + " , which is removed.");
+                }
+                _breakpoints.removeFirst();
+            }
             double maximumAllowedStepSize = nextBreakpoint.timestamp()
                 .subtract(getModelTime()).getDoubleValue();
-            if (maximumAllowedStepSize == 0.0) {
-                _index = nextBreakpoint.index();
-                _breakpoints.removeFirst();
-            } else {
-                _index = 0;
-            }
             if (_currentStepSize > maximumAllowedStepSize) {
                 _currentStepSize = maximumAllowedStepSize;
             }
