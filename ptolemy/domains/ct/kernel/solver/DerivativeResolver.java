@@ -102,6 +102,15 @@ public class DerivativeResolver extends ODESolver implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Fire state transition actors, set converged flag to
+     *  true indicating a fixed-point states have been reached. 
+     *  @exception IllegalActionException If thrown in the super class.
+     */
+    public void fireStateTransitionActors() throws IllegalActionException {
+        super.fireStateTransitionActors();
+        _setConverged(true);
+    }
+
     /** Return 0 to indicate that no history information is needed
      *  by this solver.
      *  @return 0.
