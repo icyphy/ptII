@@ -29,6 +29,7 @@ package ptolemy.actor.gui;
 
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
@@ -145,6 +146,11 @@ public class WindowPropertiesAttribute extends Parameter implements
      *  has not been set, then do nothing and return true. If the
      *  value of this attribute is malformed in any way, then just
      *  return false.
+     *
+     *  <p>If the x or y position is greater than the width or height
+     *  height of the screen, then offset the position by 30 pixels so
+     *  the user can drag the window.
+     *
      *  @param frame The frame whose properties are to be set.
      *  @return True if successful.
      */
@@ -167,11 +173,19 @@ public class WindowPropertiesAttribute extends Parameter implements
 
             ArrayToken boundsToken = (ArrayToken) value.get("bounds");
             BooleanToken maximizedToken = (BooleanToken) value.get("maximized");
-
             int x = ((IntToken) boundsToken.getElement(0)).intValue();
             int y = ((IntToken) boundsToken.getElement(1)).intValue();
             int width = ((IntToken) boundsToken.getElement(2)).intValue();
             int height = ((IntToken) boundsToken.getElement(3)).intValue();
+
+            // If x or y is greater than the width or height of the
+            // screen, then offset them by 30 pixels so the user can
+            // drag the window.
+            Toolkit tk = Toolkit.getDefaultToolkit();
+            x = (x > tk.getScreenSize().width
+                    ? tk.getScreenSize().width - 30 : x);
+            y = (y > tk.getScreenSize().height
+                    ? tk.getScreenSize().height - 30 : y);
 
             frame.setBounds(x, y, width, height);
 
