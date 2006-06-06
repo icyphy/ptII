@@ -28,7 +28,9 @@
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.FIFOQueue;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -49,7 +51,11 @@ import ptolemy.kernel.util.Workspace;
  When the <i>trigger</i> port receives a token, the oldest element in the
  queue is produced on the output.  If there is no element in the queue when a
  token is received on the <i>trigger</i> port, then no output is
- produced.  The inputs can be of any token type, and the output
+ produced. In this circumstance, if <i>persistentTrigger</i> is true
+ then the next time an input is received, it is sent immediately to
+ the output.
+ <p>
+ The inputs can be of any token type, and the output
  is constrained to be of a type at least that of the input. If
  the <i>capacity</i> parameter is negative or zero (the default),
  then the capacity is infinite. Otherwise, the capacity is
@@ -59,7 +65,6 @@ import ptolemy.kernel.util.Workspace;
  If an input arrives at the same time that an output is
  produced, then the <i>size</i> port gets two events at
  the same time.
- <p>
 
  @author Steve Neuendorffer and Edward A. Lee
  @version $Id$
@@ -67,7 +72,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (eal)
  */
-public class Queue extends DETransformer {
+public class Queue extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -99,6 +104,10 @@ public class Queue extends DETransformer {
         capacity = new Parameter(this, "capacity");
         capacity.setTypeEquals(BaseType.INT);
         capacity.setExpression("0");
+        
+        persistentTrigger = new Parameter(this, "persistentTrigger");
+        persistentTrigger.setTypeEquals(BaseType.BOOLEAN);
+        persistentTrigger.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -110,6 +119,13 @@ public class Queue extends DETransformer {
      *  This is an integer with default 0.
      */
     public Parameter capacity;
+    
+    /** If set to true, then if a <i>trigger</i> arrives when the
+     *  queue is empty, it is remembered, and the next time an
+     *  <i>input</i> arrives, it is sent immediately to the output.
+     *  This is a boolean with default false.
+     */
+    public Parameter persistentTrigger;
 
     /** The current size of the queue. This port produces an output
      *  whenever the size changes. It has type int.
@@ -168,20 +184,25 @@ public class Queue extends DETransformer {
         return newObject;
     }
 
-    /** If there is a token in the <i>trigger</i> port,
-     *  emit the most recent token from the <i>input</i> port. If there
-     *  has been no input token, or there is no token on the <i>trigger</i>
-     *  port, emit nothing.
+    /** Put a new input token on the queue and/or produce output
+     *  data from the queue.  Specifically, if there is a new token
+     *  on the <i>input</i> port, then put it on the input queue.
+     *  Then, if there is a token in the <i>trigger</i> port
+     *  and the queue is not empty, then
+     *  send the oldest token on the queue to the <i>output</i> port.
+     *  Send the resulting queue size to the output <i>size</i> output port.
      *  @exception IllegalActionException If getting tokens from input and
-     *  trigger ports or sending token to output throws it.
+     *   trigger ports or sending token to output throws it.
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        int sizeOutput = _queue.size();
         if (input.hasToken(0)) {
-            _queue.put(input.get(0));
-            size.send(0, new IntToken(_queue.size()));
+            _token = input.get(0);
+            sizeOutput++;
+        } else {
+            _token = null;
         }
-
         boolean gotTrigger = false;
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
@@ -190,10 +211,36 @@ public class Queue extends DETransformer {
                 gotTrigger = true;
             }
         }
-        if (gotTrigger && _queue.size() > 0) {
-            output.send(0, (Token) _queue.take());
-            size.send(0, new IntToken(_queue.size()));
+        if (gotTrigger) {
+            if (sizeOutput > 0) {
+                // If there is no token on the queue,
+                // then send out the currently read token.
+                if (_queue.size() == 0) {
+                    output.send(0, _token);
+                    _token = null;
+                } else {
+                    output.send(0, (Token) _queue.get(0));
+                    _removeToken = true;
+                }
+                sizeOutput--;
+                _persistentTrigger = false;
+            } else {
+                if (((BooleanToken)persistentTrigger.getToken()).booleanValue()) {
+                    _persistentTrigger = true;
+                }
+            }
+        } else {
+            // If the queue was previously empty and
+            // persistent trigger is set, and there is an
+            // input, then produce the current input as output.
+            if (_persistentTrigger && _token != null) {
+                output.send(0, _token);
+                sizeOutput--;
+                _token = null;
+                _persistentTrigger = false;
+            }
         }
+        size.send(0, new IntToken(sizeOutput));
     }
 
     /** Clear the cached input tokens.
@@ -201,7 +248,27 @@ public class Queue extends DETransformer {
      */
     public void initialize() throws IllegalActionException {
         _queue.clear();
+        _persistentTrigger = false;
+        _token = null;
+        _removeToken = false;
         super.initialize();
+    }
+
+    /** Commit additions or removals from the queue.
+     *  @return True.
+     *  @throws IllegalActionException If the superclass throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+        if (_token != null) {
+            _queue.put(_token);
+        }
+        if (_removeToken) {
+            _queue.take();
+        }
+        _token = null;
+        _removeToken = false;
+        
+        return super.postfire();
     }
 
     /** If there is no input on the <i>trigger</i> port, return
@@ -239,4 +306,22 @@ public class Queue extends DETransformer {
 
     /** The FIFOQueue. */
     protected FIFOQueue _queue;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** An indicator of whether a trigger token was received in
+     *  the last fire() method invocation.
+     */
+    private boolean _persistentTrigger;
+    
+    /** Indicator that a token should be removed from the
+     *  queue in postfire().
+     */
+    private boolean _removeToken;
+    
+    /** Token received in the fire() method for inclusion in
+     *  the queue in the postfire() method.
+     */
+    private Token _token;
 }
