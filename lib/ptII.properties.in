@@ -51,3 +51,8 @@ ptolemy.ptII.tosroot=@TOSROOT_NO_CYGDRIVE@
 
 # TOSDIR without /cygdrive
 ptolemy.ptII.tosdir=@TOSDIR_NO_CYGDRIVE@
+
+# Override the default choice of browser, see 
+# $PTII/ptolemy/actor/gui/BrowserLauncher.java
+#ptolemy.ptII.browser=c:\\Program\ Files\\Internet\ Explorer\\iexplore.exe
+#ptolemy.ptII.browser=c:\\Program\ Files\\Mozilla\ Firefox\\firefox.exe

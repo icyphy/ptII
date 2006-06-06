@@ -35,6 +35,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 
+import ptolemy.util.StringUtilities;
+
 /**
  BrowserLauncher is a class that provides one static method, openURL,
  which opens the default web browser for the current user of the system
@@ -69,7 +71,7 @@ import java.net.URL;
  On Windows, it only runs under Win32 systems (Windows 95, 98, and NT
  4.0, as well as later versions of all).  On other systems, this drops
  back from the inherently platform-sensitive concept of a default
- browser and simply attempts to launch Netscape via a shell command.
+ browser and simply attempts to launch Firefox via a shell command.
 
  <p> This code is Copyright 1999-2001 by Eric Albert (ejalbert@cs.stanford.edu)
  and may be redistributed or modified in any form without restrictions as
@@ -149,6 +151,25 @@ public class BrowserLauncher {
      * found file instead of the given URL.
      * <br>If the file cannot be found in the classpath, then pass the
      * original given URL to the browser.
+     * <p>If the ptolemy.ptII.browser property is set, then its value
+     * is used as the value of the browser.
+     * <br>To always use Internet Explorer, one might invoke Ptolemy
+     * with: 
+     * <pre>
+     * java -classpath $PTII -Dptolemy.ptII.browser=c:\\Program\ Files\\Internet\ Explorer\\iexplore.exe ptolemy.vergil.VergilApplication
+     * </pre>
+     * <p>To always use Firefox:
+     * <pre>
+     * java -classpath $PTII -Dptolemy.ptII.browser=c:\\Program\ Files\\Mozilla\ Firefox\\firefox ptolemy.vergil.VergilApplication
+     * </pre>
+     *
+     * <p>To preserve your browser choice set the ptolemy.ptII.browser
+     * property in <code>$PTII/lib/ptII.properties</code>.  Note that
+     * each time <code>$PTII/bin/configure</code> is run,
+     * <code>$PTII/lib/ptII.properties.in</code> is read and 
+     * <code>$PTII/lib/ptII.properties</code> is overwritten, so you
+     * may want to add your changes to 
+     * <code>$PTII/lib/ptII.properties.in</code>.
      *
      * @param url The URL to open.
      *  It is best if the first argument is an absolute URL
@@ -224,6 +245,15 @@ public class BrowserLauncher {
                 }
             }
         }
+
+        if (StringUtilities.getProperty("ptolemy.ptII.browser") != "") {
+            Runtime.getRuntime().exec(new String[]
+                { "\"" + 
+                  StringUtilities.getProperty("ptolemy.ptII.browser")
+                  + "\"", url });
+            return;
+        }
+
 
         Object browser = locateBrowser();
 
@@ -333,7 +363,7 @@ public class BrowserLauncher {
 
         case OTHER:
 
-            // Assume that we're on Unix and that Netscape is installed
+            // Assume that we're on Unix and that firefox is installed
             // First, attempt to open the URL in a currently running
             // session of Netscape
             process = Runtime.getRuntime().exec(
@@ -362,7 +392,8 @@ public class BrowserLauncher {
 
             // This should never occur, but if it does, we'll try
             // the simplest thing possible
-            Runtime.getRuntime().exec(new String[] { (String) browser, url });
+            Runtime.getRuntime().exec(new String[]
+                { "\"" + (String) browser + "\"", url });
             break;
         }
 
@@ -513,8 +544,9 @@ public class BrowserLauncher {
     private static final String THIRD_WINDOWS_PARAMETER = "\"\"";
 
     /**
-     * The shell parameters for Netscape that opens a given URL in an
-     * already-open copy of Netscape on many command-line systems.
+     * The shell parameters for Netscape or firefox that opens a given
+     * URL in an already-open copy of Netscape or firefox on many
+     * command-line systems.
      */
     private static final String NETSCAPE_REMOTE_PARAMETER = "-remote";
 
@@ -748,9 +780,10 @@ public class BrowserLauncher {
      * Attempts to locate the default web browser on the local system.
      * Caches results so it only locates the browser once for each use
      * of this class per JVM instance.
+     *
      * @return The browser for the system.  Note that this may not be
-     * what you would consider * to be a standard web browser;
-     * instead, it's the application that gets called to * open the
+     * what you would consider to be a standard web browser;
+     * instead, it's the application that gets called to open the
      * default web browser.  In some cases, this will be a non-String
      * object that provides the means of calling the default browser.
      *
@@ -884,7 +917,7 @@ public class BrowserLauncher {
 
         case OTHER:
         default:
-            browser = "netscape";
+            browser = "firefox";
             break;
         }
 
