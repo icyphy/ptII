@@ -34,8 +34,7 @@ ME =		ptolemy/domains/continuous/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		AssemblyLine HierarchicalModel Inspection LongRuns ModalModel \
-		QueueAndServer TimingParadox SmartSender VariableDelay
+DIRS =		Integration
 
 CLASSPATH =	$(ROOT)
 
@@ -50,7 +49,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	Integration/Integation.jar
+	Integration/Integration.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
