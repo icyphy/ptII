@@ -5,6 +5,53 @@
 </head>
 <body>
 An interface between Java Native Interface (JNI) classes and Ptolemy.
+
+<p>Under Windows, JNI does not work with recent versions of Cygwin
+and GCC after gcc3.2.x.  The workaround is to install the version of Cygwin
+that shipped with Ptolemy II 4.0, see
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/cygwin.htm">http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/cygwin.htm</a>
+
+
+<p>The Interface to C actors using the Java Native Interface is not
+available via the Windows Installer (or Web Start). To use the
+JNI/Ptolemy II interface, you must download Ptolemy II as source files
+and compile.
+
+<p>The JNI user interface does not permit creation of new JNI actors.
+
+
+<p>To build under windows, you may need to edit <code>jni.h</code>,
+see
+<a href="JNIUtilities.html">JNIUtilities.java</a>.
+
+<p>Under Windows, you may need to create 
+<code>/usr/bin/gmake</code>:
+<pre>
+cp /usr/bin/make /usr/bin/gmake
+</pre>
+
+<p> A demo can be found in 
+<code>$PTII/jni/demo/jni</code>
+See the <code>README.html</code> file in that directory.
+
+<p>If you follow the instructions in
+<a href="JNIUtilities.html">JNIUtilities.java</a> , then eventually you
+will get a NameDuplicationException.
+
+<p>The resulting model will be missing
+
+<pre>
+&lt;property name="output" class="jni.Argument"
+value="false,false,true,double"&gt;
+&lt;/property&gt;
+</pre>
+
+In the short term, one workaround is to edit the xml file directly and
+add the appropriate property by hand.
+
+<p> JNI will not work with Hierarchical classes, subclasses, and inner
+classes 
+
 <p>
     @since Ptolemy II 0.2
 </body>
