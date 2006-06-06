@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HysteresisWithRandomDelay" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -460,7 +460,7 @@ second refinement called "wait" that triggers an event after a specified time.</
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 15.0]">
                 </property>
             </property>
-            <property name="time" class="ptolemy.data.expr.Parameter" value="0.8353607348804">
+            <property name="time" class="ptolemy.data.expr.Parameter" value="0.8420813436183">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -622,7 +622,7 @@ second refinement called "wait" that triggers an event after a specified time.</
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 365.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
