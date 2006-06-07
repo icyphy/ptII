@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	DiscreteClock.java \
 	Integrator.java 
 
 OTHER_FILES_TO_BE_JARED = \
