@@ -174,12 +174,12 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     /** If the value at the <i>derivative</i> port is known, and the current 
      *  step size is bigger than 0, perform an integration.
-     *  <p> 
      *  If the <i>impulse</i> port is known and has data, then add the
      *  value provided to the state; if the <i>initialState</i> port
      *  is known and has data, then reset the state to the provided
      *  value. If both <i>impulse</i> and <i>initialState</i> have
-     *  data, then <i>initialState</i> dominates. Note that the signals
+     *  data, then <i>initialState</i> dominates. If either is unknown,
+     *  then simply return, leaving the output unknown. Note that the signals
      *  provided at these two ports are required to be purely discrete.
      *  This is enforced by throwing an exception if the current step
      *  size is greater than zero when they have input data.
@@ -189,6 +189,10 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *   or <i>initialState</i> and the step size is greater than zero.
      */
     public void fire() throws IllegalActionException {
+        if (!impulse.isKnown() || !initialState.getPort().isKnown()) {
+            // Cannot do anything until these inputs are known.
+            return;
+        }
         ContinuousDirector dir = (ContinuousDirector) getDirector();
         double stepSize = dir.getCurrentStepSize();
 
@@ -197,12 +201,12 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         // derivative at the current model time.
         for (int i = 0; i < impulse.getWidth(); i++) {
             if (impulse.hasToken(i)) {
-                if (stepSize != 0) {
+                if (stepSize != 0.0) {
                     throw new IllegalActionException(this,
                     "Signal at the impulse port is not purely discrete.");
                 }
                 double currentState = getState()
-                + ((DoubleToken) impulse.get(i)).doubleValue();
+                        + ((DoubleToken) impulse.get(i)).doubleValue();
                 setTentativeState(currentState);
             }
         }
@@ -211,7 +215,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         TypedIOPort statePort = initialState.getPort();
         for (int i = 0; i < statePort.getWidth(); i++) {
             if (statePort.hasToken(i)) {
-                if (stepSize != i) {
+                if (stepSize != 0.0) {
                     throw new IllegalActionException(this,
                     "Signal at the initialState port is not purely discrete.");
                 }
@@ -232,7 +236,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                         "The provided derivative input is invalid: "
                         + currentDerivative);
             }
-            if (stepSize > 0) {
+            if (stepSize > 0.0) {
                 // The following method changes the tentative state but 
                 // should not expose the tentative state.
                 dir._getODESolver().integratorIntegrate(this);
@@ -351,16 +355,6 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     public double suggestedStepSize() {
         ContinuousODESolver solver = ((ContinuousDirector) getDirector())._getODESolver();
         return solver.integratorSuggestedStepSize(this);
-    }
-
-    /** Return true if the <i>impulse</i> port and <i>initialState</i> 
-     *  port are known and the superclass returns true.
-     *  @return True if the integrator is ready to fire. 
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean prefire() throws IllegalActionException {
-        return impulse.isKnown() && 
-            initialState.getPort().isKnown() && super.prefire();
     }
 
     /** Override the base class to declare that the <i>output</i>

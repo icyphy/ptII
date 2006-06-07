@@ -351,7 +351,8 @@ public class ContinuousDirector extends FixedPointDirector implements
             // Iterate until the solver is done with the integration step
             // or the maximum number of iterations is reached.
             int iterations = 0;
-            while (!_ODESolver._isStepFinished() && iterations < _maxIterations) {
+            while (!_ODESolver._isStepFinished()
+                    && iterations < _maxIterations && !_stopRequested) {
                 // Resolve the fixed point at the current time.
                 // Note that prefire resets all receivers to unknown,
                 // and fire() iterates to a fixed point where all signals
@@ -359,6 +360,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                 // Although super.prefire() is called in the prefire() method,
                 // super.prefire() is called again here, because it may take 
                 // several iterations to complete an integration step. 
+                // FIXME: Optimization opportunity to eliminate the extra prefire() call.
                 if (super.prefire()) {
                     super.fire();
                 }
