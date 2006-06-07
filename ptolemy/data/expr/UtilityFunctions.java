@@ -795,7 +795,9 @@ public class UtilityFunctions {
                     // native code be in the top level of a jar file
                     // that is specially marked.  Matlab under Web Start
                     // requires this.
-                    System.loadLibrary(shortLibraryName);
+                    if (shortLibraryName != null) {
+                        System.loadLibrary(shortLibraryName);
+                    }
                     return;
                 } catch (UnsatisfiedLinkError ex2) {
                     // We ignore ex2 and report the original error.
