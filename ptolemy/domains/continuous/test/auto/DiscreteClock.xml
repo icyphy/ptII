@@ -22,26 +22,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{160, 135}">
         </property>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1}">
-        </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{290, 135}">
-        </property>
-    </entity>
     <entity name="DiscreteClock2" class="ptolemy.domains.continuous.lib.DiscreteClock">
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 205.0}">
-        </property>
-    </entity>
-    <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0}">
-        </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 205.0]">
         </property>
     </entity>
     <entity name="DiscreteClock3" class="ptolemy.domains.continuous.lib.DiscreteClock">
@@ -52,10 +36,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 270.0}">
         </property>
     </entity>
-    <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 0}">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 135.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 270.0]">
         </property>
@@ -73,9 +67,9 @@
         </property>
     </relation>
     <link port="DiscreteClock.output" relation="relation"/>
-    <link port="Test.input" relation="relation"/>
     <link port="DiscreteClock2.output" relation="relation2"/>
-    <link port="Test2.input" relation="relation2"/>
     <link port="DiscreteClock3.output" relation="relation3"/>
-    <link port="Test3.input" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="NonStrictTest2.input" relation="relation2"/>
+    <link port="NonStrictTest3.input" relation="relation3"/>
 </entity>
