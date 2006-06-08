@@ -226,7 +226,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  of the executive director, say t0.
      *  If t == t0, do nothing. <BR>
      *  If t > t0, then rollback to the "known good" time (which should be
-     *  less than the outside time) and catch up with the outside time. <BR>
+     *  less than the outside time). <BR>
      *  If t < t0, then throw an exception because the CT subsystem
      *  should always run ahead of the outside event-based system. <BR>
      *  <P>
@@ -283,6 +283,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                         + outsideNextIterationTime);
             }
 
+            double aheadLength = _runAheadLength;
+            
             // Ideally, the outside time should equal the local time.
             // If the outside time is less than the local time, then rollback
             // is needed. If the outside time is greater than the local time,
@@ -316,46 +318,21 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 // The local time is set backwards to a known good time.
                 _rollback();
 
-                // restore the derivatives by propagating the restored states.
-                _propagateResolvedStates();
+                aheadLength = 
+                    _outsideTime.subtract(getModelTime()).getDoubleValue();
 
-                // NOTE: At this time, new inputs are not transferred yet.
-                // The catchup will use the old inputs. This is one of the
-                // reasons that catch up must be performed in the prefire()
-                // method.
-                // The local time is set to the outside time.
-                _catchUp();
-
-                if (_debugging) {
-                    _debug("After catch up, the current time is " + localTime);
-                }
-            }
-
-            // Now, the outside time must be equal to the local time.
-            if (_debugging) {
-                _debug("The outside time is equal to the local time. "
-                        + "Check whether there are outputs.");
-            }
-
-            // set the start time of the current iteration
-            // The begin time of an iteration can be changed only by directors.
-            // On the other hand, the model time may be changed by ODE solvers.
-            // The reason is that when the CurrentTime actor is involved in a
-            // multi-step integration, it needs to report the current time at
-            // the intermediate steps. The CurrentTime actor reports the model
-            // time.
-            _setIterationBeginTime(getModelTime());
-
-            double aheadLength = outsideNextIterationTime
+            } else {
+                aheadLength = outsideNextIterationTime
                     .subtract(_outsideTime).getDoubleValue();
+            }
 
             if (_debugging) {
                 _debug(getName(), " local time = " + localTime,
                         " Outside Time = " + _outsideTime,
                         " NextIterationTime = " + outsideNextIterationTime
-                                + " Inferred run length = " + aheadLength);
+                        + " Inferred run length = " + aheadLength);
             }
-
+            
             if (aheadLength < getTimeResolution()) {
                 // This is a zero step size iteration.
                 // TESTIT: simultaneous events from the outside model drives
@@ -380,6 +357,15 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                         + getSuggestedNextStepSize());
             }
 
+            // set the start time of the current iteration
+            // The begin time of an iteration can be changed only by directors.
+            // On the other hand, the model time may be changed by ODE solvers.
+            // The reason is that when the CurrentTime actor is involved in a
+            // multi-step integration, it needs to report the current time at
+            // the intermediate steps. The CurrentTime actor reports the model
+            // time.
+            _setIterationBeginTime(getModelTime());
+
             return true;
         } else {
             return super.prefire();
@@ -388,38 +374,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Catch up the simulation from a known good state to the outside
-     *  current time. There should be no breakpoints of any kind
-     *  in this process. If the current time is greater than or equal
-     *  to the outside time, then do nothing.
-     *  @exception IllegalActionException If thrown from the execution
-     *   methods from any actor, or the local time of this director is
-     *   already ahead of the outside time.
-     */
-    protected void _catchUp() throws IllegalActionException {
-        Time outsideTime = _getOutsideTime();
-        Time localTime = getModelTime();
-        
-        double stepsize = outsideTime.subtract(localTime).getDoubleValue();
-
-        if (stepsize == 0) {
-            return;
-        } else if (stepsize < 0) {
-            throw new IllegalActionException(this, 
-                    "Local time, " + localTime 
-                    + " is already ahead of the out side time, " 
-                    + outsideTime + ", which in incorrect.");
-        }
-
-        _setIterationBeginTime(localTime);
-        setCurrentStepSize(stepsize);
-        _resolveInitialStates();
-        
-        if (_debugging) {
-            _debug("Catch up one step: current time is" + localTime);
-        }
-    }
 
     /** Initialize parameters in addition to the parameters inherited
      *  from CTMultiSolverDirector. In this class the additional
@@ -495,21 +449,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
             actor.goToMarkedState();
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Return the time of the outside domain. If this is the top-level
-     *  director return the current time.
-     *  @return The outside current time.
-     */
-    private Time _getOutsideTime() {
-        if (_isTopLevel()) {
-            return getModelTime();
-        }
-
-        return _outsideTime;
     }
 
     ///////////////////////////////////////////////////////////////////
