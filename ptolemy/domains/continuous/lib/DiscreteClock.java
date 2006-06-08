@@ -240,7 +240,7 @@ public class DiscreteClock extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        EventSource newObject = (EventSource) super.clone(workspace);
+        DiscreteClock newObject = (DiscreteClock) super.clone(workspace);
         ArrayType valuesArrayType = (ArrayType) newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
