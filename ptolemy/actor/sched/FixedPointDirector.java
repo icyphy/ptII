@@ -512,6 +512,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                     _sendClearToAllUnknownOutputsOf(actor);
                 }
                 _numberOfActorsFired++;
+            } else {
+                _sendClearToAllUnknownOutputsOf(actor);
             }
         }
     }
