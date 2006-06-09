@@ -322,7 +322,7 @@ public class JNIUtilities {
                 + nativeLibrary + "/Jni" + actor.getName() + ".java");
 
         // Create the .h file.
-        execCommands.add("javah -d jni/" + nativeLibrary + " jni."
+        execCommands.add("javah -classpath . -d jni/" + nativeLibrary + " jni."
                 + nativeLibrary + ".Jni" + actor.getName());
 
         // Create the shared library.
