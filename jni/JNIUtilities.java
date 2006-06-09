@@ -241,7 +241,11 @@ public class JNIUtilities {
         // Verification qu'il y a un return, place le return en void sinon
         if (actor.getArgumentReturn() == null) {
             MessageHandler
-                    .warning("No return was configured,\n so we set it as void");
+                    .warning("No return was configured,"
+                            + "so we set it as void. "
+                            + "If this is not ok, right click on the JNIActor "
+                            + "and select Configure Arguments"); 
+                            
             actor.addArgumentReturn();
         }
 
