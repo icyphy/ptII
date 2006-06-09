@@ -88,10 +88,12 @@ JCLASS = $(JSRCS:%.java=%.class)
 #PTLIB=$(PTJNI_SHAREDLIBRARY_PREFIX)ptmatlab.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 
 # make clean removes $(KRUFT)
-#KRUFT = matlabWindows.jar
+KRUFT = launcher.exe
 
-all: launcher jclass
+all: launcher
 	@echo "To see a demonstration, run \"make demo\""
+
+jclass: launcher
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
