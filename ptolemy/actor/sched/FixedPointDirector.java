@@ -185,6 +185,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                 // do not fire it.
                 if (!_actorsFinished.contains(actor)) {
                     _fireActor(actor);
+                    _actorsFired.add(actor);
                 } else {
                     // The postfire() method of this actor returned false in
                     // some previous iteration, so here, for the benefit of
@@ -222,12 +223,10 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
         _actorsAllowedToFire = new HashSet();
         _actorsFinishedFiring = new HashSet();
-        _actorsPostfired = new HashSet();
         _cachedAllInputsKnown = new HashSet();
 
         _cachedFunctionalProperty = true;
         _functionalPropertyVersion = -1;
-        _numberOfActorsFired = 0;
         
         _index = 0;
     }
@@ -280,7 +279,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         return receiver;
     }
 
-    /** Call postfire() on all contained actors.  Return false if the model
+    /** Call postfire() on all contained actors that were fired on the last
+     *  invocation of fire().  Return false if the model
      *  has finished executing, either by reaching the iteration limit, or if
      *  no actors in the model return true in postfire(), or if stop has
      *  been requested. This method is called only once for each iteration.
@@ -291,8 +291,11 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *   indicates a causality loop).
      */
     public boolean postfire() throws IllegalActionException {
-        _postfireReturns = false;
-        Iterator actors = ((CompositeActor) getContainer()).deepEntityList().iterator();
+        if (_debugging) {
+            _debug("FixedPointDirector: Called postfire().");
+        }
+        boolean atLeastOneActorAlive = false;
+        Iterator actors = _actorsFired.iterator();
         while (actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor)actors.next();
             if (!_areAllInputsKnown(actor)) {
@@ -301,7 +304,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             }
             if (!_actorsFinished.contains(actor)) {
                 if (_postfireActor(actor)) {
-                    _postfireReturns = true;
+                    atLeastOneActorAlive = true;
                 } else {
                     // postfire() returned false, so prevent the actor
                     // from iterating again.
@@ -313,19 +316,18 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             _debug(this.getFullName()
                     + "Iteration " + _currentIteration
                     + " is complete.");
-            _debug("Total number of actor firings: " + _numberOfActorsFired);
         }
 
-        // Check if the current execution has reached its iteration limit. 
+        // Check whether the current execution has reached its iteration limit. 
         _currentIteration++;
         int numberOfIterations = ((IntToken) iterations.getToken()).intValue();
         if ((numberOfIterations > 0)
                 && (_currentIteration >= numberOfIterations)) {
-            _currentIteration = 0;
-            _postfireReturns = false;
+            super.postfire();
+            return false;
         }
 
-        return super.postfire();
+        return super.postfire() && atLeastOneActorAlive;
     }
 
     /** Initialize the firing of the director by resetting state variables
@@ -336,7 +338,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     public boolean prefire() throws IllegalActionException {
         _actorsAllowedToFire.clear();
         _actorsFinishedFiring.clear();
-        _actorsPostfired.clear();
+        _actorsFired.clear();
         _cachedAllInputsKnown.clear();
         _lastNumberOfKnownReceivers = -1;
         
@@ -480,8 +482,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     private void _fireActor(Actor actor) throws IllegalActionException {
         if (_isReadyToFire(actor) && !_stopRequested) {
             if (_debugging) {
-                _debug(getFullName() + " is prefiring",
-                        ((Nameable) actor).getFullName());
+                _debug("Prefiring: " + ((Nameable) actor).getFullName());
             }
             // Prefire the actor.
             boolean prefireReturns = actor.prefire();
@@ -495,8 +496,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             if (prefireReturns) {
                 _actorsAllowedToFire.add(actor);
                 if (_debugging) {
-                    _debug(getFullName() + " is firing",
-                            ((Nameable) actor).getName());
+                    _debug("Firing: " + ((Nameable) actor).getName());
                 }
                 
                 // Whether all inputs are known must be checked before
@@ -511,8 +511,10 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                     _actorsFinishedFiring.add(actor);
                     _sendClearToAllUnknownOutputsOf(actor);
                 }
-                _numberOfActorsFired++;
             } else {
+                // If prefire() returned false, the actor declines
+                // to fire, meaning all its outputs are absent.
+                _actorsFinishedFiring.add(actor);
                 _sendClearToAllUnknownOutputsOf(actor);
             }
         }
@@ -530,9 +532,10 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                     + ":\n Number of receivers known now is "
                     + _currentNumberOfKnownReceivers);
         }
-        // The number of known receivers has not converged, so the
-        // iteration has not converged.
-        boolean converged = _lastNumberOfKnownReceivers == _currentNumberOfKnownReceivers;
+        // Determine whether all receivers are known or the number of known receivers
+        // has not changed since the last iteration.
+        boolean converged = (_currentNumberOfKnownReceivers == _receivers.size())
+                || (_lastNumberOfKnownReceivers == _currentNumberOfKnownReceivers);
         _lastNumberOfKnownReceivers = _currentNumberOfKnownReceivers;
         return converged;
     }
@@ -575,8 +578,9 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         return true;
     }
 
-    /** Call the sendClear() method of each of the output ports of the
-     *  specified actor if the actor is strict.
+    /** Call the sendClear() method of each output port with
+     *  unknown status of the specified actor
+     *  @param actor The actor.
      */
     private void _sendClearToAllUnknownOutputsOf(Actor actor)
             throws IllegalActionException {
@@ -584,14 +588,14 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // outputs are still unknown, clear these outputs.
         // However, there is nothing need to do if this actor has 
         // resolved all of its outputs.
-        
         Iterator outputPorts = actor.outputPortList().iterator();
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
             for (int j = 0; j < outputPort.getWidth(); j++) {
                 if (!outputPort.isKnown(j)) {
-                    _debug("  FixedPointDirector is calling sendClear() on " +
-                            "the output port " + outputPort.getName());
+                    if (_debugging) {
+                        _debug("  Set output " + outputPort.getFullName() + " to absent.");
+                    }
                     outputPort.sendClear(j);
                 }
             }
@@ -611,10 +615,10 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  all inputs known.
      */
     private Set _actorsFinishedFiring;
-
-    /** The set of actors that have been postfired in the given iteration. */
-    private Set _actorsPostfired;
     
+    /** Actors that were fired in the most recent invocation of the fire() method. */
+    private Set _actorsFired = new HashSet();
+
     /** The set of actors that have all inputs known in the given iteration. */
     private Set _cachedAllInputsKnown;
 
@@ -634,7 +638,4 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  actor firings.
      */
     private int _lastNumberOfKnownReceivers;
-
-    /** The number of actors fired since initialize(). */
-    private int _numberOfActorsFired;
 }
