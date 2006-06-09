@@ -38,7 +38,7 @@ static void setup_win_environ(void)
                       malloc(cygwin_posix_to_win32_path_list_buf_size(val)+1);
                 if (winpathlist) {
                     cygwin_posix_to_win32_path_list(val, winpathlist);
-                    std::cout << "A: setting " << var << " to " << winpathlist << "\n";
+                    //std::cout << "A: setting " << var << " to " << winpathlist << "\n";
                     SetEnvironmentVariable(var, winpathlist);
                     free(winpathlist);
                 }
@@ -46,11 +46,11 @@ static void setup_win_environ(void)
                         !strcmp(var, "TMPDIR") ||
                         !strcmp(var, "TMP") ||
                         !strcmp(var, "TEMP")) {
-                std::cout << "B: setting " << var << " to " << winpath << "\n";
+                //std::cout << "B: setting " << var << " to " << winpath << "\n";
                 cygwin_conv_to_win32_path(val, winpath);
                 SetEnvironmentVariable(var, winpath);
             } else {
-                std::cout << "C: setting " << var << " to " << val << "\n";
+                //std::cout << "C: setting " << var << " to " << val << "\n";
                 std::cout.flush();
                 SetEnvironmentVariable(var, val);
             }

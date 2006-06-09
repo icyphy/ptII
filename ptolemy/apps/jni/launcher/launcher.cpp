@@ -174,7 +174,7 @@ private:
     jclass javaClass = env->FindClass(className.c_str());
     if (javaClass == 0) {
       std::ostringstream os;
-      os << "FindClass(\"" << className << "\") failed.";
+      os << "FindClass(\"" << className << "\") failed.\n" << "Try using / separated paths instead of . separated, for example: foo/bar/bif";
       throw UsageError(os.str());
     }
     return javaClass;
