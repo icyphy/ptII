@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModifiedNondeterministicHysteresis_2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
@@ -105,7 +105,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of a&#10;modal model to implement hysteresis, but&#10;where, with a specified probability, the&#10;model fails to switch levels on decting&#10;a threshold crossing.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of a&#10;modal model to implement hysteresis, but&#10;where, with a specified probability, the&#10;model fails to switch levels on detecting&#10;a threshold crossing.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 20.0]">
         </property>
