@@ -39,7 +39,7 @@
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 135.0]">
         </property>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">

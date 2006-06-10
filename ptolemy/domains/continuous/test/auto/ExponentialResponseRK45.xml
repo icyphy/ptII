@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ExponentialResponse" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ExponentialResponseRK45" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
@@ -11,7 +11,7 @@
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-7">
         </property>
-        <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
+        <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK45Solver">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 45.0]">
         </property>
@@ -66,7 +66,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="repeat(100, 0.0)">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="repeat(35, 0.0)">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
