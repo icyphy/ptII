@@ -726,7 +726,7 @@ public class Director extends Attribute implements Executable {
      */
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
-            _debug("Called postfire().");
+            _debug("Director: Called postfire().");
         }
         return !_stopRequested;
     }
