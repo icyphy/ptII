@@ -28,13 +28,14 @@
 package ptolemy.domains.continuous.kernel;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.TimedDirector;
-import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.FixedPointDirector;
-import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.GeneralComparator;
 import ptolemy.actor.util.SuperdenseTime;
 import ptolemy.actor.util.Time;
@@ -52,6 +53,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
@@ -149,6 +152,10 @@ import ptolemy.kernel.util.Settable;
  This is a string that defaults to "ExplicitRK45Solver".
  Solvers are all required to be in package
  "ptolemy.domains.continuous.kernel.solver".
+ If there is another ContinuousDirector above this one
+ in the hierarchy, separated possibly by MultiComposite,
+ then the value of this parameter is ignored and the
+ solver given by the other ContinuousDirector will be used.
     
  <LI> <i>errorTolerance</i>: This is the local truncation
  error tolerance, used for controlling the integration accuracy
@@ -183,7 +190,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.AcceptedRating Red (hyzheng)
  */
 public class ContinuousDirector extends FixedPointDirector implements
-        TimedDirector {
+        TimedDirector, ContinuousStatefulActor, ContinuousStepSizeControlActor {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a NullPointerException
@@ -242,6 +249,10 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  If a solver is changed during execution, the
      *  change does not take effect until the next execution
      *  of the model.
+     *  If there is another ContinuousDirector above this one
+     *  in the hierarchy, separated possibly by MultiComposite,
+     *  then the value of this parameter is ignored and the
+     *  solver given by the other ContinuousDirector will be used.
      */
     public StringParameter ODESolver;
 
@@ -313,29 +324,38 @@ public class ContinuousDirector extends FixedPointDirector implements
     }
 
     /** Perform an integration step. This invokes prefire() and fire() of
-     *  actors (possibly repeatedly) and advances time by one step.
-     *  There are two nested iterative procedures followed.
-     *  The outer one iterates until a suitable step size is
-     *  found. The inner one iterates until a fixed point is
-     *  found at each time point.
-     *  That is, if the solver is a variable step-size solver, then the
-     *  integration step may be repeated until all actors indicate
-     *  that the chosen step size is acceptable (the outer iteration).
-     *  For the inner iteration, at the current time
-     *  and (for multistep solvers) at times between the current
-     *  time and current time plus the step size, actors may be
-     *  repeatedly prefired and fired until a fixed point is reached,
-     *  that is, until all signal values are known.
+     *  actors (possibly repeatedly) and advances the local view of
+     *  time by one step. This normally involves three nested iterative procedures.
+     *  The outer procedure invokes the possibly multiple steps of
+     *  the solver (if it is a multistep solver), unless the step size
+     *  is zero.  The middle one iterates until a suitable step size is
+     *  found. The inner one, implemented by the superclass,
+     *  iterates until a fixed point is found at each time point.
+     *  <p>
+     *  If there is an enclosing ContinuousDirector, however, then this
+     *  method simply performs the current round of execution of the enclosing
+     *  director, using the step size of the enclosing director.
+     *  @throws IllegalActionException If an actor throws it.
      */
     public void fire() throws IllegalActionException {
         
-        // Make sure time does not pass the next breakpoint.
-        _refineStepWRTBreakpoints();
+        _fired = true;
+        
+        // If there is an enclosing director, then just execute its current round.
+        ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
+        if (enclosingDirector != null) {
+            _currentStepSize = enclosingDirector._currentStepSize;
+            _ODESolver._setRound(enclosingDirector._ODESolver._getRound());
+            if (super.prefire()) {
+                super.fire();
+            }
+            return;
+        }
         
         if (_debugging) {
-            _debug("Execute the system from "
-                    + getModelTime()
-                    + " with a step size "
+            _debug("Execute the system from iteration begin time "
+                    + _iterationBeginTime
+                    + " with step size "
                     + _currentStepSize
                     + ".");
         }
@@ -352,7 +372,8 @@ public class ContinuousDirector extends FixedPointDirector implements
             // or the maximum number of iterations is reached.
             int iterations = 0;
             while (!_ODESolver._isStepFinished()
-                    && iterations < _maxIterations && !_stopRequested) {
+                    && iterations < _maxIterations
+                    && !_stopRequested) {
                 // Resolve the fixed point at the current time.
                 // Note that prefire resets all receivers to unknown,
                 // and fire() iterates to a fixed point where all signals
@@ -360,24 +381,33 @@ public class ContinuousDirector extends FixedPointDirector implements
                 // Although super.prefire() is called in the prefire() method,
                 // super.prefire() is called again here, because it may take 
                 // several iterations to complete an integration step. 
-                // FIXME: Optimization opportunity to eliminate the extra prefire() call.
                 if (super.prefire()) {
                     super.fire();
                 }
                 // If the step size is zero, then one iteration is sufficient.
-                if (_currentStepSize == 0) break;
-                // Advance time such that the derivatives of the integrators 
-                // can be calculated correctly for next iteration.
-                double timeIncrement = _ODESolver._incrementRound();
-                if (_currentStepSize > 0 && timeIncrement > 0) {
-                    setModelTime(_iterationBeginTime.add(
-                            _currentStepSize * timeIncrement));
-                }
-                // Increase the iteration counts.
+                if (_currentStepSize == 0.0) break;
+                
+                // Advance the local view of time such that
+                // the derivatives of the integrators 
+                // can be calculated by firing all the actors.
+                // Note that this doesn't change global model time.
+                // It only changes the local view of time.
+                double timeIncrement = _ODESolver._getRoundTimeIncrement();
+                _ODESolver._setRound(_ODESolver._getRound() + 1);
+                setModelTime(_iterationBeginTime.add(_currentStepSize * timeIncrement));
+                
+                // Increase the iteration count.
                 iterations++;
             }
+            // If the step size is accurate and we did not reach the
+            // maximum number of iterations then we are done.
+            // Otherwise, we have to try again with a smaller step size.
+            // FIXME: handling _maxIterations here isn't right.
+            // The step size won't change if we hit maxIterations,
+            // but the integration will be redone anyway.
             if (isStepSizeAccurate() && iterations < _maxIterations) {
-                // All actors agree with the current step size.
+                // All actors agree with the current step size,
+                // or we have reached the maximum allowed number of iterations.
                 // The integration step is finished.
                 break;
             } else {
@@ -386,25 +416,12 @@ public class ContinuousDirector extends FixedPointDirector implements
                 _setCurrentStepSize(refinedStepSize());
 
                 if (_debugging) {
-                    _debug("Refine the current step size to: " 
+                    _debug("Step was not accurate. Refine the step size to: " 
                             + _currentStepSize);
                 }
-                // Restore model time to the start of the integration step.
-                setModelTime(_iterationBeginTime);
-                
                 // Restore the saved state of the stateful actors, 
                 // including the save starting time of this integration.
-                // FIXME: may generate a StatefulActor set for more 
-                // efficient execution.
-                Schedule schedule = getScheduler().getSchedule();
-                Iterator firingIterator = schedule.firingIterator();
-                while (firingIterator.hasNext() && !_stopRequested) {
-                    Actor actor = ((Firing) firingIterator.next()).getActor();
-                    if (actor instanceof ContinuousStatefulActor) {
-                        _debug("Restoring states of " + actor);
-                        ((ContinuousStatefulActor) actor).rollBackToCommittedState();
-                    }
-                }
+                rollBackToCommittedState();
             }
         }
     }
@@ -437,6 +454,9 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Insert a superdense time object as a breakpoint into the 
         // breakpoint table.
         _breakpoints.insert(new SuperdenseTime(time, index));
+        if (_debugging){
+            _debug("Inserted breakpoint with time = " + time + ", and index = " + index);
+        }
     }
 
     /** Return the current integration step size.
@@ -467,13 +487,10 @@ public class ContinuousDirector extends FixedPointDirector implements
         return _maxIterations;
     }
 
-    /** Return the current iteration begin time plus the current step size.
-     *  @return The iteration begin time plus the current step size.
+    /** Return the end time of the current integration step.
+     *  @return The next time at which controlled actors will be fired.
      */
     public Time getModelNextIterationTime() {
-        // FIXME: the semantics of this method is unclear... 
-        // when should this method be called? after the step size is confirmed?
-        // before the current time gets updated? only in postfire() method?
         return _iterationBeginTime.add(_currentStepSize);
     }
 
@@ -511,29 +528,32 @@ public class ContinuousDirector extends FixedPointDirector implements
         // set current time and initialize actors.
         super.initialize();
 
-        // register the start time as a breakpoint.
-        if (_debugging) {
-            _debug("Set the start time as a breakpoint: " + getModelStartTime());
-        }
-        fireAt((Actor) getContainer(), getModelStartTime());
+        // Make sure the first step has zero step size.
+        // This ensures that actors like plotters will be postfired at the start time.
+        _currentStepSize = 0.0;
 
-        // register the stop time as a breakpoint.
-        if (_debugging) {
-            _debug("Set the stop time as a breakpoint: " + getModelStopTime());
+        // If we are embedded, then request a firing at the start and
+        // stop times.
+        if (_isEmbedded()) {
+            Actor container = (Actor)getContainer();
+            Director director = container.getExecutiveDirector();
+            director.fireAt(container, getModelStartTime());
+            director.fireAt(container, getModelStopTime());
         }
-        fireAt((Actor) getContainer(), getModelStopTime());
 
         // Record starting point of the real time (the computer system time)
         // in case the director is synchronized to the real time.
         _timeBase = System.currentTimeMillis();
+        
+        _fired = false;
     }
 
     /** Return true if all step size control actors agree that the current 
      *  step is accurate.
      *  @return True if all step size control actors agree with the current
-     *  step size.
+     *   step size.
      */
-    public boolean isStepSizeAccurate() throws IllegalActionException {
+    public boolean isStepSizeAccurate() {
         _debug("Check accuracy for output step size control actors:");
     
         // A zero step size is always accurate.
@@ -541,67 +561,54 @@ public class ContinuousDirector extends FixedPointDirector implements
     
         boolean accurate = true;
     
-        // Get all the step size control actors.
-        Schedule schedule = getScheduler().getSchedule();
-        Iterator firingIterator = schedule.firingIterator();
-        while (firingIterator.hasNext() && !_stopRequested) {
-            Actor actor = ((Firing) firingIterator.next()).getActor();
-            // Ask -ALL- the actors whether the current step size is accurate.
-            // THIS IS VERY IMPORTANT!!!
-            // All actors are guranteed to be asked once even if some
-            // actors already set the "accurate" variable to false.
-            // The reason is that event generators do not check the step size
-            // accuracy in their fire emthods and they need to check the 
-            // existence of events in the special isStepSizeAccurate() method.
-            // FIXME: may generate StepSizeControlActor set for more 
-            // efficient execution.
-            if (actor instanceof ContinuousStepSizeControlActor) {
-                boolean thisAccurate = 
-                    ((ContinuousStepSizeControlActor) actor).isStepSizeAccurate();
-                if (_debugging) {
-                    _debug("  Checking output step size control actor: "
-                            + actor.getName() 
-                            + ", which returns " 
-                            + thisAccurate);
-                }
-                accurate = accurate && thisAccurate;
+        // Ask the actors whether the current step size is accurate.
+        Iterator stepSizeControlActors = _stepSizeControlActors().iterator();
+        while (stepSizeControlActors.hasNext() && !_stopRequested) {
+            ContinuousStepSizeControlActor actor
+                    = (ContinuousStepSizeControlActor) stepSizeControlActors.next();
+            boolean thisAccurate = actor.isStepSizeAccurate();
+            if (_debugging) {
+                _debug("  Checking output step size control actor: "
+                        + ((NamedObj)actor).getFullName() 
+                        + ", which returns " 
+                        + thisAccurate);
             }
+            accurate = accurate && thisAccurate;
         }
-    
         if (_debugging) {
-            _debug("Overall output accuracy result: " + accurate);
+            _debug("Overall output is accurate: " + accurate);
         }
-        
         return accurate;
     }
 
     /** If this director is not at the top level and the breakpoint table
-     *  is not empty, request a refiring at the first breakpoint.
-     *  If the <i>synchronizeToRealTime</i> parameter is <i>true</i>,
-     *  then this method will block execution until the real time catches
-     *  up with current model time. The units for time are seconds. Then,
-     *  call the super.postfire() method and return its result.
-     *  
+     *  is not empty, request a refiring at the first breakpoint or at
+     *  the local current time (iteration start time plus the step size),
+     *  whichever is less.
+     *  Postfire all controlled actors.
      *  @return True if the Director wants to be fired again in the future.
-     *  @exception IllegalActionException If states cannot be marked, or
-     *  the current model time exceeds the stop time, or refiring can not 
-     *  be granted, or the super class throws it.
+     *  @exception IllegalActionException If the current model time exceeds
+     *   the stop time, or refiring can not be granted, or the super class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        // Postfire all actors.
-        boolean result = super.postfire();
-
-        Time modelTime = getModelTime();
+        if (_debugging) {
+            _debug("ContinuousDirector: Called postfire().");
+        }
         
         // If the current time is equal to the stop time, return false.
         // Check, however, to make sure that the breakpoints table
         // does not contain the current model time, which would mean
         // that more events may be generated at this time.
+        // If the index of the breakpoint is the same as the current
+        // index, then we have executed it.
+        Time modelTime = getModelTime();
         if (modelTime.equals(getModelStopTime())) {
             SuperdenseTime nextBreakpoint = 
-                (SuperdenseTime) _breakpoints.first();
-            if (nextBreakpoint == null || 
-                    nextBreakpoint.timestamp().compareTo(modelTime) > 0) {
+                    (SuperdenseTime) _breakpoints.first();
+            if (nextBreakpoint == null
+                    || nextBreakpoint.timestamp().compareTo(modelTime) > 0) {
+                // Postfire the contained actors.
+                boolean result = super.postfire();
                 return false;
             }
         }
@@ -614,32 +621,131 @@ public class ContinuousDirector extends FixedPointDirector implements
                     "Current time exceeds the specified stopTime.");
         }
 
-        // The update of the model time gets confimed during the fire method.
-        // Update the index in the postfire method.
+        // Set the suggested step size for next integration step.
+        double suggestedStepSize = suggestedStepSize();
+        _setCurrentStepSize(suggestedStepSize);
+
+        // Make sure time does not pass the next breakpoint.
+        // If it matches current time, this removes the first
+        // breakpoint from the table.
+        _refineStepWRTBreakpoints();
+        
+        // Make sure the time does not exceed the next iteration
+        // time of the environment.
+        _refineStepWRTEnvironment();
+
+        // Postfire the contained actors.
+        // Do this after fixing the next step size because
+        // inside continous actors will choose the same step size.
+        boolean result = super.postfire();
+
+        // Update the index.
         if (_currentStepSize == 0.0) {
             _index++;
         } else {
             _index = 0;
         }
         
-        // Set the suggested step size for next integration step.
-        _setCurrentStepSize(suggestedStepSize());
+        // If the step size is greater than zero, then
+        // figure out what time this model should be re-awakened.
+        // NOTE: Current time + step size is not on the breakpoint table.
+        if (_currentStepSize > 0.0) {
+            Time nextIterationTime = _iterationBeginTime.add(_currentStepSize);
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
+            if (nextBreakpoint != null) {
+                Time nextBreakpointTime = nextBreakpoint.timestamp();
+                if (nextBreakpointTime.compareTo(nextIterationTime) < 0) {
+                    nextIterationTime = nextBreakpointTime;
+                }
+            }
+            // If this director is enclosed within an opaque composite
+            // actor, then request that the enclosing director refire
+            // the composite actor containing this director.
+            if (_isEmbedded()) {
+                CompositeActor container = (CompositeActor) getContainer();
+                container.getExecutiveDirector().fireAt(container, nextIterationTime);
+            }
+        }
+        return result;
+    }
 
-        // If this director is enclosed within an opaque composite
-        // actor, then request that the enclosing director refire
-        // the composite actor containing this director.
-        SuperdenseTime nextBreakpoint = 
-            (SuperdenseTime) _breakpoints.first();
-        if (_isEmbedded() && nextBreakpoint != null) {
-            CompositeActor container = (CompositeActor) getContainer();
-            container.getExecutiveDirector().fireAt(
-                    container, nextBreakpoint.timestamp());
+    /** Call the prefire() method of the super class and return its value.
+     *  Record the current model time as the beginning time of the current
+     *  iteration, and if there is a pending invocation of postfire()
+     *  from a previous integration step, invoke that now.
+     *  If the <i>synchronizeToRealTime</i> parameter is <i>true</i>,
+     *  then this method will block execution until the real time catches
+     *  up with current model time. The units for time are seconds.
+     *  @return True if this director is ready to fire.
+     *  @exception IllegalActionException If thrown by the super class,
+     *   or if the model time of the environment is less than our current
+     *   model time.
+     */
+    public boolean prefire() throws IllegalActionException {
+        
+        // If we are not at the toplevel, then check the model
+        // time of the environment against ours.
+        Nameable container = getContainer();
+        Director executiveDirector = ((Actor) container).getExecutiveDirector();
+        if (executiveDirector != null) {
+            Time outTime = executiveDirector.getModelTime();
+            int comparison = _currentTime.compareTo(outTime);
+            if (comparison > 0) {
+                throw new IllegalActionException(this,
+                        "Model time in the environment is less than my model time. "
+                        + "Environment: "
+                        + outTime
+                        + ", my model time: "
+                        + _currentTime);
+            } else if (comparison < 0 && executiveDirector != _enclosingContinuousDirector()) {
+                _catchUpTo(outTime);
+            }
+        }
+        
+        // If the current time and index matches the first entry in the breakpoint
+        // table, then remove that entry.
+        if (!_breakpoints.isEmpty()) {
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
+            Time breakpointTime = nextBreakpoint.timestamp();
+            int comparison = breakpointTime.compareTo(_currentTime);
+            if (comparison < 0) {
+                throw new IllegalActionException(this,
+                        "Missed a breakpoint time at "
+                        + breakpointTime
+                        + ", with index "
+                        + nextBreakpoint.index());
+            }
+            if (comparison == 0) {
+                if (nextBreakpoint.index() == _index) {
+                    if (_debugging){
+                        _debug("The current superdense time is a breakpoint, "
+                                + nextBreakpoint + " , which is removed.");
+                    }
+                    _breakpoints.removeFirst();
+                } else if (nextBreakpoint.index() < _index) {
+                    throw new IllegalActionException(this,
+                            "Missed a breakpoint time at "
+                            + breakpointTime
+                            + ", with index "
+                            + nextBreakpoint.index());                    
+                }
+            }
         }
 
+        // The super.prefire() method cannot be called before this point
+        // because it sets the local model time to match that of the
+        // executive director.
+        boolean prefireReturns = super.prefire();
+
+        // Set the start time of the current iteration.
+        // The iterationBegintime will be used for roll back when the current
+        // step size is incorrect.
+        _iterationBeginTime = _currentTime;
+        
         // Synchronize to real time if necessary.
         if (((BooleanToken) synchronizeToRealTime.getToken()).booleanValue()) {
             long realTime = System.currentTimeMillis() - _timeBase;
-            long simulationTime = (long) ((modelTime.subtract(
+            long simulationTime = (long) ((_iterationBeginTime.subtract(
                     getModelStartTime()).getDoubleValue()) * 1000);
             long timeDifference = simulationTime - realTime;
             // If the time difference is large enough, go to sleep.
@@ -656,32 +762,10 @@ public class ContinuousDirector extends FixedPointDirector implements
             } else {
                 if (_debugging) {
                     _debug("Warning: cannot achieve real-time performance"
-                            + " at simulation time " + modelTime);
+                            + " at simulation time " + _iterationBeginTime);
                 }
             }
         }
-        
-        return result;
-    }
-
-    /** Call the prefire() method of the super class and return its value.
-     *  Record the current model time as the beginning time of the current
-     *  iteration.
-     *  @return True if this director is ready to fire.
-     *  @exception IllegalActionException If thrown by the super class.
-     */
-    public boolean prefire() throws IllegalActionException {
-        // The super.prefire() has to be called at the very beginning because
-        // it synchronizes the model time with that of the executive director,
-        // which changes the _currentTime.
-        boolean prefireReturns = super.prefire();
-    
-        // Set the start time of the current iteration.
-        // The begin time of an iteration and the model time can only be 
-        // changed by directors.
-        // The iterationBegintime will be used for roll back when the current
-        // step size is incorrect.
-        _iterationBeginTime = getModelTime();
     
         return prefireReturns;
     }
@@ -723,16 +807,11 @@ public class ContinuousDirector extends FixedPointDirector implements
         double timeResolution = getTimeResolution();
         double refinedStep = _currentStepSize;
     
-        // FIXME: may generate StepSizeControlActor set for more 
-        // efficient execution.
-        Schedule schedule = getScheduler().getSchedule();
-        Iterator firingIterator = schedule.firingIterator();
-        while (firingIterator.hasNext() && !_stopRequested) {
-            Actor actor = ((Firing) firingIterator.next()).getActor();
-            if (actor instanceof ContinuousStepSizeControlActor) {
-                refinedStep = Math.min(refinedStep, 
-                        ((ContinuousStepSizeControlActor) actor).refinedStepSize());
-            }
+        Iterator stepSizeControlActors = _stepSizeControlActors().iterator();
+        while (stepSizeControlActors.hasNext() && !_stopRequested) {
+            ContinuousStepSizeControlActor actor
+                    = (ContinuousStepSizeControlActor) stepSizeControlActors.next();
+            refinedStep = Math.min(refinedStep, actor.refinedStepSize());
         }
     
         // If the requested step size is smaller than the time
@@ -760,6 +839,22 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
         return refinedStep;
     }
+    
+    /** Roll back all actors that implement ContinuousStatefulActor
+     *  to committed state, and set local model time to the start
+     *  of the integration period.
+     */
+    public void rollBackToCommittedState() {
+        // Restore the local view of model time to
+        // the start of the integration step.
+        setModelTime(_iterationBeginTime);
+        
+        Iterator rollbacks = _statefulActors().iterator();
+        while (rollbacks.hasNext()) {
+            ContinuousStatefulActor actor = (ContinuousStatefulActor) rollbacks.next();
+            actor.rollBackToCommittedState();
+        }
+    }
 
     /** Set a new value to the current time of the model, where the new
      *  time can be earlier than the current time to support rollback.
@@ -777,19 +872,16 @@ public class ContinuousDirector extends FixedPointDirector implements
     }
 
     /** Return an array of suggested ModalModel directors to use
-     *  with ContinuousDirector. The default director is HSFSMDirector, which
-     *  is used in hybrid system. FSMDirector could also be used
-     *  with ContinuousDirector in some simple cases.
+     *  with ContinuousDirector. The only available director is
+     *  ModalDirector because we need a director that implements
+     *  the strict actor semantics.
      *  @return An array of suggested directors to be used with ModalModel.
-     *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
         // This method does not call the method defined in the super class,
         // because this method provides complete new information.
-        // Default is a HSFSMDirector, while FSMDirector is also in the array.
-        String[] defaultSuggestions = new String[2];
-        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.HSFSMDirector";
-        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
+        String[] defaultSuggestions = new String[1];
+        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.ModalDirector";
         return defaultSuggestions;
     }
 
@@ -798,39 +890,38 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  and it never exceeds 10 times of the current step size.
      *  If there are no step size control actors at all, then return
      *  5 times of the current step size. However, the suggested step size
-     *  never exceeds the maximum step size.
+     *  never exceeds the maximum step size.  If this director has not been
+     *  fired since initialize() or the previous call to suggestedStepSize(),
+     *  then return the value of <i>maxStepSize</i>.
      *  @return The suggested step size for next integration.
-     *  @exception IllegalActionException If the scheduler throws it.
      */
-    public double suggestedStepSize() throws IllegalActionException {
-        double suggestedStep = _currentStepSize;
-        if (suggestedStep == 0.0) {
+    public double suggestedStepSize() {
+        if (!_fired) {
+            return _maxStepSize;
+        }
+        _fired = false;
+        if (_currentStepSize == 0.0) {
             // The current step size is 0.0. Predict a positive value to let
             // time advance.
-            suggestedStep = _initStepSize;
+            return _initStepSize;
         } else {
-            suggestedStep = 10.0 * _currentStepSize;
-            // FIXME: may generate ContinuousStepSizeControlActor set for more 
-            // efficient execution.
-            Schedule schedule = getScheduler().getSchedule();
-            Iterator firingIterator = schedule.firingIterator();
-            while (firingIterator.hasNext() && !_stopRequested) {
-                Actor actor = ((Firing) firingIterator.next()).getActor();
-                if (actor instanceof ContinuousStepSizeControlActor) {
-                    double suggestedStepSize = 
-                        ((ContinuousStepSizeControlActor) actor)
-                            .suggestedStepSize();
-                        if (suggestedStep > suggestedStepSize) {
-                            suggestedStep = suggestedStepSize;
-                        }
+            // FIXME: This seems odd.  Why not just use _maxStepSize?
+            double suggestedStep = 10.0 * _currentStepSize;
+            Iterator stepSizeControlActors = _stepSizeControlActors().iterator();
+            while (stepSizeControlActors.hasNext() && !_stopRequested) {
+                ContinuousStepSizeControlActor actor
+                        = (ContinuousStepSizeControlActor) stepSizeControlActors.next();
+                double suggestedStepSize = actor.suggestedStepSize();
+                if (suggestedStep > suggestedStepSize) {
+                    suggestedStep = suggestedStepSize;
                 }
             }
             // The suggested step size should not exceed the maximum step size.
             if (suggestedStep > _maxStepSize) {
                 suggestedStep = _maxStepSize;
             }
+            return suggestedStep;
         }
-        return suggestedStep;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -961,6 +1052,78 @@ public class ContinuousDirector extends FixedPointDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Perform integration up to the specified target time, which is
+     *  assumed to be in the future relative to current time.
+     *  For all steps earlier the targetTime, force all inputs to
+     *  be absent before executing at those times.
+     *  @throws IllegalActionException If an actor throws it.
+     */
+    private void _catchUpTo(Time targetTime) throws IllegalActionException {
+        // FIXME: Not implemented yet.
+        throw new IllegalActionException(this,
+                "Catch up to future time is not implemented yet!");
+    }
+    
+    /** Return a list of all the enclosed continuous directors.
+     *  These are instances of this class that are either contained
+     *  by opaque composite actors in the specified composite, or
+     *  are contained by opaque composite actors that are refinements
+     *  of a MultiComposite directly contained by the specified composite.
+     *  @return A list of enclosed instances of ContinuousDirector.
+     */
+    private List _enclosedContinuousDirectors(CompositeEntity composite) {
+        if (_enclosedContinuousDirectorsVersion != _workspace.getVersion()) {
+            _enclosedContinuousDirectors.clear();
+            Iterator composites = composite.entityList(CompositeActor.class).iterator();
+            while (composites.hasNext()) {
+                CompositeActor actor = (CompositeActor)composites.next();
+                if (actor.isOpaque()) {
+                    Director director = actor.getDirector();
+                    if (director instanceof ContinuousDirector) {
+                        _enclosedContinuousDirectors.add(director);
+                    } else {
+                        /* FIXME: Define a MultiComposite interface in the kernel
+                        and have MultiCompositeActor and ModalModel implement it.
+                        Then do:
+                        else if (actor instanceof MultiComposite) {
+                        // Iterate over the refinements and do:
+                         _stepSizeControlActors.addAll(_enclosedContinuousDirectors(refinement));
+                         } */
+                    }
+                }
+            }
+            _enclosedContinuousDirectorsVersion = _workspace.getVersion();
+        }
+        return _enclosedContinuousDirectors;
+    }
+
+    /** Return the enclosing continuous director, or null if there
+     *  is none.  The enclosing continous director is a director
+     *  above this in the hierarchy, possibly separated by composite
+     *  actors that implement the MultiComposite interface.
+     *  @return The enclosing ContinuousDirector, or null if there is none.
+     */
+    private ContinuousDirector _enclosingContinuousDirector() {
+        if (_enclosingContinuousDirectorVersion != _workspace.getVersion()) {
+            // Update the cache.
+            _enclosingContinuousDirector = null;
+            NamedObj container = getContainer().getContainer();
+            while (container != null) {
+                if (container instanceof Actor) {
+                    Director director = ((Actor)container).getDirector();
+                    if (director instanceof ContinuousDirector) {
+                        _enclosingContinuousDirector = (ContinuousDirector)director;
+                    }
+                    // FIXME: Handle intervening FSMs or Case.
+                    break;
+                }
+                container = container.getContainer();
+            }
+            _enclosingContinuousDirectorVersion = _workspace.getVersion();
+        }
+        return _enclosingContinuousDirector;
+    }
+    
     /** Initialize the local variables of this ContinuousDirector. Create or
      *  clear the breakpoints table. Instantiate an ODE solver. 
      *  This method is called in the preinitialize method.
@@ -987,38 +1150,69 @@ public class ContinuousDirector extends FixedPointDirector implements
 
         // Instantiate an ODE solver, using the class name given
         // by ODESolver.
-        String solverClassName = ((StringToken) ODESolver.getToken()).stringValue().trim();
+        String solverClassName;
+        // If there is an enclosing ContinuousDirector, then use its solver
+        // specification instead of the local one.
+        ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
+        if (enclosingDirector != null) {
+            solverClassName = ((StringToken) enclosingDirector.ODESolver.getToken()).stringValue().trim();
+        } else {
+            solverClassName = ((StringToken) ODESolver.getToken()).stringValue().trim();
+        }
         _ODESolver = _instantiateODESolver(_solverClasspath + solverClassName);
     }
-
+    
     /** Modify the current step size so that current model time plus the
-     *  step size does not exceed the time of the next breakpoint.
-     *  NOTE: if the current time is a breakpoint, that breakpoint is
-     *  removed. Otherwise, the breakpoint table is left unmodified.
-     *  If the current time is a breakpoint, the index is updated by the
-     *  removed breakpoint. Otherwise, the index is reset to 0.
+     *  step size does not exceed the time of the next breakpoint nor
+     *  the stop time of the model.
      */
     private void _refineStepWRTBreakpoints() {
         if (!_breakpoints.isEmpty()) {
-            SuperdenseTime nextBreakpoint = 
-                (SuperdenseTime) _breakpoints.first();
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
             if (_debugging){
                 _debug("The first breakpoint is at " + nextBreakpoint);
             }
             Time breakpointTime = nextBreakpoint.timestamp();
-            Time modelTime = getModelTime();
-            if (breakpointTime.compareTo(modelTime) == 0 && 
-                    nextBreakpoint.index() == _index) {
-                if (_debugging){
-                    _debug("The current superdense tiime is a breakpoint, "
-                            + nextBreakpoint + " , which is removed.");
-                }
-                _breakpoints.removeFirst();
-            }
-            double maximumAllowedStepSize = nextBreakpoint.timestamp()
-                .subtract(getModelTime()).getDoubleValue();
+            double maximumAllowedStepSize = breakpointTime
+                    .subtract(getModelTime()).getDoubleValue();
             if (_currentStepSize > maximumAllowedStepSize) {
                 _currentStepSize = maximumAllowedStepSize;
+                if (_debugging) {
+                    _debug("----- Revising step size due to breakpoints to "
+                            + _currentStepSize);
+                }
+            }
+        }
+        // Next ensure the selected step size does not take us
+        // past the stop time.
+        Time targetTime = getModelTime().add(_currentStepSize);
+        if (targetTime.compareTo(getModelStopTime()) > 0) {
+            _currentStepSize = getModelStopTime()
+                      .subtract(getModelTime()).getDoubleValue();
+            if (_debugging) {
+                _debug("----- Revising step size due to stop time to "
+                        + _currentStepSize);
+            }
+        }
+    }
+
+    /** If necesssary, modify the current step size so that
+     *  current model time plus the step size does not exceed
+     *  the time of the next iteration of the environment.
+     *  If this director controls a top-level model, then there
+     *  is no environment, so this method does nothing.
+     */
+    private void _refineStepWRTEnvironment() {
+        if (_isEmbedded()) {
+            CompositeActor container = (CompositeActor) getContainer();
+            Time environmentTime = container.getExecutiveDirector().getModelNextIterationTime();
+            Time localTargetTime = _currentTime.add(_currentStepSize);
+            if (environmentTime.compareTo(localTargetTime) < 0) {
+                _currentStepSize = environmentTime.subtract(_currentTime).getDoubleValue();
+                if (_debugging) {
+                    _debug("----- Revising step size due to environment to "
+                            + _currentStepSize);
+                }
             }
         }
     }
@@ -1035,6 +1229,48 @@ public class ContinuousDirector extends FixedPointDirector implements
         _currentStepSize = stepSize;
     }
     
+    /** Return a list of stateful actors.
+     *  @return A list of actors implementing ContinuousStatefulActor.
+     */
+    private List _statefulActors() {
+        if (_workspace.getVersion() != _statefulActorsVersion) {
+            // Construct the list.
+            _statefulActors.clear();
+            CompositeEntity container = (CompositeEntity)getContainer();
+            Iterator actors = container.deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Object actor = actors.next();
+                if (actor instanceof ContinuousStatefulActor) {
+                    _statefulActors.add(actor);
+                }
+                _statefulActors.addAll(_enclosedContinuousDirectors(container));
+            }
+            _statefulActorsVersion = _workspace.getVersion();
+        }
+        return _statefulActors;
+    }
+    
+    /** Return a list of step-size control actors.
+     *  @return A list of step-size control actors.
+     */
+    private List _stepSizeControlActors() {
+        if (_workspace.getVersion() != _stepSizeControlActorsVersion) {
+            // Construct the list.
+            _stepSizeControlActors.clear();
+            CompositeEntity container = (CompositeEntity)getContainer();
+            Iterator actors = container.deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Object actor = actors.next();
+                if (actor instanceof ContinuousStepSizeControlActor) {
+                    _stepSizeControlActors.add(actor);
+                }
+                _stepSizeControlActors.addAll(_enclosedContinuousDirectors(container));
+            }
+            _stepSizeControlActorsVersion = _workspace.getVersion();
+        }
+        return _stepSizeControlActors;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
@@ -1043,9 +1279,24 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** Simulation step sizes. */
     private double _currentStepSize;
+    
+    /** A list of the enclosed continuous directors. */
+    private List _enclosedContinuousDirectors = new LinkedList();
+    
+    /** The version for _enclosedContinuousDirectors. */
+    private long _enclosedContinuousDirectorsVersion = -1;
 
-    /** the error tolerance for state resolution */
+    /** The enclosing continuous director. */
+    private ContinuousDirector _enclosingContinuousDirector = null;
+    
+    /** The version for __enclosingContinuousDirector. */
+    private long _enclosingContinuousDirectorVersion = -1;
+
+    /** The error tolerance for state resolution. */
     private double _errorTolerance;
+    
+    /** An indicator of whether this actor has been fired. */
+    private boolean _fired = false;
 
     /** A cache of the value of initStepSize. */
     private double _initStepSize;
@@ -1063,13 +1314,25 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  the <i>ODESolver</i> parameter.
      */
     private ContinuousODESolver _ODESolver = null;
-
+    
     /** The package name for the solvers supported by this director. */
     private static String _solverClasspath = 
         "ptolemy.domains.continuous.kernel.solver.";
     
     /** The cached value of the startTime parameter. */
     private Time _startTime;
+    
+    /** The list of stateful actors. */
+    private List _statefulActors = new LinkedList();
+    
+    /** The version for the list of step size control actors. */
+    private long _statefulActorsVersion = -1;
+    
+    /** The list of step size control actors. */
+    private List _stepSizeControlActors = new LinkedList();
+    
+    /** The version for the list of step size control actors. */
+    private long _stepSizeControlActorsVersion = -1;
 
     /** The cached value of the stopTime parameter. */
     private Time _stopTime;

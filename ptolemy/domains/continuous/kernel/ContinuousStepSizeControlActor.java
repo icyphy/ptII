@@ -27,6 +27,8 @@
  */
 package ptolemy.domains.continuous.kernel;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousStepSizeControlActor
@@ -107,6 +109,7 @@ public interface ContinuousStepSizeControlActor {
      *  If the actor does not need a smaller step size, then
      *  this method should return the current step size.
      *  @return The suggested refined step size.
+     *  @throws IllegalActionException If the step size cannot be further refined.
      */
-    public double refinedStepSize();
+    public double refinedStepSize() throws IllegalActionException;
 }

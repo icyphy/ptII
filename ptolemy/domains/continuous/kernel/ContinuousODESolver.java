@@ -105,6 +105,9 @@ public abstract class ContinuousODESolver {
     public abstract double integratorSuggestedStepSize(
             ContinuousIntegrator integrator);
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
     /** Report a debug message via the director.
      *  @param message The message.
      */
@@ -112,8 +115,20 @@ public abstract class ContinuousODESolver {
         _director._reportDebugMessage(message);
     }
 
+    /** Get the current round factor. If the rounds are
+     *  finished, then return 1.0.
+     *  @see _isStepFinished()
+     */
+    protected abstract double _getRoundTimeIncrement();
+
+    /** Return the current round.
+     *  @return The current round.
+     */
+    protected abstract int _getRound();
+    
     /** Increment the round and return the time increment associated
-     *  with the round.
+     *  with the round. The time increment is a factor that will be
+     *  multiplied by the step size. It is less than or equal to one.
      *  @return The time increment associated with the next round.
      */
     protected abstract double _incrementRound() throws IllegalActionException; 
@@ -147,6 +162,13 @@ public abstract class ContinuousODESolver {
      *  we have not converged to a solution if the ODE solver is implicit.
      */
     protected abstract void _reset();
+    
+    /** Set the round for the next integration step.
+     *  This must be between zero and the value returned by
+     *  getIntegratorAuxVariableCount().
+     *  @see getIntegratorAuxVariableCount()
+     */
+    protected abstract void _setRound(int round);
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
