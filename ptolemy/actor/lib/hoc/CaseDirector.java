@@ -106,16 +106,6 @@ public class CaseDirector extends Director {
         }
     }
 
-    /** Return the next iteration time provided by the refinement of the
-     *  current state of the mode controller. If the refinement does not
-     *  provide this, return that given by the superclass.
-     *  @return The time of the next iteration.
-     */
-    public Time getModelNextIterationTime() {
-        Case container = (Case) getContainer();
-        return container._current.getDirector().getModelNextIterationTime();
-    }
-
     /** Fire the current refinement.
      *  @exception IllegalActionException If refinement throws it.
      */
