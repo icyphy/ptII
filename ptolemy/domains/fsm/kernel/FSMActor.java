@@ -936,8 +936,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     /** Return an enabled transition among the given list of transitions.
-     *  <p>
-     *  If there is only transition enabled, return that transition.
+     *  If there is only one transition enabled, return that transition.
      *  In case there are multiple enabled transitions, if any of
      *  them is not nondeterministic, throw an exception. See {@link Transition}
      *  for the explanation of "nondeterministic". Otherwise, randomly choose

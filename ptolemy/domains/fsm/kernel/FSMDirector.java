@@ -74,9 +74,10 @@ import ptolemy.kernel.util.Workspace;
  When a modal model is fired, this director first transfers the input tokens
  from the outside domain to the mode controller and the refinement of its
  current state. The preemptive transitions from the current state of the mode
- controller are examined. If there is more than one transition enabled, an
+ controller are examined. If there is more than one transition enabled, and
+ any of the enabled transitions is not marked nondeterministic, an
  exception is thrown. If there is exactly one preemptive transition enabled
- then it is chosen. The choice actions contained by the transition are
+ then it is chosen. The choice actions (outputActions) contained by the transition are
  executed. Any output token produced by the mode controller is transferred to
  both the output ports of the modal model and the input ports of the mode
  controller. Then the refinements associated with the enabled transition are
@@ -89,7 +90,8 @@ import ptolemy.kernel.util.Workspace;
  both the output ports of the modal model and the input ports of the mode
  controller. After this, the non-preemptive transitions from the current
  state of the mode controller are examined. If there is more than one
- transition enabled, an exception is thrown. If there is exactly one
+ transition enabled, and any of the enabled transitions is not marked
+ nondeterministic, an exception is thrown. If there is exactly one
  non-preemptive transition enabled then it is chosen and the choice actions
  contained by the transition are executed. Any output token produced by the
  mode controller is transferred to the output ports of the modal model and
@@ -169,9 +171,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
     ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute is
-     *  the <i>controllerName</i> attribute, record the change but do not
-     *  check whether there is an FSMActor with the specified name in the
-     *  container of this director.
+     *  the <i>controllerName</i> attribute, then make note that this
+     *  has changed.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If thrown by the superclass
      *  attributeChanged() method.
@@ -202,24 +203,11 @@ public class FSMDirector extends Director implements ModelErrorHandler,
     }
 
     /** Fire the model model for one iteration.
-     *  <p>
-     *  Set the values of input variables in the mode controller. Examine
-     *  the preemptive outgoing transitions of its current state. Throw an
-     *  exception if there is more than one transition enabled. If there
-     *  is exactly one preemptive transition enabled then it is chosen and
-     *  the choice actions and transition refinements contained by the enabled
-     *  transition are executed. The refinement of the current state of the
-     *  mode controller is not fired.
-     *  <p>
-     *  If no preemptive transition is enabled and the refinement is ready
-     *  to fire in the current iteration, fire the refinement. The
-     *  non-preemptive transitions from the current state of the mode
-     *  controller are examined. If there is more than one transition
-     *  enabled, an exception is thrown. If there is exactly one
-     *  non-preemptive transition enabled then it is chosen and the choice
-     *  actions and transition refinements contained by the transition are
-     *  executed.
-     *  <p>
+     *  If there is a preemptive transition enabled, execute its choice
+     *  actions (outputActions) and fire its refinement. Otherwise,
+     *  fire the refinement of the current state. After this firing,
+     *  if there is a transition enabled, execute its choice actions
+     *  and fire the refinement of the transition.
      *  If any tokens are produced during this iteration, they are sent to
      *  both the output ports of the model model but also the input ports of
      *  the mode controller.
@@ -229,21 +217,17 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      */
     public void fire() throws IllegalActionException {
         FSMActor ctrl = getController();
-
-        if (_debugging && _verbose) {
-            _debug(getFullName(), " find FSMActor " + ctrl.getName()
-                    + " at time: " + getModelTime());
+        if (_debugging) {
+            _debug("Firing " + getFullName(), " at time " + getModelTime());
         }
-
         ctrl._readInputs();
-
         State st = ctrl.currentState();
 
         Transition tr = ctrl._chooseTransition(st.preemptiveTransitionList());
         _enabledTransition = tr;
 
         if (tr != null) {
-            // First execute the refinemtns of transition
+            // First execute the refinements of the transition.
             Actor[] actors = tr.getRefinement();
 
             if (actors != null) {
@@ -321,39 +305,21 @@ public class FSMDirector extends Director implements ModelErrorHandler,
     }
 
     /** Schedule a firing of the given actor at the given time.
-     *  <p>
      *  If there exists an executive director, this method delegates to
      *  the fireAt() method of the executive director by requesting
      *  a firing of the container of this director at the given time.
-     *  The actor should be either the mode controller or the refinement
-     *  of one of its states. For both cases, the actor is only fired
-     *  when the container of this director reaches the given time.
-     *  In the second case, if the actor is not the refinement of the
-     *  current state of the mode controller when the execution reaches the
-     *  given time, the firing is ignored.
-     *
-     *  FIXME: the last sentence does not make sense: how does the upper level
-     *  director knows which refinement requests a refiring? I guess what really
-     *  happens is that the modal model gets fired anyway, but there may be
-     *  nothing interesting... For example, a DE refinement simply returns
-     *  false in its prefire() method.
-     *
+     *  If there is no executive director, then the request is ignored.
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
-     *  @exception IllegalActionException If thrown in scheduling
-     *  a firing of the container of this director at the given
-     *  time with the executive director.
+     *  @exception IllegalActionException If thrown by the executive director.
      */
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
-        // FIXME: Changed by liuj, not yet reviewed.
         // Note that the actor parameter is ignored, because it does not
         // matter which actor requests firing.
         Nameable container = getContainer();
-
         if (container instanceof Actor) {
             Actor modalModel = (Actor) container;
             Director executiveDirector = modalModel.getExecutiveDirector();
-
             if (executiveDirector != null) {
                 executiveDirector.fireAt(modalModel, time);
             } else {
@@ -489,7 +455,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      *  an exception will be thrown. For future designs, different ways to
      *  handle this situation will be introduced here.
      *  <p>
-     *  When an invariant is violated, this method checks whether there exits
+     *  When an invariant is violated, this method checks whether there exists
      *  an enabled (non-preemptive) transition. If there is one, the model
      *  error is ignored and this director will handle the enabled transition
      *  later. Otherwise, an exception will be thrown.
@@ -605,40 +571,33 @@ public class FSMDirector extends Director implements ModelErrorHandler,
 
         _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
                 .currentState());
-
-        // Note, we increment the workspace version such that the
-        // function dependencies will be reconstructed. This design
-        // is based on that each time one transition happens, the
-        // new refinement takes place of the modal model for
-        // execution, consequently, the model structure changes.
-        // Note that we also check whether mutation is enabled at
-        // the current iteration. For some models, such as CT models,
-        // during a discrete phase of execution, the mutation is disable
-        // to avoid unnecessary change requests made by this director.
+        
+        // Increment the workspace version such that the
+        // function dependencies will be reconstructed.
+        // Note that this occurs only if a transition was taken.
+        // FIXME: Replace this with conservative approximation.
         if (_mutationEnabled && (_enabledTransition != null)) {
             ChangeRequest request = new ChangeRequest(this,
-                    "increment workspace version by 1") {
+            "increment workspace version to force recalculation of function dependencies") {
                 protected void _execute() throws KernelException {
                     getContainer().workspace().incrVersion();
                 }
             };
-
             request.setPersistent(false);
             getContainer().requestChange(request);
         }
 
+        // If a transition was taken, then request a refiring at the current time
+        // in case the destination state is a transient state.
         if (_enabledTransition != null) {
             CompositeActor container = (CompositeActor) getContainer();
             Director executiveDirector = container.getExecutiveDirector();
-            // If the top level of the model is modal model, the director
-            // is null. We do not request to be fired again since no one in
-            // the upper level of hierarchy will do that.
             if (executiveDirector != null) {
                 if (_debugging) {
-                    _debug(executiveDirector.getFullName()
-                            + " requests refiring at " + getModelTime());
+                    _debug("Request refiring by " 
+                            + executiveDirector.getFullName()
+                            + " at " + getModelTime());
                 }
-                // Handle transient states.
                 executiveDirector.fireAt(container, getModelTime());
             }
         }
@@ -655,9 +614,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      *  @exception IllegalActionException If there is no controller.
      */
     public boolean prefire() throws IllegalActionException {
-        // FIXME: Changed by liuj, not yet reviewed.
         if (_debugging) {
-            _debug(getFullName(), "prefire called at time: " + getModelTime());
+            _debug("Prefire called at time: " + getModelTime());
         }
 
         // Clear the inside receivers of all output ports of the container.
@@ -1091,15 +1049,9 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         }
     }
 
-    // Create the controllerName attribute.
+    /** Create the controllerName attribute. */
     private void _createAttribute() {
         try {
-            Attribute a = getAttribute("controllerName");
-
-            if (a != null) {
-                a.setContainer(null);
-            }
-
             controllerName = new StringAttribute(this, "controllerName");
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(getName() + "Cannot create "
