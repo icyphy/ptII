@@ -863,6 +863,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   is not opaque.
      */
     public void preinitialize() throws IllegalActionException {
+        _functionDependency = null;
         _stopRequested = false;
 
         if (_debugging) {
