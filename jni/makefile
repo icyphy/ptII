@@ -68,8 +68,7 @@ JSRCS = \
 	JNICodeGenerator.java \
 	JNIUtilities.java \
 	ThalesGraphFrame.java \
-	ThalesGraphTableau.java \
-	VergilApplication.java
+	ThalesGraphTableau.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -81,9 +80,7 @@ OPTIONAL_FILES = demo \
 	'ArgumentDialogFactory$$1.class' \
 	'ThalesGraphFrame$$DebugMenuListener.class' \
 	'ThalesGraphFrame$$JNIMenuListener.class' \
-	'ThalesGraphTableau$$Factory.class' \
-	'VergilApplication$$1.class'
-
+	'ThalesGraphTableau$$Factory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
