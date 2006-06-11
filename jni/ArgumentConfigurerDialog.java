@@ -309,5 +309,5 @@ public class ArgumentConfigurerDialog extends ComponentDialog implements
 
     /** Possible configurations.
      */
-    private String[] _optionsArray = { "input", "ouput", "return" };
+    private String[] _optionsArray = { "input", "output", "return" };
 }
