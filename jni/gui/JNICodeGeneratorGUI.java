@@ -203,9 +203,9 @@ public class JNICodeGeneratorGUI extends PtolemyFrame {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     exec.updateStatusBar("// Starting " + codeGenerator
-                            + " code generation.");
+                            + " code generatio for " + getModel().getContainer());
 
-                    JNIUtilities.generateJNI((CompositeEntity)getModel());
+                    JNIUtilities.generateJNI((CompositeEntity)(getModel().getContainer()));
 //                     StringBuffer code = new StringBuffer();
 //                     codeGenerator.generateCode(code);
 //                     String codeFileNameWritten = codeGenerator
