@@ -157,6 +157,13 @@ private:
   JNIEnv* env;
   
 private:
+  void checkException() {
+      if (env->ExceptionOccurred()) {
+          std::cout << "Exception Occurred:" << std::endl;
+          env->ExceptionDescribe();
+          env->ExceptionClear();
+      }
+  }
   static CreateJavaVM findCreateJavaVM(const char* sharedLibraryFilename) {
     void* sharedLibraryHandle = dlopen(sharedLibraryFilename, RTLD_LAZY);
     if (sharedLibraryHandle == 0) {
@@ -178,63 +185,26 @@ private:
   jclass findClass(const std::string& className) {
     jclass javaClass = env->FindClass(className.c_str());
     if (javaClass == 0) {
-      if (env->ExceptionOccurred()) {
-          std::cout << "Exception\n";
-          env->ExceptionDescribe();
-          env->ExceptionClear();
-      }
-      std::cout << "About to call GetStaticMethod\n";
-      std::cout.flush();
-
-      //const char * systemClassName = strdup();
+      checkException();
+      // Print out the CLASSPATH
       jclass systemClass = env->FindClass("java/lang/System");
       
-      //const char * getPropertySignature = strdup("getProperty(Ljava/lang/String;)Ljava/lang/String;)");
-
       jmethodID systemId = env->GetStaticMethodID(systemClass,
               "getProperty",
               "(Ljava/lang/String;)Ljava/lang/String;");
 
-      if (env->ExceptionOccurred()) {
-          std::cout << "Exception\n";
-          std::cout.flush();
-          env->ExceptionDescribe();
-          env->ExceptionClear();
-      }
-
-      std::cout << "About to call NewString\n";
-      std::cout.flush();
+      checkException();
 
       jstring propertyName = env->NewStringUTF("java.class.path");
-      //jstring propertyName = env->NewStringUTF("file.separator");
 
-      if (env->ExceptionOccurred()) {
-          std::cout << "Exception\n";
-          std::cout.flush();
-          env->ExceptionDescribe();
-          env->ExceptionClear();
-      }
-
-      std::cout << "About to call CallStaticObjectMethod " << systemClass << " " << systemId << " " << propertyName << "\n" ;
-      std::cout.flush();
+      checkException();
 
       jstring property = (jstring) env->CallStaticObjectMethod(systemClass, systemId, propertyName);
 
-      if (env->ExceptionOccurred()) {
-          std::cout << "Exception\n";
-          std::cout.flush();
-          env->ExceptionDescribe();
-          env->ExceptionClear();
-      }
-
-      std::cout << "About to call GetStringChars\n";
-      std::cout.flush();
-
-      //const jchar * propertyString = env->GetStringChars((jstring)&property, JNI_FALSE);
-
+      checkException();
       const char * propertyString = env->GetStringUTFChars(property, NULL);
       std::ostringstream os;
-      os << "FindClass(\"" << className << "\") failed.\n" << "Try using / separated paths instead of . separated, for example: foo/bar/bif. Classpath: " << propertyString;
+      os << "FindClass(\"" << className << "\") failed." << std::endl << "Try using / separated paths instead of . separated, for example: foo/bar/bif. Classpath was " << propertyString << "If classpath is empty, be sure to set java.class.path property by invoking with -Djava.class.path=\"$CLASSPATH\"";
       
       throw UsageError(os.str());
     }
@@ -244,6 +214,7 @@ private:
   jmethodID findMainMethod(jclass mainClass) {
     jmethodID method = env->GetStaticMethodID(mainClass, "main", "([Ljava/lang/String;)V");
     if (method == 0) {
+      checkException();
       throw UsageError("GetStaticMethodID(\"main\") failed.");
     }
     return method;
@@ -398,9 +369,13 @@ int main(int, char** argv) {
     os << "  -client - use client VM" << std::endl;
     os << "  -server - use server VM" << std::endl;
     os << "  -D<name>=<value> - set a system property" << std::endl;
+    os << "     For example:"  << std::endl;
+    os << "  -Djava.class.path=\"$CLASSPATH\" - set the classpath" << std::endl;
+
     os << "  -verbose[:class|gc|jni] - enable verbose output" << std::endl;
     // FIXME: If we know which version of JVM we've selected here, we could say so.
     os << "or JVM 1.5 or newer -X options." << std::endl;
+    os << "class should be a / separated classname: Foo/Bar/Baz" << std::endl;
     os << std::endl;
     os << "Command line was:";
     os << std::endl;

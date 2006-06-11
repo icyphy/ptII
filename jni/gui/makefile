@@ -1,9 +1,10 @@
-# Makefile for JNI Interface
+# Makefile for the Java Native Interface GUI
+#
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
-# @Author: Christopher Hylands (makefile only)
 #
-# @Copyright (c) 2003-2005 The Regents of the University of California.
+# @Copyright (c) 2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,73 +28,49 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		jni
+ME =		jni/gui
 
-DIRS = 		doc launcher demo test #dll
+DIRS =
 
-# Root of Ptolemy II directory
-ROOT =		..
+# Root of the Java directory
+ROOT =		../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	jni
+PTPACKAGE = 	gui
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include these jars in PTAUXALLJAR
-PTAUXALLJARS = \
-		demo/demo.jar \
-		doc/doc.jar
-
-PTAUXALLJAR =	$(PTPACKAGE).jar
-
-OTHER_FILES_TO_BE_JARED = \
-	dll.gif \
-	jni.xml
-
-# Keep this list alphabetized.
 JSRCS = \
-	Argument.java \
-	ArgumentConfigurer.java \
-	ArgumentConfigurerDialog.java \
-	ArgumentDialogFactory.java \
-	GenericJNIActor.java \
-	JNICodeGenerator.java \
-	JNIUtilities.java \
-	ThalesGraphFrame.java \
-	ThalesGraphTableau.java \
-	VergilApplication.java
+	JNICodeGeneratorGUI.java \
+	JNICodeGeneratorGUIFactory.java
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = doc launcher test
+MISC_FILES =	$(DIRS)
 
-OPTIONAL_FILES = demo \
-	'ArgumentDialogFactory$$1.class' \
-	'ThalesGraphFrame$$DebugMenuListener.class' \
-	'ThalesGraphFrame$$JNIMenuListener.class' \
-	'ThalesGraphTableau$$Factory.class' \
-	'VergilApplication$$1.class'
-
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	doc \
+	'JNIGUI$$1.class' \
+	'JNIGUI$$2.class' \
+	'JNIGUI$$3.class' \
+	'JNIGUI$$4.class' \
+	'JNIGUI$$5.class' 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: all jars
+install: jclass $(PTCLASSJAR)
 
-# Run all the tests that do not take much time.
-fast_tests:
-	$(MAKE) PTCOPERNICUS_DIR= tests 
-
-
-# Include rules for directories that contain only subdirectories.
+# Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

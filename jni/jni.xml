@@ -5,11 +5,11 @@
   <configure>
     <?moml
       <group>
-<entity name="JNIActor" class="jni.GenericJNIActor">
-<doc> An actor able to call a native function </doc>
-</entity>
-
-   </group>
+        <property name="JNICodeGenerator" class="jni.JNICodeGenerator"/>
+        <entity name="JNIActor" class="jni.GenericJNIActor">
+          <doc> An actor able to call a native function </doc>
+        </entity>
+      </group>
     ?>
   </configure>
 </entity>

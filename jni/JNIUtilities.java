@@ -41,6 +41,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.ExecuteCommands;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
@@ -335,9 +336,11 @@ public class JNIUtilities {
         execCommands.add("gmake -C jni/" + nativeLibrary + " -f " + "Jni"
                 + interNativeLibrary + ".mk");
 
-        StreamExec javaExec = new StreamExec();
-        javaExec.setCommands(execCommands);
-        javaExec.start();
+        if (_executeCommands == null) {
+            _executeCommands = new StreamExec();
+        }
+        _executeCommands.setCommands(execCommands);
+        _executeCommands.start();
     }
 
     /** Return the value of the nativeLibrary attribute with the double
@@ -351,6 +354,28 @@ public class JNIUtilities {
         String nativeLibrary = (((StringToken) ((Parameter) actor
                 .getAttribute("nativeLibrary")).getToken()).toString());
         return nativeLibrary.substring(1, nativeLibrary.length() - 1);
+    }
+
+    /** Get the command executor, which can be either non-graphical
+     *  or graphical.  The initial default is non-graphical, which
+     *  means that stderr and stdout from subcommands is written
+     *  to the console.
+     *  @return executeCommands The subprocess command executor.
+     *  @see #setExecuteCommands(ExecuteCommands)
+     */
+    public static ExecuteCommands getExecuteCommands() {
+        return _executeCommands;
+    }
+
+    /** Set the command executor, which can be either non-graphical
+     *  or graphical.  The initial default is non-graphical, which
+     *  means that stderr and stdout from subcommands is written
+     *  to the console.
+     *  @param executeCommands The subprocess command executor.
+     *  @see #getExecuteCommands()
+     */
+    public static void setExecuteCommands(ExecuteCommands executeCommands) {
+        _executeCommands = executeCommands;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1576,4 +1601,7 @@ public class JNIUtilities {
 
     // String to use to indent 3 level
     private static String _indent3 = StringUtilities.getIndentPrefix(3);
+
+    /** Non-graphical or graphical executor of commands. */
+    private static ExecuteCommands _executeCommands;
 }
