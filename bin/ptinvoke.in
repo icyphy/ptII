@@ -592,6 +592,7 @@ case $commandname in
     ;;
 esac
 
+classpatharg="-classpath "
 error="none"
 # Keep these alphabetical
 case $commandname in
@@ -929,7 +930,14 @@ and run:
             fi
 	    javaflag="\"-Dptolemy.ptII.tosroot=$TOSROOT\" \"-Dptolemy.ptII.tosdir=$TOSDIR\" $ALL_JFLAG"
 	else    
-	    javaflag="$ALL_JFLAG"
+	    if [ "$1" = "-jni" -o -x "$PTII/jni/launcher/launcher" ]; then
+		javac="$PTII/jni/launcher/launcher"
+		javaflag="$ALL_JFLAG -Djava.class.path=\"$CLASSPATH\""
+		javastartupclass=ptolemy/vergil/VergilApplication
+		classpatharg=-Djava.class.path=
+	    else
+		javaflag="$ALL_JFLAG"
+	    fi	
 	fi	    
 	javasourcedir=ptolemy/vergil
 	jarfile="$ALL_JAR${SINGLE_WINDOW_JARS}"
@@ -1082,7 +1090,7 @@ if [ "$error" = "none" ]; then
     else
     # If JAVAHOME has spaces in it, we need to jump through hoops
     # Use double quotes around ptflag to handle the case where PTII=c:\\ptII
-	str="\"$javac\" $jdbflags $javaflag $ptflag $localeflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
+	str="\"$javac\" $jdbflags $javaflag $ptflag $localeflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND $classpatharg\"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
     fi 
     if [ "$quiet" = "0" ]; then echo $str; fi
     
