@@ -31,7 +31,7 @@
 
 ME =		jni
 
-DIRS = 		doc demo test #dll
+DIRS = 		doc launcher demo test #dll
 
 # Root of Ptolemy II directory
 ROOT =		..
@@ -74,7 +74,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = doc test
+MISC_FILES = doc launcher test
 
 OPTIONAL_FILES = demo \
 	'ArgumentDialogFactory$$1.class' \

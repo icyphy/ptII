@@ -173,8 +173,64 @@ private:
   jclass findClass(const std::string& className) {
     jclass javaClass = env->FindClass(className.c_str());
     if (javaClass == 0) {
+      if (env->ExceptionOccurred()) {
+          std::cout << "Exception\n";
+          env->ExceptionDescribe();
+          env->ExceptionClear();
+      }
+      std::cout << "About to call GetStaticMethod\n";
+      std::cout.flush();
+
+      //const char * systemClassName = strdup();
+      jclass systemClass = env->FindClass("java/lang/System");
+      
+      //const char * getPropertySignature = strdup("getProperty(Ljava/lang/String;)Ljava/lang/String;)");
+
+      jmethodID systemId = env->GetStaticMethodID(systemClass,
+              "getProperty",
+              "(Ljava/lang/String;)Ljava/lang/String;");
+
+      if (env->ExceptionOccurred()) {
+          std::cout << "Exception\n";
+          std::cout.flush();
+          env->ExceptionDescribe();
+          env->ExceptionClear();
+      }
+
+      std::cout << "About to call NewString\n";
+      std::cout.flush();
+
+      jstring propertyName = env->NewStringUTF("java.class.path");
+      //jstring propertyName = env->NewStringUTF("file.separator");
+
+      if (env->ExceptionOccurred()) {
+          std::cout << "Exception\n";
+          std::cout.flush();
+          env->ExceptionDescribe();
+          env->ExceptionClear();
+      }
+
+      std::cout << "About to call CallStaticObjectMethod " << systemClass << " " << systemId << " " << propertyName << "\n" ;
+      std::cout.flush();
+
+      jstring property = (jstring) env->CallStaticObjectMethod(systemClass, systemId, propertyName);
+
+      if (env->ExceptionOccurred()) {
+          std::cout << "Exception\n";
+          std::cout.flush();
+          env->ExceptionDescribe();
+          env->ExceptionClear();
+      }
+
+      std::cout << "About to call GetStringChars\n";
+      std::cout.flush();
+
+      //const jchar * propertyString = env->GetStringChars((jstring)&property, JNI_FALSE);
+
+      const char * propertyString = env->GetStringUTFChars(property, NULL);
       std::ostringstream os;
-      os << "FindClass(\"" << className << "\") failed.\n" << "Try using / separated paths instead of . separated, for example: foo/bar/bif";
+      os << "FindClass(\"" << className << "\") failed.\n" << "Try using / separated paths instead of . separated, for example: foo/bar/bif. Classpath: " << propertyString;
+      
       throw UsageError(os.str());
     }
     return javaClass;

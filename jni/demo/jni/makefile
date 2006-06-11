@@ -109,6 +109,15 @@ demo_vergil:
 	"$(PTII)/bin/vergil" -jni \
 		$(MODELS)
 
+demo_launcher:
+	CLASSPATH=".$(CLASSPATHSEPARATOR)$(ROOT)"; \
+	PATH="`pwd`:`pwd`/jni/meaningOfLife:`pwd`/jni/testDeux:`pwd`/jni/testTrois:`pwd`jni/jnimeaningOfLifeImeaningOfLife:$(PATH)"; export PATH; \
+	LD_LIBRARY_PATH="`pwd`:`pwd`/jni/meaningOfLife:`pwd`/jni/testDeux:`pwd`/jni/testTrois:`pwd`jni/jnimeaningOfLifeImeaningOfLife:/usr/local/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
+	"$(PTII)/jni/launcher/launcher" \
+		-Djava.class.path="$(PTII)$(CLASSPATHSEPARATOR)."  \
+		ptolemy/vergil/VergilApplication -jni \
+		meaningOfLife.xml
+
 # PTCC is set in $PTII/mk/ptII.mk
 # See also ptolemy/matlab/makefile
 SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(SHAREDBASE).$(PTJNI_SHAREDLIBRARY_SUFFIX)

@@ -104,8 +104,11 @@ demo: launcher jclass
 
 # $(PTMATLAB_cC) is set to cl or gcc by configure in $PTII/mk/ptII.mk
 launcher: $(CPPSRCS) $(HEADERS)
-	g++ -I. \
+	g++ -g -I. \
 		"-I$(PTJAVA_HOME)/../include" \
 		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
 		-o launcher \
 		$(CPPSRCS)
+
+launcher_vergil: launcher
+	./launcher -Djava.class.path=$(PTII) ptolemy/vergil/VergilApplication	 -jni
