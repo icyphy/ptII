@@ -6,18 +6,35 @@
 <body>
 An interface between Java Native Interface (JNI) classes and Ptolemy.
 
-<p>Under Windows, JNI does not work with recent versions of Cygwin
-and GCC after gcc3.2.x.  The workaround is to install the version of Cygwin
+<p>Under Windows, JNI does has problems with recent versions of Cygwin
+and GCC after gcc3.2.x.  The workaround is to invoke Ptolemy by using
+the launcher program written in C, which is found at
+$PTII/jni/launcher.
+
+<p>The launcher program is from 
+<a href="http://elliotth.blogspot.com/2005/08/porting-jni-code-to-win32-with-cygwin.html#in_browser">http://elliotth.blogspot.com/2005/08/porting-jni-code-to-win32-with-cygwin.html</a>
+
+<p>The .cpp and .h files in the launcher directory are from salma-hayek, found at
+<a href="http://software.jessies.org/terminator/#in_browser">http://software.jessies.org/terminator/</a>
+salma-hayek is LGPL'd, see the COPYING.txt file.
+
+<p>If you invoke <code>$PTII/bin/vergil -jni</code>, then the launcher
+program will be invoked for you.  If you do not use the launcher program
+under Windows with Cygwin, the Ptolemy is likely to exit when you run
+a model.
+ 
+<p>Another alternative is to install the version of Cygwin
 that shipped with Ptolemy II 4.0, see
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/cygwin.htm">http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/cygwin.htm</a>
-
 
 <p>The Interface to C actors using the Java Native Interface is not
 available via the Windows Installer (or Web Start). To use the
 JNI/Ptolemy II interface, you must download Ptolemy II as source files
 and compile.
 
-<p>The JNI user interface does not permit creation of new JNI actors.
+<p>The JNI user interface is <b>broken</b>, it makes it very
+difficult to create new JNI actors.  In particular, you will
+need to set 
 
 
 <p>To build under windows, you may need to edit <code>jni_md.h</code>,
