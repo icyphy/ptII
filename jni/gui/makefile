@@ -61,11 +61,11 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'JNIGUI$$1.class' \
-	'JNIGUI$$2.class' \
-	'JNIGUI$$3.class' \
-	'JNIGUI$$4.class' \
-	'JNIGUI$$5.class' 
+	'JNICodeGeneratorGUI$$1.class' \
+	'JNICodeGeneratorGUI$$2.class' \
+	'JNICodeGeneratorGUI$$3.class' \
+	'JNICodeGeneratorGUI$$4.class' \
+	'JNICodeGeneratorGUI$$5.class' 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
