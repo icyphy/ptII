@@ -101,6 +101,9 @@ public class GenerateCopyrights {
 
         // Add the classnames and copyrights.
         // Alphabetical by className.
+        _addIfPresent(copyrightsMap, "jni.GenericJNIActor",
+                "jni/launcher/launcher-copyright.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.backtrack.ast.TypeAnalyzer",
                 "ptolemy/backtrack/ast/eclipse-copyright.htm");
 
