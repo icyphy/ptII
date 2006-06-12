@@ -4,47 +4,24 @@
 <entity name="ContinuousWithinContinuous3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 267]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[105, 47]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 819, 572}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -1, 819, 385}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 133.5}">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 414, 508, 355}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 115.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Sinusoid</title>
-<xLabel>time</xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="100.0"/>
-<yRange min="-0.9670383796294615" max="1.0"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 115.0]">
         </property>
@@ -119,10 +96,20 @@
         <link port="Integrator2.derivative" relation="relation3"/>
         <link port="Integrator2.state" relation="relation"/>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.995, 0.9747798936632, 0.9281624941511, 0.8874593981943, 0.824737826312, 0.7291946318891, 0.6607273619374, 0.5667752741025, 0.4381860896214, 0.3527026753497, 0.2416383888796, 0.0983889336239, -0.0333735012645, -0.131937716439, -0.2770617042559, -0.416086236123}">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 225.0}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <vertex name="vertex1" value="{205.0, 140.0}">
+        </vertex>
     </relation>
-    <link port="TimedPlotter.input" relation="relation3"/>
-    <link port="CompositeActor.output" relation="relation3"/>
+    <link port="CompositeActor.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation"/>
 </entity>
