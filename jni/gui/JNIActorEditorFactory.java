@@ -37,6 +37,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -130,13 +131,14 @@ public class JNIActorEditorFactory extends EditorFactory {
      */
     public Component createEditorPane() {
         JPanel panel = new JPanel();
-        JTextArea textArea = new JTextArea();
-        textArea.setWrapStyleWord(true);
-        textArea.setLineWrap(true);
-        textArea.setEditable(false);
-        textArea.setText("To edit the parameters, select "
+        JTextArea textArea = new JTextArea(
+                "To edit the parameters, select "
                 + "\"Configure Parameters\".  To edit the native method "
-                + "arguments, select \"Configure Arguments\"");
+                + "arguments, select \"Configure Arguments\"", 3, 40);
+        textArea.setEditable(false);
+        textArea.setBorder(BorderFactory.createEtchedBorder());
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
 
         JScrollPane pane = new JScrollPane(textArea);
 
