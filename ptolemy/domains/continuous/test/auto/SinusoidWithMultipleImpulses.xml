@@ -55,32 +55,12 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 1.99}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 1.0, 0.995, 0.9747798936632, 0.9281624941511, 0.8597327049228, 0.7948396588907, 0.6777563216041, 0.5402078399905}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{345, 70}">
         </property>
-    </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={448, 386, 508, 355}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 275.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="0.1"/>
-<yRange min="1.0" max="2.0"/>
-<default marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.domains.continuous.lib.DiscreteClock">
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0}">
@@ -116,6 +96,5 @@
     <link port="Integrator.derivative" relation="relation"/>
     <link port="Integrator.state" relation="relation4"/>
     <link port="NonStrictTest.input" relation="relation4"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
     <link port="DiscreteClock.output" relation="relation3"/>
 </entity>
