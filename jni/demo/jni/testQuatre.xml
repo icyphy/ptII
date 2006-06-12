@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="testQuatre" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 5, 1005, 753}, maximized=false}">
     </property>
@@ -47,8 +47,6 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
-        </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -71,6 +69,10 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{322.720400423617, 339.1194953918457}">
     </property>
     <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="C:\cxh\ptII\jni\demo\jni\README.htm">
+    </property>
+    <property name="JNICodeGenerator" class="jni.gui.JNICodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 165.0]">
+        </property>
     </property>
     <entity name="testDeuxItestDeux" class="jni.GenericJNIActor">
         <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">

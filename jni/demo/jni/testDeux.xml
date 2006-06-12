@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="testDeux" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={64, 33, 934, 544}, maximized=false}">
     </property>
@@ -60,7 +60,11 @@ See the Visual Project associated jnitestDeux.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{359.5, 213.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{325.6739267676767, 240.4226641414141}">
+    </property>
+    <property name="JNICodeGenerator" class="jni.gui.JNICodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 145.0]">
+        </property>
     </property>
     <entity name="testDeuxItestDeux" class="jni.GenericJNIActor">
         <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
