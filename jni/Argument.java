@@ -43,7 +43,8 @@ import ptolemy.util.StringUtilities;
 //// Argument
 
 /**
- An Argument is a native function argument associated to a GenericJNIActor
+ An Argument is a native function argument associated with a GenericJNIActor.
+
  @author V.Arnould, Thales
  @version $Id$
  @since Ptolemy II 2.2

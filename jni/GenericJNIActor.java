@@ -33,6 +33,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -283,8 +284,9 @@ public class GenericJNIActor extends TypedAtomicActor {
 //                         port.setOutput(true);
 //                         port.setTypeEquals(BaseType.GENERAL);
                         MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                this,
                                 "<port name=\"" + argument.getName()
-                                + "\" class=\"ptolemy.actor.TypedIOPort\"\n"
+                                + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
                                 + "    <property name=\"output\"/>\n"
                                 + "</port>");
                         request.setUndoable(true);
@@ -306,12 +308,13 @@ public class GenericJNIActor extends TypedAtomicActor {
 //                         port.setOutput(argument.isOutput());
 //                         port.setTypeEquals(BaseType.GENERAL);
                         MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                this,
                                 "<port name=\"" + argument.getName() + "in"
-                                + "\" class=\"ptolemy.actor.TypedIOPort\"\n"
+                                + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
                                 + "    <property name=\"input\"/>\n"
                                 + "</port>\n"
                                 +"<port name=\"" + argument.getName() + "out"
-                                + "\" class=\"ptolemy.actor.TypedIOPort\"\n"
+                                + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
                                 + "    <property name=\"output\"/>\n"
                                 + "</port>");
                         request.setUndoable(true);
@@ -328,10 +331,15 @@ public class GenericJNIActor extends TypedAtomicActor {
 //                         port.setOutput(argument.isOutput());
 //                         port.setTypeEquals(BaseType.GENERAL);
                         MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                this,
                                 "<port name=\"" + argument.getName()
-                                + "\" class=\"ptolemy.actor.TypedIOPort\"\n"
-                                + "    <property name=\"input\"/>\n"
-                                + "    <property name=\"output\"/>\n"
+                                + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
+                                + (argument.isInput() ?
+                                        "    <property name=\"input\"/>\n"
+                                        : "")
+                                + (argument.isOutput() ?
+                                        "    <property name=\"output\"/>\n"
+                                        : "")
                                 + "</port>");
                         request.setUndoable(true);
                         requestChange(request);
@@ -349,6 +357,7 @@ public class GenericJNIActor extends TypedAtomicActor {
 //                     port.setTypeEquals(BaseType.GENERAL);
 
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            this,
                             "<port name=\"" + argument.getName()
                             + "\" class=\"ptolemy.actor.TypedIOPort\"\n"
                             + "    <property name=\"output\"/>\n"
@@ -360,6 +369,7 @@ public class GenericJNIActor extends TypedAtomicActor {
 //                     port.setOutput(argument.isOutput());
 //                     port.setTypeEquals(BaseType.GENERAL);
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            this,
                             "<port name=\"" + argument.getName()
                             + "\" class=\"ptolemy.actor.TypedIOPort\"\n"
                             + "    <property name=\"input\"/>\n"
@@ -369,6 +379,8 @@ public class GenericJNIActor extends TypedAtomicActor {
 
                 }
             }
+            port = (TypedIOPort) this.getPort(argument.getName());
+            port.setTypeEquals(BaseType.GENERAL);
         }
     }
 
@@ -796,7 +808,9 @@ public class GenericJNIActor extends TypedAtomicActor {
         try {
             _workspace.getWriteAccess();
 
-            Iterator ports = portList().iterator();
+            // Have to copy _portList to avoid corrupting the iterator.
+            List portListCopy = new LinkedList(portList());
+            Iterator ports = portListCopy.iterator();
 
             while (ports.hasNext()) {
                 Port port = (Port) ports.next();
@@ -811,6 +825,7 @@ public class GenericJNIActor extends TypedAtomicActor {
 //                 }
                 try {
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            this,
                             "<deletePort name=\"" + port.getName()  + "\"/>");
                     request.setUndoable(true);
                     requestChange(request);
@@ -840,29 +855,27 @@ public class GenericJNIActor extends TypedAtomicActor {
      */
     public void updatePorts() throws IllegalActionException {
         Iterator arguments = this.argumentsList().iterator();
-        //TypedIOPort port;
+        TypedIOPort port;
 
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
-            //port = (TypedIOPort) this.getPort(argument.getName());
+            port = (TypedIOPort) this.getPort(argument.getName());
 
-            //if (port == null) {
-            MoMLChangeRequest request = null;
-            try {
-                if (argument.isReturn()) {
+            if (port == null) {
+                MoMLChangeRequest request = null;
+
+                try {
+                    if (argument.isReturn()) {
 //                         port = (TypedIOPort) this.newPort(argument.getName());
 //                         port.setInput(false);
 //                         port.setOutput(true);
 //                         port.setTypeEquals(BaseType.GENERAL);
-                    // FIXME: set input to false with 
-                    // "    <deleteProperty name=\"input\"/>\n"
-
-                    request = new MoMLChangeRequest(this, this,
-                            "<port name=\"" + argument.getName()
-                            + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
-                            + "    <property name=\"output\"/>\n"
-                            + "</port>");
-                } else if (argument.isInput() && argument.isOutput()) {
+                        request = new MoMLChangeRequest(this, this,
+                                "<port name=\"" + argument.getName()
+                                + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
+                                + "    <property name=\"output\"/>\n"
+                                + "</port>");
+                    } else if (argument.isInput() && argument.isOutput()) {
 //                         port = (TypedIOPort) this.newPort(argument.getName()
 //                                 + "in");
 //                         port.setInput(argument.isInput());
@@ -871,7 +884,7 @@ public class GenericJNIActor extends TypedAtomicActor {
 //                                 + "out");
 //                         port.setOutput(argument.isOutput());
 //                         port.setTypeEquals(BaseType.GENERAL);
-                    request = new MoMLChangeRequest(this, this,
+                        request = new MoMLChangeRequest(this, this,
                                 "<port name=\"" + argument.getName() + "in"
                                 + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
                                 + "    <property name=\"input\"/>\n"
@@ -880,15 +893,13 @@ public class GenericJNIActor extends TypedAtomicActor {
                                 + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
                                 + "    <property name=\"output\"/>\n"
                                 + "</port>");
-                } else {
+                    } else {
 //                         port = (TypedIOPort) this.newPort(argument.getName());
 //                         port.setInput(argument.isInput());
 //                         port.setOutput(argument.isOutput());
 //                         port.setTypeEquals(BaseType.GENERAL);
-                    // FIXME: set input or output to false with 
-                    // "    <deleteProperty name=\"input\"/>\n"
 
-                    request = new MoMLChangeRequest(this, this,
+                        request = new MoMLChangeRequest(this, this,
                                 "<port name=\"" + argument.getName()
                                 + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
                                 + (argument.isInput() ?
@@ -899,43 +910,76 @@ public class GenericJNIActor extends TypedAtomicActor {
                                         : "")
                                 + "</port>");
 
+                    }
+                    request.setUndoable(true);
+                    System.out.println(request.getDescription());
+                    requestChange(request);
+                } catch (Throwable throwable) {
+                    throw new IllegalActionException(this, throwable,
+                            "MoMLChangeRequest for \"" + argument.getName()
+                            + "\" failed. Request was:\n" + request);
                 }
-                request.setUndoable(true);
-                System.out.println(request.getDescription());
-                requestChange(request);
-            } catch (Throwable throwable) {
-                throw new IllegalActionException(this, throwable,
-                        "MoMLChangeRequest for \"" + argument.getName()
-                        + "\" failed. Request was:\n" + request);
-            }
-//             } else {
-//                 //end if port == nul
-//                 // synchronized the arguments and the ports
-//                 if (argument.isReturn()) {
+            } else {
+                // We have a preexisting port, synchronized the
+                // arguments and the ports.
+
+                if (argument.isReturn()) {
 // //                     port.setInput(false);
 // //                     port.setOutput(true);
 // //                     port.setTypeEquals(BaseType.GENERAL);
+                    if (port.isInput()) {
+                        MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                this,
+                                "<port name=\"" + argument.getName()
+                                + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
+                                + "    <deleteProperty name=\"input\"/>\n"
+                                + (port.isOutput() ? "" 
+                                        : "    <property name=\"output\"/>\n")
+                                + "</port>");
+                        request.setUndoable(true);
+                        requestChange(request);
+                    }
+                    if (!port.isOutput()) {
+                        MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                this,
+                                "<port name=\"" + argument.getName()
+                                + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
+                                + "    <property name=\"output\"/>\n"
+                                + "</port>");
+                        request.setUndoable(true);
+                        requestChange(request);
+                    }
+                } else /*if (port.isInput() != argument.isInput() 
+                         || port.isOutput() != argument.isOutput())*/ {
 
-//                     MoMLChangeRequest request = new MoMLChangeRequest(this,
-//                             "<port name=\"" + argument.getName()
-//                             + "\" class=\"ptolemy.actor.TypedIOPort\"\n"
-//                             + "    <deletePropert name=\"input\"/>\n"
-//                             + "    <property name=\"output\"/>\n"
-//                             + "</port>");
-//                     request.setUndoable(true);
-//                     requestChange(request);
-//                 } else {
 // //                     port.setInput(argument.isInput());
 // //                     port.setOutput(argument.isOutput());
 // //                     port.setTypeEquals(BaseType.GENERAL);
-//                     MoMLChangeRequest request = new MoMLChangeRequest(this,
-//                             "<port name=\"" + argument.getName()
-//                             + "\" class=\"ptolemy.actor.TypedIOPort\"\n"
-//                             + "    <property name=\"input\"/>\n"
-//                             + "    <property name=\"output\"/>\n"
-//                             + "</port>");
-//                     request.setUndoable(true);
-//                     requestChange(request);
+
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            this,
+                            "<port name=\"" + argument.getName()
+                            + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
+                            + (port.isInput()
+                                    ? ( argument.isInput()
+                                            ? ""
+                                            : "<deleteProperty name=\"input\"/>\n")
+                                    : ( argument.isInput()
+                                            ? "<property name=\"input\"/>\n"
+                                            : ""))
+                            + (port.isOutput()
+                                    ? ( argument.isOutput()
+                                            ? ""
+                                            : "<deleteProperty name=\"output\"/>\n")
+                                    : ( argument.isOutput()
+                                            ? "<property name=\"output\"/>\n"
+                                            : ""))
+                            + "</port>");
+                    request.setUndoable(true);
+                    System.out.println("2LL" + request.getDescription());
+                    requestChange(request);
+                }
+            }
 
 //                 }
 //             }
@@ -945,10 +989,11 @@ public class GenericJNIActor extends TypedAtomicActor {
         Iterator ports = portList().iterator();
 
         while (ports.hasNext()) {
-            Port port = (Port) ports.next();
+            port = (TypedIOPort) ports.next();
             Argument argument = (Argument) _argumentsList.get(port.getName());
             if (argument == null) {
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        this, 
                         "<deletePort name=\"" + port.getName()  + "\"/>");
                 request.setUndoable(true);
                 requestChange(request);

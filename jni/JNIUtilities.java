@@ -257,8 +257,10 @@ public class JNIUtilities {
             ((ptolemy.kernel.ComponentRelation) (relations.next())).unlinkAll();
         }
 
+
         actor.removeAllPorts();
         actor.createPorts();
+        //actor.updatePorts();
 
         // Name of the actor and function
         String nativeFunction = _getNativeFunction(actor);
