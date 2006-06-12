@@ -105,7 +105,7 @@ public class JNICodeGeneratorGUI extends PtolemyFrame {
 
         JTextArea messageArea = new JTextArea(
                 "NOTE: This is a highly preliminary "
-                        + "code generator facility, with many "
+                        + "JNI facility, with many "
                         + "limitations.  It is best viewed as "
                         + "a concept demonstration.", 2, 10);
         messageArea.setEditable(false);
@@ -117,22 +117,7 @@ public class JNICodeGeneratorGUI extends PtolemyFrame {
         JButton moreInfoButton = new JButton("More Info");
         moreInfoButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                try {
-                    Configuration configuration = getConfiguration();
-
-                    // FIXME: Customize to the particular code generator.
-                    // Use Thread.currentThread() so that this code will
-                    // work under WebStart.
-                    URL infoURL = Thread.currentThread()
-                            .getContextClassLoader().getResource(
-                                    "ptolemy/codegen/README.html");
-
-                    configuration.openModel(null, infoURL, infoURL
-                            .toExternalForm());
-                } catch (Exception ex) {
-                    throw new InternalErrorException(codeGenerator, ex,
-                            "Failed to open doc/codegen.htm: ");
-                }
+                ArgumentConfigurerDialog.help(getConfiguration());
             }
         });
         caveatsPanel.add(moreInfoButton);
