@@ -44,9 +44,11 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
+import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -120,6 +122,7 @@ public class GenericJNIActor extends TypedAtomicActor {
     public GenericJNIActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
         _argumentsList = new NamedList(this);
 
         // FIXME: Should libraryDirectory be a FileParameter?
@@ -743,6 +746,7 @@ public class GenericJNIActor extends TypedAtomicActor {
      * @exception IllegalActionException If an error occurs.
      */
     public void removeArgument(Argument arg) throws IllegalActionException {
+        _removeAttribute(arg);
         _argumentsList.remove(arg);
     }
 
@@ -750,15 +754,17 @@ public class GenericJNIActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Add an argument to this entity
+    /** Add an argument to this entity.
      */
     protected void _addArgument(Argument arg) throws IllegalActionException,
             NameDuplicationException {
+        _addAttribute(arg);
         _argumentsList.append(arg);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     // A list of Ports, which correspond to arguments of the native function,
     // owned by this Entity.
     private NamedList _argumentsList;
