@@ -101,7 +101,7 @@ include $(ROOT)/mk/ptcommon.mk
 
 #--- Specialized part of the makefile: ---
 demo: launcher jclass
-	./launcher Hello
+	./launcher -Djava.class.path=$(ROOT) jni/launcher/Hello
 
 # $(PTMATLAB_cC) is set to cl or gcc by configure in $PTII/mk/ptII.mk
 launcher: $(CPPSRCS) $(HEADERS)
