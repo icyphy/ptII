@@ -420,10 +420,13 @@ public class Argument extends AbstractSettableAttribute {
             // Do this first, because it may throw an exception, and
             // we have not yet changed any state.
             if (container != null) {
-                ((GenericJNIActor) container)._addArgument(this);
-
-                if (previousContainer == null) {
-                    _workspace.remove(this);
+                if (((GenericJNIActor) container).getArgument(getName())
+                        == null) {
+                    // Only add if the argument is not already present.
+                    ((GenericJNIActor) container)._addArgument(this);
+                    if (previousContainer == null) {
+                        _workspace.remove(this);
+                    }
                 }
             }
 
