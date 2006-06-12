@@ -309,20 +309,23 @@ public class GenericJNIActor extends TypedAtomicActor {
 //                         port.setTypeEquals(BaseType.GENERAL);
                         MoMLChangeRequest request = new MoMLChangeRequest(this,
                                 this,
-                                "<port name=\"" + argument.getName() + "in"
+                                "<group>\n"
+                                + " <port name=\"" + argument.getName() + "in"
                                 + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
                                 + "    <property name=\"input\"/>\n"
-                                + "</port>\n"
-                                +"<port name=\"" + argument.getName() + "out"
+                                + " </port>\n"
+                                +" <port name=\"" + argument.getName() + "out"
                                 + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
                                 + "    <property name=\"output\"/>\n"
-                                + "</port>");
+                                + " </port>\n"
+                                + "</group>");
                         request.setUndoable(true);
                         requestChange(request);
                     } catch (Exception ex) {
                         throw new IllegalActionException(this, ex,
                                 "Unable to construct " + "input or output "
-                                        + "port '" + port + "'");
+                                + "port for argument \""
+                                + argument.getName() + "\"");
                     }
                 } else {
                     try {
@@ -345,7 +348,9 @@ public class GenericJNIActor extends TypedAtomicActor {
                         requestChange(request);
                     } catch (Exception ex) {
                         throw new IllegalActionException(this, ex,
-                                "Unable to construct " + "port '" + port + "'");
+                                "Unable to construct "
+                                + "port for argument \""
+                                + argument.getName() + "\"");
                     }
                 }
             } else {
@@ -380,7 +385,9 @@ public class GenericJNIActor extends TypedAtomicActor {
                 }
             }
             port = (TypedIOPort) this.getPort(argument.getName());
-            port.setTypeEquals(BaseType.GENERAL);
+            if (port != null) {
+                port.setTypeEquals(BaseType.GENERAL);
+            }
         }
     }
 
