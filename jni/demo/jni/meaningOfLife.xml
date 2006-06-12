@@ -28,6 +28,10 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
+    <property name="JNICodeGenerator" class="jni.JNICodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{345, 285}">
+        </property>
+    </property>
     <entity name="meaningOfLifeImeaningOfLife" class="jni.GenericJNIActor">
         <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         </property>

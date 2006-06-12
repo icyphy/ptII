@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import jni.gui.JNIActorEditorFactory;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -128,6 +129,9 @@ public class GenericJNIActor extends TypedAtomicActor {
                 "unknownFunction"));
         nativeLibrary = new Parameter(this, "nativeLibrary", new StringToken(
                 "unknownLibrary"));
+
+        // Create our own custom editor
+        new JNIActorEditorFactory(this, "_editorFactory");
 
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
                 + "width=\"32\" height=\"38\" " + "style=\"fill:white\"/>\n"
@@ -735,6 +739,14 @@ public class GenericJNIActor extends TypedAtomicActor {
         }
     }
 
+    /** Remove an argument from this entity.
+     * @exception IllegalActionException If an error occurs.
+     */
+    public void removeArgument(Argument arg) throws IllegalActionException {
+        _argumentsList.remove(arg);
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -743,13 +755,6 @@ public class GenericJNIActor extends TypedAtomicActor {
     protected void _addArgument(Argument arg) throws IllegalActionException,
             NameDuplicationException {
         _argumentsList.append(arg);
-    }
-
-    /** Remove an argument from this entity.
-     * @exception IllegalActionException If an error occurs.
-     */
-    protected void _removeArgument(Argument arg) throws IllegalActionException {
-        _argumentsList.remove(arg);
     }
 
     ///////////////////////////////////////////////////////////////////

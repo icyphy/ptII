@@ -30,7 +30,6 @@ package jni.gui;
 
 import java.awt.Frame;
 
-import jni.JNICodeGenerator;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;

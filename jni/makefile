@@ -61,14 +61,8 @@ OTHER_FILES_TO_BE_JARED = \
 # Keep this list alphabetized.
 JSRCS = \
 	Argument.java \
-	ArgumentConfigurer.java \
-	ArgumentConfigurerDialog.java \
-	ArgumentDialogFactory.java \
 	GenericJNIActor.java \
-	JNICodeGenerator.java \
-	JNIUtilities.java \
-	ThalesGraphFrame.java \
-	ThalesGraphTableau.java
+	JNIUtilities.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -26,7 +26,7 @@
  COPYRIGHTENDKEY
 
  */
-package jni;
+package jni.gui;
 
 import java.awt.Component;
 import java.awt.Frame;
@@ -35,6 +35,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
+
+import jni.GenericJNIActor;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.Entity;

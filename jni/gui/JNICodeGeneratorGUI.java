@@ -43,8 +43,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
-import jni.JNICodeGenerator;
 import jni.JNIUtilities;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.PtolemyFrame;

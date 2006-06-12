@@ -25,13 +25,16 @@
  COPYRIGHTENDKEY
 
  */
-package jni;
+package jni.gui;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
+
+import jni.Argument;
+import jni.GenericJNIActor;
 
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
@@ -136,7 +139,7 @@ public class ArgumentConfigurer extends Query implements QueryListener {
 
                     String newKind = getStringValue(kind);
                     argument.setKind(newKind);
-                    argument._checkType();
+                    argument.checkType();
                     foundOne = true;
                 }
 

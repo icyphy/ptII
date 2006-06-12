@@ -78,6 +78,31 @@ public class Argument extends AbstractSettableAttribute {
     public void addValueListener(ptolemy.kernel.util.ValueListener listener) {
     }
 
+    /** Check that the specified type is a suitable type for
+     *  this entity.
+     *  @exception IllegalActionException If the Argument has not
+     *   an acceptable C type.  Not thrown in this base class.
+     */
+    public void checkType() {
+        if (_cType.startsWith("char") || _cType.startsWith("long")
+                || _cType.startsWith("short") || _cType.startsWith("double")) {
+            if (isOutput() && !isInput() && !_cType.endsWith("[]")) {
+                MessageHandler.error("An argument can't be "
+                        + "output with a simple type.");
+                setInput(true);
+            }
+
+            return;
+        } else {
+            MessageHandler.error("The type : " + _cType
+                    + " is not supported. Types supported:"
+                    + "\nchar, long (unsigned)" + " , short, double"
+                    + "\nThe JNI code generation" + " will not work");
+            setCType("");
+        }
+    }
+
+
     /** Export the Argument in a property MoML. If this object is not
      *  persistent, then write nothing.
      *  @exception IOException If an IO error occurs
@@ -407,7 +432,7 @@ public class Argument extends AbstractSettableAttribute {
             if (previousContainer != null) {
                 // This is safe now because it does not
                 // throw an exception.
-                previousContainer._removeArgument(this);
+                previousContainer.removeArgument(this);
             }
         } finally {
             _workspace.doneWriting();
@@ -550,30 +575,6 @@ public class Argument extends AbstractSettableAttribute {
                     "Cannot place arguments on entities "
                             + container.getClass().getName()
                             + ", which are not GenericJNIActor.");
-        }
-    }
-
-    /** Check that the specified type is a suitable type for
-     *  this entity.
-     *  @exception IllegalActionException If the Argument has not
-     *   an acceptable C type.  Not thrown in this base class.
-     */
-    protected void _checkType() {
-        if (_cType.startsWith("char") || _cType.startsWith("long")
-                || _cType.startsWith("short") || _cType.startsWith("double")) {
-            if (isOutput() && !isInput() && !_cType.endsWith("[]")) {
-                MessageHandler.error("An argument can't be "
-                        + "output with a simple type.");
-                setInput(true);
-            }
-
-            return;
-        } else {
-            MessageHandler.error("The type : " + _cType
-                    + " is not supported. Types supported:"
-                    + "\nchar, long (unsigned)" + " , short, double"
-                    + "\nThe JNI code generation" + " will not work");
-            setCType("");
         }
     }
 

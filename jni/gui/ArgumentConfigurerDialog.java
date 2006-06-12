@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package jni;
+package jni.gui;
 
 import java.awt.Frame;
 import java.net.URL;
@@ -33,6 +33,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import jni.Argument;
+import jni.GenericJNIActor;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.gui.ComponentDialog;
@@ -124,7 +127,7 @@ public class ArgumentConfigurerDialog extends ComponentDialog implements
 
                     if (argument != null) {
                         try {
-                            _target._removeArgument(argument);
+                            _target.removeArgument(argument);
                         } catch (Exception e) {
                             MessageHandler.error("Unable to remove argument '"
                                     + argument + "'.", e);
@@ -146,24 +149,7 @@ public class ArgumentConfigurerDialog extends ComponentDialog implements
                 }
             }
         } else if (buttonPressed().equals("Help")) {
-            // Documentation used by classes should be in a subpackage
-            // of the class so that it is easier to ship the class.
-            // Having the documentation in a different package hierarchy
-            // adds package dependencies, which makes it harder to ship
-            // packages.
-            URL toRead = getClass().getClassLoader().getResource(
-                    "ptolemy/actor/gui/doc/argDialog.htm");
-
-            if ((toRead != null) && (configuration != null)) {
-                try {
-                    configuration.openModel(null, toRead, toRead
-                            .toExternalForm());
-                } catch (Exception ex) {
-                    MessageHandler.error("Help screen failure", ex);
-                }
-            } else {
-                MessageHandler.error("No help available.");
-            }
+            help(configuration);
         }
     }
 
@@ -203,6 +189,31 @@ public class ArgumentConfigurerDialog extends ComponentDialog implements
 
         if (!change.isErrorReported()) {
             MessageHandler.error("Change failed: ", exception);
+        }
+    }
+
+    /** Display the help documentation for the JNI facility.
+     *  @param configuration The configuration in which to open the docs.    
+     */
+    public static void help(Configuration configuration) {
+        // Documentation used by classes should be in a subpackage
+        // of the class so that it is easier to ship the class.
+        // Having the documentation in a different package hierarchy
+        // adds package dependencies, which makes it harder to ship
+        // packages.
+        String helpFile = "jni/package.html";
+        URL toRead = Thread.currentThread()
+            .getContextClassLoader().getResource(helpFile);
+
+        if ((toRead != null) && (configuration != null)) {
+            try {
+                configuration.openModel(null, toRead, toRead
+                        .toExternalForm());
+            } catch (Exception ex) {
+                MessageHandler.error("Help screen failure", ex);
+            }
+        } else {
+            MessageHandler.error("No help available.");
         }
     }
 

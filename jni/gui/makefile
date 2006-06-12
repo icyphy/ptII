@@ -48,6 +48,11 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	ArgumentConfigurer.java \
+	ArgumentConfigurerDialog.java \
+	ArgumentDialogFactory.java \
+	JNIActorEditorFactory.java \
+	JNICodeGenerator.java \
 	JNICodeGeneratorGUI.java \
 	JNICodeGeneratorGUIFactory.java
 
@@ -61,11 +66,15 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'ArgumentDialogFactory$$1.class' \
 	'JNICodeGeneratorGUI$$1.class' \
 	'JNICodeGeneratorGUI$$2.class' \
 	'JNICodeGeneratorGUI$$3.class' \
 	'JNICodeGeneratorGUI$$4.class' \
-	'JNICodeGeneratorGUI$$5.class' 
+	'JNICodeGeneratorGUI$$5.class' \
+	'ThalesGraphFrame$$DebugMenuListener.class' \
+	'ThalesGraphFrame$$JNIMenuListener.class' \
+	'ThalesGraphTableau$$Factory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
