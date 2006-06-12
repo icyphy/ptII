@@ -1,7 +1,7 @@
 // $Id$
 // The .cpp and .h files in this directory are from salma-hayek, found at
 // http://software.jessies.org/terminator/
-// salma-hayek is LGPL'd, see the COPYING.txt file.
+// salma-hayek is LGPL'd, see the launcher-copyright.htm file
 
 #ifdef __CYGWIN__
 #include <windows.h>

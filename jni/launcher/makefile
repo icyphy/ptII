@@ -66,7 +66,7 @@ HEADERS = \
 	unix_exception.h
 
 OTHER_FILES_TO_BE_JARED = \
-	COPYING.txt
+	launcher-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) $(CPPSRCS) $(HEADERS)
 

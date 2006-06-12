@@ -1,3 +1,8 @@
+// $Id$
+// The .cpp and .h files in this directory are from salma-hayek, found at
+// http://software.jessies.org/terminator/
+// salma-hayek is LGPL'd, see the launcher-copyright.htm file
+
 #ifndef TO_STRING_H_included
 #define TO_STRING_H_included
 
