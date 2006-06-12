@@ -109,7 +109,7 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	@echo "Put . and /usr/local in LD_LIBRARY_PATH"
 	PATH="`pwd`:$(PATH)"; export PATH; \
 	LD_LIBRARY_PATH="`pwd`:/usr/local/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
-	$(JTCLSH) alljtests.tcl
+	../launcher/launcher -Djava.class.path="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)" "-Dptolemy.ptII.dir=$(PTII)" $(JTCLSHFLAGS) tcl/lang/Shell alljtests.tcl
 
 #	PATH="`pwd`:`pwd`/jni/meaningOfLife:`pwd`/jni/testDeux:`pwd`/jni/testTrois:`pwd`jni/jnimeaningOfLifeImeaningOfLife:$(PATH)"; export PATH; \
 #	LD_LIBRARY_PATH="`pwd`:`pwd`/jni/meaningOfLife:`pwd`/jni/testDeux:`pwd`/jni/testTrois:`pwd`jni/jnimeaningOfLifeImeaningOfLife:/usr/local/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
