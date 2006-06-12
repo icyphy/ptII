@@ -117,7 +117,7 @@ public abstract class ContinuousODESolver {
 
     /** Get the current round factor. If the rounds are
      *  finished, then return 1.0.
-     *  @see _isStepFinished()
+     *  @see #_isStepFinished()
      */
     protected abstract double _getRoundTimeIncrement();
 
@@ -166,7 +166,7 @@ public abstract class ContinuousODESolver {
     /** Set the round for the next integration step.
      *  This must be between zero and the value returned by
      *  getIntegratorAuxVariableCount().
-     *  @see getIntegratorAuxVariableCount()
+     *  @see #getIntegratorAuxVariableCount()
      */
     protected abstract void _setRound(int round);
 

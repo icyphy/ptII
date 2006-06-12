@@ -224,7 +224,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
 
     /** Get the current round factor. If the
      *  step is finished, then return 1.0.
-     *  @see _isStepFinished()
+     *  @see _#isStepFinished()
      */
     protected final double _getRoundTimeIncrement() {
         if (_isStepFinished()) {
@@ -240,8 +240,8 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
      *  calls. This method should only be called if _isStepFinished()
      *  returns true or it will throw an ArrayOutOfBoundsException.
      *  The _reset() method starts the sequence over.
-     *  @see _isStepFinished()
-     *  @see _reset()
+     *  @see _#isStepFinished()
+     *  @see _#reset()
      *  @return The time increment associated with the next round.
      */
     protected final double _incrementRound() { 
@@ -253,8 +253,8 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
     /** Return true if the current integration step is finished. 
      *  This method will return true if _incrementRound() has been
      *  called 6 or more times since _reset().
-     *  @see _incrementRound()
-     *  @see _reset()
+     *  @see _#incrementRound()
+     *  @see _#reset()
      */
     protected final boolean _isStepFinished() {
         return _roundCount >= _TIME_INCREMENTS.length;
