@@ -38,9 +38,12 @@ import java.util.Vector;
 import ptolemy.actor.Actor;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.ExecuteCommands;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StreamExec;
@@ -250,11 +253,24 @@ public class JNIUtilities {
             actor.addArgumentReturn();
         }
 
+        
+        //        String linksMoML = "<entity name=\""
+        //            + actor.getContainer().getName()
+        //            + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
+        //            + model.exportLinks(0, null)
+        //            + "</entity>";
+
+        String linksMoML = "<group>\n"
+            + model.exportLinks(0, null)
+            + "</group>";
         //Creation des ports
         Iterator relations = model.relationList().iterator();
 
+        StringBuffer relationsMoML = new StringBuffer();
         while (relations.hasNext()) {
-            ((ptolemy.kernel.ComponentRelation) (relations.next())).unlinkAll();
+            ComponentRelation relation = (ComponentRelation) relations.next();
+            relationsMoML.append(relation.exportMoML());
+            relation.unlinkAll();
         }
 
 
@@ -292,6 +308,12 @@ public class JNIUtilities {
             // created the JNI files for those actors.
             try {
                 actor.setName(newName);
+                MoMLChangeRequest request = new MoMLChangeRequest(actor,
+                        actor, 
+                        "<entity name=\"" + actor.getName() 
+                        + "\"><rename name=\"" + newName + "\"/>");
+                request.setUndoable(true);
+                actor.requestChange(request);
             } catch (NameDuplicationException ex) {
                 throw new IllegalActionException(actor, ex,
                         "Unable to rename GenericJNIActor '" + actor.getName()
@@ -299,6 +321,26 @@ public class JNIUtilities {
                                 + "An JNI Actor already exists!\n");
             }
         }
+
+        try {
+            MoMLChangeRequest request = new MoMLChangeRequest(actor.getContainer(), actor.getContainer(),
+                    "<group>\n"
+                    + relationsMoML.toString()
+                    + "</group>");
+            request.setUndoable(true);
+            actor.getContainer().requestChange(request);
+
+            request = new MoMLChangeRequest(actor,
+                    actor.getContainer(),
+                    linksMoML);
+            request.setUndoable(true);
+            System.out.println(actor.getName() + "\n" + actor.exportMoML() + "\n" + linksMoML);
+            actor.getContainer().requestChange(request);
+        } catch (Throwable throwable) {
+            // ignore
+            throwable.printStackTrace();
+        }
+
 
         //render the graph within its controller
         // FIXME: when this method was in ThalesGraphFrame, we rerendered.
@@ -311,10 +353,6 @@ public class JNIUtilities {
         //Creation du fichier Java
         _exportJavaInterfaceFile(actor, destinationDirectory);
 
-        // FIXME: if we are running under Vergil, we should use
-        // the graphical exec code in Copernicus so that the user
-        // can see the execution.  If we are running without a UI.
-        // We should call exec().
         //Compilation java de la classe interface:
         //Creation du fichier C
         _exportCInterfaceFile(actor, destinationDirectory);
