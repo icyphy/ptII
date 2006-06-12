@@ -117,8 +117,10 @@ import ptolemy.kernel.util.Settable;
  The parameters of this director are:
  <UL>
  <LI> <i>startTime</i>: The start time of the
- simulation. This parameter is ignored if the director
- is not at the top level. The default value is 0.0.
+ execution. This parameter has no effect if
+ there is an enclosing ContinuousDirector (i.e., above
+ in the hierarchy, separated possibly by FIXME: What are
+ we going to call the intervening FSMs or Case actors?.
  
  <LI> <i>stopTime</i>: The stop time of the execution.
  When the current time reaches this value, postfire() will return false.
@@ -256,8 +258,11 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public StringParameter ODESolver;
 
-    /** Starting time of the simulation. The default value is 0.0,
-     *  and the type is double.
+    /** Starting time of the execution. The default value is 0.0,
+     *  and the type is double. This parameter has no effect if
+     *  there is an enclosing ContinuousDirector (i.e., above
+     *  in the hierarchy, separated possibly by FIXME: What are
+     *  we going to call the intervening FSMs or Case actors?.
      */
     public Parameter startTime;
 
@@ -533,8 +538,9 @@ public class ContinuousDirector extends FixedPointDirector implements
         _currentStepSize = 0.0;
 
         // If we are embedded, then request a firing at the start and
-        // stop times.
-        if (_isEmbedded()) {
+        // stop times. However, do not do this if there is an enclosing
+        // ContinuousDirector.
+        if (_isEmbedded() && (_enclosingContinuousDirector() == null)) {
             Actor container = (Actor)getContainer();
             Director director = container.getExecutiveDirector();
             director.fireAt(container, getModelStartTime());
@@ -544,6 +550,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Record starting point of the real time (the computer system time)
         // in case the director is synchronized to the real time.
         _timeBase = System.currentTimeMillis();
+        
+        _index = 0;
         
         _fired = false;
     }
@@ -620,10 +628,18 @@ public class ContinuousDirector extends FixedPointDirector implements
             throw new IllegalActionException(this,
                     "Current time exceeds the specified stopTime.");
         }
-
+        
+        boolean incrementIndex = false;
+        // Update the index. Note that this must happen before
+        // we refine the step size.
+        if (_currentStepSize == 0.0) {
+            incrementIndex = true;
+        } else {
+            _index = 0;
+        }
+        
         // Set the suggested step size for next integration step.
-        double suggestedStepSize = suggestedStepSize();
-        _setCurrentStepSize(suggestedStepSize);
+        _setCurrentStepSize(suggestedStepSize());
 
         // Make sure time does not pass the next breakpoint.
         // If it matches current time, this removes the first
@@ -639,13 +655,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         // inside continous actors will choose the same step size.
         boolean result = super.postfire();
 
-        // Update the index.
-        if (_currentStepSize == 0.0) {
-            _index++;
-        } else {
-            _index = 0;
-        }
-        
         // If the step size is greater than zero, then
         // figure out what time this model should be re-awakened.
         // NOTE: Current time + step size is not on the breakpoint table.
@@ -661,7 +670,9 @@ public class ContinuousDirector extends FixedPointDirector implements
             // If this director is enclosed within an opaque composite
             // actor, then request that the enclosing director refire
             // the composite actor containing this director.
-            if (_isEmbedded()) {
+            // However, do not make the request if there is an
+            // enclosing ContinuousDirector. It will handle it.
+            if (_isEmbedded() && (_enclosingContinuousDirector() == null)) {
                 CompositeActor container = (CompositeActor) getContainer();
                 container.getExecutiveDirector().fireAt(container, nextIterationTime);
             }
@@ -686,8 +697,12 @@ public class ContinuousDirector extends FixedPointDirector implements
         // If we are not at the toplevel, then check the model
         // time of the environment against ours.
         Nameable container = getContainer();
-        Director executiveDirector = ((Actor) container).getExecutiveDirector();
-        if (executiveDirector != null) {
+        
+        // If this model is inside another that is not a Continuous model,
+        // then check current time against the environment time, and catch
+        // up to the environment time if necessary.
+        if (_isEmbedded() && _enclosingContinuousDirector() == null) {
+            Director executiveDirector = ((Actor) container).getExecutiveDirector();
             Time outTime = executiveDirector.getModelTime();
             int comparison = _currentTime.compareTo(outTime);
             if (comparison > 0) {
@@ -1185,6 +1200,10 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
         // Next ensure the selected step size does not take us
         // past the stop time.
+        // FIXME: This test could possibly be eliminated by
+        // putting the stop time on the breakpoint table. Be sure,
+        // however, that this results in the right number of
+        // events generated at the stop time.
         Time targetTime = getModelTime().add(_currentStepSize);
         if (targetTime.compareTo(getModelStopTime()) > 0) {
             _currentStepSize = getModelStopTime()
