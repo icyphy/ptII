@@ -105,9 +105,11 @@ public class JNICodeGeneratorGUI extends PtolemyFrame {
 
         JTextArea messageArea = new JTextArea(
                 "NOTE: This is a highly preliminary "
-                        + "JNI facility, with many "
-                        + "limitations.  It is best viewed as "
-                        + "a concept demonstration.", 2, 10);
+                + "JNI facility, with many "
+                + "limitations.  It is best viewed as "
+                + "a concept demonstration."
+                + "\nPress the Generate button to create ports "
+                + "and generate code.", 2, 10);
         messageArea.setEditable(false);
         messageArea.setBorder(BorderFactory.createEtchedBorder());
         messageArea.setLineWrap(true);
@@ -132,7 +134,7 @@ public class JNICodeGeneratorGUI extends PtolemyFrame {
         buttonPanel.setLayout(new GridLayout(1, 4));
 
         JButton goButton = new JButton("Generate");
-        goButton.setToolTipText("Generate code");
+        goButton.setToolTipText("Create ports, Generate code");
         buttonPanel.add(goButton);
 
         JButton stopButton = new JButton("Cancel");
