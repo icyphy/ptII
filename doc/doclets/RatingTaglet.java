@@ -184,19 +184,19 @@ public class RatingTaglet implements Taglet {
             color = color.substring(0, spaceIndex);
         }
 
-        String result = "\n<DT><B>" + _tagName + ":</B><DD>";
-        result += ("<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
+        StringBuffer result = new StringBuffer("\n<DT><B>" + _tagName + ":</B><DD>");
+        result.append("<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
                 + color.toLowerCase() + "\">");
 
         for (int i = 0; i < tags.length; i++) {
             if (i > 0) {
-                result += ", ";
+                result.append(", ");
             }
 
-            result += tags[i].text();
+            result.append(tags[i].text());
         }
 
-        return result + "</td></tr></table></DD>\n";
+        return result.toString() + "</td></tr></table></DD>\n";
     }
 
     // Remove any previous entry in the given map with the given name
