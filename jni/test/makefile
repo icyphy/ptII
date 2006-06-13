@@ -106,9 +106,9 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	@echo "Put . in the path so we can find the shared libraries"
-	@echo "Put . and /usr/local in LD_LIBRARY_PATH"
+	@echo "Put ., /usr/local an libjvm.so in LD_LIBRARY_PATH"
 	PATH="`pwd`:$(PATH)"; export PATH; \
-	LD_LIBRARY_PATH="`pwd`:/usr/local/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
+	LD_LIBRARY_PATH="`pwd`:/usr/local/lib:$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE):$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
 	../launcher/launcher -Djava.class.path="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)" "-Dptolemy.ptII.dir=$(PTII)" $(JTCLSHFLAGS) tcl/lang/Shell alljtests.tcl
 
 #	PATH="`pwd`:`pwd`/jni/meaningOfLife:`pwd`/jni/testDeux:`pwd`/jni/testTrois:`pwd`jni/jnimeaningOfLifeImeaningOfLife:$(PATH)"; export PATH; \
