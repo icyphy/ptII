@@ -1,6 +1,6 @@
-/** Represent an native function argument
+/** Represent an native method argument
 
- Copyright (c) 2003-2005 The Regents of the University of California.
+ Copyright (c) 2003-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -36,6 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -43,9 +44,9 @@ import ptolemy.util.StringUtilities;
 //// Argument
 
 /**
- An Argument is a native function argument associated with a GenericJNIActor.
+ A native method argument associated with a GenericJNIActor.
 
- @author V.Arnould, Thales
+ @author V.Arnould, Thales, Contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 2.2
  @Pt.ProposedRating Red (vincent.arnould)
@@ -53,17 +54,34 @@ import ptolemy.util.StringUtilities;
  @see jni.GenericJNIActor
  */
 public class Argument extends AbstractSettableAttribute {
+
+    /** Construct an attribute in the default workspace with an empty string
+     *  as its name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     */
+    public Argument() {
+        super();
+    }
+
     /** Creates a new instance of Argument with the given name
-     * for the given GenericJNIActor
+     *  for the given GenericJNIActor.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     *  @param container   
      */
     public Argument(GenericJNIActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    }
-
-    /** Default constructor */
-    public Argument() {
-        super();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -74,9 +92,11 @@ public class Argument extends AbstractSettableAttribute {
      *  the call if the specified listener is already on the list of
      *  listeners.  In other words, it should not be possible for the
      *  same listener to be notified twice of a value update.
-     *  @param listener The listener to add.
+     *  @param listener The listener to add, which is ignored, no
+     *  listener is added.   
+     *  @see #removeValueListener(ValueListener)   
      */
-    public void addValueListener(ptolemy.kernel.util.ValueListener listener) {
+    public void addValueListener(ValueListener listener) {
     }
 
     /** Check that the specified type is a suitable type for
@@ -88,6 +108,7 @@ public class Argument extends AbstractSettableAttribute {
         if (_cType.startsWith("char") || _cType.startsWith("long")
                 || _cType.startsWith("short") || _cType.startsWith("double")) {
             if (isOutput() && !isInput() && !_cType.endsWith("[]")) {
+                // FIXME: Throw an exception here
                 MessageHandler.error("An argument can't be "
                         + "output with a simple type.");
                 setInput(true);
@@ -95,6 +116,7 @@ public class Argument extends AbstractSettableAttribute {
 
             return;
         } else {
+            // FIXME: Throw an exception here
             MessageHandler.error("The type : " + _cType
                     + " is not supported. Types supported:"
                     + "\nchar, long (unsigned)" + " , short, double"
@@ -125,16 +147,16 @@ public class Argument extends AbstractSettableAttribute {
      *  @return the _cType attribute in pointer
      */
     public String getC2Type() {
-        String ret = _cType;
+        String result = _cType;
 
         if (_cType.endsWith("[]")) {
             if (StringUtilities.getProperty("os.name").startsWith("SunOS")) {
             }
 
-            ret = _cType.substring(0, _cType.length() - 2) + " *";
+            result = _cType.substring(0, _cType.length() - 2) + " *";
         }
 
-        return ret;
+        return result;
     }
 
     /** Get the C2 Type Array, but if we are under SunOS, and
@@ -144,45 +166,46 @@ public class Argument extends AbstractSettableAttribute {
      *  @return the _cType attribute in pointer
      */
     public String getC2TypeHack() {
-        String returnValue = getC2Type();
+        String result = getC2Type();
 
         if (StringUtilities.getProperty("os.name").startsWith("SunOS")) {
-            if (returnValue.startsWith("long")) {
+            if (result.startsWith("long")) {
                 return "int *";
             }
         } else if (StringUtilities.getProperty("os.name").startsWith("Linux")) {
-            if (returnValue.startsWith("long")) {
+            if (result.startsWith("long")) {
                 return "jint *";
             }
         }
 
-        return returnValue;
+        return result;
     }
 
     /** Get the C type of the argument.
-     *   @return the _cType attribute
+     *  @return the _cType attribute
+     *  @see #setCType(String)
      */
     public String getCType() {
         return _cType;
     }
 
     /** Get the container entity.
-     *  @return The container, which is an instance
-     *   of CompositeEntity.
+     *  @return The container, which is an instance of CompositeEntity.
+     *  @see #setContainer(NamedObj)
      */
     public NamedObj getContainer() {
         return _container;
     }
 
     /** Get the expression of the argument.
-     * The format is "_isInput, _isOutput, _isReturn, _cType".
-     * @return the string containing the argument specifications
+     *  The format is "_isInput, _isOutput, _isReturn, _cType".
+     *  @return the string containing the argument specifications
+     *  @see #setExpression(String)
      */
     public String getExpression() {
-        String ret = Boolean.valueOf(isInput()).toString() + ","
+        return Boolean.valueOf(isInput()).toString() + ","
                 + Boolean.valueOf(isOutput()).toString() + ","
                 + Boolean.valueOf(isReturn()).toString() + "," + getCType();
-        return ret;
     }
 
     /** Get the JNI type of the argument.
@@ -218,19 +241,19 @@ public class Argument extends AbstractSettableAttribute {
         return returnJNIType;
     }
 
-    /** Get the Java type of the argument
+    /** Get the Java type of the argument.
      *  @return the corresponding Java type
      */
     public String getJType() {
         String returnJType = "";
 
-        //if it's an array
+        // If it's an array.
         if (_cType.endsWith("[]")) {
             returnJType = "[]";
         }
 
-        // a C char is 8 bits unsigned. a java char is 16 bits,
-        // so we use boolean which is 8 bits unsigned
+        // A C char is 8 bits unsigned. a java char is 16 bits,
+        // so we use boolean which is 8 bits unsigned.
         if (_cType.equals("char") || _cType.startsWith("char")) {
             returnJType = "boolean" + returnJType;
         } else if (_cType.equals("short") || _cType.startsWith("short")) {
@@ -263,13 +286,14 @@ public class Argument extends AbstractSettableAttribute {
         return returnJType;
     }
 
-    /** Get the kind as a comma separated list
+    /** Get the kind as a comma separated list.
      *  @return "input", "output" "input, output" or "return"
+     *  @see #setKind(String)
      */
     public String getKind() {
         String returnValue = "";
 
-        //set Kind
+        // Set Kind
         if (isInput()) {
             returnValue = "input";
         }
@@ -289,7 +313,7 @@ public class Argument extends AbstractSettableAttribute {
         return returnValue;
     }
 
-    /** Get the Java class corresponding to the Java Type
+    /** Get the Java class corresponding to the Java Type.
      *  @return the corresponding Java class
      */
     public String getType() {
@@ -319,11 +343,13 @@ public class Argument extends AbstractSettableAttribute {
         return returnCType;
     }
 
-    /** This is for derivates of Attribute
-     *  @return the Visibility
+    /** Get the visibility of this Settable.
+     *  @return Always return Settable.NONE, indicating that the user
+     *  interface should not make an instance visible.   
+     *  @see #setVisibility(Visibility)
      */
     public Visibility getVisibility() {
-        return null;
+        return Settable.NONE;
     }
 
     /** Return true if it is an input.
@@ -341,7 +367,7 @@ public class Argument extends AbstractSettableAttribute {
     }
 
     /** Return true if it is a return
-     *   @return true is it is an return, or false if not.
+     *  @return true is it is an return, or false if not.
      */
     public boolean isReturn() {
         return _isReturn;
@@ -350,11 +376,14 @@ public class Argument extends AbstractSettableAttribute {
     /** Remove a listener to be notified when the value of
      *  this settable object changes.
      *  @param listener The listener to remove.
+     *  @see #addValueListener(ValueListener)   
      */
-    public void removeValueListener(ptolemy.kernel.util.ValueListener listener) {
+    public void removeValueListener(ValueListener listener) {
     }
 
-    /** Set the C type of the argument with the given string
+    /** Set the C type of the argument with the given string.
+     *  @param cType The C type of argument.
+     *  @see #getCType()
      */
     public void setCType(String cType) {
         _cType = cType.trim();
@@ -394,6 +423,7 @@ public class Argument extends AbstractSettableAttribute {
      *  is not an instance of GenericJNIActor.
      *  @exception NameDuplicationException If the name of this entity
      *   collides with a name already in the container.
+     *   @see #getContainer()
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
@@ -442,7 +472,8 @@ public class Argument extends AbstractSettableAttribute {
     }
 
     /** Set the expression of the argument.
-     * The format wanted is "_isInput,_isOutput,_isReturn,_cType".
+     *  The format is "_isInput,_isOutput,_isReturn,_cType".
+     *  @see #getExpression()
      */
     public void setExpression(String expression) {
         try {
@@ -466,13 +497,12 @@ public class Argument extends AbstractSettableAttribute {
         }
     }
 
-    /** Set the expression of the argument from its attributes
+    /** Set the expression of the argument from its attributes.
      */
     public void setExpression() {
-        String ret = Boolean.valueOf(isInput()).toString() + ","
+        setExpression(Boolean.valueOf(isInput()).toString() + ","
                 + Boolean.valueOf(isOutput()).toString() + ","
-                + Boolean.valueOf(isReturn()).toString() + "," + getCType();
-        setExpression(ret);
+                + Boolean.valueOf(isReturn()).toString() + "," + getCType());
     }
 
     /** Set to true if the attribute is an input.
@@ -482,9 +512,10 @@ public class Argument extends AbstractSettableAttribute {
         _isInput = input;
     }
 
-    /** Set the kind of the argument with the given string
+    /** Set the kind of the argument with the given string.
      *  @param selectedValues A string describing the type of Argument.
      *  valid values are "input", "output", "return", "input, output".
+     *  @see #getKind()
      */
     public void setKind(String selectedValues) {
         if (selectedValues.equals("input")) {
@@ -529,25 +560,27 @@ public class Argument extends AbstractSettableAttribute {
     }
 
     /** Set to true if the attribute is an output.
-     *        @param output True if this is an output, false if it is not.
+     *  @param output True if this is an output, false if it is not.
      */
     public void setOutput(boolean output) {
         _isOutput = output;
     }
 
-    /** Set to true if the attribute is a return
-     *        @param returnFlag True if this is an input, false if it is not.
+    /** Set to true if the attribute is a return.
+     *  @param returnFlag True if this is an input, false if it is not.
      */
     public void setReturn(boolean returnFlag) {
         _isReturn = returnFlag;
     }
 
-    /** This is for derivates of Attribute set the Visibility
+    /** Set the visibility of this attribute in the user interface.
+     *  @param visibility Ignored, the visibility of this attribute is
+     *  always {@link ptolemy.kernel.util.Settable#NONE}.
      */
-    public void setVisibility(ptolemy.kernel.util.Settable.Visibility v) {
+    public void setVisibility(ptolemy.kernel.util.Settable.Visibility visbility) {
     }
 
-    /** Notify the container that an attribute has changed
+    /** Notify the container that an attribute has changed.
      *   @exception IllegalActionException If a error occurs
      */
     public void validate() throws IllegalActionException {
@@ -605,7 +638,7 @@ public class Argument extends AbstractSettableAttribute {
      */
     private boolean _isOutput;
 
-    /** A boolean that specified if the argument is a return
+    /** A boolean that specified if the argument is a return.
      */
     private boolean _isReturn;
 
