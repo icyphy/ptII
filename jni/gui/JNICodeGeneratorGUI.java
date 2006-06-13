@@ -32,8 +32,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -44,12 +42,9 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
 import jni.JNIUtilities;
-
-import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.gui.JTextAreaExec;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -87,8 +82,9 @@ public class JNICodeGeneratorGUI extends PtolemyFrame {
      *   configuration attribute.
      *  @exception NameDuplicationException If a name collision occurs.
      */
-    public JNICodeGeneratorGUI(final JNICodeGenerator codeGenerator, Tableau tableau)
-            throws IllegalActionException, NameDuplicationException {
+    public JNICodeGeneratorGUI(final JNICodeGenerator codeGenerator,
+            Tableau tableau) throws IllegalActionException,
+            NameDuplicationException {
         super(codeGenerator, tableau);
 
         setTitle(codeGenerator.getName());
@@ -105,11 +101,11 @@ public class JNICodeGeneratorGUI extends PtolemyFrame {
 
         JTextArea messageArea = new JTextArea(
                 "NOTE: This is a highly preliminary "
-                + "JNI facility, with many "
-                + "limitations.  It is best viewed as "
-                + "a concept demonstration."
-                + "\nPress the Generate button to create ports "
-                + "and generate code.", 2, 10);
+                        + "JNI facility, with many "
+                        + "limitations.  It is best viewed as "
+                        + "a concept demonstration."
+                        + "\nPress the Generate button to create ports "
+                        + "and generate code.", 2, 10);
         messageArea.setEditable(false);
         messageArea.setBorder(BorderFactory.createEtchedBorder());
         messageArea.setLineWrap(true);
@@ -161,7 +157,7 @@ public class JNICodeGeneratorGUI extends PtolemyFrame {
                 false);
 
         // If we execute any commands, print the output in the text area.
-        codeGenerator.setExecuteCommands(exec);
+        JNICodeGenerator.setExecuteCommands(exec);
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 left, exec);
@@ -190,26 +186,28 @@ public class JNICodeGeneratorGUI extends PtolemyFrame {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     exec.updateStatusBar("// Starting " + codeGenerator
-                            + " code generatio for " + getModel().getContainer());
+                            + " code generatio for "
+                            + getModel().getContainer());
 
-                    JNIUtilities.generateJNI((CompositeEntity)(getModel().getContainer()));
-//                     StringBuffer code = new StringBuffer();
-//                     codeGenerator.generateCode(code);
-//                     String codeFileNameWritten = codeGenerator
-//                             .getCodeFileName();
+                    JNIUtilities.generateJNI((CompositeEntity) (getModel()
+                            .getContainer()));
+                    //                     StringBuffer code = new StringBuffer();
+                    //                     codeGenerator.generateCode(code);
+                    //                     String codeFileNameWritten = codeGenerator
+                    //                             .getCodeFileName();
 
-//                     if (codeFileNameWritten != null) {
-//                         Configuration configuration = getConfiguration();
+                    //                     if (codeFileNameWritten != null) {
+                    //                         Configuration configuration = getConfiguration();
 
-//                         URL codeURL = new File(codeFileNameWritten).toURL();
-//                         // Use Thread.currentThread() so that this code will
-//                         // work under WebStart.
-//                         configuration.openModel(null, codeURL, codeURL
-//                                 .toExternalForm());
+                    //                         URL codeURL = new File(codeFileNameWritten).toURL();
+                    //                         // Use Thread.currentThread() so that this code will
+                    //                         // work under WebStart.
+                    //                         configuration.openModel(null, codeURL, codeURL
+                    //                                 .toExternalForm());
 
-//                     }
-//                     // Don't write the file to the window
-//                     //exec.updateStatusBar(code.toString());
+                    //                     }
+                    //                     // Don't write the file to the window
+                    //                     //exec.updateStatusBar(code.toString());
 
                     exec.updateStatusBar("// Code generation " + "complete.");
                 } catch (Exception ex) {
