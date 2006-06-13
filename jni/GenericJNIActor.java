@@ -118,7 +118,11 @@ public class GenericJNIActor extends TypedAtomicActor {
      *  Increment the version of the workspace.
      *  @param container The container.
      *  @param name The name of this object.
-     *  @exception IllegalActionException If the name has a period.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+
      */
     public GenericJNIActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -167,6 +171,10 @@ public class GenericJNIActor extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Add a return argument to this entity.
+     *  @exception IllegalActionException If the argument with the
+     *  name "return" is not of an acceptable class for the container.
+     *  @exception NameDuplicationException If there is already an
+     *  argument with the name "return"   
      */
     public void addArgumentReturn() throws IllegalActionException,
             NameDuplicationException {
@@ -265,6 +273,8 @@ public class GenericJNIActor extends TypedAtomicActor {
 
     /** For each Argument, a port of the same name is created,
      *  belonging to this argument.
+     *  @exception IllegalActionException If there is a problem
+     *  creating the ports.
      */
     public void createPorts() throws IllegalActionException {
         Iterator arguments = this.argumentsList().iterator();
@@ -864,7 +874,9 @@ public class GenericJNIActor extends TypedAtomicActor {
     }
 
     /** Remove an argument from this entity.
-     * @exception IllegalActionException If an error occurs.
+     *  @param arg The argument to be removed.
+     *  @exception IllegalActionException If there is a problem removing
+     *  the argument.   
      */
     public void removeArgument(Argument arg) throws IllegalActionException {
         _removeAttribute(arg);
@@ -877,6 +889,8 @@ public class GenericJNIActor extends TypedAtomicActor {
      *  is removed.
      *  If a input and/or output nature of a Port does not match the
      *  Argument with the same name, then the Port is adjusted.
+     *  @exception IllegalActionException If there is a problem updating
+     *  the ports.
      */
     public void updatePorts() throws IllegalActionException {
         Iterator arguments = this.argumentsList().iterator();
@@ -1036,6 +1050,12 @@ public class GenericJNIActor extends TypedAtomicActor {
     ////                         protected methods                 ////
 
     /** Add an argument to this entity.
+     *  @param arg The argument to be added.
+     *  @exception IllegalActionException If the argument
+     *  is not of an acceptable class for the container or the name contains
+     *  a period.   
+     *  @exception NameDuplicationException If there is already an
+     *  argument with the same name. 
      */
     protected void _addArgument(Argument arg) throws IllegalActionException,
             NameDuplicationException {
