@@ -19,36 +19,9 @@
     <table border=1>
       <tr><td>
       <h3>Windows Notes</h3>
-    <p>If you are running on Windows, you must have Cygwin installed
-    with gcc 3.2 and Cygwin 1.3.22.
-    Note that gcc 3.3 and 3.4 on Cygwin produce .dll's
-    that are incompatible with JNI as used in the current version of
-    Ptolemy II and Viptos.  
+    <p>To invoke Tinyos, we use $PTII/jni/launcher/launcher.exe.
+    This tool solves problems with Cygwin and JNI.
 
-    <p>We highly recommend that you use the
-    version of cygwinDevel shipped with Ptolemy II 3.0 and <a
-    href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/cygwin.htm"
-    target="_top">here</a>.  
-    <br>Once you have installed Cygwin, you should have these versions:
-<pre>
-cxh@DOPLAP35 ~/ptII
-$ gcc -v
-Reading specs from /usr/lib/gcc-lib/i686-pc-cygwin/3.2/specs
-Configured with: /netrel/src/gcc-3.2-3/configure --enable-languages
-va --enable-libgcj --enable-threads=posix --with-system-zlib --enab
-out-included-gettext --enable-interpreter --disable-sjlj-exceptions
-rsion-specific-runtime-libs --enable-shared --build=i686-pc-linux -
--cygwin --target=i686-pc-cygwin --enable-haifa --prefix=/usr --exec
---sysconfdir=/etc --libdir=/usr/lib --includedir=/nonexistent/inclu
-ir=/usr/sbin
-Thread model: posix
-gcc version 3.2 20020927 (prerelease)
-
-cxh@DOPLAP35 ~/ptII
-$ uname -a
-CYGWIN_NT-5.1 DOPLAP35 1.3.22(0.78/3/2) 2003-03-18 09:20 i686 unkno
-gwin
-</pre>
     <p>Windows users should verify that JNI works before proceeding
     
       <pre>
@@ -64,7 +37,7 @@ Failed: 0  Total Tests: 4  ((Passed: 4, Newly Passed: 0)  Known Failed: 0) C:/cx
     <p><b>If the above test fail for you under Cygwin, then it is
     very unlikely that running a TinyOS model within Viptos will work.</b>
 
-    <p>Despite the bug above, Windows users and other users can
+    <p>If the any of the test above fail for you, Windows users and other users can
     generate code by changing the PtinyOSDirector target
     from <code>ptII</code> to <code>pc</code> or some other tinyos target like
     <code>mica</code> or <code>mica install</code>.
