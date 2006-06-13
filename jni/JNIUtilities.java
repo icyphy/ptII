@@ -1545,14 +1545,14 @@ public class JNIUtilities {
      *  @return the signature of the interface function.
      */
     protected static String _signatureSendResults(GenericJNIActor actor) {
-        String returnValue = "(";
+        StringBuffer returnValue = new StringBuffer("(");
 
         //out
         Iterator arguments = _getArgumentsOut(actor).iterator();
 
         while (arguments.hasNext()) {
             String typ = ((Argument) arguments.next()).getJType();
-            returnValue = returnValue + _signature(typ);
+            returnValue.append(_signature(typ));
         }
 
         //in out
@@ -1560,12 +1560,12 @@ public class JNIUtilities {
 
         while (arguments.hasNext()) {
             String typ = ((Argument) arguments.next()).getJType();
-            returnValue = returnValue + _signature(typ);
+            returnValue.append(_signature(typ));
         }
 
-        returnValue = returnValue + ")V";
+        returnValue.append(")V");
 
-        return returnValue;
+        return returnValue.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
