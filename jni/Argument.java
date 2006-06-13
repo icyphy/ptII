@@ -103,7 +103,6 @@ public class Argument extends AbstractSettableAttribute {
         }
     }
 
-
     /** Export the Argument in a property MoML. If this object is not
      *  persistent, then write nothing.
      *  @exception IOException If an IO error occurs
@@ -421,8 +420,7 @@ public class Argument extends AbstractSettableAttribute {
             // Do this first, because it may throw an exception, and
             // we have not yet changed any state.
             if (container != null) {
-                if (((GenericJNIActor) container).getArgument(getName())
-                        == null) {
+                if (((GenericJNIActor) container).getArgument(getName()) == null) {
                     // Only add if the argument is not already present.
                     ((GenericJNIActor) container)._addArgument(this);
                     if (previousContainer == null) {

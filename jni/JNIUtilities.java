@@ -40,7 +40,6 @@ import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.MoMLChangeRequest;
@@ -244,25 +243,22 @@ public class JNIUtilities {
 
         // Verification qu'il y a un return, place le return en void sinon
         if (actor.getArgumentReturn() == null) {
-            MessageHandler
-                    .warning("No return was configured,"
-                            + "so we set it as void. "
-                            + "If this is not ok, right click on the JNIActor "
-                            + "and select Configure Arguments"); 
-                            
+            MessageHandler.warning("No return was configured,"
+                    + "so we set it as void. "
+                    + "If this is not ok, right click on the JNIActor "
+                    + "and select Configure Arguments");
+
             actor.addArgumentReturn();
         }
 
-        
         //        String linksMoML = "<entity name=\""
         //            + actor.getContainer().getName()
         //            + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
         //            + model.exportLinks(0, null)
         //            + "</entity>";
 
-        String linksMoML = "<group>\n"
-            + model.exportLinks(0, null)
-            + "</group>";
+        String linksMoML = "<group>\n" + model.exportLinks(0, null)
+                + "</group>";
         //Creation des ports
         Iterator relations = model.relationList().iterator();
 
@@ -272,7 +268,6 @@ public class JNIUtilities {
             relationsMoML.append(relation.exportMoML());
             relation.unlinkAll();
         }
-
 
         actor.removeAllPorts();
         actor.createPorts();
@@ -308,12 +303,12 @@ public class JNIUtilities {
             // created the JNI files for those actors.
             try {
                 actor.setName(newName);
-//                 MoMLChangeRequest request = new MoMLChangeRequest(actor,
-//                         actor, 
-//                         "<entity name=\"" + actor.getName() 
-//                         + "\"><rename name=\"" + newName + "\"/>");
-//                 request.setUndoable(true);
-//                 actor.requestChange(request);
+                //                 MoMLChangeRequest request = new MoMLChangeRequest(actor,
+                //                         actor, 
+                //                         "<entity name=\"" + actor.getName() 
+                //                         + "\"><rename name=\"" + newName + "\"/>");
+                //                 request.setUndoable(true);
+                //                 actor.requestChange(request);
             } catch (NameDuplicationException ex) {
                 throw new IllegalActionException(actor, ex,
                         "Unable to rename GenericJNIActor '" + actor.getName()
@@ -325,15 +320,13 @@ public class JNIUtilities {
         // Recreate the relations and links.
         // FIXME: get the locations as well.
         try {
-            MoMLChangeRequest request = new MoMLChangeRequest(actor.getContainer(), actor.getContainer(),
-                    "<group>\n"
-                    + relationsMoML.toString()
-                    + "</group>");
+            MoMLChangeRequest request = new MoMLChangeRequest(actor
+                    .getContainer(), actor.getContainer(), "<group>\n"
+                    + relationsMoML.toString() + "</group>");
             request.setUndoable(true);
             actor.getContainer().requestChange(request);
 
-            request = new MoMLChangeRequest(actor,
-                    actor.getContainer(),
+            request = new MoMLChangeRequest(actor, actor.getContainer(),
                     linksMoML);
             request.setUndoable(true);
             actor.getContainer().requestChange(request);
@@ -341,7 +334,6 @@ public class JNIUtilities {
             // ignore
             throwable.printStackTrace();
         }
-
 
         //render the graph within its controller
         // FIXME: when this method was in ThalesGraphFrame, we rerendered.
@@ -380,8 +372,8 @@ public class JNIUtilities {
         if (_executeCommands == null) {
             _executeCommands = new StreamExec();
         }
-        _executeCommands.setWorkingDirectory(
-                new File(StringUtilities.getProperty("user.dir")));
+        _executeCommands.setWorkingDirectory(new File(StringUtilities
+                .getProperty("user.dir")));
         _executeCommands.setCommands(execCommands);
         _executeCommands.start();
     }
@@ -517,7 +509,8 @@ public class JNIUtilities {
                         + _getArgumentsInOutWithJNIType(actor, ",")
                         + _virgule(_getArgumentsInOutWithJNIType(actor, ","),
                                 _getArgumentsOutWithCType(actor, ","))
-                        + _getArgumentsOutWithJNIType(actor, ",") + ")\n"
+                        + _getArgumentsOutWithJNIType(actor, ",")
+                        + ")\n"
                         + "{\n" + _indent1 + "// Declaration des sorties\n");
 
         arguments = _getArgumentsOut(actor).iterator();
