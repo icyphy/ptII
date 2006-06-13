@@ -304,8 +304,9 @@ public class GenericJNIActor extends TypedAtomicActor {
 
                     } catch (Exception ex) {
                         throw new IllegalActionException(this, ex,
-                                "Unable to construct " + "return port '" + port
-                                        + "'");
+                                "Unable to construct port "
+                                + "port for argument \""
+                                + argument.getName() + "\"");
                     }
                 } else if (argument.isInput() && argument.isOutput()) {
                     try {
