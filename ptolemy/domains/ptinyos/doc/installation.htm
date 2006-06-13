@@ -2,7 +2,7 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II</title>
+<title>Ptolemy II PtinyOS Domain Installation Notes</title>
 <link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -57,7 +57,7 @@ PATH=/usr/local/bin:${PATH}
 	    (For details, see 
         <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm#settingptII">Set the value of the PTII environment variable</a>).
 
-    <p>If you use the Ptolemy II 3.0 cygwinDevel, you will also need
+    <p>If you use the Ptolemy II 5.0 cygwinDevel, you may also need
     to upgrade to 
     <ul> 
        <li>autoconf-2.53 or later, (2.59 preferred)
@@ -246,7 +246,11 @@ rpm -ivh *.rpm
 
         </ul>
 
-      <li>You must have <code>make</code> version 3.80 or later installed.  If you have an earlier version, please choose the option that corresponds to your operating system:
+      <li>You must have <code>make</code> version 3.80 or later
+      installed.  To check your make version, run <code>make --version</code>.
+      If you have an earlier version, please choose the
+      option that corresponds to your operating system:
+
         <ul>
           <li>Windows (Cygwin):
             <br>
