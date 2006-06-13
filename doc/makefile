@@ -352,6 +352,7 @@ ALL1_4PACKAGES = \
 	$(VISUALSENSEPACKAGES) \
 	doc.doclets \
 	jni \
+	jni.gui \
 	ptolemy.plot \
 	ptolemy.plot.plotml \
 	ptolemy.plot.compat \
