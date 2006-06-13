@@ -617,6 +617,15 @@ public class GenericJNIActor extends TypedAtomicActor {
                         }
                     } else if (typ.equals("class [I")) {
                         try {
+                            if (field == null) {
+                                throw new InternalErrorException("field == null?");
+                            }
+                            if (obj == null) {
+                                throw new InternalErrorException("obj == null?");
+                            }
+                            if (field.get(obj) == null) {
+                                throw new InternalErrorException("field.get(obj)  == null? (field = " + field + " obj = " + obj);
+                            }
                             Token[] toks = new Token[((int[]) field.get(obj)).length];
 
                             for (int j = 0; j < ((int[]) field.get(obj)).length; j++) {
@@ -919,7 +928,6 @@ public class GenericJNIActor extends TypedAtomicActor {
 
                     }
                     request.setUndoable(true);
-                    System.out.println(request.getDescription());
                     requestChange(request);
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(this, throwable,
@@ -983,7 +991,6 @@ public class GenericJNIActor extends TypedAtomicActor {
                                             : ""))
                             + "</port>");
                     request.setUndoable(true);
-                    System.out.println("2LL" + request.getDescription());
                     requestChange(request);
                 }
             }

@@ -325,7 +325,6 @@ public class JNIUtilities {
         // Recreate the relations and links.
         // FIXME: get the locations as well.
         try {
-            System.out.println("JNIUtilities:\n" + relationsMoML);
             MoMLChangeRequest request = new MoMLChangeRequest(actor.getContainer(), actor.getContainer(),
                     "<group>\n"
                     + relationsMoML.toString()

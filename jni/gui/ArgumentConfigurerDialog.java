@@ -253,9 +253,9 @@ public class ArgumentConfigurerDialog extends ComponentDialog implements
             _query.setMessage(message);
         }
 
-        _query.addLine(name + "Name", name + "Name", name);
-        _query.addLine(name + "CType", name + "C or C++ Type", cType);
-        _query.addSelectButtons(name + "Kind", name + "Kind", _optionsArray,
+        _query.addLine(name + " Name", name + " Name", name);
+        _query.addLine(name + " CType", name + " C or C++ Type", cType);
+        _query.addSelectButtons(name + " Kind", name + " Kind", _optionsArray,
                 optionsDefault);
 
         ComponentDialog dialog = new ComponentDialog(_owner,
@@ -264,9 +264,9 @@ public class ArgumentConfigurerDialog extends ComponentDialog implements
         // If the OK button was pressed, then queue a mutation
         // to create the parameter.
         // A blank property name is interpreted as a cancel.
-        String newName = _query.getStringValue(name + "Name");
-        String newCType = _query.getStringValue(name + "CType");
-        String newKind = _query.getStringValue(name + "Kind");
+        String newName = _query.getStringValue(name + " Name");
+        String newCType = _query.getStringValue(name + " CType");
+        String newKind = _query.getStringValue(name + " Kind");
 
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")
                 && !newCType.equals("") && !newKind.equals("")) {

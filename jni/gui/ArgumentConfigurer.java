@@ -77,10 +77,10 @@ public class ArgumentConfigurer extends Query implements QueryListener {
             if (candidate instanceof Argument) {
                 Argument argument = (Argument) candidate;
                 setColumns(1);
-                addLine(argument.getName() + "Name", argument.getName()
+                addLine(argument.getName() + " Name", argument.getName()
                         + "Name", argument.getName());
-                addLine(argument.getName() + "CType", argument.getName()
-                        + "C or C++ Type", argument.getCType());
+                addLine(argument.getName() + " CType", argument.getName()
+                        + " C or C++ Type", argument.getCType());
 
                 Set optionsDefault = new HashSet();
 
@@ -96,9 +96,9 @@ public class ArgumentConfigurer extends Query implements QueryListener {
                     optionsDefault.add("return");
                 }
 
-                addSelectButtons(argument.getName() + "Kind", argument
-                        .getName()
-                        + "Kind:", _optionsArray, optionsDefault);
+                addSelectButtons(argument.getName() + " Kind",
+                        argument.getName() + " Kind:",
+                        _optionsArray, optionsDefault);
             }
         }
     }
@@ -117,9 +117,9 @@ public class ArgumentConfigurer extends Query implements QueryListener {
 
             if (candidate instanceof Argument) {
                 Argument argument = (Argument) candidate;
-                String type = argument.getName() + "CType";
-                String name = argument.getName() + "Name";
-                String kind = argument.getName() + "Kind";
+                String type = argument.getName() + " CType";
+                String name = argument.getName() + " Name";
+                String kind = argument.getName() + " Kind";
 
                 if (!type.equals(argument.getCType())
                         && !name.equals(argument.getName())
