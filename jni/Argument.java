@@ -77,7 +77,6 @@ public class Argument extends AbstractSettableAttribute {
      *   acceptable class for the container, or if the name contains a period.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
-     *  @param container   
      */
     public Argument(GenericJNIActor container, String name)
             throws IllegalActionException, NameDuplicationException {
