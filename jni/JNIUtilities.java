@@ -308,12 +308,12 @@ public class JNIUtilities {
             // created the JNI files for those actors.
             try {
                 actor.setName(newName);
-                MoMLChangeRequest request = new MoMLChangeRequest(actor,
-                        actor, 
-                        "<entity name=\"" + actor.getName() 
-                        + "\"><rename name=\"" + newName + "\"/>");
-                request.setUndoable(true);
-                actor.requestChange(request);
+//                 MoMLChangeRequest request = new MoMLChangeRequest(actor,
+//                         actor, 
+//                         "<entity name=\"" + actor.getName() 
+//                         + "\"><rename name=\"" + newName + "\"/>");
+//                 request.setUndoable(true);
+//                 actor.requestChange(request);
             } catch (NameDuplicationException ex) {
                 throw new IllegalActionException(actor, ex,
                         "Unable to rename GenericJNIActor '" + actor.getName()
@@ -322,7 +322,10 @@ public class JNIUtilities {
             }
         }
 
+        // Recreate the relations and links.
+        // FIXME: get the locations as well.
         try {
+            System.out.println("JNIUtilities:\n" + relationsMoML);
             MoMLChangeRequest request = new MoMLChangeRequest(actor.getContainer(), actor.getContainer(),
                     "<group>\n"
                     + relationsMoML.toString()
@@ -334,7 +337,6 @@ public class JNIUtilities {
                     actor.getContainer(),
                     linksMoML);
             request.setUndoable(true);
-            System.out.println(actor.getName() + "\n" + actor.exportMoML() + "\n" + linksMoML);
             actor.getContainer().requestChange(request);
         } catch (Throwable throwable) {
             // ignore
@@ -379,6 +381,8 @@ public class JNIUtilities {
         if (_executeCommands == null) {
             _executeCommands = new StreamExec();
         }
+        _executeCommands.setWorkingDirectory(
+                new File(StringUtilities.getProperty("user.dir")));
         _executeCommands.setCommands(execCommands);
         _executeCommands.start();
     }
