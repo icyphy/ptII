@@ -458,6 +458,9 @@ PTJNI_ARCHITECTURE =	@PTJNI_ARCHITECTURE@
 # $PTII/makefile if gcc or cc was found
 PTJNI_DIR =	@PTJNI_DIR@
 
+# JNI lib architecture, used to run jni/launcher
+PTJNI_LIB_ARCHITECTURE = @PTJNI_LIB_ARCHITECTURE@
+
 # Flag to use with TinyOS under Cygwin (-mno-cygwin)
 #PTJNI_NO_CYGWIN =	@PTJNI_NO_CYGWIN@
 # Under Windows with Cygwin-1.3.22 and gcc-3.2, we do not use -mno-cygwin

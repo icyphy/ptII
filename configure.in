@@ -2108,6 +2108,29 @@ else
 	AC_MSG_RESULT([$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE])
     fi
 
+    AC_MSG_CHECKING([for the proper JNI architecture])
+    case "`uname -p`" in
+	*86) PTJNI_LIB_ARCHITECTURE=i386;;
+	sparc) PTJNI_LIB_ARCHITECTURE=sparc;;
+	unknown) if test $PTJNI_ARCHITECTURE = "win32"; then
+		     PTJNI_LIB_ARCHITECTURE=i386
+		 else    
+		     PTJNI_LIB_ARCHITECTURE=unknown
+		 fi    
+                 ;;
+	*) PTJNI_LIB_ARCHITECTURE=unknown;;
+    esac
+
+    AC_MSG_RESULT(['$PTJNI_LIB_ARCHITECTURE'])
+
+    AC_MSG_CHECKING([for the proper JNI architecture lib directory])
+    if test ! -d "$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE"; then 
+	AC_MSG_WARN(["$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE" was not found.
+    As a result, $PTII/jni/launcher/launcher might not work.])
+    else 
+	AC_MSG_RESULT([$PTJAVA_HOME/lib/$PTJNI_ARCHITECTURE])
+    fi
+
     AC_MSG_CHECKING([for if the -mno-cygwin flag is available])
     case "`uname -s`" in
         CYGWIN_ME-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
@@ -3380,6 +3403,10 @@ AC_SUBST(PTJNI_ARCHITECTURE)
 # Set to jni and used in 
 # $PTII/makefile if gcc or cc was found
 AC_SUBST(PTJNI_DIR)
+
+
+# JNI lib architecture, used to run jni/launcher
+AC_SUBST(PTJNI_LIB_ARCHITECTURE)
 
 # Flag to use with TinyOS under Cygwin (-mno-cygwin)
 AC_SUBST(PTJNI_NO_CYGWIN)
