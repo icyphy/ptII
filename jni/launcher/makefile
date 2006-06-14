@@ -101,7 +101,7 @@ include $(ROOT)/mk/ptcommon.mk
 
 #--- Specialized part of the makefile: ---
 demo: launcher jclass
-	LD_LIBRARY_PATH=$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE) \
+	LD_LIBRARY_PATH=$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE):$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/client \
 		./launcher -Djava.class.path=$(ROOT) jni/launcher/Hello
 
 # $(PTMATLAB_cC) is set to cl or gcc by configure in $PTII/mk/ptII.mk
@@ -113,5 +113,5 @@ launcher: $(CPPSRCS) $(HEADERS)
 		$(CPPSRCS) $(PTJNI_DL_LIBRARY)
 
 launcher_vergil: launcher
-	LD_LIBRARY_PATH=$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE) \
+	LD_LIBRARY_PATH=$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE):$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/client \
 		./launcher -Djava.class.path=$(PTII) ptolemy/vergil/VergilApplication	 -jni
