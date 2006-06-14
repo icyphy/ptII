@@ -218,8 +218,11 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
-        super.initialize();
         _currentIteration = 0;
+        // This variable has to be reset at the very beginning, because
+        // some actors may call fireAt method to register breakpoints in DE
+        // and Continuous domains, which depend on the value of _index.
+        _index = 0;
 
         _actorsAllowedToFire = new HashSet();
         _actorsFinishedFiring = new HashSet();
@@ -227,8 +230,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
         _cachedFunctionalProperty = true;
         _functionalPropertyVersion = -1;
-        
-        _index = 0;
+
+        super.initialize();
     }
 
     /** Return true if all the controlled actors' isFireFunctional()
