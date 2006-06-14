@@ -142,6 +142,10 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
                             + (k[4] * _B[5][4]) + (k[5] * _B[5][5])));
             break;
 
+        case 6:
+            outputValue = integrator.getTentativeState();
+            return;
+
         default:
             throw new InvalidStateException(
                     "Execution sequence out of range.");
@@ -278,7 +282,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
     ////                         private variables                 ////
 
     /** The ratio of time increments within one integration step. */
-    protected static final double[] _TIME_INCREMENTS = { 0.2, 0.3, 0.6, 1.0, 0.875, 1.0 };
+    protected static final double[] _TIME_INCREMENTS = { 0.2, 0.3, 0.6, 1.0, 0.875, 1.0, 1.0 };
 
     /** B coefficients */
     private static final double[][] _B = {
