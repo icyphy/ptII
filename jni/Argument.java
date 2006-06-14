@@ -33,6 +33,7 @@ import java.util.StringTokenizer;
 
 import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -149,9 +150,6 @@ public class Argument extends AbstractSettableAttribute {
         String result = _cType;
 
         if (_cType.endsWith("[]")) {
-            if (StringUtilities.getProperty("os.name").startsWith("SunOS")) {
-            }
-
             result = _cType.substring(0, _cType.length() - 2) + " *";
         }
 
@@ -449,11 +447,17 @@ public class Argument extends AbstractSettableAttribute {
             // Do this first, because it may throw an exception, and
             // we have not yet changed any state.
             if (container != null) {
-                if (((GenericJNIActor) container).getArgument(getName()) == null) {
-                    // Only add if the argument is not already present.
-                    ((GenericJNIActor) container)._addArgument(this);
-                    if (previousContainer == null) {
-                        _workspace.remove(this);
+                if (!(container instanceof GenericJNIActor)) {
+                    throw new InternalErrorException("Expecting a container "
+                            + "of type GenericJNIActor, got " + container);
+                } else {
+                    if (((GenericJNIActor) container).getArgument(getName())
+                            == null) {
+                        // Only add if the argument is not already present.
+                        ((GenericJNIActor) container)._addArgument(this);
+                        if (previousContainer == null) {
+                            _workspace.remove(this);
+                        }
                     }
                 }
             }
