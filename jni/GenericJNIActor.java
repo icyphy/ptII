@@ -1,6 +1,6 @@
 /** An actor able to call a C function
 
- Copyright (c) 2003-2005 The Regents of the University of California.
+ Copyright (c) 2003-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -410,7 +410,7 @@ public class GenericJNIActor extends TypedAtomicActor {
 
     /** Read the argument of the function from the ports,
      *  call the native method throw the generated interface,
-     *  and put the results on the corresponding ports
+     *  and put the results on the corresponding ports.
      *  @exception IllegalActionException If a exception occured
      */
     public void fire() throws IllegalActionException {

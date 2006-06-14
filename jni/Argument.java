@@ -365,7 +365,7 @@ public class Argument extends AbstractSettableAttribute {
         return _isOutput;
     }
 
-    /** Return true if it is a return
+    /** Return true if it is a return.
      *  @return true is it is an return, or false if not.
      */
     public boolean isReturn() {
@@ -497,6 +497,7 @@ public class Argument extends AbstractSettableAttribute {
     }
 
     /** Set the expression of the argument from its attributes.
+     *  @see #getExpression()
      */
     public void setExpression() {
         setExpression(Boolean.valueOf(isInput()).toString() + ","
@@ -575,6 +576,7 @@ public class Argument extends AbstractSettableAttribute {
     /** Set the visibility of this attribute in the user interface.
      *  @param visibility Ignored, the visibility of this attribute is
      *  always {@link ptolemy.kernel.util.Settable#NONE}.
+     *  @see #getVisibility()
      */
     public void setVisibility(ptolemy.kernel.util.Settable.Visibility visibility) {
     }
