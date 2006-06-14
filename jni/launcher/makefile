@@ -110,7 +110,7 @@ launcher: $(CPPSRCS) $(HEADERS)
 		"-I$(PTJAVA_HOME)/../include" \
 		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
 		-o launcher \
-		$(CPPSRCS)
+		$(CPPSRCS) $(PTJNI_DL_LIBRARY)
 
 launcher_vergil: launcher
 	LD_LIBRARY_PATH=$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE) \

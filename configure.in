@@ -2182,10 +2182,13 @@ else
     AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_SUFFIX'])
 
     AC_MSG_CHECKING([for JNI libraries needed to link JNI])
+    PTJNI_DL_LIBRARY=
     case "`uname -s`" in
         CYGWIN_ME-*) PTJNI_LIBRARIES=-lcygwin;;
 	CYGWIN_NT-*) PTJNI_LIBRARIES=-lcygwin;;
 	CYGWIN_98-*) PTJNI_LIBRARIES=-lcygwin;;
+	Linux) PTJNI_LIBRARIES=
+	       PTJNI_DL_LIBRARY=-ldl;;
 	*) PTJNI_LIBRARIES=;;
     esac
     AC_MSG_RESULT(['$PTJNI_LIBRARIES'])
@@ -3404,6 +3407,8 @@ AC_SUBST(PTJNI_ARCHITECTURE)
 # $PTII/makefile if gcc or cc was found
 AC_SUBST(PTJNI_DIR)
 
+# Set to -ldl for use by jni/launcher/makefile under Linux
+AC_SUBST(PTJNI_DL_LIBRARY)
 
 # JNI lib architecture, used to run jni/launcher
 AC_SUBST(PTJNI_LIB_ARCHITECTURE)
