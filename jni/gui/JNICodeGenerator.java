@@ -73,9 +73,10 @@ import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-//// JNIGenerator
+//// JNICodeGenerator
 
-/** Generate Java Native Interface (JNI) support code.
+/** Generate Java Native Interface (JNI) support code and create ports
+ *  that correspond with the native method arguments.
  *  
  *  @author Christopher Brooks
  *  @version $Id$
@@ -84,7 +85,7 @@ import ptolemy.util.StringUtilities;
  *  @Pt.AcceptedRating Red (cxh)
  */
 public class JNICodeGenerator extends Attribute {
-    /** Create a new instance of JNI Generator
+    /** Create a new instance of JNI Generator.
      *  @param container The container.
      *  @param name The name of the JNI generator.
      *  @exception IllegalActionException If the super class throws the
@@ -120,8 +121,7 @@ public class JNICodeGenerator extends Attribute {
      *  @param code The given string buffer.
      *  @return The return value of the last subprocess that was executed.
      *  or -1 if no commands were executed.
-     *  @exception KernelException If the target file cannot be overwritten
-     *   or write-to-file throw any exception.
+     *  @exception Exception If there was a problem creating the JNI files.
      */
     public int generateCode(StringBuffer code) throws Exception {
         // FIXME: Need to append code to the code buffer

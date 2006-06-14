@@ -576,7 +576,7 @@ public class Argument extends AbstractSettableAttribute {
      *  @param visibility Ignored, the visibility of this attribute is
      *  always {@link ptolemy.kernel.util.Settable#NONE}.
      */
-    public void setVisibility(ptolemy.kernel.util.Settable.Visibility visbility) {
+    public void setVisibility(ptolemy.kernel.util.Settable.Visibility visibility) {
     }
 
     /** Notify the container that an attribute has changed.

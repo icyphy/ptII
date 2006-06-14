@@ -193,7 +193,7 @@ public class GetDocumentationAction extends FigureAction {
      *  _remoteDocumentationURLBase attribute is not set, then the
      *  location of the website documentation defaults to
      *  <code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII/<i>Major.Version</i></code>,
-     *  where <code><i>Major.Version</i> is the value returned by
+     *  where <code><i>Major.Version</i></code> is the value returned by
      *  {@link ptolemy.kernel.attributes.VersionAttribute#majorCurrentVersion()}.
      *
      *  @param configuration The configuration.
