@@ -928,14 +928,14 @@ and run:
 		    echo ""
 		fi    
             fi
-	    if [ -x "$PTII/jni/launcher/launcher" ]; then
+	    if [ -x "$PTII/jni/launcher/launcher" -a "`uname -s`" != "Linux" ]; then
    	        javac="$PTII/jni/launcher/launcher"
 	        javastartupclass=ptolemy/vergil/VergilApplication
 	        classpatharg=-Djava.class.path=
             fi
 	    javaflag="\"-Dptolemy.ptII.tosroot=$TOSROOT\" \"-Dptolemy.ptII.tosdir=$TOSDIR\" $ALL_JFLAG"
 	else    
-	    if [ "$1" = "-jni" -a -x "$PTII/jni/launcher/launcher" ]; then
+	    if [ "$1" = "-jni" -a -x "$PTII/jni/launcher/launcher" -a "`uname -s`" != "Linux" ]; then
 		javac="$PTII/jni/launcher/launcher"
 		javaflag="$ALL_JFLAG -Djava.class.path=\"$CLASSPATH\""
 		javastartupclass=ptolemy/vergil/VergilApplication
