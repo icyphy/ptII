@@ -548,8 +548,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Record starting point of the real time (the computer system time)
         // in case the director is synchronized to the real time.
         _timeBase = System.currentTimeMillis();
-
-        _index = 0;
     }
 
     /** Return true if all step size control actors agree that the current 
