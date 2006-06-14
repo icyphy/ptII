@@ -287,10 +287,6 @@ public class GenericJNIActor extends TypedAtomicActor {
             if (port == null) {
                 if (argument.isReturn()) {
                     try {
-                        //                         port = (TypedIOPort) this.newPort(argument.getName());
-                        //                         port.setInput(false);
-                        //                         port.setOutput(true);
-                        //                         port.setTypeEquals(BaseType.GENERAL);
                         MoMLChangeRequest request = new MoMLChangeRequest(
                                 this,
                                 this,
@@ -310,14 +306,6 @@ public class GenericJNIActor extends TypedAtomicActor {
                     }
                 } else if (argument.isInput() && argument.isOutput()) {
                     try {
-                        //                         port = (TypedIOPort) this.newPort(argument.getName()
-                        //                                 + "in");
-                        //                         port.setInput(argument.isInput());
-                        //                         port.setTypeEquals(BaseType.GENERAL);
-                        //                         port = (TypedIOPort) this.newPort(argument.getName()
-                        //                                 + "out");
-                        //                         port.setOutput(argument.isOutput());
-                        //                         port.setTypeEquals(BaseType.GENERAL);
                         MoMLChangeRequest request = new MoMLChangeRequest(
                                 this,
                                 this,
@@ -344,10 +332,6 @@ public class GenericJNIActor extends TypedAtomicActor {
                     }
                 } else {
                     try {
-                        //                         port = (TypedIOPort) this.newPort(argument.getName());
-                        //                         port.setInput(argument.isInput());
-                        //                         port.setOutput(argument.isOutput());
-                        //                         port.setTypeEquals(BaseType.GENERAL);
                         MoMLChangeRequest request = new MoMLChangeRequest(
                                 this,
                                 this,
@@ -367,13 +351,9 @@ public class GenericJNIActor extends TypedAtomicActor {
                     }
                 }
             } else {
-                //end if port == nul
+
                 // synchronized the arguments and the ports
                 if (argument.isReturn()) {
-                    //                     port.setInput(false);
-                    //                     port.setOutput(true);
-                    //                     port.setTypeEquals(BaseType.GENERAL);
-
                     MoMLChangeRequest request = new MoMLChangeRequest(
                             this,
                             this,
@@ -385,9 +365,6 @@ public class GenericJNIActor extends TypedAtomicActor {
                     request.setUndoable(true);
                     requestChange(request);
                 } else {
-                    //                     port.setInput(argument.isInput());
-                    //                     port.setOutput(argument.isOutput());
-                    //                     port.setTypeEquals(BaseType.GENERAL);
                     MoMLChangeRequest request = new MoMLChangeRequest(
                             this,
                             this,
@@ -728,13 +705,6 @@ public class GenericJNIActor extends TypedAtomicActor {
     /** Load the generated class and search for its fire method.
      */
     public void initialize() throws IllegalActionException {
-        //         String interNativeLibraryValue =
-        //             "jni" + nativeLibraryValue
-        //             .substring(1, nativeLibraryValue.length() - 1);
-        //        String interNativeLibrary = JNIUtilities._getInterNativeLibrary(this);
-        //searching the class generated
-        //        String className = "jni." + interNativeLibrary + ".Jni"
-        //            + this.getName();
         String nativeLibrary = JNIUtilities.getNativeLibrary(this);
         String className = "jni." + nativeLibrary + ".Jni" + this.getName();
 
@@ -764,38 +734,14 @@ public class GenericJNIActor extends TypedAtomicActor {
                     + className + "' relative to " + tab[0]);
         }
 
-        // FIXME: This adds to the path every time the actor is initialized
-        // FIXME: This does not work for me anyway.  I think the
-        // java.library.path needs to be set by the environment before
-        // the java process starts or else it needs to be set with
-        // -Djava.library.path when java is invoked
-        // Add the value of libraryDirectory to the java.library.path
-        // First, look relative to the current directory (user.dir)
-        // Second, look relative to $PTII
-        //         System.setProperty("java.library.path",
-        //                 StringUtilities.getProperty("user.dir")
-        //                 + File.separator
-        //                 + libraryDirectoryValue
-        //                 + File.pathSeparator
-        //                 + StringUtilities
-        //                 .getProperty("ptolemy.ptII.dir")
-        //                 + File.separator
-        //                 + libraryDirectoryValue
-        //                 + File.pathSeparator
-        //                 + StringUtilities.getProperty("user.dir")
-        //                 + File.separator
-        //                 + "jni"
-        //                 + File.separator
-        //                 + "jnitestDeux"
-        //                 + File.pathSeparator
-        //                 + System.getProperty("java.library.path"));
         _methods = null;
 
         try {
             _methods = _class.getMethods();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Interface C _methods not found " + "class was: " + _class);
+                    "Interface C _methods not found " + "class was: "
+                    + _class);
         }
 
         if (_methods == null) {
@@ -850,15 +796,6 @@ public class GenericJNIActor extends TypedAtomicActor {
 
             while (ports.hasNext()) {
                 Port port = (Port) ports.next();
-
-                //                 try {
-                //                     port.setContainer(null);
-                //                 } catch (KernelException ex) {
-                //                     // Should not be thrown.
-                //                     throw new InternalErrorException(
-                //                             "Internal error in Port constructor!"
-                //                                     + ex.getMessage());
-                //                 }
                 try {
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
                             this, "<deletePort name=\"" + port.getName()
@@ -866,7 +803,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                     request.setUndoable(true);
                     requestChange(request);
                 } catch (Exception ex) {
-                    // Ignore, the port probably does not exist.
+                    // Ignore.
                 }
             }
         } finally {
@@ -906,10 +843,7 @@ public class GenericJNIActor extends TypedAtomicActor {
 
                 try {
                     if (argument.isReturn()) {
-                        //                         port = (TypedIOPort) this.newPort(argument.getName());
-                        //                         port.setInput(false);
-                        //                         port.setOutput(true);
-                        //                         port.setTypeEquals(BaseType.GENERAL);
+
                         request = new MoMLChangeRequest(
                                 this,
                                 this,
@@ -919,14 +853,6 @@ public class GenericJNIActor extends TypedAtomicActor {
                                         + "    <property name=\"output\"/>\n"
                                         + "</port>");
                     } else if (argument.isInput() && argument.isOutput()) {
-                        //                         port = (TypedIOPort) this.newPort(argument.getName()
-                        //                                 + "in");
-                        //                         port.setInput(argument.isInput());
-                        //                         port.setTypeEquals(BaseType.GENERAL);
-                        //                         port = (TypedIOPort) this.newPort(argument.getName()
-                        //                                 + "out");
-                        //                         port.setOutput(argument.isOutput());
-                        //                         port.setTypeEquals(BaseType.GENERAL);
                         request = new MoMLChangeRequest(
                                 this,
                                 this,
@@ -943,11 +869,6 @@ public class GenericJNIActor extends TypedAtomicActor {
                                         + "    <property name=\"output\"/>\n"
                                         + "</port>");
                     } else {
-                        //                         port = (TypedIOPort) this.newPort(argument.getName());
-                        //                         port.setInput(argument.isInput());
-                        //                         port.setOutput(argument.isOutput());
-                        //                         port.setTypeEquals(BaseType.GENERAL);
-
                         request = new MoMLChangeRequest(
                                 this,
                                 this,
@@ -972,9 +893,6 @@ public class GenericJNIActor extends TypedAtomicActor {
                 // arguments and the ports.
 
                 if (argument.isReturn()) {
-                    // //                     port.setInput(false);
-                    // //                     port.setOutput(true);
-                    // //                     port.setTypeEquals(BaseType.GENERAL);
                     if (port.isInput()) {
                         MoMLChangeRequest request = new MoMLChangeRequest(
                                 this,
@@ -1003,11 +921,6 @@ public class GenericJNIActor extends TypedAtomicActor {
                     }
                 } else /*if (port.isInput() != argument.isInput() 
                  || port.isOutput() != argument.isOutput())*/{
-
-                    // //                     port.setInput(argument.isInput());
-                    // //                     port.setOutput(argument.isOutput());
-                    // //                     port.setTypeEquals(BaseType.GENERAL);
-
                     MoMLChangeRequest request = new MoMLChangeRequest(
                             this,
                             this,
@@ -1026,9 +939,6 @@ public class GenericJNIActor extends TypedAtomicActor {
                     requestChange(request);
                 }
             }
-
-            //                 }
-            //             }
         }
 
         // Remove any ports that do not have arguments.
