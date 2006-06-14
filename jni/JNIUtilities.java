@@ -236,6 +236,12 @@ public class JNIUtilities {
     }
 
     /** Generate JNI files for one actor in a model.
+     *  @param model The model that contains the actor.
+     *  @param actor The actor for which to generate JNI files. 
+     *  @exception Exception If an actor with the JNI name already
+     *  exists, if there is a problem creating or compiling the JNI files,
+     *  or if there is a problem creating the ports that correspond with
+     *  the native method parameters.   
      */
     public static void generateJNI(CompositeEntity model, GenericJNIActor actor)
             throws Exception {
@@ -251,15 +257,10 @@ public class JNIUtilities {
             actor.addArgumentReturn();
         }
 
-        //        String linksMoML = "<entity name=\""
-        //            + actor.getContainer().getName()
-        //            + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
-        //            + model.exportLinks(0, null)
-        //            + "</entity>";
-
         String linksMoML = "<group>\n" + model.exportLinks(0, null)
                 + "</group>";
-        //Creation des ports
+
+        // Creation des ports
         Iterator relations = model.relationList().iterator();
 
         StringBuffer relationsMoML = new StringBuffer();
@@ -303,12 +304,6 @@ public class JNIUtilities {
             // created the JNI files for those actors.
             try {
                 actor.setName(newName);
-                //                 MoMLChangeRequest request = new MoMLChangeRequest(actor,
-                //                         actor, 
-                //                         "<entity name=\"" + actor.getName() 
-                //                         + "\"><rename name=\"" + newName + "\"/>");
-                //                 request.setUndoable(true);
-                //                 actor.requestChange(request);
             } catch (NameDuplicationException ex) {
                 throw new IllegalActionException(actor, ex,
                         "Unable to rename GenericJNIActor '" + actor.getName()
@@ -318,7 +313,6 @@ public class JNIUtilities {
         }
 
         // Recreate the relations and links.
-        // FIXME: get the locations as well.
         try {
             MoMLChangeRequest request = new MoMLChangeRequest(actor
                     .getContainer(), actor.getContainer(), "<group>\n"
@@ -331,7 +325,7 @@ public class JNIUtilities {
             request.setUndoable(true);
             actor.getContainer().requestChange(request);
         } catch (Throwable throwable) {
-            // ignore
+            // Ignore
             throwable.printStackTrace();
         }
 
@@ -383,6 +377,8 @@ public class JNIUtilities {
      *  @param actor The actor that contains a nativeLibrary attribute.
      *  @return The value of the nativeLibrary attribute with the leading
      *  and trailing double quotes removed.
+     *  @exception IllegalActionException If there is a problem getting
+     *  the <i>nativeLibrary</i> attribute.   
      */
     public static String getNativeLibrary(GenericJNIActor actor)
             throws IllegalActionException {
@@ -419,6 +415,10 @@ public class JNIUtilities {
     /** Create the JNI C file.
      *  @param actor Actor to generate a JNI C file for.
      *  @param destinationDirectory Directory to create the file in.
+     *  @return a reference to the C file.
+     *  @exception IllegalActionException If there is a problem accessing
+     *  parameters or ports.
+     *  @exception IOException If there is a problem writing the C files.
      */
     protected static File _exportCInterfaceFile(GenericJNIActor actor,
             String destinationDirectory) throws IllegalActionException,
@@ -680,16 +680,6 @@ public class JNIUtilities {
 
         results.append(_indent1 + "// Menage\n");
 
-        /*arguments = _getArgumentsOut(actor).iterator();
-         while (arguments.hasNext()) {
-         Argument arg = (Argument) arguments.next();
-         results.append( "delete " + " " + arg.getName() + ";\n";
-         }
-         arguments = _getArgumentsInOut(actor).iterator();
-         while (arguments.hasNext()) {
-         Argument arg = (Argument) arguments.next();
-         results.append( "delete " + " " + arg.getName() + ";\n";
-         }*/
         if (!returnJNIType.equals("void")) {
             results.append(_indent1 + "return _" + returnName + ";\n}\n");
         } else {
@@ -716,6 +706,10 @@ public class JNIUtilities {
     /** Export the Visual Studio project.
      *  @param actor Actor to generate a JNI Java file for.
      *  @param destinationDirectory Directory to create the file in.
+     *  @exception IllegalActionException If there is a problem accessing
+     *  parameters or ports.
+     *  @exception IOException If there is a problem writing the
+     *  Visual Studio files.
      */
     protected static void _exportDSP(GenericJNIActor actor,
             String destinationDirectory) throws IllegalActionException,
@@ -925,6 +919,10 @@ public class JNIUtilities {
     /** Create the JNI Java file.
      *  @param actor Actor to generate a JNI Java file for.
      *  @param destinationDirectory Directory to create the file in.
+     *  @return a reference to the Java file.
+     *  @exception IllegalActionException If there is a problem accessing
+     *  parameters or ports.
+     *  @exception IOException If there is a problem writing the Java file.
      */
     protected static File _exportJavaInterfaceFile(GenericJNIActor actor,
             String destinationDirectory) throws IllegalActionException,
@@ -1183,6 +1181,9 @@ public class JNIUtilities {
     /** Export a makefile.
      *  @param actor Actor to generate a makefile for.
      *  @param destinationDirectory Directory to create the file in.
+     *  @exception IllegalActionException If there is a problem accessing
+     *  parameters or ports.
+     *  @exception IOException If there is a problem writing the makefile.
      */
     protected static void _exportMakefile(GenericJNIActor actor,
             String destinationDirectory) throws IllegalActionException,
@@ -1234,8 +1235,12 @@ public class JNIUtilities {
         }
     }
 
-    /** Get the args belonging to this entity.
-     * @return a vector of in arguments.
+    /** Get the arguments belonging to a GenericJNIActor.
+     * @param actor The GenericJNIActor object
+     * @param isInput True if we are searching for input arguments.
+     * @param isOutput True if we are searching for output arguments.
+     * @param isReturn True if we are searchin for return arguments.
+     * @return a vector of arguments.
      */
     protected static Vector _getArguments(GenericJNIActor actor,
             boolean isInput, boolean isOutput, boolean isReturn) {
@@ -1256,7 +1261,12 @@ public class JNIUtilities {
     }
 
     /** Get the args belonging to this entity.
-     *  @return the name of each in arguments.
+     *  @param actor The GenericJNIActor object.
+     *  @param isInput True if we are searching for input arguments.
+     *  @param isOutput True if we are searching for output arguments.
+     *  @param isReturn True if we are searchin for return arguments.
+     *  @param separator The separator used between multiple arguments.
+     *  @return the name of each argument.
      */
     protected static String _getArguments(GenericJNIActor actor,
             boolean isInput, boolean isOutput, boolean isReturn,
@@ -1281,6 +1291,8 @@ public class JNIUtilities {
     }
 
     /** Get the args In belonging to this entity.
+     *  @param actor The GenericJNIActor object
+     *  @param separator The separator used between multiple arguments.
      *  @return a vector of out arguments, excluding the in arguments.
      */
     protected static Vector _getArgumentsIn(GenericJNIActor actor) {
@@ -1288,6 +1300,7 @@ public class JNIUtilities {
     }
 
     /** Get the args In name belonging to this entity.
+     *  @param actor The GenericJNIActor object
      *  @return the name of the out arguments, excluding the in arguments.
      */
     protected static String _getArgumentsIn(GenericJNIActor actor,
@@ -1296,6 +1309,8 @@ public class JNIUtilities {
     }
 
     /** Get the args InOut belonging to this entity.
+     *  @param actor The GenericJNIActor object
+     *  @param separator The separator used between multiple arguments.
      *  @return a vector of inout arguments.
      */
     protected static Vector _getArgumentsInOut(GenericJNIActor actor) {
@@ -1303,14 +1318,18 @@ public class JNIUtilities {
     }
 
     /** Get the args InOut belonging to this entity.
-     *  @return a vector of inout arguments.
+     *  @param actor The GenericJNIActor object
+     *  @param separator The separator used between multiple arguments.
+     *  @return the name of the InOut arguments.
      */
     protected static String _getArgumentsInOut(GenericJNIActor actor,
             String separator) {
         return _getArguments(actor, true, true, false, separator);
     }
 
-    /** Get the args In belonging to this entity with their c type.
+    /** Get the args In belonging to a GenericJNIActor with their c type.
+     *  @param actor The GenericJNIActor object.
+     *  @param separator The separator used between multiple arguments.
      *  @return the c type and name of each in arguments.
      */
     protected static String _getArgumentsInOutWithCType(GenericJNIActor actor,
@@ -1318,8 +1337,10 @@ public class JNIUtilities {
         return _getArgumentsWithCType(actor, true, true, false, separator);
     }
 
-    /** Get the args In belonging to this entity with their JNI type,
-     *  excluding the out arguments.
+    /** Get the InOut args belonging to a GenericJNIActor entity with
+     *  their JNI type.
+     *  @param actor The GenericJNIActor object.
+     *  @param separator The separator used between multiple arguments.
      *  @return the JNI type and name of each in arguments.
      */
     protected static String _getArgumentsInOutWithJNIType(
@@ -1327,7 +1348,10 @@ public class JNIUtilities {
         return _getArgumentsWithJNIType(actor, true, true, false, separator);
     }
 
-    /** Get the args Out belonging to this entity with their java type.
+    /** Get the InOut args belonging to a GenericJNIActor entity with
+     *  their java type.
+     *  @param actor The GenericJNIActor object.
+     *  @param separator The separator used between multiple arguments.
      *  @return the name and the java type of the out arguments,
      *  excluding the in arguments.
      */
@@ -1336,7 +1360,10 @@ public class JNIUtilities {
         return _getArgumentsWithJType(actor, true, true, false, separator);
     }
 
-    /** Get the args In belonging to this entity with their c type.
+    /** Get the In args belonging to a GenericJNIActor entity with
+     *  their c type.
+     *  @param actor The GenericJNIActor object.
+     *  @param separator The separator used between multiple arguments.
      *  @return the c type of the out arguments.
      */
     protected static String _getArgumentsInWithCType(GenericJNIActor actor,
@@ -1344,41 +1371,51 @@ public class JNIUtilities {
         return _getArgumentsWithCType(actor, true, false, false, separator);
     }
 
-    /** Get the args In belonging to this entity with their JNI type,
-     *  excluding the out arguments.
-     *  @return the JNI type and name of each in arguments, excluding
-     *  the in arguments.
+    /** Get the In args belonging to a GenericJNIActor entity with
+     *  their JNI type, excluding the out arguments.
+     *  @param actor The GenericJNIActor object.
+     *  @param separator The separator used between multiple arguments.
+     *  @return the JNI type and name of each in arguments.
      */
     protected static String _getArgumentsInWithJNIType(GenericJNIActor actor,
             String separator) {
         return _getArgumentsWithJNIType(actor, true, false, false, separator);
     }
 
-    /** Get the args In belonging to this entity with their java type.
-     *  @return the name and the java type of the out arguments,
-     *  excluding the in arguments.
+    /** Get the In args belonging to a GenericJNIActor entity with
+     *  their java type.
+     *  @param actor The GenericJNIActor object.
+     *  @param separator The separator used between multiple arguments.
+     *  @return the name and the java type of the out arguments.
      */
     protected static String _getArgumentsInWithJType(GenericJNIActor actor,
             String separator) {
         return _getArgumentsWithJType(actor, true, false, false, separator);
     }
 
-    /** Get the args Out belonging to this entity.
-     *  @return a vector of out arguments, excluding the in arguments.
+    /** Get the Out args belonging a GenericJNIActor entity.
+     *  @param actor The GenericJNIActor object.
+     *  @param separator The separator used between multiple arguments.
+     *  @return a vector of out arguments.
      */
     protected static Vector _getArgumentsOut(GenericJNIActor actor) {
         return _getArguments(actor, false, true, false);
     }
 
-    /** Get the args out name belonging to this entity.
-     *  @return the name of the out arguments, excluding the in arguments.
+    /** Get the names of the out args name belonging to a GenericJNIActor.
+     *  @param actor The GenericJNIActor object.
+     *  @param separator The separator used between multiple arguments.
+     *  @return the name of the out arguments.
      */
     protected static String _getArgumentsOut(GenericJNIActor actor,
             String separator) {
         return _getArguments(actor, false, true, false, separator);
     }
 
-    /** Get the args Out belonging to this entity with their c type.
+    /** Get the Out args belonging to a GenericJNIActor entity with
+     *  their c type.
+     *  @param actor The GenericJNIActor object.
+     *  @param separator The separator used between multiple arguments.
      *  @return the c type of the out arguments.
      */
     protected static String _getArgumentsOutWithCType(GenericJNIActor actor,
@@ -1388,8 +1425,9 @@ public class JNIUtilities {
 
     /** Get the args In belonging to this entity with their JNI type,
      *   excluding the out arguments.
-     *  @return the JNI type and name of each in arguments, excluding
-     *  the in arguments.
+     *  @param actor The GenericJNIActor object.
+     *  @param separator The separator used between multiple arguments.
+     *  @return the JNI type and name of each in arguments.
      */
     protected static String _getArgumentsOutWithJNIType(GenericJNIActor actor,
             String separator) {
@@ -1397,8 +1435,9 @@ public class JNIUtilities {
     }
 
     /** Get the args Out belonging to this entity with their java type.
-     *  @return the name and the java type of the out arguments,
-     *  excluding the in arguments.
+     *  @param actor The GenericJNIActor object.
+     *  @param separator The separator used between multiple arguments.
+     *  @return the name and the java type of the out arguments.
      */
     protected static String _getArgumentsOutWithJType(GenericJNIActor actor,
             String separator) {
@@ -1406,6 +1445,11 @@ public class JNIUtilities {
     }
 
     /** Get the args belonging to this entity with their c type.
+     *  @param actor The GenericJNIActor object.
+     *  @param isInput True if we are searching for input arguments.
+     *  @param isOutput True if we are searching for output arguments.
+     *  @param isReturn True if we are searchin for return arguments.
+     *  @param separator The separator used between multiple arguments.
      *  @return the c type and name of each in arguments.
      */
     protected static String _getArgumentsWithCType(GenericJNIActor actor,
@@ -1432,6 +1476,11 @@ public class JNIUtilities {
     }
 
     /** Get the arguments belonging to this entity with their c type.
+     *  @param actor The GenericJNIActor object.
+     *  @param isInput True if we are searching for input arguments.
+     *  @param isOutput True if we are searching for output arguments.
+     *  @param isReturn True if we are searchin for return arguments.
+     *  @param separator The separator used between multiple arguments.
      *  @return the c type and name of each in arguments.
      */
     protected static String _getArgumentsWithCTypeCast(GenericJNIActor actor,
@@ -1462,6 +1511,11 @@ public class JNIUtilities {
 
     /** Get the arguments In belonging to this entity with their JNI
      *  type, excluding the out arguments.
+     *  @param actor The GenericJNIActor object.
+     *  @param isInput True if we are searching for input arguments.
+     *  @param isOutput True if we are searching for output arguments.
+     *  @param isReturn True if we are searchin for return arguments.
+     *  @param separator The separator used between multiple arguments.
      *  @return the JNI type and name of each in arguments.
      */
     protected static String _getArgumentsWithJNIType(GenericJNIActor actor,
@@ -1486,6 +1540,11 @@ public class JNIUtilities {
     }
 
     /** Get the arguments belonging to this entity with their java type.
+     *  @param actor The GenericJNIActor object.
+     *  @param isInput True if we are searching for input arguments.
+     *  @param isOutput True if we are searching for output arguments.
+     *  @param isReturn True if we are searchin for return arguments.
+     *  @param separator The separator used between multiple arguments.
      *  @return the java type and name of each in arguments
      */
     protected static String _getArgumentsWithJType(GenericJNIActor actor,
@@ -1509,7 +1568,8 @@ public class JNIUtilities {
     }
 
     /** Return the signature of the interface function.
-     *  @return the signature of the interface function.
+     *  @param typ The interface function declaration.
+     *  @return the Java JNI signature of the interface function.
      */
     protected static String _signature(String typ) {
         StringBuffer returnValue = new StringBuffer();
@@ -1542,6 +1602,7 @@ public class JNIUtilities {
     }
 
     /** Return the signature of the interface function.
+     *  @param actor The GenericJNIActor object.
      *  @return the signature of the interface function.
      */
     protected static String _signatureSendResults(GenericJNIActor actor) {
@@ -1570,20 +1631,20 @@ public class JNIUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private method                    ////
+
     private static String _getInterNativeFunction(GenericJNIActor actor)
             throws IllegalActionException {
-        //return "jni" + _getNativeFunction(actor);
         return "jni" + actor.getName();
     }
 
     private static String _getInterNativeLibrary(GenericJNIActor actor)
             throws IllegalActionException {
-        //return "jni" + getNativeLibrary(actor);
         return "jni" + actor.getName();
     }
 
-    // Return the value of the libraryDirectory argument with the double
-    // quotes stripped off.
+    /** Return the value of the libraryDirectory argument with the double
+     * quotes stripped off.
+     */
     private static String _getLibraryDirectory(GenericJNIActor actor)
             throws IllegalActionException {
         String libraryDirectory = (((StringToken) ((Parameter) actor
@@ -1591,8 +1652,9 @@ public class JNIUtilities {
         return libraryDirectory.substring(1, libraryDirectory.length() - 1);
     }
 
-    // Return the value of the nativeFunction argument with the double
-    // quotes stripped off.
+    /* Return the value of the nativeFunction argument with the double
+     * quotes stripped off.
+     */
     private static String _getNativeFunction(GenericJNIActor actor)
             throws IllegalActionException {
         String nativeFunction = (((StringToken) ((Parameter) actor
@@ -1601,8 +1663,8 @@ public class JNIUtilities {
     }
 
     /** Test the given string to know if a comma is needed
-     @param string the string to test
-     @return "" if str is null, "," else
+     * @param string the string to test
+     * @return "" if str is null, "," else
      */
     private static String _virgule(String string) {
         if (string.equals("")) {
@@ -1613,9 +1675,9 @@ public class JNIUtilities {
     }
 
     /** Test the given string to know if a comma is needed
-     @param string1 the first string to test
-     @param string2 the second string to test
-     @return "," if str != null && str2 != null, else return ""
+     * @param string1 the first string to test
+     * @param string2 the second string to test
+     * @return "," if str != null && str2 != null, else return ""
      */
     private static String _virgule(String string1, String string2) {
         if (string1.equals("")) {
@@ -1629,13 +1691,14 @@ public class JNIUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // String to use to indent 1 level
+
+    /** String to use to indent 1 level. */
     private static String _indent1 = StringUtilities.getIndentPrefix(1);
 
-    // String to use to indent 2 level
+    /** String to use to indent 2 level. */
     private static String _indent2 = StringUtilities.getIndentPrefix(2);
 
-    // String to use to indent 3 level
+    /** String to use to indent 3 level/ */
     private static String _indent3 = StringUtilities.getIndentPrefix(3);
 
     /** Non-graphical or graphical executor of commands. */
