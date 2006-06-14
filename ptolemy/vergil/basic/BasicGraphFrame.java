@@ -1180,51 +1180,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param configuration The configuration.
      *  @param entity The entity to save.
      *  @since Ptolemy 2.1
+     *  @deprecated Use {@link ptolemy.actor.gui.ActorLibraryUtilities#saveComponentInLibrary(Configuration, Entity) {
      */
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) {
-        try {
-            CompositeEntity libraryInstance = (CompositeEntity) configuration
-                    .getEntity("actor library." + VERGIL_USER_LIBRARY_NAME);
-
-            if (libraryInstance == null) {
-                MessageHandler.error("Save In Library failed: "
-                        + "Could not find user library with name \""
-                        + VERGIL_USER_LIBRARY_NAME + "\".");
-                return;
-            }
-
-            // Note that the library in the configuration is an
-            // instance of another model.  We have to go get the
-            // original model to make sure that the change propagates
-            // back to the file from which the library is loaded from.
-            Tableau libraryTableau = configuration.openModel(libraryInstance);
-            PtolemyEffigy libraryEffigy = (PtolemyEffigy) libraryTableau
-                    .getContainer();
-            CompositeEntity library = (CompositeEntity) libraryEffigy
-                    .getModel();
-
-            StringWriter buffer = new StringWriter();
-
-            // Check whether there is already something existing in the
-            // user library with this name.
-            if (library.getEntity(entity.getName()) != null) {
-                MessageHandler.error("Save In Library failed: An object"
-                        + " already exists in the user library with name "
-                        + "\"" + entity.getName() + "\".");
-                return;
-            }
-
-            entity.exportMoML(buffer, 1);
-
-            ChangeRequest request = new MoMLChangeRequest(entity, library,
-                    buffer.toString());
-            library.requestChange(request);
-        } catch (IOException ex) {
-            // Ignore.
-        } catch (KernelException ex) {
-            // Ignore.
-        }
+        ptolemy.actor.gui.ActorLibraryUtilities.saveComponentInLibrary(configuration, entity);
     }
 
     /** Set the center location of the visible part of the pane.
@@ -1335,8 +1295,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** The name of the user library.  The default value is
      *  "UserLibrary".  The value of this variable is what appears
      *  in the Vergil left hand tree menu.
+     *  @deprecated Use {@link ptolemy.actor.gui.ActorLibraryUtilities#VERGIL_USER_LIBRARY_NAME}
      */
     public static String VERGIL_USER_LIBRARY_NAME = "UserLibrary";
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
