@@ -102,7 +102,7 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.AcceptedRating Red (yuhong)
  */
 public class ContinuousIntegrator extends TypedAtomicActor implements 
-         ContinuousStatefulActor, ContinuousStepSizeControlActor {
+         ContinuousStatefulComponent, ContinuousStepSizeController {
 
     /** Construct an integrator with the specified name and a container.
      *  The integrator is in the same workspace as the container.

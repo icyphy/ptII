@@ -58,8 +58,8 @@ JSRCS = \
 	ContinuousIntegrator.java \
 	ContinuousODESolver.java \
 	ContinuousScheduler.java \
-	ContinuousStatefulActor.java \
-	ContinuousStepSizeControlActor.java
+	ContinuousStatefulComponent.java \
+	ContinuousStepSizeController.java
 
 
 EXTRA_SRCS =	$(JSRCS)

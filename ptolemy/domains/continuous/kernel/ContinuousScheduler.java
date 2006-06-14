@@ -95,6 +95,6 @@ public class ContinuousScheduler extends FixedPointScheduler {
         super(container, name);
     }
     
-    // FIXME: add two special schedules: ContinuousStepSizeControlActor 
-    // and ContinuousStatefulActor 
+    // FIXME: add two special schedules: ContinuousStepSizeController 
+    // and ContinuousStatefulComponent 
 }

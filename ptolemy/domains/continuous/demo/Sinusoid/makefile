@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Continuous domain demo
+# Makefile for Ptolemy II Continuous Sinusoid demo
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks,
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2005 The Regents of the University of California.
+# @Copyright (c) 1998-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/continuous/demo/Integration
+ME =		ptolemy/domains/continuous/demo/Sinusoid 
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../
 
 CLASSPATH =	$(ROOT)
 
@@ -41,47 +41,49 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Integration
+PTPACKAGE = 	Sinusoid
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	integrator1.xml \
-	integrator2.xml \
-	integrator3.xml \
-	integrator5.xml
+	Sinusoid.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED) 
+	$(OTHER_FILES_TO_BE_JARED) \
+	Sinusoid.htm \
+	SinusoidVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	doc \
+	$(PTCLASSJAR) \
+	'SinusoidApplet$$ParameterListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass
+all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
-install: all jars
+install: all
 
-demo: demo_ptolemy demo_vergil demo_applet
-
-demo_applet: $(PTCLASSJAR)
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer Sinusoid.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" 	integrator1.xml integrator2.xml integrator3.xml integrator4.xml integrator5.xml
+	"$(PTII)/bin/ptolemy" Sinusoid.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" integrator1.xml integrator2.xml integrator3.xml integrator4.xml integrator5.xml
+	"$(PTII)/bin/vergil" Sinusoid.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

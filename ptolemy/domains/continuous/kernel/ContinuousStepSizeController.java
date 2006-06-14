@@ -31,11 +31,11 @@ import ptolemy.kernel.util.IllegalActionException;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// ContinuousStepSizeControlActor
+//// ContinuousStepSizeController
 
 /**
- Interface for actors that control integration step sizes.
- This interface should be implemented by actors that discover
+ Interface for actors and directors that control integration step sizes.
+ This interface should be implemented by components that discover
  breakpoints during an integration step (such as level-crossing
  detectors) and by integrators.
  <P>
@@ -78,7 +78,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (eal)
  */
-public interface ContinuousStepSizeControlActor {
+public interface ContinuousStepSizeController {
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

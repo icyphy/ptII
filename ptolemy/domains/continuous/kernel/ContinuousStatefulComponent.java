@@ -28,17 +28,18 @@
 package ptolemy.domains.continuous.kernel;
 
 //////////////////////////////////////////////////////////////////////////
-//// ContinuousStatefulActor
+//// 
 
 /**
- Interface for actors that have tentative state that can be rolled back.
+ Interface for actors and directors
+ that have tentative state that can be rolled back.
  @author  Haiyang Zheng and Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (eal)
  */
-public interface ContinuousStatefulActor {
+public interface ContinuousStatefulComponent {
     
     /** Roll back to committed state.
      */

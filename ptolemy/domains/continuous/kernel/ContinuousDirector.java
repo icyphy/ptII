@@ -192,7 +192,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.AcceptedRating Red (hyzheng)
  */
 public class ContinuousDirector extends FixedPointDirector implements
-        TimedDirector, ContinuousStatefulActor, ContinuousStepSizeControlActor {
+        TimedDirector, ContinuousStatefulComponent, ContinuousStepSizeController {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a NullPointerException
@@ -566,10 +566,10 @@ public class ContinuousDirector extends FixedPointDirector implements
         boolean accurate = true;
     
         // Ask the actors whether the current step size is accurate.
-        Iterator stepSizeControlActors = _stepSizeControlActors().iterator();
+        Iterator stepSizeControlActors = _stepSizeControllers().iterator();
         while (stepSizeControlActors.hasNext() && !_stopRequested) {
-            ContinuousStepSizeControlActor actor
-                    = (ContinuousStepSizeControlActor) stepSizeControlActors.next();
+            ContinuousStepSizeController actor
+                    = (ContinuousStepSizeController) stepSizeControlActors.next();
             boolean thisAccurate = actor.isStepSizeAccurate();
             if (_debugging) {
                 _debug("  Checking output step size control actor: "
@@ -799,7 +799,7 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** Return the refined step size, which is the minimum of the
      *  current step size and the suggested step size of all actors that
-     *  implement ContinuousStepSizeControlActor. If these actors
+     *  implement ContinuousStepSizeController. If these actors
      *  request a step size smaller than the time resolution, then
      *  the first time this happens this method returns the time resolution.
      *  If it happens again on the next call to this method, then this
@@ -818,10 +818,10 @@ public class ContinuousDirector extends FixedPointDirector implements
         double timeResolution = getTimeResolution();
         double refinedStep = _currentStepSize;
     
-        Iterator stepSizeControlActors = _stepSizeControlActors().iterator();
+        Iterator stepSizeControlActors = _stepSizeControllers().iterator();
         while (stepSizeControlActors.hasNext() && !_stopRequested) {
-            ContinuousStepSizeControlActor actor
-                    = (ContinuousStepSizeControlActor) stepSizeControlActors.next();
+            ContinuousStepSizeController actor
+                    = (ContinuousStepSizeController) stepSizeControlActors.next();
             refinedStep = Math.min(refinedStep, actor.refinedStepSize());
         }
     
@@ -854,7 +854,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         return refinedStep;
     }
     
-    /** Roll back all actors that implement ContinuousStatefulActor
+    /** Roll back all actors that implement ContinuousStatefulComponent
      *  to committed state, and set local model time to the start
      *  of the integration period.
      */
@@ -863,9 +863,9 @@ public class ContinuousDirector extends FixedPointDirector implements
         // the start of the integration step.
         setModelTime(_iterationBeginTime);
         
-        Iterator rollbacks = _statefulActors().iterator();
+        Iterator rollbacks = _statefulComponents().iterator();
         while (rollbacks.hasNext()) {
-            ContinuousStatefulActor actor = (ContinuousStatefulActor) rollbacks.next();
+            ContinuousStatefulComponent actor = (ContinuousStatefulComponent) rollbacks.next();
             actor.rollBackToCommittedState();
         }
     }
@@ -921,10 +921,10 @@ public class ContinuousDirector extends FixedPointDirector implements
             // increase the step size more slowly.
             suggestedStep = 10.0 * _currentStepSize;
             
-            Iterator stepSizeControlActors = _stepSizeControlActors().iterator();
+            Iterator stepSizeControlActors = _stepSizeControllers().iterator();
             while (stepSizeControlActors.hasNext() && !_stopRequested) {
-                ContinuousStepSizeControlActor actor
-                        = (ContinuousStepSizeControlActor) stepSizeControlActors.next();
+                ContinuousStepSizeController actor
+                        = (ContinuousStepSizeController) stepSizeControlActors.next();
                 double suggestedStepSize = actor.suggestedStepSize();
                 if (suggestedStep > suggestedStepSize) {
                     suggestedStep = suggestedStepSize;
@@ -1134,7 +1134,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                         Then do:
                         else if (actor instanceof MultiComposite) {
                         // Iterate over the refinements and do:
-                         _stepSizeControlActors.addAll(_enclosedContinuousDirectors(refinement));
+                         _stepSizeControllers.addAll(_enclosedContinuousDirectors(refinement));
                          } */
                     }
                 } else {
@@ -1244,46 +1244,50 @@ public class ContinuousDirector extends FixedPointDirector implements
         _currentStepSize = stepSize;
     }
     
-    /** Return a list of stateful actors.
-     *  @return A list of actors implementing ContinuousStatefulActor.
+    /** Return a list of stateful components, which includes actors
+     *  deeply contained within the container of this director that
+     *  implement the ContinuousStatefulComponent interface and
+     *  directors of opaque composite actors within the container
+     *  of this director that implement the same interface.
+     *  @return A list of objects implementing ContinuousStatefulComponent.
      */
-    private List _statefulActors() {
-        if (_workspace.getVersion() != _statefulActorsVersion) {
+    private List _statefulComponents() {
+        if (_workspace.getVersion() != _statefulComponentsVersion) {
             // Construct the list.
-            _statefulActors.clear();
+            _statefulComponents.clear();
             CompositeEntity container = (CompositeEntity)getContainer();
             Iterator actors = container.deepEntityList().iterator();
             while (actors.hasNext()) {
                 Object actor = actors.next();
-                if (actor instanceof ContinuousStatefulActor) {
-                    _statefulActors.add(actor);
+                if (actor instanceof ContinuousStatefulComponent) {
+                    _statefulComponents.add(actor);
                 }
-                _statefulActors.addAll(_enclosedContinuousDirectors(container));
+                _statefulComponents.addAll(_enclosedContinuousDirectors(container));
             }
-            _statefulActorsVersion = _workspace.getVersion();
+            _statefulComponentsVersion = _workspace.getVersion();
         }
-        return _statefulActors;
+        return _statefulComponents;
     }
     
-    /** Return a list of step-size control actors.
+    /** Return a list of step-size controllers.
      *  @return A list of step-size control actors.
      */
-    private List _stepSizeControlActors() {
-        if (_workspace.getVersion() != _stepSizeControlActorsVersion) {
+    private List _stepSizeControllers() {
+        if (_workspace.getVersion() != _stepSizeControllersVersion) {
             // Construct the list.
-            _stepSizeControlActors.clear();
+            _stepSizeControllers.clear();
             CompositeEntity container = (CompositeEntity)getContainer();
             Iterator actors = container.deepEntityList().iterator();
             while (actors.hasNext()) {
                 Object actor = actors.next();
-                if (actor instanceof ContinuousStepSizeControlActor) {
-                    _stepSizeControlActors.add(actor);
+                if (actor instanceof ContinuousStepSizeController) {
+                    _stepSizeControllers.add(actor);
                 }
-                _stepSizeControlActors.addAll(_enclosedContinuousDirectors(container));
+                _stepSizeControllers.addAll(_enclosedContinuousDirectors(container));
             }
-            _stepSizeControlActorsVersion = _workspace.getVersion();
+            _stepSizeControllersVersion = _workspace.getVersion();
         }
-        return _stepSizeControlActors;
+        return _stepSizeControllers;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -1335,16 +1339,16 @@ public class ContinuousDirector extends FixedPointDirector implements
     private Time _startTime;
     
     /** The list of stateful actors. */
-    private List _statefulActors = new LinkedList();
+    private List _statefulComponents = new LinkedList();
     
     /** The version for the list of step size control actors. */
-    private long _statefulActorsVersion = -1;
+    private long _statefulComponentsVersion = -1;
     
     /** The list of step size control actors. */
-    private List _stepSizeControlActors = new LinkedList();
+    private List _stepSizeControllers = new LinkedList();
     
     /** The version for the list of step size control actors. */
-    private long _stepSizeControlActorsVersion = -1;
+    private long _stepSizeControllersVersion = -1;
 
     /** The cached value of the stopTime parameter. */
     private Time _stopTime;
