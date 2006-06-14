@@ -113,7 +113,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
 
         case 3:
             outputValue = integrator.getTentativeState();
-            break;
+            return;
 
         default:
             throw new InvalidStateException(
