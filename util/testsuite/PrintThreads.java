@@ -204,8 +204,11 @@ public class PrintThreads {
     /* Pads inputString out with spaces to width length.
      */
     private final static String _stringFormat(String inputString, int length) {
+        StringBuffer results;
         if (inputString == null) {
-            inputString = " ";
+            results = new StringBuffer(" ");
+        } else {
+            results = new StringBuffer(inputString);
         }
 
         // Pad string out to constant width
@@ -213,12 +216,12 @@ public class PrintThreads {
 
         if (stringLength < length) {
             for (int i = 0; i < (length - stringLength); i++) {
-                inputString = inputString + " ";
+                results.append(" ");  
             }
         } else if (inputString.length() > length) {
-            inputString = inputString.substring(0, length);
+            results = new StringBuffer(results.substring(0, length));
         }
 
-        return inputString;
+        return results.toString();
     }
 }
