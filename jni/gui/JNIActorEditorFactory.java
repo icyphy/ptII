@@ -42,6 +42,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import jni.GenericJNIActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.EditParametersDialog;
@@ -115,9 +116,14 @@ public class JNIActorEditorFactory extends EditorFactory {
         Configuration configuration =  (Configuration) Configuration.findEffigy(object.getContainer()).toplevel();
 
         if (button.equals("Configure Arguments")) {
-            new ArgumentConfigurerDialog(parent, (Entity) object,
-                    configuration);
-            return;
+            if ( !(object instanceof GenericJNIActor)) {
+                throw new InternalErrorException("Tried to configure an "
+                        + "object that is not a GenericJNIActor");
+            } else {
+                new ArgumentConfigurerDialog(parent, (GenericJNIActor) object,
+                        configuration);
+                return;
+            }
         }
 
         if (button.equals("Help")) {

@@ -76,7 +76,7 @@ public class ArgumentConfigurerDialog extends ComponentDialog implements
      *  @param configuration The configuration to use to open the
      *   help screen (or null if help is not supported).
      */
-    public ArgumentConfigurerDialog(Frame owner, Entity target,
+    public ArgumentConfigurerDialog(Frame owner, GenericJNIActor target,
             Configuration configuration) {
         super(owner, "Configure arguments for " + target.getName(),
                 new ArgumentConfigurer((GenericJNIActor) target), _moreButtons);
