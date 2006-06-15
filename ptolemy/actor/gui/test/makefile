@@ -55,7 +55,8 @@ JSRCS = \
 # tests that use diva and graphical tests in general should go
 # under JGRAPHICAL tests.
 JSIMPLE_TESTS = \
-	CheckModelSize.tcl
+	CheckModelSize.tcl \
+	UserActorLibrary
 
 # Graphical Java tests that use Tcl.
 JGRAPHICAL_TESTS = \
