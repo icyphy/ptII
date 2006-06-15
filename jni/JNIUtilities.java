@@ -1292,7 +1292,6 @@ public class JNIUtilities {
 
     /** Get the args In belonging to this entity.
      *  @param actor The GenericJNIActor object
-     *  @param separator The separator used between multiple arguments.
      *  @return a vector of out arguments, excluding the in arguments.
      */
     protected static Vector _getArgumentsIn(GenericJNIActor actor) {
@@ -1301,6 +1300,7 @@ public class JNIUtilities {
 
     /** Get the args In name belonging to this entity.
      *  @param actor The GenericJNIActor object
+     *  @param separator The separator used between multiple arguments.
      *  @return the name of the out arguments, excluding the in arguments.
      */
     protected static String _getArgumentsIn(GenericJNIActor actor,
@@ -1310,7 +1310,6 @@ public class JNIUtilities {
 
     /** Get the args InOut belonging to this entity.
      *  @param actor The GenericJNIActor object
-     *  @param separator The separator used between multiple arguments.
      *  @return a vector of inout arguments.
      */
     protected static Vector _getArgumentsInOut(GenericJNIActor actor) {
@@ -1404,7 +1403,6 @@ public class JNIUtilities {
 
     /** Get the names of the out args name belonging to a GenericJNIActor.
      *  @param actor The GenericJNIActor object.
-     *  @param separator The separator used between multiple arguments.
      *  @return the name of the out arguments.
      */
     protected static String _getArgumentsOut(GenericJNIActor actor,
