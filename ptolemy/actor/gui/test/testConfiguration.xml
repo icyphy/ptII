@@ -12,6 +12,17 @@
        <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory"/>
     </entity>
 
+  <!-- The list of tableau factories, which defines the visual   -->
+  <!-- editors that are available.  After an effigy is created   -->
+  <!-- for a model, these factories are tried in order until one -->
+  <!-- is willing to open the model. Each editor contains a list -->
+  <!-- of other editors that appear in the View menu.            -->
+  <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory">
+      <property name="Simple View"
+                class="ptolemy.actor.gui.test.SimpleTableau$Factory"/>
+    </property>
+  </property>
     <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
        <!-- Marker so that tree view expands the library. -->
        <property name="_libraryMarker"

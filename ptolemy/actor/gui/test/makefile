@@ -47,6 +47,7 @@ TCL_SRCS = \
 
 JSRCS = \
 	Rerun.java \
+	SimpleTableau.java \
 	TestModel.java
 
 # Non-graphical Java tests written in Tcl
@@ -56,13 +57,14 @@ JSRCS = \
 # under JGRAPHICAL tests.
 JSIMPLE_TESTS = \
 	CheckModelSize.tcl \
-	UserActorLibrary
+	UserActorLibrary.tcl
 
 # Graphical Java tests that use Tcl.
 JGRAPHICAL_TESTS = \
 	PtolemyApplication.tcl \
 	MoMLApplication.tcl \
 	PtExecuteApplication.tcl
+
 EXTRA_SRCS =	\
 	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS) test.xml
 
