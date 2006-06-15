@@ -535,10 +535,14 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                     + ":\n Number of receivers known now is "
                     + _currentNumberOfKnownReceivers);
         }
-        // Determine whether all receivers are known or the number of known receivers
-        // has not changed since the last iteration.
-        boolean converged = (_currentNumberOfKnownReceivers == _receivers.size())
-                || (_lastNumberOfKnownReceivers == _currentNumberOfKnownReceivers);
+        // Determine the number of known receivers has changed since the 
+        // last iteration. If not, the current iteration has converged. 
+        // Note that checking whether all receivers are known is not sufficient
+        // to conclude the convergence of the iteration because if some 
+        // receivers just become known, their containers (actors) need to be 
+        // fired to react these new inputs. 
+        boolean converged = 
+            _lastNumberOfKnownReceivers == _currentNumberOfKnownReceivers;
         _lastNumberOfKnownReceivers = _currentNumberOfKnownReceivers;
         return converged;
     }
