@@ -76,6 +76,7 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
+import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -1180,11 +1181,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param configuration The configuration.
      *  @param entity The entity to save.
      *  @since Ptolemy 2.1
-     *  @deprecated Use {@link ptolemy.actor.gui.ActorLibraryUtilities#saveComponentInLibrary(Configuration, Entity)}
+     *  @deprecated Use {@link ptolemy.actor.gui.UserActorLibrary#saveComponentInLibrary(Configuration, Entity)}
      */
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) {
-        ptolemy.actor.gui.ActorLibraryUtilities.saveComponentInLibrary(configuration, entity);
+        ptolemy.actor.gui.UserActorLibrary.saveComponentInLibrary(configuration, entity);
     }
 
     /** Set the center location of the visible part of the pane.
@@ -1295,9 +1296,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** The name of the user library.  The default value is
      *  "UserLibrary".  The value of this variable is what appears
      *  in the Vergil left hand tree menu.
-     *  @deprecated Use {@link ptolemy.actor.gui.ActorLibraryUtilities#VERGIL_USER_LIBRARY_NAME}
+     *  @deprecated Use {@link ptolemy.actor.gui.UserActorLibrary#USER_LIBRARY_NAME}
      */
-    public static String VERGIL_USER_LIBRARY_NAME = "UserLibrary";
+    public static String VERGIL_USER_LIBRARY_NAME = UserActorLibrary.USER_LIBRARY_NAME;
 
 
     ///////////////////////////////////////////////////////////////////

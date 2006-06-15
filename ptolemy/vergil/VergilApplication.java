@@ -43,6 +43,7 @@ import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyPreferences;
+import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
@@ -186,114 +187,12 @@ public class VergilApplication extends MoMLApplication {
      *  @param file The MoML file to open.
      *  @exception Exception If there is a problem opening the configuration,
      *  opening the MoML file, or opening the MoML file as a new library.
+     *  @deprecated Use {@link ptolemy.actor.gui.UserActorLibrary#openLibrary(Configuration, File)} 
      */
     public static void openLibrary(Configuration configuration, File file)
             throws Exception {
-        CompositeEntity library = null;
-        final CompositeEntity libraryContainer = (CompositeEntity) configuration
-                .getEntity("actor library");
-
-        final ModelDirectory directory = (ModelDirectory) configuration
-                .getEntity(Configuration._DIRECTORY_NAME);
-
-        if (directory == null) {
-            return;
-        }
-
-        if (libraryContainer == null) {
-            return;
-        }
-
-        StringAttribute alternateLibraryBuilderAttribute = (StringAttribute) libraryContainer
-                .getAttribute("_alternateLibraryBuilder");
-
-        // If the _alternateLibraryBuilder attribute is present, then we use
-        // the specified class to build the library instead of just reading
-        // the moml.
-        if (alternateLibraryBuilderAttribute != null) {
-            // Get the class that will build the library from the plugins
-            String libraryBuilderClassName = alternateLibraryBuilderAttribute
-                    .getExpression();
-
-            // Dynamically load the library builder and build the library
-            Class libraryBuilderClass = Class.forName(libraryBuilderClassName);
-            LibraryBuilder libraryBuilder = (LibraryBuilder) libraryBuilderClass
-                    .newInstance();
-
-            // Set the attributes defined in the moml to the attributes of the
-            // LibraryBuilder
-            libraryBuilder.addAttributes(alternateLibraryBuilderAttribute
-                    .attributeList());
-
-            try {
-                library = libraryBuilder.buildLibrary(libraryContainer
-                        .workspace());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new Exception("Cannot create library with "
-                        + "LibraryBuilder: ", ex);
-            }
-
-            System.out.println("\nActor Library built from alternative plugin");
-        }
-
-        // If we have a jar URL, convert spaces to %20
-        URL fileURL = JNLPUtilities.canonicalizeJarURL(file.toURL());
-
-        String identifier = fileURL.toExternalForm();
-
-        // Check to see whether the library is already open.
-        Effigy libraryEffigy = directory.getEffigy(identifier);
-
-        if (libraryEffigy == null) {
-            if (library == null) {
-                // Only do this if the library hasn't been set above
-                // by a LibraryBuilder
-                // No previous libraryEffigy exists that is identified
-                // by this URL.  Parse the user library into the
-                // workspace of the actor library.
-                MoMLParser parser = new MoMLParser(libraryContainer.workspace());
-
-                // Set the ErrorHandler so that if we have
-                // compatibility problems between devel and production
-                // versions, we can skip that element.
-                MoMLParser.setErrorHandler(new VergilErrorHandler());
-                parser.parse(fileURL, fileURL);
-
-                library = (CompositeEntity) parser.getToplevel();
-            }
-
-            //library.setContainer(libraryContainer); //i don't know if this is needed
-            // Now create the effigy with no tableau.
-            final PtolemyEffigy finalLibraryEffigy = new PtolemyEffigy(
-                    directory.workspace());
-            finalLibraryEffigy.setSystemEffigy(true);
-
-            // Correct old library name, if the loaded library happens
-            // to the user library.
-            if (library.getName().equals("user library")) {
-                library.setName(BasicGraphFrame.VERGIL_USER_LIBRARY_NAME);
-            }
-
-            finalLibraryEffigy.setName(directory.uniqueName(library.getName()));
-
-            _instantiateLibrary(library, directory, configuration, file,
-                    libraryContainer, finalLibraryEffigy);
-
-            finalLibraryEffigy.setModel(library);
-
-            // Identify the URL from which the model was read
-            // by inserting an attribute into both the model
-            // and the effigy.
-            URIAttribute uri = new URIAttribute(library, "_uri");
-            uri.setURL(fileURL);
-
-            // This is used by TableauFrame in its
-            //_save() method.
-            finalLibraryEffigy.uri.setURL(fileURL);
-
-            finalLibraryEffigy.identifier.setExpression(identifier);
-        }
+        MoMLParser.setErrorHandler(new VergilErrorHandler());
+        UserActorLibrary.openLibrary(configuration, file);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -348,83 +247,20 @@ public class VergilApplication extends MoMLApplication {
         PtolemyPreferences.setDefaultPreferences(configuration);
 
         // If _hideUserLibraryAttribute is not present, or is false,
-        // call openLibrary().  openLibrary() will open either the
+        // call openUserLibrary().  openUserLibrary() will open either the
         // user library or the library named by the _alternateLibraryBuilder.
         Parameter hideUserLibraryAttribute = (Parameter) configuration
                 .getAttribute("_hideUserLibrary", Parameter.class);
 
         if ((hideUserLibraryAttribute == null)
                 || hideUserLibraryAttribute.getExpression().equals("false")) {
-            // Read the user's vergilUserLibrary.xml file
-            //
-            // Use StringUtilities.getProperty() so we get the proper
-            // canonical path
-            // FIXME: If the name is something like
-            // "vergilUserLibrary.xml" then when we save an actor in the
-            // library and then save the window that comes up the name of
-            // entity gets set to vergilUserLibrary instead of the value
-            // of VERGIL_USER_LIBRARY_NAME.  This causes problems when we
-            // try to save another file.  The name of the entity gets
-            // changed by the saveAs code.
-            String libraryName = null;
 
+            // Load the user library.
             try {
-                libraryName = StringUtilities.preferencesDirectory()
-                        + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
+                MoMLParser.setErrorHandler(new VergilErrorHandler());
+                UserActorLibrary.openUserLibrary(configuration);
             } catch (Exception ex) {
-                System.out.println("Warning: Failed to get the preferences "
-                        + "directory (-sandbox always causes this): " + ex);
-            }
-
-            if (libraryName != null) {
-                System.out.println("Opening user library " + libraryName
-                        + "...");
-
-                File file = new File(libraryName);
-
-                if (!file.isFile() || !file.exists()) {
-                    // File might exist under an old name.
-                    // Try to read it.
-                    String oldLibraryName = StringUtilities
-                            .preferencesDirectory()
-                            + "user library.xml";
-                    File oldFile = new File(oldLibraryName);
-
-                    if (oldFile.isFile() && oldFile.exists()) {
-                        oldFile.renameTo(file);
-                    }
-                }
-
-                if (!file.isFile() || !file.exists()) {
-                    FileWriter writer = null;
-
-                    try {
-                        if (!file.createNewFile()) {
-                            throw new Exception(file + "already exists?");
-                        }
-
-                        writer = new FileWriter(file);
-                        writer.write("<entity name=\""
-                                + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME
-                                + "\" class=\"ptolemy.moml.EntityLibrary\"/>");
-                        writer.close();
-                    } catch (Exception ex) {
-                        MessageHandler.error("Failed to create an empty user "
-                                + "library: " + libraryName, ex);
-                    } finally {
-                        if (writer != null) {
-                            writer.close();
-                        }
-                    }
-                }
-
-                // Load the user library.
-                try {
-                    openLibrary(configuration, file);
-                    System.out.println(" Done");
-                } catch (Exception ex) {
-                    MessageHandler.error("Failed to display user library.", ex);
-                }
+                MessageHandler.error("Failed to display user library.", ex);
             }
         }
 
@@ -636,28 +472,6 @@ public class VergilApplication extends MoMLApplication {
         MessageHandler.error(argsBuffer.toString(), throwable);
 
         System.exit(0);
-    }
-
-    /**
-     * instantiate a ComponentEntity and create the changeRequest to
-     * implement it in the model
-     */
-    private static void _instantiateLibrary(final CompositeEntity library,
-            final ModelDirectory directory, Configuration configuration,
-            File file, final CompositeEntity libraryContainer,
-            final PtolemyEffigy finalLibraryEffigy) throws Exception {
-        ChangeRequest request = new ChangeRequest(configuration, file.toURL()
-                .toString()) {
-            protected void _execute() throws Exception {
-                // The library is a class!
-                library.setClassDefinition(true);
-                library.instantiate(libraryContainer, library.getName());
-                finalLibraryEffigy.setContainer(directory);
-            }
-        };
-
-        libraryContainer.requestChange(request);
-        request.waitForCompletion();
     }
 
     ///////////////////////////////////////////////////////////////////
