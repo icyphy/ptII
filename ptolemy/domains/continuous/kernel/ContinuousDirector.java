@@ -347,14 +347,15 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public void fire() throws IllegalActionException {
         
-        // If there is an enclosing director, then just execute its current round.
-        ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
-        if (enclosingDirector != null) {
-            _currentStepSize = enclosingDirector._currentStepSize;
-            _ODESolver._setRound(enclosingDirector._ODESolver._getRound());
-            if (super.prefire()) {
-                super.fire();
-            }
+        // If there is an enclosing director, then just execute 
+        // its current round.
+        ContinuousDirector enclosingContinuousDirector = 
+            _enclosingContinuousDirector();
+        if (enclosingContinuousDirector != null) {
+            _currentStepSize = enclosingContinuousDirector._currentStepSize;
+            _ODESolver._setRound(
+                    enclosingContinuousDirector._ODESolver._getRound());
+            super.fire();
             return;
         }
         
