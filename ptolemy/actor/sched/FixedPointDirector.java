@@ -297,7 +297,13 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         if (_debugging) {
             _debug("FixedPointDirector: Called postfire().");
         }
-        boolean atLeastOneActorAlive = false;
+        
+        boolean needMoreIterations = true;
+        int numberOfActors = getScheduler().getSchedule().size();
+        if ((numberOfActors > 0) && (_actorsFired.size() == 0)) {
+                needMoreIterations = false;
+        }
+
         Iterator actors = _actorsFired.iterator();
         while (actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor)actors.next();
@@ -306,9 +312,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                         "Unknown inputs remain. Possible causality loop.");
             }
             if (!_actorsFinishedExecution.contains(actor)) {
-                if (_postfireActor(actor)) {
-                    atLeastOneActorAlive = true;
-                } else {
+                if (!_postfireActor(actor)) {
                     // postfire() returned false, so prevent the actor
                     // from iterating again.
                     _actorsFinishedExecution.add(actor);
@@ -330,7 +334,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             return false;
         }
 
-        return super.postfire() && atLeastOneActorAlive;
+        return super.postfire() && needMoreIterations;
     }
 
     /** Initialize the firing of the director by resetting state variables
