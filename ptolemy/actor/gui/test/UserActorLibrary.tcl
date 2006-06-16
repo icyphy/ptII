@@ -44,11 +44,24 @@ if {[info procs jdkCapture] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-######################################################################
-####
+
+test UserActorLibrary-0.1 {Read in the configuration} { 
+    set configurationURL [java::call ptolemy.util.FileUtilities nameToURL \
+			      {$CLASSPATH/ptolemy/actor/gui/test/testConfiguration.xml} \
+			      [java::null] \
+			      [java::null]]
+
+    if {[info vars configuration] == ""} {
+	set configuration [java::call ptolemy.actor.gui.MoMLApplication readConfiguration $configurationURL]
+    }
+    $configuration getFullName
+} {.configuration}
+
 #
-test UserActorLibrary-1.0 {} {
-    # Set the user library
+# Test the UserActorLibrary.saveComponentInLibrary() method 
+#
+proc testSaveComponentInLibrary { modelFile configuration } { 
+    # Set the user library to something temporary
     set userLibraryName testUserActorLibrary_OK_2_DELETE
     java::field ptolemy.actor.gui.UserActorLibrary \
     	USER_LIBRARY_NAME $userLibraryName
@@ -57,20 +70,14 @@ test UserActorLibrary-1.0 {} {
     if [file exists $libraryName] {
 	error "$libraryName exists"
     } 
-    set configurationURL [java::call ptolemy.util.FileUtilities nameToURL \
-			      {$CLASSPATH/ptolemy/actor/gui/test/testConfiguration.xml} \
-			      [java::null] \
-			      [java::null]]
-			  
-    # If we run twice, this will throw a NameDuplicationException
-    if {[catch {$configuration getName} errMsg]} {
-	set configuration [java::call ptolemy.actor.gui.MoMLApplication readConfiguration $configurationURL]
-    }
+
     java::call ptolemy.actor.gui.UserActorLibrary openUserLibrary \
 	$configuration
 
     set parser [java::new ptolemy.moml.MoMLParser]
-    set entity [$parser parseFile test.xml]
+    $parser reset
+    $parser purgeModelRecord $modelFile
+    set entity [$parser parseFile $modelFile]
 
     java::call ptolemy.actor.gui.UserActorLibrary \
 	saveComponentInLibrary \
@@ -87,11 +94,17 @@ test UserActorLibrary-1.0 {} {
 
     # Read in the library and check it
     set parser [java::new ptolemy.moml.MoMLParser]
-    $parser purgeModelRecord [$file toURL]]
+    $parser purgeModelRecord [$file toURL]
     set readbackEntity [$parser {parse java.net.URL java.net.URL} \
 			    [java::null] [$file toURL]]
-    $readbackEntity exportMoML
+    return $readbackEntity
+}
 
+######################################################################
+####
+#
+test UserActorLibrary-1.0 {} {
+    [testSaveComponentInLibrary test.xml $configuration] exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -132,3 +145,37 @@ test UserActorLibrary-1.0 {} {
 </class>
 }
 
+######################################################################
+####
+#
+test UserActorLibrary-1.2 {Sinewave, which is a class} {
+
+    set entityLibrary [java::cast ptolemy.moml.EntityLibrary \
+			   [testSaveComponentInLibrary \
+				../../lib/Sinewave.xml $configuration]]
+    set restoredEntity [$entityLibrary getEntity Sinewave]
+    
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set entity [$parser parseFile ../../lib/Sinewave.xml]
+    set entityMoML [$entity exportMoML]
+
+    # Get rid of the header
+    diffText [string range $entityMoML 153 [string length $entityMoML]] \
+	[$restoredEntity exportMoML]
+} {}
+
+######################################################################
+####
+#
+test UserActorLibrary-1.3 {Sinewave, which is a class} {
+
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    set entity [java::cast ptolemy.kernel.CompositeEntity \
+		    [$parser parseFile model.xml]]
+    set entity2 [$entity getEntity CompositeActor]
+    java::call ptolemy.actor.gui.UserActorLibrary \
+	saveComponentInLibrary \
+	$configuration $entity2
+
+} {}
