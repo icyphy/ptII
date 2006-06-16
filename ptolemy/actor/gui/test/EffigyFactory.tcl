@@ -56,7 +56,8 @@ test EffigyFactory-1.0 {} {
     set effigyFactory2 [java::new ptolemy.actor.gui.EffigyFactory $e1 EF1]
     $effigyFactory2 exportMoML 
 } {<entity name="EF1" class="ptolemy.actor.gui.EffigyFactory">
-</entity>}
+</entity>
+}
 
 ######################################################################
 ####
