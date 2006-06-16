@@ -540,7 +540,7 @@ public class Configuration extends CompositeEntity {
      *  @param container The proposed container.
      *  @exception IllegalActionException If the argument is not null.
      */
-    public void setContainer(InstantiableNamedObj container)
+    public void setContainer(CompositeEntity container)
             throws IllegalActionException {
         if (container != null) {
             throw new IllegalActionException(this,
