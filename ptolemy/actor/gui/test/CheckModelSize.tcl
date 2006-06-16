@@ -51,14 +51,14 @@ test CheckModelSize-1.0 {checkModelSize} {
     set args [java::new {String[]} {1} {../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml}]
     set results \
 	[java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args]
-    regsub -all {file:.*/ptII/} $results {} results2
+    regsub -all {file:[^>]*/ptII/} $results {} results2
     list $results2
 	
 } {{<h1>Check Size</h1>
 Below are the results from checking the sizes of and centering of models
 <table>
 <tr>
-  <td><a href="ptolemy/actor/gui/test/../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml</a></td>
+  <td><a href="ptolemy/actor/gui/test/../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml">ptolemy/actor/gui/test/../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml</a></td>
   <td> seems to be OK.</td>
 </table>
 }}
@@ -73,15 +73,14 @@ test CheckModelSize-2.0 {main} {
     jdkCapture {
         java::call ptolemy.actor.gui.CheckModelSize main $args
     } results
-    regsub -all {file:.*/ptII/} $results {} results2
+    regsub -all {file:[^>]*/ptII/} $results {} results2
     list $results2
-} {{CheckModelSize: 1 ptolemy/actor/gui/test/testCheckModelSize.xml
-<h1>Check Size</h1>
+} {{<h1>Check Size</h1>
 Below are the results from checking the sizes of and centering of models
 <table>
 <tr>
-  <td><a href="ptolemy/actor/gui/test/testCheckModelSize.xml</a></td>
-  <td> width(9999) > 800 width(8888) > 768 Center([7777.0, 6666.0]) is not centered, should be [4999.5, 4444.0] Zoom(2.0) != 1.0</td>
+  <td><a href="ptolemy/actor/gui/test/testCheckModelSize.xml">ptolemy/actor/gui/test/testCheckModelSize.xml</a></td>
+  <td> width(9999) > 800 height(8888) > 768 Center([7777.0, 6666.0]) is not centered, should be [4999.5, 4444.0] Zoom(2.0) != 1.0</td>
 </table>
 
 }}
