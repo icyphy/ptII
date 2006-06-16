@@ -66,6 +66,42 @@ Below are the results from checking the sizes of and centering of models
 ######################################################################
 ####
 #
+test CheckModelSize-1.1 {checkModelSize: no _vergilSize} {
+    set args [java::new {String[]} {1} {test.xml}]
+    set results \
+	[java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args]
+    regsub -all {file:[^>]*/ptII/} $results {} results2
+    list $results2
+	
+} {{<h1>Check Size</h1>
+Below are the results from checking the sizes of and centering of models
+<table>
+<tr>
+  <td><a href="ptolemy/actor/gui/test/test.xml">ptolemy/actor/gui/test/test.xml</a></td>
+  <td> has no _vergilSize.</td>
+</table>
+}}
+
+######################################################################
+####
+#
+test CheckModelSize-1.2 {checkModelSize: bad moml} {
+    set args [java::new {String[]} {1} {badMoML.moml}]
+    set results \
+	[java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args]
+    regsub -all {file:[^>]*/ptII/} $results {} results2
+    list [string range $results2 0 290]
+} {{<h1>Check Size</h1>
+Below are the results from checking the sizes of and centering of models
+<table>
+<tr>
+  <td><a href="ptolemy/actor/gui/test/badMoML.moml">ptolemy/actor/gui/test/badMoML.moml</a></td>
+  <td> can't be parsed because java.net.MalformedURLException: no protocol: badMoML.moml}}
+	
+
+######################################################################
+####
+#
 test CheckModelSize-2.0 {main} {
     set modelFile [java::new java.io.File testCheckModelSize.xml]
     set modelURL [$modelFile toURL]
@@ -102,3 +138,15 @@ Below are the results from checking the sizes of and centering of models
 </table>
 
 }}
+######################################################################
+####
+#
+test CheckModelSize-2.2 {main: throw an exception} {
+    set modelFile [java::new java.io.File badMoML.moml]
+    set modelURL [$modelFile toURL]
+    set args [java::new {String[]} {1} [java::null]]
+    jdkCaptureErr {
+        java::call ptolemy.actor.gui.CheckModelSize main $args
+    } results
+    list [string range $results 0 29]
+} {java.lang.NullPointerException}
