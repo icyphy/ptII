@@ -173,5 +173,5 @@ test HTMLAbout-2.0 {generateLinks for completeDemos.htm} {
     set links [java::call ptolemy.actor.gui.HTMLAbout generateLinks \
 		   {ptolemy/actor/gui/test/testDemos.htm} {.*.xml$} \
 		   $configuration]
-    list $links
+    list [string range [$links toString] [expr {[string length [$links toString]] - 36}] [string length [$links toString]]]
 } {}
