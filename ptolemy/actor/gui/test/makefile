@@ -57,6 +57,7 @@ JSRCS = \
 # under JGRAPHICAL tests.
 JSIMPLE_TESTS = \
 	CheckModelSize.tcl \
+	Configuration.tcl \
 	UserActorLibrary.tcl
 
 # Graphical Java tests that use Tcl.
