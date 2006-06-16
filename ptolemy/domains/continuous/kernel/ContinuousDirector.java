@@ -118,12 +118,11 @@ import ptolemy.kernel.util.Settable;
  <UL>
  <LI> <i>startTime</i>: The start time of the
  execution. This parameter has no effect if
- there is an enclosing ContinuousDirector (i.e., above
- in the hierarchy, separated possibly by FIXME: What are
- we going to call the intervening FSMs or Case actors?.
+ this director is not within a top-level model.
  
  <LI> <i>stopTime</i>: The stop time of the execution.
  When the current time reaches this value, postfire() will return false.
+ This will occur whether or not this director is at the top level.
  
  <LI> <i>initStepSize</i>: The suggested integration step size.
  If the ODE solver is a fixed step size solver, then this parameter
@@ -155,9 +154,8 @@ import ptolemy.kernel.util.Settable;
  Solvers are all required to be in package
  "ptolemy.domains.continuous.kernel.solver".
  If there is another ContinuousDirector above this one
- in the hierarchy, separated possibly by MultiComposite,
- then the value of this parameter is ignored and the
- solver given by the other ContinuousDirector will be used.
+ in the hierarchy, then the value of this parameter is ignored and the
+ solver given by the first ContinuousDirector above will be used.
     
  <LI> <i>errorTolerance</i>: This is the local truncation
  error tolerance, used for controlling the integration accuracy
@@ -181,6 +179,13 @@ import ptolemy.kernel.util.Settable;
  may be requested by the director, which inserts the stop time of the
  execution. The fireAt method may also be requested by actors and the
  requested firing time will be inserted into the breakpoint table.
+ <p>
+ This director is designed to work with any other director that
+ implements the actor semantics. As long as the other director does
+ not commit state changes except in postfire, this director can be
+ used within it, and it can be used within the model controlled by
+ this director. Of course, the enclosing model must advance time,
+ or model time will not progress beyond zero.
  <p>
  This director is based on the CTDirector by Jie Liu and Haiyang Zheng,
  but it has a much simpler scheduler.
@@ -260,9 +265,7 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** Starting time of the execution. The default value is 0.0,
      *  and the type is double. This parameter has no effect if
-     *  there is an enclosing ContinuousDirector (i.e., above
-     *  in the hierarchy, separated possibly by FIXME: What are
-     *  we going to call the intervening FSMs or Case actors?.
+     *  this director is not at the top level.
      */
     public Parameter startTime;
 
@@ -500,11 +503,18 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** Return the start time, which is the value of the
      *  <i>startTime</i> parameter, represented as an instance
      *  of the Time class. This will be null before preinitialize()
-     *  is called. 
+     *  is called. If this director is not at the top level, then
+     *  this method delegates to the executive director.
+     *  Otherwise, it returns the value given by the <i>startTime</i>
+     *  parameter.
      *  @return The start time.
+     *  @throws IllegalActionException If the enclosing director throws it.
      */
-    public final Time getModelStartTime() {
+    public final Time getModelStartTime() throws IllegalActionException {
         // This method is final for performance reason.
+        if (_isEmbedded()) {
+            return ((Actor)getContainer()).getExecutiveDirector().getModelStartTime();
+        }
         return _startTime;
     }
 
@@ -893,7 +903,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // This method does not call the method defined in the super class,
         // because this method provides complete new information.
         String[] defaultSuggestions = new String[1];
-        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.ModalDirector";
+        defaultSuggestions[0] = "ptolemy.domains.continuous.kernel.HybridModalDirector";
         return defaultSuggestions;
     }
 
@@ -1109,45 +1119,10 @@ public class ContinuousDirector extends FixedPointDirector implements
                 "Catch up to future time is not implemented yet!");
     }
     
-    /** Return a list of all the enclosed continuous directors.
-     *  These are instances of this class that are either contained
-     *  by opaque composite actors in the specified composite, or
-     *  are contained by opaque composite actors that are refinements
-     *  of a MultiComposite directly contained by the specified composite.
-     *  @return A list of enclosed instances of ContinuousDirector.
-     */
-    private List _enclosedContinuousDirectors(CompositeEntity composite) {
-        if (_enclosedContinuousDirectorsVersion != _workspace.getVersion()) {
-            _enclosedContinuousDirectors.clear();
-            Iterator composites = composite.entityList(CompositeActor.class).iterator();
-            while (composites.hasNext()) {
-                CompositeActor actor = (CompositeActor)composites.next();
-                if (actor.isOpaque()) {
-                    Director director = actor.getDirector();
-                    if (director instanceof ContinuousDirector) {
-                        _enclosedContinuousDirectors.add(director);
-                    } else {
-                        /* FIXME: Define a MultiComposite interface in the kernel
-                        and have MultiCompositeActor and ModalModel implement it.
-                        Then do:
-                        else if (actor instanceof MultiComposite) {
-                        // Iterate over the refinements and do:
-                         _stepSizeControllers.addAll(_enclosedContinuousDirectors(refinement));
-                         } */
-                    }
-                } else {
-                    _enclosedContinuousDirectors.addAll(_enclosedContinuousDirectors(actor));
-                }
-            }
-            _enclosedContinuousDirectorsVersion = _workspace.getVersion();
-        }
-        return _enclosedContinuousDirectors;
-    }
-
     /** Return the enclosing continuous director, or null if there
      *  is none.  The enclosing continous director is a director
      *  above this in the hierarchy, possibly separated by composite
-     *  actors that implement the MultiComposite interface.
+     *  actors with other foreign directors.
      *  @return The enclosing ContinuousDirector, or null if there is none.
      */
     private ContinuousDirector _enclosingContinuousDirector() {
@@ -1160,9 +1135,8 @@ public class ContinuousDirector extends FixedPointDirector implements
                     Director director = ((Actor)container).getDirector();
                     if (director instanceof ContinuousDirector) {
                         _enclosingContinuousDirector = (ContinuousDirector)director;
+                        break;
                     }
-                    // FIXME: Handle intervening FSMs or Case.
-                    break;
                 }
                 container = container.getContainer();
             }
@@ -1259,8 +1233,14 @@ public class ContinuousDirector extends FixedPointDirector implements
                 Object actor = actors.next();
                 if (actor instanceof ContinuousStatefulComponent) {
                     _statefulComponents.add(actor);
+                } else if ((actor instanceof CompositeActor)
+                        && ((CompositeEntity)actor).isOpaque()
+                        && !((CompositeEntity)actor).isAtomic()) {
+                    Director director = ((Actor)actor).getDirector();
+                    if (director instanceof ContinuousStatefulComponent) {
+                        _statefulComponents.add(director);
+                    }
                 }
-                _statefulComponents.addAll(_enclosedContinuousDirectors(container));
             }
             _statefulComponentsVersion = _workspace.getVersion();
         }
@@ -1280,8 +1260,14 @@ public class ContinuousDirector extends FixedPointDirector implements
                 Object actor = actors.next();
                 if (actor instanceof ContinuousStepSizeController) {
                     _stepSizeControllers.add(actor);
+                } else if ((actor instanceof CompositeActor)
+                        && ((CompositeEntity)actor).isOpaque()
+                        && !((CompositeEntity)actor).isAtomic()) {
+                    Director director = ((Actor)actor).getDirector();
+                    if (director instanceof ContinuousStepSizeController) {
+                        _stepSizeControllers.add(director);
+                    }
                 }
-                _stepSizeControllers.addAll(_enclosedContinuousDirectors(container));
             }
             _stepSizeControllersVersion = _workspace.getVersion();
         }
@@ -1297,12 +1283,6 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** Simulation step sizes. */
     private double _currentStepSize;
     
-    /** A list of the enclosed continuous directors. */
-    private List _enclosedContinuousDirectors = new LinkedList();
-    
-    /** The version for _enclosedContinuousDirectors. */
-    private long _enclosedContinuousDirectorsVersion = -1;
-
     /** The enclosing continuous director. */
     private ContinuousDirector _enclosingContinuousDirector = null;
     
