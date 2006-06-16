@@ -31,6 +31,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import java.io.File;
+import java.io.IOException;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
@@ -44,6 +46,7 @@ import ptolemy.actor.gui.TableauFactory;
 import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.CancelException;
@@ -77,6 +80,26 @@ public class SimpleTableau extends Tableau {
     public SimpleTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+    }
+
+    /** Close this tableau.
+     *  @return Always return true.
+     */
+    public boolean close() {
+        Effigy effigy = (Effigy) getContainer();
+        System.out.println("SimpleTableau.close(): effigy: " + effigy);
+        if (effigy.isModified()) {
+            File file = effigy.getWritableFile();
+            System.out.println("Writing " + file);
+            try {
+                effigy.writeFile(file);
+                effigy.setModified(false);
+            } catch (IOException ex) {
+                throw new KernelRuntimeException(effigy, "Failed to write "
+                        + file);
+            }
+        }
+        return true;
     }
 
     /** A factory that creates run control panel tableaux for Ptolemy models.
