@@ -49,7 +49,7 @@ if {[info procs jdkCapture] == "" } then {
 ####
 #
 test HTMLAbout-1.0 {Read in the configuration} { 
-    global $configuration
+    global configuration
     set configurationURL [java::call ptolemy.util.FileUtilities nameToURL \
 			      {$CLASSPATH/ptolemy/actor/gui/test/testConfiguration.xml} \
 			      [java::null] \
@@ -169,9 +169,9 @@ tag specially.
 ######################################################################
 ####
 #
-test HTMLAbout-2.0 {generateLinks} {
+test HTMLAbout-2.0 {generateLinks for completeDemos.htm} {
     set links [java::call ptolemy.actor.gui.HTMLAbout generateLinks \
-		   {ptolemy/configs/doc/completeDemos.htm} {.*.xml$} \
+		   {ptolemy/actor/gui/test/testDemos.htm} {.*.xml$} \
 		   $configuration]
     list $links
 } {}
