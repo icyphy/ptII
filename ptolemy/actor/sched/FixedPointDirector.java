@@ -183,7 +183,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                 Actor actor = ((Firing) firingIterator.next()).getActor();
                 // If the actor has previously returned false in postfire(),
                 // do not fire it.
-                if (!_actorsFinished.contains(actor)) {
+                if (!_actorsFinishedExecution.contains(actor)) {
                     _fireActor(actor);
                     _actorsFired.add(actor);
                 } else {
@@ -305,13 +305,13 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                 throw new IllegalActionException(actor,
                         "Unknown inputs remain. Possible causality loop.");
             }
-            if (!_actorsFinished.contains(actor)) {
+            if (!_actorsFinishedExecution.contains(actor)) {
                 if (_postfireActor(actor)) {
                     atLeastOneActorAlive = true;
                 } else {
                     // postfire() returned false, so prevent the actor
                     // from iterating again.
-                    _actorsFinished.add(actor);
+                    _actorsFinishedExecution.add(actor);
                 }
             }
         }

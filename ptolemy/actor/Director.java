@@ -537,7 +537,7 @@ public class Director extends Attribute implements Executable {
             _debug("Called initialize().");
         }
 
-        _actorsFinished = new HashSet();
+        _actorsFinishedExecution = new HashSet();
 
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
@@ -1326,7 +1326,7 @@ public class Director extends Attribute implements Executable {
     /** Set of actors that have returned false from  postfire(),
      *  indicating that they do not wish to be iterated again.
      */
-    protected Set _actorsFinished;
+    protected Set _actorsFinishedExecution;
     
     /** The current time of the model. */
     protected Time _currentTime;
