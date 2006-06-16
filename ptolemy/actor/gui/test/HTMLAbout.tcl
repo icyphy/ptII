@@ -169,9 +169,76 @@ tag specially.
 ######################################################################
 ####
 #
-test HTMLAbout-2.0 {generateLinks for completeDemos.htm} {
+test HTMLAbout-2.0 {generateLinks for testDemos.htm} {
     set links [java::call ptolemy.actor.gui.HTMLAbout generateLinks \
 		   {ptolemy/actor/gui/test/testDemos.htm} {.*.xml$} \
 		   $configuration]
     list [string range [$links toString] [expr {[string length [$links toString]] - 36}] [string length [$links toString]]]
-} {}
+} {ptolemy/actor/gui/test/testDemos.htm}
+
+######################################################################
+####
+#
+test HTMLAbout-3.0 {GenerateCopyrights.generateCopyrights} {
+    set copyrights [java::call ptolemy.actor.gui.GenerateCopyrights generateHTML $configuration]
+    regsub -all {file:.*/ptII/} $copyrights {} results
+    list $results
+} {{<html>
+<head>
+<title>Copyrights</title>
+<link href="doc/default.css" rel="stylesheet"type="text/css">
+</head>
+<body>
+<h1>Ptolemy II</h1>
+The primary copyright for the Ptolemy II System can be
+found in <a href="ptolemy/configs/doc/copyright.htm</code></a>.
+This configuration includes code that uses packages
+with the following copyrights.
+<p>Ptolemy II uses AElfred as an XML Parser.
+AElfred is covered by the copyright in
+ <a href="com/microstar/xml/README.txt</code></a>
+<p>Below we list features and the corresponding copyright  of the package that is used.  If a feature is not listed below, then the Ptolemy II copyright is the only copyright.<table>
+  <tr><th>Feature</th>
+      <th>Copyright of package used by the feature</th>
+  </tr>
+<tr><td><a href="doc/codeDoc/ptolemy/actor/lib/io/comm/SerialComm.html">ptolemy.actor.lib.io.comm.SerialComm</a></td>
+    <td> <a href="ptolemy/actor/lib/io/comm/copyright.htm</code></a></td>
+</tr>
+<tr><td><a href="doc/codeDoc/ptolemy/domains/gr/kernel/GRActor.html">ptolemy.domains.gr.kernel.GRActor</a></td>
+    <td> <a href="ptolemy/domains/gr/lib/java3d-copyright.htm</code></a></td>
+</tr>
+<tr><td><a href="doc/codeDoc/ptolemy/actor/lib/joystick/Joystick.html">ptolemy.actor.lib.joystick.Joystick</a></td>
+    <td> <a href="ptolemy/actor/lib/joystick/copyright.htm</code></a></td>
+</tr>
+<tr><td><a href="doc/codeDoc/ptolemy/actor/lib/colt/ColtRandomSource.html">ptolemy.actor.lib.colt.ColtRandomSource</a></td>
+    <td> <a href="ptolemy/actor/lib/colt/colt-copyright.htm</code></a></td>
+</tr>
+<tr><td><a href="doc/codeDoc/ptolemy/matlab/Expression.html">ptolemy.matlab.Expression</a></td>
+    <td> <a href="ptolemy/matlab/copyright.htm</code></a></td>
+</tr>
+<tr><td><a href="doc/codeDoc/ptolemy/actor/lib/python/PythonScript.html">ptolemy.actor.lib.python.PythonScript</a></td>
+    <td> <a href="ptolemy/actor/lib/python/copyright.htm</code></a></td>
+</tr>
+<tr><td><a href="doc/codeDoc/jni/GenericJNIActor.html">jni.GenericJNIActor</a></td>
+    <td> <a href="jni/launcher/launcher-copyright.htm</code></a></td>
+</tr>
+<tr><td><a href="doc/codeDoc/ptolemy/copernicus/kernel/KernelMain.html">ptolemy.copernicus.kernel.KernelMain</a></td>
+    <td> <a href="ptolemy/copernicus/kernel/soot-copyright.html</code></a></td>
+</tr>
+<tr><td><a href="doc/codeDoc/ptolemy/actor/lib/jmf/JMFImageToken.html">ptolemy.actor.lib.jmf.JMFImageToken</a></td>
+    <td> <a href="ptolemy/actor/lib/jmf/jmf-copyright.htm</code></a></td>
+</tr>
+<tr><td><a href="doc/codeDoc/ptolemy/actor/lib/jai/JAIImageToken.html">ptolemy.actor.lib.jai.JAIImageToken</a></td>
+    <td> <a href="ptolemy/actor/lib/jai/jai-copyright.htm</code></a></td>
+</tr>
+<tr><td><a href="doc/codeDoc/ptolemy/domains/psdf/kernel/PSDFScheduler.html">ptolemy.domains.psdf.kernel.PSDFScheduler</a></td>
+    <td> <a href="ptolemy/domains/psdf/mapss-copyright.htm</code></a></td>
+</tr>
+<tr><td><a href="doc/codeDoc/ptolemy/actor/lib/x10/X10Interface.html">ptolemy.actor.lib.x10.X10Interface</a></td>
+    <td> <a href="ptolemy/actor/lib/x10/x10-copyright.htm</code></a></td>
+</tr>
+</table>
+</p><p>Other information <a href="about:">about</a>
+this configuration.
+</body>
+</html>}}
