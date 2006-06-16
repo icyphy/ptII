@@ -125,7 +125,7 @@ public class ModalDirector extends FSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire the model model.
+    /** Fire the modal model.
      *  If there is a preemptive transition enabled, execute its choice
      *  actions (outputActions) and fire its refinement. Otherwise,
      *  fire the refinement of the current state. After this firing,
@@ -314,11 +314,14 @@ public class ModalDirector extends FSMDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                       protected variables                 ////
 
     /** Actors that were fired in the most recent invocation of the fire() method. */
-    private Set _actorsFired = new HashSet();
-    
+    protected Set _actorsFired = new HashSet();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
     /** Actors that have returned false in postfire(). */
     private Set _disabledActors = new HashSet();
 }
