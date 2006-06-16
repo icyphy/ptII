@@ -50,8 +50,8 @@ if {[info procs jdkCapture] == "" } then {
 test CheckModelSize-1.0 {CheckSize} {
     set args [java::new {String[]} {1} {../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml}]
     jdkCapture {
-        java::new util.testsuite.CheckSize $args
+        java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args
     } results
     list $results
-} {{Check Size ../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml seems to be OK.
-}} 
+} {{CheckModelSize: 0 ../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml
+}}
