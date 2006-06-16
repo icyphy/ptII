@@ -179,3 +179,19 @@ test UserActorLibrary-1.3 {Sinewave, which is a class} {
 	$configuration $entity2
 
 } {}
+
+######################################################################
+####
+#
+test UserActorLibrary-1.4 {Try to assign to a Singleton. ComponentEntity._checkContainer() was throwing an exception, which was masking the real error  } {
+
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    set entity [java::cast ptolemy.kernel.CompositeEntity \
+		    [$parser parseFile testSingleton.xml]]
+    set entity2 [$entity getEntity CompositeActor]
+    java::call ptolemy.actor.gui.UserActorLibrary \
+	saveComponentInLibrary \
+	$configuration $entity2
+
+} {}
