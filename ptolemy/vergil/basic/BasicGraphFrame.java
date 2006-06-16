@@ -1185,7 +1185,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) {
-        ptolemy.actor.gui.UserActorLibrary.saveComponentInLibrary(configuration, entity);
+        try {
+            ptolemy.actor.gui.UserActorLibrary.saveComponentInLibrary(configuration, entity);
+        } catch (Exception ex) {
+            // We catch exceptions here because this method used to
+            // not throw Exceptions, and we don't want to break compatibility.
+            MessageHandler.error("Failed to save \"" + entity.getName()
+                    + "\".");
+        }
     }
 
     /** Set the center location of the visible part of the pane.
