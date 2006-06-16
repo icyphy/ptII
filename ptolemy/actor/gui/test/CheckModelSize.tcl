@@ -47,11 +47,53 @@ if {[info procs jdkCapture] == "" } then {
 ######################################################################
 ####
 #
-test CheckModelSize-1.0 {CheckSize} {
+test CheckModelSize-1.0 {checkModelSize} {
     set args [java::new {String[]} {1} {../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml}]
+    list [java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args]
+} {{<h1>Check Size</h1>
+Below are the results from checking the sizes of and centering of models
+<table>
+<tr>
+  <td><a href="file:/c:/cxh/ptII/ptolemy/actor/gui/test/../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml">file:/c:/cxh/ptII/ptolemy/actor/gui/test/../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml</a></td>
+  <td> seems to be OK.</td>
+</table>
+}}
+
+######################################################################
+####
+#
+test CheckModelSize-2.0 {main} {
+    set modelFile [java::new java.io.File testCheckModelSize.xml]
+    set modelURL [$modelFile toURL]
+    set args [java::new {String[]} {2} [list  Notafile [$modelURL toString]]]
     jdkCapture {
-        java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args
+        java::call ptolemy.actor.gui.CheckModelSize main $args
     } results
     list $results
-} {{CheckModelSize: 0 ../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml
+} {{<h1>Check Size</h1>
+Below are the results from checking the sizes of and centering of models
+<table>
+<tr>
+  <td><a href="file:/c:/cxh/ptII/ptolemy/actor/gui/test/file:/c:/cxh/ptII/ptolemy/actor/gui/test/testCheckModelSize.xml">file:/c:/cxh/ptII/ptolemy/actor/gui/test/file:/c:/cxh/ptII/ptolemy/actor/gui/test/testCheckModelSize.xml</a></td>
+  <td> width(9999) > 800 height(8888) > 768 Center([7777.0, 6666.0]) is not centered, should be [4999.5, 4444.0] Zoom(2.0) != 1.0</td>
+</table>
+
+}}
+
+######################################################################
+####
+#
+test CheckModelSize-2.1 {main: bad moml} {
+    set modelFile [java::new java.io.File badMoML.moml]
+    set modelURL [$modelFile toURL]
+    set args [java::new {String[]} {1} $modelURL]
+    jdkCapture {
+        java::call ptolemy.actor.gui.CheckModelSize main $args
+    } results
+    list $results
+} {{<h1>Check Size</h1>
+Below are the results from checking the sizes of and centering of models
+<table>
+</table>
+
 }}
