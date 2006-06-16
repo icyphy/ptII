@@ -271,19 +271,21 @@ public class UserActorLibrary {
      *  configuration.
      *  @param configuration The configuration.
      *  @param entity The entity to save.
+     *  @exception IOException if the user library cannot be found.
+     *  @exception NameDuplicationException If an entity with the same
+     *  name already exists in the library.
      *  @since Ptolemy 2.1
      */
     public static void saveComponentInLibrary(Configuration configuration,
-            Entity entity) {
+            Entity entity) throws IOException, IllegalActionException {
         try {
             CompositeEntity libraryInstance = (CompositeEntity) configuration
                     .getEntity("actor library." + USER_LIBRARY_NAME);
 
             if (libraryInstance == null) {
-                MessageHandler.error("Save In Library failed: "
+                throw new IOException("Save In Library failed: "
                         + "Could not find user library with name \""
                         + USER_LIBRARY_NAME + "\".");
-                return;
             }
 
             // Note that the library in the configuration is an
@@ -301,10 +303,10 @@ public class UserActorLibrary {
             // Check whether there is already something existing in the
             // user library with this name.
             if (library.getEntity(entity.getName()) != null) {
-                MessageHandler.error("Save In Library failed: An object"
+                throw new NameDuplicationException(entity, 
+                        "Save In Library failed: An object"
                         + " already exists in the user library with name "
                         + "\"" + entity.getName() + "\".");
-                return;
             }
 
             entity.exportMoML(buffer, 1);
