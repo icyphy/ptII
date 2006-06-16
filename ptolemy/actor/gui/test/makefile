@@ -58,6 +58,7 @@ JSRCS = \
 JSIMPLE_TESTS = \
 	CheckModelSize.tcl \
 	Configuration.tcl \
+	EffigyFactory.tcl \
 	UserActorLibrary.tcl
 
 # Graphical Java tests that use Tcl.
