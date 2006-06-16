@@ -1317,13 +1317,19 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // ptolemy.moml.test.MoMLParserLeak with the heap profiler
             // and look for leaks.
             if (_toplevel != null && _toplevel instanceof ComponentEntity) {
-                ((ComponentEntity) _toplevel).setContainer(null);
-
+                try {
+                    ((ComponentEntity) _toplevel).setContainer(null);
+                } catch (Exception ex2) {
+                    // Ignore.  setContainer(null) might throw an exception
+                    // if there are deferrables, but we don't want to hide
+                    // the original exception.
+                    // This problem comes up with tests in
+                    // actor/gui/test/UserActorLibrary.tcl.
+                } 
                 // Since the container is probably already null, then
                 // the setContainer(null) call probably did not do anything.
                 // so, we remove the object from the workspace so it
                 // can get gc'd.
-
                 // FIXME: perhaps we should do more of what
                 // ComponentEntity.setContainer() does and remove the ports?
                 try {
