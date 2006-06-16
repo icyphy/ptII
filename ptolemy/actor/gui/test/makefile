@@ -59,6 +59,7 @@ JSIMPLE_TESTS = \
 	CheckModelSize.tcl \
 	Configuration.tcl \
 	EffigyFactory.tcl \
+	HTMLAbout.tcl \
 	UserActorLibrary.tcl
 
 # Graphical Java tests that use Tcl.
