@@ -200,6 +200,13 @@ public interface Receiver {
     public void putToAll(Token token, Receiver[] receivers)
             throws NoRoomException, IllegalActionException;
 
+    /** Reset this receiver to its initial state, which is typically
+     *  either empty (same as calling clear()) or unknown.
+     *  @exception IllegalActionException If reset() is not supported by
+     *   the domain.
+     */
+    public void reset() throws IllegalActionException;
+
     /** Set the container.
      *  @param port The container.
      *  @exception IllegalActionException If the container is not of

@@ -317,6 +317,15 @@ public abstract class AbstractReceiver implements Receiver {
         }
     }
 
+    /** Reset this receiver to its initial state, which in this base
+     *  class is the same as calling clear().
+     *  @exception IllegalActionException If reset() is not supported by
+     *   the domain.
+     */
+    public void reset() throws IllegalActionException {
+        clear();
+    }
+
     /** Set the container.
      *  @param port The container.
      *  @exception IllegalActionException If the container is not of

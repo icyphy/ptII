@@ -482,7 +482,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                     IOPort port = (IOPort) ports.next();
 
                     if (port.isInput()) {
-                        // Clear all receivers.
+                        // Reset all receivers.
                         Receiver[][] receivers = port.getReceivers();
 
                         if (receivers == null) {
@@ -496,7 +496,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                             Receiver[] receivers2 = receivers[i];
 
                             for (int j = 0; j < receivers2.length; j++) {
-                                receivers2[j].clear();
+                                receivers2[j].reset();
                             }
                         }
                     }
@@ -517,7 +517,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                         Receiver[] receivers2 = receivers[i];
 
                         for (int j = 0; j < receivers2.length; j++) {
-                            receivers2[j].clear();
+                            receivers2[j].reset();
                         }
                     }
                 }
@@ -821,7 +821,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
-            _debug("Calling prefire()");
+            _debug("CompositeActor: Calling prefire()");
         }
 
         try {
@@ -835,13 +835,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
             boolean result = getDirector().prefire();
 
             if (_debugging) {
-                _debug("Prefire returns (from director) " + result);
+                _debug("CompositeActor: prefire returns: " + result);
             }
-
-            if (_debugging) {
-                _debug("Called prefire()");
-            }
-
             return result;
         } finally {
             _workspace.doneReading();

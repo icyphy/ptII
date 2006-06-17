@@ -751,7 +751,7 @@ public class Director extends Attribute implements Executable {
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
-            _debug("Called prefire().");
+            _debug("Director: Called prefire().");
         }
 
         Nameable container = getContainer();
