@@ -1289,6 +1289,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** The function dependency, if it is present. */
+    protected FunctionDependency _functionDependency;
+
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
 
@@ -1312,7 +1315,4 @@ public class CompositeActor extends CompositeEntity implements Actor {
     private transient long _outputPortsVersion = -1;
 
     private transient List _cachedOutputPorts;
-    
-    /** The function dependency, if it is present. */
-    private FunctionDependency _functionDependency;
 }
