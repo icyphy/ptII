@@ -175,6 +175,9 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *   of the actor throws it.
      */
     public void fire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("FixedPointDirector: invoking fire().");
+        }
         Schedule schedule = getScheduler().getSchedule();
         int iterationCount = 0;
         do {
@@ -192,6 +195,10 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                     // connected actors, we need to explicitly call the
                     // sendClear() method of all of its output ports,
                     // which indicates that a signal is known to be absent.
+                    if (_debugging) {
+                        _debug("FixedPointDirector: no longer enabled (return false in postfire): "
+                                + actor.getFullName());
+                    }
                     _sendClearToAllUnknownOutputsOf(actor);
                 }
             }
@@ -343,6 +350,9 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If thrown by the parent class.
      */
     public boolean prefire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("FixedPointDirector: Called prefire().");
+        }
         _actorsAllowedToFire.clear();
         _actorsFinishedFiring.clear();
         _actorsFired.clear();
@@ -488,11 +498,14 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      */
     private void _fireActor(Actor actor) throws IllegalActionException {
         if (_isReadyToFire(actor) && !_stopRequested) {
-            if (_debugging) {
-                _debug("Prefiring: " + ((Nameable) actor).getFullName());
-            }
             // Prefire the actor.
             boolean prefireReturns = actor.prefire();
+            if (_debugging) {
+                _debug("FixedPointDirector: Prefiring: "
+                        + ((Nameable) actor).getFullName()
+                        + ", which returns "
+                        + prefireReturns);
+            }
             // Check monotonicity constraint.
             if (!prefireReturns
                     && _actorsAllowedToFire.contains(actor)) {
@@ -502,15 +515,23 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             }
             if (prefireReturns) {
                 _actorsAllowedToFire.add(actor);
-                if (_debugging) {
-                    _debug("Firing: " + ((Nameable) actor).getName());
-                }
                 
                 // Whether all inputs are known must be checked before
                 // firing to handle cases with self-loops, because the
                 // current firing may change the status of some input
                 // receivers from unknown to known.
                 boolean allInputsKnownBeforeFiring = _areAllInputsKnown(actor);
+
+                if (_debugging) {
+                    if (allInputsKnownBeforeFiring) {
+                        _debug("Firing: " + ((Nameable) actor).getName()
+                                + ", which has all inputs known.");
+                    } else {
+                        _debug("Firing: " + ((Nameable) actor).getName()
+                                + ", which has some inputs unknown.");
+                    }
+                }
+
                 actor.fire();
                 // If all of the inputs of this actor were known before firing, firing
                 // the actor again in the current iteration is not necessary.
@@ -605,7 +626,9 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             for (int j = 0; j < outputPort.getWidth(); j++) {
                 if (!outputPort.isKnown(j)) {
                     if (_debugging) {
-                        _debug("  Set output " + outputPort.getFullName() + " to absent.");
+                        _debug("  FixedPointDirector: Set output "
+                                + outputPort.getFullName()
+                                + " to absent.");
                     }
                     outputPort.sendClear(j);
                 }
