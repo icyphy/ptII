@@ -55,6 +55,7 @@ JSRCS = \
 	Current.java \
 	Default.java \
 	EnabledComposite.java \
+	FunctionDependencyOfEnabledCompositeActor.java \
 	InstantaneousDialogGenerator.java \
 	NonStrictDelay.java \
 	NonStrictDisplay.java \
