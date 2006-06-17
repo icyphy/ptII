@@ -27,16 +27,15 @@
  */
 package ptolemy.domains.sr.lib;
 
-import java.util.Iterator;
-
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
@@ -104,42 +103,89 @@ public class EnabledComposite extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** If the <i>enable</i> input is known and true, then invoke the 
+     *  fire() method of the superclass.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void fire() throws IllegalActionException {
+        if (_enabled) {
+            super.fire();
+        }
+    }
+
+    /** Return a representation of the function dependencies that output
+     *  ports have on input ports.
+     *  @return A representation of the function dependencies of the
+     *   ports of this actor.
+     *  @see ptolemy.actor.util.FunctionDependency
+     */
+    public FunctionDependency getFunctionDependency() {
+        if (_functionDependency == null) {
+            try {
+                _functionDependency = 
+                    new FunctionDependencyOfEnabledCompositeActor(this);
+            } catch (NameDuplicationException e) {
+                // This should not happen.
+                throw new InternalErrorException("Failed to construct a "
+                        + "function dependency object for " + getFullName());
+            } catch (IllegalActionException e) {
+                // This should not happen.
+                throw new InternalErrorException("Failed to construct a "
+                        + "function dependency object for " + getFullName());
+            }
+        }
+
+        return _functionDependency;
+    }
+
+    /** If the <i>enable</i> input is known and true, then invoke the 
+     *  postfire() method of the superclass and return its value. Otherwise,
+     *  return true.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+        if (_enabled) {
+            return super.postfire();
+        } else {
+            return true;
+        }
+    }
+
     /** If the <i>enable</i> input is not known, then return false;
-     *  if it is known and either absent or false,
-     *  then produce absent on all the output ports and return false;
-     *  if it is known and true, the invoke prefire() on the superclass
-     *  and return what it returns.
+     *  if it is known and either absent or false, then return false;
+     *  if it is known and true, then invoke the prefire() method of the 
+     *  superclass and return what it returns.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean prefire() throws IllegalActionException {
-        boolean returnValue = super.prefire();
-        if (!enable.isKnown(0)) {
-            // Do nothing, which will leave the outputs unknown.
-            if (_debugging) {
-                _debug("enabled port status is not known: "
-                        + "prefire() returns false.");
+        // By default prefire() returns true indicating it is ready to be 
+        // prefired and fired again.
+        boolean prefireReturnValue = true;
+        // By default (in most cases), this actor is disabled.
+        _enabled = false;
+        if (enable.isKnown(0)) {
+            if (enable.hasToken(0)) {
+                _enabled = ((BooleanToken) enable.get(0)).booleanValue();
             }
-
-            return false;
-        } else if (!enable.hasToken(0)
-                || !((BooleanToken) enable.get(0)).booleanValue()) {
-            // Not enabled. Clear outputs.
-            if (_debugging) {
-                _debug("Not enabled: prefire() sets all outputs "
-                        + "to absent and returns false.");
+            if (!_enabled) {
+                // Not enabled. Return false and the outputs will be 
+                // cleared by the director.
+                if (_debugging) {
+                    _debug("Not enabled: prefire() returns false.");
+                }
+                prefireReturnValue = false;
+            } else {
+                prefireReturnValue = super.prefire();
             }
-
-            Iterator ports = outputPortList().iterator();
-
-            while (ports.hasNext()) {
-                IOPort port = (IOPort) ports.next();
-                port.broadcastClear();
-            }
-
-            return false;
-        } else {
-            // Actor is enabled. Delegate to the superclass.
-            return returnValue;
         }
+        return prefireReturnValue;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** Local variable indicating whether this actor can be fired. 
+     *  The value of this variable is set in the prefire method. 
+     */
+    private boolean _enabled = false;
 }
