@@ -346,6 +346,8 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
      *  @return The error tolerance used for detecting enabled transitions.
      */
     public final double getErrorTolerance() {
+        // FIXME: This isn't right because there could be nested
+        // modal models.
         CompositeActor container = (CompositeActor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
 
@@ -983,6 +985,7 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
      *  @return The refined step size.
      */
     public double refinedStepSize() {
+        // FIXME: This isn't the right director for nested modal models.
         CTDirector director = (CTDirector) (((Actor) getContainer())
                 .getExecutiveDirector());
         double result = director.getCurrentStepSize();

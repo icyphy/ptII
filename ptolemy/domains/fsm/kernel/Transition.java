@@ -31,6 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
@@ -42,6 +43,7 @@ import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.UnknownResultException;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -50,6 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
@@ -290,7 +293,7 @@ public class Transition extends ComponentRelation {
             // attributes used to convey expressions without being evaluated.
             // _guard and _trigger are the variables that do the evaluation.
             _guardParseTree = null;
-            _guardVersion = -1;
+            _relationListVersion = -1;
         } else if (attribute == triggerExpression) {
             // The guard and trigger expressions can only be evaluated at run
             // time, because the input variables they can reference are created
@@ -347,7 +350,7 @@ public class Transition extends ComponentRelation {
         newObject._choiceActionList = new LinkedList();
         newObject._commitActionList = new LinkedList();
         newObject._stateVersion = -1;
-        newObject._guardVersion = -1;
+        newObject._relationListVersion = -1;
         return newObject;
     }
 
@@ -500,15 +503,15 @@ public class Transition extends ComponentRelation {
         }
     }
 
-    /** Return the trigger expression. The trigger expression should evaluate
-     *  to a boolean value.
-     *  @return The trigger expression.
+    /** Return the list of relations (boolean-valued expressions that do not
+     *  contain a logical operator, such as comparison expressions) in the
+     *  guard expression of this transition.
+     *  @return The list of relations.
      */
     public RelationList getRelationList() {
-        if (_guardVersion != workspace().getVersion()) {
+        if (_relationListVersion != workspace().getVersion()) {
             _updateRelationList();
         }
-
         return _relationList;
     }
 
@@ -856,28 +859,41 @@ public class Transition extends ComponentRelation {
         }
     }
 
-    // Update the relation list of guard expression depending on which
-    // director the modal model is using.
+    /** Update the list of relations (subexpressions that possibly
+     *  have comparison operators) associated with the guard expression
+     *  of this transition.
+     */
     private void _updateRelationList() {
         try {
             workspace().getReadAccess();
 
-            CompositeEntity container = (CompositeEntity) getContainer();
+            NamedObj container = getContainer();
             double errorTolerance = 1e-4;
 
             if (container != null) {
-                TypedCompositeActor modalModel = (TypedCompositeActor) container
-                        .getContainer();
+                CompositeActor modalModel = (CompositeActor) container.getContainer();
 
                 if (modalModel != null) {
                     Director director = modalModel.getDirector();
 
+                    // FIXME: This design is terrible!
+                    // Suggest using empty _relationList instead of _exeDirectorIsHSFSMDirector flag.
+                    // Moreover, all we need from the director is an error tolerance.
+                    // Surely we can use an interface to get a cleaner design here.
+                    // Or perhaps just always support error tolerance?
+                    // FIXME: This design won't support FSM within FSM!
+                    _exeDirectorIsHSFSMDirector = false;
                     if (director instanceof HSFSMDirector) {
                         errorTolerance = ((HSFSMDirector) director)
                                 .getErrorTolerance();
                         _exeDirectorIsHSFSMDirector = true;
-                    } else {
-                        _exeDirectorIsHSFSMDirector = false;
+                    } else if (director instanceof HybridModalDirector) {
+                        ContinuousDirector enclosingDirector
+                                = ((HybridModalDirector)director)._enclosingContinuousDirector();
+                        if (enclosingDirector != null) {
+                            errorTolerance = enclosingDirector.getErrorTolerance();
+                        }
+                        _exeDirectorIsHSFSMDirector = true;
                     }
                 }
             }
@@ -888,7 +904,9 @@ public class Transition extends ComponentRelation {
                 _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(
                         _relationList, errorTolerance);
 
-                // Invalid a relation list for the transition.
+                // Invalidate the relation list for the transition by clearing it.
+                // FIXME: What about _relationListVersion?  getRelationList()?
+                // These become bogus...
                 _relationList.destroy();
 
                 // Reconstruct the relation list.
@@ -898,7 +916,7 @@ public class Transition extends ComponentRelation {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
             }
 
-            _guardVersion = workspace().getVersion();
+            _relationListVersion = workspace().getVersion();
         } finally {
             workspace().doneReading();
         }
@@ -924,9 +942,6 @@ public class Transition extends ComponentRelation {
     // The parse tree for the guard expression.
     private ASTPtRootNode _guardParseTree;
 
-    // Version of the cached list of relations of a guard expression
-    private long _guardVersion = -1;
-
     // Cached nondeterministic attribute value.
     private boolean _nondeterministic = false;
 
@@ -945,8 +960,11 @@ public class Transition extends ComponentRelation {
     // Version of the cached reference to the refinement.
     private long _refinementVersion = -1;
 
-    // List of the relation expressions of a gurad expression
+    // List of the relation expressions of a guard expression
     private RelationList _relationList;
+
+    // Version of the cached list of relations of a guard expression
+    private long _relationListVersion = -1;
 
     // The parse tree evaluator for the transition.
     private ParseTreeEvaluator _parseTreeEvaluator;

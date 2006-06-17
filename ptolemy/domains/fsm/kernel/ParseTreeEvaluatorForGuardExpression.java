@@ -58,7 +58,7 @@ import ptolemy.kernel.util.IllegalActionException;
  <i>update mode</i>. During the construction mode, this visitor constructs a
  relation list where each element of the list corresponds to a relation of
  the guard expression. The order of the elements is fixed and it is the same
- as the order of the relations appear in the guard expression. If the guard
+ as the order that the relations appear in the guard expression. If the guard
  expression changes, the relation list will be reconstructed. During the
  update mode, the relation list gets updated only. The order of the elements
  get updated is the same order the relations of the guard expression get
@@ -87,9 +87,8 @@ import ptolemy.kernel.util.IllegalActionException;
  relationOperator scalarRight), the relationType depends on the
  relationOperator. If the relationOperator is '==' or '!=', the
  relationType can be 3 indicating the two scalars equal or not equal.
- FIXME:
- 4
- indicating the left scalar is less than the right one, and 5 to
+ The relation type is 4
+ to indicate that the left scalar is less than the right one, and 5 to
  indicate left scalar is bigger than the right one. For the other kinds of
  relation operators, the relationType is decided by the
  boolean value of the evaluation result, i.e., 1 for true and 2 for false.
@@ -167,9 +166,6 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         // NOTE: based on the *_isPresent variable, we figure out
         // the discrete variables and do not evaluate it when it is
         // not present.
-        // FIXME: This is not the best solution, we should use the signalType
-        // attribute to distinguish the signal types. Unfortunately, the
-        // signalType is not passed along as the type system does.
         String nodeName = node.getName();
 
         // Check whether this leaf node contains a discrete variable.

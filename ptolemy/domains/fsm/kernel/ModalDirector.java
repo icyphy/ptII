@@ -231,7 +231,9 @@ public class ModalDirector extends FSMDirector {
     }
 
     /** Return true if the mode controller wishes to be scheduled for
-     *  another iteration. Execute the commit actions contained by the last
+     *  another iteration. Postfire all the actors that were
+     *  fired since the last call to initialize() or postfire().
+     *  Then execute the commit actions contained by the last
      *  chosen transition of the mode controller and set its current
      *  state to the destination state of the transition.
      *  @return True if the mode controller wishes to be scheduled for
@@ -243,24 +245,21 @@ public class ModalDirector extends FSMDirector {
         if (_debugging) {
             _debug("Postfire called at time: " + getModelTime());
         }
+        // Postfire all the actors that were fired in this iteration.
+        Iterator actors = _actorsFired.iterator();
+        while (actors.hasNext()) {
+            Actor actor = ((Actor)actors.next());
+            if (!actor.postfire()) {
+                _disabledActors.add(actor);
+            }
+        }
+        _actorsFired.clear();
+
         // Postfire the controller.
         FSMActor controller = getController();
         State previousState = controller.currentState();
         boolean result = controller.postfire();
         State newState = controller.currentState();
-
-        // Postfire all the actors that were fired since the last call to prefire().
-        Iterator actors = _actorsFired.iterator();
-        boolean noLiveActors = true;
-        while (actors.hasNext()) {
-            Actor actor = ((Actor)actors.next());
-            if (actor.postfire()) {
-                noLiveActors = false;
-            } else {
-                _disabledActors.add(actor);
-            }
-        }
-        result = result && !noLiveActors;
 
         if (previousState != newState) {
             // Update the _currentLocalReceiverMap to the new state.
@@ -289,7 +288,7 @@ public class ModalDirector extends FSMDirector {
             Director executiveDirector = container.getExecutiveDirector();
             if (executiveDirector != null) {
                 if (_debugging) {
-                    _debug("Request refiring by " 
+                    _debug("ModalDirector: Request refiring by " 
                             + executiveDirector.getFullName()
                             + " at " + getModelTime());
                 }
@@ -300,23 +299,18 @@ public class ModalDirector extends FSMDirector {
         return result && !_stopRequested;
     }
 
-    /** Return true if the mode controller is ready to fire.
-     *  If this model is not at the top level and the current
-     *  time of this director lags behind that of the executive director,
-     *  update the current time to that of the executive director. Record
-     *  whether the refinements of the current state of the mode controller
-     *  are ready to fire.
-     *  @exception IllegalActionException If there is no controller.
+    /** Initialize this director.
+     *  @exception IllegalActionException If the superclass throws it.
      */
-    public boolean prefire() throws IllegalActionException {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _actorsFired.clear();
-        return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
-    /** Actors that were fired in the most recent invocation of the fire() method. */
+    /** Actors that were fired in the current iteration. */
     protected Set _actorsFired = new HashSet();
 
     ///////////////////////////////////////////////////////////////////
