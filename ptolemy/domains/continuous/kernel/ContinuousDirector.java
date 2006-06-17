@@ -715,6 +715,10 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public boolean prefire() throws IllegalActionException {
         
+        if (_debugging) {
+            _debug("ContinuousDirector: Called prefire().");
+        }
+
         // If we are not at the toplevel, then check the model
         // time of the environment against ours.
         Nameable container = getContainer();
@@ -783,7 +787,11 @@ public class ContinuousDirector extends FixedPointDirector implements
         // The super.prefire() method cannot be called before this point
         // because it sets the local model time to match that of the
         // executive director.
-        return super.prefire();
+        boolean result = super.prefire();
+        if (_debugging) {
+            _debug("ContinuousDirector: prefire() returns " + result);
+        }
+        return result;
     }
 
     /** Preinitialize the model for an execution. This method is
@@ -904,7 +912,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // This method does not call the method defined in the super class,
         // because this method provides complete new information.
         String[] defaultSuggestions = new String[1];
-        defaultSuggestions[0] = "ptolemy.domains.continuous.kernel.HybridModalDirector";
+        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.HybridModalDirector";
         return defaultSuggestions;
     }
 

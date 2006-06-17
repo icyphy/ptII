@@ -59,9 +59,7 @@ JSRCS = \
 	ContinuousODESolver.java \
 	ContinuousScheduler.java \
 	ContinuousStatefulComponent.java \
-	ContinuousStepSizeController.java \
-	HybridModalDirector.java
-
+	ContinuousStepSizeController.java
 
 EXTRA_SRCS =	$(JSRCS)
 
