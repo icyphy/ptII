@@ -180,58 +180,12 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         }
     }
 
-    /** Get a list of embedded entities for function dependency calculation.
-     *  This list of entities appear in the detailed view. Subclasses may
-     *  need to override this method to exclude some entities from calculation
-     *  of function dependency.
-     *  @return A list of embedded entities for the calculation of function
-     *  dependency.
-     */
-    protected List _getEntities() {
-        return ((CompositeActor) getContainer()).deepEntityList();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    // Categorize the given list of actors into three kinds: sinks, sources,
-    // and transformers.
-    private void _categorizeActors(List actorList) {
-        Iterator actors = actorList.listIterator();
-
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-
-            if (actor instanceof AtomicActor) {
-                // Atomic actors have type.
-                if (actor instanceof Source) {
-                    _sourceActors.add(actor);
-                } else if (actor instanceof Sink) {
-                    _sinkActors.add(actor);
-                } else {
-                    _transformers.add(actor);
-                }
-            } else {
-                // Composite actors are categorized based
-                // on their ports
-                int numberOfInputs = actor.inputPortList().size();
-                int numberOfOutputs = actor.outputPortList().size();
-
-                if (numberOfInputs == 0) {
-                    _sourceActors.add(actor);
-                } else if (numberOfOutputs == 0) {
-                    _sinkActors.add(actor);
-                } else {
-                    _transformers.add(actor);
-                }
-            }
-        }
-    }
-
-    // Construct a directed graph with the nodes representing input and
-    // output ports, and directed edges representing dependencies. This
-    // graph includes both the ports of this actor and the ports of all
-    // deeply contained opaque actors.
-    private void _constructDetailedDependencyGraph() {
+    /** Construct a directed graph with the nodes representing input and
+     * output ports, and directed edges representing dependencies. This
+     * graph includes both the ports of this actor and the ports of all
+     * deeply contained opaque actors.
+     */ 
+    protected void _constructDetailedDependencyGraph() {
         // get the actor
         CompositeActor actor = (CompositeActor) getContainer();
 
@@ -352,8 +306,66 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         }
     }
 
-    // Merge dependency graphs of the internal actors into
-    // the dependency graph of the actor.
+    /** Get a list of embedded entities for function dependency calculation.
+     *  This list of entities appear in the detailed view. Subclasses may
+     *  need to override this method to exclude some entities from calculation
+     *  of function dependency.
+     *  @return A list of embedded entities for the calculation of function
+     *  dependency.
+     */
+    protected List _getEntities() {
+        return ((CompositeActor) getContainer()).deepEntityList();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+
+    /** The detailed dependency graph that includes both the ports of
+     * this actor and the ports of all deeply contained opaque actors.
+     */ 
+    protected DirectedGraph _detailedDependencyGraph;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /** Categorize the given list of actors into three kinds: sinks, sources,
+     * and transformers.
+     */ 
+    private void _categorizeActors(List actorList) {
+        Iterator actors = actorList.listIterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+
+            if (actor instanceof AtomicActor) {
+                // Atomic actors have type.
+                if (actor instanceof Source) {
+                    _sourceActors.add(actor);
+                } else if (actor instanceof Sink) {
+                    _sinkActors.add(actor);
+                } else {
+                    _transformers.add(actor);
+                }
+            } else {
+                // Composite actors are categorized based
+                // on their ports
+                int numberOfInputs = actor.inputPortList().size();
+                int numberOfOutputs = actor.outputPortList().size();
+
+                if (numberOfInputs == 0) {
+                    _sourceActors.add(actor);
+                } else if (numberOfOutputs == 0) {
+                    _sinkActors.add(actor);
+                } else {
+                    _transformers.add(actor);
+                }
+            }
+        }
+    }
+
+    /** Merge dependency graphs of the internal actors into
+     * the dependency graph of the actor.
+     */ 
     private void _mergeActorsGraph(List actorList) {
         Iterator actors = actorList.iterator();
 
@@ -375,16 +387,13 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The detailed dependency graph that includes both the ports of
-    // this actor and the ports of all deeply contained opaque actors.
-    private DirectedGraph _detailedDependencyGraph;
 
-    // Sink actors
+    /** Sink actors. */
     private List _sinkActors;
 
-    // Source actors
+    /** Source actors. */
     private List _sourceActors;
 
-    // Transformer actors.
+    /** Transformer actors. */
     private List _transformers;
 }
