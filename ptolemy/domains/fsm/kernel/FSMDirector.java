@@ -308,7 +308,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      *  If there exists an executive director, this method delegates to
      *  the fireAt() method of the executive director by requesting
      *  a firing of the container of this director at the given time.
-     *  If there is no executive director, then the request is ignored.
+     *  If there is no executive director, then the request results
+     *  in model time of this director being set to the specified time.
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
      *  @exception IllegalActionException If thrown by the executive director.

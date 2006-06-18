@@ -876,7 +876,7 @@ public class Transition extends ComponentRelation {
                 if (modalModel != null) {
                     Director director = modalModel.getDirector();
 
-                    // FIXME: This design is terrible!
+                    // FIXME: This design is very problematic!
                     // Suggest using empty _relationList instead of _exeDirectorIsHSFSMDirector flag.
                     // Moreover, all we need from the director is an error tolerance.
                     // Surely we can use an interface to get a cleaner design here.

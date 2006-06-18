@@ -33,6 +33,7 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.util.Time;
 import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.domains.continuous.kernel.ContinuousStatefulComponent;
 import ptolemy.domains.continuous.kernel.ContinuousStepSizeController;
@@ -40,6 +41,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -272,34 +274,30 @@ public class HybridModalDirector extends ModalDirector
         }
     }
 
-    /** Return the minimum of the step sizes suggested by any
-     *  actors that were fired in current iteration.
-     *  @return The suggested next step size.
+    /** Override the base class to set current time to match that of
+     *  the enclosing executive director, if there is one, regardless
+     *  of whether that time is in the future or past. The superclass
+     *  sets current time only if the local time is less than the
+     *  environment time.
+     *  @return Whatever the superclass returns.
+     *  @exception IllegalActionException If thrown by the superclass.
      */
-    public double suggestedStepSize() {
-        double result = Double.POSITIVE_INFINITY;
-        Iterator actors = _actorsFired.iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            if (actor instanceof ContinuousStepSizeController) {
-                double candidate = ((ContinuousStepSizeController) actor).suggestedStepSize();
-                if (candidate < result) {
-                    result = candidate;
-                }
-            } else if (actor instanceof CompositeActor) {
-                Iterator insideActors = ((CompositeActor)actor).deepEntityList().iterator();
-                while (insideActors.hasNext()) {
-                    Actor insideActor = (Actor)insideActors.next();
-                    if (insideActor instanceof ContinuousStepSizeController) {
-                        double candidate = ((ContinuousStepSizeController) insideActor).suggestedStepSize();
-                        if (candidate < result) {
-                            result = candidate;
-                        }
-                    }
+    public boolean prefire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("HybridModalDirector: Called prefire().");
+        }
+        Nameable container = getContainer();
+        if (container instanceof Actor) {
+            Director executiveDirector = ((Actor) container).getExecutiveDirector();
+            if (executiveDirector != null) {
+                Time outTime = executiveDirector.getModelTime();
+                setModelTime(outTime);
+                if (_debugging) {
+                    _debug("HybridModalDirector: Setting local current time to: " + outTime);
                 }
             }
         }
-        return result;
+        return super.prefire();
     }
 
     /** Return the minimum of the step sizes suggested by any
@@ -344,11 +342,19 @@ public class HybridModalDirector extends ModalDirector
                 // Linear interpolation to refine the step size.
                 // Note the step size is refined such that the distanceToBoundary
                 // is half of errorTolerance.
+                /* FIXME: Why this formula? Replace with the following
+                 * and then eliminate the _lastDistanceToBoundary variable.
                 double refinedStepSize = (currentStepSize
                         * (_lastDistanceToBoundary + (errorTolerance / 2)))
                         / (_lastDistanceToBoundary + _distanceToBoundary);
+                */
+                double refinedStepSize = (currentStepSize
+                        * currentStepSize
+                        / (currentStepSize + _distanceToBoundary));
                 
                 result = Math.min(result, refinedStepSize);
+                // FIXME
+                // System.out.println("refined step size: " + result);
             }
         }
 
@@ -374,6 +380,36 @@ public class HybridModalDirector extends ModalDirector
                 }
             }
         }
+    }
+
+    /** Return the minimum of the step sizes suggested by any
+     *  actors that were fired in current iteration.
+     *  @return The suggested next step size.
+     */
+    public double suggestedStepSize() {
+        double result = Double.POSITIVE_INFINITY;
+        Iterator actors = _actorsFired.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            if (actor instanceof ContinuousStepSizeController) {
+                double candidate = ((ContinuousStepSizeController) actor).suggestedStepSize();
+                if (candidate < result) {
+                    result = candidate;
+                }
+            } else if (actor instanceof CompositeActor) {
+                Iterator insideActors = ((CompositeActor)actor).deepEntityList().iterator();
+                while (insideActors.hasNext()) {
+                    Actor insideActor = (Actor)insideActors.next();
+                    if (insideActor instanceof ContinuousStepSizeController) {
+                        double candidate = ((ContinuousStepSizeController) insideActor).suggestedStepSize();
+                        if (candidate < result) {
+                            result = candidate;
+                        }
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
