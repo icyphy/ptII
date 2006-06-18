@@ -64,6 +64,8 @@ An integrator also has an input port named <i>impulse</i>.
 When present, a token at the <i>impulse</i> input
 port is interpreted as the weight of a Dirac delta function.
 It cause an instantaneous increment or decrement to the state.
+If both <i>impulse</i> and <i>initialState</i> have data, then 
+<i>initialState</i> dominates.  
 <P>
 An integrator can generate an output (its current state) before
 the derivative input is known, and hence can be used in feedback
