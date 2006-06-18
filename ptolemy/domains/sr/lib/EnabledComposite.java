@@ -151,15 +151,23 @@ public class EnabledComposite extends TypedCompositeActor {
         }
     }
 
-    /** If the <i>enable</i> input is not known, then return false;
-     *  if it is known and either absent or false, then return false;
+    /** If the <i>enable</i> input is not known, then return true,
+     *  and set a flag that prevents fire() and postfire() from
+     *  doing anything;  if the <i>enable</i> input is known
+     *  and either absent or false, then return false;
      *  if it is known and true, then invoke the prefire() method of the 
      *  superclass and return what it returns.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean prefire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("EnabledComposite: Calling prefire()");
+        }
         // By default prefire() returns true indicating it is ready to be 
-        // prefired and fired again.
+        // prefired and fired again.  Note that it must return true
+        // if the inputs are not known since otherwise, if it returns
+        // false, the FixedPointDirector will set all its outputs
+        // to absent.
         boolean prefireReturnValue = true;
         // By default (in most cases), this actor is disabled.
         _enabled = false;
@@ -175,6 +183,7 @@ public class EnabledComposite extends TypedCompositeActor {
                 }
                 prefireReturnValue = false;
             } else {
+                // This will call prefire() on the contained director.
                 prefireReturnValue = super.prefire();
             }
         }
