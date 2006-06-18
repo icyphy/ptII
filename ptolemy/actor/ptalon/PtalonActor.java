@@ -72,6 +72,10 @@ public class PtalonActor extends TypedCompositeActor {
      *  Increment the version of the workspace.  This actor will have no
      *  local director initially, and its executive director will be simply
      *  the director of the container.
+     *  
+     *  FIXME: There is an issue with persistence that has yet to be
+     *  solved for this actor.  In particular, if I create an
+     *  instance of this actor and then save it...
      *
      *  @param container The container.
      *  @param name The name of this actor.
@@ -85,8 +89,7 @@ public class PtalonActor extends TypedCompositeActor {
         super(container, name);
         setClassName("ptolemy.actor.ptalon.PtalonActor");
         ptalonCodeLocation = new FileParameter(this, "ptalonCodeLocation");
-        _initializeLists();
-        _fileName = "";
+        _fileSet = false;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -111,7 +114,6 @@ public class PtalonActor extends TypedCompositeActor {
             Class[] argClasses = new Class[] {CompositeEntity.class, String.class};
             cons = actorClass.getConstructor(argClasses);
             TypedAtomicActor p = (TypedAtomicActor) cons.newInstance(args);
-            _actors.add(p);
             List portList = p.portList();
             TypedIOPort atomicPort;
             TypedIOPort newPort;
@@ -125,6 +127,18 @@ public class PtalonActor extends TypedCompositeActor {
                 r = new TypedIORelation(this, uniqueName("relation"));
                 atomicPort.link(r);
                 newPort.link(r);
+            }
+            List attributeList = p.attributeList();
+            Parameter atomicParam;
+            Parameter newParam;
+            for (int j = 0; j < attributeList.size(); j++){
+                if (!(attributeList.get(j) instanceof Parameter)) {
+                    continue;
+                }
+                atomicParam = (Parameter) attributeList.get(j);
+                newParam = new Parameter(this, atomicParam.getName());
+                newParam.setExpression(atomicParam.getExpression());
+                atomicParam.setExpression(newParam.getName());
             }
             return p;
         } catch(Exception e) {
@@ -144,10 +158,9 @@ public class PtalonActor extends TypedCompositeActor {
     public Parameter addParameter(String name) throws IllegalActionException {
         try {
             Parameter p = new Parameter(this, name);
-            _parameters.add(p);
             return p;
         } catch(NameDuplicationException e) {
-            //Do nothing, just give up.
+            //Do nothing.  Just give up.
         }
         return null;
     }
@@ -176,7 +189,6 @@ public class PtalonActor extends TypedCompositeActor {
             } else {
                 p = new TypedIOPort(this, name, true, true);
             }
-            _ports.add(p);
             return p;
         } catch(NameDuplicationException e) {
             //Do nothing, just give up.
@@ -197,7 +209,6 @@ public class PtalonActor extends TypedCompositeActor {
     public TypedIORelation addRelation(String name) throws IllegalActionException {
         try {
             TypedIORelation p = new TypedIORelation(this, name);
-            _relations.add(p);
             return p;
         } catch(NameDuplicationException e) {
             //Do nothing, just give up.
@@ -214,25 +225,22 @@ public class PtalonActor extends TypedCompositeActor {
     public void attributeChanged(Attribute att) throws IllegalActionException {
         if (att == ptalonCodeLocation) {
             File inputFile = ptalonCodeLocation.asFile();
-            if (inputFile == null) {
+            if ((inputFile == null) || (_fileSet))  {
                 return;
             }
             PtalonLexer lex;
             PtalonRecognizer rec;
             try {
-                String newFileName = inputFile.getCanonicalPath();
-                if (newFileName.equals(_fileName)) {
-                    return;
-                }
                 FileReader reader = new FileReader(inputFile);
                 lex = new PtalonLexer(reader);
                 rec = new PtalonRecognizer(lex);
-                _cleanUp();
                 rec.actor_definition(this);
-                _fileName = newFileName;
+                ptalonCodeLocation.setExpression("");
+                ptalonCodeLocation.setContainer(null);
             } catch (Exception e) {
                 throw new IllegalActionException(e.getMessage());
             }
+            
         } else {
             super.attributeChanged(att);
         }
@@ -264,85 +272,15 @@ public class PtalonActor extends TypedCompositeActor {
         
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
-    
-    /**
-     * This is used to clean up any parameters, ports, relations,
-     * and actors that have been created by an earlier Ptalon model.
-     */
-    private void _cleanUp() throws NameDuplicationException, IllegalActionException {
-        Parameter p;
-        for (int i= _parameters.size()-1; i >= 0; i--) {
-            p = _parameters.remove(i);
-            p.setContainer(null);
-        }
-        TypedIOPort port;
-        for (int i= _ports.size()-1; i >= 0; i--) {
-            port = _ports.remove(i);
-            port.setContainer(null);
-        }
-        TypedIORelation r;
-        for (int i= _relations.size()-1; i >= 0; i--) {
-            r = _relations.remove(i);
-            r.setContainer(null);
-        }
-        TypedAtomicActor a;
-        for (int i= _actors.size()-1; i >= 0; i--) {
-            a = _actors.remove(i);
-            a.setContainer(null);
-        }        
-    }
-    
-    /**
-     * Initialize the lists of ports, paramters,
-     * relations, and actors of this actor.
-     *
-     */
-    private void _initializeLists() {
-        _actors = new ArrayList<TypedAtomicActor>();
-        _relations = new ArrayList<TypedIORelation>();
-        _parameters = new ArrayList<Parameter>();
-        _ports = new ArrayList<TypedIOPort>();
-        List entities = entityList();
-        for (int i = 0; i < entities.size(); i++) {
-            if (entities.get(i) instanceof TypedAtomicActor) {
-                _actors.add((TypedAtomicActor) entities.get(i));
-            }
-        }
-        List relations
-    }
+        
     
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
     
     /**
-     * A list of the actors added to this actor when an
-     * attribute is changed.
+     * True if the file has already been set.
      */
-    private ArrayList<TypedAtomicActor> _actors;
+    private boolean _fileSet;
+    
 
-    /**
-     * This string is used to make sure that the filename
-     * actually changed before doing anything in attributeChanged.
-     */
-    private String _fileName;
-    
-    /**
-     * A list of the relations added to this actor when an
-     * attribute is changed.
-     */
-    private ArrayList<TypedIORelation> _relations;
-    
-    /**
-     * A list of the parameters added to this actor when an
-     * attribute is changed.
-     */
-    private ArrayList<Parameter> _parameters;
-
-    /**
-     * A list of the port added to this actor when an
-     * attribute is changed.
-     */
-    private ArrayList<TypedIOPort> _ports;
-    
-   
 }
