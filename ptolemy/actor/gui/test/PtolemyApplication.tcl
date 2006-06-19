@@ -36,7 +36,7 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
-set VERBOSE 1
+#set VERBOSE 1
 
 set testCase {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
