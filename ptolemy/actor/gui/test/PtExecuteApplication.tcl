@@ -36,7 +36,7 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
-set VERBOSE 1
+#set VERBOSE 1
 
 ######################################################################
 ####
@@ -54,16 +54,26 @@ test PtExecuteApplication-1.1 {check result of running the model} {
     set models [listToObjects [$app models]]
     set result {}
     foreach model $models {
-        set modelc [java::cast ptolemy.actor.CompositeActor $model]
+        set modelc [java::cast ptolemy.kernel.CompositeEntity $model]
+	if [java::instanceof $modelc ptolemy.actor.gui.Configuration] {
+	    continue
+	}
         set rec [java::cast ptolemy.actor.lib.Recorder \
                 [$modelc getEntity "rec"]]
-	lappend result [listToStrings [$rec getHistory 0]]
-	$modelc setContainer [java::null]
+	if [java::isnull $rec] {
+	    lappend result "rec for [$modelc getFullName] was null!"
+	} else {
+	    lappend result [listToStrings [$rec getHistory 0]]
+	    $modelc setContainer [java::null]
+	}
     }
     java::call ptolemy.moml.MoMLParser purgeModelRecord test.xml
     list $result
 } {{{0 1 2}}}
 
+######################################################################
+####
+#
 sleep 2 0
 test PtExecuteApplication-1.2 {check parameter handling} {
     set cmdArgs [java::new {java.lang.String[]} 3 \
@@ -75,6 +85,7 @@ test PtExecuteApplication-1.2 {check parameter handling} {
     $app waitForFinish
     foreach model $models {
         set modelc [java::cast ptolemy.actor.CompositeActor $model]
+	puts [$modelc getFullName]
         set rec [java::cast ptolemy.actor.lib.Recorder \
                 [$modelc getEntity "rec"]]
 	lappend result [listToStrings [$rec getHistory 0]]
