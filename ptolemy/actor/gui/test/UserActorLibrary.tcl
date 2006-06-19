@@ -151,13 +151,6 @@ test UserActorLibrary-1.0 {} {
 test UserActorLibrary-1.2 {Sinewave, which is a class} {
 
     set parser [java::new ptolemy.moml.MoMLParser]
-#    $parser setMoMLFilters [java::null]
-#    $parser addMoMLFilters \
-#	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
-#
-#    $parser addMoMLFilter [java::new \
-#	    ptolemy.moml.filter.RemoveGraphicalClasses]
-
 
     set entityLibrary [java::cast ptolemy.moml.EntityLibrary \
 			   [testSaveComponentInLibrary \
@@ -207,12 +200,19 @@ test UserActorLibrary-1.4 {Try to assign to a Singleton. ComponentEntity._checkC
 ######################################################################
 ####
 #
-test UserActorLibrary-1.5 {UserLibInsertError.xml} {
+test UserActorLibrary-1.5 {UserActorLibrayInsertError.xml} {
 
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser reset
+#    $parser setMoMLFilters [java::null]
+#    $parser addMoMLFilters \
+#	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+#
+#    $parser addMoMLFilter [java::new \
+#	    ptolemy.moml.filter.RemoveGraphicalClasses]
+
     set entity [java::cast ptolemy.kernel.CompositeEntity \
-		    [$parser parseFile UserLibInsertError.xml]]
+		    [$parser parseFile UserActorLibraryInsertError.xml]]
     set entity2 [$entity getEntity CompositeActor]
     java::call ptolemy.actor.gui.UserActorLibrary \
 	saveComponentInLibrary \
