@@ -172,8 +172,13 @@ test UserActorLibrary-1.2 {Sinewave, which is a class} {
     set results [diffText [string range $entityMoML 153 \
 			       [string length $entityMoML]] \
 		     [$restoredEntity exportMoML]]
-    list [string range $results 12 81]
-} {{       <property name="_hideName" class="ptolemy.data.expr.Parameter">}}
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        $results "\n" results2
+
+    list [string range $results2 12 81]
+} {{      <property name="_hideName" class="ptolemy.data.expr.Parameter">
+}}
 
 
 ######################################################################
