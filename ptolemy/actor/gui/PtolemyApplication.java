@@ -105,7 +105,7 @@ public class PtolemyApplication extends MoMLApplication {
         super._createDefaultConfiguration();
 
         // Read the user preferences, if any.
-        PtolemyPreferences.setDefaultPreferences(_configuration);
+        PtolemyPreferences.setDefaultPreferences(configuration);
 
         return configuration;
     }
