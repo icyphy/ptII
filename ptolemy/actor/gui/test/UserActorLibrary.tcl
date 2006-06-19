@@ -203,18 +203,35 @@ test UserActorLibrary-1.4 {Try to assign to a Singleton. ComponentEntity._checkC
 test UserActorLibrary-1.5 {UserActorLibrayInsertError.xml} {
 
     set parser [java::new ptolemy.moml.MoMLParser]
-    $parser reset
-#    $parser setMoMLFilters [java::null]
-#    $parser addMoMLFilters \
-#	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
-#
-#    $parser addMoMLFilter [java::new \
-#	    ptolemy.moml.filter.RemoveGraphicalClasses]
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
-    set entity [java::cast ptolemy.kernel.CompositeEntity \
-		    [$parser parseFile UserActorLibraryInsertError.xml]]
-    set entity2 [$entity getEntity CompositeActor]
-    java::call ptolemy.actor.gui.UserActorLibrary \
-	saveComponentInLibrary \
-	$configuration $entity2
-} {}
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+    set entityLibrary [java::cast ptolemy.moml.EntityLibrary \
+			   [testSaveComponentInLibrary \
+				UserActorLibraryInsertError.xml \
+				$configuration]]
+    set restoredEntity [$entityLibrary getEntity UserActorLibraryInsertError]
+    
+
+    set entity [$parser parseFile UserActorLibraryInsertError.xml]
+
+    regsub -all \
+	[java::call System getProperty "line.separator"] \
+	[$entity exportMoML] "\n" entityMoML
+
+    regsub -all \
+	[java::call System getProperty "line.separator"] \
+	[$restoredEntity exportMoML] "\n" restoredEntityMoML
+
+
+
+    # Get rid of the header
+    set results [diffText [string range $entityMoML 154 \
+			       [string length $entityMoML]] \
+		     $restoredEntityMoML]
+    list $results	
+
+} {{}}
