@@ -150,7 +150,9 @@ import ptolemy.kernel.util.Settable;
 
  <LI> <i>ODESolver</i>:
  The class name of the ODE solver used for integration. 
- This is a string that defaults to "ExplicitRK45Solver".
+ This is a string that defaults to "ExplicitRK23Solver",
+ a solver that tends to deliver smooth renditions of signals,
+ at the expense of computing more points than the "ExplicitRK45Solver".
  Solvers are all required to be in package
  "ptolemy.domains.continuous.kernel.solver".
  If there is another ContinuousDirector above this one
@@ -250,7 +252,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     public Parameter maxStepSize;
 
     /** The class name of the ODE solver used for integration. 
-     *  This is a string that defaults to "ExplicitRK45Solver".
+     *  This is a string that defaults to "ExplicitRK23Solver".
      *  Solvers are all required to be in package
      *  "ptolemy.domains.continuous.kernel.solver".
      *  If a solver is changed during execution, the
@@ -553,8 +555,9 @@ public class ContinuousDirector extends FixedPointDirector implements
             Actor container = (Actor)getContainer();
             Director director = container.getExecutiveDirector();
             director.fireAt(container, getModelStartTime());
-            director.fireAt(container, getModelStopTime());
         }
+        // Set a breakpoint with index 0 for the stop time.
+        _breakpoints.insert(new SuperdenseTime(getModelStopTime(), 0));
 
         // Record starting point of the real time (the computer system time)
         // in case the director is synchronized to the real time.
@@ -562,7 +565,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     }
 
     /** Return true if all step size control actors agree that the current 
-     *  step is accurate.
+     *  step is accurate and if there are no breakpoints in the past.
      *  @return True if all step size control actors agree with the current
      *   step size.
      */
@@ -588,6 +591,16 @@ public class ContinuousDirector extends FixedPointDirector implements
             }
             accurate = accurate && thisAccurate;
         }
+        
+        if (!_breakpoints.isEmpty()) {
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
+            Time breakpointTime = nextBreakpoint.timestamp();
+            int comparison = breakpointTime.compareTo(_currentTime);
+            if (comparison < 0) {
+                accurate = false;
+            }
+        }
+
         if (_debugging) {
             _debug("Overall output is accurate: " + accurate);
         }
@@ -607,98 +620,17 @@ public class ContinuousDirector extends FixedPointDirector implements
         if (_debugging) {
             _debug("ContinuousDirector: Called postfire().");
         }
-        
-        // If time exceeds the stop time, then either we failed
-        // to execute at the stop time, or the return value of
-        // false was ignored. Either condition is a bug.
-        if (_currentTime.compareTo(getModelStopTime()) > 0) {
-            throw new IllegalActionException(this,
-                    "Current time exceeds the specified stopTime.");
-        }
-        
-        // Postfire the contained actors.
-        // This must be done before refining the step size and
-        // before updating _index because the actors may call fireAt()
-        // in their postfire() method, which will insert breakpoints,
-        // which will affect the next step size.
-        boolean result = super.postfire();
-
-        // If the current time is equal to the stop time, return false.
-        // Check, however, to make sure that the breakpoints table
-        // does not contain the current model time, which would mean
-        // that more events may be generated at this time.
-        // If the index of the breakpoint is the same as the current
-        // index, then we have executed it.  This must be called
-        // after postfire() of the controlled actors is called, because
-        // they may call fireAt(), which inserts events in the breakpoint
-        // table.
-        if (_currentTime.equals(getModelStopTime())) {
-            SuperdenseTime nextBreakpoint = 
-                    (SuperdenseTime) _breakpoints.first();
-            if (nextBreakpoint == null
-                    || nextBreakpoint.timestamp().compareTo(_currentTime) > 0) {
-                return false;
-            }
-        }
-        
-        // If this director is enclosed within an opaque composite
-        // actor, then request that the enclosing director refire
-        // the composite actor containing this director.
-        // However, do not make the request if there is an
-        // enclosing ContinuousDirector. It will handle it.
-        // Note that we do this even if the current step size is zero.
-        if (_isEmbedded() && (_enclosingContinuousDirector() == null)) {
-            CompositeActor container = (CompositeActor) getContainer();
-            container.getExecutiveDirector().fireAt(container, _currentTime);
-        }
-
-        // Set the suggested step size for next integration step,
-        // but only if we are not enclosed by another continuous director.
-        // If we are, then the enclosing director will call suggestedStepSize()
-        // and adjust the step size to the right value.
-        if (_enclosingContinuousDirector() == null) {
-            _setCurrentStepSize(suggestedStepSize());
-        }
-
-        // Update the index. Note that this must happen after
-        // we refine the step size.
-        if (_currentStepSize == 0.0) {
-            _index++;
+        // This code is sufficiently confusion that, at the expense
+        // of code duplication, we completely separate three cases.
+        if (_enclosingContinuousDirector() != null) {
+            // Need to closely coordinate with the enclosing director
+            return _postfireWithEnclosingContinuousDirector();
+        } else if (_isEmbedded()) {
+            return _postfireWithEnclosingNonContinuousDirector();
         } else {
-            _index = 0;
+            // This director is at the top level.
+            return _postfireAtTopLevel();
         }
-        
-        // Set the start time of the current iteration.
-        // The iterationBegintime will be used for roll back when the current
-        // step size is incorrect.
-        _iterationBeginTime = _currentTime;
-        
-        // Synchronize to real time if necessary.
-        if (((BooleanToken) synchronizeToRealTime.getToken()).booleanValue()) {
-            long realTime = System.currentTimeMillis() - _timeBase;
-            long simulationTime = (long) ((_iterationBeginTime.subtract(
-                    getModelStartTime()).getDoubleValue()) * 1000);
-            long timeDifference = simulationTime - realTime;
-            // If the time difference is large enough, go to sleep.
-            if (timeDifference > 20) {
-                try {
-                    if (_debugging) {
-                        _debug("Sleep for " + timeDifference + "ms.");
-                    }
-                    Thread.sleep(timeDifference - 20);
-                } catch (Exception e) {
-                    throw new IllegalActionException(this, "Sleep Interrupted"
-                            + e.getMessage());
-                }
-            } else {
-                if (_debugging) {
-                    _debug("Warning: cannot achieve real-time performance"
-                            + " at simulation time " + _iterationBeginTime);
-                }
-            }
-        }
-
-        return result;
     }
 
     /** Call the prefire() method of the super class and return its value.
@@ -714,84 +646,20 @@ public class ContinuousDirector extends FixedPointDirector implements
      *   model time.
      */
     public boolean prefire() throws IllegalActionException {
-        
         if (_debugging) {
             _debug("ContinuousDirector: Called prefire().");
         }
-
-        // If we are not at the toplevel, then check the model
-        // time of the environment against ours.
-        Nameable container = getContainer();
-        
-        // If this model is inside another that is not a Continuous model,
-        // then check current time against the environment time, and catch
-        // up to the environment time if necessary. Also, refine the step
-        // size if necessary to match 
-        if (_isEmbedded()) {
-            ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
-            if (enclosingDirector == null) {
-                // Make sure the time does not exceed the next iteration
-                // time of the environment.
-                _refineStepWRTEnvironment();
-                
-                Director executiveDirector = ((Actor) container).getExecutiveDirector();
-                Time outTime = executiveDirector.getModelTime();
-                int comparison = _currentTime.compareTo(outTime);
-                if (comparison > 0) {
-                    throw new IllegalActionException(this,
-                            "Model time in the environment is less than my model time. "
-                            + "Environment: "
-                            + outTime
-                            + ", my model time: "
-                            + _currentTime);
-                } else if (comparison < 0 && executiveDirector != _enclosingContinuousDirector()) {
-                    _catchUpTo(outTime);
-                }
-            } else {
-                // When a ContinuousDirector is under the control of another
-                // ContinuousDirector, then match the step size of the outside.
-                _currentStepSize = enclosingDirector._currentStepSize;
-            }
+        // This code is sufficiently confusion that, at the expense
+        // of code duplication, we completely separate three cases.
+        if (_enclosingContinuousDirector() != null) {
+            // Need to closely coordinate with the enclosing director
+            return _prefireWithEnclosingContinuousDirector();
+        } else if (_isEmbedded()) {
+            return _prefireWithEnclosingNonContinuousDirector();
+        } else {
+            // This director is at the top level.
+            return _prefireAtTopLevel();
         }
-        
-        // If the current time and index matches the first entry in the breakpoint
-        // table, then remove that entry.
-        if (!_breakpoints.isEmpty()) {
-            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
-            Time breakpointTime = nextBreakpoint.timestamp();
-            int comparison = breakpointTime.compareTo(_currentTime);
-            if (comparison < 0) {
-                throw new IllegalActionException(this,
-                        "Missed a breakpoint time at "
-                        + breakpointTime
-                        + ", with index "
-                        + nextBreakpoint.index());
-            }
-            if (comparison == 0) {
-                if (nextBreakpoint.index() == _index) {
-                    if (_debugging){
-                        _debug("The current superdense time is a breakpoint, "
-                                + nextBreakpoint + " , which is removed.");
-                    }
-                    _breakpoints.removeFirst();
-                } else if (nextBreakpoint.index() < _index) {
-                    throw new IllegalActionException(this,
-                            "Missed a breakpoint time at "
-                            + breakpointTime
-                            + ", with index "
-                            + nextBreakpoint.index());                    
-                }
-            }
-        }
-
-        // The super.prefire() method cannot be called before this point
-        // because it sets the local model time to match that of the
-        // executive director.
-        boolean result = super.prefire();
-        if (_debugging) {
-            _debug("ContinuousDirector: prefire() returns " + result);
-        }
-        return result;
     }
 
     /** Preinitialize the model for an execution. This method is
@@ -816,7 +684,8 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** Return the refined step size, which is the minimum of the
      *  current step size and the suggested step size of all actors that
-     *  implement ContinuousStepSizeController. If these actors
+     *  implement ContinuousStepSizeController and that also ensures
+     *  that we do not pass a breakpoint. If these actors
      *  request a step size smaller than the time resolution, then
      *  the first time this happens this method returns the time resolution.
      *  If it happens again on the next call to this method, then this
@@ -868,6 +737,21 @@ public class ContinuousDirector extends FixedPointDirector implements
         if (_debugging) {
             _debug("Suggested step size: " + refinedStep);
         }
+        
+        if (!_breakpoints.isEmpty()) {
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
+            Time breakpointTime = nextBreakpoint.timestamp();
+            int comparison = breakpointTime.compareTo(_iterationBeginTime.add(refinedStep));
+            if (comparison < 0) {
+                refinedStep = breakpointTime.subtract(_iterationBeginTime).getDoubleValue();
+                if (refinedStep < 0.0) {
+                    throw new IllegalActionException(this,
+                            "Cannot set a step size to respect the breakpoint at "
+                            + nextBreakpoint);
+                }
+            }
+        }
+
         return refinedStep;
     }
     
@@ -972,10 +856,11 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
         // Next ensure the selected step size does not take us
         // past the stop time.
-        // FIXME: This test could possibly be eliminated by
+        // NOTE: This test could possibly be eliminated by
         // putting the stop time on the breakpoint table. Be sure,
         // however, that this results in the right number of
-        // events generated at the stop time.
+        // events generated at the stop time. This is very tricky,
+        // and probably not worth the effort.
         Time targetTime = getModelTime().add(suggestedStep);
         if (targetTime.compareTo(getModelStopTime()) > 0) {
             suggestedStep = getModelStopTime()
@@ -1036,7 +921,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             iterations.setVisibility(Settable.NONE);
 
             ODESolver = new StringParameter(this, "ODESolver");
-            ODESolver.setExpression("ExplicitRK45Solver");
+            ODESolver.setExpression("ExplicitRK23Solver");
             ODESolver.addChoice("ExplicitRK23Solver");
             ODESolver.addChoice("ExplicitRK45Solver");
             /* FIXME: These solvers are currently not implemented in this package.
@@ -1192,6 +1077,382 @@ public class ContinuousDirector extends FixedPointDirector implements
         _ODESolver = _instantiateODESolver(_solverClasspath + solverClassName);
     }
     
+    /** Postfire method when this director is at the top level.
+     *  @return True if it is OK to fire again.
+     */
+    private boolean _postfireAtTopLevel() throws IllegalActionException {
+        // If time exceeds the stop time, then either we failed
+        // to execute at the stop time, or the return value of
+        // false was ignored. Either condition is a bug.
+        if (_currentTime.compareTo(getModelStopTime()) > 0) {
+            throw new IllegalActionException(this,
+                    "Current time exceeds the specified stopTime.");
+        }
+        
+        // Postfire the contained actors.
+        // This must be done before refining the step size and
+        // before updating _index because the actors may call fireAt()
+        // in their postfire() method, which will insert breakpoints,
+        // which will affect the next step size.
+        boolean result = super.postfire();
+        
+        // If current time matches a time on the breakpoint table
+        // with the current index, then remove that breakpoint because we have
+        // just completed execution of that iteration.
+        if (!_breakpoints.isEmpty()) {
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
+            Time breakpointTime = nextBreakpoint.timestamp();
+            int comparison = breakpointTime.compareTo(_currentTime);
+            if (comparison == 0 && nextBreakpoint.index() == _index) {
+                if (_debugging){
+                    _debug("Removing breakpoint at " + nextBreakpoint);
+                }
+                _breakpoints.removeFirst();
+            }
+        }
+
+        // If the current time is equal to the stop time, return false.
+        // Check, however, to make sure that the breakpoints table
+        // does not contain the current model time, which would mean
+        // that more events may be generated at this time.
+        // If the index of the breakpoint is the same as the current
+        // index, then we have executed it.  This must be called
+        // after postfire() of the controlled actors is called, because
+        // they may call fireAt(), which inserts events in the breakpoint
+        // table.
+        if (_currentTime.equals(getModelStopTime())) {
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
+            if (nextBreakpoint == null
+                    || nextBreakpoint.timestamp().compareTo(_currentTime) > 0) {
+                return false;
+            }
+        }
+
+        // Set the suggested step size for next integration step by polling
+        // the contained actors and examining the breakpoint table.
+        _setCurrentStepSize(suggestedStepSize());
+
+        // Update the index. Note that this must happen after
+        // we refine the step size.
+        if (_currentStepSize == 0.0) {
+            _index++;
+        } else {
+            _index = 0;
+        }
+        
+        // Set the start time of the current iteration.
+        // The iterationBegintime will be used for roll back when the current
+        // step size is incorrect.
+        _iterationBeginTime = _currentTime;
+        
+        // Synchronize to real time if necessary.
+        _synchronizeToRealTime();
+
+        return result;
+    }
+    
+    /** Postfire method when the enclosing director
+     *  is an instance of this same class.
+     *  @return True if it is OK to fire again.
+     */
+    private boolean _postfireWithEnclosingContinuousDirector()
+            throws IllegalActionException {
+
+        // If time exceeds the stop time, then either we failed
+        // to execute at the stop time, or the return value of
+        // false was ignored. Either condition is a bug.
+        // FIXME: This could happen if inside a modal model,
+        // and we were not awake at the stop time.
+        if (_currentTime.compareTo(getModelStopTime()) > 0) {
+            throw new IllegalActionException(this,
+                    "Current time exceeds the specified stopTime.");
+        }
+        
+        // Postfire the contained actors.
+        // This must be done before refining the step size and
+        // before updating _index because the actors may call fireAt()
+        // in their postfire() method, which will insert breakpoints,
+        // which will affect the next step size.
+        boolean result = super.postfire();
+
+        // If current time matches a time on the breakpoint table
+        // with the current index, then remove that breakpoint because we have
+        // just completed execution of that iteration.
+        if (!_breakpoints.isEmpty()) {
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
+            Time breakpointTime = nextBreakpoint.timestamp();
+            int comparison = breakpointTime.compareTo(_currentTime);
+            if (comparison == 0 && nextBreakpoint.index() == _index) {
+                if (_debugging){
+                    _debug("Removing breakpoint at " + nextBreakpoint);
+                }
+                _breakpoints.removeFirst();
+            }
+        }
+
+        // If the current time is equal to the stop time, return false.
+        // Check, however, to make sure that the breakpoints table
+        // does not contain the current model time, which would mean
+        // that more events may be generated at this time.
+        // If the index of the breakpoint is the same as the current
+        // index, then we have executed it.  This must be called
+        // after postfire() of the controlled actors is called, because
+        // they may call fireAt(), which inserts events in the breakpoint
+        // table.
+        if (_currentTime.equals(getModelStopTime())) {
+            SuperdenseTime nextBreakpoint = 
+                    (SuperdenseTime) _breakpoints.first();
+            if (nextBreakpoint == null
+                    || nextBreakpoint.timestamp().compareTo(_currentTime) > 0) {
+                return false;
+            }
+        }
+        // Update the index. Note that this must happen after
+        // we refine the step size.
+        if (_currentStepSize == 0.0) {
+            _index++;
+        } else {
+            _index = 0;
+        }
+        
+        // Set the start time of the current iteration.
+        // The iterationBegintime will be used for roll back when the current
+        // step size is incorrect.
+        _iterationBeginTime = _currentTime;
+        
+        // Synchronize to real time if necessary.
+        _synchronizeToRealTime();
+
+        return result;
+    }
+    
+    /** Postfire method when the enclosing director
+     *  is not an instance of this same class.
+     *  @return True if it is OK to fire again.
+     */
+    private boolean _postfireWithEnclosingNonContinuousDirector()
+            throws IllegalActionException {
+
+        // If time exceeds the stop time, then either we failed
+        // to execute at the stop time, or the return value of
+        // false was ignored. Either condition is a bug.
+        // FIXME: This could happen if inside a modal model,
+        // and we were not awake at the stop time.
+        if (_currentTime.compareTo(getModelStopTime()) > 0) {
+            throw new IllegalActionException(this,
+                    "Current time exceeds the specified stopTime.");
+        }
+        
+        // Postfire the contained actors.
+        // This must be done before refining the step size and
+        // before updating _index because the actors may call fireAt()
+        // in their postfire() method, which will insert breakpoints,
+        // which will affect the next step size.
+        boolean result = super.postfire();
+
+        // If current time matches a time on the breakpoint table
+        // with the current index, then remove that breakpoint because we have
+        // just completed execution of that iteration.
+        if (!_breakpoints.isEmpty()) {
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
+            Time breakpointTime = nextBreakpoint.timestamp();
+            int comparison = breakpointTime.compareTo(_currentTime);
+            if (comparison == 0 && nextBreakpoint.index() == _index) {
+                if (_debugging){
+                    _debug("Removing breakpoint at " + nextBreakpoint);
+                }
+                _breakpoints.removeFirst();
+            }
+        }
+
+        // If the current time is equal to the stop time, return false.
+        // Check, however, to make sure that the breakpoints table
+        // does not contain the current model time, which would mean
+        // that more events may be generated at this time.
+        // If the index of the breakpoint is the same as the current
+        // index, then we have executed it.  This must be called
+        // after postfire() of the controlled actors is called, because
+        // they may call fireAt(), which inserts events in the breakpoint
+        // table.
+        if (_currentTime.equals(getModelStopTime())) {
+            SuperdenseTime nextBreakpoint = 
+                    (SuperdenseTime) _breakpoints.first();
+            if (nextBreakpoint == null
+                    || nextBreakpoint.timestamp().compareTo(_currentTime) > 0) {
+                return false;
+            }
+        }
+        
+        // Request that the enclosing director refire
+        // the composite actor containing this director.
+        // Note that we do this even if the current step size is zero.
+        CompositeActor container = (CompositeActor) getContainer();
+        container.getExecutiveDirector().fireAt(container, _currentTime);
+
+        // Set the suggested step size for next integration step
+        // by polling the contained actors and examining the breakpoint table.
+        _setCurrentStepSize(suggestedStepSize());
+
+        // Update the index. Note that this must happen after
+        // we refine the step size.
+        if (_currentStepSize == 0.0) {
+            _index++;
+        } else {
+            _index = 0;
+        }
+        
+        // Set the start time of the current iteration.
+        // The iterationBegintime will be used for roll back when the current
+        // step size is incorrect.
+        _iterationBeginTime = _currentTime;
+        
+        // Synchronize to real time if necessary.
+        _synchronizeToRealTime();
+
+        return result;
+    }
+    
+    /** Prefire method when this director is at the top level.
+     *  @return True if it is OK to fire.
+     */
+    private boolean _prefireAtTopLevel() throws IllegalActionException {
+        // If the current time and index matches the first entry in the breakpoint
+        // table, then remove that entry.
+        if (!_breakpoints.isEmpty()) {
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
+            Time breakpointTime = nextBreakpoint.timestamp();
+            int comparison = breakpointTime.compareTo(_currentTime);
+            if (comparison < 0 || (comparison == 0 && nextBreakpoint.index() < _index )) {
+                // At the top level, we should not have missed a breakpoint.
+                throw new IllegalActionException(this,
+                        "Missed a breakpoint time at "
+                        + breakpointTime
+                        + ", with index "
+                        + nextBreakpoint.index());
+            } else if (comparison == 0 && nextBreakpoint.index() == _index) {
+                if (_debugging){
+                    _debug("The current superdense time is a breakpoint, "
+                            + nextBreakpoint + " , which is removed.");
+                }
+                _breakpoints.removeFirst();
+            }
+        }
+        boolean result = super.prefire();
+        if (_debugging) {
+            _debug("ContinuousDirector: prefire() returns " + result);
+        }
+        return result;
+    }
+    
+    /** Prefire method when the enclosing director
+     *  is an instance of this same class.
+     *  @return True if it is OK to fire.
+     */
+    private boolean _prefireWithEnclosingContinuousDirector()
+            throws IllegalActionException {
+        // Set the time and step size to match that of the enclosing director. 
+        ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
+        _currentStepSize = enclosingDirector._currentStepSize;
+        _currentTime = enclosingDirector._currentTime;
+        _index = enclosingDirector._index;
+        _iterationBeginTime = enclosingDirector._iterationBeginTime;
+        
+        // If we have passed the stop time, then return false.
+        // This can occur if we are inside a modal model and were not
+        // active when the stop time elapsed.
+        if (_iterationBeginTime.compareTo(getModelStopTime()) > 0) {
+            if (_debugging) {
+                _debug("ContinuousDirector: prefire() returns false because "
+                        + " stop time is exceeded at "
+                        + _iterationBeginTime);
+            }
+            return false;
+        }
+        
+        // Update the breakpoint table to not include any entries earlier
+        // than or equal to the iteration begin time. Note that we may have missed
+        // some breakpoints if we are inside a modal model and were not
+        // active during the time of those breakpoints.
+        while (!_breakpoints.isEmpty()) {
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
+            Time breakpointTime = nextBreakpoint.timestamp();
+            int comparison = breakpointTime.compareTo(_iterationBeginTime);
+            if (comparison > 0 || (comparison == 0 && nextBreakpoint.index() > _index)) {
+                // Next breakpoint is in the future.
+                break;
+            } else {
+                if (_debugging){
+                    _debug("Removing a breakpoint from the breakpoint table: " + nextBreakpoint);
+                }
+                _breakpoints.removeFirst();
+            }
+        }
+        boolean result = super.prefire();
+        if (_debugging) {
+            _debug("ContinuousDirector: prefire() returns " + result);
+        }
+        return result;
+    }
+    
+    /** Prefire method when the enclosing director
+     *  is not an instance of this same class.
+     *  @return True if it is OK to fire.
+     */
+    private boolean _prefireWithEnclosingNonContinuousDirector()
+            throws IllegalActionException {
+        // Make sure the time does not exceed the next iteration
+        // time of the environment.
+        _refineStepWRTEnvironment();
+        
+        // Check the enclosing model time against this one.
+        Nameable container = getContainer();
+        Director executiveDirector = ((Actor) container).getExecutiveDirector();
+        Time outTime = executiveDirector.getModelTime();
+        int comparison = _currentTime.compareTo(outTime);
+        if (comparison > 0) {
+            throw new IllegalActionException(this,
+                    "My model time is greater than the environment time. "
+                    + "Environment: "
+                    + outTime
+                    + ", my model time (iteration begin time): "
+                    + _currentTime);
+        } else if (comparison < 0 && executiveDirector != _enclosingContinuousDirector()) {
+            _catchUpTo(outTime);
+        }
+        
+        // If the current time and index matches the first entry in the breakpoint
+        // table, then remove that entry.
+        if (!_breakpoints.isEmpty()) {
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
+            Time breakpointTime = nextBreakpoint.timestamp();
+            comparison = breakpointTime.compareTo(_currentTime);
+            if (comparison < 0 || (comparison == 0 && nextBreakpoint.index() < _index )) {
+                // We should not have missed a breakpoint.
+                // FIXME: What if we were inside a modal model and not awake during that time?
+                throw new IllegalActionException(this,
+                        "Missed a breakpoint time at "
+                        + breakpointTime
+                        + ", with index "
+                        + nextBreakpoint.index());
+            } else if (comparison == 0 && nextBreakpoint.index() == _index) {
+                if (_debugging){
+                    _debug("The current superdense time is a breakpoint, "
+                            + nextBreakpoint + " , which is removed.");
+                }
+                _breakpoints.removeFirst();
+            }
+        }
+
+        // The super.prefire() method cannot be called before this point
+        // because it sets the local model time to match that of the
+        // executive director.
+        boolean result = super.prefire();
+        if (_debugging) {
+            _debug("ContinuousDirector: prefire() returns " + result);
+        }
+        return result;
+    }
+    
     /** If necesssary, modify the current step size so that
      *  current model time plus the step size does not exceed
      *  the time of the next iteration of the environment.
@@ -1281,6 +1542,36 @@ public class ContinuousDirector extends FixedPointDirector implements
             _stepSizeControllersVersion = _workspace.getVersion();
         }
         return _stepSizeControllers;
+    }
+    
+    /** Synchronize to real time, if appropriate.
+     *  @throws IllegalActionException If evaluating the parameter fails
+     *   or if an exception occurs during sleeping.
+     */
+    private void _synchronizeToRealTime() throws IllegalActionException {
+        if (((BooleanToken) synchronizeToRealTime.getToken()).booleanValue()) {
+            long realTime = System.currentTimeMillis() - _timeBase;
+            long simulationTime = (long) ((_iterationBeginTime.subtract(
+                    getModelStartTime()).getDoubleValue()) * 1000);
+            long timeDifference = simulationTime - realTime;
+            // If the time difference is large enough, go to sleep.
+            if (timeDifference > 20) {
+                try {
+                    if (_debugging) {
+                        _debug("Sleep for " + timeDifference + "ms.");
+                    }
+                    Thread.sleep(timeDifference - 20);
+                } catch (Exception e) {
+                    throw new IllegalActionException(this, "Sleep Interrupted"
+                            + e.getMessage());
+                }
+            } else {
+                if (_debugging) {
+                    _debug("Warning: cannot achieve real-time performance"
+                            + " at simulation time " + _iterationBeginTime);
+                }
+            }
+        }
     }
     
     ///////////////////////////////////////////////////////////////////
