@@ -53,6 +53,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
@@ -375,8 +376,19 @@ public class MoMLApplication implements ExecutionListener {
         ComponentEntity directory = configuration.getEntity("directory");
 
         if (directory instanceof ModelDirectory) {
-            PtolemyEffigy effigy = new PtolemyEffigy(
+            PtolemyEffigy effigy = null;
+            try {
+                effigy = new PtolemyEffigy(
                     (ModelDirectory) directory, configuration.getName());
+            } catch (NameDuplicationException ex) {
+                // Try deleting the old configuration
+                PtolemyEffigy oldEffigy = (PtolemyEffigy)
+                    ((ModelDirectory)directory).getEntity(configuration.getName());
+                oldEffigy.setContainer(null);
+                effigy = new PtolemyEffigy(
+                        (ModelDirectory) directory, configuration.getName());
+            }
+
             effigy.setModel(configuration);
             effigy.identifier.setExpression(specificationURL.toExternalForm());
         }
