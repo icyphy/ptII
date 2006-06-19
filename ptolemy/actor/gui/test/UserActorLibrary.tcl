@@ -203,3 +203,18 @@ test UserActorLibrary-1.4 {Try to assign to a Singleton. ComponentEntity._checkC
     java::call ptolemy.util.MessageHandler setMessageHandler $handler
     java::call ptolemy.actor.gui.UserActorLibrary  saveComponentInLibrary  $configuration $entity2
 } {}
+
+######################################################################
+####
+#
+test UserActorLibrary-1.5 {UserLibInsertError.xml} {
+
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    set entity [java::cast ptolemy.kernel.CompositeEntity \
+		    [$parser parseFile UserLibInsertError.xml]]
+    set entity2 [$entity getEntity CompositeActor]
+    java::call ptolemy.actor.gui.UserActorLibrary \
+	saveComponentInLibrary \
+	$configuration $entity2
+} {}
