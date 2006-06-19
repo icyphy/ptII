@@ -115,12 +115,12 @@ test PNDirector-5.2.1 {cover debug basic block} {
     # Truncate debugging output because it varies
     puts $debugOutput 	
     list [string range $debugOutput 0 178]
-} {{Invoking preinitialize():  .E0.A1
+} {{.E0.D3 Preinitializing ...
+Invoking preinitialize():  .E0.A1
 Invoking preinitialize():  .E0.A2
-Finished preinitialize().
+.E0.D3 Finished preinitialize().
 ----- Setting current time to 0.0
-Called initialize().
-Invoking initialize():  .E0.A1}}
+Called initialize}}
 
 ######################################################################
 ####
