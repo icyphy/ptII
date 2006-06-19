@@ -303,7 +303,6 @@ $(PTII_SRC): $(PTII_FULL)
 # Files to be removed from all source distributions
 PTII_SRC_TO_BE_REMOVED = \
 		META-INF \
-		jni \
 		bin/comm.policy \
 		bin/copernicus.bat \
 		bin/copernicusjhdl.bat \
@@ -346,7 +345,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		lib/ptII.properties \
 		lib/ptvr.jar \
 		lib/saxon8.jar \
-		jni \
 		mk/ptII.mk \
 		ptolemy/actor/gui/style/test/alljsimpletests.tcl \
 		ptolemy/actor/gui/test/alljsimpletests.tcl \
@@ -389,7 +387,6 @@ PTII_SRC_TO_BE_REMOVED = \
 BASE_SRC_TO_BE_REMOVED = \
 		doc/usingVergil \
 		lib/hsif \
-		lib/jni.jar \
 		lib/chic.jar \
 		lib/colt.jar \
 		lib/jasminclasses.jar \
@@ -416,7 +413,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/component \
 		ptolemy/configs/dsp \
 		ptolemy/configs/full \
-		ptolemy/configs/jni \
 		ptolemy/configs/jxta \
 		ptolemy/configs/SingleWindow \
 		ptolemy/configs/copernicus \
@@ -552,7 +548,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 	mv src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile
 	# Fix up configs/makefile
-	egrep -v "dsp.jar|full.jar|jni.jar|jxta.jar|ptiny.jar|visualsense.jar" \
+	egrep -v "dsp.jar|full.jar|jxta.jar|ptiny.jar|visualsense.jar" \
 		src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile \
 		> src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile.tmp \
@@ -564,7 +560,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 	mv src_jar/hyvisual$(VERSION)/doc/design/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/doc/design/makefile
 	# Fix up doc/makefile
-	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|jni |lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
 		src_jar/hyvisual$(VERSION)/doc/makefile \
 		> src_jar/hyvisual$(VERSION)/doc/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/doc/makefile.tmp \
@@ -584,8 +580,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		src_jar/hyvisual$(VERSION)/ptolemy/makefile
 	# Fix up makefile
 	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|thales" \
-		src_jar/hyvisual$(VERSION)/makefile | \
-		sed 's/\$$(PTJNI_DIR)//' \
+		src_jar/hyvisual$(VERSION)/makefile \
 		> src_jar/hyvisual$(VERSION)/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/makefile \
@@ -670,7 +665,7 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 	mv src_jar/viptos$(VERSION)/ptolemy/domains/makefile.tmp \
 		src_jar/viptos$(VERSION)/ptolemy/domains/makefile
 	# Fix up configs/makefile
-	egrep -v "dsp.jar|full.jar|hyvisual.jar|jni.jar|jxta.jar|ptiny.jar|visualsense.jar" \
+	egrep -v "dsp.jar|full.jar|hyvisual.jar|jxta.jar|ptiny.jar|visualsense.jar" \
 		src_jar/viptos$(VERSION)/ptolemy/configs/makefile \
 		> src_jar/viptos$(VERSION)/ptolemy/configs/makefile.tmp
 	mv src_jar/viptos$(VERSION)/ptolemy/configs/makefile.tmp \
@@ -688,7 +683,7 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 	mv src_jar/viptos$(VERSION)/doc/img/makefile.tmp \
 		src_jar/viptos$(VERSION)/doc/img/makefile
 	# Fix up doc/makefile
-	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|jni |lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
 		src_jar/viptos$(VERSION)/doc/makefile \
 		| sed 's/codeDocHyVisual.jar codeDocVisualSense.jar//' \
 		> src_jar/viptos$(VERSION)/doc/makefile.tmp
@@ -709,8 +704,7 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 		src_jar/viptos$(VERSION)/ptolemy/makefile
 	# Fix up makefile
 	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|thales" \
-		src_jar/viptos$(VERSION)/makefile | \
-		sed 's/\$$(PTJNI_DIR)//' \
+		src_jar/viptos$(VERSION)/makefile \
 		> src_jar/viptos$(VERSION)/makefile.tmp
 	mv src_jar/viptos$(VERSION)/makefile.tmp \
 		src_jar/viptos$(VERSION)/makefile \
@@ -1266,7 +1260,7 @@ remote1distjsrestore:
 		echo making jsrestore in ptolemy/copernicus/applet ; \
 		$(MAKE) $(MFLAGS) $(MAKEVARS) jsrestore)
 
-# Remove the JavaScope instrumentation
+# Build the docs
 remote1doc:
 	@echo "#"
 	@echo "# remote1doc rule"
