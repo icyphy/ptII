@@ -151,12 +151,12 @@ test UserActorLibrary-1.0 {} {
 test UserActorLibrary-1.2 {Sinewave, which is a class} {
 
     set parser [java::new ptolemy.moml.MoMLParser]
-    $parser setMoMLFilters [java::null]
-    $parser addMoMLFilters \
-	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
-
-    $parser addMoMLFilter [java::new \
-	    ptolemy.moml.filter.RemoveGraphicalClasses]
+#    $parser setMoMLFilters [java::null]
+#    $parser addMoMLFilters \
+#	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+#
+#    $parser addMoMLFilter [java::new \
+#	    ptolemy.moml.filter.RemoveGraphicalClasses]
 
 
     set entityLibrary [java::cast ptolemy.moml.EntityLibrary \
@@ -184,7 +184,7 @@ test UserActorLibrary-1.3 {model.xml, which has problems with hideName} {
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser reset
     set entity [java::cast ptolemy.kernel.CompositeEntity \
-		    [$parser parseFile model.xml]]
+		    [$parser parseFile hideNameTestModel.xml]]
     set entity2 [$entity getEntity CompositeActor]
     java::call ptolemy.actor.gui.UserActorLibrary \
 	saveComponentInLibrary \
@@ -201,9 +201,5 @@ test UserActorLibrary-1.4 {Try to assign to a Singleton. ComponentEntity._checkC
     $parser reset
     set handler [java::new ptolemy.util.MessageHandler]
     java::call ptolemy.util.MessageHandler setMessageHandler $handler
-    jdkCaptureErr {
-	java::call ptolemy.util.MessageHandler error "This is an error"
-	java::call ptolemy.actor.gui.UserActorLibrary  saveComponentInLibrary  $configuration $entity2
-    } foobar
-     list $foobar
+    java::call ptolemy.actor.gui.UserActorLibrary  saveComponentInLibrary  $configuration $entity2
 } {}
