@@ -171,9 +171,8 @@ test CompositeActor-6.1 {Invoke all the action methods} {
     list $output
 } {{Called preinitialize()
 Called initialize()
-Calling prefire()
-Prefire returns (from director) true
-Called prefire()
+CompositeActor: Calling prefire()
+CompositeActor: prefire returns: true
 Calling fire()
 Called fire()
 Calling postfire()
