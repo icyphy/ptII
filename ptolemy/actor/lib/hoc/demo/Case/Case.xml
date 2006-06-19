@@ -45,7 +45,7 @@
     <property name="DocViewerAttribute" class="ptolemy.kernel.util.SingletonAttribute">
         <property name="viewer" class="ptolemy.vergil.basic.DocViewerFactory">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
