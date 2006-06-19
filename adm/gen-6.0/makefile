@@ -286,30 +286,12 @@ $(PTII_SRC): $(PTII_FULL)
 		ls $(PTII_SRC_TO_BE_REMOVED); \
 		$(FINDCLEAN); \
 		cd ..;)
-	# Fix up configs/makefile
-	egrep -v "jni.jar" \
-		src/ptII$(VERSION)/ptolemy/configs/makefile \
-		> src/ptII$(VERSION)/ptolemy/configs/makefile.tmp
-	mv src/ptII$(VERSION)/ptolemy/configs/makefile.tmp \
-		src/ptII$(VERSION)/ptolemy/configs/makefile
 	# Fix up doc/img/makefile
 	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd" \
 		src/ptII$(VERSION)/doc/img/makefile \
 		> src/ptII$(VERSION)/doc/img/makefile.tmp
 	mv src/ptII$(VERSION)/doc/img/makefile.tmp \
 		src/ptII$(VERSION)/doc/img/makefile
-	# Fix up doc/makefile
-	egrep -v "jni |domains.rtp.kernel|domains.rtp.lib|ptolemy.ptp.lib" \
-		src/ptII$(VERSION)/doc/makefile \
-		> src/ptII$(VERSION)/doc/makefile.tmp
-	mv src/ptII$(VERSION)/doc/makefile.tmp \
-		src/ptII$(VERSION)/doc/makefile
-	# Fix up makefile
-	cat	src/ptII$(VERSION)/makefile | \
-		sed 's/\$$(PTJNI_DIR)//' \
-		> src/ptII$(VERSION)/makefile.tmp
-	mv src/ptII$(VERSION)/makefile.tmp \
-		src/ptII$(VERSION)/makefile \
 	# Fix up ct/demo/makefile
 	egrep -v Corba \
 		src/ptII$(VERSION)/ptolemy/domains/ct/demo/makefile \
@@ -352,7 +334,6 @@ $(PTII_SRC): $(PTII_FULL)
 # Files to be removed from all source distributions
 PTII_SRC_TO_BE_REMOVED = \
 		META-INF \
-		jni \
 		bin/comm.policy \
 		bin/copernicus.bat \
 		bin/copernicusjhdl.bat \
@@ -360,6 +341,7 @@ PTII_SRC_TO_BE_REMOVED = \
 		bin/emachine.bat \
 		bin/giottoc.bat \
 		bin/histogram.bat \
+		bin/hyvisual \
 		bin/jode.bat \
 		bin/mescal.bat \
 		bin/moml.bat \
@@ -394,6 +376,7 @@ PTII_SRC_TO_BE_REMOVED = \
 		lib/cachedir \
 		lib/ptII.properties \
 		lib/ptvr.jar \
+		lib/saxon8.jar \
 		mk/ptII.mk \
 		ptolemy/actor/gui/style/test/alljsimpletests.tcl \
 		ptolemy/actor/gui/test/alljsimpletests.tcl \
@@ -413,12 +396,14 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/x10/X10Interface.class \
 		ptolemy/actor/lib/x10/demo/MotionDrivenDemos/shutdown.bat \
 		ptolemy/backtrack \
+		ptolemy/codegen \
 		ptolemy/component \
 		ptolemy/domains/giotto/cgc \
 		ptolemy/domains/gr/demo/Demo1 \
 		ptolemy/domains/gr/lib/vr \
 		ptolemy/domains/hs \
 		ptolemy/distributed \
+		ptolemy/hsif \
 		ptolemy/matlab/ptmatlab.exp \
 		ptolemy/matlab/ptmatlab.lib \
 		ptolemy/matlab/ptmatlab.obj \
@@ -434,7 +419,6 @@ PTII_SRC_TO_BE_REMOVED = \
 BASE_SRC_TO_BE_REMOVED = \
 		doc/usingVergil \
 		lib/hsif \
-		lib/jni.jar \
 		lib/chic.jar \
 		lib/colt.jar \
 		lib/jasminclasses.jar \
@@ -484,7 +468,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/hdf \
 		ptolemy/domains/petrinet \
 		ptolemy/domains/psdf \
-		ptolemy/domains/rendezvous \
 		ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml \
 		ptolemy/domains/sr \
 		ptolemy/domains/test \
@@ -493,7 +476,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/moml/jxta/demo/EPtolemyA/EPtolemy.properties \
 		ptolemy/plot/build.xml \
 		ptolemy/plot/plotml/build.xml \
-		ptolemy/ptp \
 		thales
 
 # Files to be removed from HyVisual source distributions
@@ -509,14 +491,14 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/xslt \
 		ptolemy/codegen \
 		ptolemy/configs/ptiny \
-		ptolemy/configs/visualsense \
 		ptolemy/domains/csp \
 		ptolemy/domains/pn \
 		ptolemy/domains/ptinyDomains.xml \
 		ptolemy/domains/ptinyos \
-		ptolemy/domains/wireless
+		ptolemy/domains/wireless \
+		ptolemy/configs/visualsense \
 
-# Files to be removed from HyVisual source distributions
+# Files to be removed from Viptos source distributions
 VIPTOS_SRC_TO_BE_REMOVED = \
 		$(BASE_SRC_TO_BE_REMOVED) \
 		bin/hyvisual \
@@ -605,7 +587,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 	mv src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile
 	# Fix up configs/makefile
-	egrep -v "dsp.jar|full.jar|jni.jar|jxta.jar|ptiny.jar|visualsense.jar" \
+	egrep -v "dsp.jar|full.jar|jxta.jar|ptiny.jar|visualsense.jar" \
 		src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile \
 		> src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile.tmp \
@@ -617,7 +599,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 	mv src_jar/hyvisual$(VERSION)/doc/design/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/doc/design/makefile
 	# Fix up doc/makefile
-	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|jni |lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
 		src_jar/hyvisual$(VERSION)/doc/makefile \
 		> src_jar/hyvisual$(VERSION)/doc/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/doc/makefile.tmp \
@@ -637,8 +619,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		src_jar/hyvisual$(VERSION)/ptolemy/makefile
 	# Fix up makefile
 	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|thales" \
-		src_jar/hyvisual$(VERSION)/makefile | \
-		sed 's/\$$(PTJNI_DIR)//' \
+		src_jar/hyvisual$(VERSION)/makefile \
 		> src_jar/hyvisual$(VERSION)/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/makefile \
@@ -724,7 +705,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 	mv src_jar/viptos$(VIPTOS_VERSION)/ptolemy/domains/makefile.tmp \
 		src_jar/viptos$(VIPTOS_VERSION)/ptolemy/domains/makefile
 	# Fix up configs/makefile
-	egrep -v "dsp.jar|full.jar|hyvisual.jar|jni.jar|jxta.jar|ptiny.jar|visualsense.jar" \
+	egrep -v "dsp.jar|full.jar|hyvisual.jar|jxta.jar|ptiny.jar|visualsense.jar" \
 		src_jar/viptos$(VIPTOS_VERSION)/ptolemy/configs/makefile \
 		> src_jar/viptos$(VIPTOS_VERSION)/ptolemy/configs/makefile.tmp
 	mv src_jar/viptos$(VIPTOS_VERSION)/ptolemy/configs/makefile.tmp \
@@ -742,7 +723,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 	mv src_jar/viptos$(VIPTOS_VERSION)/doc/img/makefile.tmp \
 		src_jar/viptos$(VIPTOS_VERSION)/doc/img/makefile
 	# Fix up doc/makefile
-	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|jni |lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|ptolemy.hsif|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|ptolemy.hsif|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
 		src_jar/viptos$(VIPTOS_VERSION)/doc/makefile \
 		| sed 's/codeDocHyVisual.jar codeDocVisualSense.jar//' \
 	        | sed 's@^all:.*$$@all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html@' \
@@ -774,8 +755,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 		src_jar/viptos$(VIPTOS_VERSION)/ptolemy/makefile
 	# Fix up makefile
 	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|thales" \
-		src_jar/viptos$(VIPTOS_VERSION)/makefile | \
-		sed 's/\$$(PTJNI_DIR)//' \
+		src_jar/viptos$(VIPTOS_VERSION)/makefile \
 		> src_jar/viptos$(VIPTOS_VERSION)/makefile.tmp
 	mv src_jar/viptos$(VIPTOS_VERSION)/makefile.tmp \
 		src_jar/viptos$(VIPTOS_VERSION)/makefile \
@@ -1101,6 +1081,9 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/corba \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/corba/util \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous/kernel/solver \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/kernel \
@@ -1116,6 +1099,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ptinyos/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ptinyos/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/ptinyos/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rendezvous/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rendezvous/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rtp/kernel \
@@ -1173,18 +1157,26 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/eclipse/ast \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/fsm/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/fsm/modal \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/giotto/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/hdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/comm \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/conversions \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/hoc \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/io \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/logic \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/string \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/fsm \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/giotto \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/hdf \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/ \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct \
@@ -1205,6 +1197,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/hsif \
 	$(REMOTE1PTIIDIST)/jni \
+	$(REMOTE1PTIIDIST)/jni/gui \
 	$(REMOTE1PTIIDIST)/ptp/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/configs 
@@ -1214,6 +1207,7 @@ JSALLDIRS = \
 NONJSALLCOREDIRS = \
 	ptolemy/copernicus/kernel \
 	ptolemy/copernicus/java \
+	ptolemy/copernicus/gui
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
@@ -1243,6 +1237,9 @@ remote1distjsall_1:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
+	@echo "Setting up javax.comm.properties so that we can build under solaris"
+	-(cd $(REMOTE1PTIIDIST)/lib; rm javax.comm.properties; ln -s /usr/java/commapi/docs/javax.comm.properties .)
+	@echo "Removing vendors/sun/commapi so that we can build under solaris"
 	@echo "Removing $(JSDATABASE) in prep for $$x "
 	-ls -ldg $(JSDATABASE) $(JSDATABASE)/*
 	-rm -rf $(JSDATABASE)
@@ -1313,17 +1310,22 @@ remote1distjsrestore:
 		echo making jsrestore in ptolemy/copernicus/applet ; \
 		$(MAKE) $(MFLAGS) $(MAKEVARS) jsrestore)
 
-# Remove the JavaScope instrumentation
+# Build the docs
 remote1doc:
 	@echo "#"
-	@echo "# Now running make in $(REMOTE1PTIIDIST)/doc"
+	@echo "# remote1doc rule"
+	@echo "# Now running make install in $(REMOTE1PTIIDIST)/doc"
 	@echo "# on `hostname`"
 	@echo "# We run make in the doc directory early so that"
 	@echo "# the website link checker will find files in doc/codeDoc"
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE))
+	@echo "Setting up javax.comm.properties so that we can build under solaris"
+	-(cd $(REMOTE1PTIIDIST)/lib; rm javax.comm.properties; ln -s /usr/java/commapi/docs/javax.comm.properties .)
+	@echo "Removing vendors/sun/commapi so that we can build under solaris"
+	-rm $(REMOTE1PTIIDIST)/vendors/sun/commapi/*
+	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE) install)
 
 # Remove the JavaScope instrumentation
 remote1build:
@@ -1391,6 +1393,15 @@ remote1doccheck:
 	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST)/doc; rm -rf doccheck; \
 		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k doccheck)
+
+remote1findbugs:
+	@echo "#"
+	@echo "# Now generating findbugs files in $(REMOTE1PTIIDIST)/doc"
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
+	(cd $(REMOTE1PTIIDIST)/doc; rm -rf findbugs.*; \
+		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k findbugs)
 
 # Build jnlp installers
 remote1jnlp:
@@ -2324,21 +2335,3 @@ softwalls.tar.gz: softwalls
 	rm -f softwalls.tar.gz softwalls.tar
 	(cd softwalls; tar -cf ../softwalls.tar .)
 	gzip -9 softwalls.tar
-#############
-# FindBugs : http://findbugs.sourceforge.net
-#
-FINDBUGS=$(PTII)/vendors/findbugs-1.0.0-rc1
-
-# Tree to test
-PTFB = $(PTIIADM)/gen-$(MAJOR_VERSION)/test/ptII$(VERSION)
-
-ptII.fb: $(PTFB)
-	echo "[Jar files]" > ptII.fb
-	echo "[Source dirs]" >> ptII.fb
-	echo $(PTFB) >> ptII.fb
-	echo "[Aux classpath entries]" >> ptII.fb
-	for file in `ls $(PTFB)/lib/*.jar`; do \
-	echo "$$file" >> ptII.fb; \
-	done
-findbugs.xml:  ptII.fb
-	$(FINDBUGS)/bin/findbugs -textui -xml -project ptII.fb $(PTFB) > $@
