@@ -137,47 +137,47 @@ Ramp: ENABLED_NOT_DEFERRABLE
 Consumer: NOT_ENABLED
 
 iterationCount 0
-Called prefire().
+Director: Called prefire().
 The actor .E1.Ramp will be iterated.
 The actor .E1.Ramp was iterated.
 Consumer: ENABLED_NOT_DEFERRABLE
 Ramp: ENABLED_DEFERRABLE
-Called postfire().
+Director: Called postfire().
 
 iterationCount 1
-Called prefire().
+Director: Called prefire().
 The actor .E1.Consumer will be iterated.
 The actor .E1.Consumer was iterated.
 Ramp: ENABLED_NOT_DEFERRABLE
 Consumer: NOT_ENABLED
-Called postfire().
+Director: Called postfire().
 
 iterationCount 2
-Called prefire().
+Director: Called prefire().
 The actor .E1.Ramp will be iterated.
 The actor .E1.Ramp was iterated.
 Consumer: ENABLED_NOT_DEFERRABLE
 Ramp: ENABLED_DEFERRABLE
-Called postfire().
+Director: Called postfire().
 
 iterationCount 3
-Called prefire().
+Director: Called prefire().
 The actor .E1.Consumer will be iterated.
 The actor .E1.Consumer was iterated.
 Ramp: ENABLED_NOT_DEFERRABLE
 Consumer: NOT_ENABLED
-Called postfire().
+Director: Called postfire().
 
 iterationCount 4
-Called prefire().
+Director: Called prefire().
 The actor .E1.Ramp will be iterated.
 The actor .E1.Ramp was iterated.
 Consumer: ENABLED_NOT_DEFERRABLE
 Ramp: ENABLED_DEFERRABLE
-Called postfire().
+Director: Called postfire().
 
 iterationCount 5
-Called prefire().
+Director: Called prefire().
 The actor .E1.Consumer will be iterated.
 The actor .E1.Consumer was iterated.
 Ramp: ENABLED_NOT_DEFERRABLE
