@@ -1394,7 +1394,6 @@ public class JNIUtilities {
 
     /** Get the Out args belonging a GenericJNIActor entity.
      *  @param actor The GenericJNIActor object.
-     *  @param separator The separator used between multiple arguments.
      *  @return a vector of out arguments.
      */
     protected static Vector _getArgumentsOut(GenericJNIActor actor) {
