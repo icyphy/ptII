@@ -94,7 +94,6 @@ public class CheckModelSize {
 
             try {
                 NamedObj top = null;
-                System.out.println("CheckModelSize: " + i + " " + fileName);
                 try {
                     top = parser.parse(null, new File(fileName).toURL());
                 } catch (Exception ex) {
@@ -121,7 +120,7 @@ public class CheckModelSize {
                             }
 
                             if (height > 768) {
-                                analysis.append(" width(" + height + ") > 768");
+                                analysis.append(" height(" + height + ") > 768");
                             }
 
                             if (vergilCenter != null) {
