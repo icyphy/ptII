@@ -270,6 +270,38 @@ public class HybridModalDirector extends ModalDirector
             throw new InternalErrorException(throwable);
         }
     }
+    
+
+    /** Override the base class so that if there is no enabled transition
+     *  then we record for each relation (comparison operation) in each
+     *  guard expression the distance between the current value of the
+     *  variable being compared and the threshold.
+     *  @exception IllegalActionException If thrown by any commit action
+     *  or there is no controller.
+     */
+    public boolean postfire() throws IllegalActionException {
+        if (_enabledTransition == null) {
+            State currentState = getController().currentState();
+            // Only commit the current states of the relationlists
+            // of all the transitions during these execution phases.
+            Iterator iterator = currentState.nonpreemptiveTransitionList()
+            .listIterator();
+            
+            while (iterator.hasNext()) {
+                Transition transition = (Transition) iterator.next();
+                transition.getRelationList().commitRelationValues();
+            }
+            
+            iterator = currentState.preemptiveTransitionList()
+            .listIterator();
+            
+            while (iterator.hasNext()) {
+                Transition transition = (Transition) iterator.next();
+                transition.getRelationList().commitRelationValues();
+            }
+        }
+        return super.postfire();
+    }
 
     /** Override the base class to set current time to match that of
      *  the enclosing executive director, if there is one, regardless
