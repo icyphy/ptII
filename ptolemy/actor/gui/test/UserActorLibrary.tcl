@@ -172,13 +172,8 @@ test UserActorLibrary-1.2 {Sinewave, which is a class} {
     set results [diffText [string range $entityMoML 153 \
 			       [string length $entityMoML]] \
 		     [$restoredEntity exportMoML]]
-    # This hack is necessary because of problems with crnl under windows
-    regsub -all [java::call System getProperty "line.separator"] \
-	        $results "\n" results2
-
-    list [string range $results2 12 81]
-} {{      <property name="_hideName" class="ptolemy.data.expr.Parameter">
-}}
+    list $results	
+} {{}}
 
 
 ######################################################################
@@ -200,15 +195,15 @@ test UserActorLibrary-1.3 {model.xml, which has problems with hideName} {
 ######################################################################
 ####
 #
-# test UserActorLibrary-1.4 {Try to assign to a Singleton. ComponentEntity._checkContainer() was throwing an exception, which was masking the real error  } {
+test UserActorLibrary-1.4 {Try to assign to a Singleton. ComponentEntity._checkContainer() was throwing an exception, which was masking the real error  } {
 
-#     set parser [java::new ptolemy.moml.MoMLParser]
-#     $parser reset
-#     set handler [java::new ptolemy.util.MessageHandler]
-#     java::call ptolemy.util.MessageHandler setMessageHandler $handler
-#     jdkCaptureErr {
-# 	java::call ptolemy.util.MessageHandler error "This is an error"
-# 	java::call ptolemy.actor.gui.UserActorLibrary  saveComponentInLibrary  $configuration $entity2
-#     } foobar
-#     list $foobar
-# } {}
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    set handler [java::new ptolemy.util.MessageHandler]
+    java::call ptolemy.util.MessageHandler setMessageHandler $handler
+    jdkCaptureErr {
+	java::call ptolemy.util.MessageHandler error "This is an error"
+	java::call ptolemy.actor.gui.UserActorLibrary  saveComponentInLibrary  $configuration $entity2
+    } foobar
+     list $foobar
+} {}
