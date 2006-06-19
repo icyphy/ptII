@@ -38,6 +38,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
@@ -278,6 +279,11 @@ public class UserActorLibrary {
      */
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) throws IOException, IllegalActionException {
+        if (entity == null) {
+            throw new NullPointerException(
+                    "Save in library failed. "
+                    + "entity was null, cannot save a null entity.");
+        }
         try {
             CompositeEntity libraryInstance = (CompositeEntity) configuration
                     .getEntity("actor library." + USER_LIBRARY_NAME);
@@ -302,6 +308,11 @@ public class UserActorLibrary {
 
             // Check whether there is already something existing in the
             // user library with this name.
+            if (library == null) {
+                throw new InternalErrorException(
+                        "Save in library failed. "
+                        + "libraryEffigy.getModel() returned null.");
+            }
             if (library.getEntity(entity.getName()) != null) {
                 throw new NameDuplicationException(entity, 
                         "Save In Library failed: An object"
