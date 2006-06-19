@@ -90,6 +90,8 @@ public class HybridModalDirector extends ModalDirector
      */
     public boolean isStepSizeAccurate() {
         boolean result = true;
+        _lastDistanceToBoundary = 0.0;
+        _distanceToBoundary = 0.0;
         Iterator actors = _actorsFired.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -98,14 +100,11 @@ public class HybridModalDirector extends ModalDirector
                     return false;
                 }
             } else if (actor instanceof CompositeActor) {
-                Iterator insideActors = ((CompositeActor)actor).deepEntityList().iterator();
-                while (insideActors.hasNext()) {
-                    Actor insideActor = (Actor)insideActors.next();
-                    if (insideActor instanceof ContinuousStepSizeController) {
-                        if (!((ContinuousStepSizeController) insideActor).isStepSizeAccurate()) {
-                            result = false;
-                            break;
-                        }
+                // Delegate to the director.
+                Director director = actor.getDirector();
+                if (director instanceof ContinuousStepSizeController) {
+                    if (!((ContinuousStepSizeController) director).isStepSizeAccurate()) {
+                        return false;
                     }
                 }
             }
@@ -121,8 +120,6 @@ public class HybridModalDirector extends ModalDirector
         // ContinuousDirector.
         ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
         if (enclosingDirector == null) {
-            _lastDistanceToBoundary = 0.0;
-            _distanceToBoundary = 0.0;
             return result;
         }
         try {
@@ -316,14 +313,12 @@ public class HybridModalDirector extends ModalDirector
                     result = candidate;
                 }
             } else if (actor instanceof CompositeActor) {
-                Iterator insideActors = ((CompositeActor)actor).deepEntityList().iterator();
-                while (insideActors.hasNext()) {
-                    Actor insideActor = (Actor)insideActors.next();
-                    if (insideActor instanceof ContinuousStepSizeController) {
-                        double candidate = ((ContinuousStepSizeController) insideActor).refinedStepSize();
-                        if (candidate < result) {
-                            result = candidate;
-                        }
+                // Delegate to the director.
+                Director director = actor.getDirector();
+                if (director instanceof ContinuousStepSizeController) {
+                    double candidate = ((ContinuousStepSizeController) director).refinedStepSize();
+                    if (candidate < result) {
+                        result = candidate;
                     }
                 }
             }
@@ -397,14 +392,12 @@ public class HybridModalDirector extends ModalDirector
                     result = candidate;
                 }
             } else if (actor instanceof CompositeActor) {
-                Iterator insideActors = ((CompositeActor)actor).deepEntityList().iterator();
-                while (insideActors.hasNext()) {
-                    Actor insideActor = (Actor)insideActors.next();
-                    if (insideActor instanceof ContinuousStepSizeController) {
-                        double candidate = ((ContinuousStepSizeController) insideActor).suggestedStepSize();
-                        if (candidate < result) {
-                            result = candidate;
-                        }
+                // Delegate to the director.
+                Director director = actor.getDirector();
+                if (director instanceof ContinuousStepSizeController) {
+                    double candidate = ((ContinuousStepSizeController) director).suggestedStepSize();
+                    if (candidate < result) {
+                        result = candidate;
                     }
                 }
             }

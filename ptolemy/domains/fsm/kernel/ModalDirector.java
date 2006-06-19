@@ -305,6 +305,7 @@ public class ModalDirector extends FSMDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _actorsFired.clear();
+        _disabledActors.clear();
     }
 
     ///////////////////////////////////////////////////////////////////
