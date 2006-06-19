@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="UserLibInsertError" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0.1">
+<entity name="UserActorLibraryInsertError" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 20.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 1215, 968}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 1036, 780}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1000, 859]">
     </property>
@@ -225,13 +225,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{1025.0, 815.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={21, 14, 1243, 927}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={10, -12, 1036, 780}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1028, 818]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 662]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7193841847446">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{634.7626262626263, 721.9848484848485}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{709.2222222222222, 862.3333333333333}">
         </property>
         <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
@@ -299,14 +299,6 @@
                 </property>
             </port>
         </entity>
-        <entity name="Service Time Records" class="ptolemy.actor.lib.gui.Display">
-            <property name="title" class="ptolemy.kernel.util.StringAttribute" value="&lt;&lt;INSPECTION STEP TEMPLATE&gt;&gt;">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={398, 469, 292, 222}, maximized=false}">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{1070.0, 955.0}">
-            </property>
-        </entity>
         <entity name="Generator" class="ptolemy.actor.lib.Bernoulli">
             <property name="seed" class="ptolemy.data.expr.Parameter" value="Seed">
             </property>
@@ -317,7 +309,7 @@
             </property>
         </entity>
         <entity name="Processing Queue" class="ptolemy.domains.de.lib.Server">
-            <property name="newServiceTime" class="ptolemy.actor.parameters.PortParameter" value="10.0">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="10.0">
             </property>
             <property name="ServerIcon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {130, 260, 815, 516}, maximized = false}">
@@ -327,7 +319,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 1070.0}">
             </property>
-            <port name="newServiceTime" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="serviceTime" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
                 </property>
@@ -497,13 +489,19 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 1005.0]">
             </property>
         </entity>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1130.0, 1055.0]">
+            </property>
+        </entity>
+        <entity name="Test2" class="ptolemy.actor.lib.Test">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1120.0, 940.0]">
+            </property>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="[355.0, 1060.0]">
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="[80.0, 410.0]">
@@ -557,21 +555,23 @@
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
         <link port="job_in" relation="relation4"/>
         <link port="job_out" relation="relation"/>
-        <link port="Service Time Plot.input" relation="relation"/>
         <link port="CurrentTime.output" relation="relation2"/>
         <link port="CurrentTime.trigger" relation="relation"/>
-        <link port="RecordAssembler.output" relation="relation6"/>
+        <link port="RecordAssembler.output" relation="relation5"/>
         <link port="RecordAssembler.job" relation="relation"/>
         <link port="RecordAssembler.svc_time" relation="relation2"/>
         <link port="RecordAssembler.step_name" relation="relation3"/>
-        <link port="Service Time Records.input" relation="relation6"/>
         <link port="Generator.output" relation="relation8"/>
         <link port="Generator.trigger" relation="relation4"/>
         <link port="Processing Queue.input" relation="relation4"/>
         <link port="Processing Queue.output" relation="relation"/>
-        <link port="Processing Queue.newServiceTime" relation="relation15"/>
+        <link port="Processing Queue.serviceTime" relation="relation15"/>
         <link port="WaitingTime.output" relation="relation24"/>
         <link port="WaitingTime.waiter" relation="relation4"/>
         <link port="WaitingTime.waitee" relation="relation"/>
@@ -614,5 +614,7 @@
         <link port="Count 1.output" relation="relation23"/>
         <link port="Step Name.output" relation="relation3"/>
         <link port="Step Name.trigger" relation="relation"/>
+        <link port="Test.input" relation="relation"/>
+        <link port="Test2.input" relation="relation5"/>
     </entity>
 </entity>
