@@ -1793,10 +1793,10 @@ remote4build:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) fast JAVA_FLAGS=-J-Xss100m)
+	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) fast)
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) install JAR_FLAGS=-J-Xss100m)
+	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) install)
 
 # Run the deep tests, this is likely to take 14 hours.
 remote4javatest:
