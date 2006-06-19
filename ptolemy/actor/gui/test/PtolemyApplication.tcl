@@ -96,4 +96,4 @@ test PtolemyApplication-2.1 {test invalid command line options} {
     catch {set app [java::new ptolemy.actor.gui.PtolemyApplication $cmdArgs]} \
             msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Unrecognized option: -foo}}
+} {{java.lang.Exception: Failed to parse "-foo -test"}}
