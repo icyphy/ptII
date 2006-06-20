@@ -42,13 +42,13 @@ import ptolemy.kernel.util.InvalidStateException;
 /**
  This class is a schedule element that contains a reference to an
  actor.  This class is used together with the Schedule class to
- construct a static schedule.  This class contains a reference to an
- actor, and is used to represent an actor term of a schedule loop. The
- setActor() method is used to create the reference to an actor. The
- getActor() method will return a reference to this actor. <p>
+ construct a static schedule.  This class is used to represent an 
+ actor term of a schedule loop. The setActor() method is used to 
+ create the reference to an actor. The getActor() method will return 
+ a reference to this actor. <p>
 
  It is more efficient to use this class than to simply maintain a list of
- actors since actors will often firing multiple times consecutively.  Using
+ actors since actors will often fire multiple times consecutively.  Using
  this class (and the Schedule data structure in general) greatly reduces the
  memory requirements of most large schedules.
 
@@ -96,8 +96,6 @@ public class Firing extends ScheduleElement {
      *   is active.
      */
     public Iterator actorIterator() {
-        // As of 8/02, it seems like this method class is not really
-        // used except by the test suite.
         return new ActorIterator(getIterationCount());
     }
 
