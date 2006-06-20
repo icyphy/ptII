@@ -35,45 +35,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ContinuousScheduler
 
 /**
- The Static scheduler for the CT domain.
- A continuous-time (sub)system can be mathematically represented as:<Br>
- <pre>
- <pre>    dx/dt = f(x, u, t)<Br>
- <pre>    y = g(x, u, t)<BR>
- </pre></pre></pre>
- where x is the state of the system, u is the input, y is the output,
- f() is the state transition map and g() is the output map.
- <P>
- The system is built using actors. That is, all the functions, f() and g(),
- are built up by chains of actors.  For higher order systems,
- x is a vector, built using more than one integrator.
- In general, actors that have the functionality of integration
- from their inputs to their outputs are called <I>dynamic actors</I>.
- Other actors are called <I>arithmetic actors</I>.
- <P>
- In continuous-time simulation, time progresses in a discrete way.
- The distance between two consecutive time points is called the
- <I>integration step size</I> or step size, for short. Some actors
- may put constraints on the choice of the step size.
- These actors are called <I>step size control actors</I>. Examples of step
- size control actors include integrators, which control the
- accuracy and speed of numerical ODE solutions, and event generators,
- which produce discrete events.
- <P>
- If there are loops of arithmetic actors,
- then the (sub)system are not schedulable, and a NotSchedulableException
- will be thrown when schedules are requested.
- <P>
- This scheduler is based on the CTScheduler by Jie Liu, Haiyang Zheng, and
- Ye Zhou. It eliminates the classification of actors into multiple categories
- that that scheduler relied on.
+ The Static scheduler for the Continuous domain.  Currently, this scheduler is 
+ the same as the FixedPointScheduler.
 
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
- @see ptolemy.actor.sched.Scheduler
+ @see ptolemy.actor.sched.FixedPointScheduler
  */
 public class ContinuousScheduler extends FixedPointScheduler {
 
@@ -94,7 +64,4 @@ public class ContinuousScheduler extends FixedPointScheduler {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
-    // FIXME: add two special schedules: ContinuousStepSizeController 
-    // and ContinuousStatefulComponent 
 }
