@@ -71,6 +71,10 @@ public abstract class ScheduleElement {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    // FIXME: what is the key difference between the following methods?
+    // Under what conditions should which method be used?
+    // Any performance comparision is necessary?
+    
     /** Return the actor invocation sequence of the schedule in the
      *  form of a sequence of actors. All of the lowest-level nodes
      *  should be an instance of Firing. Otherwise, the returned
