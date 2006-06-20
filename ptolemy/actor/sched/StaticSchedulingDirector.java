@@ -318,8 +318,6 @@ public class StaticSchedulingDirector extends Director {
      */
     protected void _setScheduler(Scheduler scheduler)
             throws IllegalActionException, NameDuplicationException {
-        // FIXME: why call invalidateSchedule() twice?
-        invalidateSchedule();
         _scheduler = scheduler;
         invalidateSchedule();
     }

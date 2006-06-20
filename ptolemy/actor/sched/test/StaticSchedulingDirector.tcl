@@ -97,7 +97,6 @@ test StaticSchedulingDirector-5.1 {addDebugListener, removeDebugListener} {
     $d1 addDebugListener $listener
 
     set s0 [java::new ptolemy.actor.sched.Scheduler]
-    # setScheduler calls _setScheduler which calls invalidateSchedule twice.
     $d1 setScheduler $s0
 
     $d1 removeDebugListener $listener
@@ -119,7 +118,6 @@ test StaticSchedulingDirector-5.1 {addDebugListener, removeDebugListener} {
 	        [$stream toString] "\n" output
     list $output
 } {{Added attribute Scheduler to .
-Invalidating schedule.
 Invalidating schedule.
 Invalidating schedule.
 }}
