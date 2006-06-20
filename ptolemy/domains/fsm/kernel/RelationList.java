@@ -142,8 +142,8 @@ public class RelationList extends Attribute {
 
     /** Return the previous difference of the relation that has the
      *  maximum current difference.  This is the value as of the last
-     *  call to commiteRelationValues().
-     *  @see #commentRelationValues()
+     *  call to commitRelationValues().
+     *  @see #commitRelationValues()
      *  @return The previous distance of a relation.
      */
     public double getPreviousMaximumDistance() {
