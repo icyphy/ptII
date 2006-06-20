@@ -183,6 +183,5 @@ test HTMLAbout-3.0 {GenerateCopyrights.generateCopyrights} {
     set copyrights [java::call ptolemy.actor.gui.GenerateCopyrights generateHTML $configuration]
     # Just check for a few strings because the configuration
     # changes on different machines.
-    list [regexp {com/microstar/xml/README.txt} $copyrights] \
-	[regexp {jni/launcher/launcher-copyright.htm} $copyrights]
-} {1 1}
+    list [regexp {com/microstar/xml/README.txt} $copyrights]
+} {1}
