@@ -207,8 +207,8 @@ public class StaticSchedulingDirector extends Director {
      *  If there is no scheduler, do nothing.
      */
     public void invalidateSchedule() {
+        _debug("Invalidating schedule.");
         if (_scheduler != null) {
-            _debug("Invalidating schedule.");
             _scheduler.setValid(false);
         }
     }
