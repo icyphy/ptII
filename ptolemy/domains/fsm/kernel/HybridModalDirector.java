@@ -196,6 +196,11 @@ public class HybridModalDirector extends ModalDirector
 
                     double distanceToBoundary = relationList.maximumDifference();
 
+                    // The distance to boundary is the difference between
+                    // the value of a variable in a relation (comparison
+                    // operation) and the threshold value against which it
+                    // is being compared. The previous distance is the last
+                    // committed distance.
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
                         _lastDistanceToBoundary = relationList
@@ -367,20 +372,19 @@ public class HybridModalDirector extends ModalDirector
                 double currentStepSize = enclosingDirector.getCurrentStepSize();
                 
                 // Linear interpolation to refine the step size.
+                // The "distances" here are not in time, but in the value
+                // of continuous variables. The "last distance" is the distance
+                // as of the previous postfire(), i.e., the previously committed
+                // values of the continuous variables.
                 // Note the step size is refined such that the distanceToBoundary
-                // is half of errorTolerance.
-                /* FIXME: Why this formula? Replace with the following
-                 * and then eliminate the _lastDistanceToBoundary variable.
+                // expected at the new step size is half of errorTolerance.
                 double refinedStepSize = (currentStepSize
                         * (_lastDistanceToBoundary + (errorTolerance / 2)))
                         / (_lastDistanceToBoundary + _distanceToBoundary);
-                */
-                double refinedStepSize = (currentStepSize
-                        * currentStepSize
-                        / (currentStepSize + _distanceToBoundary));
                 
                 result = Math.min(result, refinedStepSize);
-                // FIXME
+                // NOTE: To see how well this algorithm is working, you can
+                // uncomment the following line.
                 // System.out.println("refined step size: " + result);
             }
         }
@@ -502,6 +506,6 @@ public class HybridModalDirector extends ModalDirector
     /** The version for __enclosingContinuousDirector. */
     private long _enclosingContinuousDirectorVersion = -1;
 
-    /** Local variable to indicate the last distance to boundary. */
+    /** Local variable to indicate the last committed distance to boundary. */
     private double _lastDistanceToBoundary = 0.0;
 }

@@ -39,8 +39,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  A RelationList object contains a list of relations of a guard expression.
- It provides facilities to access the previous and current information of
- each relation of a guard expression during its evaluation. The information
+ Relations are comparison operations, for example "x >= 10", where x is
+ a variable.  This class provides facilities for measuring how far the
+ expression is from the threshold; for example, if x = 7, then the
+ distance to the threshold is 3.  Moreover, it provides a mechanism
+ for recording the current distance (via a "commit") and then later
+ accessing that distance and comparing it against the current distance.
+ The information
  includes relation type and the difference information. (See
  {@link ParseTreeEvaluatorForGuardExpression} for the detailed explanation
  of relation type and difference.) This attribute is non-persistent and will
@@ -117,7 +122,9 @@ public class RelationList extends Attribute {
         }
     }
 
-    /** Update the relation list by updating each relation node.
+    /** Record the current relation values so that when getPreviousMaximumDistance()
+     *  is called, these recorded values are used.
+     *  @see #getPreviousMaximumDistance()
      */
     public void commitRelationValues() {
         ListIterator relations = _relationList.listIterator();
@@ -134,7 +141,9 @@ public class RelationList extends Attribute {
     }
 
     /** Return the previous difference of the relation that has the
-     *  maximum current difference.
+     *  maximum current difference.  This is the value as of the last
+     *  call to commiteRelationValues().
+     *  @see #commentRelationValues()
      *  @return The previous distance of a relation.
      */
     public double getPreviousMaximumDistance() {
