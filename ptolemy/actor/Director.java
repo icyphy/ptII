@@ -792,18 +792,15 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug(getFullName(), "Preinitializing ...");
         }
-
-        // preinitialize protected variables.
-        _currentTime = getModelStartTime();
-        _stopRequested = false;
-
         // validate all settable attributes.
         Iterator attributes = attributeList(Settable.class).iterator();
         while (attributes.hasNext()) {
             Settable attribute = (Settable) attributes.next();
             attribute.validate();
         }
-
+        // preinitialize protected variables.
+        _currentTime = getModelStartTime();
+        _stopRequested = false;
         // preinitialize all the contained actors.
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
