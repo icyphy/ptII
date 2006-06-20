@@ -125,11 +125,16 @@ test ScopeExtendingAttribute-2.2 {Changing container of scopeExtendingAttribute 
     catch {set msg1 [[$p3 getToken] toString]} msg1
 
     catch {$a setContainer $e1} msg2
+    set msg2b [[$a getContainer] getFullName]
+
+    # Set the container again, so that we get better coverage
+    catch {$a setContainer $e1} msg2c
+    set msg2d [[$a getContainer] getFullName]
 
     catch {set msg3 [[$p3 getToken] toString]} msg3
     
-    list $msg1 $msg2 $msg3
-} {7 {} 5}
+    list $msg1 $msg2 $msg2b $msg2c $msg2d $msg3
+} {7 {} . {} . 5}
 
 test ScopeExtendingAttribute-2.3 {Changing container of parameter must shadow a parameter inside a scopeExtendingAttribute.} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
