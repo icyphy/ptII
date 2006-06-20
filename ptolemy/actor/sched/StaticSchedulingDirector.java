@@ -207,12 +207,9 @@ public class StaticSchedulingDirector extends Director {
      *  If there is no scheduler, do nothing.
      */
     public void invalidateSchedule() {
-        _debug("Invalidating schedule.");
-
-        try {
-            setScheduleValid(false);
-        } catch (IllegalActionException ex) {
-            // no scheduler.  ignore.
+        if (_scheduler != null) {
+            _debug("Invalidating schedule.");
+            _scheduler.setValid(false);
         }
     }
 
@@ -282,28 +279,6 @@ public class StaticSchedulingDirector extends Director {
         }
     }
 
-    /** Validate/Invalidate the schedule. A true argument indicate that
-     *  the current (cached) schedule is valid, and the director can use
-     *  it in the further execution. A false argument indicate that
-     *  the CompositeActor has been significantly changed so that the
-     *  cached schedule is no longer valid, and the director should
-     *  invoke the scheduler again for a new schedule. This calls the
-     *  setValid() method of Scheduler.
-     *  @param valid True if the schedule is to be marked valid.
-     *  @exception IllegalActionException If there's no scheduler.
-     */
-    public void setScheduleValid(boolean valid) throws IllegalActionException {
-        // FIXME: This should be protected.  Edward Added this
-        // comment 5/99 r1.26
-        // The only other place it is called is CTEmbeddedDirector,
-        // which extends this class?
-        if (_scheduler == null) {
-            throw new IllegalActionException(this, "has no scheduler.");
-        }
-
-        _scheduler.setValid(valid);
-    }
-
     /** Set the scheduler for this StaticSchedulingDirector.
      *  The container of the specified scheduler is set to this director.
      *  If there was a previous scheduler, the container of that scheduler
@@ -343,6 +318,7 @@ public class StaticSchedulingDirector extends Director {
      */
     protected void _setScheduler(Scheduler scheduler)
             throws IllegalActionException, NameDuplicationException {
+        // FIXME: why call invalidateSchedule() twice?
         invalidateSchedule();
         _scheduler = scheduler;
         invalidateSchedule();
