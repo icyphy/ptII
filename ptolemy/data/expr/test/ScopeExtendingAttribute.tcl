@@ -179,3 +179,39 @@ test ScopeExtendingAttribute-2.4 {Changing container of scopeExtendingAttribute 
     
     list $msg1 $msg2 $msg3
 } {5 {} 7}
+
+test ScopeExtendingAttribute-2.5 {Changing container of scopeExtendingAttribute must invalidate the scope of variables that are no longer shadowed in the old scope.--- Including any scopeExtendingAttributes} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set a [java::new ptolemy.data.expr.ScopeExtendingAttribute $e1 "a"]
+    set b [java::new ptolemy.data.expr.ScopeExtendingAttribute $e1 "b"]
+ 
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
+    set p2 [java::new ptolemy.data.expr.Parameter $a "p"]
+    set p3 [java::new ptolemy.data.expr.Parameter $e1 "p3"]
+
+    set pb2 [java::new ptolemy.data.expr.Parameter $b "p"]
+
+    $p1 setExpression "5"
+    $p2 setExpression "7"
+    $p3 setExpression "p"
+    $pb2 setExpression "p"
+    
+    set r1 [list \
+		[[$p1 getToken] toString] \
+		[[$p2 getToken] toString] \
+		[[$p3 getToken] toString] \
+		[[$pb2 getToken] toString]]
+
+    # Increase code coverage for cases where the container contains other
+    # ScopeExtendingAttributes.
+    $a setContainer $b
+
+    set r2 [list \
+		[[$p1 getToken] toString] \
+		[[$p2 getToken] toString] \
+		[[$p3 getToken] toString] \
+		[[$pb2 getToken] toString]]
+
+    list $r1 $r2
+} {{5 7 5 5} {5 7 5 7}}
