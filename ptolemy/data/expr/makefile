@@ -102,6 +102,7 @@ JSRCS = \
         ParserScope.java \
         ScopeExtender.java \
         ScopeExtendingAttribute.java \
+        ScopeExtendingFileReadingAttribute.java \
         SingletonParameter.java \
         StringParameter.java \
 	TokenMgrError.java \
