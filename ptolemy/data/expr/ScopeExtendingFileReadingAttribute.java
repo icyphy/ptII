@@ -30,18 +30,17 @@
  */
 package ptolemy.data.expr;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
-import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
 
@@ -58,8 +57,9 @@ import ptolemy.util.FileUtilities;
  where <code><i>variableName</i></code> is the name of the attribute
  in a format suitable for {@link ptolemy.kernel.util.NamedObj#setName(String)}
  (i.e., does not contain periods) and  <code><i>value<i></code> is
- a the expression in the Ptolemy expression language.
- Comments begin with the <code>#</code> character.
+ the expression in the Ptolemy expression language.
+ Comments are lines that begin with the <code>#</code> character.
+ Each line in the file is interpreted as a separate assignment.
 
  <p>The attributes that are created will have the same
  visibility as parameters of the container of the attribute.
@@ -92,22 +92,44 @@ public class ScopeExtendingFileReadingAttribute extends ScopeExtendingAttribute 
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         fileOrURL = new FileParameter(this, "fileOrURL");
-        fileOrURL.setExpression("$CWD/parameters.txt");
+        fileOrURL.setExpression("");
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         parameters                        ////
 
     /** A parameter naming the file or URL to be read that contains
      *  attribute names and values.  The file should be in a format
      *  suitable for java.util.Properties.load(), see the class
      *  comment of this class for details.
-     *  This initial default value is the string "$CWD/parameters.txt",
-     *  which means that the file <code>parameters.txt</code> in
-     *  the current directory will be read.
+     *  This initial default value is the empty string "",
+     *  which means that no file will be read and no parameter
+     *  values will be defined.
      */
     public FileParameter fileOrURL;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** If the parameter is <i>fileOrURL</i>, and the specified file
+     *  name is not null, then open and read the file.
+     *  @param attribute The attribute that changed.
+     *  @throws IllegalActionException If the superclass throws it, or
+     *   if the file cannot be read, or if the file parameters cannot
+     *   be evaluated.
+     */
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        if (attribute == fileOrURL) {
+            try {
+                read();
+            } catch (Exception exception) {
+                throw new IllegalActionException(this, exception,
+                        "Failed to read file: " + fileOrURL.getExpression());
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Read the contents of the file named by this parameter and create
      *  attributes in the current scope.
@@ -116,7 +138,24 @@ public class ScopeExtendingFileReadingAttribute extends ScopeExtendingAttribute 
     public void read() throws IllegalActionException, NameDuplicationException,
             IOException {
 
-        URL url = FileUtilities.nameToURL(fileOrURL.getExpression(),
+        String fileName = fileOrURL.getExpression();
+        if (fileName == null || fileName.trim().equals("")) {
+            // FIXME: Don't remove _iconDescription!!!! Other parameters?
+            // Remove all contained parameters.
+            // Copy the list of parameters to avoid concurrent modification exception.
+            /*
+            List attributeList = new LinkedList(attributeList());
+            Iterator attributes = attributeList.iterator();
+            while (attributes.hasNext()) {
+                Attribute attribute = (Attribute)attributes.next();
+                if (attribute != fileOrURL) {
+                    attribute.setContainer(null);
+                }
+            }
+            */
+            return;
+        }
+        URL url = FileUtilities.nameToURL(fileName,
                 fileOrURL.getBaseDirectory(),
                 getClass().getClassLoader());
         if (url == null) {
@@ -146,13 +185,14 @@ public class ScopeExtendingFileReadingAttribute extends ScopeExtendingAttribute 
         while (attributeNames.hasNext()) {
             String attributeName = (String) attributeNames.next();
             String attributeValue = (String) properties.get(attributeName);
+            // FIXME
             System.out.println("ScopeExtendingFileReadingAttribute: " 
                     + attributeName + " " + attributeValue);
-            Variable variable = null;
+            Parameter variable = null;
             if (getAttribute(attributeName) == null) {
-                variable = new Variable(this,attributeName);
+                variable = new Parameter(this, attributeName);
             } else {
-                variable = (Variable)getAttribute(attributeName);
+                variable = (Parameter)getAttribute(attributeName);
             }
             
             variable.setExpression(attributeValue);
