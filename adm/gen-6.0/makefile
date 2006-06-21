@@ -80,6 +80,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar 
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
 
@@ -112,6 +113,7 @@ PTII_TOPDIR=	.cshrc \
 		copyright.txt \
 		diva \
 		doc \
+		jni \
 		lib \
 		makefile \
 		mk \
@@ -187,7 +189,7 @@ $(PTIIDIST):
 			-X $(GENDIR)/src.ex \
 			-X $(GENDIR)/src1.ex \
 		$ -f - $(PTII_TOPDIR) )| \
-		(cd $@; $(TAR) -xpf -)
+		(cd $@; $(TAR) -xvpf -)
 	@echo "Removing codeDoc directories and other documentation"
 	@echo "  tar -X does not seem to work under Cygwin"
 	rm -rf $(PTIIDIST)/doc/codeDoc* $(PTIIDIST)/config/*.jar \
@@ -227,7 +229,7 @@ $(PTII_FULL): $(PTIIDIST)
 	@echo "For some reason under Cygwin, we need to build the compressed"
 	@echo "  tar file or we get errors"
 	(cd $(PTIIDIST)/..; \
-		$(TAR) -c --no-anchored -X $(GENDIR)/src.ex \
+		$(TAR) -c -v --no-anchored -X $(GENDIR)/src.ex \
 		 -f $@ \
 		ptII$(VERSION))
 	#(cd $(PTIIDIST)/..; \
@@ -268,7 +270,7 @@ $(PTII_SRC): $(PTII_FULL)
 	rm -rf src/ptII$(VERSION)
 	-mkdir src
 	(cd src; \
-		$(TAR) -xf $(PTII_FULL); \
+		$(TAR) -xvf $(PTII_FULL); \
 		cd ptII$(VERSION); \
 		echo "About to configure `pwd`"; \
 		PTII=`pwd` ./configure; make -k clean; \
@@ -318,7 +320,7 @@ $(PTII_SRC): $(PTII_FULL)
 		src/ptII$(VERSION)/ptolemy/domains/tm/makefile
 	(cd src; \
 		echo "#  Starting tar of $@"; \
-		$(TAR) -c --no-anchored -X $(GENDIR)/src.ex -f $(PTII_SRC) ptII$(VERSION); \
+		$(TAR) -c -v --no-anchored -X $(GENDIR)/src.ex -f $(PTII_SRC) ptII$(VERSION); \
 		);
 
 ###############
@@ -445,7 +447,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/component \
 		ptolemy/configs/dsp \
 		ptolemy/configs/full \
-		ptolemy/configs/jni \
 		ptolemy/configs/jxta \
 		ptolemy/configs/SingleWindow \
 		ptolemy/configs/copernicus \
@@ -491,6 +492,7 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/xslt \
 		ptolemy/codegen \
 		ptolemy/configs/ptiny \
+		ptolemy/configs/jni \
 		ptolemy/domains/csp \
 		ptolemy/domains/pn \
 		ptolemy/domains/ptinyDomains.xml \
@@ -523,7 +525,7 @@ $(PTII_SRC_JAR): src_jar
 # The directory we jar up.
 src_jar: #$(PTII_SRC) 
 	mkdir src_jar;
-	(cd src_jar; $(TAR) -xf $(PTII_SRC))
+	(cd src_jar; $(TAR) -xvf $(PTII_SRC))
 	rm -f src_jar/ptII$(VERSION)/doc/design/hyvisual.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign1-intro.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign2-software.pdf
@@ -642,7 +644,7 @@ viptos: $(VIPTOS_SRC_TAR)
 viptos.tar: $(VIPTOS_SRC_TAR)
 $(VIPTOS_SRC_TAR): src_jar/viptos$(VIPTOS_VERSION)
 	(cd src_jar; \
-		$(TAR) -czf ../viptos$(VIPTOS_VERSION).src.tar.gz \
+		$(TAR) -cvzf ../viptos$(VIPTOS_VERSION).src.tar.gz \
 		viptos$(VIPTOS_VERSION) \
 	)
 		#cp $(PTIIHOME)/doc/design/viptos.pdf \
