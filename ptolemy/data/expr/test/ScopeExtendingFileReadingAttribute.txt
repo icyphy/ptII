@@ -1,0 +1,3 @@
+# $Id$
+# This file is in the java.util.Properties file format
+p = 42
