@@ -56,7 +56,7 @@ import ptolemy.util.FileUtilities;
  <i>attributeName</i> = <i>value<i>
  <pre>
  where <code><i>variableName</i></code> is the name of the attribute
- in a format suitable for {@link ptolemy.kernel.util.NamedObj@setName(String)}
+ in a format suitable for {@link ptolemy.kernel.util.NamedObj#setName(String)}
  (i.e., does not contain periods) and  <code><i>value<i></code> is
  a the expression in the Ptolemy expression language.
  Comments begin with the <code>#</code> character.
