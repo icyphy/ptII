@@ -2,6 +2,7 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
+<group>
 <!-- scopeExtendingAttribute -->
 <property name="ScopeExtendingAttribute" 
           class="ptolemy.data.expr.ScopeExtendingAttribute">
@@ -14,3 +15,18 @@
     </configure>
   </property>
 </property>
+<property name="ScopeExtendingFileReadingAttribute" 
+          class="ptolemy.data.expr.ScopeExtendingFileReadingAttribute">
+  <property name="_iconDescription" 
+            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+        <rect x="-30" y="-15" width="60" height="30" style="fill:#C0C0C0"/>
+        <text x="-20"
+              style="font-size:40; font-family:SansSerif; fill:#00BB00"
+              y="15">-F-</text>
+      </svg>
+    </configure>
+  </property>
+</property>
+</group>
