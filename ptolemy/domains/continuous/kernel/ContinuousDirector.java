@@ -43,7 +43,6 @@ import ptolemy.actor.util.TotallyOrderedSet;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
@@ -53,7 +52,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
@@ -89,7 +87,8 @@ import ptolemy.kernel.util.Settable;
  This means that the initial value, as a function of time,
  is continuous on the left, the final value, as a function
  of time, is continuous on the right, and the signal
- has exactly one value at all times except those
+ has exactly one value (meaning the initial value and the final value
+ are the same) at all times except those
  on a discrete subset D.
  <p>
  A purely continouous signal has exactly one value at
@@ -103,9 +102,9 @@ import ptolemy.kernel.util.Settable;
  is absent at all tags.
  <p>
  A signal may be mostly continuous,
- but have multiple values at a discrete subset of times.
+ but has multiple values at a discrete subset of times.
  These multiple values semantically represent discontinuities
- in an otherwise continuous signal.
+ in a continuous signal that is not purely continuous.
  <p>
  The set of times where signals have more than one distinct value
  are a discrete subset D of the time set. These times are called
@@ -545,12 +544,18 @@ public class ContinuousDirector extends FixedPointDirector implements
         super.initialize();
 
         // Make sure the first step has zero step size.
-        // This ensures that actors like plotters will be postfired at the start time.
+        // This ensures that actors like plotters will be postfired at 
+        // the start time.
         _currentStepSize = 0.0;
 
-        // If we are embedded, then request a firing at the start and
-        // stop times. However, do not do this if there is an enclosing
-        // ContinuousDirector.
+        // If this director is embedded, then request a firing at the 
+        // start and stop times. However, do not do this if there is 
+        // an enclosing ContinuousDirector.
+
+        // The reason for doing this is that if a Continuous composite actor
+        // is embedded in a DE model but has no input ports, without the 
+        // following statements, the composite actor has no chance to be fired. 
+
         if (_isEmbedded() && (_enclosingContinuousDirector() == null)) {
             Actor container = (Actor)getContainer();
             Director director = container.getExecutiveDirector();
@@ -636,7 +641,8 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** Call the prefire() method of the super class and return its value.
      *  Record the current model time as the beginning time of the current
      *  iteration, and if there is a pending invocation of postfire()
-     *  from a previous integration step, invoke that now.
+     *  from a previous integration step, invoke that now. 
+     *  <p>
      *  If the <i>synchronizeToRealTime</i> parameter is <i>true</i>,
      *  then this method will block execution until the real time catches
      *  up with current model time. The units for time are seconds.
@@ -664,21 +670,14 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** Preinitialize the model for an execution. This method is
      *  called only once for each simulation. 
-     *  <p>
-     *  Note, however, time does not have a meaning when actors are
-     *  preinitialized. So actors must not use a notion of time in their
-     *  preinitialize() methods.
      *
      *  @exception IllegalActionException If the super class throws it, or 
      *  local variables cannot be initialized.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        // Time objects can only be initialized at the end of this method after
-        // the time scale and time resolution are evaluated.
-        // Time resolution is provided by the preinitialize() method in
-        // the super class (Director). So, the following method must be called
-        // after the super.preinitialize() is called.
+        // Time objects can only be instantiated after super.preinitialize()
+        // is called, where the time resolution is resolved.
         _initializeLocalVariables();
     }
 
@@ -1054,25 +1053,28 @@ public class ContinuousDirector extends FixedPointDirector implements
         
         // clear the existing breakpoint table or
         // create a breakpoint table if necessary
-        if (_debugging) {
-            _debug(getFullName(), " create/clear break point table.");
-        }
         if (_breakpoints != null) {
+            if (_debugging) {
+                _debug(getFullName(), "clears the break point table.");
+            }
             _breakpoints.clear();
         } else {
+            if (_debugging) {
+                _debug(getFullName(), "creates a break point table.");
+            }
             _breakpoints = new TotallyOrderedSet(new GeneralComparator());
         }
 
         // Instantiate an ODE solver, using the class name given
-        // by ODESolver.
+        // by ODESolver parameter, which is a string parameter.
         String solverClassName;
         // If there is an enclosing ContinuousDirector, then use its solver
         // specification instead of the local one.
         ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
         if (enclosingDirector != null) {
-            solverClassName = ((StringToken) enclosingDirector.ODESolver.getToken()).stringValue().trim();
+            solverClassName = enclosingDirector.ODESolver.stringValue().trim();
         } else {
-            solverClassName = ((StringToken) ODESolver.getToken()).stringValue().trim();
+            solverClassName = ODESolver.stringValue().trim();
         }
         _ODESolver = _instantiateODESolver(_solverClasspath + solverClassName);
     }
@@ -1365,6 +1367,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                 _debug("ContinuousDirector: prefire() returns false because "
                         + " stop time is exceeded at "
                         + _iterationBeginTime);
+                _debug("ContinuousDirector: prefire() returns false.");
             }
             return false;
         }
@@ -1387,6 +1390,10 @@ public class ContinuousDirector extends FixedPointDirector implements
                 _breakpoints.removeFirst();
             }
         }
+        
+        // Call the super.prefire() method to synchronized to the outside time.
+        // by setting the current time. Note that this is also done at the very 
+        // beginning of this method. 
         boolean result = super.prefire();
         if (_debugging) {
             _debug("ContinuousDirector: prefire() returns " + result);
@@ -1402,25 +1409,35 @@ public class ContinuousDirector extends FixedPointDirector implements
             throws IllegalActionException {
         // Make sure the time does not exceed the next iteration
         // time of the environment.
-        _refineStepWRTEnvironment();
-        
-        // Check the enclosing model time against this one.
-        Nameable container = getContainer();
+        CompositeActor container = (CompositeActor) getContainer();
         Director executiveDirector = ((Actor) container).getExecutiveDirector();
+        Time environmentNextIterationTime = executiveDirector.getModelNextIterationTime();
+        Time localTargetTime = _iterationBeginTime.add(_currentStepSize);
+        if (environmentNextIterationTime.compareTo(localTargetTime) < 0) {
+            _currentStepSize = environmentNextIterationTime.subtract(_currentTime).getDoubleValue();
+            if (_debugging) {
+                _debug("----- Revising step size due to environment to "
+                        + _currentStepSize);
+            }
+        }
+        
+        // Check the enclosing model time against the local model time.
         Time outTime = executiveDirector.getModelTime();
         int comparison = _currentTime.compareTo(outTime);
         if (comparison > 0) {
             throw new IllegalActionException(this,
-                    "My model time is greater than the environment time. "
+                    "The model time of " 
+                    + container.getFullName()
+                    + " is greater than the environment time. "
                     + "Environment: "
                     + outTime
-                    + ", my model time (iteration begin time): "
+                    + ", the model time (iteration begin time): "
                     + _currentTime);
         } else if (comparison < 0 && executiveDirector != _enclosingContinuousDirector()) {
             _catchUpTo(outTime);
         }
         
-        // If the current time and index matches the first entry in the breakpoint
+        // If the current time and index match the first entry in the breakpoint
         // table, then remove that entry.
         if (!_breakpoints.isEmpty()) {
             SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
@@ -1453,27 +1470,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         return result;
     }
     
-    /** If necesssary, modify the current step size so that
-     *  current model time plus the step size does not exceed
-     *  the time of the next iteration of the environment.
-     *  If this director controls a top-level model, then there
-     *  is no environment, so this method does nothing.
-     */
-    private void _refineStepWRTEnvironment() {
-        if (_isEmbedded()) {
-            CompositeActor container = (CompositeActor) getContainer();
-            Time environmentTime = container.getExecutiveDirector().getModelNextIterationTime();
-            Time localTargetTime = _iterationBeginTime.add(_currentStepSize);
-            if (environmentTime.compareTo(localTargetTime) < 0) {
-                _currentStepSize = environmentTime.subtract(_currentTime).getDoubleValue();
-                if (_debugging) {
-                    _debug("----- Revising step size due to environment to "
-                            + _currentStepSize);
-                }
-            }
-        }
-    }
-
     /** Set the current step size. Only CT directors can call this method.
      *  Solvers and actors must not call this method.
      *  @param stepSize The step size to be set.
