@@ -267,12 +267,14 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** Starting time of the execution. The default value is 0.0,
      *  and the type is double. This parameter has no effect if
-     *  this director is used inside an enclosing ContinuousDirector.
+     *  this director is used inside an enclosing ContinuousDirector and
+     *  after the simulation starts.
      */
     public Parameter startTime;
 
     /** Stop time of the simulation. The default value is Infinity,
-     *  and the type is double.
+     *  and the type is double. This parameter has no effect after the
+     *  simulation starts.
      */
     public Parameter stopTime;
 
@@ -514,40 +516,24 @@ public class ContinuousDirector extends FixedPointDirector implements
         return _errorTolerance;
     }
 
-    /** Return the maximum number of iterations in a fixed point
-     *  calculation. If the iteration has exceeded this number
-     *  and the fixed point is still not found, then the algorithm
-     *  is considered to have failed.
-     *  @return The maximum number of iterations when calculating
-     *  fixed points.
-     */
-    public final int getMaxIterations() {
-        // This method is final for performance reason.
-        return _maxIterations;
-    }
-
     /** Return the end time of the current integration step.
      *  @return The next time at which controlled actors will be fired.
      */
     public Time getModelNextIterationTime() {
+        // FIXME: this method may be unnecessary.
         return _iterationBeginTime.add(_currentStepSize);
     }
 
-    /** Return the start time, which is the value of the
-     *  <i>startTime</i> parameter, represented as an instance
-     *  of the Time class. This will be null before preinitialize()
-     *  is called. If this director is not at the top level, then
-     *  this method delegates to the executive director.
+    /** Return the start time. If this director is not at the top level, then
+     *  this method returns the start time of the executive director.
      *  Otherwise, it returns the value given by the <i>startTime</i>
-     *  parameter.
+     *  parameter. This will be null before preinitialize()
+     *  is called.
      *  @return The start time.
      *  @throws IllegalActionException If the enclosing director throws it.
      */
     public final Time getModelStartTime() throws IllegalActionException {
         // This method is final for performance reason.
-        if (_isEmbedded()) {
-            return ((Actor)getContainer()).getExecutiveDirector().getModelStartTime();
-        }
         return _startTime;
     }
 
@@ -590,12 +576,12 @@ public class ContinuousDirector extends FixedPointDirector implements
         if (_isEmbedded() && (_enclosingContinuousDirector() == null)) {
             Actor container = (Actor)getContainer();
             Director director = container.getExecutiveDirector();
-            director.fireAt(container, getModelStartTime());
+            director.fireAt(container, _startTime);
         }
         // Set a breakpoint with index 0 for the stop time.
         // Note that do not use fireAt because that will set index to 1, 
-        // which may produce more than one outputs at the stop time.
-        _breakpoints.insert(new SuperdenseTime(getModelStopTime(), 0));
+        // which may produce more than one output at the stop time.
+        _breakpoints.insert(new SuperdenseTime(_stopTime, 0));
 
         // Record starting point of the real time (the computer system time)
         // in case the director is synchronized to the real time.
@@ -617,7 +603,8 @@ public class ContinuousDirector extends FixedPointDirector implements
     
         boolean accurate = true;
     
-        // Ask the actors whether the current step size is accurate.
+        // Ask ALL the actors whether the current step size is accurate.
+        // Note that ALL the step size controllers need to be queried.
         Iterator stepSizeControlActors = _stepSizeControllers().iterator();
         while (stepSizeControlActors.hasNext() && !_stopRequested) {
             ContinuousStepSizeController actor
@@ -642,7 +629,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
 
         if (_debugging) {
-            _debug("Overall output is accurate: " + accurate);
+            _debug("Overall output is accurate? " + accurate);
         }
         return accurate;
     }
@@ -650,8 +637,11 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** If this director is not at the top level and the breakpoint table
      *  is not empty, request a refiring at the first breakpoint or at
      *  the local current time (iteration start time plus the step size),
-     *  whichever is less.
-     *  Postfire all controlled actors.
+     *  whichever is less. Postfire all controlled actors.
+     *  <p>
+     *  If the <i>synchronizeToRealTime</i> parameter is <i>true</i>,
+     *  then this method will block execution until the real time catches
+     *  up with current model time. The units for time are seconds.
      *  @return True if the Director wants to be fired again in the future.
      *  @exception IllegalActionException If the current model time exceeds
      *   the stop time, or refiring can not be granted, or the super class throws it.
@@ -677,10 +667,6 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  Record the current model time as the beginning time of the current
      *  iteration, and if there is a pending invocation of postfire()
      *  from a previous integration step, invoke that now. 
-     *  <p>
-     *  If the <i>synchronizeToRealTime</i> parameter is <i>true</i>,
-     *  then this method will block execution until the real time catches
-     *  up with current model time. The units for time are seconds.
      *  @return True if this director is ready to fire.
      *  @exception IllegalActionException If thrown by the super class,
      *   or if the model time of the environment is less than our current
@@ -748,7 +734,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         // If the requested step size is smaller than the time
         // resolution, then set the step size to the time resolution.
         // Set a flag indicating that we have done that so that if
-        // the step size is still too large, we throw an exception.
+        // the step size as time resolution is still too large, 
+        // throw an exception.
         if (refinedStep < timeResolution) {
             if (!_triedTheMinimumStepSize) {
                 // First time requested step size is less than time resolution
@@ -768,16 +755,17 @@ public class ContinuousDirector extends FixedPointDirector implements
         } else {
             _triedTheMinimumStepSize = false;
         }
+
         if (_debugging) {
             _debug("Suggested step size: " + refinedStep);
         }
         
         if (!_breakpoints.isEmpty()) {
             SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
-            Time breakpointTime = nextBreakpoint.timestamp();
-            int comparison = breakpointTime.compareTo(_iterationBeginTime.add(refinedStep));
+            Time nextBreakpointTime = nextBreakpoint.timestamp();
+            int comparison = nextBreakpointTime.compareTo(_iterationBeginTime.add(refinedStep));
             if (comparison < 0) {
-                refinedStep = breakpointTime.subtract(_iterationBeginTime).getDoubleValue();
+                refinedStep = nextBreakpointTime.subtract(_iterationBeginTime).getDoubleValue();
                 if (refinedStep < 0.0) {
                     throw new IllegalActionException(this,
                             "Cannot set a step size to respect the breakpoint at "
@@ -850,7 +838,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         if (_currentStepSize != 0.0) {
             // Increase the current step size, then ask the step-size control
             // actors for their suggestions and choose the minimum.
-            // We could use _maxStepSize here, but this if the current step
+            // We could use _maxStepSize here, but if the current step
             // size is very small w.r.t. the maximum, then this will almost
             // certainly be too much of a change in step size. Hence, we
             // increase the step size more slowly.
@@ -871,8 +859,6 @@ public class ContinuousDirector extends FixedPointDirector implements
             suggestedStep = _maxStepSize;
         }
         // Make sure time does not pass the next breakpoint.
-        // If it matches current time, this removes the first
-        // breakpoint from the table.
         if (!_breakpoints.isEmpty()) {
             SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
             if (_debugging){
@@ -896,9 +882,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         // events generated at the stop time. This is very tricky,
         // and probably not worth the effort.
         Time targetTime = getModelTime().add(suggestedStep);
-        if (targetTime.compareTo(getModelStopTime()) > 0) {
-            suggestedStep = getModelStopTime()
-            .subtract(getModelTime()).getDoubleValue();
+        if (targetTime.compareTo(_stopTime) > 0) {
+            suggestedStep = _stopTime.subtract(getModelTime()).getDoubleValue();
             if (_debugging) {
                 _debug("----- Revising step size due to stop time to "
                         + suggestedStep);
@@ -1094,7 +1079,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // after postfire() of the controlled actors is called, because
         // they may call fireAt(), which inserts events in the breakpoint
         // table.
-        if (_currentTime.equals(getModelStopTime())) {
+        if (_currentTime.equals(_stopTime)) {
             SuperdenseTime nextBreakpoint = 
                     (SuperdenseTime) _breakpoints.first();
             if (nextBreakpoint == null
@@ -1161,7 +1146,13 @@ public class ContinuousDirector extends FixedPointDirector implements
         _maxStepSize = ((DoubleToken) maxStepSize.getToken()).doubleValue();
         _currentStepSize = _initStepSize;
     
-        _startTime = new Time(this, ((DoubleToken) startTime.getToken()).doubleValue());
+        if (_isEmbedded()) {
+            _startTime = ((Actor)getContainer()).getExecutiveDirector().
+                    getModelStartTime();
+        } else {
+            _startTime = new Time(this, 
+                    ((DoubleToken) startTime.getToken()).doubleValue());
+        }
         _stopTime = new Time(this, ((DoubleToken) stopTime.getToken()).doubleValue());
         _iterationBeginTime = _startTime;
         
@@ -1200,7 +1191,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // If time exceeds the stop time, then either we failed
         // to execute at the stop time, or the return value of
         // false was ignored. Either condition is a bug.
-        if (_currentTime.compareTo(getModelStopTime()) > 0) {
+        if (_currentTime.compareTo(_stopTime) > 0) {
             throw new IllegalActionException(this,
                     "Current time exceeds the specified stopTime.");
         }
@@ -1236,7 +1227,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // after postfire() of the controlled actors is called, because
         // they may call fireAt(), which inserts events in the breakpoint
         // table.
-        if (_currentTime.equals(getModelStopTime())) {
+        if (_currentTime.equals(_stopTime)) {
             SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
             if (nextBreakpoint == null
                     || nextBreakpoint.timestamp().compareTo(_currentTime) > 0) {
@@ -1278,7 +1269,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // to execute at the stop time, or the return value of
         // false was ignored, or the return value of false in
         // prefire() was ignored. All of these conditions are bugs.
-        if (_currentTime.compareTo(getModelStopTime()) > 0) {
+        if (_currentTime.compareTo(_stopTime) > 0) {
             throw new IllegalActionException(this,
                     "Current time exceeds the specified stopTime.");
         }
@@ -1296,7 +1287,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // to execute at the stop time, or the return value of
         // false was ignored, or the return value of false in
         // prefire() was ignored. All of these conditions are bugs.
-        if (_currentTime.compareTo(getModelStopTime()) > 0) {
+        if (_currentTime.compareTo(_stopTime) > 0) {
             throw new IllegalActionException(this,
                     "Current time exceeds the specified stopTime.");
         }
@@ -1377,7 +1368,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // If we have passed the stop time, then return false.
         // This can occur if we are inside a modal model and were not
         // active when the stop time elapsed.
-        if (_iterationBeginTime.compareTo(getModelStopTime()) > 0) {
+        if (_iterationBeginTime.compareTo(_stopTime) > 0) {
             if (_debugging) {
                 _debug("ContinuousDirector: prefire() returns false because "
                         + " stop time is exceeded at "
@@ -1599,7 +1590,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         if (((BooleanToken) synchronizeToRealTime.getToken()).booleanValue()) {
             long realTime = System.currentTimeMillis() - _timeBase;
             long simulationTime = (long) ((_iterationBeginTime.subtract(
-                    getModelStartTime()).getDoubleValue()) * 1000);
+                    _startTime).getDoubleValue()) * 1000);
             long timeDifference = simulationTime - realTime;
             // If the time difference is large enough, go to sleep.
             if (timeDifference > 20) {
