@@ -34,15 +34,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Properties;
 
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.FileUtilities;
+import ptolemy.vergil.toolbox.FileEditorTableauFactory;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParameterSet
@@ -93,6 +93,8 @@ public class ParameterSet extends ScopeExtendingAttribute {
         super(container, name);
         fileOrURL = new FileParameter(this, "fileOrURL");
         fileOrURL.setExpression("");
+        //FileEditorTableauFactory editor = new FileEditorTableauFactory(this, "_editorFactory");
+        //((StringAttribute) editor.getAttribute("attributeName")).setExpression("fileOrURL");
     }
 
     ///////////////////////////////////////////////////////////////////
