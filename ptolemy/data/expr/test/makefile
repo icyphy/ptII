@@ -51,13 +51,13 @@ JSRCS = AttributeChanged.java
 JSIMPLE_TESTS = \
 	CParseTreeCodeGenerator.tcl \
 	Functions.tcl \
+	ParameterSet.tcl \
 	Parameter.tcl \
 	ParseTreeEvaluator.tcl \
 	ParseTreeTypeInference.tcl \
 	ParseTreeFreeVariableCollector.tcl \
 	ParseTreeWriter.tcl \
 	PtParser.tcl \
-	ScopeExtendingAttribute.tcl \
 	UtilityFunctions.tcl \
 	FixFunctions.tcl \
 	Variable.tcl

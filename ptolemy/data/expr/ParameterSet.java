@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-//// ScopeExtendingFileReadingAttribute
+//// ParameterSet
 
 /**
  An attribute that reads attributes from a file or URL.
@@ -74,7 +74,7 @@ import ptolemy.util.FileUtilities;
  @version $Id$
  @see ptolemy.data.expr.Variable
  */
-public class ScopeExtendingFileReadingAttribute extends ScopeExtendingAttribute {
+public class ParameterSet extends ScopeExtendingAttribute {
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -88,7 +88,7 @@ public class ScopeExtendingFileReadingAttribute extends ScopeExtendingAttribute 
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public ScopeExtendingFileReadingAttribute(NamedObj container, String name)
+    public ParameterSet(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         fileOrURL = new FileParameter(this, "fileOrURL");
@@ -185,9 +185,6 @@ public class ScopeExtendingFileReadingAttribute extends ScopeExtendingAttribute 
         while (attributeNames.hasNext()) {
             String attributeName = (String) attributeNames.next();
             String attributeValue = (String) properties.get(attributeName);
-            // FIXME
-            System.out.println("ScopeExtendingFileReadingAttribute: " 
-                    + attributeName + " " + attributeValue);
             Parameter variable = null;
             if (getAttribute(attributeName) == null) {
                 variable = new Parameter(this, attributeName);

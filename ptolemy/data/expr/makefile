@@ -92,6 +92,7 @@ JSRCS = \
         NamedConstantsScope.java \
         NestedScope.java \
 	Parameter.java \
+	ParameterSet.java \
 	ParseTreeDumper.java \
 	ParseTreeEvaluator.java \
 	ParseTreeFreeVariableCollector.java \
@@ -102,7 +103,6 @@ JSRCS = \
         ParserScope.java \
         ScopeExtender.java \
         ScopeExtendingAttribute.java \
-        ScopeExtendingFileReadingAttribute.java \
         SingletonParameter.java \
         StringParameter.java \
 	TokenMgrError.java \

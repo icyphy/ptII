@@ -15,16 +15,16 @@
     </configure>
   </property>
 </property>
-<property name="ScopeExtendingFileReadingAttribute" 
-          class="ptolemy.data.expr.ScopeExtendingFileReadingAttribute">
+<property name="ParameterSet" 
+          class="ptolemy.data.expr.ParameterSet">
   <property name="_iconDescription" 
             class="ptolemy.kernel.util.SingletonConfigurableAttribute">
     <configure>
       <svg>
         <rect x="-30" y="-15" width="60" height="30" style="fill:#C0C0C0"/>
         <text x="-20"
-              style="font-size:40; font-family:SansSerif; fill:#00BB00"
-              y="15">-F-</text>
+              style="font-size:30; font-family:SansSerif; fill:#00BB00"
+              y="15">-PS-</text>
       </svg>
     </configure>
   </property>

@@ -1,4 +1,4 @@
-# Tests for the ScopeExtendingFileReadingAttribute class
+# Tests for the ParameterSet class
 #
 # @Author: Christopher Brooks
 #
@@ -44,10 +44,10 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test ScopeExtendingFileReadingAttribute-1.0 {Read in fileReadingAttribute.txt} {
+test ParameterSet-1.0 {Read in fileReadingAttribute.txt} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
     set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
-    set a [java::new ptolemy.data.expr.ScopeExtendingFileReadingAttribute $e2 "a"]
+    set a [java::new ptolemy.data.expr.ParameterSet $e2 "a"]
     #set a [java::new ptolemy.data.expr.ScopeExtendingAttribute $e2 "a"]
 
     set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
@@ -63,7 +63,7 @@ test ScopeExtendingFileReadingAttribute-1.0 {Read in fileReadingAttribute.txt} {
 		[[$p2 getToken] toString] \
 		[[$p3 getToken] toString]]
     set fileOrURL [java::cast ptolemy.data.expr.FileParameter [$a getAttribute fileOrURL]]
-    set URL [[java::new java.io.File ScopeExtendingFileReadingAttribute.txt] \
+    set URL [[java::new java.io.File TestParameterSet.txt] \
 	toURL]
     $fileOrURL setExpression [$URL toString]
     $a read
@@ -81,4 +81,4 @@ test ScopeExtendingFileReadingAttribute-1.0 {Read in fileReadingAttribute.txt} {
 		[[$p3 getToken] toString]]
 
     list $r1 $r2 $r3
-} {}
+} {{5 7 7} {5 42 42} {5 42 42}}
