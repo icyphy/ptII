@@ -436,6 +436,8 @@ cd "$startdir"
 AC_MSG_CHECKING([the JDK version])
 JDOCSIZE=
 UPGRADE_JVM=no
+# Ptalon uses generics, which are present only in Java 1.5 and later
+HAS_GENERICS=no
 case "$JVERSION" in
 	1.1.*) UPGRADE_JVM=yes;;
 	1.2.*) UPGRADE_JVM=yes;;
@@ -446,6 +448,9 @@ case "$JVERSION" in
 		JDOCBREAKITERATOR=-breakiterator
 		AC_MSG_RESULT([ok, you are running 1.4 or later])
         ;;
+	1.5.*) 
+                # Ptalon uses generics
+                HAS_GENERICS=yes
 	*) AC_MSG_RESULT([ok, you are running $JVERSION])
 	;;
 esac
@@ -2566,6 +2571,12 @@ else
     Ptalon.])
 	# Note that we don't substitute in the ${PTII} here
 	PTPTALON_DIR='${PTII}/ptolemy/actor/ptalon/antlr'
+    fi
+
+    if test $HAS_GENERICS != "yes"; then 
+        AC_MSG_WARN([You are running Java $JVERSION, which does not
+    support generics.  Thus, ptolemy/actor/ptalon will not compile.])
+        PTPTALON_DIR=
     fi
 fi
 
