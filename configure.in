@@ -451,6 +451,8 @@ case "$JVERSION" in
 	1.5.*) 
                 # Ptalon uses generics
                 HAS_GENERICS=yes
+		AC_MSG_RESULT([ok, you are running $JVERSION])
+	;;	
 	*) AC_MSG_RESULT([ok, you are running $JVERSION])
 	;;
 esac
@@ -2573,7 +2575,7 @@ else
 	PTPTALON_DIR='${PTII}/ptolemy/actor/ptalon/antlr'
     fi
 
-    if test $HAS_GENERICS != "yes"; then 
+    if test ! "$HAS_GENERICS" = "yes"; then 
         AC_MSG_WARN([You are running Java $JVERSION, which does not
     support generics.  Thus, ptolemy/actor/ptalon will not compile.])
         PTPTALON_DIR=
