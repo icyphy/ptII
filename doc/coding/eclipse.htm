@@ -107,14 +107,14 @@ suggest "Ptolemy II", but you can select any name.
  </ol>
 
 <li>
-Ptolemy II uses some features of Java 1.4.
-Set Eclipse to use Java 1.4 source code compliance.
+Ptolemy II uses some features of Java 5.0.
+In particular, <CODE>ptolemy/actor/ptalon</CODE> uses generics,
+which require Java 5.0
+Set Eclipse to use Java 5.0 source code compliance.
 <ol>
  <li> While still in the preferences window (Window -&gt; Preferences).
  <li> Expand the Java tree, select "Compiler" -&gt; "JDK Compliance:"
- <li> Uncheck "Use default compliance settings".
- <li> Set both "Generated .class files compatibility" and
-      "Source compatibility" to 1.4.
+ <li> Set "Compiler compliance level" to "5.0".
  <li> Click Apply. 
 </ol>
 
