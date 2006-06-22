@@ -2113,6 +2113,9 @@ echo "${ECHO_T}ok, you are running 1.4 or later" >&6
 	1.5.*)
                 # Ptalon uses generics
                 HAS_GENERICS=yes
+		echo "$as_me:$LINENO: result: ok, you are running $JVERSION" >&5
+echo "${ECHO_T}ok, you are running $JVERSION" >&6
+	;;
 	*) echo "$as_me:$LINENO: result: ok, you are running $JVERSION" >&5
 echo "${ECHO_T}ok, you are running $JVERSION" >&6
 	;;
@@ -7433,7 +7436,7 @@ echo "$as_me: WARNING: Failed to find PTII/ptolemy/actor/ptalon/antlr/antlr.jar
 	PTPTALON_DIR='${PTII}/ptolemy/actor/ptalon/antlr'
     fi
 
-    if test $HAS_GENERICS != "yes"; then
+    if test ! "$HAS_GENERICS" = "yes"; then
         { echo "$as_me:$LINENO: WARNING: You are running Java $JVERSION, which does not
     support generics.  Thus, ptolemy/actor/ptalon will not compile." >&5
 echo "$as_me: WARNING: You are running Java $JVERSION, which does not
