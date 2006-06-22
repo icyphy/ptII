@@ -485,7 +485,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
             controller._readOutputsFromRefinement();
 
             State st = controller.currentState();
-            List enabledTransitions = controller._checkTransition(st
+            List enabledTransitions = controller.enabledTransitions(st
                     .nonpreemptiveTransitionList());
 
             if (enabledTransitions.size() == 0) {
@@ -887,7 +887,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         FSMActor controller = getController();
 
         if (controller != null) {
-            return controller._checkTransition(transitionList);
+            return controller.enabledTransitions(transitionList);
         } else {
             throw new IllegalActionException(this, "No controller!");
         }

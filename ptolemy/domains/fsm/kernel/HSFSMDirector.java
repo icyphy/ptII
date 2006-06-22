@@ -553,7 +553,7 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
         try {
             // Check if there is any preemptive transition enabled.
             List preemptiveEnabledTransitions = _ctrl
-                    ._checkTransition(_currentState.preemptiveTransitionList());
+                    .enabledTransitions(_currentState.preemptiveTransitionList());
 
             if (preemptiveEnabledTransitions.size() != 0) {
                 if (_debugging && _verbose) {
@@ -563,7 +563,7 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
 
             // Check if there is any non-preemptive transition enabled.
             List nonpreemptiveEnabledTransitions = _ctrl
-                    ._checkTransition(_currentState
+                    .enabledTransitions(_currentState
                             .nonpreemptiveTransitionList());
 
             if (nonpreemptiveEnabledTransitions.size() != 0) {

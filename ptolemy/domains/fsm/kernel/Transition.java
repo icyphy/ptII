@@ -293,7 +293,7 @@ public class Transition extends ComponentRelation {
             // attributes used to convey expressions without being evaluated.
             // _guard and _trigger are the variables that do the evaluation.
             _guardParseTree = null;
-            _relationListVersion = -1;
+            _parseTreeEvaluator = null;
         } else if (attribute == triggerExpression) {
             // The guard and trigger expressions can only be evaluated at run
             // time, because the input variables they can reference are created
@@ -540,6 +540,7 @@ public class Transition extends ComponentRelation {
      *  @exception IllegalActionException If thrown when evaluating the guard.
      */
     public boolean isEnabled() throws IllegalActionException {
+        _updateParseTreeEvaluator();
         try {
             if (_exeDirectorIsHSFSMDirector && !_relationList.isEmpty()) {
                 ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
@@ -785,6 +786,27 @@ public class Transition extends ComponentRelation {
             workspace().doneReading();
         }
     }
+    
+    /** Return the FSMDirector in charge of this transition,
+     *  or null if there is none.
+     *  @return The director in charge of this transition.
+     */
+    private FSMDirector _getDirector() {
+        // Get the containing FSMActor.
+        NamedObj container = getContainer();
+        if (container != null) {
+            // Get the containing modal model.
+            CompositeActor modalModel = (CompositeActor) container.getContainer();
+            if (modalModel != null) {
+                // Get the director for the modal model.
+                Director director = modalModel.getDirector();
+                if (director instanceof FSMDirector) {
+                    return (FSMDirector)director;
+                }
+            }
+        }
+        return null;
+    }
 
     // Initialize the variables of this transition.
     private void _init() throws IllegalActionException,
@@ -821,7 +843,7 @@ public class Transition extends ComponentRelation {
 
         _exeDirectorIsHSFSMDirector = false;
 
-        //CompositeEntity container = (CompositeEntity) getContainer();
+        // Create a default parse tree evaluator.
         _parseTreeEvaluator = new ParseTreeEvaluator();
 
         // construct a relation list for the transition;
@@ -858,10 +880,26 @@ public class Transition extends ComponentRelation {
             workspace().doneReading();
         }
     }
+    
+    /** If there is no current parse tree evaluator,
+     *  then create one. If this transition is under the control
+     *  of an FSMDirector, then delegate creation to that director.
+     *  Otherwise, create a default instance of ParseTreeEvaluator.
+     */
+    private void _updateParseTreeEvaluator() {
+        FSMDirector director = _getDirector();
+        if (director != null) {
+            _parseTreeEvaluator = director.getParseTreeEvaluator(this);
+        } else {
+            _parseTreeEvaluator = new ParseTreeEvaluator();
+        }
+    }
 
     /** Update the list of relations (subexpressions that possibly
      *  have comparison operators) associated with the guard expression
-     *  of this transition.
+     *  of this transition. This method constructs a new relation list
+     *  for the guard expression of this transition.  It should be
+     *  invoked after the model has changed.
      */
     private void _updateRelationList() {
         try {
@@ -876,23 +914,17 @@ public class Transition extends ComponentRelation {
                 if (modalModel != null) {
                     Director director = modalModel.getDirector();
 
-                    // FIXME: This design is very problematic!
-                    // Suggest using empty _relationList instead of _exeDirectorIsHSFSMDirector flag.
-                    // Moreover, all we need from the director is an error tolerance.
-                    // Surely we can use an interface to get a cleaner design here.
-                    // Or perhaps just always support error tolerance?
-                    // FIXME: This design won't support FSM within FSM!
+                    // FIXME: Ugh.  Perhaps set _relationList to null?
+                    // How to avoid dependency on ct and continuous?
+                    // Default director returns an error tolerance of 0.0.
+                    // What effect will this have?
                     _exeDirectorIsHSFSMDirector = false;
+                    errorTolerance = director.getErrorTolerance();
                     if (director instanceof HSFSMDirector) {
-                        errorTolerance = ((HSFSMDirector) director)
-                                .getErrorTolerance();
                         _exeDirectorIsHSFSMDirector = true;
                     } else if (director instanceof HybridModalDirector) {
                         ContinuousDirector enclosingDirector
                                 = ((HybridModalDirector)director)._enclosingContinuousDirector();
-                        if (enclosingDirector != null) {
-                            errorTolerance = enclosingDirector.getErrorTolerance();
-                        }
                         _exeDirectorIsHSFSMDirector = true;
                     }
                 }

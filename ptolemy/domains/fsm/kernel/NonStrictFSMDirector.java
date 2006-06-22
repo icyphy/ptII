@@ -133,7 +133,7 @@ public class NonStrictFSMDirector extends FSMDirector {
         State currentState = controller.currentState();
 
         // Choose a nonpreemptive transition.
-        List enabledTransitions = controller._checkTransition(currentState
+        List enabledTransitions = controller.enabledTransitions(currentState
                 .preemptiveTransitionList());
 
         // Ensure that if there are multiple enabled transitions, all of them
@@ -227,7 +227,7 @@ public class NonStrictFSMDirector extends FSMDirector {
             }
 
             // Choose a nonpreemptive transition.
-            enabledTransitions = controller._checkTransition(currentState
+            enabledTransitions = controller.enabledTransitions(currentState
                     .nonpreemptiveTransitionList());
 
             // Ensure that if there are multiple enabled transitions, all of them
