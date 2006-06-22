@@ -31,7 +31,11 @@
 
 ME =		ptolemy/actor
 
-DIRS = 		util sched process gui lib corba parameters test
+# $PTII/configure looks for antlr and sets PTPTALON_DIR in 
+# $PTII/mk/ptII.mk to ptalon if it is found.
+#
+DIRS = 		util sched process gui lib corba parameters test \
+		$(PTPTALON_DIR)
 
 # Root of the Ptolemy II directory
 ROOT =		../..

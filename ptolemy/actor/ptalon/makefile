@@ -38,7 +38,7 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)${CLASSPATHSEPARATOR}${ROOT}/ptolemy/actor/ptalon/antlr/antlr.jar
+CLASSPATH =	$(ROOT)${CLASSPATHSEPARATOR}${ANTLR_DIR}/antlr.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

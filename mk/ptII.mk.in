@@ -535,6 +535,13 @@ PTSVG_DIR =	@PTSVG_DIR@
 # Jar file used by diva/util/java2d/svg/makefile
 PTSVG_JAR =	@PTSVG_JAR@
 
+# PTPTALON_DIR is set to ptalon and used in
+# $PTII/ptolemy/actor/makefile if antlr.jar was found.
+PTPTALON_DIR =  @PTPTALON_DIR@
+
+# Directory that contains the antlr.jar file, used by ptalon
+ANTLR_DIR =	@ANTLR_DIR@
+
 # Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
 # QuickTime for Java was found.
 PTQUICKTIME_DIR =	@PTQUICKTIME_DIR@
