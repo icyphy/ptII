@@ -818,7 +818,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // This method does not call the method defined in the super class,
         // because this method provides complete new information.
         String[] defaultSuggestions = new String[1];
-        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.HybridModalDirector";
+        defaultSuggestions[0] = "ptolemy.domains.continuous.kernel.HybridModalDirector";
         return defaultSuggestions;
     }
 
