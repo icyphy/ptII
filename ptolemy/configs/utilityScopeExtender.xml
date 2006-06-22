@@ -17,14 +17,17 @@
 </property>
 <property name="ParameterSet" 
           class="ptolemy.data.expr.ParameterSet">
+  <property name="_tableauFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
+    <property name="attributeName" value="fileOrURL"/>
+  </property>
   <property name="_iconDescription" 
             class="ptolemy.kernel.util.SingletonConfigurableAttribute">
     <configure>
       <svg>
         <rect x="-30" y="-15" width="60" height="30" style="fill:#C0C0C0"/>
-        <text x="-20"
+        <text x="-30"
               style="font-size:30; font-family:SansSerif; fill:#00BB00"
-              y="15">-PS-</text>
+              y="10">-PS-</text>
       </svg>
     </configure>
   </property>
