@@ -2952,12 +2952,16 @@ changequote([, ])dnl
      but there is no directory by that name.
      For details, see $PTII/ptolemy/domains/ptinyos/README.txt.])
             else 
-                #ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-                #    <classpathentry kind=\"lib\" path=\"$PTINYOS_MOMLROOT\"/>"
+	        PTINYOS_MOMLROOT_NO_CYGDRIVE=`echo "$PTINYOS_MOMLROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+		if test -d "$PTINYOS_MOMLROOT_NO_CYGDRIVE"; then 
+		    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+                        <classpathentry kind=\"lib\" path=\"$PTINYOS_MOMLROOT_NO_CYGDRIVE\"/>"
+                else			
+	            AC_MSG_WARN([\$PTINYOS_MOMLROOT_NO_CYGDRIVE does not exist])
+                fi			
 	        AC_MSG_RESULT([$PTINYOS_MOMLROOT])
             fi
         fi
-
         # Add TOSROOT and jars to the classpath
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
         <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/nesc.jar\"/> \
