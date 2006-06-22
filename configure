@@ -7425,12 +7425,12 @@ echo "$as_me: WARNING: Failed to find PTII/ptolemy/actor/ptalon/antlr/antlr.jar
     If it is not present, you will not be able to use the
     Ptalon." >&2;}
 	# Note that we don't substitute in the ${PTII} here
-	PTALON_DIR='${PTII}/ptolemy/actor/ptalon/antlr'
+	PTPTALON_DIR='${PTII}/ptolemy/actor/ptalon/antlr'
     fi
 fi
 
-if test -z "$PTALON_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/antlr/ptalon/"
+if test -z "$PTPTALON_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/ptalon/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$ANTLR_DIR/antlr.jar\"/> "
