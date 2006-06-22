@@ -1,0 +1,131 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PNPNSleep" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    </property>
+    <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 85}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 37, 815, 652}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 534]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 267.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model has PN inside PN.&#10;The inner PN has a sleep actor.&#10;When run, we get:&#10;Exception in thread &quot;Thread-9&quot; ptolemy.actor.process.TerminateProcessException:&#10;&#10;        at ptolemy.domains.pn.kernel.PNQueueReceiver.get(PNQueueReceiver.java:185)&#10;        at ptolemy.actor.process.Branch.transferToken(Branch.java:194)&#10;        at ptolemy.actor.process.Branch.run(Branch.java:161)&#10;        at java.lang.Thread.run(Thread.java:595)&#10;&#10;Exception in thread &quot;Thread-10&quot; ptolemy.actor.process.TerminateProcessException:&#10; Process terminated.&#10;        at ptolemy.domains.pn.kernel.PNQueueReceiver.put(PNQueueReceiver.java:413)&#10;        at ptolemy.actor.process.Branch.transferToken(Branch.java:195)&#10;        at ptolemy.actor.process.Branch.run(Branch.java:161)&#10;        at java.lang.Thread.run(Thread.java:595)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 265.0]">
+        </property>
+    </property>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 195.0]">
+        </property>
+        <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-255.0, -240.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={242, 223, 764, 468}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[549, 347]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-80.8570727142128, -139.1644583521662}">
+        </property>
+        <port name="i" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-310.0, -25.0]">
+            </property>
+        </port>
+        <port name="o" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, -25.0]">
+            </property>
+        </port>
+        <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;test&quot;">
+            </property>
+            <doc>Create a constant sequence with a string value.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, -25.0]">
+            </property>
+        </entity>
+        <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
+            <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="10000L">
+            </property>
+            <property name="entityId" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:actor:92:1">
+            </property>
+            <property name="class" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.actor.lib.Sleep">
+                <property name="id" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:class:966:1">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-220.0, -25.0]">
+            </property>
+            <port name="sleepTime" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="i" relation="relation4"/>
+        <link port="o" relation="relation3"/>
+        <link port="StringConst2.output" relation="relation3"/>
+        <link port="StringConst2.trigger" relation="relation2"/>
+        <link port="Sleep.input" relation="relation4"/>
+        <link port="Sleep.output" relation="relation2"/>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 195.0]">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <property name="entityId" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:actor:5:1">
+        </property>
+        <property name="class" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.actor.lib.Ramp">
+            <property name="id" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:class:881:1">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 195.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="CompositeActor.i" relation="relation"/>
+    <link port="CompositeActor.o" relation="relation2"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="Ramp.output" relation="relation"/>
+</entity>
