@@ -17,7 +17,7 @@
 </property>
 <property name="ParameterSet" 
           class="ptolemy.data.expr.ParameterSet">
-  <property name="_tableauFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
+  <property name="_editorFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
     <property name="attributeName" value="fileOrURL"/>
   </property>
   <property name="_iconDescription" 
