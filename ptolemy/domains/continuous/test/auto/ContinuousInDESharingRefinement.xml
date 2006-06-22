@@ -5,10 +5,12 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 70}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 30, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -142,7 +144,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 45}">
                 </property>
             </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+            <property name="period" class="ptolemy.data.expr.Parameter" value="3.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -161,7 +163,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{260, 55}">
                 </property>
             </property>
-            <property name="output" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="output" class="ptolemy.data.expr.Parameter" value="2.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -223,7 +225,7 @@
         <link port="state.out" relation="outRelation"/>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 210, 508, 348}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 376, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -236,8 +238,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="3.0"/>
-<yRange min="2.0" max="2.0"/>
+<xRange min="0.0" max="50.0"/>
+<yRange min="1.0" max="2.0"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
