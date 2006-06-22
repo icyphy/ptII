@@ -354,29 +354,43 @@ public class ContinuousDirector extends FixedPointDirector implements
         ContinuousDirector enclosingContinuousDirector = 
             _enclosingContinuousDirector();
         if (enclosingContinuousDirector != null) {
+            // The local model time is not synchronized here because
+            // the prefire method is responsible for it.
             _currentStepSize = enclosingContinuousDirector._currentStepSize;
-            _ODESolver._setRound(
-                    enclosingContinuousDirector._ODESolver._getRound());
+            int round = enclosingContinuousDirector._ODESolver._getRound();
+            _ODESolver._setRound(round);
+            if (_debugging) {
+                _debug(getName() 
+                        + " as a inside Continuous director" 
+                        + " executes the system from iteration begin time "
+                        + _iterationBeginTime
+                        + " with step size "
+                        + _currentStepSize
+                        + " at round "
+                        + round
+                        + ".");
+            }
             super.fire();
             _transferOutputs();
             return;
         }
         
-        if (_debugging) {
-            _debug("Execute the system from iteration begin time "
-                    + _iterationBeginTime
-                    + " with step size "
-                    + _currentStepSize
-                    + ".");
-        }
-
-        // Iterate until we conclude that the step size is acceptable
-        // or we exceed the maximum allowable number of iterations.
+        // If there is not an enclosing director, then iterate until 
+        // the step size is acceptable or the number of iterations exceeds
+        // the maximum allowable number.
         while (!_stopRequested) {
             // Some solvers take multiple rounds to perform an integration step.
             // Tell the solver we are starting an integration step by resetting
             // the solver.
             _ODESolver._reset();
+            
+            if (_debugging) {
+                _debug("Execute the system from iteration begin time "
+                        + _iterationBeginTime
+                        + " with step size "
+                        + _currentStepSize
+                        + ".");
+            }
 
             // Iterate until the solver is done with the integration step
             // or the maximum number of iterations is reached.
@@ -420,18 +434,22 @@ public class ContinuousDirector extends FixedPointDirector implements
             // If the step size is accurate and we did not reach the
             // maximum number of iterations then we are done.
             // Otherwise, we have to try again with a smaller step size.
-            // FIXME: handling _maxIterations here isn't right.
-            // The step size won't change if we hit maxIterations,
-            // but the integration will be redone anyway.
-            if (isStepSizeAccurate() && iterations < _maxIterations) {
+            if (isStepSizeAccurate() && iterations <= _maxIterations) {
                 // All actors agree with the current step size,
                 // or we have reached the maximum allowed number of iterations.
                 // The integration step is finished.
                 break;
             } else {
-                // If any step size control actor is unsatisfied with the 
-                // current step size, refine the step size to a smaller one.
-                _setCurrentStepSize(refinedStepSize());
+                if (iterations > _maxIterations) {
+                    // If any step size control actor is unsatisfied with the 
+                    // current step size, refine the step size to a smaller one.
+                    _setCurrentStepSize(_currentStepSize/2);
+                } else {
+                    // There is some step size control actor that is 
+                    // unsatisfied with the current step size, refine the 
+                    // step size to a smaller one.
+                    _setCurrentStepSize(refinedStepSize());
+                }
 
                 if (_debugging) {
                     _debug("Step was not accurate. Refine the step size to: " 
@@ -459,6 +477,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
         // Check if the request time is earlier than the current time.
         Time currentTime = getModelTime();
+        // Breakpoints always have an index larger than 1 except the 
+        // stop time breakpoint.
         int index = 1;
 
         int comparisonResult = time.compareTo(currentTime); 
@@ -473,7 +493,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         // breakpoint table.
         _breakpoints.insert(new SuperdenseTime(time, index));
         if (_debugging){
-            _debug("Inserted breakpoint with time = " + time + ", and index = " + index);
+            _debug("Inserted breakpoint with time = " + time 
+                    + ", and index = " + index);
         }
     }
 
@@ -572,6 +593,8 @@ public class ContinuousDirector extends FixedPointDirector implements
             director.fireAt(container, getModelStartTime());
         }
         // Set a breakpoint with index 0 for the stop time.
+        // Note that do not use fireAt because that will set index to 1, 
+        // which may produce more than one outputs at the stop time.
         _breakpoints.insert(new SuperdenseTime(getModelStopTime(), 0));
 
         // Record starting point of the real time (the computer system time)
@@ -1598,11 +1621,12 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
     }
     
-    /** Transfer outputs to the environment.
+    /** Transfer outputs to the environment. 
      *  @throws IllegalActionException If the transferOutputs(Port)
      *   method throws it.
      */
     private void _transferOutputs() throws IllegalActionException {
+        // If there are no output ports, this method does nothing.
         CompositeActor container = (CompositeActor) getContainer();
         Iterator outports = container.outputPortList().iterator();
         while (outports.hasNext() && !_stopRequested) {
