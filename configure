@@ -2097,6 +2097,8 @@ echo "$as_me:$LINENO: checking the JDK version" >&5
 echo $ECHO_N "checking the JDK version... $ECHO_C" >&6
 JDOCSIZE=
 UPGRADE_JVM=no
+# Ptalon uses generics, which are present only in Java 1.5 and later
+HAS_GENERICS=no
 case "$JVERSION" in
 	1.1.*) UPGRADE_JVM=yes;;
 	1.2.*) UPGRADE_JVM=yes;;
@@ -2108,6 +2110,9 @@ case "$JVERSION" in
 		echo "$as_me:$LINENO: result: ok, you are running 1.4 or later" >&5
 echo "${ECHO_T}ok, you are running 1.4 or later" >&6
         ;;
+	1.5.*)
+                # Ptalon uses generics
+                HAS_GENERICS=yes
 	*) echo "$as_me:$LINENO: result: ok, you are running $JVERSION" >&5
 echo "${ECHO_T}ok, you are running $JVERSION" >&6
 	;;
@@ -7426,6 +7431,14 @@ echo "$as_me: WARNING: Failed to find PTII/ptolemy/actor/ptalon/antlr/antlr.jar
     Ptalon." >&2;}
 	# Note that we don't substitute in the ${PTII} here
 	PTPTALON_DIR='${PTII}/ptolemy/actor/ptalon/antlr'
+    fi
+
+    if test $HAS_GENERICS != "yes"; then
+        { echo "$as_me:$LINENO: WARNING: You are running Java $JVERSION, which does not
+    support generics.  Thus, ptolemy/actor/ptalon will not compile." >&5
+echo "$as_me: WARNING: You are running Java $JVERSION, which does not
+    support generics.  Thus, ptolemy/actor/ptalon will not compile." >&2;}
+        PTPTALON_DIR=
     fi
 fi
 
