@@ -759,6 +759,12 @@ public class DEDirector extends Director implements TimedDirector {
 
         super.initialize();
 
+        // Register the stop time as an event such that the model is 
+        // guaranteed to stop at that time. This event also serves as
+        // a guideline for an embedded Continuous model to know how much
+        // further to integrate into future.
+        fireAt((Actor)getContainer(), _stopTime);
+        
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
             // If the event queue is not empty and the container is not at
             // the top level, ask the upper level director in the
@@ -1241,6 +1247,8 @@ public class DEDirector extends Director implements TimedDirector {
     private void _computeActorDepth() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
         LinkedList actors = (LinkedList) container.deepEntityList();
+        // Add container. 
+        actors.add(container);
         int numberOfActors = actors.size();
         _actorToDepth = new Hashtable(numberOfActors);
 
