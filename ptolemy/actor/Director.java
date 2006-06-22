@@ -371,6 +371,15 @@ public class Director extends Attribute implements Executable {
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
     }
+    
+    /** Return the error tolerance, if any, of this director.
+     *  By default, a director has no error tolerance, so this method
+     *  returns 0.0. Some directors override this to allow computed
+     *  values to be approximate with a specified precision.
+     */
+    public double getErrorTolerance() {
+        return 0.0;
+    }
 
     /** Return the next time of interest in the model being executed by
      *  this director or the director of any enclosing model up the
