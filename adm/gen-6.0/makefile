@@ -398,7 +398,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/x10/X10Interface.class \
 		ptolemy/actor/lib/x10/demo/MotionDrivenDemos/shutdown.bat \
 		ptolemy/backtrack \
-		ptolemy/codegen \
 		ptolemy/component \
 		ptolemy/domains/giotto/cgc \
 		ptolemy/domains/gr/demo/Demo1 \
@@ -498,7 +497,7 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/ptinyDomains.xml \
 		ptolemy/domains/ptinyos \
 		ptolemy/domains/wireless \
-		ptolemy/configs/visualsense \
+		ptolemy/configs/visualsense
 
 # Files to be removed from Viptos source distributions
 VIPTOS_SRC_TO_BE_REMOVED = \
