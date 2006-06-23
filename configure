@@ -7923,8 +7923,25 @@ echo "$as_me: WARNING: \$PTINYOS_MOMLROOT is set to '$PTINYOS_MOMLROOT',
             else
 	        PTINYOS_MOMLROOT_NO_CYGDRIVE=`echo "$PTINYOS_MOMLROOT" | sed 's@^/cygdrive/\(a-zA-Z\)/@\1:/@'`
 		if test -d "$PTINYOS_MOMLROOT_NO_CYGDRIVE"; then
-		    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-                        <classpathentry kind=\"lib\" path=\"$PTINYOS_MOMLROOT_NO_CYGDRIVE\"/>"
+
+		    # If MOMLROOT is under $PTII, then add it to the classpat
+		    echo "$PTINYOS_MOMLROOT_NO_CYGDRIVE" | grep "$PTII" > /dev/null
+		    retval=$?
+		    if test "$retval" = "0"; then
+		        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+                            <classpathentry kind=\"lib\" path=\"$PTINYOS_MOMLROOT_NO_CYGDRIVE\"/>"
+	            else
+		        { echo "$as_me:$LINENO: WARNING: \$PTINYOS_MOMLROOT ($PTINYOS_MOMLROOT)
+    is not under \$PTII ($PTII) so we are not
+    appending \$PTINYOS_MOMLROOT to the Eclipse classpath.
+    This is only a problem for Viptos users, who will not be able
+    to view .nc files when running under Eclipse." >&5
+echo "$as_me: WARNING: \$PTINYOS_MOMLROOT ($PTINYOS_MOMLROOT)
+    is not under \$PTII ($PTII) so we are not
+    appending \$PTINYOS_MOMLROOT to the Eclipse classpath.
+    This is only a problem for Viptos users, who will not be able
+    to view .nc files when running under Eclipse." >&2;}
+	            fi
                 else
 	            { echo "$as_me:$LINENO: WARNING: \$PTINYOS_MOMLROOT_NO_CYGDRIVE does not exist" >&5
 echo "$as_me: WARNING: \$PTINYOS_MOMLROOT_NO_CYGDRIVE does not exist" >&2;}
@@ -7933,11 +7950,29 @@ echo "$as_me: WARNING: \$PTINYOS_MOMLROOT_NO_CYGDRIVE does not exist" >&2;}
 echo "${ECHO_T}$PTINYOS_MOMLROOT" >&6
             fi
         fi
-        # Add TOSROOT and jars to the classpath
+        # The jars to the classpath
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
         <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/nesc.jar\"/> \
         <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/jdom.jar\"/>"
-#        <classpathentry kind=\"lib\" path=\"$TOSROOT_NO_CYGDRIVE\"/>"
+
+	# If TOSROOT is under $PTII, then add it to the classpat
+	echo "$TOSROOT_NO_CYGDRIVE" | grep "$PTII" > /dev/null
+	retval=$?
+	if test "$retval" = "0"; then
+	    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	        <classpathentry kind=\"lib\" path=\"$TOSROOT_NO_CYGDRIVE\"/>"
+        else
+	    { echo "$as_me:$LINENO: WARNING: \$TOSROOT ($TOSROOT)is not
+    under \$PTII ($PTII) so we are not
+    appending \$TOSROOT to the Eclipse classpath.
+    This is only a problem for Viptos users, who will not be able
+    to view .nc files when running under Eclipse." >&5
+echo "$as_me: WARNING: \$TOSROOT ($TOSROOT)is not
+    under \$PTII ($PTII) so we are not
+    appending \$TOSROOT to the Eclipse classpath.
+    This is only a problem for Viptos users, who will not be able
+    to view .nc files when running under Eclipse." >&2;}
+        fi
     fi
 fi
 
