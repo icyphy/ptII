@@ -100,6 +100,9 @@ jclass: launcher
 include $(ROOT)/mk/ptcommon.mk
 
 #--- Specialized part of the makefile: ---
+# make fast runs "make $(PTLIB)
+PTLIB = 	launcher
+
 demo: launcher jclass
 	LD_LIBRARY_PATH=$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE):$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/client \
 		./launcher -Djava.class.path=$(ROOT) jni/launcher/Hello
