@@ -31,17 +31,33 @@ package ptolemy.domains.fsm.kernel;
 ////RelationType
 
 /**
- A static class contains a list of types for relation node. The list contains
- the following types:
+ A static class contains a list of types for relation node. There are six
+ different types:
  <pre>
- NOT_A_TYPE
+ INVALID
  TRUE
  FALSE
  EQUAL_INEQUAL
  LESS_THAN
  GREATER_THAN
  </pre>
- 
+ <p>
+ For a leaf node evaluated as a boolean token, its relationType is
+ decided by the boolean value of the result boolean token: TRUE for
+ true and FALSE for false. 
+ <p>
+ For a relation node, (scalarLeft
+ relationOperator scalarRight), the relationType depends on the
+ relationOperator. If the relationOperator is '==' or '!=', the
+ relationType can be EQUAL_INEQUAL indicating the two scalars equal or 
+ not equal. The relation type is LESS_THAN to indicate that the left scalar 
+ is less than the right one, and GREATER_THAN to
+ indicate left scalar is bigger than the right one. For the other kinds of
+ relation operators, the relationType is decided by the boolean value of 
+ the evaluation result, i.e., TRUE for true and FALSE for false. 
+ <p>
+ The INVALID type is for a relation not evaluated yet.
+
  @author  Haiyang Zheng
  @version $Id$
  @since Ptolemy II 6.0
@@ -55,7 +71,7 @@ public final class RelationType {
 
     /** Index for actors in the continuous part of the system, not sorted.
      */
-    public final static int NOT_A_TYPE = 0;
+    public final static int INVALID = 0;
 
     /** Index for actors in the continuous part of the system, not sorted.
      */

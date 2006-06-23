@@ -59,7 +59,7 @@ public final class RelationNode {
      *  information to RelationType.NOT_A_TYPE and 0.0 respectively. 
      */
     public void reset() {
-        _previousType = RelationType.NOT_A_TYPE;
+        _previousType = RelationType.INVALID;
         _previousDifference = 0.0;
     }
 
@@ -108,7 +108,7 @@ public final class RelationNode {
      *  information is valid.
      */
     public boolean typeChanged() {
-        return (_previousType != RelationType.NOT_A_TYPE) 
+        return (_previousType != RelationType.INVALID) 
             && (_previousType != _currentType);
     }
 
