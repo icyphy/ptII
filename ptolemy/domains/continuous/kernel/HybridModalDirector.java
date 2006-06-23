@@ -323,12 +323,11 @@ public class HybridModalDirector extends ModalDirector
      *  or there is no controller.
      */
     public boolean postfire() throws IllegalActionException {
+        State currentState = getController().currentState();
         if (_enabledTransition == null) {
-            State currentState = getController().currentState();
             // Only commit the current states of the relationlists
             // of all the transitions during these execution phases.
             Iterator iterator = currentState.nonpreemptiveTransitionList().listIterator();
-            
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
                 ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
@@ -338,13 +337,33 @@ public class HybridModalDirector extends ModalDirector
             }
             
             iterator = currentState.preemptiveTransitionList().listIterator();
-            
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
                 ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
                     (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
                 RelationList relationList = parseTreeEvaluator.getRelationList();
                 relationList.commitRelationValues();
+            }
+        } else {
+            // It is important to clear the history information of the
+            // relation list since after this breakpoint, no history
+            // information is valid.
+            Iterator iterator = currentState.nonpreemptiveTransitionList().listIterator();
+            while (iterator.hasNext()) {
+                Transition transition = (Transition) iterator.next();
+                ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                    (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+                RelationList relationList = parseTreeEvaluator.getRelationList();
+                relationList.resetRelationList();
+            }
+
+            iterator = currentState.preemptiveTransitionList().listIterator();
+            while (iterator.hasNext()) {
+                Transition transition = (Transition) iterator.next();
+                ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                    (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+                RelationList relationList = parseTreeEvaluator.getRelationList();
+                relationList.resetRelationList();
             }
         }
         return super.postfire();
