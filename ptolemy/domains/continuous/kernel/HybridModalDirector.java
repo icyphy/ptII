@@ -91,14 +91,30 @@ public class HybridModalDirector extends ModalDirector
     /** Return the parse tree evaluator used to evaluate guard expressions 
      *  associated with the given transition. In this class, an instance 
      *  of {@link ParseTreeEvaluatorForGuardExpression} is returned. 
+     *  The parse tree evaluator is set to construction mode. 
      *  @param transition Transition whose guard expression is to be evaluated.
      *  @return ParseTreeEvaluator used to evaluate guard expressions.
      */
     public ParseTreeEvaluator getParseTreeEvaluator(Transition transition) {
-        // FIXME: each time returning a new ParseTreeEvaluator is unncessary.
-        // If the director for modal model is not chnaged, the 
-        // ParseTreeEvaluator does not have to be changed.
-        return new ParseTreeEvaluatorForGuardExpression(this, transition);
+        try {
+            RelationList relationList = new RelationList(transition, "RelationList");
+            // FIXME: creating a new ParseTreeEvaluator may be unncessary.
+            // If the director for modal model is not chnaged, the 
+            // ParseTreeEvaluator does not have to be changed. We only need
+            // to set the construction mode and clear the relation list.
+            ParseTreeEvaluatorForGuardExpression evaluator =
+                new ParseTreeEvaluatorForGuardExpression(relationList, getErrorTolerance());
+            evaluator.setConstructionMode();
+            return evaluator;
+        } catch (NameDuplicationException e) {
+            // This should not happen.
+            throw new InternalErrorException("Failed to construct a "
+                    + "RelationList object for " + transition.getGuardExpression());
+        } catch (IllegalActionException e) {
+            // This should not happen.
+            throw new InternalErrorException("Failed to construct a "
+                    + "RelationList object for " + transition.getGuardExpression());
+        }
     }
     
     /** Return true if all actors that were fired in the current iteration
