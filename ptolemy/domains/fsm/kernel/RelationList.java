@@ -112,13 +112,13 @@ public class RelationList extends SingletonAttribute {
         _relationList.add(new RelationNode(type, difference));
     }
 
-    /** Clear the relation list by resetting each relation node.
+    /** Reset the relation list by resetting each relation node.
      */
-    public void clearRelationList() {
+    public void resetRelationList() {
         ListIterator relations = _relationList.listIterator();
 
         while (relations.hasNext()) {
-            ((RelationNode) relations.next()).clear();
+            ((RelationNode) relations.next()).reset();
         }
     }
 
@@ -234,94 +234,4 @@ public class RelationList extends SingletonAttribute {
 
     // The relation list.
     private LinkedList _relationList;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** An inner class relation node stores the type and difference information
-     *  of a relation. It not only stores the current information but
-     *  also the previous one.
-     */
-    private class RelationNode {
-        /** Constructor to construct a relation node with given type and
-         *  difference information.
-         */
-        public RelationNode(int type, double difference) {
-            _currentType = type;
-            _previousType = type;
-            _difference = difference;
-            _previousDifference = difference;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       public inner methods            ////
-
-        /** Reset the relation node by setting the former type and difference
-         *  information to 0 and 0.0 respectively. Note that having the type
-         *  value as 0 indicating the former information is invalid.
-         */
-        public void clear() {
-            _previousType = 0;
-            _previousDifference = 0.0;
-        }
-
-        /** Update the relation node previous type and difference information
-         *  with the current information.
-         */
-        public void commit() {
-            _previousType = _currentType;
-            _previousDifference = _difference;
-        }
-
-        public double getDifference() {
-            return _difference;
-        }
-
-        public double gePreviousDifference() {
-            return Math.abs(_previousDifference);
-        }
-
-        /** Return true if the relation node has its type changed, and if the
-         *  current type is equal/inequal or the current type changes from
-         *  less_than to bigger_than or bigger_than to less_than. This is used
-         *  to detect whether a continuous variable crosses a level.
-         *  @return True If event has been detected.
-         */
-        public boolean hasEvent() {
-            if (typeChanged()) {
-                return ((_previousType * _currentType) == 20);
-            }
-
-            return false;
-        }
-
-        public void setType(int type) {
-            _currentType = type;
-        }
-
-        public void setDifference(double difference) {
-            _difference = difference;
-        }
-
-        /** Return true if the type changed and the previous type
-         *  information is valid.
-         *  @return True If the type changed and the previous type
-         *  information is valid.
-         */
-        public boolean typeChanged() {
-            return (_previousType != 0) && (_previousType != _currentType);
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       private inner fields            ////
-        private int _currentType;
-
-        private double _difference;
-
-        private double _previousDifference;
-
-        // a relation has 5 possible types represented with 5 integer values:
-        // 1: true; 2: false; 3: equal/inequal; 4: less_than: 5: bigger_than.
-        private int _previousType;
-    }
 }
