@@ -45,6 +45,7 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -445,6 +446,17 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         return list;
     }
 
+    /** Return the parse tree evaluator used to evaluate guard expressions 
+     *  associated with the given transition. In this base class, an instance 
+     *  of {@link ParseTreeEvaluator} is returned. The derived classes may need
+     *  to override this method to return different parse tree evaluators.
+     *  @param transition Transition whose guard expression is to be evaluated.
+     *  @return ParseTreeEvaluator used to evaluate guard expressions.
+     */
+    public ParseTreeEvaluator getParseTreeEvaluator(Transition transition) {
+        return new ParseTreeEvaluator();
+    }
+    
     /** Return true if the model errors are handled. Otherwise, return false
      *  and the model errors are passed to the higher level in hierarchy.
      *  <p>

@@ -37,6 +37,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.util.Time;
+import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTEmbeddedDirector;
@@ -428,6 +429,16 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
         }
     }
 
+    /** Return the parse tree evaluator used to evaluate guard expressions 
+     *  associated with the given transition. In this class, an instance 
+     *  of {@link ParseTreeEvaluatorForGuardExpression} is returned. 
+     *  @param transition Transition whose guard expression is to be evaluated.
+     *  @return ParseTreeEvaluator used to evaluate guard expressions.
+     */
+    public ParseTreeEvaluator getParseTreeEvaluator(Transition transition) {
+        return new ParseTreeEvaluatorForGuardExpression(this, transition);
+    }
+    
     /** Restore the states of all the enabled refinements to the
      *  previously marked states.
      */
@@ -619,7 +630,9 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
 
                 while (iterator.hasNext()) {
                     Transition transition = (Transition) iterator.next();
-                    RelationList relationList = transition.getRelationList();
+                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                        (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+                    RelationList relationList = parseTreeEvaluator.getRelationList();
 
                     double distanceToBoundary = relationList
                             .maximumDifference();
@@ -636,7 +649,9 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
 
                 while (iterator.hasNext()) {
                     Transition transition = (Transition) iterator.next();
-                    RelationList relationList = transition.getRelationList();
+                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                        (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+                    RelationList relationList = parseTreeEvaluator.getRelationList();
 
                     double distanceToBoundary = relationList
                             .maximumDifference();
@@ -650,11 +665,12 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
                 }
 
                 if (preemptiveTrWithEvent != null) {
-                    RelationList relationList = preemptiveTrWithEvent
-                            .getRelationList();
+                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                        (ParseTreeEvaluatorForGuardExpression)preemptiveTrWithEvent.getParseTreeEvaluator();
+                    RelationList relationList = parseTreeEvaluator.getRelationList();
+
                     double distanceToBoundary = relationList
                             .maximumDifference();
-
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
                         _lastDistanceToBoundary = relationList
@@ -664,11 +680,11 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
                 }
 
                 if (nonPreemptiveTrWithEvent != null) {
-                    RelationList relationList = nonPreemptiveTrWithEvent
-                            .getRelationList();
-                    double distanceToBoundary = relationList
-                            .maximumDifference();
+                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                        (ParseTreeEvaluatorForGuardExpression)nonPreemptiveTrWithEvent.getParseTreeEvaluator();
+                    RelationList relationList = parseTreeEvaluator.getRelationList();
 
+                    double distanceToBoundary = relationList.maximumDifference();
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
                         _lastDistanceToBoundary = relationList
@@ -810,14 +826,20 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
 
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
-                transition.getRelationList().clearRelationList();
+                ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                    (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+                RelationList relationList = parseTreeEvaluator.getRelationList();
+                relationList.clearRelationList();
             }
 
             iterator = _currentState.preemptiveTransitionList().listIterator();
 
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
-                transition.getRelationList().clearRelationList();
+                ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                    (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+                RelationList relationList = parseTreeEvaluator.getRelationList();
+                relationList.clearRelationList();
             }
 
             // If the top level of the model is modal model, the director
@@ -868,7 +890,10 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
 
                 while (iterator.hasNext()) {
                     Transition transition = (Transition) iterator.next();
-                    transition.getRelationList().commitRelationValues();
+                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                        (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+                    RelationList relationList = parseTreeEvaluator.getRelationList();
+                    relationList.commitRelationValues();
                 }
 
                 iterator = _currentState.preemptiveTransitionList()
@@ -876,7 +901,10 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
 
                 while (iterator.hasNext()) {
                     Transition transition = (Transition) iterator.next();
-                    transition.getRelationList().commitRelationValues();
+                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                        (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+                    RelationList relationList = parseTreeEvaluator.getRelationList();
+                    relationList.commitRelationValues();
                 }
             }
         }
@@ -1031,8 +1059,11 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
         while (transitionRelations.hasNext() && !_stopRequested
                 && (result == null)) {
             Transition transition = (Transition) transitionRelations.next();
+            ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+            RelationList relationList = parseTreeEvaluator.getRelationList();
 
-            if (transition.getRelationList().hasEvent()) {
+            if (relationList.hasEvent()) {
                 result = transition;
             }
         }

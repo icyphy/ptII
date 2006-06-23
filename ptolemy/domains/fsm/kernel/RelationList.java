@@ -30,9 +30,9 @@ package ptolemy.domains.fsm.kernel;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.SingletonAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// RelationList
@@ -75,7 +75,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class RelationList extends Attribute {
+public class RelationList extends SingletonAttribute {
     /** Construct a relation list with the given name contained by
      *  the specified transition. The transition argument must not be
      *  null, or a NullPointerException will be thrown. This action

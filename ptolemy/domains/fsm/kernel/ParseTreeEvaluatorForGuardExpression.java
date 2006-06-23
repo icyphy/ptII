@@ -33,6 +33,7 @@ import java.util.Set;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtLogicalNode;
 import ptolemy.data.expr.ASTPtRelationalNode;
@@ -42,6 +43,8 @@ import ptolemy.data.expr.ParseTreeFreeVariableCollector;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParserConstants;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeEvaluatorForGuardExpression
@@ -109,21 +112,34 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ptolemy.data.expr.ParseTreeEvaluator
  */
 public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
-    /** Construct a parse tree evaluator for a guard expression with the
-     *  given relation list of that guard expression and an error tolerance.
+    /** Construct a parse tree evaluator for a guard expression of the
+     *  given transition and the director controls the transition.
      *  The relation stores the information of the relation. After the parse
      *  tree evaluator is created, it is always in construction mode.
-     *  @param relationList The relation list.
+     *  @param transition The relation list.
      *  @param errorTolerance The errorTolerance.
      */
-    public ParseTreeEvaluatorForGuardExpression(RelationList relationList,
-            double errorTolerance) {
+    public ParseTreeEvaluatorForGuardExpression(FSMDirector fsmDirector, 
+            Transition transition) {
         _constructingRelationList = true;
-        _relationList = relationList;
+        _director = fsmDirector;
+        _relationListVersion = -1;
         _relationIndex = 0;
+        _transition = transition;
         _absentDiscreteVariables = new LinkedList();
-        _errorTolerance = errorTolerance;
+        _errorTolerance = fsmDirector.getErrorTolerance();
         _variableCollector = new ParseTreeFreeVariableCollector();
+        try {
+            _relationList = new RelationList(_transition, "RelationList");
+        } catch (NameDuplicationException e) {
+            // This should not happen.
+            throw new InternalErrorException("Failed to construct a "
+                    + "RelationList object for " + _transition.getGuardExpression());
+        } catch (IllegalActionException e) {
+            // This should not happen.
+            throw new InternalErrorException("Failed to construct a "
+                    + "RelationList object for " + _transition.getGuardExpression());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -137,10 +153,23 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
+    public Token evaluateParseTree(ASTPtRootNode node,
             ParserScope scope) throws IllegalActionException {
         _relationIndex = 0;
-        return super.evaluateParseTree(node, scope);
+        Token result = super.evaluateParseTree(node, scope);
+        if (_constructingRelationList) {
+            _constructingRelationList = false;
+        }
+        return result; 
+    }
+
+    /** Return the list of relations (boolean-valued expressions that do not
+     *  contain a logical operator, such as comparison expressions) in the
+     *  guard expression of this transition.
+     *  @return The list of relations.
+     */
+    public RelationList getRelationList() {
+        return _relationList;
     }
 
     /** Set the mode of parse tree evaluator.  If the given flag is
@@ -163,6 +192,9 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  visitLeafNode throws the IllegalActionException.
      */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+        
+        RelationList relationList = getRelationList();
+        
         // NOTE: based on the *_isPresent variable, we figure out
         // the discrete variables and do not evaluate it when it is
         // not present.
@@ -195,7 +227,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             // If the current mode of the evaluator is the construction mode,
             // add a relation node into the relation list.
             if (_constructingRelationList) {
-                _relationList.addRelation(0, 0.0);
+                relationList.addRelation(0, 0.0);
             }
 
             // Only increment the relation index but do not update
@@ -203,8 +235,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             _relationIndex++;
 
             // Round the _relationIndex.
-            if (_relationIndex >= _relationList.length()) {
-                _relationIndex -= _relationList.length();
+            if (_relationIndex >= relationList.length()) {
+                _relationIndex -= relationList.length();
             }
 
             return;
@@ -244,17 +276,17 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         _difference = 0.0;
 
         if (_constructingRelationList) {
-            _relationList.addRelation(_relationType, _difference);
+            relationList.addRelation(_relationType, _difference);
         } else {
-            _relationList.setRelation(_relationIndex, _relationType,
+            relationList.setRelation(_relationIndex, _relationType,
                     _difference);
         }
 
         _relationIndex++;
 
         // Round the _relationIndex.
-        if (_relationIndex >= _relationList.length()) {
-            _relationIndex -= _relationList.length();
+        if (_relationIndex >= relationList.length()) {
+            _relationIndex -= relationList.length();
         }
     }
 
@@ -328,6 +360,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             return;
         }
 
+        RelationList relationList = getRelationList();
+        
         // Check whether the relation node has some absent discrete variables.
         // If yes, skip the node, otherwise, evaluate (visit) the node.
         // For example, if we have "x_isPresent && x < 10.0", in the
@@ -347,13 +381,13 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                 _evaluatedChildToken = new BooleanToken(false);
 
                 if (_constructingRelationList) {
-                    _relationList.addRelation(0, 0.0);
+                    relationList.addRelation(0, 0.0);
                 }
 
                 _relationIndex++;
 
-                if (_relationIndex >= _relationList.length()) {
-                    _relationIndex -= _relationList.length();
+                if (_relationIndex >= relationList.length()) {
+                    _relationIndex -= relationList.length();
                 }
 
                 return;
@@ -454,16 +488,16 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         _evaluatedChildToken = result;
 
         if (_constructingRelationList) {
-            _relationList.addRelation(_relationType, _difference);
+            relationList.addRelation(_relationType, _difference);
         } else {
-            _relationList.setRelation(_relationIndex, _relationType,
+            relationList.setRelation(_relationIndex, _relationType,
                     _difference);
         }
 
         _relationIndex++;
 
-        if (_relationIndex >= _relationList.length()) {
-            _relationIndex -= _relationList.length();
+        if (_relationIndex >= relationList.length()) {
+            _relationIndex -= relationList.length();
         }
 
         return;
@@ -471,6 +505,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
     // The list of discrete variables without values.
     private LinkedList _absentDiscreteVariables;
 
@@ -481,12 +516,21 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     // The metric for relations.
     private double _difference;
 
+    // The FSM director that creates this ParseTreeEvaluator.
+    private FSMDirector _director;
+
     // The error tolerance.
     private double _errorTolerance;
+
+    // private relation node index
+    private int _relationIndex;
 
     // The list to store the relation nodes and leaf nodes with
     // boolean tokens inside a guard expression.
     private RelationList _relationList;
+
+    // Version of the cached list of relations of a guard expression
+    private long _relationListVersion = -1;
 
     // the relation types have 5 integer values with meaning:
     // 1: true; 2: false; 3: equal/inequal; 4: less_than: 5: bigger_than.
@@ -494,7 +538,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
     // variable collector
     private ParseTreeFreeVariableCollector _variableCollector;
-
-    // private relation node index
-    private int _relationIndex;
+    
+    // transition whose guard expression is evaluated by this evaluator
+    private Transition _transition;
 }

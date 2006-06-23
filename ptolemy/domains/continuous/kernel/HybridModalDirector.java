@@ -34,8 +34,10 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.util.Time;
+import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.ModalDirector;
+import ptolemy.domains.fsm.kernel.ParseTreeEvaluatorForGuardExpression;
 import ptolemy.domains.fsm.kernel.RelationList;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
@@ -86,6 +88,19 @@ public class HybridModalDirector extends ModalDirector
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the parse tree evaluator used to evaluate guard expressions 
+     *  associated with the given transition. In this class, an instance 
+     *  of {@link ParseTreeEvaluatorForGuardExpression} is returned. 
+     *  @param transition Transition whose guard expression is to be evaluated.
+     *  @return ParseTreeEvaluator used to evaluate guard expressions.
+     */
+    public ParseTreeEvaluator getParseTreeEvaluator(Transition transition) {
+        // FIXME: each time returning a new ParseTreeEvaluator is unncessary.
+        // If the director for modal model is not chnaged, the 
+        // ParseTreeEvaluator does not have to be changed.
+        return new ParseTreeEvaluatorForGuardExpression(this, transition);
+    }
+    
     /** Return true if all actors that were fired in the current iteration
      *  report that the step size is accurate.
      *  @return True if the current step is accurate.
@@ -194,10 +209,11 @@ public class HybridModalDirector extends ModalDirector
 
                 while (iterator.hasNext()) {
                     Transition transition = (Transition) iterator.next();
-                    RelationList relationList = transition.getRelationList();
-
+                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                        (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+                    RelationList relationList = parseTreeEvaluator.getRelationList();
+                    
                     double distanceToBoundary = relationList.maximumDifference();
-
                     // The distance to boundary is the difference between
                     // the value of a variable in a relation (comparison
                     // operation) and the threshold value against which it
@@ -215,7 +231,9 @@ public class HybridModalDirector extends ModalDirector
 
                 while (iterator.hasNext()) {
                     Transition transition = (Transition) iterator.next();
-                    RelationList relationList = transition.getRelationList();
+                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                        (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+                    RelationList relationList = parseTreeEvaluator.getRelationList();
 
                     double distanceToBoundary = relationList
                             .maximumDifference();
@@ -229,8 +247,9 @@ public class HybridModalDirector extends ModalDirector
                 }
 
                 if (preemptiveTrWithEvent != null) {
-                    RelationList relationList = preemptiveTrWithEvent
-                            .getRelationList();
+                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                        (ParseTreeEvaluatorForGuardExpression)preemptiveTrWithEvent.getParseTreeEvaluator();
+                    RelationList relationList = parseTreeEvaluator.getRelationList();
                     double distanceToBoundary = relationList
                             .maximumDifference();
 
@@ -243,8 +262,9 @@ public class HybridModalDirector extends ModalDirector
                 }
 
                 if (nonPreemptiveTrWithEvent != null) {
-                    RelationList relationList = nonPreemptiveTrWithEvent
-                            .getRelationList();
+                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                        (ParseTreeEvaluatorForGuardExpression)nonPreemptiveTrWithEvent.getParseTreeEvaluator();
+                    RelationList relationList = parseTreeEvaluator.getRelationList();
                     double distanceToBoundary = relationList
                             .maximumDifference();
 
@@ -291,20 +311,24 @@ public class HybridModalDirector extends ModalDirector
             State currentState = getController().currentState();
             // Only commit the current states of the relationlists
             // of all the transitions during these execution phases.
-            Iterator iterator = currentState.nonpreemptiveTransitionList()
-            .listIterator();
+            Iterator iterator = currentState.nonpreemptiveTransitionList().listIterator();
             
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
-                transition.getRelationList().commitRelationValues();
+                ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                    (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+                RelationList relationList = parseTreeEvaluator.getRelationList();
+                relationList.commitRelationValues();
             }
             
-            iterator = currentState.preemptiveTransitionList()
-            .listIterator();
+            iterator = currentState.preemptiveTransitionList().listIterator();
             
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
-                transition.getRelationList().commitRelationValues();
+                ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                    (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+                RelationList relationList = parseTreeEvaluator.getRelationList();
+                relationList.commitRelationValues();
             }
         }
         return super.postfire();
@@ -488,8 +512,10 @@ public class HybridModalDirector extends ModalDirector
 
         while (transitionRelations.hasNext() && !_stopRequested) {
             Transition transition = (Transition) transitionRelations.next();
-
-            if (transition.getRelationList().hasEvent()) {
+            ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
+                (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+            RelationList relationList = parseTreeEvaluator.getRelationList();
+            if (relationList.hasEvent()) {
                 return transition;
             }
         }

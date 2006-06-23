@@ -41,9 +41,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
-import ptolemy.data.expr.UnknownResultException;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -287,13 +285,12 @@ public class Transition extends ComponentRelation {
             _nondeterministic = ((BooleanToken) nondeterministic.getToken())
                     .booleanValue();
         } else if (attribute == guardExpression) {
-            // The guard and trigger expressions can only be evaluated at run
-            // time, because the input variables they can reference are created
-            // at run time. guardExpression and triggerExpression are string
-            // attributes used to convey expressions without being evaluated.
-            // _guard and _trigger are the variables that do the evaluation.
+            // The guard expression can only be evaluated at run
+            // time, because the input variables it can reference are created
+            // at run time. The guardExpression is a string
+            // attribute used to convey expressions without being evaluated.
+            // _guard is the variable that does the evaluation.
             _guardParseTree = null;
-            _parseTreeEvaluator = null;
         } else if (attribute == triggerExpression) {
             // The guard and trigger expressions can only be evaluated at run
             // time, because the input variables they can reference are created
@@ -350,7 +347,6 @@ public class Transition extends ComponentRelation {
         newObject._choiceActionList = new LinkedList();
         newObject._commitActionList = new LinkedList();
         newObject._stateVersion = -1;
-        newObject._relationListVersion = -1;
         return newObject;
     }
 
@@ -434,6 +430,28 @@ public class Transition extends ComponentRelation {
         }
     }
 
+    /** Return the parse tree evaluator used by this transition to evaluate
+     *  the guard expression. 
+     *  @return ParseTreeEvaluator for evaluating the guard expression.
+     */
+    public ParseTreeEvaluator getParseTreeEvaluator() {
+        if (_parseTreeEvaluatorVersion != workspace().getVersion()) {
+            // If there is no current parse tree evaluator,
+            // then create one. If this transition is under the control
+            // of an FSMDirector, then delegate creation to that director.
+            // Otherwise, create a default instance of ParseTreeEvaluator.
+            FSMDirector director = _getDirector();
+            if (director != null) {
+                _parseTreeEvaluator = director.getParseTreeEvaluator(this);
+            } else {
+                // When this transition is used inside an FSMActor.
+                _parseTreeEvaluator = new ParseTreeEvaluator();
+            }
+            _parseTreeEvaluatorVersion = workspace().getVersion();
+        }
+        return _parseTreeEvaluator;
+    }
+    
     /** Return the refinements of this transition. The names of the refinements
      *  are specified by the <i>refinementName</i> attribute. The refinements
      *  must be instances of TypedActor and have the same container as
@@ -503,18 +521,6 @@ public class Transition extends ComponentRelation {
         }
     }
 
-    /** Return the list of relations (boolean-valued expressions that do not
-     *  contain a logical operator, such as comparison expressions) in the
-     *  guard expression of this transition.
-     *  @return The list of relations.
-     */
-    public RelationList getRelationList() {
-        if (_relationListVersion != workspace().getVersion()) {
-            _updateRelationList();
-        }
-        return _relationList;
-    }
-
     /** Return the trigger expression. The trigger expression should evaluate
      *  to a boolean value.
      *  @return The trigger expression.
@@ -540,42 +546,24 @@ public class Transition extends ComponentRelation {
      *  @exception IllegalActionException If thrown when evaluating the guard.
      */
     public boolean isEnabled() throws IllegalActionException {
-        _updateParseTreeEvaluator();
-        try {
-            if (_exeDirectorIsHSFSMDirector && !_relationList.isEmpty()) {
-                ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
-                        .setConstructionMode(false);
-            }
-
-            FSMActor fsmActor = (FSMActor) getContainer();
-
-            if (_guardParseTree == null) {
-                String expr = getGuardExpression();
-
-                // Parse the guard expression.
-                PtParser parser = new PtParser();
-                _guardParseTree = parser.generateParseTree(expr);
-            }
-
-            Token token = _parseTreeEvaluator.evaluateParseTree(
-                    _guardParseTree, fsmActor.getPortScope());
-
-            if (token == null) {
-                // FIXME: when could this happen??
-                return false;
-            }
-
-            //FIXME: deal with continuous and discrete variables
-            // using signalType.
-            boolean result = ((BooleanToken) token).booleanValue();
-            return result;
-        } catch (UnknownResultException ex) {
-            return false;
-        } catch (IllegalActionException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Error evaluating guard expression: "
-                            + getGuardExpression());
+        ParseTreeEvaluator parseTreeEvaluator = getParseTreeEvaluator();
+        FSMActor fsmActor = (FSMActor) getContainer();
+        if (_guardParseTree == null) {
+            String expr = getGuardExpression();
+            // Parse the guard expression.
+            PtParser parser = new PtParser();
+            _guardParseTree = parser.generateParseTree(expr);
         }
+        Token token = parseTreeEvaluator.evaluateParseTree(
+                _guardParseTree, fsmActor.getPortScope());
+        if (token == null) {
+            // FIXME: when could this happen??
+            return false;
+        }
+        //FIXME: deal with continuous and discrete variables
+        // using signalType.
+        boolean result = ((BooleanToken) token).booleanValue();
+        return result;
     }
 
     /** Return true if this transition is nondeterministic. Return false
@@ -606,17 +594,15 @@ public class Transition extends ComponentRelation {
      *   trigger, or the trigger is true but the guard is false.
      */
     public boolean isTriggered() throws IllegalActionException {
+        ParseTreeEvaluator parseTreeEvaluator = getParseTreeEvaluator();
         FSMActor fsmActor = (FSMActor) getContainer();
-
         if (_triggerParseTree == null) {
             String expr = triggerExpression.getExpression();
-
-            // Parse the guard expression.
+            // Parse the trigger expression.
             PtParser parser = new PtParser();
             _triggerParseTree = parser.generateParseTree(expr);
         }
-
-        Token triggerToken = _parseTreeEvaluator.evaluateParseTree(
+        Token triggerToken = parseTreeEvaluator.evaluateParseTree(
                 _triggerParseTree, fsmActor.getPortScope());
         boolean triggerValue = ((BooleanToken) triggerToken).booleanValue();
 
@@ -628,7 +614,7 @@ public class Transition extends ComponentRelation {
             _guardParseTree = parser.generateParseTree(expr);
         }
 
-        Token guardToken = _parseTreeEvaluator.evaluateParseTree(
+        Token guardToken = parseTreeEvaluator.evaluateParseTree(
                 _guardParseTree, fsmActor.getPortScope());
         boolean guardValue = ((BooleanToken) guardToken).booleanValue();
 
@@ -760,6 +746,7 @@ public class Transition extends ComponentRelation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
     // Check the states connected by this transition, cache the result.
     // This method is read-synchronized on the workspace.
     private void _checkConnectedStates() {
@@ -841,14 +828,6 @@ public class Transition extends ComponentRelation {
         nondeterministic.setTypeEquals(BaseType.BOOLEAN);
         nondeterministic.setToken(BooleanToken.FALSE);
 
-        _exeDirectorIsHSFSMDirector = false;
-
-        // Create a default parse tree evaluator.
-        _parseTreeEvaluator = new ParseTreeEvaluator();
-
-        // construct a relation list for the transition;
-        _relationList = new RelationList(this, "relationList");
-
         // Add refinement name parameter
         refinementName = new StringAttribute(this, "refinementName");
     }
@@ -881,81 +860,9 @@ public class Transition extends ComponentRelation {
         }
     }
     
-    /** If there is no current parse tree evaluator,
-     *  then create one. If this transition is under the control
-     *  of an FSMDirector, then delegate creation to that director.
-     *  Otherwise, create a default instance of ParseTreeEvaluator.
-     */
-    private void _updateParseTreeEvaluator() {
-        FSMDirector director = _getDirector();
-        if (director != null) {
-            _parseTreeEvaluator = director.getParseTreeEvaluator(this);
-        } else {
-            _parseTreeEvaluator = new ParseTreeEvaluator();
-        }
-    }
-
-    /** Update the list of relations (subexpressions that possibly
-     *  have comparison operators) associated with the guard expression
-     *  of this transition. This method constructs a new relation list
-     *  for the guard expression of this transition.  It should be
-     *  invoked after the model has changed.
-     */
-    private void _updateRelationList() {
-        try {
-            workspace().getReadAccess();
-
-            NamedObj container = getContainer();
-            double errorTolerance = 1e-4;
-
-            if (container != null) {
-                CompositeActor modalModel = (CompositeActor) container.getContainer();
-
-                if (modalModel != null) {
-                    Director director = modalModel.getDirector();
-
-                    // FIXME: Ugh.  Perhaps set _relationList to null?
-                    // How to avoid dependency on ct and continuous?
-                    // Default director returns an error tolerance of 0.0.
-                    // What effect will this have?
-                    _exeDirectorIsHSFSMDirector = false;
-                    errorTolerance = director.getErrorTolerance();
-                    if (director instanceof HSFSMDirector) {
-                        _exeDirectorIsHSFSMDirector = true;
-                    } else if (director instanceof HybridModalDirector) {
-                        ContinuousDirector enclosingDirector
-                                = ((HybridModalDirector)director)._enclosingContinuousDirector();
-                        _exeDirectorIsHSFSMDirector = true;
-                    }
-                }
-            }
-
-            if (_exeDirectorIsHSFSMDirector) {
-                // associate the relation list with the
-                // ParseTreeEvaluatorForGuardExpression
-                _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(
-                        _relationList, errorTolerance);
-
-                // Invalidate the relation list for the transition by clearing it.
-                // FIXME: What about _relationListVersion?  getRelationList()?
-                // These become bogus...
-                _relationList.destroy();
-
-                // Reconstruct the relation list.
-                ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
-                        .setConstructionMode(true);
-            } else {
-                _parseTreeEvaluator = new ParseTreeEvaluator();
-            }
-
-            _relationListVersion = workspace().getVersion();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
     // Version of cached lists of actions.
     private long _actionListsVersion = -1;
 
@@ -967,9 +874,6 @@ public class Transition extends ComponentRelation {
 
     // Cached destination state of this transition.
     private State _destinationState = null;
-
-    // Flag to indicate whether the executive director is HSFSMDirector.
-    private boolean _exeDirectorIsHSFSMDirector = false;
 
     // The parse tree for the guard expression.
     private ASTPtRootNode _guardParseTree;
@@ -992,12 +896,11 @@ public class Transition extends ComponentRelation {
     // Version of the cached reference to the refinement.
     private long _refinementVersion = -1;
 
-    // List of the relation expressions of a guard expression
-    private RelationList _relationList;
-
-    // Version of the cached list of relations of a guard expression
-    private long _relationListVersion = -1;
-
     // The parse tree evaluator for the transition.
+    // Note that this variable should not be accessed directly even inside 
+    // this class. Instead, always use the getParseTreeEvaluator() method.
     private ParseTreeEvaluator _parseTreeEvaluator;
+
+    // Version of the cached parse tree evaluator
+    private long _parseTreeEvaluatorVersion = -1;
 }
