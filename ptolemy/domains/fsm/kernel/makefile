@@ -71,6 +71,8 @@ JSRCS = \
 	OutputActionsAttribute.java \
 	ParseTreeEvaluatorForGuardExpression.java \
 	RelationList.java \
+	RelationNode.java \
+	RelationType.java \
 	State.java \
 	StateEvent.java \
 	Transition.java
