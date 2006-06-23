@@ -650,7 +650,7 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
                     RelationList relationList = parseTreeEvaluator.getRelationList();
 
                     double distanceToBoundary = relationList
-                            .maximumDifference();
+                            .getMaximumDifference();
 
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
@@ -669,7 +669,7 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
                     RelationList relationList = parseTreeEvaluator.getRelationList();
 
                     double distanceToBoundary = relationList
-                            .maximumDifference();
+                            .getMaximumDifference();
 
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
@@ -685,7 +685,7 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
                     RelationList relationList = parseTreeEvaluator.getRelationList();
 
                     double distanceToBoundary = relationList
-                            .maximumDifference();
+                            .getMaximumDifference();
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
                         _lastDistanceToBoundary = relationList
@@ -699,7 +699,7 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
                         (ParseTreeEvaluatorForGuardExpression)nonPreemptiveTrWithEvent.getParseTreeEvaluator();
                     RelationList relationList = parseTreeEvaluator.getRelationList();
 
-                    double distanceToBoundary = relationList.maximumDifference();
+                    double distanceToBoundary = relationList.getMaximumDifference();
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
                         _lastDistanceToBoundary = relationList

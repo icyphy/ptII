@@ -229,7 +229,7 @@ public class HybridModalDirector extends ModalDirector
                         (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
                     RelationList relationList = parseTreeEvaluator.getRelationList();
                     
-                    double distanceToBoundary = relationList.maximumDifference();
+                    double distanceToBoundary = relationList.getMaximumDifference();
                     // The distance to boundary is the difference between
                     // the value of a variable in a relation (comparison
                     // operation) and the threshold value against which it
@@ -252,7 +252,7 @@ public class HybridModalDirector extends ModalDirector
                     RelationList relationList = parseTreeEvaluator.getRelationList();
 
                     double distanceToBoundary = relationList
-                            .maximumDifference();
+                            .getMaximumDifference();
 
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
@@ -267,7 +267,7 @@ public class HybridModalDirector extends ModalDirector
                         (ParseTreeEvaluatorForGuardExpression)preemptiveTrWithEvent.getParseTreeEvaluator();
                     RelationList relationList = parseTreeEvaluator.getRelationList();
                     double distanceToBoundary = relationList
-                            .maximumDifference();
+                            .getMaximumDifference();
 
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
@@ -282,7 +282,7 @@ public class HybridModalDirector extends ModalDirector
                         (ParseTreeEvaluatorForGuardExpression)nonPreemptiveTrWithEvent.getParseTreeEvaluator();
                     RelationList relationList = parseTreeEvaluator.getRelationList();
                     double distanceToBoundary = relationList
-                            .maximumDifference();
+                            .getMaximumDifference();
 
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
