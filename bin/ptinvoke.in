@@ -298,6 +298,15 @@ JODE_JAR="@JODE_CLASSES@"
 
 JODE_JFLAG=
 
+#### Ptalon
+# Ptalon uses antlr.jar, found in ptolemy/actor/ptalon/antlr/antlr.jar
+# PTPTALON_DIR is set to ptalon by configure if antlr.jar was found
+PTPTALON_DIR=@PTPTALON_DIR@
+PTALON_JARS=""
+if [ "$PTPTALON_DIR" = "ptalon" ]; then
+    PTALON_JARS="${CLASSPATHSEPARATOR}@ANTLR_DIR@/antlr.jar"
+fi
+
 #### QuickTime ..  QuickTime for Java
 # The QuickTime jar file, usually found in somewhere like:
 # c:/Program Files/Java/j2re1.4.1_02/lib/ext/QTJava.zip
@@ -452,7 +461,7 @@ fi
 # a version of java cup
 #
 # If you update ALL_JARS, please update ptolemy/configs/test/makefile
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${PTALON_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
 
 #### Sandbox
@@ -932,6 +941,13 @@ and run:
    	        javac="$PTII/jni/launcher/launcher"
 	        javastartupclass=ptolemy/vergil/VergilApplication
 	        classpatharg=-Djava.class.path=
+            else		
+		if [ $windows = "yes" ]; then
+		    echo "$0: Warning: Under Windows, Viptos requires "
+                    echo " \$PTII/jni/launcher/launcher,"
+		    echo " which is not present.  If launcher is not present,"
+		    echo " then running PtinyOS demos will fail to run."
+                fi		    
             fi
 	    javaflag="\"-Dptolemy.ptII.tosroot=$TOSROOT\" \"-Dptolemy.ptII.tosdir=$TOSDIR\" $ALL_JFLAG"
 	else    
