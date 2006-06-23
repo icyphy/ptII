@@ -31,9 +31,12 @@ package ptolemy.domains.fsm.kernel;
 ////RelationNode
 
 /** 
- An inner class relation node stores the type and difference information
- of a relation. It not only stores the current information but
- also the previous one.
+ An instance of the RelationNode class stores the type and difference 
+ information of a relation. For more details of type, see {@link RelationType}. 
+ For more details of difference, see 
+ {@link ptolemy.domains.fsm.kernel.ParseTreeEvaluatorForGuardExpression}. 
+ The instance stores the information of two evaluations of the transition,
+ the current evaluation and the previous evaluaiton.
 
  @author  Haiyang Zheng
  @version $Id$
@@ -56,27 +59,35 @@ public final class RelationNode {
     ////                       public methods                  ////
 
     /** Reset the relation node by setting the former type and difference
-     *  information to RelationType.NOT_A_TYPE and 0.0 respectively. 
+     *  information to RelationType.INVALID and 0.0 respectively. 
      */
     public void reset() {
         _previousType = RelationType.INVALID;
         _previousDifference = 0.0;
     }
 
-    /** Update the relation node previous type and difference information
-     *  with the current information.
+    /** Update the previous type and difference information of this relation 
+     *  node with the current evaluation result.
      */
     public void commit() {
         _previousType = _currentType;
         _previousDifference = _difference;
     }
 
+    /** Return the difference information from the current evaluation of the
+     *  relation node.
+     *  @return The current difference information.
+     */
     public double getDifference() {
         return _difference;
     }
 
-    public double gePreviousDifference() {
-        return Math.abs(_previousDifference);
+    /** Return the difference information from the previous evaluation of the
+     *  relation node.
+     *  @return The previous difference information.
+     */
+    public double getPreviousDifference() {
+        return _previousDifference;
     }
 
     /** Return true if the relation node has its type changed, and if the
@@ -90,14 +101,21 @@ public final class RelationNode {
             return ((_previousType * _currentType) == 
                 RelationType.LESS_THAN * RelationType.GREATER_THAN);
         }
-
         return false;
     }
 
+    /** Set the type information with the current evaluation result of the
+     *  relation node.
+     *  @param type The current type information.
+     */
     public void setType(int type) {
         _currentType = type;
     }
 
+    /** Set the difference information with the current evaluation result 
+     *  of the relation node.
+     *  @param difference The current difference information.
+     */
     public void setDifference(double difference) {
         _difference = difference;
     }

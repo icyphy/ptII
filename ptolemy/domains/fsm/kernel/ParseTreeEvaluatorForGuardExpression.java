@@ -162,7 +162,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         
-        // NOTE: based on the *_isPresent variable, we figure out
+        // Note: based on the *_isPresent variable, we figure out
         // the discrete variables and do not evaluate it when it is
         // not present.
         String nodeName = node.getName();
@@ -231,6 +231,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             }
         }
 
+        // In this case, the difference is always 0.0.
         _difference = 0.0;
         if (_constructingRelationList) {
             _relationList.addRelation(_relationType, _difference);
@@ -329,6 +330,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                 if (_constructingRelationList) {
                     _relationList.addRelation(RelationType.INVALID, 0.0);
                 } else {
+                    // Only update _relationIndex but do not change relation node.
                     _relationIndex++;
                     if (_relationIndex >= _relationList.length()) {
                         _relationIndex -= _relationList.length();
@@ -359,9 +361,9 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             // The following code basically works as a level crossing detector
             // that detects level crossing in both rising and falling
             // directions.
-            // Note we can not two double values exactly equal, therefore, we
-            // need an error tolerance. This is the only place ther error
-            // tolerance is used.
+            // Note we cannot tell whether two double values exactly equal, 
+            // therefore, we need an error tolerance. This is the only place 
+            // where error tolerance is used.
             if ((leftToken instanceof ScalarToken)
                     && (rightToken instanceof ScalarToken)) {
                 // handle the relations like x == 2.0
@@ -414,21 +416,21 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             } else {
                 _relationType = RelationType.FALSE;
             }
-            _difference = ((ScalarToken) leftScalar.subtract(rightScalar))
-                    .doubleValue();
+            _difference = ((ScalarToken) leftScalar.subtract(rightScalar)).doubleValue();
         }
 
-        _evaluatedChildToken = result;
+        _difference = Math.abs(_difference);
         if (_constructingRelationList) {
             _relationList.addRelation(_relationType, _difference);
         } else {
-            _relationList.setRelation(_relationIndex, _relationType,
-                    _difference);
+            _relationList.setRelation(_relationIndex, _relationType, _difference);
             _relationIndex++;
             if (_relationIndex >= _relationList.length()) {
                 _relationIndex -= _relationList.length();
             }
         }
+
+        _evaluatedChildToken = result;
         return;
     }
 

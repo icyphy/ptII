@@ -50,7 +50,7 @@ package ptolemy.domains.fsm.kernel;
  relationOperator scalarRight), the relationType depends on the
  relationOperator. If the relationOperator is '==' or '!=', the
  relationType can be EQUAL_INEQUAL indicating the two scalars equal or 
- not equal. The relation type is LESS_THAN to indicate that the left scalar 
+ not equal; the relation type is LESS_THAN to indicate that the left scalar 
  is less than the right one, and GREATER_THAN to
  indicate left scalar is bigger than the right one. For the other kinds of
  relation operators, the relationType is decided by the boolean value of 
@@ -69,29 +69,34 @@ public final class RelationType {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Index for actors in the continuous part of the system, not sorted.
+    /** Relation type a relation node that is not evaluated.
      */
     public final static int INVALID = 0;
 
-    /** Index for actors in the continuous part of the system, not sorted.
+    /** Relation type a relation node that is evaluated to be true while the
+     *  relation operation is not equal or inequal.
      */
     public final static int TRUE = 1;
 
-    /** Index for actors in the discrete part of the system,
-     *  topologically ordered.
+    /** Relation type a relation node that is evaluated to be fale while the
+     *  relation operation is not equal or inequal.
      */
     public final static int FALSE = 2;
 
-    /** Index for dynamic actor schedule, in a topologically reverse order.
+    /** Relation type a relation node that is evaluated to be true while the
+     *  relation operation is not equal or inequal.
      */
     public final static int EQUAL_INEQUAL = 3;
 
-    /** Index for the schedule of actors that implement
-     *  the CTEventGenerator interface, topologically ordered.
+    /** Relation type a relation node that is evaluated to be false and 
+     *  the left token is less than the right token, while the
+     *  relation operation is not equal or inequal.
      */
     public final static int LESS_THAN = 4;
 
-    /** Index for output schedule, topologically ordered.
+    /** Relation type a relation node that is evaluated to be false and 
+     *  the left token is greater than the right token, while the
+     *  relation operation is not equal or inequal.
      */
     public final static int GREATER_THAN = 5;
 }

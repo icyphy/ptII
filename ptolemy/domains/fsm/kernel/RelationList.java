@@ -116,7 +116,6 @@ public class RelationList extends SingletonAttribute {
      */
     public void resetRelationList() {
         ListIterator relations = _relationList.listIterator();
-
         while (relations.hasNext()) {
             ((RelationNode) relations.next()).reset();
         }
@@ -128,7 +127,6 @@ public class RelationList extends SingletonAttribute {
      */
     public void commitRelationValues() {
         ListIterator relations = _relationList.listIterator();
-
         while (relations.hasNext()) {
             ((RelationNode) relations.next()).commit();
         }
@@ -147,8 +145,7 @@ public class RelationList extends SingletonAttribute {
      *  @return The previous distance of a relation.
      */
     public double getPreviousMaximumDistance() {
-        return ((RelationNode) _relationList.get(_maximumDifferenceIndex))
-                .gePreviousDifference();
+        return ((RelationNode) _relationList.get(_maximumDifferenceIndex)).getPreviousDifference();
     }
 
     /** Return true if there exists an event caused by the type change of
@@ -157,17 +154,13 @@ public class RelationList extends SingletonAttribute {
      */
     public boolean hasEvent() {
         boolean result = false;
-
         ListIterator relations = _relationList.listIterator();
-
         while (relations.hasNext() && !result) {
             result = result || ((RelationNode) relations.next()).hasEvent();
         }
-
-        if (result && _debugging && _verbose) {
+        if (result && _debugging) {
             _debug("Detected event!");
         }
-
         return result;
     }
 
@@ -189,26 +182,21 @@ public class RelationList extends SingletonAttribute {
      *  the relation list.
      *  @return maximumDistance The maximum current distance.
      */
-    public double maximumDifference() {
+    public double getMaximumDifference() {
         double maxDifference = 0.0;
         double difference = 0.0;
         int index = 0;
         _maximumDifferenceIndex = 0;
-
         ListIterator relations = _relationList.listIterator();
-
         while (relations.hasNext()) {
             RelationNode relation = ((RelationNode) relations.next());
             difference = Math.abs(relation.getDifference());
-
             if (relation.typeChanged() && (difference > maxDifference)) {
                 maxDifference = difference;
                 _maximumDifferenceIndex = index;
             }
-
             index++;
         }
-
         return maxDifference;
     }
 
