@@ -432,11 +432,26 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
     /** Return the parse tree evaluator used to evaluate guard expressions 
      *  associated with the given transition. In this class, an instance 
      *  of {@link ParseTreeEvaluatorForGuardExpression} is returned. 
+     *  The parse tree evaluator is set to construction mode. 
      *  @param transition Transition whose guard expression is to be evaluated.
      *  @return ParseTreeEvaluator used to evaluate guard expressions.
      */
     public ParseTreeEvaluator getParseTreeEvaluator(Transition transition) {
-        return new ParseTreeEvaluatorForGuardExpression(this, transition);
+        try {
+            RelationList relationList = new RelationList(transition, "RelationList");
+            ParseTreeEvaluatorForGuardExpression evaluator =
+                new ParseTreeEvaluatorForGuardExpression(relationList, getErrorTolerance());
+            evaluator.setConstructionMode();
+            return evaluator;
+        } catch (NameDuplicationException e) {
+            // This should not happen.
+            throw new InternalErrorException("Failed to construct a "
+                    + "RelationList object for " + transition.getGuardExpression());
+        } catch (IllegalActionException e) {
+            // This should not happen.
+            throw new InternalErrorException("Failed to construct a "
+                    + "RelationList object for " + transition.getGuardExpression());
+        }
     }
     
     /** Restore the states of all the enabled refinements to the
@@ -829,7 +844,7 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
                 ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
                     (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
                 RelationList relationList = parseTreeEvaluator.getRelationList();
-                relationList.clearRelationList();
+                relationList.resetRelationList();
             }
 
             iterator = _currentState.preemptiveTransitionList().listIterator();
@@ -839,7 +854,7 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
                 ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
                     (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
                 RelationList relationList = parseTreeEvaluator.getRelationList();
-                relationList.clearRelationList();
+                relationList.resetRelationList();
             }
 
             // If the top level of the model is modal model, the director
