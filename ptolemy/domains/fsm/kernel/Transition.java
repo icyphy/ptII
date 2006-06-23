@@ -291,6 +291,7 @@ public class Transition extends ComponentRelation {
             // attribute used to convey expressions without being evaluated.
             // _guard is the variable that does the evaluation.
             _guardParseTree = null;
+            _parseTreeEvaluatorVersion = -1;
         } else if (attribute == triggerExpression) {
             // The guard and trigger expressions can only be evaluated at run
             // time, because the input variables they can reference are created
@@ -298,6 +299,7 @@ public class Transition extends ComponentRelation {
             // attributes used to convey expressions without being evaluated.
             // _guard and _trigger are the variables that do the evaluation.
             _triggerParseTree = null;
+            _parseTreeEvaluatorVersion = -1;
         } else if (attribute == refinementName) {
             _refinementVersion = -1;
         } else if ((attribute == outputActions) || (attribute == setActions)) {
