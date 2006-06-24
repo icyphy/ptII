@@ -60,7 +60,8 @@ JSIMPLE_TESTS = \
 	Configuration.tcl \
 	EffigyFactory.tcl \
 	HTMLAbout.tcl \
-	UserActorLibrary.tcl
+	UserActorLibrary.tcl \
+	ZZZConfiguration.tcl
 
 # Graphical Java tests that use Tcl.
 JGRAPHICAL_TESTS = \
