@@ -73,6 +73,14 @@ import ptolemy.kernel.util.Workspace;
  alternating 1 and 0, uniformly spaced one time unit apart.  The default period
  is 2.0.
  <p>
+ One subtlety is that if this actor is used inside a modal model
+ and the mode it is in is disabled for some period of time, then
+ when that mode is resumed, it will produce its first event at
+ the appropriate time as if it had been running conintuously.
+ That is, it will not act as if the execution were starting over.
+ If you need it to act this way, then the modal model should specify
+ that the target state should be re-initialized.
+ <p>
  The actor uses the fireAt() method of the director to request
  firing at the beginning of each period and at each of the offsets.
  <p>
