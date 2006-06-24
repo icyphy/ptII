@@ -123,3 +123,4 @@ test UserActorLibrary-7.0 {_effigyIdentifier} {
     set namedObj [java::null]	
     list [$tableau getFullName] [$effigy1 getFullName] [$effigy2 getFullName]
 } {.configuration.directory.myNamedObj.simpleTableau .configuration.directory.test .configuration.directory.test}
+
