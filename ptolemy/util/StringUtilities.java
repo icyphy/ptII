@@ -166,6 +166,29 @@ public class StringUtilities {
         return string;
     }
 
+    /** If the ptolemy.ptII.exitAfterWrapup property is not set, then 
+     *  call System.exit().
+     *  Ptolemy code should call this method instead of directly calling
+     *  System.exit() so that we can test code that would usually exit.
+     *  @param returnValue The return value of this process, where
+     *  non-zero values indicate an error.
+     */
+    public static void exit(int returnValue) {
+        // $PTII/util/testsuite/testDefs.tcl sets
+        // ptolemy.ptII.exitAfterWrapup
+        if (StringUtilities.getProperty("ptolemy.ptII.exitAfterWrapup")
+                .length() > 0) {
+            throw new RuntimeException("Normally, we would "
+                    + "exit here because Manager.exitAfterWrapup() "
+                    + "was called.  However, because the "
+                    + "ptolemy.ptII.exitAfterWrapup property "
+                    + "is set, we throw this exception instead.");
+        } else {
+            // Non-zero indicates a problem.
+            System.exit(returnValue);
+        }
+    }
+
     /** Return a number of spaces that is proportional to the argument.
      *  If the argument is negative or zero, return an empty string.
      *  @param level The level of indenting represented by the spaces.
