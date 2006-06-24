@@ -174,8 +174,6 @@ public class StringUtilities {
      *  non-zero values indicate an error.
      */
     public static void exit(int returnValue) {
-        // $PTII/util/testsuite/testDefs.tcl sets
-        // ptolemy.ptII.exitAfterWrapup
         if (StringUtilities.getProperty("ptolemy.ptII.exitAfterWrapup")
                 .length() > 0) {
             throw new RuntimeException("Normally, we would "
