@@ -76,7 +76,7 @@ import ptolemy.kernel.util.Workspace;
  One subtlety is that if this actor is used inside a modal model
  and the mode it is in is disabled for some period of time, then
  when that mode is resumed, it will produce its first event at
- the appropriate time as if it had been running conintuously.
+ the appropriate time as if it had been running continuously.
  That is, it will not act as if the execution were starting over.
  If you need it to act this way, then the modal model should specify
  that the target state should be re-initialized.
