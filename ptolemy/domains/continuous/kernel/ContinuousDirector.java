@@ -1029,20 +1029,6 @@ public class ContinuousDirector extends FixedPointDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Perform integration up to the specified target time, which is
-     *  assumed to be in the future relative to current time.
-     *  For all steps earlier the targetTime, force all inputs to
-     *  be absent before executing at those times.
-     *  @return False if during catching up either we reach the
-     *   stop time or all controlled actors are disabled.
-     *  @throws IllegalActionException If an actor throws it.
-     */
-    private boolean _catchUpTo(Time targetTime) throws IllegalActionException {
-        // FIXME: Not implemented yet.
-        throw new IllegalActionException(this,
-                "Catch up to future time is not implemented yet!");
-    }
-    
     /** Commit the current state by postfiring the actors under the
      *  control of this director and FIXME.
      *  @return True if it is OK to fire again.
@@ -1441,6 +1427,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             // no events, then an integration step with this now smaller
             // step size will also be successful and produce no events.
             _currentStepSize = outTime.subtract(_iterationBeginTime).getDoubleValue();
+            rollBackToCommittedState();
             fire();
             _commit();
             _commitIsPending = false;
@@ -1457,13 +1444,20 @@ public class ContinuousDirector extends FixedPointDirector implements
                 return false;
             }
         } else if (comparison < 0 && executiveDirector != _enclosingContinuousDirector()) {
+            // Local current time is behind environment time, so
+            // We must be inside a modal model and have been
+            // disabled at the time that the commit
+            // would be effective. Cancel any pending commit.
             if (_commitIsPending) {
                 _commitIsPending = false;
-                if (!_commit()) {
-                    return false;
-                }
+                rollBackToCommittedState();
             }
-            _catchUpTo(outTime);
+            // Force current time to match the environment time, and treat
+            // this as if were were starting again in initialize().
+            // This ensures that actors like plotters will be postfired at 
+            // the current time.
+            _currentTime = outTime;
+            _currentStepSize = 0.0;
         }
         
         // Adjust the step size to
@@ -1485,15 +1479,27 @@ public class ContinuousDirector extends FixedPointDirector implements
             SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
             Time breakpointTime = nextBreakpoint.timestamp();
             comparison = breakpointTime.compareTo(_currentTime);
-            if (comparison < 0 || (comparison == 0 && nextBreakpoint.index() < _index )) {
-                // We should not have missed a breakpoint.
-                // FIXME: What if we were inside a modal model and not awake during that time?
-                throw new IllegalActionException(this,
-                        "Missed a breakpoint time at "
-                        + breakpointTime
-                        + ", with index "
-                        + nextBreakpoint.index());
-            } else if (comparison == 0 && nextBreakpoint.index() == _index) {
+            // Remove any breakpoints from the table that are now in the past.
+            // In theory, this should only happen if we are inside a modal model
+            // and we were not active at the time of the breakpoint. In such a
+            // case, the right thing to do is to ignore the breakpoint.
+            // NOTE: This requires that actors be written carefully, since
+            // they have to ensure that if they post something on the breakpoint
+            // table (by calling fireAt()) and are not fired at that requested
+            // time, then they recover the next time they are fired.
+            while (comparison < 0 || (comparison == 0 && nextBreakpoint.index() < _index )) {
+                if (_debugging){
+                    _debug("Remove a breakpoint that we missed: " + breakpointTime);
+                }
+                _breakpoints.removeFirst();
+                if (_breakpoints.isEmpty()) {
+                    break;
+                }
+                nextBreakpoint = (SuperdenseTime) _breakpoints.first();
+                breakpointTime = nextBreakpoint.timestamp();
+                comparison = breakpointTime.compareTo(_currentTime);
+            }
+            if (comparison == 0 && nextBreakpoint.index() == _index) {
                 if (_debugging){
                     _debug("The current superdense time is a breakpoint, "
                             + nextBreakpoint + " , which is removed.");

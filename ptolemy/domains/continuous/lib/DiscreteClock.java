@@ -248,8 +248,10 @@ public class DiscreteClock extends TypedAtomicActor {
         return newObject;
     }
 
-    /** Emit the discrete event that happens at the current time. If there
-     *  is no such events, do nothing.
+    /** Send to the output the value corresponding to the current
+     *  phase of the clock. This relies on the fact that prefire()
+     *  will return false if the current time is not a time at which
+     *  we should emit an event.
      *  @exception IllegalActionException If the event cannot be sent.
      */
     public void fire() throws IllegalActionException {
@@ -332,31 +334,35 @@ public class DiscreteClock extends TypedAtomicActor {
         FixedPointDirector director = (FixedPointDirector) getDirector();
         boolean rightIndex = _nextOutputIndex == director.getIndex();
         int rightTime = director.getModelTime().compareTo(_nextOutputTime);
-        if (rightTime > 0) {
-            // Model time has passed us by, perhaps because we are
-            // in a modal model and are in a refinement that has not
-            // been active.
-            while (rightTime > 0 && !_stopRequested) {
-                // Increment to the next phase.
-                _phase++;
-                if (_phase >= _offsets.length) {
-                    _phase = 0;
-                    _cycleCount++;
-                    // If we are beyond the number of cycles requested, then
-                    // return false.
-                    int cycleLimit = ((IntToken) numberOfCycles.getToken()).intValue();
-                    if (cycleLimit > 0 && _cycleCount > cycleLimit) {
-                        super.prefire();
-                        return false;
-                    }
-                    double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-                    _cycleStartTime = _cycleStartTime.add(periodValue);
-                }
-                _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
-                rightTime = director.getModelTime().compareTo(_nextOutputTime);
+        // Check whether model time has passed us by, perhaps because we are
+        // in a modal model and are in a refinement that has not
+        // been active.
+        while (rightTime > 0.0 && !_stopRequested) {
+            // If model time has passed us by, then increment
+            // our state until either we match model time or
+            // we exceed it.
+            // Increment to the next phase.
+            _phase++;
+            if (_phase >= _offsets.length) {
+                _phase = 0;
+                // Do not increment the cycle count, since we did
+                // not actually complete these cycles.
+                double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+                _cycleStartTime = _cycleStartTime.add(periodValue);
+            }
+            _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
+            _nextOutputIndex = 1;
+            rightIndex = _nextOutputIndex == director.getIndex();
+            rightTime = director.getModelTime().compareTo(_nextOutputTime);
+            
+            // If at this point we are caught up but can't fire now,
+            // then request a refiring.
+            if (rightTime < 0.0 || (rightTime == 0.0 && !rightIndex)) {
+                director.fireAt(this, _nextOutputTime);
+                // The return statement below will return false.
             }
         }
-        return super.prefire() &&  rightIndex && (rightTime == 0);
+        return super.prefire() &&  rightIndex && (rightTime == 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////
