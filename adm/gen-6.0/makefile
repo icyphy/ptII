@@ -826,7 +826,7 @@ ptbuild:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	rm -f /users/$(USER)/logs/java`date  '+%m%d'`
-	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.4" -k sources fast install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
+	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.5" -k sources fast install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
 
 # test in ~ptII
 pttests:
@@ -975,14 +975,14 @@ remote1local: $(PTII_FULL) $(GENLOGDIR)
 		remote1done >& $(REMOTE1LOG)" &
 
 
-# caltrop requires -source 1.4
+# caltrop requires -source 1.4, ptalon -source 1.5
 # Move remote1doc to after rebuild so that the Actor Index tool is built.
 bldmastrcoverage:
 	$(MAKE) -k REMOTE1HOME=/home/bldmastr \
 		PTII=/home/bldmastr/ptII \
 		PTIIHOME=/home/bldmastr/ptII \
 		VERSION= \
-		JFLAGS="-deprecation -g -source 1.4" \
+		JFLAGS="-deprecation -g -source 1.5" \
 		JSDATABASE=/home/bldmastr/jsdatabase \
 		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.zip \
