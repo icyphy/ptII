@@ -110,3 +110,16 @@ test UserActorLibrary-5.0 {setContainer} {
 test UserActorLibrary-6.0 {showAll} {
     $configuration showAll	
 } {}
+
+######################################################################
+####
+#
+test UserActorLibrary-7.0 {_effigyIdentifier} {
+    # no _uri attribute
+    set namedObj [java::new ptolemy.kernel.util.NamedObj "myNamedObj"]
+    set tableau [$configuration openModel $namedObj]	
+    set effigy1 [$configuration findEffigy $entity]
+    set effigy2 [$configuration getEffigy $entity]
+    set namedObj [java::null]	
+    list [$tableau getFullName] [$effigy1 getFullName] [$effigy2 getFullName]
+} {.configuration.directory.myNamedObj.simpleTableau .configuration.directory.test .configuration.directory.test}
