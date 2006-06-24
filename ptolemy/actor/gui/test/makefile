@@ -64,6 +64,7 @@ JSIMPLE_TESTS = \
 
 # Graphical Java tests that use Tcl.
 JGRAPHICAL_TESTS = \
+	HTMLViewer.tcl \
 	PtolemyApplication.tcl \
 	MoMLApplication.tcl \
 	PtExecuteApplication.tcl
@@ -97,6 +98,8 @@ test_java: jclass
 
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
+
+JTCLSHFLAGS=-Dptolemy.ptII.exitAfterWrapup=false
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljsimpletests.tcl
