@@ -4,13 +4,17 @@
 <title>jni</title>
 </head>
 <body>
-An interface between Java Native Interface (JNI) classes and Ptolemy.
-<p>This package provides a draft implementation of a way to call 
-actors that contain C code from Ptolemy.  Note that the user interface
-is <b>broken</b>, we don't recommend using it.
+An interface between native C code and Ptolemy.
 
-<p>Under Windows, JNI does has problems with recent versions of Cygwin
-and GCC after gcc3.2.x.  The workaround is to invoke Ptolemy by using
+<p>This package provides a draft implementation of a way to create
+actors that call native C code.  In Java, the Java Native Interface
+(JNI) is used to interface with C code.  This package and subpackages
+provide glue code that make it easier to create actors that call C
+functions.
+
+<p>Under Windows, JNI has problems with recent versions of Cygwin
+and GCC after gcc3.2.x.  One workaround is to use Microsoft Visual C.
+Another workaround is to invoke Ptolemy by using
 the launcher program written in C, which is found at
 $PTII/jni/launcher.
 
@@ -24,7 +28,7 @@ salma-hayek is LGPL'd, see the COPYING.txt file.
 <p>If you invoke <code>$PTII/bin/vergil -jni</code>, then the launcher
 program will be invoked for you.  If you do not use the launcher program
 under Windows with Cygwin, the Ptolemy is likely to exit when you run
-a model.
+a model that tries to load a JNI shared object.
  
 <p>Another alternative is to install the version of Cygwin
 that shipped with Ptolemy II 4.0, see
@@ -35,18 +39,13 @@ available via the Windows Installer (or Web Start). To use the
 JNI/Ptolemy II interface, you must download Ptolemy II as source files
 and compile.
 
-<p>The JNI user interface is <b>broken</b>, it makes it very
-difficult to create new JNI actors.  In particular, you will
-need to set 
-
-
-<p>To build under windows, you may need to edit <code>jni_md.h</code>,
+<p>To build under Windows, you may need to edit <code>jni_md.h</code>,
 see
 <a href="JNIUtilities.html">JNIUtilities.html (javadoc, if present)</a>
 or
 <a href="JNIUtilities.java">JNIUtilities.java (source, if present)</a>.
 
-<p>Under Windows, you may need to create 
+<p>Under Windows with Cygwin, you may need to create 
 <code>/usr/bin/gmake</code>:
 <pre>
 cp /usr/bin/make /usr/bin/gmake
@@ -54,25 +53,11 @@ cp /usr/bin/make /usr/bin/gmake
 
 <p> A demo can be found in 
 <code>$PTII/jni/demo/jni</code>
-See the <code>README.html</code> file in that directory.
-
-<p>If you follow the instructions in
-<a href="JNIUtilities.html">JNIUtilities.java</a> , then eventually you
-will get a NameDuplicationException.
-
-<p>The resulting model will be missing
-
-<pre>
-&lt;property name="output" class="jni.Argument"
-value="false,false,true,double"&gt;
-&lt;/property&gt;
-</pre>
-
-In the short term, one workaround is to edit the xml file directly and
-add the appropriate property by hand.
+See the <code>README.html</code> file in that directory.  To run
+the demo, you should start vergil in that directory.
 
 <p> JNI will not work with Hierarchical classes, subclasses, and inner
-classes 
+classes. 
 
 <p>
     @since Ptolemy II 0.2
