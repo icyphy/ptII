@@ -179,7 +179,8 @@ public class HybridModalDirector extends ModalDirector
             }
 
             // Check whether there is any event detected for preemptive transitions.
-            Transition preemptiveTrWithEvent = _checkEvent(currentState.preemptiveTransitionList());
+            Transition preemptiveTrWithEvent = 
+                _checkEvent(currentState.preemptiveTransitionList());
 
             if (preemptiveTrWithEvent != null) {
                 if (_debugging) {
@@ -190,8 +191,8 @@ public class HybridModalDirector extends ModalDirector
 
             // Check whether there is any events detected for
             // nonpreemptive transitions.
-            Transition nonPreemptiveTrWithEvent = _checkEvent(currentState
-                    .nonpreemptiveTransitionList());
+            Transition nonPreemptiveTrWithEvent = 
+                _checkEvent(currentState.nonpreemptiveTransitionList());
 
             if (nonPreemptiveTrWithEvent != null) {
                 if (_debugging) {
@@ -251,8 +252,8 @@ public class HybridModalDirector extends ModalDirector
                         (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
                     RelationList relationList = parseTreeEvaluator.getRelationList();
 
-                    double distanceToBoundary = relationList
-                            .getMaximumDifference();
+                    double distanceToBoundary = 
+                        relationList.getMaximumDifference();
 
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
@@ -266,8 +267,8 @@ public class HybridModalDirector extends ModalDirector
                     ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
                         (ParseTreeEvaluatorForGuardExpression)preemptiveTrWithEvent.getParseTreeEvaluator();
                     RelationList relationList = parseTreeEvaluator.getRelationList();
-                    double distanceToBoundary = relationList
-                            .getMaximumDifference();
+                    double distanceToBoundary = 
+                        relationList.getMaximumDifference();
 
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
@@ -444,7 +445,7 @@ public class HybridModalDirector extends ModalDirector
                         / (_lastDistanceToBoundary + _distanceToBoundary);
                 
                 result = Math.min(result, refinedStepSize);
-                // NOTE: To see how well this algorithm is working, you can
+                // Note: To see how well this algorithm is working, you can
                 // uncomment the following line.
                 // System.out.println("refined step size: " + result);
             }
@@ -538,8 +539,8 @@ public class HybridModalDirector extends ModalDirector
     ////                         private methods                   ////
     
     /** Return the first transition in the specified list that has
-     *  an "event", which is a change in the boolean value of a guard
-     *  since FIXME: When?
+     *  an "event", which is a change in the boolean value of its guard
+     *  since the last evaluation.
      *  @return A transition with a change in the value of the guard.
      */
     private Transition _checkEvent(List transitionList) {
