@@ -103,3 +103,10 @@ test UserActorLibrary-5.0 {setContainer} {
     list [java::isnull [$configuration getContainer]] $errMsg
 } {1 {ptolemy.kernel.util.IllegalActionException: Configuration can only be at the top level of a hierarchy.
   in .configuration}}
+
+######################################################################
+####
+#
+test UserActorLibrary-6.0 {showAll} {
+    $configuration showAll	
+} {}
