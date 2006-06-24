@@ -1201,21 +1201,9 @@ public class Manager extends NamedObj implements Runnable {
         _workspace.incrVersion();
 
         if (_exitAfterWrapup) {
-            // $PTII/util/testsuite/testDefs.tcl sets
-            // ptolemy.ptII.exitAfterWrapup
-            if (StringUtilities.getProperty("ptolemy.ptII.exitAfterWrapup")
-                    .length() > 0) {
-                // Set the state to IDLE for codegen
-                _setState(IDLE);
-                throw new KernelRuntimeException(this, "Normally, we would "
-                        + "exit here because Manager.exitAfterWrapup() "
-                        + "was called.  However, because the "
-                        + "ptolemy.ptII.exitAfterWrapup property "
-                        + "is set, we throw this exception instead.");
-            } else {
-                // Non-zero indicates a problem.
-                System.exit(0);
-            }
+            // If the ptolemy.ptII.exitAfterWrapup property is set,
+            // then we don't actually exit.
+            StringUtilities.exit(0);
         }
 
         // Wrapup completed successfully
