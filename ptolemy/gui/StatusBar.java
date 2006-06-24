@@ -28,6 +28,7 @@ package ptolemy.gui;
 
 // Java imports.
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -55,6 +56,9 @@ public class StatusBar extends JPanel {
      */
     public StatusBar() {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        // Set the maximum size so that resizing the Vergil welcome window
+        // does not result in a large, ugly status bar.
+        setMaximumSize(new Dimension(Short.MAX_VALUE, 25));
         _message = new JTextField(20);
         _message.setEditable(false);
         _message.setAlignmentX(LEFT_ALIGNMENT);
