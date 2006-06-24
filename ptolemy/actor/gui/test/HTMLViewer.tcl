@@ -43,8 +43,12 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test HTMLViewer-1.1 {} {
     set htmlViewer [java::new ptolemy.actor.gui.HTMLViewer]
+    set pane [java::field $htmlViewer pane]
+    set url [[java::new java.io.File testDemos.htm] toURL]
+    $pane setPage $url
     $htmlViewer pack
     $htmlViewer show
-    sleep 2
+    # sleep for 3 seconds, don't print dots
+    sleep 3 0
     $htmlViewer close
 } {}
