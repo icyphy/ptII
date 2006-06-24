@@ -35,6 +35,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.GeneralComparator;
@@ -1100,7 +1101,8 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** Return the enclosing continuous director, or null if there
      *  is none.  The enclosing continuous director is a director
      *  above this in the hierarchy, possibly separated by composite
-     *  actors with other foreign directors.
+     *  actors with actors that implement the QuasiTransparentDirector
+     *  interface, such as FSMDirector or CaseDirector.
      *  @return The enclosing ContinuousDirector, or null if there is none.
      */
     private ContinuousDirector _enclosingContinuousDirector() {
@@ -1113,6 +1115,9 @@ public class ContinuousDirector extends FixedPointDirector implements
                     Director director = ((Actor)container).getDirector();
                     if (director instanceof ContinuousDirector) {
                         _enclosingContinuousDirector = (ContinuousDirector)director;
+                        break;
+                    }
+                    if (!(director instanceof QuasiTransparentDirector)) {
                         break;
                     }
                 }
