@@ -35,6 +35,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.util.Time;
 import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.domains.ct.kernel.CTGeneralDirector;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.ModalDirector;
 import ptolemy.domains.fsm.kernel.ParseTreeEvaluatorForGuardExpression;
@@ -88,6 +89,19 @@ public class HybridModalDirector extends ModalDirector
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return error tolerance used for detecting enabled transitions.
+     *  If there is an enclosing continuous director, then get the
+     *  error tolerance from that director. Otherwise, return 1e-4.
+     *  @return The error tolerance used for detecting enabled transitions.
+     */
+    public final double getErrorTolerance() {
+        ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
+        if (enclosingDirector == null) {
+            return 1e-4;
+        }
+        return enclosingDirector.getErrorTolerance();
+    }
+
     /** Return the parse tree evaluator used to evaluate guard expressions 
      *  associated with the given transition. In this class, an instance 
      *  of {@link ParseTreeEvaluatorForGuardExpression} is returned. 
@@ -99,7 +113,7 @@ public class HybridModalDirector extends ModalDirector
         try {
             RelationList relationList = new RelationList(transition, "RelationList");
             // FIXME: creating a new ParseTreeEvaluator may be unncessary.
-            // If the director for modal model is not chnaged, the 
+            // If the director for modal model is not changed, the 
             // ParseTreeEvaluator does not have to be changed. We only need
             // to set the construction mode and clear the relation list.
             ParseTreeEvaluatorForGuardExpression evaluator =
@@ -189,7 +203,7 @@ public class HybridModalDirector extends ModalDirector
                 }
             }
 
-            // Check whether there is any events detected for
+            // Check whether there is any event detected for
             // nonpreemptive transitions.
             Transition nonPreemptiveTrWithEvent = 
                 _checkEvent(currentState.nonpreemptiveTransitionList());
