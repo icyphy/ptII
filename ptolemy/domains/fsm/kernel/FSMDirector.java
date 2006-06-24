@@ -40,6 +40,7 @@ import ptolemy.actor.InvariantViolationException;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
+import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.ExplicitChangeContext;
@@ -119,7 +120,7 @@ import ptolemy.kernel.util.Workspace;
  @see FSMActor
  */
 public class FSMDirector extends Director implements ModelErrorHandler,
-        ExplicitChangeContext {
+        ExplicitChangeContext, QuasiTransparentDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
