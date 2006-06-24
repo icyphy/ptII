@@ -79,6 +79,7 @@ JSRCS = \
 	Manager.java \
 	NoRoomException.java \
 	NoTokenException.java \
+	QuasiTransparentDirector.java \
 	QueueReceiver.java \
 	Receiver.java \
 	StateReceiver.java \
