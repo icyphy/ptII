@@ -63,7 +63,7 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -73,13 +73,13 @@
             </property>
             <port name="in" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 190.0]">
                 </property>
             </port>
             <port name="out" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 250.0]">
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.fsm.kernel.State">
@@ -224,25 +224,18 @@
         <link port="state.in" relation="inRelation"/>
         <link port="state.out" relation="outRelation"/>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 376, 508, 355}, maximized=false}">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 3.0, 6.0, 8.0, 10.0, 12.0, 15.0, 18.0, 20.0, 22.0, 25.0, 28.0, 30.0, 32.0, 35.0, 38.0, 41.0, 44.0, 47.0, 50.0}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{490, 85}">
         </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="50.0"/>
-<yRange min="1.0" max="2.0"/>
-<default marks="dots"/>
-</plot>?>
-        </configure>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 85.0]">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -251,9 +244,17 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <vertex name="vertex1" value="{315.0, 175.0}">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="Clock.output" relation="relation"/>
     <link port="ModalModel.in" relation="relation"/>
     <link port="ModalModel.out" relation="relation2"/>
-    <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
+    <link port="CurrentTime.output" relation="relation3"/>
+    <link port="CurrentTime.trigger" relation="relation2"/>
 </entity>
