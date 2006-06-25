@@ -170,11 +170,8 @@ test FSMActor-5.2 {test handling port name change} {
     $dir iterate 1
     $dir wrapup
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Error evaluating guard expression: p1 > 5
-  in .<Unnamed Object>.fsm.t0
-Because:
-The ID p1 is undefined.}}
-   
+} {{ptolemy.kernel.util.IllegalActionException: The ID p1 is undefined.}}
+  
 test FSMActor-5.3 {guard must be true whenever trigger is true} {
     $t0 setTriggerExpression "pp > -5"
     catch {$t0 isTriggered} msg
