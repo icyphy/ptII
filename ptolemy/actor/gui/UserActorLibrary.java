@@ -42,11 +42,9 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryBuilder;
-import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.util.MessageHandler;
+import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////

@@ -28,21 +28,9 @@
  */
 package ptolemy.data;
 
-import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.ParseTreeEvaluator;
-import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.FixType;
 import ptolemy.data.type.Type;
-import ptolemy.data.type.TypeLattice;
-import ptolemy.graph.CPO;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.FixPoint;
-import ptolemy.math.FixPointQuantization;
-import ptolemy.math.Overflow;
-import ptolemy.math.Precision;
-import ptolemy.math.Quantization;
-import ptolemy.math.Rounding;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnsizedFixToken
