@@ -35,7 +35,6 @@ import javax.swing.BoxLayout;
 
 import jni.Argument;
 import jni.GenericJNIActor;
-
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.kernel.util.IllegalActionException;

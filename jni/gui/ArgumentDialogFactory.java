@@ -37,9 +37,7 @@ import javax.swing.Action;
 import javax.swing.JMenuItem;
 
 import jni.GenericJNIActor;
-
 import ptolemy.actor.gui.Configuration;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import diva.gui.toolbox.JContextMenu;

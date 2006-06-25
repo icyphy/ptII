@@ -36,11 +36,9 @@ import java.util.Set;
 
 import jni.Argument;
 import jni.GenericJNIActor;
-
 import ptolemy.actor.gui.Configuration;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;

@@ -28,28 +28,23 @@
  */
 package ptolemy.actor.ptalon;
 
-import antlr.TokenBuffer;
-import antlr.TokenStreamException;
-import antlr.TokenStreamIOException;
-import antlr.ANTLRException;
-import antlr.LLkParser;
-import antlr.Token;
-import antlr.TokenStream;
-import antlr.RecognitionException;
-import antlr.NoViableAltException;
-import antlr.MismatchedTokenException;
-import antlr.SemanticException;
-import antlr.ParserSharedInputState;
-import antlr.collections.impl.BitSet;
+import java.util.ArrayList;
 
-	import java.util.ArrayList;
-	import ptolemy.actor.TypedAtomicActor;
-	import ptolemy.actor.TypedIOPort;
-	import ptolemy.actor.TypedIORelation;
-	import ptolemy.data.expr.Parameter;
-	import ptolemy.data.type.BaseType;
-	import ptolemy.kernel.util.NameDuplicationException;
-	import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import antlr.NoViableAltException;
+import antlr.ParserSharedInputState;
+import antlr.RecognitionException;
+import antlr.Token;
+import antlr.TokenBuffer;
+import antlr.TokenStream;
+import antlr.TokenStreamException;
+import antlr.collections.impl.BitSet;
 
 public class PtalonRecognizer extends antlr.LLkParser       implements PtalonTokenTypes
  {

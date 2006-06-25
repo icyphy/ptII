@@ -1,13 +1,14 @@
 package ptolemy.actor.ptalon;
 
 import java.io.FileWriter;
+
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.lib.Ramp;
+import ptolemy.actor.lib.gui.Display;
+import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.actor.lib.gui.Display;
-import ptolemy.actor.lib.Ramp;
-import ptolemy.domains.sdf.kernel.SDFDirector;
 
 public class IOComp extends TypedCompositeActor {
    

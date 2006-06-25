@@ -27,13 +27,7 @@
  */
 package ptolemy.vergil.basic;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
@@ -41,18 +35,13 @@ import javax.swing.JOptionPane;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.Tableau;
 import ptolemy.data.expr.Parameter;
-import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.Query;
-import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.actor.DocApplicationSpecializer;
 import ptolemy.vergil.actor.DocBuilderEffigy;
 import ptolemy.vergil.actor.DocBuilderTableau;
 import ptolemy.vergil.actor.DocEffigy;

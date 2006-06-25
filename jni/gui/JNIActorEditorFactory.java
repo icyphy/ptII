@@ -30,12 +30,6 @@ package jni.gui;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.GraphicsEnvironment;
-import java.io.Reader;
-import java.io.StringReader;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -44,23 +38,13 @@ import javax.swing.JTextArea;
 
 import jni.GenericJNIActor;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.EditParametersDialog;
+import ptolemy.actor.gui.EditorFactory;
 import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.Query;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonConfigurableAttribute;
-import ptolemy.moml.MoMLChangeRequest;
-import diva.canvas.toolbox.SVGParser;
-import diva.util.xml.XmlDocument;
-import diva.util.xml.XmlElement;
-import diva.util.xml.XmlReader;
 
 //////////////////////////////////////////////////////////////////////////
 //// JNIActorEditorFactory

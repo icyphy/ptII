@@ -76,14 +76,13 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
-import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;

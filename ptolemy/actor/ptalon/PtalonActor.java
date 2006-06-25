@@ -31,10 +31,8 @@ package ptolemy.actor.ptalon;
 import java.io.File;
 import java.io.FileReader;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.List;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
