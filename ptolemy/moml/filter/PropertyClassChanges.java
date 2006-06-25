@@ -477,5 +477,12 @@ public class PropertyClassChanges implements MoMLFilter {
                 rateParameterChanges);
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.sdf.lib.VariableFIR", rateParameterChanges);
+
+        // Transition
+        HashMap TransitionClassChanges = new HashMap();
+        TransitionClassChanges.put("relationList", null);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.fsm.kernel.Transition",
+                TransitionClassChanges);
     }
 }
