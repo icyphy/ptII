@@ -2959,8 +2959,9 @@ changequote([, ])dnl
 		    echo "$PTINYOS_MOMLROOT_NO_CYGDRIVE" | grep "$PTII" > /dev/null
 		    retval=$?
 		    if test "$retval" = "0"; then  
+		        SHORT_PTINYOS_MOMLROOT_NO_CYGDRIVE=`echo "$PTINYOS_MOMLROOT_NO_CYGDRIVE" | sed "s@$PTII/@@"` 
 		        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-                            <classpathentry kind=\"lib\" path=\"$PTINYOS_MOMLROOT_NO_CYGDRIVE\"/>"
+                            <classpathentry kind=\"lib\" path=\"$SHORT_PTINYOS_MOMLROOT_NO_CYGDRIVE\"/>"
 	            else 
 		        AC_MSG_WARN([\$PTINYOS_MOMLROOT ($PTINYOS_MOMLROOT)
     is not under \$PTII ($PTII) so we are not
@@ -2982,9 +2983,10 @@ changequote([, ])dnl
 	# If TOSROOT is under $PTII, then add it to the classpat
 	echo "$TOSROOT_NO_CYGDRIVE" | grep "$PTII" > /dev/null
 	retval=$?
-	if test "$retval" = "0"; then  
+	if test "$retval" = "0"; then
+		SHORT_TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT_NO_CYGDRIVE" | sed "s@$PTII/@@"` 
 	    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	        <classpathentry kind=\"lib\" path=\"$TOSROOT_NO_CYGDRIVE\"/>"
+	        <classpathentry kind=\"lib\" path=\"$SHORT_TOSROOT_NO_CYGDRIVE\"/>"
         else 
 	    AC_MSG_WARN([\$TOSROOT ($TOSROOT)is not
     under \$PTII ($PTII) so we are not
