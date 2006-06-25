@@ -30,10 +30,6 @@ package ptolemy.domains.fsm.kernel;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.SingletonAttribute;
-
 //////////////////////////////////////////////////////////////////////////
 //// RelationList
 
@@ -57,14 +53,14 @@ import ptolemy.kernel.util.SingletonAttribute;
  <i>Construct a relation list for a transition with the first argument of the
  constructor as that transition.</i>
  <pre>
- _relationList = new RelationList(this, "relationList");
+ _relationList = new RelationList();
  </pre>
  <p>
  <i>Associate the relation list with the an object of
  ParseTreeEvaluatorForGuardExpression</i>
  <pre>
  _parseTreeEvaluator =
- new ParseTreeEvaluatorForGuardExpression(_relationList);
+ new ParseTreeEvaluatorForGuardExpression(_relationList, getErrorTolerance());
  </pre>
  <p>
  See {@link Transition} for the detailed usage.
@@ -75,27 +71,10 @@ import ptolemy.kernel.util.SingletonAttribute;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class RelationList extends SingletonAttribute {
-    /** Construct a relation list with the given name contained by
-     *  the specified transition. The transition argument must not be
-     *  null, or a NullPointerException will be thrown. This action
-     *  will use the workspace of the transition for synchronization
-     *  and version counts. If the name argument is null, then the
-     *  name is set to the empty string.
-     *  This attribute is a non-persistent and it will not be exported
-     *  into MoML file.
-     *  @param transition The transition container.
-     *  @param name The name of this relation list.
-     *  @exception IllegalActionException If the relation list is not
-     *   of an acceptable class for the container, or if the name contains
-     *   a period.
-     *  @exception NameDuplicationException If the transition already
-     *   has an attribute with the name.
+public class RelationList {
+    /** Construct a relation list.
      */
-    public RelationList(Transition transition, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(transition, name);
-        setPersistent(false);
+    public RelationList() {
         _relationList = new LinkedList();
     }
 
@@ -157,9 +136,6 @@ public class RelationList extends SingletonAttribute {
         ListIterator relations = _relationList.listIterator();
         while (relations.hasNext() && !result) {
             result = result || ((RelationNode) relations.next()).hasEvent();
-        }
-        if (result && _debugging) {
-            _debug("Detected event!");
         }
         return result;
     }

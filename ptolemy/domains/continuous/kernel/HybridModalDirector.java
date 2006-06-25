@@ -35,7 +35,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.util.Time;
 import ptolemy.data.expr.ParseTreeEvaluator;
-import ptolemy.domains.ct.kernel.CTGeneralDirector;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.ModalDirector;
 import ptolemy.domains.fsm.kernel.ParseTreeEvaluatorForGuardExpression;
@@ -110,25 +109,15 @@ public class HybridModalDirector extends ModalDirector
      *  @return ParseTreeEvaluator used to evaluate guard expressions.
      */
     public ParseTreeEvaluator getParseTreeEvaluator(Transition transition) {
-        try {
-            RelationList relationList = new RelationList(transition, "RelationList");
-            // FIXME: creating a new ParseTreeEvaluator may be unncessary.
-            // If the director for modal model is not changed, the 
-            // ParseTreeEvaluator does not have to be changed. We only need
-            // to set the construction mode and clear the relation list.
-            ParseTreeEvaluatorForGuardExpression evaluator =
-                new ParseTreeEvaluatorForGuardExpression(relationList, getErrorTolerance());
-            evaluator.setConstructionMode();
-            return evaluator;
-        } catch (NameDuplicationException e) {
-            // This should not happen.
-            throw new InternalErrorException("Failed to construct a "
-                    + "RelationList object for " + transition.getGuardExpression());
-        } catch (IllegalActionException e) {
-            // This should not happen.
-            throw new InternalErrorException("Failed to construct a "
-                    + "RelationList object for " + transition.getGuardExpression());
-        }
+        RelationList relationList = new RelationList();
+        // FIXME: creating a new ParseTreeEvaluator may be unncessary.
+        // If the director for modal model is not changed, the 
+        // ParseTreeEvaluator does not have to be changed. We only need
+        // to set the construction mode and clear the relation list.
+        ParseTreeEvaluatorForGuardExpression evaluator =
+            new ParseTreeEvaluatorForGuardExpression(relationList, getErrorTolerance());
+        evaluator.setConstructionMode();
+        return evaluator;
     }
     
     /** Return true if all actors that were fired in the current iteration
