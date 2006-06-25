@@ -248,6 +248,26 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector implements
         }
     }
 
+//    /** Delegate to the executive director and return its truncation error 
+//     *  tolerance.
+//     *  @return The truncation error tolerance of the executive director.
+//     */
+//    public final double getErrorTolerance() {
+//        // This method is final for performance reason.
+//        CompositeActor container = (CompositeActor) getContainer();
+//        Director executiveDirector = container.getExecutiveDirector();
+//
+//        if ((executiveDirector != null) && 
+//                (executiveDirector instanceof CTGeneralDirector)) {
+//                return ((CTGeneralDirector) executiveDirector).getErrorTolerance();
+//        } else {
+//            // This should never happen because this director must 
+//            // be used within a CT model.
+//            throw new InternalErrorException("A CTEmbeddedDirector must" +
+//                    " be used inside a CT model.");
+//        }
+//    }
+//
     /** Return the begin time of the current iteration.
      *  @return The begin time of the current iteration.
      */

@@ -347,7 +347,6 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
      *  @return The error tolerance used for detecting enabled transitions.
      */
     public final double getErrorTolerance() {
-        // FIXME: This isn't right because there could be nested
         // modal models.
         CompositeActor container = (CompositeActor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
@@ -437,21 +436,11 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
      *  @return ParseTreeEvaluator used to evaluate guard expressions.
      */
     public ParseTreeEvaluator getParseTreeEvaluator(Transition transition) {
-        try {
-            RelationList relationList = new RelationList(transition, "RelationList");
-            ParseTreeEvaluatorForGuardExpression evaluator =
-                new ParseTreeEvaluatorForGuardExpression(relationList, getErrorTolerance());
-            evaluator.setConstructionMode();
-            return evaluator;
-        } catch (NameDuplicationException e) {
-            // This should not happen.
-            throw new InternalErrorException("Failed to construct a "
-                    + "RelationList object for " + transition.getGuardExpression());
-        } catch (IllegalActionException e) {
-            // This should not happen.
-            throw new InternalErrorException("Failed to construct a "
-                    + "RelationList object for " + transition.getGuardExpression());
-        }
+        RelationList relationList = new RelationList();
+        ParseTreeEvaluatorForGuardExpression evaluator =
+            new ParseTreeEvaluatorForGuardExpression(relationList, getErrorTolerance());
+        evaluator.setConstructionMode();
+        return evaluator;
     }
     
     /** Restore the states of all the enabled refinements to the

@@ -413,8 +413,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      *  variable step size solvers.
      *  @return The local truncation error tolerance.
      */
-    public final double getErrorTolerance() {
-        // This method is final for performance reason.
+    public double getErrorTolerance() {
         return _errorTolerance;
     }
 
