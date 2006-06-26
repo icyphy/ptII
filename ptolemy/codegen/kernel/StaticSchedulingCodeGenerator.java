@@ -41,7 +41,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
@@ -130,7 +129,6 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
                 code.append(_INDENT1 + "while (true) {\n");
             } else {
                 // Declare iteration outside of the loop to avoid
-                // "error: `for' loop initial declaration used outside C99
                 // mode" with gcc-3.3.3
                 code.append(_INDENT1 + "for (iteration = 0; iteration < "
                         + iterationCount + "; iteration ++) {\n");
@@ -183,7 +181,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
             // This makes it difficult to test the Exit actor.
             try {
                 manager.wrapup();
-            } catch (KernelRuntimeException ex) {
+            } catch (RuntimeException ex) {
                 // The Exit actor causes Manager.wrapup() to throw this.
                 if (!manager.isExitingAfterWrapup()) {
                     throw ex;
