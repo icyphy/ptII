@@ -75,6 +75,7 @@ JSRCS = \
 	CTStepSizeControlActor.java \
 	CTTransparentDirector.java \
 	CTWaveformGenerator.java \
+	HSFSMDirector.java \
 	NumericalNonconvergeException.java \
 	ODESolver.java
 

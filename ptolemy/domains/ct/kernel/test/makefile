@@ -68,6 +68,7 @@ JSIMPLE_TESTS = \
 	CTMultiSolverDirector.tcl \
 	CTReceiver.tcl \
 	CTScheduler.tcl \
+	HSFSMDirector.tcl \
 	NumericalNonconvergeException.tcl
 
 # Graphical Java tests that use Tcl.

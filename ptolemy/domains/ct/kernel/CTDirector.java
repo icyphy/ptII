@@ -773,7 +773,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         // because this method provides complete new information.
         // Default is a HSFSMDirector, while FSMDirector is also in the array.
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.HSFSMDirector";
+        defaultSuggestions[0] = "ptolemy.domains.ct.kernel.HSFSMDirector";
         defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
