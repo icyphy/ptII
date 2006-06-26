@@ -239,32 +239,31 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         Transition result = null;
     
         List enabledTransitions = enabledTransitions(transitionList);
+        int length = enabledTransitions.size();
     
-        // Ensure that if there are multiple enabled transitions, all of them
-        // must be nondeterministic.
-        if (enabledTransitions.size() > 1) {
+        if (length == 1) {
+            result = (Transition) enabledTransitions.get(0);
+        } else if (length > 1) {
+            // Ensure that if there are multiple enabled transitions, all of them
+            // must be nondeterministic.
             Iterator transitions = enabledTransitions.iterator();
-    
+            
             while (transitions.hasNext()) {
                 Transition enabledTransition = (Transition) transitions.next();
-    
+                
                 if (!enabledTransition.isNondeterministic()) {
                     throw new MultipleEnabledTransitionsException(
                             currentState(),
                             "Multiple enabled transitions found but not all"
-                                    + " of them are nondeterministic. Transition "
-                                    + enabledTransition.getName()
-                                    + " is deterministic.");
+                            + " of them are nondeterministic. Transition "
+                            + enabledTransition.getName()
+                            + " is deterministic.");
                 }
             }
-        }
-    
-        // Randomly choose one transition from the list of the
-        // enabled trnasitions.
-        int length = enabledTransitions.size();
-    
-        // FIXME: can be optimized when length == 1
-        if (length != 0) {
+            
+            // Randomly choose one transition from the list of the
+            // enabled trnasitions.
+
             // Since the size of the list of enabled transitions usually (almost
             // always) is less than the maximum value of integer. We can safely
             // do the cast from long to int in the following statement.
@@ -826,9 +825,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         // Note: reset() (gotoInitialState()) is called from
         // initialize() now (zk 2002/09/11)`
-        // FIXME: why this is necessary?
+        // why this is necessary?
         // I moved reset() here because the FunctionDependency analysis
-        // needs to catch the currentState.
+        // needs to know the currentState.
         // In DE/ModalModel, reset() happening in the initialize method
         // is too late. hyzheng 1/7/2004
         reset();
