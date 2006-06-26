@@ -133,7 +133,8 @@ test TMReceiver-4.4 {put port that has a container} {
 	        [$stream toString] "\n" debugOutput
     list $debugOutput
 
-} {{Updating TMDirector parameter _iconDescription
+} {{.top.TMDirector Preinitializing ...
+Updating TMDirector parameter _iconDescription
 Updating TMDirector parameter timeResolution
 Updating TMDirector parameter timeResolution
 Updating TMDirector parameter startTime
@@ -142,11 +143,10 @@ Updating TMDirector parameter preemptive
 Updating TMDirector parameter defaultTaskExecutionTime
 Updating TMDirector parameter synchronizeToRealTime
 Invoking preinitialize():  .top.A0
-Finished preinitialize().
+.top.TMDirector Finished preinitialize().
 enqueue event: to TMEvent(token = 2, priority = 5, destination = ptolemy.actor.TypedAtomicActor {.top.A0}, hasStarted = false, processingTime = -1.0)
 enqueue event: to TMEvent(token = 7, priority = 4, destination = ptolemy.actor.TypedAtomicActor {.top.A0}, hasStarted = false, processingTime = -1.0)
 }}
-
 
 
 
