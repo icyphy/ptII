@@ -200,8 +200,14 @@ import ptolemy.kernel.util.Workspace;
  ${id} or $(id).  The first case only works if the id consists
  only of alphanumeric characters and/or underscore, and if the
  character immediately following the id is not one of these.
- To get a simple dollar sign, use $$.
-
+ To get a simple dollar sign, use $$.  In string mode, to set the
+ value to be the empty string, create a Parameter in the container
+ that has the value <code>""</code> and then set the string mode
+ parameter to the <code>$<i>nameOfTheParameter</i></code>.  For example,
+ the parameter might be named <code>myEmptyParameter</code> and have
+ a value <code>""</code>; the value for the string mode parameter would 
+ be <code>$myEmptyParameter</code>.
+ 
  @author Neil Smyth, Xiaojun Liu, Edward A. Lee, Yuhong Xiong
  @version $Id$
  @since Ptolemy II 0.2
