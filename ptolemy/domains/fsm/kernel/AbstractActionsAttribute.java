@@ -144,27 +144,6 @@ public abstract class AbstractActionsAttribute extends Action implements
         }
     }
 
-    /** Return the channel number associated with the given name, assuming
-     *  that the destination is a port object.
-     *  @param name The name of the channel.
-     *  @return The channel number associated with the given name.
-     *  @exception IllegalActionException If the name does not refer to a
-     *  port, or a channel has not been specified for the name.
-     */
-    public int getChannel(String name) throws IllegalActionException {
-        // FIXME: if a port has several channels specified, this will always
-        // return the first channel specified, which makes it not quite useful.
-        Integer integer = (Integer) _numbers.get(_destinationNames
-                .indexOf(name));
-
-        if (integer == null) {
-            throw new IllegalActionException("No channel was specified for "
-                    + name);
-        }
-
-        return integer.intValue();
-    }
-
     /** Return the list of channel numbers given in expression set
      *  for this attribute.  If no destinations are specified, then return
      *  an empty list.
