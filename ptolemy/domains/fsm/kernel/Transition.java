@@ -443,10 +443,6 @@ public class Transition extends ComponentRelation {
             // of an FSMDirector, then delegate creation to that director.
             // Otherwise, create a default instance of ParseTreeEvaluator.
             FSMDirector director = _getDirector();
-            // FIXME: check whether the director changes. If so, create
-            // a new parse tree evaluator. Otherwise, use the old parse tree
-            // evaluator but change the associated transition.
-            // If no director, nothing needs to be changed.
             if (director != null) {
                 _parseTreeEvaluator = director.getParseTreeEvaluator(this);
             } else {
