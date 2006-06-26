@@ -3695,7 +3695,20 @@ set moml_25 "$classheader
 
 test MoMLParser-25.1 {fail while parsing something that has deferred} {
     $parser reset
+    set recorderErrorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
+    $parser setErrorHandler $recorderErrorHandler
     set toplevel [$parser parse $moml_25]
+
+    # We need a ChangeListener at the top
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.StreamChangeListener \
+	    $printStream]
+
+
+    $toplevel addChangeListener $listener
+
     set change [java::new ptolemy.moml.MoMLChangeRequest \
 		    $toplevel $toplevel {
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -3707,7 +3720,23 @@ test MoMLParser-25.1 {fail while parsing something that has deferred} {
         </property>
     </entity>
 		    }]
-    $toplevel requestChange $change
-    catch {$toplevel requestChange $change} errMsg
-    list $errMsg
-} {}
+    # This fails because _hideName gets converted into a SingletonAttribute
+    # by the filter and cannot be set twice	
+
+    catch {$toplevel requestChange $change} errMsg1
+
+    list $errMsg1 \
+	    [$stream toString] \
+	    [$recorderErrorHandler getMessages]
+} {{} {StreamChangeRequest.changeFailed(): 
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="DocViewerAttribute" class="ptolemy.kernel.util.SingletonAttribute">
+            <property name="viewer" class="ptolemy.kernel.util.Attribute">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+    </entity>
+		     failed: com.microstar.xml.XmlException: Property cannot be assigned a value: .testUserActorLibrary_OK_2_DELETE.CompositeActor.DocViewerAttribute._hideName (instance of class ptolemy.kernel.util.SingletonAttribute)
+ in [external stream] at line 6 and column 72
+} {}}
