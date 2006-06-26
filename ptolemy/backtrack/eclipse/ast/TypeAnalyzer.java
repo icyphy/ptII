@@ -98,6 +98,7 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -146,8 +147,9 @@ public class TypeAnalyzer extends ASTVisitor {
      *  class loader (an instanceof {@link LocalClassLoader}). Such
      *  a class loader cannot resolve classes other than Java
      *  built-in classes.
+     *  @exception  MalformedURLException If a classpath is not a proper URL.
      */
-    public TypeAnalyzer() {
+    public TypeAnalyzer() throws MalformedURLException {
         this(null);
     }
 
@@ -156,8 +158,9 @@ public class TypeAnalyzer extends ASTVisitor {
      *  LocalClassLoader}).
      *  
      *  @param classPaths The class paths.
+     *  @exception  MalformedURLException If a classpath is not a proper URL.
      */
-    public TypeAnalyzer(String[] classPaths) {
+    public TypeAnalyzer(String[] classPaths) throws MalformedURLException {
         _state.setClassLoader(new LocalClassLoader(classPaths));
     }
 

@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URLClassLoader;
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,19 +56,21 @@ public class ClassFileLoader extends URLClassLoader {
     /** Construct a class loader with no special class path. This class
      *  loader can only load Java built-in classes indirectly, when they are
      *  required by the class file to be loaded.
+     *  @exception  MalformedURLException If a string is not a proper URL.
      */
-    public ClassFileLoader() {
+    public ClassFileLoader() throws MalformedURLException { 
         this(null);
     }
 
-    /** Construct a class loader with a set of class paths specified as
-     *  a string array. When the class file to be loaded requires other classes,
-     *  this class loader loads those required classes with the given class
-     *  paths.
+    /** Construct a class loader with a set of class paths specified
+     *  as a string array. When the class file to be loaded requires
+     *  other classes, this class loader loads those required classes
+     *  with the given class paths.
      *
      *  @param classPaths The array of class paths to be searched in order.
+     *  @exception  MalformedURLException If a string is not a proper URL.
      */
-    public ClassFileLoader(String[] classPaths) {
+    public ClassFileLoader(String[] classPaths) throws MalformedURLException {
         super(Strings.stringsToUrls(classPaths), null, null);
     }
 

@@ -48,6 +48,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.net.MalformedURLException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -571,8 +572,10 @@ public class Transformer {
      *  @param writer The writer where the output is written.
      *  @param classPaths An array of explicit class paths, or <tt>null</tt>
      *   if none.
+     *  @exception  MalformedURLException If a classpath is not a proper URL.
      */
-    private Transformer(char[] source, String[] classPaths) {
+    private Transformer(char[] source, String[] classPaths)
+            throws MalformedURLException{
         _source = source;
         _visitor = new TypeAnalyzer(classPaths);
     }
@@ -584,8 +587,11 @@ public class Transformer {
      *  @param writer The writer where the output is written.
      *  @param classPaths An array of explicit class paths, or <tt>null</tt>
      *   if none.
+     *   
+     *  @exception  MalformedURLException If a classpath is not a proper URL.
      */
-    private Transformer(String fileName, String[] classPaths) {
+    private Transformer(String fileName, String[] classPaths)
+            throws MalformedURLException {
         _fileName = fileName;
         _visitor = new TypeAnalyzer(classPaths);
     }

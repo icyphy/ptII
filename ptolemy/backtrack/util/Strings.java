@@ -116,7 +116,8 @@ public class Strings {
      *  @return The array of urls.
      *  @exception  MalformedURLException If a string is not a proper URL.
      */
-    public static URL[] stringsToUrls(String[] strings) {
+    public static URL[] stringsToUrls(String[] strings)
+            throws MalformedURLException {
         if (strings == null) {
             return new URL[0];
         }

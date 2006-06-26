@@ -88,8 +88,9 @@ public class LocalClassLoader extends URLClassLoader {
     /** Construct a class loader with no special class path. This class
      *  loader can only load Java built-in classes. More class paths may
      *  be added after this class loader is created.
+     *  @exception  MalformedURLException If a string is not a proper URL.
      */
-    public LocalClassLoader() {
+    public LocalClassLoader() throws MalformedURLException {
         this(null);
     }
 
@@ -99,8 +100,9 @@ public class LocalClassLoader extends URLClassLoader {
      *
      *  @param classPaths The array of class paths to be searched in
      *   order.
+     *  @exception  MalformedURLException If a string is not a proper URL.
      */
-    public LocalClassLoader(String[] classPaths) {
+    public LocalClassLoader(String[] classPaths) throws MalformedURLException {
         super(Strings.stringsToUrls(classPaths), null, null);
     }
 
