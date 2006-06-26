@@ -3693,7 +3693,7 @@ set moml_25 "$classheader
 </class>
 "
 
-test MoMLParser-25.1 {fail while parsing something that has deferred} {
+test MoMLParser-25.1 {Replicated the problems I was having with adding a Sinewave to the user library.  The problem was that Sinewave had a _hideName Parameter that was set to true.  Instead, hideName should be a SingletonAttribute.  This test replicates that} {
     $parser reset
     set recorderErrorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
     $parser setErrorHandler $recorderErrorHandler
