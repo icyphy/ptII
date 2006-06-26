@@ -27,7 +27,6 @@
  */
 package ptolemy.backtrack.util;
 
-import ptolemy.backtrack.eclipse.ast.LocalClassLoader;
 import ptolemy.util.StringUtilities;
 
 import java.io.File;
@@ -39,7 +38,7 @@ import java.io.FileFilter;
 /**
  A tool to search paths and set up class paths. It provides functions to
  search paths for certain files, and set up customized class paths from
- which class can be loaded with {@link LocalClassLoader}.
+ which class can be loaded with ptolemy.backtrack.eclipse.ast.LocalClassLoader.
 
  @author Thomas Feng
  @version $Id$
