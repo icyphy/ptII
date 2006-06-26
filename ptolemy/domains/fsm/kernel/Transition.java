@@ -444,10 +444,12 @@ public class Transition extends ComponentRelation {
             // Otherwise, create a default instance of ParseTreeEvaluator.
             FSMDirector director = _getDirector();
             if (director != null) {
-                _parseTreeEvaluator = director.getParseTreeEvaluator(this);
+                _parseTreeEvaluator = director.getParseTreeEvaluator();
             } else {
                 // When this transition is used inside an FSMActor.
-                _parseTreeEvaluator = new ParseTreeEvaluator();
+                if (_parseTreeEvaluator == null) {
+                    _parseTreeEvaluator = new ParseTreeEvaluator();
+                }
             }
             _parseTreeEvaluatorVersion = workspace().getVersion();
         }

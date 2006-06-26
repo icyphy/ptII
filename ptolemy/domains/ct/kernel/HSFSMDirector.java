@@ -429,14 +429,13 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
         }
     }
 
-    /** Return the parse tree evaluator used to evaluate guard expressions 
-     *  associated with the given transition. In this class, an instance 
+    /** Return the parse tree evaluator used to evaluate guard expressions. 
+     *  In this class, an instance 
      *  of {@link ParseTreeEvaluatorForGuardExpression} is returned. 
      *  The parse tree evaluator is set to construction mode. 
-     *  @param transition Transition whose guard expression is to be evaluated.
      *  @return ParseTreeEvaluator used to evaluate guard expressions.
      */
-    public ParseTreeEvaluator getParseTreeEvaluator(Transition transition) {
+    public ParseTreeEvaluator getParseTreeEvaluator() {
         RelationList relationList = new RelationList();
         ParseTreeEvaluatorForGuardExpression evaluator =
             new ParseTreeEvaluatorForGuardExpression(relationList, getErrorTolerance());

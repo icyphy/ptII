@@ -101,19 +101,14 @@ public class HybridModalDirector extends ModalDirector
         return enclosingDirector.getErrorTolerance();
     }
 
-    /** Return the parse tree evaluator used to evaluate guard expressions 
-     *  associated with the given transition. In this class, an instance 
+    /** Return the parse tree evaluator used to evaluate guard expressions. 
+     *  In this class, an instance 
      *  of {@link ParseTreeEvaluatorForGuardExpression} is returned. 
      *  The parse tree evaluator is set to construction mode. 
-     *  @param transition Transition whose guard expression is to be evaluated.
      *  @return ParseTreeEvaluator used to evaluate guard expressions.
      */
-    public ParseTreeEvaluator getParseTreeEvaluator(Transition transition) {
+    public ParseTreeEvaluator getParseTreeEvaluator() {
         RelationList relationList = new RelationList();
-        // FIXME: creating a new ParseTreeEvaluator may be unncessary.
-        // If the director for modal model is not changed, the 
-        // ParseTreeEvaluator does not have to be changed. We only need
-        // to set the construction mode and clear the relation list.
         ParseTreeEvaluatorForGuardExpression evaluator =
             new ParseTreeEvaluatorForGuardExpression(relationList, getErrorTolerance());
         evaluator.setConstructionMode();
