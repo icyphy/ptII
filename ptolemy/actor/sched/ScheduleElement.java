@@ -71,9 +71,15 @@ public abstract class ScheduleElement {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    // FIXME: what is the key difference between the following methods?
-    // Under what conditions should which method be used?
-    // Any performance comparision is necessary?
+    // What is the key difference between the following methods?
+    // From Steve:
+    // Basically, in some cases (debugging? testing?) it seemed
+    // more worthwhile to have a flat view of the schedule (actorIterator)
+    // rather than a tree view... providing this method also meant that
+    // it was temporarily easy to muck about with the schedule
+    // representation, without breaking the execution mechanism.
+    // ScheduleElement contains an iteration count, which multiplies the number
+    // of times that an actor is fired or a Schedule is executed.
     
     /** Return the actor invocation sequence of the schedule in the
      *  form of a sequence of actors. All of the lowest-level nodes
