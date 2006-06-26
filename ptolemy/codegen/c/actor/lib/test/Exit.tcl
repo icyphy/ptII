@@ -45,8 +45,7 @@ test Exit-1.1 {} {
     java::call System setProperty ptolemy.ptII.exitAfterWrapup true
     catch {java::new ptolemy.actor.gui.MoMLSimpleApplication Exit.xml} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.KernelRuntimeException: Normally, we would exit here because Manager.exitAfterWrapup() was called.  However, because the ptolemy.ptII.exitAfterWrapup property is set, we throw this exception instead.
-  in .Exit.MoMLSimpleApplication}}
+} {{java.lang.RuntimeException: Normally, we would exit here because Manager.exitAfterWrapup() was called.  However, because the ptolemy.ptII.exitAfterWrapup property is set, we throw this exception instead.}}
 
 test Exit-2.1 {Execute the Exit.xml file in CG} {
     set file Exit.xml	
