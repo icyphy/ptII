@@ -126,7 +126,7 @@ public class NonStrictFSMDirector extends FSMDirector {
      */
     public void fire() throws IllegalActionException {
         FSMActor controller = getController();
-        controller._readInputs();
+        controller.readInputs();
 
         CompositeActor container = (CompositeActor) getContainer();
         List inputPortList = container.inputPortList();
@@ -190,7 +190,7 @@ public class NonStrictFSMDirector extends FSMDirector {
                 if (_refinementReferredInputPorts.contains(port)
                         && !_referredInputPorts.contains(port)) {
                     super.transferInputs(port);
-                    controller._readInputs();
+                    controller.readInputs();
                     _referredInputPorts.add(port);
                 }
             }
@@ -209,7 +209,7 @@ public class NonStrictFSMDirector extends FSMDirector {
                 }
             }
 
-            controller._readOutputsFromRefinement();
+            controller.readOutputsFromRefinement();
 
             // Get inputs needed by the nonpreemptive transitions.
             getNonpreemptiveTransitionsReferredInputPorts(currentState);
@@ -221,7 +221,7 @@ public class NonStrictFSMDirector extends FSMDirector {
                 if (_nonpreemptiveTransitionsInputs.contains(port)
                         && !_referredInputPorts.contains(port)) {
                     super.transferInputs(port);
-                    controller._readInputs();
+                    controller.readInputs();
                     _referredInputPorts.add(port);
                 }
             }
@@ -283,12 +283,12 @@ public class NonStrictFSMDirector extends FSMDirector {
                 if (_outputActionReferredInputPorts.contains(port)
                         && !_referredInputPorts.contains(port)) {
                     super.transferInputs(port);
-                    controller._readInputs();
+                    controller.readInputs();
                     _referredInputPorts.add(port);
                 }
             }
 
-            controller._readInputs();
+            controller.readInputs();
 
             // execute output actions.
             Iterator actions = enabledTransition.choiceActionList().iterator();
@@ -306,12 +306,12 @@ public class NonStrictFSMDirector extends FSMDirector {
                 if (_setActionReferredInputPorts.contains(port)
                         && !_referredInputPorts.contains(port)) {
                     super.transferInputs(port);
-                    controller._readInputs();
+                    controller.readInputs();
                     _referredInputPorts.add(port);
                 }
             }
 
-            controller._readInputs();
+            controller.readInputs();
         }
 
         controller._lastChosenTransition = enabledTransition;

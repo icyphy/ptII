@@ -222,10 +222,10 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         if (_debugging) {
             _debug("Firing " + getFullName(), " at time " + getModelTime());
         }
-        ctrl._readInputs();
+        ctrl.readInputs();
         State st = ctrl.currentState();
 
-        Transition tr = ctrl._chooseTransition(st.preemptiveTransitionList());
+        Transition tr = ctrl.chooseTransition(st.preemptiveTransitionList());
         _enabledTransition = tr;
 
         if (tr != null) {
@@ -245,7 +245,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                 }
             }
 
-            ctrl._readOutputsFromRefinement();
+            ctrl.readOutputsFromRefinement();
             return;
         }
 
@@ -272,9 +272,9 @@ public class FSMDirector extends Director implements ModelErrorHandler,
 
         st.setVisited(true);
 
-        ctrl._readOutputsFromRefinement();
+        ctrl.readOutputsFromRefinement();
 
-        tr = ctrl._chooseTransition(st.nonpreemptiveTransitionList());
+        tr = ctrl.chooseTransition(st.nonpreemptiveTransitionList());
         _enabledTransition = tr;
 
         if (tr != null) {
@@ -299,7 +299,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                     }
                 }
 
-                ctrl._readOutputsFromRefinement();
+                ctrl.readOutputsFromRefinement();
             }
         }
 
@@ -495,7 +495,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         // exception, check if any transition is enabled.
         if (exception instanceof InvariantViolationException) {
             FSMActor controller = getController();
-            controller._readOutputsFromRefinement();
+            controller.readOutputsFromRefinement();
 
             State st = controller.currentState();
             List enabledTransitions = controller.enabledTransitions(st
@@ -921,7 +921,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         FSMActor controller = getController();
 
         if (controller != null) {
-            return controller._chooseTransition(transitionList);
+            return controller.chooseTransition(transitionList);
         } else {
             throw new IllegalActionException(this, "No controller!");
         }
@@ -968,7 +968,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         FSMActor controller = getController();
 
         if (controller != null) {
-            controller._readInputs();
+            controller.readInputs();
         }
     }
 
@@ -981,7 +981,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         FSMActor controller = getController();
 
         if (controller != null) {
-            controller._readOutputsFromRefinement();
+            controller.readOutputsFromRefinement();
         }
     }
 

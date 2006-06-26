@@ -63,7 +63,6 @@ JSRCS = \
 	FSMActor.java \
 	FSMDirector.java \
 	FunctionDependencyOfFSMActor.java \
-	HSFSMDirector.java \
 	ModalDirector.java \
 	MultipleEnabledTransitionsException.java \
 	MultirateFSMDirector.java \

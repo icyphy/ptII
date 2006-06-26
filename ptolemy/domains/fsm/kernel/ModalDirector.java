@@ -143,13 +143,13 @@ public class ModalDirector extends FSMDirector {
         if (_debugging) {
             _debug("Firing " + getFullName(), " at time " + getModelTime());
         }
-        controller._readInputs();
+        controller.readInputs();
         State st = controller.currentState();
         
         // Chose a preemptive transition, if there is one,
         // and execute its choice actions.
         // The choice actions are the outputActions, not the setActions.
-        Transition tr = controller._chooseTransition(st.preemptiveTransitionList());
+        Transition tr = controller.chooseTransition(st.preemptiveTransitionList());
         _enabledTransition = tr;
         
         // If a preemptive transition was found, prefire and fire
@@ -174,7 +174,7 @@ public class ModalDirector extends FSMDirector {
                     }
                 }
             }
-            controller._readOutputsFromRefinement();
+            controller.readOutputsFromRefinement();
             return;
         }
 
@@ -200,10 +200,10 @@ public class ModalDirector extends FSMDirector {
         st.setVisited(true);
 
         // Read the outputs from the refinement.
-        controller._readOutputsFromRefinement();
+        controller.readOutputsFromRefinement();
 
         // See whether there is an enabled transition.
-        tr = controller._chooseTransition(st.nonpreemptiveTransitionList());
+        tr = controller.chooseTransition(st.nonpreemptiveTransitionList());
         _enabledTransition = tr;
         if (tr != null) {
             if (_debugging) {
@@ -225,7 +225,7 @@ public class ModalDirector extends FSMDirector {
                         _actorsFired.add(actors[i]);
                     }
                 }
-                controller._readOutputsFromRefinement();
+                controller.readOutputsFromRefinement();
             }
         }
     }

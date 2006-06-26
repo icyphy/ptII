@@ -221,6 +221,81 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
+    /** Return an enabled transition among the given list of transitions.
+     *  If there is only one transition enabled, return that transition.
+     *  In case there are multiple enabled transitions, if any of
+     *  them is not nondeterministic, throw an exception. See {@link Transition}
+     *  for the explanation of "nondeterministic". Otherwise, randomly choose
+     *  one from the enabled transitions and return it.
+     *  <p>
+     *  Execute the choice actions contained by the returned transition.
+     *  @param transitionList A list of transitions.
+     *  @return An enabled transition, or null if none is enabled.
+     *  @exception IllegalActionException If there is more than one
+     *   transition enabled and not all of them are nondeterministic.
+     */
+    public Transition chooseTransition(List transitionList)
+            throws IllegalActionException {
+        Transition result = null;
+    
+        List enabledTransitions = enabledTransitions(transitionList);
+    
+        // Ensure that if there are multiple enabled transitions, all of them
+        // must be nondeterministic.
+        if (enabledTransitions.size() > 1) {
+            Iterator transitions = enabledTransitions.iterator();
+    
+            while (transitions.hasNext()) {
+                Transition enabledTransition = (Transition) transitions.next();
+    
+                if (!enabledTransition.isNondeterministic()) {
+                    throw new MultipleEnabledTransitionsException(
+                            currentState(),
+                            "Multiple enabled transitions found but not all"
+                                    + " of them are nondeterministic. Transition "
+                                    + enabledTransition.getName()
+                                    + " is deterministic.");
+                }
+            }
+        }
+    
+        // Randomly choose one transition from the list of the
+        // enabled trnasitions.
+        int length = enabledTransitions.size();
+    
+        // FIXME: can be optimized when length == 1
+        if (length != 0) {
+            // Since the size of the list of enabled transitions usually (almost
+            // always) is less than the maximum value of integer. We can safely
+            // do the cast from long to int in the following statement.
+            int randomChoice = (int) Math.floor(Math.random() * length);
+    
+            // There is a tiny chance that randomChoice equals length.
+            // When this happens, we deduct 1 from the randomChoice.
+            if (randomChoice == length) {
+                randomChoice--;
+            }
+    
+            result = (Transition) enabledTransitions.get(randomChoice);
+        }
+    
+        if (result != null) {
+            if (_debugging) {
+                _debug("Enabled transition: ", result.getFullName());
+            }
+    
+            Iterator actions = result.choiceActionList().iterator();
+    
+            while (actions.hasNext()) {
+                Action action = (Action) actions.next();
+                action.execute();
+            }
+        }
+    
+        _lastChosenTransition = result;
+        return result;
+    }
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the attribute public members to refer
      *  to the attributes of the new actor.
@@ -293,9 +368,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // NOTE: this method is not called in the FSMDirector class.
         // This FSMActor is a mealy machine in that it produces outputs
         // when taking transitions.
-        _readInputs();
+        readInputs();
         List transitionList = _currentState.outgoingPort.linkedRelationList();
-        _chooseTransition(transitionList);
+        chooseTransition(transitionList);
     }
 
     /**
@@ -759,6 +834,43 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         reset();
     }
 
+    /** Set the value of the shadow variables for input ports of this actor.
+     *  @exception IllegalActionException If a shadow variable cannot take
+     *   the token read from its corresponding channel (should not occur).
+     */
+    public void readInputs() throws IllegalActionException {
+        Iterator inPorts = inputPortList().iterator();
+    
+        while (inPorts.hasNext() && !_stopRequested) {
+            IOPort p = (IOPort) inPorts.next();
+            int width = p.getWidth();
+    
+            for (int channel = 0; channel < width; ++channel) {
+                _readInputs(p, channel);
+            }
+        }
+    }
+
+    /** Set the input variables for channels that are connected to an
+     *  output port of the refinement of current state.
+     *  @exception IllegalActionException If a value variable cannot take
+     *   the token read from its corresponding channel.
+     */
+    public void readOutputsFromRefinement() throws IllegalActionException {
+        Iterator inPorts = inputPortList().iterator();
+    
+        while (inPorts.hasNext() && !_stopRequested) {
+            IOPort p = (IOPort) inPorts.next();
+            int width = p.getWidth();
+    
+            for (int channel = 0; channel < width; ++channel) {
+                if (_isRefinementOutput(p, channel)) {
+                    _readInputs(p, channel);
+                }
+            }
+        }
+    }
+
     /** Reset current state to the initial state. The name of the initial
      *  state is specified by the <i>initialStateName</i> attribute.
      *  @exception IllegalActionException If this actor does not
@@ -935,81 +1047,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
-    /** Return an enabled transition among the given list of transitions.
-     *  If there is only one transition enabled, return that transition.
-     *  In case there are multiple enabled transitions, if any of
-     *  them is not nondeterministic, throw an exception. See {@link Transition}
-     *  for the explanation of "nondeterministic". Otherwise, randomly choose
-     *  one from the enabled transitions and return it.
-     *  <p>
-     *  Execute the choice actions contained by the returned transition.
-     *  @param transitionList A list of transitions.
-     *  @return An enabled transition, or null if none is enabled.
-     *  @exception IllegalActionException If there is more than one
-     *   transition enabled and not all of them are nondeterministic.
-     */
-    protected Transition _chooseTransition(List transitionList)
-            throws IllegalActionException {
-        Transition result = null;
-
-        List enabledTransitions = enabledTransitions(transitionList);
-
-        // Ensure that if there are multiple enabled transitions, all of them
-        // must be nondeterministic.
-        if (enabledTransitions.size() > 1) {
-            Iterator transitions = enabledTransitions.iterator();
-
-            while (transitions.hasNext()) {
-                Transition enabledTransition = (Transition) transitions.next();
-
-                if (!enabledTransition.isNondeterministic()) {
-                    throw new MultipleEnabledTransitionsException(
-                            currentState(),
-                            "Multiple enabled transitions found but not all"
-                                    + " of them are nondeterministic. Transition "
-                                    + enabledTransition.getName()
-                                    + " is deterministic.");
-                }
-            }
-        }
-
-        // Randomly choose one transition from the list of the
-        // enabled trnasitions.
-        int length = enabledTransitions.size();
-
-        // FIXME: can be optimized when length == 1
-        if (length != 0) {
-            // Since the size of the list of enabled transitions usually (almost
-            // always) is less than the maximum value of integer. We can safely
-            // do the cast from long to int in the following statement.
-            int randomChoice = (int) Math.floor(Math.random() * length);
-
-            // There is a tiny chance that randomChoice equals length.
-            // When this happens, we deduct 1 from the randomChoice.
-            if (randomChoice == length) {
-                randomChoice--;
-            }
-
-            result = (Transition) enabledTransitions.get(randomChoice);
-        }
-
-        if (result != null) {
-            if (_debugging) {
-                _debug("Enabled transition: ", result.getFullName());
-            }
-
-            Iterator actions = result.choiceActionList().iterator();
-
-            while (actions.hasNext()) {
-                Action action = (Action) actions.next();
-                action.execute();
-            }
-        }
-
-        _lastChosenTransition = result;
-        return result;
-    }
-
     /** Execute all commit actions contained by the transition chosen
      *  during the last call to _chooseTransition(). Change current state
      *  to the destination state of the transition. Reset the refinement
@@ -1115,23 +1152,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
 
         _currentConnectionMap = (Map) _connectionMaps.get(_currentState);
-    }
-
-    /** Set the value of the shadow variables for input ports of this actor.
-     *  @exception IllegalActionException If a shadow variable cannot take
-     *   the token read from its corresponding channel (should not occur).
-     */
-    protected void _readInputs() throws IllegalActionException {
-        Iterator inPorts = inputPortList().iterator();
-
-        while (inPorts.hasNext() && !_stopRequested) {
-            IOPort p = (IOPort) inPorts.next();
-            int width = p.getWidth();
-
-            for (int channel = 0; channel < width; ++channel) {
-                _readInputs(p, channel);
-            }
-        }
     }
 
     /** Read tokens from the given channel of the given input port and
@@ -1268,26 +1288,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
-    /** Set the input variables for channels that are connected to an
-     *  output port of the refinement of current state.
-     *  @exception IllegalActionException If a value variable cannot take
-     *   the token read from its corresponding channel.
-     */
-    protected void _readOutputsFromRefinement() throws IllegalActionException {
-        Iterator inPorts = inputPortList().iterator();
-
-        while (inPorts.hasNext() && !_stopRequested) {
-            IOPort p = (IOPort) inPorts.next();
-            int width = p.getWidth();
-
-            for (int channel = 0; channel < width; ++channel) {
-                if (_isRefinementOutput(p, channel)) {
-                    _readInputs(p, channel);
-                }
-            }
-        }
-    }
-
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected fields                  ////
+    
     /** Current state. */
     protected State _currentState = null;
 
@@ -1394,7 +1397,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _finalStateNames = stateNames;
     }
 
-    /*  Create receivers for each input port.
+    /** Create receivers for each input port.
      *  @exception IllegalActionException If any port throws it.
      */
     private void _createReceivers() throws IllegalActionException {
