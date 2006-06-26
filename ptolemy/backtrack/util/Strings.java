@@ -114,6 +114,7 @@ public class Strings {
      *
      *  @param strings The array of strings.
      *  @return The array of urls.
+     *  @exception  MalformedURLException If a string is not a proper URL.
      */
     public static URL[] stringsToUrls(String[] strings) {
         if (strings == null) {
@@ -123,11 +124,9 @@ public class Strings {
         URL[] urls = new URL[strings.length];
 
         for (int i = 0; i < strings.length; i++) {
-            try {
-                urls[i] = new File(strings[i]).toURL();
-            } catch (MalformedURLException e) {
-                throw new UnknownASTException();
-            }
+            // Throw a MalformedURLException so that we avoid
+            // having a dependency on eclipse.backtrack.ast.
+            urls[i] = new File(strings[i]).toURL();
         }
 
         return urls;
