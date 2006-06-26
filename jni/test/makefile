@@ -39,7 +39,8 @@ DIRS =
 # Root of the Java directory
 ROOT =		../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR).
+# Can't use $(ROOT) here in the nightly build.
+CLASSPATH =	$(PTII)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR).
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
