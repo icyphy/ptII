@@ -177,6 +177,25 @@ public class DECQEventQueue implements DEEventQueue {
     public final Object[] toArray() {
         return _cQueue.toArray();
     }
+    
+    /** Describe the Contents of the queue as a string.
+     *  @return A string with a comma-separated list of events.
+     */
+    public String toString() {
+        Object[] array = toArray();
+        StringBuffer buffer = new StringBuffer("");
+        if (array != null) {
+            buffer.append("{");
+            for (int i = 0; i < array.length; i++) {
+                if (i > 0) {
+                    buffer.append(", ");
+                }
+                buffer.append(array[i]);
+            }
+            buffer.append("}");
+        }
+        return buffer.toString();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private inner class               ////
