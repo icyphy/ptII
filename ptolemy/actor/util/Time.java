@@ -413,8 +413,8 @@ public class Time implements Comparable {
     public long divide(Time interval) {
         if (_isPositiveInfinite || _isNegativeInfinite) {
             if (!interval.isInfinite()) {
-                if ((_isPositiveInfinite && interval._isPositiveInfinite)
-                        || (_isNegativeInfinite && interval._isNegativeInfinite)) {
+                if ((_isPositiveInfinite && interval.getDoubleValue() > 0)
+                        || (_isNegativeInfinite && interval.getDoubleValue() < 0)) {
                     return Long.MAX_VALUE;
                 } else {
                     return Long.MIN_VALUE;
