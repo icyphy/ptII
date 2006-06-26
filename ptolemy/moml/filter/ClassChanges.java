@@ -236,6 +236,10 @@ public class ClassChanges implements MoMLFilter {
         _classChanges.put("ptolemy.domains.sr.kernel.SROptimizedScheduler",
                 "ptolemy.actor.sched.FixedPointScheduler");
 
+        // Moved HSFSMDirector
+        _classChanges.put("ptolemy.domains.fsm.kernel.HSFSMDirector",
+                "ptolemy.domains.ct.kernel.HSFSMDirector");
+
         // Look for Kepler's NamedObjId, and if we don't find it, then
         // add it to the filter.  This makes it much easier to open
         // Kepler models in Ptolemy.
