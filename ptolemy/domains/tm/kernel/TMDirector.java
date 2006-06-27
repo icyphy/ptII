@@ -702,7 +702,7 @@ public class TMDirector extends Director implements TimedDirector {
      */
     public void preinitialize() throws IllegalActionException {
         _eventQueue = new CalendarQueue(new TMEventComparator(), 16, 2);
-        _interruptQueue = new DECQEventQueue(this, 2, 2, true);
+        _interruptQueue = new DECQEventQueue(2, 2, true);
 
         _disabledActors = null;
 

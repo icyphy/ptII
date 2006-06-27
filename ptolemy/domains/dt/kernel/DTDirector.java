@@ -521,15 +521,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
      */
     public Receiver newReceiver() {
         DTReceiver dtReceiver = new DTReceiver();
-
-        try {
-            dtReceiver.initializeLocalTime(new Time(this));
-        } catch (IllegalActionException e) {
-            // If the time resolution of the director is invalid,
-            // it should have been caught before this.
-            throw new InternalErrorException(e);
-        }
-
+        dtReceiver.initializeLocalTime(new Time(this));
         return dtReceiver;
     }
 
@@ -590,7 +582,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
      */
     public void setActorLocalTime(Time newTime, Actor actor) {
         DTActor dtActor = (DTActor) _allActorsTable.get(actor);
-        dtActor._localTime = newTime;
+        dtActor.localTime = newTime;
     }
 
     /** Set a new value to the current time of the model, where
@@ -1148,15 +1140,9 @@ public class DTDirector extends SDFDirector implements TimedDirector {
         _receiverTable = new ArrayList();
         _allActorsTable = new Hashtable();
 
-        try {
-            setModelTime(new Time(this));
-            _formerTimeFired = new Time(this);
-            _formerValidTimeFired = new Time(this);
-        } catch (IllegalActionException e) {
-            // If the time resolution of the director is invalid,
-            // it should have been caught before this.
-            throw new InternalErrorException(e);
-        }
+        setModelTime(new Time(this));
+        _formerTimeFired = new Time(this);
+        _formerValidTimeFired = new Time(this);
 
         _isFiringAllowed = true;
         _shouldDoInternalTransferOutputs = true;
@@ -1196,30 +1182,19 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     ////                         inner classes                     ////
     // Inner class to cache important variables for contained actors
     private class DTActor {
+        public Time localTime;
+
         private Actor _actor;
-
-        // FIXME; this is set, but never read
-        private Time _localTime;
-
         private int _repeats;
-
         private boolean _shouldGenerateInitialTokens;
 
         /* Construct the information on the contained Actor
          * @param a The actor
          */
         public DTActor(Actor actor) {
+            localTime = new Time(_actor.getDirector());
             _actor = actor;
             _repeats = 0;
-
-            try {
-                _localTime = new Time(_actor.getDirector());
-            } catch (IllegalActionException e) {
-                // If the time resolution of the director is invalid,
-                // it should have been caught before this.
-                throw new InternalErrorException(e);
-            }
-
             _shouldGenerateInitialTokens = false;
         }
     }

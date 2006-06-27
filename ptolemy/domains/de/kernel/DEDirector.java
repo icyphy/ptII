@@ -997,7 +997,7 @@ public class DEDirector extends Director implements TimedDirector {
      */
     public void preinitialize() throws IllegalActionException {
         // Initialize an event queue.
-        _eventQueue = new DECQEventQueue(this, ((IntToken) minBinCount
+        _eventQueue = new DECQEventQueue(((IntToken) minBinCount
                 .getToken()).intValue(), ((IntToken) binCountFactor.getToken())
                 .intValue(), ((BooleanToken) isCQAdaptive.getToken())
                 .booleanValue());

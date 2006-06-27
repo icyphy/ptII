@@ -195,8 +195,7 @@ public class TimedDelay extends DETransformer {
         super.initialize();
         _currentInput = null;
         _currentOutput = null;
-        _delayedOutputTokens = new CalendarQueue(new TimedEvent.TimeComparator(
-                this.getDirector()));
+        _delayedOutputTokens = new CalendarQueue(new TimedEvent.TimeComparator());
     }
 
     /** Process the current input if it has not been processed. Schedule
