@@ -28,8 +28,6 @@
  */
 package ptolemy.actor.util;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedEvent
@@ -85,10 +83,7 @@ public class TimedEvent {
      * If this is violated, ClassCastException will be thrown.
      */
     public static class TimeComparator implements CQComparator {
-        /** Construct a TimeComparator object for the given director.
-         *  @param director The director this comparator is associated with.
-         *  @exception IllegalActionException If the specified director has
-         *   an invalid time precision.
+        /** Construct a TimeComparator object.
          */
         public TimeComparator() {
             _binWidth = 1;
@@ -137,8 +132,6 @@ public class TimedEvent {
          *   current zero reference and the bin width.
          *  @exception ClassCastException If the arguments are not instances of
          *   TimedEvent.
-         *  @exception InternalErrorException If the specified director has
-         *   an invalid time precision.
          */
         public long getVirtualBinNumber(Object entry) {
             // Note: The longValue() method will only
@@ -166,8 +159,6 @@ public class TimedEvent {
          *  @param entryArray An array of TimedEvent objects.
          *  @exception ClassCastException If one of the array elements is not
          *   an instance of TimedEvent.
-         *  @exception InternalErrorException If the specified director has
-         *   an invalid time precision.
          */
         public void setBinWidth(Object[] entryArray) {
             if (entryArray == null) {

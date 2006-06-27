@@ -31,7 +31,6 @@ import ptolemy.actor.util.CQComparator;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.DebugListener;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,7 +54,6 @@ import ptolemy.kernel.util.InvalidStateException;
  */
 public class DECQEventQueue implements DEEventQueue {
     /** Construct an empty event queue.
-     *  @param director The director that contains this event queue.
      */
     public DECQEventQueue() {
         // Construct a calendar queue _cQueue with its default parameters:
@@ -186,8 +184,6 @@ public class DECQEventQueue implements DEEventQueue {
     // The default binWidth is 1.0, and the default zeroReference is 0.0.
     private class DECQComparator implements CQComparator {
         /** Construct a new comparator.
-         *  @exception IllegalActionException If the time resolution
-         *  of the director is invalid.
          */
         public DECQComparator() {
             _binWidth = 1;
@@ -201,12 +197,12 @@ public class DECQEventQueue implements DEEventQueue {
          *  ClassCastException will be thrown.  The compareTo() method
          *  of the first argument is used to do the comparison.
          *
-         * @param object1 The first DE event.
-         * @param object2 The second DE event.
-         * @return A negative integer, zero, or a positive integer if the first
-         *  argument is less than, equal to, or greater than the second.
-         * @exception ClassCastException If any of the arguments is not
-         *  an instance of DEEvent.
+         *  @param object1 The first DE event.
+         *  @param object2 The second DE event.
+         *  @return A negative integer, zero, or a positive integer if the first
+         *   argument is less than, equal to, or greater than the second.
+         *  @exception ClassCastException If any of the arguments is not
+         *   an instance of DEEvent.
          */
         public final int compare(Object object1, Object object2) {
             return ((DEEvent) object1).compareTo((DEEvent) object2);
