@@ -50,9 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 set d1 [java::new ptolemy.actor.Director]
 $d1 setName D1
 
-set comparator [java::new \
-		    {ptolemy.actor.util.TimedEvent$TimeComparator \
-			 ptolemy.actor.Director} $d1]
+set comparator [java::new {ptolemy.actor.util.TimedEvent$TimeComparator}]
 
 ######################################################################
 ####
