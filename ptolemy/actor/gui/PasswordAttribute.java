@@ -69,7 +69,7 @@ public class PasswordAttribute extends StringParameter {
     /** Get the password contained by this attribute. If the password
      *  hasn't been set, then open a dialog and wait for the user to
      *  set the password.
-     *  @return The password.
+     *  @return A copy of the password.
      *  @see #setPassword(char[])
      */
     public char[] getPassword() {
@@ -78,7 +78,12 @@ public class PasswordAttribute extends StringParameter {
             new EditParametersDialog(null, this);
         }
 
-        return _password;
+        // FindBugs: Return a copy instead of a mutable value.
+        char[] returnValue = new char[_password.length];
+        for (int i = 0; i < _password.length; i++) {
+            returnValue[i] = _password[i];
+        } 
+        return returnValue;
     }
 
     /** Set the password contained by this attribute.
@@ -86,6 +91,11 @@ public class PasswordAttribute extends StringParameter {
      *  @see #getPassword()
      */
     public void setPassword(char[] password) {
+        // FindBugs: Don't incorporate reference to a mutable object.
+        char[] returnValue = new char[_password.length];
+        for (int i = 0; i < _password.length; i++) {
+            _password[i] = password[i];
+        } 
         _password = password;
     }
 
