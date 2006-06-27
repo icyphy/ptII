@@ -1192,8 +1192,8 @@ public class DTDirector extends SDFDirector implements TimedDirector {
          * @param a The actor
          */
         public DTActor(Actor actor) {
-            localTime = new Time(_actor.getDirector());
             _actor = actor;
+            localTime = new Time(_actor.getDirector());
             _repeats = 0;
             _shouldGenerateInitialTokens = false;
         }
