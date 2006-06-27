@@ -448,7 +448,7 @@ public class Configuration extends CompositeEntity {
 
             // Check the URL to see whether it is a file,
             // and if so, whether it is writable.
-            if (in.getProtocol().equals("file")) {
+            if (in != null && in.getProtocol().equals("file")) {
                 String filename = in.getFile();
                 File file = new File(filename);
 
