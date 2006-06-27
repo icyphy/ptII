@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HierarchicalModel" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 2, 820, 590}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 2, 820, 579}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 472]">
     </property>
@@ -34,8 +34,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 445.0]">
         </property>
     </property>
-    <entity name=" A" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="A" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
+        </property>
+        <property name="conservativeAnalysis" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
@@ -241,6 +243,8 @@ output with no delay.</text></svg></configure>
     </entity>
     <entity name="B" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
+        </property>
+        <property name="conservativeAnalysis" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
@@ -507,9 +511,9 @@ output with no delay.</text></svg></configure>
         <vertex name="vertex1" value="[105.0, 70.0]">
         </vertex>
     </relation>
-    <link port=" A.input" relation="relation5"/>
-    <link port=" A.output" relation="relation3"/>
-    <link port=" A.trigger" relation="relation2"/>
+    <link port="A.input" relation="relation5"/>
+    <link port="A.output" relation="relation3"/>
+    <link port="A.trigger" relation="relation2"/>
     <link port="B.input" relation="relation3"/>
     <link port="B.output" relation="relation"/>
     <link port="B.trigger" relation="relation2"/>
