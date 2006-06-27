@@ -132,14 +132,12 @@ public class HTMLViewer extends TableauFrame implements Printable,
      */
     public void hyperlinkUpdate(HyperlinkEvent event) {
         if (event.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-            if (event != null) {
-                if (event.getURL() != null) {
-                    // If the link was 'about:copyright',
-                    // then getURL() returns null, but getDescription() works.
-                    report(event.getURL().toString());
-                } else if (event.getDescription() != null) {
-                    report(event.getDescription());
-                }
+            if (event.getURL() != null) {
+                // If the link was 'about:copyright',
+                // then getURL() returns null, but getDescription() works.
+                report(event.getURL().toString());
+            } else if (event.getDescription() != null) {
+                report(event.getDescription());
             }
         } else if (event.getEventType() == HyperlinkEvent.EventType.EXITED) {
             report("");
