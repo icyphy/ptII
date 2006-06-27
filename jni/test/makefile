@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Hylands
 #
-# @Copyright (c) 2003-2005 The Regents of the University of California
+# @Copyright (c) 2003-2006 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -39,8 +39,7 @@ DIRS =
 # Root of the Java directory
 ROOT =		../..
 
-# Can't use $(ROOT) here in the nightly build.
-CLASSPATH =	$(PTII)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR).
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR).$(AUXCLASS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
