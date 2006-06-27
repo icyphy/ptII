@@ -628,8 +628,7 @@ public class HTMLAbout {
                             modelURL = new URL(model);
                         } else {
                             if (model.startsWith("file:/")) {
-                                model = model.substring((new String("file:/"))
-                                        .length());
+                                model = model.substring("file:/".length());
                             }
                             modelURL = new File(model).toURL();
                         }
