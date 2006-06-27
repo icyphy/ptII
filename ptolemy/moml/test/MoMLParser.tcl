@@ -3741,21 +3741,3 @@ test MoMLParser-25.1 {Replicated the problems I was having with adding a Sinewav
  in [external stream] at line 6 and column 72
 } {}}
 
-######################################################################
-####
-#
-set moml_26 "$classheader
-<entity name=\"moml_26constTest\" class=\"ptolemy.actor.TypedCompositeActor\">
-    <entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">
-        <property name=\"value\" class=\"ptolemy.data.expr.Parameter\"/>
-    </entity>
-</entity>
-"
-
-test MoMLParser-26.1 {Try to set Const to the empty string.  This is a problem with the InteractiveShell, because we can't set the prompt to the empty string} {
-    $parser reset
-    set toplevel [java::cast ptolemy.actor.TypedCompositeActor [$parser parse $moml_26]]
-    set const [$toplevel getEntity Const]
-    set valueParameter [java::cast ptolemy.data.expr.Parameter [$const getAttribute value]]
-    $valueParameter getExpression
-} {}
