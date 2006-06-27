@@ -70,6 +70,7 @@ public class PasswordAttribute extends StringParameter {
      *  hasn't been set, then open a dialog and wait for the user to
      *  set the password.
      *  @return The password.
+     *  @see #setPassword(char[])
      */
     public char[] getPassword() {
         if (_password == null) {
@@ -82,6 +83,7 @@ public class PasswordAttribute extends StringParameter {
 
     /** Set the password contained by this attribute.
      *  @param password The password.
+     *  @see #getPassword()
      */
     public void setPassword(char[] password) {
         _password = password;

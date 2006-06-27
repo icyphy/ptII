@@ -56,7 +56,7 @@ import ptolemy.util.MessageHandler;
  to be read.  For example,
  <pre>
  $PTII/bin/ptexecute -conf ptolemy/configs/full/configuration.xml ../../domains/sdf/demo/Butterfly/Butterfly.xml
- <pre>
+ </pre>
  and
  <pre>
  $PTII/bin/ptexecute -full ../../domains/sdf/demo/Butterfly/Butterfly.xml
@@ -114,9 +114,10 @@ public class PtExecuteApplication extends MoMLApplication {
      *  is printed to stderr and the eventual exiting of the process
      *  is delayed so the stack trace can be read.
      *  @param manager The manager calling this method.
+     *  @param throwable The Throwable to be displayed.
      */
-
-    public synchronized void executionError(Manager manager, Throwable throwable) {
+    public synchronized void executionError(Manager manager,
+            Throwable throwable) {
 
         // If you modify this code, make sure that the following command
         // prints a meaningful message to stdout:

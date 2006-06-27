@@ -194,6 +194,7 @@ public class ModelPane extends JPanel implements CloseListener {
 
     /** Return the container for model displays.
      *  @return A container for graphical displays.
+     *  @see #setDisplayPane(Container)
      */
     public Container getDisplayPane() {
         if (_displays == null) {
@@ -207,6 +208,7 @@ public class ModelPane extends JPanel implements CloseListener {
 
     /** Get the associated model.
      *  @return The associated model.
+     *  @see #setModel(CompositeActor)
      */
     public CompositeActor getModel() {
         return _model;
@@ -250,8 +252,10 @@ public class ModelPane extends JPanel implements CloseListener {
 
     /** Set the container for model displays.  This method sets the
      *  background of the specified pane to match that of this panel.
+     *  @param pane The pane that is to be the container.
      *  @deprecated It is no longer necessary to specify a display pane.
      *   The displays are handled by setModel().
+     *  @see #getDisplayPane()
      */
     public void setDisplayPane(Container pane) {
         if (_displays != null) {
@@ -267,6 +271,7 @@ public class ModelPane extends JPanel implements CloseListener {
      *  parameters, and those of its director, if it has one.
      *  All placeable objects in the hierarchy will get placed.
      *  @param model The associated model.
+     *  @see #getModel()
      */
     public void setModel(CompositeActor model) {
         // If there was a previous model, close its displays.

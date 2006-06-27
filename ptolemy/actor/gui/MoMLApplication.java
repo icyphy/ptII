@@ -456,6 +456,7 @@ public class MoMLApplication implements ExecutionListener {
      *  current working directory, or the directory in which this application
      *  is started up.
      *  @param spec The specification.
+     *  @return the URL.
      *  @exception IOException If it cannot convert the specification to
      *   a URL.
      */
@@ -726,6 +727,7 @@ public class MoMLApplication implements ExecutionListener {
     }
 
     /** Parse a command-line argument.
+     *  @param arg The command-line argument to be parsed.
      *  @return True if the argument is understood, false otherwise.
      *  @exception Exception If something goes wrong.
      */
@@ -905,6 +907,7 @@ public class MoMLApplication implements ExecutionListener {
     }
 
     /** Parse the command-line arguments.
+     *  @param args The command-line arguments to be parsed.
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
@@ -1068,7 +1071,7 @@ public class MoMLApplication implements ExecutionListener {
 
     /** The base path of the configuration directory, usually
      *  "ptolemy/configs" for Ptolemy II, but subclasses might
-     *  have configurations in a different directory
+     *  have configurations in a different directory.
      */
     protected String _basePath = "ptolemy/configs";
 

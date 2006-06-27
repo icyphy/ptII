@@ -64,7 +64,7 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
  */
 public class MoMLSimpleApplication implements ChangeListener, ExecutionListener {
     /** A Nullary constructor is necessary so that we can extends this
-     *  base class with a subclass
+     *  base class with a subclass.
      *  @exception Exception Not thrown in this base class
      */
     public MoMLSimpleApplication() throws Exception {
@@ -74,7 +74,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  @param xmlFileName A string that refers to an MoML file that
      *  contains a Ptolemy II model.  The string should be
      *  a relative pathname.
-     *  @exception Exception If there was a problem parsing
+     *  @exception Throwable If there was a problem parsing
      *  or running the model.
      */
     public MoMLSimpleApplication(String xmlFileName) throws Throwable {
@@ -201,7 +201,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
     public void managerStateChanged(Manager manager) {
     }
 
-    /** Create an instance of a single model and run it
+    /** Create an instance of a single model and run it.
      *  @param args The command-line arguments naming the .xml file to run
      */
     public static void main(String[] args) {
@@ -214,6 +214,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
     }
 
     /** Execute the same model again.
+     *  @exception Exception if there was a problem rerunning the model.
      */
     public void rerun() throws Exception {
         _manager.execute();

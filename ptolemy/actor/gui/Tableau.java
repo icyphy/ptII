@@ -164,6 +164,7 @@ public class Tableau extends CompositeEntity {
     /** Return the top-level window that implements the display of
      *  this tableau.
      *  @return A top-level window.
+     *  @see #setFrame(JFrame)
      */
     public JFrame getFrame() {
         return _frame;
@@ -178,6 +179,7 @@ public class Tableau extends CompositeEntity {
      *  The title is used as the title of the top-level window in
      *  the setFrame() method.
      *  @return The title to put on the window.
+     *  @see #setTitle(String)
      */
     public String getTitle() {
         if (_title == null) {
@@ -273,6 +275,7 @@ public class Tableau extends CompositeEntity {
      *  @param frame The top-level window associated with the tableau.
      *  @exception IllegalActionException If the frame is not acceptable
      *   (not thrown in this base class).
+     *  @see #getFrame()
      */
     public void setFrame(JFrame frame) throws IllegalActionException {
         _frame = frame;
@@ -319,6 +322,7 @@ public class Tableau extends CompositeEntity {
      *  associated top-level window.  Call this with a null argument
      *  to use the identifier of the containing effigy as a title.
      *  @param title The title to put on the window.
+     *  @see #getTitle()
      */
     public void setTitle(String title) {
         _title = StringUtilities.abbreviate(title);

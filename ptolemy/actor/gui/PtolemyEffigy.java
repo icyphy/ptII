@@ -147,6 +147,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 
     /** Return the ptolemy model that this is an effigy of.
      *  @return The model, or null if none has been set.
+     *  @see #setModel(NamedObj)
      */
     public NamedObj getModel() {
         return _model;
@@ -181,6 +182,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
     /** Set the ptolemy model that this is an effigy of.
      *  Register with that model as a change listener.
      *  @param model The model.
+     *  @see #getModel()
      */
     public void setModel(NamedObj model) {
         if (_model != null) {
@@ -611,6 +613,10 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  @param container The container for the effigy.
          *  @param name The name.
          *  @return A new effigy.
+         *  @exception IllegalActionException If the entity cannot be contained
+         *   by the proposed container.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an entity already in the container.       
          */
         protected PtolemyEffigy _newEffigy(CompositeEntity container,
                 String name) throws IllegalActionException,

@@ -64,6 +64,10 @@ public class PlotEffigy extends Effigy {
     /** Create a new effigy in the given directory with the given name.
      *  @param container The directory that contains this effigy.
      *  @param name The name of this effigy.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
      */
     public PlotEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -75,6 +79,7 @@ public class PlotEffigy extends Effigy {
 
     /** Return the plot that this is an effigy of.
      *  @return The plot or null if none has been set.
+     *  @see #setPlot(PlotBox)   
      */
     public PlotBox getPlot() {
         return _plot;
@@ -82,6 +87,7 @@ public class PlotEffigy extends Effigy {
 
     /** Set the plot that this is an effigy of.
      *  @param plot The plot.
+     *  @see #getPlot()
      */
     public void setPlot(PlotBox plot) {
         _plot = plot;

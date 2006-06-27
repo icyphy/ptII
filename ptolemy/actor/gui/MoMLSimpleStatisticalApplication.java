@@ -72,6 +72,9 @@ import ptolemy.moml.StreamErrorHandler;
  */
 public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
     /** Parse the xml file and run it.
+     *  @param args The command line arguments 
+     *  @exception Exception If there was a problem parsing
+     *  or running the model.
      */
     public MoMLSimpleStatisticalApplication(String[] args) throws Exception {
         _parser = new MoMLParser();
@@ -150,6 +153,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
     }
 
     /** Parse a command-line argument.
+     *  @param arg The command-line argument to be parsed.
      *  @return True if the argument is understood, false otherwise.
      *  @exception Exception If something goes wrong.
      */
@@ -217,6 +221,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
     }
 
     /** Parse the command-line arguments.
+     *  @param args The command-line arguments to be parsed.
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
@@ -300,7 +305,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
         }
     }
 
-    /** Create an instance of a single model and run it
+    /** Create an instance of a single model and run it.
      *  @param args The command-line arguments naming the .xml file to run
      */
     public static void main(String[] args) {
@@ -351,7 +356,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
     /** The parser used to construct the configuration. */
     protected MoMLParser _parser;
 
-    /** The toplevel, which is usually the model */
+    /** The toplevel, which is usually the model. */
     protected CompositeActor _toplevel;
 
     /** If true, then auto exit after a few seconds. */

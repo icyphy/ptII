@@ -100,7 +100,7 @@ public class TokenTableau extends Tableau {
 
     /** Append the specified tokens to the display.
      *  @param list A list of tokens.
-     *  @exception IllegalActionExceptoin If the tokens are not
+     *  @exception IllegalActionException If the tokens are not
      *  acceptable (not thrown in this base class).
      */
     public void append(List list) throws IllegalActionException {

@@ -42,7 +42,7 @@ import ptolemy.util.StringUtilities;
 /** This class contains utilities for use with JNLP, aka Web Start.
 
  <p>For more information about Web Start, see
- <a href="http://java.sun.com/products/javawebstart/" target="_top"><code>http://java.sun.com/products/javawebstart</a></code>
+ <a href="http://java.sun.com/products/javawebstart/" target="_top"><code>http://java.sun.com/products/javawebstart</code></a>
  or <code>$PTII/doc/webStartHelp</code>
 
  @author Christopher Hylands
@@ -91,7 +91,9 @@ public class JNLPUtilities {
         return possibleJarURL;
     }
 
-    /** Return true if we are running under WebStart */
+    /** Return true if we are running under WebStart.
+     *  @return True if we are running under WebStart.
+     */
     public static boolean isRunningUnderWebStart() {
         try {
             // NOTE: getProperty() will probably fail in applets, which
@@ -108,7 +110,7 @@ public class JNLPUtilities {
         return false;
     }
 
-    /** Given a jar url of the format jar:<url>!/{entry}, return
+    /** Given a jar url of the format jar:{url}!/{entry}, return
      *  the resource, if any of the {entry}.
      *  If the string does not contain <code>!/</code>, then return null.
      *  Web Start uses jar URL, and there are some cases where
@@ -118,6 +120,7 @@ public class JNLPUtilities {
      *  @param spec The string containing the jar url.
      *  @exception IOException If it cannot convert the specification to
      *   a URL.
+     *  @return the resource if any.
      *  @deprecated Use ptolemy.util.ClassUtilities#jarURLEntryResource(String)
      *  @see ptolemy.util.ClassUtilities#jarURLEntryResource(String)
      *  @see java.net.JarURLConnection
@@ -144,6 +147,7 @@ public class JNLPUtilities {
      *  created.  If directory is null then the platform dependent
      *  temporary directory is used.
      *  @return the name of the temporary file that was created
+     *  @exception IOException If there is a problem saving the jar URL.
      */
     public static String saveJarURLAsTempFile(String jarURLName, String prefix,
             String suffix, File directory) throws IOException {
@@ -186,6 +190,7 @@ public class JNLPUtilities {
      *  with "jar:" and have a "!/" in them.
      *  @return the name of the file that was created or
      *  null if the file cannot be created
+     *  @exception IOException If there is a problem saving the jar URL.
      */
     public static String saveJarURLInClassPath(String jarURLName)
             throws IOException {
