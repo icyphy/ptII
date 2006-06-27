@@ -81,7 +81,7 @@ test UserActorLibrary-3.0 {getDirectory} {
 ######################################################################
 ####
 #
-test UserActorLibrary-4.0 {openModel, findEffigy} {
+test UserActorLibrary-4.0 {openModel, findEffigy, showAll} {
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser reset
     $parser purgeModelRecord test.xml
@@ -91,6 +91,7 @@ test UserActorLibrary-4.0 {openModel, findEffigy} {
     set effigy1 [$configuration findEffigy $entity]
     set effigy2 [$configuration getEffigy $entity]
     $entity setContainer [java::null]
+    $configuration showAll
     list [$tableau getFullName] [$effigy1 getFullName] [$effigy2 getFullName]
 } {.configuration.directory.test.simpleTableau .configuration.directory.test .configuration.directory.test}
 
