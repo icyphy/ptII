@@ -28,7 +28,6 @@
  */
 package ptolemy.actor.util;
 
-import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
@@ -91,10 +90,9 @@ public class TimedEvent {
          *  @exception IllegalActionException If the specified director has
          *   an invalid time precision.
          */
-        public TimeComparator(Director director) throws IllegalActionException {
-            _director = director;
-            _binWidth = new Time(_director, 1.0);
-            _zeroReference = new TimedEvent(new Time(_director, 0.0), null);
+        public TimeComparator() {
+            _binWidth = 1;
+            _zeroReference = 0.0;
         }
 
         ///////////////////////////////////////////////////////////////////
@@ -143,20 +141,17 @@ public class TimedEvent {
          *   an invalid time precision.
          */
         public long getVirtualBinNumber(Object entry) {
-            // NOTE: The longValue() method will only
+            // Note: The longValue() method will only
             // returns the low-order 64 bits of the result.
             // If it is larger than what can be represented
             // in 64 bits, then the returned result will be wrapped.
-            long value = (((TimedEvent) entry).timeStamp
-                    .subtract(_zeroReference.timeStamp)).divide(_binWidth);
-            return value;
-
-            // What used to be here:
-
-            /*
-             return (long) (((TimedEvent) entry).timeStamp.subtract(_zeroReference.timeStamp)
-             .getDoubleValue() / _binWidth);
-             */
+            long value = (long)
+                (((TimedEvent) entry).timeStamp.subtract(_zeroReference).getLongValue() / _binWidth);
+            if (value != Long.MAX_VALUE) {
+                return value;
+            } else {
+                return Long.MAX_VALUE-1;
+            }
         }
 
         /** Given an array of TimedEvent objects, find the appropriate bin
@@ -164,9 +159,7 @@ public class TimedEvent {
          *  the bin width is chosen such that on average
          *  the number of entries in all non-empty bins is equal to one.
          *  If the argument is null, return the default bin width,
-         *  which is 1.0 for this implementation.  If the argument
-         *  is a length-one array, then the single element in the array
-         *  (an instance of TimedEvent) is made the bin width.
+         *  which is 1.0 for this implementation. 
          *  Otherwise, the statistics of the elements of the array
          *  are analyzed to determine a reasonable bin width.
          *
@@ -177,53 +170,47 @@ public class TimedEvent {
          *   an invalid time precision.
          */
         public void setBinWidth(Object[] entryArray) {
-            try {
-                if (entryArray == null) {
-                    // Reset to default.
-                    _binWidth = new Time(_director, 1.0);
-                    return;
-                }
-
-                if (entryArray.length == 1) {
-                    _binWidth = ((TimedEvent) entryArray[0]).timeStamp;
-                    return;
-                }
-
-                Time[] diff = new Time[entryArray.length - 1];
-
-                Time zero = new Time(_director, 0.0);
-                Time average = zero;
-
-                for (int i = 1; i < entryArray.length; ++i) {
-                    diff[i - 1] = ((TimedEvent) entryArray[i]).timeStamp
-                            .subtract(((TimedEvent) entryArray[i - 1]).timeStamp);
-                    average = average.add(diff[i - 1]);
-                }
-
-                average = average.divide(diff.length);
-
-                Time effAverage = zero;
-                int nEffSamples = 0;
-
-                for (int i = 1; i < entryArray.length; ++i) {
-                    if (diff[i - 1].compareTo(average.add(average)) < 0) {
-                        nEffSamples++;
-                        effAverage = effAverage.add(diff[i - 1]);
-                    }
-                }
-
-                // To avoid returning NaN or 0.0 for the width, if this is
-                // the result, leave the bin width unchanged.
-                if ((effAverage.equals(zero)) || (nEffSamples == 0)) {
-                    return;
-                }
-
-                effAverage = effAverage.divide(nEffSamples);
-                _binWidth = effAverage.multiply(3L);
-            } catch (IllegalActionException e) {
-                // Malformed time resolution would have been caught by now.
-                throw new InternalErrorException(e);
+            if (entryArray == null) {
+                // Reset to default.
+                _binWidth = 1;
+                _zeroReference = 0.0;
+                return;
             }
+            
+            double[] diff = new double[entryArray.length - 1];
+            
+            Time firstEntryTime = ((TimedEvent) entryArray[0]).timeStamp;
+            Time lastEntryTime = ((TimedEvent) entryArray[entryArray.length - 1]).timeStamp;
+            
+            if (firstEntryTime.isInfinite() 
+                    && firstEntryTime.equals(lastEntryTime)) {
+                // To avoid setting NaN or 0.0
+                // for the width, apparently due to simultaneous events,
+                // we leave it unchanged instead.
+                return;
+            }
+
+            double average = lastEntryTime.subtract(firstEntryTime).getDoubleValue();
+            average = average / (entryArray.length - 1);
+
+            double effAverage = 0.0;
+            int nEffSamples = 0;
+            
+            for (int i = 1; i < entryArray.length; ++i) {
+                if (diff[i - 1]< 2*average) {
+                    nEffSamples++;
+                    effAverage = effAverage + diff[i - 1];
+                }
+            }
+            
+            // To avoid returning NaN or 0.0 for the width, if this is
+            // the result, leave the bin width unchanged.
+            if ((effAverage == 0) || (nEffSamples == 0)) {
+                return;
+            }
+            
+            effAverage = effAverage / nEffSamples;
+            _binWidth = effAverage*3;
         }
 
         /** Set the zero reference, to be used in calculating the virtual
@@ -232,18 +219,16 @@ public class TimedEvent {
          *   of TimedEvent.
          */
         public void setZeroReference(Object zeroReference) {
-            _zeroReference = (TimedEvent) zeroReference;
+            _zeroReference = ((TimedEvent) zeroReference).timeStamp.getDoubleValue();
         }
 
         ///////////////////////////////////////////////////////////////////
         ////                         private members                   ////
-        // The director that contains this comparator.
-        private Director _director;
 
         // The bin width.
-        private Time _binWidth;
+        private double _binWidth;
 
         // The zero reference.
-        private TimedEvent _zeroReference;
+        private double _zeroReference;
     }
 }

@@ -27,14 +27,11 @@
  */
 package ptolemy.domains.de.kernel;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
 import ptolemy.actor.util.CQComparator;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,40 +57,20 @@ public class DECQEventQueue implements DEEventQueue {
     /** Construct an empty event queue.
      *  @param director The director that contains this event queue.
      */
-    public DECQEventQueue(Director director) {
-        _director = director;
-
-        try {
-            // Construct a calendar queue _cQueue with its default parameters:
-            // minBinCount is 2, binCountFactor is 2, and isAdaptive is true.
-            _cQueue = new CalendarQueue(new DECQComparator());
-        } catch (IllegalActionException e) {
-            // If the time resolution of the director is invalid,
-            // it should have been caught before this.
-            throw new InternalErrorException(e);
-        }
+    public DECQEventQueue() {
+        // Construct a calendar queue _cQueue with its default parameters:
+        // minBinCount is 2, binCountFactor is 2, and isAdaptive is true.
+        _cQueue = new CalendarQueue(new DECQComparator());
     }
 
     /** Construct an empty event queue with the specified parameters.
-     *  @param director The director that contains this event queue.
      *  @param minBinCount The minimum number of bins.
      *  @param binCountFactor The factor when changing the bin count.
      *  @param isAdaptive If the queue changes its number of bins at run time.
      */
-    public DECQEventQueue(Director director, int minBinCount,
-            int binCountFactor, boolean isAdaptive) {
-        _director = director;
-
-        try {
-            // Construct a calendar queue _cQueue with the given parameters.
-            _cQueue = new CalendarQueue(new DECQComparator(), minBinCount,
-                    binCountFactor);
-        } catch (IllegalActionException e) {
-            // If the time resolution of the director is invalid,
-            // it should have been caught before this.
-            throw new InternalErrorException(e);
-        }
-
+    public DECQEventQueue(int minBinCount, int binCountFactor, boolean isAdaptive) {
+        // Construct a calendar queue _cQueue with the given parameters.
+        _cQueue = new CalendarQueue(new DECQComparator(), minBinCount, binCountFactor);
         _cQueue.setAdaptive(isAdaptive);
     }
 
@@ -212,9 +189,9 @@ public class DECQEventQueue implements DEEventQueue {
          *  @exception IllegalActionException If the time resolution
          *  of the director is invalid.
          */
-        public DECQComparator() throws IllegalActionException {
-            // This constructor exists only to declare the thrown exception.
-            super();
+        public DECQComparator() {
+            _binWidth = 1;
+            _zeroReference = 0.0;
         }
 
         /** Compare two arguments for order. Return a negative integer,
@@ -253,12 +230,17 @@ public class DECQEventQueue implements DEEventQueue {
          *   an instance of DEEvent.
          */
         public final long getVirtualBinNumber(Object event) {
-            // NOTE: The longValue() method will only
+            // Note: The longValue() method will only
             // returns the low-order 64 bits of the result.
             // If it is larger than what can be represented
             // in 64 bits, then the returned result will be wrapped.
-            return (((DEEvent) event).timeStamp().subtract(_zeroReference
-                    .timeStamp())).divide(_binWidth.timeStamp());
+            long value = (long) 
+                (((DEEvent) event).timeStamp().subtract(_zeroReference).getLongValue() / _binWidth);
+            if (value != Long.MAX_VALUE) {
+                return value;
+            } else {
+                return Long.MAX_VALUE-1;
+            }
         }
 
         /** Given an array of DE events, set an appropriate bin width.
@@ -278,50 +260,53 @@ public class DECQEventQueue implements DEEventQueue {
          *  an instance of DEEvent.
          */
         public void setBinWidth(Object[] entryArray) {
-            try {
-                if ((entryArray == null) || (entryArray.length < 2)) {
-                    _zeroReference = new DEEvent((Actor) null, new Time(
-                            _director, 0.0), 0, 0);
-                    return;
-                }
-
-                Time[] diff = new Time[entryArray.length - 1];
-                Time average = (((DEEvent) entryArray[entryArray.length - 1])
-                        .timeStamp().subtract(((DEEvent) entryArray[0])
-                        .timeStamp())).divide((entryArray.length - 1));
-                Time zero = new Time(_director, 0.0);
-                Time effectiveAverage = zero;
-                int effectiveSamples = 0;
-
-                if (average.isInfinite()) {
-                    return;
-                }
-
-                for (int i = 0; i < (entryArray.length - 1); ++i) {
-                    diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp()
-                            .subtract(((DEEvent) entryArray[i]).timeStamp());
-
-                    if (diff[i].compareTo(average.add(average)) < 0) {
-                        effectiveSamples++;
-                        effectiveAverage = effectiveAverage.add(diff[i]);
-                    }
-                }
-
-                if (effectiveAverage.equals(zero) || (effectiveSamples == 0)) {
-                    // To avoid setting NaN or 0.0
-                    // for the width, apparently due to simultaneous events,
-                    // we leave it unchanged instead.
-                    return;
-                }
-
-                effectiveAverage = effectiveAverage.divide(effectiveSamples);
-                _binWidth = new DEEvent((Actor) null, effectiveAverage
-                        .multiply(3L), 0, 0);
-            } catch (IllegalActionException e) {
-                // If the time resolution of the director is invalid,
-                // it should have been caught before this.
-                throw new InternalErrorException(e);
+            if ((entryArray == null) || (entryArray.length < 2)) {
+                // Reset to default.
+                _binWidth = 1;
+                _zeroReference = 0.0;
+                return;
             }
+            
+            double[] diff = new double[entryArray.length - 1];
+            Time firstEntryTime = ((DEEvent) entryArray[0]).timeStamp();
+            Time lastEntryTime = ((DEEvent) entryArray[entryArray.length - 1]).timeStamp();
+            
+            if (firstEntryTime.isInfinite() 
+                    && firstEntryTime.equals(lastEntryTime)) {
+                // To avoid setting NaN or 0.0
+                // for the width, apparently due to simultaneous events,
+                // we leave it unchanged instead.
+                return;
+            }
+
+            double average = lastEntryTime.subtract(firstEntryTime).getDoubleValue();
+            average = average / (entryArray.length - 1);
+            
+            double effectiveAverage = 0;
+            int effectiveSamples = 0;
+            
+            if (Double.isInfinite(average)) {
+                return;
+            }
+            
+            for (int i = 0; i < (entryArray.length - 1); ++i) {
+                diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp()
+                .subtract(((DEEvent) entryArray[i]).timeStamp()).getDoubleValue();
+                if (diff[i]< 2* average) {
+                    effectiveSamples++;
+                    effectiveAverage = effectiveAverage + diff[i];
+                }
+            }
+            
+            if ((effectiveAverage == 0) || (effectiveSamples == 0)) {
+                // To avoid setting NaN or 0.0
+                // for the width, apparently due to simultaneous events,
+                // we leave it unchanged instead.
+                return;
+            }
+            
+            effectiveAverage = effectiveAverage / effectiveSamples;
+            _binWidth = effectiveAverage*3;
         }
 
         /** Set the zero reference, to be used in calculating the virtual
@@ -331,25 +316,20 @@ public class DECQEventQueue implements DEEventQueue {
          *   of DEEvent.
          */
         public void setZeroReference(Object zeroReference) {
-            _zeroReference = (DEEvent) zeroReference;
+            _zeroReference = ((DEEvent) zeroReference).timeStamp().getDoubleValue();
         }
 
         ///////////////////////////////////////////////////////////////////
         ////                         private members                   ////
         // The bin width.
-        private DEEvent _binWidth = new DEEvent((Actor) null, new Time(
-                _director, 1.0), 0, 0);
+        private double _binWidth = 1.0;
 
         // The zero reference.
-        private DEEvent _zeroReference = new DEEvent((Actor) null, new Time(
-                _director, 0.0), 0, 0);
+        private double _zeroReference = 0.0;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // An instance of CalendarQueue used for sorting and storing events.
     private CalendarQueue _cQueue;
-
-    // The director that contains this event queue.
-    private Director _director;
 }
