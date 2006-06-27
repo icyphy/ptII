@@ -26,8 +26,6 @@
  */
 package ptolemy.actor;
 
-import ptolemy.kernel.util.IllegalActionException;
-
 //////////////////////////////////////////////////////////////////////////
 //// QuasiTransparentDirector
 
