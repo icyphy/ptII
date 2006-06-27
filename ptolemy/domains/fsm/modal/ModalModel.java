@@ -32,7 +32,10 @@ import java.util.Iterator;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.util.FunctionDependency;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
@@ -152,6 +155,13 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
      */
     public StringParameter directorClass;
 
+    /** A boolean parameter indicating how the function dependency analysis of
+     *  the model is performed. If the parameter value is true, conservative 
+     *  analysis is chosen; if false, optimistic analysis is chosen. 
+     *  The default value is true for conservative analysis. 
+     */
+    public Parameter conservativeAnalysis;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -216,9 +226,12 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                         }
                     }
                 };
-
                 requestChange(request);
             }
+        } else if (attribute == conservativeAnalysis) {
+            _functionDependency = null;
+        } else {
+            super.attributeChanged(attribute);
         }
     }
 
@@ -314,6 +327,9 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         if (_functionDependency == null) {
             try {
                 _functionDependency = new FunctionDependencyOfModalModel(this);
+                boolean value = 
+                    ((BooleanToken)conservativeAnalysis.getToken()).booleanValue();
+                _functionDependency.setConservativeAnalysis(value);
             } catch (NameDuplicationException e) {
                 // This should not happen.
                 throw new InternalErrorException("Failed to construct a "
@@ -324,7 +340,6 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                         + "function dependency object for " + getFullName());
             }
         }
-
         return _functionDependency;
     }
 
@@ -473,6 +488,12 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                     .setExpression("ptolemy.domains.fsm.kernel.FSMDirector");
         }
 
+        // Create the parameter indicating whether the dependency analysis 
+        // is optimistic or conservative. 
+        conservativeAnalysis = new Parameter(this, "conservativeAnalysis");
+        conservativeAnalysis.setTypeEquals(BaseType.BOOLEAN);
+        conservativeAnalysis.setToken(BooleanToken.TRUE);
+        
         // Create a more reasonable default icon.
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
@@ -490,5 +511,5 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
     ////                         private variables                 ////
 
     /** The function dependency, if it is present. */
-    private FunctionDependency _functionDependency;
+    private FunctionDependencyOfModalModel _functionDependency;
 }

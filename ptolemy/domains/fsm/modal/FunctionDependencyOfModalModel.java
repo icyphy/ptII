@@ -28,6 +28,7 @@
  */
 package ptolemy.domains.fsm.modal;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,6 +36,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.MessageHandler;
@@ -44,9 +46,10 @@ import ptolemy.util.MessageHandler;
 
 /** An instance of FunctionDependencyOfModalModel describes the function
  dependency information between the outputs and inputs of a modal model.
-
- FIXME: two design choices can be chosen here. 1. dynamic configuration.
- 2. conservation approximation.
+ Depending on the value of conservativeAnalysis parameter of the modal 
+ model that containing this attribute, either optimimistic (dynamic) 
+ calculation or conservation approximation of the function dependencies is
+ performed.
 
  @see ptolemy.actor.util.FunctionDependencyOfCompositeActor
  @author Haiyang Zheng
@@ -55,8 +58,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Red (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class FunctionDependencyOfModalModel extends
-        FunctionDependencyOfCompositeActor {
+public class FunctionDependencyOfModalModel extends FunctionDependencyOfCompositeActor {
     /** Construct a FunctionDependency in the given actor.
      *  The name of this attribute is always "_functionDependency".
      *  @param compositeActor The associated actor.
@@ -72,6 +74,22 @@ public class FunctionDependencyOfModalModel extends
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** If there is a dependency loop in the dependency graph of this
+     *  FunctionDependency object, return the nodes in the
+     *  dependency loop. If there are multiple loops, the nodes in all the
+     *  loops will be returned. If there is no loop, return an empty array.
+     *  The elements of the returned array are instances of IOPort.
+     *  Note that the returned result is actually an object array instead
+     *  of an array of IOPorts.
+     *  @param flag 
+     */
+    public void setConservativeAnalysis(boolean flag) {
+        _conservativeAnalysis = flag;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Get a list of refinements of the current state for function
@@ -83,22 +101,46 @@ public class FunctionDependencyOfModalModel extends
 
         try {
             FSMActor controller = ((ModalModel) getContainer()).getController();
-            Actor[] actors = controller.currentState().getRefinement();
 
-            // If the modal model has no refinements, the modal model is
-            // basically an FSM actor. We use the function dependency of
-            // the controller instead.
-            if ((actors != null) && (actors.length > 0)) {
-                for (int i = 0; i < actors.length; ++i) {
-                    entities.add(actors[i]);
+            if (_conservativeAnalysis) {
+                // Conservative approximation
+                Iterator states = controller.entityList(State.class).iterator();
+                while (states.hasNext()) {
+                    State state = (State) states.next();
+                    Actor[] actors = state.getRefinement();
+                    // If the modal model has no refinements, the modal model is
+                    // basically an FSM actor. We use the function dependency of
+                    // the controller instead.
+                    if ((actors != null) && (actors.length > 0)) {
+                        for (int i = 0; i < actors.length; ++i) {
+                            if (!entities.contains(actors[i])) {
+                                entities.add(actors[i]);
+                            }
+                        }
+                    }
                 }
             } else {
-                entities.add(controller);
+                // Optimistic approximation
+              Actor[] actors = controller.currentState().getRefinement();
+              // If the modal model has no refinements, the modal model is
+              // basically an FSM actor. We use the function dependency of
+              // the controller instead.
+              if ((actors != null) && (actors.length > 0)) {
+              for (int i = 0; i < actors.length; ++i) {
+              entities.add(actors[i]);
+              }
+              } else {
+              entities.add(controller);
+              }
             }
         } catch (IllegalActionException e) {
             MessageHandler.error("Invalid refinements.", e);
         }
-
         return entities;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    boolean _conservativeAnalysis = true;
 }
