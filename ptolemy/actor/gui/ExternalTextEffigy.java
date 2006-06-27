@@ -66,6 +66,10 @@ public class ExternalTextEffigy extends TextEffigy {
     /** Create a new effigy in the given directory with the given name.
      *  @param container The directory that contains this effigy.
      *  @param name The name of this effigy.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
      */
     public ExternalTextEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -135,7 +139,16 @@ public class ExternalTextEffigy extends TextEffigy {
         return effigy;
     }
 
-    /** Create a new ExternalTextEffigy. */
+    /** Create a new ExternalTextEffigy.
+     *  @param container The container for the effigy.
+     *  @param base The base for relative file references, or null if
+     *   there are no relative file references.  This is ignored in this
+     *   class.
+     *  @param in The input URL, or null if there is none.
+     *  @return A new instance of TextEffigy.
+     *  @exception Exception If the URL cannot be read, or if the data
+     *   is malformed in some way.
+     */
     public static TextEffigy newTextEffigy(CompositeEntity container, URL base,
             URL in) throws Exception {
         ExternalTextEffigy effigy = new ExternalTextEffigy(container, container
@@ -152,7 +165,7 @@ public class ExternalTextEffigy extends TextEffigy {
         return effigy;
     }
 
-    /** Pass the modifiable flag onto the external text editor */
+    /** Pass the modifiable flag onto the external text editor. */
     public void setModifiable(boolean flag) {
         super.setModifiable(flag);
     }

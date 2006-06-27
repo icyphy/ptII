@@ -90,6 +90,7 @@ public class HTMLAbout {
 
      *  @param configuration The configuration to look for the
      *  _applicationName attribute in
+     *  @return A string containing HTML that describes the about: features.
      */
     public static String about(Configuration configuration) {
         // Use an explicit version here - the name of the whatsNew file
@@ -211,6 +212,7 @@ public class HTMLAbout {
      *  in.
      *  @param configuration  The configuration to open the files in.
      *  @return the URL of the HTML file that was searched.
+     *  @exception Exception If there is a problem opening a model.
      */
     public static URL generateLinks(String demosFileName, String regexp,
             Configuration configuration) throws Exception {
@@ -320,8 +322,8 @@ public class HTMLAbout {
      *  followed by the optional name of the output file.  The default
      *  demo file is ptolemy/configs/doc/completeDemos.htm, the default
      *  output file is models.txt.
-     *  @exception If there is a problem reading the demo file or writing
-     *  the model file.
+     *  @exception IOException If there is a problem reading the demo
+     *  file or writing the model file.
      */
     public static void main(String[] args) throws IOException {
         String demoFileName = "ptolemy/configs/doc/completeDemos.htm";
@@ -348,6 +350,7 @@ public class HTMLAbout {
      *  "ptolemy/configs/doc/completeDemos.htm" is used.
      *  @param configuration  The configuration to run the files in.
      *  @return the URL of the HTML file that was searched.
+     *  @exception Exception If there is a problem running a demo.
      */
     public static URL runAllDemos(String demosFileName,
             Configuration configuration) throws Exception {

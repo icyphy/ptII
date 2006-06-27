@@ -376,6 +376,7 @@ public class Director extends Attribute implements Executable {
      *  By default, a director has no error tolerance, so this method
      *  returns 0.0. Some directors override this to allow computed
      *  values to be approximate with a specified precision.
+     *  @return the error tolerance.
      */
     public double getErrorTolerance() {
         return 0.0;

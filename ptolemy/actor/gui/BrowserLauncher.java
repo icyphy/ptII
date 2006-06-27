@@ -117,6 +117,7 @@ public class BrowserLauncher {
      *  argument names a URL to be opened.  If there is no first
      *  argument, then open http://ptolemy.eecs.berkeley.edu.  Second
      *  and subsequent arguments are ignored.
+     *  @exception Exception If there is a problem launching the browser.
      */
     public static void main(String[] args) throws Exception {
         if (args.length >= 1) {
