@@ -42,6 +42,7 @@ import java.util.ListIterator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.ModelErrorHandler;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
@@ -977,7 +978,9 @@ public class Manager extends NamedObj implements Runnable {
     /** Execute the model, catching all exceptions. Use this method to
      *  execute the model within the calling thread, but to not throw
      *  exceptions.  Instead, the exception is handled using the
-     *  notifyListenersOfException() method.  Except for its
+     *  notifyListenersOfException() method, or if the model contains
+     *  an attribute that implements the ModelErrorHandler interface,
+     *  by the last such attribute.  Except for its
      *  exception handling, this method has exactly the same behavior
      *  as execute().
      */
@@ -985,6 +988,19 @@ public class Manager extends NamedObj implements Runnable {
         try {
             execute();
         } catch (Throwable throwable) {
+            // If the model has an attribute registered that implements
+            // ModelErrorHandler, then delegate to the last such attribute.
+            List errorHandlers = _container.attributeList(ModelErrorHandler.class);
+            int length = errorHandlers.size();
+            if (length > 0 && throwable instanceof IllegalActionException) {
+                try {
+                    ((ModelErrorHandler)errorHandlers.get(length - 1))
+                            .handleModelError(_container, (IllegalActionException)throwable);
+                } catch (IllegalActionException e) {
+                    // Notify listeners of the exception thrown by the handler.
+                    notifyListenersOfThrowable(e);
+                }
+            }
             // If running tried to load in some native code using JNI
             // then we may get an Error here
             notifyListenersOfThrowable(throwable);
