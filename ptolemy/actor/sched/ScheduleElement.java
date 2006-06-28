@@ -83,7 +83,7 @@ public abstract class ScheduleElement {
     
     /** Return the actor invocation sequence of the schedule in the
      *  form of a sequence of actors. All of the lowest-level nodes
-     *  should be an instance of Firing. Otherwise, the returned
+     *  should be an instance of Actor. Otherwise, the returned
      *  iterator will contain null elements.
      *
      *  @return An iterator over a sequence of actors.
@@ -92,7 +92,8 @@ public abstract class ScheduleElement {
 
     /** Return the actor invocation sequence in the form
      *  of a sequence of firings. All of the lowest-level nodes
-     *  should be an instance of Firing. Otherwise, the returned
+     *  should be an instance of Firing, which references an
+     *  actor and an iteration count. Otherwise, the returned
      *  iterator will contain null elements.
      *
      *  @return An iterator over a sequence of firings.

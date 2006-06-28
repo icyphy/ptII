@@ -41,11 +41,15 @@ import ptolemy.kernel.util.InvalidStateException;
 
 /**
  This class is a schedule element that contains a reference to an
- actor.  This class is used together with the Schedule class to
- construct a static schedule.  This class is used to represent an 
- actor term of a schedule loop. The setActor() method is used to 
- create the reference to an actor. The getActor() method will return 
- a reference to this actor. <p>
+ actor and an iteration count.  This class is used together
+ with the Schedule class to construct a static schedule.
+ This class is used to represent a single actor repeated some
+ number of times, whereas Schedule is used for multi-actor schedules.
+ The setActor() method is used to 
+ create the reference to an actor, and the setIterationCount() method
+ to set the iteration count. The getActor() method will return 
+ a reference to this actor, and getIterationCount() will return
+ the iteration count. <p>
 
  It is more efficient to use this class than to simply maintain a list of
  actors since actors will often fire multiple times consecutively.  Using
@@ -82,7 +86,7 @@ public class Firing extends ScheduleElement {
 
     /** Return the actor invocation sequence of the schedule in the
      *  form of a sequence of actors. For a valid schedule, all of the
-     *  lowest-level nodes should be an instance of Firing. If the
+     *  lowest-level nodes should be an instance of Actor. If the
      *  schedule is not valid, then the returned iterator will contain
      *  null elements.
      *  <p>
@@ -101,7 +105,8 @@ public class Firing extends ScheduleElement {
 
     /** Return the actor invocation sequence in the form
      *  of a sequence of firings.
-     *  Since this ScheduleElement is a Firing, the
+     *  Since this ScheduleElement is a Firing, which
+     *  represents an Actor and an iteration count. the
      *  iterator returned will contain exactly one Firing (this Firing).
      *  <p>
      *  A runtime exception is thrown if the
