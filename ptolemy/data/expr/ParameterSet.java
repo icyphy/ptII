@@ -1,4 +1,4 @@
-/* A scope extending attribute that reads multiple values from a file.
+/* An attribute that reads multiple values from a file and sets corresponding parameters in the container.
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -40,17 +40,21 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.toolbox.FileEditorTableauFactory;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParameterSet
 
 /**
- An attribute that reads attributes from a file or URL.
- 
- The values are in the form:
+  An attribute that reads multiple values from a file and sets
+  corresponding parameters in the container.
+
+ <p>The values are in the form:
  <pre>
  <i>attributeName</i> = <i>value<i>
  <pre>
@@ -74,7 +78,7 @@ import ptolemy.vergil.toolbox.FileEditorTableauFactory;
  @version $Id$
  @see ptolemy.data.expr.Variable
  */
-public class ParameterSet extends ScopeExtendingAttribute {
+public class ParameterSet extends Parameter {
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -93,8 +97,12 @@ public class ParameterSet extends ScopeExtendingAttribute {
         super(container, name);
         fileOrURL = new FileParameter(this, "fileOrURL");
         fileOrURL.setExpression("");
-        //FileEditorTableauFactory editor = new FileEditorTableauFactory(this, "_editorFactory");
-        //((StringAttribute) editor.getAttribute("attributeName")).setExpression("fileOrURL");
+
+        StringParameter initialDefaultContents = new StringParameter(this,
+                "initialDefaultContents");
+        initialDefaultContents.setExpression("# This file defines parameters in the current container.\n# Each non-comment line in the file is interpreted as a separate assignment.\n# The lines are of the form:\n# attributeName = value\n# where variableName is the name of the attribute\n# in a format suitable for ptolemy.kernel.util.NamedObj.setName()\n# (i.e., does not contain periods) and value is\n# the expression in the Ptolemy expression language.\n# Comments are lines that begin with the # character.\n# FIXME: After saving, you need to update the fileOrURLParameter by hand.\n# Sample line (remove the leading #):\n# foo = \"bar\"\n");
+        initialDefaultContents.setPersistent(false);
+        initialDefaultContents.setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -142,19 +150,26 @@ public class ParameterSet extends ScopeExtendingAttribute {
 
         String fileName = fileOrURL.getExpression();
         if (fileName == null || fileName.trim().equals("")) {
-            // FIXME: Don't remove _iconDescription!!!! Other parameters?
-            // Remove all contained parameters.
-            // Copy the list of parameters to avoid concurrent modification exception.
-            /*
-            List attributeList = new LinkedList(attributeList());
-            Iterator attributes = attributeList.iterator();
-            while (attributes.hasNext()) {
-                Attribute attribute = (Attribute)attributes.next();
-                if (attribute != fileOrURL) {
-                    attribute.setContainer(null);
+            if (_properties != null) {
+                // Remove previous parameters named in the properties file
+                Iterator attributeNames = _properties.keySet().iterator();
+                while (attributeNames.hasNext()) {
+                    String attributeName = (String) attributeNames.next();
+                    getAttribute(attributeName).setContainer(null);
+
+                    // FIXME: should we delete the parameter in the parent?
+//                     NamedObj parent = getContainer();
+//                     String moml = "<deleteProperty name=\"" + attributeName
+//                         + "\"/>";
+//                     MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
+//                             parent, // context
+//                             moml, // MoML code
+//                             null); // base
+//                     request.execute();
                 }
+                _properties = null;
+
             }
-            */
             return;
         }
         URL url = FileUtilities.nameToURL(fileName,
@@ -182,19 +197,47 @@ public class ParameterSet extends ScopeExtendingAttribute {
                 }
             }
         }
+        _properties = properties;
 
+        // Iterate through all the properties and either create new parameters
+        // or set current parameters
         Iterator attributeNames = properties.keySet().iterator();
         while (attributeNames.hasNext()) {
             String attributeName = (String) attributeNames.next();
             String attributeValue = (String) properties.get(attributeName);
-            Parameter variable = null;
+
+            // The context for the MoML should be the first container
+            // above this attribute in the hierarchy that defers its
+            // MoML definition, or the immediate parent if there is none.
+            NamedObj parent = getContainer();
+            // Instantiate Variables so that they are not preserved
+            // in the MoML output.
+            String moml = "<property name=\"" + attributeName
+                + "\" class=\"ptolemy.data.expr.Variable\" value=\""
+                + StringUtilities.escapeForXML(attributeValue) + "\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
+                    parent, // context
+                    moml, // MoML code
+                    null); // base
+            request.execute();
+
+            Variable variable = null;
+
             if (getAttribute(attributeName) == null) {
-                variable = new Parameter(this, attributeName);
+                variable = new Variable(this, attributeName);
             } else {
-                variable = (Parameter)getAttribute(attributeName);
+                variable = (Variable)getAttribute(attributeName);
             }
             
             variable.setExpression(attributeValue);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
+    /** Cached copy of the last hashset of properties, used to remove old
+     *  properties.
+     */   
+    private Properties _properties;
 }
