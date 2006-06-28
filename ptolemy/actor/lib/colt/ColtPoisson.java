@@ -27,14 +27,16 @@
  */
 package ptolemy.actor.lib.colt;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.Poisson;
+
+import com.sun.tools.javac.tree.Tree.If;
 
 //////////////////////////////////////////////////////////////////////////
 //// Poisson
@@ -42,16 +44,16 @@ import cern.jet.random.Poisson;
 /**
  Produce a random sequence with a Poisson distribution.  On each
  iteration, a new random number is produced.  The output port is of
- type DoubleToken.  The values that are generated are independent
- and identically distributed with the mean and the standard
- deviation given by parameters.  In addition, the seed can be
+ type double.  The values that are generated are independent
+ and identically distributed with the mean given by a port-parameter.
+ In addition, the seed can be
  specified as a parameter to control the sequence that is generated.
 
  <p> This actor instantiates a
- <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Poisson.html">cern.jet.random.Poisson</a> object with
- a mean of 1.0.
+ <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Poisson.html">cern.jet.random.Poisson</a>
+ object with a mean of 1.0 by default.
 
- @author David Bauer and Kostas Oikonomou
+ @author David Bauer and Kostas Oikonomou, contributor: Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.1
  @Pt.ProposedRating Red (cxh)
@@ -72,7 +74,7 @@ public class ColtPoisson extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.INT);
 
-        mean = new Parameter(this, "mean", new DoubleToken(1.0));
+        mean = new PortParameter(this, "mean", new DoubleToken(1.0));
         mean.setTypeEquals(BaseType.DOUBLE);
 
         mean.moveToFirst();
@@ -81,10 +83,10 @@ public class ColtPoisson extends ColtRandomSource {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** mean.
-     *  This parameter contains a DoubleToken, initially with value 1.0.
+    /** The mean.
+     *  This port-parameter has type double, initially with value 1.0.
      */
-    public Parameter mean;
+    public PortParameter mean;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -95,6 +97,7 @@ public class ColtPoisson extends ColtRandomSource {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        mean.update();
         super.fire();
         output.send(0, new IntToken(_current));
     }
