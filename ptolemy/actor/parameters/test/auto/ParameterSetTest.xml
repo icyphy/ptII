@@ -18,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 40}">
         </property>
     </property>
-    <property name="a" class="ptolemy.data.expr.Parameter" value="666">
+    <property name="a" class="ptolemy.data.expr.Parameter" value="233232">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -42,10 +42,6 @@
         </property>
         <property name="_editorFactory" class="ptolemy.actor.gui.FileOrURLEditorFactory">
         </property>
-        <property name="initialDefaultContents" class="ptolemy.data.expr.StringParameter" value="# This file defines parameters in the current container.&#10;# Each non-comment line in the file is interpreted as a separate assignment.&#10;# The lines are of the form:&#10;# attributeName = value&#10;# where variableName is the name of the attribute&#10;# in a format suitable for ptolemy.kernel.util.NamedObj.setName()&#10;# (i.e., does not contain periods) and value is&#10;# the expression in the Ptolemy expression language.&#10;# Comments are lines that begin with the # character.&#10;# FIXME: After saving, you need to update the fileOrURLParameter by hand.&#10;">
-            <property name="_expertMode" class="ptolemy.kernel.util.Attribute">
-            </property>
-        </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
       <svg>
@@ -54,18 +50,10 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 155.0]">
-        </property>
-        <property name="b" class="ptolemy.data.expr.Parameter" value="a">
-        </property>
-        <property name="a" class="ptolemy.data.expr.Parameter" value="42">
-        </property>
-        <property name="_showParameters" class="ptolemy.data.expr.Parameter" value="&quot;All&quot;">
-        </property>
-        <property name="c" class="ptolemy.data.expr.Parameter" value="b">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 150.0]">
         </property>
     </property>
-    <property name="b" class="ptolemy.data.expr.Parameter" value="-1">
+    <property name="b" class="ptolemy.data.expr.Parameter" value="a">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -111,11 +99,11 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{666, -1}, {666, -1}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{42, 42}, {42, 42}}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 125}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 125.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
