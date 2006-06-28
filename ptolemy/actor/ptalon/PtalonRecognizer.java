@@ -28,23 +28,29 @@
  */
 package ptolemy.actor.ptalon;
 
-import java.util.ArrayList;
-
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.TypedIORelation;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import antlr.NoViableAltException;
-import antlr.ParserSharedInputState;
-import antlr.RecognitionException;
-import antlr.Token;
 import antlr.TokenBuffer;
-import antlr.TokenStream;
 import antlr.TokenStreamException;
+import antlr.TokenStreamIOException;
+import antlr.ANTLRException;
+import antlr.LLkParser;
+import antlr.Token;
+import antlr.TokenStream;
+import antlr.RecognitionException;
+import antlr.NoViableAltException;
+import antlr.MismatchedTokenException;
+import antlr.SemanticException;
+import antlr.ParserSharedInputState;
 import antlr.collections.impl.BitSet;
+
+	import java.lang.reflect.Method;
+	import java.util.ArrayList;
+	import ptolemy.actor.TypedAtomicActor;
+	import ptolemy.actor.TypedIOPort;
+	import ptolemy.actor.TypedIORelation;
+	import ptolemy.data.expr.Parameter;
+	import ptolemy.data.type.BaseType;
+	import ptolemy.kernel.util.NameDuplicationException;
+	import ptolemy.kernel.util.IllegalActionException;
 
 public class PtalonRecognizer extends antlr.LLkParser       implements PtalonTokenTypes
  {
@@ -57,6 +63,15 @@ public class PtalonRecognizer extends antlr.LLkParser       implements PtalonTok
 	private ArrayList<TypedIOPort> _inports = new ArrayList<TypedIOPort>();
 	private ArrayList<TypedIOPort> _outports = new ArrayList<TypedIOPort>();
 	private ArrayList<TypedIORelation> _relations = new ArrayList<TypedIORelation>();
+	
+	private boolean isParameter(String name) {
+		for (int i=0; i < _parameters.size(); i++) {
+			if (_parameters.get(i).getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 protected PtalonRecognizer(TokenBuffer tokenBuf, int k) {
   super(tokenBuf,k);
@@ -296,7 +311,6 @@ public PtalonRecognizer(ParserSharedInputState state) {
  * @param actor The input actor.
  * @exception IllegalActionException If generated in trying to modify 
  * the Ptalon actor.
- * modify the Ptalon actor.  
  */
 	public final void attribute(
 		PtalonActor actor
@@ -321,7 +335,16 @@ public PtalonRecognizer(ParserSharedInputState state) {
 		}
 	}
 	
-	public final void assignment() throws RecognitionException, TokenStreamException {
+/**
+ * This parses this recognizer's input to see if it's a vailid
+ * assignment and add any necessary methods to the ptalon actor.
+ * @param actor The input actor.
+ * @exception IllegalActionException If generated in trying to modify 
+ * the Ptalon actor.
+ */
+	public final void assignment(
+		PtalonActor actor
+	) throws RecognitionException, TokenStreamException, IllegalActionException {
 		
 		
 		match(ID);
@@ -384,7 +407,7 @@ inputState.guessing--;
 inputState.guessing--;
 			}
 			if ( synPredMatched17 ) {
-				actor_declaration();
+				actor_declaration(actor);
 			}
 			else if ((_tokenSet_0.member(LA(1))) && (_tokenSet_1.member(LA(2)))) {
 				{
@@ -429,22 +452,33 @@ inputState.guessing--;
 		}
 	}
 	
-	public final void actor_declaration() throws RecognitionException, TokenStreamException {
+/**
+ * This parses this recognizer's input to see if it's a vailid
+ * actor declaration and add any necessary methods to the ptalon actor.
+ * @param actor The input actor.
+ * @exception IllegalActionException If generated in trying to modify 
+ * the Ptalon actor.
+ */
+	public final void actor_declaration(
+		PtalonActor actor
+	) throws RecognitionException, TokenStreamException, IllegalActionException {
 		
+		Token  a = null;
 		
+		a = LT(1);
 		match(ID);
 		match(LPAREN);
 		{
 		switch ( LA(1)) {
 		case ID:
 		{
-			assignment();
+			assignment(actor);
 			{
 			_loop24:
 			do {
 				if ((LA(1)==COMMA)) {
 					match(COMMA);
-					assignment();
+					assignment(actor);
 				}
 				else {
 					break _loop24;
@@ -465,6 +499,20 @@ inputState.guessing--;
 		}
 		}
 		match(RPAREN);
+		if ( inputState.guessing==0 ) {
+			
+					if (isParameter(a.getText())) {
+						try {
+							Class actorClass = PtalonActor.class;
+							Class[] stringClass = new Class[] {String.class};
+							Method addMethod = actorClass.getMethod("addActor", stringClass);
+							actor.addParameterMethod(a.getText(), addMethod);
+						} catch(Exception e) {
+							throw new IllegalActionException(e.getMessage());
+						}
+					}
+				
+		}
 	}
 	
 	public final void arithmetic_expression() throws RecognitionException, TokenStreamException {
@@ -789,7 +837,7 @@ inputState.guessing--;
 			}
 			case ID:
 			{
-				actor_declaration();
+				actor_declaration(actor);
 				break;
 			}
 			default:

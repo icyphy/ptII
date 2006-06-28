@@ -31,7 +31,10 @@ package ptolemy.actor.ptalon;
 import java.io.File;
 import java.io.FileReader;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
@@ -39,10 +42,13 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedList;
+import ptolemy.kernel.util.Settable;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -88,16 +94,98 @@ public class PtalonActor extends TypedCompositeActor {
         setClassName("ptolemy.actor.ptalon.PtalonActor");
         ptalonCodeLocation = new FileParameter(this, "ptalonCodeLocation");
         _fileSet = false;
+        _methods = new ParameterMethodList();
+        _parameters = new ParameterValues();
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
         
+    
+    /**
+     * Add an actor with the given class name.  The class name should
+     * include the full class path.  The actorName parameter may only
+     * be a prefix of the generated actor.  This avoid name conflicts.
+     * 
+     * @param className The class name.
+     * @param actorName The desired name for the actor.
+     * @return The generated actor.
+     * @throws IllegalActionExcepiton If it is generated in creating
+     * the actor.
+     */
+    public ComponentEntity addActor(String className) throws IllegalActionException {
+        try {
+            StringTokenizer tokenizer = new StringTokenizer(className, "\"");
+            className = tokenizer.nextToken();
+            tokenizer = new StringTokenizer(className, ".");
+            String actorName = "";
+            while (tokenizer.hasMoreElements()) {
+                actorName = tokenizer.nextToken();
+            }
+            String displayName = uniqueName(actorName);
+            Object[] args = new Object[] {this, displayName};
+            Constructor cons;
+            Class actorClass = Class.forName(className); 
+            Class[] argClasses = new Class[] {CompositeEntity.class, String.class};
+            cons = actorClass.getConstructor(argClasses);
+            ComponentEntity p = (ComponentEntity) cons.newInstance(args);
+            List portList = p.portList();
+            TypedIOPort atomicPort;
+            TypedIOPort newPort;
+            TypedIORelation r;
+            for (int j = portList.size() - 1; j >= 0; j--) {
+                if (!(portList.get(j) instanceof TypedIOPort)) {
+                    continue;
+                }
+                atomicPort = (TypedIOPort) portList.get(j);
+                String portName = p.getName() + "_" + atomicPort.getName();
+                newPort = new TypedIOPort(this, portName);
+                r = new TypedIORelation(this, uniqueName("relation"));
+                atomicPort.link(r);
+                newPort.link(r);
+            }
+            List attributeList = p.attributeList();
+            Parameter atomicParam;
+            Parameter newParam;
+            for (int j = 0; j < attributeList.size(); j++){
+                if (!(attributeList.get(j) instanceof Parameter)) {
+                    continue;
+                }
+                atomicParam = (Parameter) attributeList.get(j);
+                String paramName = p.getName() + "_" + atomicParam.getName();
+                newParam = new Parameter(this, paramName);
+                newParam.setExpression(atomicParam.getExpression());
+                atomicParam.setExpression(newParam.getName());
+            }
+            return p;
+        } catch(Exception e) {
+            if (!(e instanceof IllegalActionException)) {
+                throw new IllegalActionException(e.getMessage());
+            } else {
+                throw (IllegalActionException) e;
+            }
+        }
+    }
+    
+    /**
+     * Return the addActor method as a Method object.
+     * @return The addActor method.
+     */
+    public static Method addActorMethod() {
+        try {
+            Class thisClass = Class.forName("ptolemy.actor.ptalon");
+            Class stringClass = Class.forName("java.lang.String");
+            Method addActorMethod = thisClass.getMethod("addActor", stringClass);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
     /**
      * Add an atomic actor to this actor with the specified className.
      * If the className is in use, this will do nothing and return null.
      * otherwise, it will return the generated TypedAtomicActor.
-     * @param className The desired class name for the actor.
+     * @param className The class of the actor.
      * @param actorName The desired display name of the actor.
      * @return The created actor or null.
      * @exception IllegalActionException If generated in trying to
@@ -164,6 +252,15 @@ public class PtalonActor extends TypedCompositeActor {
     }
     
     /**
+     * Add a parameter and an associated method to this Ptalon actor.
+     * @param name The name of the parameter.
+     * @param method The method to call for this parameter.
+     */
+    public void addParameterMethod(String name, Method method) {
+        _methods.addPair(name, method);
+    }
+    
+    /**
      * Add a port to this actor with the specified name.
      * If the name is in use, this will do nothing and return null.
      * otherwise, it will return the generated Parameter.  The
@@ -194,7 +291,6 @@ public class PtalonActor extends TypedCompositeActor {
         return null;
     }
     
-    
     /**
      * Add a relation to this actor with the specified name.
      * If the name is in use, this will do nothing and return null.
@@ -215,8 +311,9 @@ public class PtalonActor extends TypedCompositeActor {
     }
 
     /** React to a change in an attribute.  This method is called by
-     *  a contained attribute when its value changes.  This only responds
-     *  to changes in the <i>ptalonCode</i> parameter.
+     *  a contained attribute when its value changes.  This initally responds
+     *  to changes in the <i>ptalonCode</i> parameter.  Later it responds
+     *  to changes in parameters specified in the Ptalon code itself.
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
@@ -238,7 +335,33 @@ public class PtalonActor extends TypedCompositeActor {
             } catch (Exception e) {
                 throw new IllegalActionException(e.getMessage());
             }
-            
+        } else if ((att instanceof Parameter) && !(att instanceof FileParameter)) {
+            try {
+                String expression = ((Parameter) att).getExpression();
+                String name;
+                if (expression.equals("")) {
+                    return;
+                }
+                for (int i=0; i < _methods.size(); i++) {
+                    name = att.getName();
+                    if (!(expression.equals(_parameters.getValue(name)))) {
+                        Method method = _methods.getMethod(name);
+                        if (method != null) {
+                            method.invoke(this, expression);
+                            _parameters.setValue(name, expression);
+                            ((Parameter)att).setVisibility(Settable.NONE);
+                            return;
+                        }
+                    }
+                }
+            } catch(Exception e) {
+                if (e instanceof IllegalActionException) {
+                    throw (IllegalActionException) e;
+                }
+                else {
+                    throw new IllegalActionException(e.getMessage());
+                }
+            }
         } else {
             super.attributeChanged(att);
         }
@@ -269,10 +392,6 @@ public class PtalonActor extends TypedCompositeActor {
     
         
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
-        
-    
-    ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
     
     /**
@@ -280,5 +399,8 @@ public class PtalonActor extends TypedCompositeActor {
      */
     private boolean _fileSet;
     
+    private ParameterMethodList _methods;
+    
+    private ParameterValues _parameters;
 
 }
