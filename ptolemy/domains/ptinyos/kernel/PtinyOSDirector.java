@@ -37,8 +37,18 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.SocketException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.ByteBuffer;
+import java.nio.channels.ClosedSelectorException;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.List;
 
@@ -655,9 +665,203 @@ public class PtinyOSDirector extends Director {
         }
 
         if (((BooleanToken) simulate.getToken()).booleanValue()) {
-            _loader.wrapup(); // SIGSTOP: man 7 signal
+            if (_loader != null) {
+                _loader.wrapup(); // SIGSTOP: man 7 signal
+            }
         }
     }
+
+    ///////////////////////////////////////////////////////////////////////
+    // Methods for accessing sockets in external_comm.c
+    ///////////////////////////////////////////////////////////////////////
+
+    // Create a non-blocking server socket and check for connections
+    public ServerSocket serverSocketCreate(short port) {
+        ServerSocket serverSocket = null;
+        try {
+            // Create non-blocking server sockets on port.
+            ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+            serverSocketChannel.configureBlocking(false);
+            serverSocket = serverSocketChannel.socket();
+            try {
+                serverSocket.setReuseAddress(true);
+            } catch (SocketException e) {
+                System.out.println(e);
+            }
+            serverSocket.bind(new InetSocketAddress(InetAddress.getByName(null), port));
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return serverSocket;
+    }
+
+    public void serverSocketClose(ServerSocket serverSocket) {
+        if (serverSocket != null) {
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                System.out.println(e);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }    
+
+    // Create a selector and register the ServerSocketChannel of the
+    // ServerSocket with the selector.
+    public Selector selectorCreate(ServerSocket serverSocket) {
+        Selector selector = null;
+        try {
+            // Create the selector
+            selector = Selector.open();
+
+            ServerSocketChannel serverSocketChannel = serverSocket.getChannel();
+            if (serverSocketChannel != null) {
+                // Register channel with selector.
+                serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+            } else {
+                System.out.println("Could not find ServerSocketChannel associated with ServerSocket!");
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return selector;
+    }
+
+    public void selectorClose(Selector selector) {
+        if (selector != null) {
+            try {
+                if (_debugging) {
+                    _debug("Begin call to selectorClose()");
+                }
+                // We have to call wakeup() here because of a possible bug in J2SE
+                //
+                // Note that this also requires a locking machnism to
+                // prevent selector.select() from being called again after
+                // the selector wakes up but before close() is called.
+                // See:
+                // http://forum.java.sun.com/thread.jspa?threadID=293213&messageID=2671029
+                selector.wakeup();
+                selector.close();
+                if (_debugging) {
+                    _debug("End call to selectorClose()");
+                }
+            } catch (IOException e) {
+                System.out.println(e);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }       
+
+    // notNullIfClosing is set to TRUE if returning NULL, otherwise left as is.
+    // We use notNullIfClosing because of threading issues discussed in:
+    // @see selectorClose(Selector selector)
+    public ServerSocketChannel selectSocket(Selector selector, boolean[] notNullIfClosing) {
+       notNullIfClosing[0] = false;
+        
+        try {
+            // Wait for an event
+            if (selector.select() > 0) {
+                // Get list of selection keys with pending events
+                Iterator iterator = selector.selectedKeys().iterator();
+    
+                // Process each key
+                if (iterator.hasNext()) {
+                    // Get the selection key
+                    SelectionKey selKey = (SelectionKey)iterator.next();
+    
+                    // Remove it from the list to indicate that it is being processed
+                    iterator.remove();
+    
+                    // Check if it's a connection request
+                    if (selKey.isAcceptable()) {
+                        // Get channel with connection request
+                        ServerSocketChannel ssChannel = (ServerSocketChannel)selKey.channel();
+                        return ssChannel;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            // Handle error with selector.
+            System.out.println("Exception in selectSocket(): " + e);
+        } catch (ClosedSelectorException e) {
+            // Handle error with selector.
+            System.out.println("Exception in selectSocket(): " + e);
+        }
+        // Return null if this method didn't find a channel above.
+        // This means the selector is about to close.
+        //System.out.println("hi " + notNullIfClosing);
+        //notNullIfClosing = Boolean.TRUE;
+        notNullIfClosing[0] = true;
+        //System.out.println("hi " + notNullIfClosing);
+        return null;
+    }
+
+    public SocketChannel acceptConnection(ServerSocketChannel serverSocketChannel) {
+        SocketChannel socketChannel = null;
+    
+        try {
+            // Accept the connection request.
+            // If serverSocketChannel is blocking, this method blocks.
+            // The returned channel is in blocking mode.
+            socketChannel = serverSocketChannel.accept();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return socketChannel;
+    }
+
+    public void socketChannelClose(SocketChannel socketChannel) {
+        try {
+            socketChannel.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
+    // Returns number of bytes written.  -1 if error.
+    public int socketChannelWrite(SocketChannel socketChannel, byte[] writeBuffer) {
+        // Create a direct buffer to write bytes to socket.
+        // Direct buffers should be long-lived and be reused as much as possible.
+        ByteBuffer buffer = ByteBuffer.wrap(writeBuffer);
+    
+        try {
+            // Write bytes
+            int numBytesWritten = socketChannel.write(buffer);
+            return numBytesWritten;
+        } catch (IOException e) {
+            // Connection may have been closed
+            System.out.println(e);
+            return -1;
+        }
+    }
+
+    // Returns number of bytes read.  0 if end of stream reached.  -1 if error.
+    public int socketChannelRead(SocketChannel socketChannel, byte[] readBuffer) {
+        // Create a direct buffer to get bytes from socket.
+        // Direct buffers should be long-lived and be reused as much as possible.
+        ByteBuffer buffer = ByteBuffer.wrap(readBuffer);
+        
+        try {
+            // Clear the buffer and read bytes from socket
+            buffer.clear();
+            int numBytesRead = socketChannel.read(buffer);
+    
+            if (numBytesRead == -1) {
+                // No more bytes can be read from the channel
+                socketChannel.close();  // FIXME: is this ok?
+                return 0; // Reached end of stream
+            } else {
+                return numBytesRead;
+            }
+        } catch (IOException e) {
+            // Connection may have been closed
+            System.out.println(e);
+            return -1;
+        }
+    }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -801,6 +1005,11 @@ public class PtinyOSDirector extends Director {
         // FIXME: why not just use a StringBuffer?
         _CodeString text = new _CodeString();
 
+        text.addLine("import java.net.ServerSocket;");
+        text.addLine("import java.nio.channels.Selector;");
+        text.addLine("import java.nio.channels.ServerSocketChannel;");
+        text.addLine("import java.nio.channels.SocketChannel;");
+        
         text.addLine("import ptolemy.domains.ptinyos.kernel.PtinyOSLoader;");
         text.addLine("import ptolemy.domains.ptinyos.kernel.PtinyOSDirector;");
         text.addLine("import ptolemy.kernel.util.IllegalActionException;");
@@ -829,21 +1038,22 @@ public class PtinyOSDirector extends Director {
         text.addLine("    }");
 
         text.addLine("    public void startThreads() {");
-        text
-                .addLine("        this.eventAcceptThread = new EventAcceptThread();");
+        text.addLine("        this.eventAcceptThread = new EventAcceptThread();");
         text.addLine("        this.eventAcceptThread.start();");
-        text
-                .addLine("        this.commandReadThread = new CommandReadThread();");
+        text.addLine("        this.commandReadThread = new CommandReadThread();");
         text.addLine("        this.commandReadThread.start();");
         text.addLine("    }");
 
         text.addLine("    public int joinThreads() {");
         text.addLine("        try {");
-        text.addLine("            this.commandReadThread.join();");
-        text.addLine("            this.eventAcceptThread.join();");
+        text.addLine("            if (this.commandReadThread != null) {");
+        text.addLine("                this.commandReadThread.join();");
+        text.addLine("            }");
+        text.addLine("            if (this.eventAcceptThread != null) {");
+        text.addLine("                this.eventAcceptThread.join();");
+        text.addLine("            }");
         text.addLine("        } catch (Exception e) {");
-        text
-                .addLine("            System.err.println(\"Could not join thread: \" + e);");
+        text.addLine("            System.err.println(\"Could not join thread: \" + e);");
         text.addLine("            return -1;");
         text.addLine("        }");
         text.addLine("        return 0;");
@@ -857,8 +1067,7 @@ public class PtinyOSDirector extends Director {
         text.addLine("        processEvent" + toplevelName + "(currentTime);");
         text.addLine("    }");
 
-        text
-                .addLine("    public void receivePacket(long currentTime, String packet) {");
+        text.addLine("    public void receivePacket(long currentTime, String packet) {");
         text.addLine("        receivePacket" + toplevelName
                 + "(currentTime, packet);");
         text.addLine("    }");
@@ -894,6 +1103,44 @@ public class PtinyOSDirector extends Director {
                 .addLine("        this.director.tosDebug(debugMode, message, nodeNumber);");
         text.addLine("    }");
 
+        //////////////////////// Begin socket methods. ////////////////////
+        text.addLine("    public ServerSocket serverSocketCreate(short port) {");
+        text.addLine("        return this.director.serverSocketCreate(port);");
+        text.addLine("    }");
+
+        text.addLine("    public void serverSocketClose(ServerSocket serverSocket) {");
+        text.addLine("        this.director.serverSocketClose(serverSocket);");
+        text.addLine("    }");        
+
+        text.addLine("    public Selector selectorCreate(ServerSocket serverSocket) {");
+        text.addLine("        return this.director.selectorCreate(serverSocket);");
+        text.addLine("    }");
+
+        text.addLine("    public void selectorClose(Selector selector) {");
+        text.addLine("        this.director.selectorClose(selector);");
+        text.addLine("    }");        
+        
+        text.addLine("    public ServerSocketChannel selectSocket(Selector selector, boolean[] notNullIfClosing) {");
+        text.addLine("        return this.director.selectSocket(selector, notNullIfClosing);");
+        text.addLine("    }");
+
+        text.addLine("    public SocketChannel acceptConnection(ServerSocketChannel serverSocketChannel) {");
+        text.addLine("        return this.director.acceptConnection(serverSocketChannel);");
+        text.addLine("    }");
+        
+        text.addLine("    public void socketChannelClose(SocketChannel socketChannel) {");
+        text.addLine("        this.director.socketChannelClose(socketChannel);");
+        text.addLine("    }");
+        
+        text.addLine("    public int socketChannelWrite(SocketChannel socketChannel, byte[] writeBuffer) {");
+        text.addLine("        return this.director.socketChannelWrite(socketChannel, writeBuffer);");
+        text.addLine("    }");
+
+        text.addLine("    public int socketChannelRead(SocketChannel socketChannel, byte[] readBuffer) {");
+        text.addLine("        return this.director.socketChannelRead(socketChannel, readBuffer);");
+        text.addLine("    }");
+        //////////////////////// End socket methods. //////////////////////
+        
         text.addLine("    private PtinyOSDirector director;");
 
         text.addLine("    private native int main" + toplevelName
