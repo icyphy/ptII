@@ -179,7 +179,7 @@ public class FileOrURLEditorFactory extends EditorFactory {
         JTextArea textArea = new JTextArea(
                 "To edit the parameters, select "
                 + "\"" + _moreButtons[0]
-                + "\".  To edit the fileOrURL parameter,"
+                + "\".  To edit the file named by the fileOrURL parameter,"
                 + " select \"" + _moreButtons[1] + "\"", 3, 40);
         textArea.setEditable(false);
         textArea.setBorder(BorderFactory.createEtchedBorder());
