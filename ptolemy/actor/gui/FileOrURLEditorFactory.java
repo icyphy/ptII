@@ -177,10 +177,10 @@ public class FileOrURLEditorFactory extends EditorFactory {
     public Component createEditorPane() {
         JPanel panel = new JPanel();
         JTextArea textArea = new JTextArea(
-                "To edit the parameters, select "
+                "To edit name of the file that contains the parameters, select "
                 + "\"" + _moreButtons[0]
-                + "\".  To edit the file named by the fileOrURL parameter,"
-                + " select \"" + _moreButtons[1] + "\"", 3, 40);
+                + "\".  To edit the file itself that contains the parameter,"
+                + " select \"" + _moreButtons[1] + "\".", 3, 40);
         textArea.setEditable(false);
         textArea.setBorder(BorderFactory.createEtchedBorder());
         textArea.setLineWrap(true);
