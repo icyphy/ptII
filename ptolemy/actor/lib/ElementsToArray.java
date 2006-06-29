@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  On each firing, this actor reads exactly one token from each channel
- of the input port and assemble the tokens into an ArrayToken. The
+ of the input port and assembles the tokens into an ArrayToken. The
  ArrayToken is sent to the output port. If there is no input token
  at any channel of the input port, the prefire() will return false.
  <p>
