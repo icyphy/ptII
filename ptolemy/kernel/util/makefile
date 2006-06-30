@@ -89,6 +89,7 @@ JSRCS = \
 	StreamChangeListener.java \
 	StreamListener.java \
 	StringAttribute.java \
+	TestExceptionHandler.java \
 	TransientSingletonConfigurableAttribute.java \
 	ValueListener.java \
 	Workspace.java

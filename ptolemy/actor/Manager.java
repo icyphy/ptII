@@ -46,6 +46,7 @@ import ptolemy.kernel.util.ModelErrorHandler;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
+import ptolemy.kernel.util.TestExceptionHandler;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -988,9 +989,11 @@ public class Manager extends NamedObj implements Runnable {
         try {
             execute();
         } catch (Throwable throwable) {
+            // If running tried to load in some native code using JNI
+            // then we may get an Error here
             // If the model has an attribute registered that implements
             // ModelErrorHandler, then delegate to the last such attribute.
-            List errorHandlers = _container.attributeList(ModelErrorHandler.class);
+            List errorHandlers = _container.attributeList(TestExceptionHandler.class);
             int length = errorHandlers.size();
             if (length > 0 && throwable instanceof IllegalActionException) {
                 try {
@@ -1001,9 +1004,6 @@ public class Manager extends NamedObj implements Runnable {
                     notifyListenersOfThrowable(e);
                 }
             }
-            // If running tried to load in some native code using JNI
-            // then we may get an Error here
-            notifyListenersOfThrowable(throwable);
         } finally {
             _thread = null;
         }
