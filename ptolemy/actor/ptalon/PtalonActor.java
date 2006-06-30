@@ -141,6 +141,11 @@ public class PtalonActor extends TypedCompositeActor {
                 String portName = p.getName() + "_" + atomicPort.getName();
                 newPort = new TypedIOPort(this, portName);
                 r = new TypedIORelation(this, uniqueName("relation"));
+                if (atomicPort.isMultiport()) {
+                    newPort.setMultiport(true);
+                    r.setWidth(0);
+                }
+                newPort.setTypeEquals(atomicPort.getType());
                 atomicPort.link(r);
                 newPort.link(r);
             }
@@ -209,8 +214,12 @@ public class PtalonActor extends TypedCompositeActor {
                     continue;
                 }
                 atomicPort = (TypedIOPort) portList.get(j);
-                newPort = new TypedIOPort(this, atomicPort.getName());
+                newPort = new TypedIOPort(this, atomicPort.getName()); 
                 r = new TypedIORelation(this, uniqueName("relation"));
+                if (atomicPort.isMultiport()) {
+                    newPort.setMultiport(true);
+                    r.setWidth(0);
+                }
                 atomicPort.link(r);
                 newPort.link(r);
             }
