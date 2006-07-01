@@ -351,7 +351,6 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @throws IllegalActionException If an actor throws it.
      */
     public void fire() throws IllegalActionException {
-        
         // If there is an enclosing director, then just execute 
         // its current round.
         ContinuousDirector enclosingContinuousDirector = 
@@ -374,7 +373,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                         + ".");
             }
             super.fire();
-            _transferOutputs();
+            _transferOutputsToEnvironment();
             return;
         }
         
@@ -392,6 +391,8 @@ public class ContinuousDirector extends FixedPointDirector implements
                         + _iterationBeginTime
                         + " with step size "
                         + _currentStepSize
+                        + " at index "
+                        + _index
                         + ".");
             }
 
@@ -416,7 +417,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                         // values at the _iterationBeginTime, which on
                         // the first pass through, will match the
                         // current environment time.
-                        _transferOutputs();
+                        _transferOutputsToEnvironment();
                     }
                 }
                 // If the step size is zero, then one iteration is sufficient.
@@ -517,12 +518,49 @@ public class ContinuousDirector extends FixedPointDirector implements
         return _errorTolerance;
     }
 
-    /** Return the end time of the current integration step.
-     *  @return The next time at which controlled actors will be fired.
+    /** Return the next time of interest in the model being executed by
+     *  this director or the director of any enclosing model up the
+     *  hierarchy. If this director is at the top level, then this
+     *  default implementation simply returns infinity, indicating
+     *  that this director has no interest in any future time.
+     *  If this director is not at the top level, then return
+     *  whatever the enclosing director returns.
+     *  <p>
+     *  This method is useful for domains that perform
+     *  speculative execution (such as Continuous itself).
+     *  Such a domain in a hierarchical
+     *  model (i.e. CT inside DE) uses this method to determine how far
+     *  into the future to execute. This is simply an optimization that
+     *  reduces the likelihood of having to roll back.
+     *  <p>
+     *  The base class implementation in Director is almost right,
+     *  but not quite, because at the top level it returns current
+     *  time. However, this director should not constrain any director
+     *  below it from speculatively executing into the future.
+     *  Instead, it assumes that any director below it implements
+     *  a strict actor semantics.  Note in particular that the
+     *  implementation below would block time advancement in
+     *  a Continuous in DE in Continuous model because the
+     *  top-level model will usually only invoke the DE model
+     *  during a zero-step execution, which means that the returned
+     *  next iteration time will always be current time, which will
+     *  force the inside Continuous director to have a zero step
+     *  size always.
+     *  @return The next time of interest.
+     *  @see #getModelTime()
      */
     public Time getModelNextIterationTime() {
-        // FIXME: this method may be unnecessary.
-        return _iterationBeginTime.add(_currentStepSize);
+        NamedObj container = getContainer();
+        // NOTE: the container may not be a composite actor.
+        // For example, the container may be an entity as a library,
+        // where the director is already at the top level.
+        if (container instanceof CompositeActor) {
+            Director executiveDirector = ((CompositeActor) container).getExecutiveDirector();
+            if (executiveDirector != null) {
+                return executiveDirector.getModelNextIterationTime();
+            }
+        }
+        return Time.POSITIVE_INFINITY;
     }
 
     /** Return the start time. If this director is not at the top level, then
@@ -1627,7 +1665,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @throws IllegalActionException If the transferOutputs(Port)
      *   method throws it.
      */
-    private void _transferOutputs() throws IllegalActionException {
+    private void _transferOutputsToEnvironment() throws IllegalActionException {
         // If there are no output ports, this method does nothing.
         CompositeActor container = (CompositeActor) getContainer();
         Iterator outports = container.outputPortList().iterator();
