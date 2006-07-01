@@ -213,7 +213,10 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Return the index of the director.
+    /** Return the current index of the director.
+     *  The current index is a portion of the superdense time.
+     *  Superdense time means that time is a real value and an index,
+     *  allowing multiple sequential steps to occur at a fixed (real) time.
      *  @return Index of the director.
      */
     public int getIndex() {
