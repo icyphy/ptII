@@ -591,6 +591,12 @@ public class DEDirector extends Director implements TimedDirector {
             throw new IllegalActionException(this,
                     "Calling fireAt() before preinitialize().");
         }
+        if (_debugging) {
+            _debug("DEDirector: Actor "
+                    + actor.getFullName()
+                    + " requests refiring at "
+                    + time);
+        }
 
         // We want to keep event queues at all levels in hierarchy
         // as short as possible. So, this pure event is not reported
@@ -653,6 +659,7 @@ public class DEDirector extends Director implements TimedDirector {
         // exists, it means that the model next iteration time still needs to
         // be resolved. In other words, the model next iteration time is 
         // just the current time.
+        /* FIXME: This seems like nonsense... Why? */
         Object[] events = _eventQueue.toArray();
         for (int i = 0; i < events.length; i++) {
             DEEvent event = (DEEvent) events[i];
@@ -902,6 +909,9 @@ public class DEDirector extends Director implements TimedDirector {
 
         // A top-level DE director is always ready to fire.
         if (_isTopLevel()) {
+            if (_debugging) {
+                _debug("Prefire returns: " + result);
+            }
             return result;
         }
 
@@ -914,24 +924,11 @@ public class DEDirector extends Director implements TimedDirector {
             nextEventTime = _eventQueue.get().timeStamp();
         }
 
-        // The following check does not work with modal model. When a 
-        // refinement is reactivated after being inactive for a while, the
-        // events in the event queue are in the past. In this case, we need
-        // to catch up with the current model time by discarding the old
-        // events. 
-        // The following check is commentted but not deleted because it is
-        // useful for debugging a DE model without modal model.
         // If the model time is larger (later) than the first event
-        // in the queue, then there's a missing firing.
-        //        if (modelTime.compareTo(nextEventTime) > 0) {
-        //            throw new IllegalActionException(this,
-        //                    "Missed a firing. This director is scheduled to fire at "
-        //                    + nextEventTime + ", while" + " the outside time is already "
-        //                    + modelTime + ".");
-        //        }
-        //If the model time is larger (later) than the first event
-        //in the queue, catch up with the current model time by discarding 
-        // the old events.
+        // in the queue, catch up with the current model time by discarding 
+        // the old events. This can occur, for example, if we are in a
+        // modal model and this director was in an inactive mode when
+        // we reached the time of the event.
         while (modelTime.compareTo(nextEventTime) > 0) {
             _eventQueue.take();
 
@@ -941,6 +938,14 @@ public class DEDirector extends Director implements TimedDirector {
                 nextEventTime = Time.POSITIVE_INFINITY;
             }
         }
+
+        /* FIXME: The following is wrong because there might be
+         * pure events in the event queue, and returning false
+         * from prefire() will prevent processing of those events.
+         * Suppose, for example, that this DEDirector has a Continuous
+         * opaque composite within it.  That composite may have requested
+         * a firing at its next integration time. If we return false in
+         * prefire, it will not get a chance to perform that firing.
 
         // Now, the model time is either less than or equal to the
         // next event time.
@@ -974,7 +979,10 @@ public class DEDirector extends Director implements TimedDirector {
                 result = false;
             }
         }
-
+        */
+        if (_debugging) {
+            _debug("Prefire returns: " + result);
+        }
         return result;
     }
 
@@ -1708,13 +1716,13 @@ public class DEDirector extends Director implements TimedDirector {
             if (!_isTopLevel()) {
                 // If the director is not at the top level.
                 if (_eventQueue.isEmpty()) {
-                    // NOTE: when could this happen?
-                    // The container of this director, an opaque composite
-                    // actor, may be invoked by an update of its parameter
-                    // port. Therefore, no actors inside this container need
-                    // to be fired.
-                    // jump out of the loop: LOOPLABEL::GetNextEvent
-                    // TESTIT
+                    // This could happen if the container simply fires
+                    // this composite at times it chooses. Most directors
+                    // do this (SDF, SR, Continuous, etc.). It can also
+                    // happen if an input is provided to a parameter port
+                    // and the container is DE.
+                    // In all these cases, no actors inside need to be
+                    // fired.
                     break;
                 } else {
                     // For an embedded DE director, the following code prevents
@@ -1727,7 +1735,8 @@ public class DEDirector extends Director implements TimedDirector {
 
                     // An embedded director should process events
                     // that only happen at the current tag.
-                    // If the event is in the past, that is an error.
+                    // If the event is in the past, that is an error,
+                    // because the event should have been consumed in prefire().
                     if ((nextEvent.timeStamp().compareTo(getModelTime()) < 0)) {
                         // missed an event
                         throw new IllegalActionException(
@@ -2009,8 +2018,10 @@ public class DEDirector extends Director implements TimedDirector {
         CompositeActor container = (CompositeActor) getContainer();
 
         if (_debugging) {
-            _debug("Request refiring of an opaque composite actor: "
-                    + container.getName());
+            _debug("DEDirector: Requests refiring of: "
+                    + container.getName()
+                    + " at time "
+                    + nextEvent.timeStamp());
         }
 
         // Enqueue a pure event to fire the container of this director.
