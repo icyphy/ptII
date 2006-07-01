@@ -136,9 +136,16 @@ public class ColtSeedParameter extends SharedParameter {
             if (value == 0L) {
                 // Call again without suppression of propagation.
                 super.setExpression(expression);
+                // No need to record this, as it is the default value.
+                setPersistent(false);
             } else {
                 // Need to assign unique values.
                 if (!isSuppressingPropagation()) {
+                    // Ensure that when the model is saved, that this
+                    // parameter value, and only this one, is saved.
+                    // The shared parameters are made non-persistent below.
+                    setPersistent(true);
+                    
                     NamedObj toplevel = getRoot();
 
                     // Do not do sharing if this is within an EntityLibrary.
