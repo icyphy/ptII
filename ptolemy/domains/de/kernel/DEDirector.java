@@ -1249,9 +1249,11 @@ public class DEDirector extends Director implements TimedDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Based on the depths of IO ports, calculate the depths of actors.
-    // The results are cached in a hashtable _actorToDepth.
-    // Update the depths of existing events in the event queue.
+    
+    /** Based on the depths of IO ports, calculate the depths of actors.
+     *  The results are cached in a hashtable _actorToDepth.
+     *  Update the depths of existing events in the event queue.
+     */  
     private void _computeActorDepth() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
         LinkedList actors = (LinkedList) container.deepEntityList();
@@ -1351,12 +1353,13 @@ public class DEDirector extends Director implements TimedDirector {
         }
     }
 
-    // Perform a topological sort on the directed graph and use the result
-    // to set the depth for each IO port. A new Hashtable is created each
-    // time this method is called.
+    /** Perform a topological sort on the directed graph and use the result
+     *  to set the depth for each IO port. A new Hashtable is created each
+     * time this method is called.
+     */
     private void _computePortDepth() throws IllegalActionException {
         DirectedAcyclicGraph portsGraph = _constructDirectedGraph();
-
+        _verbose = true;
         if (_debugging && _verbose) {
             _debug("## ports graph is:" + portsGraph.toString());
         }
@@ -1511,11 +1514,13 @@ public class DEDirector extends Director implements TimedDirector {
                 continue;
             }
 
+            // FIXME: The following is really problematic. Check the 
+            // DESchedulingTest3.xml as example. 
             // Get the function dependency of the container actor
             FunctionDependency functionDependency = portContainer
                     .getFunctionDependency();
 
-            Set inputPorts = functionDependency
+            List inputPorts = functionDependency
                     .getInputPortsDependentOn(ioPort);
             Iterator inputsIterator = inputPorts.iterator();
 
@@ -2031,7 +2036,8 @@ public class DEDirector extends Director implements TimedDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // A hashtable that caches the depths of actors.
+    
+    /** A hashtable that caches the depths of actors. */
     private Hashtable _actorToDepth = null;
 
     /**
@@ -2067,7 +2073,7 @@ public class DEDirector extends Director implements TimedDirector {
      */
     private boolean _noMoreActorsToFire = false;
 
-    // A hashtable that caches the depths of ports.
+    /** A hashtable that caches the depths of ports. */
     private Hashtable _portToDepth = null;
 
     /**
