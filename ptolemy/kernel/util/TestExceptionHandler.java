@@ -36,7 +36,7 @@ import ptolemy.data.type.BaseType;
 //// TestExceptionHandler
 
 /**
- A singleton attribute that handles exceptions thrown in a test. It has two
+ An attribute that handles exceptions thrown in a test. It has two
  working modes, trainging mode and not training mode. If in training mode, 
  this attribute handles an exception by recording the exception message. If
  not in training mode, this attribute first compares the previously stored 
@@ -49,7 +49,7 @@ import ptolemy.data.type.BaseType;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Yellow (hyzheng)
  */
-public class TestExceptionHandler extends SingletonAttribute 
+public class TestExceptionHandler extends Attribute 
     implements ModelErrorHandler {
     
     /** Construct an attribute with the given container and name.
