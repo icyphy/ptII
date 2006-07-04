@@ -980,31 +980,42 @@ public class Manager extends NamedObj implements Runnable {
      *  execute the model within the calling thread, but to not throw
      *  exceptions.  Instead, the exception is handled using the
      *  notifyListenersOfException() method, or if the model contains
-     *  an attribute that implements the ModelErrorHandler interface,
-     *  by the last such attribute.  Except for its
+     *  attributes that implement the ModelErrorHandler interface,
+     *  by such attributes.  Except for its
      *  exception handling, this method has exactly the same behavior
      *  as execute().
      */
     public void run() {
+        // Note that there may be more exception handlers.
+        // Get the attributes that implement the TestExceptionHandler.
+        List testExceptionHandlers = _container.attributeList(TestExceptionHandler.class);
+        int length = testExceptionHandlers.size();
+        boolean testExceptionHandled = false;
         try {
+            if (length > 1) {
+                throw new IllegalActionException(this, "Cannot contain more " +
+                        "than one TestExceptionHandler attribute.");
+            }
             execute();
         } catch (Throwable throwable) {
-            // If running tried to load in some native code using JNI
-            // then we may get an Error here
-            // If the model has an attribute registered that implements
-            // ModelErrorHandler, then delegate to the last such attribute.
-            List errorHandlers = _container.attributeList(TestExceptionHandler.class);
-            int length = errorHandlers.size();
-            if (length > 0 && throwable instanceof IllegalActionException) {
+            if (throwable instanceof IllegalActionException) {
+                testExceptionHandled = true;
                 try {
-                    ((ModelErrorHandler)errorHandlers.get(length - 1))
+                    ((ModelErrorHandler)testExceptionHandlers.get(0))
                             .handleModelError(_container, (IllegalActionException)throwable);
-                } catch (IllegalActionException e) {
+                } catch (IllegalActionException exception) {
                     // Notify listeners of the exception thrown by the handler.
-                    notifyListenersOfThrowable(e);
+                    notifyListenersOfThrowable(
+                            new IllegalActionException(this, exception, null));
                 }
             }
+            _notifyListenersOfCompletion();
         } finally {
+            if (length > 0 && !testExceptionHandled) {
+                notifyListenersOfThrowable(
+                        new IllegalActionException(this, "Model should " 
+                                + "have thrown an exception but did not."));
+            }
             _thread = null;
         }
     }
