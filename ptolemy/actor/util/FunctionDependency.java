@@ -32,6 +32,8 @@ package ptolemy.actor.util;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -144,10 +146,10 @@ public abstract class FunctionDependency extends SingletonAttribute {
 
     /** Get the input ports on which the given output port is dependent.
      *  @param outputPort The given output port.
-     *  @return A set of input ports on which the output port is dependent.
+     *  @return A list of input ports on which the output port is dependent.
      *   The elements of the set are all instances of IOPort.
      */
-    public Set getInputPortsDependentOn(IOPort outputPort) {
+    public List getInputPortsDependentOn(IOPort outputPort) {
         _validate();
 
         // ensure that the output port is inside the dependency graph
@@ -159,7 +161,7 @@ public abstract class FunctionDependency extends SingletonAttribute {
 
         Collection backwardReachableInputs = _dependencyGraph
                 .backwardReachableNodes(_dependencyGraph.node(outputPort));
-        Set dependentInputPorts = new HashSet();
+        LinkedList dependentInputPorts = new LinkedList();
         Iterator inputs = backwardReachableInputs.iterator();
 
         while (inputs.hasNext()) {
