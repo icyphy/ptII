@@ -27,21 +27,23 @@
  */
 package ptolemy.backtrack.eclipse.plugin.actions;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelection;
-
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
-
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.console.MessageConsoleStream;
@@ -52,10 +54,6 @@ import ptolemy.backtrack.eclipse.plugin.console.OutputConsole;
 import ptolemy.backtrack.eclipse.plugin.preferences.PreferenceConstants;
 import ptolemy.backtrack.eclipse.plugin.util.Environment;
 import ptolemy.backtrack.util.Strings;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.PrintStream;
 
 //////////////////////////////////////////////////////////////////////////
 //// RefactorAction
@@ -202,18 +200,20 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
                 EclipsePlugin.getStandardDisplay().asyncExec(
                         new ErrorDialogRunnable(e));
             } finally {
-                if (oldErr != null) {
-                    System.setErr(oldErr);
-                }
-
-                IPreferenceStore store = EclipsePlugin.getDefault()
-                        .getPreferenceStore();
+                // IPreferenceStore store = EclipsePlugin.getDefault()
+                //         .getPreferenceStore();
 
                 try {
                     IContainer container = Environment.getAffectedFolder();
                     container.refreshLocal(IResource.DEPTH_INFINITE, null);
                 } catch (Exception e) {
-                    OutputConsole.outputError(e.getMessage());
+                	e.printStackTrace(_error);
+                }
+                _output.flush();
+            	_error.flush();
+
+                if (oldErr != null) {
+                    System.setErr(oldErr);
                 }
             }
         }
@@ -495,10 +495,10 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
 
                 // Flush every time, does not work with Eclipse 3.0.
 
-                /*try {
-                 _stream.flush();
+                try {
+                	_stream.flush();
                  } catch (IOException e) {
-                 }*/
+                 }
             }
 
             /** The operation to flush the output.
