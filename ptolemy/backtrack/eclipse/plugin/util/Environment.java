@@ -109,8 +109,8 @@ public class Environment {
      *  @return The array of class paths, or null if Ptolemy is not found.
      */
     public static String[] getClassPaths(Shell shell) {
-        IPreferenceStore store = EclipsePlugin.getDefault()
-                .getPreferenceStore();
+        // IPreferenceStore store = EclipsePlugin.getDefault()
+        //         .getPreferenceStore();
         String PTII = getPtolemyHome(shell);
 
         if (PTII != null) {
@@ -199,7 +199,7 @@ public class Environment {
 
         String fullClassName = (newPackage == null) ? simpleName : (newPackage
                 + "." + simpleName);
-        String fileName = fullClassName.replace(".", "" + File.separator)
+        String fileName = fullClassName.replace('.', File.separatorChar)
                 + ".java";
 
         String root = store.getString(PreferenceConstants.BACKTRACK_ROOT);

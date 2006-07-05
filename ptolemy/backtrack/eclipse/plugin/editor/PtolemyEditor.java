@@ -142,8 +142,8 @@ public class PtolemyEditor extends CompilationUnitEditor {
      *  @param colorManager The color manager with the color settings.
      */
     protected void _installSemanticHighlighting(IColorManager colorManager) {
-        IPreferenceStore preferenceStore = EclipsePlugin.getDefault()
-                .getPreferenceStore();
+        // IPreferenceStore preferenceStore = EclipsePlugin.getDefault()
+        //         .getPreferenceStore();
 
         _reconciler = new SemanticHighlightingReconciler();
         _reconciler.install(this, colorManager);

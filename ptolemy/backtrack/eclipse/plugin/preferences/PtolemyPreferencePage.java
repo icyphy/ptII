@@ -117,7 +117,7 @@ public class PtolemyPreferencePage extends FieldEditorPreferencePage implements
         logo.setLayoutData(gridData);
 
         ImageDescriptor descriptor = EclipsePlugin
-                .getImageDescriptor("ptolemy/backtrack/plugin/images/ptolemy.gif");
+                .getImageDescriptor("ptolemy/backtrack/eclipse/plugin/images/ptolemy.gif");
         logo.setImage(descriptor.createImage());
     }
 

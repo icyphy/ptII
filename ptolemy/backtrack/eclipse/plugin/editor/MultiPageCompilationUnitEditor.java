@@ -45,6 +45,7 @@ import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.eclipse.jdt.ui.IWorkingCopyManager;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
@@ -57,10 +58,12 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
 import ptolemy.backtrack.eclipse.ast.Transformer;
@@ -160,7 +163,19 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    /** Update the "Preview" tab if the source code is changed in the "Raw" tab.
+    /** Override the title image so that the Ptolemy icon is always used as the
+     *  editor's title image.
+     *  
+     *  @param titleImage The new title image to be set, which is always
+     *   ignored.
+     */
+    protected void setTitleImage(Image titleImage) {
+    	ImageDescriptor descriptor = EclipsePlugin.getImageDescriptor(
+    			"ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif");
+		super.setTitleImage(descriptor.createImage());
+	}
+
+	/** Update the "Preview" tab if the source code is changed in the "Raw" tab.
      */
     protected void _update() {
         if (!_needRefactoring) {
@@ -200,7 +215,6 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
             CompilationUnit compilationUnit = _getCompilationUnit();
             new RefactoringOutputThread(previewFile, inputStream).start();
 
-            String[] classPaths = null;
             String[] PTClassPaths = Environment.getClassPaths(null);
 
             IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
@@ -347,7 +361,8 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
 
             return previewFile;
         } catch (Exception e) {
-            OutputConsole.outputError(e.getMessage());
+        	// Ignore the errors, and return null.
+            // OutputConsole.outputError(e.getMessage());
             return null;
         }
     }
@@ -355,19 +370,17 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     /** Initialize the "Preview" tab.
      */
     private void _setupPreviewPage() {
-        int pageIndex = 1;
-
         _preview = new PtolemyEditor();
 
-        IFile previewFile = _getPreviewFile();
-
-        if (previewFile != null) {
+        // In Eclipse 3.2, always set up the editor site and editor input.
+        // IFile previewFile = _getPreviewFile();
+        // if (previewFile != null) {
             try {
                 _preview.init(_editor.getEditorSite(), getEditorInput());
             } catch (Exception e) {
                 OutputConsole.outputError(e.getMessage());
             }
-        }
+        // }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -71,7 +71,7 @@
          </menu>
          <action
                class="ptolemy.backtrack.eclipse.plugin.actions.RefactorAction"
-               icon="ptolemy/backtrack/plugin/icons/ptolemy_icon.gif"
+               icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
                id="ptolemy.backtrack.eclipse.plugin.refactor"
                label="&amp;Refactor"
                menubarPath="ptolemy/ptolemy.backtrack.eclipse.plugin.menu/backtrackGroup1"
@@ -103,7 +103,7 @@
          point="org.eclipse.ui.console.consoleFactories">
       <consoleFactory
             label="Ptolemy II Backtracking"
-            icon="ptolemy/backtrack/plugin/icons/ptolemy_icon.gif"
+            icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
             class="ptolemy.backtrack.eclipse.plugin.console.ConsoleFactory"/>
    </extension>
    -->
@@ -114,13 +114,13 @@
             contributorClass="org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditorActionContributor"
             default="true"
             extensions="java"
-            icon="ptolemy/backtrack/plugin/icons/ptolemy_icon.gif"
+            icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
             id="ptolemy.backtrack.eclipse.plugin.editor.MultiPageEditor"
             name="Ptolemy II Multi-page Editor"
             symbolicFontName="org.eclipse.jdt.ui.editors.textfont"/>
    </extension>
    <extension point="org.eclipse.help.toc">
-      <toc file="ptolemy/backtrack/plugin/doc/toc.xml" primary="true"/>
+      <toc file="ptolemy/backtrack/eclipse/plugin/doc/toc.xml" primary="true"/>
    </extension>
    
    <extension

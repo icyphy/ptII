@@ -53,8 +53,8 @@ public class OutputConsole extends MessageConsole implements IConsoleListener {
     public OutputConsole() {
         super(
                 "Ptolemy II Backtracking",
-                EclipsePlugin
-                        .getImageDescriptor("ptolemy/backtrack/plugin/images/ptolemy.gif"));
+                EclipsePlugin.getImageDescriptor(
+                		"ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"));
         register();
     }
 

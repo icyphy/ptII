@@ -34,7 +34,7 @@
 		<mkdir dir="${build.result.folder}"/>
 		<zip destfile="${build.result.folder}/ptIIbacktracksrc.zip" filesonly="false" whenempty="skip" update="false">
 			<fileset dir="${basedir}/" includes="com/microstar/xml/**/*.java"/>
-			<fileset dir="${basedir}/" includes="ptolemy/backtrack/**/*.java" excludes="ptolemy/backtrack/automatic/, ptolemy/backtrack/plugin/build/, ptolemy/backtrack/manual/, ptolemy/backtrack/**/test/"/>
+			<fileset dir="${basedir}/" includes="ptolemy/backtrack/**/*.java" excludes="ptolemy/backtrack/automatic/, ptolemy/backtrack/eclipse/plugin/build/, ptolemy/backtrack/manual/, ptolemy/backtrack/**/test/"/>
 		</zip>
 	</target>
 
@@ -54,7 +54,7 @@
 			<fileset dir="${build.result.folder}" includes="ptIIbacktrack.jar"			/>
 		</copy>
 		<copy todir="${destination.temp.folder}/ptolemy.backtrack_${version}" failonerror="true">
-			<fileset dir="${basedir}" includes="plugin.xml,ptIIbacktrack.jar,ptolemy/backtrack/plugin/doc/,ptolemy/backtrack/plugin/icons/,ptolemy/backtrack/plugin/images/"/>
+			<fileset dir="${basedir}" includes="plugin.xml,ptIIbacktrack.jar,ptolemy/backtrack/eclipse/plugin/doc/,ptolemy/backtrack/eclipse/plugin/icons/,ptolemy/backtrack/eclipse/plugin/images/"/>
 		</copy>
 	</target>
 
