@@ -113,16 +113,24 @@ public class ClassFileLoader extends URLClassLoader {
             }
         } catch (LinkageError e) {
             // Class already loaded.
-            // FIXME: Any better solution here?
-            String errorPrefix = "duplicate class definition: ";
+        	// FIXME: Any better solution here?
             String message = e.getMessage();
-
-            if (message.startsWith(errorPrefix)) {
-                String path = message.substring(errorPrefix.length());
-                String classFullName = path.replace('/', '.');
-                return loadClass(classFullName);
+            int slashIndex = message.indexOf('/');
+            if (slashIndex < 0) {
+            	throw e;
             } else {
-                throw e;
+                int startIndex = message.lastIndexOf(' ', slashIndex);
+                if (startIndex < 0) {
+                	throw e;
+                } else {
+                	int endIndex = message.indexOf(' ', slashIndex);
+                	if (endIndex < 0) {
+                		endIndex = message.length();
+                	}
+                    String path = message.substring(startIndex + 1, endIndex);
+                    String classFullName = path.replace('/', '.');
+                    return loadClass(classFullName);
+                }
             }
         }
     }
