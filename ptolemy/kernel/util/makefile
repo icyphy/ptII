@@ -64,6 +64,7 @@ JSRCS = \
 	Debuggable.java \
 	DebugListener.java \
 	Derivable.java \
+	ExceptionHandler.java \
 	IllegalActionException.java \
 	Instantiable.java \
 	InternalErrorException.java \
@@ -89,7 +90,6 @@ JSRCS = \
 	StreamChangeListener.java \
 	StreamListener.java \
 	StringAttribute.java \
-	TestExceptionHandler.java \
 	TransientSingletonConfigurableAttribute.java \
 	ValueListener.java \
 	Workspace.java
