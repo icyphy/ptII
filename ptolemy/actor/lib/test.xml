@@ -5,7 +5,7 @@
   <configure>
     <?moml
       <group>
-			<property name="TestExceptionHandler" class="ptolemy.kernel.util.TestExceptionHandler"/>
+			<entity name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler"/>
 			<entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest"/>
 			<entity name="Test" class="ptolemy.actor.lib.Test"/>
 			<entity name="TypeTest" class="ptolemy.actor.lib.TypeTest"/>

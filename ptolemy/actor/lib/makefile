@@ -182,6 +182,7 @@ JSRCS = \
 	Switch.java \
 	Synchronizer.java \
 	Test.java \
+	TestExceptionHandler.java \
 	ThrowException.java \
 	ThrowModelError.java \
 	TimedSource.java \
