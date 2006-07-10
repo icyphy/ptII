@@ -39,14 +39,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import ptolemy.kernel.util.ExceptionHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.ModelErrorHandler;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
-import ptolemy.kernel.util.TestExceptionHandler;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -376,6 +375,10 @@ public class Manager extends NamedObj implements Runnable {
                     _notifyListenersOfCompletion();
                 }
 
+                // Wrapup may throw an exception, so put the following 
+                // statement inside the finally block.
+                System.out.println(timeAndMemory(startTime));
+
                 if (initialThrowable != null) {
                     if (initialThrowable instanceof KernelException) {
                         // Since this class is declared to throw
@@ -390,8 +393,6 @@ public class Manager extends NamedObj implements Runnable {
                 }
             }
         }
-
-        System.out.println(timeAndMemory(startTime));
     }
 
     /** Cause the system to exit after wrapup().
@@ -979,43 +980,40 @@ public class Manager extends NamedObj implements Runnable {
     /** Execute the model, catching all exceptions. Use this method to
      *  execute the model within the calling thread, but to not throw
      *  exceptions.  Instead, the exception is handled using the
-     *  notifyListenersOfException() method, or if the model contains
-     *  attributes that implement the ModelErrorHandler interface,
-     *  by such attributes.  Except for its
+     *  notifyListenersOfException() method, or by the exception handlers 
+     *  contained by this model. Except for its
      *  exception handling, this method has exactly the same behavior
      *  as execute().
      */
     public void run() {
-        // Note that there may be more exception handlers.
-        // Get the attributes that implement the TestExceptionHandler.
-        List testExceptionHandlers = _container.attributeList(TestExceptionHandler.class);
-        int length = testExceptionHandlers.size();
-        boolean testExceptionHandled = false;
         try {
-            if (length > 1) {
-                throw new IllegalActionException(this, "Cannot contain more " +
-                        "than one TestExceptionHandler attribute.");
-            }
             execute();
         } catch (Throwable throwable) {
-            if (throwable instanceof IllegalActionException) {
-                testExceptionHandled = true;
-                try {
-                    ((ModelErrorHandler)testExceptionHandlers.get(0))
-                            .handleModelError(_container, (IllegalActionException)throwable);
-                } catch (IllegalActionException exception) {
-                    // Notify listeners of the exception thrown by the handler.
-                    notifyListenersOfThrowable(
-                            new IllegalActionException(this, exception, null));
+            List exceptionHandlersList = 
+                _container.entityList(ExceptionHandler.class);
+            Iterator exceptionHandlers = exceptionHandlersList.iterator();
+            if (exceptionHandlersList.size() > 0) {
+                while (exceptionHandlers.hasNext()) {
+                    ExceptionHandler exceptionHandler = 
+                        (ExceptionHandler) exceptionHandlers.next(); 
+                    try {
+                        // FIXME: when can the throwable not be an exception?
+                        // From the code, it seems only exception can be thrown
+                        // fro the execute() method.
+                        if (throwable instanceof Exception) {
+                            exceptionHandler.handleException(_container, (Exception) throwable);
+                        }
+                    } catch (Exception e) {
+                        // Notify listeners of the exception thrown by the handler.
+                        notifyListenersOfException(e);
+                    }
                 }
+                _notifyListenersOfCompletion();
+            } else {
+                // Notify listeners of the seen throwable.
+                notifyListenersOfThrowable(throwable);
             }
-            _notifyListenersOfCompletion();
         } finally {
-            if (length > 0 && !testExceptionHandled) {
-                notifyListenersOfThrowable(
-                        new IllegalActionException(this, "Model should " 
-                                + "have thrown an exception but did not."));
-            }
             _thread = null;
         }
     }
