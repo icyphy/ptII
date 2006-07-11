@@ -275,7 +275,11 @@ public class Manager extends NamedObj implements Runnable {
      *  so this method returns only after execution finishes.
      *  If you wish to perform execution in a new thread, use startRun()
      *  instead.  Even if an exception occurs during the execution, the
-     *  wrapup() method is called (in a finally clause).  It is up to the
+     *  wrapup() method is called (in a finally clause).  
+     *  <p> 
+     *  If an exception occurs during the execution, delegate to the 
+     *  exception handlers (if there are any) to handle these exceptions.
+     *  If there is no exception handlers, it is up to the
      *  caller to handle (i.e. report) the exception.
      *  If you do not wish to handle exceptions, but want to execute
      *  within the calling thread, use run().
@@ -353,6 +357,13 @@ public class Manager extends NamedObj implements Runnable {
         } finally {
             try {
                 wrapup();
+            } catch (Exception exception) {
+                // Caught an exception. Discard this exception 
+                // if there is an exception thrown during the iteration.
+                // Otherwise, save the exception to be handled later.
+                if (initialThrowable == null) {
+                    initialThrowable = exception;
+                }
             } finally {
                 // Indicate that it is now safe to execute
                 // change requests when they are requested.
@@ -379,6 +390,37 @@ public class Manager extends NamedObj implements Runnable {
                 // statement inside the finally block.
                 System.out.println(timeAndMemory(startTime));
 
+                // Handle throwable with exception handlers.
+                if (initialThrowable != null) {
+                    List exceptionHandlersList = 
+                        _container.entityList(ExceptionHandler.class);
+                    Iterator exceptionHandlers = exceptionHandlersList.iterator();
+                    if (exceptionHandlersList.size() > 0) {
+                        boolean exceptionHandled = false;
+                        // Note that we allow multiple exception handlers
+                        // to handle the same exception. So we iterate all
+                        // of the exception handlers.
+                        while (exceptionHandlers.hasNext()) {
+                            ExceptionHandler exceptionHandler = 
+                                (ExceptionHandler) exceptionHandlers.next(); 
+                            // FIXME: when can the throwable not be an exception?
+                            // From the code, it seems only exception can be thrown
+                            // from the execute() method.
+                            if (initialThrowable instanceof Exception) {
+                                if (exceptionHandler.handleException(_container, (Exception) initialThrowable)) {
+                                    exceptionHandled = true;
+                                }
+                            }
+                        }
+                        if (exceptionHandled) {
+                            initialThrowable = null;
+                            _notifyListenersOfCompletion();
+                        }
+                    }
+                }
+
+                // If the throwable has not been handled by exception handlers, 
+                // throw it.
                 if (initialThrowable != null) {
                     if (initialThrowable instanceof KernelException) {
                         // Since this class is declared to throw
@@ -980,8 +1022,7 @@ public class Manager extends NamedObj implements Runnable {
     /** Execute the model, catching all exceptions. Use this method to
      *  execute the model within the calling thread, but to not throw
      *  exceptions.  Instead, the exception is handled using the
-     *  notifyListenersOfException() method, or by the exception handlers 
-     *  contained by this model. Except for its
+     *  notifyListenersOfException() method.  Except for its
      *  exception handling, this method has exactly the same behavior
      *  as execute().
      */
@@ -989,30 +1030,9 @@ public class Manager extends NamedObj implements Runnable {
         try {
             execute();
         } catch (Throwable throwable) {
-            List exceptionHandlersList = 
-                _container.entityList(ExceptionHandler.class);
-            Iterator exceptionHandlers = exceptionHandlersList.iterator();
-            if (exceptionHandlersList.size() > 0) {
-                while (exceptionHandlers.hasNext()) {
-                    ExceptionHandler exceptionHandler = 
-                        (ExceptionHandler) exceptionHandlers.next(); 
-                    try {
-                        // FIXME: when can the throwable not be an exception?
-                        // From the code, it seems only exception can be thrown
-                        // fro the execute() method.
-                        if (throwable instanceof Exception) {
-                            exceptionHandler.handleException(_container, (Exception) throwable);
-                        }
-                    } catch (Exception e) {
-                        // Notify listeners of the exception thrown by the handler.
-                        notifyListenersOfException(e);
-                    }
-                }
-                _notifyListenersOfCompletion();
-            } else {
-                // Notify listeners of the seen throwable.
-                notifyListenersOfThrowable(throwable);
-            }
+            // If running tried to load in some native code using JNI
+            // then we may get an Error here
+            notifyListenersOfThrowable(throwable);
         } finally {
             _thread = null;
         }

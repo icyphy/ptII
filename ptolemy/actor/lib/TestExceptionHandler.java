@@ -112,12 +112,12 @@ public class TestExceptionHandler extends TypedAtomicActor
      *  @param context The object in which the error occurred.
      *  @param exception The exception to be handled.
      *  @return True if the exception message is the same as the saved message.
-     *  @exception Exception If cannot get a valid token from
+     *  @exception IllegalActionException If cannot get a valid token from
      *  the traningMode parameter or the exception message is not the same as
      *  the stored message.
      */
     public boolean handleException(NamedObj context, Exception exception) 
-        throws Exception {
+        throws IllegalActionException{
         if (!(exception instanceof IllegalActionException)) {
             return false;
         }

@@ -105,7 +105,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         toplevel.setManager(_manager);
         toplevel.addChangeListener(this);
         _manager.addExecutionListener(this);
-        _manager.run();
+        _manager.execute();
 
         // PtExecuteApplication uses _activeCount to determine when
         // the models are done.  We can't do that here because
@@ -217,7 +217,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  @exception Exception if there was a problem rerunning the model.
      */
     public void rerun() throws Exception {
-        _manager.run();
+        _manager.execute();
     }
 
     ///////////////////////////////////////////////////////////////////
