@@ -659,7 +659,6 @@ public class DEDirector extends Director implements TimedDirector {
         // exists, it means that the model next iteration time still needs to
         // be resolved. In other words, the model next iteration time is 
         // just the current time.
-        /* FIXME: This seems like nonsense... Why? */
         Object[] events = _eventQueue.toArray();
         for (int i = 0; i < events.length; i++) {
             DEEvent event = (DEEvent) events[i];
@@ -939,19 +938,10 @@ public class DEDirector extends Director implements TimedDirector {
             }
         }
 
-        /* FIXME: The following is wrong because there might be
-         * pure events in the event queue, and returning false
-         * from prefire() will prevent processing of those events.
-         * Suppose, for example, that this DEDirector has a Continuous
-         * opaque composite within it.  That composite may have requested
-         * a firing at its next integration time. If we return false in
-         * prefire, it will not get a chance to perform that firing.
-
-        // Now, the model time is either less than or equal to the
-        // next event time.
-        // If there is an internal event scheduled to happen
-        // at the current time, it is the right time to fire
-        // regardless whether there are external inputs.
+        // If model time is strictly less than the next event time,
+        // then there are no events on the event queue with this
+        // model time, and hence, if there are also no input events,
+        // then there is nothing to do, and we can return false.
         if (!nextEventTime.equals(modelTime)) {
             // If the event timestamp is greater than the model timestamp,
             // we check if there's any external input.
@@ -979,7 +969,7 @@ public class DEDirector extends Director implements TimedDirector {
                 result = false;
             }
         }
-        */
+
         if (_debugging) {
             _debug("Prefire returns: " + result);
         }
