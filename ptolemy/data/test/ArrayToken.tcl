@@ -310,8 +310,12 @@ test ArrayToken-2.2.1 {test multiply errors} {
     catch {$t1 multiplyReverse $t} errMsg2
     catch {$t1 elementMultiply $t} errMsg3
     list "$errMsg1\n $errMsg2\n $errMsg3"
-} {{ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present' because the tokens have different classes.
- ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present' because the tokens have different classes.
+} {{ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
+Because:
+multiplyReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'
+ ptolemy.kernel.util.IllegalActionException: multiplyReverse operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
+Because:
+multiplyReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'
  ptolemy.kernel.util.IllegalActionException: elementMultiply operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
 Because:
 multiplyReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'}}
@@ -326,16 +330,45 @@ test ArrayToken-2.2.2 {test multiply length errors} {
     catch {$t1 multiply $t2} errMsg1
     catch {$t1 multiplyReverse $t2} errMsg2
     catch {$t1 elementMultiply $t2} errMsg3
-    list "$errMsg1\n    $errMsg2\n    $errMsg3"
+    list "$errMsg1\n    $errMsg2"
 } {{ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
 Because:
 The length of the argument (2) is not the same as the length of this token (3).
     ptolemy.kernel.util.IllegalActionException: multiplyReverse operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
 Because:
-The length of the argument (3) is not the same as the length of this token (2).
-    ptolemy.kernel.util.IllegalActionException: elementMultiply operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
-Because:
-multiply method not supported between ptolemy.data.IntToken '1' and ptolemy.data.ArrayToken '{3, 4}' because the types are incomparable.}}
+The length of the argument (2) is not the same as the length of this token (3).}}
+
+######################################################################
+####
+# 
+test ArrayToken-2.2.2.1 {test elementMultiply by array} {
+    # Cover blocks in AbstractNotConvertibleToken
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{3, 4}"]
+    set result [$t1 elementMultiply $t2]
+    list [$result toString]
+} {{{{3, 4}, {6, 8}, {9, 12}}}}
+
+######################################################################
+####
+#
+test ArrayToken-2.2.3 {test multiply by a scalar} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 3, 3}"]
+    set t2 [java::new {ptolemy.data.DoubleToken String} "2.0"]
+    set tadd [$t1 multiply $t2]
+    list [$tadd toString]
+} {{{2.0, 6.0, 6.0}}}
+
+######################################################################
+####
+#
+test ArrayToken-2.2.4 {test multiply by a array} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{{1.0, 2.0}, {3.0, 1.0}}"]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 2.0}"]
+    set tadd [$t1 multiply $t2]
+    set tadd1 [$t1 multiplyReverse $t2]
+    list [$tadd toString] [$tadd1 toString]
+} {{{{0.5, 1.0}, {6.0, 2.0}}} {{{0.5, 1.0}, {6.0, 2.0}}}}
 
 ######################################################################
 ####
@@ -361,30 +394,48 @@ test ArrayToken-2.3.1 {test divide type errors} {
     catch {$t1 divideReverse $t} errMsg2
     catch {$t1 elementDivide $t} errMsg3
     list "$errMsg1\n $errMsg2\n $errMsg3"
-} {{ptolemy.kernel.util.IllegalActionException: divide method not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present' because the tokens have different classes.
- ptolemy.kernel.util.IllegalActionException: divideReverse method not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present' because the tokens have different classes.
+} {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
+Because:
+divideReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'
+ ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
+Because:
+divide operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'
  ptolemy.kernel.util.IllegalActionException: elementDivide operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
 Because:
 divideReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'}}
 
 ######################################################################
 ####
+#
+test ArrayToken-2.3.2 {test divide by a scalar} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 3, 3}"]
+    set t2 [java::new {ptolemy.data.DoubleToken String} "2.0"]
+    set tadd [$t1 divide $t2]
+    list [$tadd toString]
+} {{{0.5, 1.5, 1.5}}}
+
+######################################################################
+####
+#
+test ArrayToken-2.3.3 {test divide by a array} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{{1.0, 2.0}, {3.0, 1.0}}"]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 2.0}"]
+    set tadd [$t1 divide $t2]
+    list [$tadd toString]
+} {{{{2.0, 4.0}, {1.5, 0.5}}}}
+
+######################################################################
+####
 # 
-test ArrayToken-2.3.2 {test divide length errors} {
+test ArrayToken-2.3.4 {test divide length errors} {
     # Cover blocks in AbstractNotConvertibleToken
     set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
     set t2 [java::new {ptolemy.data.ArrayToken String} "{3, 4}"]
     catch {$t1 divide $t2} errMsg1
-    catch {$t1 addDivide $t2} errMsg2
-    catch {$t1 elementDivide $t2} errMsg3
-    list "$errMsg1\n    $errMsg2\n    $errMsg3"
+    list "$errMsg1"
 } {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
 Because:
-The length of the argument (2) is not the same as the length of this token (3).
-    no such method "addDivide" in class ptolemy.data.ArrayToken
-    ptolemy.kernel.util.IllegalActionException: elementDivide operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
-Because:
-divide method not supported between ptolemy.data.IntToken '1' and ptolemy.data.ArrayToken '{3, 4}' because the types are incomparable.}}
+The length of the argument (2) is not the same as the length of this token (3).}}
 
 ######################################################################
 ####

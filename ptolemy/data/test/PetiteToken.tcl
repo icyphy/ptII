@@ -204,7 +204,7 @@ test PetiteToken-4.1 {Test dividing petites and ints.} {
     #
     #list [$res1 toString] [$res2 toString] [$res3 toString]
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: divide method not supported between ptolemy.data.PetiteToken '0.41p' and ptolemy.data.IntToken '2' because the types are incomparable.}}
+} {{ptolemy.kernel.util.IllegalActionException: divideReverse method not supported between ptolemy.data.IntToken '2' and ptolemy.data.PetiteToken '0.41p' because the types are incomparable.}}
 
 ######################################################################
 ####
@@ -400,9 +400,8 @@ test PetiteToken-7.1 {Test multiply operator between petites and ints.} {
     set tok1 [java::new {ptolemy.data.PetiteToken double} 0.71]
     set tok2 [java::new {ptolemy.data.IntToken int} 3]
     
-    catch {set res1 [$tok1 multiply $tok2]} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.PetiteToken '0.71p' and ptolemy.data.IntToken '3' because the types are incomparable.}}
+    [$tok1 multiply $tok2] toString
+} {1.0p}
 
 
 ######################################################################

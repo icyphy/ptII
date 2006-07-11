@@ -209,6 +209,54 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         return result;
     }
 
+    /** Divide this array token by the specified argument.
+     *  If the argument is an array token, then it is required to have
+     *  the same length as this array token, and the division is elementwise.
+     *  Otherwise, each element is divided by the argument.
+     *  This overrides the base class to allow division by scalars.
+     *  @param rightArgument The token to divide into this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *   an array token but does not have the same length as this
+     *   token, or if division is not supported between the elements
+     *   of this array and the argument.
+     */
+    public Token divide(Token rightArgument) throws IllegalActionException {
+        try {
+            return _divide(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "divide", this, rightArgument));
+        }
+    }
+
+    /** Divide this array token into the specified argument.
+     *  If the argument is an array token, then it is required to have
+     *  the same length as this array token, and the division is elementwise.
+     *  Otherwise, each element is divided into the argument.
+     *  This overrides the base class to allow division into scalars.
+     *  @param rightArgument The token into which to divide this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *   an array token but does not have the same length as this
+     *   token, or if division is not supported between the elements
+     *   of this array and the argument.
+     */
+    public Token divideReverse(Token rightArgument) throws IllegalActionException {
+        try {
+            return _divideReverse(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "divide", this, rightArgument));
+        }
+    }
+
     /** Add the given token to each element of this array.
      *  @param token The token to be added to this token.   
      *  @return A new array token.
@@ -504,6 +552,55 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         return _value.length;
     }
 
+    /** Multiply this array token by the specified argument.
+     *  If the argument is an array token, then it is required to have
+     *  the same length as this array token, and the multiplication is elementwise.
+     *  Otherwise, each element is multiplied by the argument.
+     *  This overrides the base class to allow multiplication by scalars.
+     *  @param rightArgument The token to multiply by this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *   an array token but does not have the same length as this
+     *   token, or if multiplication is not supported between the elements
+     *   of this array and the argument.
+     */
+    public Token multiply(Token rightArgument) throws IllegalActionException {
+        try {
+            return _multiply(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "multiply", this, rightArgument));
+        }
+    }
+    
+    /** Multiply this array token by the specified argument.
+     *  If the argument is an array token, then it is required to have
+     *  the same length as this array token, and the multiplication is elementwise.
+     *  Otherwise, each element is multiplied by the argument.
+     *  This overrides the base class to allow multiplication by scalars.
+     *  @param rightArgument The token to multiply by this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *   an array token but does not have the same length as this
+     *   token, or if multiplication is not supported between the elements
+     *   of this array and the argument.
+     */
+    public Token multiplyReverse(Token leftArgument)
+            throws IllegalActionException {
+        try {
+            return _multiply(leftArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "multiplyReverse", this, leftArgument));
+        }
+    }
+
     /** Return a new ArrayToken representing the multiplicative
      *  identity.  The returned token contains an array of the same
      *  size as the array contained by this token, and each element of
@@ -656,25 +753,55 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Return a new token whose value is the value of this token
-     *  divided by the value of the argument token.  It is assumed that
-     *  this class is the class of the argument.
-     *  @param rightArgument The token to divide this token by
+     *  divided by the value of the argument token.  If the argument
+     *  is an array, then the division is done
+     *  elementwise. Otherwise, this method assumes that each
+     *  element can be divided by the argument and performs the
+     *  division.
+     *  @param rightArgument The token to divide this token by.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument is an
-     *  ArrayToken of different length, or calling the divide method
-     *  of the element token throws it.
+     *   ArrayToken of different length, or calling the divide method
+     *   of the element token throws it.
      */
     protected Token _divide(Token rightArgument) throws IllegalActionException {
-        _checkArgumentLength(rightArgument);
-
-        ArrayToken rightArray = (ArrayToken) rightArgument;
         Token[] result = new Token[_value.length];
-
-        for (int i = 0; i < _value.length; i++) {
-            result[i] = _value[i].divide(rightArray.getElement(i));
-        }
-
+        if (rightArgument instanceof ArrayToken) {
+            _checkArgumentLength(rightArgument);
+            ArrayToken rightArray = (ArrayToken) rightArgument;
+            for (int i = 0; i < _value.length; i++) {
+                result[i] = _value[i].divide(rightArray.getElement(i));
+            }
+        } else {
+            for (int i = 0; i < _value.length; i++) {
+                result[i] = _value[i].divide(rightArgument);
+            }            
+        }        
         return new ArrayToken(result);
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  divided into the value of the argument token.  If the argument
+     *  is an array, then the division is done
+     *  elementwise. Otherwise, this method assumes that the argument
+     *  can be divided by each element of this array and performs the
+     *  division.
+     *  @param rightArgument The token into which to divide this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument is an
+     *   ArrayToken of different length, or calling the divide method
+     *   of the element token throws it.
+     */
+    protected Token _divideReverse(Token rightArgument) throws IllegalActionException {
+        if (rightArgument instanceof ArrayToken) {
+            return ((ArrayToken)rightArgument).divide(this);
+        } else {
+            Token[] result = new Token[_value.length];
+            for (int i = 0; i < _value.length; i++) {
+                result[i] = rightArgument.divide(_value[i]);
+            }            
+            return new ArrayToken(result);
+        }        
     }
 
     /** Test whether the value of this token is close to the first argument,
@@ -767,8 +894,11 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Return a new token whose value is the value of this token
-     *  multiplied by the value of the argument token.  It is assumed
-     *  that this class is the class of the argument.
+     *  multiplied by the value of the argument token.  If the argument
+     *  is an array token, then it is required to have the same length
+     *  as this array token, and the multiplication is performed
+     *  elementwise. Otherwise, each element of this array is multiplied
+     *  by the argument.
      *  @param rightArgument The token to multiply this token by.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument is an
@@ -777,15 +907,18 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
-        _checkArgumentLength(rightArgument);
-
-        ArrayToken rightArray = (ArrayToken) rightArgument;
         Token[] result = new Token[_value.length];
-
-        for (int i = 0; i < _value.length; i++) {
-            result[i] = _value[i].multiply(rightArray.getElement(i));
+        if (rightArgument instanceof ArrayToken) {
+            _checkArgumentLength(rightArgument);
+            ArrayToken rightArray = (ArrayToken) rightArgument;
+            for (int i = 0; i < _value.length; i++) {
+                result[i] = _value[i].multiply(rightArray.getElement(i));
+            }
+        } else {
+            for (int i = 0; i < _value.length; i++) {
+                result[i] = _value[i].multiply(rightArgument);
+            }            
         }
-
         return new ArrayToken(result);
     }
 

@@ -404,8 +404,30 @@ public abstract class ScalarToken extends Token implements
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.divideReverse(this);
         } else {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "divide", this, rightArgument));
+            // Items being divided are incomparable.
+            // However, division may still be possible because
+            // the LUB of the types might support it. E.g., [double]/complex,
+            // where the LUB is [complex].
+            Type lubType = (Type) TypeLattice.lattice().leastUpperBound(
+                    getType(), rightArgument.getType());
+
+            // If the LUB is a new type, try it.
+            if (lubType != null && !lubType.equals(getType())) {
+                Token lub = lubType.convert(this);
+
+                // Caution: convert() might return this again, e.g.
+                // if lubType is general.  Only proceed if the conversion
+                // returned a new type.
+                if (!(lub.getType().equals(getType()))) {
+                    return lub.divide(rightArgument);
+                }
+            }
+
+            // LUB does not support it, but it still might be
+            // possible, e.g. with expressions like double / {double}.
+            // Only divideReverse() could support it at this time however.
+            // This will throw an exception if it is not supported.
+            return rightArgument.divideReverse(this);
         }
     }
 
@@ -868,7 +890,7 @@ public abstract class ScalarToken extends Token implements
                     getType(), rightArgument.getType());
 
             // If the LUB is a new type, try it.
-            if (!lubType.equals(getType())) {
+            if (lubType != null && !lubType.equals(getType())) {
                 Token lub = lubType.convert(this);
 
                 // Caution: convert() might return this again, e.g.
@@ -879,8 +901,11 @@ public abstract class ScalarToken extends Token implements
                 }
             }
 
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "multiply", this, rightArgument));
+            // LUB does not support it, but it still might be
+            // possible, e.g. with expressions like double * {double}.
+            // Only multiplyReverse() could support it at this time however.
+            // This will throw an exception if it is not supported.
+            return rightArgument.multiplyReverse(this);
         }
     }
 
