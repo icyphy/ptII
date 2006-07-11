@@ -57,7 +57,8 @@ import ptolemy.kernel.util.StringAttribute;
  <li> <b>truncate</b>: Round towards zero.
  </ul>
 
- If the argument is NaN, then the result is NaN.  The default is "round".
+ If the argument is NaN, then the fire() method will throw
+ an exception.
 
  @author C. Fong
  @version $Id$
@@ -133,11 +134,15 @@ public class Round extends Transformer {
     /** This computes the specified rounded value of the input.
      *  This consumes and produces at most one token for each firing.
      *  If there is no input, then produce no output.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If there is no director,
+     *   or if the input is NaN.
      */
     public void fire() throws IllegalActionException {
         super.fire();
         double in = ((DoubleToken) input.get(0)).doubleValue();
+        if (in == Double.NaN) {
+            throw new IllegalActionException(this, "Input is NaN, which can't be rounded.");
+        }
         output.send(0, new IntToken(_doFunction(in)));
     }
 
