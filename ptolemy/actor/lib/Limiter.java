@@ -28,6 +28,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -42,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  equal to the input if the input lies between the <i>bottom</i> and
  <i>top</i> parameters.  Otherwise, if the input is greater than <i>top</i>,
  output <i>top</i>.  If the input is less than <i>bottom</i>, output
- <i>bottom</i>.  This actor operates on doubles only.
+ <i>bottom</i>.  This actor operates on scalar types only.
 
  @author Edward A. Lee
  @version $Id$
@@ -64,25 +65,25 @@ public class Limiter extends Transformer {
         super(container, name);
         bottom = new Parameter(this, "bottom");
         bottom.setExpression("0.0");
-        bottom.setTypeEquals(BaseType.DOUBLE);
 
         top = new Parameter(this, "top");
         top.setExpression("1.0");
-        top.setTypeEquals(BaseType.DOUBLE);
 
-        input.setTypeEquals(BaseType.DOUBLE);
-        output.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeAtMost(BaseType.SCALAR);
+        output.setTypeAtLeast(input);
+        output.setTypeAtLeast(top);
+        output.setTypeAtLeast(bottom);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The bottom of the limiting range.  This is a double with default
+    /** The bottom of the limiting range.  This is a scalar with default
      *  value 0.0.
      */
     public Parameter bottom;
 
-    /** The top of the limiting range.  This is a double with default
+    /** The top of the limiting range.  This is a scalar with default
      *  value 1.0.
      */
     public Parameter top;
@@ -97,12 +98,10 @@ public class Limiter extends Transformer {
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
-            DoubleToken in = (DoubleToken) input.get(0);
-            double inValue = in.doubleValue();
-
-            if (inValue < ((DoubleToken) bottom.getToken()).doubleValue()) {
+            ScalarToken in = (ScalarToken) input.get(0);
+            if ((in.isLessThan((ScalarToken)bottom.getToken())).booleanValue()) {
                 output.send(0, bottom.getToken());
-            } else if (inValue > ((DoubleToken) top.getToken()).doubleValue()) {
+            } else if ((in.isGreaterThan((ScalarToken)top.getToken())).booleanValue()) {
                 output.send(0, top.getToken());
             } else {
                 output.send(0, in);
