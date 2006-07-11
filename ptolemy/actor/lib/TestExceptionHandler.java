@@ -79,7 +79,7 @@ public class TestExceptionHandler extends TypedAtomicActor
     public TestExceptionHandler(CompositeEntity container, String name) 
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        correctExceptionMessage = new StringParameter(this, name);
+        correctExceptionMessage = new StringParameter(this, "correctExceptionMessage");
         correctExceptionMessage.setExpression("");
         trainingMode = new SharedParameter(this, "trainingMode", getClass(),
             "false");
