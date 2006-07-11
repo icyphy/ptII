@@ -189,6 +189,7 @@ public class CalendarQueue implements Debuggable {
     public void clear() {
         _initialized = false;
         _queueSize = 0;
+        _indexOfMinimumBucketValid = false;
     }
 
     /** Return entry that is at the head of the
@@ -200,13 +201,13 @@ public class CalendarQueue implements Debuggable {
      *  @exception InvalidStateException If the queue is empty.
      */
     public final Object get() throws InvalidStateException {
-        // First check whether the queue is empty.
-        if (_queueSize == 0) {
-            throw new InvalidStateException("Queue is empty.");
+        int indexOfMinimum = _getIndexOfMinimumBucket();
+        Object result = _getFromBucket(indexOfMinimum);
+        _collect(result);
+        if (_debugging) {
+            _debug("--- taking from queue: " + result);
         }
-
-        Object[] contents = toArray(1);
-        return contents[0];
+        return result;
     }
 
     /** Return true if the specified entry is in the queue.
@@ -402,80 +403,12 @@ public class CalendarQueue implements Debuggable {
      *  @exception InvalidStateException If the queue is empty.
      */
     public final Object take() throws InvalidStateException {
-        // First check whether the queue is empty.
-        if (_queueSize == 0) {
-            throw new InvalidStateException("Cannot take from an empty queue.");
-        }
-
-        // Search the buckets starting from the index given by _minBucket.
-        // This is analogous to starting from the current page(month)
-        // of the calendar.
-        int i = _minBucket;
-
-        // Search the buckets starting from the index given by _minBucket.
-        // This is analogous to starting from the current page(month)
-        // of the calendar.
-        int j = 0;
-        int indexOfMinimum = i;
-        Object minSoFar = null;
-        Object result = null;
-
-        while (true) {
-            // At each bucket, we first determine whether the bucket is empty.
-            // If not, then we check whether the first entry in the
-            // bucket is in the current year. This is done simply by
-            // comparing the virtual bucket number to _minVirtualBucket.
-            // If an entry is in the current year, then return it.
-            // If no entry is in the current year, then we cycle
-            // through all buckets and find the minimum entry.
-            if (!_bucket[i].isEmpty()) {
-                // The bucket is not empty.
-                Object minimumInBucket = _bucket[i].head.contents;
-
-                if (_cqComparator.getVirtualBinNumber(minimumInBucket) == (_minVirtualBucket + j)) {
-                    // The entry is in the current year. Return it.
-                    result = _takeFromBucket(i);
-                    break;
-                } else {
-                    // The entry is not in the current year.
-                    // Compare to the minimum found so far.
-                    if (minSoFar == null) {
-                        minSoFar = minimumInBucket;
-                        indexOfMinimum = i;
-                    } else if (_cqComparator.compare(minimumInBucket, minSoFar) < 0) {
-                        minSoFar = minimumInBucket;
-                        indexOfMinimum = i;
-                    }
-                }
-            }
-
-            // Prepare to check the next bucket
-            ++i;
-            ++j;
-
-            if (i == _numberOfBuckets) {
-                i = 0;
-            }
-
-            // If one round of search has already elapsed,
-            // then return the minimum that we have found.
-            if (i == _minBucket) {
-                if (minSoFar == null) {
-                    throw new InternalErrorException(
-                            "Queue is empty, but size() is not zero!");
-                }
-
-                result = _takeFromBucket(indexOfMinimum);
-                break;
-            }
-        }
-
+        int indexOfMinimum = _getIndexOfMinimumBucket();
+        Object result = _takeFromBucket(indexOfMinimum);
         _collect(result);
-
         if (_debugging) {
             _debug("--- taking from queue: " + result);
         }
-
         return result;
     }
 
@@ -647,6 +580,100 @@ public class CalendarQueue implements Debuggable {
         return (int) i;
     }
 
+    /** Get the first entry from the specified bucket and return
+     *  its contents.
+     */  
+    private Object _getFromBucket(int index) {
+        return _bucket[index].head.contents;
+    }
+
+    /** Get the index of the minimum bucket. The index is cached. When
+     *  this method is invoked, this method first checks whether the queue
+     *  has changed, if so, find a new index, otherwise, return the cached 
+     *  index.
+     *  @return The index of the minimum bucket.
+     */
+    private int _getIndexOfMinimumBucket() {
+        // First check whether the queue is empty.
+        if (_queueSize == 0) {
+            throw new InvalidStateException("Queue is empty.");
+        }
+        
+        // If the queue has not been changed, do nothing.
+        // Note that this has a strong dependency on the implementation
+        // of methods that modify the queue, such as the put(), remove(), 
+        // and take() methods.
+        if (_indexOfMinimumBucketValid) {
+            return _indexOfMinimumBucket;
+        }
+
+        // Search the buckets starting from the index given by _minBucket.
+        // This is analogous to starting from the current page(month)
+        // of the calendar.
+        int i = _minBucket;
+
+        // Search the buckets starting from the index given by _minBucket.
+        // This is analogous to starting from the current page(month)
+        // of the calendar.
+        int j = 0;
+        int indexOfMinimum = i;
+        Object minSoFar = null;
+
+        while (true) {
+            // At each bucket, we first determine whether the bucket is empty.
+            // If not, then we check whether the first entry in the
+            // bucket is in the current year. This is done simply by
+            // comparing the virtual bucket number to _minVirtualBucket.
+            // If an entry is in the current year, then the entry is the
+            // minimum one and record its index.
+            // If no entry is in the current year, then we cycle
+            // through all buckets and find the minimum entry.
+            if (!_bucket[i].isEmpty()) {
+                // The bucket is not empty.
+                Object minimumInBucket = _bucket[i].head.contents;
+
+                if (_cqComparator.getVirtualBinNumber(minimumInBucket) == (_minVirtualBucket + j)) {
+                    // The entry is in the current year. Record its index.
+                    _indexOfMinimumBucket = i;
+                    break;
+                } else {
+                    // The entry is not in the current year.
+                    // Compare to the minimum found so far.
+                    if (minSoFar == null) {
+                        minSoFar = minimumInBucket;
+                        indexOfMinimum = i;
+                    } else if (_cqComparator.compare(minimumInBucket, minSoFar) < 0) {
+                        minSoFar = minimumInBucket;
+                        indexOfMinimum = i;
+                    }
+                }
+            }
+
+            // Prepare to check the next bucket
+            ++i;
+            ++j;
+
+            if (i == _numberOfBuckets) {
+                i = 0;
+            }
+
+            // If one round of search has already elapsed,
+            // then use the index of minimum one we have found so far
+            // as the index for the minimum bucket.
+            if (i == _minBucket) {
+                if (minSoFar == null) {
+                    throw new InternalErrorException(
+                            "Queue is empty, but size() is not zero!");
+                }
+                _indexOfMinimumBucket = indexOfMinimum;
+                break;
+            }
+        }
+        
+        _indexOfMinimumBucketValid = true;
+        return _indexOfMinimumBucket;
+    }
+    
     // Initialize the bucket array to the specified number of buckets
     // with the specified width.
     //
@@ -689,6 +716,10 @@ public class CalendarQueue implements Debuggable {
     // The argument indicates whether the queue just increased or decreased
     // in size.
     private void _resize(boolean increasing) {
+        // This method is called whenever the queue is modified. So, we 
+        // set the flat _queueChanged to true.
+        _indexOfMinimumBucketValid = false;
+        
         if (!_resizeEnabled) {
             return;
         }
@@ -1017,6 +1048,13 @@ public class CalendarQueue implements Debuggable {
     // Comparator to determine how to order entries.
     private CQComparator _cqComparator;
 
+    /** The index of the minmum bucket. */
+    private int _indexOfMinimumBucket = 0;
+    
+    /** Flag indicating whether the index of the minimum bucket is valid.
+     */
+    private boolean _indexOfMinimumBucketValid = false;
+    
     // An indicator of whether the queue has been initialized.
     private boolean _initialized = false;
 
