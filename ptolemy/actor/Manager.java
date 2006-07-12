@@ -422,10 +422,18 @@ public class Manager extends NamedObj implements Runnable {
                 // If the throwable has not been handled by exception handlers, 
                 // throw it.
                 if (initialThrowable != null) {
-                    if (initialThrowable instanceof KernelException) {
+                    if (initialThrowable instanceof RuntimeException) {
+                        // We do not handle runtime exception. 
+                        // Throw it.
+                        throw (RuntimeException) initialThrowable;
+                    } else if (initialThrowable instanceof KernelException) {
                         // Since this class is declared to throw
                         // KernelException, if we have one, we throw it.
                         throw (KernelException) initialThrowable;
+                    } else if (initialThrowable instanceof RuntimeException) {
+                        // We do not handle runtime exception. 
+                        // Throw it.
+                        throw (RuntimeException) initialThrowable;
                     } else {
                         // Ok, it is not a KernelException, so we
                         // rethrow it as the cause of a KernelException
