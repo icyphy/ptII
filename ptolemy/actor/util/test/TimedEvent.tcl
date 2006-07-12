@@ -67,7 +67,7 @@ test TimedEvent-2.2 {Construct an empty queue and attempt a take} {
     set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     catch {[$queue take]} msg1
     list $msg1
-} {{ptolemy.kernel.util.InvalidStateException: Cannot take from an empty queue.}}
+} {{ptolemy.kernel.util.InvalidStateException: Queue is empty.}}
 
 ######################################################################
 ######################################################################
