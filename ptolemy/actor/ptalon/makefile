@@ -33,38 +33,12 @@
 
 ME =		ptolemy/actor/lib/ptalon
 
-# $PTII/configure looks for Colt and sets PTCOLT_DIR in
-# $PTII/mk/ptII.mk if was found.  Otherwise, PTCOLT_DIR is empty.
-
-# $PTII/configure looks for Java Advanced Imaging and sets PTJAI_DIR in
-# $PTII/mk/ptII.mk if was found.  Otherwise, PTJAI_DIR is empty.
-#
-# $PTII/configure looks for Java Media Framework and sets PTJMF_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTJMF_DIR is empty.
-#
-# $PTII/configure looks for the Joystick interface  and sets PTJOYSTICK_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTJOYSTICK_DIR is empty.
-#
-# $PTII/configure looks for Jython and sets PTJYTHON_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTJYTHON_DIR is empty.
-#
-# $PTII/configure looks for JXTA and sets PTJXTA_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTJXTA_DIR is empty.
-#
-# $PTII/configure looks for X10 and sets PTX10_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTX10_DIR is empty.
-
-DIRS = 		conversions gui logic hoc image javasound net io xslt \
-		test comm security string $(PTCOLT_DIR) $(PTJAI_DIR) \
-		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
-		$(PTJYTHON_DIR) $(PTJXTA_DIR) $(PTX10_DIR)
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../..
 
-# Do not add diva.jar to the CLASSPATH in actor/lib/makefile
-# instead, move any actors that require diva.jar into actor/lib/gui -cxh
-CLASSPATH =	$(ROOT)${CLASSPATHSEPARATOR}${ROOT}/ptolemy/actor/ptalon/antlr/antlr.jar
+CLASSPATH =	$(ROOT)${CLASSPATHSEPARATOR}${ANTLR_DIR}/antlr.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
