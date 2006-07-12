@@ -424,6 +424,8 @@ public class DEDirector extends Director implements TimedDirector {
             // have fired (reacted to their triggers) before the composite
             // actor fires.
             // TESTIT.
+            // FIXME: However, there may be more than one output port,
+            // should all the events be removed from the event queue?
             if (actorToFire == getContainer()) {
                 return;
             }
@@ -926,7 +928,7 @@ public class DEDirector extends Director implements TimedDirector {
         // If the model time is larger (later) than the first event
         // in the queue, catch up with the current model time by discarding 
         // the old events. This can occur, for example, if we are in a
-        // modal model and this director was in an inactive mode when
+        // modal model and this director was in an inactive mode before
         // we reached the time of the event.
         while (modelTime.compareTo(nextEventTime) > 0) {
             _eventQueue.take();
@@ -1946,6 +1948,18 @@ public class DEDirector extends Director implements TimedDirector {
                 if (nextEvent.hasTheSameTagAndDepthAs(lastFoundEvent)) {
                     // Consume the event from the queue and discard it.
                     _eventQueue.take();
+                } else if (actorToFire == getContainer()) {
+                    // The actor to be fired is the container, we remove all 
+                    // the trigger events with the same tag from the event
+                    // queue such that the executive director of this DE model
+                    // can react to these events.
+                    Actor actor = nextEvent.actor();
+                    if (actor == actorToFire && nextEvent.hasTheSameTagAs(lastFoundEvent)) {
+                        _eventQueue.take();
+                    } else {
+                        // Next event has a future tag or a different destination.
+                        break;
+                    }
                 } else {
                     // Next event has a future tag or a different destination.
                     break;
@@ -2030,32 +2044,26 @@ public class DEDirector extends Director implements TimedDirector {
     /** A hashtable that caches the depths of actors. */
     private Hashtable _actorToDepth = null;
 
-    /**
-     * The set of actors that have returned false in their postfire()
-     * methods. Events destined for these actors are discarded and
-     * the actors are  never fired.
+    /** The set of actors that have returned false in their postfire()
+     *  methods. Events destined for these actors are discarded and
+     *  the actors are  never fired.
      */
     private Set _disabledActors;
 
-    /**
-     * The queue used for sorting events.
-     */
+    /** The queue used for sorting events. */
     private DEEventQueue _eventQueue;
 
-    /**
-     * Set to true when the time stamp of the token to be dequeue
-     * has exceeded the stopTime.
+    /** Set to true when the time stamp of the token to be dequeue
+     *  has exceeded the stopTime.
      */
     private boolean _exceedStopTime = false;
 
     /** A local boolean variable indicating whether this director is in
-     * initialization phase execution.
+     *  initialization phase execution.
      */
     private boolean _isInitializing = false;
 
-    /**
-     * The current microstep.
-     */
+    /** The current microstep. */
     private int _microstep = 0;
 
     /**
@@ -2066,37 +2074,33 @@ public class DEDirector extends Director implements TimedDirector {
     /** A hashtable that caches the depths of ports. */
     private Hashtable _portToDepth = null;
 
-    /**
-     * The real time at which the model begins executing.
-     */
+    /** The real time at which the model begins executing. */
     private long _realStartTime = 0;
 
-    /**
-     * Indicator of whether the topological sort giving ports their
-     * priorities is valid.
+    /** Indicator of whether the topological sort giving ports their
+     *  priorities is valid.
      */
     private long _sortValid = -1;
 
-    // Start and stop times.
+    /** Start time. */
     private Time _startTime;
 
+    /** Stop time. */
     private Time _stopTime;
 
-    /**
-     * Decide whether the simulation should be stopped when there's no more
-     * events in the global event queue. By default, its value is 'true',
-     * meaning that the simulation will stop under that circumstances.
-     * Setting it to 'false', instruct the director to wait on the queue
-     * while some other threads might enqueue events in it.
+    /** Decide whether the simulation should be stopped when there's no more
+     *  events in the global event queue. By default, its value is 'true',
+     *  meaning that the simulation will stop under that circumstances.
+     *  Setting it to 'false', instruct the director to wait on the queue
+     *  while some other threads might enqueue events in it.
      */
     private boolean _stopWhenQueueIsEmpty = true;
 
-    /**
-     * Specify whether the director should wait for elapsed real time to
-     * catch up with model time.
+    /** Specify whether the director should wait for elapsed real time to
+     *  catch up with model time.
      */
     private boolean _synchronizeToRealTime;
 
-    // The name of an attribute that marks an actor as strict.
+    /** The name of an attribute that marks an actor as strict. */
     private static final String STRICT_ATTRIBUTE_NAME = "_strictMarker";
 }
