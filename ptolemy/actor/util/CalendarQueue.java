@@ -190,6 +190,7 @@ public class CalendarQueue implements Debuggable {
         _initialized = false;
         _queueSize = 0;
         _indexOfMinimumBucketValid = false;
+        _cachedMinimumBucket = null;
     }
 
     /** Return entry that is at the head of the
@@ -201,13 +202,19 @@ public class CalendarQueue implements Debuggable {
      *  @exception InvalidStateException If the queue is empty.
      */
     public final Object get() throws InvalidStateException {
-        int indexOfMinimum = _getIndexOfMinimumBucket();
-        Object result = _getFromBucket(indexOfMinimum);
-        _collect(result);
-        if (_debugging) {
-            _debug("--- taking from queue: " + result);
+        if (_indexOfMinimumBucketValid) {
+            // If the queue has not been changed, return the cached bucket.
+            return _cachedMinimumBucket;
+        } else {
+            int indexOfMinimum = _getIndexOfMinimumBucket();
+            Object result = _getFromBucket(indexOfMinimum);
+            _collect(result);
+            if (_debugging) {
+                _debug("--- getting from queue: " + result);
+            }
+            _cachedMinimumBucket = result;
+            return result;
         }
-        return result;
     }
 
     /** Return true if the specified entry is in the queue.
@@ -1045,6 +1052,9 @@ public class CalendarQueue implements Debuggable {
     // The array of bins or buckets.
     private CQLinkedList[] _bucket;
 
+    // Cached minimum bucket.
+    private Object _cachedMinimumBucket;
+    
     // Comparator to determine how to order entries.
     private CQComparator _cqComparator;
 
