@@ -44,7 +44,10 @@ import java.net.SocketException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.ByteBuffer;
+import java.nio.channels.CancelledKeyException;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.ClosedSelectorException;
+import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -709,16 +712,31 @@ public class PtinyOSDirector extends Director {
 
     // Create a selector and register the ServerSocketChannel of the
     // ServerSocket with the selector.
-    public Selector selectorCreate(ServerSocket serverSocket) {
+    public Selector selectorCreate(ServerSocket serverSocket, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {
         Selector selector = null;
         try {
             // Create the selector
             selector = Selector.open();
 
+            if (_debugging) {
+                _debug("Created selector.");
+            }
+
             ServerSocketChannel serverSocketChannel = serverSocket.getChannel();
             if (serverSocketChannel != null) {
                 // Register channel with selector.
-                serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+                if (opAccept) {
+                    serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+                }
+                if (opConnect) {
+                    serverSocketChannel.register(selector, SelectionKey.OP_CONNECT);
+                }
+                if (opRead) {
+                    serverSocketChannel.register(selector, SelectionKey.OP_READ);
+                }
+                if (opWrite) {
+                    serverSocketChannel.register(selector, SelectionKey.OP_WRITE);
+                }
             } else {
                 System.out.println("Could not find ServerSocketChannel associated with ServerSocket!");
             }
@@ -726,6 +744,30 @@ public class PtinyOSDirector extends Director {
             System.out.println(e);
         }
         return selector;
+    }
+    
+    // Register channel with selector.
+    public void selectorRegister(Selector selector, SelectableChannel socketChannel, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {
+        
+        if (selector != null && socketChannel != null) {
+            try {
+                // Register channel with selector.
+                if (opAccept) {
+                    socketChannel.register(selector, SelectionKey.OP_ACCEPT);
+                }
+                if (opConnect) {
+                    socketChannel.register(selector, SelectionKey.OP_CONNECT);
+                }
+                if (opRead) {
+                    socketChannel.register(selector, SelectionKey.OP_READ);
+                }
+                if (opWrite) {
+                    socketChannel.register(selector, SelectionKey.OP_WRITE);
+                }
+            } catch (ClosedChannelException e) {
+                System.out.println(e);
+            }
+        }
     }
 
     public void selectorClose(Selector selector) {
@@ -757,9 +799,8 @@ public class PtinyOSDirector extends Director {
     // notNullIfClosing is set to TRUE if returning NULL, otherwise left as is.
     // We use notNullIfClosing because of threading issues discussed in:
     // @see selectorClose(Selector selector)
-    public ServerSocketChannel selectSocket(Selector selector, boolean[] notNullIfClosing) {
-       notNullIfClosing[0] = false;
-        
+    public SelectableChannel selectSocket(Selector selector, boolean[] notNullIfClosing, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {
+        notNullIfClosing[0] = false;
         try {
             // Wait for an event
             if (selector.select() > 0) {
@@ -775,14 +816,21 @@ public class PtinyOSDirector extends Director {
                     iterator.remove();
     
                     // Check if it's a connection request
-                    if (selKey.isAcceptable()) {
+                    if (    (opAccept   && selKey.isAcceptable())  ||
+                            (opConnect  && selKey.isConnectable()) ||
+                            (opRead     && selKey.isReadable())    ||
+                            (opWrite    && selKey.isWritable())
+                       ) {
                         // Get channel with connection request
-                        ServerSocketChannel ssChannel = (ServerSocketChannel)selKey.channel();
+                        SelectableChannel ssChannel = selKey.channel();
                         return ssChannel;
                     }
                 }
             }
         } catch (IOException e) {
+            // Handle error with selector.
+            System.out.println("Exception in selectSocket(): " + e);
+        } catch(CancelledKeyException e) {
             // Handle error with selector.
             System.out.println("Exception in selectSocket(): " + e);
         } catch (ClosedSelectorException e) {
@@ -791,32 +839,37 @@ public class PtinyOSDirector extends Director {
         }
         // Return null if this method didn't find a channel above.
         // This means the selector is about to close.
-        //System.out.println("hi " + notNullIfClosing);
-        //notNullIfClosing = Boolean.TRUE;
         notNullIfClosing[0] = true;
-        //System.out.println("hi " + notNullIfClosing);
         return null;
     }
 
-    public SocketChannel acceptConnection(ServerSocketChannel serverSocketChannel) {
-        SocketChannel socketChannel = null;
-    
-        try {
-            // Accept the connection request.
-            // If serverSocketChannel is blocking, this method blocks.
-            // The returned channel is in blocking mode.
-            socketChannel = serverSocketChannel.accept();
-        } catch (IOException e) {
-            System.out.println(e);
+    public SocketChannel acceptConnection(SelectableChannel serverSocketChannel) {
+        if (serverSocketChannel instanceof ServerSocketChannel) {
+            SocketChannel socketChannel = null;
+            try {
+                // Accept the connection request.
+                // If serverSocketChannel is blocking, this method blocks.
+                // The returned channel is in blocking mode.
+                socketChannel = ((ServerSocketChannel)serverSocketChannel).accept();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+            return socketChannel;
+        } else {
+            System.out.println("The argument passed to acceptConnection() was not a ServerSocketChannel.");
+            return null;
         }
-        return socketChannel;
     }
 
-    public void socketChannelClose(SocketChannel socketChannel) {
-        try {
-            socketChannel.close();
-        } catch (IOException e) {
-            System.out.println(e);
+    public void socketChannelClose(SelectableChannel socketChannel) {
+        if (socketChannel instanceof SocketChannel) {
+            try {
+                socketChannel.close();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+        } else {
+            System.out.println("The argument passed to socketChannelClose() was not a SocketChannel.");
         }
     }
 
@@ -1007,7 +1060,7 @@ public class PtinyOSDirector extends Director {
 
         text.addLine("import java.net.ServerSocket;");
         text.addLine("import java.nio.channels.Selector;");
-        text.addLine("import java.nio.channels.ServerSocketChannel;");
+        text.addLine("import java.nio.channels.SelectableChannel;");
         text.addLine("import java.nio.channels.SocketChannel;");
         
         text.addLine("import ptolemy.domains.ptinyos.kernel.PtinyOSLoader;");
@@ -1017,12 +1070,9 @@ public class PtinyOSDirector extends Director {
         text.addLine("public class Loader" + toplevelName
                 + " implements PtinyOSLoader {");
 
-        text
-                .addLine("    public void load(String path, PtinyOSDirector director) {");
-        text
-                .addLine("        String fileSeparator = System.getProperty(\"file.separator\");");
-        text
-                .addLine("        String toBeLoaded = path + fileSeparator + System.mapLibraryName(\""
+        text.addLine("    public void load(String path, PtinyOSDirector director) {");
+        text.addLine("        String fileSeparator = System.getProperty(\"file.separator\");");
+        text.addLine("        String toBeLoaded = path + fileSeparator + System.mapLibraryName(\""
                         + toplevelName + "\");");
         text.addLine("        toBeLoaded = toBeLoaded.replace('\\\\', '/');");
         text.addLine("        System.out.println(\"" + toplevelName
@@ -1072,35 +1122,27 @@ public class PtinyOSDirector extends Director {
                 + "(currentTime, packet);");
         text.addLine("    }");
 
-        text
-                .addLine("    public void enqueueEvent(String newTime) throws IllegalActionException {");
+        text.addLine("    public void enqueueEvent(String newTime) throws IllegalActionException {");
         text.addLine("        this.director.enqueueEvent(newTime);");
         text.addLine("    }");
 
         text.addLine("    public char getCharParameterValue(String param)");
         text.addLine("            throws IllegalActionException {");
-        text
-                .addLine("        return this.director.getCharParameterValue(param);");
+        text.addLine("        return this.director.getCharParameterValue(param);");
         text.addLine("    }");
 
-        text
-                .addLine("    public boolean getBooleanParameterValue(String param)");
+        text.addLine("    public boolean getBooleanParameterValue(String param)");
         text.addLine("            throws IllegalActionException {");
-        text
-                .addLine("        return this.director.getBooleanParameterValue(param);");
+        text.addLine("        return this.director.getBooleanParameterValue(param);");
         text.addLine("    }");
 
-        text
-                .addLine("    public int sendToPort(String portName, String expression)");
+        text.addLine("    public int sendToPort(String portName, String expression)");
         text.addLine("            throws IllegalActionException {");
-        text
-                .addLine("        return this.director.sendToPort(portName, expression);");
+        text.addLine("        return this.director.sendToPort(portName, expression);");
         text.addLine("    }");
 
-        text
-                .addLine("    public void tosDebug(String debugMode, String message, String nodeNumber) {");
-        text
-                .addLine("        this.director.tosDebug(debugMode, message, nodeNumber);");
+        text.addLine("    public void tosDebug(String debugMode, String message, String nodeNumber) {");
+        text.addLine("        this.director.tosDebug(debugMode, message, nodeNumber);");
         text.addLine("    }");
 
         //////////////////////// Begin socket methods. ////////////////////
@@ -1112,23 +1154,27 @@ public class PtinyOSDirector extends Director {
         text.addLine("        this.director.serverSocketClose(serverSocket);");
         text.addLine("    }");        
 
-        text.addLine("    public Selector selectorCreate(ServerSocket serverSocket) {");
-        text.addLine("        return this.director.selectorCreate(serverSocket);");
+        text.addLine("    public Selector selectorCreate(ServerSocket serverSocket, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
+        text.addLine("        return this.director.selectorCreate(serverSocket, opAccept, opConnect, opRead, opWrite);");
+        text.addLine("    }");
+
+        text.addLine("    public void selectorRegister(Selector selector, SelectableChannel SocketChannel, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
+        text.addLine("        this.director.selectorRegister(selector, SocketChannel, opAccept, opConnect, opRead, opWrite);");
         text.addLine("    }");
 
         text.addLine("    public void selectorClose(Selector selector) {");
         text.addLine("        this.director.selectorClose(selector);");
         text.addLine("    }");        
         
-        text.addLine("    public ServerSocketChannel selectSocket(Selector selector, boolean[] notNullIfClosing) {");
-        text.addLine("        return this.director.selectSocket(selector, notNullIfClosing);");
+        text.addLine("    public SelectableChannel selectSocket(Selector selector, boolean[] notNullIfClosing, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
+        text.addLine("        return this.director.selectSocket(selector, notNullIfClosing, opAccept, opConnect, opRead, opWrite);");
         text.addLine("    }");
 
-        text.addLine("    public SocketChannel acceptConnection(ServerSocketChannel serverSocketChannel) {");
+        text.addLine("    public SocketChannel acceptConnection(SelectableChannel serverSocketChannel) {");
         text.addLine("        return this.director.acceptConnection(serverSocketChannel);");
         text.addLine("    }");
         
-        text.addLine("    public void socketChannelClose(SocketChannel socketChannel) {");
+        text.addLine("    public void socketChannelClose(SelectableChannel socketChannel) {");
         text.addLine("        this.director.socketChannelClose(socketChannel);");
         text.addLine("    }");
         
