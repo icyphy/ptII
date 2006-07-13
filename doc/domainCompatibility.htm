@@ -30,8 +30,11 @@ domain and second level domain.
    <td>&nbsp;</td>
    <td>&nbsp;</td>
    <th>CSP</th>
+   <th>Continuous</th>
    <th>CT</th>
+   <th>DDF</th>
    <th>DE</th>
+   <th>DE2</th>
    <th>FSM</th>
    <th>Giotto</th>
    <th>PN</th>
@@ -44,34 +47,11 @@ domain and second level domain.
    <th rowspan=11>Second Level Domain</tr>
    <td>CSP</td>
    <td><!-- CSP --></td>
-   <td><!-- CT -->
-   </td>
-   <td><!-- DE -->
-   </td>
-   <td><!-- FSM --></td>
-   <td><!-- Giotto --></td>
-   <td><!-- PN --></td>
-   <td><!-- PSDF --></td>
-   <td><!-- SDF -->
-   </td>
-   <td><!-- SR -->
-   </td>
-  </tr>
-
-  <tr>
-   <td>CT</td>
-   <td><!-- CSP --></td>
-   <td>CT/CT
-     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor.xml">+</a>,
-     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor2.xml">+</a>,
-     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor3.xml">+</a>,
-     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor4.xml">+</a>,
-     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor5.xml">+</a>
-   </td>
-   <td>DE/CT
-     <a href="../ptolemy/domains/ct/demo/SigmaDelta/SigmaDelta.xml">+</a>,
-     <a href="../ptolemy/domains/ct/test/auto/CTInsideDESimplel.xml">+</a>
-   </td>
+   <td><!-- Continuous--></td>
+   <td><!-- CT --></td>
+   <td><!-- DDF --></td>
+   <td><!-- DE --></td>
+   <td><!-- DE2 --></td>
    <td><!-- FSM --></td>
    <td><!-- Giotto --></td>
    <td><!-- PN --></td>
@@ -81,52 +61,13 @@ domain and second level domain.
   </tr>
 
   <tr>
-   <td>DE</td>
+   <td>Rendezvous</td>
    <td><!-- CSP --></td>
-   <td>CT/DE
-     <a href="../ptolemy/domains/de/test/auto/deInCt.xml">+</a>,
-     <a href="../ptolemy/domains/de/test/auto/deInCt2.xml">+</a>
-   </td>
-   <td>DE/DE
-     <a href="../ptolemy/domains/de/demo/HierarchicalModel/HierarchicalModel.xml">+</a>
-</td>
-   <td><!-- FSM --></td>
-   <td><!-- Giotto --></td>
-   <td><!-- PN -->
-   </td>
-   <td><!-- PSDF --></td>
-   <td><a href="../ptolemy/domains/sdf/test/auto/de_in_sdf.xml">?</a>
-   </td>
-   <td><!-- SR -->
-   </td>
-  </tr>
-
-  <tr>
-   <td>FSM</td>
-   <td><!-- CSP --></td>
-   <td>CT/FSM
-     <a href="../ptolemy/domains/ct/demo/Switch/Switch.xml">+</a>
-   </td>
-   <td>DE/FSM
-     <a href="../ptolemy/domains/de/demo/ModalModel/ModalModel.xml">+</a>
-   </td>
-   <td><!-- FSM --></td>
-   <td><!-- Giotto --></td>
-   <td><!-- PN --></td>
-   <td><!-- PSDF --></td>
-   <td>SDF/FSM
-     <a href="../ptolemy/domains/fsm/test/auto/SDF-FSMComposite.xml">+</a>
-   </td>
-   <td><!-- SR --></td>
-  </tr>
-
-  <tr>
-   <td>Giotto</td>
-   <td><!-- CSP --></td>
+   <td><!-- Continuous--></td>
    <td><!-- CT --></td>
-   <td>DE/Giotto
-     <a href="../ptolemy/domains/giotto/test/auto/Composite.xml">+</a>
-   </td>
+   <td><!-- DDF --></td>
+   <td><!-- DE --></td>
+   <td><!-- DE2 --></td>
    <td><!-- FSM --></td>
    <td><!-- Giotto --></td>
    <td><!-- PN --></td>
@@ -138,37 +79,60 @@ domain and second level domain.
   <tr>
    <td>PN</td>
    <td><!-- CSP --></td>
+   <td><!-- Continuous--></td>
    <td><!-- CT --></td>
    <td>DE/PN
-     <a href="../ptolemy/domains/pn/test/PNInsideDE.xml">+</a>
+     <a href="../ptolemy/domains/pn/test/PNInsideDE.xml">-</a>
    </td>
+   <td><!-- DE2 --></td>
    <td><!-- FSM --></td>
    <td><!-- Giotto --></td>
-   <td>PN/PN
-     <a href="../ptolemy/domains/test/auto/PNPNtest1.xml">+</a>
-   </td>
-   <td><!-- PSDF -->
-   </td>
-   <td><!-- SDF -->
-   </td>
-   <td><!-- SR -->
-   </td>
+   <td><!-- PN --></td>
+   <td><!-- PSDF --></td>
+   <td><!-- SDF --></td>
+   <td><!-- SR --></td>
   </tr>
 
+
   <tr>
-   <td>PSDF</td>
-   <td><!-- CSP --></td>
-   <td><!-- CT --></td>
-   <td><!-- DE --></td>
-   <td><!-- FSM --></td>
+   <td>DDF</td>
+   <td>CSP/DDF</td>
+   <td><!-- Continuous--></td>
+   <td>CT/DDF</td>
+   <td>DDF/DDF</td>
+   <td>DE/DE</td>
+   <td><!-- DE2 --></td>
+   <td>FSM/DDF</td>
    <td><!-- Giotto --></td>
-   <td>PN/PSDF
-     <a href="../ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.xml">+</a>
+   <td>PN/DDF</td>
+   <td>PSDF/DDF</td>
+   <td>SDF/DDF</td>
+   <td><!-- SR --></td>
+  </tr>
+
+
+  <tr>
+   <td>CT</td>
+   <td>CSP/CT</td>
+   <td>CT/CT
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor.xml">+</a>,
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor2.xml">+</a>,
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor3.xml">+</a>,
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor4.xml">+</a>,
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor5.xml">+</a>
    </td>
-   <td><!-- PSDF --></td>
-   <td>SDF/PN
-     <a href="../ptolemy/domains/psdf/kernel/test/auto/SDFDirector1.xml">+</a>
+   <td><!-- Continuous--></td>
+   <td>DDF/CT</td>
+   <td>DE/CT
+     <a href="../ptolemy/domains/ct/demo/SigmaDelta/SigmaDelta.xml">+</a>,
+     <a href="../ptolemy/domains/ct/test/auto/CTInsideDESimplel.xml">+</a>
    </td>
+   <td><!-- DE2 --></td>
+   <td>FSM/CT</td>
+   <td><!-- Giotto --></td>
+   <td>PN/CT</td>
+   <td>PSDF/CT</td>
+   <td>SDF/CT</td>
    <td><!-- SR --></td>
   </tr>
 
@@ -176,19 +140,21 @@ domain and second level domain.
    <td>SDF</td>
    <td>CSP/SDF
      <a href="../ptolemy/domains/test/auto/CSPSDFtest1.xml">+</a>
-
    </td>
-   <td><!-- CT --></td>
+   <td><!-- Continuous--></td>
+   <td>CT/SDF</td>
+   <td>DDF/SDF</td>
    <td>DE/SDF
      <a href="../ptolemy/domains/sdf/test/auto/sdf_inside_de.xml">+</a>
    </td>
-   <td><!-- FSM --></td>
+   <td><!-- DE2 --></td>
+   <td>FSM/SDF</td>
    <td><!-- Giotto --></td>
    <td>PN/SDF
      <a href="../ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml">+</a>,
      <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSDFtest1.xml">-</a>
-  </td>
-   <td><!-- PSDF --></td>
+   </td>
+   <td>PSDF/SDF</td>
    <td>SDF/SDF
      <a href="../ptolemy/domains/sdf/demo/Spectrum/Spectrum.xml">+</a>
    </td>
@@ -200,21 +166,131 @@ domain and second level domain.
   </tr>
 
   <tr>
+   <td>PSDF</td>
+   <td>CSP/PSDF</td>
+   <td><!-- Continuous--></td>
+   <td>CT/PSDF</td>
+   <td>DE/PSDF</td>
+   <td><!-- DE2 --></td>
+   <td>FSM/PSDF</td>
+   <td>?<!-- Giotto --></td>
+   <td>PN/PSDF
+     <a href="../ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.xml">+</a>
+   </td>
+   <td>PSDF/PSDF</td>
+   <td>SDF/PN
+     <a href="../ptolemy/domains/psdf/kernel/test/auto/SDFDirector1.xml">+</a>
+   </td>
+   <td>SR/PSDF</td>
+  </tr>
+
+  <tr>
+   <td>DE</td>
+   <td><!-- CSP --></td>
+   <td><!-- Continuous--></td>
+   <td>CT/DE
+     <a href="../ptolemy/domains/de/test/auto/deInCt.xml">+</a>,
+     <a href="../ptolemy/domains/de/test/auto/deInCt2.xml">+</a>
+   </td>
+   <td>DDF/SDF</td>
+   <td>DE/DE
+     <a href="../ptolemy/domains/de/demo/HierarchicalModel/HierarchicalModel.xml">+</a>
+   </td>
+   <td><!-- DE2 --></td>
+   <td>FSM/DE</td>
+   <td><!-- Giotto --></td>
+   <td>PN/DE</td>
+   <td>PSDF/DE</td>
+   <td><a href="../ptolemy/domains/sdf/test/auto/de_in_sdf.xml">?</a>
+   </td>
+   <td><!-- SR -->
+   </td>
+  </tr>
+
+  <tr>
+   <td>FSM</td>
+   <td>CSP/FSM*</td>
+   <td>CT/FSM**
+     <a href="../ptolemy/domains/ct/demo/Switch/Switch.xml">+</a>
+   </td>
+   <td>DDF/FSM*</td>
+   <td>DE/FSM*
+     <a href="../ptolemy/domains/de/demo/ModalModel/ModalModel.xml">+</a>
+   </td>
+   <td>DE2/FSM*</td>
+   <td>FSM/FSM</td>
+   <td><!-- Giotto --></td>
+   <td>PN/FSM*</td>
+   <td>PSDF/FSM*</td>
+   <td>SDF/FSM*
+     <a href="../ptolemy/domains/fsm/test/auto/SDF-FSMComposite.xml">+</a>
+   </td>
+   <td>SR/FSM*</td>
+  </tr>
+
+  <tr>
+   <td>Giotto</td>
+   <td>?<!-- CSP --></td>
+   <td>?<!-- CT --></td>
+   <td>DE/Giotto
+     <a href="../ptolemy/domains/giotto/test/auto/Composite.xml">+</a>
+   </td>
+   <td>?<!-- FSM --></td>
+   <td>?<!-- Giotto --></td>
+   <td>?<!-- PN --></td>
+   <td>?<!-- PSDF --></td>
+   <td>?<!-- SDF --></td>
+   <td>?<!-- SR --></td>
+  </tr>
+
+  <tr>
+   <td>Continuous</td>
+   <td>CSP/Continuous</td>
+   <td>Continuous/Continuous</td>
+   <td>CT/Continuous</td>
+   <td>DE/Continuous</td>
+   <td>DE2/Continuous</td>
+   <td>FSM/Continuous</td>
+   <td>?<!-- Giotto --></td>
+   <td>PN/Continuous</td>
+   <td>PSDF/Continuous</td>
+   <td>SDF/Continuous</td>
+   <td>SR/Continuous</td>
+  </tr>
+
+  <tr>
+   <td>DE2</td>
+   <td>CSP/DE2</td>
+   <td>Continuous/DE2</td>
+   <td>CT/DE2</td>
+   <td>DE/DE2</td>
+   <td>DE2/DE2</td>
+   <td>FSM/DE2</td>
+   <td>?<!-- Giotto --></td>
+   <td>PN/DE2</td>
+   <td>PSDF/DE2</td>
+   <td>SDF/DE2</td>
+   <td>SR/DE2</td>
+  </tr>
+
+  <tr>
    <td>SR</td>
    <td>CSP/SR
      <a href="../ptolemy/domains/test/auto/CSPSRtest1.xml">+</a>,
      <a href="../ptolemy/domains/test/auto/CSPSRtest2.xml">+</a>
    </td>
-   <td><!-- CT --></td>
-   <td><!-- DE --></td>
-   <td><!-- FSM --></td>
-   <td><!-- Giotto --></td>
+   <td>Continuous/SR</td>
+   <td>CT/SR</td>
+   <td>DE/SR</td>
+   <td>DE2/SR</td>
+   <td>FSM/SR</td>
+   <td>?<!-- Giotto --></td>
    <td>PN/SR
      <a href="../ptolemy/domains/test/auto/PNSRtest1.xml">+</a>,
      <a href="../ptolemy/domains/test/auto/PNSRtest2.xml">+</a>,
      <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSRTimedtest.xml">-</a>,
      <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSRtest3.xml">-</a>   </td>
-   <td><!-- PSDF --></td>
+   <td>PSDF/SR</td>
    <td>SDF/SR
      <a href="../ptolemy/domains/test/auto/SDFSRtest1.xml">+</a>,
      <a href="../ptolemy/domains/test/auto/SDFSRtest3.xml">+</a>,
@@ -227,5 +303,238 @@ domain and second level domain.
 
 </table>
 </center>
+
+<h3>Notes from 7/13/06 meeting</h3>
+
+<pre>
+
+Actor Abstract Semantics
+    Component is "actor"
+    An actor has ports
+    Ports are input/output/both/neither
+    An actor has parameters
+    An actor has a set of actions
+    * Preinitialize
+        type check
+    * initialize: aall types are fixed
+    * prefire: check to see whether fire is ok
+    * fire: reacto to inputs & produces outputs
+    * postfire: commits state changes
+    * wrapup: clean up
+
+Composite actors that fulfil the actor interface (obey the abstract
+semantics) can be embedded in models
+
+Whether a domain can be embedded:
+1. Can you define uniquely a finite firing of a composite
+    ex: the notion of iteration in PN is not defined.
+    If you have a PN Composite that has only an output,
+    how much output should it generate?
+
+2. Can you separate the fire from postfire
+    ex: embedding sdf in sdf where inner sdf has a multirate
+    model.  
+    
+    2-->1
+    
+    The 1 actor would need to fire twice, which means
+    postfire would be called twice.
+
+    One solution would be to use SR, or to use 
+    homogenous SDF (all rates are the same, no multirate)
+
+
+What we have been doing:  Some domains do not follow
+the actor abstract semantics
+PN  - violates 1 and 2
+SDF - violates 2
+DE  - our DE does not follow the abstract semantics
+CT  - our CT does not follow the abstract semantics
+
+Another issue is that we need to handle time.
+Timed Actor Semantics: Manage time in a coherent way,
+adds a few more methods to manage time across the hierarchy.
+
+SR was the only domain that was created that follows
+the abstract semantics.
+
+Is there hope for PN: probably not, run up
+against the undecidable.
+Can have PN on the outside.  PN can use any component
+that uses the abstract components.
+
+PN inside FSM is problematic, notion of firing or
+iteration is ill defined.  One solution would be
+to use SDF.
+
+---
+IterateOverArray:
+Either: Operate on a sequence of inputs,
+  - Have to commit data changes after each read
+  (IterateOverArray)
+Or: Create multiple copies, each of which act on
+one data point (MultiInstanceComposite)
+
+Today we have loose actor Abstract Semantics.
+Loose vs Strict: If we can separate fire from postfire
+then we are strict.  If not we are loose
+
+These domains PN SDF DE
+PN assumes loose, export loose
+SDF, DE export loose
+
+SR, Continuous require strict and export strict
+
+All domains that export loose and  assume loose
+can be composed: 
+
+PN: assumes loose of its components, exports nothing (sort of exports
+loose, its notion of iteration is illdefined, it will do something,
+but not clearly defined)
+   Thus - don't use PN inside
+
+SDF: assume loose, export loose
+  Since it embeds loose, can embed any domain that exports lose
+  inside SDF
+
+DE: assume loose, export loose
+  Being rewritten to assume and export strict: (Depends on Haiyang)
+
+Continuous: assumes strict, exports strict
+
+SR: assumes strict, export strict
+
+FSM: is a HOC
+Case, MultInstanceComposite are HOC
+HOC: assume loose, export whatever their refinement exports
+
+IterateOverArray: assume loose, export loose
+
+DDF: assumes loose, in Ptolemy Classic exported loose:
+ one can define what a firing does by annotating the graph
+ Not clear in Ptolemy II what happens
+ Can define a firing of DDF composite to be a certain number
+ of firings of the internal actors.  This gets around the
+ undecidability
+
+CSP: like PN, has more potential to export either strict or loose.
+  CSP can now handle multiway rendezvous (work with Thomas)
+
+Backtracking: allows us to take any actor that exports loose
+and make it export strict (at a performance cost)
+
+	    csp	   cont.  ct     ddf	 de     de2     fsm    pn    sdf    sr
+csp (L,0)   -       -      -	  -	 -      -       -      -     -      - 
+   (== PN)
+rendezvous  -       -      -	  -	 -      -       -      -     -      - 
+ (L,0) (== PN)
+
+pn (L,0)    -       -      -	  -	 -      -       -      -?    -      - 
+
+
+ddf (L,x)   +       -      +	  +	 +      -       +      +     +      -
+x L if we annotate graph
+
+
+ct (L,L)    +       -      +	  +	 +      -       +      +     +      -
+  
+sdf (L,L)   +       -      +	  +	 +      -       +      +     +      -
+
+de (L,L)    +       -      +	  +      +      -       +      +     +      -
+
+
+fsm (L,?)   *       **     *	  *	 *      **      +      *     *      **
+
+continuous  +       +	   +	  +	 +      +       +      +     +      +
+  (S,S)
+de2 (S,S)   +       +      +	  +	 +      +       +      +     +      +
+
+sr (S,S)    +       +      +	  +	 +      +       +      +     +      +
+
+
+* iff FSM has no CSP, Rendezvous, or PN refinement
+** iff FSM has continuous, DE2 or SR (all export strict) 
+
+Loose goes into Loose
+Loose goes inside Strict
+Strict goes inside Strict
+
+! domains should work inside themselves
+  Problematic: PN and Rendezvous and CSP 
+
+FSM: what about differences between modal models and real FSMs?
+
+Time: if top level domain does not advance time, then it is
+meaningless to use any time in any inner domain.
+SDF can advance time
+PN cannot
+TimedPN can advance time
+
+demos: Use actors specific to each domain.
+  CT - integrator, DE - Poisson clock, PN - nondetmerge 
+
+
+TimedPN    Same as PN
+Rendezvous Same as PN
+CT (L,L)
+
+Why does the SR/SDF demo work?
+
+This does not work:
+SR
+  ----------------
+  |              |
+  |  ----------  |
+  |  |SDF     |  |
+---->|---[]---|--|    
+  |  |        |
+  -->|---[]---|--->    
+     ----------
+
+unless you insert a delay
+
+This works
+SR
+  ----------------
+  |              |
+  |  ----------  |
+  |  |Cont.   |  |
+---->|---[]---|--|    
+  |  |        |
+  -->|---[]---|--->    
+     ----------
+
+SR has the notion of strict, meaning all
+the inputs must be known before firing
+and non-strict, meaning that some inputs
+can be unknown.
+
+Thus we now have loose and tight actor
+semantics to disambiguate strict.
+(other terms: lienent, liberal, forgiving)
+
+SR assumes composites are non-strict (in the
+SR sense).
+
+
+Paper
+  Abstract
+  Actor Abstract Semantics
+  Definition of domains
+  Loose vs. Strict
+  Table summarizing results
+
+
+TODO:
+ Update chart in release (cxh)
+ Add examples (cxh)
+ PN conversion cookbook (cxh)
+   Look at PN models and decide how to convert them.
+     - PN actors require PN
+     - models with non-schedulable firings require DDF
+       non-deterministic merges
+
+</pre>
+
 </body>
 </html>
