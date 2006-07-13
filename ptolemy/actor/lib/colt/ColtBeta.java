@@ -27,13 +27,17 @@
  */
 package ptolemy.actor.lib.colt;
 
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.Beta;
+
+import com.sun.tools.javac.tree.Tree.If;
 
 //////////////////////////////////////////////////////////////////////////
 //// Beta
@@ -102,10 +106,16 @@ public class ColtBeta extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        alpha = new Parameter(this, "alpha", new DoubleToken(2.0));
+        alpha = new PortParameter(this, "alpha");
+        alpha.setExpression("2.0");
         alpha.setTypeEquals(BaseType.DOUBLE);
-        beta = new Parameter(this, "beta", new DoubleToken(2.0));
+        new SingletonParameter(alpha.getPort(), "_showName").setToken(BooleanToken.TRUE);
+
+        beta = new PortParameter(this, "beta");
+        beta.setExpression("2.0");
         beta.setTypeEquals(BaseType.DOUBLE);
+        new SingletonParameter(beta.getPort(), "_showName").setToken(BooleanToken.TRUE);
+
         beta.moveToFirst();
         alpha.moveToFirst();
     }
@@ -114,14 +124,14 @@ public class ColtBeta extends ColtRandomSource {
     ////                     ports and parameters                  ////
 
     /** Alpha.
-     *  This parameter contains a DoubleToken, initially with value 1.0.
+     *  This has type double with default 2.0.
      */
-    public Parameter alpha;
+    public PortParameter alpha;
 
     /** Beta.
-     *  This parameter contains a DoubleToken, initially with value 1.0.
+     *  This has type double with default 2.0.
      */
-    public Parameter beta;
+    public PortParameter beta;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -132,6 +142,8 @@ public class ColtBeta extends ColtRandomSource {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        alpha.update();
+        beta.update();
         super.fire();
         output.send(0, new DoubleToken(_current));
     }

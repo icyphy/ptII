@@ -27,13 +27,17 @@
  */
 package ptolemy.actor.lib.colt;
 
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.Exponential;
+
+import com.sun.tools.javac.tree.Tree.If;
 
 //////////////////////////////////////////////////////////////////////////
 //// Exponential
@@ -79,8 +83,10 @@ public class ColtExponential extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        lambda = new Parameter(this, "lambda", new DoubleToken(1.0));
+        lambda = new PortParameter(this, "lambda", new DoubleToken(1.0));
         lambda.setTypeEquals(BaseType.DOUBLE);
+        new SingletonParameter(lambda.getPort(), "_showName").setToken(BooleanToken.TRUE);
+
         lambda.moveToFirst();
     }
 
@@ -88,9 +94,9 @@ public class ColtExponential extends ColtRandomSource {
     ////                     ports and parameters                  ////
 
     /** The mean value of the exponential.
-     *  This parameter contains a DoubleToken, initially with value 1.0.
+     *  This is a double with default value 1.0.
      */
-    public Parameter lambda;
+    public PortParameter lambda;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -101,6 +107,7 @@ public class ColtExponential extends ColtRandomSource {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        lambda.update();
         super.fire();
         output.send(0, new DoubleToken(_current));
     }

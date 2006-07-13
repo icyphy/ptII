@@ -27,14 +27,18 @@
  */
 package ptolemy.actor.lib.colt;
 
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.PoissonSlow;
+
+import com.sun.tools.javac.tree.Tree.If;
 
 //////////////////////////////////////////////////////////////////////////
 //// PoissonSlow
@@ -72,8 +76,9 @@ public class ColtPoissonSlow extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.INT);
 
-        mean = new Parameter(this, "mean", new DoubleToken(1.0));
+        mean = new PortParameter(this, "mean", new DoubleToken(1.0));
         mean.setTypeEquals(BaseType.DOUBLE);
+        new SingletonParameter(mean.getPort(), "_showName").setToken(BooleanToken.TRUE);
 
         mean.moveToFirst();
     }
@@ -82,9 +87,9 @@ public class ColtPoissonSlow extends ColtRandomSource {
     ////                     ports and parameters                  ////
 
     /** mean.
-     *  This parameter contains a DoubleToken, initially with value 1.0.
+     *  This has type double with default value 1.0.
      */
-    public Parameter mean;
+    public PortParameter mean;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -95,6 +100,7 @@ public class ColtPoissonSlow extends ColtRandomSource {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        mean.update();
         super.fire();
         output.send(0, new IntToken(_current));
     }

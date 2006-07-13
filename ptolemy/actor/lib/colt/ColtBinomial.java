@@ -27,14 +27,18 @@
  */
 package ptolemy.actor.lib.colt;
 
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.Binomial;
+
+import com.sun.tools.javac.tree.Tree.If;
 
 //////////////////////////////////////////////////////////////////////////
 //// Binomial
@@ -105,10 +109,14 @@ public class ColtBinomial extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.INT);
 
-        n = new Parameter(this, "n", new IntToken(1));
+        n = new PortParameter(this, "n", new IntToken(1));
         n.setTypeEquals(BaseType.INT);
-        p = new Parameter(this, "p", new DoubleToken(0.5));
+        new SingletonParameter(n.getPort(), "_showName").setToken(BooleanToken.TRUE);
+
+        p = new PortParameter(this, "p", new DoubleToken(0.5));
         p.setTypeEquals(BaseType.DOUBLE);
+        new SingletonParameter(p.getPort(), "_showName").setToken(BooleanToken.TRUE);
+
         p.moveToFirst();
         n.moveToFirst();
     }
@@ -117,14 +125,14 @@ public class ColtBinomial extends ColtRandomSource {
     ////                     ports and parameters                  ////
 
     /** n.
-     *  This parameter contains a IntToken, initially with value 1.0.
+     *  This has type int with default 1.
      */
-    public Parameter n;
+    public PortParameter n;
 
     /** p.
-     *  This parameter contains a DoubleToken, initially with value 1.0.
+     *  This has type double with default 0.5.
      */
-    public Parameter p;
+    public PortParameter p;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -135,6 +143,8 @@ public class ColtBinomial extends ColtRandomSource {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        n.update();
+        p.update();
         super.fire();
         output.send(0, new IntToken(_current));
     }

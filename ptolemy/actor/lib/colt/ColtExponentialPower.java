@@ -27,13 +27,17 @@
  */
 package ptolemy.actor.lib.colt;
 
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.ExponentialPower;
+
+import com.sun.tools.javac.tree.Tree.If;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExponentialPower
@@ -71,8 +75,9 @@ public class ColtExponentialPower extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        tau = new Parameter(this, "tau", new DoubleToken(1.0));
+        tau = new PortParameter(this, "tau", new DoubleToken(1.0));
         tau.setTypeEquals(BaseType.DOUBLE);
+        new SingletonParameter(tau.getPort(), "_showName").setToken(BooleanToken.TRUE);
 
         tau.moveToFirst();
     }
@@ -81,9 +86,9 @@ public class ColtExponentialPower extends ColtRandomSource {
     ////                     ports and parameters                  ////
 
     /** tau.
-     *  This parameter contains a DoubleToken, initially with value 1.0.
+     *  This has type double with default value 1.0.
      */
-    public Parameter tau;
+    public PortParameter tau;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -94,6 +99,7 @@ public class ColtExponentialPower extends ColtRandomSource {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        tau.update();
         super.fire();
         output.send(0, new DoubleToken(_current));
     }

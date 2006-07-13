@@ -27,13 +27,17 @@
  */
 package ptolemy.actor.lib.colt;
 
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.StudentT;
+
+import com.sun.tools.javac.tree.Tree.If;
 
 //////////////////////////////////////////////////////////////////////////
 //// StudentT
@@ -71,8 +75,9 @@ public class ColtStudentT extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        freedom = new Parameter(this, "freedom", new DoubleToken(1.0));
+        freedom = new PortParameter(this, "freedom", new DoubleToken(1.0));
         freedom.setTypeEquals(BaseType.DOUBLE);
+        new SingletonParameter(freedom.getPort(), "_showName").setToken(BooleanToken.TRUE);
 
         freedom.moveToFirst();
     }
@@ -81,9 +86,9 @@ public class ColtStudentT extends ColtRandomSource {
     ////                     ports and parameters                  ////
 
     /** freedom.
-     *  This parameter contains a DoubleToken, initially with value 1.0.
+     *  This has type double, initially with value 1.0.
      */
-    public Parameter freedom;
+    public PortParameter freedom;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -94,6 +99,7 @@ public class ColtStudentT extends ColtRandomSource {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        freedom.update();
         super.fire();
         output.send(0, new DoubleToken(_current));
     }

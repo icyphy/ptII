@@ -33,6 +33,7 @@ import ptolemy.actor.lib.Source;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -119,6 +120,8 @@ public abstract class ColtRandomSource extends Source {
         resetOnEachRun = new SharedParameter(this, "resetOnEachRun",
                 ColtRandomSource.class, "false");
         resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
+        
+        new SingletonParameter(trigger, "_showName").setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////

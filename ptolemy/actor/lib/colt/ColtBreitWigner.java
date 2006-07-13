@@ -27,13 +27,18 @@
  */
 package ptolemy.actor.lib.colt;
 
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.BreitWigner;
+
+import com.sun.tools.javac.tree.Tree.If;
 
 //////////////////////////////////////////////////////////////////////////
 //// BreitWigner
@@ -78,14 +83,17 @@ public class ColtBreitWigner extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        mean = new Parameter(this, "mean", new DoubleToken(1.0));
+        mean = new PortParameter(this, "mean", new DoubleToken(1.0));
         mean.setTypeEquals(BaseType.DOUBLE);
+        new SingletonParameter(mean.getPort(), "_showName").setToken(BooleanToken.TRUE);
 
-        gamma = new Parameter(this, "gamma", new DoubleToken(1.0));
+        gamma = new PortParameter(this, "gamma", new DoubleToken(1.0));
         gamma.setTypeEquals(BaseType.DOUBLE);
+        new SingletonParameter(gamma.getPort(), "_showName").setToken(BooleanToken.TRUE);
 
-        cut = new Parameter(this, "cut", new DoubleToken(1.0));
+        cut = new PortParameter(this, "cut", new DoubleToken(1.0));
         cut.setTypeEquals(BaseType.DOUBLE);
+        new SingletonParameter(cut.getPort(), "_showName").setToken(BooleanToken.TRUE);
 
         cut.moveToFirst();
         gamma.moveToFirst();
@@ -96,19 +104,19 @@ public class ColtBreitWigner extends ColtRandomSource {
     ////                     ports and parameters                  ////
 
     /** mean.
-     *  This parameter contains a DoubleToken, initially with value 1.0.
+     *  This is a double with default 1.0.
      */
-    public Parameter mean;
+    public PortParameter mean;
 
     /** gamma.
-     *  This parameter contains a DoubleToken, initially with value 1.0.
+     *  This is a double with default 1.0.
      */
-    public Parameter gamma;
+    public PortParameter gamma;
 
     /** cut.
-     *  This parameter contains a DoubleToken, initially with value 1.0.
+     *  This is a double with default 1.0.
      */
-    public Parameter cut;
+    public PortParameter cut;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -119,6 +127,9 @@ public class ColtBreitWigner extends ColtRandomSource {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        mean.update();
+        gamma.update();
+        cut.update();
         super.fire();
         output.send(0, new DoubleToken(_current));
     }

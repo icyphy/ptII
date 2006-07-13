@@ -27,13 +27,17 @@
  */
 package ptolemy.actor.lib.colt;
 
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.HyperGeometric;
+
+import com.sun.tools.javac.tree.Tree.If;
 
 //////////////////////////////////////////////////////////////////////////
 //// HyperGeometric
@@ -71,14 +75,17 @@ public class ColtHyperGeometric extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.INT);
 
-        N = new Parameter(this, "N", new IntToken(2));
+        N = new PortParameter(this, "N", new IntToken(2));
         N.setTypeEquals(BaseType.INT);
+        new SingletonParameter(N.getPort(), "_showName").setToken(BooleanToken.TRUE);
 
-        s = new Parameter(this, "s", new IntToken(1));
+        s = new PortParameter(this, "s", new IntToken(1));
         s.setTypeEquals(BaseType.INT);
+        new SingletonParameter(s.getPort(), "_showName").setToken(BooleanToken.TRUE);
 
-        n = new Parameter(this, "n", new IntToken(1));
+        n = new PortParameter(this, "n", new IntToken(1));
         n.setTypeEquals(BaseType.INT);
+        new SingletonParameter(n.getPort(), "_showName").setToken(BooleanToken.TRUE);
 
         n.moveToFirst();
         s.moveToFirst();
@@ -89,19 +96,19 @@ public class ColtHyperGeometric extends ColtRandomSource {
     ////                     ports and parameters                  ////
 
     /** N.
-     *  This parameter contains a IntToken, initially with value 1.0.
+     *  This has type int with default 2.
      */
-    public Parameter N;
+    public PortParameter N;
 
     /** coltLmabda.
-     *  This parameter contains a IntToken, initially with value 1.0.
+     *  This has type int with default 1.
      */
-    public Parameter s;
+    public PortParameter s;
 
     /** coltLmabda.
-     *  This parameter contains a IntToken, initially with value 1.0.
+     *  This has type int with default 1.
      */
-    public Parameter n;
+    public PortParameter n;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -112,6 +119,9 @@ public class ColtHyperGeometric extends ColtRandomSource {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        N.update();
+        s.update();
+        n.update();
         super.fire();
         output.send(0, new IntToken(_current));
     }

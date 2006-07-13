@@ -27,13 +27,17 @@
  */
 package ptolemy.actor.lib.colt;
 
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.Logarithmic;
+
+import com.sun.tools.javac.tree.Tree.If;
 
 //////////////////////////////////////////////////////////////////////////
 //// Logarithmic
@@ -71,8 +75,9 @@ public class ColtLogarithmic extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        p = new Parameter(this, "p", new DoubleToken(0.5));
+        p = new PortParameter(this, "p", new DoubleToken(0.5));
         p.setTypeEquals(BaseType.DOUBLE);
+        new SingletonParameter(p.getPort(), "_showName").setToken(BooleanToken.TRUE);
 
         p.moveToFirst();
     }
@@ -81,9 +86,9 @@ public class ColtLogarithmic extends ColtRandomSource {
     ////                     ports and parameters                  ////
 
     /** p.
-     *  This parameter contains a DoubleToken, initially with value 0.5.
+     *  This has type double with default value 0.5.
      */
-    public Parameter p;
+    public PortParameter p;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -94,6 +99,7 @@ public class ColtLogarithmic extends ColtRandomSource {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        p.update();
         super.fire();
         output.send(0, new DoubleToken(_current));
     }

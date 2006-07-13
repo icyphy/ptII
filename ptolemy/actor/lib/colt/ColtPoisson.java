@@ -28,8 +28,10 @@
 package ptolemy.actor.lib.colt;
 
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -74,6 +76,7 @@ public class ColtPoisson extends ColtRandomSource {
 
         mean = new PortParameter(this, "mean", new DoubleToken(1.0));
         mean.setTypeEquals(BaseType.DOUBLE);
+        new SingletonParameter(mean.getPort(), "_showName").setToken(BooleanToken.TRUE);
 
         mean.moveToFirst();
     }
@@ -82,7 +85,7 @@ public class ColtPoisson extends ColtRandomSource {
     ////                     ports and parameters                  ////
 
     /** The mean.
-     *  This port-parameter has type double, initially with value 1.0.
+     *  This has type double, initially with value 1.0.
      */
     public PortParameter mean;
 

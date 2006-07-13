@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ColtRandom" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 19, 948, 693}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 948, 769}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[733, 575]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[733, 651]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8570896217626">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8728004022122">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.6098913043478, 287.5624999999999}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{366.9127304147466, 335.0625}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
@@ -28,12 +28,12 @@
         <property name="resetOnEachRun" class="ptolemy.moml.SharedParameter" value="true">
         </property>
         <doc>Create a sequence of Beta random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 60.0]">
         </property>
     </entity>
     <entity name="ColtBinomial" class="ptolemy.actor.lib.colt.ColtBinomial">
         <doc>Create a sequence of Binomial random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 130.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -43,26 +43,26 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 180.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 130.0]">
         </property>
     </entity>
     <entity name="ColtBreitWigner" class="ptolemy.actor.lib.colt.ColtBreitWigner">
         <doc>Create a sequence of BreitWigner random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 200.0]">
         </property>
     </entity>
     <entity name="ColtChiSquare" class="ptolemy.actor.lib.colt.ColtChiSquare">
         <property name="generatorClass" class="ptolemy.moml.SharedParameter" value="DRand">
         </property>
         <doc>Create a sequence of ChiSquare random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 135.0]">
         </property>
     </entity>
     <entity name="ColtExponential" class="ptolemy.actor.lib.colt.ColtExponential">
         <property name="generatorClass" class="ptolemy.moml.SharedParameter" value="DRand">
         </property>
         <doc>Create a sequence of Exponential random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 70.0]">
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
@@ -72,7 +72,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 200.0]">
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
@@ -82,7 +82,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 135.0]">
         </property>
     </entity>
     <entity name="Test5" class="ptolemy.actor.lib.Test">
@@ -92,35 +92,35 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 70.0]">
         </property>
     </entity>
     <entity name="ColtExponentialPower" class="ptolemy.actor.lib.colt.ColtExponentialPower">
         <property name="generatorClass" class="ptolemy.moml.SharedParameter" value="DRand">
         </property>
         <doc>Create a sequence of Exponential Power random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 395.0]">
         </property>
     </entity>
     <entity name="ColtGamma" class="ptolemy.actor.lib.colt.ColtGamma">
         <property name="generatorClass" class="ptolemy.moml.SharedParameter" value="DRand">
         </property>
         <doc>Create a sequence of Gamma random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 265.0]">
         </property>
     </entity>
     <entity name="ColtHyperGeometric" class="ptolemy.actor.lib.colt.ColtHyperGeometric">
         <property name="generatorClass" class="ptolemy.moml.SharedParameter" value="DRand">
         </property>
         <doc>Create a sequence of HyperGeometric random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 270.0]">
         </property>
     </entity>
     <entity name="ColtLogarithmic" class="ptolemy.actor.lib.colt.ColtLogarithmic">
         <property name="generatorClass" class="ptolemy.moml.SharedParameter" value="DRand">
         </property>
         <doc>Create a sequence of Logarithmic random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 200.0]">
         </property>
     </entity>
     <entity name="Test6" class="ptolemy.actor.lib.Test">
@@ -130,7 +130,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 395.0]">
         </property>
     </entity>
     <entity name="Test7" class="ptolemy.actor.lib.Test">
@@ -140,7 +140,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 265.0]">
         </property>
     </entity>
     <entity name="Test8" class="ptolemy.actor.lib.Test">
@@ -150,7 +150,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 270.0]">
         </property>
     </entity>
     <entity name="Test9" class="ptolemy.actor.lib.Test">
@@ -160,7 +160,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 200.0]">
         </property>
     </entity>
     <entity name="HistogramPlotter4" class="ptolemy.actor.lib.gui.HistogramPlotter">
@@ -172,7 +172,7 @@
         </property>
         <property name="binWidth" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 330.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -192,49 +192,49 @@
         <property name="generatorClass" class="ptolemy.moml.SharedParameter" value="DRand">
         </property>
         <doc>Create a sequence of Negative Binomial random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 600.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 530.0]">
         </property>
     </entity>
     <entity name="ColtNormal" class="ptolemy.actor.lib.colt.ColtNormal">
         <property name="generatorClass" class="ptolemy.moml.SharedParameter" value="DRand">
         </property>
         <doc>Create a sequence of Normal random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 525.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 455.0]">
         </property>
     </entity>
     <entity name="ColtPoisson" class="ptolemy.actor.lib.colt.ColtPoisson">
         <property name="generatorClass" class="ptolemy.moml.SharedParameter" value="DRand">
         </property>
         <doc>Create a sequence of Poisson random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 395.0]">
         </property>
     </entity>
     <entity name="ColtPoissonSlow" class="ptolemy.actor.lib.colt.ColtPoissonSlow">
         <property name="generatorClass" class="ptolemy.moml.SharedParameter" value="DRand">
         </property>
         <doc>Create a sequence of PoissonSlow random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 460.0]">
         </property>
     </entity>
     <entity name="ColtStudentT" class="ptolemy.actor.lib.colt.ColtStudentT">
         <property name="generatorClass" class="ptolemy.moml.SharedParameter" value="DRand">
         </property>
         <doc>Create a sequence of StudentT random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[59.5, 620.0]">
         </property>
     </entity>
     <entity name="ColtVonMises" class="ptolemy.actor.lib.colt.ColtVonMises">
         <property name="generatorClass" class="ptolemy.moml.SharedParameter" value="DRand">
         </property>
         <doc>Create a sequence of VonMises random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 590.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 520.0]">
         </property>
     </entity>
     <entity name="ColtZeta" class="ptolemy.actor.lib.colt.ColtZeta">
         <property name="generatorClass" class="ptolemy.moml.SharedParameter" value="DRand">
         </property>
         <doc>Create a sequence of Zeta random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 595.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[59.5, 685.0]">
         </property>
     </entity>
     <entity name="Test11" class="ptolemy.actor.lib.Test">
@@ -244,7 +244,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 600.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 530.0]">
         </property>
     </entity>
     <entity name="Test12" class="ptolemy.actor.lib.Test">
@@ -254,7 +254,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 525.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 455.0]">
         </property>
     </entity>
     <entity name="Test13" class="ptolemy.actor.lib.Test">
@@ -264,7 +264,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 395.0]">
         </property>
     </entity>
     <entity name="Test14" class="ptolemy.actor.lib.Test">
@@ -274,7 +274,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 460.0]">
         </property>
     </entity>
     <entity name="Test15" class="ptolemy.actor.lib.Test">
@@ -284,7 +284,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[254.5, 620.0]">
         </property>
     </entity>
     <entity name="Test16" class="ptolemy.actor.lib.Test">
@@ -294,7 +294,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 590.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 520.0]">
         </property>
     </entity>
     <entity name="Test17" class="ptolemy.actor.lib.Test">
@@ -304,7 +304,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 595.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[254.5, 685.0]">
         </property>
     </entity>
     <entity name="HistogramPlotter1" class="ptolemy.actor.lib.gui.HistogramPlotter">
@@ -316,7 +316,7 @@
         </property>
         <property name="binWidth" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 5.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -341,7 +341,7 @@
         </property>
         <property name="binWidth" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 335.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -366,7 +366,7 @@
         </property>
         <property name="binWidth" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 5.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -391,7 +391,7 @@
         </property>
         <property name="binWidth" class="ptolemy.data.expr.Parameter" value="1000.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 460.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 585.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -412,71 +412,71 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 60.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[45.0, 110.0]">
+        <vertex name="vertex1" value="[130.0, 60.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[55.0, 180.0]">
+        <vertex name="vertex1" value="[140.0, 130.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[335.0, 115.0]">
+        <vertex name="vertex1" value="[600.0, 70.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[345.0, 180.0]">
+        <vertex name="vertex1" value="[610.0, 135.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[65.0, 250.0]">
+        <vertex name="vertex1" value="[150.0, 200.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[355.0, 245.0]">
+        <vertex name="vertex1" value="[620.0, 200.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[75.0, 320.0]">
+        <vertex name="vertex1" value="[160.0, 270.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[365.0, 310.0]">
+        <vertex name="vertex1" value="[630.0, 265.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[80.0, 465.0]">
+        <vertex name="vertex1" value="[160.0, 395.0]">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[635.0, 595.0]">
+        <vertex name="vertex1" value="[149.5, 685.0]">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[100.0, 590.0]">
+        <vertex name="vertex1" value="[180.0, 520.0]">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[625.0, 530.0]">
+        <vertex name="vertex1" value="[139.5, 620.0]">
         </vertex>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[350.0, 530.0]">
+        <vertex name="vertex1" value="[625.0, 460.0]">
         </vertex>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[340.0, 465.0]">
+        <vertex name="vertex1" value="[615.0, 395.0]">
         </vertex>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[90.0, 525.0]">
+        <vertex name="vertex1" value="[170.0, 455.0]">
         </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[360.0, 600.0]">
+        <vertex name="vertex1" value="[635.0, 530.0]">
         </vertex>
     </relation>
     <link port="ColtBeta.output" relation="relation"/>
