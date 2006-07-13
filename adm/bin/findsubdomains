@@ -1,0 +1,17 @@
+#! /bin/sh
+# Find all demos and tests that have multiple domains
+#
+
+textfiles=/tmp/t
+if [ ! -d $textfiles ]; then
+   $PTII/adm/bin/ptIItxtfiles >$textfiles
+fi
+
+xmlfiles=`cat $textfiles | egrep ".xml$"`
+demofiles=`echo $xmlfiles | grep "/demo/"`
+testfiles=`echo $xmlfiles | grep "/test/auto"`
+
+for model in $demofiles
+do
+    echo `grep "domains.*Director" $file`
+done
