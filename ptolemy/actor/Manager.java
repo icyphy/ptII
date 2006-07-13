@@ -279,10 +279,11 @@ public class Manager extends NamedObj implements Runnable {
      *  <p> 
      *  If an exception occurs during the execution, delegate to the 
      *  exception handlers (if there are any) to handle these exceptions.
-     *  If there is no exception handlers, it is up to the
-     *  caller to handle (i.e. report) the exception.
+     *  If there are no exception handlers, it is up to the
+     *  caller to handle (e.g. report) the exception.
      *  If you do not wish to handle exceptions, but want to execute
      *  within the calling thread, use run().
+     *  @see #run()
      *  @exception KernelException If the model throws it.
      *  @exception IllegalActionException If the model is already running, or
      *   if there is no container.
@@ -390,7 +391,8 @@ public class Manager extends NamedObj implements Runnable {
                 // statement inside the finally block.
                 System.out.println(timeAndMemory(startTime));
 
-                // Handle throwable with exception handlers.
+                // Handle throwable with exception handlers,
+                // if there are any.
                 if (initialThrowable != null) {
                     List exceptionHandlersList = 
                         _container.entityList(ExceptionHandler.class);
@@ -399,17 +401,13 @@ public class Manager extends NamedObj implements Runnable {
                         boolean exceptionHandled = false;
                         // Note that we allow multiple exception handlers
                         // to handle the same exception. So we iterate all
-                        // of the exception handlers.
+                        // of the exception handlers, at least until one
+                        // those throws an exception.
                         while (exceptionHandlers.hasNext()) {
                             ExceptionHandler exceptionHandler = 
                                 (ExceptionHandler) exceptionHandlers.next(); 
-                            // FIXME: when can the throwable not be an exception?
-                            // From the code, it seems only exception can be thrown
-                            // from the execute() method.
-                            if (initialThrowable instanceof Exception) {
-                                if (exceptionHandler.handleException(_container, (Exception) initialThrowable)) {
-                                    exceptionHandled = true;
-                                }
+                            if (exceptionHandler.handleException(_container, (Exception) initialThrowable)) {
+                                exceptionHandled = true;
                             }
                         }
                         if (exceptionHandled) {
