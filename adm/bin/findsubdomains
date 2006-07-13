@@ -3,15 +3,27 @@
 #
 
 textfiles=/tmp/t
-if [ ! -d $textfiles ]; then
-   $PTII/adm/bin/ptIItxtfiles >$textfiles
+if [ ! -f $textfiles ]; then
+   echo "finding text files"
+   $PTII/adm/bin/ptIItxtfiles | grep -v findbugs.xml >$textfiles
 fi
 
-xmlfiles=`cat $textfiles | egrep ".xml$"`
-demofiles=`echo $xmlfiles | grep "/demo/"`
-testfiles=`echo $xmlfiles | grep "/test/auto"`
+demofiles=`cat $textfiles | egrep ".xml$" | grep "/demo/"`
+testfiles=`cat $textfiles | egrep ".xml$" | grep "/test/auto/"`
 
 for model in $demofiles
 do
-    echo `grep "domains.*Director" $file`
+    lines=`grep "domains.*Director" $model | wc -l`
+    if [ $lines -gt 1 ]; then
+	echo $model
+	grep "domains.*Director" $model |
+	    gawk -F\" '{ director=$(NF-1) 
+			 if (length(directors[$director]) == 0) {
+		             nf=split(director, f, ".")
+			     print substr($1, 1, length($1) - length("<property name=")), f[nf]
+	                 }
+			 directors[$director] = $director
+		}'
+    fi
+
 done
