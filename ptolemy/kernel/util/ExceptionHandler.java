@@ -31,7 +31,9 @@ package ptolemy.kernel.util;
 //// ExceptionHandler
 
 /**
- Interface for exception handlers. 
+ Interface for exception handlers. If a model contains an entity that
+ implements this interface, then if running the model results in an
+ exception, the exception is delegated to this exception handler.
  
  @author Haiyang Zheng
  @version $Id$
@@ -48,9 +50,9 @@ public interface ExceptionHandler {
      *  @param exception An exception to be handled.
      *  @return True if the exception has been handled, or false if the
      *   exception is not handled.
-     *  @exception IllegalActionException If the handler handles the
+     *  @exception IllegalActionException If this handler handles the
      *   exception by throwing an exception.
      */
-    public boolean handleException(NamedObj context, Exception exception) 
+    public boolean handleException(NamedObj context, Throwable exception) 
         throws IllegalActionException;
 }
