@@ -38,7 +38,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.Zeta;
 
-import com.sun.tools.javac.tree.Tree.If;
 
 //////////////////////////////////////////////////////////////////////////
 //// Zeta

@@ -37,7 +37,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.ExponentialPower;
 
-import com.sun.tools.javac.tree.Tree.If;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExponentialPower
