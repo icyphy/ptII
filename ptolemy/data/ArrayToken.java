@@ -581,7 +581,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  the same length as this array token, and the multiplication is elementwise.
      *  Otherwise, each element is multiplied by the argument.
      *  This overrides the base class to allow multiplication by scalars.
-     *  @param rightArgument The token to multiply by this token.
+     *  @param leftArgument The token to multiply by this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token is
      *   an array token but does not have the same length as this
