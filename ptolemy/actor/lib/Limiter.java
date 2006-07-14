@@ -34,6 +34,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Limiter
@@ -90,6 +91,22 @@ public class Limiter extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Override the base class to set type constraints.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new instance of Sleep.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Limiter newObject = (Limiter) super.clone(workspace);
+        newObject.output.setTypeAtMost(BaseType.SCALAR);
+        newObject.output.setTypeAtLeast(input);
+        newObject.output.setTypeAtLeast(top);
+        newObject.output.setTypeAtLeast(bottom);
+        return newObject;
+    }
 
     /** Compute the output and send it to the output port. If there is
      *  no input, then produce no output.
