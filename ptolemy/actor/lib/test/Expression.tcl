@@ -67,15 +67,14 @@ test Expression-2.1 {run with default empty expression} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     set m [$e0 getManager]
     catch {$m execute} msg
-    string range $msg 0 228
+    string range $msg 0 200
 
-} {ptolemy.kernel.util.IllegalActionException:   in .top.<Unnamed Object>
-Because:
-Type resolution failed because of an error during type inference
+} {ptolemy.kernel.util.InternalErrorException: Type resolution failed because of an error during type inference
   in .top
 Because:
 An error occurred during expression type inference
-  in .top.expr}
+  in .top.expr
+Because}
 
 test Expression-3.1 {run with a simple expression} {
     set expression [java::field $expr expression]
