@@ -125,7 +125,7 @@ public class ColtZeta extends ColtRandomSource {
     }
 
     /** Generate a new random number.
-     *  @exception If the parameter values are incorrect.
+     *  @exception IllegalActionException If the parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
         double roValue = ((DoubleToken) ro.getToken()).doubleValue();

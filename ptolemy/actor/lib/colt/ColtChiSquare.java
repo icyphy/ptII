@@ -128,7 +128,7 @@ public class ColtChiSquare extends ColtRandomSource {
     }
 
     /** Generate a new random number.
-     *  @exception If parameter values are incorrect.
+     *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
         double freedomValue = ((DoubleToken) freedom.getToken()).doubleValue();

@@ -113,7 +113,7 @@ public class ColtExponentialPower extends ColtRandomSource {
     }
 
     /** Generate a new random number.
-     *  @exception If parameter values are incorrect.
+     *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
         double tauValue = ((DoubleToken) tau.getToken()).doubleValue();
