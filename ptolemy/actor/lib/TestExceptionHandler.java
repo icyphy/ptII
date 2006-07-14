@@ -116,7 +116,7 @@ public class TestExceptionHandler extends TypedAtomicActor
      *  the traningMode parameter or the exception message is not the same as
      *  the stored message.
      */
-    public boolean handleException(NamedObj context, Exception exception) 
+    public boolean handleException(NamedObj context, Throwable exception) 
         throws IllegalActionException{
         if (!(exception instanceof IllegalActionException)) {
             return false;
