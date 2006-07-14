@@ -102,9 +102,9 @@ public class Limiter extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Limiter newObject = (Limiter) super.clone(workspace);
         newObject.output.setTypeAtMost(BaseType.SCALAR);
-        newObject.output.setTypeAtLeast(input);
-        newObject.output.setTypeAtLeast(top);
-        newObject.output.setTypeAtLeast(bottom);
+        newObject.output.setTypeAtLeast(newObject.input);
+        newObject.output.setTypeAtLeast(newObject.top);
+        newObject.output.setTypeAtLeast(newObject.bottom);
         return newObject;
     }
 
