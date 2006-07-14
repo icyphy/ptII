@@ -232,9 +232,7 @@ test Ramp-3.1 {Run a CT model which will detect errors in scheduling} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException:   in .top.<Unnamed Object>
-Because:
-ramp is a SequenceActor, which cannot be a source actor in the CT domain.}}
+} {{ptolemy.actor.sched.NotSchedulableException: ramp is a SequenceActor, which cannot be a source actor in the CT domain.}}
 
 
 ######################################################################
