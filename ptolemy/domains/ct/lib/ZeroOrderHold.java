@@ -90,7 +90,7 @@ public class ZeroOrderHold extends Transformer implements CTWaveformGenerator {
      * The default is an integer with value 0.
      * The type of the output is set to at least this type.
      */
-    Parameter defaultValue;
+    public Parameter defaultValue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
