@@ -261,7 +261,7 @@ foreach i $configs {
    			    if {$greaterTermObject != [java::null] && \
 			           $lesserTermObject != [java::null] && \
 			           [$greaterTermObject getContainer] != [$lesserTermObject getContainer] } {
-			        lappend results "[$clone toString] has type constraints with associated objects that don't have the same container: [$greaterTermObject toString] [$lesserTermObject toString].\nYou will see this if the clone() method has\n  newObject.output.setTypeAtLeast(input);\ninstead of\n  newObject.output.setTypeAtLeast(newObject.input);\n\n "
+			        lappend results "[$clone toString] has type constraints with associated objects that don't have the same container:\n[$greaterTermObject getContainer] != [$lesserTermObject getContainer]\nclone: $clone, actor: $actor\nContainers:\n  [[$greaterTermObject getContainer] toString] != \n  [[$lesserTermObject getContainer] toString]\nAssociated Objects:\n  [$greaterTermObject toString]\n  [$lesserTermObject toString].\nYou will see this if the clone() method has\n  newObject.output.setTypeAtLeast(input);\ninstead of\n  newObject.output.setTypeAtLeast(newObject.input);\n\n "
 			    }
                         }
 		    }
