@@ -288,8 +288,9 @@ public class HTMLAbout {
             // we open it up as a .xml file, we get a graphical browser
             // that does not tell us much.  If we open it up as a .htm,
             // then the output is confusing.
-            newURL = _temporaryHTMLFile("configuration", ".txt", configuration
-                    .exportMoML());
+            newURL = _temporaryHTMLFile("configuration", ".txt",
+                    configuration.check() +
+                    configuration.exportMoML());
         } else if (event.getDescription().startsWith("about:demos")) {
             // Expand all the local .xml files in the fragment
             // and return a URL pointing to the fragment.
