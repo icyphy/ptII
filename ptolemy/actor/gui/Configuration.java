@@ -153,24 +153,50 @@ public class Configuration extends CompositeEntity {
                 if (clone == null) {
                     results.append("Actor " + fullName + " was not cloned!");
                 } else {
+
                     List constraints = actor.typeConstraintList();
                     List cloneConstraints = clone.typeConstraintList();
 
-                    // FIXME: check each constraint.
-
+                    // Make sure the clone has the same number of constraints.
                     if (constraints.size() != cloneConstraints.size()) {
                         results.append(actor.getFullName() + " has "
                                 + constraints.size() + " constraints that "
                                 + "differ from " + cloneConstraints.size()
                                 + " constraints its clone has.\n");
+                    } 
+                    
+
+                    // Make sure the constraints are the same.
+                    StringBuffer constraintsDescription = new StringBuffer();
+                    Iterator constraintIterator = constraints.iterator();
+                    while (constraintIterator.hasNext()) {
+                        Inequality constraint =
+                            (Inequality) constraintIterator.next();
+                        constraintsDescription.append(constraint);
+                    }
+
+
+                    StringBuffer cloneConstraintsDescription = new StringBuffer();
+                    Iterator cloneConstraintIterator = cloneConstraints.iterator();
+                    while (cloneConstraintIterator.hasNext()) {
+                        Inequality constraint = (Inequality) cloneConstraintIterator.next();                        
+                        cloneConstraintsDescription.append(constraint);
+                    }
+
+                    if (!constraintsDescription.toString().equals(
+                                cloneConstraintsDescription.toString())) {
+                        results.append(actor.getFullName() + " and its clone do "
+                                + "not have the same constraints:\n"
+                                + constraintsDescription.toString() + "\nClone:\n" 
+                                + cloneConstraintsDescription.toString() + "\n"); 
                     }
 
 		    // Check that the type constraint is between ports
-		    // of the same object.
+		    // and Parameters of the same object.
                     
-                    Iterator constraintIterator = cloneConstraints.iterator();
-                    while (constraintIterator.hasNext()) {
-                        Inequality constraint = (Inequality) constraintIterator.next();
+                    cloneConstraintIterator = cloneConstraints.iterator();
+                    while (cloneConstraintIterator.hasNext()) {
+                        Inequality constraint = (Inequality) cloneConstraintIterator.next();
                         InequalityTerm greaterTerm = constraint.getGreaterTerm();
                         InequalityTerm lesserTerm = constraint.getLesserTerm();
 
@@ -179,6 +205,7 @@ public class Configuration extends CompositeEntity {
                         if ( greaterAssociatedObject instanceof NamedObj
                                 && lesserAssociatedObject instanceof
                                 NamedObj) {
+                            // FIXME: what about non-NamedObjs?
                             NamedObj greaterNamedObj =
                                 (NamedObj) greaterAssociatedObject;
                             NamedObj lesserNamedObj =
@@ -192,8 +219,18 @@ public class Configuration extends CompositeEntity {
                                         + " has type constraints with "
                                         + "associated objects that don't have "
                                         + "the same container:\n"
+                                        + greaterNamedObj.getFullName()
+                                        + " has a container:\n"
                                         + greaterNamedObj.getContainer() + "\n"
-                                        + lesserNamedObj.getContainer() + "\n");
+                                        + lesserNamedObj.getFullName()
+                                        + " has a container:\n"
+                                        + lesserNamedObj.getContainer() + "\n"
+                                        + "This can occur if the clone(Workspace) "
+                                        + "method is not present or does not set "
+                                        + "the constraints like the constructor "
+                                        + "does or if a Parameter or Port is not "
+                                        + "declared public.\n"
+                                               );
                             }
                         }
                     }
