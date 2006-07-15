@@ -217,86 +217,10 @@ foreach i $configs {
     } {{}}
 
     test "$i-3.1" "Test to see if $i contains any actors whose type constraints don't clone" {
-	set cloneConfiguration [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]
-
-	set entityList [$configuration allAtomicEntityList]
-	set results {}
-	for {set iterator [$entityList iterator]} {[$iterator hasNext] == 1} {} {
-	    set entity [$iterator next]
-	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
-		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
-		set fullName [$actor getName $configuration]
-	
-		set clone [java::cast ptolemy.actor.TypedAtomicActor [$cloneConfiguration getEntity $fullName]]
-		if [java::isnull $clone] {
-		    lappend results "\n\tActor $fullName was not cloned!"
-		} {
-		    set constraints [$actor typeConstraintList]
-		    
-		    set cloneConstraints [$clone typeConstraintList]
-
-		    # Check that the type constraint is between ports
-		    # of the same object.
-
-		    set constraintIterator [$cloneConstraints iterator]
-		    while { [$constraintIterator hasNext] == 1 } {
-			set constraint [java::cast ptolemy.graph.Inequality [$constraintIterator next]]
-
-			set greaterTerm [$constraint getGreaterTerm]
-			set lesserTerm [$constraint getLesserTerm]
-			if {[java::instanceof \
-				[$greaterTerm getAssociatedObject] \
-				ptolemy.kernel.util.NamedObj] && \
-			        [java::instanceof \
-				    [$lesserTerm getAssociatedObject] \
-				    ptolemy.kernel.util.NamedObj]} {
-		            # FIXME: what about non- NamedObjs
-			    set greaterTermObject \
-				[java::cast ptolemy.kernel.util.NamedObj \
-				[$greaterTerm getAssociatedObject]]
-			    set lesserTermObject \
-				[java::cast ptolemy.kernel.util.NamedObj \
-				[$lesserTerm getAssociatedObject]]
-
-   			    if {$greaterTermObject != [java::null] && \
-			           $lesserTermObject != [java::null] && \
-			           [$greaterTermObject getContainer] != [$lesserTermObject getContainer] } {
-			        lappend results "[$clone toString] has type constraints with associated objects that don't have the same container:\n[$greaterTermObject getContainer] != [$lesserTermObject getContainer]\nclone: $clone, actor: $actor\nContainers:\n  [[$greaterTermObject getContainer] toString] != \n  [[$lesserTermObject getContainer] toString]\nAssociated Objects:\n  [$greaterTermObject toString]\n  [$lesserTermObject toString].\nYou will see this if the clone() method has\n  newObject.output.setTypeAtLeast(input);\ninstead of\n  newObject.output.setTypeAtLeast(newObject.input);\n\n "
-			    }
-                        }
-		    }
-
-
-		    # Don't join the constraints, because some types have
-		    # braces in them.
-		    set c [jdkPrintArray \
-				     [$constraints toArray] "\n" ]
-		    set cc [jdkPrintArray \
-				      [$cloneConstraints toArray] "\n" ]
-		    if {$c != $cc} {
-			set size [$constraints size]
-			set cloneSize [$cloneConstraints size]
-		   	set msg "\n\n[$actor getFullName]\n\
-				\thas $size constraints, \
-				that differ from the $cloneSize \
-                                constraints its clone has."
-			#set diff [diffText $c $cc]
-			#puts $diff
-
-			#set c [join [jdkPrintArray 
-			#	[$constraints toArray] "\n" ] "\n"]
-			#set cc [join [jdkPrintArray 
-			#	[$cloneConstraints toArray] "\n" ] "\n"]
-			lappend results "$msg\n\tActor Constraints:\n$c\
-					     \tClone constraints:\n$cc"
-		    }
-		}
-	    } 
-	}
-	
-	# Don't call return as the last line of a test proc, since return
-	# throws an exception.
-	list $results
+	    set results [[java::cast ptolemy.actor.gui.Configuration $configuration] check]
+   	    # Don't call return as the last line of a test proc, since return
+	    # throws an exception.
+	    list $results
     } {{}}
 
 
