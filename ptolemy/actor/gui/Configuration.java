@@ -33,6 +33,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -131,6 +134,74 @@ public class Configuration extends CompositeEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Check the configuration for common style problems.
+     *  @return HTML describing the problems 
+     *  @exception Exception If there is a problem cloning the configuration.
+     */
+    public String check() throws Exception {
+        StringBuffer results = new StringBuffer();
+        Configuration cloneConfiguration = (Configuration)clone();
+        List entityList = allAtomicEntityList();
+        Iterator entities = entityList.iterator();
+        while (entities.hasNext()) {
+            Object entity = entities.next();
+            if (entity instanceof TypedAtomicActor) {
+                TypedAtomicActor actor = (TypedAtomicActor)entity;
+                String fullName = actor.getName(this);
+                TypedAtomicActor clone = (TypedAtomicActor) cloneConfiguration.getEntity(fullName);
+                if (clone == null) {
+                    results.append("Actor " + fullName + " was not cloned!");
+                } else {
+                    List constraints = actor.typeConstraintList();
+                    List cloneConstraints = clone.typeConstraintList();
+
+                    // FIXME: check each constraint.
+
+                    if (constraints.size() != cloneConstraints.size()) {
+                        results.append(actor.getFullName() + " has "
+                                + constraints.size() + " constraints that "
+                                + "differ from " + cloneConstraints.size()
+                                + " constraints its clone has.\n");
+                    }
+
+		    // Check that the type constraint is between ports
+		    // of the same object.
+                    
+                    Iterator constraintIterator = cloneConstraints.iterator();
+                    while (constraintIterator.hasNext()) {
+                        Inequality constraint = (Inequality) constraintIterator.next();
+                        InequalityTerm greaterTerm = constraint.getGreaterTerm();
+                        InequalityTerm lesserTerm = constraint.getLesserTerm();
+
+                        Object greaterAssociatedObject = greaterTerm.getAssociatedObject();
+                        Object lesserAssociatedObject = lesserTerm.getAssociatedObject();
+                        if ( greaterAssociatedObject instanceof NamedObj
+                                && lesserAssociatedObject instanceof
+                                NamedObj) {
+                            NamedObj greaterNamedObj =
+                                (NamedObj) greaterAssociatedObject;
+                            NamedObj lesserNamedObj =
+                                (NamedObj) lesserAssociatedObject;
+                            if (greaterNamedObj != null
+                                    && lesserNamedObj != null
+                                    && (greaterNamedObj.getContainer()
+                                            != lesserNamedObj.getContainer()
+                                        )) {
+                                results.append(clone.getFullName() 
+                                        + " has type constraints with "
+                                        + "associated objects that don't have "
+                                        + "the same container:\n"
+                                        + greaterNamedObj.getContainer() + "\n"
+                                        + lesserNamedObj.getContainer() + "\n");
+                            }
+                        }
+                    }
+                }
+            }
+    }
+        return results.toString();
+    }
 
     /** Return a list of all the configurations that have been created.
      *  Note  that if this method is called before a configuration
@@ -583,9 +654,11 @@ public class Configuration extends CompositeEntity {
      */
     protected void _removeEntity(ComponentEntity entity) {
         super._removeEntity(entity);
-
+        System.out.println("Configuration._removeEntity()");
         if (entity.getName().equals(_DIRECTORY_NAME)) {
-            System.exit(0);
+            // If the ptolemy.ptII.exitAfterWrapup property is set,
+            // then we don't actually exit.
+            StringUtilities.exit(0);
         }
     }
 
@@ -597,6 +670,7 @@ public class Configuration extends CompositeEntity {
      *  @return An identifier for the effigy.
      */
     private String _effigyIdentifier(Effigy effigy, NamedObj entity) {
+        System.out.println("Configuration._effigyIdentifier()" + effigy);
         // Set the identifier of the effigy to be that
         // of the parent with the model name appended.
         NamedObj parent = effigy.getContainer();
