@@ -74,7 +74,7 @@ public abstract class StructuredType implements Type {
     /** Return a new type which represents the type that results from
      *  dividing a token of this type and a token of the given
      *  argument type.
-     *  @param rightArgumentType The type to add to this type.
+     *  @param rightArgumentType The type to divide with this type.
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
@@ -128,7 +128,7 @@ public abstract class StructuredType implements Type {
     /** Return a new type which represents the type that results from
      *  multiplying a token of this type and a token of the given
      *  argument type.
-     *  @param rightArgumentType The type to add to this type.
+     *  @param rightArgumentType The type to multiply by this type.
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
