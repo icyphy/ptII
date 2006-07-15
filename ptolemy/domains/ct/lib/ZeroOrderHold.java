@@ -103,8 +103,8 @@ public class ZeroOrderHold extends Transformer implements CTWaveformGenerator {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ZeroOrderHold newObject = (ZeroOrderHold) super.clone(workspace);
-        newObject.output.setTypeAtLeast(input);
-        newObject.output.setTypeAtLeast(defaultValue);
+        newObject.output.setTypeAtLeast(newObject.input);
+        newObject.output.setTypeAtLeast(newObject.defaultValue);
         return newObject;
     }
 

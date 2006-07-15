@@ -106,7 +106,7 @@ public class Timer extends DETransformer {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Timer newObject = (Timer) super.clone(workspace);
-        newObject.output.setTypeSameAs(value);
+        newObject.output.setTypeSameAs(newObject.value);
         newObject.input.setTypeEquals(BaseType.DOUBLE);
         return newObject;
     }
