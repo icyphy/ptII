@@ -234,6 +234,39 @@ foreach i $configs {
 		    set constraints [$actor typeConstraintList]
 		    
 		    set cloneConstraints [$clone typeConstraintList]
+
+		    # Check that the type constraint is between ports
+		    # of the same object.
+
+		    set constraintIterator [$cloneConstraints iterator]
+		    while { [$constraintIterator hasNext] == 1 } {
+			set constraint [java::cast ptolemy.graph.Inequality [$constraintIterator next]]
+
+			set greaterTerm [$constraint getGreaterTerm]
+			set lesserTerm [$constraint getLesserTerm]
+			if {[java::instanceof \
+				[$greaterTerm getAssociatedObject] \
+				ptolemy.kernel.util.NamedObj] && \
+			        [java::instanceof \
+				    [$lesserTerm getAssociatedObject] \
+				    ptolemy.kernel.util.NamedObj]} {
+		            # FIXME: what about non- NamedObjs
+			    set greaterTermObject \
+				[java::cast ptolemy.kernel.util.NamedObj \
+				[$greaterTerm getAssociatedObject]]
+			    set lesserTermObject \
+				[java::cast ptolemy.kernel.util.NamedObj \
+				[$lesserTerm getAssociatedObject]]
+
+   			    if {$greaterTermObject != [java::null] && \
+			           $lesserTermObject != [java::null] && \
+			           [$greaterTermObject getContainer] != [$lesserTermObject getContainer] } {
+			        lappend results "[$clone toString] has type constraints with associated objects that don't have the same container: [$greaterTermObject toString] [$lesserTermObject toString].\nYou will see this if the clone() method has\n  newObject.output.setTypeAtLeast(input);\ninstead of\n  newObject.output.setTypeAtLeast(newObject.input);\n\n "
+			    }
+                        }
+		    }
+
+
 		    # Don't join the constraints, because some types have
 		    # braces in them.
 		    set c [jdkPrintArray \
