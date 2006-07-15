@@ -31,7 +31,6 @@ package ptolemy.actor.ptalon;
 import java.io.File;
 import java.io.FileReader;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -47,7 +46,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedList;
 import ptolemy.kernel.util.Settable;
 
 
@@ -94,8 +92,7 @@ public class PtalonActor extends TypedCompositeActor {
         setClassName("ptolemy.actor.ptalon.PtalonActor");
         ptalonCodeLocation = new FileParameter(this, "ptalonCodeLocation");
         _fileSet = false;
-        _methods = new ParameterMethodList();
-        _parameters = new ParameterValues();
+        _ptalonParameters = new ArrayList<PtalonParameter>();
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -103,87 +100,78 @@ public class PtalonActor extends TypedCompositeActor {
         
     
     /**
-     * Add an actor with the given class name.  The class name should
-     * include the full class path.  The actorName parameter may only
+     * Add an actor with the class name specified in the given 
+     * PtalonParameter.  This is given as the only element of an
+     * array to be used with the flexible executeMethods method
+     * of PtalonParameter, where it will be called.
+     * The class name should include the full class path.  The actorName parameter may only
      * be a prefix of the generated actor.  This avoid name conflicts.
      * 
-     * @param className The class name.
-     * @param actorName The desired name for the actor.
-     * @return The generated actor.
+     * @param paramter A length 1 array of parameters
      * @throws IllegalActionExcepiton If it is generated in creating
      * the actor.
      */
-    public ComponentEntity addActor(String className) throws IllegalActionException {
+    public void addActor(PtalonObject[] param) throws IllegalActionException {
+        if (param.length != 1) {
+            throw new IllegalActionException(
+                    "addActor expects a length one array of parameters.");
+        }
         try {
-            StringTokenizer tokenizer = new StringTokenizer(className, "\"");
-            className = tokenizer.nextToken();
-            tokenizer = new StringTokenizer(className, ".");
+            PtalonParameter parameter = (PtalonParameter)param[0];
+            String className = parameter.stringValue(); 
+            StringTokenizer tokenizer = new StringTokenizer(className, ".");
             String actorName = "";
             while (tokenizer.hasMoreElements()) {
                 actorName = tokenizer.nextToken();
             }
             String displayName = uniqueName(actorName);
+            parameter.setActorName(displayName);
             Object[] args = new Object[] {this, displayName};
             Constructor cons;
             Class actorClass = Class.forName(className); 
             Class[] argClasses = new Class[] {CompositeEntity.class, String.class};
             cons = actorClass.getConstructor(argClasses);
             ComponentEntity p = (ComponentEntity) cons.newInstance(args);
-            List portList = p.portList();
-            TypedIOPort atomicPort;
-            TypedIOPort newPort;
-            TypedIORelation r;
-            for (int j = portList.size() - 1; j >= 0; j--) {
-                if (!(portList.get(j) instanceof TypedIOPort)) {
-                    continue;
-                }
-                atomicPort = (TypedIOPort) portList.get(j);
-                String portName = p.getName() + "_" + atomicPort.getName();
-                newPort = new TypedIOPort(this, portName);
-                r = new TypedIORelation(this, uniqueName("relation"));
-                if (atomicPort.isMultiport()) {
-                    newPort.setMultiport(true);
-                    r.setWidth(0);
-                }
-                newPort.setTypeEquals(atomicPort.getType());
-                atomicPort.link(r);
-                newPort.link(r);
-            }
-            List attributeList = p.attributeList();
-            Parameter atomicParam;
-            Parameter newParam;
-            for (int j = 0; j < attributeList.size(); j++){
-                if (!(attributeList.get(j) instanceof Parameter)) {
-                    continue;
-                }
-                atomicParam = (Parameter) attributeList.get(j);
-                String paramName = p.getName() + "_" + atomicParam.getName();
-                newParam = new Parameter(this, paramName);
-                newParam.setExpression(atomicParam.getExpression());
-                atomicParam.setExpression(newParam.getName());
-            }
-            return p;
+//            List portList = p.portList();
+//            TypedIOPort atomicPort;
+//            PtalonPort newPort;
+//            TypedIORelation r;
+//            for (int j = portList.size() - 1; j >= 0; j--) {
+//                if (!(portList.get(j) instanceof TypedIOPort)) {
+//                    continue;
+//                }
+//                atomicPort = (TypedIOPort) portList.get(j);
+//                String portName = p.getName() + "_" + atomicPort.getName();
+//                newPort = new PtalonPort(this, portName);
+//                r = new TypedIORelation(this, uniqueName("relation"));
+//                if (atomicPort.isMultiport()) {
+//                    newPort.setMultiport(true);
+//                    r.setWidth(0);
+//                }
+//                newPort.setTypeEquals(atomicPort.getType());
+//                atomicPort.link(r);
+//                newPort.link(r);
+//            }
+//            List attributeList = p.attributeList();
+//            Parameter atomicParam;
+//            Parameter newParam;
+//            for (int j = 0; j < attributeList.size(); j++){
+//                if (!(attributeList.get(j) instanceof Parameter)) {
+//                    continue;
+//                }
+//                atomicParam = (Parameter) attributeList.get(j);
+//                String paramName = p.getName() + "_" + atomicParam.getName();
+//                newParam = new Parameter(this, paramName);
+//                newParam.setExpression(atomicParam.getExpression());
+//                atomicParam.setExpression(newParam.getName());
+//            }
         } catch(Exception e) {
             if (!(e instanceof IllegalActionException)) {
-                throw new IllegalActionException(e.getMessage());
+                throw new IllegalActionException(this, e, e.getMessage());
             } else {
                 throw (IllegalActionException) e;
             }
         }
-    }
-    
-    /**
-     * Return the addActor method as a Method object.
-     * @return The addActor method.
-     */
-    public static Method addActorMethod() {
-        try {
-            Class thisClass = Class.forName("ptolemy.actor.ptalon");
-            Class stringClass = Class.forName("java.lang.String");
-            Method addActorMethod = thisClass.getMethod("addActor", stringClass);
-        } catch (Exception e) {
-        }
-        return null;
     }
     
     /**
@@ -207,14 +195,14 @@ public class PtalonActor extends TypedCompositeActor {
             TypedAtomicActor p = (TypedAtomicActor) cons.newInstance(args);
             List portList = p.portList();
             TypedIOPort atomicPort;
-            TypedIOPort newPort;
+            PtalonPort newPort;
             TypedIORelation r;
             for (int j = portList.size() - 1; j >= 0; j--) {
                 if (!(portList.get(j) instanceof TypedIOPort)) {
                     continue;
                 }
                 atomicPort = (TypedIOPort) portList.get(j);
-                newPort = new TypedIOPort(this, atomicPort.getName()); 
+                newPort = new PtalonPort(this, atomicPort.getName()); 
                 r = new TypedIORelation(this, uniqueName("relation"));
                 if (atomicPort.isMultiport()) {
                     newPort.setMultiport(true);
@@ -237,7 +225,7 @@ public class PtalonActor extends TypedCompositeActor {
             }
             return p;
         } catch(Exception e) {
-            throw new IllegalActionException(e.getMessage());
+            throw new IllegalActionException(this, e, e.getMessage());
         }
     }
 
@@ -250,23 +238,14 @@ public class PtalonActor extends TypedCompositeActor {
      * @exception IllegalActionException If generated in trying to
      * create the new parameter.
      */
-    public Parameter addParameter(String name) throws IllegalActionException {
+    public PtalonParameter addParameter(String name) throws IllegalActionException {
         try {
-            Parameter p = new Parameter(this, name);
+            PtalonParameter p = new PtalonParameter(this, name);
             return p;
         } catch(NameDuplicationException e) {
             //Do nothing.  Just give up.
         }
         return null;
-    }
-    
-    /**
-     * Add a parameter and an associated method to this Ptalon actor.
-     * @param name The name of the parameter.
-     * @param method The method to call for this parameter.
-     */
-    public void addParameterMethod(String name, Method method) {
-        _methods.addPair(name, method);
     }
     
     /**
@@ -283,15 +262,15 @@ public class PtalonActor extends TypedCompositeActor {
      * @exception IllegalActionException If generated in trying to
      * create the new port.
      */
-    public TypedIOPort addPort(String name, String flow) throws IllegalActionException {
+    public PtalonPort addPort(String name, String flow) throws IllegalActionException {
         try {
-            TypedIOPort p;
+            PtalonPort p;
             if (flow.equals(INPUT)) {
-                p = new TypedIOPort(this, name, true, false);
+                p = new PtalonPort(this, name, true, false);
             } else if (flow.equals(OUTPUT)) {
-                p = new TypedIOPort(this, name, false, true);
+                p = new PtalonPort(this, name, false, true);
             } else {
-                p = new TypedIOPort(this, name, true, true);
+                p = new PtalonPort(this, name, true, true);
             }
             return p;
         } catch(NameDuplicationException e) {
@@ -309,9 +288,9 @@ public class PtalonActor extends TypedCompositeActor {
      * @exception IllegalActionException If generated in trying to
      * create the new relation.
      */
-    public TypedIORelation addRelation(String name) throws IllegalActionException {
+    public PtalonRelation addRelation(String name) throws IllegalActionException {
         try {
-            TypedIORelation p = new TypedIORelation(this, name);
+            PtalonRelation p = new PtalonRelation(this, name);
             return p;
         } catch(NameDuplicationException e) {
             //Do nothing, just give up.
@@ -328,53 +307,166 @@ public class PtalonActor extends TypedCompositeActor {
      */
     public void attributeChanged(Attribute att) throws IllegalActionException {
         if (att == ptalonCodeLocation) {
-            File inputFile = ptalonCodeLocation.asFile();
-            if ((inputFile == null) || (_fileSet))  {
-                return;
-            }
-            PtalonLexer lex;
-            PtalonRecognizer rec;
-            try {
-                FileReader reader = new FileReader(inputFile);
-                lex = new PtalonLexer(reader);
-                rec = new PtalonRecognizer(lex);
-                rec.actor_definition(this);
-                ptalonCodeLocation.setExpression("");
-                ptalonCodeLocation.setContainer(null);
-            } catch (Exception e) {
-                throw new IllegalActionException(e.getMessage());
-            }
-        } else if ((att instanceof Parameter) && !(att instanceof FileParameter)) {
-            try {
-                String expression = ((Parameter) att).getExpression();
-                String name;
-                if (expression.equals("")) {
-                    return;
-                }
-                for (int i=0; i < _methods.size(); i++) {
-                    name = att.getName();
-                    if (!(expression.equals(_parameters.getValue(name)))) {
-                        Method method = _methods.getMethod(name);
-                        if (method != null) {
-                            method.invoke(this, expression);
-                            _parameters.setValue(name, expression);
-                            ((Parameter)att).setVisibility(Settable.NONE);
-                            return;
-                        }
-                    }
-                }
-            } catch(Exception e) {
-                if (e instanceof IllegalActionException) {
-                    throw (IllegalActionException) e;
-                }
-                else {
-                    throw new IllegalActionException(e.getMessage());
-                }
-            }
+            _initializePtalonCodeLocation();
+        } else if (att instanceof PtalonParameter) {
+            _respondToParameterUpdate((PtalonParameter) att);
         } else {
             super.attributeChanged(att);
         }
     }
+    
+
+    /**
+     * Connect loose ports for an actor with the class name specified
+     * in the given PtalonParameter.  This is given as the only element of an
+     * array to be used with the flexible executeMethods method
+     * of PtalonParameter, where it will be called.
+     * The class name should include the full class path.  The actorName parameter may only
+     * be a prefix of the generated actor.  This avoid name conflicts.
+     * 
+     * @param paramter A length 1 array of parameters
+     * @throws IllegalActionExcepiton If it is generated in connecting
+     * the ports.
+     */
+    public void connectLoosePorts(PtalonObject[] param) throws IllegalActionException {
+        if (param.length != 1) {
+            throw new IllegalActionException(
+                    "addActor expects a length one array of parameters.");
+        }
+        try {
+            PtalonParameter parameter = (PtalonParameter)param[0];
+            String displayName = parameter.getActorName();
+            Object[] args = new Object[] {this, displayName};
+            ComponentEntity p = getEntity(parameter.getActorName());
+            List portList = p.portList();
+            TypedIOPort port, newPort;
+            TypedIORelation r;
+            List relations;
+            for (Object obj : portList) {
+                if (!(obj instanceof TypedIOPort)) {
+                    continue;
+                }
+                port = (TypedIOPort) obj;
+                relations = port.linkedRelationList();
+                if (relations.isEmpty()) {
+                  String portName = p.getName() + "_" + port.getName();
+                  newPort = new PtalonPort(this, portName);
+                  r = new TypedIORelation(this, uniqueName("relation"));
+                  if (port.isMultiport()) {
+                      newPort.setMultiport(true);
+                      r.setWidth(0);
+                  }
+                  newPort.setTypeEquals(port.getType());
+                  port.link(r);
+                  newPort.link(r);                    
+                }
+            }
+        } catch(Exception e) {
+            if (!(e instanceof IllegalActionException)) {
+                throw new IllegalActionException(this, e, e.getMessage());
+            } else {
+                throw (IllegalActionException) e;
+            }
+        }
+    }
+
+    /**
+     * Connect two PtalonPorts together.
+     * @param ports A length three array consisting of
+     * 1) A PtalonParameter in contained in this composite, corresponding to an actor.
+     * 2) A PtalonParamter not in this class, whose value is a port name for the contained actor.
+     * 3) A PtalonPort contained in this actor to connect two.
+     * @throws IllegalActionException If it is generated in creating
+     * the actor.
+     */
+    public void connectPorts(PtalonObject[] ports) throws IllegalActionException {
+        try {
+            TypedIORelation r = new TypedIORelation(this, uniqueName("relation"));
+            PtalonParameter actorParam = (PtalonParameter) ports[0];
+            PtalonParameter portParam = (PtalonParameter) ports[1];
+            ComponentEntity actor = getEntity(actorParam.getActorName());
+            TypedIOPort p = (TypedIOPort) actor.getPort(portParam.getExpression());
+            PtalonPort q = (PtalonPort) ports[2];
+            p.link(r);
+            q.link(r);
+        } catch(IllegalActionException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e, e.getMessage());
+        }        
+    }
+    
+    /**
+     * Connect a PtalonPort and a PtalonRelation.
+     * @param ports A length three array consisting of
+     * 1) A PtalonParameter in contained in this composite, corresponding to an actor.
+     * 2) A PtalonParamter not in this class, whose value is a port name for the contained actor.
+     * 3) A PtalonRelation contained in this actor to connect two.
+     * @throws IllegalActionException If it is generated in creating
+     * the actor.
+     */
+    public void linkToRelation(PtalonObject[] ports) throws IllegalActionException {
+        try {
+            PtalonParameter actorParam = (PtalonParameter) ports[0];
+            PtalonParameter portParam = (PtalonParameter) ports[1];
+            ComponentEntity actor = getEntity(actorParam.getActorName());
+            TypedIOPort p = (TypedIOPort) actor.getPort(portParam.getExpression());
+            PtalonRelation r = (PtalonRelation) ports[2];
+            p.link(r);
+        } catch(IllegalActionException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e, e.getMessage());
+        }        
+    }
+    
+    /**
+     * Propagage parameters for an actor with the class name specified
+     * in the given PtalonParameter up to this actor.  This is given as the only element of an
+     * array to be used with the flexible executeMethods method
+     * of PtalonParameter, where it will be called.
+     * The class name should include the full class path.  The actorName parameter may only
+     * be a prefix of the generated actor.  This avoid name conflicts.
+     * 
+     * @param paramter A length 1 array of parameters
+     * @throws IllegalActionExcepiton If it is generated in connecting
+     * the parameters.
+     */
+    public void propagateParameters(PtalonObject[] param) throws IllegalActionException {
+        if (param.length != 1) {
+            throw new IllegalActionException(
+                    "addActor expects a length one array of parameters.");
+        }
+        try {
+            PtalonParameter parameter = (PtalonParameter)param[0];
+            String displayName = parameter.getActorName();
+            Object[] args = new Object[] {this, displayName};
+            ComponentEntity p = getEntity(parameter.getActorName());
+            List portList = p.portList();
+            List attributeList = p.attributeList();
+            Parameter atomicParam;
+            Parameter newParam;
+            for (int j = 0; j < attributeList.size(); j++){
+                if (!(attributeList.get(j) instanceof Parameter)) {
+                    continue;
+                }
+                atomicParam = (Parameter) attributeList.get(j);
+                if (atomicParam.getVisibility().equals(Settable.NONE)) {
+                    continue;
+                }
+                String paramName = p.getName() + "_" + atomicParam.getName();
+                newParam = new Parameter(this, paramName);
+                newParam.setExpression(atomicParam.getExpression());
+                atomicParam.setExpression(newParam.getName());
+            }
+        } catch(Exception e) {
+            if (!(e instanceof IllegalActionException)) {
+                throw new IllegalActionException(this, e, e.getMessage());
+            } else {
+                throw (IllegalActionException) e;
+            }
+        }
+    }    
 
     ///////////////////////////////////////////////////////////////////
     ////                       public variables                    ////
@@ -399,7 +491,110 @@ public class PtalonActor extends TypedCompositeActor {
      */
     public FileParameter ptalonCodeLocation;
     
-        
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+    
+    
+    /**
+     * Collect all the PtalonParameters created into the
+     * _ptalonParameters list.
+     */
+    private void _collectPtalonParameters() {
+        List attributes = attributeList();
+        Attribute attribute;
+        PtalonParameter parameter;
+        for (int i = 0; i < attributes.size(); i++) {
+            attribute = (Attribute) attributes.get(i);
+            if (attribute instanceof PtalonParameter) {
+                parameter = (PtalonParameter) attribute;
+                if (!parameter.getVisibility().equals(Settable.NONE)) {
+                    _ptalonParameters.add(parameter);
+                }
+            }
+        }
+    }
+    
+    /**
+     * This helper method is used to begin the Ptalon compiler
+     * if the ptalonCodeLocation attribute has been updated.
+     * @throws IllegalActionException If any exception is thrown.
+     */
+    private void _initializePtalonCodeLocation() throws IllegalActionException {
+        File inputFile = ptalonCodeLocation.asFile();
+        if ((inputFile == null) || (_fileSet))  {
+            return;
+        }
+        PtalonLexer lex;
+        PtalonRecognizer rec;
+        try {
+            FileReader reader = new FileReader(inputFile);
+            lex = new PtalonLexer(reader);
+            rec = new PtalonRecognizer(lex);
+            rec.actor_definition(this);
+            ptalonCodeLocation.setExpression("");
+            ptalonCodeLocation.setContainer(null);
+            _collectPtalonParameters();
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e, e.getMessage());
+        }
+    }
+    
+    /**
+     * Invoke the methods that have been associated with each
+     * Ptalon actor.
+     * @throws IllegalActionException If there is any problem
+     * invoking one of the specified mehtods.
+     */
+    private void _invokeMethods() throws IllegalActionException {
+        for (int i = 0; i < _ptalonParameters.size(); i++) {
+            _ptalonParameters.get(i).executeMethods(this);
+            _ptalonParameters.get(i).setVisibility(Settable.NONE);
+        }
+    }
+    
+    /**
+     * Returns true if all the PtalonParamters have values and
+     * are therefore ready to have their methods called.  Their
+     * methods will populate this actor with a hierarchical network of
+     * interconnected actors.
+     * @return True when all parameters are ready. 
+     */
+    private boolean _readyToCallMethods() {
+        PtalonParameter p;
+        for (int i = 0; i < _ptalonParameters.size(); i++) {
+            p = _ptalonParameters.get(i);
+            if (!(p.hasValue())) {
+                return false;
+            } else if (p.getVisibility().equals(Settable.NONE)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * This helper method is used to process the update of a
+     * Ptalon parameter.
+     * @param att The parameter to process.
+     * @throws IllegalActionException If any exception is called
+     * in trying to execute methods corresponding to a PtalonParameter.
+     */
+    private void _respondToParameterUpdate(PtalonParameter att) throws IllegalActionException {
+        try {
+            String expression = att.getExpression();
+            if (expression.equals("")) {
+                return;
+            }
+            att.setHasValue(true);
+            if (_readyToCallMethods()) {
+                _invokeMethods();
+            }
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e, e.getMessage());
+        }
+    }
+
+    
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
     
@@ -408,8 +603,10 @@ public class PtalonActor extends TypedCompositeActor {
      */
     private boolean _fileSet;
     
-    private ParameterMethodList _methods;
+    /**
+     * List of all PtalonParameters associated with this actor.
+     */
+    private ArrayList<PtalonParameter> _ptalonParameters;
     
-    private ParameterValues _parameters;
 
 }

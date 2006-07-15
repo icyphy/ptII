@@ -43,14 +43,17 @@ import antlr.ParserSharedInputState;
 import antlr.collections.impl.BitSet;
 
 	import java.lang.reflect.Method;
+	import java.util.List;
 	import java.util.ArrayList;
-	import ptolemy.actor.TypedAtomicActor;
-	import ptolemy.actor.TypedIOPort;
-	import ptolemy.actor.TypedIORelation;
 	import ptolemy.data.expr.Parameter;
+	import ptolemy.actor.TypedAtomicActor;
+	import ptolemy.actor.TypedIORelation;
+	import ptolemy.actor.TypedIOPort;
+	import ptolemy.data.expr.FileParameter;
 	import ptolemy.data.type.BaseType;
 	import ptolemy.kernel.util.NameDuplicationException;
 	import ptolemy.kernel.util.IllegalActionException;
+	import ptolemy.kernel.util.Settable;
 
 public class PtalonRecognizer extends antlr.LLkParser       implements PtalonTokenTypes
  {
@@ -59,11 +62,15 @@ public class PtalonRecognizer extends antlr.LLkParser       implements PtalonTok
 	 * Respective lists of all paramters, inports, outports,
 	 * and relations generated in the actor being generated.
 	 */
-	private ArrayList<Parameter> _parameters = new ArrayList<Parameter>();
-	private ArrayList<TypedIOPort> _inports = new ArrayList<TypedIOPort>();
-	private ArrayList<TypedIOPort> _outports = new ArrayList<TypedIOPort>();
+	private ArrayList<PtalonParameter> _parameters = new ArrayList<PtalonParameter>();
+	private ArrayList<PtalonPort> _ports = new ArrayList<PtalonPort>();
 	private ArrayList<TypedIORelation> _relations = new ArrayList<TypedIORelation>();
 	
+	/**
+	 * Returns true if the given string corresponds to a parameter.
+	 * @param name The name to test.
+	 * @return True if the name is a parameter.
+	 */
 	private boolean isParameter(String name) {
 		for (int i=0; i < _parameters.size(); i++) {
 			if (_parameters.get(i).getName().equals(name)) {
@@ -72,6 +79,35 @@ public class PtalonRecognizer extends antlr.LLkParser       implements PtalonTok
 		}
 		return false;
 	}
+	
+	/**
+	 * Returns true if the given string corresponds to a port.
+	 * @param name The name to test.
+	 * @return True if the name is a port.
+	 */
+	private boolean isPort(String name) {
+		for (int i=0; i < _ports.size(); i++) {
+			if (_ports.get(i).getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Returns true if the given string corresponds to a relation.
+	 * @param name The name to test.
+	 * @return True if the name is a relation.
+	 */
+	private boolean isRelation(String name) {
+		for (int i=0; i < _relations.size(); i++) {
+			if (_relations.get(i).getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 protected PtalonRecognizer(TokenBuffer tokenBuf, int k) {
   super(tokenBuf,k);
@@ -151,18 +187,15 @@ public PtalonRecognizer(ParserSharedInputState state) {
 		match(ID);
 		if ( inputState.guessing==0 ) {
 			
-					TypedIOPort p;
+					PtalonPort p;
 					if (flow.equals("input")) {
 						p = actor.addPort(a.getText(), PtalonActor.INPUT);
-						_inports.add(p);
 					} else if (flow.equals("output")) {
 						p = actor.addPort(a.getText(), PtalonActor.OUTPUT);
-						_outports.add(p);
 					} else {
 						p = actor.addPort(a.getText(), PtalonActor.BIDIRECTIONAL);
-						_inports.add(p);
-						_outports.add(p);
 					}
+					_ports.add(p);
 				
 		}
 	}
@@ -222,11 +255,13 @@ public PtalonRecognizer(ParserSharedInputState state) {
 		match(ID);
 		if ( inputState.guessing==0 ) {
 			
-					Parameter p = actor.addParameter(a.getText());
+					PtalonParameter p = actor.addParameter(a.getText());
 					if (type.equals("int")) {
 						p.setTypeEquals(BaseType.INT);
 					} else if (type.equals("boolean")) {
 						p.setTypeEquals(BaseType.BOOLEAN);
+					} else {
+						p.setStringMode(true);
 					}
 					_parameters.add(p);
 				
@@ -253,7 +288,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
 		match(ID);
 		if ( inputState.guessing==0 ) {
 			
-					TypedIORelation r = actor.addRelation(a.getText());
+					PtalonRelation r = actor.addRelation(a.getText());
 					_relations.add(r);
 				
 		}
@@ -339,14 +374,23 @@ public PtalonRecognizer(ParserSharedInputState state) {
  * This parses this recognizer's input to see if it's a vailid
  * assignment and add any necessary methods to the ptalon actor.
  * @param actor The input actor.
+ * @param outActor The name of the actor being declared in which
+   this actor is created.
  * @exception IllegalActionException If generated in trying to modify 
  * the Ptalon actor.
  */
-	public final void assignment(
+	public final String[]  assignment(
 		PtalonActor actor
 	) throws RecognitionException, TokenStreamException, IllegalActionException {
+		String[] s;
+		
+		Token  a = null;
+		Token  b = null;
+		
+			s = new String[] {"", ""};
 		
 		
+		a = LT(1);
 		match(ID);
 		match(ASSIGN);
 		{
@@ -385,7 +429,14 @@ public PtalonRecognizer(ParserSharedInputState state) {
 inputState.guessing--;
 		}
 		if ( synPredMatched14 ) {
+			b = LT(1);
 			match(ID);
+			if ( inputState.guessing==0 ) {
+				
+							s[0] = a.getText();
+							s[1] = b.getText();
+						
+			}
 		}
 		else if ((_tokenSet_0.member(LA(1))) && (_tokenSet_1.member(LA(2)))) {
 			{
@@ -450,6 +501,7 @@ inputState.guessing--;
 		}
 		
 		}
+		return s;
 	}
 	
 /**
@@ -465,20 +517,149 @@ inputState.guessing--;
 		
 		Token  a = null;
 		
+			PtalonParameter param = null;
+			String [] s;
+			String l, r;
+			Class actorClass = PtalonActor.class;
+			Class[] parameterClass = null;
+			ArrayList<PtalonObject> list = null;
+			PtalonActor newActor = null;
+		
+		
 		a = LT(1);
 		match(ID);
+		if ( inputState.guessing==0 ) {
+			
+					if (isParameter(a.getText())) {
+						try {
+							parameterClass = new Class[] {PtalonObject[].class};
+							Method method = actorClass.getMethod("addActor", parameterClass);
+							param = (PtalonParameter)actor.getAttribute(a.getText());
+							list = new ArrayList<PtalonObject>();
+							list.add(param);
+							param.addMethod(method, list);
+						} catch(Exception e) {
+							throw new IllegalActionException(actor, e, e.getMessage());
+						}
+					} else {
+						try {
+							newActor = new 
+								PtalonActor(actor, actor.uniqueName(a.getText()));
+							FileParameter codeLocation = newActor.ptalonCodeLocation;
+							codeLocation.setExpression(a.getText() + ".ptln");
+							newActor.attributeChanged(codeLocation);
+						} catch(Exception e) {
+							throw new IllegalActionException(actor, e, e.getMessage());
+						}
+					}
+				
+		}
 		match(LPAREN);
 		{
 		switch ( LA(1)) {
 		case ID:
 		{
-			assignment(actor);
+			s=assignment(actor);
+			if ( inputState.guessing==0 ) {
+				
+							try {
+								l = s[0];
+								r = s[1];
+								if (isParameter(a.getText())) { 
+									if (isPort(l) && isPort(r)) {
+										Method portMethod = actorClass.getMethod("connectPorts", parameterClass);
+										ArrayList<PtalonObject> list2 = new ArrayList<PtalonObject>();
+										list2.add(param);
+										PtalonParameter portParam = new PtalonParameter(actor, actor.uniqueName("bar"));
+										portParam.setExpression(l);
+										portParam.setVisibility(Settable.NONE);
+										list2.add(portParam);
+										PtalonPort port = (PtalonPort)actor.getPort(r);
+										list2.add(port);
+										param.addMethod(portMethod, list2);
+									} else if (isPort(l) && isRelation(r)) {
+										Method portMethod = actorClass.getMethod("linkToRelation", parameterClass);
+										ArrayList list2 = new ArrayList<PtalonParameter>();
+										list2.add(param);
+										PtalonParameter portParam = new PtalonParameter(actor, actor.uniqueName("bar"));
+										portParam.setExpression(l);
+										portParam.setVisibility(Settable.NONE);
+										list2.add(portParam);
+										PtalonRelation relation = (PtalonRelation)actor.getRelation(r);
+										list2.add(relation);
+										param.addMethod(portMethod, list2);
+									}
+								} else {
+									if (isPort(l) && isPort(r)) {
+										TypedIORelation rel = new TypedIORelation(actor, actor.uniqueName("r"));
+										PtalonPort lPort = (PtalonPort) newActor.getPort(l);
+										PtalonPort rPort = (PtalonPort) actor.getPort(r);
+										lPort.link(rel);
+										rPort.link(rel);
+									} else if (isPort(l) && isRelation(r)) {
+										PtalonRelation rel = (PtalonRelation) actor.getRelation(r);
+										PtalonPort lPort = (PtalonPort) actor.getPort(l);
+										lPort.link(rel);
+									}
+								}
+							} catch (Exception e) {
+								throw new IllegalActionException(actor, e, e.getMessage());
+							}
+						
+			}
 			{
 			_loop24:
 			do {
 				if ((LA(1)==COMMA)) {
 					match(COMMA);
-					assignment(actor);
+					s=assignment(actor);
+					if ( inputState.guessing==0 ) {
+						
+										try {
+											l = s[0];
+											r = s[1];
+											if (isParameter(a.getText())) {
+												if (isPort(l) && isPort(r)) {
+													Method portMethod = actorClass.getMethod("connectPorts", parameterClass);
+													ArrayList list2 = new ArrayList<PtalonParameter>();
+													list2.add(param);
+													PtalonParameter portParam = new PtalonParameter(actor, actor.uniqueName("bar"));
+													portParam.setExpression(l);
+													portParam.setVisibility(Settable.NONE);
+													list2.add(portParam);
+													PtalonPort port = (PtalonPort)actor.getPort(r);
+													list2.add(port);
+													param.addMethod(portMethod, list2);
+												} else if (isPort(l) && isRelation(r)) {
+													Method portMethod = actorClass.getMethod("linkToRelation", parameterClass);
+													ArrayList list2 = new ArrayList<PtalonParameter>();
+													list2.add(param);
+													PtalonParameter portParam = new PtalonParameter(actor, actor.uniqueName("bar"));
+													portParam.setExpression(l);
+													portParam.setVisibility(Settable.NONE);
+													list2.add(portParam);
+													PtalonRelation relation = (PtalonRelation)actor.getRelation(r);
+													list2.add(relation);
+													param.addMethod(portMethod, list2);
+												}
+											} else {
+												if (isPort(l) && isPort(r)) {
+													TypedIORelation rel = new TypedIORelation(actor, actor.uniqueName("r"));
+													PtalonPort lPort = (PtalonPort) newActor.getPort(l);
+													PtalonPort rPort = (PtalonPort) actor.getPort(r);
+													lPort.link(rel);
+													rPort.link(rel);
+												} else if (isPort(l) && isRelation(r)) {
+													PtalonRelation rel = (PtalonRelation) actor.getRelation(r);
+													PtalonPort lPort = (PtalonPort) actor.getPort(l);
+													lPort.link(rel);
+												}
+											}
+										} catch (Exception e) {
+											throw new IllegalActionException(actor, e, e.getMessage());
+										}
+									
+					}
 				}
 				else {
 					break _loop24;
@@ -501,15 +682,56 @@ inputState.guessing--;
 		match(RPAREN);
 		if ( inputState.guessing==0 ) {
 			
-					if (isParameter(a.getText())) {
-						try {
-							Class actorClass = PtalonActor.class;
-							Class[] stringClass = new Class[] {String.class};
-							Method addMethod = actorClass.getMethod("addActor", stringClass);
-							actor.addParameterMethod(a.getText(), addMethod);
-						} catch(Exception e) {
-							throw new IllegalActionException(e.getMessage());
+					try {
+						if (isParameter(a.getText())) {
+							Method clpMethod = actorClass.getMethod("connectLoosePorts", parameterClass);
+							param.addMethod(clpMethod, list);
+							Method paramMethod = actorClass.getMethod("propagateParameters", parameterClass);
+							param.addMethod(paramMethod, list);
+						} else {
+							List portList = newActor.portList();
+							TypedIOPort port, newPort;
+				            TypedIORelation rel;
+				            List relations;
+				            for (Object obj : portList) {
+				                if (!(obj instanceof TypedIOPort)) {
+				                    continue;
+				                }
+				                port = (TypedIOPort) obj;
+				                relations = port.linkedRelationList();
+				                if (relations.isEmpty()) {
+				                  String portName = newActor.getName() + "_" + port.getName();
+				                  newPort = new PtalonPort(actor, portName);
+				                  rel = new TypedIORelation(actor, actor.uniqueName("relation"));
+				                  if (port.isMultiport()) {
+				                      newPort.setMultiport(true);
+				                      rel.setWidth(0);
+				                  }
+				                  newPort.setTypeEquals(port.getType());
+				                  port.link(rel);
+				                  newPort.link(rel);                    
+				                }
+				            }
+				            portList = newActor.portList();
+				            List attributeList = newActor.attributeList();
+				            Parameter atomicParam;
+				            Parameter newParam;
+				            for (int j = 0; j < attributeList.size(); j++){
+				                if (!(attributeList.get(j) instanceof Parameter)) {
+				                    continue;
+				                }
+				                atomicParam = (Parameter) attributeList.get(j);
+				                if (atomicParam.getVisibility().equals(Settable.NONE)) {
+				                    continue;
+				                }
+				                String paramName = newActor.getName() + "_" + atomicParam.getName();
+				                newParam = new Parameter(actor, paramName);
+				                newParam.setExpression(atomicParam.getExpression());
+				                atomicParam.setExpression(newParam.getName());
+				            }				
 						}
+					} catch(Exception e) {
+						throw new IllegalActionException(actor, e, e.getMessage());
 					}
 				
 		}
@@ -995,7 +1217,7 @@ inputState.guessing--;
 						try {
 							actor.setName(a.getText());
 						} catch (NameDuplicationException ex1) {
-							actor.setName(actor.uniqueName(a.getText()));
+							actor.setName(actor.getContainer().uniqueName(a.getText()));
 						}
 					
 			}
