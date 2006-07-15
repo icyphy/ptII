@@ -282,7 +282,7 @@ public class HTMLAbout {
                         null);
             }
         } else if (event.getDescription().equals("about:configuration")) {
-            // about:expandConfiguration will expand the configuration
+            // about:configuration will expand the configuration
             // and report any problems such as missing classes.
             // Open up the configuration as a .txt file because if
             // we open it up as a .xml file, we get a graphical browser
