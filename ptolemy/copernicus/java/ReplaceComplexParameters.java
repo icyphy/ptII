@@ -29,6 +29,7 @@ package ptolemy.copernicus.java;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.HashMap;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.parameters.PortParameter;
@@ -236,16 +237,35 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                 // since their container isn't associated with a class.
                 FieldsForEntitiesTransformer._createContainerField(newClass);
 
-                // Loop over all the methods and replace construction
-                // of the old attribute with construction of the
-                // copied class.
+                HashMap oldSignatureToFieldMap = new HashMap();
+
+                // Loop over all the methods and replace the old class
+                // wherever it appears with the copied class.
                 for (Iterator classes = Scene.v().getApplicationClasses()
                         .iterator(); classes.hasNext();) {
                     SootClass theClass = (SootClass) classes.next();
 
                     if (theClass != newClass) {
-                        _replaceObjectTypesInClass(theClass, attribute,
+                        _replaceObjectTypesInClassMethods(theClass, attribute,
                                 attributeClass, newClass);
+                    }
+                }
+                for (Iterator classes = Scene.v().getApplicationClasses()
+                        .iterator(); classes.hasNext();) {
+                    SootClass theClass = (SootClass) classes.next();
+
+                    if (theClass != newClass) {
+                        _replaceObjectTypesInClassFields(theClass, attribute,
+                                attributeClass, newClass, oldSignatureToFieldMap);
+                    }
+                }
+                for (Iterator classes = Scene.v().getApplicationClasses()
+                        .iterator(); classes.hasNext();) {
+                    SootClass theClass = (SootClass) classes.next();
+
+                    if (theClass != newClass) {
+                        _fixFieldTypesInClassMethods(theClass, attribute,
+                                attributeClass, newClass, oldSignatureToFieldMap);
                     }
                 }
             }
@@ -260,14 +280,15 @@ public class ReplaceComplexParameters extends SceneTransformer implements
         }
     }
 
-    // This operation is similar to sootUtilities.changeTypesOfFields
-    // and SootUtilities.changeTypesInMethods, except that it uses
-    // namedObjAnalysis to pick up only references to the given
-    // object.
-    private void _replaceObjectTypesInClass(SootClass theClass,
-            NamedObj object, SootClass oldClass, SootClass newClass) {
+    // This operation is similar to sootUtilities.changeTypesOfFields,
+    // except that it uses namedObjAnalysis to pick up only references
+    // to the given object.  oldSignatureToFieldMap is populated with
+    // entries for fields that are changed
+    private void _replaceObjectTypesInClassFields(SootClass theClass,
+            NamedObj object, SootClass oldClass, SootClass newClass,
+            HashMap oldSignatureToFieldMap) {
         if (_debug) {
-            System.out.println("replacing objects in " + theClass + " for "
+            System.out.println("replacing field objects in " + theClass + " for "
                     + object);
         }
 
@@ -292,6 +313,8 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                 SootClass refClass = ((RefType) type).getSootClass();
 
                 if (refClass == oldClass) {
+                    String oldFieldSignature = oldField.getSignature();
+
                     oldField.setType(RefType.v(newClass));
 
                     // we have to do this seemingly useless
@@ -299,7 +322,10 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                     // to the field based on it's parameter types.
                     theClass.removeField(oldField);
                     theClass.addField(oldField);
+                    
+                    oldSignatureToFieldMap.put(oldFieldSignature, oldField);
 
+                    System.out.println("replacing " + oldFieldSignature);
                     //  } else if (refClass.getName()
                     //                         .startsWith(oldClass.getName())) {
                     //                     SootClass changeClass =
@@ -314,6 +340,19 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                     //                     theClass.addField(oldField);
                 }
             }
+        }
+    }
+
+    // This operation is similar to
+    // SootUtilities.changeTypesInMethods, except that it uses
+    // namedObjAnalysis to pick up only references to the given
+    // object.  oldSignatureToFieldMap is used to fix the types of
+    // modified fields.
+    private void _replaceObjectTypesInClassMethods(SootClass theClass,
+            NamedObj object, SootClass oldClass, SootClass newClass) {
+        if (_debug) {
+            System.out.println("replacing method objects in " + theClass + " for "
+                    + object);
         }
 
         ArrayList methodList = new ArrayList(theClass.getMethods());
@@ -384,11 +423,11 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                     if (value instanceof InstanceFieldRef) {
                         // Fix references to fields
                         InstanceFieldRef r = (InstanceFieldRef) value;
-
+                        
                         if (object != analysis.getObject((Local) r.getBase())) {
-                            //    System.out.println("object = " + object);
-                            //                             System.out.println("analysis object = " + analysis.getObject((Local)r.getBase()));
-                            //                             System.out.println("not equal!");
+//                             System.out.println("object = " + object);
+//                             System.out.println("analysis object = " + analysis.getObject((Local)r.getBase()));
+//                             System.out.println("not equal!");
                             continue;
                         }
 
@@ -548,6 +587,46 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                 }
 
                 //   System.out.println("unit = " + unit);
+            }
+        }
+    }
+
+    // oldSignatureToFieldMap is used to fix the types of modified
+    // fields.
+    private void _fixFieldTypesInClassMethods(SootClass theClass,
+            NamedObj object, SootClass oldClass, SootClass newClass, 
+            HashMap oldSignatureToFieldMap) {
+        ArrayList methodList = new ArrayList(theClass.getMethods());
+
+        for (Iterator methods = methodList.iterator(); methods.hasNext();) {
+            SootMethod newMethod = (SootMethod) methods.next();
+
+            Body newBody = newMethod.retrieveActiveBody();
+            Iterator j = newBody.getUnits().iterator();
+
+            while (j.hasNext()) {
+                Unit unit = (Unit) j.next();
+                Iterator boxes = unit.getUseAndDefBoxes().iterator();
+
+                while (boxes.hasNext()) {
+                    ValueBox box = (ValueBox) boxes.next();
+                    Value value = box.getValue();
+
+                    if (value instanceof InstanceFieldRef) {
+                        // Fix references to fields
+                        InstanceFieldRef r = (InstanceFieldRef) value;
+                        
+                        System.out.println("instanceFieldRef unit " + unit);
+
+                        // First fix the types of references to the
+                        // fields we changed.
+                        String signature = r.getFieldRef().getSignature();
+                        if (oldSignatureToFieldMap.containsKey(signature)) {
+                            System.out.println("comparing " + signature);
+                            r.setFieldRef(((SootField)oldSignatureToFieldMap.get(signature)).makeRef());
+                        }
+                    }
+                }
             }
         }
     }

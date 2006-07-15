@@ -35,6 +35,7 @@ import java.util.Set;
 import soot.ArrayType;
 import soot.Body;
 import soot.BodyTransformer;
+import soot.FastHierarchy;
 import soot.Hierarchy;
 import soot.PhaseOptions;
 import soot.RefType;
@@ -91,6 +92,9 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
 
     public static void eliminateCastsAndInstanceOf(Body body, String phaseName,
             Set unsafeLocalSet, boolean debug) {
+        Scene.v().setActiveHierarchy(new Hierarchy());
+        Scene.v().setFastHierarchy(new FastHierarchy());
+   
         for (Iterator units = body.getUnits().iterator(); units.hasNext();) {
             Unit unit = (Unit) units.next();
 

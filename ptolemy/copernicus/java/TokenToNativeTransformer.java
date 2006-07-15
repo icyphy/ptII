@@ -364,7 +364,15 @@ public class TokenToNativeTransformer extends SceneTransformer implements
             SootClass entityClass = (SootClass) classes.next();
 
             // Specialize the code, according to the analyzed types.
-            TypeSpecializer.specializeTypes(debug, entityClass, unsafeLocalSet,
+            TypeSpecializer.specializeTypesInMethods(debug, entityClass, unsafeLocalSet,
+                    typeAnalysis);
+        }
+        for (Iterator classes = Scene.v().getApplicationClasses().iterator(); classes
+                .hasNext();) {
+            SootClass entityClass = (SootClass) classes.next();
+
+            // Specialize the code, according to the analyzed types.
+            TypeSpecializer.specializeTypesOfFields(debug, entityClass, unsafeLocalSet,
                     typeAnalysis);
         }
     }
