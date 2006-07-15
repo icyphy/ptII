@@ -38,7 +38,7 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)${CLASSPATHSEPARATOR}${ANTLR_DIR}/antlr.jar
+CLASSPATH =	$(ROOT)${CLASSPATHSEPARATOR}${ROOT}/ptolemy/actor/ptalon/antlr/antlr.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -47,12 +47,15 @@ include $(CONFIG)
 # Keep this list alphabetized.
 JSRCS = \
 	ParameterMethodList.java \
-	ParameterValues.java \
-	PtalonTokenTypes.java \
+	PtalonActor.java \
 	PtalonLexer.java \
-	PtalonRecognizer.java \
-	PtalonActor.java
-
+	PtalonObject.java \
+	PtalonParameter.java \
+	PtalonPort.java \
+	PtalonRecognizer.java  \
+	PtalonRelation.java \
+	PtalonTokenTypes.java
+	
 EXTRA_SRCS =	$(JSRCS)
 
 
