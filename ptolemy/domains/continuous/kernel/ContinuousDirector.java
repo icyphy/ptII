@@ -363,7 +363,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             _ODESolver._setRound(round);
             if (_debugging) {
                 _debug(getName() 
-                        + " as a inside Continuous director" 
+                        + " as an inside Continuous director" 
                         + " executes the system from iteration begin time "
                         + _iterationBeginTime
                         + " with step size "
@@ -821,6 +821,10 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  of the integration period.
      */
     public void rollBackToCommittedState() {
+        if (_debugging) {
+            _debug("Roll back all actors to committed state and set the local" +
+                        " model time to " + _iterationBeginTime);
+        }
         // Restore the local view of model time to
         // the start of the integration step.
         setModelTime(_iterationBeginTime);
@@ -882,6 +886,10 @@ public class ContinuousDirector extends FixedPointDirector implements
             // certainly be too much of a change in step size. Hence, we
             // increase the step size more slowly.
             suggestedStep = 10.0 * _currentStepSize;
+            if (_debugging) {
+                _debug("----- Temporarily set step size to "
+                        + suggestedStep);
+            }
             
             Iterator stepSizeControlActors = _stepSizeControllers().iterator();
             while (stepSizeControlActors.hasNext() && !_stopRequested) {
@@ -889,6 +897,12 @@ public class ContinuousDirector extends FixedPointDirector implements
                         = (ContinuousStepSizeController) stepSizeControlActors.next();
                 double suggestedStepSize = actor.suggestedStepSize();
                 if (suggestedStep > suggestedStepSize) {
+                    if (_debugging) {
+                        _debug("----- Revising step size due to " 
+                                + ((NamedObj) actor).getFullName() 
+                                + " to "
+                                + suggestedStepSize);
+                    }
                     suggestedStep = suggestedStepSize;
                 }
             }
@@ -1073,6 +1087,9 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @return True if it is OK to fire again.
      */
     private boolean _commit() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Committing the current states at " + _currentTime);
+        }
         // Postfire the contained actors.
         // This must be done before refining the step size and
         // before updating _index because the actors may call fireAt()
