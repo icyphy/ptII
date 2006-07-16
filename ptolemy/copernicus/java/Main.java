@@ -151,9 +151,11 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.rcp", ReplaceComplexParameters.v(toplevel),
                 "targetPackage:" + _targetPackage);
 
+        addTransform(pack, "wjtp.umr0", UnreachableMethodRemover.v());
+
         addTransform(pack, "wjtp.cs", ConstructorSpecializer.v(toplevel),
                 "targetPackage:" + _targetPackage);
-
+        
         // Infer the types of locals again, since replacing attributes
         // depends on the types of fields
         addTransform(pack, "wjtp.ta12",
@@ -317,11 +319,9 @@ public class Main extends KernelMain {
             addTransform(pack, "wjtp.lur4", LibraryUsageReporter.v(),
                     "outFile:" + _outputDirectory + "/jimple4/jarClassList.txt");
         }
-
+        
         if (_unboxing) {
-            addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(toplevel));
-
-            //     "debug:true level:1");
+            addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(toplevel)); //"debug:true" level:1");
             addStandardOptimizations(pack, 8);
 
             addTransform(pack, "wjtp.ufr", UnusedFieldRemover.v());
