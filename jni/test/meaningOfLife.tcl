@@ -115,9 +115,19 @@ test meaningOfLife-1.4 {Run a model that uses both testDeux and testTrois} {
     testJNI testQuatre
 } {}
 
-test meaningOfLife-1.5 {Run a model that uses arrays} {
-    testJNI Streaming
-} {}
+test meaningOfLife-1.5 {Run a model that uses long arrays, but does not run } {
+    set modelbase Streaming
+    puts "Generating JNI for $modelbase" 
 
+    # Read in the model
+    set parser [java::new ptolemy.moml.MoMLParser]
 
+    set namedObj [$parser parseFile "./$modelbase.xml"]
+    set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
+    
+
+    # Create the JNI files and compile them.
+    # generateJNI also deletes relations and ports and recreates the ports
+    java::call jni.JNIUtilities generateJNI $toplevel
+} {1}
 
