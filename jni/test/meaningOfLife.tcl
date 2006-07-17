@@ -90,7 +90,6 @@ proc runModel {modelbase} {
 # run.
 file delete -force jni
 
-
 test meaningOfLife-1.1 {Run a simple JNI model} {
     # Create the shared library that has the code we want
     puts "Running 'make shared'"
@@ -116,6 +115,9 @@ test meaningOfLife-1.4 {Run a model that uses both testDeux and testTrois} {
     testJNI testQuatre
 } {}
 
+test meaningOfLife-1.5 {Run a model that uses arrays} {
+    testJNI Streaming
+} {}
 
 
 

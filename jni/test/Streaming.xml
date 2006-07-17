@@ -1,0 +1,83 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Streaming" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 248, 815, 528}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="JNICodeGenerator" class="jni.gui.JNICodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 65.0]">
+        </property>
+    </property>
+    <entity name="StreamingIVLDSynP" class="jni.GenericJNIActor">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        </property>
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;VLDSynP&quot;">
+        </property>
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;Streaming&quot;">
+        </property>
+        <doc> An actor able to call a native function </doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 200.0]">
+        </property>
+        <property name="mb_type_queue" class="jni.Argument" value="true,true,false,long[]" >
+        </property>
+        <property name="mb_cbp_queue" class="jni.Argument" value="true,true,false,long[]" >
+        </property>
+        <property name="mb_acpred_queue" class="jni.Argument" value="true,true,false,long[]" >
+        </property>
+        <property name="mb_dqp_queue" class="jni.Argument" value="true,true,false,long[]" >
+        </property>
+        <property name="mb_dc_queue" class="jni.Argument" value="true,true,false,long[]" >
+        </property>
+        <property name="mb_ac_queue" class="jni.Argument" value="true,true,false,long[]" >
+        </property>
+        <property name="ret" class="jni.Argument" value="false,false,true,long" >
+        </property>
+        <port name="mb_type_queuein" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="mb_type_queueout" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="mb_cbp_queuein" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="mb_cbp_queueout" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="mb_acpred_queuein" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="mb_acpred_queueout" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="mb_dqp_queuein" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="mb_dqp_queueout" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="mb_dc_queuein" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="mb_dc_queueout" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="mb_ac_queuein" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="mb_ac_queueout" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="ret" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+</entity>

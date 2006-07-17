@@ -98,6 +98,7 @@ all:
 	$(MAKE) SHAREDBASE=meaningOfLife shared
 	$(MAKE) SHAREDBASE=testDeux shared
 	$(MAKE) SHAREDBASE=testTrois shared
+	$(MAKE) SHAREDBASE=Streaming shared
 
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
