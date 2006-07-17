@@ -501,14 +501,13 @@ public class JNIUtilities {
                         + actor.getName()
                         + "_"
                         + interNativeFunction
+                        // jni/test/Streaming.xml requires the code below.
                         + "(\nJNIEnv *env, jobject jobj "
                         + _virgule(_getArgumentsInWithJNIType(actor, ","))
                         + _getArgumentsInWithJNIType(actor, ",")
-                        + _virgule(_getArgumentsInWithJNIType(actor, ","),
-                                _getArgumentsInOutWithCType(actor, ","))
+                        + _virgule(_getArgumentsInOutWithJNIType(actor, ","))
                         + _getArgumentsInOutWithJNIType(actor, ",")
-                        + _virgule(_getArgumentsInOutWithJNIType(actor, ","),
-                                _getArgumentsOutWithCType(actor, ","))
+                        + _virgule(_getArgumentsOutWithJNIType(actor, ","))
                         + _getArgumentsOutWithJNIType(actor, ",")
                         + ")\n"
                         + "{\n" + _indent1 + "// Declaration des sorties\n");
