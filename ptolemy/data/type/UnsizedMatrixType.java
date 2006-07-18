@@ -31,15 +31,22 @@ import java.io.Serializable;
 
 import ptolemy.data.BooleanMatrixToken;
 import ptolemy.data.ComplexMatrixToken;
+import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.FixMatrixToken;
+import ptolemy.data.FixToken;
 import ptolemy.data.IntMatrixToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.LongMatrixToken;
+import ptolemy.data.LongToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.math.Complex;
+import ptolemy.math.FixPoint;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatrixType
@@ -251,6 +258,8 @@ public abstract class UnsizedMatrixType extends StructuredType implements
             if (token instanceof MatrixToken) {
                 return BooleanMatrixToken.convert(token);
             } else {
+                // NOTE: No point in converting to a boolean matrix,
+                // since you can't do anything with it.
                 throw new IllegalActionException(Token
                         .notSupportedConversionMessage(token, toString()));
             }
@@ -267,9 +276,15 @@ public abstract class UnsizedMatrixType extends StructuredType implements
             if (token instanceof MatrixToken) {
                 return ComplexMatrixToken.convert(token);
             } else {
-                throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                // Try to create a new [complex] type with just one member.
+                // The following conversion will fail if the member cannot
+                // be converted to an int.
+                ComplexToken singleMember = ComplexToken.convert(token);
+                Complex[][] matrix = new Complex[1][1];
+                matrix[0][0] = singleMember.complexValue();
+                return new ComplexMatrixToken(matrix);
             }
+
         }
     }
 
@@ -283,8 +298,13 @@ public abstract class UnsizedMatrixType extends StructuredType implements
             if (token instanceof MatrixToken) {
                 return DoubleMatrixToken.convert(token);
             } else {
-                throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                // Try to create a new [double] type with just one member.
+                // The following conversion will fail if the member cannot
+                // be converted to an int.
+                DoubleToken singleMember = DoubleToken.convert(token);
+                double[] matrix = new double[1];
+                matrix[0] = singleMember.doubleValue();
+                return new DoubleMatrixToken(matrix, 1, 1);
             }
         }
     }
@@ -299,8 +319,13 @@ public abstract class UnsizedMatrixType extends StructuredType implements
             if (token instanceof MatrixToken) {
                 return IntMatrixToken.convert(token);
             } else {
-                throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                // Try to create a new [int] type with just one member.
+                // The following conversion will fail if the member cannot
+                // be converted to an int.
+                IntToken singleMember = IntToken.convert(token);
+                int[] matrix = new int[1];
+                matrix[0] = singleMember.intValue();
+                return new IntMatrixToken(matrix, 1, 1);
             }
         }
     }
@@ -315,8 +340,13 @@ public abstract class UnsizedMatrixType extends StructuredType implements
             if (token instanceof MatrixToken) {
                 return FixMatrixToken.convert(token);
             } else {
-                throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                // Try to create a new [fix] type with just one member.
+                // The following conversion will fail if the member cannot
+                // be converted to an int.
+                FixToken singleMember = FixToken.convert(token);
+                FixPoint[][] matrix = new FixPoint[1][1];
+                matrix[0][0] = singleMember.fixValue();
+                return new FixMatrixToken(matrix);
             }
         }
     }
@@ -331,8 +361,13 @@ public abstract class UnsizedMatrixType extends StructuredType implements
             if (token instanceof MatrixToken) {
                 return LongMatrixToken.convert(token);
             } else {
-                throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                // Try to create a new [long] type with just one member.
+                // The following conversion will fail if the member cannot
+                // be converted to an int.
+                LongToken singleMember = LongToken.convert(token);
+                long[] matrix = new long[1];
+                matrix[0] = singleMember.longValue();
+                return new LongMatrixToken(matrix, 1, 1);
             }
         }
     }

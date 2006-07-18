@@ -276,7 +276,7 @@ public abstract class BaseType implements Type, Serializable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                         inner classes                     ////
     // NOTE: It may seem strange that these inner classes are built this
     // way instead of as anonymous classes...  As anonymous classes, the
     // fields cannot be appropriately typed, which makes type inference

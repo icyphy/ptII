@@ -93,8 +93,9 @@ public class ArrayType extends StructuredType {
     }
 
     /** Convert the argument token into an ArrayToken having this
-     *  type, if losslessly conversion can be done.  The argument must
-     *  be an ArrayToken.
+     *  type, if losslessly conversion can be done.  If the argument
+     *  is not an ArrayToken, then the result is an array token with
+     *  one entry, the argument.
      *  @param token A token.
      *  @return An ArrayToken.
      *  @exception IllegalActionException If lossless conversion
@@ -102,9 +103,10 @@ public class ArrayType extends StructuredType {
      */
     public Token convert(Token token) throws IllegalActionException {
         if (!(token instanceof ArrayToken)) {
-            throw new IllegalArgumentException(Token
-                    .notSupportedIncomparableConversionMessage(token,
-                            toString()));
+            // NOTE: Added 7/17/06 by EAL to support type -> {type} conversion.
+            Token[] contents = new Token[1];
+            contents[0] = token;
+            return new ArrayToken(contents);
         }
 
         ArrayToken argumentArrayToken = (ArrayToken) token;

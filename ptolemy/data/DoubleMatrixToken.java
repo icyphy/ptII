@@ -472,7 +472,8 @@ public class DoubleMatrixToken extends MatrixToken {
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with just one
+     *  element.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -480,7 +481,17 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
-        double scalar = ((DoubleToken) rightArgument).doubleValue();
+        double scalar;
+        if (rightArgument instanceof DoubleMatrixToken) {
+            if (((DoubleMatrixToken)rightArgument).getRowCount() != 1
+                    || ((DoubleMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((DoubleMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((DoubleToken) rightArgument).doubleValue();
+        }
         double[] result = DoubleArrayMath.add(_value, scalar);
         return new DoubleMatrixToken(result, _rowCount, _columnCount,
                 DO_NOT_COPY);
@@ -489,7 +500,8 @@ public class DoubleMatrixToken extends MatrixToken {
     /** Return a new token whose elements are the result of dividing
      *  the elements of this token by the argument. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with just one
+     *  element.
      *  @param rightArgument The token that divides this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -497,7 +509,17 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     protected MatrixToken _divideElement(Token rightArgument)
             throws IllegalActionException {
-        double scalar = ((DoubleToken) rightArgument).doubleValue();
+        double scalar;
+        if (rightArgument instanceof DoubleMatrixToken) {
+            if (((DoubleMatrixToken)rightArgument).getRowCount() != 1
+                    || ((DoubleMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((DoubleMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((DoubleToken) rightArgument).doubleValue();
+        }
         double[] result = DoubleArrayMath.divide(_value, scalar);
         return new DoubleMatrixToken(result, _rowCount, _columnCount,
                 DO_NOT_COPY);
@@ -515,7 +537,8 @@ public class DoubleMatrixToken extends MatrixToken {
     /** Return a new token whose elements are the remainders of
      *  the elements of this token when divided by the argument.
      *  It is guaranteed by the caller that the type of the argument
-     *  is the same as the type of each element of this class.
+     *  is the same as the type of each element of this class or
+     *  a scalar of the same type as the element.
      *  @param rightArgument The token that performs modulo on this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -523,7 +546,17 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     protected MatrixToken _moduloElement(Token rightArgument)
             throws IllegalActionException {
-        double scalar = ((DoubleToken) rightArgument).doubleValue();
+        double scalar;
+        if (rightArgument instanceof DoubleMatrixToken) {
+            if (((DoubleMatrixToken)rightArgument).getRowCount() != 1
+                    || ((DoubleMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((DoubleMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((DoubleToken) rightArgument).doubleValue();
+        }
         double[] result = DoubleArrayMath.modulo(_value, scalar);
         return new DoubleMatrixToken(result, _rowCount, _columnCount,
                 DO_NOT_COPY);
@@ -570,8 +603,9 @@ public class DoubleMatrixToken extends MatrixToken {
 
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.
-     *  This method should be overridden in derived
-     *  classes to provide type specific actions for multiply.
+     *  It is assumed that the argument has the same type as
+     *  the elements of this matrix or is a matrix with just
+     *  one element.
      *  @param rightArgument The token to multiply this token by.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
@@ -579,7 +613,17 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     protected MatrixToken _multiplyElement(Token rightArgument)
             throws IllegalActionException {
-        double scalar = ((DoubleToken) rightArgument).doubleValue();
+        double scalar;
+        if (rightArgument instanceof DoubleMatrixToken) {
+            if (((DoubleMatrixToken)rightArgument).getRowCount() != 1
+                    || ((DoubleMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((DoubleMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((DoubleToken) rightArgument).doubleValue();
+        }
         double[] result = DoubleArrayMath.multiply(_value, scalar);
         return new DoubleMatrixToken(result, _rowCount, _columnCount,
                 DO_NOT_COPY);
@@ -606,7 +650,8 @@ public class DoubleMatrixToken extends MatrixToken {
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with just one
+     *  element.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -614,7 +659,17 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
-        double scalar = ((DoubleToken) rightArgument).doubleValue();
+        double scalar;
+        if (rightArgument instanceof DoubleMatrixToken) {
+            if (((DoubleMatrixToken)rightArgument).getRowCount() != 1
+                    || ((DoubleMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((DoubleMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((DoubleToken) rightArgument).doubleValue();
+        }
         double[] result = DoubleArrayMath.add(_value, -scalar);
         return new DoubleMatrixToken(result, _rowCount, _columnCount,
                 DO_NOT_COPY);
@@ -623,7 +678,8 @@ public class DoubleMatrixToken extends MatrixToken {
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with just one
+     *  element.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -631,7 +687,17 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
-        double scalar = ((DoubleToken) rightArgument).doubleValue();
+        double scalar;
+        if (rightArgument instanceof DoubleMatrixToken) {
+            if (((DoubleMatrixToken)rightArgument).getRowCount() != 1
+                    || ((DoubleMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((DoubleMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((DoubleToken) rightArgument).doubleValue();
+        }
         double[] result = DoubleArrayMath.negative(DoubleArrayMath.add(_value,
                 -scalar));
         return new DoubleMatrixToken(result, _rowCount, _columnCount,

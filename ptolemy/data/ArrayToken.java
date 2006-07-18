@@ -169,6 +169,62 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add this array token to the specified argument.
+     *  If the argument is an array token and it has
+     *  the same length as this array token then addition is elementwise.
+     *  If the argument is an array of length one, then each element
+     *  of this array is added to the argument. If this array has length
+     *  one, then its value is added to each element of the argument,
+     *  if it is an array.
+     *  Otherwise, each element is multiplied by the argument.
+     *  This overrides the base class to allow multiplication by scalars.
+     *  @param rightArgument The token to multiply by this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *   an array token but does not have the same length as this
+     *   token, or if multiplication is not supported between the elements
+     *   of this array and the argument.
+     */
+    public Token add(Token rightArgument) throws IllegalActionException {
+        try {
+            return _add(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "add", this, rightArgument));
+        }
+    }
+    
+    /** Add this array token to the specified argument.
+     *  If the argument is an array token and it has
+     *  the same length as this array token then addition is elementwise.
+     *  If the argument is an array of length one, then each element
+     *  of this array is added to the argument. If this array has length
+     *  one, then its value is added to each element of the argument,
+     *  if it is an array.
+     *  This overrides the base class to allow multiplication by scalars.
+     *  @param leftArgument The token to multiply by this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *   an array token but does not have the same length as this
+     *   token, or if multiplication is not supported between the elements
+     *   of this array and the argument.
+     */
+    public Token addReverse(Token leftArgument)
+            throws IllegalActionException {
+        try {
+            return _add(leftArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "addReverse", this, leftArgument));
+        }
+    }
+
     /** Convert an ArrayToken to an array of unsigned bytes.
      *
      * @param dataArrayToken to be converted to a unsigned byte array.
@@ -210,7 +266,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Divide this array token by the specified argument.
-     *  If the argument is an array token, then it is required to have
+     *  If the argument is an array token and it has
      *  the same length as this array token, and the division is elementwise.
      *  Otherwise, each element is divided by the argument.
      *  This overrides the base class to allow division by scalars.
@@ -234,7 +290,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Divide this array token into the specified argument.
-     *  If the argument is an array token, then it is required to have
+     *  If the argument is an array token and it has
      *  the same length as this array token, and the division is elementwise.
      *  Otherwise, each element is divided into the argument.
      *  This overrides the base class to allow division into scalars.
@@ -552,8 +608,50 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         return _value.length;
     }
 
+    /** Return a new token whose value is the value of this token
+     *  modulo the value of the argument token.
+     *  This overrides the base class to allow modulo by scalars.
+     *  @param rightArgument The token to divide into this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are implemented in different classes, or the
+     *  operation does not make sense for the given types.
+     */
+    public Token modulo(Token rightArgument) throws IllegalActionException {
+        try {
+            return _modulo(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "modulo", this, rightArgument));
+        }
+    }
+
+    /** Return a new token whose value is the value of the argument
+     *  modulo the value of this token.
+     *  This overrides the base class to allow modulo by scalars.
+     *  @param rightArgument The token to divide into this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are implemented in different classes, or the
+     *  operation does not make sense for the given types.
+     */
+    public Token moduloReverse(Token rightArgument) throws IllegalActionException {
+        try {
+            return _moduloReverse(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "modulo", this, rightArgument));
+        }
+    }
+
     /** Multiply this array token by the specified argument.
-     *  If the argument is an array token, then it is required to have
+     *  If the argument is an array token and it has
      *  the same length as this array token, and the multiplication is elementwise.
      *  Otherwise, each element is multiplied by the argument.
      *  This overrides the base class to allow multiplication by scalars.
@@ -577,7 +675,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
     
     /** Multiply this array token by the specified argument.
-     *  If the argument is an array token, then it is required to have
+     *  If the argument is an array token and it has
      *  the same length as this array token, and the multiplication is elementwise.
      *  Otherwise, each element is multiplied by the argument.
      *  This overrides the base class to allow multiplication by scalars.
@@ -648,6 +746,54 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             return new ArrayToken(result);
         } else {
             return new ArrayToken(getElementPrototype());
+        }
+    }
+    
+    /** Subtract from this array token the specified argument.
+     *  If the argument is an array token and it has
+     *  the same length as this array token, and the subtraction is elementwise.
+     *  Otherwise, subtract the argument from each element.
+     *  This overrides the base class to allow subtraction by scalars.
+     *  @param rightArgument The token to subctract from this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *   an array token but does not have the same length as this
+     *   token or length 1, or if division is not supported between the elements
+     *   of this array and the argument.
+     */
+    public Token subtract(Token rightArgument) throws IllegalActionException {
+        try {
+            return _subtract(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "subtract", this, rightArgument));
+        }
+    }
+
+    /** Subtract this array token from the specified argument.
+     *  If the argument is an array token and it has
+     *  the same length as this array token, and the subtraction is elementwise.
+     *  Otherwise, each element is subtracted from the argument.
+     *  This overrides the base class to allow subtraction from scalars.
+     *  @param rightArgument The token from which to subtract this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *   an array token but does not have the same length as this
+     *   token or length 1, or if division is not supported between the elements
+     *   of this array and the argument.
+     */
+    public Token subtractReverse(Token rightArgument) throws IllegalActionException {
+        try {
+            return _subtractReverse(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "divide", this, rightArgument));
         }
     }
 
@@ -740,15 +886,39 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  an element token throws it.
      */
     protected Token _add(Token rightArgument) throws IllegalActionException {
-        _checkArgumentLength(rightArgument);
-
-        ArrayToken rightArray = (ArrayToken) rightArgument;
         Token[] result = new Token[_value.length];
-
-        for (int i = 0; i < _value.length; i++) {
-            result[i] = _value[i].add(rightArray.getElement(i));
+        if (rightArgument instanceof ArrayToken) {
+            ArrayToken rightArray = (ArrayToken) rightArgument;
+            if (rightArray.length() == length()) {
+                for (int i = 0; i < _value.length; i++) {
+                    result[i] = _value[i].add(rightArray.getElement(i));
+                }
+            } else {
+                // Maybe one argument or the other is an array
+                // of length one, converted automatically from
+                // a scalar.
+                if (rightArray.length() == 1) {
+                    Token scalar = rightArray.getElement(0);
+                    for (int i = 0; i < _value.length; i++) {
+                        result[i] = _value[i].add(scalar);
+                    }            
+                } else if (length() == 1) {
+                    result = new Token[rightArray.length()];
+                    Token scalar = getElement(0);
+                    for (int i = 0; i < rightArray.length(); i++) {
+                        result[i] = rightArray.getElement(i).add(scalar);
+                    }
+                } else {
+                    // Use this method to get a consistent error message
+                    // defined in one place.
+                    _checkArgumentLength(rightArgument);
+                }
+            }
+        } else {
+            for (int i = 0; i < _value.length; i++) {
+                result[i] = _value[i].add(rightArgument);
+            }            
         }
-
         return new ArrayToken(result);
     }
 
@@ -767,15 +937,36 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     protected Token _divide(Token rightArgument) throws IllegalActionException {
         Token[] result = new Token[_value.length];
         if (rightArgument instanceof ArrayToken) {
-            _checkArgumentLength(rightArgument);
             ArrayToken rightArray = (ArrayToken) rightArgument;
-            for (int i = 0; i < _value.length; i++) {
-                result[i] = _value[i].divide(rightArray.getElement(i));
+            if (rightArray.length() == length()) {
+                for (int i = 0; i < _value.length; i++) {
+                    result[i] = _value[i].divide(rightArray.getElement(i));
+                }
+            } else {
+                // Maybe one argument or the other is an array
+                // of length one, converted automatically from
+                // a scalar.
+                if (rightArray.length() == 1) {
+                    Token scalar = rightArray.getElement(0);
+                    for (int i = 0; i < _value.length; i++) {
+                        result[i] = _value[i].divide(scalar);
+                    }            
+                } else if (length() == 1) {
+                    result = new Token[rightArray.length()];
+                    Token scalar = getElement(0);
+                    for (int i = 0; i < rightArray.length(); i++) {
+                        result[i] = scalar.divide(rightArray.getElement(i));
+                    }
+                } else {
+                    // Use this method to get a consistent error message
+                    // defined in one place.
+                    _checkArgumentLength(rightArgument);
+                }
             }
         } else {
             for (int i = 0; i < _value.length; i++) {
                 result[i] = _value[i].divide(rightArgument);
-            }            
+            }
         }        
         return new ArrayToken(result);
     }
@@ -881,16 +1072,64 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  of the element token throws it.
      */
     protected Token _modulo(Token rightArgument) throws IllegalActionException {
-        _checkArgumentLength(rightArgument);
-
-        ArrayToken rightArray = (ArrayToken) rightArgument;
         Token[] result = new Token[_value.length];
-
-        for (int i = 0; i < _value.length; i++) {
-            result[i] = _value[i].modulo(rightArray.getElement(i));
-        }
-
+        if (rightArgument instanceof ArrayToken) {
+            ArrayToken rightArray = (ArrayToken) rightArgument;
+            if (rightArray.length() == length()) {
+                for (int i = 0; i < _value.length; i++) {
+                    result[i] = _value[i].modulo(rightArray.getElement(i));
+                }
+            } else {
+                // Maybe one argument or the other is an array
+                // of length one, converted automatically from
+                // a scalar.
+                if (rightArray.length() == 1) {
+                    Token scalar = rightArray.getElement(0);
+                    for (int i = 0; i < _value.length; i++) {
+                        result[i] = _value[i].modulo(scalar);
+                    }            
+                } else if (length() == 1) {
+                    result = new Token[rightArray.length()];
+                    Token scalar = getElement(0);
+                    for (int i = 0; i < rightArray.length(); i++) {
+                        result[i] = scalar.modulo(rightArray.getElement(i));
+                    }
+                } else {
+                    // Use this method to get a consistent error message
+                    // defined in one place.
+                    _checkArgumentLength(rightArgument);
+                }
+            }
+        } else {
+            for (int i = 0; i < _value.length; i++) {
+                result[i] = _value[i].modulo(rightArgument);
+            }
+        }        
         return new ArrayToken(result);
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  modulo the value of the argument token.  If the argument
+     *  is an array, then the modulo is done
+     *  elementwise. Otherwise, this method assumes that the argument
+     *  can be moduloed by each element of this array and performs the
+     *  modulo.
+     *  @param rightArgument The token into which to modulo this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument is an
+     *   ArrayToken of different length, or calling the modulo method
+     *   of the element token throws it.
+     */
+    protected Token _moduloReverse(Token rightArgument) throws IllegalActionException {
+        if (rightArgument instanceof ArrayToken) {
+            return ((ArrayToken)rightArgument).modulo(this);
+        } else {
+            Token[] result = new Token[_value.length];
+            for (int i = 0; i < _value.length; i++) {
+                result[i] = rightArgument.modulo(_value[i]);
+            }            
+            return new ArrayToken(result);
+        }        
     }
 
     /** Return a new token whose value is the value of this token
@@ -909,10 +1148,31 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             throws IllegalActionException {
         Token[] result = new Token[_value.length];
         if (rightArgument instanceof ArrayToken) {
-            _checkArgumentLength(rightArgument);
             ArrayToken rightArray = (ArrayToken) rightArgument;
-            for (int i = 0; i < _value.length; i++) {
-                result[i] = _value[i].multiply(rightArray.getElement(i));
+            if (rightArray.length() == length()) {
+                for (int i = 0; i < _value.length; i++) {
+                    result[i] = _value[i].multiply(rightArray.getElement(i));
+                }
+            } else {
+                // Maybe one argument or the other is an array
+                // of length one, converted automatically from
+                // a scalar.
+                if (rightArray.length() == 1) {
+                    Token scalar = rightArray.getElement(0);
+                    for (int i = 0; i < _value.length; i++) {
+                        result[i] = _value[i].multiply(scalar);
+                    }            
+                } else if (length() == 1) {
+                    result = new Token[rightArray.length()];
+                    Token scalar = getElement(0);
+                    for (int i = 0; i < rightArray.length(); i++) {
+                        result[i] = rightArray.getElement(i).multiply(scalar);
+                    }
+                } else {
+                    // Use this method to get a consistent error message
+                    // defined in one place.
+                    _checkArgumentLength(rightArgument);
+                }
             }
         } else {
             for (int i = 0; i < _value.length; i++) {
@@ -933,16 +1193,64 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     protected Token _subtract(Token rightArgument)
             throws IllegalActionException {
-        _checkArgumentLength(rightArgument);
-
-        ArrayToken rightArray = (ArrayToken) rightArgument;
         Token[] result = new Token[_value.length];
-
-        for (int i = 0; i < _value.length; i++) {
-            result[i] = _value[i].subtract(rightArray.getElement(i));
-        }
-
+        if (rightArgument instanceof ArrayToken) {
+            ArrayToken rightArray = (ArrayToken) rightArgument;
+            if (rightArray.length() == length()) {
+                for (int i = 0; i < _value.length; i++) {
+                    result[i] = _value[i].subtract(rightArray.getElement(i));
+                }
+            } else {
+                // Maybe one argument or the other is an array
+                // of length one, converted automatically from
+                // a scalar.
+                if (rightArray.length() == 1) {
+                    Token scalar = rightArray.getElement(0);
+                    for (int i = 0; i < _value.length; i++) {
+                        result[i] = _value[i].subtract(scalar);
+                    }            
+                } else if (length() == 1) {
+                    result = new Token[rightArray.length()];
+                    Token scalar = getElement(0);
+                    for (int i = 0; i < rightArray.length(); i++) {
+                        result[i] = scalar.subtract(rightArray.getElement(i));
+                    }
+                } else {
+                    // Use this method to get a consistent error message
+                    // defined in one place.
+                    _checkArgumentLength(rightArgument);
+                }
+            }
+        } else {
+            for (int i = 0; i < _value.length; i++) {
+                result[i] = _value[i].subtract(rightArgument);
+            }
+        }        
         return new ArrayToken(result);
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  subtracted from the value of the argument token.  If the argument
+     *  is an array with the same length as this one, then the division is done
+     *  elementwise. Otherwise, this method assumes that the argument
+     *  can be subtracted from each element of this array and performs the
+     *  subtraction.
+     *  @param rightArgument The token from which to subtract this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument is an
+     *   ArrayToken of different length (and not length 1), or calling the subtract method
+     *   of the element token throws it.
+     */
+    protected Token _subtractReverse(Token rightArgument) throws IllegalActionException {
+        if (rightArgument instanceof ArrayToken) {
+            return ((ArrayToken)rightArgument).subtract(this);
+        } else {
+            Token[] result = new Token[_value.length];
+            for (int i = 0; i < _value.length; i++) {
+                result[i] = rightArgument.subtract(_value[i]);
+            }            
+            return new ArrayToken(result);
+        }        
     }
 
     ///////////////////////////////////////////////////////////////////

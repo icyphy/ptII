@@ -415,7 +415,7 @@ public class ComplexMatrixToken extends MatrixToken {
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with one element.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -423,7 +423,17 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
-        Complex scalar = ((ComplexToken) rightArgument).complexValue();
+        Complex scalar;
+        if (rightArgument instanceof ComplexMatrixToken) {
+            if (((ComplexMatrixToken)rightArgument).getRowCount() != 1
+                    || ((ComplexMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((ComplexMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((ComplexToken) rightArgument).complexValue();
+        }
         Complex[][] result = ComplexMatrixMath.add(_value, scalar);
         return new ComplexMatrixToken(result);
     }
@@ -431,7 +441,7 @@ public class ComplexMatrixToken extends MatrixToken {
     /** Return a new token whose elements are the result of dividing
      *  the elements of this token by the argument. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with one element.
      *  @param rightArgument The token that divides this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -439,7 +449,17 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     protected MatrixToken _divideElement(Token rightArgument)
             throws IllegalActionException {
-        Complex scalar = ((ComplexToken) rightArgument).complexValue();
+        Complex scalar;
+        if (rightArgument instanceof ComplexMatrixToken) {
+            if (((ComplexMatrixToken)rightArgument).getRowCount() != 1
+                    || ((ComplexMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((ComplexMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((ComplexToken) rightArgument).complexValue();
+        }
         Complex[][] result = ComplexMatrixMath.divide(_value, scalar);
         return new ComplexMatrixToken(result);
     }
@@ -480,7 +500,17 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     protected MatrixToken _multiplyElement(Token rightArgument)
             throws IllegalActionException {
-        Complex scalar = ((ComplexToken) rightArgument).complexValue();
+        Complex scalar;
+        if (rightArgument instanceof ComplexMatrixToken) {
+            if (((ComplexMatrixToken)rightArgument).getRowCount() != 1
+                    || ((ComplexMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((ComplexMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((ComplexToken) rightArgument).complexValue();
+        }
         Complex[][] result = ComplexMatrixMath.multiply(_value, scalar);
         return new ComplexMatrixToken(result);
     }
@@ -505,7 +535,7 @@ public class ComplexMatrixToken extends MatrixToken {
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with one element.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -513,7 +543,17 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
-        Complex scalar = ((ComplexToken) rightArgument).complexValue();
+        Complex scalar;
+        if (rightArgument instanceof ComplexMatrixToken) {
+            if (((ComplexMatrixToken)rightArgument).getRowCount() != 1
+                    || ((ComplexMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((ComplexMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((ComplexToken) rightArgument).complexValue();
+        }
         Complex[][] result = ComplexMatrixMath.add(_value, scalar.negate());
         return new ComplexMatrixToken(result);
     }
@@ -521,7 +561,7 @@ public class ComplexMatrixToken extends MatrixToken {
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with one element.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -529,7 +569,17 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
-        Complex scalar = ((ComplexToken) rightArgument).complexValue();
+        Complex scalar;
+        if (rightArgument instanceof ComplexMatrixToken) {
+            if (((ComplexMatrixToken)rightArgument).getRowCount() != 1
+                    || ((ComplexMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((ComplexMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((ComplexToken) rightArgument).complexValue();
+        }
         Complex[][] result = ComplexMatrixMath.negative(ComplexMatrixMath.add(
                 _value, scalar.negate()));
         return new ComplexMatrixToken(result);

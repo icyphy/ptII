@@ -36,6 +36,8 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.math.Complex;
+import ptolemy.math.FixPoint;
 import ptolemy.math.LongArrayMath;
 import ptolemy.math.LongMatrixMath;
 
@@ -494,7 +496,7 @@ public class LongMatrixToken extends MatrixToken {
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with one element.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -502,7 +504,17 @@ public class LongMatrixToken extends MatrixToken {
      */
     protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
-        long scalar = ((LongToken) rightArgument).longValue();
+        long scalar;
+        if (rightArgument instanceof LongMatrixToken) {
+            if (((LongMatrixToken)rightArgument).getRowCount() != 1
+                    || ((LongMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((LongMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((LongToken) rightArgument).longValue();
+        }
         long[] result = LongArrayMath.add(_value, scalar);
         return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
@@ -510,7 +522,7 @@ public class LongMatrixToken extends MatrixToken {
     /** Return a new token whose elements are the result of dividing
      *  the elements of this token by the argument. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with one element.
      *  @param rightArgument The token that divides this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -518,7 +530,17 @@ public class LongMatrixToken extends MatrixToken {
      */
     protected MatrixToken _divideElement(Token rightArgument)
             throws IllegalActionException {
-        long scalar = ((LongToken) rightArgument).longValue();
+        long scalar;
+        if (rightArgument instanceof LongMatrixToken) {
+            if (((LongMatrixToken)rightArgument).getRowCount() != 1
+                    || ((LongMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((LongMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((LongToken) rightArgument).longValue();
+        }
         long[] result = LongArrayMath.divide(_value, scalar);
         return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
@@ -535,7 +557,8 @@ public class LongMatrixToken extends MatrixToken {
     /** Return a new token whose elements are the remainders of
      *  the elements of this token when divided by the argument.
      *  It is guaranteed by the caller that the type of the argument
-     *  is the same as the type of each element of this class.
+     *  is the same as the type of each element of this class
+     *  or is a matrix with one element.
      *  @param rightArgument The token that performs modulo on this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -543,7 +566,17 @@ public class LongMatrixToken extends MatrixToken {
      */
     protected MatrixToken _moduloElement(Token rightArgument)
             throws IllegalActionException {
-        long scalar = ((LongToken) rightArgument).longValue();
+        long scalar;
+        if (rightArgument instanceof LongMatrixToken) {
+            if (((LongMatrixToken)rightArgument).getRowCount() != 1
+                    || ((LongMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((LongMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((LongToken) rightArgument).longValue();
+        }
         long[] result = LongArrayMath.modulo(_value, scalar);
         return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
@@ -589,8 +622,6 @@ public class LongMatrixToken extends MatrixToken {
 
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument scalar token.
-     *  This method should be overridden in derived
-     *  classes to provide type specific actions for multiply.
      *  @param rightArgument The token to multiply this token by.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
@@ -598,7 +629,17 @@ public class LongMatrixToken extends MatrixToken {
      */
     protected MatrixToken _multiplyElement(Token rightArgument)
             throws IllegalActionException {
-        long scalar = ((LongToken) rightArgument).longValue();
+        long scalar;
+        if (rightArgument instanceof LongMatrixToken) {
+            if (((LongMatrixToken)rightArgument).getRowCount() != 1
+                    || ((LongMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((LongMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((LongToken) rightArgument).longValue();
+        }
         long[] result = LongArrayMath.multiply(_value, scalar);
         return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
@@ -623,7 +664,7 @@ public class LongMatrixToken extends MatrixToken {
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with one element.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -631,7 +672,17 @@ public class LongMatrixToken extends MatrixToken {
      */
     protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
-        long scalar = ((LongToken) rightArgument).longValue();
+        long scalar;
+        if (rightArgument instanceof LongMatrixToken) {
+            if (((LongMatrixToken)rightArgument).getRowCount() != 1
+                    || ((LongMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((LongMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((LongToken) rightArgument).longValue();
+        }
         long[] result = LongArrayMath.add(_value, -scalar);
         return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
@@ -639,7 +690,7 @@ public class LongMatrixToken extends MatrixToken {
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with one element.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -647,7 +698,17 @@ public class LongMatrixToken extends MatrixToken {
      */
     protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
-        long scalar = ((LongToken) rightArgument).longValue();
+        long scalar;
+        if (rightArgument instanceof LongMatrixToken) {
+            if (((LongMatrixToken)rightArgument).getRowCount() != 1
+                    || ((LongMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((LongMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((LongToken) rightArgument).longValue();
+        }
         long[] result = LongArrayMath.negative(LongArrayMath.add(_value,
                 -scalar));
         return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);

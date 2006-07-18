@@ -538,8 +538,30 @@ public abstract class MatrixToken extends Token {
         // the rightArgument or incomparable to it.
         typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.INCOMPARABLE) {
-            // Items being added are incomparable.
+        if (typeInfo == CPO.SAME 
+                && ((MatrixToken)rightArgument).getRowCount() == 1
+                && ((MatrixToken)rightArgument).getColumnCount() == 1) {
+            // Dividing a matrix by a matrix. If the divisor has
+            // only one element, then this is OK.
+            return _divideElement(rightArgument);
+        } else if (typeInfo == CPO.HIGHER
+                && ((MatrixToken)rightArgument).getRowCount() == 1
+                && ((MatrixToken)rightArgument).getColumnCount() == 1) {
+            // Dividing a matrix by something that can be converted
+            // to a matrix, which if it has one element is OK.
+            Token convertedArgument = getType().convert(rightArgument);
+
+            try {
+                return _divideElement(convertedArgument);
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a better
+                // error message that has the types of the arguments that were
+                // passed in.
+                throw new IllegalActionException(null, ex, notSupportedMessage(
+                        "divide", this, rightArgument));
+            }
+        } else if (typeInfo == CPO.INCOMPARABLE) {
+            // Items being divided are incomparable.
             // However, division may still be possible because
             // the LUB of the types might support it. E.g., [double]/complex,
             // where the LUB is [complex].
@@ -801,7 +823,25 @@ public abstract class MatrixToken extends Token {
         // the rightArgument or incomparable to it.
         typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.INCOMPARABLE) {
+        if (typeInfo == CPO.SAME) {
+            // Dividing a matrix by a matrix. If the divisor has
+            // only one element, then this is OK.
+            return _moduloElement(rightArgument);
+        } else if (typeInfo == CPO.HIGHER) {
+            // Dividing a matrix by something that can be converted
+            // to a matrix, which if it has one element is OK.
+            Token convertedArgument = getType().convert(rightArgument);
+
+            try {
+                return _moduloElement(convertedArgument);
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a better
+                // error message that has the types of the arguments that were
+                // passed in.
+                throw new IllegalActionException(null, ex, notSupportedMessage(
+                        "modulo", this, rightArgument));
+            }
+        } else if (typeInfo == CPO.INCOMPARABLE) {
             // Items being added are incomparable.
             // However, division may still be possible because
             // the LUB of the types might support it. E.g., [double]/complex,
@@ -1561,9 +1601,21 @@ public abstract class MatrixToken extends Token {
 
         if ((convertedArgument.getRowCount() != getRowCount())
                 || (convertedArgument.getColumnCount() != getColumnCount())) {
-            throw new IllegalActionException(Token.notSupportedMessage("add",
-                    this, rightArgument)
-                    + " because the matrices have different dimensions.");
+            // Either this matrix or the argument might be a size one matrix
+            // converted automatically from a scalar. Support this by
+            // scalar addition.
+            if (getRowCount() == 1 && getColumnCount() == 1) {
+                // This matrix should be treated as a scalar.
+                return convertedArgument._addElement(getElementAsToken(0, 0));
+            } else if (convertedArgument.getRowCount() == 1 
+                    && convertedArgument.getColumnCount() == 1) {
+                // The argument matrix should be treated as a scalar.
+                return _addElement(convertedArgument.getElementAsToken(0, 0));
+            } else {
+                throw new IllegalActionException(Token.notSupportedMessage("add",
+                        this, rightArgument)
+                        + " because the matrices have different dimensions.");
+            }
         }
 
         MatrixToken result = _add(convertedArgument);
@@ -1638,11 +1690,22 @@ public abstract class MatrixToken extends Token {
         MatrixToken convertedArgument = (MatrixToken) rightArgument;
 
         if (convertedArgument.getRowCount() != getColumnCount()) {
-            throw new IllegalActionException(Token.notSupportedMessage(
-                    "multiply", this, rightArgument)
-                    + " because the matrices have incompatible dimensions.");
+            // Either this matrix or the argument might be a size one matrix
+            // converted automatically from a scalar. Support this by
+            // scalar multiplication.
+            if (getRowCount() == 1 && getColumnCount() == 1) {
+                // This matrix should be treated as a scalar.
+                return convertedArgument._multiplyElement(getElementAsToken(0, 0));
+            } else if (convertedArgument.getRowCount() == 1 
+                    && convertedArgument.getColumnCount() == 1) {
+                // The argument matrix should be treated as a scalar.
+                return _multiplyElement(convertedArgument.getElementAsToken(0, 0));
+            } else {
+                throw new IllegalActionException(Token.notSupportedMessage(
+                        "multiply", this, rightArgument)
+                        + " because the matrices have incompatible dimensions.");
+            }
         }
-
         MatrixToken result = _multiply(convertedArgument);
         return result;
     }
@@ -1666,9 +1729,22 @@ public abstract class MatrixToken extends Token {
 
         if ((convertedArgument.getRowCount() != getRowCount())
                 || (convertedArgument.getColumnCount() != getColumnCount())) {
-            throw new IllegalActionException(Token.notSupportedMessage(
-                    "subtract", this, rightArgument)
-                    + " because the matrices have different dimensions.");
+            // Either this matrix or the argument might be a size one matrix
+            // converted automatically from a scalar. Support this by
+            // scalar multiplication.
+            if (getRowCount() == 1 && getColumnCount() == 1) {
+                // This matrix should be treated as a scalar.
+                // Need to reverse the subtraction.
+                return convertedArgument._subtractElementReverse(getElementAsToken(0, 0));
+            } else if (convertedArgument.getRowCount() == 1 
+                    && convertedArgument.getColumnCount() == 1) {
+                // The argument matrix should be treated as a scalar.
+                return _subtractElement(convertedArgument.getElementAsToken(0, 0));
+            } else {
+                throw new IllegalActionException(Token.notSupportedMessage(
+                        "subtract", this, rightArgument)
+                        + " because the matrices have different dimensions.");
+            }
         }
 
         MatrixToken result = _subtract(convertedArgument);

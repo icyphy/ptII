@@ -233,10 +233,35 @@ public class TypeLattice {
 
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
                 return ((StructuredType) t1)._compare((StructuredType) t2);
+            } else if (t1Rep instanceof ArrayType && !(t2Rep instanceof ArrayType)) {
+                // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                int elementComparison = compare(((ArrayType)ct1).getElementType(), t2Rep);
+                if (elementComparison == SAME || elementComparison == HIGHER) {
+                    return HIGHER;
+                } else {
+                    if (t2Rep == BaseType.GENERAL) {
+                        return LOWER;
+                    } else {
+                        return INCOMPARABLE;
+                    }
+                }
+            } else if (t2Rep instanceof ArrayType && !(t1Rep instanceof ArrayType)) {
+                // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                int elementComparison = compare(((ArrayType)ct2).getElementType(), t1Rep);
+                if (elementComparison == SAME || elementComparison == HIGHER) {
+                    return LOWER;
+                } else {
+                    if (t1Rep == BaseType.GENERAL) {
+                        return HIGHER;
+                    } else {
+                        return INCOMPARABLE;
+                    }
+                }
             } else if (_basicLattice.containsNodeWeight(t1Rep)
                     && _basicLattice.containsNodeWeight(t2Rep)) {
-                // Both are not the same structured type, so their relation is
-                // defined by their relation in the basic lattice.
+                // Both are neither the same structured type, nor an array
+                // and non-array pair, so their type relation is defined
+                // by the basic lattice.
                 return _basicLattice.compare(t1Rep, t2Rep);
             } else {
                 // Both arguments are not the same structured type, and
@@ -289,10 +314,49 @@ public class TypeLattice {
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
                 return ((StructuredType) t1)
                         ._greatestLowerBound((StructuredType) t2);
+            } else if (t1Rep instanceof ArrayType && !(t2Rep instanceof ArrayType)) {
+                // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                int elementComparison = compare(((ArrayType)ct1).getElementType(), t2Rep);
+                if (elementComparison == SAME || elementComparison == HIGHER) {
+                    return t2;
+                } else {
+                    if (t2Rep == BaseType.GENERAL) {
+                        return t1;
+                    } else {
+                        // INCOMPARABLE
+                        if (_basicLattice.containsNodeWeight(t2Rep)) {
+                            return _basicLattice.greatestLowerBound(t1Rep, t2Rep);
+                        } else {
+                            // t2 is a user type (has no representative in the
+                            // basic lattice). Arrays of this type are not supported.
+                            return BaseType.UNKNOWN;
+                        }
+                    }
+                }
+            } else if (t2Rep instanceof ArrayType && !(t1Rep instanceof ArrayType)) {
+                // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                int elementComparison = compare(((ArrayType)ct2).getElementType(), t1Rep);
+                if (elementComparison == SAME || elementComparison == HIGHER) {
+                    return t1;
+                } else {
+                    if (t1Rep == BaseType.GENERAL) {
+                        return t2;
+                    } else {
+                        // INCOMPARABLE
+                        if (_basicLattice.containsNodeWeight(t1Rep)) {
+                            return _basicLattice.greatestLowerBound(t1Rep, t2Rep);
+                        } else {
+                            // t1 is a user type (has no representative in the
+                            // basic lattice). Arrays of this type are not supported.
+                            return BaseType.UNKNOWN;
+                        }
+                    }
+                }
             } else if (_basicLattice.containsNodeWeight(t1Rep)
                     && _basicLattice.containsNodeWeight(t2Rep)) {
-                // Both are not the same structured type, so their relation is
-                // defined by their relation in the basic lattice.
+                // Both are neither the same structured type, nor an array
+                // and non-array pair, so their type relation is defined
+                // by the basic lattice.
                 int relation = _basicLattice.compare(t1Rep, t2Rep);
 
                 if (relation == SAME) {
@@ -368,7 +432,7 @@ public class TypeLattice {
                     return subset[i];
                 }
             }
-
+            // FIXME: Shouldn't this return GENERAL?
             return null;
         }
 
@@ -405,7 +469,7 @@ public class TypeLattice {
                     return subset[i];
                 }
             }
-
+            // FIXME: Shouldn't thir return bottom?
             return null;
         }
 
@@ -430,10 +494,49 @@ public class TypeLattice {
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
                 return ((StructuredType) t1)
                         ._leastUpperBound((StructuredType) t2);
+            } else if (t1Rep instanceof ArrayType && !(t2Rep instanceof ArrayType)) {
+                // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                int elementComparison = compare(((ArrayType)ct1).getElementType(), t2Rep);
+                if (elementComparison == SAME || elementComparison == HIGHER) {
+                    return t1;
+                } else {
+                    if (t2Rep == BaseType.GENERAL) {
+                        return t2;
+                    } else {
+                        // INCOMPARABLE
+                        if (_basicLattice.containsNodeWeight(t2Rep)) {
+                            return _basicLattice.leastUpperBound(t1Rep, t2Rep);
+                        } else {
+                            // t2 is a user type (has no representative in the
+                            // basic lattice). Arrays of this type are not supported.
+                            return BaseType.GENERAL;
+                        }
+                    }
+                }
+            } else if (t2Rep instanceof ArrayType && !(t1Rep instanceof ArrayType)) {
+                // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                int elementComparison = compare(((ArrayType)ct2).getElementType(), t1Rep);
+                if (elementComparison == SAME || elementComparison == HIGHER) {
+                    return t2;
+                } else {
+                    if (t1Rep == BaseType.GENERAL) {
+                        return t1;
+                    } else {
+                        // INCOMPARABLE
+                        if (_basicLattice.containsNodeWeight(t1Rep)) {
+                            return _basicLattice.leastUpperBound(t1Rep, t2Rep);
+                        } else {
+                            // t1 is a user type (has no representative in the
+                            // basic lattice). Arrays of this type are not supported.
+                            return BaseType.GENERAL;
+                        }
+                    }
+                }
             } else if (_basicLattice.containsNodeWeight(t1Rep)
                     && _basicLattice.containsNodeWeight(t2Rep)) {
-                // Both are not the same structured type, so their relation is
-                // defined by their relation in the basic lattice.
+                // Both are neither the same structured type, nor an array
+                // and non-array pair, so their type relation is defined
+                // by the basic lattice.
                 int relation = _basicLattice.compare(t1Rep, t2Rep);
 
                 if (relation == SAME) {

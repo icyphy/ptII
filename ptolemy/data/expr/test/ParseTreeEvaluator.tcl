@@ -371,11 +371,11 @@ test ParseTreeEvaluator-8.1.2 {Test bitwise operators on doubles} {
     catch {evaluate "5.0|2.0"} errMsg2
     catch {evaluate "5.0\#4.0"} errMsg3
     catch {evaluate "~5.0"} errMsg4
-    list " $errMsg1\n $errMsg2\n $errMsg\n $errMsg4" 
+    list " $errMsg1\n $errMsg2\n $errMsg3\n $errMsg4" 
 	
 } {{ ptolemy.kernel.util.IllegalActionException: bitwiseAnd operation not supported between ptolemy.data.DoubleToken '5.0' and ptolemy.data.DoubleToken '2.0'
  ptolemy.kernel.util.IllegalActionException: bitwiseOr operation not supported between ptolemy.data.DoubleToken '5.0' and ptolemy.data.DoubleToken '2.0'
- ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.IntMatrixToken '[1, 0; 0, 1]' and ptolemy.data.IntMatrixToken '[1, 2; 3, 4]'
+ ptolemy.kernel.util.IllegalActionException: bitwiseXor operation not supported between ptolemy.data.DoubleToken '5.0' and ptolemy.data.DoubleToken '4.0'
  ptolemy.kernel.util.IllegalActionException: bitwiseNot operation not supported between ptolemy.data.DoubleToken '5.0' and ptolemy.data.DoubleToken '5.0'}}
 
 test ParseTreeEvaluator-8.1.3 {Test bitwise operators on mixed types} {

@@ -75,7 +75,7 @@ test ArrayToken-1.1.1 {Create an double array using expression} {
 test ArrayToken-1.1.2 {One element is the wrong type} {
     catch {java::new {ptolemy.data.ArrayToken String} "{1, nil, {1}}"} errMsg
     list $errMsg	
-} {{ptolemy.kernel.util.IllegalActionException: Elements of the array do not have the same type:value[0]=1 (type: int) value[2]={1} (type: {int})}}
+} {{ptolemy.kernel.util.IllegalActionException: Elements of the array do not have the same type:value[0]={1} (type: {int}) value[1]={nil} (type: {niltype})}}
 
 ######################################################################
 ####
@@ -195,8 +195,12 @@ test ArrayToken-2.0.1 {test add typ errors} {
     catch {$t1 addReverse $t} errMsg2
     catch {$t1 elementAdd $t} errMsg3
     list "$errMsg1\n $errMsg2\n $errMsg3"
-} {{ptolemy.kernel.util.IllegalActionException: add method not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present' because the tokens have different classes.
- ptolemy.kernel.util.IllegalActionException: addReverse method not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present' because the tokens have different classes.
+} {{ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
+Because:
+addReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'
+ ptolemy.kernel.util.IllegalActionException: addReverse operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
+Because:
+addReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'
  ptolemy.kernel.util.IllegalActionException: elementAdd operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
 Because:
 addReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'}}
@@ -210,18 +214,16 @@ test ArrayToken-2.0.2 {test add length errors} {
     set t2 [java::new {ptolemy.data.ArrayToken String} "{3, 4}"]
     catch {$t1 add $t2} errMsg1
     catch {$t1 addReverse $t2} errMsg2
-    catch {$t1 elementAdd $t2} errMsg3
-    list "$errMsg1\n    $errMsg2\n    $errMsg3"
+    set result [$t1 elementAdd $t2]
+    list "$errMsg1\n    $errMsg2\n    [$result toString]"
 } {{ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
 Because:
 The length of the argument (2) is not the same as the length of this token (3).
     ptolemy.kernel.util.IllegalActionException: addReverse operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
 Because:
-The length of the argument (3) is not the same as the length of this token (2).
-    ptolemy.kernel.util.IllegalActionException: elementAdd operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
-Because:
-add method not supported between ptolemy.data.IntToken '1' and ptolemy.data.ArrayToken '{3, 4}' because the types are incomparable.}}
-
+The length of the argument (2) is not the same as the length of this token (3).
+    {{4, 5}, {5, 6}, {6, 7}}}}
+    
 ######################################################################
 ####
 # 
@@ -258,12 +260,15 @@ test ArrayToken-2.1.1 {test subtract errors} {
     catch {$t1 subtractReverse $t} errMsg2
     catch {$t1 elementSubtract $t} errMsg3
     list "$errMsg1\n $errMsg2\n $errMsg3"
-} {{ptolemy.kernel.util.IllegalActionException: subtract method not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present' because the tokens have different classes.
- ptolemy.kernel.util.IllegalActionException: subtractReverse method not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present' because the tokens have different classes.
+} {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
+Because:
+subtractReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'
+ ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
+Because:
+subtract operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'
  ptolemy.kernel.util.IllegalActionException: elementSubtract operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
 Because:
 subtractReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'}}
-
 
 ######################################################################
 ####
@@ -274,17 +279,17 @@ test ArrayToken-2.1.2 {test subtract length errors} {
     set t2 [java::new {ptolemy.data.ArrayToken String} "{3, 4}"]
     catch {$t1 subtract $t2} errMsg1
     catch {$t1 subtractReverse $t2} errMsg2
-    catch {$t1 elementSubtract $t2} errMsg3
-    list "$errMsg1\n    $errMsg2\n    $errMsg3"
+    set result [$t1 elementSubtract $t2]
+    list "$errMsg1\n    $errMsg2\n    [$result toString]"
 } {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
 Because:
 The length of the argument (2) is not the same as the length of this token (3).
-    ptolemy.kernel.util.IllegalActionException: subtractReverse operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
+    ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
+Because:
+subtract operation not supported between ptolemy.data.ArrayToken '{3, 4}' and ptolemy.data.ArrayToken '{1, 2, 3}'
 Because:
 The length of the argument (3) is not the same as the length of this token (2).
-    ptolemy.kernel.util.IllegalActionException: elementSubtract operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
-Because:
-subtract method not supported between ptolemy.data.IntToken '1' and ptolemy.data.ArrayToken '{3, 4}' because the types are incomparable.}}
+    {{-2, -3}, {-1, -2}, {0, -1}}}}
 
 ######################################################################
 ####
@@ -461,8 +466,12 @@ test ArrayToken-2.4.1 {test modulo errors} {
     catch {$t1 moduloReverse $t} errMsg2
     catch {$t1 elementModulo $t} errMsg3
     list "$errMsg1\n $errMsg2\n $errMsg3"
-} {{ptolemy.kernel.util.IllegalActionException: modulo method not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present' because the tokens have different classes.
- ptolemy.kernel.util.IllegalActionException: moduloReverse method not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present' because the tokens have different classes.
+} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
+Because:
+moduloReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'
+ ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
+Because:
+modulo operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'
  ptolemy.kernel.util.IllegalActionException: elementModulo operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
 Because:
 moduloReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'}}
@@ -476,18 +485,19 @@ test ArrayToken-2.4.2 {test modulo length errors} {
     set t2 [java::new {ptolemy.data.ArrayToken String} "{3, 4}"]
     catch {$t1 modulo $t2} errMsg1
     catch {$t1 moduloReverse $t2} errMsg2
-    catch {$t1 elementModulo $t2} errMsg3
-    list "$errMsg1\n    $errMsg2\n    $errMsg3"
+    # This is now allowed.
+    set result [$t1 elementModulo $t2]
+    list "$errMsg1\n    $errMsg2\n[$result toString]"
 } {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
 Because:
 The length of the argument (2) is not the same as the length of this token (3).
-    ptolemy.kernel.util.IllegalActionException: moduloReverse operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
+    ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
+Because:
+modulo operation not supported between ptolemy.data.ArrayToken '{3, 4}' and ptolemy.data.ArrayToken '{1, 2, 3}'
 Because:
 The length of the argument (3) is not the same as the length of this token (2).
-    ptolemy.kernel.util.IllegalActionException: elementModulo operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
-Because:
-modulo method not supported between ptolemy.data.IntToken '1' and ptolemy.data.ArrayToken '{3, 4}' because the types are incomparable.}}
-
+{{1, 1}, {2, 2}, {0, 3}}}}
+    
 ######################################################################
 ####
 # 
@@ -823,4 +833,5 @@ test ArrayToken-20.1 {elementMultiplyReturnType} {
     set t3 [java::call ptolemy.data.ArrayToken elementMultiplyReturnType \
 		[$intToken getType] [$valToken getType]]
     list [$t1 toString] [$t2 toString] [$t3 toString]
-} {{{general}} {{int}} {{unknown}}}
+} {{{{int}}} {{int}} {{unknown}}}
+

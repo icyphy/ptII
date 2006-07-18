@@ -40,6 +40,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
 import ptolemy.math.ComplexMatrixMath;
 import ptolemy.math.DoubleMatrixMath;
+import ptolemy.math.FixPoint;
 import ptolemy.math.IntegerArrayMath;
 import ptolemy.math.IntegerMatrixMath;
 import ptolemy.math.LongMatrixMath;
@@ -522,7 +523,7 @@ public class IntMatrixToken extends MatrixToken {
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with one element.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -530,7 +531,17 @@ public class IntMatrixToken extends MatrixToken {
      */
     protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
-        int scalar = ((IntToken) rightArgument).intValue();
+        int scalar;
+        if (rightArgument instanceof IntMatrixToken) {
+            if (((IntMatrixToken)rightArgument).getRowCount() != 1
+                    || ((IntMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((IntMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((IntToken) rightArgument).intValue();
+        }
         int[] result = IntegerArrayMath.add(_value, scalar);
         return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
@@ -538,7 +549,8 @@ public class IntMatrixToken extends MatrixToken {
     /** Return a new token whose elements are the result of dividing
      *  the elements of this token by the argument. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class, or is an integer matrix
+     *  with one element that is of the same type.
      *  @param rightArgument The token that divides this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -546,7 +558,17 @@ public class IntMatrixToken extends MatrixToken {
      */
     protected MatrixToken _divideElement(Token rightArgument)
             throws IllegalActionException {
-        int scalar = ((IntToken) rightArgument).intValue();
+        int scalar;
+        if (rightArgument instanceof IntMatrixToken) {
+            if (((IntMatrixToken)rightArgument).getRowCount() != 1
+                    || ((IntMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((IntMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((IntToken) rightArgument).intValue();
+        }
         int[] result = IntegerArrayMath.divide(_value, scalar);
         return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
@@ -563,7 +585,8 @@ public class IntMatrixToken extends MatrixToken {
     /** Return a new token whose elements are the remainders of
      *  the elements of this token when divided by the argument.
      *  It is guaranteed by the caller that the type of the argument
-     *  is the same as the type of each element of this class.
+     *  is the same as the type of each element of this class
+     *  or is a matrix with one element.
      *  @param rightArgument The token that performs modulo on this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -571,7 +594,17 @@ public class IntMatrixToken extends MatrixToken {
      */
     protected MatrixToken _moduloElement(Token rightArgument)
             throws IllegalActionException {
-        int scalar = ((IntToken) rightArgument).intValue();
+        int scalar;
+        if (rightArgument instanceof IntMatrixToken) {
+            if (((IntMatrixToken)rightArgument).getRowCount() != 1
+                    || ((IntMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((IntMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((IntToken) rightArgument).intValue();
+        }
         int[] result = IntegerArrayMath.modulo(_value, scalar);
         return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
@@ -617,8 +650,6 @@ public class IntMatrixToken extends MatrixToken {
 
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument scalar token.
-     *  This method should be overridden in derived
-     *  classes to provide type specific actions for multiply.
      *  @param rightArgument The token to multiply this token by.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
@@ -626,7 +657,17 @@ public class IntMatrixToken extends MatrixToken {
      */
     protected MatrixToken _multiplyElement(Token rightArgument)
             throws IllegalActionException {
-        int scalar = ((IntToken) rightArgument).intValue();
+        int scalar;
+        if (rightArgument instanceof IntMatrixToken) {
+            if (((IntMatrixToken)rightArgument).getRowCount() != 1
+                    || ((IntMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((IntMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((IntToken) rightArgument).intValue();
+        }
         int[] result = IntegerArrayMath.multiply(_value, scalar);
         return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
@@ -651,7 +692,7 @@ public class IntMatrixToken extends MatrixToken {
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with one element.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -659,7 +700,17 @@ public class IntMatrixToken extends MatrixToken {
      */
     protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
-        int scalar = ((IntToken) rightArgument).intValue();
+        int scalar;
+        if (rightArgument instanceof IntMatrixToken) {
+            if (((IntMatrixToken)rightArgument).getRowCount() != 1
+                    || ((IntMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((IntMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((IntToken) rightArgument).intValue();
+        }
         int[] result = IntegerArrayMath.add(_value, -scalar);
         return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
@@ -667,7 +718,7 @@ public class IntMatrixToken extends MatrixToken {
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  of each element of this class or is a matrix with one element.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -675,7 +726,17 @@ public class IntMatrixToken extends MatrixToken {
      */
     protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
-        int scalar = ((IntToken) rightArgument).intValue();
+        int scalar;
+        if (rightArgument instanceof IntMatrixToken) {
+            if (((IntMatrixToken)rightArgument).getRowCount() != 1
+                    || ((IntMatrixToken)rightArgument).getColumnCount() != 1) {
+                // Throw an exception.
+                return super._moduloElement(rightArgument);
+            }
+            scalar = ((IntMatrixToken)rightArgument).getElementAt(0, 0);
+        } else {
+            scalar = ((IntToken) rightArgument).intValue();
+        }
         int[] result = IntegerArrayMath.negative(IntegerArrayMath.add(_value,
                 -scalar));
         return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
