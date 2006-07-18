@@ -52,12 +52,12 @@ test Linpack-1.1 {Generate all required files for Linpack.java} {
 
     set className Linpack
     set outputDir testOutput/$className
-    set output [generateC $className]
+    catch {set output [generateC $className]} errMsg
     
     # Move the additional class file to the test directory.
     file rename -force ../../DataItem.class .
 
     # We cannot use a template because results may vary.
     string first $output $output
-} {0}
-
+    list $errMsg	
+} {0} {Known Failure: Linpack fails with soot-2.2.2 under Java 1.5}
