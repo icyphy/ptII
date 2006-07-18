@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Green (neuendor)
  @Pt.AcceptedRating Green (cxh)
  */
-public class PetiteToken extends DoubleToken {
+public class PetiteToken extends ScalarToken {
     /** Construct a PetiteToken with value 0.0.
      */
     public PetiteToken() {
@@ -90,7 +90,7 @@ public class PetiteToken extends DoubleToken {
      *  @exception IllegalActionException If the conversion
      *   cannot be carried out.
      */
-    public static DoubleToken convert(Token token)
+    public static PetiteToken convert(Token token)
             throws IllegalActionException {
         if (token instanceof PetiteToken) {
             return (PetiteToken) token;
@@ -105,6 +105,13 @@ public class PetiteToken extends DoubleToken {
         }
     }
 
+    /** Return the value in the token as a double.
+     *  @return The value contained in this token as a double.
+     */
+    public double doubleValue() {
+        return _value;
+    }
+
     /** Return the value in the token.
      *  @return The value contained in this token.
      */
@@ -115,7 +122,7 @@ public class PetiteToken extends DoubleToken {
     /** Return true if the argument's class is PetiteToken and it has the
      *  same values as this token.
      *  @param object An instance of Object.
-     *  @return True if the argument is a DoubleToken with the
+     *  @return True if the argument is a PetiteToken with the
      *  same value.
      */
     public boolean equals(Object object) {
@@ -195,7 +202,7 @@ public class PetiteToken extends DoubleToken {
      *  token, since the units are the same. The call to the contructor
      *  ensures the value is within the range defined by a PetiteToken. 
      *  It thus automatically converts -1 to (1 - Double.MIN_VALUE).
-     *  @return An DoubleToken.
+     *  @return An PetiteToken.
      */
     protected ScalarToken _absolute() {
         PetiteToken result;
@@ -211,7 +218,7 @@ public class PetiteToken extends DoubleToken {
 
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of this Token.  It is assumed that
-     *  the type of the argument is an DoubleToken.The token to add is
+     *  the type of the argument is an PetiteToken.The token to add is
      *  first adjusted to the range defined by a petite token. After
      *  division, the result is adjusted again to maintain the range
      *  of a PetiteToken. The final adjustment happens automatically
@@ -220,13 +227,58 @@ public class PetiteToken extends DoubleToken {
      *  @return A new PetiteToken containing the result.
      */
     protected ScalarToken _add(ScalarToken rightArgument) {
-        double sum = _value + ((DoubleToken) rightArgument).doubleValue();
+        double sum = _value + ((PetiteToken) rightArgument).doubleValue();
         return new PetiteToken(sum);
+    }
+
+    /** Returns a token representing the bitwise AND of this token and
+     *  the given token.
+     *  @param rightArgument The PetiteToken to bitwise AND with this one.
+     *  @return The bitwise AND.
+     *  @exception IllegalActionException Always thrown by this base class.
+     */
+    protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
+                this, rightArgument));
+    }
+
+    /** Returns a token representing the bitwise NOT of this token.
+     *  @return The bitwise NOT of this token.
+     *  @exception IllegalActionException Always thrown by this base class.
+     */
+    protected ScalarToken _bitwiseNot() throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("bitwiseNot",
+                this, this));
+    }
+
+    /** Returns a token representing the bitwise OR of this token and
+     *  the given token.
+     *  @param rightArgument The PetiteToken to bitwise OR with this one.
+     *  @return The bitwise OR.
+     *  @exception IllegalActionException Always thrown by this base class.
+     */
+    protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
+                rightArgument));
+    }
+
+    /** Returns a token representing the bitwise XOR of this token and
+     *  the given token.
+     *  @param rightArgument The PetiteToken to bitwise XOR with this one.
+     *  @return The bitwise XOR.
+     *  @exception IllegalActionException Always thrown by this base class.
+     */
+    protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("bitwiseXor",
+                this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
-     *  the type of the argument is an DoubleToken. The token to
+     *  the type of the argument is an PetiteToken. The token to
      *  divide by is first adjusted to the range defined by a petite
      *  token. After division, the result is adjusted again to
      *  maintain the range of a PetiteToken. The final adjustment
@@ -236,14 +288,14 @@ public class PetiteToken extends DoubleToken {
      *  @return A new PetiteToken containing the result.
      */
     protected ScalarToken _divide(ScalarToken divisor) {
-        double quotient = _value / ((DoubleToken) divisor).doubleValue();
+        double quotient = _value / ((PetiteToken) divisor).doubleValue();
         return new PetiteToken(quotient);
     }
 
     /** Test that the value of this token is close to the first argument,
      *  where "close" means that the distance between their values is less than
      *  or equal to the second argument. It is assumed that the type of
-     *  the first argument is DoubleToken. The right argument is adjusted to
+     *  the first argument is PetiteToken. The right argument is adjusted to
      *  be in the range of a PetiteToken. The second argument is also adjusted
      *  likewise.
      *  @param rightArgument The token to compare to this token.
@@ -257,9 +309,9 @@ public class PetiteToken extends DoubleToken {
         // implementation changes, also change the corresponding
         // implementation there.
         // NOTE: Used to compare against epsilon the following expression:
-        // Math.abs(doubleValue() - ((DoubleToken)rightArgument).doubleValue()))
+        // Math.abs(doubleValue() - ((PetiteToken)rightArgument).doubleValue()))
         // However, because of quantization errors, this did not work well.
-        double right = ((DoubleToken) rightArgument).doubleValue();
+        double right = ((PetiteToken) rightArgument).doubleValue();
         double left = petiteValue();
 
         if ((right > (left + epsilon)) || (right < (left - epsilon))) {
@@ -270,7 +322,7 @@ public class PetiteToken extends DoubleToken {
     }
 
     /** Test for ordering of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is DoubleToken. 
+     *  Token.  It is assumed that the type of the argument is PetiteToken. 
      *  The argument token is then adjusted to the range of a PetiteToken.
      *  @param rightArgument The token to compare this token with.
      *  @exception IllegalActionException If this method is not
@@ -279,29 +331,29 @@ public class PetiteToken extends DoubleToken {
      */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
-        DoubleToken convertedArgument = (DoubleToken) rightArgument;
+        PetiteToken convertedArgument = (PetiteToken) rightArgument;
         return BooleanToken.getInstance(_value < convertedArgument
                 .doubleValue());
     }
 
     /** Return a new token whose value is the value of this token
      *  modulo the value of the argument token.  It is assumed that
-     *  the type of the argument is an DoubleToken.The token to take 
+     *  the type of the argument is an PetiteToken.The token to take 
      *  modulo by is first adjusted to the range defined by a petite 
      *  token. After the modulo operation, the result is adjusted again to 
      *  maintain the range of a PetiteToken. The final adjustment happens
      *  automatically given the call to _adjust in the PetiteToken constructor
      *  @param rightArgument The token to modulo this token by.
-     *  @return A new DoubleToken containing the result.
+     *  @return A new PetiteToken containing the result.
      */
     protected ScalarToken _modulo(ScalarToken rightArgument) {
-        double remainder = _value % ((DoubleToken) rightArgument).doubleValue();
+        double remainder = _value % ((PetiteToken) rightArgument).doubleValue();
         return new PetiteToken(remainder);
     }
 
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.  It is assumed that
-     *  the type of the argument is an DoubleToken.The token to multiply 
+     *  the type of the argument is an PetiteToken.The token to multiply 
      *  is first adjusted to the range defined by a petite token. After 
      *  multiplication, the result is adjusted again to 
      *  maintain the range of a PetiteToken. The final adjustment happens
@@ -310,13 +362,13 @@ public class PetiteToken extends DoubleToken {
      *  @return A new PetiteToken containing the result.
      */
     protected ScalarToken _multiply(ScalarToken rightArgument) {
-        double product = _value * ((DoubleToken) rightArgument).doubleValue();
+        double product = _value * ((PetiteToken) rightArgument).doubleValue();
         return new PetiteToken(product);
     }
 
     /** Return a new token whose value is the value of the argument token
      *  subtracted from the value of this token.  It is assumed that
-     *  the type of the argument is an DoubleToken. The token to subtract 
+     *  the type of the argument is an PetiteToken. The token to subtract 
      *  is first adjusted to the range defined by a petite token. After 
      *  subtraction from this token, the result is adjusted again to 
      *  maintain the range of a PetiteToken. The final adjustment happens
@@ -326,13 +378,13 @@ public class PetiteToken extends DoubleToken {
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
         double difference = _value
-                - ((DoubleToken) rightArgument).doubleValue();
+                - ((PetiteToken) rightArgument).doubleValue();
         return new PetiteToken(difference);
     }
 
     /**
      * Adjust the value of the PetiteToken to limit it to the range
-     * [-1,1) while maintaining the precision of DoubleToken.
+     * [-1,1) while maintaining the precision of PetiteToken.
      * @param number The value to be adjusted.
      * @return The adjusted value.
      */
