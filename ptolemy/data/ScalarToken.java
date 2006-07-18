@@ -133,10 +133,7 @@ public abstract class ScalarToken extends Token implements
         } else if ((typeInfo == CPO.LOWER)
                 || (rightArgument instanceof MatrixToken)) {
             // NOTE: If the right argument is an instance of MatrixToken,
-            // then we try reversing the add. This is because the
-            // code below for incomparable types won't work because
-            // automatic conversion from double to [double] is not
-            // supported.  Perhaps it should be?
+            // then we try reversing the add.
             return rightArgument.addReverse(this);
         } else {
             // Items being multiplied are incomparable.
@@ -876,10 +873,7 @@ public abstract class ScalarToken extends Token implements
         } else if ((typeInfo == CPO.LOWER)
                 || rightArgument instanceof MatrixToken) {
             // NOTE: If the right argument is an instance of MatrixToken,
-            // then we try reversing the multiply.  This is because the
-            // code below for incomparable types won't work because
-            // automatic conversion from double to [double] is not
-            // supported.  Perhaps it should be?
+            // then we try reversing the multiply.
             return rightArgument.multiplyReverse(this);
         } else {
             // Items being multiplied are incomparable.
@@ -949,10 +943,7 @@ public abstract class ScalarToken extends Token implements
         } else if ((typeInfo == CPO.HIGHER)
                 || leftArgument instanceof MatrixToken) {
             // NOTE: If the left argument is an instance of MatrixToken,
-            // then we try reversing the multiply.  This is because the
-            // code below for incomparable types won't work because
-            // automatic conversion from double to [double] is not
-            // supported.  Perhaps it should be?
+            // then we try reversing the multiply.
             return leftArgument.multiply(this);
         } else {
             // Items being multiplied are incomparable.
@@ -1047,10 +1038,7 @@ public abstract class ScalarToken extends Token implements
         } else if ((typeInfo == CPO.LOWER)
                 || (rightArgument instanceof MatrixToken)) {
             // NOTE: If the right argument is an instance of MatrixToken,
-            // then we try reversing the subtract. This is because the
-            // code below for incomparable types won't work because
-            // automatic conversion from double to [double] is not
-            // supported.  Perhaps it should be?
+            // then we try reversing the subtract.
             return rightArgument.subtractReverse(this);
         } else {
             // Items being subtracted are incomparable.
