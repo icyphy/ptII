@@ -54,4 +54,4 @@ test UserActorLibrary-100.0 {call setContainer, which calls _remoteEntity} {
     java::call System setProperty ptolemy.ptII.exitAfterWrapup true
     catch {$directory setContainer [java::null]} errMsg
     list $errMsg	
-} {}
+} {{java.lang.RuntimeException: Normally, we would exit here because Manager.exitAfterWrapup() was called.  However, because the ptolemy.ptII.exitAfterWrapup property is set, we throw this exception instead.}}
