@@ -571,7 +571,7 @@ test DoubleToken-13.8 {Test convert from PetiteToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.DoubleToken convert $t] toString]} msg
     list $msg
-} {0.1p}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.PetiteToken '0.1p' to the type double.}}
 
 
 ######################################################################
