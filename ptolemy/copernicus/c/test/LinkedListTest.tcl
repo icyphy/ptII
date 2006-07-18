@@ -52,7 +52,7 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 test LinkedListTest-1.1 {Generate all required files for Terp.java} {
 
     set className LinkedListTest
-    set output [generateC $className]
+    catch {set output [generateC $className]} msg
        
     # Solaris needs the -classpath.
     set template [exec java -classpath . $className]
@@ -64,6 +64,7 @@ test LinkedListTest-1.1 {Generate all required files for Terp.java} {
     
     # Test output
     string first $template $output
-  
-} {0}
+
+    list $msg
+} {0} {Known Failure: LinkedListTest throws a segfault with Java 1.5 and soot-2.2.2}
 
