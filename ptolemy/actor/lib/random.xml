@@ -26,6 +26,10 @@
 	  <doc>Create a sequence of uniformly distributed random numbers</doc>
 	</entity>
 
+	<entity name="Triangular" class="ptolemy.actor.lib.Triangular">
+	  <doc>Create a sequence of random numbers with a triangular distribution</doc>
+	</entity>
+
         <!-- Colt actors generate random numbers -->
         <input source="ptolemy/actor/lib/colt/colt.xml"/>
 
