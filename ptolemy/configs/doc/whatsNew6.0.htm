@@ -316,6 +316,14 @@ An alternative start up screen infrastructure.
     Support for <a href="http://kepler-project.org#in_browser">Kepler</a>,
     added by Chad Berkeley.
 
+
+<li>Haiyang Zheng just enriched the exception handling
+capabilities in Ptolemy II...  Currently, if you create an actor
+that implements the ExceptionHandler interface and put it into a model,
+then any exception that occurs when the model is executes gets delegated
+to that actor.  The first such actor is a test actor that can be used
+to make regression tests that ensure that an exception is thrown.
+
 <li><a href="ptdoc:ptolemy.util.ExecuteCommands">ExecuteCommands</a>,
   <a href="ptdoc:ptolemy.util.StreamExec">StreamExec</a>:
   Code that executes subprocesses
