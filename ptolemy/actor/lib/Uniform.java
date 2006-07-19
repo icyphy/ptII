@@ -27,8 +27,10 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -66,10 +68,15 @@ public class Uniform extends RandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        lowerBound = new Parameter(this, "lowerBound", new DoubleToken(0.0));
+        lowerBound = new PortParameter(this, "lowerBound", new DoubleToken(0.0));
         lowerBound.setTypeEquals(BaseType.DOUBLE);
-        upperBound = new Parameter(this, "upperBound", new DoubleToken(1.0));
+        new SingletonParameter(lowerBound.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
+
+        upperBound = new PortParameter(this, "upperBound", new DoubleToken(1.0));
         upperBound.setTypeEquals(BaseType.DOUBLE);
+        new SingletonParameter(upperBound.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -78,12 +85,12 @@ public class Uniform extends RandomSource {
     /** The lower bound.
      *  This parameter contains a DoubleToken, initially with value 0.0.
      */
-    public Parameter lowerBound;
+    public PortParameter lowerBound;
 
     /** The upper bound.
      *  This parameter contains a DoubleToken, initially with value 0.0.
      */
-    public Parameter upperBound;
+    public PortParameter upperBound;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -94,6 +101,8 @@ public class Uniform extends RandomSource {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        lowerBound.update();
+        upperBound.update();
         super.fire();
         output.send(0, new DoubleToken(_current));
     }
