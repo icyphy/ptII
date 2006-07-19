@@ -1,4 +1,4 @@
-/* An attribute that reads multiple values from a file and sets corresponding parameters in the container.
+/* A scope extending attribute that reads multiple values from a file.
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -78,7 +78,7 @@ import ptolemy.vergil.toolbox.FileEditorTableauFactory;
  @version $Id$
  @see ptolemy.data.expr.Variable
  */
-public class ParameterSet extends Parameter {
+public class ParameterSet extends ScopeExtendingAttribute {
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
