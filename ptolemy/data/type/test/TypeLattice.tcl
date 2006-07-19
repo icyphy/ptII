@@ -234,6 +234,13 @@ test TypeLattice-3.5.1 {compare array types and basic types} {
     list [[$lattice leastUpperBound $type1 $type2] toString] [[$lattice leastUpperBound $type2 $type1] toString] [[$lattice greatestLowerBound $type1 $type2] toString] [[$lattice greatestLowerBound $type2 $type1] toString]
 } {{{double}} {{double}} int int}
 
+test TypeLattice-3.5.2 {compare array types and basic types} {
+    set int [java::field ptolemy.data.type.BaseType INT]
+    set unk [java::field ptolemy.data.type.BaseType UNKNOWN]
+    set unkArrayType [java::new ptolemy.data.type.ArrayType $unk]
+    list [[$lattice leastUpperBound $int $unkArrayType] toString] [[$lattice leastUpperBound $unkArrayType $int] toString]
+} {{{int}} {{int}}}
+
 test TypeLattice-3.6 {compare structured types} {
     set testToken [java::new ptolemy.data.type.test.TestToken [java::new java.lang.Object]]
     set int [java::field ptolemy.data.type.BaseType INT]
@@ -269,13 +276,13 @@ test TypeLattice-3.9 {compare different structured types} {
     set vt [java::field ptolemy.data.type.BaseType DOUBLE]
     set v [java::new {ptolemy.data.type.Type[]} 2 [list $nt $vt]]
 
-    set type1 [java::new {ptolemy.data.type.RecordType} $l $v]
+    set record [java::new {ptolemy.data.type.RecordType} $l $v]
     set str [java::field ptolemy.data.type.BaseType STRING]
-    set type2 [java::new ptolemy.data.type.ArrayType $str]
+    set arrayStrings [java::new ptolemy.data.type.ArrayType $str]
     set lattice [[java::new ptolemy.data.type.TypeLattice] lattice]
-    list [[$lattice leastUpperBound $type1 $type2] toString] [[$lattice leastUpperBound $type2 $type1] toString] [[$lattice greatestLowerBound $type1 $type2] toString] [[$lattice greatestLowerBound $type2 $type1] toString]
+    list [[$lattice leastUpperBound $record $arrayStrings] toString] [[$lattice leastUpperBound $arrayStrings $record] toString] [[$lattice greatestLowerBound $record $arrayStrings] toString] [[$lattice greatestLowerBound $arrayStrings $record] toString]
 
-} {general general unknown unknown}
+} {{{general}} {{general}} unknown unknown}
 
 test TypeLattice-4.0 {compare scalar and array} {
     set int [java::field ptolemy.data.type.BaseType INT]
