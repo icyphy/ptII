@@ -29,8 +29,10 @@ package ptolemy.actor.lib;
 
 import java.util.Random;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -65,6 +67,8 @@ public abstract class RandomSource extends Source {
         super(container, name);
         seed = new Parameter(this, "seed", new LongToken(0));
         seed.setTypeEquals(BaseType.LONG);
+        
+        new SingletonParameter(trigger, "_showName").setToken(BooleanToken.TRUE);        
     }
 
     ///////////////////////////////////////////////////////////////////
