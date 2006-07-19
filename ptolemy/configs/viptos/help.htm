@@ -6,28 +6,19 @@
 <body>
 <h1>Help for the Viptos 1.0-beta Sensor Networks Development Platform</h1>
 
-<h2>Running a TinyOS model from within Viptos does not work under Windows</h2>
- Note: As of 2/06, Windows users must use gcc-3.2 and
-        Cygwin 1.3.22 to to run TinyOS models inside Ptolemy.
-        The reason is that that Java Native Interface (JNI) is broken
-        in newer versions of Cygwin.  Windows users must install
-        Cygwin from roughly August, 2003, such as
-        <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/cygwin.htm"\>Ptolemy II 3.0 Cygwin Devel</a>
-See the
-<a href="../../domains/ptinyos/doc/installation.htm">Ptolemy II PtinyOS Domain Installation Notes</a> for details about setting up Cygwin.
-
 <h2>Generating Code for the pc target</h2>
-Despite the bug above, Windows users and other users can
-generate code by changing the PtinyOSDirector target
-from <code>ptII</code> to <code>pc</code> or some other tinyos target like
-<code>mica</code> or <code>mica install</code>.
-Only running a simulation within ptII will bring up the pthreads issue.
+
+Windows users and other users can generate nesC code from Viptos
+models by changing the PtinyOSDirector target from <code>ptII</code>
+to <code>pc</code> or some other tinyos target like <code>mica</code>
+or <code>mica install</code>.  Only running a simulation within ptII
+will bring up the pthreads issue.
 
 <ol>
 <li> Assuming you are looking at a demo model, look inside MicaBoard or
 MicaActor.
 <li>  Double-click on the PtinyOSDirector and change the <i>target</i>
-parameter to <code>pc<code>.
+parameter to <code>pc</code>.
 
 <li>Run the model as usual by hitting Control-R or hitting the green
 run button.
@@ -35,11 +26,11 @@ run button.
 <li>Look in the output directory (you can find out what it was by
 double-clicking on the PtinyOSDirector and examining the
 <i>destinationDirectory</i> parameter.  For demo models, this is usually 
-<code><i>demo directory</i>/output</code>.
+<code><i>demo_directory</i>/output</code>.
 
 <li>To run the generated TOSSIM:
 <pre>
-cd <i>demo directory</i>/output
+cd <i>demo_directory</i>/output
 ./build/pc/main.exe 1
 </pre>
 This will run TOSSIM with 1 node.
