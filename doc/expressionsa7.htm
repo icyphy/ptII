@@ -115,13 +115,13 @@ function(x:double) x*5.0<a name="184140"> </a>
 
 
 <p>
-  <a name="184256"> </a>Functions can also be passed along connections in a Ptolemy II model. Consider the model shown in figure <img src="img/expressions41.gif" height="346" width="937" align="center" border="0" hspace="0" vspace="0">
+  <a name="184256"> </a>Functions can also be passed along connections in a Ptolemy II model. Consider the model shown in figure <img src="img/expressions41.gif" height="221" width="600" align="center" border="0" hspace="0" vspace="0">
 <a href="expressionsa7.htm#184256">3.6</a>. In that example, the Const actor defines a function that simply squares the argument. Its output, therefore, is a token with type <i>function</i>. That token is fed to the "f" input of the Expression actor. The expression uses this function by applying it to the token provided on the "y" input. That token, in turn, is supplied by the Ramp actor, so the result is the curve shown in the plot on the right.
 </p>
 
 
 <p>
-  <a name="184278"> </a>A more elaborate use is shown in figure <img src="img/expressions55.gif" height="483" width="937" align="center" border="0" hspace="0" vspace="0">
+  <a name="184278"> </a>A more elaborate use is shown in figure <img src="img/expressions55.gif" height="309" width="600" align="center" border="0" hspace="0" vspace="0">
 <a href="expressionsa7.htm#184278">3.7</a>. In that example, the Const actor produces a function, which is then used by the Expression actor to create new function, which is then used by Expression2 to perform a calculation. The calculation performed here adds the output of the Ramp to the square of the output of the Ramp.
 </p>
 
@@ -135,7 +135,9 @@ function(x:double) x*5.0<a name="184140"> </a>
 &gt;&gt; fact = function(x:int,f:(function(x,f) int)) (x&lt;1?1:x*f(x-1,f))<a name="193854"> </a>
 (function(x:int, f:function(a0:general, a1:general) int) (x&lt;1)?1:(x*f((x-1), f)))<a name="193855"> </a>
 &gt;&gt; factorial = function(x:int) fact(x,fact)<a name="193856"> </a>
-(function(x:int) (function(x:int, f:function(a0:general, a1:general) int) (x&lt;1)?1:(x*f((x-1), f)))(x, (function(x:int, f:function(a0:gen-eral, a1:general) int) (x&lt;1)?1:(x*f((x-1), f)))))<a name="193857"> </a>
+(function(x:int) (function(x:int, f:function(a0:general, a1:general) int) \
+   (x&lt;1)?1:(x*f((x-1), f)))(x, (function(x:int, f:function(a0:gen-eral, a1:general) int) \
+   (x&lt;1)?1:(x*f((x-1), f)))))<a name="193857"> </a>
 &gt;&gt; map(factorial, [1:1:5].toArray())<a name="193858"> </a>
 {1, 2, 6, 24, 120}<a name="193859"> </a>
 &gt;&gt; <a name="193838"> </a>
