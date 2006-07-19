@@ -54,6 +54,7 @@ EXTRA_SRCS = \
 	develsetup.htm \
 	eclipse.htm \
 	index.htm \
+	installers.htm \
 	javalinks.htm \
 	main.htm \
 	packages.htm \
