@@ -32,6 +32,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.data.expr.ScopeExtender;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.data.type.Typeable;
@@ -44,6 +46,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -246,10 +249,12 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
              System.out.println(constraintsIterator.next().toString());
              }
              */
+
             if (constraintList.size() > 0) {
                 InequalitySolver solver = new InequalitySolver(TypeLattice
                         .lattice());
                 Iterator constraints = constraintList.iterator();
+
                 solver.addInequalities(constraints);
 
                 // Find the least solution (most specific types)
@@ -396,6 +401,21 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             while (typeables.hasNext()) {
                 Typeable typeable = (Typeable) typeables.next();
                 result.addAll(typeable.typeConstraintList());
+            }
+
+            // Collect constraints from instances of ScopeExtender,
+            // such as ScopeExtendingAttribute.  
+            Iterator extenders = attributeList(ScopeExtender.class).iterator();
+
+            while (extenders.hasNext()) {
+                ScopeExtender extender = (ScopeExtender) extenders.next();
+                Iterator extenderAttributes = extender.attributeList().iterator();
+                while (extenderAttributes.hasNext()) {
+                    Attribute extenderAttribute = (Attribute) extenderAttributes.next();
+                    if (extenderAttribute instanceof Variable) {
+                        result.addAll( ((Variable) extenderAttribute).typeConstraintList());
+                    }
+                }
             }
 
             return result;
