@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TransmitAntennaPattern" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -69,7 +69,7 @@
         </property>
     </entity>
     <entity name="Receiver" class="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[289.8026728428272, 178.7209480470696]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 195.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -399,9 +399,9 @@ of this actor relative to the position of the Sender.</text></svg></configure>
                 </property>
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 50.0">
                 </property>
@@ -658,6 +658,14 @@ of this actor relative to the position of the Sender.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 355.0]">
                 </property>
             </entity>
+            <entity name="AntennaModel" class="ptolemy.domains.wireless.demo.AntennaPattern.AntennaModel">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 220.0]">
+                </property>
+                <property name="numberOfElements" class="ptolemy.data.expr.Parameter" value="numberOfElements">
+                </property>
+                <property name="steeringAngle" class="ptolemy.data.expr.Parameter" value="steeringAngle">
+                </property>
+            </entity>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -706,6 +714,8 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             <link port="MultiplyDivide.multiply" relation="relation12"/>
             <link port="MultiplyDivide.multiply" relation="relation3"/>
             <link port="MultiplyDivide.output" relation="relation9"/>
+            <link port="AntennaModel.angle" relation="relation8"/>
+            <link port="AntennaModel.gain" relation="relation3"/>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
