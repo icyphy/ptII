@@ -90,11 +90,13 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 KRUFT = *.dll
 
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+tests:: $(EXTRA_SRCS) jclass all_shared test_java test_jsimple
 
 test_java: jclass
 
-all: 
+all: all_shared
+
+all_shared:
 	$(MAKE) SHAREDBASE=meaningOfLife shared
 	$(MAKE) SHAREDBASE=testDeux shared
 	$(MAKE) SHAREDBASE=testTrois shared
