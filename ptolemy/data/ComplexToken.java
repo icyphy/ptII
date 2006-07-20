@@ -117,6 +117,9 @@ public class ComplexToken extends ScalarToken {
         if (token instanceof ComplexToken) {
             return (ComplexToken) token;
         }
+        if (token == null || token.isNil()) {
+            return ComplexToken.NIL;
+        }
 
         int compare = TypeLattice.compare(BaseType.COMPLEX, token);
 
@@ -158,6 +161,18 @@ public class ComplexToken extends ScalarToken {
         }
 
         return false;
+    }
+
+
+    /** Return true if the token is nil, (aka null or missing).
+     *  Nil or missing tokens occur when a data source is sparsely populated.
+     *  @return True if the token is the {@link #NIL} token.
+     */
+    public boolean isNil() {
+        // We use a method here so that we can easily change how
+        // we determine if a token is nil without modify lots of classes.
+        // Can't use equals() here, or we'll go into an infinite loop.
+        return this == ComplexToken.NIL;
     }
 
     /** Return the type of this token.
@@ -202,6 +217,18 @@ public class ComplexToken extends ScalarToken {
     public Token zero() {
         return new ComplexToken(Complex.ZERO);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** A token that represents a missing value.
+     *  Null or missing tokens are common in analytical systems
+     *  like R and SAS where they are used to handle sparsely populated data
+     *  sources.  In database parlance, missing tokens are sometimes called
+     *  null tokens.  Since null is a Java keyword, we use the term "nil".
+     *  The toString() method on a nil token returns the string "nil".
+     */
+    public static final ComplexToken NIL = new ComplexToken();
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

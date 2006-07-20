@@ -89,12 +89,13 @@ test ArrayToken-1.1.3 {first element is nil} {
 ######################################################################
 ####
 # 
-test ArrayToken-1.2 {ArrayTokens of length 0 are supported} {
-    # This used to trigger an exception when creating empty array
-    set valArray [java::new {ptolemy.data.Token[]} 0 ]
-    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
-    list [$valToken toString] [$valToken isNil]
-} {{{}} 0}
+test ArrayToken-1.2 {ArrayTokens of length 0 are supported.  Use the constructor that gives the array a type.} {
+    set valArray [java::new {ptolemy.data.IntToken[]} 0 ]
+    catch {java::new {ptolemy.data.ArrayToken} $valArray} errMsg
+    set intToken [java::new {ptolemy.data.IntToken} 0]
+    set valToken [java::new {ptolemy.data.ArrayToken} $intToken]
+    list $errMsg [$valToken toString] [$valToken isNil]
+} {{java.lang.ArrayIndexOutOfBoundsException: 0} {{}} 0}
 
 ######################################################################
 ####
@@ -121,7 +122,7 @@ test ArrayToken-1.4 {Create an array of nil DoubleTokens} {
 ####
 # 
 test ArrayToken-1.5 {Create an array of DoubleTokens, first one nil} {
-    set val0 [java::field ptolemy.data.Token NIL]
+    set val0 [java::field ptolemy.data.DoubleToken NIL]
     set val1 [java::new ptolemy.data.DoubleToken 2.0]
     set valArray [java::new {ptolemy.data.Token[]} 2 [list $val0 $val1]]
     set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
@@ -134,7 +135,7 @@ test ArrayToken-1.5 {Create an array of DoubleTokens, first one nil} {
 #
 test ArrayToken-1.6 {Create an array of DoubleTokens, second one nil} {
     set val0 [java::new ptolemy.data.DoubleToken 2.0]
-    set val1 [java::field ptolemy.data.Token NIL]
+    set val1 [java::field ptolemy.data.DoubleToken NIL]
     set valArray [java::new {ptolemy.data.Token[]} 2 [list $val0 $val1]]
     set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
 

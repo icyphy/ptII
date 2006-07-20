@@ -58,8 +58,7 @@ test UtilityFunctions-1.3.1 {Check find(ArrayToken)} {
     set r2 [java::call ptolemy.data.expr.UtilityFunctions find $arrayToken2]
 
     # Empty array has no type, which is an error
-    set valArray [java::new {ptolemy.data.Token[]} 0 ]
-    set arrayTokenWrong [java::new {ptolemy.data.ArrayToken} $valArray]
+    set arrayTokenWrong [java::field ptolemy.data.ArrayToken NIL]
     catch {java::call ptolemy.data.expr.UtilityFunctions find $arrayTokenWrong} errMsg
 
     # Create an empty ArrayToken with type boolean

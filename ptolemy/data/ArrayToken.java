@@ -45,9 +45,10 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  A token that contains an array of tokens.  The operations between
  arrays are defined pointwise, and require that the lengths of the
- arrays are the same.  The elements of the ArrayToken will be converted
- to the least upper bound of their input types and zero length array
- tokens cannot be created.
+ arrays are the same.  The elements of the ArrayToken will be
+ converted to the least upper bound of their input types.  Zero length
+ array tokens are supported, given a prototype element to determine
+ the type of the array.
 
  @author Yuhong Xiong, Steve Neuendorffer, Contributor: Christopher Brooks
  @version $Id$
@@ -61,8 +62,11 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  exception will be thrown.  Generally, the type of the array
      *  created is determined by the type of the first element in the
      *  given array.  This class makes a copy of the given array, so
-     *  the passed array may be reused.
-     *  @param value An array of tokens.
+     *  the passed array may be reused.  Note that this method cannot
+     *  be used to create an empty array token, since the array token
+     *  must have a type.  Instead, use the constructor that takes a
+     *  token argument.
+     *  @param value An (not empty) array of tokens.
      *  @exception IllegalActionException If the tokens in the array
      *   do not have the same type, or the length of the given array is
      *   zero.
@@ -73,29 +77,9 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         // Otherwise type inference has to propagate through the
         // _initialize method correctly, which is hard.
 
-        Type elementType = null;
+        _elementPrototype = value[0];
+        Type elementType = value[0].getType();
         int length = value.length;
-        int nonNilIndex = 0;
-        // Look for the first non-nil token to get the type.
-        while (nonNilIndex < length) {
-            if (!value[nonNilIndex].isNil()) {
-                _elementPrototype = value[nonNilIndex];
-                elementType = value[nonNilIndex].getType();
-                break;
-            }
-            nonNilIndex++;
-        }
-        if (elementType == null) {
-            if (value.length > 0) {
-                // Did not find a non-nil element, use the 0th.
-                nonNilIndex = 0;
-                elementType = value[0].getType();
-                _elementPrototype = value[0];
-            } else {
-                elementType = BaseType.NIL;
-                _elementPrototype = Token.NIL;
-            }
-        }
 
         // It would be nice to have this, but the Code generator cannot
         // deal with the least upper bound.
@@ -112,18 +96,12 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             if (elementType.equals(value[i].getType())) {
                 _value[i] = value[i]; // _elementType.convert(value[i]);
             } else {
-                if (value[i].isNil()) {
-                    // Construct a nil token, same type as elementType.
-                    _value[i] = Token.NIL;
-                } else {
-                    throw new IllegalActionException(
-                            "Elements of the array do not have the same type:"
-                                    + "value[0]=" + value[0] + " (type: "
-                                    + elementType + ")" + " value[" + i + "]="
-                                    + value[i] + " (type: "
-                                    + value[i].getType() + ")");
-
-                }
+                throw new IllegalActionException(
+                        "Elements of the array do not have the same type:"
+                        + "value[0]=" + value[0] + " (type: "
+                        + elementType + ")" + " value[" + i + "]="
+                        + value[i] + " (type: "
+                        + value[i].getType() + ")");
             }
         }
     }
@@ -146,8 +124,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         Token token = evaluator.evaluateParseTree(tree);
 
         if (token instanceof ArrayToken) {
-            Token[] value = ((ArrayToken) token)._value;
-            _initialize(value);
+            _value = ((ArrayToken) token)._value;
+            _elementPrototype = ((ArrayToken) token)._elementPrototype;
         } else {
             throw new IllegalActionException("An array token cannot be"
                     + " created from the expression '" + init + "'");
@@ -845,6 +823,10 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  supported by an element token.
      */
     public Token zero() throws IllegalActionException {
+        if(_value.length == 0) {
+            return this;
+        }
+
         Token[] zeroValueArray = new Token[_value.length];
 
         for (int i = 0; i < _value.length; i++) {
@@ -863,14 +845,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  sources.  In database parlance, missing tokens are sometimes called
      *  null tokens.  Since null is a Java keyword, we use the term "nil".
      */
-    public static final ArrayToken NIL;
-    static {
-        try { 
-            NIL = new ArrayToken(new Token[0]);
-        } catch (IllegalActionException ex) {
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
+    public static final ArrayToken NIL = new ArrayToken(Token.NIL);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1266,64 +1241,6 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     + length
                     + ") is not the same as the length of this token ("
                     + length() + ").");
-        }
-    }
-
-    // initialize this token using the specified array.
-    private void _initialize(Token[] value) throws IllegalActionException {
-        Type elementType = null;
-        int length = value.length;
-        int nonNilIndex = 0;
-        // Look for the first non-nil token to get the type.
-        while (nonNilIndex < length) {
-            if (!value[nonNilIndex].isNil()) {
-                _elementPrototype = value[nonNilIndex];
-                elementType = value[nonNilIndex].getType();
-                break;
-            }
-            nonNilIndex++;
-        }
-        if (elementType == null) {
-            if (value.length > 0) {
-                // Did not find a non-nil element, use the 0th.
-                nonNilIndex = 0;
-                elementType = value[0].getType();
-                _elementPrototype = value[0];
-            } else {
-                elementType = BaseType.NIL;
-                _elementPrototype = Token.NIL;
-            }
-        }
-
-        // It would be nice to have this, but the Code generator cannot
-        // deal with the least upper bound.
-        //    for (int i = 0; i < length; i++) {
-        //             Type valueType = value[i].getType();
-        //             if (!elementType.equals(valueType)) {
-        //                 _elementType = TypeLattice.leastUpperBound(
-        //                         elementType, valueType);
-        //             }
-        //         }
-        _value = new Token[length];
-
-        for (int i = 0; i < length; i++) {
-            if (elementType.equals(value[i].getType())) {
-                _value[i] = value[i]; // _elementType.convert(value[i]);
-            } else {
-                if (value[i].isNil()) {
-                    // Construct a nil token, same type as elementType.
-                    // FIXME: what?
-                    _value[i] = Token.NIL;
-                } else {
-                    throw new IllegalActionException(
-                            "Elements of the array do not have the same type:"
-                                    + "value[0]=" + value[0] + " (type: "
-                                    + elementType + ")" + " value[" + i + "]="
-                                    + value[i] + " (type: "
-                                    + value[i].getType() + ")");
-
-                }
-            }
         }
     }
 

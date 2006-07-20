@@ -1381,7 +1381,7 @@ public abstract class ScalarToken extends Token implements
      */
     private Token _doAdd(Token rightArgument) throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
-            return Token.NIL;
+            return getType().convert(Token.NIL);
         }
 
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
@@ -1414,7 +1414,7 @@ public abstract class ScalarToken extends Token implements
     private BitwiseOperationToken _doBitwiseAnd(Token rightArgument)
             throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
-            return (BitwiseOperationToken) Token.NIL;
+            return (BitwiseOperationToken) getType().convert(Token.NIL);
         }
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
@@ -1450,7 +1450,7 @@ public abstract class ScalarToken extends Token implements
     private BitwiseOperationToken _doBitwiseOr(Token rightArgument)
             throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
-            return (BitwiseOperationToken) Token.NIL;
+            return (BitwiseOperationToken) getType().convert(Token.NIL);
         }
 
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
@@ -1487,7 +1487,7 @@ public abstract class ScalarToken extends Token implements
     private BitwiseOperationToken _doBitwiseXor(Token rightArgument)
             throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
-            return (BitwiseOperationToken) Token.NIL;
+            return (BitwiseOperationToken) getType().convert(Token.NIL);
         }
 
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
@@ -1523,7 +1523,7 @@ public abstract class ScalarToken extends Token implements
      */
     private Token _doDivide(Token rightArgument) throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
-            return Token.NIL;
+            return getType().convert(Token.NIL);
         }
 
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
@@ -1646,7 +1646,7 @@ public abstract class ScalarToken extends Token implements
      */
     private Token _doModulo(Token rightArgument) throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
-            return Token.NIL;
+            return getType().convert(Token.NIL);
         }
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
@@ -1679,7 +1679,7 @@ public abstract class ScalarToken extends Token implements
     private Token _doMultiply(Token rightArgument)
             throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
-            return Token.NIL;
+            return getType().convert(Token.NIL);
         }
 
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
@@ -1709,7 +1709,7 @@ public abstract class ScalarToken extends Token implements
     private Token _doSubtract(Token rightArgument)
             throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
-            return Token.NIL;
+            return getType().convert(Token.NIL);
         }
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
