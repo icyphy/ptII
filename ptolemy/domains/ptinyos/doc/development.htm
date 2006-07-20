@@ -12,11 +12,19 @@ If you use Eclipse to run Viptos or develop PtinyOS Domain related
 code, you should follow the instructions below for setting up Eclipse
 properly.
 
-<h2><a name="runViptos">Setting up Eclipse 3.1 to run Viptos</a></h2>
+<p>
+<b>Quick links:</b>
+<br><a href="#runViptos">Setting up Eclipse to run Viptos</a>
+<br><a href="#nesC">Setting up Eclipse to work with nesC</a>
+<br><a href="#runNc2moml">Setting up Eclipse to run nc2moml or ncapp2moml</a>
+
+<h2><a name="runViptos">Setting up Eclipse to run Viptos</a></h2>
 
 These instructions assume you already having Eclipse working with
 vergil (ptII).  You should omit the quote symbols (") when entering
 values in Eclipse.
+
+These instructions were tested on Eclipse 3.1.
 
 <ol>
       <li>Click on Run | Run... in the menu.
@@ -42,7 +50,7 @@ values in Eclipse.
 <li>
 </ol>
 
-<h2>Setting up Eclipse to work with nesC</h2>
+<h2><a name="nesC">Setting up Eclipse to work with nesC</a></h2>
 
 <p>
 If you are editing nc2moml files (in
@@ -88,6 +96,11 @@ cvs -z3 -d:ext:developername@nescc.cvs.sourceforge.net:/cvsroot/nescc co -P nesc
 
 (If you have Eclipse 3.0, see <a href=#eclipse3.0>Eclipse 3.0 instructions</a>).
 <h3>Instructions for Eclipse 3.1</h3>
+
+These instructions assume you already having Eclipse working with
+vergil (ptII).  You should omit the quote symbols (") when entering
+values in Eclipse.
+
 <ol>
       <li>File | New | Project...
       <li>Select a wizard: Java Project
@@ -108,10 +121,14 @@ cvs -z3 -d:ext:developername@nescc.cvs.sourceforge.net:/cvsroot/nescc co -P nesc
         <br>Right click on nesc project in Navigator pane on left hand side
         <br>Build Project
       <li>Class files should appear in nesc/tools/java/...
-      <li><a href="#runNc2moml">Jump</a> to instructions below on How to setup Eclipse to run nc2moml or ncapp2moml.
+      <li><a href="#runNc2moml">Jump</a> to instructions below on Setting up Eclipse to run nc2moml or ncapp2moml.
 </ol>
 
 <h3><a name=eclipse3.0>Instructions for Eclipse 3.0</a></h3>
+
+These instructions assume you already having Eclipse working with
+vergil (ptII).  You should omit the quote symbols (") when entering
+values in Eclipse.
 
 <ol>
       <li>File | New | Project...
@@ -135,10 +152,10 @@ cvs -z3 -d:ext:developername@nescc.cvs.sourceforge.net:/cvsroot/nescc co -P nesc
       <li>  Class files should appear in nesc/tools/java/...
 </ol>
 
-<h2><a name="runNc2moml">How to setup Eclipse to run nc2moml or ncapp2moml</a></h2>
+<h2><a name="runNc2moml">Setting up Eclipse to run nc2moml or ncapp2moml</a></h2>
 
 First follow the instructions above for <a href="#runViptos">Setting
-up Eclipse 3.1 to run Viptos</a>.
+up Eclipse to run Viptos</a>.
 
 To run or debug the java applications found in
 <code>$PTII/ptolemy/domains/ptinyos/util</code> under Eclipse, you

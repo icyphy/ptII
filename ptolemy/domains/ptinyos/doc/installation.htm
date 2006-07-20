@@ -25,66 +25,77 @@
 
     <blockquote>
     <table border=1>
-      <tr><td>
-      <h3>Windows Notes</h3>
-    <p>To invoke Viptos, we use $PTII/jni/launcher/launcher.exe.
-    This tool solves problems with Cygwin and JNI.
+        <tr><td>
+            <h3>Windows Notes</h3>
+            <p>To invoke Viptos, we use $PTII/jni/launcher/launcher.exe.
+              This tool solves problems with Cygwin and JNI.
 
-    <p>Windows users should verify that JNI works before proceeding
-    
-      <pre>
+            <p>Windows users should verify that JNI works before proceeding
+              
+            <pre>
 cd /usr/bin
 cp make.exe gmake.exe
+
+cd $PTII
+./configure
+
+cd $PTII/jni
+make
+
 cd $PTII/jni/test
 make
-      </pre>
-      You should see:
-<pre>
+            </pre>
+
+            You should see:
+            <pre>
 Failed: 0  Total Tests: 4  ((Passed: 4, Newly Passed: 0)  Known Failed: 0) C:/cxh/ptII/jni/test
-</pre>
-    <p><b>If the above tests fail for you under Cygwin, then it is
-    very unlikely that running a TinyOS model within Viptos (or
-    Ptolemy II) will work.</b>
+            </pre>
 
-    <p>If the any of the tests above fail for you, Windows users and
-    other users can generate code by changing the PtinyOSDirector
-    target from <code>ptII</code> to <code>pc</code> or some other
-    TinyOS target like <code>mica</code> or <code>mica install</code>.
-    See <code>$PTII/ptolemy/configs/viptos/help.htm</code> for
-    details.  Only running a simulation within ptII involves JNI.
+            <p><b>If you are using Cygwin, and the above tests fail for you,
+                then it is very unlikely that running a TinyOS model within Viptos
+                (or Ptolemy II) will work.</b>
 
+            <p>If the any of the tests above fail for you, Windows users and
+              other users can still generate code by changing the
+              PtinyOSDirector target from <code>ptII</code> to <code>pc</code>
+              or some other TinyOS target like <code>mica</code> or <code>mica
+                install</code>.  See
+              <code>$PTII/ptolemy/configs/viptos/help.htm</code> for details.
+              Only running a simulation within ptII involves JNI.
 
-    <p>Cygwin users should make sure that <code>/usr/local/bin</code>
-    is in your path before <code>/usr/bin</code> <br>Under Cygwin, the
-    easiest way to add <code>/usr/local/bin</code> to your path is to
-    edit <code>$HOME/.bashrc</code> and add
+            <p>Cygwin users should make sure that <code>/usr/local/bin</code>
+              is in your path before <code>/usr/bin</code> 
+
+              <br>Under Cygwin, the easiest way to add
+              <code>/usr/local/bin</code> to your path is to edit
+              <code>$HOME/.bashrc</code> and add
 	    <pre>
 PATH=/usr/local/bin:${PATH}
             </pre>
 
 	    Another way is via the System control panel (For details,
 	    see <a
-	    href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm#settingptII">Set
-	    the value of the PTII environment variable</a>).
+              href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm#settingptII">Set
+              the value of the PTII environment variable</a>).
 
-    <p>If you use the Ptolemy II 5.0 cygwinDevel, you may also need
-    to upgrade to 
-    <ul> 
-       <li>autoconf-2.53 or later, (2.59 preferred)
-       <li>automake-1.5 or later (1.9.6 preferred)
-       <li>make-3.80 or later (3.80 preferred)
-     </ul>
+            <p>If you use the Ptolemy II 5.0 cygwinDevel, you may also need
+              to upgrade to 
+            <ul> 
+              <li>autoconf-2.53 or later, (2.59 preferred)
+              <li>automake-1.5 or later (1.9.6 preferred)
+              <li>make-3.80 or later (3.80 preferred)
+            </ul>
 
-     <p>For each of the packages, download the .tar.gz or bzip2 file from
-     <a href="http://www.gnu.org/order/ftp.html">one of the GNU Mirrors</a>,
-     unzip it, and run
-     <pre>
+            <p>For each of the packages, download the .tar.gz or bzip2 file from
+              <a href="http://www.gnu.org/order/ftp.html">one of the GNU Mirrors</a>,
+              unzip it, and run
+            <pre>
 configure
 make
 make install
-     </pre>
-       </td></tr>
-     </table>
+            </pre>
+          </td></tr>
+      </table>
     </blockquote>
 
     <p>If you wish to use pre-existing installations of nesC and TinyOS 1.x, please
@@ -194,11 +205,11 @@ ln -s <I>location_of_your_nesc_tree</I> nesc
              <p><B>Installing the rpms under Cygwin is not recommended</B>,
 		it causes include file problems later.
                 <ul>
-                  <li><a href="http://www.tinyos.net/dist-1.2.0/tools/windows/avarice-2.3.20041206cvs-1.cygwin.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/windows/avarice-2.3.20041206cvs-1.cygwin.i386.rpm</a>
-                  <li><a href="http://www.tinyos.net/dist-1.2.0/tools/windows/avr-binutils-2.15tinyos-3.cygwin.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/windows/avr-binutils-2.15tinyos-3.cygwin.i386.rpm</a>
-                  <li><a href="http://www.tinyos.net/dist-1.2.0/tools/windows/avr-gcc-3.4.3-1.cygwin.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/windows/avr-gcc-3.4.3-1.cygwin.i386.rpm</a>
-                  <li><a href="http://www.tinyos.net/dist-1.2.0/tools/windows/avr-insight-6.3-1.cygwin.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/windows/avr-insight-6.3-1.cygwin.i386.rpm</a>
-                  <li><a href="http://www.tinyos.net/dist-1.2.0/tools/windows/avr-libc-1.2.3-1.cygwin.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/windows/avr-libc-1.2.3-1.cygwin.i386.rpm</a>
+                  <li><a href="http://www.tinyos.net/dist-2.0.0/tools/windows/avarice-2.3.20041206cvs-1.cygwin.i386.rpm">http://www.tinyos.net/dist-2.0.0/tools/windows/avarice-2.3.20041206cvs-1.cygwin.i386.rpm</a>
+                  <li><a href="http://www.tinyos.net/dist-2.0.0/tools/windows/avr-binutils-2.15tinyos-3.cygwin.i386.rpm">http://www.tinyos.net/dist-2.0.0/tools/windows/avr-binutils-2.15tinyos-3.cygwin.i386.rpm</a>
+                  <li><a href="http://www.tinyos.net/dist-2.0.0/tools/windows/avr-gcc-3.4.3-1.cygwin.i386.rpm">http://www.tinyos.net/dist-2.0.0/tools/windows/avr-gcc-3.4.3-1.cygwin.i386.rpm</a>
+                  <li><a href="http://www.tinyos.net/dist-2.0.0/tools/windows/avr-insight-6.3-1.cygwin.i386.rpm">http://www.tinyos.net/dist-2.0.0/tools/windows/avr-insight-6.3-1.cygwin.i386.rpm</a>
+                  <li><a href="http://www.tinyos.net/dist-2.0.0/tools/windows/avr-libc-1.2.3-1.cygwin.i386.rpm">http://www.tinyos.net/dist-2.0.0/tools/windows/avr-libc-1.2.3-1.cygwin.i386.rpm</a>
                 </ul>
 
                 and install them on the cygwin command line by typing:
@@ -234,11 +245,11 @@ rpm --ignoreos --nodeps -ivh *.rpm
           <li> If you are running Linux (tested on Fedora Core 2),
           download the following rpms:
             <ul>
-              <li><a href="http://www.tinyos.net/dist-1.2.0/tools/linux/avarice-2.3.20041206cvs-1.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/linux/avarice-2.3.20041206cvs-1.i386.rpm</a>
-              <li><a href="http://www.tinyos.net/dist-1.2.0/tools/linux/avr-binutils-2.15tinyos-3.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/linux/avr-binutils-2.15tinyos-3.i386.rpm</a>
-              <li><a href="http://www.tinyos.net/dist-1.2.0/tools/linux/avr-gcc-3.4.3-1.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/linux/avr-gcc-3.4.3-1.i386.rpm</a>
-              <li><a href="http://www.tinyos.net/dist-1.2.0/tools/linux/avr-insight-6.3-1.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/linux/avr-insight-6.3-1.i386.rpm</a>
-              <li><a href="http://www.tinyos.net/dist-1.2.0/tools/linux/avr-libc-1.2.3-1.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/linux/avr-libc-1.2.3-1.i386.rpm</a>
+              <li><a href="http://www.tinyos.net/dist-2.0.0/tools/linux/avarice-2.3.20041206cvs-1.i386.rpm">http://www.tinyos.net/dist-2.0.0/tools/linux/avarice-2.3.20041206cvs-1.i386.rpm</a>
+              <li><a href="http://www.tinyos.net/dist-2.0.0/tools/linux/avr-binutils-2.15tinyos-3.i386.rpm">http://www.tinyos.net/dist-2.0.0/tools/linux/avr-binutils-2.15tinyos-3.i386.rpm</a>
+              <li><a href="http://www.tinyos.net/dist-2.0.0/tools/linux/avr-gcc-3.4.3-1.i386.rpm">http://www.tinyos.net/dist-2.0.0/tools/linux/avr-gcc-3.4.3-1.i386.rpm</a>
+              <li><a href="http://www.tinyos.net/dist-2.0.0/tools/linux/avr-insight-6.3-1.i386.rpm">http://www.tinyos.net/dist-2.0.0/tools/linux/avr-insight-6.3-1.i386.rpm</a>
+              <li><a href="http://www.tinyos.net/dist-2.0.0/tools/linux/avr-libc-1.2.3-1.i386.rpm">http://www.tinyos.net/dist-2.0.0/tools/linux/avr-libc-1.2.3-1.i386.rpm</a>
             </ul>
 
             and install them on the shell command line with 
@@ -248,6 +259,11 @@ rpm -ivh *.rpm
             </pre>
 
             in the directory where you saved the files.
+
+
+          <li>You may also try compiling from source:
+            <br><a href="http://www.tinyos.net/dist-2.0.0/tools/source">http://www.tinyos.net/dist-2.0.0/tools/source</a>
+
         </ul>
 
       <li>You must have <code>make</code> version 3.80 or later
@@ -273,7 +289,7 @@ cp make.exe gmake.exe
             <p><i>Ptolemy II 3.0 CygwinDevel users will not have rpm installed,
 	    so this step won't work.  Grab the tar file instead.</i>
 	    Download 
-	    <a href="http://www.tinyos.net/dist-1.2.0/tools/windows/make-3.80tinyos-1.cygwin.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/windows/make-3.80tinyos-1.cygwin.i386.rpm</a>
+	    <a href="http://www.tinyos.net/dist-2.0.0/tools/windows/make-3.80tinyos-1.cygwin.i386.rpm">http://www.tinyos.net/dist-2.0.0/tools/windows/make-3.80tinyos-1.cygwin.i386.rpm</a>
             
             Install the rpm on the command line with
             <pre>
@@ -283,7 +299,7 @@ rpm -ivh make-3.80tinyos-1.cygwin.i386.rpm
 
           <li>Linux:
             <br>
-            <a href="http://www.tinyos.net/dist-1.2.0/tools/linux/make-3.80tinyos-1.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/linux/make-3.80tinyos-1.i386.rpm</a>
+            <a href="http://www.tinyos.net/dist-2.0.0/tools/linux/make-3.80tinyos-1.i386.rpm">http://www.tinyos.net/dist-2.0.0/tools/linux/make-3.80tinyos-1.i386.rpm</a>
             
             Install the rpm on the command line with
             <pre>
@@ -293,7 +309,7 @@ rpm -ivh make-3.80tinyos-1.i386.rpm
             
           <li>Or you can try to compile and install from source:
             <br>
-            <a href="http://www.tinyos.net/dist-1.2.0/tools/source/make-3.80tinyos.tar.bz2">http://www.tinyos.net/dist-1.2.0/tools/source/make-3.80tinyos.tar.bz2</a>
+            <a href="http://www.tinyos.net/dist-2.0.0/tools/source/make-3.80tinyos.tar.bz2">http://www.tinyos.net/dist-2.0.0/tools/source/make-3.80tinyos.tar.bz2</a>
             
             If you install this under Cygwin, make sure
             <code>/usr/local/bin</code> is in your path and comes
