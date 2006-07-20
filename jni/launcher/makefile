@@ -104,6 +104,7 @@ include $(ROOT)/mk/ptcommon.mk
 PTLIB = 	launcher
 
 demo: launcher jclass
+	PATH="$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)$(CLASSPATHSEPARATOR)$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/client$(CLASSPATHSEPARATOR)$(PATH)" \
 	LD_LIBRARY_PATH="$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE):$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/client" \
 		./launcher -Djava.class.path=$(ROOT) jni/launcher/Hello
 
@@ -116,5 +117,6 @@ launcher: $(CPPSRCS) $(HEADERS)
 		$(CPPSRCS) $(PTJNI_DL_LIBRARY)
 
 launcher_vergil: launcher
+	PATH="$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)$(CLASSPATHSEPARATOR)$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/client$(CLASSPATHSEPARATOR)$(PATH)" \
 	LD_LIBRARY_PATH="$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE):$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/client" \
 		./launcher -Djava.class.path=$(PTII) ptolemy/vergil/VergilApplication	 -jni
