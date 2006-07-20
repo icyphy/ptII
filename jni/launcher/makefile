@@ -116,5 +116,5 @@ launcher: $(CPPSRCS) $(HEADERS)
 		$(CPPSRCS) $(PTJNI_DL_LIBRARY)
 
 launcher_vergil: launcher
-	LD_LIBRARY_PATH=$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE):$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/client \
+	LD_LIBRARY_PATH="$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE):$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/client" \
 		./launcher -Djava.class.path=$(PTII) ptolemy/vergil/VergilApplication	 -jni
