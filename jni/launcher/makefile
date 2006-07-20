@@ -104,7 +104,7 @@ include $(ROOT)/mk/ptcommon.mk
 PTLIB = 	launcher
 
 demo: launcher jclass
-	LD_LIBRARY_PATH=$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE):$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/client \
+	LD_LIBRARY_PATH="$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE):$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/client" \
 		./launcher -Djava.class.path=$(ROOT) jni/launcher/Hello
 
 # $(PTMATLAB_cC) is set to cl or gcc by configure in $PTII/mk/ptII.mk
