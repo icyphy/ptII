@@ -17,7 +17,8 @@
     extension to the C programming language designed to embody the
     structuring concepts and execution model of TinyOS.
 
-    <p>nc2moml is used to convert nesC files (.nc) into <a
+    <p>nc2moml is used to convert nesC files (.nc configuration or
+    module files with at least one interface) into <a
     href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/moml#in_browser"
     target="_top">MoML</a> (.moml) files.  This will create the Viptos
     (Ptolemy II) libraries of components that are used to assemble
@@ -31,12 +32,11 @@
 
     These nc2moml installation instructions assume that you already
     have the tools required for Viptos installed.  This includes the
-    AVR tools, make 3.80 version, TinyOS 1.x, nesC 1.2.2 or later, and
-    if you are running on Windows, Cygwin with gcc 3.2.  We also
-    assume that you have set up the necessary environment
-    variables. If not, please see the <a
-    href="../../doc/installation.htm" target="main">Ptolemy II PtinyOS
-    Domain Installation Notes</a>.
+    AVR tools, make 3.80 or later, TinyOS 1.x, nesC 1.2.2 or later,
+    and if you are running on Windows, Cygwin.  We also assume that
+    you have set up the necessary environment variables. If not,
+    please see the <a href="../../doc/installation.htm"
+    target="main">Ptolemy II PtinyOS Domain Installation Notes</a>.
 
 
     <h2>How to install nc2moml</h2>
@@ -62,8 +62,8 @@ chmod a+x unzip-opts.sh
         then try the step above again.
 
         <p> If you placed your tinyos-1.x tree in a different
-        location, you can find the opts.tar.gz file in
-        $TOSROOT/contrib/ptII.
+        location, you can find the <code>opts.tar.gz</code> file in
+        <code>$TOSROOT/contrib/ptII</code>.
       </li>
 
       <li>Make sure that the tools in <CODE>$PTII/bin</CODE> have been built:
@@ -107,6 +107,12 @@ chmod a+x nc2moml*
                 newly generated directory structure.
             </ol>
         </ol>
+      <li> If the last step above did not work, then you probably did
+      not install the required tools correctly, or you have version
+      conflicts with pre-existing tools (e.g., gcc) on your system.
+      Try <a href="../../doc/installation.htm">reinstalling the required
+      tools</a> from the RPM's or compiling them from scratch using
+      your pre-existing toolset.
     </ol>
 </body>
 </html>

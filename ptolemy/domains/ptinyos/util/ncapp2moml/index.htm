@@ -17,14 +17,14 @@
     extension to the C programming language designed to embody the
     structuring concepts and execution model of TinyOS.
 
-    <p>ncapp2moml is used to convert nesC application files (.nc) into
-    <a
+    <p>ncapp2moml is used to convert nesC application files (.nc
+    configuration files with no interfaces) into <a
     href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/moml#in_browser"
     target="_top">MoML</a> (.moml) files.  This will create Ptolemy II
     models that you can run in Viptos.  You must setup the necessary
     MoML library of nesC components with the <a
-    href="../nc2moml/index.htm">nc2moml</a> tool before you can successfully
-    open files made with this ncapp2moml tool.
+    href="../nc2moml/index.htm">nc2moml</a> tool before you can
+    successfully open files made with this ncapp2moml tool.
 
     <h2>Installation instructions</h2>
 
@@ -70,28 +70,17 @@ make
               on what options were used in running ncapp2moml).
 
               <li>
-                <ul>
-                  <li>If you opened CntToLeds.moml, you may wish to
+                  If you opened CntToLeds.moml, you may wish to
                   run the automatic graph layout by selecting Graph -&gt;
                   Automatic Layout form the menu, or by typing Ctrl-T.
 
-                  <li>If you opened CntToLeds-InWireless.moml, you
+                  <p>If you opened CntToLeds-InWireless.moml, you
                   have to first right-click on the MicaBoard and
                   select Look Inside, then right-click on the
                   MicaCompositeActor and select Look Inside.  Then,
                   you can run the automatic graph layout by selecting
                   Graph -&gt; Automatic Layout form the menu, or by
                   typing Ctrl-T.
-
-                </ul>
-
-              <li>Try to open a demo that uses the components original
-              source directory.  Go to File -&gt; Open File, and open file
-              <CODE>$PTII/vendors/ptinyos/momlapp/apps/Blink/Blink.moml</CODE>
-		 or
-              <CODE>$PTII/vendors/ptinyos/momlapp/apps/Blink/Blink-InWireless.moml</CODE>
-              (only one of these will have been generated, depending
-              on what options were used in running ncapp2moml.
             </ol>
         </ol>
     </ol>
