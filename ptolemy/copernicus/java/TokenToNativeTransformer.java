@@ -787,6 +787,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                     typeAnalysis.inlineTypeLatticeMethods(method, unit, box, r,
                             localDefs, localUses);
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     System.out.println("Exception occurred " + ex.getMessage());
                 }
             } else {
@@ -1799,6 +1800,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                             // Deal with them specially.
                             boolean isBooleanTokenTrueSingleton = false;
                             boolean isBooleanTokenFalseSingleton = false;
+                            boolean isNullSingleton = false;
 
                             if (field
                                     .getSignature()
@@ -1810,18 +1812,33 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                     .equals(
                                             "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken FALSE>")) {
                                 isBooleanTokenFalseSingleton = true;
+                            } else if (field.getName().equals("NIL")) {
+                                isNullSingleton = true;
                             }
-
+                            
+                            if (isNullSingleton && (fieldToReplacementLocal != null)) {
+                                doneSomething = true;
+                                
+                                // Replace references to fields with
+                                // token types.  We treat Nil fields as a nulls.
+                                body.getUnits().insertBefore(
+                                        Jimple.v().newAssignStmt(
+                                                (Local) localToIsNotNullLocal
+                                                .get(stmt.getLeftOp()),
+                                                IntConstant.v(0)), unit);
+                                System.out.println("replacing as Null");
+                            }
                             if ((isBooleanTokenFalseSingleton || isBooleanTokenTrueSingleton)
                                     && (fieldToReplacementLocal != null)) {
                                 doneSomething = true;
 
-                                // Replace references to fields with token types.
-                                // The special fields should never be null
+                                // Replace references to fields with
+                                // token types.  The special fields
+                                // should never be null
                                 body.getUnits().insertBefore(
                                         Jimple.v().newAssignStmt(
                                                 (Local) localToIsNotNullLocal
-                                                        .get(stmt.getLeftOp()),
+                                                .get(stmt.getLeftOp()),
                                                 IntConstant.v(1)), unit);
 
                                 if (debug) {
@@ -2322,9 +2339,9 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                 .getOp2().getType());
 
                         if (op1IsToken && op2IsToken) {
-                            throw new RuntimeException(
-                                    "Unable to handle expression"
-                                            + " of two token types: " + unit);
+//                             throw new RuntimeException(
+//                                     "Unable to handle expression"
+//                                             + " of two token types: " + unit);
                         } else if (op1IsToken
                                 && expr.getOp2().getType().equals(NullType.v())) {
                             doneSomething = true;
