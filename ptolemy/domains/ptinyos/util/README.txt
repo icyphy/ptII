@@ -6,10 +6,10 @@ ptII/vendors to see if we can avoid this problem in Eclipse 3.1.
 I have symlinks in ptII/vendors/ptinyos for nesc and tinyos-1.x.
 
 ---------------------------------------------------------------------------
-How to set up nesc in Eclipse 3.0 so that you can run 
-  $PTII/ptolemy/domains/ptinyos/util/create-nescdumpjar.sh
+How to set up nesC in Eclipse 3.0 so that you can compile nesC Java
+files from Eclipse:
 
-These instructions assume that you have checked out nesc from sourceforge:
+These instructions assume that you have checked out nesc from sourceforge.
 
 In $PTII/vendors/ptinyos
   cvs -d:ext:celaine@cvs.sourceforge.net:/cvsroot/nescc co nesc
@@ -35,10 +35,10 @@ In $PTII/vendors/ptinyos
 6.  Class files should appear in nesc/tools/java/...
 
 ---------------------------------------------------------------------------
-How to set up nesc in Eclipse 3.1 so that you can run 
-  $PTII/ptolemy/domains/ptinyos/util/create-nescdumpjar.sh
+How to set up nesC in Eclipse 3.1 so that you can compile nesC Java
+files from Eclipse:
 
-These instructions assume that you have checked out nesc from sourceforge:
+These instructions assume that you have checked out nesc from sourceforge.
 
 In $PTII/vendors/ptinyos
   cvs -d:ext:celaine@cvs.sourceforge.net:/cvsroot/nescc co nesc
@@ -64,8 +64,8 @@ In $PTII/vendors/ptinyos
 6.  Class files should appear in nesc/tools/java/...
 
 ---------------------------------------------------------------------------
-To run or debug the java applications found these subdirectories under
-Eclipse, you must setup the following pass the following VM arguments:
+To run or debug the java applications found in these subdirectories
+under Eclipse, you must pass the following VM arguments:
 
   -Dorg.xml.sax.driver=org.apache.crimson.parser.XMLReaderImpl
 
