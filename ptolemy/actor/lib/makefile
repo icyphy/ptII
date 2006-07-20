@@ -211,7 +211,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ComputeHistogramIcon.xml \
 	DistributorIcon.xml \
 	GaussianIcon.xml \
-	TriangularIcon.xml \	
+	TriangularIcon.xml \
 	PowerEstimate.xml \
 	SelectIcon.xml \
 	Sinewave.xml \
