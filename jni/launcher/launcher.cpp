@@ -26,6 +26,11 @@
 #include <unistd.h>
 #include <vector>
 
+const char* programName;
+const char* jdkRegistryPath = "/proc/registry/HKEY_LOCAL_MACHINE/SOFTWARE/JavaSoft/Java Development Kit";
+const char* jreRegistryPath = "/proc/registry/HKEY_LOCAL_MACHINE/SOFTWARE/JavaSoft/Java Runtime Environment";
+
+
 struct UsageError : std::runtime_error {
   UsageError(const std::string& description)
   : std::runtime_error(description) {
@@ -89,7 +94,6 @@ public:
   }
   
   std::string findJvmLibraryUsingJreRegistry() const {
-    const char* jreRegistryPath = "/proc/registry/HKEY_LOCAL_MACHINE/SOFTWARE/JavaSoft/Java Runtime Environment";
     std::string version = chooseVersionFromRegistry(jreRegistryPath);
     // What should we do if this points to "client" when we want "server"?
     std::string jvmRegistryPath = std::string(jreRegistryPath) + "/" + version + "/RuntimeLib";
@@ -97,7 +101,6 @@ public:
   }
   
   std::string findJvmLibraryUsingJdkRegistry() const {
-    const char* jdkRegistryPath = "/proc/registry/HKEY_LOCAL_MACHINE/SOFTWARE/JavaSoft/Java Development Kit";
     std::string version = chooseVersionFromRegistry(jdkRegistryPath);
     std::string javaHome = readRegistryFile(std::string(jdkRegistryPath) + "/" + version + "/JavaHome");
     return javaHome + "/jre/bin/client/jvm.dll";
@@ -105,12 +108,21 @@ public:
   
   std::string findWin32JvmLibrary() const {
     std::ostringstream os;
-    os << "Couldn't find jvm.dll - please install a 1.5 or newer JRE or JDK.";
+    os << programName << ": ";
+    os << "Couldn't find jvm.dll in the Windows registry by looking for";
+    os << std::endl;
+    os << jdkRegistryPath;
+    os << std::endl;
+    os << "and";
+    os << std::endl;
+    os << jreRegistryPath;
+    os << std::endl;
+    os << "Please install a 1.5 or newer version JRE or JDK.";
     os << std::endl;
     os << "Error messages were:";
     os << std::endl;
     try {
-      return findJvmLibraryUsingJdkRegistry();
+        return findJvmLibraryUsingJdkRegistry();
     } catch (const std::exception& ex) {
       os << "  ";
       os << ex.what();
@@ -349,7 +361,7 @@ public:
 
 int main(int, char** argv) {
   synchronizeWindowsEnvironment();
-  const char* programName = *argv;
+  programName = *argv;
   ++ argv;
   NativeArguments launcherArguments;
   while (*argv != 0) {
