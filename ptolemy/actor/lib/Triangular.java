@@ -52,6 +52,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  @since Ptolemy II 6.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.actor.lib.Bernoulli
+ @see ptolemy.actor.lib.DiscreteRandomSource
+ @see ptolemy.actor.lib.Rician
+ @see ptolemy.actor.lib.Uniform
  */
 public class Triangular extends RandomSource {
     /** Construct an actor with the given container and name.

@@ -55,6 +55,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  @since Ptolemy II 0.3
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (bilung)
+ @see ptolemy.actor.lib.DiscreteRandomSource
+ @see ptolemy.actor.lib.Rician
+ @see ptolemy.actor.lib.Triangular
+ @see ptolemy.actor.lib.Uniform
  */
 public class Bernoulli extends RandomSource {
     /** Construct an actor with the given container and name.

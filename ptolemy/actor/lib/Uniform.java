@@ -52,6 +52,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  @since Ptolemy II 1.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (cxh)
+ @see ptolemy.actor.lib.Bernoulli
+ @see ptolemy.actor.lib.DiscreteRandomSource
+ @see ptolemy.actor.lib.Rician
+ @see ptolemy.actor.lib.Triangular
  */
 public class Uniform extends RandomSource {
     /** Construct an actor with the given container and name.
