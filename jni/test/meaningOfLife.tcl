@@ -116,6 +116,10 @@ test meaningOfLife-1.4 {Run a model that uses both testDeux and testTrois} {
 } {}
 
 test meaningOfLife-1.5 {Run a model that uses long arrays, but does not run } {
+    # Create the shared library that has the code we want
+    puts "Running 'make shared'"
+    puts "[exec make shared SHAREDBASE=Streaming]"
+
     set modelbase Streaming
     puts "Generating JNI for $modelbase" 
 
