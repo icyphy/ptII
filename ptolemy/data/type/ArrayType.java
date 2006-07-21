@@ -127,6 +127,18 @@ public class ArrayType extends StructuredType {
                     .notSupportedConversionMessage(token, "int"));
         }
 
+        if (resultArray.length < 1) {
+            // Support your local zero length array.
+            // actor/lib/test/auto/NilTokenTypeTest.xml requires this.
+            Class argumentArrayTokenClass = argumentArrayToken.getElementType().getTokenClass();
+            try {
+                Token argumentArrayElementToken = (Token)argumentArrayTokenClass.newInstance();
+                return new ArrayToken(argumentArrayElementToken);
+            } catch (Exception ex) {
+                throw new IllegalActionException(null, ex,
+                        "Failed to construct a " + argumentArrayTokenClass);
+            }
+        }
         return new ArrayToken(resultArray);
     }
 
