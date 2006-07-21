@@ -77,6 +77,13 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         // Otherwise type inference has to propagate through the
         // _initialize method correctly, which is hard.
 
+        if (value.length < 1) {
+            throw new IllegalActionException("ArrayToken(Token[]) called with "
+                    + "a an array of length less than 1.  To create an array "
+                    + "of length 0, use the ArrayToken(Token) constructor "
+                    + "because elements in ArrayToken must have a type.");
+        }
+
         _elementPrototype = value[0];
         Type elementType = value[0].getType();
         int length = value.length;
