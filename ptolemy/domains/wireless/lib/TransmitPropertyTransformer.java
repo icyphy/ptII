@@ -188,11 +188,15 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
      *   the director's action methods throw it.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
         if (input.hasToken(0)) {
             Token inputValue = input.get(0);
             output.send(0, inputValue);
         }
+        // Call super.fire() at the end of fire() instead of at the
+        // start of fire() or else 
+        // wireless/demo/AntennaPattern/TransmitAntennaPattern.xml
+        // will not plot.
+        super.fire();
     }
 
     /** Return true, indicating that execution can continue.
