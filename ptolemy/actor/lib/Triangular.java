@@ -50,6 +50,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  @author Raymond A. Cardillo
  @version $Id$
  @since Ptolemy II 6.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class Triangular extends RandomSource {
     /** Construct an actor with the given container and name.
@@ -111,7 +113,7 @@ public class Triangular extends RandomSource {
     public void fire() throws IllegalActionException {
         mode.update();
         min.update();
-        max.update();        
+        max.update();
         super.fire();
         output.send(0, new DoubleToken(_current));
     }
@@ -120,7 +122,7 @@ public class Triangular extends RandomSource {
     ////                         protected methods                 ////
 
     /** Generate a new random number.
-     *  @exception If parameter values are incorrect.
+     *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
         double minValue = ((DoubleToken) (min.getToken())).doubleValue();
