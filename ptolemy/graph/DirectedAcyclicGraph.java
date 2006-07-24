@@ -196,6 +196,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         for (int i = 0; i < (nodes.length - 1); i++) {
             for (int j = i + 1; j < nodes.length; j++) {
                 if (leastUpperBound(nodes[i], nodes[j]) == null) {
+                    // Uncomment this to find the offending nodes.
+                    // System.out.println(">>>>> No LUB: " + nodes[i] + ", " + nodes[j]);
                     return false;
                 }
             }
