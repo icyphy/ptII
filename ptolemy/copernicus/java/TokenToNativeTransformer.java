@@ -243,6 +243,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                 replaceTokenFields(entityClass, depth, unsafeLocalSet, debug);
             }
 
+//             if(depth == 1) {
+//                 break;
+//             }
+
             for (Iterator classes = classList.iterator(); classes.hasNext();) {
                 SootClass entityClass = (SootClass) classes.next();
 
@@ -665,6 +669,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                 StringConstant.v(typeClass.getName())));
                         doneSomething = true;
                     }
+                } else if (inlinee.getName().equals("isNil")) {
+                    box.setValue(IntConstant.v(0));
                 } else {
                     SootClass declaringClass = inlinee.getDeclaringClass();
 
@@ -1643,6 +1649,24 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                     System.out.println("unit = " + unit);
                 }
 
+                // Hack to work around the presence of NIL fields:
+                // Assume they are null references.
+           //      for (Iterator boxes = unit.getUseAndDefBoxes().iterator(); boxes
+//                         .hasNext();) {
+//                     ValueBox box = (ValueBox) boxes.next();
+//                     Value value = box.getValue();
+//                     if(value instanceof FieldRef) {
+//                         FieldRef ref = (FieldRef)value;
+//                         SootField field = ref.getField();
+//                          if (field.getName().equals("NIL")) {
+//                              doneSomething = true;
+                             
+//                              box.setValue(NullConstant.v());
+//                              System.out.println("replacing as Null");
+//                          }
+//                     }
+//                 }
+
                 if (unit instanceof AssignStmt) {
                     AssignStmt stmt = (AssignStmt) unit;
                     Type assignmentType = stmt.getLeftOp().getType();
@@ -1813,7 +1837,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                             "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken FALSE>")) {
                                 isBooleanTokenFalseSingleton = true;
                             } else if (field.getName().equals("NIL")) {
-                                isNullSingleton = true;
+                                //  isNullSingleton = true;
                             }
                             
                             if (isNullSingleton && (fieldToReplacementLocal != null)) {
