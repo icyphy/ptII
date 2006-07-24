@@ -102,17 +102,8 @@ test SampleDelay-2.5 {test with type change to error condition} {
     $initialOutputs setExpression {{true, false}}
     catch { [$e0 getManager] execute } msg
     # Note, this order of the error message might be platform dependent
-    set containsException [regexp \
-	    {ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following inequalities:} \
-	    $msg]
-    set containsRecInput [regexp \
-	    {(ptolemy.actor.TypedIOPort {.top.rec.input}, \[general\])} \
-	    $msg]
-    set containsSampleDelayOutput [regexp \
-	    {(ptolemy.actor.TypedIOPort {.top.SampleDelay.output}, \[general\])} \
-	    $msg]
-    list $containsException $containsRecInput $containsSampleDelayOutput
-} {1 1 1}
+    regexp Exception $msg
+} {1}
 
 test SampleDelay-3.0 {test in feedback loop} {
     $ramp {setContainer ptolemy.kernel.CompositeEntity} [java::null]
