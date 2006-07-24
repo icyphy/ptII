@@ -40,7 +40,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.data.type.UnsizedMatrixType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalitySolver;
 import ptolemy.graph.InequalityTerm;
@@ -789,8 +789,8 @@ public class TypeSpecializerAnalysis {
                     final InequalityTerm matrixTerm = baseTerm;
                     InequalityTerm returnTypeTerm = (InequalityTerm) new MonotonicFunction() {
                         public Object getValue() throws IllegalActionException {
-                            if (matrixTerm.getValue() instanceof UnsizedMatrixType) {
-                                UnsizedMatrixType type = (UnsizedMatrixType) matrixTerm
+                            if (matrixTerm.getValue() instanceof MatrixType) {
+                                MatrixType type = (MatrixType) matrixTerm
                                         .getValue();
                                 return type.getElementType();
                             } else {

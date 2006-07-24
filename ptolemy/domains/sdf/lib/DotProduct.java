@@ -38,7 +38,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.data.type.UnsizedMatrixType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
@@ -139,8 +139,8 @@ public class DotProduct extends TypedAtomicActor {
             } catch (IllegalActionException e) {
                 throw e;
             }
-        } else if ((input1.getType() instanceof UnsizedMatrixType)
-                && (input2.getType() instanceof UnsizedMatrixType)) {
+        } else if ((input1.getType() instanceof MatrixType)
+                && (input2.getType() instanceof MatrixType)) {
             try {
                 _matrixFire();
             } catch (IllegalActionException e) {
@@ -282,10 +282,10 @@ public class DotProduct extends TypedAtomicActor {
                 Type elType2 = ((ArrayType) type2).getElementType();
                 CPO lattice = TypeLattice.lattice();
                 return lattice.leastUpperBound(elType1, elType2);
-            } else if ((type1 instanceof UnsizedMatrixType)
-                    && (type2 instanceof UnsizedMatrixType)) {
-                Type elType1 = ((UnsizedMatrixType) type1).getElementType();
-                Type elType2 = ((UnsizedMatrixType) type2).getElementType();
+            } else if ((type1 instanceof MatrixType)
+                    && (type2 instanceof MatrixType)) {
+                Type elType1 = ((MatrixType) type1).getElementType();
+                Type elType2 = ((MatrixType) type2).getElementType();
                 CPO lattice = TypeLattice.lattice();
                 return lattice.leastUpperBound(elType1, elType2);
             } else {

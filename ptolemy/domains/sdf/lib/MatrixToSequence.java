@@ -35,7 +35,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
-import ptolemy.data.type.UnsizedMatrixType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -226,11 +226,11 @@ public class MatrixToSequence extends SDFTransformer {
         public Object getValue() {
             Type inputType = _port.getType();
 
-            if (!(inputType instanceof UnsizedMatrixType)) {
+            if (!(inputType instanceof MatrixType)) {
                 return BaseType.UNKNOWN;
             }
 
-            return ((UnsizedMatrixType) inputType).getElementType();
+            return ((MatrixType) inputType).getElementType();
         }
 
         /** Return the variables in this term. If the type of the input port

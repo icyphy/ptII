@@ -384,7 +384,7 @@ public class PtolemyUtilities {
         Chain units = body.getUnits();
 
         if (type instanceof ptolemy.data.type.BaseType
-                || type instanceof ptolemy.data.type.UnsizedMatrixType) {
+                || type instanceof ptolemy.data.type.MatrixType) {
             Local typeLocal = Jimple.v().newLocal("type_" + type.toString(),
                     RefType.v(baseTypeClass));
             body.getLocals().add(typeLocal);
@@ -868,8 +868,8 @@ public class PtolemyUtilities {
         } else if (type instanceof ptolemy.data.type.FixType) {
             ptolemy.data.type.FixType fixType = (ptolemy.data.type.FixType) type;
             return RefType.v(fixType.getTokenClass().getName());
-        } else if (type instanceof ptolemy.data.type.UnsizedMatrixType) {
-            ptolemy.data.type.UnsizedMatrixType matrixType = (ptolemy.data.type.UnsizedMatrixType) type;
+        } else if (type instanceof ptolemy.data.type.MatrixType) {
+            ptolemy.data.type.MatrixType matrixType = (ptolemy.data.type.MatrixType) type;
             return RefType.v(matrixType.getTokenClass().getName());
         } else {
             throw new RuntimeException("unknown type = " + type);
@@ -1522,7 +1522,7 @@ public class PtolemyUtilities {
 
     public static SootMethod matrixGetElementAsTokenMethod;
 
-    // Soot Class representing the ptolemy.data.type.UnsizedMatrixType
+    // Soot Class representing the ptolemy.data.type.MatrixType
     // class.
     public static SootClass matrixTypeClass;
 
@@ -2080,7 +2080,7 @@ public class PtolemyUtilities {
         baseTypeClass = Scene.v().loadClassAndSupport(
                 "ptolemy.data.type.BaseType");
         matrixTypeClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.type.UnsizedMatrixType");
+                "ptolemy.data.type.MatrixType");
         unknownTypeField = baseTypeClass.getFieldByName("UNKNOWN");
         generalTypeField = baseTypeClass.getFieldByName("GENERAL");
         booleanTypeField = baseTypeClass.getFieldByName("BOOLEAN");

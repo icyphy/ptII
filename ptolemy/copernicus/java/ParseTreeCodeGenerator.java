@@ -65,7 +65,7 @@ import ptolemy.data.expr.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.RecordType;
-import ptolemy.data.type.UnsizedMatrixType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import soot.ArrayType;
@@ -324,7 +324,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                     throw new IllegalActionException("Wrong number of indices "
                             + "when referencing " + node.getFunctionName());
                 }
-            } else if (type instanceof UnsizedMatrixType) {
+            } else if (type instanceof MatrixType) {
                 if (argCount == 2) {
                     // matrix..
                     Local tokenCastLocal = Jimple.v().newLocal("indexToken",
