@@ -410,7 +410,7 @@ test PtParser-7.0 {Construct a Parser, try simple functional if then else} {
     catch {[[ $p1 {generateParseTree String} "(true)?(7L):(6.0)\n"] evaluateParseTree] toString} res3
  
     list [$res1 toString] [$res2 toString] $res3
-} {7 7.0 {ptolemy.kernel.util.IllegalActionException: Cannot convert token 7L to type scalar, because scalar is not a concrete type.}}
+} {7 7.0 7L}
 
 ######################################################################
 ####

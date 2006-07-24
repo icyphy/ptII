@@ -195,7 +195,7 @@ public class UtilityFunctions {
      *  @return An empty array.
      */
     public static ArrayToken emptyArray(Token prototype) {
-        return new ArrayToken(prototype);
+        return new ArrayToken(prototype.getType());
     }
 
     /** Extract a sub-array consisting of all of the elements of an
@@ -280,8 +280,7 @@ public class UtilityFunctions {
             resultArray = (Token[]) (result.toArray(resultArray));
             return new ArrayToken(resultArray);
         } else {
-            Token prototype = array.getElementPrototype();
-            return new ArrayToken(prototype);
+            return new ArrayToken(array.getElementType());
         }
     }
 
@@ -388,8 +387,7 @@ public class UtilityFunctions {
                 throw new InternalErrorException(e);
             }
         } else {
-            Token prototype = array.getElementPrototype();
-            return new ArrayToken(prototype);
+            return new ArrayToken(array.getElementType());
         }
     }
 

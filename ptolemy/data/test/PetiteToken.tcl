@@ -162,7 +162,8 @@ test PetiteToken-3.0 {Test adding petites.} {
     set res2 [$p addReverse $p]
 
     list [$res1 toString] [$res2 toString]
-} {0.2p 0.2p} {Known Failure}
+} {0.2p 0.2p}
+
 ######################################################################
 ####
 # 
@@ -253,7 +254,7 @@ test PetiteToken-5.5 {Test closeness between petites. \
     set res2 [$tok1 {isCloseTo ptolemy.data.Token} $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {true false} {Known Failure}
+} {true false}
 
 ######################################################################
 ####
@@ -326,7 +327,7 @@ test PetiteToken-5.8 {Test closeness between petites around 0} {
 
     list [$res1 toString] [$res2 toString] [$res3 toString] \
 	    [$res4 toString] [$res5 toString] [$res6 toString]
-} {false false true false false true} {Known Failure}
+} {false false true false false true}
 
 test PetiteToken-5.9 {Test closeness between a double and a String} {
     set doubleToken [java::new {ptolemy.data.PetiteToken double} 0.59]

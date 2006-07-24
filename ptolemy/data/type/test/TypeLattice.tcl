@@ -213,11 +213,38 @@ test TypeLattice-3.4 {compare different structured types} {
     set v [java::new {ptolemy.data.type.Type[]} 2 [list $nt $vt]]
 
     set r [java::new {ptolemy.data.type.RecordType} $l $v]
+    set double [java::field ptolemy.data.type.BaseType DOUBLE]
+    set doubleArrayType [java::new ptolemy.data.type.ArrayType $double]
+    set lattice [java::new ptolemy.data.type.TypeLattice]
+    list [$lattice compare $doubleArrayType $r] [$lattice compare $r $doubleArrayType]
+} {2 2}
+
+test TypeLattice-3.4.1 {array of strings is greater than a record type} {
+    set l [java::new {String[]} {2} {{name} {value}}]
+
+    set nt [java::field ptolemy.data.type.BaseType STRING]
+    set vt [java::field ptolemy.data.type.BaseType DOUBLE]
+    set v [java::new {ptolemy.data.type.Type[]} 2 [list $nt $vt]]
+
+    set r [java::new {ptolemy.data.type.RecordType} $l $v]
     set str [java::field ptolemy.data.type.BaseType STRING]
     set strArrayType [java::new ptolemy.data.type.ArrayType $str]
     set lattice [java::new ptolemy.data.type.TypeLattice]
     list [$lattice compare $strArrayType $r] [$lattice compare $r $strArrayType]
-} {2 2}
+} {1 -1}
+
+test TypeLattice-3.4.2 {string is greater than a record type} {
+    set l [java::new {String[]} {2} {{name} {value}}]
+
+    set nt [java::field ptolemy.data.type.BaseType STRING]
+    set vt [java::field ptolemy.data.type.BaseType DOUBLE]
+    set v [java::new {ptolemy.data.type.Type[]} 2 [list $nt $vt]]
+
+    set r [java::new {ptolemy.data.type.RecordType} $l $v]
+    set str [java::field ptolemy.data.type.BaseType STRING]
+    set lattice [java::new ptolemy.data.type.TypeLattice]
+    list [$lattice compare $str $r] [$lattice compare $r $str]
+} {1 -1}
 
 test TypeLattice-3.5 {compare array types and basic types} {
     set type1 [java::field ptolemy.data.type.BaseType INT]
@@ -269,7 +296,7 @@ test TypeLattice-3.8  {compare user and general} {
     list [[$lattice leastUpperBound $type1 $type2] toString] [[$lattice leastUpperBound $type2 $type1] toString] [[$lattice greatestLowerBound $type1 $type2] toString] [[$lattice greatestLowerBound $type2 $type1] toString]
 } {general general {{int}} {{int}}}
 
-test TypeLattice-3.9 {compare different structured types} {
+test TypeLattice-3.9 {LUB of record and array of strings is array of strings} {
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::field ptolemy.data.type.BaseType STRING]
@@ -281,8 +308,20 @@ test TypeLattice-3.9 {compare different structured types} {
     set arrayStrings [java::new ptolemy.data.type.ArrayType $str]
     set lattice [[java::new ptolemy.data.type.TypeLattice] lattice]
     list [[$lattice leastUpperBound $record $arrayStrings] toString] [[$lattice leastUpperBound $arrayStrings $record] toString] [[$lattice greatestLowerBound $record $arrayStrings] toString] [[$lattice greatestLowerBound $arrayStrings $record] toString]
+} {{{string}} {{string}} {{name = string, value = double}} {{name = string, value = double}}}
 
-} {{{general}} {{general}} unknown unknown}
+test TypeLattice-3.9.1 {LUB of record and array of doubles is array of strings} {
+    set l [java::new {String[]} {2} {{name} {value}}]
+
+    set string [java::field ptolemy.data.type.BaseType STRING]
+    set double [java::field ptolemy.data.type.BaseType DOUBLE]
+    set v [java::new {ptolemy.data.type.Type[]} 2 [list $string $double]]
+
+    set record [java::new {ptolemy.data.type.RecordType} $l $v]
+    set arrayDoubles [java::new ptolemy.data.type.ArrayType $double]
+    set lattice [[java::new ptolemy.data.type.TypeLattice] lattice]
+    list [[$lattice leastUpperBound $record $arrayDoubles] toString] [[$lattice leastUpperBound $arrayDoubles $record] toString] [[$lattice greatestLowerBound $record $arrayDoubles] toString] [[$lattice greatestLowerBound $arrayDoubles $record] toString]
+} {{{string}} {{string}} unknown unknown}
 
 test TypeLattice-4.0 {compare scalar and array} {
     set int [java::field ptolemy.data.type.BaseType INT]
@@ -290,3 +329,33 @@ test TypeLattice-4.0 {compare scalar and array} {
     set lattice [java::new ptolemy.data.type.TypeLattice]
     list [$lattice compare $intArrayType $int] [$lattice compare $int $intArrayType]
 } {1 -1}
+
+test TypeLattice-4.1 {compare scalar and array} {
+    set int [java::field ptolemy.data.type.BaseType INT]
+    set intArrayType [java::new ptolemy.data.type.ArrayType $int]
+    set lattice [java::new ptolemy.data.type.TypeLattice]
+    list [[$lattice leastUpperBound $intArrayType $int] toString] [[$lattice leastUpperBound $int $intArrayType] toString]
+} {{{int}} {{int}}}
+
+test TypeLattice-4.2 {compare scalar and array} {
+    set int [java::field ptolemy.data.type.BaseType INT]
+    set intArrayType [java::new ptolemy.data.type.ArrayType $int]
+    set boolean [java::field ptolemy.data.type.BaseType BOOLEAN]
+    set lattice [java::new ptolemy.data.type.TypeLattice]
+    list [$lattice compare $intArrayType $boolean] [$lattice compare $boolean $intArrayType]
+} {2 2}
+
+test TypeLattice-4.3 {compare boolean and integer array} {
+    set int [java::field ptolemy.data.type.BaseType INT]
+    set intArrayType [java::new ptolemy.data.type.ArrayType $int]
+    set boolean [java::field ptolemy.data.type.BaseType BOOLEAN]
+    set lattice [java::new ptolemy.data.type.TypeLattice]
+    list [[$lattice leastUpperBound $intArrayType $boolean] toString] [[$lattice leastUpperBound $boolean $intArrayType] toString]
+} {{{matrix}} {{matrix}}}
+
+test TypeLattice-4.4 {compare boolean and int} {
+    set int [java::field ptolemy.data.type.BaseType INT]
+    set boolean [java::field ptolemy.data.type.BaseType BOOLEAN]
+    set lattice [java::new ptolemy.data.type.TypeLattice]
+    list [[$lattice leastUpperBound $int $boolean] toString] [[$lattice leastUpperBound $boolean $int] toString]
+} {matrix matrix}

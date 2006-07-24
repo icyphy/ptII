@@ -42,4 +42,5 @@ package ptolemy.data;
  @Pt.AcceptedRating Green (cxh)
  */
 public interface Numerical {
+    // FIXME: No longer needed.
 }

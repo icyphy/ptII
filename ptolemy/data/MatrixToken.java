@@ -36,7 +36,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FixType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.data.type.UnsizedMatrixType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -340,7 +340,7 @@ public abstract class MatrixToken extends Token {
         // FIXME: why are type2 and type3 isgnored here?
         if (type1 instanceof ArrayType) {
             Type elementType = ((ArrayType) type1).getElementType();
-            return UnsizedMatrixType.getMatrixTypeForElementType(elementType);
+            return MatrixType.getMatrixTypeForElementType(elementType);
         } else {
             return BaseType.UNKNOWN;
         }
@@ -355,6 +355,22 @@ public abstract class MatrixToken extends Token {
     public Complex[][] complexMatrix() throws IllegalActionException {
         throw new IllegalActionException(notSupportedConversionMessage(this,
                 "complex matrix"));
+    }
+
+    /** If the token is an instance of a subclass of MatrixToken,
+     *  then return the token. Otherwise, throw an exception.
+     *  @param token The token to be converted to a MatrixToken.
+     *  @return An instance of MatrixToken.
+     *  @exception IllegalActionException If the argument is not
+     *   already an instance of MatrixToken.
+     */
+    public static MatrixToken convert(Token token)
+            throws IllegalActionException {
+        if (token instanceof MatrixToken) {
+            return (MatrixToken) token;
+        }
+        throw new IllegalActionException(
+                notSupportedIncomparableConversionMessage(token, "matrix"));
     }
 
     /** Create a new instance of a MatrixToken subclass with the given
@@ -901,7 +917,7 @@ public abstract class MatrixToken extends Token {
      */
     public final Token multiply(Token rightArgument)
             throws IllegalActionException {
-        // UnsizedMatrixType type = (UnsizedMatrixType)getType();
+        // MatrixType type = (MatrixType)getType();
         // Get the corresponding element type for this matrix type,
         // and try a scalar operation.
         Type elementType = getElementType();
@@ -1289,8 +1305,8 @@ public abstract class MatrixToken extends Token {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type toArrayReturnType(Type type) {
-        if (type instanceof UnsizedMatrixType) {
-            Type elementType = ((UnsizedMatrixType) type).getElementType();
+        if (type instanceof MatrixType) {
+            Type elementType = ((MatrixType) type).getElementType();
             return new ArrayType(elementType);
         } else {
             return BaseType.UNKNOWN;

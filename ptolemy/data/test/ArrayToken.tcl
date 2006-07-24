@@ -72,10 +72,10 @@ test ArrayToken-1.1.1 {Create an double array using expression} {
 ######################################################################
 ####
 # 
-test ArrayToken-1.1.2 {One element is the wrong type} {
-    catch {java::new {ptolemy.data.ArrayToken String} "{1, nil, {1}}"} errMsg
-    list $errMsg	
-} {{ptolemy.kernel.util.IllegalActionException: Elements of the array do not have the same type:value[0]={1} (type: {int}) value[1]={nil} (type: {niltype})}}
+test ArrayToken-1.1.2 {Odd mixture of types} {
+    set token [java::new {ptolemy.data.ArrayToken String} "{1, nil, {1}}"]
+    $token toString	
+} {{{1}, {nil}, {1}}}
 
 ######################################################################
 ####
@@ -93,7 +93,7 @@ test ArrayToken-1.2 {ArrayTokens of length 0 are supported.  Use the constructor
     set valArray [java::new {ptolemy.data.IntToken[]} 0 ]
     catch {java::new {ptolemy.data.ArrayToken} $valArray} errMsg
     set intToken [java::new {ptolemy.data.IntToken} 0]
-    set valToken [java::new {ptolemy.data.ArrayToken} $intToken]
+    set valToken [java::new {ptolemy.data.ArrayToken ptolemy.data.type.Type} [$intToken getType]]
     list $errMsg [$valToken toString] [$valToken isNil]
 } {{ptolemy.kernel.util.IllegalActionException: ArrayToken(Token[]) called with a an array of length less than 1.  To create an array of length 0, use the ArrayToken(Token) constructor because elements in ArrayToken must have a type.} {{}} 0}
 
@@ -147,7 +147,7 @@ test ArrayToken-1.6 {Create an array of DoubleTokens, second one nil} {
 # 
 test ArrayToken-1.7.1 {Create a nil Token, but not a nil ArrayToken} {
     set valToken [java::field ptolemy.data.Token NIL]
-    set valToken2 [java::new {ptolemy.data.ArrayToken ptolemy.data.Token} \
+    set valToken2 [java::new {ptolemy.data.ArrayToken ptolemy.data.type.Type} \
 		      [java::null]]
     list [$valToken toString] [$valToken isNil] \
 	[$valToken2 toString] [$valToken2 isNil]
@@ -158,8 +158,8 @@ test ArrayToken-1.7.1 {Create a nil Token, but not a nil ArrayToken} {
 # 
 test ArrayToken-1.7.2 {Create a Double ArrayToken} {
     set val0 [java::new ptolemy.data.DoubleToken 2.0]
-    set valToken [java::new {ptolemy.data.ArrayToken ptolemy.data.Token} \
-		      $val0]
+    set valToken [java::new {ptolemy.data.ArrayToken ptolemy.data.type.Type} \
+		      [$val0 getType]]
     list [$valToken toString] [$valToken isNil]
 } {{{}} 0}
 
@@ -749,9 +749,9 @@ test ArrayToken-7.3 {extract nothing, increase code coverage} {
 ######################################################################
 ####
 # 
-test ArrayToken-8.0 {getElementPrototype} {
+test ArrayToken-8.0 {getElementType} {
     set valToken [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
-    [[$valToken getElementPrototype] getType] toString
+    [$valToken getElementType] toString
 } {int}
 
 ######################################################################

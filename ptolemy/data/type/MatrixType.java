@@ -52,24 +52,27 @@ import ptolemy.math.FixPoint;
 //// MatrixType
 
 /**
- The base type of matrix token classes.
+ The base type of matrix token classes. This type functions as a union
+ of the various matrix types. It allows for the creation of arrays
+ that consist of diverse matrix types, because the array type will
+ be {matrix}.
 
- @author Steve Neuendorffer
+ @author Steve Neuendorffer and Edward A. Lee
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red
  */
-public abstract class UnsizedMatrixType extends StructuredType implements
+public class MatrixType extends StructuredType implements
         Serializable {
-
+    
     /** Construct a new matrix type that represents matrix tokens of the
      *  given class with the given number of rows and columns.
-     *  @param c The class.
-     *  @param type The type.
+     *  @param c The token class.
+     *  @param type The element type.
      *  @param name The name.
      */
-    public UnsizedMatrixType(Class c, Type type, String name) {
+    public MatrixType(Class c, Type type, String name) {
         _tokenClass = c;
         _elementType = type;
         _name = name;
@@ -86,14 +89,16 @@ public abstract class UnsizedMatrixType extends StructuredType implements
         return this;
     }
 
-    /** Convert the specified token to a token having the type
-     *  represented by this object.
+    /** If the argument is an instance of this class or a subclass,
+     *  then return the token. Otherwise, throw an exception.
      *  @param token A token.
-     *  @return A token.
-     *  @exception IllegalActionException If lossless conversion cannot
-     *   be done.
+     *  @return An instance of this class.
+     *  @exception IllegalActionException If the argument is not
+     *   an instance of this class.
      */
-    public abstract Token convert(Token token) throws IllegalActionException;
+    public Token convert(Token token) throws IllegalActionException {
+        return MatrixToken.convert(token);
+    }
 
     /** Determine if the argument represents the same MatrixType as this
      *  object.
@@ -102,11 +107,11 @@ public abstract class UnsizedMatrixType extends StructuredType implements
      *  same class, with the same number of rows and columns.
      */
     public boolean equals(Object object) {
-        if (!(object instanceof UnsizedMatrixType)) {
+        if (!(object instanceof MatrixType)) {
             return false;
         }
 
-        UnsizedMatrixType matrixType = (UnsizedMatrixType) object;
+        MatrixType matrixType = (MatrixType) object;
 
         if (matrixType.getTokenClass() != _tokenClass) {
             return false;
@@ -118,7 +123,8 @@ public abstract class UnsizedMatrixType extends StructuredType implements
     /** Return the type of the elements contained in an instance of
      *  this matrix type.  Tokens of the type returned by this method
      *  will be returned by the getElementAsToken of matrices that
-     *  have this type.
+     *  have this type. If this is an instance of this base class
+     *  rather than the specific matrix types, then return null.
      *  @return The type of the elements. 
      */
     public Type getElementType() {
@@ -132,9 +138,9 @@ public abstract class UnsizedMatrixType extends StructuredType implements
      *  @exception IllegalActionException If the elementType is not a
      *  type that has a corresponding matrix type.
      */
-    public static UnsizedMatrixType getMatrixTypeForElementType(Type elementType)
+    public static MatrixType getMatrixTypeForElementType(Type elementType)
             throws IllegalActionException {
-        UnsizedMatrixType matrixType;
+        MatrixType matrixType;
 
         if (elementType.equals(BaseType.UNKNOWN)) {
             throw new IllegalActionException("Cannot resolve type for "
@@ -204,8 +210,8 @@ public abstract class UnsizedMatrixType extends StructuredType implements
         return true;
     }
 
-    /** Test if this type corresponds to an instantiable token
-     *  classes.
+    /** Return true, indicating that instances of this type can
+     *  exist.
      *  @return True.
      */
     public boolean isInstantiable() {
@@ -243,13 +249,13 @@ public abstract class UnsizedMatrixType extends StructuredType implements
             throws IllegalActionException {
         if (newType._getRepresentative() != _getRepresentative()) {
             throw new InternalErrorException(
-                    "UnsizedMatrixType.updateType: Cannot "
+                    "MatrixType.updateType: Cannot "
                             + "updateType the element type to " + newType + ".");
         }
     }
 
     /** The boolean matrix data type. */
-    public static class BooleanMatrixType extends UnsizedMatrixType {
+    public static class BooleanMatrixType extends MatrixType {
         public BooleanMatrixType() {
             super(BooleanMatrixToken.class, BaseType.BOOLEAN, "[boolean]");
         }
@@ -267,7 +273,7 @@ public abstract class UnsizedMatrixType extends StructuredType implements
     }
 
     /** The complex matrix data type. */
-    public static class ComplexMatrixType extends UnsizedMatrixType {
+    public static class ComplexMatrixType extends MatrixType {
         public ComplexMatrixType() {
             super(ComplexMatrixToken.class, BaseType.COMPLEX, "[complex]");
         }
@@ -289,7 +295,7 @@ public abstract class UnsizedMatrixType extends StructuredType implements
     }
 
     /** The double matrix data type. */
-    public static class DoubleMatrixType extends UnsizedMatrixType {
+    public static class DoubleMatrixType extends MatrixType {
         public DoubleMatrixType() {
             super(DoubleMatrixToken.class, BaseType.DOUBLE, "[double]");
         }
@@ -310,7 +316,7 @@ public abstract class UnsizedMatrixType extends StructuredType implements
     }
 
     /** The integer matrix data type. */
-    public static class IntMatrixType extends UnsizedMatrixType {
+    public static class IntMatrixType extends MatrixType {
         public IntMatrixType() {
             super(IntMatrixToken.class, BaseType.INT, "[int]");
         }
@@ -331,7 +337,7 @@ public abstract class UnsizedMatrixType extends StructuredType implements
     }
 
     /** The fix matrix data type. */
-    public static class FixMatrixType extends UnsizedMatrixType {
+    public static class FixMatrixType extends MatrixType {
         public FixMatrixType() {
             super(FixMatrixToken.class, BaseType.UNSIZED_FIX, "[fixedpoint]");
         }
@@ -352,7 +358,7 @@ public abstract class UnsizedMatrixType extends StructuredType implements
     }
 
     /** The long matrix data type. */
-    public static class LongMatrixType extends UnsizedMatrixType {
+    public static class LongMatrixType extends MatrixType {
         public LongMatrixType() {
             super(LongMatrixToken.class, BaseType.LONG, "[long]");
         }
@@ -438,9 +444,13 @@ public abstract class UnsizedMatrixType extends StructuredType implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** The type of MatrixToken that this class represents. */
     private Class _tokenClass;
 
+    /** The type of the elements of the matrix, or ScalarType for this base class. */
     private Type _elementType;
 
+    /** The name of this instance. */
     private String _name;
 }

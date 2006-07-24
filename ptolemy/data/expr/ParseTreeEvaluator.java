@@ -169,7 +169,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             tokens[i] = elementType.convert(tokens[i]);
         }
 
-        _evaluatedChildToken = (new ArrayToken(tokens));
+        _evaluatedChildToken = (new ArrayToken(elementType, tokens));
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);

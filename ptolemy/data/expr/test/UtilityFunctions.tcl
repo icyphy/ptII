@@ -62,7 +62,7 @@ test UtilityFunctions-1.3.1 {Check find(ArrayToken)} {
     catch {java::call ptolemy.data.expr.UtilityFunctions find $arrayTokenWrong} errMsg
 
     # Create an empty ArrayToken with type boolean
-    set arrayToken3 [java::new {ptolemy.data.ArrayToken} 	[java::field ptolemy.data.BooleanToken TRUE]]
+    set arrayToken3 [java::new {ptolemy.data.ArrayToken ptolemy.data.type.Type} [[java::field ptolemy.data.BooleanToken TRUE] getType]]
     set r3 [java::call ptolemy.data.expr.UtilityFunctions find $arrayToken3]
 
     list [$r1 toString] [$r2 toString] $errMsg [$r3 toString]
@@ -90,7 +90,7 @@ test UtilityFunctions-1.3.2 {Check find(ArrayToken, Token)} {
 	find $arrayTokenWrong $intToken1]
 
     # Create an empty ArrayToken with type Int
-    set arrayToken3 [java::new {ptolemy.data.ArrayToken} 	[java::field ptolemy.data.IntToken ONE]]
+    set arrayToken3 [java::new {ptolemy.data.ArrayToken ptolemy.data.type.Type} [[java::field ptolemy.data.IntToken ONE] getType]]
     set r4 [java::call ptolemy.data.expr.UtilityFunctions find \
 	$arrayToken3 $intToken1]
 

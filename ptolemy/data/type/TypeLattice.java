@@ -648,7 +648,8 @@ public class TypeLattice {
             _basicLattice.addNodeWeight(BaseType.LONG_MATRIX);
             _basicLattice.addNodeWeight(BaseType.MATRIX);
             _basicLattice.addNodeWeight(BaseType.UNKNOWN);
-            _basicLattice.addNodeWeight(BaseType.NUMERICAL);
+            // NOTE: Removed NUMERICAL from the type lattice, EAL 7/22/06.
+            // _basicLattice.addNodeWeight(BaseType.NUMERICAL);
             _basicLattice.addNodeWeight(BaseType.OBJECT);
             _basicLattice.addNodeWeight(BaseType.XMLTOKEN);
             _basicLattice.addNodeWeight(BaseType.SCALAR);
@@ -672,11 +673,12 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.BOOLEAN, BaseType.BOOLEAN_MATRIX);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.BOOLEAN);
 
-            _basicLattice.addEdge(BaseType.NUMERICAL, BaseType.MATRIX);
-            _basicLattice.addEdge(BaseType.FIX_MATRIX, BaseType.NUMERICAL);
-            _basicLattice.addEdge(BaseType.SCALAR, BaseType.NUMERICAL);
-            _basicLattice.addEdge(BaseType.LONG_MATRIX, BaseType.NUMERICAL);
-            _basicLattice.addEdge(BaseType.COMPLEX_MATRIX, BaseType.NUMERICAL);
+            // NOTE: Removed NUMERICAL from the type lattice, EAL 7/22/06.
+            // _basicLattice.addEdge(BaseType.NUMERICAL, BaseType.MATRIX);
+            _basicLattice.addEdge(BaseType.FIX_MATRIX, BaseType.MATRIX);
+            _basicLattice.addEdge(BaseType.SCALAR, BaseType.MATRIX);
+            _basicLattice.addEdge(BaseType.LONG_MATRIX, BaseType.MATRIX);
+            _basicLattice.addEdge(BaseType.COMPLEX_MATRIX, BaseType.MATRIX);
 
             _basicLattice.addEdge(BaseType.UNSIZED_FIX, BaseType.FIX_MATRIX);
             _basicLattice.addEdge(BaseType.SIZED_FIX, BaseType.UNSIZED_FIX);
@@ -693,6 +695,8 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.DOUBLE_MATRIX,
                     BaseType.COMPLEX_MATRIX);
             _basicLattice.addEdge(BaseType.DOUBLE, BaseType.DOUBLE_MATRIX);
+            _basicLattice.addEdge(BaseType.INT, BaseType.DOUBLE);
+            _basicLattice.addEdge(BaseType.DOUBLE, BaseType.SCALAR);
 
             _basicLattice.addEdge(BaseType.PETITE, BaseType.DOUBLE);
             _basicLattice.addEdge(BaseType.COMPLEX, BaseType.SCALAR);
@@ -705,10 +709,10 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.EVENT, BaseType.GENERAL);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.EVENT);
 
-            _basicLattice.addEdge(arrayRep, BaseType.GENERAL);
+            _basicLattice.addEdge(arrayRep, BaseType.STRING);
             _basicLattice.addEdge(BaseType.UNKNOWN, arrayRep);
 
-            _basicLattice.addEdge(recordRep, BaseType.GENERAL);
+            _basicLattice.addEdge(recordRep, BaseType.STRING);
             _basicLattice.addEdge(BaseType.UNKNOWN, recordRep);
 
             _basicLattice.addEdge(unionRep, BaseType.GENERAL);
@@ -716,9 +720,10 @@ public class TypeLattice {
 
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.NIL);
             _basicLattice.addEdge(BaseType.NIL, BaseType.BOOLEAN);
-            _basicLattice.addEdge(BaseType.NIL, BaseType.DOUBLE);
-            _basicLattice.addEdge(BaseType.NIL, BaseType.INT);
-            _basicLattice.addEdge(BaseType.NIL, BaseType.LONG);
+            // NOTE: Redundant, given edge to UnsignedByte
+            // _basicLattice.addEdge(BaseType.NIL, BaseType.DOUBLE);
+            // _basicLattice.addEdge(BaseType.NIL, BaseType.LONG);
+            // _basicLattice.addEdge(BaseType.NIL, BaseType.INT);
             _basicLattice.addEdge(BaseType.NIL, BaseType.UNSIGNED_BYTE);
 
             // FIXME: Replace this with an assert when we move to 1.5

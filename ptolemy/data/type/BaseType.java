@@ -39,7 +39,7 @@ import ptolemy.data.EventToken;
 import ptolemy.data.FixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
-import ptolemy.data.Numerical;
+import ptolemy.data.MatrixToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.PetiteToken;
 import ptolemy.data.ScalarToken;
@@ -324,7 +324,7 @@ public abstract class BaseType implements Type, Serializable {
     public static final BooleanType BOOLEAN = new BooleanType();
 
     /** The boolean matrix data type. */
-    public static final UnsizedMatrixType.BooleanMatrixType BOOLEAN_MATRIX = new UnsizedMatrixType.BooleanMatrixType();
+    public static final MatrixType.BooleanMatrixType BOOLEAN_MATRIX = new MatrixType.BooleanMatrixType();
 
     /** The unsigned byte data type. */
     public static class UnsignedByteType extends BaseType {
@@ -363,7 +363,7 @@ public abstract class BaseType implements Type, Serializable {
     public static final ComplexType COMPLEX = new ComplexType();
 
     /** The complex matrix data type. */
-    public static final UnsizedMatrixType.ComplexMatrixType COMPLEX_MATRIX = new UnsizedMatrixType.ComplexMatrixType();
+    public static final MatrixType.ComplexMatrixType COMPLEX_MATRIX = new MatrixType.ComplexMatrixType();
 
     /** The double data type. */
     public static class DoubleType extends BaseType {
@@ -384,7 +384,7 @@ public abstract class BaseType implements Type, Serializable {
     public static final DoubleType DOUBLE = new DoubleType();
 
     /** The double matrix data type. */
-    public static final UnsizedMatrixType.DoubleMatrixType DOUBLE_MATRIX = new UnsizedMatrixType.DoubleMatrixType();
+    public static final MatrixType.DoubleMatrixType DOUBLE_MATRIX = new MatrixType.DoubleMatrixType();
 
     /** The fix data type. */
     public static class UnsizedFixType extends BaseType {
@@ -414,7 +414,7 @@ public abstract class BaseType implements Type, Serializable {
     public static final FixType SIZED_FIX = FixType.BOTTOM;
 
     /** The fix matrix data type. */
-    public static final UnsizedMatrixType.FixMatrixType FIX_MATRIX = new UnsizedMatrixType.FixMatrixType();
+    public static final MatrixType.FixMatrixType FIX_MATRIX = new MatrixType.FixMatrixType();
 
     /** The integer data type. */
     public static class IntType extends BaseType {
@@ -435,7 +435,7 @@ public abstract class BaseType implements Type, Serializable {
     public static final IntType INT = new IntType();
 
     /** The integer matrix data type. */
-    public static final UnsizedMatrixType.IntMatrixType INT_MATRIX = new UnsizedMatrixType.IntMatrixType();
+    public static final MatrixType.IntMatrixType INT_MATRIX = new MatrixType.IntMatrixType();
 
     /** The long integer data type. */
     public static class LongType extends BaseType {
@@ -456,12 +456,11 @@ public abstract class BaseType implements Type, Serializable {
     public static final LongType LONG = new LongType();
 
     /** The long integer matrix data type. */
-    public static final UnsizedMatrixType.LongMatrixType LONG_MATRIX = new UnsizedMatrixType.LongMatrixType();
-
-    /** The matrix data type: The least upper bound of all the matrix types. */
-    public static final TopMatrixType MATRIX = TopMatrixType.getInstance();
+    public static final MatrixType.LongMatrixType LONG_MATRIX = new MatrixType.LongMatrixType();
 
     /** The numerical data type. */
+    // NOTE: Removed NUMERICAL from the type lattice, EAL 6/22/06.
+    /*
     public static class NumericalType extends BaseType {
         private NumericalType() {
             super(Numerical.class, "numerical");
@@ -478,9 +477,13 @@ public abstract class BaseType implements Type, Serializable {
             return 7;
         }
     }
+    */
 
     /** The numerical data type. */
+    // NOTE: Removed NUMERICAL from the type lattice, EAL 6/22/06.
+    /*
     public static final NumericalType NUMERICAL = new NumericalType();
+    */
 
     /** The object data type. */
     public static class ObjectType extends BaseType {
@@ -525,17 +528,23 @@ public abstract class BaseType implements Type, Serializable {
         }
 
         public Token convert(Token t) throws IllegalActionException {
-            throw new IllegalActionException("Cannot convert token " + t
-                    + " to type scalar, because scalar is not a concrete type.");
+            return ScalarToken.convert(t);
         }
 
         public int getTypeHash() {
             return 9;
         }
+
+        public boolean isInstantiable() {
+            return true;
+        }
     }
 
     /** The scalar data type: The least upper bound of all the scalar types. */
     public static final ScalarType SCALAR = new ScalarType();
+    
+    /** The matrix data type: The least upper bound of all the matrix types. */
+    public static final MatrixType MATRIX = new MatrixType(MatrixToken.class, SCALAR, "matrix");
 
     /** The string data type. */
     public static class StringType extends BaseType {
@@ -672,8 +681,10 @@ public abstract class BaseType implements Type, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The class of tokens with this type. */
     private Class _tokenClass;
 
+    /** The name of the type. */
     private String _name;
 
     /** A map from type name to the type for all base types. */

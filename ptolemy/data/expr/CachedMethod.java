@@ -38,7 +38,7 @@ import ptolemy.data.MatrixToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.data.type.UnsizedMatrixType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
@@ -381,9 +381,9 @@ public class CachedMethod {
             for (int i = 0; i < argumentTypes.length; i++) {
                 // System.out.println("argType[" + i + "] = "
                 //        + argumentTypes[i].getClass());
-                if (argumentTypes[i] instanceof UnsizedMatrixType) {
+                if (argumentTypes[i] instanceof MatrixType) {
                     hasArray = true;
-                    newArgTypes[i] = ((UnsizedMatrixType) argumentTypes[i])
+                    newArgTypes[i] = ((MatrixType) argumentTypes[i])
                             .getElementType();
                     isArrayArg[i] = true;
                 } else {
@@ -1428,7 +1428,7 @@ public class CachedMethod {
             }
 
             Type elementType = _cachedMethod.getReturnType();
-            return UnsizedMatrixType.getMatrixTypeForElementType(elementType);
+            return MatrixType.getMatrixTypeForElementType(elementType);
         }
 
         /** Return an appropriate description of the method being invoked.

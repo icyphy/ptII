@@ -39,7 +39,7 @@ import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeConstant;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.data.type.UnsizedMatrixType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -160,8 +160,8 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                             + "' because it does not have an array type.");
                 }
             } else if (argCount == 2) {
-                if (baseType instanceof UnsizedMatrixType) {
-                    _setType(node, ((UnsizedMatrixType) baseType)
+                if (baseType instanceof MatrixType) {
+                    _setType(node, ((MatrixType) baseType)
                             .getElementType());
                     return;
                 } else {
@@ -414,7 +414,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type elementType = (Type) TypeLattice.lattice().leastUpperBound(
                 childTypes);
 
-        Type matrixType = UnsizedMatrixType
+        Type matrixType = MatrixType
                 .getMatrixTypeForElementType(elementType);
         _setType(node, matrixType);
     }

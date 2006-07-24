@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  cases, these operations to be performed only on types that can be
  losslessly converted to this type (or vice versa).  The operations are
  implemented to first perform the conversion to the same type, and then
- perform the operation.  This class provides a base class
+ to perform the operation.  This class provides a base class
  implementation of the operation methods which performs the appropriate
  conversion, and then defers to a protected _operation method if the
  type of the argument of the operation is less than or equal to this

@@ -130,13 +130,12 @@ public class ArrayType extends StructuredType {
         if (resultArray.length < 1) {
             // Support your local zero length array.
             // actor/lib/test/auto/NilTokenTypeTest.xml requires this.
-            Class argumentArrayTokenClass = argumentArrayToken.getElementType().getTokenClass();
+            Type argumentArrayElementType = argumentArrayToken.getElementType();
             try {
-                Token argumentArrayElementToken = (Token)argumentArrayTokenClass.newInstance();
-                return new ArrayToken(argumentArrayElementToken);
+                return new ArrayToken(argumentArrayElementType);
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex,
-                        "Failed to construct a " + argumentArrayTokenClass);
+                        "Failed to construct an array of type " + argumentArrayElementType);
             }
         }
         return new ArrayToken(resultArray);

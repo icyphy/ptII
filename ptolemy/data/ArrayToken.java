@@ -72,45 +72,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   zero.
      */
     public ArrayToken(Token[] value) throws IllegalActionException {
-        // NOTE: This code is purposefully duplicated from
-        // _initialize() for the benefit of the code generator.
-        // Otherwise type inference has to propagate through the
-        // _initialize method correctly, which is hard.
-
-        if (value.length < 1) {
-            throw new IllegalActionException("ArrayToken(Token[]) called with "
-                    + "a an array of length less than 1.  To create an array "
-                    + "of length 0, use the ArrayToken(Token) constructor "
-                    + "because elements in ArrayToken must have a type.");
-        }
-
-        _elementPrototype = value[0];
-        Type elementType = value[0].getType();
-        int length = value.length;
-
-        // It would be nice to have this, but the Code generator cannot
-        // deal with the least upper bound.
-        //    for (int i = 0; i < length; i++) {
-        //             Type valueType = value[i].getType();
-        //             if (!elementType.equals(valueType)) {
-        //                 _elementType = TypeLattice.leastUpperBound(
-        //                         elementType, valueType);
-        //             }
-        //         }
-        _value = new Token[length];
-
-        for (int i = 0; i < length; i++) {
-            if (elementType.equals(value[i].getType())) {
-                _value[i] = value[i]; // _elementType.convert(value[i]);
-            } else {
-                throw new IllegalActionException(
-                        "Elements of the array do not have the same type:"
-                        + "value[0]=" + value[0] + " (type: "
-                        + elementType + ")" + " value[" + i + "]="
-                        + value[i] + " (type: "
-                        + value[i].getType() + ")");
-            }
-        }
+        this(null, value);
     }
 
     /** Construct an ArrayToken from the specified string.
@@ -132,23 +94,79 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
         if (token instanceof ArrayToken) {
             _value = ((ArrayToken) token)._value;
-            _elementPrototype = ((ArrayToken) token)._elementPrototype;
+            _elementType = ((ArrayToken) token)._elementType;
         } else {
             throw new IllegalActionException("An array token cannot be"
                     + " created from the expression '" + init + "'");
         }
     }
 
-    /** Construct an empty ArrayToken with the element type of the
-     *  specified token. If the token parameter is a nil token, then a
-     *  new nil ArrayToken is returned, see 
-     *  {@link ptolemy.data.Token#NIL}.
-
-     *  @param elementPrototype A token specifying the element type.
+    /** Construct an empty ArrayToken with the given element type.
+     *  @param elementType A token type.
      */
-    public ArrayToken(Token elementPrototype) {
+    public ArrayToken(Type elementType) {
         _value = new Token[0];
-        _elementPrototype = elementPrototype;
+        _elementType = elementType;
+    }
+
+    /** Construct an ArrayToken with the specified element type and
+     *  token array. All the tokens in the array must have the type
+     *  of element type (or a subclass), otherwise an exception will
+     *  be thrown. This class makes a copy of the given array, so
+     *  the passed array may be reused.
+     *  @param elementType The type of the array.
+     *  @param value An array of tokens.
+     *  @exception IllegalActionException If the tokens in the array
+     *   do not have the specified type.
+     */
+    public ArrayToken(Type elementType, Token[] value) throws IllegalActionException {
+        _elementType = elementType;
+        int length = value.length;
+        if (_elementType == null) {
+            if (length < 1) {
+                throw new IllegalActionException("ArrayToken(Token[]) called with "
+                        + "a an array of length less than 1.  To create an array "
+                        + "of length 0, use the ArrayToken(Token) constructor "
+                        + "because elements in ArrayToken must have a type.");
+            }
+
+            _elementType = value[0].getType();
+
+            // NOTE: The code generator justified commenting out the
+            // following code, but this isn't right.  The code generator
+            // is going to have to be made to deal with it.  The original
+            // comment accompanying the commented out was:
+            // It would be nice to have this, but the Code generator cannot
+            // deal with the least upper bound.
+            for (int i = 0; i < length; i++) {
+                Type valueType = value[i].getType();
+                if (!_elementType.equals(valueType)) {
+                    _elementType = TypeLattice.leastUpperBound(
+                            _elementType, valueType);
+                }
+            }
+        }
+        _value = new Token[length];
+        
+        for (int i = 0; i < length; i++) {
+            // NOTE: This had previously been like this, but the
+            // the code generator caused a change as shown in the commented
+            // out code below.  But in order to be able to have {scalar},
+            // it is essential to have this call to convert here.
+            _value[i] = _elementType.convert(value[i]);
+            /*
+             if (_elementType.equals(value[i].getType())) {
+             _value[i] = value[i]; // _elementType.convert(value[i]);
+             } else {
+             throw new IllegalActionException(
+             "Elements of the array do not have the same type:"
+             + "value[0]=" + value[0] + " (type: "
+             + elementType + ")" + " value[" + i + "]="
+             + value[i] + " (type: "
+             + value[i].getType() + ")");
+             }
+             */
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -529,7 +547,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             resultArray = (Token[]) (result.toArray(resultArray));
             return new ArrayToken(resultArray);
         } else {
-            return new ArrayToken(getElementPrototype());
+            return new ArrayToken(getElementType());
         }
     }
 
@@ -544,19 +562,11 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         return _value[index];
     }
 
-    /** Return a token whose type matches the element type of this
-     *   array.
-     *  @return A token whose type matches the element type.
-     */
-    public Token getElementPrototype() {
-        return _elementPrototype;
-    }
-
     /** Return the type contained in this ArrayToken.
      *  @return A Type.
      */
     public Type getElementType() {
-        return _elementPrototype.getType();
+        return _elementType;
     }
 
     /** Return the type of this ArrayToken.
@@ -567,12 +577,19 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Return a hash code value for this token. This method returns
-     *  the hash code of the first element, or of the prototype
-     *  if the array is empty.
+     *  the hash code of the first element, unless the array is empty,
+     *  in which case it returns the hashCode of the element type, unless
+     *  there is no element type, in which case it returns the superclass hash code.
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-        return _elementPrototype.hashCode();
+        if (_value != null && _value.length > 0) {
+            return _value[0].hashCode();
+        } else if (_elementType != null) {
+            return _elementType.hashCode();
+        } else {
+            return super.hashCode();
+        }
     }
 
     /** Return true if the token is nil, (aka null or missing).
@@ -730,7 +747,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             System.arraycopy(_value, index, result, 0, count);
             return new ArrayToken(result);
         } else {
-            return new ArrayToken(getElementPrototype());
+            return new ArrayToken(getElementType());
         }
     }
     
@@ -852,7 +869,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  sources.  In database parlance, missing tokens are sometimes called
      *  null tokens.  Since null is a Java keyword, we use the term "nil".
      */
-    public static final ArrayToken NIL = new ArrayToken(Token.NIL);
+    public static final ArrayToken NIL = new ArrayToken(BaseType.NIL);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1253,7 +1270,10 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** The array of values of this array token. */
     private Token[] _value;
 
-    private Token _elementPrototype;
+    /** The type of this array. */
+    private Type _elementType;
 }

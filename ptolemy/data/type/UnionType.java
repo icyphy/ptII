@@ -126,7 +126,7 @@ public class UnionType extends StructuredType {
 
     /** Convert the argument token into a UnionToken having this
      *  type, if lossless conversion can be done.  The argument must
-     *  be an UnionToken, and its type must be a subtype of this
+     *  be a UnionToken, and its type must be a subtype of this
      *  record type.  The argument token must have at least the fields
      *  of this type.  Extra fields in the argument token that are not
      *  in this type are removed.

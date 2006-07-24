@@ -53,17 +53,15 @@ JSRCS = \
 	FixType.java \
 	FunctionType.java \
 	HasTypeConstraints.java \
+	MatrixType.java \
 	MonotonicFunction.java \
 	RecordType.java \
-	SizedMatrixType.java \
 	StructuredType.java \
-	TopMatrixType.java \
 	Type.java \
 	Typeable.java \
 	TypeConstant.java \
 	TypeLattice.java \
-	UnionType.java \
-	UnsizedMatrixType.java
+	UnionType.java
 
 EXTRA_SRCS =	$(JSRCS)
 
