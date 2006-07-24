@@ -321,7 +321,8 @@ public class Main extends KernelMain {
         }
         
         if (_unboxing) {
-            addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(toplevel)); //"debug:true" level:1");
+            addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(toplevel));// "debug:true"); // level:1");
+            
             addStandardOptimizations(pack, 8);
 
             addTransform(pack, "wjtp.ufr", UnusedFieldRemover.v());
@@ -364,6 +365,7 @@ public class Main extends KernelMain {
             //        addStandardOptimizations(pack, 11);
             //        addTransform(pack, "wjtp.umr5",
             //                UnreachableMethodRemover.v());
+             
         }
 
         /* */
