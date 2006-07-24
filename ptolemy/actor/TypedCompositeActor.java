@@ -233,6 +233,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
         try {
             List conflicts = new LinkedList();
+            List unacceptable = new LinkedList();
 
             // Check declared types across all connections.
             List typeConflicts = topLevel._checkDeclaredTypes();
@@ -284,7 +285,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                             InequalityTerm variable = lesserVariables[i];
 
                             if (!variable.isValueAcceptable()) {
-                                conflicts.add(inequality);
+                                unacceptable.add(inequality);
                                 added = true;
                                 break;
                             }
@@ -295,7 +296,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                                 InequalityTerm variable = greaterVariables[i];
 
                                 if (!variable.isValueAcceptable()) {
-                                    conflicts.add(inequality);
+                                    unacceptable.add(inequality);
                                     break;
                                 }
                             }
@@ -308,6 +309,11 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 throw new TypeConflictException(conflicts,
                         "Type conflicts occurred in " + topLevel.getFullName()
                                 + " on the following inequalities:");
+            }
+            if (unacceptable.size() > 0) {
+                throw new TypeConflictException(unacceptable,
+                        "Types resolved to unacceptable types in " + topLevel.getFullName()
+                                + " due to the following inequalities:");
             }
         } catch (IllegalActionException ex) {
             // This should not happen. The exception means that
