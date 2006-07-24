@@ -57,7 +57,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.data.type.UnsizedMatrixType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -186,7 +186,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                 : ptType == BaseType.DOUBLE ? "Double"
                                         : ptType == BaseType.BOOLEAN ? "Boolean"
                                                 : ptType instanceof ArrayType ? "Array"
-                                                        : ptType instanceof UnsizedMatrixType ? "Matrix"
+                                                        : ptType instanceof MatrixType ? "Matrix"
                                                                 : ptType == BaseType.GENERAL ? "Token"
                                                                         : "";
         if (result.length() == 0) {
