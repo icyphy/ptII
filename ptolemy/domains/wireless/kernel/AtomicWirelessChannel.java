@@ -83,7 +83,7 @@ import ptolemy.kernel.util.ValueListener;
  derived classes can override the _isInRange() protected method,
  or the transmit() public method.
 
- @author Xiaojun Liu, Edward A. Lee and Yang Zhao
+ @author Xiaojun Liu, Edward A. Lee, Yang Zhao, Heather Taylor
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Green (cxh)
@@ -309,6 +309,40 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
             _propertyTransformers.add(transformer);
         }
     }
+    
+    /** Register a token processor for transmissions from the specified
+     *  port.  If null is given for the port, then the token processor
+     *  will be used for all transmissions through this channel.
+     *  If the token processor is already registered, then no changes
+     *  are made.
+     *  @param processor The token processor to be registered.
+     *  @param port The port whose transmissions should be subject to the
+     *   token processor, or null to make them subject to all
+     *   transmissions through this channel.
+     */
+    public void registerTokenProcessor(TokenProcessor processor,
+            WirelessIOPort port) {
+        if (port != null) {
+            if (_tokenProcessorsByPort == null) {
+                _tokenProcessorsByPort = new HashMap();
+            }
+
+            Set processors = (Set) _tokenProcessorsByPort.get(port);
+
+            if (processors == null) {
+                processors = new HashSet();
+                _tokenProcessorsByPort.put(port, processors);
+            }
+
+            processors.add(processor);
+        } else {
+            if (_tokenProcessors == null) {
+                _tokenProcessors = new HashSet();
+            }
+
+            _tokenProcessors.add(processor);
+        }
+    }
 
     /** Override the base class to declare that the dummy port
      *  returned by getChannelPort() does not depend on itself
@@ -507,6 +541,61 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
 
         return result;
     }
+    
+    /** Any token processors that have been registered will be applied in this method.
+     *  @param properties The transmission properties.
+     *  @param token The token to be processed.
+     *  @param source The sending port.
+     *  @param destination The receiving port.
+     *  @exception IllegalActionException If the properties cannot
+     *   be transformed. Not thrown in this base class.
+     *  @see #registerTokenProcessor(TokenProcessor, WirelessIOPort)
+     */
+    public void processTokens(RecordToken properties,Token token,
+            WirelessIOPort source, WirelessIOPort destination)
+            throws IllegalActionException {
+
+        if (_tokenProcessorsByPort != null) {
+            //Apply token processor for the sender.
+            Set processors = (Set) _tokenProcessorsByPort.get(source);
+
+            if (processors != null) {
+                Iterator iterator = processors.iterator();
+
+                while (iterator.hasNext()) {
+                    TokenProcessor processor = (TokenProcessor) iterator
+                            .next();
+                    processor.processTokens(properties, token, source,
+                            destination);
+                }
+            }
+
+            //Apply token processor for the receiver.
+            processors = (Set) _tokenProcessorsByPort.get(destination);
+
+            if (processors != null) {
+                Iterator iterator = processors.iterator();
+
+                while (iterator.hasNext()) {
+                    TokenProcessor processor = (TokenProcessor) iterator
+                            .next();
+                    processor.processTokens(properties, token, source,
+                            destination);
+                }
+            }
+        }
+
+        if (_tokenProcessors != null) {
+            Iterator iterator = _tokenProcessors.iterator();
+
+            while (iterator.hasNext()) {
+                TokenProcessor processor = (TokenProcessor) iterator
+                        .next();
+                processor.processTokens(properties, token, source,
+                        destination);
+            }
+        }
+    }
 
     /** Transmit the specified token from the specified port with the
      *  specified properties.  All ports that are in range will receive
@@ -579,6 +668,32 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         } else {
             if (_propertyTransformers != null) {
                 _propertyTransformers.remove(transformer);
+            }
+        }
+    }
+    
+    /** Unregister a token processor for transmissions from the specified
+     *  port (or from null for a generic token processor). If the processor
+     *  has not been registered, then do nothing.
+     *  @param processor The token processor to be unregistered.
+     *  @param port The port whose transmissions should be subject to the
+     *   token processor, or null for a generic processor.
+     *  @see #registerTokenProcessor(TokenProcessor, WirelessIOPort)
+     *  (htaylor)
+     */
+    public void unregisterTokenProcessor(TokenProcessor processor,
+            WirelessIOPort port) {
+        if (port != null) {
+            if (_tokenProcessorsByPort != null) {
+                Set processors = (Set) _tokenProcessorsByPort.get(port);
+
+                if (processors != null) {
+                    processors.remove(processor);
+                }
+            }
+        } else {
+            if (_tokenProcessors != null) {
+                _tokenProcessors.remove(processor);
             }
         }
     }
@@ -803,11 +918,15 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
                 WirelessIOPort destination = (WirelessIOPort) receiver
                         .getContainer();
                 Token newToken = destination.convert(token);
-
+                
                 // Transform the properties.
                 Token transformedProperties = transformProperties(properties,
                         sender, destination);
+                // Process the tokens.
+                processTokens(properties,token, sender, destination);
                 receiver.put(newToken, transformedProperties);
+                // Process the tokens.
+                processTokens(properties, token, sender, destination);
             }
         } else {
             receiver.clear();
@@ -849,6 +968,17 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  indexed by port.
      */
     private HashMap _propertyTransformersByPort;
+    
+    /** The token processors that have been registered without
+     *  specifying a port.
+     */
+    private Set _tokenProcessors;
+
+    /** The token processors that have been registered to
+     *  operate on transmissions from a particular port,
+     *  indexed by port.
+     */
+    private HashMap _tokenProcessorsByPort;
 
     private HashMap _receiversInRangeCache;
 

@@ -53,14 +53,17 @@ import ptolemy.kernel.util.Nameable;
  property transformers(@see PropertyTransformer) during the
  transmission to take into account channel losses, antenna
  gain, noise, etc.
+ <p>
+ Token Processors may also register with this channel to inspect
+ the token.
 
- @author Yang Zhao and Edward A. Lee
+ @author Yang Zhao, Edward A. Lee and Heather Taylor
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
+public interface WirelessChannel extends Actor, Nameable, PropertyTransformer, TokenProcessor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -120,6 +123,27 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
     public void registerPropertyTransformer(PropertyTransformer transformer,
             WirelessIOPort port);
 
+    /** Register a token processor for transmissions from the
+     *  specified port. A Token Processor reads the transmitted token.
+     *  If null is
+     *  given for the port, then the token processor will
+     *  be used for all transmissions through this channel.
+     *  If multiple token processors are registered that can operate
+     *  on a given transmission, then the order in which they are applied
+     *  is arbitrary.
+     *  If the token processor is already registered with a particular
+     *  port, then an implementer of this method must not register it again with
+     *  that port.  Similarly, if a token processor is registered with
+     *  no port, then an implementer of this method must not register
+     *  it again with no port.
+     *  @param processor The token processor to be registered.
+     *  @param port The port whose transmissions should be subject to the
+     *   token processor, or null to make them subject to all
+     *   transmissions through this channel.
+     */
+    public void registerTokenProcessor(TokenProcessor processor,
+            WirelessIOPort port);
+    
     /** Return a list of input ports that can potentially send data
      *  to this channel.  This must include input ports contained by
      *  the container of this channel that
@@ -166,5 +190,16 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *  @see #registerPropertyTransformer(PropertyTransformer, WirelessIOPort)
      */
     public void unregisterPropertyTransformer(PropertyTransformer transformer,
+            WirelessIOPort port);
+    
+    /** Unregister a token processor for transmissions from the specified
+     *  port (or from null for a generic token processor). If the processor
+     *  has not been registered, then do nothing.
+     *  @param processor The token processor to be unregistered.
+     *  @param port The port whose transmissions should be subject to the
+     *   token processor, or null for a generic processor.
+     *  @see #registerTokenProcessor(TokenProcessor, WirelessIOPort)
+     */
+    public void unregisterTokenProcessor(TokenProcessor processor,
             WirelessIOPort port);
 }
