@@ -1819,41 +1819,23 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                             Map fieldToReplacementField = (Map) entityFieldToTokenFieldToReplacementField
                                     .get(field);
 
-                            // There are some fields that
-                            // represent singleton tokens.
-                            // Deal with them specially.
-                            boolean isBooleanTokenTrueSingleton = false;
-                            boolean isBooleanTokenFalseSingleton = false;
-                            boolean isNullSingleton = false;
+                            // There are some fields that represent
+                            // singleton tokens.  Deal with them
+                            // specially. 
 
-                            if (field
-                                    .getSignature()
-                                    .equals(
-                                            "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken TRUE>")) {
-                                isBooleanTokenTrueSingleton = true;
-                            } else if (field
-                                    .getSignature()
-                                    .equals(
-                                            "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken FALSE>")) {
-                                isBooleanTokenFalseSingleton = true;
-                            } else if (field.getName().equals("NIL")) {
-                                //  isNullSingleton = true;
+                            // This is awkward, but it is simpler than
+                            // doing a dataflow analysis of the static
+                            // initializer of the token class to
+                            // figure out what the value is.
+                            boolean isSingleton = false;
+                            if (field.getName().equals("TRUE") ||
+                                    field.getName().equals("FALSE") ||
+                                    field.getName().equals("ZERO") ||
+                                    field.getName().equals("ONE")) {
+                                isSingleton = true;
                             }
-                            
-                            if (isNullSingleton && (fieldToReplacementLocal != null)) {
-                                doneSomething = true;
-                                
-                                // Replace references to fields with
-                                // token types.  We treat Nil fields as a nulls.
-                                body.getUnits().insertBefore(
-                                        Jimple.v().newAssignStmt(
-                                                (Local) localToIsNotNullLocal
-                                                .get(stmt.getLeftOp()),
-                                                IntConstant.v(0)), unit);
-                                System.out.println("replacing as Null");
-                            }
-                            if ((isBooleanTokenFalseSingleton || isBooleanTokenTrueSingleton)
-                                    && (fieldToReplacementLocal != null)) {
+                                                    
+                            if ((isSingleton) && (fieldToReplacementLocal != null)) {
                                 doneSomething = true;
 
                                 // Replace references to fields with
@@ -1881,43 +1863,118 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                                 + localField);
                                     }
 
-                                    if (localField.getName().equals("_isNil")) {
-                                        Local replacementLocal = (Local) fieldToReplacementLocal
-                                                .get(localField);
+                                //     if (localField.getName().equals("_isNil")) {
+//                                         Local replacementLocal = (Local) fieldToReplacementLocal
+//                                                 .get(localField);
 
-                                        body
-                                                .getUnits()
-                                                .insertBefore(
-                                                        Jimple
-                                                                .v()
-                                                                .newAssignStmt(
-                                                                        replacementLocal,
-                                                                        IntConstant
-                                                                                .v(1)),
-                                                        unit);
+//                                         body
+//                                                 .getUnits()
+//                                                 .insertBefore(
+//                                                         Jimple
+//                                                                 .v()
+//                                                                 .newAssignStmt(
+//                                                                         replacementLocal,
+//                                                                         IntConstant
+//                                                                                 .v(1)),
+//                                                         unit);
+//                                     } else 
+                                    if (localField.getName().equals(
+                                                "_unitCategoryExponents")) {
+                                        
+                                        Local replacementLocal = (Local) fieldToReplacementLocal
+                                            .get(localField);
+                                        body.getUnits().insertBefore(
+                                                Jimple.v().newAssignStmt(
+                                                        replacementLocal,
+                                                        NullConstant.v()),
+                                                unit);
                                     } else if (localField.getName().equals(
-                                            "_value")) {
-
+                                                "_value")) {
+                                        
                                         Local replacementLocal = (Local) fieldToReplacementLocal
-                                                .get(localField);
-
-                                        if (isBooleanTokenTrueSingleton) {
+                                            .get(localField);
+                                        
+                                        if (field.getSignature()
+                                                .equals("<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken TRUE>")) {
                                             body.getUnits().insertBefore(
                                                     Jimple.v().newAssignStmt(
                                                             replacementLocal,
                                                             IntConstant.v(1)),
                                                     unit);
-                                        } else {
+                                        } else if (field.getSignature()
+                                                .equals("<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken FALSE>")) {
+                                            
                                             body.getUnits().insertBefore(
                                                     Jimple.v().newAssignStmt(
                                                             replacementLocal,
                                                             IntConstant.v(0)),
                                                     unit);
+                                        } else if (field.getSignature()
+                                                .equals("<ptolemy.data.UnsignedByteToken: ptolemy.data.UnsignedByteToken ONE>")) {
+                                            body.getUnits().insertBefore(
+                                                    Jimple.v().newAssignStmt(
+                                                            replacementLocal,
+                                                            IntConstant.v(1)),
+                                                    unit);
+                                        } else if (field.getSignature()
+                                                .equals("<ptolemy.data.UnsignedByteToken: ptolemy.data.UnsignedByteToken ZERO>")) {
+                                            
+                                            body.getUnits().insertBefore(
+                                                    Jimple.v().newAssignStmt(
+                                                            replacementLocal,
+                                                            IntConstant.v(0)),
+                                                    unit);
+                                        } else if (field.getSignature()
+                                                .equals("<ptolemy.data.IntToken: ptolemy.data.IntToken ONE>")) {
+                                            body.getUnits().insertBefore(
+                                                    Jimple.v().newAssignStmt(
+                                                            replacementLocal,
+                                                            IntConstant.v(1)),
+                                                    unit);
+                                        } else if (field.getSignature()
+                                                .equals("<ptolemy.data.IntToken: ptolemy.data.IntToken ZERO>")) {
+                                            
+                                            body.getUnits().insertBefore(
+                                                    Jimple.v().newAssignStmt(
+                                                            replacementLocal,
+                                                            IntConstant.v(0)),
+                                                    unit);
+                                        } else if (field.getSignature()
+                                                .equals("<ptolemy.data.LongToken: ptolemy.data.LongToken ONE>")) {
+                                            body.getUnits().insertBefore(
+                                                    Jimple.v().newAssignStmt(
+                                                            replacementLocal,
+                                                            LongConstant.v(1)),
+                                                    unit);
+                                        } else if (field.getSignature()
+                                                .equals("<ptolemy.data.LongToken: ptolemy.data.LongToken ZERO>")) {
+                                            
+                                            body.getUnits().insertBefore(
+                                                    Jimple.v().newAssignStmt(
+                                                            replacementLocal,
+                                                            LongConstant.v(0)),
+                                                    unit);
+                                        } else if (field.getSignature()
+                                                .equals("<ptolemy.data.DoubleToken: ptolemy.data.DoubleToken ONE>")) {
+                                            
+                                            body.getUnits().insertBefore(
+                                                    Jimple.v().newAssignStmt(
+                                                            replacementLocal,
+                                                            DoubleConstant.v(1.0)),
+                                                    unit);
+                                        } else if (field.getSignature()
+                                                .equals("<ptolemy.data.DoubleToken: ptolemy.data.DoubleToken ZERO>")) {
+                                            
+                                            body.getUnits().insertBefore(
+                                                    Jimple.v().newAssignStmt(
+                                                            replacementLocal,
+                                                            DoubleConstant.v(0.0)),
+                                                    unit);
                                         }
                                     } else {
                                         throw new RuntimeException(
-                                                "Unknown Field in BooleanToken: "
-                                                        + localField.getName());
+                                                "Unknown Field in Token: "
+                                                + localField.getSignature());
                                     }
                                 }
 
