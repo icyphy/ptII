@@ -27,29 +27,22 @@
  */
 package ptolemy.domains.wireless.lib;
 
-import java.awt.Polygon;
-import java.awt.Shape;
-
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.wireless.kernel.TokenProcessor;
 import ptolemy.domains.wireless.kernel.WirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
+import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 import ptolemy.vergil.kernel.attributes.LineAttribute;
 
 //////////////////////////////////////////////////////////////////////////
@@ -86,36 +79,58 @@ public class LinkVisualizer extends TypedAtomicActor implements
         channelName = new StringParameter(this, "channelName");
         channelName.setExpression("AtomicWirelessChannel");
 
-        xyPoints = new Parameter(this, "xyPoints");
-        xyPoints.setExpression("{{0, 0}, {0, 5}, {20, 5}, {20, 0}}");
+        EditorIcon link_icon = new EditorIcon(this, "_icon");
+        
+        _line1 = new LineAttribute(link_icon, "_line1");
 
-        //create the default icon.
-        _numberOfPoints = 4;
-        _xPoints = new int[_numberOfPoints];
-        _yPoints = new int[_numberOfPoints];
-        _xPoints[0] = 0;
-        _yPoints[0] = 0;
-        _xPoints[1] = 0;
-        _yPoints[1] = 5;
-        _xPoints[2] = 5;
-        _yPoints[2] = 5;
-        _xPoints[3] = 5;
-        _yPoints[3] = 0;
+        Location line1Loc = new Location(_line1, "_location");
+        double[] line1LocVal = { -19.0, -3.0 };
+        line1Loc.setLocation(line1LocVal);
+        _line1.lineColor.setToken("{0.0, 0.0, 1.0, 1.0}");
+        _line1.x.setToken("30.0");
+        _line1.y.setToken("20.0");
+        _line1.moveToFirst();
+        
+        _line2 = new LineAttribute(link_icon, "_line2");
 
-        //Create the icon.
-        _icon = new EditorIcon(this, "_icon");
-        _terrain = new FilledShapeAttribute(_icon, "terrain") {
-            protected Shape _newShape() {
-                return new Polygon(_xPoints, _yPoints, _numberOfPoints);
-            }
-        };
+        Location line2Loc = new Location(_line2, "_location");
+        double[] line2LocVal = { -22.0, 2.0 };
+        line2Loc.setLocation(line2LocVal);
+        _line2.lineColor.setToken("{0.0, 0.0, 1.0, 1.0}");
+        _line2.x.setToken("30.0");
+        _line2.y.setToken("-20.0");
+        _line2.moveToFirst();
+        
+        _ellipse1 = new EllipseAttribute(link_icon, "_ellipse1");
 
-        // Set the color to blue.
-        _terrain.fillColor.setToken("{0.0, 0.0, 1.0, 1.0}");
+        Location ellipse1Loc = new Location(_ellipse1, "_location");
+        double[] ellipse1LocVal = { -18.0, -2.0 };
+        ellipse1Loc.setLocation(ellipse1LocVal);
+        _ellipse1.fillColor.setToken("{1.0, 1.0, 0.0, 1.0}");
+        _ellipse1.width.setToken("15.0");
+        _ellipse1.height.setToken("15.0");
+        _ellipse1.centered.setToken("true");
+        
+        _ellipse2 = new EllipseAttribute(link_icon, "_ellipse2");
 
-        // NOTE: The width is not used, but this triggers a
-        // call to _newShape().
-        _terrain.width.setToken(new IntToken(10));
+        Location ellipse2Loc = new Location(_ellipse2, "_location");
+        double[] ellipse2LocVal = { 8.0, 14.0 };
+        ellipse2Loc.setLocation(ellipse2LocVal);
+        _ellipse2.fillColor.setToken("{1.0, 0.0, 1.0, 1.0}");
+        _ellipse2.width.setToken("15.0");
+        _ellipse2.height.setToken("15.0");
+        _ellipse2.centered.setToken("true");
+        
+        _ellipse3 = new EllipseAttribute(link_icon, "_ellipse3");
+
+        Location ellipse3Loc = new Location(_ellipse3, "_location");
+        double[] ellipse3LocVal = { 8.0, -16.0 };
+        ellipse3Loc.setLocation(ellipse3LocVal);
+        _ellipse3.fillColor.setToken("{1.0, 0.0, 1.0, 1.0}");
+        _ellipse3.width.setToken("15.0");
+        _ellipse3.height.setToken("15.0");
+        _ellipse3.centered.setToken("true");
+        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -125,68 +140,14 @@ public class LinkVisualizer extends TypedAtomicActor implements
      */
     public StringParameter channelName;
 
-    /** The x/y coordinates of ? (FIXME)
-     *  The default value is an array of integer pairs:
-     *  {{0, 0}, {0, 5}, {20, 5}, {20, 0}}
-     *  FIXME: need more info
-     */
-    public Parameter xyPoints;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Override the base class to parse the model specified if the
-     *  attribute is modelFileOrURL.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container (not thrown in this base class).
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == xyPoints) {
-            Token xypoints = xyPoints.getToken();
-
-            if (xypoints instanceof ArrayToken) {
-                ArrayToken xypointsArray = (ArrayToken) xypoints;
-
-                if (xypointsArray.length() != _numberOfPoints) {
-                    _numberOfPoints = xypointsArray.length();
-                    _xPoints = new int[_numberOfPoints];
-                    _yPoints = new int[_numberOfPoints];
-                }
-
-                for (int i = 0; i < xypointsArray.length(); i++) {
-                    ArrayToken xypointArray = (ArrayToken) xypointsArray
-                            .getElement(i);
-                    _xPoints[i] = ((IntToken) xypointArray.getElement(0))
-                            .intValue();
-                    _yPoints[i] = ((IntToken) xypointArray.getElement(1))
-                            .intValue();
-                }
-
-                _number++;
-
-                //set the width different to trigger the shape change...
-                _terrain.width.setToken(new IntToken(_number));
-            } else {
-                throw new IllegalActionException(this,
-                        "xPoints is required to be an integer array");
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
 
     /** Initialize the _registeredWithChannel.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _terrain.width.setToken(new IntToken(10));
-        _number = 10;
- 
         _isOff = true;
-
- 
 
 
         CompositeEntity container = (CompositeEntity) getContainer();
@@ -196,7 +157,6 @@ public class LinkVisualizer extends TypedAtomicActor implements
 
         if (channel instanceof WirelessChannel) {
             _channel = (WirelessChannel) channel;
-            //change made to below line, from registerPropertyTransformer (htaylor)
             ((WirelessChannel) channel).registerTokenProcessor(this, null);
         } else {
             throw new IllegalActionException(this,
@@ -265,23 +225,24 @@ public class LinkVisualizer extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private WirelessChannel _channel;
-
-    private int[] _xPoints;
-
-    private int[] _yPoints;
-
-    private EditorIcon _icon;
-
-    private FilledShapeAttribute _terrain;
-
-    private int _numberOfPoints;
-
-    // this variable is merely used to set the ShapeAttribute
-    // with different width, so that is can update the shape.
-    private int _number;
+    
+    /** Graphical icon for line1 */
+    private LineAttribute _line1;
+    
+    /** Graphical icon for line1 */
+    private LineAttribute _line2;
+    
+    /** Graphical icon for ellipse1 */
+    private EllipseAttribute _ellipse1;
+    
+    /** Graphical icon for ellipse2 */
+    private EllipseAttribute _ellipse2;
+    
+    /** Graphical icon for ellipse3 */
+    private EllipseAttribute _ellipse3;
 
     private String _channelName;
     
-    //Status of radio link line
+    /** Status of radio link line */
     private boolean _isOff;
 }

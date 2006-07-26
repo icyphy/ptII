@@ -62,6 +62,7 @@ JSRCS = \
 	GetProperties.java \
 	GraphicalLocator.java \
 	LimitedRangeChannel.java \
+	LinkVisualizer.java \
 	Locator.java \
 	NodeRandomizer.java \
 	PowerLossChannel.java \

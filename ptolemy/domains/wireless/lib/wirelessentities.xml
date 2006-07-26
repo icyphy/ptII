@@ -26,6 +26,9 @@
 <entity name="TerrainProperty" class="ptolemy.domains.wireless.lib.TerrainProperty">
 </entity>
 
+<entity name="LinkVisualizer" class="ptolemy.domains.wireless.lib.LinkVisualizer">
+</entity>
+
 <entity name="TransmitPropertyTransformer" class="ptolemy.domains.wireless.lib.TransmitPropertyTransformer">
 </entity>
 

@@ -51,6 +51,7 @@ JSRCS = \
 	AtomicWirelessChannel.java \
 	ChannelPort.java \
 	PropertyTransformer.java \
+	TokenProcessor.java \
 	WirelessChannel.java \
 	WirelessComposite.java \
 	WirelessDirector.java \
