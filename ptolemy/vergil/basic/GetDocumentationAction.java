@@ -114,12 +114,14 @@ public class GetDocumentationAction extends FigureAction {
             // No doc attribute. Try for a doc file.
             String className = target.getClass().getName();
             Effigy context = Configuration.findEffigy(target);
+            NamedObj container = target.getContainer();
+            while (context == null && container != null) {
+                context = Configuration.findEffigy(container);
+                container = container.getContainer();
+            }
             if (context == null) {
-                context = Configuration.findEffigy(target.getContainer());
-                if (context == null) {
-                    MessageHandler.error("Cannot find an effigy for "
-                            + target.getFullName());
-                }
+                MessageHandler.error("Cannot find an effigy for "
+                        + target.getFullName());
             }
             getDocumentation(_configuration, className, context);
         } else {
