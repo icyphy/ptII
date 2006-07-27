@@ -829,7 +829,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot invoke prefire on a non-opaque actor.");
+                        "Cannot invoke prefire on a non-opaque actor, "
+                        + " please add a director.");
             }
 
             boolean result = getDirector().prefire();
@@ -879,7 +880,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
                             + "please add actors and a director.");
                 }
                 throw new IllegalActionException(this,
-                        "Cannot preinitialize a non-opaque actor.");
+                        "Cannot preinitialize a non-opaque actor, "
+                        + "please add a shdirector.");
             }
 
             if (_director == null) {
