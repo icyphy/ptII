@@ -528,7 +528,11 @@ public abstract class BaseType implements Type, Serializable {
         }
 
         public Token convert(Token t) throws IllegalActionException {
-            return ScalarToken.convert(t);
+            if (t instanceof ScalarToken) {
+                return (ScalarToken) t;
+            }
+            throw new IllegalActionException(
+                Token.notSupportedIncomparableConversionMessage(t, "scalar"));
         }
 
         public int getTypeHash() {
