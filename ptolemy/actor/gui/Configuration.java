@@ -691,7 +691,6 @@ public class Configuration extends CompositeEntity {
      */
     protected void _removeEntity(ComponentEntity entity) {
         super._removeEntity(entity);
-        System.out.println("Configuration._removeEntity()");
         if (entity.getName().equals(_DIRECTORY_NAME)) {
             // If the ptolemy.ptII.exitAfterWrapup property is set,
             // then we don't actually exit.
@@ -707,7 +706,6 @@ public class Configuration extends CompositeEntity {
      *  @return An identifier for the effigy.
      */
     private String _effigyIdentifier(Effigy effigy, NamedObj entity) {
-        System.out.println("Configuration._effigyIdentifier()" + effigy);
         // Set the identifier of the effigy to be that
         // of the parent with the model name appended.
         NamedObj parent = effigy.getContainer();
