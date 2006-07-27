@@ -357,22 +357,6 @@ public abstract class MatrixToken extends Token {
                 "complex matrix"));
     }
 
-    /** If the token is an instance of a subclass of MatrixToken,
-     *  then return the token. Otherwise, throw an exception.
-     *  @param token The token to be converted to a MatrixToken.
-     *  @return An instance of MatrixToken.
-     *  @exception IllegalActionException If the argument is not
-     *   already an instance of MatrixToken.
-     */
-    public static MatrixToken convert(Token token)
-            throws IllegalActionException {
-        if (token instanceof MatrixToken) {
-            return (MatrixToken) token;
-        }
-        throw new IllegalActionException(
-                notSupportedIncomparableConversionMessage(token, "matrix"));
-    }
-
     /** Create a new instance of a MatrixToken subclass with the given
      *  number of rows and columns.  The token will contain all of the
      *  elements of the given array.  The element type of the matrix

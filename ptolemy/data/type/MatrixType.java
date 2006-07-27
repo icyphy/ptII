@@ -97,7 +97,11 @@ public class MatrixType extends StructuredType implements
      *   an instance of this class.
      */
     public Token convert(Token token) throws IllegalActionException {
-        return MatrixToken.convert(token);
+        if (token instanceof MatrixToken) {
+            return (MatrixToken) token;
+        }
+        throw new IllegalActionException(
+                Token.notSupportedIncomparableConversionMessage(token, "matrix"));
     }
 
     /** Determine if the argument represents the same MatrixType as this
