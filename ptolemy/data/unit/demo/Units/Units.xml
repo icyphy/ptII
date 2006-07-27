@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Units" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
@@ -307,7 +307,7 @@ amperes.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="620.0, 495.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 505.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -387,12 +387,12 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 505.0">
         </property>
     </entity>
-    <entity name="Display1" class="ptolemy.actor.lib.gui.Display">
+    <entity name="DisplayVoltage" class="ptolemy.actor.lib.gui.Display">
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Voltage">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={724, 60, 290, 227}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={724, 60, 330, 237}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 375.0">
         </property>
@@ -404,7 +404,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 535.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 535.0]">
         </property>
     </entity>
     <entity name="InUnitsOf" class="ptolemy.actor.lib.conversions.InUnitsOf">
@@ -416,15 +416,15 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="610.0, 495.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 495.0]">
         </property>
     </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+    <entity name="DisplayCurrent" class="ptolemy.actor.lib.gui.Display">
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Current">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={728, 530, 290, 227}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={724, 297, 330, 237}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 435.0">
         </property>
@@ -479,14 +479,14 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
             </property>
         </port>
     </entity>
-    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+    <entity name="DisplayCurrentInAmps" class="ptolemy.actor.lib.gui.Display">
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Current in units of Amps">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={726, 295, 290, 227}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={723, 533, 330, 237}, maximized=false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="720.0, 495.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 495.0]">
         </property>
     </entity>
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
@@ -526,7 +526,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         </vertex>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="565.0, 435.0">
+        <vertex name="vertex1" value="[555.0, 435.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -540,12 +540,12 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
     <link port="Scale2.input" relation="relation6"/>
     <link port="Scale2.output" relation="relation"/>
     <link port="Const.output" relation="relation2"/>
-    <link port="Display1.input" relation="relation3"/>
+    <link port="DisplayVoltage.input" relation="relation3"/>
     <link port="Scale3.input" relation="relation5"/>
     <link port="Scale3.output" relation="relation12"/>
     <link port="InUnitsOf.input" relation="relation15"/>
     <link port="InUnitsOf.output" relation="relation4"/>
-    <link port="Display2.input" relation="relation15"/>
+    <link port="DisplayCurrent.input" relation="relation15"/>
     <link port="MultiplyDivide.multiply" relation="relation"/>
     <link port="MultiplyDivide.divide" relation="relation2"/>
     <link port="MultiplyDivide.output" relation="relation5"/>
@@ -555,7 +555,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
     <link port="PeriodicSampler2.output" relation="relation15"/>
     <link port="PeriodicSampler.input" relation="relation"/>
     <link port="PeriodicSampler.output" relation="relation3"/>
-    <link port="Display3.input" relation="relation4"/>
+    <link port="DisplayCurrentInAmps.input" relation="relation4"/>
     <link port="Integrator.input" relation="relation7"/>
     <link port="Integrator.output" relation="relation6"/>
 </entity>
