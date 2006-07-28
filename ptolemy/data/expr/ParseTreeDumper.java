@@ -35,8 +35,8 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ParseTreeDumper
 
 /**
- This class implements a visitor that writes parse trees in the
- expression language.
+ This class implements a visitor that writes parse trees in a
+ debug format.
 
  @author Steve Neuendorffer
  @version $Id$
