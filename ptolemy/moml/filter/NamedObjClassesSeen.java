@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 
@@ -99,7 +100,8 @@ public class NamedObjClassesSeen implements MoMLFilter {
                     if (theClass != null
                             && _namedObjClass.isAssignableFrom(theClass)) {
                         if (container != null
-                                && container.getFullName().indexOf(".", 1) != -1) {
+			    && container instanceof TypedCompositeActor
+			    && container.getFullName().indexOf(".", 1) != -1) {
                             // If the container is not a top level, then
                             // link to the inner part
                             String compositePath = _modelPath
@@ -107,11 +109,12 @@ public class NamedObjClassesSeen implements MoMLFilter {
                                     + container.getFullName().substring(
                                             container.getFullName().indexOf(
                                                     ".", 1) + 1);
-                            //                             System.out.println("NamedObjClasssesSeen: "
-                            //                                 + compositePath + " " + container
-                            //                                     + " " + element
-                            //                                     + " " + attributeName
-                            //                                     + " " + attributeValue);
+// 			    System.out.println("NamedObjClasssesSeen: ("
+// 					       + compositePath
+// 					       + ") container: " + container
+// 					       + " element: " + element
+// 					       + " attributeName: " + attributeName
+// 					       + " attributeValue: " + attributeValue);
                             models.add(compositePath);
                         } else {
                             models.add(_modelPath);
