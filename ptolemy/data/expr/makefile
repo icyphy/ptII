@@ -96,6 +96,7 @@ JSRCS = \
 	ParseTreeDumper.java \
 	ParseTreeEvaluator.java \
 	ParseTreeFreeVariableCollector.java \
+	ParseTreeFreeVariableRenamer.java \
 	ParseTreeSpecializer.java \
 	ParseTreeTypeInference.java \
 	ParseTreeVisitor.java \
