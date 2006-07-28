@@ -60,6 +60,23 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
         }
     }
 
+    /** Produce an expression for this parse tree.
+     *  @param root The root of the parse tree.
+     *  @return The expression.
+     *  @exception IllegalActionException If the parse tree has an error.
+     */
+    public String parseTreeToExpression(ASTPtRootNode root) throws IllegalActionException {
+        StringWriter writer = new StringWriter();
+        _writer = new PrintWriter(writer);
+        root.visit(this);
+        return writer.toString();
+    }
+
+    /** Return an expression for this parse tree, or a description
+     *  of the exception if an exception occurs.
+     *  @param root The root of the parse tree.
+     *  @return The expression.
+     */
     public String printParseTree(ASTPtRootNode root) {
         StringWriter writer = new StringWriter();
         _writer = new PrintWriter(writer);
