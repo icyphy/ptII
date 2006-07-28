@@ -422,6 +422,16 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         return value;
     }
 
+    /** Return the parser scope for this variable.
+     *  @return The parser scope.
+     */
+    public ParserScope getParserScope() {
+        if (_parserScope == null) {
+            _parserScope = new VariableScope();
+        }
+        return _parserScope;
+    }
+    
     /** Return a NamedList of the variables that the value of this
      *  variable can depend on.  These include other variables contained
      *  by the same container or any container that deeply contains
@@ -871,6 +881,65 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
 
         _isLazy = lazy;
+    }
+    
+    /** Override the base class to throw an exception if renaming this
+     *  variable results in an error evaluating some variable that depends
+     *  on it. In this case, the name remains unchanged.
+     *  @exception IllegalActionException If the name contains a period
+     *   or if this variable is referenced in some other expression.
+     *  @exception NameDuplicationException If there is already an
+     *       attribute with the same name in the container.
+     */
+    public void setName(String name) throws IllegalActionException,
+            NameDuplicationException {
+        String previousName = getName();
+        // If the name is changing from a previous name, then
+        // make sure to update the variables that depend on this.
+        // Record which variables get changed so they can be
+        // reversed if the change fails at any point.
+        LinkedList changed = new LinkedList();
+        if (previousName != null && !previousName.equals(name)) {
+            try {
+                if (_valueListeners != null) {
+                    Iterator listeners = _valueListeners.iterator();
+                    while (listeners.hasNext()) {
+                        ValueListener listener = (ValueListener) listeners.next();
+                        if (listener instanceof Variable) {
+                            // The listener could be referencing this variable.
+                            ParseTreeFreeVariableRenamer renamer = new ParseTreeFreeVariableRenamer();
+                            ((Variable)listener)._parseIfNecessary();
+                            renamer.renameVariables(((Variable)listener)._parseTree, (Variable)listener, this, name);
+                            ParseTreeWriter writer = new ParseTreeWriter();
+                            ((Variable)listener).setExpression(
+                                    writer.parseTreeToExpression(((Variable)listener)._parseTree));
+                            changed.add(listener);
+                        }
+                    }
+                }
+                super.setName(name);
+                validate();
+            } catch (IllegalActionException ex) {
+                // Reverse the changes above.
+                super.setName(previousName);
+                Iterator listeners = changed.iterator();
+                while (listeners.hasNext()) {
+                    Variable listener = (Variable) listeners.next();
+                    if (listener instanceof Variable) {
+                        // The listener could be referencing this variable.
+                        ParseTreeFreeVariableRenamer renamer = new ParseTreeFreeVariableRenamer();
+                        renamer.renameVariables(listener._parseTree, listener, this, previousName);
+                        ParseTreeWriter writer = new ParseTreeWriter();
+                        listener.setExpression(writer.parseTreeToExpression(listener._parseTree));
+                    }
+                }
+                // Make sure to re-evaluate dependent variables.
+                validate();
+                throw(ex);
+            }
+        } else {
+            super.setName(name);
+        }
     }
 
     /** Set a new parseTreeEvaluator.
