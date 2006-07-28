@@ -290,7 +290,10 @@ public class StringUtilities {
             File ptIIAsFile = new File(getProperty("ptolemy.ptII.dir"));
 
             try {
-                URL ptIIAsURL = ptIIAsFile.toURL();
+		// Convert first to a URI, then to a URL so that we
+		// properly handle cases where $PTII has spaces in it.
+                URI ptIIAsURI = ptIIAsFile.toURI();
+                URL ptIIAsURL = ptIIAsURI.toURL();
                 return ptIIAsURL.toString();
             } catch (java.net.MalformedURLException malformed) {
                 throw new RuntimeException("While trying to find '"
