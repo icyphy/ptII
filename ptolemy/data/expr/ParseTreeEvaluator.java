@@ -276,7 +276,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         String functionName = node.getFunctionName();
 
         if ((functionName != null) && (_scope != null)) {
-            value = _scope.get(node.getFunctionName());
+            value = _scope.get(functionName);
         }
 
         // The first child contains the function name as an id.  It is
@@ -337,8 +337,12 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
                 result = function.apply(argValues);
             } else {
-                // the value cannot be indexed or applied
-                // throw exception
+                // FIXME: It might be the a parameter is
+                // shadowing a built-in function, in which
+                // case, thrown an exception seems bogus.
+                
+                // The value cannot be indexed or applied
+                // throw exception.
                 throw new IllegalActionException(
                         "Cannot index or apply arguments to "
                                 + value.toString());
