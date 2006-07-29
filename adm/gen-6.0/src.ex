@@ -70,6 +70,7 @@ core.*
 core.[0-9]*
 doc/design/src
 doc/design/html
+doc/doccheck
 doc/img/PtolemyIISplash.psd
 doc/uml
 doc/uml/*
@@ -79,6 +80,11 @@ jsdatabase
 jni/test/jni
 junk
 lib/cachedir
+lib/kepler-configs.jar
+lib/kepler-icons.jar
+lib/ptolemy.jar
+lib/ptolemy-doc.jar
+lib/ptvr.jar
 mail
 make.out
 mems
