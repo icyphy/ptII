@@ -80,6 +80,7 @@ jsdatabase
 jni/test/jni
 junk
 lib/cachedir
+lib/javax.comm.properties
 lib/kepler-configs.jar
 lib/kepler-icons.jar
 lib/ptolemy.jar
