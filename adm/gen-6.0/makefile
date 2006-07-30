@@ -1241,7 +1241,7 @@ remote1distjsall_1:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	@echo "Setting up javax.comm.properties so that we can build under solaris"
-	-(cd $(REMOTE1PTIIDIST)/lib; rm javax.comm.properties; ln -s /usr/java/commapi/docs/javax.comm.properties .)
+	-(cd $(REMOTE1PTIIDIST)/lib; rm javax.comm.properties; cp /usr/java/commapi/docs/javax.comm.properties .)
 	@echo "Removing vendors/sun/commapi so that we can build under solaris"
 	@echo "Removing $(JSDATABASE) in prep for $$x "
 	-ls -ldg $(JSDATABASE) $(JSDATABASE)/*
@@ -1325,7 +1325,7 @@ remote1doc:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	@echo "Setting up javax.comm.properties so that we can build under solaris"
-	-(cd $(REMOTE1PTIIDIST)/lib; rm javax.comm.properties; ln -s /usr/java/commapi/docs/javax.comm.properties .)
+	-(cd $(REMOTE1PTIIDIST)/lib; rm javax.comm.properties; cp /usr/java/commapi/docs/javax.comm.properties .)
 	@echo "Removing vendors/sun/commapi so that we can build under solaris"
 	-rm $(REMOTE1PTIIDIST)/vendors/sun/commapi/*
 	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE) install)
