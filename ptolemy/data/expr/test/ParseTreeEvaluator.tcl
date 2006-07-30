@@ -364,7 +364,7 @@ test ParseTreeEvaluator-8.1.1 {Test bitwise operators} {
             [evaluate "5L|2L"] \
             [evaluate "5L\#4L"] \
             [evaluate "~5L"]
-} {false false false true false true true false true true true true true false 0 7 1 -6 0ub 7ub 1ub 250ub 0L 7L 1L -6L}
+} {false false false true false true true false true true true true false false 0 7 1 -6 0ub 7ub 1ub 250ub 0L 7L 1L -6L}
 
 test ParseTreeEvaluator-8.1.2 {Test bitwise operators on doubles} {
     catch {evaluate "5.0&2.0"} errMsg1

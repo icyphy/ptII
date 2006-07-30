@@ -234,7 +234,7 @@ test DoubleMatrixToken-3.6 {Test adding DoubleMatrixToken to BooleanToken.} {
     catch {set res4 [$r addReverse $p]} msg4
 
     list $msg1 $msg2 $msg3 $msg4
-} {{ptolemy.kernel.util.IllegalActionException: add method not supported between ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: addReverse method not supported between ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: add method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: addReverse method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' because the types are incomparable.}}
+} {{ptolemy.kernel.util.IllegalActionException: add method not supported between ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: addReverse method not supported between ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: addReverse method not supported between ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: addReverse method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' because the types are incomparable.}}
 
 test DoubleMatrixToken-3.7 {Test adding DoubleMatrixToken to ComplexToken.} {
     set c1 [java::new {ptolemy.math.Complex double double} 2.0 0.0]
@@ -458,8 +458,8 @@ test DoubleMatrixToken-7.6 {Test multiplying DoubleMatrixToken to BooleanToken.}
     list "$msg1\n$msg2\n$msg3\n$msg4"
 } {{ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.
 ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' because the types are incomparable.
-ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' because the types are incomparable.
-ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' because the types are incomparable.}}
+ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' because the types are incomparable.
+ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.}}
 
 test DoubleMatrixToken-7.7 {Test multiplying DoubleMatrixToken to ComplexToken.} {
     set c1 [java::new {ptolemy.math.Complex double double} 2.0 0.0]
@@ -556,7 +556,7 @@ test DoubleMatrixToken-8.6 {Test subtracting DoubleMatrixToken to BooleanToken.}
     catch {set res4 [$r subtractReverse $p]} msg4
 
     list $msg1 $msg2 $msg3 $msg4
-} {{ptolemy.kernel.util.IllegalActionException: subtract method not supported between ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: subtractReverse method not supported between ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: subtract method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: subtractReverse method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' because the types are incomparable.}}
+} {{ptolemy.kernel.util.IllegalActionException: subtract method not supported between ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: subtractReverse method not supported between ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: subtractReverse method not supported between ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: subtractReverse method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' because the types are incomparable.}}
 
 test DoubleMatrixToken-8.7 {Test subtracting DoubleMatrixToken to ComplexToken.} {
     set c1 [java::new {ptolemy.math.Complex double double} 2.0 0.0]

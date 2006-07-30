@@ -423,7 +423,7 @@ test BooleanToken-14.1 {Test bitwise ops with Token} {
     catch {$trueToken bitwiseOr $token} errMsg1
     catch {$trueToken bitwiseXor $token} errMsg2
     list $errMsg $errMsg1 $errMsg2
-} {{ptolemy.kernel.util.IllegalActionException: bitwiseAnd method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: bitwiseOr method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: bitwiseXor method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.}}
+} {{ptolemy.kernel.util.IllegalActionException: bitwiseAnd operation not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present'} {ptolemy.kernel.util.IllegalActionException: bitwiseOr operation not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present'} {ptolemy.kernel.util.IllegalActionException: bitwiseXor operation not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present'}}
 
 test BooleanToken-14.2 {Test bitwiseAnd on nil} {
     set nil [java::field ptolemy.data.BooleanToken NIL]
@@ -518,7 +518,7 @@ test BooleanToken-16.0 {Test bitwiseXor} {
 	[$results1 toString] \
 	[$results2 toString] \
 	[$results3 toString]
-} {true true false true}
+} {false true false true}
 
 test BooleanToken-16.2 {Test bitwiseXor on nil} {
     set nil [java::field ptolemy.data.BooleanToken NIL]

@@ -671,6 +671,7 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.MATRIX, BaseType.STRING);
             _basicLattice.addEdge(BaseType.BOOLEAN_MATRIX, BaseType.MATRIX);
             _basicLattice.addEdge(BaseType.BOOLEAN, BaseType.BOOLEAN_MATRIX);
+            _basicLattice.addEdge(BaseType.BOOLEAN, BaseType.SCALAR);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.BOOLEAN);
 
             // NOTE: Removed NUMERICAL from the type lattice, EAL 7/22/06.

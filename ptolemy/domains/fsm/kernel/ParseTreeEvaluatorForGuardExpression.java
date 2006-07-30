@@ -364,8 +364,11 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             // Note we cannot tell whether two double values exactly equal, 
             // therefore, we need an error tolerance. This is the only place 
             // where error tolerance is used.
+            // Note that subtraction is not supported for BooleanToken,
+            // unlike other scalars.
             if ((leftToken instanceof ScalarToken)
-                    && (rightToken instanceof ScalarToken)) {
+                    && (rightToken instanceof ScalarToken)
+                    && !(leftToken instanceof BooleanToken)) {
                 // handle the relations like x == 2.0
                 ScalarToken difference = (ScalarToken) leftToken.subtract(rightToken);
                 if (((BooleanToken) result).booleanValue()) {

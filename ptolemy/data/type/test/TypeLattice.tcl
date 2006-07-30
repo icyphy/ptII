@@ -351,11 +351,11 @@ test TypeLattice-4.3 {compare boolean and integer array} {
     set boolean [java::field ptolemy.data.type.BaseType BOOLEAN]
     set lattice [java::new ptolemy.data.type.TypeLattice]
     list [[$lattice leastUpperBound $intArrayType $boolean] toString] [[$lattice leastUpperBound $boolean $intArrayType] toString]
-} {{{matrix}} {{matrix}}}
+} {{{scalar}} {{scalar}}}
 
 test TypeLattice-4.4 {compare boolean and int} {
     set int [java::field ptolemy.data.type.BaseType INT]
     set boolean [java::field ptolemy.data.type.BaseType BOOLEAN]
     set lattice [java::new ptolemy.data.type.TypeLattice]
     list [[$lattice leastUpperBound $int $boolean] toString] [[$lattice leastUpperBound $boolean $int] toString]
-} {matrix matrix}
+} {scalar scalar}

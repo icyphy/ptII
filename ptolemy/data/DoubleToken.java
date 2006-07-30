@@ -393,7 +393,7 @@ public class DoubleToken extends ScalarToken {
 
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is DoubleToken.
-     *  @param rightArgument The token to add to this token.
+     *  @param rightArgument The token to compare to this token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
      *  @return A new Token containing the result.

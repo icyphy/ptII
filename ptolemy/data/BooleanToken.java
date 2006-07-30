@@ -51,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Yellow (cxh) nil token
  @Pt.AcceptedRating Red (cxh)
  */
-public class BooleanToken extends AbstractConvertibleToken implements
+public class BooleanToken extends ScalarToken implements
         BitwiseOperationToken {
     /** Construct a token with value false.
      */
@@ -100,83 +100,6 @@ public class BooleanToken extends AbstractConvertibleToken implements
         } else {
             return FALSE;
         }
-    }
-
-    /** Returns a token representing the bitwise AND of this token and
-     *  the given token.
-     *  @param rightArgument The BooleanToken to bitwise AND with this one.
-     *  @return The boolean AND.
-     *  @exception IllegalActionException If the rightArgument is not a 
-     *  BooleanToken.
-     */
-    public BitwiseOperationToken bitwiseAnd(Token rightArgument)
-            throws IllegalActionException {
-        if (isNil() || rightArgument.isNil()) {
-            return BooleanToken.NIL;
-        }
-        if (!(rightArgument instanceof BooleanToken)) {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "bitwiseAnd", this, rightArgument));
-        }
-
-        return (BooleanToken) _multiply(rightArgument);
-    }
-
-    /** Returns a token representing the bitwise NOT of this token.
-     *  @return The boolean negation.
-     */
-    public BitwiseOperationToken bitwiseNot() {
-        return not();
-    }
-
-    /** Returns a token representing the bitwise OR of this token and
-     *  the given token.
-     *  If this token is nil, or the argument is nil,
-     *  then {@link #NIL} is returned.
-     *  @param rightArgument The BooleanToken to bitwise OR with this one
-     *  @return The boolean OR.
-     *  @exception IllegalActionException If the rightArgument is not a 
-     *  BooleanToken.
-     */
-    public BitwiseOperationToken bitwiseOr(Token rightArgument)
-            throws IllegalActionException {
-        if (isNil() || rightArgument.isNil()) {
-            return BooleanToken.NIL;
-        }
-        if (!(rightArgument instanceof BooleanToken)) {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "bitwiseOr", this, rightArgument));
-        }
-
-        boolean rightValue = ((BooleanToken) rightArgument).booleanValue();
-
-        if (_value || rightValue) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
-
-    /** Returns a token representing the bitwise XOR of this token and
-     *  the given token.
-     *  If this token is nil, or the argument is nil,
-     *  then {@link #NIL} is returned.
-     *  @param rightArgument The BooleanToken to bitwise XOR with this one
-     *  @return The boolean XOR.
-     *  @exception IllegalActionException If the rightArgument is not a 
-     *  BooleanToken.
-     */
-    public BitwiseOperationToken bitwiseXor(Token rightArgument)
-            throws IllegalActionException {
-        if (isNil() || rightArgument.isNil()) {
-            return BooleanToken.NIL;
-        }
-        if (!(rightArgument instanceof BooleanToken)) {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "bitwiseXor", this, rightArgument));
-        }
-
-        return (BooleanToken) _add(rightArgument);
     }
 
     /** Return the value as a boolean.
@@ -388,18 +311,67 @@ public class BooleanToken extends AbstractConvertibleToken implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return this token.
+     *  @return This token.
+     */
+    protected ScalarToken _absolute() {
+        return this;
+    }
+
     /** Return a new token whose value is the value of the
      *  argument Token added to the value of this Token.  It is assumed
      *  that the type of the argument is an BooleanToken.
      *  @param rightArgument The token to add to this token.
      *  @return A new BooleanToken containing the result.
      */
-    protected Token _add(Token rightArgument) {
+    protected ScalarToken _add(ScalarToken rightArgument) {
         return this.or((BooleanToken) rightArgument);
     }
 
-    /** Return a new token whose value is the value of the argument
-     *  Token added to the value of this Token.  It is assumed that
+    /** Returns a token representing the bitwise AND of this token and
+     *  the given token. This is the same as and().
+     *  @param rightArgument The DoubleToken to bitwise AND with this one.
+     *  @return The bitwise AND.
+     *  @exception IllegalActionException Always thrown by this base class.
+     */
+    protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
+            throws IllegalActionException {
+        return and((BooleanToken)rightArgument);
+    }
+
+    /** Returns a token representing the bitwise NOT of this token.
+     *  This is the same as not().
+     *  @return The bitwise NOT of this token.
+     *  @exception IllegalActionException Always thrown by this base class.
+     */
+    protected ScalarToken _bitwiseNot() throws IllegalActionException {
+        return not();
+    }
+
+    /** Returns a token representing the bitwise OR of this token and
+     *  the given token. This is the same as or().
+     *  @param rightArgument The DoubleToken to bitwise OR with this one.
+     *  @return The bitwise OR.
+     *  @exception IllegalActionException Always thrown by this base class.
+     */
+    protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
+            throws IllegalActionException {
+        return or((BooleanToken)rightArgument);
+    }
+
+    /** Returns a token representing the bitwise XOR of this token and
+     *  the given token. This is the same as xor().
+     *  @param rightArgument The DoubleToken to bitwise XOR with this one.
+     *  @return The bitwise XOR.
+     *  @exception IllegalActionException Always thrown by this base class.
+     */
+    protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
+            throws IllegalActionException {
+        return xor((BooleanToken)rightArgument);
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  divided by the value of this Token.  It is assumed that
      *  the type of the argument is an BooleanToken.  For booleans,
      *  division is defined by multiplication (which is logical and).
      *  Thus, if <i>c</i> = <i>a</i>/<i>b</i> then <i>c</i> is defined
@@ -413,7 +385,7 @@ public class BooleanToken extends AbstractConvertibleToken implements
      *  @exception IllegalActionException If the argument token is
      *  FALSE.
      */
-    protected Token _divide(Token rightArgument) throws IllegalActionException {
+    protected ScalarToken _divide(ScalarToken rightArgument) throws IllegalActionException {
         if (isNil() || ((BooleanToken) rightArgument).isNil()) {
             return BooleanToken.NIL;
         }
@@ -435,40 +407,43 @@ public class BooleanToken extends AbstractConvertibleToken implements
      *  @param epsilon Ignored in this method.
      *  @return A token containing the result.
      */
-    protected BooleanToken _isCloseTo(Token token, double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken token, double epsilon) {
         return _isEqualTo(token);
     }
 
     /** Test for equality of the values of this token and the argument.
-     *  It is assumed that the type of the argument is BooleanToken.
+     *  This is the same as equals(), except that it returns a BooleanToken
+     *  instead of a boolean.
      *  @param token The token to compare to this token.
      *  @return A token containing the result.
      *  If either this object or the argument is a nil Token, return
      *  false.
      */
-    protected BooleanToken _isEqualTo(Token token) {
-        if (isNil() || ((BooleanToken) token).isNil()) {
-            return BooleanToken.NIL;
-        }
-
-        boolean argumentValue = ((BooleanToken) token).booleanValue();
-        if (_value == argumentValue) {
+    protected BooleanToken _isEqualTo(ScalarToken token) {
+        if (equals(token)) {
             return TRUE;
         } else {
             return FALSE;
         }
     }
-
-    /** Return a new token whose value is the value of this token
-     *  modulo the value of the argument token.  It is assumed
-     *  that the type of the argument is BooleanToken.
-     *  @param rightArgument The token to modulo this token by.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A new Token containing the result that is of the same
-     *  class as this token.
+    
+    /** Throw an exception.
+     *  @param rightArgument The token to compare to this token.
+     *  @exception IllegalActionException Always.
+     *  @return Does not return.
      */
-    protected Token _modulo(Token rightArgument) throws IllegalActionException {
+    protected BooleanToken _isLessThan(ScalarToken rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("isLessThan", this,
+                rightArgument));
+    }
+
+    /** Throw an exception. This method is not supported.
+     *  @param rightArgument The token to modulo this token by.
+     *  @exception IllegalActionException Always.
+     *  @return Does not return.
+     */
+    protected ScalarToken _modulo(ScalarToken rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
                 rightArgument));
     }
@@ -482,14 +457,14 @@ public class BooleanToken extends AbstractConvertibleToken implements
      *  @exception IllegalActionException If ANDing the argument
      *  and the token throws it.
      */
-    protected Token _multiply(Token rightArgument)
+    protected ScalarToken _multiply(ScalarToken rightArgument)
             throws IllegalActionException {
         return this.and((BooleanToken) rightArgument);
     }
 
     /** Subtraction is not supported in Boolean algebras.
      */
-    protected Token _subtract(Token rightArgument)
+    protected ScalarToken _subtract(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("subtract", this,
                 rightArgument));
