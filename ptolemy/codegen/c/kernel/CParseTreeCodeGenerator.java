@@ -301,7 +301,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 CodeGeneratorHelper.codeGenType(elementType));
         _fireCode.append("))");
         
-        _evaluatedChildToken = (new ArrayToken(tokens));
+        _evaluatedChildToken = (new ArrayToken(elementType, tokens));
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
