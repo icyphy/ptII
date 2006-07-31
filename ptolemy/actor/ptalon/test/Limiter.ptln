@@ -1,0 +1,3 @@
+Limiter is {
+	$actorSource ptolemy.actor.lib.Limiter$
+}

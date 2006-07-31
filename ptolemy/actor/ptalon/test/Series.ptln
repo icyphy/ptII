@@ -1,0 +1,12 @@
+Series is {
+	intparameter n;
+	inport input;
+	outport output;
+	if (n == 0) {
+		Link(a := Scale, b := Scale, 
+			input := input, output := output);
+	} else {
+		Link(a := Scale, b := Series(n := n - 1),
+			input := input, output := output);
+	}
+}

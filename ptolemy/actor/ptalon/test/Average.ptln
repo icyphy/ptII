@@ -1,0 +1,3 @@
+Average is {
+	$actorSource ptolemy.actor.lib.Average$
+}
