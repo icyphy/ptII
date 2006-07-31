@@ -1,4 +1,4 @@
-// $ANTLR 2.7.6 (2005-12-22): "ptalonForPtolemy.g" -> "PtalonLexer.java"$
+// $ANTLR : "ptalonForPtolemy.g" -> "PtalonLexer.java"$
 /* 
 
  Copyright (c) 2006 The Regents of the University of California.
@@ -76,7 +76,7 @@ public PtalonLexer(LexerSharedInputState state) {
 	literals.put(new ANTLRHashString("parameter", this), new Integer(8));
 	literals.put(new ANTLRHashString("else", this), new Integer(39));
 	literals.put(new ANTLRHashString("true", this), new Integer(31));
-	literals.put(new ANTLRHashString("boolparameter", this), new Integer(10));
+	literals.put(new ANTLRHashString("boolparameter", this), new Integer(41));
 	literals.put(new ANTLRHashString("outport", this), new Integer(6));
 	literals.put(new ANTLRHashString("false", this), new Integer(32));
 	literals.put(new ANTLRHashString("is", this), new Integer(40));

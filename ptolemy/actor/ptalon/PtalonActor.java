@@ -28,6 +28,8 @@
  */
 package ptolemy.actor.ptalon;
 
+import antlr.CommonAST;
+
 import java.io.File;
 import java.io.FileReader;
 import java.lang.reflect.Constructor;
@@ -530,7 +532,10 @@ public class PtalonActor extends TypedCompositeActor {
             FileReader reader = new FileReader(inputFile);
             lex = new PtalonLexer(reader);
             rec = new PtalonRecognizer(lex);
-            rec.actor_definition(this);
+            rec.actor_definition();
+            CommonAST ast = (CommonAST) rec.getAST();
+            PtalonWalker walker = new PtalonWalker();
+            walker.actor_definition(ast, this);
             ptalonCodeLocation.setExpression("");
             ptalonCodeLocation.setContainer(null);
             _collectPtalonParameters();

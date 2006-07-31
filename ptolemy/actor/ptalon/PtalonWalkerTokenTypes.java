@@ -1,4 +1,4 @@
-// $ANTLR : "ptalonForPtolemy.g" -> "PtalonLexer.java"$
+// $ANTLR 2.7.6 (2005-12-22): "ptolemyTreeWalker.g" -> "PtalonWalker.java"$
 /* 
 
  Copyright (c) 2006 The Regents of the University of California.
@@ -28,7 +28,7 @@
  */
 package ptolemy.actor.ptalon;
 
-public interface PtalonTokenTypes {
+public interface PtalonWalkerTokenTypes {
 	int EOF = 1;
 	int NULL_TREE_LOOKAHEAD = 3;
 	int PORT = 4;

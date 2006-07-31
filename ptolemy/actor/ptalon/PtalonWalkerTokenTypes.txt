@@ -1,5 +1,5 @@
-// $ANTLR : ptalonForPtolemy.g -> PtalonTokenTypes.txt$
-Ptalon    // output token vocab name
+// $ANTLR 2.7.6 (2005-12-22): ptolemyTreeWalker.g -> PtalonWalkerTokenTypes.txt$
+PtalonWalker    // output token vocab name
 PORT="port"=4
 INPORT="inport"=5
 OUTPORT="outport"=6

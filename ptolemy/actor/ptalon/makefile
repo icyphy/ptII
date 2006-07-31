@@ -48,13 +48,16 @@ include $(CONFIG)
 JSRCS = \
 	ParameterMethodList.java \
 	PtalonActor.java \
+	PtalonCompilerInfo.java \
 	PtalonLexer.java \
 	PtalonObject.java \
 	PtalonParameter.java \
 	PtalonPort.java \
 	PtalonRecognizer.java  \
 	PtalonRelation.java \
-	PtalonTokenTypes.java
+	PtalonScopeChecker.java \
+	PtalonTokenTypes.java \
+	PtalonWalker.java 
 	
 EXTRA_SRCS =	$(JSRCS)
 
