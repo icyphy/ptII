@@ -205,6 +205,8 @@ $(PTIIDIST):
 	rm -f $(PTIIDIST)/.glimpse*
 	cp $(PTIIHOME)/.glimpse_exclude $(PTIIDIST)
 	touch $(PTIIDIST)/configure
+	# Copy the vergil script for use in the full tar file
+	cp $(PTIIHOME)/bin/vergil $(PTIIDIST)/bin
 	# Bump up the mod time of $PTII/mk/ptII.mk.in so that if
 	# the user runs make, then configure will run 
 	touch $(PTIIDIST)/mk/ptII.mk.in
