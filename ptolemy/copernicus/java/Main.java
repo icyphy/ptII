@@ -322,8 +322,7 @@ public class Main extends KernelMain {
         
         if (_unboxing) {
             
-            addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(toplevel));
-            //, "debug:true");// level:1");
+            addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(toplevel)); //, "debug:true"); // level:1");
             
             addStandardOptimizations(pack, 8);
 
@@ -352,6 +351,9 @@ public class Main extends KernelMain {
             addTransform(pack, "wjtp.doe6", new TransformerAdapter(
                     DeadObjectEliminator.v()));
             addStandardOptimizations(pack, 12);
+            addTransform(pack, "wjtp.doe7", new TransformerAdapter(
+                    DeadObjectEliminator.v()));
+            addStandardOptimizations(pack, 13);
 
             // The library usage reporter also pulls in all depended
             // classes for analysis.

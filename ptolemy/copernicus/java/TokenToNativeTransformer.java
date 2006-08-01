@@ -51,6 +51,7 @@ import soot.Body;
 import soot.BooleanType;
 import soot.ByteType;
 import soot.DoubleType;
+import soot.FastHierarchy;
 import soot.FloatType;
 import soot.HasPhaseOptions;
 import soot.Hierarchy;
@@ -477,6 +478,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
             TypeSpecializerAnalysis typeAnalysis = new TypeSpecializerAnalysis(
                     entityClass, unsafeLocalSet);
 
+
             // Specialize the code, according to the analyzed types.
             //TypeSpecializer.specializeTypes(true, entityClass, unsafeLocalSet, typeAnalysis);
             for (Iterator methods = entityClass.getMethods().iterator(); methods
@@ -519,6 +521,9 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                         if (debug) {
                             System.out.println("value = " + value);
                         }
+
+                        Scene.v().setActiveHierarchy(new Hierarchy());
+                        Scene.v().setFastHierarchy(new FastHierarchy());
 
                         boolean flag = _inlineTokenMethodsIn(method, body,
                                 stmt, box, localDefs, localUses, typeAnalysis,
@@ -590,6 +595,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
             boolean isInlineableTokenMethod = _isLocalTokenTypeWithDepth(local,
                     typeAnalysis, unsafeLocalSet, depth, debug);
+
+            if (debug) {
+                System.out.println("checking inline for " + r);
+            }
 
             // Check if token arguments are being used.  This makes
             // sure we get methods like Scale._scaleOnRight and

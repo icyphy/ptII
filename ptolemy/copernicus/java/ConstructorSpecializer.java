@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -99,6 +100,8 @@ public class ConstructorSpecializer extends SceneTransformer implements
 
         List modifiedConstructorClassList = new LinkedList();
 
+        HashMap classToConstructorMap = new HashMap();
+
         // Loop over all the classes
         for (Iterator i = Scene.v().getApplicationClasses().iterator(); i
                 .hasNext();) {
@@ -134,6 +137,9 @@ public class ConstructorSpecializer extends SceneTransformer implements
                             // updated.
                             theClass.removeMethod(method);
                             theClass.addMethod(method);
+
+                            // Keep track of the modified constructor.
+                            classToConstructorMap.put(theClass, method);
 
                             // Replace the parameter refs so THEY have
                             // the right type, too..
@@ -215,8 +221,7 @@ public class ConstructorSpecializer extends SceneTransformer implements
                                 System.out
                                         .println("replacing constructor invocation = "
                                                 + unit + " in method " + method);
-                                SootMethod newConstructor = declaringClass
-                                        .getMethodByName("<init>");
+                                SootMethod newConstructor = (SootMethod)classToConstructorMap.get(declaringClass);//                                        .getMethodByName("<init>");
                                 if (newConstructor.getParameterCount() == 2) {
                                     SpecialInvokeExpr r = (SpecialInvokeExpr) value;
                                     r.setMethodRef(newConstructor.makeRef());
