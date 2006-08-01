@@ -249,7 +249,7 @@ public class Test extends NonStrictTest {
                             _tolerance);
                 }
                 if(token instanceof RecordToken && reference[i] instanceof RecordToken) {
-                    _isCloseToIfNilRecordElement(token, reference[i],
+                    isClose |=_isCloseToIfNilRecordElement(token, reference[i],
                             _tolerance);
                 }
 
