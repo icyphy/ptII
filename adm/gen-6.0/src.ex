@@ -56,7 +56,6 @@ bin/soot
 bin/tinic
 bin/tinicomm
 bin/tiniconverter
-bin/vergil
 brass
 collections
 com/microstar/xml/driver
