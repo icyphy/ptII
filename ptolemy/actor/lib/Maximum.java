@@ -137,7 +137,7 @@ public class Maximum extends TypedAtomicActor {
             if (input.hasToken(i)) {
                 ScalarToken in = (ScalarToken) input.get(i);
 
-                if (in.getType() == BaseType.COMPLEX) {
+                if (in.getType().equals(BaseType.COMPLEX)) {
                     // If we have a complex, we use the absolute value
                     // for comparison, but save output the initial input
                     // for output at the end.
