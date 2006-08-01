@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -240,12 +241,17 @@ public class Test extends NonStrictTest {
             try {
                 isClose = token.isCloseTo(reference[i], _tolerance)
                         .booleanValue()
-                        || token.isNil()
-                        && reference[i].isNil()
-                        || _isCloseToIfNilArrayElement(token, reference[i],
-                                _tolerance)
-                        || _isCloseToIfNilRecordElement(token, reference[i],
-                                _tolerance);
+                    || token.isNil() && reference[i].isNil();
+                // Additional guards makes things slightly easier for
+                // Copernicus.
+                if(token instanceof ArrayToken && reference[i] instanceof ArrayToken) {
+                    isClose |= _isCloseToIfNilArrayElement(token, reference[i],
+                            _tolerance);
+                }
+                if(token instanceof RecordToken && reference[i] instanceof RecordToken) {
+                    _isCloseToIfNilRecordElement(token, reference[i],
+                            _tolerance);
+                }
 
             } catch (IllegalActionException ex) {
                 // Chain the exceptions together so we know which test
