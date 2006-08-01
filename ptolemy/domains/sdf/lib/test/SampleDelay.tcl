@@ -98,12 +98,17 @@ test SampleDelay-2.4 {test with type change} {
     enumToTokenValues [$rec getRecord 0]
 } {7.0 4.0 0.0 1.0 2.0}
 
-test SampleDelay-2.5 {test with type change to error condition} {
+test SampleDelay-2.5 {test with type change} {
+    # This used to throw an exception, but now because boolean
+    # is a subtype of scalar, it no longer does
     $initialOutputs setExpression {{true, false}}
-    catch { [$e0 getManager] execute } msg
+    #catch { [$e0 getManager] execute } msg
     # Note, this order of the error message might be platform dependent
-    regexp Exception $msg
-} {1}
+    #regexp Exception $msg
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {true false 0 1 2}
+
 
 test SampleDelay-3.0 {test in feedback loop} {
     $ramp {setContainer ptolemy.kernel.CompositeEntity} [java::null]
@@ -115,3 +120,12 @@ test SampleDelay-3.0 {test in feedback loop} {
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {true false true false true}
+
+test SampleDelay-4.0 {test with type change that is bogus} {
+    $initialOutputs setExpression {[0,1]}
+    catch { [$e0 getManager] execute } msg
+    # Note, this order of the error message might be platform dependent
+    #puts "SampleDelay-4.0: $msg"
+    regexp Exception $msg
+} {1}
+
