@@ -134,7 +134,7 @@ foreach type $types {
 		set result4 [$one $relationalOperation $one]
 		list [$result toString] [$result2 toString] \
 		    [$result3 toString] [$result4 toString]
-	    } {nil nil nil true}
+	    } {false false false true}
 	}
     }
 

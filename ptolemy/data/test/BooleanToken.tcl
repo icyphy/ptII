@@ -195,7 +195,7 @@ test BooleanToken-6.1 {Test equality test on nils} {
     set r4 [$nil isEqualTo $trueToken]
     set r5 [$nil isEqualTo $nil]
     list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString] [$r5 toString]
-} {nil nil nil nil nil}
+} {false false false false false}
 
 
 ######################################################################

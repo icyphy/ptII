@@ -236,7 +236,7 @@ public class Token implements Serializable {
     public BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
-            return BooleanToken.NIL;
+            return BooleanToken.FALSE;
         }
         throw new IllegalActionException(notSupportedMessage("isEqualTo", this,
                 rightArgument));

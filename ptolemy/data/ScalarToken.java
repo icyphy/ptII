@@ -1601,7 +1601,7 @@ public abstract class ScalarToken extends Token implements
     private BooleanToken _doIsEqualTo(Token rightArgument)
             throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
-            return BooleanToken.NIL;
+            return BooleanToken.FALSE;
         }
 
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
