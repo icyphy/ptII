@@ -322,7 +322,7 @@ $(PTII_SRC): $(PTII_FULL)
 		src/ptII$(VERSION)/ptolemy/domains/tm/makefile
 	(cd src; \
 		echo "#  Starting tar of $@"; \
-		$(TAR) -c -v --no-anchored -X $(GENDIR)/src.ex -f $(PTII_SRC) ptII$(VERSION); \
+		$(TAR) -c -v --no-anchored -X $(GENDIR)/src.ex --exclude bin/vergil -f $(PTII_SRC) ptII$(VERSION); \
 		);
 
 ###############
