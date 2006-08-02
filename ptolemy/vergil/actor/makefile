@@ -74,6 +74,7 @@ JSRCS = \
 	DocTableau.java \
 	DocViewer.java \
 	ExternalIOPortController.java \
+	FindPackages.java \
 	IOPortController.java \
 	LinkController.java \
 	LinkManhattanConnector.java \
