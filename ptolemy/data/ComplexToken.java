@@ -117,7 +117,7 @@ public class ComplexToken extends ScalarToken {
         if (token instanceof ComplexToken) {
             return (ComplexToken) token;
         }
-        if (token == null || token.isNil()) {
+        if (token.isNil()) {
             return ComplexToken.NIL;
         }
 

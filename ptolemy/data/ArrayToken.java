@@ -72,7 +72,28 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   zero.
      */
     public ArrayToken(Token[] value) throws IllegalActionException {
-        this(null, value);
+        int length = value.length;
+        
+        if (length < 1) {
+            throw new IllegalActionException("ArrayToken(Token[]) called with "
+                    + "a an array of length less than 1.  To create an array "
+                    + "of length 0, use the ArrayToken(Token) constructor "
+                    + "because elements in ArrayToken must have a type.");
+        }
+        
+        _elementType = value[0].getType();
+        
+        for (int i = 0; i < length; i++) {
+            Type valueType = value[i].getType();
+            _elementType = TypeLattice.leastUpperBound(
+                    _elementType, valueType);
+        }
+        
+        _value = new Token[length];
+        
+        for (int i = 0; i < length; i++) {
+            _value[i] = _elementType.convert(value[i]);
+        }
     }
 
     /** Construct an ArrayToken from the specified string.
@@ -122,50 +143,11 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     public ArrayToken(Type elementType, Token[] value) throws IllegalActionException {
         _elementType = elementType;
         int length = value.length;
-        if (_elementType == null) {
-            if (length < 1) {
-                throw new IllegalActionException("ArrayToken(Token[]) called with "
-                        + "a an array of length less than 1.  To create an array "
-                        + "of length 0, use the ArrayToken(Token) constructor "
-                        + "because elements in ArrayToken must have a type.");
-            }
 
-            _elementType = value[0].getType();
-
-            // NOTE: The code generator justified commenting out the
-            // following code, but this isn't right.  The code generator
-            // is going to have to be made to deal with it.  The original
-            // comment accompanying the commented out was:
-            // It would be nice to have this, but the Code generator cannot
-            // deal with the least upper bound.
-            for (int i = 0; i < length; i++) {
-                Type valueType = value[i].getType();
-                if (!_elementType.equals(valueType)) {
-                    _elementType = TypeLattice.leastUpperBound(
-                            _elementType, valueType);
-                }
-            }
-        }
         _value = new Token[length];
         
         for (int i = 0; i < length; i++) {
-            // NOTE: This had previously been like this, but the
-            // the code generator caused a change as shown in the commented
-            // out code below.  But in order to be able to have {scalar},
-            // it is essential to have this call to convert here.
             _value[i] = _elementType.convert(value[i]);
-            /*
-             if (_elementType.equals(value[i].getType())) {
-             _value[i] = value[i]; // _elementType.convert(value[i]);
-             } else {
-             throw new IllegalActionException(
-             "Elements of the array do not have the same type:"
-             + "value[0]=" + value[0] + " (type: "
-             + elementType + ")" + " value[" + i + "]="
-             + value[i] + " (type: "
-             + value[i].getType() + ")");
-             }
-             */
         }
     }
 
@@ -518,7 +500,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             throws IllegalActionException {
         List result = new LinkedList();
 
-        if (selection.getElementType() == BaseType.BOOLEAN) {
+        if (selection.getElementType().equals(BaseType.BOOLEAN)) {
             if (selection.length() != length()) {
                 throw new IllegalActionException(
                         "When the argument is an array of booleans, it must have "
@@ -530,7 +512,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     result.add(getElement(i));
                 }
             }
-        } else if (selection.getElementType() == BaseType.INT) {
+        } else if (selection.getElementType().equals(BaseType.INT)) {
             for (int i = 0; i < selection.length(); i++) {
                 // We could check for out-of-bounds indicies and ignore them,
                 // if we wanted to.

@@ -98,7 +98,7 @@ public class IntToken extends ScalarToken {
      *  This method does lossless conversion.  The units of the
      *  returned token will be the same as the units of the given
      *  token.  If the argument is already an instance of IntToken, it
-     *  is returned without any change.  If the argument is null or a
+     *  is returned without any change.  If the argument is a
      *  nil token, then {@link #NIL} is returned.
      *  Otherwise, if the argument is below IntToken in the type
      *  hierarchy, it is converted to an instance of IntToken or one
@@ -114,7 +114,7 @@ public class IntToken extends ScalarToken {
         if (token instanceof IntToken) {
             return (IntToken) token;
         }
-        if (token == null || token.isNil()) {
+        if (token.isNil()) {
             return IntToken.NIL;
         }
 

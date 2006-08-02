@@ -101,7 +101,7 @@ public class LongToken extends ScalarToken {
      *  This method does lossless conversion.  The units of the
      *  returned token will be the same as the units of the given
      *  token.  If the argument is already an instance of LongToken,
-     *  it is returned without any change.  If the argument is null or
+     *  it is returned without any change.  If the argument is
      *  a nil token, then a new nil Token is returned, see {@link
      *  #NIL}.  Otherwise, if the argument is below LongToken in the
      *  type hierarchy, it is converted to an instance of LongToken or
@@ -118,7 +118,7 @@ public class LongToken extends ScalarToken {
             return (LongToken) token;
         }
 
-        if (token == null || token.isNil()) {
+        if (token.isNil()) {
             return LongToken.NIL;
         }
 

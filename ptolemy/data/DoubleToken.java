@@ -104,7 +104,7 @@ public class DoubleToken extends ScalarToken {
      *  it is returned without any change. If it is a PetiteToken is
      *  it returned as a DoubleToken since lossless conversion is
      *  possible between PetiteToken and DoubleToken.  If the argument
-     *  is null or a nil token, then {@link #NIL} is
+     *  is a nil token, then {@link #NIL} is
      *  returned.  Otherwise, if the argument is below DoubleToken in
      *  the type hierarchy, it is converted to an instance of
      *  DoubleToken or one of the subclasses of DoubleToken and
@@ -123,7 +123,7 @@ public class DoubleToken extends ScalarToken {
             // is a Petite, then we will return a Double from here.
             return (DoubleToken) token;
         }
-        if (token == null || token.isNil()) {
+        if (token.isNil()) {
             return DoubleToken.NIL;
         }
         int compare = TypeLattice.compare(BaseType.DOUBLE, token);

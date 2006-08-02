@@ -176,7 +176,7 @@ public class UnsignedByteToken extends ScalarToken {
             return (UnsignedByteToken) token;
         }
 
-        if (token == null || token.isNil()) {
+        if (token.isNil()) {
             return UnsignedByteToken.NIL;
         }
         int compare = TypeLattice.compare(BaseType.UNSIGNED_BYTE, token);

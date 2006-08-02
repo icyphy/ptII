@@ -113,7 +113,7 @@ public class BooleanToken extends ScalarToken implements
      *  This method does lossless conversion, which in the case of
      *  booleans, means that the argument can only be already an
      *  instance of BooleanToken.  It is returned unchanged.  If the
-     *  argument is null or a nil token, then {@link #NIL} is
+     *  argument is a nil token, then {@link #NIL} is
      *  returned.
      *  @param token The token to be converted to a BooleanToken.
      *  @return A BooleanToken.
@@ -125,7 +125,7 @@ public class BooleanToken extends ScalarToken implements
         if (token instanceof BooleanToken) {
             return (BooleanToken) token;
         }
-        if (token == null || token.isNil()) {
+        if (token.isNil()) {
             return BooleanToken.NIL;
         }
 

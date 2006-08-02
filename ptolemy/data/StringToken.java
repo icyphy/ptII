@@ -109,7 +109,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  This method does lossless conversion.
      *  If the argument is already an instance of StringToken,
      *  it is returned without any change. 
-     *  If the argument is null or a nil token, then 
+     *  If the argument is a nil token, then 
      *  {@link #NIL} is returned.
      *  Otherwise, if the argument is below StringToken in the type
      *  hierarchy, it is converted to an instance of StringToken or
