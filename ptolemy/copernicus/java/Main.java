@@ -94,7 +94,7 @@ public class Main extends KernelMain {
 
         addTransform(pack, "wjtp.ta1", new TransformerAdapter(TypeAssigner.v()));
         addStandardOptimizations(pack, 1);
-
+        
         if (_snapshots) {
             addTransform(pack, "wjtp.snapshot1jimple", JimpleWriter.v(),
                     "outDir:" + _outputDirectory + "/jimple1");
@@ -322,7 +322,7 @@ public class Main extends KernelMain {
         
         if (_unboxing) {
             
-            addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(toplevel)); //, "debug:true"); // level:1");
+            addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(toplevel)); //, "debug:true");//level:1");
             
             addStandardOptimizations(pack, 8);
 

@@ -688,6 +688,24 @@ public class TypeSpecializerAnalysis {
                     _addInequality(debug, solver, firstArgTerm, elementTerm);
                     _addInequality(debug, solver, elementTerm, firstArgTerm);
                     return baseTerm;
+                } else if (r.getMethod()
+                        .equals(PtolemyUtilities.arrayTokenWithTypeConstructor)) {
+                    ptolemy.data.type.Type elementType = PtolemyUtilities
+                        .getTypeValue(method, (Local) r.getArg(0),
+                                unit, localDefs, localUses);
+                    InequalityTerm elementTypeTerm = new ConstantTerm(
+                            elementType, r);
+                    ptolemy.data.type.ArrayType arrayType = new ptolemy.data.type.ArrayType(
+                            ptolemy.data.type.BaseType.UNKNOWN);
+                    VariableTerm newTerm = new VariableTerm(arrayType, r);
+                    _addInequality(debug, solver, baseTerm, newTerm);
+                    _addInequality(debug, solver, newTerm, baseTerm);
+
+                    InequalityTerm elementTerm = (InequalityTerm) arrayType
+                            .getElementTypeTerm();
+                    _addInequality(debug, solver, elementTypeTerm, elementTerm);
+                    _addInequality(debug, solver, elementTerm, elementTypeTerm);
+                    return baseTerm;
                 } else if (methodName.equals("one")
                         || methodName.equals("zero")
                         || methodName.equals("bitwiseNot")

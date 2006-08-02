@@ -114,6 +114,8 @@ public class PtolemyUtilities {
             Local tokenArrayLocal = Jimple.v().newLocal(localName + "Array",
                     tokenArrayType);
             body.getLocals().add(tokenArrayLocal);
+            Local elementTypeLocal = buildConstantTypeLocal(body, insertPoint,
+                    arrayToken.getElementType());
 
             // Create the array of tokens.
             units.insertBefore(Jimple.v().newAssignStmt(
@@ -138,7 +140,7 @@ public class PtolemyUtilities {
                     insertPoint);
             units.insertBefore(Jimple.v().newInvokeStmt(
                     Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                            arrayTokenConstructor.makeRef(), tokenArrayLocal)),
+                            arrayTokenWithTypeConstructor.makeRef(), elementTypeLocal, tokenArrayLocal)),
                     insertPoint);
             return tokenLocal;
         } else if (token instanceof ptolemy.data.RecordToken) {
@@ -336,6 +338,13 @@ public class PtolemyUtilities {
             SootMethod tokenConstructor, Value constructorArg) {
         return _buildConstantTokenLocal(body, insertPoint, localName,
                 tokenClass, tokenConstructor, constructorArg);
+    }
+
+    public static Local addTokenLocalBefore(Body body, Unit insertPoint,
+            String localName, SootClass tokenClass,
+            SootMethod tokenConstructor, List constructorArgs) {
+        return _buildConstantTokenLocal(body, insertPoint, localName,
+                tokenClass, tokenConstructor, constructorArgs);
     }
 
     private static Local _buildConstantTokenLocal(Body body, Unit insertPoint,
@@ -1233,6 +1242,7 @@ public class PtolemyUtilities {
 
     // Soot Method representing the ArrayToken(Token[]) constructor.
     public static SootMethod arrayTokenConstructor;
+    public static SootMethod arrayTokenWithTypeConstructor;
 
     public static SootMethod arrayGetElementMethod;
 
@@ -1950,6 +1960,8 @@ public class PtolemyUtilities {
                 "ptolemy.data.ArrayToken");
         arrayTokenConstructor = arrayTokenClass
                 .getMethod("void <init>(ptolemy.data.Token[])");
+        arrayTokenWithTypeConstructor = arrayTokenClass
+                .getMethod("void <init>(ptolemy.data.type.Type,ptolemy.data.Token[])");
         arrayValueMethod = arrayTokenClass
                 .getMethod("ptolemy.data.Token[] arrayValue()");
         arrayGetElementMethod = arrayTokenClass

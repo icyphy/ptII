@@ -143,6 +143,12 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         Local local = _getChildTokensLocal(0, node);
 
+        ptolemy.data.type.ArrayType type = 
+            (ptolemy.data.type.ArrayType)node.getType();
+        Local elementTypeLocal = 
+            PtolemyUtilities.buildConstantTypeLocal(_body, _insertPoint,
+                    type.getElementType());
+
         Local tokenLocal = Jimple.v().newLocal("token",
                 RefType.v(PtolemyUtilities.arrayTokenClass));
         _body.getLocals().add(tokenLocal);
@@ -157,7 +163,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                         .newSpecialInvokeExpr(
                                 tokenLocal,
                                 PtolemyUtilities.arrayTokenConstructor
-                                        .makeRef(), local)), _insertPoint);
+                                .makeRef(), elementTypeLocal, local)), _insertPoint);
 
         _nodeToLocal.put(node, tokenLocal);
     }
