@@ -1,12 +1,16 @@
+import ptolemy.actor.ptalon.test.Link;
+
 Series is {
+	parameter transformer;
 	intparameter n;
 	inport input;
 	outport output;
 	if (n == 0) {
-		Link(a := Scale, b := Scale, 
+		parameter hidden;
+		Link(a := transformer, b := transformer, 
 			input := input, output := output);
 	} else {
-		Link(a := Scale, b := Series(n := n - 1),
+		Link(a := transformer, b := Series(n := n - 1),
 			input := input, output := output);
 	}
 }

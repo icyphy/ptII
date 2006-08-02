@@ -3,6 +3,7 @@ package ptolemy.actor.ptalon.test;
 import java.util.*;
 import java.io.*;
 import antlr.collections.*;
+import antlr.debug.misc.ASTFrame;
 import ptolemy.actor.ptalon.*;
 
 
@@ -24,6 +25,9 @@ public class PtalonTester {
                 PtalonScopeChecker check = new PtalonScopeChecker();
                 check.actor_definition(ast);
                 PtalonCompilerInfo info = check.getCompilerInfo();
+                ast = check.getAST();
+                ASTFrame frame = new ASTFrame("Checked AST", ast);
+                frame.setVisible(true);
                 System.out.println(info);
             }
         } catch(Exception e) {

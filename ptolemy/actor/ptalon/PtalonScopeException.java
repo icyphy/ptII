@@ -11,11 +11,19 @@ public class PtalonScopeException extends Exception {
 
     /**
      * Generate a Ptalon ScopeException
-     * @param message An explanation of the offense.
-     * @param variableName The name of the offensive variable.
+     * @param message An explanation of the offense
      */
     public PtalonScopeException(String message) {
         super(message);
+    }
+
+    /**
+     * Generate a Ptalon ScopeException
+     * @param message An explanation of the offense.
+     * @param cause The cause of the offense.
+     */
+    public PtalonScopeException(String message, Throwable cause) {
+        super(message, cause);
     }
     
 }

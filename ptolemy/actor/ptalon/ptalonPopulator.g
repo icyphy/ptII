@@ -31,14 +31,14 @@ package ptolemy.actor.ptalon;
 {
 	import java.util.LinkedList;
 }
-class PtalonScopeChecker extends TreeParser;
+class PtalonPopulator extends TreeParser;
 options {
 	importVocab = Ptalon;
 	buildAST = true;
 }
 
 {
-	private PtalonCompilerInfo info = new PtalonCompilerInfo();	
+	private PtalonCompilerInfo info;
 
 	public PtalonCompilerInfo getCompilerInfo() {
 		return info;
@@ -47,55 +47,65 @@ options {
 	private String scopeName;
 }
 
-import_declaration throws PtalonScopeException
+import_declaration throws PtalonRuntimeException
 :
-	#(IMPORT a:qualified_identifier
-	{
-		info.addImport(a.getText());
-	}
-	)
+	#(IMPORT qualified_identifier)
 ;
 
-port_declaration throws PtalonScopeException
+port_declaration throws PtalonRuntimeException
 :
 	#(PORT a:ID
 	{
-		info.addSymbol(a.getText(), "port");
+		if (info.isReady() && !info.isCreated(a.getText())) {
+			info.addPort(a.getText());
+		}
 	}
 	) | #(INPORT b:ID
 	{
-		info.addSymbol(b.getText(), "inport");
+		if (info.isReady() && !info.isCreated(b.getText())) {
+			info.addInPort(b.getText());
+		}
 	}
 	) | #(OUTPORT c:ID
 	{
-		info.addSymbol(c.getText(), "outport");
+		if (info.isReady() && !info.isCreated(c.getText())) {
+			info.addOutPort(c.getText());
+		}
 	}
 	)
 ;
 
-parameter_declaration throws PtalonScopeException
+parameter_declaration throws PtalonRuntimeException
 :
 	#(PARAMETER a:ID
 	{
-		info.addSymbol(a.getText(), "parameter");
+		if (info.isReady() && !info.isCreated(a.getText())) {
+			info.addParameter(a.getText());
+		}
 	}
 	) | #(INTPARAMETER b:ID
 	{
-		info.addSymbol(b.getText(), "intparameter");
+		if (info.isReady() && !info.isCreated(b.getText())) {
+			info.addIntParameter(b.getText());
+		}
 	}
 	) | #(BOOLPARAMETER c:ID
 	{
-		info.addSymbol(c.getText(), "boolparameter");
+		if (info.isReady() && !info.isCreated(c.getText())) {
+			info.addBoolParameter(c.getText());
+		}
 	}
 	)
 ;
 
-relation_declaration throws PtalonScopeException
+relation_declaration throws PtalonRuntimeException
 :
 	#(RELATION a:ID
 	{
-		info.addSymbol(a.getText(), "relation");
-	}
+		if (info.isReady() && !info.isCreated(a.getText())) {
+			info.addRelation(a.getText());
+		}
+	}	
 	)
 ;
 
@@ -109,43 +119,23 @@ attribute
 	#(ATTRIBUTE qualified_identifier)
 ;
 
-assignment throws PtalonScopeException
+assignment throws PtalonRuntimeException
 :
 	#(ASSIGN ID (ID | actor_declaration | arithmetic_expression | boolean_expression))
 ;
 
-actor_declaration throws PtalonScopeException
+actor_declaration throws PtalonRuntimeException
 :
-	#(a:ACTOR_DECLARATION 
-	{
-		String type = info.getType(a.getText());
-		LinkedList<String> types = new LinkedList<String>();
-		types.add("parameter");
-		types.add("import");
-		types.add("this");
-		if (!types.contains(type)) {
-			throw new PtalonScopeException(a.getText() + 
-				" should have type parameter, import or this, but instead has type " + type);
-		}
-	}
-	(assignment)*)
+	#(a:ACTOR_DECLARATION (assignment)*)
 ;
 
-arithmetic_factor throws PtalonScopeException
+arithmetic_factor throws PtalonRuntimeException
 :
 	#(ARITHMETIC_FACTOR (POSITIVE_SIGN | NEGATIVE_SIGN) 
-		(a:ID
-		{
-			String type = info.getType(a.getText());
-			if (!type.equals("intparameter")) {
-				throw new PtalonScopeException(a.getText() + 
-					" should have type intparameter, but instead has type " + type);
-			}
-		}
-		| NUMBER_LITERAL | arithmetic_expression))
+		(a:ID | NUMBER_LITERAL | arithmetic_expression))
 ;
 
-arithmetic_term throws PtalonScopeException
+arithmetic_term throws PtalonRuntimeException
 :
 	#(STAR arithmetic_factor arithmetic_factor) |
 	#(DIVIDE arithmetic_factor arithmetic_factor) |
@@ -153,14 +143,14 @@ arithmetic_term throws PtalonScopeException
 	arithmetic_factor
 ;
 
-arithmetic_expression throws PtalonScopeException
+arithmetic_expression throws PtalonRuntimeException
 :
 	#(PLUS arithmetic_term arithmetic_term) |
 	#(MINUS arithmetic_term arithmetic_term) |
 	arithmetic_term
 ;
 
-relational_expression throws PtalonScopeException
+relational_expression throws PtalonRuntimeException
 :
 	#(EQUAL arithmetic_expression arithmetic_expression) | 
 	#(NOT_EQUAL arithmetic_expression arithmetic_expression) | 
@@ -170,57 +160,53 @@ relational_expression throws PtalonScopeException
 	#(GREATER_EQUAL arithmetic_expression arithmetic_expression)
 ;
 
-boolean_factor throws PtalonScopeException
+boolean_factor throws PtalonRuntimeException
 :
 	#(BOOLEAN_FACTOR (LOGICAL_NOT | LOGICAL_BUFFER)
 		(boolean_expression | relational_expression | TRUE | FALSE | 
-		a:ID
-		{
-			String type = info.getType(a.getText());
-			if (!type.equals("boolparameter")) {
-				throw new PtalonScopeException(a.getText() + 
-					" should have type boolparameter, but instead has type " + type);
-			}
-		}
-		))
+		a:ID))
 ;
 
-boolean_term throws PtalonScopeException
+boolean_term throws PtalonRuntimeException
 :
 	#(LOGICAL_AND boolean_factor boolean_factor) |
 	boolean_factor
 ;
 
-boolean_expression throws PtalonScopeException
+boolean_expression throws PtalonRuntimeException
 :
 	#(LOGICAL_OR boolean_term boolean_term) |
 	boolean_term
 ;
 
-atomic_statement throws PtalonScopeException
+atomic_statement throws PtalonRuntimeException
 :
 	(port_declaration | parameter_declaration |
 		relation_declaration | actor_declaration)
 ;
 
-conditional_statement throws PtalonScopeException
+conditional_statement throws PtalonRuntimeException
 :
-	#(IF 
+	#(a:IF 
 	{
-		info.pushIfStatement();
+		info.enterIfScope(a.getText());
 	}
 	boolean_expression (atomic_statement | conditional_statement)
 		(atomic_statement | conditional_statement))
 	{
-		#conditional_statement.setText(info.popIfStatement());
+		info.exitIfScope();
 	}
 ;	
 
-actor_definition throws PtalonScopeException
+actor_definition[PtalonCompilerInfo info, PtalonActor actor] throws PtalonRuntimeException
+{
+	this.info = info;
+	this.info.startAtTop();
+}
 :
 	#(a:ACTOR_DEFINITION 
 	{
-		info.addSymbol(a.getText(), "this");
+		this.info.setActor(actor, a.getText());
 	}
 	(import_declaration)* ((atomic_statement | 
 		conditional_statement)* | attribute))

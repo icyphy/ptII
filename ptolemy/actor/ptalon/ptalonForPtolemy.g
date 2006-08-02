@@ -30,13 +30,16 @@ package ptolemy.actor.ptalon;
 
 ///////////////////////////////////////////////////////////////////
 ////                         Ptalon Parser                     ////
-
 class PtalonRecognizer extends Parser;
 options {
 	exportVocab = Ptalon;
 	k = 2;
 	buildAST = true;
 }
+
+import_declaration:
+	(IMPORT^ qualified_identifier SEMI!)
+;
 
 port_declaration:
 	(PORT^ | INPORT^ | OUTPORT^) ID
@@ -207,8 +210,8 @@ boolean_expression:
 ;
 
 atomic_statement : 
-	((port_declaration | parameter_declaration |
-	relation_declaration | actor_declaration) SEMI!) | attribute
+	(port_declaration | parameter_declaration |
+	relation_declaration | actor_declaration) SEMI!
 ;
 
 conditional_statement:
@@ -221,11 +224,18 @@ conditional_statement:
 
 actor_definition!
 :
-	a:ID
 	{
-		#actor_definition = #([ACTOR_DEFINITION, a.getText()]);
+		#actor_definition = #[ACTOR_DEFINITION];
 	}
-	IS! LCURLY! (b:atomic_statement 
+	(i:import_declaration
+	{
+		#actor_definition.addChild(#i);
+	}
+	)* a:ID
+	{
+		#actor_definition.setText(a.getText());
+	}
+	IS! LCURLY! ((b:atomic_statement 
 	{
 		#actor_definition.addChild(#b);
 	}
@@ -233,7 +243,7 @@ actor_definition!
 	{
 		#actor_definition.addChild(#c);
 	}
-	)* RCURLY!
+	)* | attribute) RCURLY!
 
 ;
 
@@ -248,6 +258,7 @@ options {
 }
 
 tokens {
+	IMPORT = "import";
 	PORT = "port";
 	INPORT = "inport";
 	OUTPORT = "outport";
