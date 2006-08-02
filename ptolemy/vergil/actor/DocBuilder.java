@@ -28,9 +28,12 @@
 package ptolemy.vergil.actor;
 
 import java.io.File;
+import java.io.FileFilter;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.data.BooleanToken;
@@ -84,13 +87,12 @@ public class DocBuilder extends Attribute {
 
     /** If true, then clean before building documentation.  The default
      *  value is false.
-     */ 
-    public Parameter cleanFirst; 
+     */
+    public Parameter cleanFirst;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
     /** Build the Java class and Actor documentation.
      *  The default is to run make in <code>$PTII/doc</code>.
      *
@@ -132,7 +134,7 @@ public class DocBuilder extends Attribute {
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
     }
-    
+
     /** Set the command executor, which can be either non-graphical
      *  or graphical.  The initial default is non-graphical, which
      *  means that stderr and stdout from subcommands is written
@@ -144,7 +146,6 @@ public class DocBuilder extends Attribute {
         _executeCommands = executeCommands;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -154,38 +155,42 @@ public class DocBuilder extends Attribute {
      */
     private int _executeCommands() throws IllegalActionException {
 
+        File ptII = new File(StringUtilities.getProperty("ptolemy.ptII.dir")
+                + "/doc");
+        _executeCommands.setWorkingDirectory(ptII);
+
         List commands = null;
         // Search for a _docApplicationSpecializer in the configuration.
         Parameter docApplicationSpecializerParameter = null;
         if (_configuration != null) {
-            docApplicationSpecializerParameter =
-                (Parameter) _configuration
-                .getAttribute("_docApplicationSpecializer",
-                        Parameter.class);
+            docApplicationSpecializerParameter = (Parameter) _configuration
+                    .getAttribute("_docApplicationSpecializer", Parameter.class);
         }
         if (docApplicationSpecializerParameter != null) {
-            String docApplicationSpecializerClassName = 
-                docApplicationSpecializerParameter.getExpression();
+            String docApplicationSpecializerClassName = docApplicationSpecializerParameter
+                    .getExpression();
 
             try {
                 Class docApplicationSpecializerClass = Class
-                    .forName(docApplicationSpecializerClassName);
-                DocApplicationSpecializer docApplicationSpecializer = (DocApplicationSpecializer) docApplicationSpecializerClass.newInstance();
-                commands = docApplicationSpecializer.buildCommands(_executeCommands);
+                        .forName(docApplicationSpecializerClassName);
+                DocApplicationSpecializer docApplicationSpecializer = (DocApplicationSpecializer) docApplicationSpecializerClass
+                        .newInstance();
+                commands = docApplicationSpecializer
+                        .buildCommands(_executeCommands);
             } catch (Throwable throwable) {
                 throw new IllegalActionException(
                         "Failed to call doc application initializer "
-                        + "class \"" + docApplicationSpecializerClassName
-                        + "\" buildCommands() method");
+                                + "class \""
+                                + docApplicationSpecializerClassName
+                                + "\" buildCommands() method");
             }
         } else {
             commands = new LinkedList();
             String applicationName = null;
 
             try {
-                StringAttribute applicationNameAttribute =
-                    (StringAttribute) _configuration
-                    .getAttribute("_applicationName", StringAttribute.class);
+                StringAttribute applicationNameAttribute = (StringAttribute) _configuration
+                        .getAttribute("_applicationName", StringAttribute.class);
 
                 if (applicationNameAttribute != null) {
                     applicationName = applicationNameAttribute.getExpression();
@@ -196,12 +201,25 @@ public class DocBuilder extends Attribute {
             }
 
             if (applicationName == null) {
+                File ptIImk = new File(StringUtilities
+                        .getProperty("ptolemy.ptII.dir")
+                        + "/mk/ptII.mk");
                 if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {
                     commands.add("rm -rf codeDoc");
                 }
-                commands.add("make codeDoc/tree.html");
-                commands.add("make codeDoc/ptolemy/actor/lib/Ramp.xml");
-                commands.add("make codeDoc/ptolemy/actor/lib/RampIdx.xml");
+                if (ptIImk.exists()) {
+                    commands.add("make codeDoc/tree.html");
+                    commands.add("make codeDoc/ptolemy/actor/lib/Ramp.xml");
+                    commands.add("make codeDoc/ptolemy/actor/lib/RampIdx.xml");
+                } else {
+                    ptII = new File(StringUtilities
+                            .getProperty("ptolemy.ptII.dir"));
+                    _executeCommands.setWorkingDirectory(ptII);
+                    commands
+                            .add("javadoc -classpath . -J-Xmx512m -d doc/codeDoc "
+                                    + "-doclet doc.doclets.PtDoclet "
+                                    + FindPackages.findPackages(ptII, _executeCommands));
+                }
             } else {
                 if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {
                     commands.add("rm -rf codeDoc" + applicationName);
@@ -210,23 +228,17 @@ public class DocBuilder extends Attribute {
                         + "/doc/codeDoc/tree.html");
                 commands.add("make APPLICATION=" + applicationName
                         + " \"PTDOCFLAGS=-d doc/codeDoc" + applicationName
-                        + "/doc/codeDoc" 
-                        + " codeDoc" + applicationName
+                        + "/doc/codeDoc" + " codeDoc" + applicationName
                         + "/ptolemy/actor/lib/Ramp.xml");
-                commands.add("make APPLICATION=" + applicationName
-                        + " codeDoc" + applicationName
-                        + "/ptolemy/actor/lib/RampIdx.xml");
+                commands.add("make APPLICATION=" + applicationName + " codeDoc"
+                        + applicationName + "/ptolemy/actor/lib/RampIdx.xml");
             }
             if (commands.size() == 0) {
                 return -1;
             }
-
-            _executeCommands.setCommands(commands);
-            File ptII = new File(StringUtilities.getProperty("ptolemy.ptII.dir")
-                    + "/doc");
-            _executeCommands.setWorkingDirectory(ptII);
-
         }
+
+        _executeCommands.setCommands(commands);
 
         try {
             // FIXME: need to put this output in to the UI, if any. 
@@ -243,7 +255,8 @@ public class DocBuilder extends Attribute {
         return _executeCommands.getLastSubprocessReturnCode();
     }
 
-    
+   
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -253,6 +266,6 @@ public class DocBuilder extends Attribute {
     private Configuration _configuration;
 
     /** The object that actually executes the commands.
-     */   
+     */
     private ExecuteCommands _executeCommands;
 }
