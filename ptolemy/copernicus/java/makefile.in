@@ -139,8 +139,10 @@ compareAll: treeShakeAll profileAll compareTreeShakeJars
 
 # TreeShake all versions of the generated code.
 treeShakeAll: treeShakeWithoutCodegen  \
-		treeShake \
-	 	obfuscate
+		treeShake
+
+# obfuscate has problems with jode 1.1.1 and 1.1.2pre-1 and Java 1.5
+#	 	obfuscate
 
 #		treeShakeSnapshots
 
@@ -308,6 +310,7 @@ compareTreeShakeJars:
 # Jode writes to stderr, which causes problem with the test suite because
 # Tcl exec will throw an error if stderr gets written to.
 obfuscate:
+	@echo "obfuscate has problems with jode 1.1.1 and 1.1.2pre-1 and Java 1.5"
 	"$(ROOT)/bin/obfuscate" "\"$(TARGETPATH)obfuscateScript.jos\"" 2>&1
 	@ls -l treeshake_codegen_obfuscated.jar
 	@echo "run 'make runObfuscate' to run the obfuscated code"
