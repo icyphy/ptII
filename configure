@@ -887,7 +887,7 @@ Optional Packages:
   --with-jini=DIR       use Jini jars from DIR,
                           defaults to \$PTII/ptolemy/distributed/jini
   --with-jode=DIR       use JODE from DIR,
-                          defaults to \$PTII/vendors/jode/1.1.1
+                          defaults to \$PTII/vendors/jode/1.1.2-pre1
   --with-kvm=DIR       use PalmOS KVM from DIR,
                           defaults to \$PTII/vendors/sun/j2me_cldc
   --with-mapss=DIR       use mapss.jar from DIR,
@@ -6801,7 +6801,7 @@ fi
 # Defaults for ptII.mk and bin/ptinvoke.in
 # Use {} here instead of () because bin/ptinvoke uses JODE_DIR and JODE_CLASSES
 # and under /bin/sh $(FOO) does not work, but ${FOO} does
-JODE_DIR='${PTII}/vendors/jode/1.1.1'
+JODE_DIR='${PTII}/vendors/jode/1.1.2-pre1'
 JODE_CLASSES='${JODE_DIR}/jode.jar'
 
 # We only need to look for jode if $PTII/ptolemy/apps/jode exists
@@ -6819,7 +6819,7 @@ if test "${with_jode+set}" = set; then
   withval="$with_jode"
   JODE_DIR=$withval
 else
-  JODE_DIR=$PTII/vendors/jode/1.1.1
+  JODE_DIR=$PTII/vendors/jode/1.1.2-pre1
 fi;
 
     if test -d "$JODE_DIR"; then
@@ -6848,7 +6848,7 @@ echo "$as_me: WARNING: Failed to find jode/jode.jar
     if you plan on debugging the byte code based code generator.
     Jode can be downloaded from http://jode.sourceforge.net/download.php" >&2;}
 	# Note that we don't substitute in the ${PTII} or $(JODE_DIR) here
-	JODE_DIR='${PTII}/vendors/jode/1.1.1'
+	JODE_DIR='${PTII}/vendors/jode/1.1.2-pre1'
    	JODE_CLASSES='${JODE_DIR}/jode.jar'
     #else
 	# Set to jode and used in
@@ -7928,8 +7928,9 @@ echo "$as_me: WARNING: \$PTINYOS_MOMLROOT is set to '$PTINYOS_MOMLROOT',
 		    echo "$PTINYOS_MOMLROOT_NO_CYGDRIVE" | grep "$PTII" > /dev/null
 		    retval=$?
 		    if test "$retval" = "0"; then
+		        SHORT_PTINYOS_MOMLROOT_NO_CYGDRIVE=`echo "$PTINYOS_MOMLROOT_NO_CYGDRIVE" | sed "s@$PTII/@@"`
 		        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-                            <classpathentry kind=\"lib\" path=\"$PTINYOS_MOMLROOT_NO_CYGDRIVE\"/>"
+                            <classpathentry kind=\"lib\" path=\"$SHORT_PTINYOS_MOMLROOT_NO_CYGDRIVE\"/>"
 	            else
 		        { echo "$as_me:$LINENO: WARNING: \$PTINYOS_MOMLROOT ($PTINYOS_MOMLROOT)
     is not under \$PTII ($PTII) so we are not
@@ -7959,8 +7960,9 @@ echo "${ECHO_T}$PTINYOS_MOMLROOT" >&6
 	echo "$TOSROOT_NO_CYGDRIVE" | grep "$PTII" > /dev/null
 	retval=$?
 	if test "$retval" = "0"; then
+		SHORT_TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT_NO_CYGDRIVE" | sed "s@$PTII/@@"`
 	    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	        <classpathentry kind=\"lib\" path=\"$TOSROOT_NO_CYGDRIVE\"/>"
+	        <classpathentry kind=\"lib\" path=\"$SHORT_TOSROOT_NO_CYGDRIVE\"/>"
         else
 	    { echo "$as_me:$LINENO: WARNING: \$TOSROOT ($TOSROOT)is not
     under \$PTII ($PTII) so we are not
@@ -8825,10 +8827,9 @@ for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
   # 1. Remove the extension, and $U if already installed.
   ac_i=`echo "$ac_i" |
 	 sed 's/\$U\././;s/\.o$//;s/\.obj$//'`
-  # 2. Prepend LIBOBJDIR.  When used with automake>=1.10 LIBOBJDIR
-  #    will be set to the directory where LIBOBJS objects are built.
-  ac_libobjs="$ac_libobjs \${LIBOBJDIR}$ac_i\$U.$ac_objext"
-  ac_ltlibobjs="$ac_ltlibobjs \${LIBOBJDIR}$ac_i"'$U.lo'
+  # 2. Add them.
+  ac_libobjs="$ac_libobjs $ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs $ac_i"'$U.lo'
 done
 LIBOBJS=$ac_libobjs
 
