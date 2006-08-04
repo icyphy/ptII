@@ -67,7 +67,6 @@ JSRCS = \
 	NodeRandomizer.java \
 	PowerLossChannel.java \
 	SetProperties.java \
-	SurgeVisualizer.java \
 	TerrainProperty.java \
 	TransmitPropertyTransformer.java \
 	Triangulator.java \

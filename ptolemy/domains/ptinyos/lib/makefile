@@ -50,7 +50,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	MicaCompositeActor.java \
 	MicaLeds.java \
-	NCComponentBase.java
+	NCComponentBase.java \
+	SurgeVisualizer.java
 
 OTHER_FILES_TO_BE_JARED = \
 	MicaBoard.xml \
