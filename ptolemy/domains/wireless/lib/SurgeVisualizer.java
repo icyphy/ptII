@@ -91,6 +91,13 @@ public class SurgeVisualizer extends LinkVisualizer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Initialize the _registeredWithChannel.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _isRemove = false;
+    }
+    
     /**This method parses the token and creates a line between the sender and
      * the destination containers, by calling MoMLChangeRequest.  The creation
      * of the line is determined by by the <i>type</i> field in the packet
@@ -104,7 +111,7 @@ public class SurgeVisualizer extends LinkVisualizer {
     public void processTokens(RecordToken properties,
             Token token, WirelessIOPort sender, WirelessIOPort destination)
             throws IllegalActionException {
-       if(_isOff){    
+       if(_isOff && !_isRemove){    
            String tokenString = (String)token.toString();
            String type = tokenString.substring(5,7);
                
@@ -160,13 +167,27 @@ public class SurgeVisualizer extends LinkVisualizer {
                    }
                }
            }
+           
+           _isRemove = true;
        } else {
-           if (getContainer().getAttribute("_senderDestLine") != null) {
+           if (!_isOff && getContainer().getAttribute("_senderDestLine") != null) {
                String moml = "<deleteProperty name=\"_senderDestLine\"/>";
                ChangeRequest request = new MoMLChangeRequest(this, getContainer(), moml);
                requestChange(request);
                _isOff = true;
            }
+           _isRemove = false;
        }
    }
+
+//////////////////////////////////////////////////////////////////
+////                         private variables                 ////
+
+/** Flag for the status of the line element
+ * as processTokens is called twice, we only want it 
+ * possible to draw a line during the first call, not
+ * when the line should be removed
+ */
+private boolean _isRemove;
+
 }
