@@ -60,8 +60,8 @@ import ptolemy.vergil.kernel.attributes.LineAttribute;
  @author Heather Taylor
  @version $Id$
  @since Ptolemy II 4.0
- @Pt.ProposedRating Red (hltaylor)
- @Pt.AcceptedRating Red (hltaylor)
+ @Pt.ProposedRating Red (htaylor)
+ @Pt.AcceptedRating Red (htaylor)
  */
 public class LinkVisualizer extends TypedAtomicActor implements
         TokenProcessor {

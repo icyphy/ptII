@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.wireless.lib;
+package ptolemy.domains.ptinyos.lib;
 
 import ptolemy.actor.Director;
 import ptolemy.data.IntToken;
@@ -34,8 +34,8 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.ptinyos.kernel.PtinyOSDirector;
 import ptolemy.domains.ptinyos.kernel.PtinyOSIntegerParameter;
-import ptolemy.domains.ptinyos.lib.MicaCompositeActor;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
+import ptolemy.domains.wireless.lib.LinkVisualizer;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -63,8 +63,8 @@ import ptolemy.vergil.kernel.attributes.LineAttribute;
  @author Heather Taylor
  @version $Id$
  @since Ptolemy II 4.0
- @Pt.ProposedRating Red (hltaylor)
- @Pt.AcceptedRating Red (hltaylor)
+ @Pt.ProposedRating Red (htaylor)
+ @Pt.AcceptedRating Red (htaylor)
  */
 public class SurgeVisualizer extends LinkVisualizer {
     /** Construct an actor with the specified container and name.
@@ -78,7 +78,6 @@ public class SurgeVisualizer extends LinkVisualizer {
     public SurgeVisualizer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,25 +119,34 @@ public class SurgeVisualizer extends LinkVisualizer {
                // Look for the PtinyOSDirector inside the destination TinyOS node.
                NamedObj wirelessNode = destination.getContainer();
                if (wirelessNode instanceof CompositeEntity) {
-                   // Note: this relies on the fact that the MicaBoard always contains a MicaCompositeActor
-                   ComponentEntity micaCompositeActor = ((CompositeEntity)wirelessNode).getEntity("MicaCompositeActor");
+                   // Note: this relies on the fact that the MicaBoard
+                   // always contains a MicaCompositeActor
+                   ComponentEntity micaCompositeActor =
+                       ((CompositeEntity)wirelessNode).
+                       getEntity("MicaCompositeActor");
                    if (micaCompositeActor instanceof MicaCompositeActor) {
                        // Get the director of the MicaCompositeActor.
-                       Director director = ((MicaCompositeActor)micaCompositeActor).getDirector();
+                       Director director = ((MicaCompositeActor)micaCompositeActor).
+                           getDirector();
                        if (director instanceof PtinyOSDirector) {
                            Attribute nodeID = director.getAttribute("nodeID");
                            if (nodeID instanceof PtinyOSIntegerParameter) {
                                // Get the token that stores the node ID.
-                               Token nodeIDToken = ((PtinyOSIntegerParameter)nodeID).getToken();
+                               Token nodeIDToken =
+                                   ((PtinyOSIntegerParameter)nodeID).getToken();
                                if (nodeIDToken instanceof IntToken) {
                                    // Get the integer value of nodeID
-                                   int nodeIDValue = ((IntToken)nodeIDToken).intValue();
+                                   int nodeIDValue = ((IntToken)nodeIDToken).
+                                       intValue();
                                    String addr = tokenString.substring(1,5);
                                    int addrInt = Integer.parseInt(addr, 16);
                                  
                                    if(addrInt == nodeIDValue){
-                                       Location senderLocation = (Location)sender.getContainer().getAttribute("_location");
-                                       Location destinationLocation = (Location)destination.getContainer().getAttribute("_location");
+                                       Location senderLocation = (Location)sender.
+                                           getContainer().getAttribute("_location");
+                                       Location destinationLocation =
+                                           (Location)destination.getContainer().
+                                           getAttribute("_location");
                                        double x = (destinationLocation.getLocation())[0] - (senderLocation.getLocation())[0];
                                        double y = (destinationLocation.getLocation())[1] - (senderLocation.getLocation())[1];
                                        String moml = "<property name=\"_senderDestLine\" class=\"ptolemy.vergil.kernel.attributes.LineAttribute\">"
@@ -150,10 +158,12 @@ public class SurgeVisualizer extends LinkVisualizer {
                                            + y
                                            + "\"/>"
                                            + "</property>";
-                                       ChangeRequest request = new MoMLChangeRequest(this, getContainer(), moml) {
+                                       ChangeRequest request =
+                                           new MoMLChangeRequest(this, getContainer(), moml) {
                                            protected void _execute() throws Exception {
                                                super._execute();
-                                               LineAttribute line = (LineAttribute)getContainer().getAttribute("_senderDestLine");
+                                               LineAttribute line =
+                                                   (LineAttribute)getContainer().getAttribute("_senderDestLine");
                                                line.moveToFirst();
                                                line.setPersistent(false);
                                            }
@@ -167,7 +177,6 @@ public class SurgeVisualizer extends LinkVisualizer {
                    }
                }
            }
-           
            _isRemove = true;
        } else {
            if (!_isOff && getContainer().getAttribute("_senderDestLine") != null) {
@@ -180,14 +189,13 @@ public class SurgeVisualizer extends LinkVisualizer {
        }
    }
 
-//////////////////////////////////////////////////////////////////
-////                         private variables                 ////
+    //////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-/** Flag for the status of the line element
- * as processTokens is called twice, we only want it 
- * possible to draw a line during the first call, not
- * when the line should be removed
- */
-private boolean _isRemove;
-
+    /** Flag for the status of the line element
+     * as processTokens is called twice, we only want it 
+     * possible to draw a line during the first call, not
+     * when the line should be removed.
+     */
+    private boolean _isRemove;
 }

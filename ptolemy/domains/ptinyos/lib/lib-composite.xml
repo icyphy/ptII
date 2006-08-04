@@ -9,6 +9,7 @@
 
     <entity name="MicaCompositeActor" class="ptolemy.domains.ptinyos.lib.MicaCompositeActor"/>
     <entity name="MicaLeds" class="ptolemy.domains.ptinyos.lib.MicaLeds"/>
+    <entity name="SurgeVisualizer" class="ptolemy.domains.ptinyos.lib.SurgeVisualizer"/>
 
       </group>
     ?>

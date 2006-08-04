@@ -8,18 +8,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -5.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 282, 703, 721}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 174, 729, 721}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[483, 613]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[507, 613]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9125925925926">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.1306818181818, 274.2944399350649}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{271.2800324675324, 274.2944399350649}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains 5 nodes.  Each node is running a version of Surge,&#10;with a unique nodeID which corresponds to their given name.  Surge is&#10;a simple program which has nodes find their place within the network &#10;based on signal strength and depth within the tree.  The base node&#10;(MicaBoard0) periodically sends out a beacon message so that nodes &#10;can update their position in the network if they need to.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains 5 nodes.  Each node is running a version of Surge,&#10;with a unique nodeID which corresponds to the number in their given name.  &#10;Surge is an example application developed for TinyOS that uses MultiHop &#10;ad-hoc routing.  Each Surge node takes light readings and forwards them to &#10;a base station.  The routing protocol uses a windowed average success rate &#10;to perform link estimation, and uses it to choose its parent, to whom the node &#10;forwards all packets. The base station (the node labeled MicaBoard0) &#10;periodically sends out a beacon message so that nodes can update their &#10;position in the network if necessary.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 415.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -33,7 +33,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Prior to execution MicaBoard0 &#10;must have its nodeID set to 0 &#10;within it's PtinyOSDirector.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Prior to execution MicaBoard0 &#10;must have its nodeID set to 0 &#10;within its PtinyOSDirector.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 40.0]">
         </property>
@@ -1101,7 +1101,7 @@
         <link port="packetOutDisplay.input" relation="relation4"/>
         <link port="packetInDisplay.input" relation="relation5"/>
     </entity>
-    <entity name="SurgeVisualizer" class="ptolemy.domains.wireless.lib.SurgeVisualizer">
+    <entity name="SurgeVisualizer" class="ptolemy.domains.ptinyos.lib.SurgeVisualizer">
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-22.0, 2.0}">

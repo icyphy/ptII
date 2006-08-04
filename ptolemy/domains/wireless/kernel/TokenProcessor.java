@@ -54,8 +54,8 @@ and the receiver then one can use a token processor to do this.
 @author Heather Taylor
 @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Red (hltaylor)
-@Pt.AcceptedRating Red (hltaylor)
+@Pt.ProposedRating Red (htaylor)
+@Pt.AcceptedRating Red (htaylor)
 */
 
 public interface TokenProcessor {
