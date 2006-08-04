@@ -29,6 +29,9 @@
 <entity name="LinkVisualizer" class="ptolemy.domains.wireless.lib.LinkVisualizer">
 </entity>
 
+<entity name="SurgeVisualizer" class="ptolemy.domains.wireless.lib.SurgeVisualizer">
+</entity>
+
 <entity name="TransmitPropertyTransformer" class="ptolemy.domains.wireless.lib.TransmitPropertyTransformer">
 </entity>
 

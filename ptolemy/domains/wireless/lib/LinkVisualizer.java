@@ -221,7 +221,12 @@ public class LinkVisualizer extends TypedAtomicActor implements
             _channel.unregisterTokenProcessor(this, null);
         }
     }
-
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+    /** Status of radio link line */
+    protected boolean _isOff;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private WirelessChannel _channel;
@@ -242,7 +247,4 @@ public class LinkVisualizer extends TypedAtomicActor implements
     private EllipseAttribute _ellipse3;
 
     private String _channelName;
-    
-    /** Status of radio link line */
-    private boolean _isOff;
 }
