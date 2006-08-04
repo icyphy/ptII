@@ -215,10 +215,13 @@ public class DocBuilder extends Attribute {
                     ptII = new File(StringUtilities
                             .getProperty("ptolemy.ptII.dir"));
                     _executeCommands.setWorkingDirectory(ptII);
+                    _executeCommands.updateStatusBar("Please wait, searching for packages.");
+                    
                     commands
                             .add("javadoc -classpath . -J-Xmx512m -d doc/codeDoc "
                                     + "-doclet doc.doclets.PtDoclet "
                                     + FindPackages.findPackages(ptII, _executeCommands));
+                    _executeCommands.updateStatusBar("Done searching for packages.");
                 }
             } else {
                 if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {
