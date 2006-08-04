@@ -217,11 +217,15 @@ public class DocBuilder extends Attribute {
                     _executeCommands.setWorkingDirectory(ptII);
                     _executeCommands.updateStatusBar("Please wait, searching for packages.");
                     
-                    commands
-                            .add("javadoc -classpath . -J-Xmx512m -d doc/codeDoc "
-                                    + "-doclet doc.doclets.PtDoclet "
-                                    + FindPackages.findPackages(ptII, _executeCommands));
+                    commands.add("javadoc -classpath \""
+                                    + StringUtilities.getProperty("java.class.path")
+                                    + "\" -J-Xmx512m -d doc/codeDoc "
+                                    + "-doclet doc.doclets.PtDoclet ");
                     _executeCommands.updateStatusBar("Done searching for packages.");
+                    commands.add("java -Xmx256m -classpath \"" 
+                            + StringUtilities.getProperty("java.class.path")
+                            + "\" ptolemy.moml.filter.ActorIndex doc/codeDoc/allNamedObjs.txt "
+                            + "\"" + ptII + "/ptolemy/configs/doc/models.txt\" doc/codeDoc");
                 }
             } else {
                 if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {
