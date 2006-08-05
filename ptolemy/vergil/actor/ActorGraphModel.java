@@ -27,6 +27,9 @@
  */
 package ptolemy.vergil.actor;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -34,8 +37,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
@@ -344,7 +349,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             Relation relation = link.getRelation();
 
             // Undo needs this: Check that the relation hasn't been removed
-            if ((relation == null) || (relation.getContainer() == null)) {
+            if ((relation == null) || (relation.getContainer() == null) || _isHidden(relation)) {
                 // NOTE: We used to not do the next three lines when
                 // relation == null, but this seems better.
                 // EAL 6/26/05.
@@ -422,6 +427,10 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  link connected to the given relation.  Create links if necessary.
      */
     private void _updateLinks(ComponentRelation relation) {
+        // If the relation is hidden, then skip it.
+        if (_isHidden(relation)) {
+            return;
+        }
         // FIXME: This method is expensive for large graphs.
         // It is called for each relation, it creates a new list
         // of links for each relation, it then goes through the full
@@ -623,6 +632,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
     /** The set of all links in the model. */
     private Set _linkSet;
 
@@ -636,6 +646,37 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     private PortModel _portModel = new PortModel();
 
     private VertexModel _vertexModel = new VertexModel();
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return true if the relation has a _hide attribute indicating
+     *  that it is hidden.
+     *  @return True if the relation is hidden.
+     */
+    private boolean _isHidden(Relation relation) {
+        Attribute hide = relation.getAttribute("_hide");
+        if (hide != null) {
+            if (hide instanceof Parameter) {
+                Token token;
+                try {
+                    token = ((Parameter)hide).getToken();
+                    if (token instanceof BooleanToken) {
+                        if (((BooleanToken)token).booleanValue()) {
+                            return true;
+                        }
+                    }
+                } catch (IllegalActionException e) {
+                    throw new InternalErrorException(e);
+                }
+            } else {
+                // The mere presence of the attribute will hide
+                // the relation.
+                return true;
+            }
+        }
+        return false;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
