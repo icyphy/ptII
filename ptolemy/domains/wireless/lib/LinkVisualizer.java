@@ -54,8 +54,12 @@ import ptolemy.vergil.kernel.attributes.LineAttribute;
  are within range of one another. It registers itself 
  with the wireless channel specified by the 
  <i>channelName</i> parameter. The default channel is 
- set to AtomicWirelessChannel. The channel may call it
+ set to AtomicWirelessChannel. The channel may call its
  getProperty() method to get the property.
+ 
+ @see ptolemy.domains.wireless.kernel.AtomicWirelessChannel#_transmitTo
+ 
+ FIXME: What if we want multiple lines visualized at the same time?
 
  @author Heather Taylor
  @version $Id$
@@ -79,10 +83,11 @@ public class LinkVisualizer extends TypedAtomicActor implements
         channelName = new StringParameter(this, "channelName");
         channelName.setExpression("AtomicWirelessChannel");
 
+        // Create the icon for this entity.
         EditorIcon link_icon = new EditorIcon(this, "_icon");
-        
-        _line1 = new LineAttribute(link_icon, "_line1");
 
+        // Set up line 1 of the icon.
+        _line1 = new LineAttribute(link_icon, "_line1");
         Location line1Loc = new Location(_line1, "_location");
         double[] line1LocVal = { -19.0, -3.0 };
         line1Loc.setLocation(line1LocVal);
@@ -91,8 +96,8 @@ public class LinkVisualizer extends TypedAtomicActor implements
         _line1.y.setToken("20.0");
         _line1.moveToFirst();
         
+        // Set up line 2 of the icon.
         _line2 = new LineAttribute(link_icon, "_line2");
-
         Location line2Loc = new Location(_line2, "_location");
         double[] line2LocVal = { -22.0, 2.0 };
         line2Loc.setLocation(line2LocVal);
@@ -101,8 +106,8 @@ public class LinkVisualizer extends TypedAtomicActor implements
         _line2.y.setToken("-20.0");
         _line2.moveToFirst();
         
+        // Set up circle 1 of the icon.
         _ellipse1 = new EllipseAttribute(link_icon, "_ellipse1");
-
         Location ellipse1Loc = new Location(_ellipse1, "_location");
         double[] ellipse1LocVal = { -18.0, -2.0 };
         ellipse1Loc.setLocation(ellipse1LocVal);
@@ -110,9 +115,9 @@ public class LinkVisualizer extends TypedAtomicActor implements
         _ellipse1.width.setToken("15.0");
         _ellipse1.height.setToken("15.0");
         _ellipse1.centered.setToken("true");
-        
-        _ellipse2 = new EllipseAttribute(link_icon, "_ellipse2");
 
+        // Set up circle 2 of the icon.
+        _ellipse2 = new EllipseAttribute(link_icon, "_ellipse2");
         Location ellipse2Loc = new Location(_ellipse2, "_location");
         double[] ellipse2LocVal = { 8.0, 14.0 };
         ellipse2Loc.setLocation(ellipse2LocVal);
@@ -121,8 +126,8 @@ public class LinkVisualizer extends TypedAtomicActor implements
         _ellipse2.height.setToken("15.0");
         _ellipse2.centered.setToken("true");
         
+        // Set up circle 3 of the icon.
         _ellipse3 = new EllipseAttribute(link_icon, "_ellipse3");
-
         Location ellipse3Loc = new Location(_ellipse3, "_location");
         double[] ellipse3LocVal = { 8.0, -16.0 };
         ellipse3Loc.setLocation(ellipse3LocVal);
@@ -130,7 +135,6 @@ public class LinkVisualizer extends TypedAtomicActor implements
         _ellipse3.width.setToken("15.0");
         _ellipse3.height.setToken("15.0");
         _ellipse3.centered.setToken("true");
-        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -143,17 +147,17 @@ public class LinkVisualizer extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initialize the _registeredWithChannel.
+    /** Register TokenProcessors with the WirelessChannel 
+     *  specified in the channelName parameter.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _isOff = true;
+        
+        _isOff = Boolean.TRUE;
 
-
+        // Get the channel specified by the channelName parameter.
         CompositeEntity container = (CompositeEntity) getContainer();
-        _channelName = channelName.stringValue();
-
-        Entity channel = container.getEntity(_channelName);
+        Entity channel = container.getEntity(channelName.stringValue());
 
         if (channel instanceof WirelessChannel) {
             _channel = (WirelessChannel) channel;
@@ -164,51 +168,51 @@ public class LinkVisualizer extends TypedAtomicActor implements
         }
     }
 
-    /**This method creates & removes a line between the sender and
-     * the destination containers, by calling MoMLChangeRequest.
-     * @param properties The transform properties.
-     * @param token The token to be processed.
-     * @param sender The sending port.
-     * @param destination The receiving port.
-     * @exception IllegalActionException If failed to execute the model.
+    /** This method creates & removes a line between the sender and
+     *  the destination containers, by creating a MoMLChangeRequest.
+     *  @param properties The properties of this transmission.
+     *  @param token The token of this transmission, which can be processed here.
+     *  @param sender The sending port.
+     *  @param destination The receiving port.
+     *  @exception IllegalActionException If failed to execute the model.
      */
     public void processTokens(RecordToken properties,
             Token token, WirelessIOPort sender, WirelessIOPort destination)
             throws IllegalActionException {
-        
-       if(_isOff) {
-            Location senderLocation = (Location)sender.getContainer().getAttribute("_location");
-            Location destinationLocation = (Location)destination.getContainer().getAttribute("_location");
-            double x = (destinationLocation.getLocation())[0] - (senderLocation.getLocation())[0];
-            double y = (destinationLocation.getLocation())[1] - (senderLocation.getLocation())[1];
-            String moml = "<property name=\"_senderDestLine\" class=\"ptolemy.vergil.kernel.attributes.LineAttribute\">"
-                + senderLocation.exportMoML()
-                + "<property name=\"x\" value=\""
-                + x
-                + "\"/>"
-                + "<property name=\"y\" value=\""
-                + y
-                + "\"/>"
-                + "</property>";
-            ChangeRequest request = new MoMLChangeRequest(this, getContainer(), moml) {
-                protected void _execute() throws Exception {
-                    super._execute();
-                    LineAttribute line = (LineAttribute)getContainer().getAttribute("_senderDestLine");
-                    line.moveToFirst();
-                    line.setPersistent(false);
-                }
-            };
-            requestChange(request);
-            _isOff = false;
-       } else {
-            if (getContainer().getAttribute("_senderDestLine") != null) {
-                String moml = "<deleteProperty name=\"_senderDestLine\"/>";
-                ChangeRequest request = new MoMLChangeRequest(this, getContainer(), moml);
+       synchronized(_isOff) {
+           if(_isOff.booleanValue()) {
+                Location senderLocation = (Location)sender.getContainer().getAttribute("_location");
+                Location destinationLocation = (Location)destination.getContainer().getAttribute("_location");
+                double x = (destinationLocation.getLocation())[0] - (senderLocation.getLocation())[0];
+                double y = (destinationLocation.getLocation())[1] - (senderLocation.getLocation())[1];
+                String moml = "<property name=\"_senderDestLine\" class=\"ptolemy.vergil.kernel.attributes.LineAttribute\">"
+                    + senderLocation.exportMoML()
+                    + "<property name=\"x\" value=\""
+                    + x
+                    + "\"/>"
+                    + "<property name=\"y\" value=\""
+                    + y
+                    + "\"/>"
+                    + "</property>";
+                ChangeRequest request = new MoMLChangeRequest(this, getContainer(), moml) {
+                    protected void _execute() throws Exception {
+                        super._execute();
+                        LineAttribute line = (LineAttribute)getContainer().getAttribute("_senderDestLine");
+                        line.moveToFirst();
+                        line.setPersistent(false);
+                    }
+                };
                 requestChange(request);
-                _isOff = true;
+                _isOff = Boolean.FALSE;
+           } else {
+                if (getContainer().getAttribute("_senderDestLine") != null) {
+                    String moml = "<deleteProperty name=\"_senderDestLine\"/>";
+                    ChangeRequest request = new MoMLChangeRequest(this, getContainer(), moml);
+                    requestChange(request);
+                    _isOff = Boolean.TRUE;
+                }
             }
-        }
-        
+       }
     }
 
     /** Override the base class to call wrap up to unregister this with the
@@ -224,11 +228,15 @@ public class LinkVisualizer extends TypedAtomicActor implements
     
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
-    /** Status of radio link line */
-    protected boolean _isOff;
+    
+    /** Status of line that visualizes the radio link.  
+     *  Initialized to true. */
+    protected Boolean _isOff;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** Channel specified by the channelName parameter. */
     private WirelessChannel _channel;
     
     /** Graphical icon for line1 */
@@ -245,6 +253,4 @@ public class LinkVisualizer extends TypedAtomicActor implements
     
     /** Graphical icon for ellipse3 */
     private EllipseAttribute _ellipse3;
-
-    private String _channelName;
 }

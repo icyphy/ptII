@@ -172,7 +172,7 @@ public class TerrainProperty extends TypedAtomicActor implements
         }
     }
 
-    /** Initialize the _registeredWithChannel.
+    /** Register PropertyTransformers with the Channel.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();

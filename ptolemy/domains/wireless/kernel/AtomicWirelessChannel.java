@@ -556,7 +556,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
             throws IllegalActionException {
 
         if (_tokenProcessorsByPort != null) {
-            //Apply token processor for the sender.
+            // Apply token processor for the sender.
             Set processors = (Set) _tokenProcessorsByPort.get(source);
 
             if (processors != null) {
@@ -570,7 +570,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
                 }
             }
 
-            //Apply token processor for the receiver.
+            // Apply token processor for the receiver.
             processors = (Set) _tokenProcessorsByPort.get(destination);
 
             if (processors != null) {
@@ -925,7 +925,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
                 // Process the tokens.
                 processTokens(properties,token, sender, destination);
                 receiver.put(newToken, transformedProperties);
-                // Process the tokens.
+                // Process the tokens again.
                 processTokens(properties, token, sender, destination);
             }
         } else {
