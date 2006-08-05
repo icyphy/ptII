@@ -719,6 +719,10 @@ public class CompositeEntity extends ComponentEntity {
                 if ((filter == null)
                         || (filter.contains(relation) && (filter.contains(port) || filter
                                 .contains(port.getContainer())))) {
+                    // If the relation is not persistent, then do not export the link.
+                    if (!relation.isPersistent()) {
+                        continue;
+                    }
                     // In order to support level-crossing links, consider the
                     // possibility that the relation is not contained by this.
                     String relationName;
@@ -788,6 +792,10 @@ public class CompositeEntity extends ComponentEntity {
                             || (filter.contains(relation) && (filter
                                     .contains(port) || filter.contains(port
                                     .getContainer())))) {
+                        // If the relation is not persistent, then do not export the link.
+                        if (!relation.isPersistent()) {
+                            continue;
+                        }
                         // In order to support level-crossing links,
                         // consider the possibility that the relation
                         // is not contained by this.
