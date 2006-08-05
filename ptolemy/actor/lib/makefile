@@ -153,6 +153,7 @@ JSRCS = \
 	OrderedMerge.java \
 	PhaseUnwrap.java \
 	PoissonClock.java \
+	Publisher.java \
 	Pulse.java \
 	Quantizer.java \
 	Ramp.java \
@@ -179,6 +180,7 @@ JSRCS = \
 	Source.java \
 	Stop.java \
 	StringConst.java \
+	Subscriber.java \
 	Switch.java \
 	Synchronizer.java \
 	Test.java \
