@@ -69,7 +69,7 @@ import ptolemy.kernel.util.Workspace;
  then the behavior of the port reverts to that of the base class.
  Specifically, it will only communicate if it is wired.
  <p>
- it is valid for a model using the wireless director to have both
+ It is valid for a model using the wireless director to have both
  wireless communication and wired communication, i.e. it may contain
  actors with ports using wireless communication (by specifying a
  wireless channel) and actors with ports using wired communication.
