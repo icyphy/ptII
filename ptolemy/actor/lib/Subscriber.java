@@ -51,7 +51,24 @@ import ptolemy.kernel.util.NamedObj;
 //// Subscriber
 
 /**
-FIXME
+This actor subscribes to tokens on a named channel. The tokens are
+"tunneled" from an instance of Publisher that names the same channel
+and that is under the control of the same director. That is, it can
+be at a different level of the hierarchy, or in an entirely different
+composite actor, as long as the relevant composite actors are
+transparent (have no director).
+<p>
+Any number of instances of Subscriber can subscribe to the same
+channel.
+<p>
+This actor actually has a hidden input port that is connected
+to the publisher via hidden "liberal links" (links that are
+allowed to cross levels of the hierarchy).  Consequently,
+any data dependencies that the director might assume on a regular
+"wired" connection will also be assumed across Publisher-Subscriber
+pairs.  Similarly, type constraints will probagate across
+Publisher-Subscriber pairs. That is, the type of the Subscriber
+output will match the type of the Publisher input.
  
  @author Edward A. Lee
  @version $Id$
@@ -75,7 +92,7 @@ public class Subscriber extends TypedAtomicActor {
         super(container, name);
 
         channel = new StringParameter(this, "channel");
-        channel.setExpression("channel");
+        channel.setExpression("channel1");
         
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
@@ -88,7 +105,7 @@ public class Subscriber extends TypedAtomicActor {
 
     /** The name of the channel.  Subscribers that reference this same
      *  channel will receive any transmissions to this port.
-     *  This is a string that defaults to "channel".
+     *  This is a string that defaults to "channel1".
      */
     public StringParameter channel;
     
@@ -129,16 +146,35 @@ public class Subscriber extends TypedAtomicActor {
     
     /** Read all available input tokens and send them to the subscribers,
      *  if any.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If there is no director, or
+     *   if there is no input connection.
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        int width = input.getWidth();
+        if (width == 0) {
+            throw new IllegalActionException(this,
+                    "Subscriber has no matching Publisher.");
+        }
         // FIXME: Input should be a multiport.
-        for (int i = 0; i < input.getWidth(); i++) {
+        for (int i = 0; i < width; i++) {
             while (input.hasToken(i)) {
                 Token token = input.get(i);
                 output.send(i, token);
             }
+        }
+    }
+
+    /** Override the base class to ensure that there is a publisher.
+     *  @exception IllegalActionException If there is no matching
+     *   publisher.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        int width = input.getWidth();
+        if (width == 0) {
+            throw new IllegalActionException(this,
+                    "Subscriber has no matching Publisher.");
         }
     }
 

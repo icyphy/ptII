@@ -52,7 +52,26 @@ import ptolemy.kernel.util.NamedObj;
 //// Publisher
 
 /**
-FIXME
+This actor publishes input tokens on a named channel. The tokens are
+"tunneled" to any instance of Subscriber that names the same channel
+and that is under the control of the same director. That is, it can
+be at a different level of the hierarchy, or in an entirely different
+composite actor, as long as the relevant composite actors are
+transparent (have no director).
+<p>
+It is an error to have two instances of Publisher using the same
+channel under the control of the same director. When you create a
+new Publisher, by default, it assigns a channel name that is unique.
+You can re-use channel names withing opaque composite actors.
+<p>
+This actor actually has a hidden output port that is connected
+to all subcribers via hidden "liberal links" (links that are
+allowed to cross levels of the hierarchy).  Consequently,
+any data dependencies that the director might assume on a regular
+"wired" connection will also be assumed across Publisher-Subscriber
+pairs. Similarly, type constraints will probagate across
+Publisher-Subscriber pairs. That is, the type of the Subscriber
+output will match the type of the Publisher input.
  
  @author Edward A. Lee
  @version $Id$
@@ -76,15 +95,15 @@ public class Publisher extends TypedAtomicActor {
         super(container, name);
 
         channel = new StringParameter(this, "channel");
-        channel.setExpression("channel");
+        channel.setExpression(_uniqueChannelName());
         
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
         
         Parameter hide = new SingletonParameter(output, "_hide");
         hide.setToken(BooleanToken.TRUE);
-        hide = new SingletonParameter(this, "_hideName");
-        hide.setToken(BooleanToken.TRUE);
+        // hide = new SingletonParameter(this, "_hideName");
+        // hide.setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,7 +111,9 @@ public class Publisher extends TypedAtomicActor {
 
     /** The name of the channel.  Subscribers that reference this same
      *  channel will receive any transmissions to this port.
-     *  This is a string that defaults to "channel".
+     *  This is a string that defaults to "channelX", where X is an
+     *  integer that ensures that this channel name does not collide
+     *  with a channel name already in use by another publisher.
      */
     public StringParameter channel;
     
@@ -146,36 +167,6 @@ public class Publisher extends TypedAtomicActor {
         }
     }
     
-    /** Override the base class to throw an exception if there is more
-     *  than one publisher publishing to the same channel.
-     *  @exception IllegalActionException If there is more than one
-     *   publisher publishing to the same channel.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        // Find the nearest opaque container above in the hierarchy.
-        CompositeEntity container = (CompositeEntity)getContainer();
-        while (container != null && !container.isOpaque()) {
-            container = (CompositeEntity)container.getContainer();
-        }
-        if (container != null) {
-            Iterator actors = container.deepEntityList().iterator();
-            while (actors.hasNext()) {
-                Object actor = actors.next();
-                // Throw an exception if there is another publisher
-                // trying to publish on the same channel.
-                if (actor instanceof Publisher && actor != this) {
-                    if (_channel.equals(((Publisher)actor)._channel)) {
-                        throw new IllegalActionException(this,
-                                "There is already a publisher using channel "
-                                + "\"_channel\": "
-                                + ((NamedObj)actor).getFullName());
-                    }
-                }
-            }
-        }
-    }
-    
     /** Override the base class to create an associated relation,
      *  and to remove any previous relation.
      *  @param container The proposed container.
@@ -225,12 +216,56 @@ public class Publisher extends TypedAtomicActor {
                     if (_channel.equals(((Subscriber)actor)._channel)) {
                         result.add(actor);
                     }
+                } else if (actor instanceof Publisher && actor != this) {
+                    // Throw an exception if there is another publisher
+                    // trying to publish on the same channel.
+                    if (_channel.equals(((Publisher)actor)._channel)) {
+                        throw new IllegalActionException(this,
+                                "There is already a publisher using channel "
+                                + "\"_channel\": "
+                                + ((NamedObj)actor).getFullName());
+                    }
                 }
             }
         }
         return result;
     }
-    
+
+    /** Return a channel name of the form "channelX", where X is an integer
+     *  that ensures that this channel name is not already in use.
+     *  @return A unique channel name.
+     */
+    private String _uniqueChannelName() {
+        int suffix = 1;
+        // Find the nearest opaque container above in the hierarchy.
+        CompositeEntity container = (CompositeEntity)getContainer();
+        while (container != null && !container.isOpaque()) {
+            container = (CompositeEntity)container.getContainer();
+        }
+        if (container != null) {
+            Iterator actors = container.deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Object actor = actors.next();
+                if (actor instanceof Publisher && actor != this) {
+                    String nameInUse = ((Publisher)actor)._channel;
+                    if (nameInUse != null && nameInUse.startsWith("channel")) {
+                        String suffixInUse = nameInUse.substring(7);
+                        try {
+                            int suffixAsInt = Integer.parseInt(suffixInUse);
+                            if (suffix <= suffixAsInt) {
+                                suffix = suffixAsInt + 1;
+                            }
+                        } catch (NumberFormatException ex) {
+                            // Not a number suffix, so it can't collide.
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+        return "channel" + suffix;
+    }
+
     /** Update connections to subscribers.
      *  @exception IllegalActionException If there is already a publisher
      *   publishing on the same channel.
