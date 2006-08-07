@@ -46,12 +46,13 @@ include $(CONFIG)
 
 # Keep this list alphabetized.
 JSRCS = \
-	ParameterMethodList.java \
+	CodeManager.java \
 	PtalonActor.java \
+	PtalonAST.java \
 	PtalonBoolParameter.java \
-	PtalonCompilerInfo.java \
 	PtalonIntParameter.java \
 	PtalonLexer.java \
+	PtalonMLHandler.java \
 	PtalonParameter.java \
 	PtalonPopulator.java \
 	PtalonRecognizer.java  \

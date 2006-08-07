@@ -24,11 +24,11 @@ public class PtalonTester {
                 AST ast = rec.getAST();
                 PtalonScopeChecker check = new PtalonScopeChecker();
                 check.actor_definition(ast);
-                PtalonCompilerInfo info = check.getCompilerInfo();
+                CodeManager info = check.getCompilerInfo();
                 ast = check.getAST();
                 ASTFrame frame = new ASTFrame("Checked AST", ast);
                 frame.setVisible(true);
-                System.out.println(info);
+//                System.out.println(info);
             }
         } catch(Exception e) {
             e.printStackTrace();

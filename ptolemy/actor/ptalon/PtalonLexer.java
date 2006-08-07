@@ -1,4 +1,4 @@
-// $ANTLR : "ptalonForPtolemy.g" -> "PtalonLexer.java"$
+// $ANTLR : "parser.g" -> "PtalonLexer.java"$
 /* 
 
  Copyright (c) 2006 The Regents of the University of California.
@@ -731,7 +731,7 @@ tryAgain:
 		}
 		}
 		{
-		_loop744:
+		_loop468:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -770,7 +770,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop744;
+				break _loop468;
 			}
 			}
 		} while (true);
@@ -789,34 +789,34 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt747=0;
-		_loop747:
+		int _cnt471=0;
+		_loop471:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt747>=1 ) { break _loop747; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt471>=1 ) { break _loop471; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt747++;
+			_cnt471++;
 		} while (true);
 		}
 		{
 		if ((LA(1)=='.')) {
 			match('.');
 			{
-			int _cnt750=0;
-			_loop750:
+			int _cnt474=0;
+			_loop474:
 			do {
 				if (((LA(1) >= '0' && LA(1) <= '9'))) {
 					matchRange('0','9');
 				}
 				else {
-					if ( _cnt750>=1 ) { break _loop750; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+					if ( _cnt474>=1 ) { break _loop474; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
 				
-				_cnt750++;
+				_cnt474++;
 			} while (true);
 			}
 		}
@@ -851,7 +851,7 @@ tryAgain:
 		
 		match('"');
 		{
-		_loop755:
+		_loop479:
 		do {
 			switch ( LA(1)) {
 			case '\\':
@@ -898,7 +898,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop755;
+				break _loop479;
 			}
 			}
 		} while (true);

@@ -1,4 +1,4 @@
-// $ANTLR : "ptalonForPtolemy.g" -> "PtalonLexer.java"$
+// $ANTLR : "parser.g" -> "PtalonLexer.java"$
 /* 
 
  Copyright (c) 2006 The Regents of the University of California.
@@ -70,19 +70,21 @@ public interface PtalonTokenTypes {
 	int ELSE = 40;
 	int IS = 41;
 	int OUTPARAMETER = 42;
-	int QUALID = 43;
-	int ATTRIBUTE = 44;
-	int ACTOR_DECLARATION = 45;
-	int ACTOR_DEFINITION = 46;
-	int NEGATIVE_SIGN = 47;
-	int POSITIVE_SIGN = 48;
-	int ARITHMETIC_FACTOR = 49;
-	int BOOLEAN_FACTOR = 50;
-	int LOGICAL_BUFFER = 51;
-	int LBRACKET = 52;
-	int RBRACKET = 53;
-	int BINARY_NOT = 54;
-	int ESC = 55;
-	int STRING_LITERAL = 56;
-	int WHITE_SPACE = 57;
+	int TRUEBRANCH = 43;
+	int FALSEBRANCH = 44;
+	int QUALID = 45;
+	int ATTRIBUTE = 46;
+	int ACTOR_DECLARATION = 47;
+	int ACTOR_DEFINITION = 48;
+	int NEGATIVE_SIGN = 49;
+	int POSITIVE_SIGN = 50;
+	int ARITHMETIC_FACTOR = 51;
+	int BOOLEAN_FACTOR = 52;
+	int LOGICAL_BUFFER = 53;
+	int LBRACKET = 54;
+	int RBRACKET = 55;
+	int BINARY_NOT = 56;
+	int ESC = 57;
+	int STRING_LITERAL = 58;
+	int WHITE_SPACE = 59;
 }

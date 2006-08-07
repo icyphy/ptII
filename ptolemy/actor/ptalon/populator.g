@@ -35,12 +35,14 @@ class PtalonPopulator extends TreeParser;
 options {
 	importVocab = Ptalon;
 	buildAST = true;
+	defaultErrorHandler = false;
+	ASTLabelType = "PtalonAST";
 }
 
 {
-	private PtalonCompilerInfo info;
+	private CodeManager info;
 
-	public PtalonCompilerInfo getCompilerInfo() {
+	public CodeManager getCodeManager() {
 		return info;
 	}
 	
@@ -191,14 +193,14 @@ conditional_statement throws PtalonRuntimeException
 	{
 		info.enterIfScope(a.getText());
 	}
-	boolean_expression (atomic_statement | conditional_statement)
-		(atomic_statement | conditional_statement))
+	boolean_expression #(TRUEBRANCH (atomic_statement | conditional_statement)*)
+		#(FALSEBRANCH (atomic_statement | conditional_statement)*))
 	{
 		info.exitIfScope();
 	}
 ;	
 
-actor_definition[PtalonCompilerInfo info, PtalonActor actor] throws PtalonRuntimeException
+actor_definition[CodeManager info, PtalonActor actor] throws PtalonRuntimeException
 {
 	this.info = info;
 	this.info.startAtTop();
@@ -206,7 +208,9 @@ actor_definition[PtalonCompilerInfo info, PtalonActor actor] throws PtalonRuntim
 :
 	#(a:ACTOR_DEFINITION 
 	{
-		this.info.setActor(actor, a.getText());
+		if (!this.info.isActorSet()) {
+			this.info.setActor(actor, a.getText());
+		}
 	}
 	(import_declaration)* ((atomic_statement | 
 		conditional_statement)* | attribute))

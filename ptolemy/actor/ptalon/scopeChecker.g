@@ -35,12 +35,14 @@ class PtalonScopeChecker extends TreeParser;
 options {
 	importVocab = Ptalon;
 	buildAST = true;
+	defaultErrorHandler  = false;
+	ASTLabelType = "PtalonAST";
 }
 
 {
-	private PtalonCompilerInfo info = new PtalonCompilerInfo();	
+	private CodeManager info = new CodeManager();	
 
-	public PtalonCompilerInfo getCompilerInfo() {
+	public CodeManager getCodeManager() {
 		return info;
 	}
 	
@@ -209,8 +211,8 @@ conditional_statement throws PtalonScopeException
 	{
 		info.pushIfStatement();
 	}
-	boolean_expression (atomic_statement | conditional_statement)
-		(atomic_statement | conditional_statement))
+	boolean_expression #(TRUEBRANCH (atomic_statement | conditional_statement)*)
+		#(FALSEBRANCH (atomic_statement | conditional_statement)*))
 	{
 		#conditional_statement.setText(info.popIfStatement());
 	}

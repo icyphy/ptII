@@ -35,6 +35,8 @@ options {
 	exportVocab = Ptalon;
 	k = 2;
 	buildAST = true;
+	defaultErrorHandler = false;
+	ASTLabelType = "PtalonAST";
 }
 
 import_declaration:
@@ -214,12 +216,39 @@ atomic_statement :
 	relation_declaration | actor_declaration) SEMI!
 ;
 
-conditional_statement:
-	IF^ LPAREN! boolean_expression RPAREN! LCURLY! 
-	(atomic_statement | conditional_statement)
-	RCURLY! ELSE! LCURLY!
-	(atomic_statement | conditional_statement)
-	RCURLY!
+conditional_statement!
+{
+	AST trueTree = null;
+	AST falseTree = null;
+}
+:
+	i:IF LPAREN! b:boolean_expression RPAREN! 
+	{
+		#conditional_statement = #(i, b);
+		trueTree = #[TRUEBRANCH, "true branch"];
+		falseTree = #[FALSEBRANCH, "false branch"];
+	}
+	LCURLY! (a1:atomic_statement 
+	{
+		trueTree.addChild(#a1);
+	}
+	| c1:conditional_statement
+	{
+		trueTree.addChild(#c1);
+	}
+	)* RCURLY! ELSE! LCURLY! (a2:atomic_statement 
+	{
+		falseTree.addChild(#a2);
+	}
+	| c2:conditional_statement
+	{
+		falseTree.addChild(#c2);
+	}
+	)* RCURLY!
+	{
+		#conditional_statement.addChild(trueTree);
+		#conditional_statement.addChild(falseTree);
+	}
 ;	
 
 actor_definition!
@@ -267,7 +296,9 @@ tokens {
 	OUTPARAMETER = "boolparameter";
 	RELATION = "relation";
 	TRUE = "true";
+	TRUEBRANCH;
 	FALSE = "false";
+	FALSEBRANCH;
 	IF = "if";
 	ELSE = "else";
 	IS = "is";

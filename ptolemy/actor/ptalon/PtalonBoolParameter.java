@@ -61,7 +61,6 @@ public class PtalonBoolParameter extends Parameter {
     public void setExpression(String expr) {
         super.setExpression(expr);
         _hasValue = true;
-        setVisibility(Settable.NOT_EDITABLE);
     }
     
     /**
@@ -74,7 +73,6 @@ public class PtalonBoolParameter extends Parameter {
     public void setToken(Token token) throws IllegalActionException {
         super.setToken(token);
         _hasValue = true;
-        setVisibility(Settable.NOT_EDITABLE);
    }
     
     /**
@@ -87,7 +85,6 @@ public class PtalonBoolParameter extends Parameter {
     public void setToken(String expression) throws IllegalActionException {
         super.setToken(expression);
         _hasValue = true;
-        setVisibility(Settable.NOT_EDITABLE);
     }
     
     

@@ -20,9 +20,11 @@ import ptolemy.util.StringUtilities;
  * @author acataldo
  *
  */
-public class PtalonCompilerInfo {
+public class CodeManager {
 
-    public PtalonCompilerInfo() {
+    public CodeManager() {
+        _actor = null;
+        _actorSet = false;
         _counter = 0;
         _root = new IfTree(getNextIfSymbol(), null);
         _imports = new Hashtable<String, File>();
@@ -321,6 +323,13 @@ public class PtalonCompilerInfo {
     }
     
     /**
+     * @return True if the actor has been set for this instance.
+     */
+    public boolean isActorSet() {
+        return _actorSet;
+    }
+    
+    /**
      * Return true if the current if-block scope is ready to be
      * entered.  It is ready when all ports, parameters, and relations
      * in the containing scope have been created, and when all parameters
@@ -406,6 +415,7 @@ public class PtalonCompilerInfo {
             throw new PtalonRuntimeException(
                     "Exception thrown in trying to change the actor name", e);
         }
+        _actorSet = true;
     }
     
     /**
@@ -442,6 +452,11 @@ public class PtalonCompilerInfo {
      * The actor in which this PtalonCompilerInfo is used.
      */
     private PtalonActor _actor;
+    
+    /**
+     * True if the actor has been set.
+     */
+    private boolean _actorSet;
     
     /**
      * A counter used to associate a unqiue
