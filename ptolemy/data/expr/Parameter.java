@@ -199,7 +199,12 @@ public class Parameter extends Variable {
         String value = getExpression();
         String valueTerm = "";
 
-        if ((value != null) && !value.equals("")) {
+        // NOTE: This used to read as follows, but this is problematic
+        // because you may actually want a parameter value to be an
+        // empty string (e.g., in InteractiveShell for the prompt).
+        // EAL 8/8/06.
+        // if ((value != null) && !value.equals("")) {
+        if ((value != null)) {
             valueTerm = " value=\"" + StringUtilities.escapeForXML(value)
                     + "\"";
         }
