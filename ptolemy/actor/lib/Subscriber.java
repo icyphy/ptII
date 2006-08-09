@@ -95,7 +95,9 @@ public class Subscriber extends TypedAtomicActor {
         channel.setExpression("channel1");
         
         input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
+        output.setMultiport(true);
         
         new Parameter(input, "_hide", BooleanToken.TRUE);
     }
@@ -156,11 +158,12 @@ public class Subscriber extends TypedAtomicActor {
             throw new IllegalActionException(this,
                     "Subscriber has no matching Publisher.");
         }
-        // FIXME: Input should be a multiport.
         for (int i = 0; i < width; i++) {
             while (input.hasToken(i)) {
                 Token token = input.get(i);
-                output.send(i, token);
+                if (i < output.getWidth()) {
+                    output.send(i, token);
+                }
             }
         }
     }

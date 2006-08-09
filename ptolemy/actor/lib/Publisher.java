@@ -42,6 +42,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -98,7 +99,9 @@ public class Publisher extends TypedAtomicActor {
         channel.setExpression(_uniqueChannelName());
         
         input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
+        output.setMultiport(true);
         
         Parameter hide = new SingletonParameter(output, "_hide");
         hide.setToken(BooleanToken.TRUE);
@@ -152,13 +155,32 @@ public class Publisher extends TypedAtomicActor {
         }
     }
     
+    /** Override the base class to update the width of the hidden link.
+     *  @param port The port that has connection changes.
+     */
+    public void connectionsChanged(Port port) {
+        super.connectionsChanged(port);
+        if (port == input) {
+            if (_relation != null && !_inConnectionsChanged) {
+                try {
+                    _inConnectionsChanged = true;
+                    int width = input.getWidth();
+                    _relation.setWidth(width);
+                } catch (IllegalActionException e) {
+                    throw new InternalErrorException(e);
+                } finally {
+                    _inConnectionsChanged = false;
+                }
+            }
+        }
+    }
+
     /** Read all available input tokens and send them to the subscribers,
      *  if any.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        // FIXME: Input should be a multiport.
         for (int i = 0; i < input.getWidth(); i++) {
             while (input.hasToken(i)) {
                 Token token = input.get(i);
@@ -301,6 +323,9 @@ public class Publisher extends TypedAtomicActor {
                 _relation.setPersistent(false);
                 // Prevent the relation from showing up in vergil.
                 new Parameter(_relation, "_hide", BooleanToken.TRUE);
+                // Set the width of the relation to match the
+                // width of the input.
+                _relation.setWidth(input.getWidth());
             } catch (NameDuplicationException e) {
                 throw new InternalErrorException(e);
             }
@@ -318,4 +343,10 @@ public class Publisher extends TypedAtomicActor {
             director.invalidateResolvedTypes();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+
+    /** An indicator that connectionsChanged() has been called. */
+    private boolean _inConnectionsChanged = false;
 }
