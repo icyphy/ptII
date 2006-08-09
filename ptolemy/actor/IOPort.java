@@ -476,6 +476,7 @@ public class IOPort extends ComponentPort {
         _localReceiversTable = new HashMap();
         // Make sure _localReceivers is updated next time it is accessed.
         _localReceiversVersion = -1;
+        _insideReceiversVersion = -1;
 
         boolean input = isInput();
         boolean output = isOutput();
@@ -2924,6 +2925,7 @@ public class IOPort extends ComponentPort {
             if ((toDelete != null) && (_localReceiversTable != null)) {
                 _removeReceivers(toDelete);
                 _localReceiversTable.remove(toDelete);
+                _localReceiversVersion = -1;
             }
 
             super.unlink(index);
@@ -2953,6 +2955,8 @@ public class IOPort extends ComponentPort {
             if (_localReceiversTable != null) {
                 _removeReceivers(relation);
                 _localReceiversTable.remove(relation);
+                _localReceiversVersion = -1;
+                _insideReceiversVersion = -1;
             }
 
             _invalidate();
@@ -2983,6 +2987,8 @@ public class IOPort extends ComponentPort {
                     if (!isInsideLinked(relation)) {
                         _removeReceivers(relation);
                         _localReceiversTable.remove(relation);
+                        _localReceiversVersion = -1;
+                        _insideReceiversVersion = -1;
                     }
                 }
             }
@@ -3016,6 +3022,8 @@ public class IOPort extends ComponentPort {
                     if (isInsideLinked(relation)) {
                         _removeReceivers(relation);
                         _localReceiversTable.remove(relation);
+                        _localReceiversVersion = -1;
+                        _insideReceiversVersion = -1;
                     }
                 }
             }
@@ -3048,6 +3056,7 @@ public class IOPort extends ComponentPort {
                 if (_localReceiversTable != null) {
                     _removeReceivers(toDelete);
                     _localReceiversTable.remove(toDelete);
+                    _insideReceiversVersion = -1;
                 }
             }
 
@@ -3074,6 +3083,7 @@ public class IOPort extends ComponentPort {
             if (_localReceiversTable != null) {
                 _removeReceivers(relation);
                 _localReceiversTable.remove(relation);
+                _insideReceiversVersion = -1;
             }
 
             _invalidate();
