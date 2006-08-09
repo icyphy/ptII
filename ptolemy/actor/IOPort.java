@@ -474,6 +474,8 @@ public class IOPort extends ComponentPort {
             }
         }
         _localReceiversTable = new HashMap();
+        // Make sure _localReceivers is updated next time it is accessed.
+        _localReceiversVersion = -1;
 
         boolean input = isInput();
         boolean output = isOutput();
