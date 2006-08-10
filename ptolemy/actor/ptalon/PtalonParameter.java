@@ -59,6 +59,9 @@ public class PtalonParameter extends Parameter {
      */
     public void setExpression(String expr) {
         super.setExpression(expr);
+        if ((expr == null) || (expr.trim().equals(""))) {
+            return;
+        }
         _hasValue = true;
     }
     
@@ -83,6 +86,9 @@ public class PtalonParameter extends Parameter {
      */
     public void setToken(String expression) throws IllegalActionException {
         super.setToken(expression);
+        if ((expression == null) || (expression.trim().equals(""))) {
+            return;
+        }
         _hasValue = true;
     }
     
@@ -95,5 +101,7 @@ public class PtalonParameter extends Parameter {
      * True if this parameter has a value.
      */
     private boolean _hasValue;
+    
+    
     
 }

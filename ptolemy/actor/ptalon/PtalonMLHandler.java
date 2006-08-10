@@ -11,10 +11,12 @@ public class PtalonMLHandler extends HandlerBase {
     /**
      * Create a PtalonMLHandler, which will be used to recover the
      * AST and code manager specified in the PtalonML.
+     * @param actor The actor to associate with this handler.
      */
-    public PtalonMLHandler() {
+    public PtalonMLHandler(PtalonActor actor) {
         super();
         _attributes = new Hashtable<String, String>();
+        _actor = actor;
     }   
     
     /**
@@ -46,6 +48,13 @@ public class PtalonMLHandler extends HandlerBase {
             } else {
                 _astStack.pop();
                 _ast = (PtalonAST) _astStack.peek();                
+            }
+        } else if (elname.equals("if")) {
+            if (_manager != null) {
+                try {
+                    _manager.popIfStatement();
+                } catch (PtalonScopeException e) {
+                }
             }
         }
     }
@@ -86,11 +95,32 @@ public class PtalonMLHandler extends HandlerBase {
                     _ast.setType(new Integer(_attributes.get(name)));
                 }
             }
-            _attributes.clear();
             _astStack.push(_ast);
-
+        } else if (elname.equals("if")) {
+            if (_manager == null) {
+                _manager = new CodeManager(_actor);
+            }
+            if (_attributes.containsKey("name")) {
+                _manager.pushIfStatement(_attributes.get("name"));
+            }
+        } else if (elname.equals("symbol")) {
+            if (_attributes.containsKey("name") && _attributes.containsKey("type")
+                    && _attributes.containsKey("status")
+                    && _attributes.containsKey("uniqueName")) {
+                String name = _attributes.get("name");
+                String type = _attributes.get("type");
+                boolean status = new Boolean(_attributes.get("status"));
+                String uniqueName = _attributes.get("uniqueName");
+                _manager.addSymbol(name, type, status, uniqueName);
+            }
         }
+        _attributes.clear();
     }
+    
+    /**
+     * The actor that created this handler.
+     */
+    PtalonActor _actor;
     
     /**
      * The AST created by this handler.

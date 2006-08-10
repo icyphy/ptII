@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 
@@ -118,7 +119,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     }
                     PtalonPopulator populator = new PtalonPopulator();
                     populator.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
-                    populator.actor_definition(_ast, _codeManager, this);
+                    populator.actor_definition(_ast, _codeManager);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -131,7 +132,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                         return;
                     }
                     PtalonPopulator populator = new PtalonPopulator();
-                    populator.actor_definition(_ast, _codeManager, this);
+                    populator.actor_definition(_ast, _codeManager);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -144,7 +145,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     }
                     ((PtalonIntParameter)att).setVisibility(Settable.NOT_EDITABLE);
                     PtalonPopulator populator = new PtalonPopulator();
-                    populator.actor_definition(_ast, _codeManager, this);
+                    populator.actor_definition(_ast, _codeManager);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -177,10 +178,11 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             }
             if ((text != null) && (!text.trim().equals(""))) {
                 XmlParser parser = new XmlParser();
-                PtalonMLHandler handler = new PtalonMLHandler();
+                PtalonMLHandler handler = new PtalonMLHandler(this);
                 parser.setHandler(handler);
                 parser.parse(_configureSource, null, new StringReader(text));
                 _ast = handler.getAST();
+                _codeManager = handler.getCodeManager();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -244,9 +246,14 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             output.write(_getIndentPrefix(depth) + "<property class=\"ptolemy.data.expr.ExpertParameter\" name=\"astCreated\"value =\"" 
                     + astCreated.getExpression() + "\">\n" + _getIndentPrefix(depth) + "</property>\n");
             output.write(_getIndentPrefix(depth) + "<configure>\n");
+            output.write(_getIndentPrefix(depth + 1) + "<ptaloninfo>\n");
             if (_ast != null) {
-                _ast.xmlSerialize(output, depth + 1);
+                _ast.xmlSerialize(output, depth + 2);
             }
+            if (_codeManager != null) {
+                _codeManager.xmlSerialize(output, depth + 2);
+            }
+            output.write(_getIndentPrefix(depth + 1) + "</ptaloninfo>\n");
             output.write(_getIndentPrefix(depth) + "</configure>\n");
         } catch (IOException e) {
             e.printStackTrace();
@@ -282,13 +289,14 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             _ast = (PtalonAST) rec.getAST();
             PtalonScopeChecker checker = new PtalonScopeChecker();
             checker.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
-            checker.actor_definition(_ast);
+            _codeManager = new CodeManager(this);
+            checker.actor_definition(_ast, _codeManager);
             _ast = (PtalonAST) checker.getAST();
             PtalonPopulator populator;
             populator = new PtalonPopulator();
             populator.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
             _codeManager = checker.getCodeManager();
-            populator.actor_definition(_ast, _codeManager, this);
+            populator.actor_definition(_ast, _codeManager);
             _ast = (PtalonAST) populator.getAST();
             astCreated.setExpression("true");
             ptalonCodeLocation.setVisibility(Settable.NOT_EDITABLE);

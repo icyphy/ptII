@@ -1,11 +1,16 @@
 package ptolemy.actor.ptalon;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+
+import com.sun.corba.se.impl.logging.IORSystemException;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
@@ -22,8 +27,12 @@ import ptolemy.util.StringUtilities;
  */
 public class CodeManager {
 
-    public CodeManager() {
-        _actor = null;
+    /**
+     * Create a new CodeManager in the specified actor.
+     * @param actor The actor to manage the code for.
+     */
+    public CodeManager(PtalonActor actor) {
+        _actor = actor;
         _actorSet = false;
         _counter = 0;
         _root = new IfTree(getNextIfSymbol(), null);
@@ -43,7 +52,7 @@ public class CodeManager {
         String uniqueName = _actor.uniqueName(name);
         try {
             PtalonBoolParameter parameter = new PtalonBoolParameter(_actor, uniqueName);
-            _currentTree.addParameter(name, parameter);
+            _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
@@ -66,7 +75,7 @@ public class CodeManager {
             TypedIOPort port = new TypedIOPort(_actor, uniqueName);
             port.setInput(true);
             port.setOutput(false);
-            _currentTree.addPort(name, port);
+            _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
@@ -87,7 +96,7 @@ public class CodeManager {
         String uniqueName = _actor.uniqueName(name);
         try {
             PtalonIntParameter parameter = new PtalonIntParameter(_actor, uniqueName);
-            _currentTree.addParameter(name, parameter);
+            _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
@@ -144,7 +153,7 @@ public class CodeManager {
             TypedIOPort port = new TypedIOPort(_actor, uniqueName);
             port.setInput(false);
             port.setOutput(true);
-            _currentTree.addPort(name, port);
+            _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
@@ -165,7 +174,7 @@ public class CodeManager {
         String uniqueName = _actor.uniqueName(name);
         try {
             PtalonParameter parameter = new PtalonParameter(_actor, uniqueName);
-            _currentTree.addParameter(name, parameter);
+            _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
@@ -188,7 +197,7 @@ public class CodeManager {
             TypedIOPort port = new TypedIOPort(_actor, uniqueName);
             port.setInput(true);
             port.setOutput(true);
-            _currentTree.addPort(name, port);
+            _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
@@ -209,7 +218,7 @@ public class CodeManager {
         String uniqueName = _actor.uniqueName(name);
         try {
             TypedIORelation relation = new TypedIORelation(_actor, uniqueName);
-            _currentTree.addRelation(name, relation);
+            _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
@@ -239,6 +248,18 @@ public class CodeManager {
         }
         _currentTree.addSymbol(name, type);
     }
+    
+    /**
+     * Add a symbol to the scope of this if statement.
+     * @param symbol The sybmol to add.
+     * @param type Its corresponding type.
+     * @param status It's statust, that is whether it has been loaded or not.
+     * @param uniqueName The unique name of this 
+     */
+    public void addSymbol(String symbol, String type, boolean status, String uniqueName) {
+        _currentTree.addSymbol(symbol, type, status, uniqueName);
+    }
+
     
     /**
      * Enter the named subscope.
@@ -335,8 +356,9 @@ public class CodeManager {
      * in the containing scope have been created, and when all parameters
      * in the containing scope have been assigned values.  
      * @return true if the current if-block scope is ready to be entered.
+     * @throws PtalonRuntimeException If it is thrown trying to access a parameter.
      */
-    public boolean isReady() {
+    public boolean isReady() throws PtalonRuntimeException {
         IfTree parent = _currentTree.getParent();
         if (parent == null) {
             return true;
@@ -399,18 +421,31 @@ public class CodeManager {
     }
     
     /**
+     * Push into the scope of a new if statement contained as
+     * a sublock of the current if statement.
+     * @name The name of the if statement.
+     */
+    public void pushIfStatement(String name) {
+        if (_firstPushWithString) {
+            _root = new IfTree(name, null);
+            _currentTree = _root;
+            _firstPushWithString = false;
+        } else {
+            _currentTree = _currentTree.addChild(name);
+        }
+    }
+    
+    /**
      * Set the PtalonActor in which this PtalonCompilerInfo is used.
-     * @param actor The PtalonActor.
      * @param name The desired name for the actor.  In case of a name
      * conflict, the actual name will have the desired name as a prefix.
      * @throws PtalonRuntimeException If an exception is thrown trying to
      * change the name.
      */
-    public void setActor(PtalonActor actor, String name) throws PtalonRuntimeException {
-        _actor = actor;
+    public void setActor(String name) throws PtalonRuntimeException {
         try {
-            String uniqueName = actor.getContainer().uniqueName(name);
-            actor.setName(uniqueName);
+            String uniqueName = _actor.getContainer().uniqueName(name);
+            _actor.setName(uniqueName);
         } catch (Exception e) {
             throw new PtalonRuntimeException(
                     "Exception thrown in trying to change the actor name", e);
@@ -431,11 +466,35 @@ public class CodeManager {
      * Print out the scope information in this compiler.
      */
     public String toString() {
-        String output = "---------Compiler info---------\n";
-        output += _root.toString();
-        return output;
+        StringWriter writer = new StringWriter();
+        try {
+            xmlSerialize(writer, 0);
+        } catch (IOException e) {
+        }
+        return writer.getBuffer().toString();
+    }
+    
+    /**
+     * Write an xml version of this actor to the given output.
+     * @param output The writer to send the output to.
+     * @param depth The depth of indents to start with.
+     * @throws IOException If there is a problem writing to the output.
+     */
+    public void xmlSerialize(Writer output, int depth) throws IOException {
+        output.write(_getIndentPrefix(depth) + "<codemanager>\n");
+        _root.xmlSerialize(output, depth + 1);
+        output.write(_getIndentPrefix(depth) + "</codemanager>\n");
     }
 
+    /** Return a number of spaces that is proportional to the argument.
+     *  If the argument is negative or zero, return an empty string.
+     *  @param level The level of indenting represented by the spaces.
+     *  @return A string with zero or more spaces.
+     */
+    protected static String _getIndentPrefix(int level) {
+        return StringUtilities.getIndentPrefix(level);
+    }
+    
     /**
      * @return The next symbol of form "_ifN" where
      * N is 0 if this funciton has not been called and
@@ -471,6 +530,11 @@ public class CodeManager {
     private IfTree _currentTree;
     
     /**
+     * This is true until #pushIfSymbol(String) is called for the first time.
+     */
+    private boolean _firstPushWithString = true;
+    
+    /**
      * A list of the import symbols and their corresponding
      * files.
      */
@@ -494,10 +558,7 @@ public class CodeManager {
             _children = new LinkedList<IfTree>();
             _name = name;
             _nameMappings = new Hashtable<String, String>();
-            _parameters = new Hashtable<String, Parameter>();
             _parent = parent;
-            _ports = new Hashtable<String, TypedIOPort>();
-            _relations = new Hashtable<String, TypedIORelation>();
             _setStatus = new Hashtable<String, Boolean>();
             _symbols = new Hashtable<String, String>();
         }
@@ -515,63 +576,6 @@ public class CodeManager {
         }
         
         /**
-         * Associate a parameter with a symbol.
-         * @param symbol The symbol name.
-         * @param parameter The associated parameter.
-         * @throws PtalonRuntimeException If the symbol does not exist, or if
-         * the symbol already has a parameter associated with it.
-         * 
-         */
-        public void addParameter(String symbol, Parameter parameter) throws PtalonRuntimeException {
-            if (!getSymbols().contains(symbol)) {
-                throw new PtalonRuntimeException("Symbol " + symbol + " does not exist.");
-            }
-            if (_parameters.keySet().contains(symbol)) {
-                throw new PtalonRuntimeException("Symbol " + symbol + " already has a parameter associated with it.");
-            }
-            _parameters.put(symbol, parameter);
-            _setStatus.put(symbol, true);
-        }
-        
-        /**
-         * Associate a port with a symbol.
-         * @param symbol The symbol name.
-         * @param port The associated port.
-         * @throws PtalonRuntimeException If the symbol does not exist, or if
-         * the symbol already has a port associated with it.
-         * 
-         */
-        public void addPort(String symbol, TypedIOPort port) throws PtalonRuntimeException {
-            if (!getSymbols().contains(symbol)) {
-                throw new PtalonRuntimeException("Symbol " + symbol + " does not exist.");
-            }
-            if (_ports.keySet().contains(symbol)) {
-                throw new PtalonRuntimeException("Symbol " + symbol + " already has a port associated with it.");
-            }
-            _ports.put(symbol, port);
-            _setStatus.put(symbol, true);
-        }
-        
-        /**
-         * Associate a relation with a symbol.
-         * @param symbol The symbol name.
-         * @param relation The associated relation.
-         * @throws PtalonRuntimeException If the symbol does not exist, or if
-         * the symbol already has a relation associated with it.
-         * 
-         */
-        public void addRelation(String symbol, TypedIORelation relation) throws PtalonRuntimeException {
-            if (!getSymbols().contains(symbol)) {
-                throw new PtalonRuntimeException("Symbol " + symbol + " does not exist.");
-            }
-            if (_relations.keySet().contains(symbol)) {
-                throw new PtalonRuntimeException("Symbol " + symbol + " already has a relation associated with it.");
-            }
-            _relations.put(symbol, relation);
-            _setStatus.put(symbol, true);
-        }
-
-        /**
          * Add a symbol to the scope of this if statement.
          * @param symbol The sybmol to add.
          * @param type Its corresponding type.
@@ -580,6 +584,19 @@ public class CodeManager {
             _symbols.put(symbol, type);
             _nameMappings.put(symbol, symbol);
             _setStatus.put(symbol, false);
+        }
+        
+        /**
+         * Add a symbol to the scope of this if statement.
+         * @param symbol The sybmol to add.
+         * @param type Its corresponding type.
+         * @param status It's statust, that is whether it has been loaded or not.
+         * @param uniqueName The unique name of this 
+         */
+        public void addSymbol(String symbol, String type, boolean status, String uniqueName) {
+            _symbols.put(symbol, type);
+            _nameMappings.put(symbol, uniqueName);
+            _setStatus.put(symbol, status);
         }
         
         /**
@@ -616,7 +633,6 @@ public class CodeManager {
             }
             return output;
         }
-
         
         /**
          * @return The name associated with this tree.
@@ -647,7 +663,7 @@ public class CodeManager {
             }
             return status;
         }
-        
+               
         /**
          * @return All symbols in the scope of the if-block.
          */
@@ -680,20 +696,23 @@ public class CodeManager {
          * for the parameter.
          * 
          * @return True if all the symbols in this if block
-         * have been assigned a value.  
+         * have been assigned a value. 
+         * @throws PtalonRuntimeException If there is any problem accessing
+         * a parameter.
          */
-        public boolean isFullyAssigned() {
+        public boolean isFullyAssigned() throws PtalonRuntimeException {
             for (String symbol : _setStatus.keySet()) {
                 if (!_setStatus.get(symbol)) {
                     return false;
                 }
-                LinkedList<String> paramTypes = new LinkedList<String>();
-                paramTypes.add("parameter");
-                paramTypes.add("intparameter");
-                paramTypes.add("boolparameter");
-                if (paramTypes.contains(_symbols.get(symbol))) {
-                    if (!_parameters.keySet().contains(symbol)) {
-                        return false;
+                if (_symbols.get(symbol).endsWith("parameter")) {
+                    try {
+                        PtalonParameter param = (PtalonParameter) _actor.getAttribute(_nameMappings.get(symbol));
+                        if (!param.hasValue()) {
+                            return false;
+                        }
+                    } catch (Exception e) {
+                        throw new PtalonRuntimeException("Could not access parameter " + symbol, e);
                     }
                 }
             }
@@ -715,7 +734,7 @@ public class CodeManager {
             }
             _nameMappings.put(symbol, uniqueName);
         }
-        
+                
         /**
          * Set the status of the symbol to true, if the symbol
          * is ready, and false otherwise.
@@ -746,6 +765,27 @@ public class CodeManager {
         }
         
         /**
+         * Write an xml version of this actor to the given output.
+         * @param output The writer to send the output to.
+         * @param depth The depth of indents to start with.
+         * @throws IOException If there is a problem writing to the output.
+         */
+        public void xmlSerialize(Writer output, int depth) throws IOException {
+            output.write(_getIndentPrefix(depth) + "<if name=\"" + _name +
+                    "\">\n");
+            for (String symbol : _symbols.keySet()) {
+                output.write(_getIndentPrefix(depth + 1) + "<symbol name =\""
+                        + symbol + "\" type=\"" + _symbols.get(symbol) + 
+                        "\" status=\"" + _setStatus.get(symbol) + 
+                        "\" uniqueName=\"" + _nameMappings.get(symbol) + "\"/>\n");
+            }
+            for (IfTree child : _children) {
+                child.xmlSerialize(output, depth + 1);
+            }
+            output.write(_getIndentPrefix(depth) + "</if>\n");
+        }
+        
+        /**
          * The children, which correspond to sub if-blocks
          * of this if-block.
          */
@@ -761,26 +801,11 @@ public class CodeManager {
          * Ptalon Actor.
          */
         private Hashtable<String, String> _nameMappings;
-
-        /**
-         * The parameters for this level of the hierarchy.
-         */
-        private Hashtable<String, Parameter> _parameters;
         
         /**
          * The parent of this if block.
          */
         private IfTree _parent;
-        
-        /**
-         * The ports for this level of the hierarchy.
-         */
-        private Hashtable<String, TypedIOPort> _ports;
-        
-        /**
-         * The relations for this level of the hierarchy.
-         */
-        private Hashtable<String, TypedIORelation> _relations;
 
         /**
          * A symbol maps to true if it has been set to some

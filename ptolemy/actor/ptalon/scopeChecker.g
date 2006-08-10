@@ -40,7 +40,7 @@ options {
 }
 
 {
-	private CodeManager info = new CodeManager();	
+	private CodeManager info;
 
 	public CodeManager getCodeManager() {
 		return info;
@@ -218,7 +218,10 @@ conditional_statement throws PtalonScopeException
 	}
 ;	
 
-actor_definition throws PtalonScopeException
+actor_definition [CodeManager manager] throws PtalonScopeException
+{
+	info = manager;
+}
 :
 	#(a:ACTOR_DEFINITION 
 	{

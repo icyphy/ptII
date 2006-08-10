@@ -200,7 +200,7 @@ conditional_statement throws PtalonRuntimeException
 	}
 ;	
 
-actor_definition[CodeManager info, PtalonActor actor] throws PtalonRuntimeException
+actor_definition[CodeManager info] throws PtalonRuntimeException
 {
 	this.info = info;
 	this.info.startAtTop();
@@ -209,7 +209,7 @@ actor_definition[CodeManager info, PtalonActor actor] throws PtalonRuntimeExcept
 	#(a:ACTOR_DEFINITION 
 	{
 		if (!this.info.isActorSet()) {
-			this.info.setActor(actor, a.getText());
+			this.info.setActor(a.getText());
 		}
 	}
 	(import_declaration)* ((atomic_statement | 
