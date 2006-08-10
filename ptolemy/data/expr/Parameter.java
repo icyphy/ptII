@@ -33,6 +33,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import ptolemy.data.StringToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -196,14 +197,33 @@ public class Parameter extends Variable {
             return;
         }
 
-        String value = getExpression();
-        String valueTerm = "";
-
         // NOTE: This used to read as follows, but this is problematic
         // because you may actually want a parameter value to be an
         // empty string (e.g., in InteractiveShell for the prompt).
+        // Unfortunately, we can't use getExpression(), because it
+        // substitutes null with an empty string, which isn't what
+        // we want. So we have to duplicate the code of getExpression().
         // EAL 8/8/06.
+        // String value = getExpression();
         // if ((value != null) && !value.equals("")) {
+        String value = _currentExpression;
+        if (value == null) {
+            ptolemy.data.Token token = null;
+            try {
+                token = getToken();
+            } catch (IllegalActionException ex) {
+                // token will remain null if the value is invalid.
+            }
+            if (token != null) {
+                if (isStringMode()) {
+                    value = ((StringToken) token).stringValue();
+                } else {
+                    value = token.toString();
+                }
+            }
+        }
+       
+        String valueTerm = "";
         if ((value != null)) {
             valueTerm = " value=\"" + StringUtilities.escapeForXML(value)
                     + "\"";
