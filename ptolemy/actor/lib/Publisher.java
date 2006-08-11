@@ -175,14 +175,15 @@ public class Publisher extends TypedAtomicActor {
         }
     }
 
-    /** Read all available input tokens and send them to the subscribers,
+    /** Read at most one input token from each
+     *  input channel and send it to the subscribers,
      *  if any.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
         for (int i = 0; i < input.getWidth(); i++) {
-            while (input.hasToken(i)) {
+            if (input.hasToken(i)) {
                 Token token = input.get(i);
                 output.send(i, token);
             }

@@ -146,8 +146,8 @@ public class Subscriber extends TypedAtomicActor {
         }
     }
     
-    /** Read all available input tokens and send them to the subscribers,
-     *  if any.
+    /** Read at most one input token from each input
+     *  channel and send it to the output.
      *  @exception IllegalActionException If there is no director, or
      *   if there is no input connection.
      */
@@ -159,7 +159,7 @@ public class Subscriber extends TypedAtomicActor {
                     "Subscriber has no matching Publisher.");
         }
         for (int i = 0; i < width; i++) {
-            while (input.hasToken(i)) {
+            if (input.hasToken(i)) {
                 Token token = input.get(i);
                 if (i < output.getWidth()) {
                     output.send(i, token);
