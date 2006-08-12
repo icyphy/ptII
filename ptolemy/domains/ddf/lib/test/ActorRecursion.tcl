@@ -56,7 +56,7 @@ test ActorRecursion-1.1 {cover _exportMoML} {
         <property name="runUntilDeadlockInOneIteration" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </property>
-    <property name="recursionActor" class="ptolemy.data.expr.StringParameter">
+    <property name="recursionActor" class="ptolemy.data.expr.StringParameter" value="">
     </property>
 </entity>
 }
