@@ -122,6 +122,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
         // Reset to force reinitialization of cache.
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
+        newObject._functionDependency = null;
         return newObject;
     }
 

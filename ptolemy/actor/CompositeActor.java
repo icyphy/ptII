@@ -189,6 +189,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
         CompositeActor newObject = (CompositeActor) super.clone(workspace);
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
+        newObject._functionDependency = null;
         return newObject;
     }
 
