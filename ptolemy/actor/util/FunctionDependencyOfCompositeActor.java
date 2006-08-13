@@ -216,7 +216,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         // Transformer actors.
         _transformers = new LinkedList();
 
-        // catogrize the embedded actors into three kinds:
+        // categorize the embedded actors into three kinds:
         _categorizeActors(embeddedActors);
 
         // Constuct the portsGraph according to the communication dependencies,
