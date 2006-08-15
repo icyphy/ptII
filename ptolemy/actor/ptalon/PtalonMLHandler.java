@@ -4,7 +4,6 @@ import java.util.Hashtable;
 import java.util.Stack;
 
 import com.microstar.xml.HandlerBase;
-import com.microstar.xml.XmlParser;
 
 public class PtalonMLHandler extends HandlerBase {
     
@@ -17,7 +16,7 @@ public class PtalonMLHandler extends HandlerBase {
         super();
         _attributes = new Hashtable<String, String>();
         _actor = actor;
-    }   
+    }
     
     /**
      * Process a PtalonML attribute.
@@ -102,6 +101,14 @@ public class PtalonMLHandler extends HandlerBase {
             }
             if (_attributes.containsKey("name")) {
                 _manager.pushIfStatement(_attributes.get("name"));
+                if (_attributes.containsKey("activeBranch")) {
+                    String value = _attributes.get("activeBranch");
+                    if (value.equals("true")) {
+                        _manager.setActiveBranch(true);
+                    } else if (value.equals("false")) {
+                        _manager.setActiveBranch(false);
+                    }
+                }
             }
         } else if (elname.equals("symbol")) {
             if (_attributes.containsKey("name") && _attributes.containsKey("type")

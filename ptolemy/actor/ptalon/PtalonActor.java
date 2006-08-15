@@ -35,6 +35,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.util.LinkedList;
 
 import antlr.debug.misc.ASTFrame;
 
@@ -99,6 +100,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     ////                         public methods                    ////
         
     
+    
+    
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  This initally responds
      *  to changes in the <i>ptalonCode</i> parameter.  Later it responds
@@ -111,41 +114,25 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         if (att == ptalonCodeLocation) {
             _initializePtalonCodeLocation();
         } else if (att instanceof PtalonParameter) {
-            if (((PtalonParameter)att).hasValue()) {
+            PtalonParameter p = (PtalonParameter) att;
+            if ((p.hasValue()) && (!p.getVisibility().equals(Settable.NOT_EDITABLE))) {
                 try {
-                    ((PtalonParameter)att).setVisibility(Settable.NOT_EDITABLE);
+                    p.setVisibility(Settable.NOT_EDITABLE);
                     if ((_ast == null) || (_codeManager == null)) {
                         return;
                     }
-                    PtalonPopulator populator = new PtalonPopulator();
-                    populator.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
-                    populator.actor_definition(_ast, _codeManager);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } else if (att instanceof PtalonBoolParameter) {
-            if (((PtalonBoolParameter)att).hasValue()) {
-                try {
-                    ((PtalonBoolParameter)att).setVisibility(Settable.NOT_EDITABLE);
-                    if ((_ast == null) || (_codeManager == null)) {
-                        return;
+                    boolean ready = true;
+                    for (PtalonParameter param : _ptalonParameters) {
+                        if (!param.hasValue()) {
+                            ready = false;
+                            break;
+                        }
                     }
-                    PtalonPopulator populator = new PtalonPopulator();
-                    populator.actor_definition(_ast, _codeManager);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } else if (att instanceof PtalonIntParameter) {
-            if (((PtalonIntParameter)att).hasValue()) {
-                try {
-                    if ((_ast == null) || (_codeManager == null)) {
-                        return;
+                    if (ready) {
+                        PtalonPopulator populator = new PtalonPopulator();
+                        populator.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
+                        populator.actor_definition(_ast, _codeManager);
                     }
-                    ((PtalonIntParameter)att).setVisibility(Settable.NOT_EDITABLE);
-                    PtalonPopulator populator = new PtalonPopulator();
-                    populator.actor_definition(_ast, _codeManager);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -231,6 +218,19 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                    ////
 
+    /**
+     * Add the attribute, and if attribute is a PtalonParameter,
+     * add it to a list of Ptalon parameters.
+     * @throws NameDuplicationException If the superclass throws it.
+     * @thrwos IllegalActionException If the superclass throws it.
+     */
+    protected void _addAttribute(Attribute p) throws NameDuplicationException, IllegalActionException {
+        super._addAttribute(p);
+        if (p instanceof PtalonParameter) {
+            _ptalonParameters.add((PtalonParameter)p);
+        }
+    }
+    
     /** Write a MoML description of the contents of this object, which
      *  in this class is the configuration information. This method is called
      *  by exportMoML().  Each description is indented according to the
@@ -321,4 +321,12 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      * The text representation of the URL for this object.
      */
     private String _configureSource;
+    
+    /**
+     * A list of all ptalon parameters for this actor.
+     */
+    private LinkedList<PtalonParameter> _ptalonParameters = new 
+        LinkedList<PtalonParameter>();
+
+
 }

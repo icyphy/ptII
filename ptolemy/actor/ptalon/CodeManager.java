@@ -8,12 +8,15 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 import com.sun.corba.se.impl.logging.IORSystemException;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -36,6 +39,7 @@ public class CodeManager {
         _actorSet = false;
         _counter = 0;
         _root = new IfTree(getNextIfSymbol(), null);
+        _root.setActiveBranch(true);
         _imports = new Hashtable<String, File>();
         _currentTree = _root;
     }
@@ -259,7 +263,6 @@ public class CodeManager {
     public void addSymbol(String symbol, String type, boolean status, String uniqueName) {
         _currentTree.addSymbol(symbol, type, status, uniqueName);
     }
-
     
     /**
      * Enter the named subscope.
@@ -290,6 +293,43 @@ public class CodeManager {
         }
         _currentTree = _currentTree.getParent();
     }
+
+    /**
+     * Get the boolean value associated with the specified parameter.
+     * @param param The parameter's name in the Ptalon code.
+     * @return It's unique value.
+     * @throws PtalonRuntimeException If the paramter does not exist or have
+     * a boolean value. 
+     */
+    public boolean getBooleanValueOf(String param) throws PtalonRuntimeException {
+        try {
+            String uniqueName = _currentTree.getMappedName(param);
+            PtalonBoolParameter att = (PtalonBoolParameter) _actor.getAttribute(uniqueName);
+            return ((BooleanToken) att.getToken()).booleanValue();
+        } catch (Exception e) {
+            throw new PtalonRuntimeException("Unable to access boolean value for " 
+                    + param, e);
+        }
+    }
+
+    /**
+     * Get the int value associated with the specified parameter.
+     * @param param The parameter's name in the Ptalon code.
+     * @return It's unique value.
+     * @throws PtalonRuntimeException If the paramter does not exist or have
+     * a boolean value. 
+     */
+    public int getIntValueOf(String param) throws PtalonRuntimeException {
+        try {
+            String uniqueName = _currentTree.getMappedName(param);
+            PtalonIntParameter att = (PtalonIntParameter) _actor.getAttribute(uniqueName);
+            return ((IntToken) att.getToken()).intValue();
+        } catch (Exception e) {
+            throw new PtalonRuntimeException("Unable to access boolean value for " 
+                    + param, e);
+        }
+    }
+
     
     /**
      * Get the unique name for the symbol in the PtalonActor. 
@@ -307,7 +347,7 @@ public class CodeManager {
         }
         throw new PtalonRuntimeException("Symbol " + symbol + " not found");
     }
-    
+        
     /**
      * Return the type associated with the given symbol in the current scope.
      * @param symbol The symbol under test.
@@ -351,10 +391,11 @@ public class CodeManager {
     }
     
     /**
-     * Return true if the current if-block scope is ready to be
+     * Return true if the current peice of code is ready to be
      * entered.  It is ready when all ports, parameters, and relations
-     * in the containing scope have been created, and when all parameters
-     * in the containing scope have been assigned values.  
+     * in the containing scope have been created, when all parameters
+     * in the containing scope have been assigned values, and when in
+     * a branch of an if-block that is active.  
      * @return true if the current if-block scope is ready to be entered.
      * @throws PtalonRuntimeException If it is thrown trying to access a parameter.
      */
@@ -369,7 +410,10 @@ public class CodeManager {
                 return false;
             }
         }
-        return true;
+        if (_currentTree.getActiveBranch() == null) {
+            return false;
+        }
+        return (_currentTree.getActiveBranch() == _currentTree.getCurrentBranch());
     }
     
    /** 
@@ -436,21 +480,42 @@ public class CodeManager {
     }
     
     /**
+     * Set the active branch for the current if statement.
+     * @param branch The branch to set.
+     */
+    public void setActiveBranch(boolean branch) {
+        _currentTree.setActiveBranch(branch);
+    }
+    
+    /**
      * Set the PtalonActor in which this PtalonCompilerInfo is used.
      * @param name The desired name for the actor.  In case of a name
      * conflict, the actual name will have the desired name as a prefix.
      * @throws PtalonRuntimeException If an exception is thrown trying to
      * change the name.
+     *
+     * @param name
+     * @throws PtalonRuntimeException
      */
     public void setActor(String name) throws PtalonRuntimeException {
         try {
             String uniqueName = _actor.getContainer().uniqueName(name);
             _actor.setName(uniqueName);
+            _root.mapName(name, uniqueName);
+            _root.setStatus(name, true);
         } catch (Exception e) {
             throw new PtalonRuntimeException(
                     "Exception thrown in trying to change the actor name", e);
         }
         _actorSet = true;
+    }
+    
+    /**
+     * Set the current branch that's being walked.
+     * @param branch True if the true branch is being walked.
+     */
+    public void setCurrentBranch(boolean branch) {
+        _currentTree.setActiveBranch(branch);
     }
     
     /**
@@ -522,7 +587,7 @@ public class CodeManager {
      * number with each if-block.
      */
     private int _counter;
-        
+    
     /**
      * Some descendent of the root tree to which new input symbols
      * should be added.
@@ -600,6 +665,15 @@ public class CodeManager {
         }
         
         /**
+         * Return the active branch, which may be null if it has not
+         * yet been set.
+         * @return
+         */
+        public Boolean getActiveBranch() {
+            return _activeBranch;
+        }
+        
+        /**
          * @return The ancestors of this tree, including this tree.
          */
         public List<IfTree> getAncestors() {
@@ -618,6 +692,10 @@ public class CodeManager {
          */
         public List<IfTree> getChildren() {
             return _children;
+        }
+        
+        public boolean getCurrentBranch() {
+            return _currentBranch;
         }
         
         /**
@@ -734,7 +812,23 @@ public class CodeManager {
             }
             _nameMappings.put(symbol, uniqueName);
         }
-                
+        
+        /**
+         * Set the active branch to true or false.
+         * @param branch The branch to set it to.
+         */
+        public void setActiveBranch(boolean branch) {
+            _activeBranch = new Boolean(branch);
+        }
+        
+        /**
+         * Set the current branch that's being walked.
+         * @param branch True if the true branch is being walked.
+         */
+        public void setCurrentBranch(boolean branch) {
+            _currentBranch = branch;
+        }
+        
         /**
          * Set the status of the symbol to true, if the symbol
          * is ready, and false otherwise.
@@ -771,8 +865,14 @@ public class CodeManager {
          * @throws IOException If there is a problem writing to the output.
          */
         public void xmlSerialize(Writer output, int depth) throws IOException {
+            String activeBranch;
+            if (_activeBranch == null) {
+                activeBranch = "unknown";
+            } else {
+                activeBranch = _activeBranch.toString();
+            }
             output.write(_getIndentPrefix(depth) + "<if name=\"" + _name +
-                    "\">\n");
+                    "\" activeBranch=\"" + activeBranch + "\">\n");
             for (String symbol : _symbols.keySet()) {
                 output.write(_getIndentPrefix(depth + 1) + "<symbol name =\""
                         + symbol + "\" type=\"" + _symbols.get(symbol) + 
@@ -786,10 +886,22 @@ public class CodeManager {
         }
         
         /**
+         * This is true when the active branch for this if statement
+         * is true, false when it is false, and null when it is unknown.
+         */
+        private Boolean _activeBranch = null;
+        
+        /**
          * The children, which correspond to sub if-blocks
          * of this if-block.
          */
         private LinkedList<IfTree> _children;
+        
+        /**
+         * This is true if we are in the main scope
+         * or the true part of a true branch.
+         */
+        private boolean _currentBranch = true;
         
         /**
          * The name of this if tree.

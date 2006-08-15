@@ -47,6 +47,7 @@ options {
 	}
 	
 	private String scopeName;
+	
 }
 
 import_declaration throws PtalonRuntimeException
@@ -122,8 +123,12 @@ attribute
 ;
 
 assignment throws PtalonRuntimeException
+{
+	int x;
+	boolean y;
+}
 :
-	#(ASSIGN ID (ID | actor_declaration | arithmetic_expression | boolean_expression))
+	#(ASSIGN ID (ID | actor_declaration | x=arithmetic_expression | y=boolean_expression))
 ;
 
 actor_declaration throws PtalonRuntimeException
@@ -131,54 +136,223 @@ actor_declaration throws PtalonRuntimeException
 	#(a:ACTOR_DECLARATION (assignment)*)
 ;
 
-arithmetic_factor throws PtalonRuntimeException
+arithmetic_factor returns [int i] throws PtalonRuntimeException
+{
+	i = 0;
+	int x;
+	int sign = 1;
+}
 :
-	#(ARITHMETIC_FACTOR (POSITIVE_SIGN | NEGATIVE_SIGN) 
-		(a:ID | NUMBER_LITERAL | arithmetic_expression))
+	#(ARITHMETIC_FACTOR (POSITIVE_SIGN | NEGATIVE_SIGN
+	{
+		sign = -1;
+	}
+	) (a:ID 
+	{
+		if (info.isReady()) {
+			i = sign * info.getIntValueOf(a.getText());
+		}
+	}
+	| b:NUMBER_LITERAL 
+	{
+		if (info.isReady()) {
+			i = sign * (new Integer(b.getText()));
+		}
+	}
+	| x=arithmetic_expression
+	{
+		if (info.isReady()) {
+			i = sign * x;
+		}
+	}	
+	))
 ;
 
-arithmetic_term throws PtalonRuntimeException
+arithmetic_term returns [int i] throws PtalonRuntimeException
+{
+	i = 0;
+	int x, y;
+}
 :
-	#(STAR arithmetic_factor arithmetic_factor) |
-	#(DIVIDE arithmetic_factor arithmetic_factor) |
-	#(MOD arithmetic_factor arithmetic_factor) |
-	arithmetic_factor
+	#(STAR x=arithmetic_factor y=arithmetic_factor
+	{
+		if (info.isReady()) {
+			i = x * y;
+		}
+	}	
+	) | #(DIVIDE x=arithmetic_factor y=arithmetic_factor
+	{
+		if (info.isReady()) {
+			i = x / y;
+		}
+	}		
+	) | #(MOD x=arithmetic_factor y=arithmetic_factor
+	{
+		if (info.isReady()) {
+			i = x % y;
+		}
+	}		
+	) | x=arithmetic_factor
+	{
+		if (info.isReady()) {
+			i = x;
+		}
+	}		
 ;
 
-arithmetic_expression throws PtalonRuntimeException
+arithmetic_expression returns [int i] throws PtalonRuntimeException
+{
+	i = 0;
+	int x, y;
+}
 :
-	#(PLUS arithmetic_term arithmetic_term) |
-	#(MINUS arithmetic_term arithmetic_term) |
-	arithmetic_term
+	#(PLUS x=arithmetic_term y=arithmetic_term
+	{
+		if (info.isReady()) {
+			i = x + y;
+		}
+	}			
+	) | #(MINUS x=arithmetic_term y=arithmetic_term
+	{
+		if (info.isReady()) {
+			i = x - y;
+		}
+	}		
+	) |	x=arithmetic_term
+	{
+		if (info.isReady()) {
+			i = x;
+		}
+	}		
 ;
 
-relational_expression throws PtalonRuntimeException
+relational_expression returns [boolean b] throws PtalonRuntimeException
+{
+	b = false;
+	int x,y;
+}
 :
-	#(EQUAL arithmetic_expression arithmetic_expression) | 
-	#(NOT_EQUAL arithmetic_expression arithmetic_expression) | 
-	#(LESS_THAN arithmetic_expression arithmetic_expression) | 
-	#(GREATER_THAN arithmetic_expression arithmetic_expression) | 
-	#(LESS_EQUAL arithmetic_expression arithmetic_expression) | 
-	#(GREATER_EQUAL arithmetic_expression arithmetic_expression)
+	#(EQUAL x=arithmetic_expression y=arithmetic_expression
+	{
+		if (info.isReady()) {
+			b = (x == y);
+		}
+	}			
+	) | #(NOT_EQUAL x=arithmetic_expression y=arithmetic_expression
+	{
+		if (info.isReady()) {
+			b = (x != y);
+		}
+	}			
+	) | #(LESS_THAN x=arithmetic_expression y=arithmetic_expression
+	{
+		if (info.isReady()) {
+			b = (x < y);
+		}
+	}				
+	) | #(GREATER_THAN x=arithmetic_expression y=arithmetic_expression
+	{
+		if (info.isReady()) {
+			b = (x > y);
+		}
+	}			
+	) | #(LESS_EQUAL x=arithmetic_expression y=arithmetic_expression
+	{
+		if (info.isReady()) {
+			b = (x <= y);
+		}
+	}			
+	) | #(GREATER_EQUAL x=arithmetic_expression y=arithmetic_expression
+	{
+		if (info.isReady()) {
+			b = (x >= y);
+		}
+	}			
+	)
 ;
 
-boolean_factor throws PtalonRuntimeException
+boolean_factor returns [boolean b] throws PtalonRuntimeException
+{
+	boolean x;
+	b = false;
+	boolean sign = true;
+}
 :
-	#(BOOLEAN_FACTOR (LOGICAL_NOT | LOGICAL_BUFFER)
-		(boolean_expression | relational_expression | TRUE | FALSE | 
-		a:ID))
+	#(BOOLEAN_FACTOR (LOGICAL_NOT 
+	{
+		sign = false;
+	}
+	| LOGICAL_BUFFER) (x=boolean_expression 
+	{
+		if (info.isReady()) {
+			b = !(sign ^ x);
+		}
+	}			
+	| x=relational_expression 
+	{
+		if (info.isReady()) {
+			b = !(sign ^ x);
+		}
+	}				
+	| TRUE 
+	{
+		if (info.isReady()) {
+			b = !(sign ^ true);
+		}
+	}			
+	| FALSE 
+	{
+		if (info.isReady()) {
+			b = !(sign ^ false);
+		}
+	}			
+	| a:ID
+	{
+		if (info.isReady()) {
+			b = !(sign ^ info.getBooleanValueOf(a.getText()));
+		}
+	}			
+	))
 ;
 
-boolean_term throws PtalonRuntimeException
+boolean_term returns [boolean b] throws PtalonRuntimeException
+{
+	boolean x, y;
+	b = false;
+}
 :
-	#(LOGICAL_AND boolean_factor boolean_factor) |
-	boolean_factor
+	#(LOGICAL_AND x=boolean_factor y=boolean_factor
+	{
+		if (info.isReady()) {
+			b = x && y;
+		}
+	}			
+	) |	x=boolean_factor
+	{
+		if (info.isReady()) {
+			b = x;
+		}
+	}			
 ;
 
-boolean_expression throws PtalonRuntimeException
+boolean_expression returns [boolean b] throws PtalonRuntimeException
+{
+	b = false;
+	boolean x, y;
+}
 :
-	#(LOGICAL_OR boolean_term boolean_term) |
-	boolean_term
+	#(LOGICAL_OR x=boolean_term y=boolean_term
+	{
+		if (info.isReady()) {
+			b = x || y;
+		}
+	}			
+	) |	x=boolean_term
+	{
+		if (info.isReady()) {
+			b = x;
+		}
+	}			
 ;
 
 atomic_statement throws PtalonRuntimeException
@@ -188,13 +362,35 @@ atomic_statement throws PtalonRuntimeException
 ;
 
 conditional_statement throws PtalonRuntimeException
+{
+	boolean b;
+	boolean ready;
+}
 :
 	#(a:IF 
 	{
+		ready = info.isReady();
 		info.enterIfScope(a.getText());
 	}
-	boolean_expression #(TRUEBRANCH (atomic_statement | conditional_statement)*)
-		#(FALSEBRANCH (atomic_statement | conditional_statement)*))
+	b=boolean_expression 
+	{
+		if (ready) {
+			info.setActiveBranch(b);
+		}
+	}
+	#(TRUEBRANCH 
+	{
+		if (ready) {
+			info.setCurrentBranch(true);
+		}
+	}
+	(atomic_statement | conditional_statement)*) #(FALSEBRANCH
+	{
+		if (ready) {
+			info.setCurrentBranch(false);
+		}
+	}
+	(atomic_statement | conditional_statement)*))
 	{
 		info.exitIfScope();
 	}
