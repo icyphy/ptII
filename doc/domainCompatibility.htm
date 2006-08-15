@@ -54,10 +54,18 @@ domain and second level domain.
    <td>&nbsp;<!-- DE2 --></td>
    <td>&nbsp;<!-- FSM --></td>
    <td>&nbsp;<!-- Giotto --></td>
-   <td>&nbsp;<!-- PN --></td>
+   <td>CSP/PN
+       <a href="./ptolemy/domains/test/auto/PNSRtest1.xml">+</a>,
+       <a href="./ptolemy/domains/test/auto/PNSRtest2.xml">+</a>
+   </td>
    <td>&nbsp;<!-- PSDF --></td>
-   <td>&nbsp;<!-- SDF --></td>
-   <td>&nbsp;<!-- SR --></td>
+   <td>CSP/SDF
+       <a href="../ptolemy/domains/test/auto/CSPSDFtest1.xml">+</a>   
+   </td>
+   <td>CSP/SR
+	<a href="../ptolemy/domains/test/auto/CSPSRtest1.xml">+</a>,
+        <a href="../ptolemy/domains/test/auto/CSPSRtest2.xml">+</a>
+   </td>
   </tr>
 
   <tr>
@@ -72,7 +80,10 @@ domain and second level domain.
    <td>&nbsp;<!-- Giotto --></td>
    <td>&nbsp;<!-- PN --></td>
    <td>&nbsp;<!-- PSDF --></td>
-   <td>&nbsp;<!-- SDF --></td>
+   <td>Rendezvous/SDF
+     <a href="../ptolemy/backtrack/demo/TrialModule/TrialModule.xml">+</a>,
+     <a href="../ptolemy/backtrack/demo/TrialModule/TrialModuleNonBacktrack.xml">+</a>
+   </td>
    <td>&nbsp;<!-- SR --></td>
   </tr>
 
@@ -90,7 +101,10 @@ domain and second level domain.
    <td>&nbsp;<!-- Giotto --></td>
    <td>&nbsp;<!-- PN --></td>
    <td>&nbsp;<!-- PSDF --></td>
-   <td>&nbsp;<!-- SDF --></td>
+   <td>PN/SDF
+     <a href="../ptolemy/actor/lib/io/demo/FilePortParameter.xml">+</a>,
+     <a href="../ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.xml">+</a>
+   </td>
    <td>&nbsp;<!-- SR --></td>
   </tr>
 
@@ -107,7 +121,12 @@ domain and second level domain.
    <td>?<!-- Giotto --></td>
    <td>PN/DDF</td>
    <td>PSDF/DDF</td>
-   <td>SDF/DDF</td>
+   <td>SDF/DDF
+      <a href="../ptolemy/domains/ddf/demo/IfThenElse/IfThenElse.xml">+</a>,
+      <a href="../ptolemy/domains/ddf/demo/RandomWalk/RandomWalk.xml">+</a>,
+      <a href="../ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml">+</a>
+
+   </td>
    <td>&nbsp;<!-- SR --></td>
   </tr>
 
@@ -144,7 +163,9 @@ domain and second level domain.
      <a href="../ptolemy/domains/test/auto/CSPSDFtest1.xml">+</a>
    </td>
    <td>CT/SDF</td>
-   <td>DDF/SDF</td>
+   <td>DDF/SDF
+     <a href="../ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.xml">+</a>
+   </td>
    <td>DE/SDF
      <a href="../ptolemy/domains/sdf/test/auto/sdf_inside_de.xml">+</a>
    </td>
@@ -211,7 +232,9 @@ domain and second level domain.
 
   <tr>
    <th>FSM</th>
-   <td>Continuous/FSM*</td>
+   <td>Continuous/FSM*
+      <a href="../ptolemy/domains/continuous/demo/Switch/Switch.xml">+</a>
+   </td>
    <td>CSP/FSM*</td>
    <td>CT/FSM**
      <a href="../ptolemy/domains/ct/demo/Switch/Switch.xml">+</a>
@@ -543,6 +566,58 @@ TODO:
        non-deterministic merges
 
 </pre>
+
+<h2>DE inside SDF</h2>
+A DE component inside an SDF model may not be that useful
+<menu>
+<li> SDF assumes that every actor consumes and produces a fixed number
+   of tokens on each input and output port on each firing.  For example,
+   the DE VariableDelay doesn't do that.
+
+<li> - You can sometimes get away with it anyway because many actors
+   (such as Scalar, AddSubtract, ...) just do nothing in the fire()
+   method if there are no inputs.  Thus, the SDF scheduler has no
+   way of knowing that its assumptions were violated because no
+   actor complains.  (Internally, we refer to this as the "sneaky
+   SDF trick". We do not advise using this feature.)
+
+
+<li> The Expression actor is more rigorous.  Its prefire() method
+   checks to see whether all inputs are present, and if they are not,
+   then it returns false, indicating to the SDF scheduler that it is
+   not ready to fire.  The SDF scheduler now knows its assumptions were
+   violated, so it complains.  Thus, the "sneaky SDF trick" doesn't work
+   with Expression.
+
+<li> VariableDelay will produce an output only if current time exactly matches
+   the time of the output (after being delayed).  If time passes the time
+   of an output without firing VariableDelay, then VariableDelay will 
+henceforth
+   produce no output.  If you have DE within SDF, then this can easily happen,
+   since the SDF outer level will fire the DE submodel only at multiples of
+   its period.  Note that they have to exactly match... Since time is a double
+   (sort of), quantization errors could become a problem.
+</menu>
+
+Possible solutions:
+<ol>
+<li> Stick with SDF inside SDF, don't use VariableDelay. 
+
+    You could get a similar effect
+    to VariableDelay by explicitly modeling presence or absence using, for
+    example, a boolean.
+
+
+<li> Use DE at the top level.  Some care would be needed to make sure that
+    SDF subsystems that exepected to fire once per day are in fact provided
+    with input tokens once per day (e.g., using PeriodicSampler).
+
+
+<li> Use DE within SDF, but ensure that the DE model never needs to do
+    anything except at multiples of the period.  This solution is fragile
+    because it will be vulnerable to quantization errors in the time variable.
+
+</ol>
 
 </body>
 </html>
