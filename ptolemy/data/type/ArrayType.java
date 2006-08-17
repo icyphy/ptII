@@ -103,10 +103,14 @@ public class ArrayType extends StructuredType {
      */
     public Token convert(Token token) throws IllegalActionException {
         if (!(token instanceof ArrayToken)) {
+            // Cannot convert to unknown element type.
+            if (token.getType() == BaseType.UNKNOWN) {
+                throw new IllegalActionException("Cannot convert to type {unknown}");
+            }
             // NOTE: Added 7/17/06 by EAL to support type -> {type} conversion.
             Token[] contents = new Token[1];
             contents[0] = token;
-            return new ArrayToken(contents);
+            return new ArrayToken(token.getType(), contents);
         }
 
         ArrayToken argumentArrayToken = (ArrayToken) token;
