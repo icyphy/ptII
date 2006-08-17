@@ -140,7 +140,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
                 arguments[i] = port.get(0);
             } else {
                 Token[] tokens = port.get(0, _rate[i]);
-                arguments[i] = new ArrayToken(tokens);
+                arguments[i] = new ArrayToken(port.getType(), tokens);
             }
 
             i++;
