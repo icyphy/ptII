@@ -33,6 +33,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -52,6 +53,7 @@ import ptolemy.kernel.util.Workspace;
  zero (of the same type as the entries in the input array).
  With the default values of the parameters, only the first element
  of the input array is copied to the output array, which has length one.
+ The output type is the same as the input type.
 
  @author Edward A. Lee, Elaine Cheong
  @version $Id$
@@ -148,7 +150,9 @@ public class ArrayExtract extends Transformer {
         outputArrayLength.update();
 
         if (input.hasToken(0)) {
-            Token[] inputArray = ((ArrayToken) input.get(0)).arrayValue();
+            ArrayToken inputValue = ((ArrayToken) input.get(0));
+            Type inputElementType = inputValue.getElementType();
+            Token[] inputArray = inputValue.arrayValue();
             int sourcePositionValue = ((IntToken) sourcePosition.getToken())
                     .intValue();
             int extractLengthValue = ((IntToken) extractLength.getToken())
@@ -174,7 +178,7 @@ public class ArrayExtract extends Transformer {
                     outputArray[i] = zero;
                 }
 
-                output.send(0, new ArrayToken(outputArray));
+                output.send(0, new ArrayToken(inputElementType, outputArray));
             } catch (IndexOutOfBoundsException ex) {
                 throw new IllegalActionException(this,
                         "Parameter values out of range for the array supplied."

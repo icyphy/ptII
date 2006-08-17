@@ -41,6 +41,7 @@ import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -245,6 +246,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
 
         if (input.hasToken(0)) {
             ArrayToken inputArray = (ArrayToken) input.get(0);
+            Type inputElementType = inputArray.getElementType();
             int inputSize = inputArray.length();
 
             if (inputSize == 0) {
@@ -472,8 +474,8 @@ public class ArrayPeakSearch extends TypedAtomicActor {
             Token[] resultIndicesArray = (Token[]) resultIndices
                     .toArray(new Token[resultIndices.size()]);
 
-            peakValues.send(0, new ArrayToken(resultPeaksArray));
-            peakIndices.send(0, new ArrayToken(resultIndicesArray));
+            peakValues.send(0, new ArrayToken(inputElementType, resultPeaksArray));
+            peakIndices.send(0, new ArrayToken(BaseType.INT, resultIndicesArray));
         }
     }
 

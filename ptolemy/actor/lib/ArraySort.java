@@ -35,6 +35,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -114,7 +115,7 @@ public class ArraySort extends Transformer {
         super.fire();
         if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken) input.get(0);
-
+            Type inputElementType = token.getElementType();
             if (token.length() == 0) {
                 output.send(0, token);
                 return;
@@ -157,7 +158,7 @@ public class ArraySort extends Transformer {
 
                 // Dummy array to give the run-time type to toArray().
                 Token[] dummy = new Token[0];
-                result = new ArrayToken((Token[]) list.toArray(dummy));
+                result = new ArrayToken(inputElementType, (Token[]) list.toArray(dummy));
             }
 
             output.send(0, result);
