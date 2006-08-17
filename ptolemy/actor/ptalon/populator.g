@@ -30,6 +30,7 @@ package ptolemy.actor.ptalon;
 
 {
 	import java.util.LinkedList;
+	import java.util.StringTokenizer;
 }
 class PtalonPopulator extends TreeParser;
 options {
@@ -122,18 +123,49 @@ attribute
 	#(ATTRIBUTE qualified_identifier)
 ;
 
-assignment throws PtalonRuntimeException
+assignment [String actorName, boolean set] throws PtalonRuntimeException
 {
 	int x;
 	boolean y;
 }
 :
-	#(ASSIGN ID (ID | actor_declaration | x=arithmetic_expression | y=boolean_expression))
+	#(ASSIGN a:ID (b:ID 
+	{
+		if (set) {
+			info.assign(actorName, a.getText(), b.getText());
+		}
+	}
+	| actor_declaration | x=arithmetic_expression | y=boolean_expression))
 ;
 
-actor_declaration throws PtalonRuntimeException
+actor_declaration! throws PtalonRuntimeException
+{
+	String actorName = "";
+	boolean set = false;
+}
 :
-	#(a:ACTOR_DECLARATION (assignment)*)
+	#(a:ACTOR_DECLARATION 
+	{
+		if (info.isReady() && !info.isCreated(a.getText())) {
+			actorName = info.addActor(a.getText());
+			#actor_declaration = #[ACTOR_DECLARATION, actorName];
+			StringTokenizer tokenizer = new StringTokenizer(actorName, "+");
+			try {
+				tokenizer.nextToken();
+				actorName = tokenizer.nextToken();
+			} catch (NullPointerException e) {
+				throw new PtalonRuntimeException("Bad name " + actorName + " given as name");
+			}
+			set = true;
+		} else {
+			#actor_declaration = #[ACTOR_DECLARATION, a.getText()];
+		}
+	}
+	(b:assignment[actorName, set]
+	{
+		#actor_declaration.addChild(#b);
+	}
+	)*)
 ;
 
 arithmetic_factor returns [int i] throws PtalonRuntimeException

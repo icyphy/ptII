@@ -8,16 +8,16 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 import java.util.StringTokenizer;
-
-import com.sun.corba.se.impl.logging.IORSystemException;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.StringUtilities;
@@ -42,6 +42,48 @@ public class CodeManager {
         _root.setActiveBranch(true);
         _imports = new Hashtable<String, File>();
         _currentTree = _root;
+    }
+    
+    /**
+     * Notify this manager that the actor name
+     * has been set.
+     * @param set
+     */
+    public void actorNameSet(boolean set) {
+        _actorSet = set;
+    }
+    
+    /**
+     * Add an actor to the PtalonActor.  In the case of an actor
+     * specifed by an import statement, the actor will be a
+     * PtalonActor.  In the case of an actor specified by a 
+     * parameter, the actor will be arbitrary.
+     * @param name The name of the actor in the Ptalon code.
+     * @return The name of the generated actor in the PtalonActor,
+     * prefixed by a plus sign to denote that it was created.
+     * @throws PtalonRuntimeException If there is any trouble
+     * loading the actor.
+     */
+    public String addActor(String name) throws PtalonRuntimeException {
+        try {
+            String uniqueName = _actor.uniqueName(name);
+            if (getType(name).equals("import")) {
+                PtalonActor actor = new PtalonActor(_actor, uniqueName);
+                FileParameter location = actor.ptalonCodeLocation;
+                File file = _imports.get(name);
+                location.setToken(new StringToken(file.toString()));
+                actor.attributeChanged(location);
+                String output = name + "+" + uniqueName;
+                _currentTree.addSymbol(output, "addedImport");
+                _currentTree.mapName(output, uniqueName);
+                _currentTree.setStatus(output, true);
+                return output;
+            } else if (getType(name).equals("parameter")) {
+            }
+            return "";
+        } catch (Exception e) {
+            throw new PtalonRuntimeException("Unable to add actor " + name, e);
+        }
     }
     
     /**
@@ -127,7 +169,7 @@ public class CodeManager {
             while (tokens.hasMoreTokens()) {
                 String token = tokens.nextToken();
                 if (!tokens.hasMoreTokens()) {
-                    symbol = new String (token);
+                    symbol = new String(token);
                     token += ".ptln";
                 }
                 filename = new File(filename, token);
@@ -135,14 +177,41 @@ public class CodeManager {
             if (!filename.exists()) {
                 throw new PtalonScopeException("File " + filename + " does not exist");
             }
-            _imports.put(symbol, filename);
-            addSymbol(symbol, "import");
+            _currentTree.addSymbol(symbol, "import");
             _currentTree.setStatus(symbol, true);
+            _imports.put(symbol, filename);
         } catch(Exception e) {
             throw new PtalonScopeException("Unable to import " + name, e);
         }
     }
-    
+        
+    /**
+     * Add a symbol for an import statement, with the
+     * specified filename.  The filename must begin
+     * with $PTII.
+     *
+     * @param name The qualified identifier in the import statement.
+     * @param filename The filename for the import.
+     * @throws PtalonScopeException If there was any trouble locating
+     * the file.
+     */
+    public void addImport(String name, String filename) throws PtalonScopeException {
+        try {
+            String ptiiDir = StringUtilities.getProperty("ptolemy.ptII.dir");
+            String absolutePathName = StringUtilities.substituteFilePrefix("$PTII",
+                    filename, ptiiDir);
+            File file = new File(absolutePathName);
+            if (!file.exists()) {
+                throw new PtalonScopeException("Unable to import " + name);
+            }
+            _currentTree.addSymbol(name, "import");
+            _currentTree.setStatus(name, true);
+            _imports.put(name, file);
+        } catch(Exception e) {
+            throw new PtalonScopeException("Unable to import " + name, e);
+        }
+    }
+
     /**
      * Add a TypedIOPort to the PtalonActor
      * with the specified name, and output flow type
@@ -262,6 +331,44 @@ public class CodeManager {
      */
     public void addSymbol(String symbol, String type, boolean status, String uniqueName) {
         _currentTree.addSymbol(symbol, type, status, uniqueName);
+    }
+    
+    /**
+     * Assign the lvalue in the specifed actor to the
+     * rvalue in this CodeManager's actor.
+     * @param actorName The name of the actor contained by this manager's actor.
+     * @param lvalue The value in the contained actor.
+     * @param rvalue The value in the containing actor.
+     * @throws PtalonRuntimeException If there is a problem assigning
+     * the values.
+     */
+    public void assign(String actorName, String lvalue, String rvalue)
+            throws PtalonRuntimeException {
+        try {
+            ComponentEntity contained = _actor.getEntity(actorName);
+            if (_actor == null) {
+                throw new PtalonRuntimeException("Actor " + actorName + 
+                        " does not exist");
+            }
+            if (getType(rvalue).endsWith("port")) {
+                if (contained.getPort(lvalue) == null) {
+                    throw new PtalonRuntimeException("Actor " + actorName + 
+                            " has no port " + lvalue);
+                } else {
+                    Port lport = contained.getPort(lvalue);
+                    Port rport = _actor.getPort(rvalue);
+                    String relName = _actor.uniqueName("relation");
+                    TypedIORelation  relation = new TypedIORelation(_actor, 
+                            relName);
+                    lport.link(relation);
+                    rport.link(relation);
+                }
+            }
+        } catch (Exception e) {
+            String message = "Unable to connect lvalue " + lvalue + " to rvalue "
+                    + rvalue + " in contained actor " + actorName;
+            throw new PtalonRuntimeException(message ,e);
+        }
     }
     
     /**
@@ -499,9 +606,11 @@ public class CodeManager {
      */
     public void setActor(String name) throws PtalonRuntimeException {
         try {
-            String uniqueName = _actor.getContainer().uniqueName(name);
-            _actor.setName(uniqueName);
-            _root.mapName(name, uniqueName);
+            if (!_actor.getName().startsWith(name)) {
+                String uniqueName = _actor.getContainer().uniqueName(name);
+                _actor.setName(uniqueName);
+                _root.mapName(name, uniqueName);
+            }
             _root.setStatus(name, true);
         } catch (Exception e) {
             throw new PtalonRuntimeException(
@@ -547,6 +656,16 @@ public class CodeManager {
      */
     public void xmlSerialize(Writer output, int depth) throws IOException {
         output.write(_getIndentPrefix(depth) + "<codemanager>\n");
+        for (String imp : _imports.keySet()) {
+            String rawFilename = _imports.get(imp).getAbsolutePath();
+            String ptiiDir = StringUtilities.getProperty("ptolemy.ptII.dir");
+            String ptiiFilename = StringUtilities.substituteFilePrefix(ptiiDir, 
+                    rawFilename, "$PTII");
+            output.write(_getIndentPrefix(depth + 1) + "<actornameset value=\"" + 
+                    Boolean.toString(_actorSet) + "\"/>");
+            output.write(_getIndentPrefix(depth + 1) + "<import name=\"" +
+                    imp + "\" file=\"" + ptiiFilename + "\"/>\n");
+        }
         _root.xmlSerialize(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</codemanager>\n");
     }
@@ -737,7 +856,7 @@ public class CodeManager {
         public boolean isCreated(String symbol) throws PtalonRuntimeException {
             Boolean status = _setStatus.get(symbol);
             if (status == null) {
-                throw new PtalonRuntimeException("Symbol " + symbol + " not found.");
+                return false;
             }
             return status;
         }

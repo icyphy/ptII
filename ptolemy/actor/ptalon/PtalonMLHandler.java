@@ -79,6 +79,9 @@ public class PtalonMLHandler extends HandlerBase {
      * the AST or code manager,
      */
     public void startElement(String elname) throws Exception {
+        if (_manager == null) {
+            _manager = new CodeManager(_actor);
+        }
         if (elname.equals("ptolemy.actor.ptalon.PtalonAST")) {
             if (_ast == null) {
                 _ast = new PtalonAST();
@@ -96,9 +99,6 @@ public class PtalonMLHandler extends HandlerBase {
             }
             _astStack.push(_ast);
         } else if (elname.equals("if")) {
-            if (_manager == null) {
-                _manager = new CodeManager(_actor);
-            }
             if (_attributes.containsKey("name")) {
                 _manager.pushIfStatement(_attributes.get("name"));
                 if (_attributes.containsKey("activeBranch")) {
@@ -119,6 +119,17 @@ public class PtalonMLHandler extends HandlerBase {
                 boolean status = new Boolean(_attributes.get("status"));
                 String uniqueName = _attributes.get("uniqueName");
                 _manager.addSymbol(name, type, status, uniqueName);
+            }
+        } else if (elname.equals("import")) {
+            if (_attributes.containsKey("name") && _attributes.containsKey("file")) {
+                String name = _attributes.get("name");
+                String filename = _attributes.get("file");
+                _manager.addImport(name, filename);
+            }
+        } else if (elname.equals("actornameset")) {
+            if (_attributes.containsKey("value")) {
+                boolean value = new Boolean(_attributes.get("value"));
+                _manager.actorNameSet(value);
             }
         }
         _attributes.clear();
