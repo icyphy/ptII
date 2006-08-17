@@ -142,10 +142,10 @@ public class Scale extends Transformer {
 
             if (((BooleanToken) scaleOnLeft.getToken()).booleanValue()) {
                 // Scale on the left.
-                result = _scaleOnLeft(in, factorToken);
+                result = _scaleOnLeft(in, factorToken, output.getType());
             } else {
                 // Scale on the right.
-                result = _scaleOnRight(in, factorToken);
+                result = _scaleOnRight(in, factorToken, output.getType());
             }
 
             output.send(0, result);
@@ -154,15 +154,24 @@ public class Scale extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Scale the given input token on the left by the given factor.
-    private Token _scaleOnLeft(Token input, Token factor)
+    
+    /** Scale the given input token on the left by the given factor.
+     *  If the input is an ArrayToken, then the resultType is required
+     *  to be an ArrayType.
+     *  @param input The input token.
+     *  @param factor The scale factor.
+     *  @param resultType The type of the result.
+     *  @return The result of scaling.
+     */
+    private Token _scaleOnLeft(Token input, Token factor, Type resultType)
             throws IllegalActionException {
         if (input instanceof ArrayToken) {
             Token[] argArray = ((ArrayToken) input).arrayValue();
             Token[] result = new Token[argArray.length];
 
             for (int i = 0; i < argArray.length; i++) {
-                result[i] = _scaleOnLeft(argArray[i], factor);
+                result[i] = _scaleOnLeft(argArray[i], factor,
+                        ((ArrayType)resultType).getElementType());
             }
 
             return new ArrayToken(result);
@@ -171,15 +180,23 @@ public class Scale extends Transformer {
         }
     }
 
-    // Scale the given input token on the right by the given factor.
-    private Token _scaleOnRight(Token input, Token factor)
+    /** Scale the given input token on the right by the given factor.
+     *  If the input is an ArrayToken, then the resultType is required
+     *  to be an ArrayType.
+     *  @param input The input token.
+     *  @param factor The scale factor.
+     *  @param resultType The type of the result.
+     *  @return The result of scaling.
+     */
+    private Token _scaleOnRight(Token input, Token factor, Type resultType)
             throws IllegalActionException {
         if (input instanceof ArrayToken) {
             Token[] argArray = ((ArrayToken) input).arrayValue();
             Token[] result = new Token[argArray.length];
 
             for (int i = 0; i < argArray.length; i++) {
-                result[i] = _scaleOnRight(argArray[i], factor);
+                result[i] = _scaleOnRight(argArray[i], factor,
+                        ((ArrayType)resultType).getElementType());
             }
 
             return new ArrayToken(result);

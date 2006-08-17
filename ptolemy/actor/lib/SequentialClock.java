@@ -125,7 +125,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
         defaultValues[0] = new IntToken(1);
         defaultValues[1] = new IntToken(0);
 
-        ArrayToken defaultValueToken = new ArrayToken(defaultValues);
+        ArrayToken defaultValueToken = new ArrayToken(BaseType.INT, defaultValues);
         values = new Parameter(this, "values", defaultValueToken);
         values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
