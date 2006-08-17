@@ -748,7 +748,7 @@ public class DatagramReader extends TypedAtomicActor {
                     dataTokens[j] = new UnsignedByteToken(dataBytes[j]);
                 }
 
-                _outputToken = new ArrayToken(dataTokens);
+                _outputToken = new ArrayToken(BaseType.UNSIGNED_BYTE, dataTokens);
             }
 
             _syncFireAndThread.notifyAll();

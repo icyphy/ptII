@@ -75,7 +75,7 @@ public class JAIConstant extends Source {
         width = new Parameter(this, "width", new IntToken(0));
         height = new Parameter(this, "height", new IntToken(0));
         bandValues = new Parameter(this, "bandValues", new ArrayToken(
-                _defaultValues));
+                BaseType.INT, _defaultValues));
         dataFormat = new StringAttribute(this, "dataFormat");
         dataFormat.setExpression("byte");
         _dataFormat = _BYTE;

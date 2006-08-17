@@ -263,7 +263,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                     resultArray[i] = (StringToken) result.get(i);
                 }
 
-                output.broadcast(new ArrayToken(resultArray));
+                output.broadcast(new ArrayToken(BaseType.STRING, resultArray));
             } else if (sourceFile.isFile()) {
                 StringToken[] result = new StringToken[1];
                 result[0] = new StringToken(sourceFile.toString());
@@ -273,7 +273,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                             + result[0].stringValue());
                 }
 
-                output.broadcast(new ArrayToken(result));
+                output.broadcast(new ArrayToken(BaseType.STRING, result));
             } else {
                 throw new IllegalActionException("'" + directoryOrURL
                         + "' is neither a file " + "nor a directory.");
@@ -424,7 +424,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         }
 
         StringToken[] results = new StringToken[resultsList.size()];
-        output.broadcast(new ArrayToken((StringToken[]) (resultsList
+        output.broadcast(new ArrayToken(BaseType.STRING, (StringToken[]) (resultsList
                 .toArray(results))));
     }
 

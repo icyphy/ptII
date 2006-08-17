@@ -425,7 +425,7 @@ public class SerialComm extends TypedAtomicActor implements
                     _debug("Producing byte array on the output port.");
                 }
 
-                dataReceived.broadcast(new ArrayToken(dataTokens));
+                dataReceived.broadcast(new ArrayToken(BaseType.UNSIGNED_BYTE, dataTokens));
 
                 int available = in.available();
 

@@ -1136,6 +1136,9 @@ public class IterateOverArray extends TypedCompositeActor implements
                 throws IllegalActionException {
             boolean result = false;
 
+            ArrayType type = (ArrayType)((TypedIOPort)port).getType();
+            Type elementType = type.getElementType();
+            
             for (int i = 0; i < port.getWidthInside(); i++) {
                 try {
                     ArrayList list = new ArrayList();
@@ -1154,7 +1157,7 @@ public class IterateOverArray extends TypedCompositeActor implements
                                     + port.getName());
                         }
 
-                        port.send(i, new ArrayToken(tokens));
+                        port.send(i, new ArrayToken(elementType, tokens));
                     }
 
                     result = true;

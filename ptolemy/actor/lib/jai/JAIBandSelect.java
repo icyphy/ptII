@@ -38,6 +38,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -73,7 +74,7 @@ public class JAIBandSelect extends Transformer {
         super(container, name);
 
         bandIndices = new Parameter(this, "bandIndices", new ArrayToken(
-                _initialArray));
+                BaseType.INT, _initialArray));
     }
 
     ///////////////////////////////////////////////////////////////////
