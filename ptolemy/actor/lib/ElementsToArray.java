@@ -102,7 +102,7 @@ public class ElementsToArray extends Transformer {
             valueArray[i] = input.get(i);
         }
 
-        output.send(0, new ArrayToken(valueArray));
+        output.send(0, new ArrayToken(input.getType(), valueArray));
     }
 
     /** Return true if all channels of the <i>input</i> port have

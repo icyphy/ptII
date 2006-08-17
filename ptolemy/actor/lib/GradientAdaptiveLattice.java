@@ -177,7 +177,7 @@ public class GradientAdaptiveLattice extends Lattice {
             _forwardCache[i + 1] = (-k * _backwardCache[i]) + _forwardCache[i];
         }
 
-        Token[] outputArray = new Token[_order];
+        DoubleToken[] outputArray = new DoubleToken[_order];
 
         // Backward: Compute the weights for the next round Note:
         // strictly speaking, _backwardCache[_order] is not necessary
@@ -212,7 +212,7 @@ public class GradientAdaptiveLattice extends Lattice {
             _estimatedErrorPowerCache[i] = newError;
         }
 
-        adaptedReflectionCoefficients.send(0, new ArrayToken(outputArray));
+        adaptedReflectionCoefficients.send(0, new ArrayToken(BaseType.DOUBLE, outputArray));
     }
 
     // Reallocate the internal arrays. Extend the base class to

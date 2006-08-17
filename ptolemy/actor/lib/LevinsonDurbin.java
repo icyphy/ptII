@@ -31,7 +31,6 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -188,9 +187,9 @@ public class LevinsonDurbin extends TypedAtomicActor {
         // (length + 2)/2.
         int order = autocorrelationValueLength / 2;
 
-        Token[] power = new Token[order + 1];
-        Token[] refl = new Token[order];
-        Token[] lp = new Token[order];
+        DoubleToken[] power = new DoubleToken[order + 1];
+        DoubleToken[] refl = new DoubleToken[order];
+        DoubleToken[] lp = new DoubleToken[order];
         double[] a = new double[order + 1];
         double[] aP = new double[order + 1];
         double[] r = new double[order + 1];
@@ -255,9 +254,9 @@ public class LevinsonDurbin extends TypedAtomicActor {
             lp[m - 1] = new DoubleToken(-a[m]);
         }
 
-        linearPredictor.broadcast(new ArrayToken(lp));
-        reflectionCoefficients.broadcast(new ArrayToken(refl));
-        errorPower.broadcast(new ArrayToken(power));
+        linearPredictor.broadcast(new ArrayToken(BaseType.DOUBLE, lp));
+        reflectionCoefficients.broadcast(new ArrayToken(BaseType.DOUBLE, refl));
+        errorPower.broadcast(new ArrayToken(BaseType.DOUBLE, power));
     }
 
     /** If there is no token on the <i>autocorrelation</i> input, return
