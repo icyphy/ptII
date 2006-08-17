@@ -63,14 +63,18 @@ import ptolemy.moml.MoMLParser;
 
 /**
 
- This is an atomic actor that filter an array received at its
+ This is an atomic actor that filters an array received at its
  <i>inputArray</i> input port via applying a model specified by a
- file or URL. The specified model evaluated on each input array
- element should return a boolean value and the output is an array
+ file or URL. The specified model is evaluated on each input array
+ element and should return a boolean value, and the output is an array
  that only contains elements satisfying the specified model (the
- evaluated result is true).
+ evaluated result is true). An element of the array received at
+ <i>inputArray</i> is provided to the model by setting its
+ <i>inputArrayElement</i> parameter (which it must have defined).
+ The result of executing the model is obtained by reading its
+ <i>evaluatedValue</i> parameter (which it must have defined).
 
- <p> Instead of output all the satisfied elements in the input
+ <p> Instead of outputing all the satisfied elements in the input
  array, the parameter <i>maxOutputLength</i> can be used to specify
  how many elements this actor should only output. If the specified
  length is larger than the number of satisfied elements, it will
@@ -78,7 +82,7 @@ import ptolemy.moml.MoMLParser;
  elements.
 
  <p>
- FIXME: what should be the correct behavior if no enough elements to output?
+ FIXME: what should be the correct behavior if there are not enough elements to output?
  <p>
  FIXME: make a convention, say when the maxOutputLength is -1, for output
  all the satisfied elements?
@@ -339,7 +343,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
                 result[i] = (Token) list.get(i);
             }
 
-            outputArray.send(0, new ArrayToken(result));
+            outputArray.send(0, new ArrayToken(array.getElementType(), result));
         }
     }
 
@@ -421,6 +425,13 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    /** Set the parameter "inputArrayElement" of the model to an element
+     *  of the input array.
+     *  @param t The element value.
+     *  @throws IllegalActionException If the model does not have a
+     *   settable attribute named "inputArrayElement".
+     */
     private void _updateParameter(Token t) throws IllegalActionException {
         Attribute attribute = _model.getAttribute("inputArrayElement");
 
@@ -437,9 +448,17 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
             }
 
             ((Settable) attribute).setExpression(t.toString());
+        } else {
+            throw new IllegalActionException(this,
+                    "The specified model does not have an inputArrayElement parameter.");
         }
     }
 
+    /** Retrieve the value of the parameter "evaluatedValue" of the model.
+     *  @return The value of the "evaluatedValue" parameter.
+     *  @throws IllegalActionException If the model does not have a
+     *   settable attribute named "evaluatedValue".
+     */
     private boolean _getResult() throws IllegalActionException {
         Attribute attribute = _model.getAttribute("evaluatedValue");
 
@@ -450,9 +469,10 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
             BooleanToken t = new BooleanToken(((Settable) attribute)
                     .getExpression());
             return t.booleanValue();
+        } else {
+            throw new IllegalActionException(this,
+                    "The specified model does not have an evaluatedValue parameter.");
         }
-
-        return false;
     }
 
     ///////////////////////////////////////////////////////////////////
