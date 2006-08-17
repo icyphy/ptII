@@ -96,7 +96,7 @@ public class StringToUnsignedByteArray extends Converter {
             dataTokens[j] = new UnsignedByteToken(dataBytes[j]);
         }
 
-        output.send(0, new ArrayToken(dataTokens));
+        output.send(0, new ArrayToken(BaseType.UNSIGNED_BYTE, dataTokens));
     }
 
     /** Return false if the input port has no token, otherwise return

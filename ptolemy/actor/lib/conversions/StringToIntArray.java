@@ -122,7 +122,7 @@ public class StringToIntArray extends TypedAtomicActor {
             dataIntTokens[j] = new IntToken(dataBytes[j]);
         }
 
-        output.send(0, new ArrayToken(dataIntTokens));
+        output.send(0, new ArrayToken(BaseType.INT, dataIntTokens));
     }
 
     /** Return false if the input port has no token, otherwise return

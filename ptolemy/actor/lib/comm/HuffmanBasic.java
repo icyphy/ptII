@@ -231,7 +231,7 @@ public class HuffmanBasic extends Transformer {
                 codeBookTokens[i] = new StringToken(_codeBook[i]);
             }
 
-            huffmanCodeBook.send(0, new ArrayToken(codeBookTokens));
+            huffmanCodeBook.send(0, new ArrayToken(BaseType.STRING, codeBookTokens));
         }
     }
 

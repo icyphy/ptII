@@ -429,7 +429,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
                     record[i] = new DoubleToken(_data[1][i]);
                 }
 
-                ArrayToken newValue = new ArrayToken(record);
+                ArrayToken newValue = new ArrayToken(BaseType.DOUBLE, record);
                 initialTrace.setToken(newValue);
             } finally {
                 _dataModified = false;

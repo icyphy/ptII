@@ -630,7 +630,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                                         ((int[]) field.get(obj))[j]);
                             }
 
-                            port.send(0, new ArrayToken(toks));
+                            port.send(0, new ArrayToken(BaseType.INT, toks));
                         } catch (IllegalAccessException ex) {
                             throw new IllegalActionException(this, ex, "Type '"
                                     + typ + "' is not castable");
