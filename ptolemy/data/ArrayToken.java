@@ -57,18 +57,16 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (cxh) nil token code
  */
 public class ArrayToken extends AbstractNotConvertibleToken {
-    /** Construct an ArrayToken with the specified token array. All
-     *  the tokens in the array must have the same type, otherwise an
-     *  exception will be thrown.  Generally, the type of the array
-     *  created is determined by the type of the first element in the
-     *  given array.  This class makes a copy of the given array, so
+    /** Construct an ArrayToken with the specified token array.
+     *  The type of the resulting array is the least upper bound
+     *  of the types of the elements.
+     *  This class makes a copy of the given array, so
      *  the passed array may be reused.  Note that this method cannot
      *  be used to create an empty array token, since the array token
      *  must have a type.  Instead, use the constructor that takes a
-     *  token argument.
+     *  type argument.
      *  @param value An (not empty) array of tokens.
-     *  @exception IllegalActionException If the tokens in the array
-     *   do not have the same type, or the length of the given array is
+     *  @exception IllegalActionException If the length of the given array is
      *   zero.
      */
     public ArrayToken(Token[] value) throws IllegalActionException {
