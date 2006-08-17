@@ -382,7 +382,7 @@ public class UtilityFunctions {
             resultArray = (Token[]) (result.toArray(resultArray));
 
             try {
-                return new ArrayToken(resultArray);
+                return new ArrayToken(BaseType.INT, resultArray);
             } catch (IllegalActionException e) {
                 throw new InternalErrorException(e);
             }
@@ -497,7 +497,7 @@ public class UtilityFunctions {
         }
 
         try {
-            return new ArrayToken(result);
+            return new ArrayToken(BaseType.DOUBLE, result);
         } catch (IllegalActionException illegalAction) {
             // This should not happen since result should not be null.
             throw new InternalErrorException("UtilityFunction.gaussian: "
@@ -1139,7 +1139,7 @@ public class UtilityFunctions {
         }
 
         try {
-            return new ArrayToken(result);
+            return new ArrayToken(BaseType.DOUBLE, result);
         } catch (IllegalActionException illegalAction) {
             // This should not happen since result should not be null.
             throw new InternalErrorException("UtilityFunction.random: "
@@ -1410,7 +1410,7 @@ public class UtilityFunctions {
         ArrayToken arrayToken;
 
         try {
-            arrayToken = new ArrayToken(result);
+            arrayToken = new ArrayToken(element.getType(), result);
         } catch (IllegalActionException illegalAction) {
             // This should not happen since the elements of the array always
             // have the same type.
@@ -1459,7 +1459,7 @@ public class UtilityFunctions {
         // NOTE: The following method returns a copy, so we can modify it.
         Token[] value = array.arrayValue();
         Arrays.sort(value, _ASCENDING);
-        return new ArrayToken(value);
+        return new ArrayToken(array.getElementType(), value);
     }
 
     /** Return the (exact) return type of the sort function above.
@@ -1535,7 +1535,7 @@ public class UtilityFunctions {
         // NOTE: The following method returns a copy, so we can modify it.
         Token[] value = array.arrayValue();
         Arrays.sort(value, _DESCENDING);
-        return new ArrayToken(value);
+        return new ArrayToken(array.getElementType(), value);
     }
 
     /** Return the (exact) return type of the sortDescending function above.
