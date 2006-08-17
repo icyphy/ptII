@@ -160,14 +160,14 @@ public class DDFSelect extends TypedAtomicActor {
         if (port == input) {
             _rateArray = new ArrayToken[input.getWidth()];
 
-            Token[] rate = new IntToken[input.getWidth()];
+            IntToken[] rate = new IntToken[input.getWidth()];
 
             for (int i = 0; i < input.getWidth(); i++) {
                 rate[i] = _zero;
             }
 
             try {
-                _rateZero = new ArrayToken(rate);
+                _rateZero = new ArrayToken(BaseType.INT, rate);
 
                 for (int i = 0; i < input.getWidth(); i++) {
                     rate[i] = _one;

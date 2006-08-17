@@ -103,7 +103,7 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
         if (port == input) {
             _rateArray = new ArrayToken[input.getWidth()];
 
-            Token[] rate = new IntToken[input.getWidth()];
+            IntToken[] rate = new IntToken[input.getWidth()];
 
             for (int i = 0; i < input.getWidth(); i++) {
                 rate[i] = _zero;
@@ -112,7 +112,7 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
             try {
                 for (int i = 0; i < input.getWidth(); i++) {
                     rate[i] = _one;
-                    _rateArray[i] = new ArrayToken(rate);
+                    _rateArray[i] = new ArrayToken(BaseType.INT, rate);
                     rate[i] = _zero;
                 }
             } catch (IllegalActionException ex) {

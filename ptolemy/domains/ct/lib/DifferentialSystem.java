@@ -111,7 +111,7 @@ public class DifferentialSystem extends TypedCompositeActor {
         StringToken[] empty = new StringToken[1];
         stateVariableNames = new Parameter(this, "stateVariableNames");
         empty[0] = new StringToken("");
-        stateVariableNames.setToken(new ArrayToken(empty));
+        stateVariableNames.setToken(new ArrayToken(BaseType.STRING, empty));
         initialStates = new Parameter(this, "initialStates");
         initialStates.setTypeEquals(BaseType.DOUBLE_MATRIX);
 

@@ -33,6 +33,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -209,12 +210,12 @@ public class RaisedCosine extends FIR {
 
         double[] tapsArray = SignalProcessing.sampleWave(lengthValue, -center,
                 1.0, raisedCosineSampleGenerator);
-        Token[] tapsArrayToken = new Token[tapsArray.length];
+        DoubleToken[] tapsArrayToken = new DoubleToken[tapsArray.length];
 
         for (int i = 0; i < tapsArray.length; i++) {
             tapsArrayToken[i] = new DoubleToken(tapsArray[i]);
         }
 
-        taps.setToken(new ArrayToken(tapsArrayToken));
+        taps.setToken(new ArrayToken(BaseType.DOUBLE, tapsArrayToken));
     }
 }

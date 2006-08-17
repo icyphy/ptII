@@ -47,6 +47,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.ddf.kernel.DDFDirector;
 import ptolemy.kernel.ComponentEntity;
@@ -546,7 +547,7 @@ public class ActorRecursion extends TypedCompositeActor {
                 }
             }
 
-            rateVariable.setToken(new ArrayToken(productionRateToken));
+            rateVariable.setToken(new ArrayToken(BaseType.INT, productionRateToken));
         }
     }
 
