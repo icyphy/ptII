@@ -185,14 +185,12 @@ public class ComputeHistogram extends TypedAtomicActor {
 
     /** Read at most one input token from each input channel
      *  and update the histogram.
-     *  This is done in postfire to ensure that data has settled.
      *  @exception IllegalActionException If there is no director.
      */
-    public boolean postfire() throws IllegalActionException {
+    public void fire() throws IllegalActionException {
+        super.fire();
         _bins = new int[_numberOfBins];
-
         inputCount.update();
-
         int count = ((IntToken) inputCount.getToken()).intValue();
 
         for (int i = 0; i < count; i++) {
@@ -211,9 +209,7 @@ public class ComputeHistogram extends TypedAtomicActor {
             values[i] = new IntToken(_bins[i]);
         }
 
-        output.send(0, new ArrayToken(values));
-
-        return super.postfire();
+        output.send(0, new ArrayToken(BaseType.INT, values));
     }
 
     /** Return false if the input does not have enough tokens to fire.
