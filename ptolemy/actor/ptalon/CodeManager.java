@@ -584,7 +584,13 @@ public class CodeManager {
     * scope.
     */
    public boolean isCreated(String symbol) throws PtalonRuntimeException {
-       return _currentTree.isCreated(symbol);
+       List<IfTree> ancestors = _currentTree.getAncestors();
+       for (IfTree parent : ancestors) {
+           if (parent.isCreated(symbol)) {
+               return true;
+           }
+       }
+       return false;
    }
     
     /**

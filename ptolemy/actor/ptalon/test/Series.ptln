@@ -6,8 +6,16 @@ Series is {
 	inport input;
 	outport output;
 	if (n == 1) {
-		parameter one;
+		transformer(input := input, output := output);
 	} else {
-		parameter notOne;
+		if (n == 2) {
+			Link(input := input, output := output);
+		} else {
+			if (n >= 3) {
+				parameter bigThree;
+			} else {
+				transformer(input := input, output := output);
+			}
+		}
 	}
 }
