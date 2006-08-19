@@ -29,7 +29,6 @@ package ptolemy.actor.ptalon;
 }
 
 {
-	import java.util.LinkedList;
 	import java.util.StringTokenizer;
 }
 class PtalonPopulator extends TreeParser;
@@ -48,6 +47,8 @@ options {
 	}
 	
 	private String scopeName;
+	
+	private boolean evalBool = false;
 	
 }
 
@@ -146,19 +147,39 @@ actor_declaration! throws PtalonRuntimeException
 :
 	#(a:ACTOR_DECLARATION 
 	{
-		if (info.isReady() && !info.isCreated(a.getText())) {
-			actorName = info.addActor(a.getText());
-			#actor_declaration = #[ACTOR_DECLARATION, actorName];
-			StringTokenizer tokenizer = new StringTokenizer(actorName, "+");
-			try {
-				tokenizer.nextToken();
-				actorName = tokenizer.nextToken();
-			} catch (NullPointerException e) {
-				throw new PtalonRuntimeException("Bad name " + actorName + " given as name");
-			}
-			set = true;
-		} else {
-			#actor_declaration = #[ACTOR_DECLARATION, a.getText()];
+		String name = a.getText();
+		try {
+			if (info.isReady() && info.getType(name).equals("import")) {
+    			actorName = info.addActor(name);
+    			#actor_declaration = #[ACTOR_DECLARATION, actorName];
+    			StringTokenizer tokenizer = new StringTokenizer(actorName, "+");
+    			try {
+    				tokenizer.nextToken();
+    				actorName = tokenizer.nextToken();
+    			} catch (NullPointerException e) {
+    				throw new PtalonRuntimeException("Bad name " + actorName + " given as name");
+    			}
+    			set = true;
+    		} else if (info.isReady() && info.getType(name).equals("parameter")) {
+    			if (info.paramHasValue(name)) {    				
+        			actorName = info.addActor(name);
+        			#actor_declaration = #[ACTOR_DECLARATION, actorName];
+        			StringTokenizer tokenizer = new StringTokenizer(actorName, "+");
+        			try {
+        				tokenizer.nextToken();
+        				actorName = tokenizer.nextToken();
+        			} catch (NullPointerException e) {
+        				throw new PtalonRuntimeException("Bad name " + actorName + " given as name");
+        			}
+        			set = true;
+    			} else {
+    				#actor_declaration = #[ACTOR_DECLARATION, name];
+    			}
+			} else {
+    			#actor_declaration = #[ACTOR_DECLARATION, name];
+    		}
+		} catch (Exception e) {
+			throw new PtalonRuntimeException("Problem with actor declaration " + name, e);
 		}
 	}
 	(b:assignment[actorName, set]
@@ -181,19 +202,19 @@ arithmetic_factor returns [int i] throws PtalonRuntimeException
 	}
 	) (a:ID 
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			i = sign * info.getIntValueOf(a.getText());
 		}
 	}
 	| b:NUMBER_LITERAL 
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			i = sign * (new Integer(b.getText()));
 		}
 	}
 	| x=arithmetic_expression
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			i = sign * x;
 		}
 	}	
@@ -208,25 +229,25 @@ arithmetic_term returns [int i] throws PtalonRuntimeException
 :
 	#(STAR x=arithmetic_factor y=arithmetic_factor
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			i = x * y;
 		}
 	}	
 	) | #(DIVIDE x=arithmetic_factor y=arithmetic_factor
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			i = x / y;
 		}
 	}		
 	) | #(MOD x=arithmetic_factor y=arithmetic_factor
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			i = x % y;
 		}
 	}		
 	) | x=arithmetic_factor
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			i = x;
 		}
 	}		
@@ -240,19 +261,19 @@ arithmetic_expression returns [int i] throws PtalonRuntimeException
 :
 	#(PLUS x=arithmetic_term y=arithmetic_term
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			i = x + y;
 		}
 	}			
 	) | #(MINUS x=arithmetic_term y=arithmetic_term
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			i = x - y;
 		}
 	}		
 	) |	x=arithmetic_term
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			i = x;
 		}
 	}		
@@ -266,37 +287,37 @@ relational_expression returns [boolean b] throws PtalonRuntimeException
 :
 	#(EQUAL x=arithmetic_expression y=arithmetic_expression
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = (x == y);
 		}
 	}			
 	) | #(NOT_EQUAL x=arithmetic_expression y=arithmetic_expression
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = (x != y);
 		}
 	}			
 	) | #(LESS_THAN x=arithmetic_expression y=arithmetic_expression
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = (x < y);
 		}
 	}				
 	) | #(GREATER_THAN x=arithmetic_expression y=arithmetic_expression
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = (x > y);
 		}
 	}			
 	) | #(LESS_EQUAL x=arithmetic_expression y=arithmetic_expression
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = (x <= y);
 		}
 	}			
 	) | #(GREATER_EQUAL x=arithmetic_expression y=arithmetic_expression
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = (x >= y);
 		}
 	}			
@@ -316,31 +337,31 @@ boolean_factor returns [boolean b] throws PtalonRuntimeException
 	}
 	| LOGICAL_BUFFER) (x=boolean_expression 
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = !(sign ^ x);
 		}
 	}			
 	| x=relational_expression 
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = !(sign ^ x);
 		}
 	}				
 	| TRUE 
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = !(sign ^ true);
 		}
 	}			
 	| FALSE 
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = !(sign ^ false);
 		}
 	}			
 	| a:ID
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = !(sign ^ info.getBooleanValueOf(a.getText()));
 		}
 	}			
@@ -355,13 +376,13 @@ boolean_term returns [boolean b] throws PtalonRuntimeException
 :
 	#(LOGICAL_AND x=boolean_factor y=boolean_factor
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = x && y;
 		}
 	}			
 	) |	x=boolean_factor
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = x;
 		}
 	}			
@@ -375,13 +396,13 @@ boolean_expression returns [boolean b] throws PtalonRuntimeException
 :
 	#(LOGICAL_OR x=boolean_term y=boolean_term
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = x || y;
 		}
 	}			
 	) |	x=boolean_term
 	{
-		if (info.isReady()) {
+		if (evalBool) {
 			b = x;
 		}
 	}			
@@ -401,13 +422,17 @@ conditional_statement throws PtalonRuntimeException
 :
 	#(a:IF 
 	{
-		ready = info.isReady();
 		info.enterIfScope(a.getText());
+		ready = info.isIfReady();
+		if (ready) {
+			evalBool = true;
+		}
 	}
 	b=boolean_expression 
 	{
 		if (ready) {
 			info.setActiveBranch(b);
+			evalBool = false;
 		}
 	}
 	#(TRUEBRANCH 

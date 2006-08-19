@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Constructor;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +18,8 @@ import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -67,20 +70,34 @@ public class CodeManager {
     public String addActor(String name) throws PtalonRuntimeException {
         try {
             String uniqueName = _actor.uniqueName(name);
+            String output = name + "+" + uniqueName;
             if (getType(name).equals("import")) {
                 PtalonActor actor = new PtalonActor(_actor, uniqueName);
                 FileParameter location = actor.ptalonCodeLocation;
                 File file = _imports.get(name);
                 location.setToken(new StringToken(file.toString()));
                 actor.attributeChanged(location);
-                String output = name + "+" + uniqueName;
                 _currentTree.addSymbol(output, "addedImport");
-                _currentTree.mapName(output, uniqueName);
-                _currentTree.setStatus(output, true);
-                return output;
             } else if (getType(name).equals("parameter")) {
+                PtalonParameter parameter = (PtalonParameter)
+                    _actor.getAttribute(getMappedName(name));
+                if (!parameter.hasValue()) {
+                    return name;
+                }
+                Class<?> genericClass = Class.forName(parameter.getExpression());
+                Class<? extends ComponentEntity> entityClass = 
+                    genericClass.asSubclass(ComponentEntity.class);
+                Constructor<? extends ComponentEntity> entityConstructor =
+                    entityClass.getConstructor(CompositeEntity.class, String.class);
+                ComponentEntity entity = entityConstructor.newInstance(_actor, 
+                        uniqueName);
+                _currentTree.addSymbol(output, "addedParameter");
+            } else {
+                throw new PtalonRuntimeException("Invalid type for " + name);
             }
-            return "";
+            _currentTree.mapName(output, uniqueName);
+            _currentTree.setStatus(output, true);
+            return output;
         } catch (Exception e) {
             throw new PtalonRuntimeException("Unable to add actor " + name, e);
         }
@@ -356,13 +373,25 @@ public class CodeManager {
                             " has no port " + lvalue);
                 } else {
                     Port lport = contained.getPort(lvalue);
-                    Port rport = _actor.getPort(rvalue);
+                    String rname = getMappedName(rvalue);
+                    Port rport = _actor.getPort(rname);
                     String relName = _actor.uniqueName("relation");
                     TypedIORelation  relation = new TypedIORelation(_actor, 
                             relName);
                     lport.link(relation);
                     rport.link(relation);
                 }
+            } else if (getType(rvalue).equals("relation")) {
+                if (contained.getPort(lvalue) == null) {
+                    throw new PtalonRuntimeException("Actor " + actorName + 
+                            " has no port " + lvalue);
+                } else {
+                    Port lport = contained.getPort(lvalue);
+                    String rname = getMappedName(rvalue);
+                    TypedIORelation  relation = (TypedIORelation) 
+                        _actor.getRelation(rname);
+                    lport.link(relation);
+               }
             }
         } catch (Exception e) {
             String message = "Unable to connect lvalue " + lvalue + " to rvalue "
@@ -410,7 +439,7 @@ public class CodeManager {
      */
     public boolean getBooleanValueOf(String param) throws PtalonRuntimeException {
         try {
-            String uniqueName = _currentTree.getMappedName(param);
+            String uniqueName = getMappedName(param);
             PtalonBoolParameter att = (PtalonBoolParameter) _actor.getAttribute(uniqueName);
             return ((BooleanToken) att.getToken()).booleanValue();
         } catch (Exception e) {
@@ -428,11 +457,11 @@ public class CodeManager {
      */
     public int getIntValueOf(String param) throws PtalonRuntimeException {
         try {
-            String uniqueName = _currentTree.getMappedName(param);
+            String uniqueName = getMappedName(param);
             PtalonIntParameter att = (PtalonIntParameter) _actor.getAttribute(uniqueName);
             return ((IntToken) att.getToken()).intValue();
         } catch (Exception e) {
-            throw new PtalonRuntimeException("Unable to access boolean value for " 
+            throw new PtalonRuntimeException("Unable to access int value for " 
                     + param, e);
         }
     }
@@ -498,6 +527,29 @@ public class CodeManager {
     }
     
     /**
+     * Return true if the boolean for the current conditional is ready to be
+     * entered.  It is ready when all ports, parameters, and relations
+     * in the containing scope have been created, when all parameters
+     * in the containing scope have been assigned values, and when in
+     * a branch of an if-block that is active.  
+     * @return true if the current if-block scope is ready to be entered.
+     * @throws PtalonRuntimeException If it is thrown trying to access a parameter.
+     */
+    public boolean isIfReady() throws PtalonRuntimeException {
+        IfTree parent = _currentTree.getParent();
+        if (parent == null) {
+            return false; //Should never make it here.
+        }
+        List<IfTree> ancestors = parent.getAncestors();
+        for (IfTree tree : ancestors) {
+            if (!tree.isFullyAssigned()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Return true if the current peice of code is ready to be
      * entered.  It is ready when all ports, parameters, and relations
      * in the containing scope have been created, when all parameters
@@ -544,6 +596,34 @@ public class CodeManager {
      */
     public void mapName(String symbol, String uniqueName) throws PtalonRuntimeException {
         _currentTree.mapName(symbol, uniqueName);
+    }
+    
+    /**
+     * Tests to see if the given parameter has it's value set yet.
+     * @param name The name of the parameter.
+     * @return true if the parameter has been given a value, false otherwise.
+     * @throws PtalonRuntimeException If there is no parameter with the given
+     * name in the given scope.
+     */
+    public boolean paramHasValue(String name) throws PtalonRuntimeException {
+        try {
+            if (getType(name).equals("parameter")) {
+                if (isCreated(name)) {
+                    String uniqueName = getMappedName(name);
+                    PtalonParameter param = (PtalonParameter) 
+                        _actor.getAttribute(uniqueName);
+                    if (param.hasValue()) {
+                        return true;
+                    }
+                }
+                return false;
+            }   
+            else {
+                throw new PtalonRuntimeException(name + " not a parameter");
+            }
+        } catch (Exception e) {
+            throw new PtalonRuntimeException(name + " not a parameter", e);
+        }
     }
     
     /**
@@ -624,7 +704,7 @@ public class CodeManager {
      * @param branch True if the true branch is being walked.
      */
     public void setCurrentBranch(boolean branch) {
-        _currentTree.setActiveBranch(branch);
+        _currentTree.setCurrentBranch(branch);
     }
     
     /**
@@ -662,7 +742,7 @@ public class CodeManager {
             String ptiiFilename = StringUtilities.substituteFilePrefix(ptiiDir, 
                     rawFilename, "$PTII");
             output.write(_getIndentPrefix(depth + 1) + "<actornameset value=\"" + 
-                    Boolean.toString(_actorSet) + "\"/>");
+                    Boolean.toString(_actorSet) + "\"/>\n");
             output.write(_getIndentPrefix(depth + 1) + "<import name=\"" +
                     imp + "\" file=\"" + ptiiFilename + "\"/>\n");
         }

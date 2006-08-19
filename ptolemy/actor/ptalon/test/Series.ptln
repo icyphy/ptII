@@ -5,12 +5,9 @@ Series is {
 	intparameter n;
 	inport input;
 	outport output;
-	if (n == 0) {
-		parameter hidden;
-		Link(a := transformer, b := transformer, 
-			input := input, output := output);
+	if (n == 1) {
+		parameter one;
 	} else {
-		Link(a := transformer, b := Series(n := n - 1),
-			input := input, output := output);
+		parameter notOne;
 	}
 }

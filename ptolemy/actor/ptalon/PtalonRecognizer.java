@@ -120,7 +120,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
 				
 		}
 		{
-		_loop381:
+		_loop270:
 		do {
 			if ((LA(1)==DOT)) {
 				PtalonAST tmp3_AST = null;
@@ -136,7 +136,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
 				}
 			}
 			else {
-				break _loop381;
+				break _loop270;
 			}
 			
 		} while (true);
@@ -308,10 +308,10 @@ public PtalonRecognizer(ParserSharedInputState state) {
 		astFactory.makeASTRoot(currentAST, tmp17_AST);
 		match(ASSIGN);
 		{
-		boolean synPredMatched387 = false;
+		boolean synPredMatched276 = false;
 		if (((LA(1)==ID) && (LA(2)==RPAREN||LA(2)==COMMA))) {
-			int _m387 = mark();
-			synPredMatched387 = true;
+			int _m276 = mark();
+			synPredMatched276 = true;
 			inputState.guessing++;
 			try {
 				{
@@ -337,12 +337,12 @@ public PtalonRecognizer(ParserSharedInputState state) {
 				}
 			}
 			catch (RecognitionException pe) {
-				synPredMatched387 = false;
+				synPredMatched276 = false;
 			}
-			rewind(_m387);
+			rewind(_m276);
 inputState.guessing--;
 		}
-		if ( synPredMatched387 ) {
+		if ( synPredMatched276 ) {
 			PtalonAST tmp18_AST = null;
 			tmp18_AST = (PtalonAST)astFactory.create(LT(1));
 			astFactory.addASTChild(currentAST, tmp18_AST);
@@ -350,10 +350,10 @@ inputState.guessing--;
 		}
 		else if ((_tokenSet_0.member(LA(1))) && (_tokenSet_1.member(LA(2)))) {
 			{
-			boolean synPredMatched390 = false;
+			boolean synPredMatched279 = false;
 			if (((LA(1)==ID) && (LA(2)==LPAREN))) {
-				int _m390 = mark();
-				synPredMatched390 = true;
+				int _m279 = mark();
+				synPredMatched279 = true;
 				inputState.guessing++;
 				try {
 					{
@@ -362,21 +362,21 @@ inputState.guessing--;
 					}
 				}
 				catch (RecognitionException pe) {
-					synPredMatched390 = false;
+					synPredMatched279 = false;
 				}
-				rewind(_m390);
+				rewind(_m279);
 inputState.guessing--;
 			}
-			if ( synPredMatched390 ) {
+			if ( synPredMatched279 ) {
 				actor_declaration();
 				astFactory.addASTChild(currentAST, returnAST);
 			}
 			else if ((_tokenSet_0.member(LA(1))) && (_tokenSet_1.member(LA(2)))) {
 				{
-				boolean synPredMatched393 = false;
+				boolean synPredMatched282 = false;
 				if (((_tokenSet_2.member(LA(1))) && (_tokenSet_3.member(LA(2))))) {
-					int _m393 = mark();
-					synPredMatched393 = true;
+					int _m282 = mark();
+					synPredMatched282 = true;
 					inputState.guessing++;
 					try {
 						{
@@ -384,12 +384,12 @@ inputState.guessing--;
 						}
 					}
 					catch (RecognitionException pe) {
-						synPredMatched393 = false;
+						synPredMatched282 = false;
 					}
-					rewind(_m393);
+					rewind(_m282);
 inputState.guessing--;
 				}
-				if ( synPredMatched393 ) {
+				if ( synPredMatched282 ) {
 					arithmetic_expression();
 					astFactory.addASTChild(currentAST, returnAST);
 				}
@@ -456,7 +456,7 @@ inputState.guessing--;
 						
 			}
 			{
-			_loop397:
+			_loop286:
 			do {
 				if ((LA(1)==COMMA)) {
 					match(COMMA);
@@ -470,7 +470,7 @@ inputState.guessing--;
 					}
 				}
 				else {
-					break _loop397;
+					break _loop286;
 				}
 				
 			} while (true);
@@ -500,7 +500,7 @@ inputState.guessing--;
 		arithmetic_term();
 		astFactory.addASTChild(currentAST, returnAST);
 		{
-		_loop409:
+		_loop298:
 		do {
 			if ((LA(1)==MINUS||LA(1)==PLUS)) {
 				{
@@ -531,7 +531,7 @@ inputState.guessing--;
 				astFactory.addASTChild(currentAST, returnAST);
 			}
 			else {
-				break _loop409;
+				break _loop298;
 			}
 			
 		} while (true);
@@ -549,7 +549,7 @@ inputState.guessing--;
 		boolean_term();
 		astFactory.addASTChild(currentAST, returnAST);
 		{
-		_loop424:
+		_loop313:
 		do {
 			if ((LA(1)==LOGICAL_OR)) {
 				PtalonAST tmp24_AST = null;
@@ -560,7 +560,7 @@ inputState.guessing--;
 				astFactory.addASTChild(currentAST, returnAST);
 			}
 			else {
-				break _loop424;
+				break _loop313;
 			}
 			
 		} while (true);
@@ -584,7 +584,7 @@ inputState.guessing--;
 		
 		
 		{
-		_loop400:
+		_loop289:
 		do {
 			if ((LA(1)==MINUS)) {
 				PtalonAST tmp25_AST = null;
@@ -597,7 +597,7 @@ inputState.guessing--;
 				}
 			}
 			else {
-				break _loop400;
+				break _loop289;
 			}
 			
 		} while (true);
@@ -676,7 +676,7 @@ inputState.guessing--;
 		arithmetic_factor();
 		astFactory.addASTChild(currentAST, returnAST);
 		{
-		_loop405:
+		_loop294:
 		do {
 			if (((LA(1) >= STAR && LA(1) <= MOD))) {
 				{
@@ -715,7 +715,7 @@ inputState.guessing--;
 				astFactory.addASTChild(currentAST, returnAST);
 			}
 			else {
-				break _loop405;
+				break _loop294;
 			}
 			
 		} while (true);
@@ -812,7 +812,7 @@ inputState.guessing--;
 		
 		
 		{
-		_loop414:
+		_loop303:
 		do {
 			if ((LA(1)==LOGICAL_NOT)) {
 				PtalonAST tmp37_AST = null;
@@ -825,7 +825,7 @@ inputState.guessing--;
 				}
 			}
 			else {
-				break _loop414;
+				break _loop303;
 			}
 			
 		} while (true);
@@ -869,10 +869,10 @@ inputState.guessing--;
 		default:
 			if ((_tokenSet_2.member(LA(1))) && (_tokenSet_4.member(LA(2)))) {
 				{
-				boolean synPredMatched418 = false;
+				boolean synPredMatched307 = false;
 				if (((LA(1)==LPAREN) && (_tokenSet_0.member(LA(2))))) {
-					int _m418 = mark();
-					synPredMatched418 = true;
+					int _m307 = mark();
+					synPredMatched307 = true;
 					inputState.guessing++;
 					try {
 						{
@@ -881,12 +881,12 @@ inputState.guessing--;
 						}
 					}
 					catch (RecognitionException pe) {
-						synPredMatched418 = false;
+						synPredMatched307 = false;
 					}
-					rewind(_m418);
+					rewind(_m307);
 inputState.guessing--;
 				}
-				if ( synPredMatched418 ) {
+				if ( synPredMatched307 ) {
 					match(LPAREN);
 					boolean_expression();
 					a_AST = (PtalonAST)returnAST;
@@ -948,7 +948,7 @@ inputState.guessing--;
 		boolean_factor();
 		astFactory.addASTChild(currentAST, returnAST);
 		{
-		_loop421:
+		_loop310:
 		do {
 			if ((LA(1)==LOGICAL_AND)) {
 				PtalonAST tmp40_AST = null;
@@ -959,7 +959,7 @@ inputState.guessing--;
 				astFactory.addASTChild(currentAST, returnAST);
 			}
 			else {
-				break _loop421;
+				break _loop310;
 			}
 			
 		} while (true);
@@ -1053,7 +1053,7 @@ inputState.guessing--;
 		}
 		match(LCURLY);
 		{
-		_loop429:
+		_loop318:
 		do {
 			switch ( LA(1)) {
 			case PORT:
@@ -1087,7 +1087,7 @@ inputState.guessing--;
 			}
 			default:
 			{
-				break _loop429;
+				break _loop318;
 			}
 			}
 		} while (true);
@@ -1096,7 +1096,7 @@ inputState.guessing--;
 		match(ELSE);
 		match(LCURLY);
 		{
-		_loop431:
+		_loop320:
 		do {
 			switch ( LA(1)) {
 			case PORT:
@@ -1130,7 +1130,7 @@ inputState.guessing--;
 			}
 			default:
 			{
-				break _loop431;
+				break _loop320;
 			}
 			}
 		} while (true);
@@ -1168,7 +1168,7 @@ inputState.guessing--;
 			currentAST.advanceChildToEnd();
 		}
 		{
-		_loop434:
+		_loop323:
 		do {
 			if ((LA(1)==IMPORT)) {
 				import_declaration();
@@ -1181,7 +1181,7 @@ inputState.guessing--;
 				}
 			}
 			else {
-				break _loop434;
+				break _loop323;
 			}
 			
 		} while (true);
@@ -1211,7 +1211,7 @@ inputState.guessing--;
 		case RCURLY:
 		{
 			{
-			_loop437:
+			_loop326:
 			do {
 				switch ( LA(1)) {
 				case PORT:
@@ -1247,7 +1247,7 @@ inputState.guessing--;
 				}
 				default:
 				{
-					break _loop437;
+					break _loop326;
 				}
 				}
 			} while (true);
