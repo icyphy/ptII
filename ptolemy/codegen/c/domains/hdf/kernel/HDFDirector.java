@@ -86,8 +86,7 @@ public class HDFDirector extends SDFDirector {
      *  offset variables.
 
      */
-    public String createOffsetVariablesIfNeeded()
-            throws IllegalActionException {
+    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ptolemy.domains.hdf.kernel.HDFDirector director = (ptolemy.domains.hdf.kernel.HDFDirector) getComponent();
@@ -268,8 +267,7 @@ public class HDFDirector extends SDFDirector {
 
                     int count = firing.getIterationCount();
                     if (count > 1) {
-                        code.append("for (i = 0; i < "
-                                + count + " ; i++) {\n");
+                        code.append("for (i = 0; i < " + count + " ; i++) {\n");
                     }
 
                     code.append(CodeGeneratorHelper
@@ -615,8 +613,7 @@ public class HDFDirector extends SDFDirector {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
-    public void generateTransferOutputsCode(IOPort outputPort,
-            StringBuffer code)
+    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
 
         code.append(_codeGenerator.comment(1, "HDFDirector: "

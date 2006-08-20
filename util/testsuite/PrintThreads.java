@@ -216,7 +216,7 @@ public class PrintThreads {
 
         if (stringLength < length) {
             for (int i = 0; i < (length - stringLength); i++) {
-                results.append(" ");  
+                results.append(" ");
             }
         } else if (inputString.length() > length) {
             results = new StringBuffer(results.substring(0, length));

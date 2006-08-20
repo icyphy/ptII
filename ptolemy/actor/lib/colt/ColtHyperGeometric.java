@@ -37,7 +37,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.HyperGeometric;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// HyperGeometric
 
@@ -76,15 +75,18 @@ public class ColtHyperGeometric extends ColtRandomSource {
 
         N = new PortParameter(this, "N", new IntToken(2));
         N.setTypeEquals(BaseType.INT);
-        new SingletonParameter(N.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(N.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         s = new PortParameter(this, "s", new IntToken(1));
         s.setTypeEquals(BaseType.INT);
-        new SingletonParameter(s.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(s.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         n = new PortParameter(this, "n", new IntToken(1));
         n.setTypeEquals(BaseType.INT);
-        new SingletonParameter(n.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(n.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         n.moveToFirst();
         s.moveToFirst();

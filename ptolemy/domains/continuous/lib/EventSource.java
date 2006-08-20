@@ -237,7 +237,7 @@ public class EventSource extends TypedAtomicActor {
         if (!_readyToFire) {
             return true;
         }
-        
+
         FixedPointDirector director = (FixedPointDirector) getDirector();
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
 
@@ -268,9 +268,8 @@ public class EventSource extends TypedAtomicActor {
     public boolean prefire() throws IllegalActionException {
         FixedPointDirector director = (FixedPointDirector) getDirector();
         boolean rightIndex = _nextOutputIndex == director.getIndex();
-        boolean rightTime = 
-            (director.getModelTime().compareTo(_nextOutputTime) == 0);
-        _readyToFire =  rightIndex && rightTime;
+        boolean rightTime = (director.getModelTime().compareTo(_nextOutputTime) == 0);
+        _readyToFire = rightIndex && rightTime;
         return super.prefire();
     }
 
@@ -278,7 +277,7 @@ public class EventSource extends TypedAtomicActor {
     ////                         private variables                 ////
     // The following are all transient because they need not be cloned.
     // Either the clone method or the initialize() method sets them.
-    
+
     /** The most recent cycle start time. */
     private transient Time _cycleStartTime;
 
@@ -293,7 +292,7 @@ public class EventSource extends TypedAtomicActor {
 
     /** The next time point when the output should be emitted. */
     private transient Time _nextOutputTime;
-    
+
     /** The flag indicating whether this actor is ready to fire. */
     private transient boolean _readyToFire;
 }

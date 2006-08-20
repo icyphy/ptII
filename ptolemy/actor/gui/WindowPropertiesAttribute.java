@@ -185,15 +185,14 @@ public class WindowPropertiesAttribute extends Parameter implements
             // as dirty so it gets saved?
             // FIXME: will these changes cause problems with multiscreen
             // monitors?
-            x = (x < 0 ? 30 : x); 
-            y = (y < 0 ? 30 : y); 
+            x = (x < 0 ? 30 : x);
+            y = (y < 0 ? 30 : y);
 
             Toolkit tk = Toolkit.getDefaultToolkit();
-            x = (x > tk.getScreenSize().width
-                    ? tk.getScreenSize().width - 30 : x);
-            y = (y > tk.getScreenSize().height
-                    ? tk.getScreenSize().height - 30 : y);
-
+            x = (x > tk.getScreenSize().width ? tk.getScreenSize().width - 30
+                    : x);
+            y = (y > tk.getScreenSize().height ? tk.getScreenSize().height - 30
+                    : y);
 
             frame.setBounds(x, y, width, height);
 

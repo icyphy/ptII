@@ -38,7 +38,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.Zeta;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Zeta
 
@@ -77,11 +76,13 @@ public class ColtZeta extends ColtRandomSource {
 
         ro = new PortParameter(this, "ro", new DoubleToken(1.0));
         ro.setTypeEquals(BaseType.DOUBLE);
-        new SingletonParameter(ro.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(ro.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         pk = new PortParameter(this, "pk", new DoubleToken(1.0));
         pk.setTypeEquals(BaseType.DOUBLE);
-        new SingletonParameter(pk.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(pk.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         pk.moveToFirst();
         ro.moveToFirst();

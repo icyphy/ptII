@@ -321,9 +321,8 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
      *  @return A usage string.
      */
     protected String _usage() {
-        StringBuffer result = new StringBuffer("Usage: "
-                + _commandTemplate + "\n\n"
-                + "Options that take values:\n");
+        StringBuffer result = new StringBuffer("Usage: " + _commandTemplate
+                + "\n\n" + "Options that take values:\n");
 
         int i;
 

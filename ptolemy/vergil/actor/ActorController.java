@@ -50,6 +50,7 @@ import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
+import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -800,8 +801,15 @@ public abstract class ActorController extends AttributeController {
 
             if (object instanceof Entity) {
                 Entity entity = (Entity) object;
-                BasicGraphFrame.saveComponentInLibrary(_configuration, entity);
-            }
+                try {
+                    UserActorLibrary.saveComponentInLibrary(_configuration, entity);
+                } catch (Exception ex) {
+                    // We catch exceptions here because this method used to
+                    // not throw Exceptions, and we don't want to break compatibility.
+                    MessageHandler
+                            .error("Failed to save \"" + entity.getName() + "\".");
+                }
+                }
         }
     }
 }

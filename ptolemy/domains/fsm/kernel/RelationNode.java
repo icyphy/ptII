@@ -43,7 +43,7 @@ package ptolemy.domains.fsm.kernel;
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
-*/
+ */
 public final class RelationNode {
     /** Constructor to construct a relation node with given type and
      *  difference information.
@@ -98,8 +98,8 @@ public final class RelationNode {
      */
     public boolean hasEvent() {
         if (typeChanged()) {
-            return ((_previousType * _currentType) == 
-                RelationType.LESS_THAN * RelationType.GREATER_THAN);
+            return ((_previousType * _currentType) == RelationType.LESS_THAN
+                    * RelationType.GREATER_THAN);
         }
         return false;
     }
@@ -126,8 +126,8 @@ public final class RelationNode {
      *  information is valid.
      */
     public boolean typeChanged() {
-        return (_previousType != RelationType.INVALID) 
-            && (_previousType != _currentType);
+        return (_previousType != RelationType.INVALID)
+                && (_previousType != _currentType);
     }
 
     ///////////////////////////////////////////////////////////////

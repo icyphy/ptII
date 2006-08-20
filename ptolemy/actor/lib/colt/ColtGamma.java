@@ -37,7 +37,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.Gamma;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Gamma
 
@@ -76,11 +75,13 @@ public class ColtGamma extends ColtRandomSource {
 
         alpha = new PortParameter(this, "alpha", new DoubleToken(1.0));
         alpha.setTypeEquals(BaseType.DOUBLE);
-        new SingletonParameter(alpha.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(alpha.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         lambda = new PortParameter(this, "lambda", new DoubleToken(1.0));
         lambda.setTypeEquals(BaseType.DOUBLE);
-        new SingletonParameter(lambda.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(lambda.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         lambda.moveToFirst();
         alpha.moveToFirst();

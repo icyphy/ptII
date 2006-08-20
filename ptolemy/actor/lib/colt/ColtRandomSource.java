@@ -120,8 +120,9 @@ public abstract class ColtRandomSource extends Source {
         resetOnEachRun = new SharedParameter(this, "resetOnEachRun",
                 ColtRandomSource.class, "false");
         resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
-        
-        new SingletonParameter(trigger, "_showName").setToken(BooleanToken.TRUE);
+
+        new SingletonParameter(trigger, "_showName")
+                .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////

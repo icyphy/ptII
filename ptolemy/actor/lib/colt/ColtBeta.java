@@ -37,7 +37,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.Beta;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Beta
 
@@ -108,12 +107,14 @@ public class ColtBeta extends ColtRandomSource {
         alpha = new PortParameter(this, "alpha");
         alpha.setExpression("2.0");
         alpha.setTypeEquals(BaseType.DOUBLE);
-        new SingletonParameter(alpha.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(alpha.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         beta = new PortParameter(this, "beta");
         beta.setExpression("2.0");
         beta.setTypeEquals(BaseType.DOUBLE);
-        new SingletonParameter(beta.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(beta.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         beta.moveToFirst();
         alpha.moveToFirst();

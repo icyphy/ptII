@@ -67,8 +67,9 @@ public abstract class RandomSource extends Source {
         super(container, name);
         seed = new Parameter(this, "seed", new LongToken(0));
         seed.setTypeEquals(BaseType.LONG);
-        
-        new SingletonParameter(trigger, "_showName").setToken(BooleanToken.TRUE);        
+
+        new SingletonParameter(trigger, "_showName")
+                .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////

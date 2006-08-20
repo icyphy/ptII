@@ -486,7 +486,6 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
         return ((IntToken) verticalPixels.getToken()).intValue();
     }
 
-
     /** Return the value of the rotatable parameter.
      *  @return The value of the rotatable parameter.
      *  @exception IllegalActionException If thrown while reading the
@@ -529,7 +528,6 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
     ///////////////////////////////////////////////////////////////////
     ////                       inner classes                       ////
 
-         
     /** Listen for Layer, LayerMotion and Key events.
      */
     public class ViewScreen2DListener implements LayerListener,

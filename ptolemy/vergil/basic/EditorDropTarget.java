@@ -303,9 +303,9 @@ public class EditorDropTarget extends DropTarget {
             //Added by MB 6Apr06 - without this, tooltips don't work
             //after first actor is dragged to canvas from library, until
             //pane loses & regains focus
-            JComponent comp = (JComponent)getComponent();
-            if (comp!=null) {
-              ToolTipManager.sharedInstance().registerComponent(comp);
+            JComponent comp = (JComponent) getComponent();
+            if (comp != null) {
+                ToolTipManager.sharedInstance().registerComponent(comp);
             }
         }
 

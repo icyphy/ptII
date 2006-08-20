@@ -26,11 +26,11 @@
  */
 package ptolemy.copernicus.java;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -221,7 +221,8 @@ public class ConstructorSpecializer extends SceneTransformer implements
                                 System.out
                                         .println("replacing constructor invocation = "
                                                 + unit + " in method " + method);
-                                SootMethod newConstructor = (SootMethod)classToConstructorMap.get(declaringClass);//                                        .getMethodByName("<init>");
+                                SootMethod newConstructor = (SootMethod) classToConstructorMap
+                                        .get(declaringClass);//                                        .getMethodByName("<init>");
                                 if (newConstructor.getParameterCount() == 2) {
                                     SpecialInvokeExpr r = (SpecialInvokeExpr) value;
                                     r.setMethodRef(newConstructor.makeRef());

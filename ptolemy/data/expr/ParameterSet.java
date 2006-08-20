@@ -41,18 +41,16 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
-import ptolemy.vergil.toolbox.FileEditorTableauFactory;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParameterSet
 
 /**
-  An attribute that reads multiple values from a file and sets
-  corresponding parameters in the container.
+ An attribute that reads multiple values from a file and sets
+ corresponding parameters in the container.
 
  <p>The values are in the form:
  <pre>
@@ -100,7 +98,8 @@ public class ParameterSet extends ScopeExtendingAttribute {
 
         StringParameter initialDefaultContents = new StringParameter(this,
                 "initialDefaultContents");
-        initialDefaultContents.setExpression("# This file defines parameters in the current container.\n# Each non-comment line in the file is interpreted as a separate assignment.\n# The lines are of the form:\n# attributeName = value\n# where variableName is the name of the attribute\n# in a format suitable for ptolemy.kernel.util.NamedObj.setName()\n# (i.e., does not contain periods) and value is\n# the expression in the Ptolemy expression language.\n# Comments are lines that begin with the # character.\n# FIXME: After saving, you need to update the fileOrURLParameter by hand.\n# Sample line (remove the leading #):\n# foo = \"bar\"\n");
+        initialDefaultContents
+                .setExpression("# This file defines parameters in the current container.\n# Each non-comment line in the file is interpreted as a separate assignment.\n# The lines are of the form:\n# attributeName = value\n# where variableName is the name of the attribute\n# in a format suitable for ptolemy.kernel.util.NamedObj.setName()\n# (i.e., does not contain periods) and value is\n# the expression in the Ptolemy expression language.\n# Comments are lines that begin with the # character.\n# FIXME: After saving, you need to update the fileOrURLParameter by hand.\n# Sample line (remove the leading #):\n# foo = \"bar\"\n");
         initialDefaultContents.setPersistent(false);
         initialDefaultContents.setVisibility(Settable.EXPERT);
     }
@@ -128,7 +127,8 @@ public class ParameterSet extends ScopeExtendingAttribute {
      *   if the file cannot be read, or if the file parameters cannot
      *   be evaluated.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == fileOrURL) {
             try {
                 read();
@@ -144,7 +144,7 @@ public class ParameterSet extends ScopeExtendingAttribute {
     /** Read the contents of the file named by this parameter and create
      *  attributes in the current scope.
      *  @exception IOException If there is a problem reading the file.
-     */ 
+     */
     public void read() throws IllegalActionException, NameDuplicationException,
             IOException {
 
@@ -158,35 +158,33 @@ public class ParameterSet extends ScopeExtendingAttribute {
                     getAttribute(attributeName).setContainer(null);
 
                     // FIXME: should we delete the parameter in the parent?
-//                     NamedObj parent = getContainer();
-//                     String moml = "<deleteProperty name=\"" + attributeName
-//                         + "\"/>";
-//                     MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
-//                             parent, // context
-//                             moml, // MoML code
-//                             null); // base
-//                     request.execute();
+                    //                     NamedObj parent = getContainer();
+                    //                     String moml = "<deleteProperty name=\"" + attributeName
+                    //                         + "\"/>";
+                    //                     MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
+                    //                             parent, // context
+                    //                             moml, // MoML code
+                    //                             null); // base
+                    //                     request.execute();
                 }
                 _properties = null;
 
             }
             return;
         }
-        URL url = FileUtilities.nameToURL(fileName,
-                fileOrURL.getBaseDirectory(),
-                getClass().getClassLoader());
+        URL url = FileUtilities.nameToURL(fileName, fileOrURL
+                .getBaseDirectory(), getClass().getClassLoader());
         if (url == null) {
             throw new IOException("Could not convert \""
-                    + fileOrURL.getExpression()
-                    + "\" with base \""
+                    + fileOrURL.getExpression() + "\" with base \""
                     + fileOrURL.getBaseDirectory() + "\" to a URL.");
         }
-        
+
         // FIXME: Properties are unordered, is this a problem?
         Properties properties = new Properties();
         InputStream inputStream = null;
         try {
-            inputStream = url.openStream(); 
+            inputStream = url.openStream();
             properties.load(url.openStream());
         } finally {
             if (inputStream != null) {
@@ -213,8 +211,8 @@ public class ParameterSet extends ScopeExtendingAttribute {
             // Instantiate Variables so that they are not preserved
             // in the MoML output.
             String moml = "<property name=\"" + attributeName
-                + "\" class=\"ptolemy.data.expr.Variable\" value=\""
-                + StringUtilities.escapeForXML(attributeValue) + "\"/>";
+                    + "\" class=\"ptolemy.data.expr.Variable\" value=\""
+                    + StringUtilities.escapeForXML(attributeValue) + "\"/>";
             MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
                     parent, // context
                     moml, // MoML code
@@ -226,9 +224,9 @@ public class ParameterSet extends ScopeExtendingAttribute {
             if (getAttribute(attributeName) == null) {
                 variable = new Variable(this, attributeName);
             } else {
-                variable = (Variable)getAttribute(attributeName);
+                variable = (Variable) getAttribute(attributeName);
             }
-            
+
             variable.setExpression(attributeValue);
         }
     }
@@ -238,6 +236,6 @@ public class ParameterSet extends ScopeExtendingAttribute {
 
     /** Cached copy of the last hashset of properties, used to remove old
      *  properties.
-     */   
+     */
     private Properties _properties;
 }

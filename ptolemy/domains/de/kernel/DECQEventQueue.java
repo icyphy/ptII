@@ -66,9 +66,11 @@ public class DECQEventQueue implements DEEventQueue {
      *  @param binCountFactor The factor when changing the bin count.
      *  @param isAdaptive If the queue changes its number of bins at run time.
      */
-    public DECQEventQueue(int minBinCount, int binCountFactor, boolean isAdaptive) {
+    public DECQEventQueue(int minBinCount, int binCountFactor,
+            boolean isAdaptive) {
         // Construct a calendar queue _cQueue with the given parameters.
-        _cQueue = new CalendarQueue(new DECQComparator(), minBinCount, binCountFactor);
+        _cQueue = new CalendarQueue(new DECQComparator(), minBinCount,
+                binCountFactor);
         _cQueue.setAdaptive(isAdaptive);
     }
 
@@ -152,7 +154,7 @@ public class DECQEventQueue implements DEEventQueue {
     public final Object[] toArray() {
         return _cQueue.toArray();
     }
-    
+
     /** Describe the Contents of the queue as a string.
      *  @return A string with a comma-separated list of events.
      */
@@ -230,12 +232,12 @@ public class DECQEventQueue implements DEEventQueue {
             // returns the low-order 64 bits of the result.
             // If it is larger than what can be represented
             // in 64 bits, then the returned result will be wrapped.
-            long value = (long) 
-                (((DEEvent) event).timeStamp().subtract(_zeroReference).getLongValue() / _binWidth);
+            long value = (long) (((DEEvent) event).timeStamp().subtract(
+                    _zeroReference).getLongValue() / _binWidth);
             if (value != Long.MAX_VALUE) {
                 return value;
             } else {
-                return Long.MAX_VALUE-1;
+                return Long.MAX_VALUE - 1;
             }
         }
 
@@ -262,12 +264,13 @@ public class DECQEventQueue implements DEEventQueue {
                 _zeroReference = 0.0;
                 return;
             }
-            
+
             double[] diff = new double[entryArray.length - 1];
             Time firstEntryTime = ((DEEvent) entryArray[0]).timeStamp();
-            Time lastEntryTime = ((DEEvent) entryArray[entryArray.length - 1]).timeStamp();
-            
-            if (firstEntryTime.isInfinite() 
+            Time lastEntryTime = ((DEEvent) entryArray[entryArray.length - 1])
+                    .timeStamp();
+
+            if (firstEntryTime.isInfinite()
                     && firstEntryTime.equals(lastEntryTime)) {
                 // To avoid setting NaN or 0.0
                 // for the width, apparently due to simultaneous events,
@@ -275,34 +278,35 @@ public class DECQEventQueue implements DEEventQueue {
                 return;
             }
 
-            double average = lastEntryTime.subtract(firstEntryTime).getDoubleValue();
+            double average = lastEntryTime.subtract(firstEntryTime)
+                    .getDoubleValue();
             average = average / (entryArray.length - 1);
-            
+
             double effectiveAverage = 0;
             int effectiveSamples = 0;
-            
+
             if (Double.isInfinite(average)) {
                 return;
             }
-            
+
             for (int i = 0; i < (entryArray.length - 1); ++i) {
-                diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp()
-                .subtract(((DEEvent) entryArray[i]).timeStamp()).getDoubleValue();
-                if (diff[i]< 2* average) {
+                diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp().subtract(
+                        ((DEEvent) entryArray[i]).timeStamp()).getDoubleValue();
+                if (diff[i] < 2 * average) {
                     effectiveSamples++;
                     effectiveAverage = effectiveAverage + diff[i];
                 }
             }
-            
+
             if ((effectiveAverage == 0) || (effectiveSamples == 0)) {
                 // To avoid setting NaN or 0.0
                 // for the width, apparently due to simultaneous events,
                 // we leave it unchanged instead.
                 return;
             }
-            
+
             effectiveAverage = effectiveAverage / effectiveSamples;
-            _binWidth = effectiveAverage*3;
+            _binWidth = effectiveAverage * 3;
         }
 
         /** Set the zero reference, to be used in calculating the virtual
@@ -312,7 +316,8 @@ public class DECQEventQueue implements DEEventQueue {
          *   of DEEvent.
          */
         public void setZeroReference(Object zeroReference) {
-            _zeroReference = ((DEEvent) zeroReference).timeStamp().getDoubleValue();
+            _zeroReference = ((DEEvent) zeroReference).timeStamp()
+                    .getDoubleValue();
         }
 
         ///////////////////////////////////////////////////////////////////

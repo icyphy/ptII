@@ -425,7 +425,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Set the parameter "inputArrayElement" of the model to an element
      *  of the input array.
      *  @param t The element value.

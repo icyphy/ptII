@@ -73,16 +73,16 @@ public class Ramp extends CCodeGeneratorHelper {
         } else {
             _codeStream.appendCodeBlock("CommonInitBlock", args);
             if (actor.output.getType() instanceof ArrayType) {
-                Type elementType = 
-                    ((ArrayType) actor.output.getType()).getElementType();
-                
+                Type elementType = ((ArrayType) actor.output.getType())
+                        .getElementType();
+
                 args.set(0, "TYPE_" + codeGenType(elementType));
                 if (!actor.step.getType().equals(actor.output.getType())) {
-                    _codeStream.appendCodeBlock("ArrayConvertStepBlock", args);                    
+                    _codeStream.appendCodeBlock("ArrayConvertStepBlock", args);
                 }
-                if (!actor.init.getType().equals(actor.output.getType())) {                    
-                    _codeStream.appendCodeBlock("ArrayConvertInitBlock", args);                    
-                }                
+                if (!actor.init.getType().equals(actor.output.getType())) {
+                    _codeStream.appendCodeBlock("ArrayConvertInitBlock", args);
+                }
             }
         }
 

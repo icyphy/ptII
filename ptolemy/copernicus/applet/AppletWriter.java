@@ -50,6 +50,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
+import ptolemy.codegen.kernel.CodeGeneratorUtilities;
 import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.data.ArrayToken;
@@ -380,10 +381,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         // Read in the templates and generate new files.
         try {
-            Copernicus.substitute(_templateDirectory + "model.htm.in",
+            CodeGeneratorUtilities.substitute(_templateDirectory + "model.htm.in",
                     _substituteMap, _outputDirectory + "/"
                             + _sanitizedModelName + ".htm");
-            Copernicus.substitute(_templateDirectory + "modelVergil.htm.in",
+            CodeGeneratorUtilities.substitute(_templateDirectory + "modelVergil.htm.in",
                     _substituteMap, _outputDirectory + "/"
                             + _sanitizedModelName + "Vergil.htm");
 
@@ -392,7 +393,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     + "/doc");
             defaultStyleSheetDirectory.mkdirs();
 
-            Copernicus.substitute(_templateDirectory + "default.css",
+            CodeGeneratorUtilities.substitute(_templateDirectory + "default.css",
                     _substituteMap, defaultStyleSheetDirectory.toString()
                             + "/default.css");
         } catch (IOException ex) {

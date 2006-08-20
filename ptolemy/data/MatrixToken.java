@@ -34,9 +34,9 @@ import java.util.Set;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FixType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.data.type.MatrixType;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -538,15 +538,15 @@ public abstract class MatrixToken extends Token {
         // the rightArgument or incomparable to it.
         typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME 
-                && ((MatrixToken)rightArgument).getRowCount() == 1
-                && ((MatrixToken)rightArgument).getColumnCount() == 1) {
+        if (typeInfo == CPO.SAME
+                && ((MatrixToken) rightArgument).getRowCount() == 1
+                && ((MatrixToken) rightArgument).getColumnCount() == 1) {
             // Dividing a matrix by a matrix. If the divisor has
             // only one element, then this is OK.
             return _divideElement(rightArgument);
         } else if (typeInfo == CPO.HIGHER
-                && ((MatrixToken)rightArgument).getRowCount() == 1
-                && ((MatrixToken)rightArgument).getColumnCount() == 1) {
+                && ((MatrixToken) rightArgument).getRowCount() == 1
+                && ((MatrixToken) rightArgument).getColumnCount() == 1) {
             // Dividing a matrix by something that can be converted
             // to a matrix, which if it has one element is OK.
             Token convertedArgument = getType().convert(rightArgument);
@@ -1607,13 +1607,13 @@ public abstract class MatrixToken extends Token {
             if (getRowCount() == 1 && getColumnCount() == 1) {
                 // This matrix should be treated as a scalar.
                 return convertedArgument._addElement(getElementAsToken(0, 0));
-            } else if (convertedArgument.getRowCount() == 1 
+            } else if (convertedArgument.getRowCount() == 1
                     && convertedArgument.getColumnCount() == 1) {
                 // The argument matrix should be treated as a scalar.
                 return _addElement(convertedArgument.getElementAsToken(0, 0));
             } else {
-                throw new IllegalActionException(Token.notSupportedMessage("add",
-                        this, rightArgument)
+                throw new IllegalActionException(Token.notSupportedMessage(
+                        "add", this, rightArgument)
                         + " because the matrices have different dimensions.");
             }
         }
@@ -1695,11 +1695,13 @@ public abstract class MatrixToken extends Token {
             // scalar multiplication.
             if (getRowCount() == 1 && getColumnCount() == 1) {
                 // This matrix should be treated as a scalar.
-                return convertedArgument._multiplyElement(getElementAsToken(0, 0));
-            } else if (convertedArgument.getRowCount() == 1 
+                return convertedArgument._multiplyElement(getElementAsToken(0,
+                        0));
+            } else if (convertedArgument.getRowCount() == 1
                     && convertedArgument.getColumnCount() == 1) {
                 // The argument matrix should be treated as a scalar.
-                return _multiplyElement(convertedArgument.getElementAsToken(0, 0));
+                return _multiplyElement(convertedArgument.getElementAsToken(0,
+                        0));
             } else {
                 throw new IllegalActionException(Token.notSupportedMessage(
                         "multiply", this, rightArgument)
@@ -1735,11 +1737,13 @@ public abstract class MatrixToken extends Token {
             if (getRowCount() == 1 && getColumnCount() == 1) {
                 // This matrix should be treated as a scalar.
                 // Need to reverse the subtraction.
-                return convertedArgument._subtractElementReverse(getElementAsToken(0, 0));
-            } else if (convertedArgument.getRowCount() == 1 
+                return convertedArgument
+                        ._subtractElementReverse(getElementAsToken(0, 0));
+            } else if (convertedArgument.getRowCount() == 1
                     && convertedArgument.getColumnCount() == 1) {
                 // The argument matrix should be treated as a scalar.
-                return _subtractElement(convertedArgument.getElementAsToken(0, 0));
+                return _subtractElement(convertedArgument.getElementAsToken(0,
+                        0));
             } else {
                 throw new IllegalActionException(Token.notSupportedMessage(
                         "subtract", this, rightArgument)

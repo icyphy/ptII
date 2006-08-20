@@ -95,8 +95,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
      *   an entity with the specified name.
      */
     public FunctionDependencyOfCompositeActor(CompositeActor compositeActor)
-            throws IllegalActionException,
-            NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(compositeActor);
     }
 
@@ -184,7 +183,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
      * output ports, and directed edges representing dependencies. This
      * graph includes both the ports of this actor and the ports of all
      * deeply contained opaque actors.
-     */ 
+     */
     protected void _constructDetailedDependencyGraph() {
         // get the actor
         CompositeActor actor = (CompositeActor) getContainer();
@@ -322,15 +321,15 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
 
     /** The detailed dependency graph that includes both the ports of
      * this actor and the ports of all deeply contained opaque actors.
-     */ 
+     */
     protected DirectedGraph _detailedDependencyGraph;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Categorize the given list of actors into three kinds: sinks, sources,
      * and transformers.
-     */ 
+     */
     private void _categorizeActors(List actorList) {
         Iterator actors = actorList.listIterator();
 
@@ -365,7 +364,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
 
     /** Merge dependency graphs of the internal actors into
      * the dependency graph of the actor.
-     */ 
+     */
     private void _mergeActorsGraph(List actorList) {
         Iterator actors = actorList.iterator();
 

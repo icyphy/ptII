@@ -64,8 +64,8 @@ import ptolemy.data.expr.PtParserConstants;
 import ptolemy.data.expr.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
-import ptolemy.data.type.RecordType;
 import ptolemy.data.type.MatrixType;
+import ptolemy.data.type.RecordType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import soot.ArrayType;
@@ -143,11 +143,10 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         Local local = _getChildTokensLocal(0, node);
 
-        ptolemy.data.type.ArrayType type = 
-            (ptolemy.data.type.ArrayType)node.getType();
-        Local elementTypeLocal = 
-            PtolemyUtilities.buildConstantTypeLocal(_body, _insertPoint,
-                    type.getElementType());
+        ptolemy.data.type.ArrayType type = (ptolemy.data.type.ArrayType) node
+                .getType();
+        Local elementTypeLocal = PtolemyUtilities.buildConstantTypeLocal(_body,
+                _insertPoint, type.getElementType());
 
         Local tokenLocal = Jimple.v().newLocal("token",
                 RefType.v(PtolemyUtilities.arrayTokenClass));
@@ -159,11 +158,9 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                         RefType.v(PtolemyUtilities.arrayTokenClass))),
                 _insertPoint);
         _units.insertBefore(Jimple.v().newInvokeStmt(
-                Jimple.v()
-                        .newSpecialInvokeExpr(
-                                tokenLocal,
-                                PtolemyUtilities.arrayTokenConstructor
-                                .makeRef(), elementTypeLocal, local)), _insertPoint);
+                Jimple.v().newSpecialInvokeExpr(tokenLocal,
+                        PtolemyUtilities.arrayTokenConstructor.makeRef(),
+                        elementTypeLocal, local)), _insertPoint);
 
         _nodeToLocal.put(node, tokenLocal);
     }

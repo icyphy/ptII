@@ -425,7 +425,8 @@ public class SerialComm extends TypedAtomicActor implements
                     _debug("Producing byte array on the output port.");
                 }
 
-                dataReceived.broadcast(new ArrayToken(BaseType.UNSIGNED_BYTE, dataTokens));
+                dataReceived.broadcast(new ArrayToken(BaseType.UNSIGNED_BYTE,
+                        dataTokens));
 
                 int available = in.available();
 
@@ -577,33 +578,36 @@ public class SerialComm extends TypedAtomicActor implements
     static {
         // Try different platforms.
         try {
-            
+
             //new com.sun.comm.Win32Driver().initialize();
 
             Class driverClass = Class.forName("com.sun.comm.Win32Driver");
             Object driver = driverClass.newInstance();
-            Method initialize = driverClass.getMethod("initialize", (Class[])null);
-            initialize.invoke(driver, (Object [])null);
+            Method initialize = driverClass.getMethod("initialize",
+                    (Class[]) null);
+            initialize.invoke(driver, (Object[]) null);
         } catch (Throwable throwable) {
             try {
                 Class driverClass = Class.forName("com.sun.comm.LinuxDriver");
                 Object driver = driverClass.newInstance();
-                Method initialize = driverClass.getMethod("initialize", (Class[])null);
-                initialize.invoke(driver, (Object [])null);
+                Method initialize = driverClass.getMethod("initialize",
+                        (Class[]) null);
+                initialize.invoke(driver, (Object[]) null);
             } catch (Throwable throwable2) {
                 try {
-                    Class driverClass = Class.forName("com.sun.comm.SolarisDriver");
+                    Class driverClass = Class
+                            .forName("com.sun.comm.SolarisDriver");
                     Object driver = driverClass.newInstance();
-                    Method initialize = driverClass.getMethod("initialize", (Class[])null);
-                    initialize.invoke(driver, (Object [])null);
+                    Method initialize = driverClass.getMethod("initialize",
+                            (Class[]) null);
+                    initialize.invoke(driver, (Object[]) null);
                 } catch (Throwable throwable3) {
                     ExceptionInInitializerError error = new ExceptionInInitializerError(
                             "Failed to "
-                            + "instantiate com.sun.comm.XXXDriver, tried "
-                            + "Win32, Linux and Solaris for XXX"
-                            + throwable + "\n"
-                            + throwable2 + "\n"
-                            + throwable3);
+                                    + "instantiate com.sun.comm.XXXDriver, tried "
+                                    + "Win32, Linux and Solaris for XXX"
+                                    + throwable + "\n" + throwable2 + "\n"
+                                    + throwable3);
                     error.initCause(throwable);
                     throw error;
                 }

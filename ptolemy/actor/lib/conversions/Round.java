@@ -141,7 +141,8 @@ public class Round extends Transformer {
         super.fire();
         double in = ((DoubleToken) input.get(0)).doubleValue();
         if (in == Double.NaN) {
-            throw new IllegalActionException(this, "Input is NaN, which can't be rounded.");
+            throw new IllegalActionException(this,
+                    "Input is NaN, which can't be rounded.");
         }
         output.send(0, new IntToken(_doFunction(in)));
     }

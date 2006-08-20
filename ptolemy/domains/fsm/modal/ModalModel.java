@@ -327,8 +327,8 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         if (_functionDependency == null) {
             try {
                 _functionDependency = new FunctionDependencyOfModalModel(this);
-                boolean value = 
-                    ((BooleanToken)conservativeAnalysis.getToken()).booleanValue();
+                boolean value = ((BooleanToken) conservativeAnalysis.getToken())
+                        .booleanValue();
                 _functionDependency.setConservativeAnalysis(value);
             } catch (NameDuplicationException e) {
                 // This should not happen.
@@ -493,7 +493,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         conservativeAnalysis = new Parameter(this, "conservativeAnalysis");
         conservativeAnalysis.setTypeEquals(BaseType.BOOLEAN);
         conservativeAnalysis.setToken(BooleanToken.TRUE);
-        
+
         // Create a more reasonable default icon.
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" width=\"60\" "

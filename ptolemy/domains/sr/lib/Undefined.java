@@ -76,7 +76,7 @@ public class Undefined extends Source {
      *  that defaults to "int".
      */
     public StringAttribute outputType;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 

@@ -352,9 +352,9 @@ public class NonStrictTest extends Sink {
 
             if (width == 1) {
                 for (int i = 0; i < newValues.length; i++) {
-                    if (newValues[i] instanceof Token []) {
+                    if (newValues[i] instanceof Token[]) {
                         // Handle width of 1, ArrayToken
-                        newTokens[i] = new ArrayToken((Token [])newValues[i]);
+                        newTokens[i] = new ArrayToken((Token[]) newValues[i]);
                     } else {
                         newTokens[i] = (Token) newValues[i];
                     }
@@ -432,8 +432,8 @@ public class NonStrictTest extends Sink {
      *  @return True if the first argument is close
      *  to this token.  False if the arguments are not ArrayTokens
      */
-    protected boolean _isCloseToIfNilArrayElement(Token token1,
-            Token token2, double epsilon) throws IllegalActionException {
+    protected boolean _isCloseToIfNilArrayElement(Token token1, Token token2,
+            double epsilon) throws IllegalActionException {
         if (!(token1 instanceof ArrayToken) || !(token2 instanceof ArrayToken)) {
             return false;
         }
@@ -487,15 +487,16 @@ public class NonStrictTest extends Sink {
      *  @return True if the first argument is close
      *  to this token.  False if the arguments are not ArrayTokens
      */
-    protected boolean _isCloseToIfNilRecordElement(Token token1,
-            Token token2, double epsilon) throws IllegalActionException {
-        if (!(token1 instanceof RecordToken) || !(token2 instanceof RecordToken)) {
+    protected boolean _isCloseToIfNilRecordElement(Token token1, Token token2,
+            double epsilon) throws IllegalActionException {
+        if (!(token1 instanceof RecordToken)
+                || !(token2 instanceof RecordToken)) {
             return false;
         }
         RecordToken record1 = (RecordToken) token1;
         RecordToken record2 = (RecordToken) token2;
 
-        Set myLabelSet = record1.labelSet(); 
+        Set myLabelSet = record1.labelSet();
         Set argLabelSet = record2.labelSet();
 
         if (!myLabelSet.equals(argLabelSet)) {
@@ -511,16 +512,18 @@ public class NonStrictTest extends Sink {
             Token innerToken2 = record2.get(label);
             boolean result = false;
             if (innerToken1 instanceof ArrayToken) {
-                result = _isCloseToIfNilArrayElement(innerToken1, innerToken2, epsilon);
+                result = _isCloseToIfNilArrayElement(innerToken1, innerToken2,
+                        epsilon);
             } else if (innerToken1 instanceof RecordToken) {
-                result = _isCloseToIfNilRecordElement(innerToken1, innerToken2, epsilon);
+                result = _isCloseToIfNilRecordElement(innerToken1, innerToken2,
+                        epsilon);
             } else {
-                result = innerToken1.isCloseTo(innerToken2, epsilon).booleanValue();
+                result = innerToken1.isCloseTo(innerToken2, epsilon)
+                        .booleanValue();
             }
-                
+
             if (!result) {
-                if (innerToken1.isNil()
-                        && innerToken2.isNil()) {
+                if (innerToken1.isNil() && innerToken2.isNil()) {
                     // They are not close, but both are nil, so for
                     // our purposes, the are close.
                 } else {

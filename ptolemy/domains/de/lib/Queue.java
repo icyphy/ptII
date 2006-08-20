@@ -104,7 +104,7 @@ public class Queue extends Transformer {
         capacity = new Parameter(this, "capacity");
         capacity.setTypeEquals(BaseType.INT);
         capacity.setExpression("0");
-        
+
         persistentTrigger = new Parameter(this, "persistentTrigger");
         persistentTrigger.setTypeEquals(BaseType.BOOLEAN);
         persistentTrigger.setExpression("false");
@@ -119,7 +119,7 @@ public class Queue extends Transformer {
      *  This is an integer with default 0.
      */
     public Parameter capacity;
-    
+
     /** If set to true, then if a <i>trigger</i> arrives when the
      *  queue is empty, it is remembered, and the next time an
      *  <i>input</i> arrives, it is sent immediately to the output.
@@ -225,7 +225,8 @@ public class Queue extends Transformer {
                 sizeOutput--;
                 _persistentTrigger = false;
             } else {
-                if (((BooleanToken)persistentTrigger.getToken()).booleanValue()) {
+                if (((BooleanToken) persistentTrigger.getToken())
+                        .booleanValue()) {
                     _persistentTrigger = true;
                 }
             }
@@ -267,7 +268,7 @@ public class Queue extends Transformer {
         }
         _token = null;
         _removeToken = false;
-        
+
         return super.postfire();
     }
 
@@ -309,17 +310,17 @@ public class Queue extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** An indicator of whether a trigger token was received in
      *  the last fire() method invocation.
      */
     private boolean _persistentTrigger;
-    
+
     /** Indicator that a token should be removed from the
      *  queue in postfire().
      */
     private boolean _removeToken;
-    
+
     /** Token received in the fire() method for inclusion in
      *  the queue in the postfire() method.
      */

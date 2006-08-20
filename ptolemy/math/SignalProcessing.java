@@ -209,7 +209,7 @@ public class SignalProcessing {
             double factor = Math.sqrt(2.0 / size);
             returnValue = DoubleArrayMath.scale(returnValue, factor);
 
-        // no break here
+            // no break here
         case DCT_TYPE_NORMALIZED:
             returnValue[0] *= ExtendedMath.ONE_OVER_SQRT_2;
             break;
@@ -1964,7 +1964,7 @@ public class SignalProcessing {
             return returnValue;
         }
 
-        // Optimized base case for higher orders
+            // Optimized base case for higher orders
         case 4: {
             double[] returnValue = new double[3];
             returnValue[0] = x[0] + x[1] + x[2] + x[3];
@@ -2019,7 +2019,7 @@ public class SignalProcessing {
         case 2:
             return null; // should never be used
 
-        // Optimized base case for higher orders
+            // Optimized base case for higher orders
         case 4: {
             double[] returnValue = new double[2];
 

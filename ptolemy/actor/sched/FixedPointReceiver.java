@@ -242,7 +242,7 @@ public class FixedPointReceiver extends AbstractReceiver {
         _token = null;
         _known = false;
     }
-    
+
     /** Set the container. This overrides the base class so that
      *  if the container is being set to null, it removes the receiver
      *  from the list in the director.
@@ -258,14 +258,14 @@ public class FixedPointReceiver extends AbstractReceiver {
         }
         super.setContainer(port);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** The director of this receiver. */
     private FixedPointDirector _director;
 
-    /** A flag indicating whether this receiver has status known. */  
+    /** A flag indicating whether this receiver has status known. */
     private boolean _known = false;
 
     /** The token held. */

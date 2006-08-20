@@ -138,7 +138,7 @@ public class FileReader extends Source {
 
             StringBuffer lineBuffer = new StringBuffer();
             String newlineValue = ((StringToken) newline.getToken())
-                .stringValue();
+                    .stringValue();
             while (true) {
                 String line = reader.readLine();
 

@@ -301,10 +301,12 @@ public class PxgraphApplication extends PlotApplication {
                 { "-zw", "<width>", "ZeroWidth", "0", "(Unsupported)" }, };
 
         String[][] commandFlags = {
-        // - is not in the original xgraph.
+                // - is not in the original xgraph.
                 { "-", "", "(read from standard in)" },
-                { "-bar", "BarGraph", "" }, { "-bb", "BoundBox", "(Ignored)" },
-                { "-bigendian", "", "" }, { "-littleendian", "", "" },
+                { "-bar", "BarGraph", "" },
+                { "-bb", "BoundBox", "(Ignored)" },
+                { "-bigendian", "", "" },
+                { "-littleendian", "", "" },
                 { "-binary", "Binary", "" },
                 // -impulses is not in the original X11 pxgraph.
                 { "-impulses", "Impulses", "" }, { "-help", "", "" },

@@ -248,13 +248,16 @@ public class BrowserLauncher {
         }
 
         if (StringUtilities.getProperty("ptolemy.ptII.browser") != "") {
-            Runtime.getRuntime().exec(new String[]
-                { "\"" + 
-                  StringUtilities.getProperty("ptolemy.ptII.browser")
-                  + "\"", url });
+            Runtime
+                    .getRuntime()
+                    .exec(
+                            new String[] {
+                                    "\""
+                                            + StringUtilities
+                                                    .getProperty("ptolemy.ptII.browser")
+                                            + "\"", url });
             return;
         }
-
 
         Object browser = locateBrowser();
 
@@ -393,8 +396,8 @@ public class BrowserLauncher {
 
             // This should never occur, but if it does, we'll try
             // the simplest thing possible
-            Runtime.getRuntime().exec(new String[]
-                { "\"" + (String) browser + "\"", url });
+            Runtime.getRuntime().exec(
+                    new String[] { "\"" + (String) browser + "\"", url });
             break;
         }
 

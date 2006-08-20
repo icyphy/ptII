@@ -54,6 +54,7 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.codegen.kernel.CodeGeneratorUtilities;
 import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.gui.JTextAreaExec;
@@ -423,7 +424,7 @@ public class GeneratorTableau extends Tableau {
                     .toURI().toString());
 
             // Generate the command to run copernicus.
-            results.add(Copernicus.substitute(
+            results.add(CodeGeneratorUtilities.substitute(
                     "ptolemy/copernicus/gui/compileCommandTemplate.txt",
                     generatorAttribute));
 

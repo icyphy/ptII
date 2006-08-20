@@ -145,13 +145,14 @@ public class ModalDirector extends FSMDirector {
         }
         controller.readInputs();
         State st = controller.currentState();
-        
+
         // Chose a preemptive transition, if there is one,
         // and execute its choice actions.
         // The choice actions are the outputActions, not the setActions.
-        Transition tr = controller.chooseTransition(st.preemptiveTransitionList());
+        Transition tr = controller.chooseTransition(st
+                .preemptiveTransitionList());
         _enabledTransition = tr;
-        
+
         // If a preemptive transition was found, prefire and fire
         // the refinements of the transition, and then return.
         if (tr != null) {
@@ -187,7 +188,8 @@ public class ModalDirector extends FSMDirector {
                     break;
                 }
                 if (_debugging) {
-                    _debug("Prefire and fire the refinement of the current state: ",
+                    _debug(
+                            "Prefire and fire the refinement of the current state: ",
                             actors[i].getFullName());
                 }
                 if (actors[i].prefire()) {
@@ -248,7 +250,7 @@ public class ModalDirector extends FSMDirector {
         // Postfire all the actors that were fired in this iteration.
         Iterator actors = _actorsFired.iterator();
         while (actors.hasNext()) {
-            Actor actor = ((Actor)actors.next());
+            Actor actor = ((Actor) actors.next());
             if (!actor.postfire()) {
                 _disabledActors.add(actor);
             }
@@ -265,13 +267,13 @@ public class ModalDirector extends FSMDirector {
             // Update the _currentLocalReceiverMap to the new state.
             _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
                     .currentState());
-            
+
             // Increment the workspace version such that the
             // function dependencies will be reconstructed.
             // FIXME: Replace this with conservative approximation.
             if (_mutationEnabled) {
                 ChangeRequest request = new ChangeRequest(this,
-                "increment workspace version to force recalculation of function dependencies") {
+                        "increment workspace version to force recalculation of function dependencies") {
                     protected void _execute() throws KernelException {
                         getContainer().workspace().incrVersion();
                     }
@@ -288,14 +290,14 @@ public class ModalDirector extends FSMDirector {
             Director executiveDirector = container.getExecutiveDirector();
             if (executiveDirector != null) {
                 if (_debugging) {
-                    _debug("ModalDirector: Request refiring by " 
-                            + executiveDirector.getFullName()
-                            + " at " + getModelTime());
+                    _debug("ModalDirector: Request refiring by "
+                            + executiveDirector.getFullName() + " at "
+                            + getModelTime());
                 }
                 executiveDirector.fireAt(container, getModelTime());
             }
         }
-        
+
         return result && !_stopRequested;
     }
 

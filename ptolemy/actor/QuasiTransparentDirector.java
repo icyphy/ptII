@@ -42,4 +42,5 @@ package ptolemy.actor;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public interface QuasiTransparentDirector {}
+public interface QuasiTransparentDirector {
+}

@@ -233,9 +233,11 @@ public class TypeLattice {
 
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
                 return ((StructuredType) t1)._compare((StructuredType) t2);
-            } else if (t1Rep instanceof ArrayType && !(t2Rep instanceof ArrayType)) {
+            } else if (t1Rep instanceof ArrayType
+                    && !(t2Rep instanceof ArrayType)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
-                int elementComparison = compare(((ArrayType)ct1).getElementType(), t2Rep);
+                int elementComparison = compare(((ArrayType) ct1)
+                        .getElementType(), t2Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
                     return HIGHER;
                 } else {
@@ -245,9 +247,11 @@ public class TypeLattice {
                         return INCOMPARABLE;
                     }
                 }
-            } else if (t2Rep instanceof ArrayType && !(t1Rep instanceof ArrayType)) {
+            } else if (t2Rep instanceof ArrayType
+                    && !(t1Rep instanceof ArrayType)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
-                int elementComparison = compare(((ArrayType)ct2).getElementType(), t1Rep);
+                int elementComparison = compare(((ArrayType) ct2)
+                        .getElementType(), t1Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
                     return LOWER;
                 } else {
@@ -314,9 +318,11 @@ public class TypeLattice {
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
                 return ((StructuredType) t1)
                         ._greatestLowerBound((StructuredType) t2);
-            } else if (t1Rep instanceof ArrayType && !(t2Rep instanceof ArrayType)) {
+            } else if (t1Rep instanceof ArrayType
+                    && !(t2Rep instanceof ArrayType)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
-                int elementComparison = compare(((ArrayType)ct1).getElementType(), t2Rep);
+                int elementComparison = compare(((ArrayType) ct1)
+                        .getElementType(), t2Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
                     return t2;
                 } else {
@@ -325,7 +331,8 @@ public class TypeLattice {
                     } else {
                         // INCOMPARABLE
                         if (_basicLattice.containsNodeWeight(t2Rep)) {
-                            return _basicLattice.greatestLowerBound(t1Rep, t2Rep);
+                            return _basicLattice.greatestLowerBound(t1Rep,
+                                    t2Rep);
                         } else {
                             // t2 is a user type (has no representative in the
                             // basic lattice). Arrays of this type are not supported.
@@ -333,9 +340,11 @@ public class TypeLattice {
                         }
                     }
                 }
-            } else if (t2Rep instanceof ArrayType && !(t1Rep instanceof ArrayType)) {
+            } else if (t2Rep instanceof ArrayType
+                    && !(t1Rep instanceof ArrayType)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
-                int elementComparison = compare(((ArrayType)ct2).getElementType(), t1Rep);
+                int elementComparison = compare(((ArrayType) ct2)
+                        .getElementType(), t1Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
                     return t1;
                 } else {
@@ -344,7 +353,8 @@ public class TypeLattice {
                     } else {
                         // INCOMPARABLE
                         if (_basicLattice.containsNodeWeight(t1Rep)) {
-                            return _basicLattice.greatestLowerBound(t1Rep, t2Rep);
+                            return _basicLattice.greatestLowerBound(t1Rep,
+                                    t2Rep);
                         } else {
                             // t1 is a user type (has no representative in the
                             // basic lattice). Arrays of this type are not supported.
@@ -494,9 +504,10 @@ public class TypeLattice {
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
                 return ((StructuredType) t1)
                         ._leastUpperBound((StructuredType) t2);
-            } else if (t1Rep instanceof ArrayType && !(t2Rep instanceof ArrayType)) {
+            } else if (t1Rep instanceof ArrayType
+                    && !(t2Rep instanceof ArrayType)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
-                Type elementType = ((ArrayType)ct1).getElementType();
+                Type elementType = ((ArrayType) ct1).getElementType();
                 int elementComparison = compare(elementType, t2Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
                     return t1;
@@ -506,10 +517,12 @@ public class TypeLattice {
                     } else {
                         // INCOMPARABLE
                         if (_basicLattice.containsNodeWeight(t2Rep)
-                                && _basicLattice.containsNodeWeight(elementType)) {
+                                && _basicLattice
+                                        .containsNodeWeight(elementType)) {
                             // The least upper bound is an array of the LUB
                             // of t2Rep and the element type of t1.
-                            return new ArrayType((Type)_basicLattice.leastUpperBound(elementType, t2Rep));
+                            return new ArrayType((Type) _basicLattice
+                                    .leastUpperBound(elementType, t2Rep));
                         } else {
                             // t2 is a user type (has no representative in the
                             // basic lattice). Arrays of this type are not supported.
@@ -517,9 +530,10 @@ public class TypeLattice {
                         }
                     }
                 }
-            } else if (t2Rep instanceof ArrayType && !(t1Rep instanceof ArrayType)) {
+            } else if (t2Rep instanceof ArrayType
+                    && !(t1Rep instanceof ArrayType)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
-                Type elementType = ((ArrayType)ct2).getElementType();
+                Type elementType = ((ArrayType) ct2).getElementType();
                 int elementComparison = compare(elementType, t1Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
                     return t2;
@@ -529,10 +543,12 @@ public class TypeLattice {
                     } else {
                         // INCOMPARABLE
                         if (_basicLattice.containsNodeWeight(t1Rep)
-                                && _basicLattice.containsNodeWeight(elementType)) {
+                                && _basicLattice
+                                        .containsNodeWeight(elementType)) {
                             // The least upper bound is an array of the LUB
                             // of t2Rep and the element type of t1.
-                            return new ArrayType((Type)_basicLattice.leastUpperBound(elementType, t1Rep));
+                            return new ArrayType((Type) _basicLattice
+                                    .leastUpperBound(elementType, t1Rep));
                         } else {
                             // t1 is a user type (has no representative in the
                             // basic lattice). Arrays of this type are not supported.

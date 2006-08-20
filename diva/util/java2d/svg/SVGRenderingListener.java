@@ -32,7 +32,6 @@
 
 package diva.util.java2d.svg;
 
-
 /** A listener interface to handle callbacks after Batik has finished rendering
  * an SVG document
  *

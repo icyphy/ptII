@@ -83,10 +83,10 @@ public class PtDoclet {
      */
     public static boolean start(RootDoc root) throws IOException,
             ClassNotFoundException {
-	System.out.println("Ptolemy version of PtDoc, with Kepler extensions");
+        System.out.println("Ptolemy version of PtDoc, with Kepler extensions");
         if (StringUtilities.getProperty("KEPLER") != "") {
-	    System.out.println("PtDoclet: KEPLER = "
-			       + StringUtilities.getProperty("KEPLER"));
+            System.out.println("PtDoclet: KEPLER = "
+                    + StringUtilities.getProperty("KEPLER"));
         }
 
         _outputDirectory = _getOutputDirectory(root.options());
@@ -106,7 +106,8 @@ public class PtDoclet {
             Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
             Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
             // The expression in the Expression actor is a StringAttribute.
-            Class stringAttributeClass = Class.forName("ptolemy.kernel.util.StringAttribute");
+            Class stringAttributeClass = Class
+                    .forName("ptolemy.kernel.util.StringAttribute");
 
             ClassDoc[] classes = root.classes();
             for (int i = 0; i < classes.length; i++) {
@@ -114,9 +115,10 @@ public class PtDoclet {
                 //System.out.println(className);
                 Class theClass = null;
                 try {
-                    if (className.equals("ptolemy.vergil.toolbox.PtolemyTransferable")
-                            || className.equals("ptolemy.vergil.toolbox.GraphicElement")
-                        ) {
+                    if (className
+                            .equals("ptolemy.vergil.toolbox.PtolemyTransferable")
+                            || className
+                                    .equals("ptolemy.vergil.toolbox.GraphicElement")) {
                         throw new Exception("Skipping " + className
                                 + ",it starts up X11 and interferes with the "
                                 + "nightly build");
@@ -175,26 +177,28 @@ public class PtDoclet {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-   /** Process customTags and return text that contains links to the
+    /** Process customTags and return text that contains links to the
      *  javadoc output.
      *  @param programElementDoc The class for which we are generating
      *  documentation.
      */
-    private static String _customTagCommentText(ProgramElementDoc
-            programElementDoc) {
+    private static String _customTagCommentText(
+            ProgramElementDoc programElementDoc) {
 
         // Process the comment as an array of tags.  Doc.commentText()
         // should do this, but it does not.
         String documentation = "";
 
         Tag tag[] = programElementDoc.tags("UserLevelDocumentation");
-        StringBuffer  textTag = new StringBuffer();
-        for(int k = 0; k <tag.length; k++) {
+        StringBuffer textTag = new StringBuffer();
+        for (int k = 0; k < tag.length; k++) {
             textTag.append(tag[k].text());
-        }				
-        
+        }
+
         if (textTag.toString().length() > 0) {
-            documentation = "<UserLevelDocumentation>" + StringUtilities.escapeForXML(textTag.toString()) +"</UserLevelDocumentation>";
+            documentation = "<UserLevelDocumentation>"
+                    + StringUtilities.escapeForXML(textTag.toString())
+                    + "</UserLevelDocumentation>";
         }
 
         return documentation;
@@ -283,18 +287,18 @@ public class PtDoclet {
                 + StringUtilities.escapeForXML(_inlineTagCommentText(classDoc))
                 + "  </description>\n");
 
-        Tag [] tags = null;	
+        Tag[] tags = null;
         // Handle other class tags.
         String[] classTags = { "author", "version", "since",
-                               "Pt.ProposedRating", "Pt.AcceptedRating",
-                               "UserLevelDocumentation"};
+                "Pt.ProposedRating", "Pt.AcceptedRating",
+                "UserLevelDocumentation" };
         for (int j = 0; j < classTags.length; j++) {
             tags = classDoc.tags(classTags[j]);
             if (tags.length > 0) {
                 StringBuffer textTag = new StringBuffer();
                 for (int k = 0; k < tags.length; k++) {
                     textTag.append(tags[k].text());
-                }				
+                }
                 documentation.append("  <" + classTags[j] + ">"
                         + StringUtilities.escapeForXML(textTag.toString())
                         + "</" + classTags[j] + ">\n");
@@ -325,8 +329,8 @@ public class PtDoclet {
 
             try {
                 if (className.equals("javax.media.j3d.Canvas3D")
-                        || className.equals("com.sun.j3d.utils.universe.SimpleUniverse")
-                    ) {
+                        || className
+                                .equals("com.sun.j3d.utils.universe.SimpleUniverse")) {
                     throw new Exception("Skipping " + className
                             + ",it starts up X11 and interferes with the "
                             + "nightly build");
@@ -344,8 +348,8 @@ public class PtDoclet {
                                     + "\">"
                                     + StringUtilities
                                             .escapeForXML(_inlineTagCommentText(fields[i]))
-				    + _customTagCommentText(fields[i])
-                                    + "</" + element + ">\n");
+                                    + _customTagCommentText(fields[i]) + "</"
+                                    + element + ">\n");
                 }
             } catch (ClassNotFoundException ex) {
                 // Ignored, we probably have a primitive type like boolean.
@@ -463,7 +467,7 @@ public class PtDoclet {
         if (StringUtilities.getProperty("KEPLER") != "") {
             // If we are running in Kepler, the put the output somewhere else.
             fileBaseName = className.substring(className.lastIndexOf('.') + 1)
-                + ".doc.xml";
+                    + ".doc.xml";
         }
 
         String fileName = null;

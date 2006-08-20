@@ -113,7 +113,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         } else {
             Actor actor = (Actor) port.getContainer();
             Director director;
-            
+
             // For a composite actor,
             // the receiver type of an input port is decided by
             // the executive director.
@@ -125,13 +125,13 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             } else {
                 director = actor.getDirector();
             }
-            
+
             if (!(director instanceof PNDirector)) {
                 throw new IllegalActionException(port,
                         "Cannot use an instance of PNQueueReceiver "
-                        + "since the director is not a PNDirector.");
+                                + "since the director is not a PNDirector.");
             }
-            
+
             _director = (PNDirector) director;
         }
     }
@@ -188,7 +188,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
         return result;
     }
-    
+
     /** Return the director in charge of this receiver, or null
      *  if there is none.
      *  @return The director in charge of this receiver.

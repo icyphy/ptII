@@ -145,7 +145,7 @@ public class ColtSeedParameter extends SharedParameter {
                     // parameter value, and only this one, is saved.
                     // The shared parameters are made non-persistent below.
                     setPersistent(true);
-                    
+
                     NamedObj toplevel = getRoot();
 
                     // Do not do sharing if this is within an EntityLibrary.

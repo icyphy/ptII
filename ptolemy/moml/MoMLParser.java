@@ -1139,11 +1139,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @return The IconLoader for all MoMLParsers.
      *  @see #setIconLoader(IconLoader)
      */
-     public static IconLoader getIconLoader() {
-         return _iconLoader ;
-     }
-      
-      /** Get the List of MoMLFilters used to translate names.
+    public static IconLoader getIconLoader() {
+        return _iconLoader;
+    }
+
+    /** Get the List of MoMLFilters used to translate names.
      *  Note that this method is static.  The returned MoMLFilters
      *  will filter all MoML for any instances of this class.
      *  @return The MoMLFilters currently filtering.
@@ -1325,7 +1325,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // the original exception.
                     // This problem comes up with tests in
                     // actor/gui/test/UserActorLibrary.tcl.
-                } 
+                }
                 // Since the container is probably already null, then
                 // the setContainer(null) call probably did not do anything.
                 // so, we remove the object from the workspace so it
@@ -1698,9 +1698,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param loader The IconLoader for all MoMLParsers.
      *  @see #getIconLoader()
      */
-      public static void setIconLoader(IconLoader loader) {
-         _iconLoader = loader;
-     }
+    public static void setIconLoader(IconLoader loader) {
+        _iconLoader = loader;
+    }
 
     /**  Set the list of MoMLFilters used to translate names.
      *  Note that this method is static.  The specified MoMLFilters
@@ -5093,12 +5093,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private boolean _loadIconForClass(String className, NamedObj context)
             throws Exception {
         if (_iconLoader != null) {
-             return _iconLoader.loadIconForClass(className, context);
-         } else {
-             // Default behavior if no icon loader has been specified.
-             String fileName = className.replace('.', '/') + "Icon.xml";
-             return _loadFileInContext(fileName, context);
-         }
+            return _iconLoader.loadIconForClass(className, context);
+        } else {
+            // Default behavior if no icon loader has been specified.
+            String fileName = className.replace('.', '/') + "Icon.xml";
+            return _loadFileInContext(fileName, context);
+        }
     }
 
     /** Mark the contents as being derived objects at a depth

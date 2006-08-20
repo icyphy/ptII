@@ -53,8 +53,7 @@ public class SRDirector extends FixedPointDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public SRDirector() throws IllegalActionException, 
-        NameDuplicationException {
+    public SRDirector() throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -67,8 +66,8 @@ public class SRDirector extends FixedPointDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public SRDirector(Workspace workspace) throws IllegalActionException, 
-        NameDuplicationException {
+    public SRDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
     }
 

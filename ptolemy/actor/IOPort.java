@@ -468,8 +468,8 @@ public class IOPort extends ComponentPort {
         // the receivers that are currently in the table.
         if (_localReceiversTable != null) {
             Iterator relations = _localReceiversTable.keySet().iterator();
-            while(relations.hasNext()) {
-                Relation relation = (Relation)relations.next();
+            while (relations.hasNext()) {
+                Relation relation = (Relation) relations.next();
                 _removeReceivers(relation);
             }
         }
@@ -3629,7 +3629,7 @@ public class IOPort extends ComponentPort {
         receiver.setContainer(this);
         return receiver;
     }
-    
+
     /** Remove the receivers associated with the specified
      *  relation, if there are any.  This sets the container
      *  of each receiver to null.
@@ -3637,11 +3637,11 @@ public class IOPort extends ComponentPort {
      */
     protected void _removeReceivers(Relation relation) {
         if (_localReceiversTable != null) {
-            List receivers = (List)_localReceiversTable.get(relation);
+            List receivers = (List) _localReceiversTable.get(relation);
             if (receivers != null) {
                 Iterator iterator = receivers.iterator();
                 while (iterator.hasNext()) {
-                    Receiver[][] receiverArray = (Receiver[][])iterator.next();
+                    Receiver[][] receiverArray = (Receiver[][]) iterator.next();
                     for (int i = 0; i < receiverArray.length; i++) {
                         if (receiverArray[i] != null) {
                             for (int j = 0; j < receiverArray[i].length; j++) {

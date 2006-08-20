@@ -568,7 +568,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
      *  to the scene.
      *  @exception IllegalActionException If thrown while reading from a
      *  channel.
-     */ 
+     */
     protected void _makeNodeConnection() throws IllegalActionException {
         if (_debugging) {
             _debug("Called _makeNodeConnection()");
@@ -701,7 +701,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     /** The BoundingSphere. */
     protected BoundingSphere _bounds;
 
-    /** The main connection branch that connects to the universe. */  
+    /** The main connection branch that connects to the universe. */
     protected BranchGroup _branchRoot;
 
     /** The connection branch to which incoming nodes connect. */
@@ -719,7 +719,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     protected JFrame _frame;
 
     /** True for manual rendering, false for default rendering.
-     */  
+     */
     protected boolean _iterationSynchronized = false;
 
     /** The last transform. */

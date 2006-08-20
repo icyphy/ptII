@@ -100,7 +100,8 @@ public class StyleConfigurer extends Query implements QueryListener {
             _parameterStyles[0] = new LineStyle(container, "Line");
             _parameterStyles[1] = new CheckBoxStyle(container, "Check Box");
             _parameterStyles[2] = new ChoiceStyle(container, "Choice");
-            _parameterStyles[3] = new EditableChoiceStyle(container, "EditableChoice");
+            _parameterStyles[3] = new EditableChoiceStyle(container,
+                    "EditableChoice");
             _parameterStyles[4] = new TextStyle(container, "Text");
             _parameterStyles[5] = new FileChooserStyle(container, "FileChooser");
             _parameterStyles[6] = new NotEditableLineStyle(container, "Fixed");

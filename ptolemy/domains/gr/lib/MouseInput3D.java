@@ -96,7 +96,7 @@ public class MouseInput3D extends GRActor3D {
      *  If mouse has not moved, then no data is sent.
      *  @exception IllegalActionException If thrown while sending the
      *  data to the output ports.
-     */  
+     */
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -135,7 +135,7 @@ public class MouseInput3D extends GRActor3D {
     /** Add this node to the viewscreen.
      *  @exception IllegalActionException If throw while adding this
      *  node to the viewscreen.
-     */   
+     */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         if (_viewScreen == null) {
             throw new IllegalActionException("GR error: no ViewScreen actor");

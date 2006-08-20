@@ -239,7 +239,7 @@ public class Translate3D extends GRTransform {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-   
+
     /** The encapsulated Java 3D node of this actor. */
     protected TransformGroup _transformNode;
 

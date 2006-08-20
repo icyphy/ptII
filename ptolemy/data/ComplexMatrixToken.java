@@ -425,12 +425,12 @@ public class ComplexMatrixToken extends MatrixToken {
             throws IllegalActionException {
         Complex scalar;
         if (rightArgument instanceof ComplexMatrixToken) {
-            if (((ComplexMatrixToken)rightArgument).getRowCount() != 1
-                    || ((ComplexMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((ComplexMatrixToken) rightArgument).getRowCount() != 1
+                    || ((ComplexMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((ComplexMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((ComplexMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((ComplexToken) rightArgument).complexValue();
         }
@@ -451,12 +451,12 @@ public class ComplexMatrixToken extends MatrixToken {
             throws IllegalActionException {
         Complex scalar;
         if (rightArgument instanceof ComplexMatrixToken) {
-            if (((ComplexMatrixToken)rightArgument).getRowCount() != 1
-                    || ((ComplexMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((ComplexMatrixToken) rightArgument).getRowCount() != 1
+                    || ((ComplexMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((ComplexMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((ComplexMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((ComplexToken) rightArgument).complexValue();
         }
@@ -502,12 +502,12 @@ public class ComplexMatrixToken extends MatrixToken {
             throws IllegalActionException {
         Complex scalar;
         if (rightArgument instanceof ComplexMatrixToken) {
-            if (((ComplexMatrixToken)rightArgument).getRowCount() != 1
-                    || ((ComplexMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((ComplexMatrixToken) rightArgument).getRowCount() != 1
+                    || ((ComplexMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((ComplexMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((ComplexMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((ComplexToken) rightArgument).complexValue();
         }
@@ -545,12 +545,12 @@ public class ComplexMatrixToken extends MatrixToken {
             throws IllegalActionException {
         Complex scalar;
         if (rightArgument instanceof ComplexMatrixToken) {
-            if (((ComplexMatrixToken)rightArgument).getRowCount() != 1
-                    || ((ComplexMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((ComplexMatrixToken) rightArgument).getRowCount() != 1
+                    || ((ComplexMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((ComplexMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((ComplexMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((ComplexToken) rightArgument).complexValue();
         }
@@ -571,12 +571,12 @@ public class ComplexMatrixToken extends MatrixToken {
             throws IllegalActionException {
         Complex scalar;
         if (rightArgument instanceof ComplexMatrixToken) {
-            if (((ComplexMatrixToken)rightArgument).getRowCount() != 1
-                    || ((ComplexMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((ComplexMatrixToken) rightArgument).getRowCount() != 1
+                    || ((ComplexMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((ComplexMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((ComplexMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((ComplexToken) rightArgument).complexValue();
         }

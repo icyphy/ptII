@@ -304,9 +304,9 @@ public class Tableau extends CompositeEntity {
             }
 
             // NOTE: We do not want to do the same in windowClosing()
-                // because this will override saving if modified as implemented
-                // in Top.
-            });
+            // because this will override saving if modified as implemented
+            // in Top.
+        });
     }
 
     /** Specify whether the window associated with this tableau

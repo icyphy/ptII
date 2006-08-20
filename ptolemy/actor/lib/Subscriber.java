@@ -28,12 +28,9 @@
 package ptolemy.actor.lib;
 
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.data.BooleanToken;
@@ -43,32 +40,30 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// Subscriber
 
 /**
-This actor subscribes to tokens on a named channel. The tokens are
-"tunneled" from an instance of Publisher that names the same channel
-and that is under the control of the same director. That is, it can
-be at a different level of the hierarchy, or in an entirely different
-composite actor, as long as the relevant composite actors are
-transparent (have no director).
-<p>
-Any number of instances of Subscriber can subscribe to the same
-channel.
-<p>
-This actor actually has a hidden input port that is connected
-to the publisher via hidden "liberal links" (links that are
-allowed to cross levels of the hierarchy).  Consequently,
-any data dependencies that the director might assume on a regular
-"wired" connection will also be assumed across Publisher-Subscriber
-pairs.  Similarly, type constraints will probagate across
-Publisher-Subscriber pairs. That is, the type of the Subscriber
-output will match the type of the Publisher input.
+ This actor subscribes to tokens on a named channel. The tokens are
+ "tunneled" from an instance of Publisher that names the same channel
+ and that is under the control of the same director. That is, it can
+ be at a different level of the hierarchy, or in an entirely different
+ composite actor, as long as the relevant composite actors are
+ transparent (have no director).
+ <p>
+ Any number of instances of Subscriber can subscribe to the same
+ channel.
+ <p>
+ This actor actually has a hidden input port that is connected
+ to the publisher via hidden "liberal links" (links that are
+ allowed to cross levels of the hierarchy).  Consequently,
+ any data dependencies that the director might assume on a regular
+ "wired" connection will also be assumed across Publisher-Subscriber
+ pairs.  Similarly, type constraints will probagate across
+ Publisher-Subscriber pairs. That is, the type of the Subscriber
+ output will match the type of the Publisher input.
  
  @author Edward A. Lee
  @version $Id$
@@ -93,12 +88,12 @@ public class Subscriber extends TypedAtomicActor {
 
         channel = new StringParameter(this, "channel");
         channel.setExpression("channel1");
-        
+
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
-        
+
         new Parameter(input, "_hide", BooleanToken.TRUE);
     }
 
@@ -110,7 +105,7 @@ public class Subscriber extends TypedAtomicActor {
      *  This is a string that defaults to "channel1".
      */
     public StringParameter channel;
-    
+
     /** The input port.  This base class imposes no type constraints except
      *  that the type of the input cannot be greater than the type of the
      *  output.
@@ -145,7 +140,7 @@ public class Subscriber extends TypedAtomicActor {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Read at most one input token from each input
      *  channel and send it to the output.
      *  @exception IllegalActionException If there is no director, or
@@ -203,10 +198,10 @@ public class Subscriber extends TypedAtomicActor {
 
     /** The relation used to link to subscribers. */
     protected TypedIORelation _relation;
-    
+
     /** Cached channel name. */
     protected String _channel;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -215,24 +210,24 @@ public class Subscriber extends TypedAtomicActor {
      */
     private Publisher _findPublisher() {
         // Find the nearest opaque container above in the hierarchy.
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
         while (container != null && !container.isOpaque()) {
-            container = (CompositeEntity)container.getContainer();
+            container = (CompositeEntity) container.getContainer();
         }
         if (container != null) {
             Iterator actors = container.deepEntityList().iterator();
             while (actors.hasNext()) {
                 Object actor = actors.next();
                 if (actor instanceof Publisher) {
-                    if (_channel.equals(((Publisher)actor)._channel)) {
-                        return (Publisher)actor;
+                    if (_channel.equals(((Publisher) actor)._channel)) {
+                        return (Publisher) actor;
                     }
                 }
             }
         }
         return null;
     }
-    
+
     /** Update the connection to the publisher, if there is one.
      */
     private void _updateLinks() throws IllegalActionException {
@@ -243,7 +238,7 @@ public class Subscriber extends TypedAtomicActor {
             return;
         }
         Publisher publisher = _findPublisher();
-        
+
         // Remove the link to a previous relation, if necessary.
         if (_relation != null) {
             input.unlink(_relation);

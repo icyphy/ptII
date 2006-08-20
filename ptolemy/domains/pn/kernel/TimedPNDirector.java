@@ -176,7 +176,8 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TimedPNDirector newObject = (TimedPNDirector) super.clone(workspace);
-        newObject._eventQueue = new CalendarQueue(new TimedEvent.TimeComparator());
+        newObject._eventQueue = new CalendarQueue(
+                new TimedEvent.TimeComparator());
         newObject._delayBlockCount = 0;
         return newObject;
     }
@@ -340,7 +341,8 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *  to advance. These processes are sorted by the time they want to resume
      *  at.
      */
-    protected CalendarQueue _eventQueue = new CalendarQueue(new TimedEvent.TimeComparator());
+    protected CalendarQueue _eventQueue = new CalendarQueue(
+            new TimedEvent.TimeComparator());
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

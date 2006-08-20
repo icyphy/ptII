@@ -37,9 +37,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.actor.gui.EditorFactory;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.ComponentDialog;
@@ -86,16 +83,16 @@ public class FileOrURLEditorFactory extends EditorFactory {
 
         ComponentDialog dialog = null;
 
-        FileParameter helpFileParameter = (FileParameter) object.getAttribute("help");
+        FileParameter helpFileParameter = (FileParameter) object
+                .getAttribute("help");
 
-        String [] buttons = _moreButtons;
+        String[] buttons = _moreButtons;
         if (helpFileParameter == null) {
             // Do not include the help button.
             buttons = _moreButtonsNoHelp;
         }
 
-        dialog = new ComponentDialog(parent,
-                "Edit Parameters or File",
+        dialog = new ComponentDialog(parent, "Edit Parameters or File",
                 createEditorPane(), buttons);
 
         String button = dialog.buttonPressed();
@@ -104,47 +101,49 @@ public class FileOrURLEditorFactory extends EditorFactory {
             return;
         }
 
-
         if (button.equals(_moreButtons[0])) {
             new EditParametersDialog(parent, object);
             return;
         }
 
-        Configuration configuration =  (Configuration) Configuration.findEffigy(object.getContainer()).toplevel();
+        Configuration configuration = (Configuration) Configuration.findEffigy(
+                object.getContainer()).toplevel();
 
         if (button.equals(_moreButtons[1])) {
-            FileParameter fileOrURLParameter = (FileParameter) object.getAttribute("fileOrURL");
-            if ( fileOrURLParameter == null) {
+            FileParameter fileOrURLParameter = (FileParameter) object
+                    .getAttribute("fileOrURL");
+            if (fileOrURLParameter == null) {
                 throw new InternalErrorException(object, null,
                         "No \"fileOrURL\" attribute.");
             } else {
                 try {
                     if (fileOrURLParameter.asURL() == null) {
                         ModelDirectory directory = configuration.getDirectory();
-                        
-                        StringParameter initialDefaultContentsParameter = (StringParameter) object.getAttribute("initialDefaultContents");
+
+                        StringParameter initialDefaultContentsParameter = (StringParameter) object
+                                .getAttribute("initialDefaultContents");
                         String defaultText = "";
                         if (initialDefaultContentsParameter != null) {
-                            defaultText = initialDefaultContentsParameter.getExpression();
+                            defaultText = initialDefaultContentsParameter
+                                    .getExpression();
                         }
                         Effigy effigy = TextEffigy.newTextEffigy(directory,
                                 defaultText);
                         configuration.createPrimaryTableau(effigy);
-                            
 
-//                         EffigyFactory textEffigyFactory = new TextEffigy.Factory(directory, "effigyFactory");
-//                         Tableau tableau = configuration.openModel(
-//                                 null, null, "Unnamed",
-//                                 textEffigyFactory);
-//                         Effigy effigy = (Effigy) tableau.getContainer();
-//                         effigy.masterEffigy().setModifiable(true);
-//                         System.out.println("FileOrURLEditorFactory: modifiable" 
-//                                            + effigy.isModifiable() + " " + effigy);
+                        //                         EffigyFactory textEffigyFactory = new TextEffigy.Factory(directory, "effigyFactory");
+                        //                         Tableau tableau = configuration.openModel(
+                        //                                 null, null, "Unnamed",
+                        //                                 textEffigyFactory);
+                        //                         Effigy effigy = (Effigy) tableau.getContainer();
+                        //                         effigy.masterEffigy().setModifiable(true);
+                        //                         System.out.println("FileOrURLEditorFactory: modifiable" 
+                        //                                            + effigy.isModifiable() + " " + effigy);
 
                     } else {
                         URL fileURL = fileOrURLParameter.asFile().toURL();
-                        configuration.openModel(null, fileURL,
-                                fileURL.toExternalForm());
+                        configuration.openModel(null, fileURL, fileURL
+                                .toExternalForm());
                     }
                 } catch (Exception ex) {
                     throw new InternalErrorException(object, ex,
@@ -158,8 +157,8 @@ public class FileOrURLEditorFactory extends EditorFactory {
             try {
                 if (helpFileParameter != null) {
                     URL fileURL = helpFileParameter.asFile().toURL();
-                    configuration.openModel(null, fileURL,
-                            fileURL.toExternalForm());
+                    configuration.openModel(null, fileURL, fileURL
+                            .toExternalForm());
                 } else {
                     throw new InternalErrorException("No help parameter?");
                 }
@@ -178,9 +177,10 @@ public class FileOrURLEditorFactory extends EditorFactory {
         JPanel panel = new JPanel();
         JTextArea textArea = new JTextArea(
                 "To edit name of the file that contains the parameters, select "
-                + "\"" + _moreButtons[0]
-                + "\".  To edit the file itself that contains the parameters,"
-                + " select \"" + _moreButtons[1] + "\".", 3, 40);
+                        + "\""
+                        + _moreButtons[0]
+                        + "\".  To edit the file itself that contains the parameters,"
+                        + " select \"" + _moreButtons[1] + "\".", 3, 40);
         textArea.setEditable(false);
         textArea.setBorder(BorderFactory.createEtchedBorder());
         textArea.setLineWrap(true);
@@ -199,8 +199,10 @@ public class FileOrURLEditorFactory extends EditorFactory {
     ////                         private members                   ////
 
     // Button labels.
-    private static String[] _moreButtons = { "Configure Parameters", "Edit File", "Help", "Cancel" };
+    private static String[] _moreButtons = { "Configure Parameters",
+            "Edit File", "Help", "Cancel" };
 
-    private static String[] _moreButtonsNoHelp = { "Configure Parameters", "Edit File", "Cancel" };
+    private static String[] _moreButtonsNoHelp = { "Configure Parameters",
+            "Edit File", "Cancel" };
 
 }

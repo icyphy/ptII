@@ -481,8 +481,8 @@ public class PropertyClassChanges implements MoMLFilter {
         // Transition
         HashMap TransitionClassChanges = new HashMap();
         TransitionClassChanges.put("relationList", null);
-        _actorsWithPropertyClassChanges.put(
-                "ptolemy.domains.fsm.kernel.Transition",
-                TransitionClassChanges);
+        _actorsWithPropertyClassChanges
+                .put("ptolemy.domains.fsm.kernel.Transition",
+                        TransitionClassChanges);
     }
 }

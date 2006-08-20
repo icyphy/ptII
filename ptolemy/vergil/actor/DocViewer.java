@@ -612,8 +612,7 @@ public class DocViewer extends HTMLViewer {
         if (target != null) {
             manager = new DocManager(_configuration, target);
         } else if (className != null) {
-            manager = new DocManager(_configuration,
-                    Class.forName(className));
+            manager = new DocManager(_configuration, Class.forName(className));
         } else if (url != null) {
             manager = new DocManager(_configuration, url);
         } else {
@@ -958,8 +957,7 @@ public class DocViewer extends HTMLViewer {
         authorPane.getCaret().setDot(0);
 
         // Populate the "See Also" window.
-        seeAlsoPane.setText(_HTML_HEADER + manager.getSeeAlso()
-                + _HTML_TAIL);
+        seeAlsoPane.setText(_HTML_HEADER + manager.getSeeAlso() + _HTML_TAIL);
         // Set the view to the start of the text.
         seeAlsoPane.getCaret().setDot(0);
     }

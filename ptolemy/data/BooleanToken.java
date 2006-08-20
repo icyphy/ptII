@@ -51,8 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Yellow (cxh) nil token
  @Pt.AcceptedRating Red (cxh)
  */
-public class BooleanToken extends ScalarToken implements
-        BitwiseOperationToken {
+public class BooleanToken extends ScalarToken implements BitwiseOperationToken {
     /** Construct a token with value false.
      */
     public BooleanToken() {
@@ -336,7 +335,7 @@ public class BooleanToken extends ScalarToken implements
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
-        return and((BooleanToken)rightArgument);
+        return and((BooleanToken) rightArgument);
     }
 
     /** Returns a token representing the bitwise NOT of this token.
@@ -356,7 +355,7 @@ public class BooleanToken extends ScalarToken implements
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
-        return or((BooleanToken)rightArgument);
+        return or((BooleanToken) rightArgument);
     }
 
     /** Returns a token representing the bitwise XOR of this token and
@@ -367,7 +366,7 @@ public class BooleanToken extends ScalarToken implements
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
-        return xor((BooleanToken)rightArgument);
+        return xor((BooleanToken) rightArgument);
     }
 
     /** Return a new token whose value is the value of this token
@@ -385,7 +384,8 @@ public class BooleanToken extends ScalarToken implements
      *  @exception IllegalActionException If the argument token is
      *  FALSE.
      */
-    protected ScalarToken _divide(ScalarToken rightArgument) throws IllegalActionException {
+    protected ScalarToken _divide(ScalarToken rightArgument)
+            throws IllegalActionException {
         if (isNil() || ((BooleanToken) rightArgument).isNil()) {
             return BooleanToken.NIL;
         }
@@ -426,7 +426,7 @@ public class BooleanToken extends ScalarToken implements
             return FALSE;
         }
     }
-    
+
     /** Throw an exception.
      *  @param rightArgument The token to compare to this token.
      *  @exception IllegalActionException Always.
@@ -434,8 +434,8 @@ public class BooleanToken extends ScalarToken implements
      */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("isLessThan", this,
-                rightArgument));
+        throw new IllegalActionException(notSupportedMessage("isLessThan",
+                this, rightArgument));
     }
 
     /** Throw an exception. This method is not supported.
@@ -443,7 +443,8 @@ public class BooleanToken extends ScalarToken implements
      *  @exception IllegalActionException Always.
      *  @return Does not return.
      */
-    protected ScalarToken _modulo(ScalarToken rightArgument) throws IllegalActionException {
+    protected ScalarToken _modulo(ScalarToken rightArgument)
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
                 rightArgument));
     }

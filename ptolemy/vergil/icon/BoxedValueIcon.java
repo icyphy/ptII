@@ -27,7 +27,6 @@
  */
 package ptolemy.vergil.icon;
 
-import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingConstants;
@@ -36,7 +35,6 @@ import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
@@ -70,11 +68,11 @@ public class BoxedValueIcon extends AttributeValueIcon {
     public BoxedValueIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         boxColor = new ColorAttribute(this, "boxColor");
         boxColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 

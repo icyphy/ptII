@@ -37,7 +37,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.ChiSquare;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ChiSquare
 
@@ -91,7 +90,8 @@ public class ColtChiSquare extends ColtRandomSource {
 
         freedom = new PortParameter(this, "freedom", new DoubleToken(1.0));
         freedom.setTypeEquals(BaseType.DOUBLE);
-        new SingletonParameter(freedom.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(freedom.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         freedom.moveToFirst();
     }

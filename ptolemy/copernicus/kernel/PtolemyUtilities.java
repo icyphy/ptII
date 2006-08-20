@@ -140,8 +140,8 @@ public class PtolemyUtilities {
                     insertPoint);
             units.insertBefore(Jimple.v().newInvokeStmt(
                     Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                            arrayTokenWithTypeConstructor.makeRef(), elementTypeLocal, tokenArrayLocal)),
-                    insertPoint);
+                            arrayTokenWithTypeConstructor.makeRef(),
+                            elementTypeLocal, tokenArrayLocal)), insertPoint);
             return tokenLocal;
         } else if (token instanceof ptolemy.data.RecordToken) {
             throw new RuntimeException(
@@ -1242,6 +1242,7 @@ public class PtolemyUtilities {
 
     // Soot Method representing the ArrayToken(Token[]) constructor.
     public static SootMethod arrayTokenConstructor;
+
     public static SootMethod arrayTokenWithTypeConstructor;
 
     public static SootMethod arrayGetElementMethod;

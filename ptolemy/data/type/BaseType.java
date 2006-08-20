@@ -75,7 +75,7 @@ public abstract class BaseType implements Type, Serializable {
      *  not make sense for the given types.
      */
     public Type add(Type rightArgumentType) {
-        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Return this, that is, return the reference to this object.
@@ -102,7 +102,7 @@ public abstract class BaseType implements Type, Serializable {
      *  not make sense for the given types.
      */
     public Type divide(Type rightArgumentType) {
-        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Determine if the argument represents the same BaseType as this
@@ -170,7 +170,7 @@ public abstract class BaseType implements Type, Serializable {
      *  not make sense for the given types.
      */
     public Type modulo(Type rightArgumentType) {
-        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Return a new type which represents the type that results from
@@ -181,7 +181,7 @@ public abstract class BaseType implements Type, Serializable {
      *  not make sense for the given types.
      */
     public Type multiply(Type rightArgumentType) {
-        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Test if the argument type is compatible with this type. The method
@@ -256,7 +256,7 @@ public abstract class BaseType implements Type, Serializable {
      *  not make sense for the given types.
      */
     public Type subtract(Type rightArgumentType) {
-        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Return the string representation of this type.
@@ -391,13 +391,13 @@ public abstract class BaseType implements Type, Serializable {
         private UnsizedFixType() {
             super(FixToken.class, "fixedpoint");
         }
+
         public Token convert(Token t) throws IllegalActionException {
-            if(t instanceof FixToken) {
+            if (t instanceof FixToken) {
                 return t;
             } else {
-                throw new IllegalActionException(
-                        "Cannot convert token "
-                        + t + " to type fixed point.");
+                throw new IllegalActionException("Cannot convert token " + t
+                        + " to type fixed point.");
             }
         }
     }
@@ -461,29 +461,29 @@ public abstract class BaseType implements Type, Serializable {
     /** The numerical data type. */
     // NOTE: Removed NUMERICAL from the type lattice, EAL 6/22/06.
     /*
-    public static class NumericalType extends BaseType {
-        private NumericalType() {
-            super(Numerical.class, "numerical");
-        }
+     public static class NumericalType extends BaseType {
+     private NumericalType() {
+     super(Numerical.class, "numerical");
+     }
 
-        public Token convert(Token t) throws IllegalActionException {
-            throw new IllegalActionException(
-                    "Cannot convert token "
-                            + t
-                            + " to type numerical, because numerical is not a concrete type.");
-        }
+     public Token convert(Token t) throws IllegalActionException {
+     throw new IllegalActionException(
+     "Cannot convert token "
+     + t
+     + " to type numerical, because numerical is not a concrete type.");
+     }
 
-        public int getTypeHash() {
-            return 7;
-        }
-    }
-    */
+     public int getTypeHash() {
+     return 7;
+     }
+     }
+     */
 
     /** The numerical data type. */
     // NOTE: Removed NUMERICAL from the type lattice, EAL 6/22/06.
     /*
-    public static final NumericalType NUMERICAL = new NumericalType();
-    */
+     public static final NumericalType NUMERICAL = new NumericalType();
+     */
 
     /** The object data type. */
     public static class ObjectType extends BaseType {
@@ -531,8 +531,8 @@ public abstract class BaseType implements Type, Serializable {
             if (t instanceof ScalarToken) {
                 return (ScalarToken) t;
             }
-            throw new IllegalActionException(
-                Token.notSupportedIncomparableConversionMessage(t, "scalar"));
+            throw new IllegalActionException(Token
+                    .notSupportedIncomparableConversionMessage(t, "scalar"));
         }
 
         public int getTypeHash() {
@@ -546,9 +546,10 @@ public abstract class BaseType implements Type, Serializable {
 
     /** The scalar data type: The least upper bound of all the scalar types. */
     public static final ScalarType SCALAR = new ScalarType();
-    
+
     /** The matrix data type: The least upper bound of all the matrix types. */
-    public static final MatrixType MATRIX = new MatrixType(MatrixToken.class, SCALAR, "matrix");
+    public static final MatrixType MATRIX = new MatrixType(MatrixToken.class,
+            SCALAR, "matrix");
 
     /** The string data type. */
     public static class StringType extends BaseType {

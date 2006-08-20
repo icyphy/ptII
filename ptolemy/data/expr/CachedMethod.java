@@ -36,9 +36,9 @@ import java.util.Iterator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.data.type.MatrixType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
@@ -226,7 +226,7 @@ public class CachedMethod {
                 try {
                     // Cast to (Object []) so as to avoid varargs warning.
                     _returnType = (Type) typeFunction.invoke(null,
-                            (Object []) _argumentTypes);
+                            (Object[]) _argumentTypes);
                 } catch (IllegalAccessException ex) {
                     throw new RuntimeException(ex); // TODO
                 } catch (InvocationTargetException ex) {

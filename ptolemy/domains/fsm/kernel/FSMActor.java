@@ -237,30 +237,30 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     public Transition chooseTransition(List transitionList)
             throws IllegalActionException {
         Transition result = null;
-    
+
         List enabledTransitions = enabledTransitions(transitionList);
         int length = enabledTransitions.size();
-    
+
         if (length == 1) {
             result = (Transition) enabledTransitions.get(0);
         } else if (length > 1) {
             // Ensure that if there are multiple enabled transitions, all of them
             // must be nondeterministic.
             Iterator transitions = enabledTransitions.iterator();
-            
+
             while (transitions.hasNext()) {
                 Transition enabledTransition = (Transition) transitions.next();
-                
+
                 if (!enabledTransition.isNondeterministic()) {
                     throw new MultipleEnabledTransitionsException(
                             currentState(),
                             "Multiple enabled transitions found but not all"
-                            + " of them are nondeterministic. Transition "
-                            + enabledTransition.getName()
-                            + " is deterministic.");
+                                    + " of them are nondeterministic. Transition "
+                                    + enabledTransition.getName()
+                                    + " is deterministic.");
                 }
             }
-            
+
             // Randomly choose one transition from the list of the
             // enabled trnasitions.
 
@@ -268,29 +268,29 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // always) is less than the maximum value of integer. We can safely
             // do the cast from long to int in the following statement.
             int randomChoice = (int) Math.floor(Math.random() * length);
-    
+
             // There is a tiny chance that randomChoice equals length.
             // When this happens, we deduct 1 from the randomChoice.
             if (randomChoice == length) {
                 randomChoice--;
             }
-    
+
             result = (Transition) enabledTransitions.get(randomChoice);
         }
-    
+
         if (result != null) {
             if (_debugging) {
                 _debug("Enabled transition: ", result.getFullName());
             }
-    
+
             Iterator actions = result.choiceActionList().iterator();
-    
+
             while (actions.hasNext()) {
                 Action action = (Action) actions.next();
                 action.execute();
             }
         }
-    
+
         _lastChosenTransition = result;
         return result;
     }
@@ -839,11 +839,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     public void readInputs() throws IllegalActionException {
         Iterator inPorts = inputPortList().iterator();
-    
+
         while (inPorts.hasNext() && !_stopRequested) {
             IOPort p = (IOPort) inPorts.next();
             int width = p.getWidth();
-    
+
             for (int channel = 0; channel < width; ++channel) {
                 _readInputs(p, channel);
             }
@@ -857,11 +857,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     public void readOutputsFromRefinement() throws IllegalActionException {
         Iterator inPorts = inputPortList().iterator();
-    
+
         while (inPorts.hasNext() && !_stopRequested) {
             IOPort p = (IOPort) inPorts.next();
             int width = p.getWidth();
-    
+
             for (int channel = 0; channel < width; ++channel) {
                 if (_isRefinementOutput(p, channel)) {
                     _readInputs(p, channel);
@@ -1289,7 +1289,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected fields                  ////
-    
+
     /** Current state. */
     protected State _currentState = null;
 

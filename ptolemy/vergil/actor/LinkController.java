@@ -292,7 +292,7 @@ public class LinkController extends BasicEdgeController {
         public void connectorDropped(ConnectorEvent evt) {
             Connector c = evt.getConnector();
             Figure f = evt.getTarget();
-            Link link = (Link)c.getUserObject();
+            Link link = (Link) c.getUserObject();
             Object node = (f == null) ? null : f.getUserObject();
             ActorGraphModel model = (ActorGraphModel) getController()
                     .getGraphModel();
@@ -300,7 +300,8 @@ public class LinkController extends BasicEdgeController {
             switch (evt.getEnd()) {
             case ConnectorEvent.HEAD_END:
                 if (node == link.getTail()) {
-                    MessageHandler.error("Cannot link both ends to the same object.");
+                    MessageHandler
+                            .error("Cannot link both ends to the same object.");
                     // FIXME: The panner needs to repaint.  How to get it to do that?
                     return;
                 }
@@ -309,7 +310,8 @@ public class LinkController extends BasicEdgeController {
 
             case ConnectorEvent.TAIL_END:
                 if (node == link.getHead()) {
-                    MessageHandler.error("Cannot link both ends to the same object.");
+                    MessageHandler
+                            .error("Cannot link both ends to the same object.");
                     // FIXME: The panner needs to repaint.  How to get it to do that?
                     return;
                 }

@@ -86,7 +86,7 @@ public class KeyInput3D extends GRActor3D {
      *  port.  If no key has been pressed, then no data is sent.
      *  @exception IllegalActionException If thrown while sending the
      *  data to the output port.
-     */  
+     */
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -126,7 +126,7 @@ public class KeyInput3D extends GRActor3D {
     /** Add this node to the viewscreen.
      *  @exception IllegalActionException If throw while adding this
      *  node to the viewscreen.
-     */   
+     */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         if (_viewScreen == null) {
             throw new IllegalActionException("GR error: no ViewScreen actor");
@@ -141,7 +141,6 @@ public class KeyInput3D extends GRActor3D {
     /** The BranchGroup to which is listened for key presses. */
     protected BranchGroup _userInputNode;
 
- 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

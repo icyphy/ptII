@@ -212,7 +212,7 @@ public class TestToken extends Token {
         public Type modulo(Type rightArgumentType) {
             return this;
         }
-        
+
         /** Return a new type which represents the type that results from
          *  multiplying a token of this type and a token of the given
          *  argument type.
@@ -232,7 +232,7 @@ public class TestToken extends Token {
         public Type one() {
             return this;
         }
-        
+
         /** Return a new type which represents the type that results from
          *  subtracting a token of this type and a token of the given
          *  argument type.

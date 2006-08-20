@@ -456,7 +456,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
     public ParseTreeEvaluator getParseTreeEvaluator() {
         return new ParseTreeEvaluator();
     }
-    
+
     /** Return true if the model errors are handled. Otherwise, return false
      *  and the model errors are passed to the higher level in hierarchy.
      *  <p>
@@ -584,14 +584,14 @@ public class FSMDirector extends Director implements ModelErrorHandler,
 
         _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
                 .currentState());
-        
+
         // Increment the workspace version such that the
         // function dependencies will be reconstructed.
         // Note that this occurs only if a transition was taken.
         // FIXME: Replace this with conservative approximation.
         if (_mutationEnabled && (_enabledTransition != null)) {
             ChangeRequest request = new ChangeRequest(this,
-            "increment workspace version to force recalculation of function dependencies") {
+                    "increment workspace version to force recalculation of function dependencies") {
                 protected void _execute() throws KernelException {
                     getContainer().workspace().incrVersion();
                 }
@@ -607,14 +607,14 @@ public class FSMDirector extends Director implements ModelErrorHandler,
             Director executiveDirector = container.getExecutiveDirector();
             if (executiveDirector != null) {
                 if (_debugging) {
-                    _debug("Request refiring by " 
-                            + executiveDirector.getFullName()
-                            + " at " + getModelTime());
+                    _debug("Request refiring by "
+                            + executiveDirector.getFullName() + " at "
+                            + getModelTime());
                 }
                 executiveDirector.fireAt(container, getModelTime());
             }
         }
-        
+
         return result && !_stopRequested;
     }
 

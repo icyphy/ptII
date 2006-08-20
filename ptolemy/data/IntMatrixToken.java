@@ -40,7 +40,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
 import ptolemy.math.ComplexMatrixMath;
 import ptolemy.math.DoubleMatrixMath;
-import ptolemy.math.FixPoint;
 import ptolemy.math.IntegerArrayMath;
 import ptolemy.math.IntegerMatrixMath;
 import ptolemy.math.LongMatrixMath;
@@ -533,12 +532,12 @@ public class IntMatrixToken extends MatrixToken {
             throws IllegalActionException {
         int scalar;
         if (rightArgument instanceof IntMatrixToken) {
-            if (((IntMatrixToken)rightArgument).getRowCount() != 1
-                    || ((IntMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((IntMatrixToken) rightArgument).getRowCount() != 1
+                    || ((IntMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((IntMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((IntMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((IntToken) rightArgument).intValue();
         }
@@ -560,12 +559,12 @@ public class IntMatrixToken extends MatrixToken {
             throws IllegalActionException {
         int scalar;
         if (rightArgument instanceof IntMatrixToken) {
-            if (((IntMatrixToken)rightArgument).getRowCount() != 1
-                    || ((IntMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((IntMatrixToken) rightArgument).getRowCount() != 1
+                    || ((IntMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((IntMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((IntMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((IntToken) rightArgument).intValue();
         }
@@ -596,12 +595,12 @@ public class IntMatrixToken extends MatrixToken {
             throws IllegalActionException {
         int scalar;
         if (rightArgument instanceof IntMatrixToken) {
-            if (((IntMatrixToken)rightArgument).getRowCount() != 1
-                    || ((IntMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((IntMatrixToken) rightArgument).getRowCount() != 1
+                    || ((IntMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((IntMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((IntMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((IntToken) rightArgument).intValue();
         }
@@ -659,12 +658,12 @@ public class IntMatrixToken extends MatrixToken {
             throws IllegalActionException {
         int scalar;
         if (rightArgument instanceof IntMatrixToken) {
-            if (((IntMatrixToken)rightArgument).getRowCount() != 1
-                    || ((IntMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((IntMatrixToken) rightArgument).getRowCount() != 1
+                    || ((IntMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((IntMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((IntMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((IntToken) rightArgument).intValue();
         }
@@ -702,12 +701,12 @@ public class IntMatrixToken extends MatrixToken {
             throws IllegalActionException {
         int scalar;
         if (rightArgument instanceof IntMatrixToken) {
-            if (((IntMatrixToken)rightArgument).getRowCount() != 1
-                    || ((IntMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((IntMatrixToken) rightArgument).getRowCount() != 1
+                    || ((IntMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((IntMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((IntMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((IntToken) rightArgument).intValue();
         }
@@ -728,12 +727,12 @@ public class IntMatrixToken extends MatrixToken {
             throws IllegalActionException {
         int scalar;
         if (rightArgument instanceof IntMatrixToken) {
-            if (((IntMatrixToken)rightArgument).getRowCount() != 1
-                    || ((IntMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((IntMatrixToken) rightArgument).getRowCount() != 1
+                    || ((IntMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((IntMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((IntMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((IntToken) rightArgument).intValue();
         }

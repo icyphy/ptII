@@ -394,9 +394,10 @@ public class Manager extends NamedObj implements Runnable {
                 // Handle throwable with exception handlers,
                 // if there are any.
                 if (initialThrowable != null) {
-                    List exceptionHandlersList = 
-                        _container.entityList(ExceptionHandler.class);
-                    Iterator exceptionHandlers = exceptionHandlersList.iterator();
+                    List exceptionHandlersList = _container
+                            .entityList(ExceptionHandler.class);
+                    Iterator exceptionHandlers = exceptionHandlersList
+                            .iterator();
                     if (exceptionHandlersList.size() > 0) {
                         boolean exceptionHandled = false;
                         // Note that we allow multiple exception handlers
@@ -404,9 +405,10 @@ public class Manager extends NamedObj implements Runnable {
                         // of the exception handlers, at least until one
                         // those throws an exception.
                         while (exceptionHandlers.hasNext()) {
-                            ExceptionHandler exceptionHandler = 
-                                (ExceptionHandler) exceptionHandlers.next(); 
-                            if (exceptionHandler.handleException(_container, (Exception) initialThrowable)) {
+                            ExceptionHandler exceptionHandler = (ExceptionHandler) exceptionHandlers
+                                    .next();
+                            if (exceptionHandler.handleException(_container,
+                                    (Exception) initialThrowable)) {
                                 exceptionHandled = true;
                             }
                         }

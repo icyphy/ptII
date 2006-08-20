@@ -98,7 +98,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (hyzheng)
  */
 public class DiscreteClock extends TypedAtomicActor {
-    
+
     // This actor only generates predictable events and that is why it does not
     // implement the ContinuousStepSizeControlActor interface. This actor requests a
     // refiring at its initialize method to produce events. During its postfire 
@@ -106,7 +106,7 @@ public class DiscreteClock extends TypedAtomicActor {
     // FIXME: However, it probably should. What if it's in a modal model
     // and its mode gets activated at a time close to when it should produce
     // an output?
-    
+
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -355,14 +355,15 @@ public class DiscreteClock extends TypedAtomicActor {
                 _phase = 0;
                 // Do not increment the cycle count, since we did
                 // not actually complete these cycles.
-                double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+                double periodValue = ((DoubleToken) period.getToken())
+                        .doubleValue();
                 _cycleStartTime = _cycleStartTime.add(periodValue);
             }
             _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
             _nextOutputIndex = 1;
             rightIndex = _nextOutputIndex == director.getIndex();
             rightTime = director.getModelTime().compareTo(_nextOutputTime);
-            
+
             // If at this point we are caught up but can't fire now,
             // then request a refiring.
             if (rightTime < 0.0 || (rightTime == 0.0 && !rightIndex)) {
@@ -370,17 +371,17 @@ public class DiscreteClock extends TypedAtomicActor {
                 // The return statement below will return false.
             }
         }
-        return super.prefire() &&  rightIndex && (rightTime == 0.0);
+        return super.prefire() && rightIndex && (rightTime == 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The following are all transient because they need not be cloned.
     // Either the clone method or the initialize() method sets them.
-    
+
     /** The count of iterations. */
     private transient int _cycleCount;
-    
+
     /** The most recent cycle start time. */
     private transient Time _cycleStartTime;
 

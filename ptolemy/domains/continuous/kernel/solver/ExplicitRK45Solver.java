@@ -147,8 +147,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
             return;
 
         default:
-            throw new InvalidStateException(
-                    "Execution sequence out of range.");
+            throw new InvalidStateException("Execution sequence out of range.");
         }
 
         integrator.setTentativeState(outputValue);
@@ -248,7 +247,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
      *  @see #_isStepFinished()
      *  @see #_reset()
      */
-    protected final double _incrementRound() { 
+    protected final double _incrementRound() {
         double result = _TIME_INCREMENTS[_roundCount];
         _roundCount++;
         return result;
@@ -270,7 +269,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
     protected final void _reset() {
         _roundCount = 0;
     }
-    
+
     /** Set the round for the next integration step.
      *  @param round The round for the next integration step.
      */
@@ -282,7 +281,8 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
     ////                         private variables                 ////
 
     /** The ratio of time increments within one integration step. */
-    protected static final double[] _TIME_INCREMENTS = { 0.2, 0.3, 0.6, 1.0, 0.875, 1.0, 1.0 };
+    protected static final double[] _TIME_INCREMENTS = { 0.2, 0.3, 0.6, 1.0,
+            0.875, 1.0, 1.0 };
 
     /** B coefficients */
     private static final double[][] _B = {
@@ -290,7 +290,8 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
             { 3.0 / 40, 9.0 / 40 },
             { 0.3, -0.9, 1.2 },
             { -11.0 / 54, 5.0 / 2, -70.0 / 27, 35.0 / 27 },
-            { 1631.0 / 55296, 175.0 / 512, 575.0 / 13824, 44275.0 / 110592, 253.0 / 4096 },
+            { 1631.0 / 55296, 175.0 / 512, 575.0 / 13824, 44275.0 / 110592,
+                    253.0 / 4096 },
             { 37.0 / 378, 0.0, 250.0 / 621, 125.0 / 594, 0.0, 512.0 / 1771 } };
 
     /** E coefficients */
@@ -301,10 +302,10 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
 
     /** The index of the error stored in the auxiliary variables. */
     private static final int _ERROR_INDEX = _TIME_INCREMENTS.length;
-    
+
     /** The order of the algorithm. */
     private static final int _ORDER = 5;
-    
+
     /** The round counter. */
     private int _roundCount = 0;
 }

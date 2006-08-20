@@ -246,11 +246,11 @@ public class LayerEvent extends MouseEvent {
         case InputEvent.SHIFT_MASK:
             return "SHIFT_MASK";
 
-        //// AWT is too stupid to handle these properly
-        //case InputEvent.ALT_MASK:
-        //return "ALT_MASK";
-        //case InputEvent.META_MASK:
-        //return "META_MASK";
+            //// AWT is too stupid to handle these properly
+            //case InputEvent.ALT_MASK:
+            //return "ALT_MASK";
+            //case InputEvent.META_MASK:
+            //return "META_MASK";
         }
 
         return null;

@@ -191,7 +191,7 @@ public class DocAttribute extends SingletonAttribute {
                     // Attribute is a port parameter.
                     name = name.substring(0, n);
                     if (!(container instanceof Entity)
-                            || ((Entity)container).getPort(name) == null) {
+                            || ((Entity) container).getPort(name) == null) {
                         // Entry is obsolete.  Delete it.
                         try {
                             attribute.setContainer(null);
@@ -206,7 +206,7 @@ public class DocAttribute extends SingletonAttribute {
                         // Attribute is a port parameter.
                         name = name.substring(0, n);
                         if (!(container instanceof Entity)
-                                || ((Entity)container).getPort(name) == null) {
+                                || ((Entity) container).getPort(name) == null) {
                             // Entry is obsolete.  Delete it.
                             try {
                                 attribute.setContainer(null);
@@ -220,8 +220,7 @@ public class DocAttribute extends SingletonAttribute {
             }
         }
 
-        parameters = container.attributeList(Settable.class)
-                .iterator();
+        parameters = container.attributeList(Settable.class).iterator();
         while (parameters.hasNext()) {
             NamedObj attribute = (NamedObj) parameters.next();
             if (((Settable) attribute).getVisibility() == Settable.FULL) {
@@ -239,7 +238,7 @@ public class DocAttribute extends SingletonAttribute {
                 }
             }
         }
-        
+
         if (container instanceof Entity) {
             Iterator ports = ((Entity) container).portList().iterator();
             while (ports.hasNext()) {

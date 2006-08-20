@@ -124,7 +124,7 @@ public class ActorIndex {
                 //URL modelURL = new File(modelName).toURL();
                 URL modelURL = FileUtilities.nameToURL(modelName, null, null);
                 System.out.println("Parsing: " + modelURL);
-		parser.reset();
+                parser.reset();
                 try {
                     parser.parse(null, modelURL);
                 } catch (Exception ex) {
@@ -167,7 +167,6 @@ public class ActorIndex {
                         + actorClassName.replace('.', File.separatorChar)
                         + "Idx.htm";
 
-
                 // Determine the relative path to $PTII from this
                 // file.  We need this so that we can link to the models.
                 String canonicalOutputFileName = new File(outputFileName)
@@ -209,7 +208,8 @@ public class ActorIndex {
                 }
 
                 // Make directories if necessary
-                File outputDirectoryFile = new File(new File(outputFileName).getParent());
+                File outputDirectoryFile = new File(new File(outputFileName)
+                        .getParent());
                 if (!outputDirectoryFile.exists()) {
                     System.out.println("Creating " + outputDirectoryFile);
                     outputDirectoryFile.mkdirs();
@@ -219,14 +219,13 @@ public class ActorIndex {
                 writer = new BufferedWriter(new FileWriter(outputFileName));
 
                 writer.write("<html>\n<head>\n<title>Index for "
-                        + actorClassName + "</title>\n"
-                        + "<link href=\"" + relativePath + "doc/default.css\""
+                        + actorClassName + "</title>\n" + "<link href=\""
+                        + relativePath + "doc/default.css\""
                         + "rel=\"stylesheet\" type=\"text/css\">\n"
-                        + "</head>\n<body>\n"
-                        + "<h2>" + actorClassName + "</h2>\n"
+                        + "</head>\n<body>\n" + "<h2>" + actorClassName
+                        + "</h2>\n"
                         + "Below are demonstration models that use "
                         + actorClassName + "\n<ul>\n");
-
 
                 // Loop through all the models that use this actor
                 Iterator models = ((Set) entry.getValue()).iterator();

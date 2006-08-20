@@ -102,8 +102,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  @param relationList The relation list.
      *  @param errorTolerance The errorTolerance.
      */
-    public ParseTreeEvaluatorForGuardExpression( 
-            RelationList relationList, double errorTolerance) {
+    public ParseTreeEvaluatorForGuardExpression(RelationList relationList,
+            double errorTolerance) {
         _absentDiscreteVariables = new LinkedList();
         _constructingRelationList = true;
         _errorTolerance = errorTolerance;
@@ -123,14 +123,14 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public Token evaluateParseTree(ASTPtRootNode node,
-            ParserScope scope) throws IllegalActionException {
+    public Token evaluateParseTree(ASTPtRootNode node, ParserScope scope)
+            throws IllegalActionException {
         _relationIndex = 0;
         Token result = super.evaluateParseTree(node, scope);
         if (_constructingRelationList) {
             _constructingRelationList = false;
         }
-        return result; 
+        return result;
     }
 
     /** Return the list of relations (boolean-valued expressions that do not
@@ -161,7 +161,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  visitLeafNode throws the IllegalActionException.
      */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
-        
+
         // Note: based on the *_isPresent variable, we figure out
         // the discrete variables and do not evaluate it when it is
         // not present.
@@ -236,7 +236,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         if (_constructingRelationList) {
             _relationList.addRelation(_relationType, _difference);
         } else {
-            _relationList.setRelation(_relationIndex, _relationType, _difference);
+            _relationList.setRelation(_relationIndex, _relationType,
+                    _difference);
             _relationIndex++;
             // Round the _relationIndex.
             if (_relationIndex >= _relationList.length()) {
@@ -318,7 +319,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         // visitLeafNode() method, we should know that x is either present or
         // absent. If x is absent, we do not evaluate the "x < 10.0" part here.
         Set variablesOfNode = _variableCollector.collectFreeVariables(node);
-        Iterator absentDiscreteVariables = _absentDiscreteVariables.listIterator();
+        Iterator absentDiscreteVariables = _absentDiscreteVariables
+                .listIterator();
 
         while (absentDiscreteVariables.hasNext()) {
             String variableName = (String) absentDiscreteVariables.next();
@@ -370,7 +372,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                     && (rightToken instanceof ScalarToken)
                     && !(leftToken instanceof BooleanToken)) {
                 // handle the relations like x == 2.0
-                ScalarToken difference = (ScalarToken) leftToken.subtract(rightToken);
+                ScalarToken difference = (ScalarToken) leftToken
+                        .subtract(rightToken);
                 if (((BooleanToken) result).booleanValue()) {
                     _relationType = RelationType.EQUAL_INEQUAL;
                 } else {
@@ -419,14 +422,16 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             } else {
                 _relationType = RelationType.FALSE;
             }
-            _difference = ((ScalarToken) leftScalar.subtract(rightScalar)).doubleValue();
+            _difference = ((ScalarToken) leftScalar.subtract(rightScalar))
+                    .doubleValue();
         }
 
         _difference = Math.abs(_difference);
         if (_constructingRelationList) {
             _relationList.addRelation(_relationType, _difference);
         } else {
-            _relationList.setRelation(_relationIndex, _relationType, _difference);
+            _relationList.setRelation(_relationIndex, _relationType,
+                    _difference);
             _relationIndex++;
             if (_relationIndex >= _relationList.length()) {
                 _relationIndex -= _relationList.length();
@@ -439,7 +444,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The list of discrete variables without values.
     private LinkedList _absentDiscreteVariables;
 

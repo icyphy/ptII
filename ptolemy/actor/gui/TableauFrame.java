@@ -685,11 +685,11 @@ public class TableauFrame extends Top {
             try {
                 Configuration configuration = getConfiguration();
                 FileParameter iconAttribute = (FileParameter) configuration
-                    .getAttribute("_applicationIcon", FileParameter.class);
+                        .getAttribute("_applicationIcon", FileParameter.class);
 
                 if (iconAttribute != null) {
                     url = iconAttribute.asURL();
-                } 
+                }
             } catch (Throwable ex) {
                 // Ignore, we will set url to the default.
             }

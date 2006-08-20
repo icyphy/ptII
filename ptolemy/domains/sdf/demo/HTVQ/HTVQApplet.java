@@ -63,17 +63,16 @@ public class HTVQApplet extends MoMLApplet {
         // So that the background color comes through...
         displayPanel.setBackground(null);
 
-
         JPanel originalPanel = new JPanel();
         JPanel compressedPanel = new JPanel();
 
-//         JPanel prnPanel = new JPanel();
+        //         JPanel prnPanel = new JPanel();
 
-//         // So the background shows through.
-//         prnPanel.setBackground(null);
-//         prnPanel.setLayout(new BorderLayout());
-//         prnPanel.add(new JLabel("SNR (dB)"), BorderLayout.NORTH);
-//         displayPanel.add(prnPanel, BorderLayout.SOUTH);
+        //         // So the background shows through.
+        //         prnPanel.setBackground(null);
+        //         prnPanel.setLayout(new BorderLayout());
+        //         prnPanel.add(new JLabel("SNR (dB)"), BorderLayout.NORTH);
+        //         displayPanel.add(prnPanel, BorderLayout.SOUTH);
 
         CompositeEntity toplevel = (CompositeEntity) _toplevel;
         ImageDisplay consumer = (ImageDisplay) toplevel.getEntity("Compressed");
@@ -88,7 +87,8 @@ public class HTVQApplet extends MoMLApplet {
         displayPanel.add(originalPanel, BorderLayout.WEST);
         original.setBackground(null);
 
-        SequencePlotter plot = (SequencePlotter) toplevel.getEntity("Signal To Noise Ratio");
+        SequencePlotter plot = (SequencePlotter) toplevel
+                .getEntity("Signal To Noise Ratio");
 
         JPanel plotPanel = new JPanel();
         plot.place(plotPanel);
@@ -103,9 +103,9 @@ public class HTVQApplet extends MoMLApplet {
         getContentPane().add(appletPanel, BorderLayout.NORTH);
 
         // To control the position, we put this in its own panel.
-//         JPanel textPanel = new JPanel();
-//         prnPanel.add(textPanel, BorderLayout.SOUTH);
-//         prn.place(textPanel);
-//         textPanel.setBackground(null);
+        //         JPanel textPanel = new JPanel();
+        //         prnPanel.add(textPanel, BorderLayout.SOUTH);
+        //         prn.place(textPanel);
+        //         textPanel.setBackground(null);
     }
 }

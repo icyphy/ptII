@@ -76,12 +76,12 @@ import ptolemy.vergil.basic.GetDocumentationAction;
  configuration.
 
  <p>If the URL starts with <code>ptdoc:</code>, then the Ptolemy
-documentation is opened.  For example <code>
-<pre>
-&lt; a href="ptdoc:ptolemy.actor.gui.HTMLViewer"&gt;HTMLViewer&lt;/a&gt;
-</pre>
-will open the Ptolemy documentation for this class.  For details see
-{@link ptolemy.vergil.basic.GetDocumentationAction}.
+ documentation is opened.  For example <code>
+ <pre>
+ &lt; a href="ptdoc:ptolemy.actor.gui.HTMLViewer"&gt;HTMLViewer&lt;/a&gt;
+ </pre>
+ will open the Ptolemy documentation for this class.  For details see
+ {@link ptolemy.vergil.basic.GetDocumentationAction}.
 
  <p>This class supports printing and will save the text to a .html file.
  The url that is viewed can be changed by calling the <i>setPage</i> method.
@@ -99,7 +99,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
     public HTMLViewer() {
         _init();
     }
-    
+
     /** Construct an empty top-level frame managed by the specified
      *  tableau and the default status bar. After constructing this,
      *  it is necessary to call setVisible(true) to make the frame appear.
@@ -110,7 +110,6 @@ public class HTMLViewer extends TableauFrame implements Printable,
         super(tableau);
         _init();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -159,10 +158,8 @@ public class HTMLViewer extends TableauFrame implements Printable,
             if (event.getDescription().startsWith("ptdoc:")) {
                 // Process "ptdoc:" hyperlinks
                 try {
-                    GetDocumentationAction.getDocumentation(
-                            getConfiguration(),
-                            event.getDescription().substring(6),
-                            getEffigy());
+                    GetDocumentationAction.getDocumentation(getConfiguration(),
+                            event.getDescription().substring(6), getEffigy());
                 } catch (Throwable throwable) {
                     MessageHandler.error("Problem processing '"
                             + event.getDescription() + "'.", throwable);
@@ -422,7 +419,6 @@ public class HTMLViewer extends TableauFrame implements Printable,
         pane.setContentType("text/html");
         pane.setEditable(false);
         pane.addHyperlinkListener(this);
-        
 
         if (_styleSheetURL != null) {
             // If _styleSheetURL is non-null, we set the style sheet
@@ -439,9 +435,11 @@ public class HTMLViewer extends TableauFrame implements Printable,
         // java 1.5, this will turn on anti-aliased fonts
         try {
             // We use reflection so that this compiles everywhere.
-            Class swingUtilities = Class.forName("com.sun.java.swing.SwingUtilities2");
-            Field propertyField = swingUtilities.getDeclaredField("AA_TEXT_PROPERTY_KEY");
-            pane.putClientProperty(propertyField.get(null),                 Boolean.TRUE );
+            Class swingUtilities = Class
+                    .forName("com.sun.java.swing.SwingUtilities2");
+            Field propertyField = swingUtilities
+                    .getDeclaredField("AA_TEXT_PROPERTY_KEY");
+            pane.putClientProperty(propertyField.get(null), Boolean.TRUE);
         } catch (Exception ex) {
             // Ignore, we just wont have anti-aliased fonts then.
         }
@@ -461,7 +459,8 @@ public class HTMLViewer extends TableauFrame implements Printable,
     static {
         try {
             Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
-            _styleSheetURL = refClass.getClassLoader().getResource("doc/default.css");
+            _styleSheetURL = refClass.getClassLoader().getResource(
+                    "doc/default.css");
         } catch (Throwable ex) {
             ex.printStackTrace();
             // Ignore, we just use the wrong style sheets.
@@ -469,28 +468,28 @@ public class HTMLViewer extends TableauFrame implements Printable,
 
     }
 
-//     static {
-//         try {
-//             // We might be in the Swing Event thread, so
-//             // Thread.currentThread().getContextClassLoader()
-//             // .getResource(entry) probably will not work.
-//             Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
-//             URL styleSheetURL = refClass.getClassLoader()
-//                 .getResource("doc/default.css");
-//             if (styleSheetURL != null) {
-//                 System.out.println("HTMLViewer: reading stylesheet "
-//                         + styleSheetURL + "Instead of " + HTMLEditorKit.DEFAULT_CSS);
+    //     static {
+    //         try {
+    //             // We might be in the Swing Event thread, so
+    //             // Thread.currentThread().getContextClassLoader()
+    //             // .getResource(entry) probably will not work.
+    //             Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
+    //             URL styleSheetURL = refClass.getClassLoader()
+    //                 .getResource("doc/default.css");
+    //             if (styleSheetURL != null) {
+    //                 System.out.println("HTMLViewer: reading stylesheet "
+    //                         + styleSheetURL + "Instead of " + HTMLEditorKit.DEFAULT_CSS);
 
-//                 StyleSheet styleSheet = htmlEditorKit.getStyleSheet();
-//                 styleSheet.importStyleSheet(styleSheetURL);
-//                 htmlEditorKit.setStyleSheet(styleSheet);
-//             } else {
-//                 System.out.println("Failed to read doc/default.css, so "
-//                         + " the wrong style sheets will be used.");
-//             }
-//         } catch (Throwable ex) {
-//             // Ignore, we just use the wrong style sheets.
-//             ex.printStackTrace();
-//         }
-//    }
+    //                 StyleSheet styleSheet = htmlEditorKit.getStyleSheet();
+    //                 styleSheet.importStyleSheet(styleSheetURL);
+    //                 htmlEditorKit.setStyleSheet(styleSheet);
+    //             } else {
+    //                 System.out.println("Failed to read doc/default.css, so "
+    //                         + " the wrong style sheets will be used.");
+    //             }
+    //         } catch (Throwable ex) {
+    //             // Ignore, we just use the wrong style sheets.
+    //             ex.printStackTrace();
+    //         }
+    //    }
 }

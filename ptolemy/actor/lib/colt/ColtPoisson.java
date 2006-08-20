@@ -76,7 +76,8 @@ public class ColtPoisson extends ColtRandomSource {
 
         mean = new PortParameter(this, "mean", new DoubleToken(1.0));
         mean.setTypeEquals(BaseType.DOUBLE);
-        new SingletonParameter(mean.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(mean.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         mean.moveToFirst();
     }

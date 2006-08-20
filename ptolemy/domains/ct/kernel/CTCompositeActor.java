@@ -158,9 +158,10 @@ public class CTCompositeActor extends TypedCompositeActor implements
         while (!result && actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor instanceof CTCompositeActor) {
-                result = ((CTCompositeActor) actor).containsWaveformGenerators();
-            } else if ((actor instanceof CTWaveformGenerator) || 
-                    (actor instanceof Source)) {
+                result = ((CTCompositeActor) actor)
+                        .containsWaveformGenerators();
+            } else if ((actor instanceof CTWaveformGenerator)
+                    || (actor instanceof Source)) {
                 result = true;
             }
         }

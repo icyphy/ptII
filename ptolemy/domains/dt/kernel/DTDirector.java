@@ -1185,7 +1185,9 @@ public class DTDirector extends SDFDirector implements TimedDirector {
         public Time localTime;
 
         private Actor _actor;
+
         private int _repeats;
+
         private boolean _shouldGenerateInitialTokens;
 
         /* Construct the information on the contained Actor

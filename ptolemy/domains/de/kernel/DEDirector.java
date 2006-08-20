@@ -594,10 +594,8 @@ public class DEDirector extends Director implements TimedDirector {
                     "Calling fireAt() before preinitialize().");
         }
         if (_debugging) {
-            _debug("DEDirector: Actor "
-                    + actor.getFullName()
-                    + " requests refiring at "
-                    + time);
+            _debug("DEDirector: Actor " + actor.getFullName()
+                    + " requests refiring at " + time);
         }
 
         // We want to keep event queues at all levels in hierarchy
@@ -757,7 +755,7 @@ public class DEDirector extends Director implements TimedDirector {
     public void initialize() throws IllegalActionException {
         _isInitializing = true;
         _eventQueue.clear();
-        
+
         // Reset the following private variables.
         _disabledActors = null;
         _exceedStopTime = false;
@@ -771,8 +769,8 @@ public class DEDirector extends Director implements TimedDirector {
         // guaranteed to stop at that time. This event also serves as
         // a guideline for an embedded Continuous model to know how much
         // further to integrate into future.
-        fireAt((Actor)getContainer(), _stopTime);
-        
+        fireAt((Actor) getContainer(), _stopTime);
+
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
             // If the event queue is not empty and the container is not at
             // the top level, ask the upper level director in the
@@ -997,10 +995,9 @@ public class DEDirector extends Director implements TimedDirector {
      */
     public void preinitialize() throws IllegalActionException {
         // Initialize an event queue.
-        _eventQueue = new DECQEventQueue(((IntToken) minBinCount
-                .getToken()).intValue(), ((IntToken) binCountFactor.getToken())
-                .intValue(), ((BooleanToken) isCQAdaptive.getToken())
-                .booleanValue());
+        _eventQueue = new DECQEventQueue(((IntToken) minBinCount.getToken())
+                .intValue(), ((IntToken) binCountFactor.getToken()).intValue(),
+                ((BooleanToken) isCQAdaptive.getToken()).booleanValue());
 
         // Add debug listeners.
         if (_debugListeners != null) {
@@ -1241,11 +1238,11 @@ public class DEDirector extends Director implements TimedDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Based on the depths of IO ports, calculate the depths of actors.
      *  The results are cached in a hashtable _actorToDepth.
      *  Update the depths of existing events in the event queue.
-     */  
+     */
     private void _computeActorDepth() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
         LinkedList actors = (LinkedList) container.deepEntityList();
@@ -1954,7 +1951,8 @@ public class DEDirector extends Director implements TimedDirector {
                     // queue such that the executive director of this DE model
                     // can react to these events.
                     Actor actor = nextEvent.actor();
-                    if (actor == actorToFire && nextEvent.hasTheSameTagAs(lastFoundEvent)) {
+                    if (actor == actorToFire
+                            && nextEvent.hasTheSameTagAs(lastFoundEvent)) {
                         _eventQueue.take();
                     } else {
                         // Next event has a future tag or a different destination.
@@ -2027,10 +2025,8 @@ public class DEDirector extends Director implements TimedDirector {
         CompositeActor container = (CompositeActor) getContainer();
 
         if (_debugging) {
-            _debug("DEDirector: Requests refiring of: "
-                    + container.getName()
-                    + " at time "
-                    + nextEvent.timeStamp());
+            _debug("DEDirector: Requests refiring of: " + container.getName()
+                    + " at time " + nextEvent.timeStamp());
         }
 
         // Enqueue a pure event to fire the container of this director.
@@ -2040,7 +2036,7 @@ public class DEDirector extends Director implements TimedDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** A hashtable that caches the depths of actors. */
     private Hashtable _actorToDepth = null;
 

@@ -115,7 +115,7 @@ public class Time implements Comparable {
      *  @param director The director with which this time object is associated.
      *   This must not be null, or subsequent uses of the class will fail.
      */
-    public Time(Director director){
+    public Time(Director director) {
         _director = director;
         _timeValue = BigInteger.ZERO;
     }
@@ -455,7 +455,7 @@ public class Time implements Comparable {
     // FIXME: profiling shows that the following three methods are called
     // enormous times and performance can be greatly improved if no infinities
     // are supported.
-    
+
     /** Return true if the current time value is infinite.
      *  @return true if the current time value is infinite.
      */

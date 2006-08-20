@@ -94,7 +94,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             Set unsafeLocalSet, boolean debug) {
         Scene.v().setActiveHierarchy(new Hierarchy());
         Scene.v().setFastHierarchy(new FastHierarchy());
-   
+
         for (Iterator units = body.getUnits().iterator(); units.hasNext();) {
             Unit unit = (Unit) units.next();
 

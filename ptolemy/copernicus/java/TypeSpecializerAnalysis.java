@@ -38,9 +38,9 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.data.type.MatrixType;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalitySolver;
 import ptolemy.graph.InequalityTerm;
@@ -688,11 +688,11 @@ public class TypeSpecializerAnalysis {
                     _addInequality(debug, solver, firstArgTerm, elementTerm);
                     _addInequality(debug, solver, elementTerm, firstArgTerm);
                     return baseTerm;
-                } else if (r.getMethod()
-                        .equals(PtolemyUtilities.arrayTokenWithTypeConstructor)) {
+                } else if (r.getMethod().equals(
+                        PtolemyUtilities.arrayTokenWithTypeConstructor)) {
                     ptolemy.data.type.Type elementType = PtolemyUtilities
-                        .getTypeValue(method, (Local) r.getArg(0),
-                                unit, localDefs, localUses);
+                            .getTypeValue(method, (Local) r.getArg(0), unit,
+                                    localDefs, localUses);
                     InequalityTerm elementTypeTerm = new ConstantTerm(
                             elementType, r);
                     ptolemy.data.type.ArrayType arrayType = new ptolemy.data.type.ArrayType(

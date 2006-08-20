@@ -34,29 +34,28 @@ import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TokenProcessor
-
 /**
-Interface for token processors.  Token processors
-are components that register with the channel a callback that they can
-inspect the token passed in a transmission. They can
-register to inspect the token from a
-specific port, or they can register to inspect all tokens that pass
-through the channel. Note that if multiple token processors are
-registered that can operate on a given transmission, then the order
-in which they are applied is arbitrary.
-<p>
-Anything that needs to know the locations of the sender and receiver
-and optionally the value of the token can implement this interface.
-For example, if one wants to visualize the radio link between the sender 
-and the receiver then one can use a token processor to do this.
+ Interface for token processors.  Token processors
+ are components that register with the channel a callback that they can
+ inspect the token passed in a transmission. They can
+ register to inspect the token from a
+ specific port, or they can register to inspect all tokens that pass
+ through the channel. Note that if multiple token processors are
+ registered that can operate on a given transmission, then the order
+ in which they are applied is arbitrary.
+ <p>
+ Anything that needs to know the locations of the sender and receiver
+ and optionally the value of the token can implement this interface.
+ For example, if one wants to visualize the radio link between the sender 
+ and the receiver then one can use a token processor to do this.
 
-@see WirelessChannel
-@author Heather Taylor
-@version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Red (htaylor)
-@Pt.AcceptedRating Red (htaylor)
-*/
+ @see WirelessChannel
+ @author Heather Taylor
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (htaylor)
+ @Pt.AcceptedRating Red (htaylor)
+ */
 
 public interface TokenProcessor {
     ///////////////////////////////////////////////////////////////////
@@ -72,7 +71,7 @@ public interface TokenProcessor {
      *  @exception IllegalActionException If the properties cannot be
      *   transformed for some reason.
      */
-    public void processTokens(RecordToken properties,
-            Token token, WirelessIOPort source, WirelessIOPort destination)
+    public void processTokens(RecordToken properties, Token token,
+            WirelessIOPort source, WirelessIOPort destination)
             throws IllegalActionException;
 }

@@ -120,7 +120,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
         if (!super.postfire()) {
             return false;
         }
-        
+
         List ports = ((CompositeActor) getContainer()).inputPortList();
 
         if (ports.iterator().hasNext()) {
@@ -141,8 +141,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
         // in the array.
         String[] defaultSuggestions = new String[] {
                 "ptolemy.domains.fsm.kernel.FSMDirector",
-                "ptolemy.domains.fsm.kernel.NonStrictFSMDirector"
-        };
+                "ptolemy.domains.fsm.kernel.NonStrictFSMDirector" };
         return defaultSuggestions;
     }
 
@@ -192,7 +191,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  @see #_setResultMap(Thread, Map)
      */
     protected Map _getResultMap(Thread thread) {
-        return (Map)_resultMaps.get(thread);
+        return (Map) _resultMaps.get(thread);
     }
 
     /** If the model is deadlocked, report the deadlock if parameter
@@ -237,7 +236,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  @see #_getResultMap(Thread)
      */
     protected Map _setResultMap(Thread thread, Map map) {
-        Map oldMap = (Map)_resultMaps.get(thread);
+        Map oldMap = (Map) _resultMaps.get(thread);
         _resultMaps.put(thread, map);
         return oldMap;
     }

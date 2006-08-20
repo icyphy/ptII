@@ -53,6 +53,6 @@ public interface ExceptionHandler {
      *  @exception IllegalActionException If this handler handles the
      *   exception by throwing an exception.
      */
-    public boolean handleException(NamedObj context, Throwable exception) 
-        throws IllegalActionException;
+    public boolean handleException(NamedObj context, Throwable exception)
+            throws IllegalActionException;
 }

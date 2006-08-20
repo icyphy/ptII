@@ -378,15 +378,15 @@ public class MoMLApplication implements ExecutionListener {
         if (directory instanceof ModelDirectory) {
             PtolemyEffigy effigy = null;
             try {
-                effigy = new PtolemyEffigy(
-                    (ModelDirectory) directory, configuration.getName());
+                effigy = new PtolemyEffigy((ModelDirectory) directory,
+                        configuration.getName());
             } catch (NameDuplicationException ex) {
                 // Try deleting the old configuration
-                PtolemyEffigy oldEffigy = (PtolemyEffigy)
-                    ((ModelDirectory)directory).getEntity(configuration.getName());
+                PtolemyEffigy oldEffigy = (PtolemyEffigy) ((ModelDirectory) directory)
+                        .getEntity(configuration.getName());
                 oldEffigy.setContainer(null);
-                effigy = new PtolemyEffigy(
-                        (ModelDirectory) directory, configuration.getName());
+                effigy = new PtolemyEffigy((ModelDirectory) directory,
+                        configuration.getName());
             }
 
             effigy.setModel(configuration);

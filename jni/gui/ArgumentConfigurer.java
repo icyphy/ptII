@@ -95,9 +95,9 @@ public class ArgumentConfigurer extends Query implements QueryListener {
                     optionsDefault.add("return");
                 }
 
-                addSelectButtons(argument.getName() + " Kind",
-                        argument.getName() + " Kind:",
-                        _optionsArray, optionsDefault);
+                addSelectButtons(argument.getName() + " Kind", argument
+                        .getName()
+                        + " Kind:", _optionsArray, optionsDefault);
             }
         }
     }

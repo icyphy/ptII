@@ -29,7 +29,6 @@ package ptolemy.domains.continuous.kernel;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousStepSizeController
 
@@ -79,7 +78,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Green (eal)
  */
 public interface ContinuousStepSizeController {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

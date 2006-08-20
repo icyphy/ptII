@@ -102,7 +102,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     public void clear() {
         reset();
     }
-    
+
     /**
      * Get a token from this receiver. This method does not return until the
      * rendezvous has been completed. This method is internally synchronized on
@@ -672,42 +672,42 @@ public class RendezvousReceiver extends AbstractReceiver implements
         }
     }
 
-//     /**
-//      * Return whether a getFromAny() is pending on this receiver.
-//      *
-//      * @return True if a getFromAny() is pending on this receiver.
-//      */
-//     protected boolean _isConditionalReceiveWaiting() {
-//         return (_getWaiting != null) && _getConditional;
-//     }
+    //     /**
+    //      * Return whether a getFromAny() is pending on this receiver.
+    //      *
+    //      * @return True if a getFromAny() is pending on this receiver.
+    //      */
+    //     protected boolean _isConditionalReceiveWaiting() {
+    //         return (_getWaiting != null) && _getConditional;
+    //     }
 
-//     /**
-//      * Return whether a putToAny() is pending on this receiver.
-//      *
-//      * @return True if a putToAny() is pending on this receiver.
-//      */
-//     protected boolean _isConditionalSendWaiting() {
-//         return (_putWaiting != null) && _putConditional;
-//     }
+    //     /**
+    //      * Return whether a putToAny() is pending on this receiver.
+    //      *
+    //      * @return True if a putToAny() is pending on this receiver.
+    //      */
+    //     protected boolean _isConditionalSendWaiting() {
+    //         return (_putWaiting != null) && _putConditional;
+    //     }
 
-//     /**
-//      * Return whether a get() is waiting to rendezvous at this receiver.
-//      *
-//      * @return True if a get() is waiting to rendezvous.
-//      */
-//     protected boolean _isGetWaiting() {
-//         return _getWaiting != null;
-//     }
+    //     /**
+    //      * Return whether a get() is waiting to rendezvous at this receiver.
+    //      *
+    //      * @return True if a get() is waiting to rendezvous.
+    //      */
+    //     protected boolean _isGetWaiting() {
+    //         return _getWaiting != null;
+    //     }
 
-//     /**
-//      * Flag indicating whether or not a put() is waiting to rendezvous at this
-//      * receiver.
-//      *
-//      * @return True if a put() is waiting to rendezvous.
-//      */
-//     protected boolean _isPutWaiting() {
-//         return _putWaiting != null;
-//     }
+    //     /**
+    //      * Flag indicating whether or not a put() is waiting to rendezvous at this
+    //      * receiver.
+    //      *
+    //      * @return True if a put() is waiting to rendezvous.
+    //      */
+    //     protected boolean _isPutWaiting() {
+    //         return _putWaiting != null;
+    //     }
 
     /**
      * Get the receivers that are ready to form a rendezvous according to the
@@ -946,8 +946,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
      */
     private static Map _getOrPutTokens(Receiver[][] getReceivers,
             Receiver[][] putReceivers, RendezvousDirector director,
-            Token token, Token[][] tokenArray, int flag) throws IllegalActionException,
-            TerminateProcessException {
+            Token token, Token[][] tokenArray, int flag)
+            throws IllegalActionException, TerminateProcessException {
 
         // Extract information from the flag.
         boolean isGet = (flag & GET) == GET;
@@ -1187,7 +1187,6 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
     /** Flag for the "get from all and put to all" operation. */
     //private static final int GET_FROM_ALL_PUT_TO_ALL = 12; // 1100
-
     /** Flag for the "get from any and put to all" operation. */
     private static final int GET_FROM_ANY_PUT_TO_ALL = 13; // 1101
 

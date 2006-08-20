@@ -82,7 +82,7 @@ public class PasswordAttribute extends StringParameter {
         char[] returnValue = new char[_password.length];
         for (int i = 0; i < _password.length; i++) {
             returnValue[i] = _password[i];
-        } 
+        }
         return returnValue;
     }
 
@@ -95,7 +95,7 @@ public class PasswordAttribute extends StringParameter {
         char[] returnValue = new char[_password.length];
         for (int i = 0; i < _password.length; i++) {
             _password[i] = password[i];
-        } 
+        }
         _password = password;
     }
 

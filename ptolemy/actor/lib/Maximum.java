@@ -145,14 +145,14 @@ public class Maximum extends TypedAtomicActor {
                 } else {
                     inMagnitude = in;
                 }
-                       
+
                 if (result == null) {
                     result = in;
                     resultMagnitude = inMagnitude;
                     channelNum = i;
                 } else {
-                    if (inMagnitude.isGreaterThan(resultMagnitude).booleanValue()
-                            == true) {
+                    if (inMagnitude.isGreaterThan(resultMagnitude)
+                            .booleanValue() == true) {
                         result = in;
                         resultMagnitude = inMagnitude;
                         channelNum = i;

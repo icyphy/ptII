@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// MovableViewScreen3D
 
 /** A sink actor that renders the GR geometry into a display screen
-    with movable viewpoint.
+ with movable viewpoint.
 
  @author Adam Cataldo
  @version $Id$

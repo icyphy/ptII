@@ -116,8 +116,7 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @param manager The manager calling this method.
      *  @param throwable The Throwable to be displayed.
      */
-    public synchronized void executionError(Manager manager,
-            Throwable throwable) {
+    public synchronized void executionError(Manager manager, Throwable throwable) {
 
         // If you modify this code, make sure that the following command
         // prints a meaningful message to stdout:

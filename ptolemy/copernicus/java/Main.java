@@ -94,7 +94,7 @@ public class Main extends KernelMain {
 
         addTransform(pack, "wjtp.ta1", new TransformerAdapter(TypeAssigner.v()));
         addStandardOptimizations(pack, 1);
-        
+
         if (_snapshots) {
             addTransform(pack, "wjtp.snapshot1jimple", JimpleWriter.v(),
                     "outDir:" + _outputDirectory + "/jimple1");
@@ -103,7 +103,7 @@ public class Main extends KernelMain {
             addTransform(pack, "wjtp.lur1", LibraryUsageReporter.v(),
                     "outFile:" + _outputDirectory + "/jimple1/jarClassList.txt");
         }
-        
+
         addTransform(pack, "wjtp.ib1", InvocationBinder.v());
 
         addTransform(pack, "wjtp.ls7",
@@ -117,7 +117,7 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.cie1", new TransformerAdapter(
                 CastAndInstanceofEliminator.v()));
         addStandardOptimizations(pack, 2);
-        
+
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
         // to getAttribute with references to those fields.
@@ -147,15 +147,15 @@ public class Main extends KernelMain {
                 CastAndInstanceofEliminator.v()));
 
         addStandardOptimizations(pack, 4);
-        
+
         addTransform(pack, "wjtp.rcp", ReplaceComplexParameters.v(toplevel),
                 "targetPackage:" + _targetPackage);
-        
+
         //        addTransform(pack, "wjtp.umr0", UnreachableMethodRemover.v(), "debug:true");
-        
+
         addTransform(pack, "wjtp.cs", ConstructorSpecializer.v(toplevel),
                 "targetPackage:" + _targetPackage);
-        
+
         // Infer the types of locals again, since replacing attributes
         // depends on the types of fields
         addTransform(pack, "wjtp.ta12",
@@ -163,7 +163,7 @@ public class Main extends KernelMain {
 
         addTransform(pack, "wjtp.cie21", new TransformerAdapter(
                 CastAndInstanceofEliminator.v()));
-        
+
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
         // parameter, replace the method call with the return value
@@ -175,7 +175,7 @@ public class Main extends KernelMain {
         // assignments to attributes and handle them differently.)
         addTransform(pack, "wjtp.iat", InlineParameterTransformer.v(toplevel),
                 "targetPackage:" + _targetPackage);
-        
+
         // Remove equality checks, which arise from inlining attributeChanged.
         //  pack.add(
         //                 new Transform("wjtp.ta",
@@ -216,7 +216,7 @@ public class Main extends KernelMain {
             addTransform(pack, "wjtp.lur2", LibraryUsageReporter.v(),
                     "outFile:" + _outputDirectory + "/jimple2/jarClassList.txt");
         }
-        
+
         // Set about removing references to ports.
         // Anywhere where a method is called on a port, replace the
         // method call with an inlined version of the method.
@@ -319,11 +319,11 @@ public class Main extends KernelMain {
             addTransform(pack, "wjtp.lur4", LibraryUsageReporter.v(),
                     "outFile:" + _outputDirectory + "/jimple4/jarClassList.txt");
         }
-        
+
         if (_unboxing) {
-            
+
             addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(toplevel)); //, "debug:true");//level:1");
-            
+
             addStandardOptimizations(pack, 8);
 
             addTransform(pack, "wjtp.ufr", UnusedFieldRemover.v());
@@ -369,7 +369,7 @@ public class Main extends KernelMain {
             //        addStandardOptimizations(pack, 11);
             //        addTransform(pack, "wjtp.umr5",
             //                UnreachableMethodRemover.v());
-             
+
         }
 
         /* */

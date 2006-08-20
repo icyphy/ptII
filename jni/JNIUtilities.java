@@ -1204,21 +1204,29 @@ public class JNIUtilities {
 
         String ptIIDirWithoutSpaces = StringUtilities.substitute(
                 StringUtilities.getProperty("ptolemy.ptII.dir"), " ", "\\ ");
-        results.append("# Makefile automatically generated for JNI\n"
-                + "ROOT =\t\t" + ptIIDirWithoutSpaces + "\n\n"
-                + "# Get configuration info\n"
-                + "CONFIG =\t$(ROOT)/mk/ptII.mk\n" + "include $(CONFIG)\n\n"
-                + "SHAREDLIBRARY =" + "$(PTJNI_SHAREDLIBRARY_PREFIX)Jni"
-                + interNativeLibrary + ".$(PTJNI_SHAREDLIBRARY_SUFFIX)\n"
-                + "$(SHAREDLIBRARY):\n" + "\t\"$(PTCC)\" \\\n"
-                + "\t\t\"-I$(PTJAVA_HOME)/../include\" \\\n"
-                + "\t\t\"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)\" \\\n"
-                + "\t\t-fno-exceptions \\\n"
-                + "\t\t-shared $(PTJNI_SHAREDLIBRARY_LDFLAG) \\\n" + "\t\t-L"
-                + libraryPath + " -l" + nativeLibrary + " \\\n"
-                + "\t\t -o $@ \\\n" + "\t\tjni" + actor.getName() + ".cpp\n\n"
-                + "# Get the rest of the rules\n"
-                + "include $(ROOT)/mk/ptcommon.mk\n");
+        results
+                .append("# Makefile automatically generated for JNI\n"
+                        + "ROOT =\t\t"
+                        + ptIIDirWithoutSpaces
+                        + "\n\n"
+                        + "# Get configuration info\n"
+                        + "CONFIG =\t$(ROOT)/mk/ptII.mk\n"
+                        + "include $(CONFIG)\n\n"
+                        + "SHAREDLIBRARY ="
+                        + "$(PTJNI_SHAREDLIBRARY_PREFIX)Jni"
+                        + interNativeLibrary
+                        + ".$(PTJNI_SHAREDLIBRARY_SUFFIX)\n"
+                        + "$(SHAREDLIBRARY):\n"
+                        + "\t\"$(PTCC)\" \\\n"
+                        + "\t\t\"-I$(PTJAVA_HOME)/../include\" \\\n"
+                        + "\t\t\"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)\" \\\n"
+                        + "\t\t-fno-exceptions \\\n"
+                        + "\t\t-shared $(PTJNI_SHAREDLIBRARY_LDFLAG) \\\n"
+                        + "\t\t-L" + libraryPath + " -l" + nativeLibrary
+                        + " \\\n" + "\t\t -o $@ \\\n" + "\t\tjni"
+                        + actor.getName() + ".cpp\n\n"
+                        + "# Get the rest of the rules\n"
+                        + "include $(ROOT)/mk/ptcommon.mk\n");
 
         File makeFile = new File(destinationDirectory + "/Jni"
                 + interNativeLibrary + ".mk");

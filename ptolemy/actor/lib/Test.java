@@ -162,7 +162,7 @@ public class Test extends NonStrictTest {
                 if (input.hasToken(0)) {
                     Token token = input.get(0);
                     if (token instanceof ArrayToken) {
-                        Token [] innerArrayToken = new Token[1];
+                        Token[] innerArrayToken = new Token[1];
                         innerArrayToken[0] = token;
                         _trainingTokens.add(innerArrayToken);
                     } else {
@@ -241,16 +241,18 @@ public class Test extends NonStrictTest {
             try {
                 isClose = token.isCloseTo(reference[i], _tolerance)
                         .booleanValue()
-                    || token.isNil() && reference[i].isNil();
+                        || token.isNil() && reference[i].isNil();
                 // Additional guards makes things slightly easier for
                 // Copernicus.
-                if(token instanceof ArrayToken && reference[i] instanceof ArrayToken) {
+                if (token instanceof ArrayToken
+                        && reference[i] instanceof ArrayToken) {
                     isClose |= _isCloseToIfNilArrayElement(token, reference[i],
                             _tolerance);
                 }
-                if(token instanceof RecordToken && reference[i] instanceof RecordToken) {
-                    isClose |=_isCloseToIfNilRecordElement(token, reference[i],
-                            _tolerance);
+                if (token instanceof RecordToken
+                        && reference[i] instanceof RecordToken) {
+                    isClose |= _isCloseToIfNilRecordElement(token,
+                            reference[i], _tolerance);
                 }
 
             } catch (IllegalActionException ex) {

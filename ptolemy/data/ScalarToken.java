@@ -28,7 +28,6 @@
  */
 package ptolemy.data;
 
-import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.data.unit.UnitUtilities;
@@ -345,21 +344,21 @@ public abstract class ScalarToken extends Token implements
         }
     }
 
-//     /** If the token is an instance of a subclass of ScalarToken,
-//      *  then return the token. Otherwise, throw an exception.
-//      *  @param token The token to be converted to a ScalarToken.
-//      *  @return An instance of ScalarToken.
-//      *  @exception IllegalActionException If the argument is not
-//      *   already an instance of ScalarToken.
-//      */
-//     public static ScalarToken convert(Token token)
-//             throws IllegalActionException {
-//         if (token instanceof ScalarToken) {
-//             return (ScalarToken) token;
-//         }
-//         throw new IllegalActionException(
-//                 notSupportedIncomparableConversionMessage(token, "scalar"));
-//     }
+    //     /** If the token is an instance of a subclass of ScalarToken,
+    //      *  then return the token. Otherwise, throw an exception.
+    //      *  @param token The token to be converted to a ScalarToken.
+    //      *  @return An instance of ScalarToken.
+    //      *  @exception IllegalActionException If the argument is not
+    //      *   already an instance of ScalarToken.
+    //      */
+    //     public static ScalarToken convert(Token token)
+    //             throws IllegalActionException {
+    //         if (token instanceof ScalarToken) {
+    //             return (ScalarToken) token;
+    //         }
+    //         throw new IllegalActionException(
+    //                 notSupportedIncomparableConversionMessage(token, "scalar"));
+    //     }
 
     /** Return the value in the token as a byte.
      *  In this base class, we just throw an exception.
@@ -738,7 +737,7 @@ public abstract class ScalarToken extends Token implements
      */
     public ScalarToken leftShift(int bits) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("leftShift", this,
-                new IntToken(bits) ));
+                new IntToken(bits)));
     }
 
     /** Returns a token representing the result of shifting the bits

@@ -301,8 +301,8 @@ public class GenericJNIActor extends TypedAtomicActor {
                     } catch (Exception ex) {
                         throw new IllegalActionException(this, ex,
                                 "Unable to construct port "
-                                + "port for argument \""
-                                + argument.getName() + "\"");
+                                        + "port for argument \""
+                                        + argument.getName() + "\"");
                     }
                 } else if (argument.isInput() && argument.isOutput()) {
                     try {
@@ -740,8 +740,7 @@ public class GenericJNIActor extends TypedAtomicActor {
             _methods = _class.getMethods();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Interface C _methods not found " + "class was: "
-                    + _class);
+                    "Interface C _methods not found " + "class was: " + _class);
         }
 
         if (_methods == null) {

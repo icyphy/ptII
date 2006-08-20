@@ -234,7 +234,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      *  @return A new string with special characters replaced.
      *  @see ptolemy.util.StringUtilities#escapeForXML(String)
      */
-    public /*static*/ String escapeForTargetLanguage(String string) {
+    public/*static*/String escapeForTargetLanguage(String string) {
         string = StringUtilities.substitute(string, "\\", "\\\\");
         //string = StringUtilities.substitute(string, "\\{", "\\\\{");
         //string = StringUtilities.substitute(string, "\\}", "\\\\}");
@@ -297,10 +297,10 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         }
 
         // Insert the elementType of the array as the last argument.
-        _fireCode.append(", TYPE_" + 
-                CodeGeneratorHelper.codeGenType(elementType));
+        _fireCode.append(", TYPE_"
+                + CodeGeneratorHelper.codeGenType(elementType));
         _fireCode.append("))");
-        
+
         _evaluatedChildToken = (new ArrayToken(elementType, tokens));
 
         if (node.isConstant()) {
@@ -685,9 +685,11 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             if (_evaluatedChildToken instanceof StringToken) {
                 // In C, Strings should have \n tags substituted. 
                 // See Test 17.2
-                _fireCode.append(escapeForTargetLanguage(_evaluatedChildToken.toString()));
+                _fireCode.append(escapeForTargetLanguage(_evaluatedChildToken
+                        .toString()));
             } else if (_evaluatedChildToken instanceof LongToken) {
-                _fireCode.append(((LongToken) _evaluatedChildToken).longValue() + "LL");
+                _fireCode.append(((LongToken) _evaluatedChildToken).longValue()
+                        + "LL");
             } else {
                 _fireCode.append(_evaluatedChildToken.toString());
             }

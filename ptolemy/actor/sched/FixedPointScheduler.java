@@ -115,8 +115,7 @@ public class FixedPointScheduler extends Scheduler {
 
         Schedule schedule = new Schedule();
 
-        FunctionDependencyOfCompositeActor functionDependency
-                = (FunctionDependencyOfCompositeActor) compositeActor
+        FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) compositeActor
                 .getFunctionDependency();
 
         Object[] cycleNodes = functionDependency.getCycleNodes();
@@ -135,9 +134,9 @@ public class FixedPointScheduler extends Scheduler {
             }
             throw new NotSchedulableException(director,
                     "There are dependency loops in the model:"
-                    + names.toString() + "\n"
-                    + " The results may contain unknowns.  This "
-                    + "scheduler cannot handle this model.");
+                            + names.toString() + "\n"
+                            + " The results may contain unknowns.  This "
+                            + "scheduler cannot handle this model.");
         }
 
         DirectedAcyclicGraph dependencyGraph = functionDependency
@@ -180,8 +179,7 @@ public class FixedPointScheduler extends Scheduler {
             schedule.add(firing);
 
             if (_debugging) {
-                _debug(actor.getFullName()
-                        + " scheduled at position: " + i);
+                _debug(actor.getFullName() + " scheduled at position: " + i);
             }
         }
 

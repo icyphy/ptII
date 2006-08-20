@@ -811,15 +811,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             MoMLChangeRequest request = null;
             request = new MoMLChangeRequest(this, container, moml.toString());
             request.setUndoable(true);
-            
-            
+
             container.requestChange(request);
-            NamedObj newObject = ( (CompositeEntity)container).getEntity(compositeActorName);
+            NamedObj newObject = ((CompositeEntity) container)
+                    .getEntity(compositeActorName);
             // Kepler wants a different icon.
             IconLoader _iconLoader = MoMLParser.getIconLoader();
             if (_iconLoader != null) {
                 _iconLoader.loadIconForClass(
-                                "ptolemy.actor.TypedCompositeActor", newObject);
+                        "ptolemy.actor.TypedCompositeActor", newObject);
             }
         } catch (Throwable throwable) {
             MessageHandler.error("Creating hierarchy failed", throwable);
@@ -1185,12 +1185,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) {
         try {
-            ptolemy.actor.gui.UserActorLibrary.saveComponentInLibrary(configuration, entity);
+            ptolemy.actor.gui.UserActorLibrary.saveComponentInLibrary(
+                    configuration, entity);
         } catch (Exception ex) {
             // We catch exceptions here because this method used to
             // not throw Exceptions, and we don't want to break compatibility.
-            MessageHandler.error("Failed to save \"" + entity.getName()
-                    + "\".");
+            MessageHandler
+                    .error("Failed to save \"" + entity.getName() + "\".");
         }
     }
 
@@ -1305,7 +1306,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @deprecated Use {@link ptolemy.actor.gui.UserActorLibrary#USER_LIBRARY_NAME}
      */
     public static String VERGIL_USER_LIBRARY_NAME = UserActorLibrary.USER_LIBRARY_NAME;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

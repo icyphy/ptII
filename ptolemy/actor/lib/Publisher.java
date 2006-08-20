@@ -53,26 +53,26 @@ import ptolemy.kernel.util.NamedObj;
 //// Publisher
 
 /**
-This actor publishes input tokens on a named channel. The tokens are
-"tunneled" to any instance of Subscriber that names the same channel
-and that is under the control of the same director. That is, it can
-be at a different level of the hierarchy, or in an entirely different
-composite actor, as long as the relevant composite actors are
-transparent (have no director).
-<p>
-It is an error to have two instances of Publisher using the same
-channel under the control of the same director. When you create a
-new Publisher, by default, it assigns a channel name that is unique.
-You can re-use channel names withing opaque composite actors.
-<p>
-This actor actually has a hidden output port that is connected
-to all subcribers via hidden "liberal links" (links that are
-allowed to cross levels of the hierarchy).  Consequently,
-any data dependencies that the director might assume on a regular
-"wired" connection will also be assumed across Publisher-Subscriber
-pairs. Similarly, type constraints will probagate across
-Publisher-Subscriber pairs. That is, the type of the Subscriber
-output will match the type of the Publisher input.
+ This actor publishes input tokens on a named channel. The tokens are
+ "tunneled" to any instance of Subscriber that names the same channel
+ and that is under the control of the same director. That is, it can
+ be at a different level of the hierarchy, or in an entirely different
+ composite actor, as long as the relevant composite actors are
+ transparent (have no director).
+ <p>
+ It is an error to have two instances of Publisher using the same
+ channel under the control of the same director. When you create a
+ new Publisher, by default, it assigns a channel name that is unique.
+ You can re-use channel names withing opaque composite actors.
+ <p>
+ This actor actually has a hidden output port that is connected
+ to all subcribers via hidden "liberal links" (links that are
+ allowed to cross levels of the hierarchy).  Consequently,
+ any data dependencies that the director might assume on a regular
+ "wired" connection will also be assumed across Publisher-Subscriber
+ pairs. Similarly, type constraints will probagate across
+ Publisher-Subscriber pairs. That is, the type of the Subscriber
+ output will match the type of the Publisher input.
  
  @author Edward A. Lee
  @version $Id$
@@ -97,12 +97,12 @@ public class Publisher extends TypedAtomicActor {
 
         channel = new StringParameter(this, "channel");
         channel.setExpression(_uniqueChannelName());
-        
+
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
-        
+
         Parameter hide = new SingletonParameter(output, "_hide");
         hide.setToken(BooleanToken.TRUE);
         // hide = new SingletonParameter(this, "_hideName");
@@ -119,7 +119,7 @@ public class Publisher extends TypedAtomicActor {
      *  with a channel name already in use by another publisher.
      */
     public StringParameter channel;
-    
+
     /** The input port.  This base class imposes no type constraints except
      *  that the type of the input cannot be greater than the type of the
      *  output.
@@ -154,7 +154,7 @@ public class Publisher extends TypedAtomicActor {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Override the base class to update the width of the hidden link.
      *  @param port The port that has connection changes.
      */
@@ -189,7 +189,7 @@ public class Publisher extends TypedAtomicActor {
             }
         }
     }
-    
+
     /** Override the base class to create an associated relation,
      *  and to remove any previous relation.
      *  @param container The proposed container.
@@ -212,10 +212,10 @@ public class Publisher extends TypedAtomicActor {
 
     /** The relation used to link to subscribers. */
     protected TypedIORelation _relation;
-    
+
     /** Cached channel name. */
     protected String _channel;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -227,26 +227,26 @@ public class Publisher extends TypedAtomicActor {
     private List _findSubscribers() throws IllegalActionException {
         LinkedList result = new LinkedList();
         // Find the nearest opaque container above in the hierarchy.
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
         while (container != null && !container.isOpaque()) {
-            container = (CompositeEntity)container.getContainer();
+            container = (CompositeEntity) container.getContainer();
         }
         if (container != null) {
             Iterator actors = container.deepEntityList().iterator();
             while (actors.hasNext()) {
                 Object actor = actors.next();
                 if (actor instanceof Subscriber) {
-                    if (_channel.equals(((Subscriber)actor)._channel)) {
+                    if (_channel.equals(((Subscriber) actor)._channel)) {
                         result.add(actor);
                     }
                 } else if (actor instanceof Publisher && actor != this) {
                     // Throw an exception if there is another publisher
                     // trying to publish on the same channel.
-                    if (_channel.equals(((Publisher)actor)._channel)) {
+                    if (_channel.equals(((Publisher) actor)._channel)) {
                         throw new IllegalActionException(this,
                                 "There is already a publisher using channel "
-                                + "\"_channel\": "
-                                + ((NamedObj)actor).getFullName());
+                                        + "\"_channel\": "
+                                        + ((NamedObj) actor).getFullName());
                     }
                 }
             }
@@ -261,16 +261,16 @@ public class Publisher extends TypedAtomicActor {
     private String _uniqueChannelName() {
         int suffix = 1;
         // Find the nearest opaque container above in the hierarchy.
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
         while (container != null && !container.isOpaque()) {
-            container = (CompositeEntity)container.getContainer();
+            container = (CompositeEntity) container.getContainer();
         }
         if (container != null) {
             Iterator actors = container.deepEntityList().iterator();
             while (actors.hasNext()) {
                 Object actor = actors.next();
                 if (actor instanceof Publisher && actor != this) {
-                    String nameInUse = ((Publisher)actor)._channel;
+                    String nameInUse = ((Publisher) actor)._channel;
                     if (nameInUse != null && nameInUse.startsWith("channel")) {
                         String suffixInUse = nameInUse.substring(7);
                         try {
@@ -303,7 +303,7 @@ public class Publisher extends TypedAtomicActor {
         // Do this before making any changes to the model in case
         // it throws an exception.
         Iterator subscribers = _findSubscribers().iterator();
-        
+
         // Remove the previous relation, if necessary.
         if (_relation != null) {
             try {
@@ -319,7 +319,8 @@ public class Publisher extends TypedAtomicActor {
         if (container instanceof TypedCompositeActor) {
             try {
                 _relation = new TypedIORelation(
-                        (TypedCompositeActor)container, container.uniqueName("publisherRelation"));
+                        (TypedCompositeActor) container, container
+                                .uniqueName("publisherRelation"));
                 // Prevent the relation and its links from being exported.
                 _relation.setPersistent(false);
                 // Prevent the relation from showing up in vergil.
@@ -331,10 +332,10 @@ public class Publisher extends TypedAtomicActor {
                 throw new InternalErrorException(e);
             }
             output.link(_relation);
-            
+
             // Link to the subscribers.
             while (subscribers.hasNext()) {
-                Subscriber subscriber = (Subscriber)subscribers.next();
+                Subscriber subscriber = (Subscriber) subscribers.next();
                 subscriber.input.liberalLink(_relation);
             }
         }

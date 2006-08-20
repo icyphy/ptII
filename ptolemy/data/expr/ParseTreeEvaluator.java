@@ -340,7 +340,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 // FIXME: It might be the a parameter is
                 // shadowing a built-in function, in which
                 // case, thrown an exception seems bogus.
-                
+
                 // The value cannot be indexed or applied
                 // throw exception.
                 throw new IllegalActionException(

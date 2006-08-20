@@ -122,8 +122,8 @@ public class EnabledComposite extends TypedCompositeActor {
     public FunctionDependency getFunctionDependency() {
         if (_functionDependency == null) {
             try {
-                _functionDependency = 
-                    new FunctionDependencyOfEnabledCompositeActor(this);
+                _functionDependency = new FunctionDependencyOfEnabledCompositeActor(
+                        this);
             } catch (NameDuplicationException e) {
                 // This should not happen.
                 throw new InternalErrorException("Failed to construct a "
@@ -192,7 +192,7 @@ public class EnabledComposite extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Local variable indicating whether this actor can be fired. 
      *  The value of this variable is set in the prefire method. 
      */

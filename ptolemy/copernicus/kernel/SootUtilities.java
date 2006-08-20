@@ -427,13 +427,11 @@ public class SootUtilities {
                 if (type instanceof RefType
                         && (((RefType) type).getSootClass() == oldClass)) {
                     paramTypes.add(RefType.v(newClass));
-                } else if(type instanceof RefType &&
-                        (((RefType) type).getSootClass().getName()
+                } else if (type instanceof RefType
+                        && (((RefType) type).getSootClass().getName()
                                 .startsWith(oldClass.getName()))) {
-                    SootClass changeClass = _getInnerClassCopy(
-                            oldClass,
-                            ((RefType) type).getSootClass(),
-                            newClass);
+                    SootClass changeClass = _getInnerClassCopy(oldClass,
+                            ((RefType) type).getSootClass(), newClass);
                     paramTypes.add(RefType.v(changeClass));
                 } else {
                     paramTypes.add(type);
@@ -501,17 +499,17 @@ public class SootUtilities {
                             SootClass changeClass = _getInnerClassCopy(
                                     oldClass, r.getField().getDeclaringClass(),
                                     newClass);
-                            r.setFieldRef(changeClass.getFieldByName(r.getField()
-                                            .getName()).makeRef());
+                            r.setFieldRef(changeClass.getFieldByName(
+                                    r.getField().getName()).makeRef());
                         }//  else if (r.getField().getDeclaringClass() == oldClass) {
-//                             r.setFieldRef(
-//                                     newClass.getFieldByName(
-//                                             r.getField().getName()).makeRef());
+                        //                             r.setFieldRef(
+                        //                                     newClass.getFieldByName(
+                        //                                             r.getField().getName()).makeRef());
 
-//                             //   System.out.println("fieldRef = " +
-//                             //              box.getValue());
-//                         } 
-                        
+                        //                             //   System.out.println("fieldRef = " +
+                        //                             //              box.getValue());
+                        //                         } 
+
                     } else if (value instanceof CastExpr) {
                         // Fix casts
                         CastExpr r = (CastExpr) value;
@@ -558,67 +556,63 @@ public class SootUtilities {
                         InvokeExpr r = (InvokeExpr) value;
                         SootMethodRef methodRef = r.getMethodRef();
                         System.out.println("invoke = " + r);
-                      
+
                         List newParameterTypes = new LinkedList();
-                        for(Iterator i = methodRef.parameterTypes().iterator(); i.hasNext();) {
-                            Type type = (Type)i.next();
-                            if(type instanceof RefType &&
-                                    (((RefType) type).getSootClass() == oldClass)) {
-                                System.out.println("matchedParameter = " + newClass);
+                        for (Iterator i = methodRef.parameterTypes().iterator(); i
+                                .hasNext();) {
+                            Type type = (Type) i.next();
+                            if (type instanceof RefType
+                                    && (((RefType) type).getSootClass() == oldClass)) {
+                                System.out.println("matchedParameter = "
+                                        + newClass);
                                 newParameterTypes.add(RefType.v(newClass));
-                            } else if(type instanceof RefType &&
-                                    (((RefType) type).getSootClass().getName()
-                                            .startsWith(oldClass.getName()))) {
-                                System.out.println("matchedParameter = " + newClass);
+                            } else if (type instanceof RefType
+                                    && (((RefType) type).getSootClass()
+                                            .getName().startsWith(oldClass
+                                            .getName()))) {
+                                System.out.println("matchedParameter = "
+                                        + newClass);
                                 SootClass changeClass = _getInnerClassCopy(
-                                        oldClass,
-                                        ((RefType) type).getSootClass(),
-                                        newClass);
+                                        oldClass, ((RefType) type)
+                                                .getSootClass(), newClass);
                                 newParameterTypes.add(RefType.v(changeClass));
                             } else {
                                 newParameterTypes.add(type);
                             }
-                                
+
                         }
-                        
+
                         Type newReturnType = methodRef.returnType();
-                        if(newReturnType instanceof RefType
+                        if (newReturnType instanceof RefType
                                 && (((RefType) newReturnType).getSootClass() == oldClass)) {
                             newReturnType = RefType.v(newClass);
                         }
 
                         // Update the parameter types and the return type.
-                        methodRef = 
-                            Scene.v().makeMethodRef(
-                                        methodRef.declaringClass(),
-                                        methodRef.name(),
-                                        newParameterTypes,
-                                        newReturnType,
-                                        methodRef.isStatic());
+                        methodRef = Scene.v().makeMethodRef(
+                                methodRef.declaringClass(), methodRef.name(),
+                                newParameterTypes, newReturnType,
+                                methodRef.isStatic());
                         r.setMethodRef(methodRef);
-                                   
-                        if(methodRef.declaringClass() == oldClass) {
-                            r.setMethodRef(
-                                    Scene.v().makeMethodRef(
-                                            newClass,
-                                            methodRef.name(),
-                                            methodRef.parameterTypes(),
-                                            methodRef.returnType(),
-                                            methodRef.isStatic()));
-                                    // System.out.println("newValue = " +
+
+                        if (methodRef.declaringClass() == oldClass) {
+                            r.setMethodRef(Scene.v().makeMethodRef(newClass,
+                                    methodRef.name(),
+                                    methodRef.parameterTypes(),
+                                    methodRef.returnType(),
+                                    methodRef.isStatic()));
+                            // System.out.println("newValue = " +
                             // box.getValue());
                         } else if (methodRef.declaringClass().getName()
                                 .startsWith(oldClass.getName())) {
                             SootClass changeClass = _getInnerClassCopy(
-                                    oldClass,
-                                    methodRef.declaringClass(), newClass);
-                            r.setMethodRef(  
-                                    Scene.v().makeMethodRef(
-                                            changeClass,
-                                            methodRef.name(),
-                                            methodRef.parameterTypes(),
-                                            methodRef.returnType(),
-                                            methodRef.isStatic()));
+                                    oldClass, methodRef.declaringClass(),
+                                    newClass);
+                            r.setMethodRef(Scene.v().makeMethodRef(changeClass,
+                                    methodRef.name(),
+                                    methodRef.parameterTypes(),
+                                    methodRef.returnType(),
+                                    methodRef.isStatic()));
                         }
                     } else if (value instanceof NewExpr) {
                         // Fix up the object creations.
@@ -1107,26 +1101,25 @@ public class SootUtilities {
 
         // First resolve all the FieldRefs and MethodRefs, so we know what
         // they are currently pointing to.
-//         for (Iterator methods = superClass.getMethods().iterator(); methods
-//                 .hasNext();) {
-//             SootMethod oldMethod = (SootMethod) methods.next();
-//             oldMethod.retrieveActiveBody();
-//             Body newBody = newMethod.retrieveActiveBody();
+        //         for (Iterator methods = superClass.getMethods().iterator(); methods
+        //                 .hasNext();) {
+        //             SootMethod oldMethod = (SootMethod) methods.next();
+        //             oldMethod.retrieveActiveBody();
+        //             Body newBody = newMethod.retrieveActiveBody();
 
-//             // use a snapshotIterator since we are going to be manipulating
-//             // the statements.
-//             Iterator j = newBody.getUnits().snapshotIterator();
+        //             // use a snapshotIterator since we are going to be manipulating
+        //             // the statements.
+        //             Iterator j = newBody.getUnits().snapshotIterator();
 
-//             while (j.hasNext()) {
-//                 Stmt stmt = (Stmt) j.next();
-//                 Iterator boxes = stmt.getUseAndDefBoxes().iterator();
+        //             while (j.hasNext()) {
+        //                 Stmt stmt = (Stmt) j.next();
+        //                 Iterator boxes = stmt.getUseAndDefBoxes().iterator();
 
-//                 while (boxes.hasNext()) {
-//                     ValueBox box = (ValueBox) boxes.next();
-//                     Value value = box.getValue();
+        //                 while (boxes.hasNext()) {
+        //                     ValueBox box = (ValueBox) boxes.next();
+        //                     Value value = box.getValue();
 
-//                     if (value instanceof FieldRef) {
-
+        //                     if (value instanceof FieldRef) {
 
         // Copy the interface declarations.
         theClass.getInterfaces().addAll(superClass.getInterfaces());
@@ -1290,7 +1283,7 @@ public class SootUtilities {
                     SootMethod invokeMethod = invoke.getMethod();
 
                     if (invokeMethod.getDeclaringClass() == superClass) {
-              
+
                         // Force the body of the thing we are inlining to be
                         // loaded
                         try {

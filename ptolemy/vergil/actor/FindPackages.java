@@ -35,8 +35,6 @@ import java.util.Set;
 
 import ptolemy.util.ExecuteCommands;
 
-
-
 /** Look for class files under a directory and return package names.
  *  @author Christopher Brooks
  *  @version $Id$
@@ -67,10 +65,11 @@ public class FindPackages {
         Set packages = new HashSet();
         Iterator classFiles = classFilesSeen.iterator();
         while (classFiles.hasNext()) {
-            File files[] = (File [])classFiles.next();
+            File files[] = (File[]) classFiles.next();
             for (int i = 0; i < files.length; i++) {
                 String fullPath = files[i].toString().replace('\\', '/');
-                String shortPath = fullPath.substring(0, files[i].toString().length() - 6);
+                String shortPath = fullPath.substring(0, files[i].toString()
+                        .length() - 6);
                 if (shortPath.startsWith(ptIIPath)) {
                     shortPath = shortPath.substring(ptIIPath.length() + 1);
                 }
@@ -78,7 +77,7 @@ public class FindPackages {
                 String packageName = shortPath.replace('/', '.');
                 if (!packages.contains(packageName)) {
                     packages.add(packageName);
-                    results.append( " " + packageName );           
+                    results.append(" " + packageName);
                 }
             }
         }
@@ -86,21 +85,20 @@ public class FindPackages {
             System.out.println(results.toString());
         } else {
             executeCommands.stdout(results.toString());
-        }        
+        }
         return results.toString();
     }
-     
+
     /** Print out any packages found under the directory named
      *  by the first argument.
      *  <p>Usage: java -classpath $PTII ptolemy.vergil.actor.FindPackages $PTII
      *  @param args An array of Strings, where the first argument is
      *  a string that names the directory under which we search for packages.
      */
-    public static void main (String [] args) {
-        findPackages(new File (args[0]), null); 
+    public static void main(String[] args) {
+        findPackages(new File(args[0]), null);
     }
 
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -112,14 +110,16 @@ public class FindPackages {
      *  @param directoriesSeen A Set of objects of type File
      *  that name .class files that have been seen.
      */
-    private static void _getDirectories(File directory, Set directoriesSeen, Set classFilesSeen) {
+    private static void _getDirectories(File directory, Set directoriesSeen,
+            Set classFilesSeen) {
         File directories[] = directory.listFiles(new DirectoryFileFilter());
         for (int i = 0; i < directories.length; i++) {
             if (!directoriesSeen.contains(directories[i])
                     && !directories[i].getName().endsWith("adm")
                     && !directories[i].getName().endsWith("CVS")
                     && !directories[i].getName().endsWith("vendors")) {
-                File classFiles[] = directories[i].listFiles(new ClassFileFilter());
+                File classFiles[] = directories[i]
+                        .listFiles(new ClassFileFilter());
                 classFilesSeen.add(classFiles);
                 directoriesSeen.add(directories[i]);
                 _getDirectories(directories[i], directoriesSeen, classFilesSeen);
@@ -129,21 +129,21 @@ public class FindPackages {
 
     /** Filter that returns true if the pathname ends with .class. */
     private static class ClassFileFilter implements FileFilter {
-	/** Filter that returns true if the file name ends with .class.
-	 *  @parameter pathname The pathname to be checked
-	 *  @return true if the pathname ends with .class.
-	 */
+        /** Filter that returns true if the file name ends with .class.
+         *  @parameter pathname The pathname to be checked
+         *  @return true if the pathname ends with .class.
+         */
         public boolean accept(File pathname) {
             return pathname.getName().endsWith(".class");
         }
     }
-    
+
     /** Filter that returns true if the pathname is a directory. */
     private static class DirectoryFileFilter implements FileFilter {
-	/** Filter that returns true if the pathname is a directory. 
-	 *  @parameter pathname The pathname to be checked
-	 *  @return true if the pathname is a directory.
-	 */
+        /** Filter that returns true if the pathname is a directory. 
+         *  @parameter pathname The pathname to be checked
+         *  @return true if the pathname is a directory.
+         */
         public boolean accept(File pathname) {
             return pathname.isDirectory();
         }

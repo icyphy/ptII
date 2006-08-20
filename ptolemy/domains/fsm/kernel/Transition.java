@@ -455,7 +455,7 @@ public class Transition extends ComponentRelation {
         }
         return _parseTreeEvaluator;
     }
-    
+
     /** Return the refinements of this transition. The names of the refinements
      *  are specified by the <i>refinementName</i> attribute. The refinements
      *  must be instances of TypedActor and have the same container as
@@ -558,8 +558,8 @@ public class Transition extends ComponentRelation {
             PtParser parser = new PtParser();
             _guardParseTree = parser.generateParseTree(expr);
         }
-        Token token = parseTreeEvaluator.evaluateParseTree(
-                _guardParseTree, fsmActor.getPortScope());
+        Token token = parseTreeEvaluator.evaluateParseTree(_guardParseTree,
+                fsmActor.getPortScope());
         if (token == null) {
             // FIXME: when could this happen??
             return false;
@@ -748,7 +748,7 @@ public class Transition extends ComponentRelation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     // Check the states connected by this transition, cache the result.
     // This method is read-synchronized on the workspace.
     private void _checkConnectedStates() {
@@ -775,7 +775,7 @@ public class Transition extends ComponentRelation {
             workspace().doneReading();
         }
     }
-    
+
     /** Return the FSMDirector in charge of this transition,
      *  or null if there is none.
      *  @return The director in charge of this transition.
@@ -785,12 +785,13 @@ public class Transition extends ComponentRelation {
         NamedObj container = getContainer();
         if (container != null) {
             // Get the containing modal model.
-            CompositeActor modalModel = (CompositeActor) container.getContainer();
+            CompositeActor modalModel = (CompositeActor) container
+                    .getContainer();
             if (modalModel != null) {
                 // Get the director for the modal model.
                 Director director = modalModel.getDirector();
                 if (director instanceof FSMDirector) {
-                    return (FSMDirector)director;
+                    return (FSMDirector) director;
                 }
             }
         }
@@ -861,10 +862,10 @@ public class Transition extends ComponentRelation {
             workspace().doneReading();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // Version of cached lists of actions.
     private long _actionListsVersion = -1;
 

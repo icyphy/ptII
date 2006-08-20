@@ -118,10 +118,11 @@ public class ArrayAppend extends Transformer {
         Token[] array = new Token[outputWidth];
         int runningPosition = 0;
         for (int i = 0; i < width; i++) {
-            System.arraycopy(inputs[i], 0, array, runningPosition, inputs[i].length);
+            System.arraycopy(inputs[i], 0, array, runningPosition,
+                    inputs[i].length);
             runningPosition += inputs[i].length;
         }
-        Type elementType = ((ArrayType)input.getType()).getElementType();
+        Type elementType = ((ArrayType) input.getType()).getElementType();
         output.send(0, new ArrayToken(elementType, array));
     }
 }

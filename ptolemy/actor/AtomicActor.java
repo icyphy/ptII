@@ -656,7 +656,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     private transient long _outputPortsVersion = -1;
 
     private transient List _cachedOutputPorts;
-    
+
     /** The function dependency, if it is present. */
     private FunctionDependency _functionDependency;
 }

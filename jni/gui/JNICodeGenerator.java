@@ -59,11 +59,14 @@ public class JNICodeGenerator extends Attribute {
     public JNICodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"60\" "
-                + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
-                + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-                + "Double click to\ncreate ports and\ngenerate code.</text></svg>");
+        _attachText(
+                "_iconDescription",
+                "<svg>\n"
+                        + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"60\" "
+                        + "style=\"fill:blue\"/>"
+                        + "<text x=\"-40\" y=\"-5\" "
+                        + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
+                        + "Double click to\ncreate ports and\ngenerate code.</text></svg>");
         new JNICodeGeneratorGUIFactory(this, "_JNICodeGeneratorGUIFactory");
     }
 

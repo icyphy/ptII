@@ -29,7 +29,6 @@ package ptolemy.domains.ddf.lib;
 
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;

@@ -65,7 +65,8 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
      *  @return The expression.
      *  @exception IllegalActionException If the parse tree has an error.
      */
-    public String parseTreeToExpression(ASTPtRootNode root) throws IllegalActionException {
+    public String parseTreeToExpression(ASTPtRootNode root)
+            throws IllegalActionException {
         StringWriter writer = new StringWriter();
         _writer = new PrintWriter(writer);
         root.visit(this);

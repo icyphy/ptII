@@ -204,7 +204,7 @@ public class KeyToken extends Token {
             return this;
         }
 
-         /** Return the class for tokens that this basetype represents.
+        /** Return the class for tokens that this basetype represents.
          */
         public Class getTokenClass() {
             return KeyToken.class;
@@ -264,7 +264,7 @@ public class KeyToken extends Token {
         public Type modulo(Type rightArgumentType) {
             return this;
         }
-        
+
         /** Return a new type which represents the type that results from
          *  multiplying a token of this type and a token of the given
          *  argument type.
@@ -284,7 +284,7 @@ public class KeyToken extends Token {
         public Type one() {
             return this;
         }
-        
+
         /** Return a new type which represents the type that results from
          *  subtracting a token of this type and a token of the given
          *  argument type.

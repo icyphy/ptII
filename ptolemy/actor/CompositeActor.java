@@ -405,7 +405,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public FunctionDependency getFunctionDependency() {
         if (_functionDependency == null) {
             try {
-                _functionDependency = new FunctionDependencyOfCompositeActor(this);
+                _functionDependency = new FunctionDependencyOfCompositeActor(
+                        this);
             } catch (NameDuplicationException e) {
                 // This should not happen.
                 throw new InternalErrorException("Failed to construct a "
@@ -831,7 +832,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
                         "Cannot invoke prefire on a non-opaque actor, "
-                        + " please add a director.");
+                                + " please add a director.");
             }
 
             boolean result = getDirector().prefire();
@@ -872,17 +873,16 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _createReceivers();
 
             if (!isOpaque()) {
-                if (getContainer() == null
-                        && deepEntityList().size() == 0) {
+                if (getContainer() == null && deepEntityList().size() == 0) {
                     // If the user runs an empty model, they get
                     // this error message.
                     throw new IllegalActionException(this,
                             "Cannot preinitialize an empty model, "
-                            + "please add actors and a director.");
+                                    + "please add actors and a director.");
                 }
                 throw new IllegalActionException(this,
                         "Cannot preinitialize a non-opaque actor, "
-                        + "please add a shdirector.");
+                                + "please add a shdirector.");
             }
 
             if (_director == null) {

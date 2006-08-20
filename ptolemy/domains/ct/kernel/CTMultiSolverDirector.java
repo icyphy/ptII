@@ -363,7 +363,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
         // Mark the current state of the stateful actors.
         _markStates();
-    
+
         // If the current time is the stop time, then the fire method
         // should immediately return because no further execution is necessary.
         // NOTE: the final states at the model stop time are resolved before
@@ -404,16 +404,16 @@ public class CTMultiSolverDirector extends CTDirector {
                             + ((Nameable) actor).getName() + " at time "
                             + getModelTime());
                 }
-                
+
                 if (!actor.prefire()) {
                     _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
                     throw new IllegalActionException(
                             actor,
                             "Actor is not ready to fire. In the CT domain, "
-                            + "all event generators should be ready to fire"
-                            + " at all times.\n"
-                            + "Does the actor only operate on sequence "
-                            + "of tokens?");
+                                    + "all event generators should be ready to fire"
+                                    + " at all times.\n"
+                                    + "Does the actor only operate on sequence "
+                                    + "of tokens?");
                 } else {
                     if (_debugging) {
                         _debug("Fire event generator : "
@@ -692,19 +692,18 @@ public class CTMultiSolverDirector extends CTDirector {
             Actor actor = (Actor) outputActors.next();
 
             if (_debugging && _verbose) {
-                _debug("Prefire output actor: "
-                        + ((Nameable) actor).getName() + " at time "
-                        + getModelTime());
+                _debug("Prefire output actor: " + ((Nameable) actor).getName()
+                        + " at time " + getModelTime());
             }
-            
+
             if (!actor.prefire()) {
                 throw new IllegalActionException(
                         actor,
                         "Actor is not ready to fire. In the CT domain, "
-                        + "all continuous actors should be ready to fire "
-                        + "at all times.\n"
-                        + "Does the actor only operate on sequence "
-                        + "of tokens?");
+                                + "all continuous actors should be ready to fire "
+                                + "at all times.\n"
+                                + "Does the actor only operate on sequence "
+                                + "of tokens?");
             } else {
                 if (_debugging) {
                     _debug("Fire output actor: " + ((Nameable) actor).getName()
@@ -936,10 +935,10 @@ public class CTMultiSolverDirector extends CTDirector {
         // which are event generators, modal models need to register the
         // current time as a breakpoint if there is an enabled transitioin
         // at the current time.
-        
+
         boolean eventExists = hasCurrentEvent();
         boolean cachedEventStatus = eventExists;
-        
+
         while (eventExists) {
             if (_debugging) {
                 _debug("Iterate all actors once in the following order:");
@@ -982,7 +981,7 @@ public class CTMultiSolverDirector extends CTDirector {
             if (_stopRequested) {
                 break;
             }
-            
+
             // To check whether a discrete phase of execution reaches a 
             // fixed point. The hasCurrentEvent() method has be called to 
             // check the existence of events at the end of each iteration. 
@@ -1646,7 +1645,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Iterate all the actors inside a given schedule, by prefiring,
      *  firing and postfiring them.
      */
@@ -1688,14 +1687,14 @@ public class CTMultiSolverDirector extends CTDirector {
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         Iterator actors = schedule.get(CTSchedule.STATEFUL_ACTORS)
                 .actorIterator();
-    
+
         while (actors.hasNext()) {
             CTStatefulActor actor = (CTStatefulActor) actors.next();
-    
+
             if (_debugging) {
                 _debug("Save State..." + ((Nameable) actor).getName());
             }
-    
+
             actor.markState();
         }
     }
@@ -1715,8 +1714,8 @@ public class CTMultiSolverDirector extends CTDirector {
 
             // NOTE: the breakpoint table is not changed.
             Time nextBreakpoint = ((Time) breakpoints.first());
-            double maximAllowedStepSize = 
-                nextBreakpoint.subtract(getModelTime()).getDoubleValue();
+            double maximAllowedStepSize = nextBreakpoint.subtract(
+                    getModelTime()).getDoubleValue();
 
             if (maximAllowedStepSize < refinedStepSize) {
                 refinedStepSize = maximAllowedStepSize;
@@ -1731,7 +1730,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The breakpoint solver. */
     private ODESolver _breakpointSolver;
 

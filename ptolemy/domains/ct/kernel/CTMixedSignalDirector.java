@@ -284,7 +284,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             }
 
             double aheadLength = _runAheadLength;
-            
+
             // Ideally, the outside time should equal the local time.
             // If the outside time is less than the local time, then rollback
             // is needed. If the outside time is greater than the local time,
@@ -318,21 +318,21 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 // The local time is set backwards to a known good time.
                 _rollback();
 
-                aheadLength = 
-                    _outsideTime.subtract(getModelTime()).getDoubleValue();
+                aheadLength = _outsideTime.subtract(getModelTime())
+                        .getDoubleValue();
 
             } else {
-                aheadLength = outsideNextIterationTime
-                    .subtract(_outsideTime).getDoubleValue();
+                aheadLength = outsideNextIterationTime.subtract(_outsideTime)
+                        .getDoubleValue();
             }
 
             if (_debugging) {
                 _debug(getName(), " local time = " + localTime,
                         " Outside Time = " + _outsideTime,
                         " NextIterationTime = " + outsideNextIterationTime
-                        + " Inferred run length = " + aheadLength);
+                                + " Inferred run length = " + aheadLength);
             }
-            
+
             if (aheadLength < getTimeResolution()) {
                 // This is a zero step size iteration.
                 // TESTIT: simultaneous events from the outside model drives
@@ -346,11 +346,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             }
 
             double currentSuggestedNextStepSize = getSuggestedNextStepSize();
-            if (aheadLength < currentSuggestedNextStepSize || 
-                    currentSuggestedNextStepSize == 0) {
+            if (aheadLength < currentSuggestedNextStepSize
+                    || currentSuggestedNextStepSize == 0) {
                 setSuggestedNextStepSize(aheadLength);
             }
-            
+
             // Now it is safe to execute the continuous part.
             if (_debugging) {
                 _debug(getName(), "The suggested step size is set to "

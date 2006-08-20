@@ -51,6 +51,7 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
+import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
@@ -663,7 +664,14 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
             Entity entity = (Entity) object;
             Configuration configuration = (Configuration) effigy.toplevel();
-            saveComponentInLibrary(configuration, entity);
+            try { 
+                UserActorLibrary.saveComponentInLibrary(configuration, entity);
+            } catch (Exception ex) {
+                // We catch exceptions here because this method used to
+                // not throw Exceptions, and we don't want to break compatibility.
+                MessageHandler
+                .error("Failed to save \"" + entity.getName() + "\".");
+            }
         }
     }
 }

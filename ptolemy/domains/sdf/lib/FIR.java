@@ -31,10 +31,10 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.Type;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
+import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -439,7 +439,7 @@ public class FIR extends SDFTransformer {
     // unless the input type is a FixType, in which case the output
     // type will ba a FixType with (in most cases) a different precision.
     private class OutputTypeFunction extends MonotonicFunction {
-        
+
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
 
@@ -448,12 +448,13 @@ public class FIR extends SDFTransformer {
          */
         public Object getValue() {
             Type inputType = input.getType();
-            Type tapsElementType = ((ArrayType)taps.getType()).getElementType();
+            Type tapsElementType = ((ArrayType) taps.getType())
+                    .getElementType();
             Type productType = inputType.multiply(tapsElementType);
             Type outputType = productType;
 
             int phaseLength = _taps.length / _interpolationValue;
-            
+
             if ((_taps.length % _interpolationValue) != 0) {
                 phaseLength++;
             }
@@ -472,8 +473,7 @@ public class FIR extends SDFTransformer {
         public InequalityTerm[] getVariables() {
             ArrayType paramType = (ArrayType) taps.getType();
             InequalityTerm elementTerm = paramType.getElementTypeTerm();
-            if (input.getTypeTerm().isSettable() && 
-                    elementTerm.isSettable()) {
+            if (input.getTypeTerm().isSettable() && elementTerm.isSettable()) {
                 InequalityTerm[] variable = new InequalityTerm[2];
                 variable[0] = input.getTypeTerm();
                 variable[1] = elementTerm;

@@ -380,7 +380,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
         } else {
             Actor actor = (Actor) port.getContainer();
             Director director;
-            
+
             // For a composite actor,
             // the receiver type of an input port is decided by
             // the executive director.
@@ -392,13 +392,13 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
             } else {
                 director = actor.getDirector();
             }
-            
+
             if (!(director instanceof ProcessDirector)) {
                 throw new IllegalActionException(port,
                         "Cannot use an instance of PNQueueReceiver "
-                        + "since the director is not a PNDirector.");
+                                + "since the director is not a PNDirector.");
             }
-            
+
             _director = (ProcessDirector) director;
         }
     }

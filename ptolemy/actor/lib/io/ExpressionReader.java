@@ -104,7 +104,7 @@ public class ExpressionReader extends LineReader {
         _expressionEvaluator.setExpression(_currentLine);
         output.setTypeEquals(_expressionEvaluator.getType());
     }
-    
+
     /** Override the base class to clear memory of any
      *  possibly erroneous expression.
      */

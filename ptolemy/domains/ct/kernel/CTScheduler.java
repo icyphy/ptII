@@ -478,13 +478,13 @@ public class CTScheduler extends Scheduler {
                     // The reason is that if a CT subsystem does not contain 
                     // any of the above two actors, it cannot be treated as
                     // a source actor. 
-                    if (((CTCompositeActor)a).containsDynamicActors()) {
+                    if (((CTCompositeActor) a).containsDynamicActors()) {
                         dynamicActors.add(a);
                     }
                     arithmeticActors.add(a);
                     ctSubsystems.add(a);
                     statefulActorSchedule.add(new Firing(a));
-                    if (((CTCompositeActor)a).containsWaveformGenerators()) {
+                    if (((CTCompositeActor) a).containsWaveformGenerators()) {
                         waveformGenerators.add(a);
                     }
                     eventGenerators.add(a);
@@ -954,8 +954,8 @@ public class CTScheduler extends Scheduler {
                     stateTransitionActors.add(dynamicActor);
                 }
             }
-        } 
-        
+        }
+
         // Create StateTransitionActorSchedule.
         Iterator stActors = stateTransitionActors.iterator();
 

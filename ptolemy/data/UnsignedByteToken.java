@@ -122,8 +122,8 @@ public class UnsignedByteToken extends ScalarToken {
 
             _value = (byte) value;
         } catch (NumberFormatException e) {
-            throw new IllegalActionException(null, e, 
-                    "Failed to parse \"" + init + "\" as a number.");
+            throw new IllegalActionException(null, e, "Failed to parse \""
+                    + init + "\" as a number.");
         }
     }
 

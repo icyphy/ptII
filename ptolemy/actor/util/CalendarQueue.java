@@ -589,7 +589,7 @@ public class CalendarQueue implements Debuggable {
 
     /** Get the first entry from the specified bucket and return
      *  its contents.
-     */  
+     */
     private Object _getFromBucket(int index) {
         return _bucket[index].head.contents;
     }
@@ -605,7 +605,7 @@ public class CalendarQueue implements Debuggable {
         if (_queueSize == 0) {
             throw new InvalidStateException("Queue is empty.");
         }
-        
+
         // If the queue has not been changed, do nothing.
         // Note that this has a strong dependency on the implementation
         // of methods that modify the queue, such as the put(), remove(), 
@@ -676,11 +676,11 @@ public class CalendarQueue implements Debuggable {
                 break;
             }
         }
-        
+
         _indexOfMinimumBucketValid = true;
         return _indexOfMinimumBucket;
     }
-    
+
     // Initialize the bucket array to the specified number of buckets
     // with the specified width.
     //
@@ -726,7 +726,7 @@ public class CalendarQueue implements Debuggable {
         // This method is called whenever the queue is modified. So, we 
         // set the flat _queueChanged to true.
         _indexOfMinimumBucketValid = false;
-        
+
         if (!_resizeEnabled) {
             return;
         }
@@ -1054,17 +1054,17 @@ public class CalendarQueue implements Debuggable {
 
     // Cached minimum bucket.
     private Object _cachedMinimumBucket;
-    
+
     // Comparator to determine how to order entries.
     private CQComparator _cqComparator;
 
     /** The index of the minmum bucket. */
     private int _indexOfMinimumBucket = 0;
-    
+
     /** Flag indicating whether the index of the minimum bucket is valid.
      */
     private boolean _indexOfMinimumBucketValid = false;
-    
+
     // An indicator of whether the queue has been initialized.
     private boolean _initialized = false;
 

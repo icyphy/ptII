@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (cxh)
  */
 public abstract class AbstractDDI implements DDI {
-    
+
     /** Return true. Most actors are written so that the prefire() and
      *  fire() methods do not change the state of the actor. Hence, for
      *  convenience, this base class by default returns true. An actor

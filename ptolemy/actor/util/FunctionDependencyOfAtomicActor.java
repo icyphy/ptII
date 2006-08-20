@@ -57,8 +57,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  port by defining this method:
  <pre>
  public void pruneDependencies() {
-    super.pruneDependencies();
-    removeDependency(input, output);
+ super.pruneDependencies();
+ removeDependency(input, output);
  }
  </pre>
 

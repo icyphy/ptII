@@ -63,7 +63,7 @@ package ptolemy.domains.fsm.kernel;
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
-*/
+ */
 public final class RelationType {
 
     ///////////////////////////////////////////////////////////////////

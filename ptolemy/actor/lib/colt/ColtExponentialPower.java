@@ -37,7 +37,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.ExponentialPower;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ExponentialPower
 
@@ -76,7 +75,8 @@ public class ColtExponentialPower extends ColtRandomSource {
 
         tau = new PortParameter(this, "tau", new DoubleToken(1.0));
         tau.setTypeEquals(BaseType.DOUBLE);
-        new SingletonParameter(tau.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(tau.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         tau.moveToFirst();
     }

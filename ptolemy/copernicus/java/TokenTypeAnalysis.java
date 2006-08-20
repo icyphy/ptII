@@ -39,8 +39,8 @@ import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.TypeLattice;
 import ptolemy.data.type.MatrixType;
+import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import soot.Local;
@@ -234,8 +234,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                         // of its constructor argument.
                         //     System.out.println("found array invoke: " + r);
                         //     System.out.println("Argument type is : " + in.get(r.getArg(0)));
-                        ptolemy.data.type.Type argType =
-                            (ptolemy.data.type.Type) in.get(r.getArg(0));
+                        ptolemy.data.type.Type argType = (ptolemy.data.type.Type) in
+                                .get(r.getArg(0));
 
                         if (argType == null) {
                             argType = BaseType.UNKNOWN;
@@ -249,8 +249,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                         //     System.out.println("found array invoke: " + r);
                         //     System.out.println("Argument type is : " + in.get(r.getArg(0)));
 
-                        ptolemy.data.type.Type argType = 
-                            (ptolemy.data.type.Type) in.get(r.getArg(0));
+                        ptolemy.data.type.Type argType = (ptolemy.data.type.Type) in
+                                .get(r.getArg(0));
 
                         if (argType == null) {
                             argType = BaseType.UNKNOWN;
@@ -363,8 +363,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                         if ((matrixType != null)
                                 && matrixType instanceof MatrixType) {
                             _updateTypeInAssignment(leftOp,
-                                    ((MatrixType) matrixType)
-                                            .getElementType(), out);
+                                    ((MatrixType) matrixType).getElementType(),
+                                    out);
                         }
                     } else if (methodName.equals("absolute")) {
                         // Return the same as the input type, unless complex,

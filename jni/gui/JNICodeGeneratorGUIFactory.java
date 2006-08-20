@@ -1,5 +1,5 @@
 /* An attribute that creates an editor to that builds support code
-   for the Java Native Interface.
+ for the Java Native Interface.
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.

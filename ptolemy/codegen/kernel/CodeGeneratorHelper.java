@@ -56,8 +56,8 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.data.type.MatrixType;
+import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -365,7 +365,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 while (sinkChannels.hasNext()) {
                     Channel sink = (Channel) sinkChannels.next();
-                    code.append(CodeStream.indent(_generateTypeConvertStatements(source, sink)));
+                    code
+                            .append(CodeStream
+                                    .indent(_generateTypeConvertStatements(
+                                            source, sink)));
                 }
             }
         }
@@ -1127,13 +1130,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                  * FIXME: The following pointer math does not give the correct
                  * result. Maybe the original author wanted to optimize by
                  * avoiding the "%" operator.   
-                int modulo = getBufferSize(port, channel) - 1;
-                temp = "(" + offsetObject.toString() + " + " + 
-                    offsetString + ")&" + modulo;
-                */
+                 int modulo = getBufferSize(port, channel) - 1;
+                 temp = "(" + offsetObject.toString() + " + " + 
+                 offsetString + ")&" + modulo;
+                 */
                 int modulo = getBufferSize(port, channel);
-                temp = "(" + offsetObject.toString() + " + " + 
-                    offsetString + ")%" + modulo;
+                temp = "(" + offsetObject.toString() + " + " + offsetString
+                        + ")%" + modulo;
             }
 
             result += "[" + temp + "]";
@@ -2252,7 +2255,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             Integer.parseInt(numberString);
             return true;
         } catch (NumberFormatException ex) {
-            return false;            
+            return false;
         }
     }
 

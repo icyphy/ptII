@@ -27,9 +27,9 @@
 package ptolemy.copernicus.java;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.HashMap;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.parameters.PortParameter;
@@ -256,7 +256,8 @@ public class ReplaceComplexParameters extends SceneTransformer implements
 
                     if (theClass != newClass) {
                         _replaceObjectTypesInClassFields(theClass, attribute,
-                                attributeClass, newClass, oldSignatureToFieldMap);
+                                attributeClass, newClass,
+                                oldSignatureToFieldMap);
                     }
                 }
                 for (Iterator classes = Scene.v().getApplicationClasses()
@@ -265,7 +266,8 @@ public class ReplaceComplexParameters extends SceneTransformer implements
 
                     if (theClass != newClass) {
                         _fixFieldTypesInClassMethods(theClass, attribute,
-                                attributeClass, newClass, oldSignatureToFieldMap);
+                                attributeClass, newClass,
+                                oldSignatureToFieldMap);
                     }
                 }
             }
@@ -288,8 +290,8 @@ public class ReplaceComplexParameters extends SceneTransformer implements
             NamedObj object, SootClass oldClass, SootClass newClass,
             HashMap oldSignatureToFieldMap) {
         if (_debug) {
-            System.out.println("replacing field objects in " + theClass + " for "
-                    + object);
+            System.out.println("replacing field objects in " + theClass
+                    + " for " + object);
         }
 
         // FIXME: deal with inner classes.
@@ -322,7 +324,7 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                     // to the field based on it's parameter types.
                     theClass.removeField(oldField);
                     theClass.addField(oldField);
-                    
+
                     oldSignatureToFieldMap.put(oldFieldSignature, oldField);
 
                     System.out.println("replacing " + oldFieldSignature);
@@ -351,8 +353,8 @@ public class ReplaceComplexParameters extends SceneTransformer implements
     private void _replaceObjectTypesInClassMethods(SootClass theClass,
             NamedObj object, SootClass oldClass, SootClass newClass) {
         if (_debug) {
-            System.out.println("replacing method objects in " + theClass + " for "
-                    + object);
+            System.out.println("replacing method objects in " + theClass
+                    + " for " + object);
         }
 
         ArrayList methodList = new ArrayList(theClass.getMethods());
@@ -423,11 +425,11 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                     if (value instanceof InstanceFieldRef) {
                         // Fix references to fields
                         InstanceFieldRef r = (InstanceFieldRef) value;
-                        
+
                         if (object != analysis.getObject((Local) r.getBase())) {
-//                             System.out.println("object = " + object);
-//                             System.out.println("analysis object = " + analysis.getObject((Local)r.getBase()));
-//                             System.out.println("not equal!");
+                            //                             System.out.println("object = " + object);
+                            //                             System.out.println("analysis object = " + analysis.getObject((Local)r.getBase()));
+                            //                             System.out.println("not equal!");
                             continue;
                         }
 
@@ -594,7 +596,7 @@ public class ReplaceComplexParameters extends SceneTransformer implements
     // oldSignatureToFieldMap is used to fix the types of modified
     // fields.
     private void _fixFieldTypesInClassMethods(SootClass theClass,
-            NamedObj object, SootClass oldClass, SootClass newClass, 
+            NamedObj object, SootClass oldClass, SootClass newClass,
             HashMap oldSignatureToFieldMap) {
         ArrayList methodList = new ArrayList(theClass.getMethods());
 
@@ -615,7 +617,7 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                     if (value instanceof InstanceFieldRef) {
                         // Fix references to fields
                         InstanceFieldRef r = (InstanceFieldRef) value;
-                        
+
                         System.out.println("instanceFieldRef unit " + unit);
 
                         // First fix the types of references to the
@@ -623,7 +625,8 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                         String signature = r.getFieldRef().getSignature();
                         if (oldSignatureToFieldMap.containsKey(signature)) {
                             System.out.println("comparing " + signature);
-                            r.setFieldRef(((SootField)oldSignatureToFieldMap.get(signature)).makeRef());
+                            r.setFieldRef(((SootField) oldSignatureToFieldMap
+                                    .get(signature)).makeRef());
                         }
                     }
                 }

@@ -141,7 +141,7 @@ public class FixToFix extends Converter {
             Precision precision = new Precision(token.getElementAt(0, 0), token
                     .getElementAt(0, 1));
             _quantization = _quantization.setPrecision(precision);
-            if(_quantization.getOverflow() == Overflow.GROW) {
+            if (_quantization.getOverflow() == Overflow.GROW) {
                 output.setTypeEquals(BaseType.UNSIZED_FIX);
             } else {
                 output.setTypeEquals(new FixType(_quantization.getPrecision()));
@@ -152,7 +152,7 @@ public class FixToFix extends Converter {
         } else if (attribute == overflow) {
             Overflow o = Overflow.forName(overflow.getExpression());
             _quantization = _quantization.setOverflow(o);
-            if(_quantization.getOverflow() == Overflow.GROW) {
+            if (_quantization.getOverflow() == Overflow.GROW) {
                 output.setTypeEquals(BaseType.UNSIZED_FIX);
             } else {
                 output.setTypeEquals(new FixType(_quantization.getPrecision()));
@@ -192,5 +192,5 @@ public class FixToFix extends Converter {
     ////                         private variables                 ////
     // The quantization of the output.
     private FixPointQuantization _quantization = new FixPointQuantization(
-            new Precision(0,0), Overflow.SATURATE, Rounding.NEAREST);
+            new Precision(0, 0), Overflow.SATURATE, Rounding.NEAREST);
 }

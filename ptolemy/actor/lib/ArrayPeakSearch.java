@@ -474,8 +474,10 @@ public class ArrayPeakSearch extends TypedAtomicActor {
             Token[] resultIndicesArray = (Token[]) resultIndices
                     .toArray(new Token[resultIndices.size()]);
 
-            peakValues.send(0, new ArrayToken(inputElementType, resultPeaksArray));
-            peakIndices.send(0, new ArrayToken(BaseType.INT, resultIndicesArray));
+            peakValues.send(0, new ArrayToken(inputElementType,
+                    resultPeaksArray));
+            peakIndices.send(0,
+                    new ArrayToken(BaseType.INT, resultIndicesArray));
         }
     }
 

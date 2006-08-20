@@ -52,7 +52,6 @@ import org.w3c.dom.svg.SVGDocument;
 
 import diva.util.java2d.PaintedObject;
 
-
 /** A utility class that paints a rendering of an SVG document
  * This class is intended for use as a low-level class to simplify
  * construction of drawn SVG graphics, while leveraging the functionality of
@@ -78,7 +77,7 @@ public class SVGPaintedObject implements PaintedObject {
 
         // Has to be an SVGDocument, not just a Document - otherwise we get
         // a ClassCastException in the Batik code
-        this.svgDoc = (SVGDocument)doc;
+        this.svgDoc = (SVGDocument) doc;
 
         // Set the component's maximum size so that content
         // bigger than the screen does not cause the creation
@@ -87,24 +86,25 @@ public class SVGPaintedObject implements PaintedObject {
         // of PreferredSize for some bizzarro reason, so we set PreferredSize to
         //the screen size, initially...
         //
-        svgComponent = new JSVGComponent(null, false, false){
+        svgComponent = new JSVGComponent(null, false, false) {
             // new JSVGComponent(SVGUserAgent, eventsEnabled, selectableText)
 
-                Dimension screenSize;
+            Dimension screenSize;
 
-                {
-                    screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                    setMaximumSize(screenSize);
-                    setPreferredSize(screenSize);
-                }
+            {
+                screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                setMaximumSize(screenSize);
+                setPreferredSize(screenSize);
+            }
 
-                public Dimension getPreferredSize(){
-                    Dimension s = super.getPreferredSize();
-                    if (s.width > screenSize.width) s.width = screenSize.width;
-                    if (s.height > screenSize.height) s.height = screenSize.height;
-                    return s;
-                }
-
+            public Dimension getPreferredSize() {
+                Dimension s = super.getPreferredSize();
+                if (s.width > screenSize.width)
+                    s.width = screenSize.width;
+                if (s.height > screenSize.height)
+                    s.height = screenSize.height;
+                return s;
+            }
 
             /**
              * This method is called when the component knows the desired
@@ -115,11 +115,11 @@ public class SVGPaintedObject implements PaintedObject {
              * @param d Dimension
              */
             public void setMySize(Dimension d) {
-                    setPreferredSize(d);
-                    invalidate();
-                    container.doLayout();
-                }
-            };
+                setPreferredSize(d);
+                invalidate();
+                container.doLayout();
+            }
+        };
 
         _addListeners();
 
@@ -140,10 +140,6 @@ public class SVGPaintedObject implements PaintedObject {
         svgComponent.setSVGDocument(svgDoc);
     }
 
-
-
-
-
     /** Get the bounding box of the object when painted. Implementations of this
      * method should take account of the thickness of the stroke, if there is one.
      *
@@ -154,11 +150,11 @@ public class SVGPaintedObject implements PaintedObject {
         // svgBounds will be null until the gvtBuildCompleted() callback occurs,
         // after the SVG tree has been constructed and Batik knows the size of
         // the SVG root element
-        if (svgBounds == null) svgBounds = _DEFAULT_SVG_BOUNDS;
+        if (svgBounds == null)
+            svgBounds = _DEFAULT_SVG_BOUNDS;
 
         return svgBounds;
     }
-
 
     /** Paint the shape. Implementations are expected to redraw the entire
      * object. Whether or not the paint overwrites fields in the graphics
@@ -169,10 +165,10 @@ public class SVGPaintedObject implements PaintedObject {
      */
     public void paint(Graphics2D g2d) {
 
-          GraphicsNode gNode = svgComponent.getGraphicsNode();
-          if (gNode!=null) gNode.paint(g2d);
+        GraphicsNode gNode = svgComponent.getGraphicsNode();
+        if (gNode != null)
+            gNode.paint(g2d);
     }
-
 
     /**
      * add a listener to receive a callback after Batik has finished rendering
@@ -182,11 +178,11 @@ public class SVGPaintedObject implements PaintedObject {
      */
     public void addSVGRenderingListener(SVGRenderingListener listener) {
 
-        if (listener==null) return;
+        if (listener == null)
+            return;
 
         svgrListenerList.add(listener);
     }
-
 
     /**
      * remove an SVGRenderingListener
@@ -195,13 +191,13 @@ public class SVGPaintedObject implements PaintedObject {
      */
     public void removeSVGRenderingListener(SVGRenderingListener listener) {
 
-        if (listener==null) return;
+        if (listener == null)
+            return;
 
         if (svgrListenerList.contains(listener)) {
             svgrListenerList.remove(listener);
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -220,17 +216,18 @@ public class SVGPaintedObject implements PaintedObject {
 
                 // notify listeners so they can update the UI...
                 _notifySVGRenderingListeners();
-            }});
+            }
+        });
     }
 
     private void _notifySVGRenderingListeners() {
         Iterator it = svgrListenerList.iterator();
         while (it.hasNext()) {
             SVGRenderingListener l = (SVGRenderingListener) (it.next());
-            if (l != null) l.svgRenderingComplete();
+            if (l != null)
+                l.svgRenderingComplete();
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
@@ -241,8 +238,12 @@ public class SVGPaintedObject implements PaintedObject {
     private List svgrListenerList = new Vector();
 
     private final SVGDocument svgDoc;
+
     private final JSVGComponent svgComponent;
+
     private final Container container = new Container();
-    private static final Rectangle2D _DEFAULT_SVG_BOUNDS = new Rectangle(20,20);
+
+    private static final Rectangle2D _DEFAULT_SVG_BOUNDS = new Rectangle(20, 20);
+
     private Rectangle2D svgBounds;
 }

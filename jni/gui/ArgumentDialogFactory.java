@@ -104,8 +104,8 @@ public class ArgumentDialogFactory implements MenuItemFactory {
                 } else {
                     System.out.println("No Frame");
 
-                    new ArgumentConfigurerDialog(null, (GenericJNIActor) target,
-                            _configuration);
+                    new ArgumentConfigurerDialog(null,
+                            (GenericJNIActor) target, _configuration);
 
                     //TRT end
                 }

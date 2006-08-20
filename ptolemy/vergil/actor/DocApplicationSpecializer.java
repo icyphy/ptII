@@ -71,9 +71,8 @@ public interface DocApplicationSpecializer {
      *  @return The URL of the documentation, if any.  If no documentation
      *  was found, return null.
      */
-    public URL docClassNameToURL(String remoteDocumentationURLBase, 
-            String className,
-            boolean lookForPtDoc, boolean lookForJavadoc,
+    public URL docClassNameToURL(String remoteDocumentationURLBase,
+            String className, boolean lookForPtDoc, boolean lookForJavadoc,
             boolean lookForSource, boolean lookForActorIndex);
 
     /** Set up the commands necessary to build the documentation.

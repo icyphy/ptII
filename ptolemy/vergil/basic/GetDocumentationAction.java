@@ -197,74 +197,70 @@ public class GetDocumentationAction extends FigureAction {
 
             // Look for the PtDoc .xml file or the javadoc.
             // Don't look for the source or the index.
-            URL toRead = DocManager.docClassNameToURL(configuration,
-                    className, true, true, false, false);
-            
+            URL toRead = DocManager.docClassNameToURL(configuration, className,
+                    true, true, false, false);
+
             if (toRead != null) {
                 _lastClassName = null;
-                configuration.openModel(null, toRead, toRead
-                        .toExternalForm());
+                configuration.openModel(null, toRead, toRead.toExternalForm());
             } else {
-                throw new Exception("Could not get find documentation for "
-                        + className + "."
-                        + ( DocManager.getRemoteDocumentationURLBase() != null
-                                ? " Also tried looking on \""
-                                + DocManager.getRemoteDocumentationURLBase()
-                                + "\"."
-                                : ""));
+                throw new Exception(
+                        "Could not get find documentation for "
+                                + className
+                                + "."
+                                + (DocManager.getRemoteDocumentationURLBase() != null ? " Also tried looking on \""
+                                        + DocManager
+                                                .getRemoteDocumentationURLBase()
+                                        + "\"."
+                                        : ""));
             }
         } catch (Exception ex) {
             // Try to open the DocBuilderGUI
             try {
-                Parameter remoteDocumentationURLBaseParameter =
-                    (Parameter) configuration
-                    .getAttribute("_remoteDocumentationURLBase",
-                            Parameter.class);
+                Parameter remoteDocumentationURLBaseParameter = (Parameter) configuration
+                        .getAttribute("_remoteDocumentationURLBase",
+                                Parameter.class);
                 String tentativeRemoteDocumentationURLBase = null;
                 if (remoteDocumentationURLBaseParameter != null) {
-                    tentativeRemoteDocumentationURLBase = 
-                            remoteDocumentationURLBaseParameter.getExpression();
+                    tentativeRemoteDocumentationURLBase = remoteDocumentationURLBaseParameter
+                            .getExpression();
                 } else {
-                    tentativeRemoteDocumentationURLBase = 
-                            "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII"
-                            + VersionAttribute.majorCurrentVersion()
-                            + "/ptII/";
+                    tentativeRemoteDocumentationURLBase = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII"
+                            + VersionAttribute.majorCurrentVersion() + "/ptII/";
                 }
                 // Pop up a query an prompt the user
-                String message =  "The documentation was not found.\n"
-                    + (_lastClassName != null &&
-                        DocManager.getRemoteDocumentationURLBase() != null
-                            ? " We looked in \""
-                            + DocManager.getRemoteDocumentationURLBase()
-                            + "\" but did not find anything.\n"
-                            : "")
-                    + "You may\n"
-                    + "1) Build the documentation, which requires "
-                    + "configure and make, or\n"
-                    + "2) Use the documentation from the website at \""
-                    + tentativeRemoteDocumentationURLBase + "\" or\n"
-                    + "3) Cancel";
-                Object[] options = {"Build", "Use Website", "Cancel"};
-                int selected = JOptionPane.showOptionDialog(null,
-                        message,
+                String message = "The documentation was not found.\n"
+                        + (_lastClassName != null
+                                && DocManager.getRemoteDocumentationURLBase() != null ? " We looked in \""
+                                + DocManager.getRemoteDocumentationURLBase()
+                                + "\" but did not find anything.\n"
+                                : "") + "You may\n"
+                        + "1) Build the documentation, which requires "
+                        + "configure and make, or\n"
+                        + "2) Use the documentation from the website at \""
+                        + tentativeRemoteDocumentationURLBase + "\" or\n"
+                        + "3) Cancel";
+                Object[] options = { "Build", "Use Website", "Cancel" };
+                int selected = JOptionPane.showOptionDialog(null, message,
                         "Choose Documentation Source",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.WARNING_MESSAGE,
+                        JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
                         null, options, options[0]);
                 switch (selected) {
-                case 2 :
+                case 2:
                     // Cancel
                     return;
-                case 1 :
+                case 1:
                     // Use Website
-                    DocManager.setRemoteDocumentationURLBase(tentativeRemoteDocumentationURLBase);
+                    DocManager
+                            .setRemoteDocumentationURLBase(tentativeRemoteDocumentationURLBase);
                     _lastClassName = className;
                     getDocumentation(configuration, className, context);
                     break;
                 case 0:
                     // Build
                     // Need to create an effigy and tableau.
-                    ComponentEntity effigy = context.getEntity("DocBuilderEffigy");
+                    ComponentEntity effigy = context
+                            .getEntity("DocBuilderEffigy");
                     if (effigy == null) {
                         try {
                             effigy = new DocBuilderEffigy(context,
@@ -279,15 +275,15 @@ public class GetDocumentationAction extends FigureAction {
                                 + "is not an instance of DocBuilderEffigy!");
                     }
                     //((DocEffigy) effigy).setDocAttribute(docAttribute);
-                    ComponentEntity tableau = ((Effigy) effigy).getEntity("DocBuilderTableau");
+                    ComponentEntity tableau = ((Effigy) effigy)
+                            .getEntity("DocBuilderTableau");
                     if (tableau == null) {
                         try {
                             tableau = new DocBuilderTableau(
                                     (DocBuilderEffigy) effigy,
                                     "DocBuilderTableau");
-                            ((DocBuilderTableau) tableau).setTitle(
-                                    "Documentation for "
-                                    + className);
+                            ((DocBuilderTableau) tableau)
+                                    .setTitle("Documentation for " + className);
                         } catch (KernelException exception) {
                             throw new InternalErrorException(exception);
                         }
@@ -300,9 +296,9 @@ public class GetDocumentationAction extends FigureAction {
                     // FIXME: Tell the user what to do here.
                     ((DocBuilderTableau) tableau).show();
                     break;
-                default: 
+                default:
                     throw new InternalErrorException("Unknown return value \""
-                            + selected 
+                            + selected
                             + "\" from Choose Documentation Source window.");
                     //break;
                 }
@@ -314,7 +310,6 @@ public class GetDocumentationAction extends FigureAction {
             }
         }
     }
-
 
     /** Set the configuration.  This is used
      *  to open files (such as documentation).  The configuration is
@@ -332,7 +327,6 @@ public class GetDocumentationAction extends FigureAction {
 
     /** The configuration. */
     protected Configuration _configuration;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -632,7 +632,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 break;
 
             default:
-            // None
+                // None
             }
         }
 
@@ -649,7 +649,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 break;
 
             default:
-            // None
+                // None
             }
         }
 

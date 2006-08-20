@@ -213,8 +213,8 @@ public class CodeStream {
      * @exception IllegalActionException If 
      *  appendCodeBlock(String, ArrayList, boolean) throws the exception.
      */
-    public void appendCodeBlock(String blockName, ArrayList arguments, int indentLevel)
-            throws IllegalActionException {
+    public void appendCodeBlock(String blockName, ArrayList arguments,
+            int indentLevel) throws IllegalActionException {
         appendCodeBlock(blockName, arguments, false, indentLevel);
     }
 
@@ -233,8 +233,7 @@ public class CodeStream {
      *  be found, or if the numbers of arguments and parameters do not match.
      */
     public void appendCodeBlock(String blockName, ArrayList arguments,
-            boolean mayNotExist) 
-            throws IllegalActionException {            
+            boolean mayNotExist) throws IllegalActionException {
         appendCodeBlock(blockName, arguments, mayNotExist, _indentLevel);
     }
 
@@ -252,8 +251,7 @@ public class CodeStream {
      *  be found, or if the numbers of arguments and parameters do not match.
      */
     public void appendCodeBlock(String blockName, ArrayList arguments,
-            boolean mayNotExist, int indentLevel)
-            throws IllegalActionException {
+            boolean mayNotExist, int indentLevel) throws IllegalActionException {
         if (!mayNotExist && arguments.size() == 0) {
             // That means this is a request by the user. This check prevents
             // user from appending duplicate code blocks that are already
@@ -309,7 +307,8 @@ public class CodeStream {
         }
 
         if (indentLevel > 0) {
-            codeBlock = new StringBuffer(indent(indentLevel, codeBlock.toString()));
+            codeBlock = new StringBuffer(indent(indentLevel, codeBlock
+                    .toString()));
         }
         _stream.append(codeBlock);
     }
@@ -408,14 +407,12 @@ public class CodeStream {
 
         String indent = StringUtilities.getIndentPrefix(indentLevel);
         // For every line.separator, substitute line.separator + indent.
-        String tmpString = StringUtilities.substitute(
-                inputString,
-                _lineSeparator,
-                _lineSeparator + indent);
+        String tmpString = StringUtilities.substitute(inputString,
+                _lineSeparator, _lineSeparator + indent);
         if (tmpString.endsWith(_lineSeparator + indent)) {
             // Chop off the last indent
-            tmpString = tmpString.substring(0,
-                    tmpString.length() - indent.length());
+            tmpString = tmpString.substring(0, tmpString.length()
+                    - indent.length());
         }
         // Insert the initial indent.
         return indent + tmpString;

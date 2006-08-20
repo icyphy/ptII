@@ -69,13 +69,13 @@ public abstract class _CorbaActorImplBase extends
             break;
         }
 
-        /* Return the value (in the form of a string) of
-         * a parameter.
-         * @exception CorbaIllegalActionException If the
-         *  query of parameter is not supported by the actor.
-         * @exception CorbaUnknowParamException If the parameter
-         *  name is not known by the actor.
-         */
+            /* Return the value (in the form of a string) of
+             * a parameter.
+             * @exception CorbaIllegalActionException If the
+             *  query of parameter is not supported by the actor.
+             * @exception CorbaUnknowParamException If the parameter
+             *  name is not known by the actor.
+             */
         case 1: // util/CorbaActor/getParameter
         {
             try {
@@ -97,11 +97,11 @@ public abstract class _CorbaActorImplBase extends
             break;
         }
 
-        /* Mirror the initialize() method of the Ptolmey
-         * executable interface.
-         * @exception CorbaIllegalActionException If the
-         *   method is an illegal action of the actor.
-         */
+            /* Mirror the initialize() method of the Ptolmey
+             * executable interface.
+             * @exception CorbaIllegalActionException If the
+             *   method is an illegal action of the actor.
+             */
         case 2: // util/CorbaActor/initialize
         {
             try {
@@ -116,15 +116,15 @@ public abstract class _CorbaActorImplBase extends
             break;
         }
 
-        /* Return true if the specified channel of the specified
-         * port contains unsent data.
-         * @exception CorbaIllegalActionException If the query is
-         *   not supported by the actor.
-         * @exception CorbaUnknownPortException If the specified
-         *   port is not known by the actor.
-         * @exception CorbaIndexOutofBoundException If the
-         *   channel index is out of the width of the port.
-         */
+            /* Return true if the specified channel of the specified
+             * port contains unsent data.
+             * @exception CorbaIllegalActionException If the query is
+             *   not supported by the actor.
+             * @exception CorbaUnknownPortException If the specified
+             *   port is not known by the actor.
+             * @exception CorbaIndexOutofBoundException If the
+             *   channel index is out of the width of the port.
+             */
         case 3: // util/CorbaActor/hasData
         {
             try {
@@ -151,9 +151,9 @@ public abstract class _CorbaActorImplBase extends
             break;
         }
 
-        /* Return true if there is a parameter of the specified
-         * name defined in the actor.
-         */
+            /* Return true if there is a parameter of the specified
+             * name defined in the actor.
+             */
         case 4: // util/CorbaActor/hasParameter
         {
             String paramName = in.read_string();
@@ -164,13 +164,13 @@ public abstract class _CorbaActorImplBase extends
             break;
         }
 
-        /* Return true if there is a port of the specified name
-         * and specified property contained by the actor.
-         * @param portName The name of the port.
-         * @param isInput True if the port is an input port.
-         * @param isOutput True if the port is an output port.
-         * @param isMultiport True if the port is a multiport.
-         */
+            /* Return true if there is a port of the specified name
+             * and specified property contained by the actor.
+             * @param portName The name of the port.
+             * @param isInput True if the port is an input port.
+             * @param isOutput True if the port is an output port.
+             * @param isMultiport True if the port is a multiport.
+             */
         case 5: // util/CorbaActor/hasPort
         {
             String portName = in.read_string();
@@ -184,16 +184,16 @@ public abstract class _CorbaActorImplBase extends
             break;
         }
 
-        /* Set the width of the specified port.
-         * @param portName The name of the port.
-         * @param width The width to be set.
-         * @exception CorbaIllegalActionException If the width
-         *  to be set is not supported by the port, e.g. the
-         *  port is restricted to a single port, but the width
-         *  to be set is greater than one.
-         * @exception CorbaUnknownPortException If the port is \
-         *  not known by the actor.
-         */
+            /* Set the width of the specified port.
+             * @param portName The name of the port.
+             * @param width The width to be set.
+             * @exception CorbaIllegalActionException If the width
+             *  to be set is not supported by the port, e.g. the
+             *  port is restricted to a single port, but the width
+             *  to be set is greater than one.
+             * @exception CorbaUnknownPortException If the port is \
+             *  not known by the actor.
+             */
         case 6: // util/CorbaActor/setPortWidth
         {
             try {
@@ -214,11 +214,11 @@ public abstract class _CorbaActorImplBase extends
             break;
         }
 
-        /* Mirror the postfire() method of the Ptolmey
-         * executable interface.
-         * @exception CorbaIllegalActionException If the
-         *   method is an illegal action of the actor.
-         */
+            /* Mirror the postfire() method of the Ptolmey
+             * executable interface.
+             * @exception CorbaIllegalActionException If the
+             *   method is an illegal action of the actor.
+             */
         case 7: // util/CorbaActor/postfire
         {
             try {
@@ -235,11 +235,11 @@ public abstract class _CorbaActorImplBase extends
             break;
         }
 
-        /* Mirror the prefire() method of the Ptolmey
-         * executable interface.
-         * @exception CorbaIllegalActionException If the
-         *   method is an illegal action of the actor.
-         */
+            /* Mirror the prefire() method of the Ptolmey
+             * executable interface.
+             * @exception CorbaIllegalActionException If the
+             *   method is an illegal action of the actor.
+             */
         case 8: // util/CorbaActor/prefire
         {
             try {
@@ -256,16 +256,16 @@ public abstract class _CorbaActorImplBase extends
             break;
         }
 
-        /* Set the value of the specified parameter.
-         * @param paramName The parameter name.
-         * @param paramValue The value to be set.
-         * @exception CorbaIllegalActionException If the set
-         *  value opertaion is not supported by the parameter.
-         * @exception CorbaUnknownParamException If the
-         *  parameter name is not known by the actor.
-         * @exception CorbaIllegalValueException If the value
-         *  is invalid for this parameter.
-         */
+            /* Set the value of the specified parameter.
+             * @param paramName The parameter name.
+             * @param paramValue The value to be set.
+             * @exception CorbaIllegalActionException If the set
+             *  value opertaion is not supported by the parameter.
+             * @exception CorbaUnknownParamException If the
+             *  parameter name is not known by the actor.
+             * @exception CorbaIllegalValueException If the value
+             *  is invalid for this parameter.
+             */
         case 9: // util/CorbaActor/setParameter
         {
             try {
@@ -290,11 +290,11 @@ public abstract class _CorbaActorImplBase extends
             break;
         }
 
-        /*  Mirror the stopFire() method of the Ptolmey
-         * executable interface.
-         * @exception CorbaIllegalActionException If the
-         *   method is an illegal action of the actor.
-         */
+            /*  Mirror the stopFire() method of the Ptolmey
+             * executable interface.
+             * @exception CorbaIllegalActionException If the
+             *   method is an illegal action of the actor.
+             */
         case 10: // util/CorbaActor/stopFire
         {
             try {
@@ -309,11 +309,11 @@ public abstract class _CorbaActorImplBase extends
             break;
         }
 
-        /* Mirror the terminate() method of the Ptolmey
-         * executable interface.
-         * @exception CorbaIllegalActionException If the
-         *   method is an illegal action of the actor.
-         */
+            /* Mirror the terminate() method of the Ptolmey
+             * executable interface.
+             * @exception CorbaIllegalActionException If the
+             *   method is an illegal action of the actor.
+             */
         case 11: // util/CorbaActor/terminate
         {
             try {
@@ -328,19 +328,19 @@ public abstract class _CorbaActorImplBase extends
             break;
         }
 
-        /* Transfer the input data to the specified port.
-         * @param portName The port name.
-         * @param portIndex The channel number within the port.
-         * @param tokenValue The string for the value of the
-         *        data token.
-         * @exception CorbaIllegalActionException If the action is
-         *  illegal.
-         * @exception CorbaUnknownPortException If the port is unknown.
-         * @exception CorbaIndexOutofBoundException If the index
-         *  number is out of the width of the port.
-         * @exception CorbaIllegalValueException If the value is not
-         *  valid, e.g. the string cannot be converted to a value.
-         */
+            /* Transfer the input data to the specified port.
+             * @param portName The port name.
+             * @param portIndex The channel number within the port.
+             * @param tokenValue The string for the value of the
+             *        data token.
+             * @exception CorbaIllegalActionException If the action is
+             *  illegal.
+             * @exception CorbaUnknownPortException If the port is unknown.
+             * @exception CorbaIndexOutofBoundException If the index
+             *  number is out of the width of the port.
+             * @exception CorbaIllegalValueException If the value is not
+             *  valid, e.g. the string cannot be converted to a value.
+             */
         case 12: // util/CorbaActor/transferInput
         {
             try {
@@ -370,16 +370,16 @@ public abstract class _CorbaActorImplBase extends
             break;
         }
 
-        /* Transfer the output from an output port.
-         * @param portName The port name
-         * @param portIndex The channel index within the port.
-         * @exception CorbaIllegalActionException If the operation
-         *  is illegal, e.g. the port is not an output port.
-         * @exception CorbaUnknownPortException If the port name
-         *  is unknown.
-         * @exception CorbaIndexOutofBoundException If the index
-         *  number is out of the width of the port.
-         */
+            /* Transfer the output from an output port.
+             * @param portName The port name
+             * @param portIndex The channel index within the port.
+             * @exception CorbaIllegalActionException If the operation
+             *  is illegal, e.g. the port is not an output port.
+             * @exception CorbaUnknownPortException If the port name
+             *  is unknown.
+             * @exception CorbaIndexOutofBoundException If the index
+             *  number is out of the width of the port.
+             */
         case 13: // util/CorbaActor/transferOutput
         {
             try {
@@ -406,11 +406,11 @@ public abstract class _CorbaActorImplBase extends
             break;
         }
 
-        /* Mirror the wrapup() method of the Ptolmey
-         * executable interface.
-         * @exception CorbaIllegalActionException If the
-         *   method is an illegal action of the actor.
-         */
+            /* Mirror the wrapup() method of the Ptolmey
+             * executable interface.
+             * @exception CorbaIllegalActionException If the
+             *   method is an illegal action of the actor.
+             */
         case 14: // util/CorbaActor/wrapup
         {
             try {

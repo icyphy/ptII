@@ -508,9 +508,9 @@ public class ShellTextArea extends JPanel {
                     break;
 
                 default:
-                // Otherwise we got a regular character.
-                // Don't consume it, and TextArea will
-                // take care of displaying it.
+                    // Otherwise we got a regular character.
+                    // Don't consume it, and TextArea will
+                    // take care of displaying it.
                 }
             }
         }

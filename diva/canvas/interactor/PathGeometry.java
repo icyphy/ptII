@@ -255,7 +255,7 @@ public class PathGeometry implements Geometry {
                         return _vertices[cursor++];
                     }
 
-                // If a quadratic curve, then make sure to include the one control point
+                    // If a quadratic curve, then make sure to include the one control point
                 case PathIterator.SEG_QUADTO:
 
                     if (control_point == 0) {

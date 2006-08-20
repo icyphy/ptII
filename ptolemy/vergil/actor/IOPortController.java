@@ -433,7 +433,8 @@ public class IOPortController extends AttributeController {
                                 String tipText = port.getName();
                                 String displayName = port.getDisplayName();
                                 if (!tipText.equals(displayName)) {
-                                    tipText = displayName + " (" + tipText + ")";
+                                    tipText = displayName + " (" + tipText
+                                            + ")";
                                 }
                                 StringAttribute _explAttr = (StringAttribute) (port
                                         .getAttribute("_explanation"));

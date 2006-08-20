@@ -159,7 +159,8 @@ public class Timer extends DETransformer {
         super.initialize();
         _currentInput = null;
         _currentOutput = null;
-        _delayedOutputTokens = new CalendarQueue(new TimedEvent.TimeComparator());
+        _delayedOutputTokens = new CalendarQueue(
+                new TimedEvent.TimeComparator());
     }
 
     /** Update the internal states of this actor. If the current input

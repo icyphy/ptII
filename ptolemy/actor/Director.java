@@ -371,7 +371,7 @@ public class Director extends Attribute implements Executable {
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
     }
-    
+
     /** Return the error tolerance, if any, of this director.
      *  By default, a director has no error tolerance, so this method
      *  returns 0.0. Some directors override this to allow computed
@@ -408,7 +408,8 @@ public class Director extends Attribute implements Executable {
         // For example, the container may be an entity as a library,
         // where the director is already at the top level.
         if (container instanceof CompositeActor) {
-            Director executiveDirector = ((CompositeActor) container).getExecutiveDirector();
+            Director executiveDirector = ((CompositeActor) container)
+                    .getExecutiveDirector();
             if (executiveDirector != null) {
                 return executiveDirector.getModelNextIterationTime();
             }
@@ -819,8 +820,8 @@ public class Director extends Attribute implements Executable {
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
                 if (_debugging) {
-                    _debug("Invoking preinitialize(): ", 
-                            ((NamedObj) actor).getFullName());
+                    _debug("Invoking preinitialize(): ", ((NamedObj) actor)
+                            .getFullName());
                 }
                 actor.preinitialize();
             }
@@ -1334,7 +1335,7 @@ public class Director extends Attribute implements Executable {
      *  indicating that they do not wish to be iterated again.
      */
     protected Set _actorsFinishedExecution;
-    
+
     /** The current time of the model. */
     protected Time _currentTime;
 

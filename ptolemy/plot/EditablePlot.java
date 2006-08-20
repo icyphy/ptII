@@ -513,7 +513,7 @@ public class EditablePlot extends Plot {
                 break;
 
             default:
-            // None
+                // None
             }
         }
 
@@ -526,7 +526,7 @@ public class EditablePlot extends Plot {
                 break;
 
             default:
-            // None
+                // None
             }
         }
 

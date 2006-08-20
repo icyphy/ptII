@@ -246,18 +246,20 @@ public class Expression extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (getPort("time") != null) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(
+                    this,
                     "This actor has a port named \"time\", "
-                    + "which will not be read, instead the "
-                    + "reserved system variable \"time\" will be read. " 
-                    + "Delete the \"time\" port to avoid this message.");
+                            + "which will not be read, instead the "
+                            + "reserved system variable \"time\" will be read. "
+                            + "Delete the \"time\" port to avoid this message.");
         }
         if (getPort("iteration") != null) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(
+                    this,
                     "This actor has a port named \"iteration\", "
-                    + "which will not be read, instead the "
-                    + "reserved system variable \"iteration\" will be read. "
-                    + "Delete the \"iteration\" port to avoid this message.");
+                            + "which will not be read, instead the "
+                            + "reserved system variable \"iteration\" will be read. "
+                            + "Delete the \"iteration\" port to avoid this message.");
         }
         _iterationCount = 1;
     }

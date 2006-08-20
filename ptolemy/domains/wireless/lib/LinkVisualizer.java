@@ -67,8 +67,7 @@ import ptolemy.vergil.kernel.attributes.LineAttribute;
  @Pt.ProposedRating Red (htaylor)
  @Pt.AcceptedRating Red (htaylor)
  */
-public class LinkVisualizer extends TypedAtomicActor implements
-        TokenProcessor {
+public class LinkVisualizer extends TypedAtomicActor implements TokenProcessor {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -95,7 +94,7 @@ public class LinkVisualizer extends TypedAtomicActor implements
         _line1.x.setToken("30.0");
         _line1.y.setToken("20.0");
         _line1.moveToFirst();
-        
+
         // Set up line 2 of the icon.
         _line2 = new LineAttribute(link_icon, "_line2");
         Location line2Loc = new Location(_line2, "_location");
@@ -105,7 +104,7 @@ public class LinkVisualizer extends TypedAtomicActor implements
         _line2.x.setToken("30.0");
         _line2.y.setToken("-20.0");
         _line2.moveToFirst();
-        
+
         // Set up circle 1 of the icon.
         _ellipse1 = new EllipseAttribute(link_icon, "_ellipse1");
         Location ellipse1Loc = new Location(_ellipse1, "_location");
@@ -125,7 +124,7 @@ public class LinkVisualizer extends TypedAtomicActor implements
         _ellipse2.width.setToken("15.0");
         _ellipse2.height.setToken("15.0");
         _ellipse2.centered.setToken("true");
-        
+
         // Set up circle 3 of the icon.
         _ellipse3 = new EllipseAttribute(link_icon, "_ellipse3");
         Location ellipse3Loc = new Location(_ellipse3, "_location");
@@ -152,7 +151,7 @@ public class LinkVisualizer extends TypedAtomicActor implements
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         _isOff = Boolean.TRUE;
 
         // Get the channel specified by the channelName parameter.
@@ -176,43 +175,50 @@ public class LinkVisualizer extends TypedAtomicActor implements
      *  @param destination The receiving port.
      *  @exception IllegalActionException If failed to execute the model.
      */
-    public void processTokens(RecordToken properties,
-            Token token, WirelessIOPort sender, WirelessIOPort destination)
+    public void processTokens(RecordToken properties, Token token,
+            WirelessIOPort sender, WirelessIOPort destination)
             throws IllegalActionException {
-       synchronized(_isOff) {
-           if(_isOff.booleanValue()) {
-                Location senderLocation = (Location)sender.getContainer().getAttribute("_location");
-                Location destinationLocation = (Location)destination.getContainer().getAttribute("_location");
-                double x = (destinationLocation.getLocation())[0] - (senderLocation.getLocation())[0];
-                double y = (destinationLocation.getLocation())[1] - (senderLocation.getLocation())[1];
+        synchronized (_isOff) {
+            if (_isOff.booleanValue()) {
+                Location senderLocation = (Location) sender.getContainer()
+                        .getAttribute("_location");
+                Location destinationLocation = (Location) destination
+                        .getContainer().getAttribute("_location");
+                double x = (destinationLocation.getLocation())[0]
+                        - (senderLocation.getLocation())[0];
+                double y = (destinationLocation.getLocation())[1]
+                        - (senderLocation.getLocation())[1];
                 String moml = "<property name=\"_senderDestLine\" class=\"ptolemy.vergil.kernel.attributes.LineAttribute\">"
-                    + senderLocation.exportMoML()
-                    + "<property name=\"x\" value=\""
-                    + x
-                    + "\"/>"
-                    + "<property name=\"y\" value=\""
-                    + y
-                    + "\"/>"
-                    + "</property>";
-                ChangeRequest request = new MoMLChangeRequest(this, getContainer(), moml) {
+                        + senderLocation.exportMoML()
+                        + "<property name=\"x\" value=\""
+                        + x
+                        + "\"/>"
+                        + "<property name=\"y\" value=\""
+                        + y
+                        + "\"/>"
+                        + "</property>";
+                ChangeRequest request = new MoMLChangeRequest(this,
+                        getContainer(), moml) {
                     protected void _execute() throws Exception {
                         super._execute();
-                        LineAttribute line = (LineAttribute)getContainer().getAttribute("_senderDestLine");
+                        LineAttribute line = (LineAttribute) getContainer()
+                                .getAttribute("_senderDestLine");
                         line.moveToFirst();
                         line.setPersistent(false);
                     }
                 };
                 requestChange(request);
                 _isOff = Boolean.FALSE;
-           } else {
+            } else {
                 if (getContainer().getAttribute("_senderDestLine") != null) {
                     String moml = "<deleteProperty name=\"_senderDestLine\"/>";
-                    ChangeRequest request = new MoMLChangeRequest(this, getContainer(), moml);
+                    ChangeRequest request = new MoMLChangeRequest(this,
+                            getContainer(), moml);
                     requestChange(request);
                     _isOff = Boolean.TRUE;
                 }
             }
-       }
+        }
     }
 
     /** Override the base class to call wrap up to unregister this with the
@@ -225,32 +231,32 @@ public class LinkVisualizer extends TypedAtomicActor implements
             _channel.unregisterTokenProcessor(this, null);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
-    
+
     /** Status of line that visualizes the radio link.  
      *  Initialized to true. */
     protected Boolean _isOff;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Channel specified by the channelName parameter. */
     private WirelessChannel _channel;
-    
+
     /** Graphical icon for line1 */
     private LineAttribute _line1;
-    
+
     /** Graphical icon for line1 */
     private LineAttribute _line2;
-    
+
     /** Graphical icon for ellipse1 */
     private EllipseAttribute _ellipse1;
-    
+
     /** Graphical icon for ellipse2 */
     private EllipseAttribute _ellipse2;
-    
+
     /** Graphical icon for ellipse3 */
     private EllipseAttribute _ellipse3;
 }

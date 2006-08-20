@@ -1436,7 +1436,7 @@ public class Plot extends PlotBox {
                     break;
 
                 default:
-                // none
+                    // none
                 }
             }
         }

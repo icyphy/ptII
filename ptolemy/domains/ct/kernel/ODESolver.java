@@ -131,7 +131,7 @@ public abstract class ODESolver extends NamedObj {
 
             next.fire();
         }
-        
+
         // Time must be advanced after all dynamic actors are fired.
         _advanceModelTime();
     }

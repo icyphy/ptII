@@ -80,7 +80,7 @@ public abstract class ScheduleElement {
     // representation, without breaking the execution mechanism.
     // ScheduleElement contains an iteration count, which multiplies the number
     // of times that an actor is fired or a Schedule is executed.
-    
+
     /** Return the actor invocation sequence of the schedule in the
      *  form of a sequence of actors. All of the lowest-level nodes
      *  should be an instance of Actor. Otherwise, the returned

@@ -163,7 +163,6 @@ public class ComplexToken extends ScalarToken {
         return false;
     }
 
-
     /** Return true if the token is nil, (aka null or missing).
      *  Nil or missing tokens occur when a data source is sparsely populated.
      *  @return True if the token is the {@link #NIL} token.

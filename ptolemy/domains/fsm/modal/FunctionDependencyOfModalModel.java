@@ -58,7 +58,8 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Red (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class FunctionDependencyOfModalModel extends FunctionDependencyOfCompositeActor {
+public class FunctionDependencyOfModalModel extends
+        FunctionDependencyOfCompositeActor {
     /** Construct a FunctionDependency in the given actor.
      *  The name of this attribute is always "_functionDependency".
      *  @param compositeActor The associated actor.
@@ -68,8 +69,7 @@ public class FunctionDependencyOfModalModel extends FunctionDependencyOfComposit
      *  the attribute is not compatible with the specified container.
      */
     public FunctionDependencyOfModalModel(CompositeActor compositeActor)
-            throws IllegalActionException,
-            NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(compositeActor);
     }
 
@@ -121,17 +121,17 @@ public class FunctionDependencyOfModalModel extends FunctionDependencyOfComposit
                 }
             } else {
                 // Optimistic approximation
-              Actor[] actors = controller.currentState().getRefinement();
-              // If the modal model has no refinements, the modal model is
-              // basically an FSM actor. We use the function dependency of
-              // the controller instead.
-              if ((actors != null) && (actors.length > 0)) {
-              for (int i = 0; i < actors.length; ++i) {
-              entities.add(actors[i]);
-              }
-              } else {
-              entities.add(controller);
-              }
+                Actor[] actors = controller.currentState().getRefinement();
+                // If the modal model has no refinements, the modal model is
+                // basically an FSM actor. We use the function dependency of
+                // the controller instead.
+                if ((actors != null) && (actors.length > 0)) {
+                    for (int i = 0; i < actors.length; ++i) {
+                        entities.add(actors[i]);
+                    }
+                } else {
+                    entities.add(controller);
+                }
             }
         } catch (IllegalActionException e) {
             MessageHandler.error("Invalid refinements.", e);

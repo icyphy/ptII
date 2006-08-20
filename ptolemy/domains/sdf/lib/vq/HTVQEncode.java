@@ -404,7 +404,7 @@ public class HTVQEncode extends Transformer {
             p4[3][3] = _lookupTable[stage][ip];
             stage++;
 
-        // Fall through to next case
+            // Fall through to next case
         case 3:
 
             //XSIZE = 4, YSIZE = 4
@@ -429,7 +429,7 @@ public class HTVQEncode extends Transformer {
             p3[1][3] = _lookupTable[stage][ip];
             stage++;
 
-        // Fall through to next case
+            // Fall through to next case
         case 2:
 
             //XSIZE = 4, YSIZE = 2
@@ -444,7 +444,7 @@ public class HTVQEncode extends Transformer {
             p2[1][1] = _lookupTable[stage][ip];
             stage++;
 
-        // Fall through to next case
+            // Fall through to next case
         case 1:
 
             //XSIZE = 2, YSIZE = 2

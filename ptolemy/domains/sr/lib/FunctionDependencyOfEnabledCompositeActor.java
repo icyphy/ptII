@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
-*/
+ */
 public class FunctionDependencyOfEnabledCompositeActor extends
         FunctionDependencyOfCompositeActor {
 
@@ -67,15 +67,15 @@ public class FunctionDependencyOfEnabledCompositeActor extends
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public FunctionDependencyOfEnabledCompositeActor(CompositeActor compositeActor)
-            throws IllegalActionException,
+    public FunctionDependencyOfEnabledCompositeActor(
+            CompositeActor compositeActor) throws IllegalActionException,
             NameDuplicationException {
         super(compositeActor);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
-    
+
     /** Construct the detailed dependency graph for the container, an 
      *  EnabledComposite actor. In particular, all output ports depend 
      *  on the enable input port. The dependencies of the ouput ports 
@@ -88,9 +88,9 @@ public class FunctionDependencyOfEnabledCompositeActor extends
         // _version is not updated yet and it will result in an infinite loop.
         CompositeActor actor = (CompositeActor) getContainer();
         if (actor instanceof EnabledComposite) {
-            IOPort enable = ((EnabledComposite)actor).enable;
-            Iterator outputs = 
-                ((Actor) getContainer()).outputPortList().listIterator();
+            IOPort enable = ((EnabledComposite) actor).enable;
+            Iterator outputs = ((Actor) getContainer()).outputPortList()
+                    .listIterator();
             while (outputs.hasNext()) {
                 IOPort output = (IOPort) outputs.next();
                 _detailedDependencyGraph.addEdge(enable, output);

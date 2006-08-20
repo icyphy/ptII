@@ -290,8 +290,8 @@ public class StringUtilities {
             File ptIIAsFile = new File(getProperty("ptolemy.ptII.dir"));
 
             try {
-		// Convert first to a URI, then to a URL so that we
-		// properly handle cases where $PTII has spaces in it.
+                // Convert first to a URI, then to a URL so that we
+                // properly handle cases where $PTII has spaces in it.
                 URI ptIIAsURI = ptIIAsFile.toURI();
                 URL ptIIAsURL = ptIIAsURI.toURL();
                 return ptIIAsURL.toString();
@@ -795,7 +795,7 @@ public class StringUtilities {
                         + streamTokenizer.nval + "'.  We should not be "
                         + "tokenizing numbers");
 
-            //break;
+                //break;
             case StreamTokenizer.TT_EOL:
                 break;
 

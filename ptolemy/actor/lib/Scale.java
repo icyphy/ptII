@@ -154,7 +154,7 @@ public class Scale extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Scale the given input token on the left by the given factor.
      *  If the input is an ArrayToken, then the resultType is required
      *  to be an ArrayType.
@@ -171,7 +171,7 @@ public class Scale extends Transformer {
 
             for (int i = 0; i < argArray.length; i++) {
                 result[i] = _scaleOnLeft(argArray[i], factor,
-                        ((ArrayType)resultType).getElementType());
+                        ((ArrayType) resultType).getElementType());
             }
 
             return new ArrayToken(result);
@@ -196,7 +196,7 @@ public class Scale extends Transformer {
 
             for (int i = 0; i < argArray.length; i++) {
                 result[i] = _scaleOnRight(argArray[i], factor,
-                        ((ArrayType)resultType).getElementType());
+                        ((ArrayType) resultType).getElementType());
             }
 
             return new ArrayToken(result);

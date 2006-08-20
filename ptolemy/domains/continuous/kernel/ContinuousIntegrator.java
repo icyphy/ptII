@@ -51,15 +51,15 @@ import ptolemy.kernel.util.StringAttribute;
  dx/dt = f(x, t), can be built as follows:
  <P>
  <pre>
-                +---------------+
-         dx/dt  |               |   x
-     +--------->|   Integrator  |---------+----->
-     |          |               |         |
-     |          +----^-----^----+         |
-     |                                    |
-     |             |---------|            |
-     +-------------| f(x, t) |<-----------+
-                   |---------|
+ +---------------+
+ dx/dt  |               |   x
+ +--------->|   Integrator  |---------+----->
+ |          |               |         |
+ |          +----^-----^----+         |
+ |                                    |
+ |             |---------|            |
+ +-------------| f(x, t) |<-----------+
+ |---------|
  </pre>
  <P>
  An integrator also has a port-parameter called <i>initialState</i>. The 
@@ -103,8 +103,8 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (yuhong)
  */
-public class ContinuousIntegrator extends TypedAtomicActor implements 
-         ContinuousStatefulComponent, ContinuousStepSizeController {
+public class ContinuousIntegrator extends TypedAtomicActor implements
+        ContinuousStatefulComponent, ContinuousStepSizeController {
 
     /** Construct an integrator with the specified name and a container.
      *  The integrator is in the same workspace as the container.
@@ -129,7 +129,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         state = new TypedIOPort(this, "state", false, true);
         state.setTypeEquals(BaseType.DOUBLE);
 
-        initialState = new PortParameter(this, "initialState", new DoubleToken(0.0));
+        initialState = new PortParameter(this, "initialState", new DoubleToken(
+                0.0));
         initialState.setTypeEquals(BaseType.DOUBLE);
         cardinality = new StringAttribute(initialState.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
@@ -205,7 +206,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             if (impulse.hasToken(i)) {
                 if (stepSize != 0.0) {
                     throw new IllegalActionException(this,
-                    "Signal at the impulse port is not purely discrete.");
+                            "Signal at the impulse port is not purely discrete.");
                 }
                 double currentState = getState()
                         + ((DoubleToken) impulse.get(i)).doubleValue();
@@ -219,24 +220,25 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             if (statePort.hasToken(i)) {
                 if (stepSize != 0.0) {
                     throw new IllegalActionException(this,
-                    "Signal at the initialState port is not purely discrete.");
+                            "Signal at the initialState port is not purely discrete.");
                 }
-                double currentState =
-                    ((DoubleToken) statePort.get(i)).doubleValue();
+                double currentState = ((DoubleToken) statePort.get(i))
+                        .doubleValue();
                 setTentativeState(currentState);
             }
         }
-        
+
         if (!state.isKnown()) {
             state.broadcast(new DoubleToken(getTentativeState()));
         }
 
         if (derivative.isKnown() && derivative.hasToken(0)) {
             double currentDerivative = getDerivative();
-            if (Double.isNaN(currentDerivative) || Double.isInfinite(currentDerivative)) {
+            if (Double.isNaN(currentDerivative)
+                    || Double.isInfinite(currentDerivative)) {
                 throw new IllegalActionException(this,
                         "The provided derivative input is invalid: "
-                        + currentDerivative);
+                                + currentDerivative);
             }
             if (stepSize > 0.0) {
                 // The following method changes the tentative state but 
@@ -262,9 +264,11 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  @return The current value at the derivative input port.
      * @throws IllegalActionException If reading the input throws it.
      */
-    public double getDerivative() throws NoTokenException, IllegalActionException {
+    public double getDerivative() throws NoTokenException,
+            IllegalActionException {
         return ((DoubleToken) derivative.get(0)).doubleValue();
     }
+
     /** Return the state of the integrator. The returned state is the
      *  latest confirmed state.
      *  @return The state of the integrator.
@@ -322,8 +326,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  @return True if the state is resolved successfully.
      */
     public boolean isStepSizeAccurate() {
-        ContinuousODESolver solver = 
-                ((ContinuousDirector) getDirector())._getODESolver();
+        ContinuousODESolver solver = ((ContinuousDirector) getDirector())
+                ._getODESolver();
         _successful = solver.integratorIsAccurate(this);
         return _successful;
     }
@@ -355,7 +359,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  @return The suggested next step size.
      */
     public double suggestedStepSize() {
-        ContinuousODESolver solver = ((ContinuousDirector) getDirector())._getODESolver();
+        ContinuousODESolver solver = ((ContinuousDirector) getDirector())
+                ._getODESolver();
         return solver.integratorSuggestedStepSize(this);
     }
 
@@ -423,7 +428,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Auxiliary variable array. This is used by the solver to
      *  record intermediate values in a multi-step solver algorithm.
      */

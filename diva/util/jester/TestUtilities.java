@@ -77,7 +77,7 @@ public final class TestUtilities {
                 break;
 
             default:
-            // presumably SEG_CLOSE
+                // presumably SEG_CLOSE
             }
 
             for (i = 0; i < n; i++) {

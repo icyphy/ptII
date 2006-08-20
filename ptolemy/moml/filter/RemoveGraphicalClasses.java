@@ -90,7 +90,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         //   +  attributeName + "\t" + attributeValue);
         if (attributeValue == null) {
             return null;
-        } else if (_graphicalClasses.containsKey(attributeValue)) { 
+        } else if (_graphicalClasses.containsKey(attributeValue)) {
             MoMLParser.setModified(true);
             return (String) _graphicalClasses.get(attributeValue);
         } else if (_removeGR && attributeValue.startsWith("ptolemy.domains.gr")) {

@@ -147,7 +147,7 @@ public class Sleep extends Transformer {
 
             try {
                 long sleepTimeValue = ((LongToken) sleepTime.getToken())
-                    .longValue();
+                        .longValue();
 
                 if (_debugging) {
                     _debug(getName() + ": Wait for " + sleepTimeValue
@@ -160,7 +160,7 @@ public class Sleep extends Transformer {
             }
 
             int outputWidth = output.getWidth();
-            
+
             for (int i = 0; i < inputWidth; i++) {
                 if (inputs[i] != null) {
                     if (i < outputWidth) {

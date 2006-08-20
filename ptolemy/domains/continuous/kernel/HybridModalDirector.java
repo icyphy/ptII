@@ -65,8 +65,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (liuxj)
  */
-public class HybridModalDirector extends ModalDirector
-        implements ContinuousStatefulComponent, ContinuousStepSizeController {
+public class HybridModalDirector extends ModalDirector implements
+        ContinuousStatefulComponent, ContinuousStepSizeController {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
@@ -109,12 +109,12 @@ public class HybridModalDirector extends ModalDirector
      */
     public ParseTreeEvaluator getParseTreeEvaluator() {
         RelationList relationList = new RelationList();
-        ParseTreeEvaluatorForGuardExpression evaluator =
-            new ParseTreeEvaluatorForGuardExpression(relationList, getErrorTolerance());
+        ParseTreeEvaluatorForGuardExpression evaluator = new ParseTreeEvaluatorForGuardExpression(
+                relationList, getErrorTolerance());
         evaluator.setConstructionMode();
         return evaluator;
     }
-    
+
     /** Return true if all actors that were fired in the current iteration
      *  report that the step size is accurate.
      *  @return True if the current step is accurate.
@@ -127,14 +127,16 @@ public class HybridModalDirector extends ModalDirector
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor instanceof ContinuousStepSizeController) {
-                if (!((ContinuousStepSizeController) actor).isStepSizeAccurate()) {
+                if (!((ContinuousStepSizeController) actor)
+                        .isStepSizeAccurate()) {
                     return false;
                 }
             } else if (actor instanceof CompositeActor) {
                 // Delegate to the director.
                 Director director = actor.getDirector();
                 if (director instanceof ContinuousStepSizeController) {
-                    if (!((ContinuousStepSizeController) director).isStepSizeAccurate()) {
+                    if (!((ContinuousStepSizeController) director)
+                            .isStepSizeAccurate()) {
                         return false;
                     }
                 }
@@ -168,7 +170,8 @@ public class HybridModalDirector extends ModalDirector
 
             // Check whether there is any non-preemptive transition enabled.
             List nonpreemptiveEnabledTransitions = controller
-                    .enabledTransitions(currentState.nonpreemptiveTransitionList());
+                    .enabledTransitions(currentState
+                            .nonpreemptiveTransitionList());
 
             if (nonpreemptiveEnabledTransitions.size() != 0) {
                 if (_debugging && _verbose) {
@@ -177,8 +180,8 @@ public class HybridModalDirector extends ModalDirector
             }
 
             // Check whether there is any event detected for preemptive transitions.
-            Transition preemptiveTrWithEvent = 
-                _checkEvent(currentState.preemptiveTransitionList());
+            Transition preemptiveTrWithEvent = _checkEvent(currentState
+                    .preemptiveTransitionList());
 
             if (preemptiveTrWithEvent != null) {
                 if (_debugging) {
@@ -189,8 +192,8 @@ public class HybridModalDirector extends ModalDirector
 
             // Check whether there is any event detected for
             // nonpreemptive transitions.
-            Transition nonPreemptiveTrWithEvent = 
-                _checkEvent(currentState.nonpreemptiveTransitionList());
+            Transition nonPreemptiveTrWithEvent = _checkEvent(currentState
+                    .nonpreemptiveTransitionList());
 
             if (nonPreemptiveTrWithEvent != null) {
                 if (_debugging) {
@@ -224,11 +227,13 @@ public class HybridModalDirector extends ModalDirector
 
                 while (iterator.hasNext()) {
                     Transition transition = (Transition) iterator.next();
-                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
-                        (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
-                    RelationList relationList = parseTreeEvaluator.getRelationList();
-                    
-                    double distanceToBoundary = relationList.getMaximumDifference();
+                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = (ParseTreeEvaluatorForGuardExpression) transition
+                            .getParseTreeEvaluator();
+                    RelationList relationList = parseTreeEvaluator
+                            .getRelationList();
+
+                    double distanceToBoundary = relationList
+                            .getMaximumDifference();
                     // The distance to boundary is the difference between
                     // the value of a variable in a relation (comparison
                     // operation) and the threshold value against which it
@@ -246,12 +251,13 @@ public class HybridModalDirector extends ModalDirector
 
                 while (iterator.hasNext()) {
                     Transition transition = (Transition) iterator.next();
-                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
-                        (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
-                    RelationList relationList = parseTreeEvaluator.getRelationList();
+                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = (ParseTreeEvaluatorForGuardExpression) transition
+                            .getParseTreeEvaluator();
+                    RelationList relationList = parseTreeEvaluator
+                            .getRelationList();
 
-                    double distanceToBoundary = 
-                        relationList.getMaximumDifference();
+                    double distanceToBoundary = relationList
+                            .getMaximumDifference();
 
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
@@ -262,11 +268,12 @@ public class HybridModalDirector extends ModalDirector
                 }
 
                 if (preemptiveTrWithEvent != null) {
-                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
-                        (ParseTreeEvaluatorForGuardExpression)preemptiveTrWithEvent.getParseTreeEvaluator();
-                    RelationList relationList = parseTreeEvaluator.getRelationList();
-                    double distanceToBoundary = 
-                        relationList.getMaximumDifference();
+                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = (ParseTreeEvaluatorForGuardExpression) preemptiveTrWithEvent
+                            .getParseTreeEvaluator();
+                    RelationList relationList = parseTreeEvaluator
+                            .getRelationList();
+                    double distanceToBoundary = relationList
+                            .getMaximumDifference();
 
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
@@ -277,9 +284,10 @@ public class HybridModalDirector extends ModalDirector
                 }
 
                 if (nonPreemptiveTrWithEvent != null) {
-                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
-                        (ParseTreeEvaluatorForGuardExpression)nonPreemptiveTrWithEvent.getParseTreeEvaluator();
-                    RelationList relationList = parseTreeEvaluator.getRelationList();
+                    ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = (ParseTreeEvaluatorForGuardExpression) nonPreemptiveTrWithEvent
+                            .getParseTreeEvaluator();
+                    RelationList relationList = parseTreeEvaluator
+                            .getRelationList();
                     double distanceToBoundary = relationList
                             .getMaximumDifference();
 
@@ -312,7 +320,6 @@ public class HybridModalDirector extends ModalDirector
             throw new InternalErrorException(throwable);
         }
     }
-    
 
     /** Override the base class so that if there is no enabled transition
      *  then we record for each relation (comparison operation) in each
@@ -326,42 +333,48 @@ public class HybridModalDirector extends ModalDirector
         if (_enabledTransition == null) {
             // Only commit the current states of the relationlists
             // of all the transitions during these execution phases.
-            Iterator iterator = currentState.nonpreemptiveTransitionList().listIterator();
+            Iterator iterator = currentState.nonpreemptiveTransitionList()
+                    .listIterator();
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
-                ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
-                    (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
-                RelationList relationList = parseTreeEvaluator.getRelationList();
+                ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = (ParseTreeEvaluatorForGuardExpression) transition
+                        .getParseTreeEvaluator();
+                RelationList relationList = parseTreeEvaluator
+                        .getRelationList();
                 relationList.commitRelationValues();
             }
-            
+
             iterator = currentState.preemptiveTransitionList().listIterator();
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
-                ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
-                    (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
-                RelationList relationList = parseTreeEvaluator.getRelationList();
+                ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = (ParseTreeEvaluatorForGuardExpression) transition
+                        .getParseTreeEvaluator();
+                RelationList relationList = parseTreeEvaluator
+                        .getRelationList();
                 relationList.commitRelationValues();
             }
         } else {
             // It is important to clear the history information of the
             // relation list since after this breakpoint, no history
             // information is valid.
-            Iterator iterator = currentState.nonpreemptiveTransitionList().listIterator();
+            Iterator iterator = currentState.nonpreemptiveTransitionList()
+                    .listIterator();
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
-                ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
-                    (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
-                RelationList relationList = parseTreeEvaluator.getRelationList();
+                ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = (ParseTreeEvaluatorForGuardExpression) transition
+                        .getParseTreeEvaluator();
+                RelationList relationList = parseTreeEvaluator
+                        .getRelationList();
                 relationList.resetRelationList();
             }
 
             iterator = currentState.preemptiveTransitionList().listIterator();
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
-                ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
-                    (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
-                RelationList relationList = parseTreeEvaluator.getRelationList();
+                ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = (ParseTreeEvaluatorForGuardExpression) transition
+                        .getParseTreeEvaluator();
+                RelationList relationList = parseTreeEvaluator
+                        .getRelationList();
                 relationList.resetRelationList();
             }
         }
@@ -382,12 +395,14 @@ public class HybridModalDirector extends ModalDirector
         }
         Nameable container = getContainer();
         if (container instanceof Actor) {
-            Director executiveDirector = ((Actor) container).getExecutiveDirector();
+            Director executiveDirector = ((Actor) container)
+                    .getExecutiveDirector();
             if (executiveDirector != null) {
                 Time outTime = executiveDirector.getModelTime();
                 setModelTime(outTime);
                 if (_debugging) {
-                    _debug("HybridModalDirector: Setting local current time to: " + outTime);
+                    _debug("HybridModalDirector: Setting local current time to: "
+                            + outTime);
                 }
             }
         }
@@ -405,7 +420,8 @@ public class HybridModalDirector extends ModalDirector
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor instanceof ContinuousStepSizeController) {
-                double candidate = ((ContinuousStepSizeController) actor).refinedStepSize();
+                double candidate = ((ContinuousStepSizeController) actor)
+                        .refinedStepSize();
                 if (candidate < result) {
                     result = candidate;
                 }
@@ -413,7 +429,8 @@ public class HybridModalDirector extends ModalDirector
                 // Delegate to the director.
                 Director director = actor.getDirector();
                 if (director instanceof ContinuousStepSizeController) {
-                    double candidate = ((ContinuousStepSizeController) director).refinedStepSize();
+                    double candidate = ((ContinuousStepSizeController) director)
+                            .refinedStepSize();
                     if (candidate < result) {
                         result = candidate;
                     }
@@ -430,7 +447,7 @@ public class HybridModalDirector extends ModalDirector
             if (enclosingDirector != null) {
                 double errorTolerance = enclosingDirector.getErrorTolerance();
                 double currentStepSize = enclosingDirector.getCurrentStepSize();
-                
+
                 // Linear interpolation to refine the step size.
                 // The "distances" here are not in time, but in the value
                 // of continuous variables. The "last distance" is the distance
@@ -438,10 +455,9 @@ public class HybridModalDirector extends ModalDirector
                 // values of the continuous variables.
                 // Note the step size is refined such that the distanceToBoundary
                 // expected at the new step size is half of errorTolerance.
-                double refinedStepSize = (currentStepSize
-                        * (_lastDistanceToBoundary + (errorTolerance / 2)))
+                double refinedStepSize = (currentStepSize * (_lastDistanceToBoundary + (errorTolerance / 2)))
                         / (_lastDistanceToBoundary + _distanceToBoundary);
-                
+
                 result = Math.min(result, refinedStepSize);
                 // Note: To see how well this algorithm is working, you can
                 // uncomment the following line.
@@ -460,13 +476,16 @@ public class HybridModalDirector extends ModalDirector
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor instanceof ContinuousStatefulComponent) {
-                ((ContinuousStatefulComponent) actor).rollBackToCommittedState();
+                ((ContinuousStatefulComponent) actor)
+                        .rollBackToCommittedState();
             } else if (actor instanceof CompositeActor) {
-                Iterator insideActors = ((CompositeActor)actor).deepEntityList().iterator();
+                Iterator insideActors = ((CompositeActor) actor)
+                        .deepEntityList().iterator();
                 while (insideActors.hasNext()) {
-                    Actor insideActor = (Actor)insideActors.next();
+                    Actor insideActor = (Actor) insideActors.next();
                     if (insideActor instanceof ContinuousStatefulComponent) {
-                        ((ContinuousStatefulComponent) insideActor).rollBackToCommittedState();
+                        ((ContinuousStatefulComponent) insideActor)
+                                .rollBackToCommittedState();
                     }
                 }
             }
@@ -483,7 +502,8 @@ public class HybridModalDirector extends ModalDirector
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor instanceof ContinuousStepSizeController) {
-                double candidate = ((ContinuousStepSizeController) actor).suggestedStepSize();
+                double candidate = ((ContinuousStepSizeController) actor)
+                        .suggestedStepSize();
                 if (candidate < result) {
                     result = candidate;
                 }
@@ -491,7 +511,8 @@ public class HybridModalDirector extends ModalDirector
                 // Delegate to the director.
                 Director director = actor.getDirector();
                 if (director instanceof ContinuousStepSizeController) {
-                    double candidate = ((ContinuousStepSizeController) director).suggestedStepSize();
+                    double candidate = ((ContinuousStepSizeController) director)
+                            .suggestedStepSize();
                     if (candidate < result) {
                         result = candidate;
                     }
@@ -521,9 +542,9 @@ public class HybridModalDirector extends ModalDirector
                 // container first.
                 container = container.getContainer();
                 if (container instanceof Actor) {
-                    Director director = ((Actor)container).getDirector();
+                    Director director = ((Actor) container).getDirector();
                     if (director instanceof ContinuousDirector) {
-                        _enclosingContinuousDirector = (ContinuousDirector)director;
+                        _enclosingContinuousDirector = (ContinuousDirector) director;
                         break;
                     }
                 }
@@ -535,7 +556,7 @@ public class HybridModalDirector extends ModalDirector
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return the first transition in the specified list that has
      *  an "event", which is a change in the boolean value of its guard
      *  since the last evaluation.
@@ -546,8 +567,8 @@ public class HybridModalDirector extends ModalDirector
 
         while (transitionRelations.hasNext() && !_stopRequested) {
             Transition transition = (Transition) transitionRelations.next();
-            ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = 
-                (ParseTreeEvaluatorForGuardExpression)transition.getParseTreeEvaluator();
+            ParseTreeEvaluatorForGuardExpression parseTreeEvaluator = (ParseTreeEvaluatorForGuardExpression) transition
+                    .getParseTreeEvaluator();
             RelationList relationList = parseTreeEvaluator.getRelationList();
             if (relationList.hasEvent()) {
                 return transition;
@@ -558,13 +579,13 @@ public class HybridModalDirector extends ModalDirector
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Local variable to indicate the distance to boundary. */
     private double _distanceToBoundary = 0.0;
 
     /** The enclosing continuous director, if there is one. */
     private ContinuousDirector _enclosingContinuousDirector = null;
-    
+
     /** The version for __enclosingContinuousDirector. */
     private long _enclosingContinuousDirectorVersion = -1;
 

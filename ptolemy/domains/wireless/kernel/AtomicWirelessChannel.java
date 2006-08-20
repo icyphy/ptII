@@ -309,7 +309,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
             _propertyTransformers.add(transformer);
         }
     }
-    
+
     /** Register a token processor for transmissions from the specified
      *  port.  If null is given for the port, then the token processor
      *  will be used for all transmissions through this channel.
@@ -541,7 +541,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
 
         return result;
     }
-    
+
     /** Any token processors that have been registered will be applied in this method.
      *  @param properties The transmission properties.
      *  @param token The token to be processed.
@@ -551,7 +551,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *   be transformed. Not thrown in this base class.
      *  @see #registerTokenProcessor(TokenProcessor, WirelessIOPort)
      */
-    public void processTokens(RecordToken properties,Token token,
+    public void processTokens(RecordToken properties, Token token,
             WirelessIOPort source, WirelessIOPort destination)
             throws IllegalActionException {
 
@@ -563,8 +563,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
                 Iterator iterator = processors.iterator();
 
                 while (iterator.hasNext()) {
-                    TokenProcessor processor = (TokenProcessor) iterator
-                            .next();
+                    TokenProcessor processor = (TokenProcessor) iterator.next();
                     processor.processTokens(properties, token, source,
                             destination);
                 }
@@ -577,8 +576,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
                 Iterator iterator = processors.iterator();
 
                 while (iterator.hasNext()) {
-                    TokenProcessor processor = (TokenProcessor) iterator
-                            .next();
+                    TokenProcessor processor = (TokenProcessor) iterator.next();
                     processor.processTokens(properties, token, source,
                             destination);
                 }
@@ -589,10 +587,8 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
             Iterator iterator = _tokenProcessors.iterator();
 
             while (iterator.hasNext()) {
-                TokenProcessor processor = (TokenProcessor) iterator
-                        .next();
-                processor.processTokens(properties, token, source,
-                        destination);
+                TokenProcessor processor = (TokenProcessor) iterator.next();
+                processor.processTokens(properties, token, source, destination);
             }
         }
     }
@@ -671,7 +667,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
             }
         }
     }
-    
+
     /** Unregister a token processor for transmissions from the specified
      *  port (or from null for a generic token processor). If the processor
      *  has not been registered, then do nothing.
@@ -918,12 +914,12 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
                 WirelessIOPort destination = (WirelessIOPort) receiver
                         .getContainer();
                 Token newToken = destination.convert(token);
-                
+
                 // Transform the properties.
                 Token transformedProperties = transformProperties(properties,
                         sender, destination);
                 // Process the tokens.
-                processTokens(properties,token, sender, destination);
+                processTokens(properties, token, sender, destination);
                 receiver.put(newToken, transformedProperties);
                 // Process the tokens again.
                 processTokens(properties, token, sender, destination);
@@ -968,7 +964,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  indexed by port.
      */
     private HashMap _propertyTransformersByPort;
-    
+
     /** The token processors that have been registered without
      *  specifying a port.
      */

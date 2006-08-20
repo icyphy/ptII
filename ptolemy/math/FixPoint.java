@@ -206,9 +206,9 @@ public class FixPoint implements Cloneable, Serializable {
      */
     public static Precision addPrecision(Precision leftArgument,
             Precision rightArgument) {
-        Precision union = Precision.union(leftArgument,rightArgument);
-        Precision newPrecision = new Precision(union.getSign(),
-                union.getNumberOfBits() + 1, union.getExponent());
+        Precision union = Precision.union(leftArgument, rightArgument);
+        Precision newPrecision = new Precision(union.getSign(), union
+                .getNumberOfBits() + 1, union.getExponent());
         return newPrecision;
     }
 
@@ -220,10 +220,9 @@ public class FixPoint implements Cloneable, Serializable {
      */
     public static Precision subtractPrecision(Precision leftArgument,
             Precision rightArgument) {
-        Precision union = Precision.union(leftArgument,rightArgument);
+        Precision union = Precision.union(leftArgument, rightArgument);
         int length = union.getNumberOfBits() + 1;
-        Precision newPrecision = new Precision(1,
-                length, union.getExponent());
+        Precision newPrecision = new Precision(1, length, union.getExponent());
         return newPrecision;
     }
 
@@ -238,15 +237,12 @@ public class FixPoint implements Cloneable, Serializable {
      */
     public static Precision multiplyPrecision(Precision leftArgument,
             Precision rightArgument) {
-        int sign = ((leftArgument.getSign() == 1) || 
-                (rightArgument.getSign() == 1)) ? 1
+        int sign = ((leftArgument.getSign() == 1) || (rightArgument.getSign() == 1)) ? 1
                 : 0;
-        int fractionBits = 
-            leftArgument.getFractionBitLength() +
-            rightArgument.getFractionBitLength();
-        int integerBits =
-            leftArgument.getIntegerBitLength() +
-            rightArgument.getIntegerBitLength();
+        int fractionBits = leftArgument.getFractionBitLength()
+                + rightArgument.getFractionBitLength();
+        int integerBits = leftArgument.getIntegerBitLength()
+                + rightArgument.getIntegerBitLength();
         Precision newPrecision = new Precision(sign,
                 fractionBits + integerBits, -fractionBits);
         return newPrecision;
@@ -264,20 +260,17 @@ public class FixPoint implements Cloneable, Serializable {
      */
     public static Precision dividePrecision(Precision leftArgument,
             Precision rightArgument) {
-        int sign = ((leftArgument.getSign() == 1) || 
-                (rightArgument.getSign() == 1)) ? 1
+        int sign = ((leftArgument.getSign() == 1) || (rightArgument.getSign() == 1)) ? 1
                 : 0;
-        int integerBits =
-            leftArgument.getIntegerBitLength() +
-            rightArgument.getFractionBitLength() + sign;
-        int fractionBits = 
-            leftArgument.getFractionBitLength() +
-            rightArgument.getIntegerBitLength() + 1 - sign;
-        Precision newPrecision = new Precision(sign,
-                sign + fractionBits + integerBits, -fractionBits);
+        int integerBits = leftArgument.getIntegerBitLength()
+                + rightArgument.getFractionBitLength() + sign;
+        int fractionBits = leftArgument.getFractionBitLength()
+                + rightArgument.getIntegerBitLength() + 1 - sign;
+        Precision newPrecision = new Precision(sign, sign + fractionBits
+                + integerBits, -fractionBits);
         return newPrecision;
-    }       
-    
+    }
+
     /** Return a FixPoint with a value equal to the absolute
      *  value of this FixPoint. The operation is lossless and
      *  the Precision of the result is the same Precision as
@@ -315,15 +308,15 @@ public class FixPoint implements Cloneable, Serializable {
 
         // Create new precision
         /*
-        int sign = _determineSign(_precision, arg._precision);
-        int new_bits = newValue.bitLength() + sign;
-        int max_bits = Math.max(_precision.getNumberOfBits(), arg._precision
-                .getNumberOfBits());
-        int bits = (new_bits > max_bits ? new_bits : max_bits);
+         int sign = _determineSign(_precision, arg._precision);
+         int new_bits = newValue.bitLength() + sign;
+         int max_bits = Math.max(_precision.getNumberOfBits(), arg._precision
+         .getNumberOfBits());
+         int bits = (new_bits > max_bits ? new_bits : max_bits);
 
-        Precision newPrecision = new Precision(sign, bits, minExponent);
-        */
-        Precision newPrecision = addPrecision(_precision,arg._precision);
+         Precision newPrecision = new Precision(sign, bits, minExponent);
+         */
+        Precision newPrecision = addPrecision(_precision, arg._precision);
         return new FixPoint(newValue, newPrecision);
     }
 
@@ -372,13 +365,13 @@ public class FixPoint implements Cloneable, Serializable {
     public FixPoint divide(FixPoint arg) throws IllegalArgumentException {
 
         /*
-        int minExponent = Math.min(_precision.getExponent(), arg._precision
-                .getExponent());
-        int sign = _determineSign(_precision, arg._precision);
-        int maxLength = Math.max(_precision.getNumberOfBits(), arg._precision
-                .getNumberOfBits());
-        Precision netPrecision = new Precision(sign, maxLength, minExponent);
-        */
+         int minExponent = Math.min(_precision.getExponent(), arg._precision
+         .getExponent());
+         int sign = _determineSign(_precision, arg._precision);
+         int maxLength = Math.max(_precision.getNumberOfBits(), arg._precision
+         .getNumberOfBits());
+         Precision netPrecision = new Precision(sign, maxLength, minExponent);
+         */
         Precision newPrecision = dividePrecision(this._precision,
                 arg._precision);
         Quantization netQuantization = new FixPointQuantization(newPrecision,
@@ -557,28 +550,26 @@ public class FixPoint implements Cloneable, Serializable {
         BigInteger newValue = _value.multiply(arg._value);
 
         /*
-        int new_sign = _determineSign(_precision, arg._precision);
-        int new_exponent = _precision.getExponent()
-                + arg._precision.getExponent();
-        Precision worstCasePrecision = new Precision(new_sign, new_sign
-                + newValue.bitLength(), new_exponent);
-        FixPoint newVal = new FixPoint(newValue, worstCasePrecision);
+         int new_sign = _determineSign(_precision, arg._precision);
+         int new_exponent = _precision.getExponent()
+         + arg._precision.getExponent();
+         Precision worstCasePrecision = new Precision(new_sign, new_sign
+         + newValue.bitLength(), new_exponent);
+         FixPoint newVal = new FixPoint(newValue, worstCasePrecision);
 
-        // 2. Requantize the value with the minimum quantization necessary
-        newVal = newVal.minimumQuantization();
+         // 2. Requantize the value with the minimum quantization necessary
+         newVal = newVal.minimumQuantization();
 
-        // 3. Determine "Growth" precision for result. This will be the
-        //    "maximium" of the precision of the arguments and the result.
-        Precision newPrecision =
-            Precision.union(_precision, arg._precision);
-        newPrecision = Precision.union(newPrecision, newVal._precision);
-        */
-        
-        Precision newPrecision = multiplyPrecision(_precision,arg._precision);
+         // 3. Determine "Growth" precision for result. This will be the
+         //    "maximium" of the precision of the arguments and the result.
+         Precision newPrecision =
+         Precision.union(_precision, arg._precision);
+         newPrecision = Precision.union(newPrecision, newVal._precision);
+         */
+
+        Precision newPrecision = multiplyPrecision(_precision, arg._precision);
         FixPoint newVal = new FixPoint(newValue, newPrecision);
 
-        
-        
         // 4. Requantize the result with the new precision (this
         //    precision should be adequate and will not cause overflow
         //    or rounding.
@@ -660,21 +651,21 @@ public class FixPoint implements Cloneable, Serializable {
         BigInteger newValue = thisValue.subtract(thatValue);
 
         /*
-        // Create new precision
-        int sign = _determineSign(_precision, arg._precision);
-        // If the sign of the subtract is negative and both arguments
-        // were unsigned, make the result signed.
-        if (sign == 0 && newValue.signum() == -1)
-            sign = 1;
+         // Create new precision
+         int sign = _determineSign(_precision, arg._precision);
+         // If the sign of the subtract is negative and both arguments
+         // were unsigned, make the result signed.
+         if (sign == 0 && newValue.signum() == -1)
+         sign = 1;
 
-        int new_bits = newValue.bitLength() + sign;
-        int max_bits = Math.max(_precision.getNumberOfBits(), arg._precision
-                .getNumberOfBits());
-        int bits = (new_bits > max_bits ? new_bits : max_bits);
+         int new_bits = newValue.bitLength() + sign;
+         int max_bits = Math.max(_precision.getNumberOfBits(), arg._precision
+         .getNumberOfBits());
+         int bits = (new_bits > max_bits ? new_bits : max_bits);
 
-        Precision newPrecision = new Precision(sign, bits, minExponent);
-        */
-        Precision newPrecision = subtractPrecision(_precision,arg._precision);
+         Precision newPrecision = new Precision(sign, bits, minExponent);
+         */
+        Precision newPrecision = subtractPrecision(_precision, arg._precision);
         return new FixPoint(newValue, newPrecision);
     }
 

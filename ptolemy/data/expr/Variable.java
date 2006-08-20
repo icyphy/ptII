@@ -431,7 +431,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
         return _parserScope;
     }
-    
+
     /** Return a NamedList of the variables that the value of this
      *  variable can depend on.  These include other variables contained
      *  by the same container or any container that deeply contains
@@ -882,7 +882,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         _isLazy = lazy;
     }
-    
+
     /** Override the base class to throw an exception if renaming this
      *  variable results in an error evaluating some variable that depends
      *  on it. In this case, the name remains unchanged.
@@ -904,15 +904,19 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 if (_valueListeners != null) {
                     Iterator listeners = _valueListeners.iterator();
                     while (listeners.hasNext()) {
-                        ValueListener listener = (ValueListener) listeners.next();
+                        ValueListener listener = (ValueListener) listeners
+                                .next();
                         if (listener instanceof Variable) {
                             // The listener could be referencing this variable.
                             ParseTreeFreeVariableRenamer renamer = new ParseTreeFreeVariableRenamer();
-                            ((Variable)listener)._parseIfNecessary();
-                            renamer.renameVariables(((Variable)listener)._parseTree, (Variable)listener, this, name);
+                            ((Variable) listener)._parseIfNecessary();
+                            renamer.renameVariables(
+                                    ((Variable) listener)._parseTree,
+                                    (Variable) listener, this, name);
                             ParseTreeWriter writer = new ParseTreeWriter();
-                            ((Variable)listener).setExpression(
-                                    writer.parseTreeToExpression(((Variable)listener)._parseTree));
+                            ((Variable) listener)
+                                    .setExpression(writer
+                                            .parseTreeToExpression(((Variable) listener)._parseTree));
                             changed.add(listener);
                         }
                     }
@@ -928,14 +932,16 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     if (listener instanceof Variable) {
                         // The listener could be referencing this variable.
                         ParseTreeFreeVariableRenamer renamer = new ParseTreeFreeVariableRenamer();
-                        renamer.renameVariables(listener._parseTree, listener, this, previousName);
+                        renamer.renameVariables(listener._parseTree, listener,
+                                this, previousName);
                         ParseTreeWriter writer = new ParseTreeWriter();
-                        listener.setExpression(writer.parseTreeToExpression(listener._parseTree));
+                        listener.setExpression(writer
+                                .parseTreeToExpression(listener._parseTree));
                     }
                 }
                 // Make sure to re-evaluate dependent variables.
                 validate();
-                throw(ex);
+                throw (ex);
             }
         } else {
             super.setName(name);

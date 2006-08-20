@@ -60,7 +60,7 @@ public class FixType extends StructuredType implements Serializable {
      * bottom of the FixPoint type lattice.
      */
     public FixType() {
-        _precision = new Precision(0,0);
+        _precision = new Precision(0, 0);
     }
 
     /** Construct a new fix type.
@@ -82,14 +82,14 @@ public class FixType extends StructuredType implements Serializable {
      *  not make sense for the given types.
      */
     public Type add(Type rightArgumentType) {
-        if(rightArgumentType instanceof FixType) {
-            Precision rPrecision = ((FixType)rightArgumentType).getPrecision();
+        if (rightArgumentType instanceof FixType) {
+            Precision rPrecision = ((FixType) rightArgumentType).getPrecision();
             Precision newPrecision = FixPoint.addPrecision(rPrecision,
                     _precision);
             FixType returnType = new FixType(newPrecision);
             return returnType;
         } else {
-            return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+            return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
         }
     }
 
@@ -108,18 +108,15 @@ public class FixType extends StructuredType implements Serializable {
      *   be done.
      */
     public Token convert(Token token) throws IllegalActionException {
-        if (token.getType() instanceof FixType && 
-                (_compare((FixType)token.getType()) == CPO.SAME ||
-                        _compare((FixType)token.getType()) == CPO.HIGHER)) {
-                        
+        if (token.getType() instanceof FixType
+                && (_compare((FixType) token.getType()) == CPO.SAME || _compare((FixType) token
+                        .getType()) == CPO.HIGHER)) {
+
             // The overflow and rounding modes could be anything here,
             // since the above check should ensure that rounding and
             // overflow will never occur.
-            return ((FixToken)token).quantize(
-                    new FixPointQuantization(
-                            getPrecision(), 
-                            Overflow.GROW, 
-                            Rounding.HALF_EVEN));
+            return ((FixToken) token).quantize(new FixPointQuantization(
+                    getPrecision(), Overflow.GROW, Rounding.HALF_EVEN));
         }
 
         throw new IllegalActionException(Token.notSupportedConversionMessage(
@@ -134,18 +131,20 @@ public class FixType extends StructuredType implements Serializable {
      *  not make sense for the given types.
      */
     public Type divide(Type rightArgumentType) {
-        if(rightArgumentType instanceof FixType) {
-            if(rightArgumentType instanceof FixType) {
-                Precision rPrecision = ((FixType)rightArgumentType).getPrecision();
+        if (rightArgumentType instanceof FixType) {
+            if (rightArgumentType instanceof FixType) {
+                Precision rPrecision = ((FixType) rightArgumentType)
+                        .getPrecision();
                 Precision newPrecision = FixPoint.dividePrecision(rPrecision,
                         _precision);
                 FixType returnType = new FixType(newPrecision);
                 return returnType;
             } else {
-                return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+                return (Type) TypeLattice.leastUpperBound(this,
+                        rightArgumentType);
             }
         } else {
-            return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+            return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
         }
     }
 
@@ -158,7 +157,7 @@ public class FixType extends StructuredType implements Serializable {
         if (!(object instanceof FixType)) {
             return false;
         }
-        Precision precision = ((FixType)object).getPrecision();
+        Precision precision = ((FixType) object).getPrecision();
         if (!(precision.equals(_precision))) {
             return false;
         }
@@ -245,7 +244,7 @@ public class FixType extends StructuredType implements Serializable {
      */
     public Type modulo(Type rightArgumentType) {
         // FIXME...  deal with precisions correctly.
-        return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Return a new type which represents the type that results from
@@ -262,14 +261,14 @@ public class FixType extends StructuredType implements Serializable {
      *  not make sense for the given types.
      */
     public Type multiply(Type rightArgumentType) {
-        if(rightArgumentType instanceof FixType) {
-            Precision rPrecision = ((FixType)rightArgumentType).getPrecision();
+        if (rightArgumentType instanceof FixType) {
+            Precision rPrecision = ((FixType) rightArgumentType).getPrecision();
             Precision newPrecision = FixPoint.multiplyPrecision(rPrecision,
                     _precision);
             FixType returnType = new FixType(newPrecision);
             return returnType;
         } else {
-            return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+            return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
         }
     }
 
@@ -291,14 +290,14 @@ public class FixType extends StructuredType implements Serializable {
      *  not make sense for the given types.
      */
     public Type subtract(Type rightArgumentType) {
-        if(rightArgumentType instanceof FixType) {
-            Precision rPrecision = ((FixType)rightArgumentType).getPrecision();
+        if (rightArgumentType instanceof FixType) {
+            Precision rPrecision = ((FixType) rightArgumentType).getPrecision();
             Precision newPrecision = FixPoint.subtractPrecision(rPrecision,
                     _precision);
             FixType returnType = new FixType(newPrecision);
             return returnType;
         } else {
-            return (Type)TypeLattice.leastUpperBound(this, rightArgumentType);
+            return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
         }
     }
 
@@ -306,7 +305,8 @@ public class FixType extends StructuredType implements Serializable {
      *  @return A String.
      */
     public String toString() {
-        return "fixedpoint" + _precision.toString(Precision.EXPRESSION_LANGUAGE);
+        return "fixedpoint"
+                + _precision.toString(Precision.EXPRESSION_LANGUAGE);
     }
 
     /** Update this StructuredType to the specified Structured Type.
@@ -321,9 +321,8 @@ public class FixType extends StructuredType implements Serializable {
             throws IllegalActionException {
         super.updateType(newType);
         if (newType._getRepresentative() != _getRepresentative()) {
-            throw new InternalErrorException(
-                    "FixType.updateType: Cannot "
-                            + "updateType the element type to " + newType + ".");
+            throw new InternalErrorException("FixType.updateType: Cannot "
+                    + "updateType the element type to " + newType + ".");
         }
     }
 
@@ -364,18 +363,22 @@ public class FixType extends StructuredType implements Serializable {
             throw new IllegalArgumentException("FixType._compare: "
                     + "The argument is not a FixType.");
         }
-        Precision precision = ((FixType)type).getPrecision();
+        Precision precision = ((FixType) type).getPrecision();
         if (_precision.equals(precision)) {
             return CPO.SAME;
-        } else if(_precision.getFractionBitLength() <= precision.getFractionBitLength() &&
-                _precision.getIntegerBitLength() <= precision.getIntegerBitLength()) {
+        } else if (_precision.getFractionBitLength() <= precision
+                .getFractionBitLength()
+                && _precision.getIntegerBitLength() <= precision
+                        .getIntegerBitLength()) {
             return CPO.LOWER;
-        } else if(_precision.getFractionBitLength() >= precision.getFractionBitLength() &&
-                _precision.getIntegerBitLength() >= precision.getIntegerBitLength()) {
+        } else if (_precision.getFractionBitLength() >= precision
+                .getFractionBitLength()
+                && _precision.getIntegerBitLength() >= precision
+                        .getIntegerBitLength()) {
             return CPO.HIGHER;
         } else {
             return CPO.INCOMPARABLE;
-        }                
+        }
     }
 
     /** Return a static instance of this structured type. The return
@@ -399,14 +402,13 @@ public class FixType extends StructuredType implements Serializable {
             throw new IllegalArgumentException("FixType._greatestLowerBound: "
                     + "The argument is not a FixType.");
         }
-        Precision precision = ((FixType)type).getPrecision();
-        int fractionBits = 
-            Math.min(precision.getFractionBitLength(),
-                    _precision.getFractionBitLength());
-        int integerBits =
-            Math.min(precision.getIntegerBitLength(),
-                    _precision.getIntegerBitLength());
-        return new FixType(new Precision(fractionBits + integerBits, integerBits));
+        Precision precision = ((FixType) type).getPrecision();
+        int fractionBits = Math.min(precision.getFractionBitLength(),
+                _precision.getFractionBitLength());
+        int integerBits = Math.min(precision.getIntegerBitLength(), _precision
+                .getIntegerBitLength());
+        return new FixType(new Precision(fractionBits + integerBits,
+                integerBits));
     }
 
     /** Return the least upper bound of this type with the specified
@@ -422,14 +424,13 @@ public class FixType extends StructuredType implements Serializable {
             throw new IllegalArgumentException("FixType._greatestLowerBound: "
                     + "The argument is not a FixType.");
         }
-        Precision precision = ((FixType)type).getPrecision();
-        int fractionBits = 
-            Math.max(precision.getFractionBitLength(),
-                    _precision.getFractionBitLength());
-        int integerBits =
-            Math.max(precision.getIntegerBitLength(),
-                    _precision.getIntegerBitLength());
-        FixType returnType = new FixType(new Precision(fractionBits + integerBits, integerBits));
+        Precision precision = ((FixType) type).getPrecision();
+        int fractionBits = Math.max(precision.getFractionBitLength(),
+                _precision.getFractionBitLength());
+        int integerBits = Math.max(precision.getIntegerBitLength(), _precision
+                .getIntegerBitLength());
+        FixType returnType = new FixType(new Precision(fractionBits
+                + integerBits, integerBits));
         returnType._checkPrecision();
         return returnType;
     }
@@ -438,18 +439,20 @@ public class FixType extends StructuredType implements Serializable {
      *  If the number of bits is greater than 128, throw an exception.
      */
     protected void _checkPrecision() {
-        if(_precision.getNumberOfBits() > 128) {
+        if (_precision.getNumberOfBits() > 128) {
             throw new RuntimeException(
-                    "Large fixed point type detected during type resolution." + 
-                    "  The structured type " + this +
-                    " has depth larger than the bound " + 128 +
-                    ".  This may be an indicator of type constraints " +
-                    "in a model with no finite solution, which may occur " +
-                    "if there is a feedback loop that requires an " +
-                    "explicit FixToFix conversion actor.");
+                    "Large fixed point type detected during type resolution."
+                            + "  The structured type "
+                            + this
+                            + " has depth larger than the bound "
+                            + 128
+                            + ".  This may be an indicator of type constraints "
+                            + "in a model with no finite solution, which may occur "
+                            + "if there is a feedback loop that requires an "
+                            + "explicit FixToFix conversion actor.");
         }
     }
-                                        
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Precision _precision;

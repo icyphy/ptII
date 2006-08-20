@@ -184,7 +184,8 @@ public class RatingTaglet implements Taglet {
             color = color.substring(0, spaceIndex);
         }
 
-        StringBuffer result = new StringBuffer("\n<DT><B>" + _tagName + ":</B><DD>");
+        StringBuffer result = new StringBuffer("\n<DT><B>" + _tagName
+                + ":</B><DD>");
         result.append("<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
                 + color.toLowerCase() + "\">");
 

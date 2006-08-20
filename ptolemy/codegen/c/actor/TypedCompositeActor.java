@@ -196,7 +196,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer initializeCode = new StringBuffer();
         //initializeCode.append(super.generateInitializeCode());
-        
+
         // Reset the offset for all of the contained actors' input ports.
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();

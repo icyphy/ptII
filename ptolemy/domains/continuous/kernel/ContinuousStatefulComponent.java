@@ -40,7 +40,7 @@ package ptolemy.domains.continuous.kernel;
  @Pt.AcceptedRating Green (eal)
  */
 public interface ContinuousStatefulComponent {
-    
+
     /** Roll back to committed state.
      */
     public void rollBackToCommittedState();

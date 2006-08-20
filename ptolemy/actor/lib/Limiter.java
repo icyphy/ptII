@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.lib;
 
-import ptolemy.data.DoubleToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -116,9 +115,10 @@ public class Limiter extends Transformer {
         super.fire();
         if (input.hasToken(0)) {
             ScalarToken in = (ScalarToken) input.get(0);
-            if ((in.isLessThan((ScalarToken)bottom.getToken())).booleanValue()) {
+            if ((in.isLessThan((ScalarToken) bottom.getToken())).booleanValue()) {
                 output.send(0, bottom.getToken());
-            } else if ((in.isGreaterThan((ScalarToken)top.getToken())).booleanValue()) {
+            } else if ((in.isGreaterThan((ScalarToken) top.getToken()))
+                    .booleanValue()) {
                 output.send(0, top.getToken());
             } else {
                 output.send(0, in);

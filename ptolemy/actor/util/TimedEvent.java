@@ -28,7 +28,6 @@
  */
 package ptolemy.actor.util;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TimedEvent
 
@@ -138,12 +137,12 @@ public class TimedEvent {
             // returns the low-order 64 bits of the result.
             // If it is larger than what can be represented
             // in 64 bits, then the returned result will be wrapped.
-            long value = (long)
-                (((TimedEvent) entry).timeStamp.subtract(_zeroReference).getLongValue() / _binWidth);
+            long value = (long) (((TimedEvent) entry).timeStamp.subtract(
+                    _zeroReference).getLongValue() / _binWidth);
             if (value != Long.MAX_VALUE) {
                 return value;
             } else {
-                return Long.MAX_VALUE-1;
+                return Long.MAX_VALUE - 1;
             }
         }
 
@@ -167,13 +166,13 @@ public class TimedEvent {
                 _zeroReference = 0.0;
                 return;
             }
-            
+
             double[] diff = new double[entryArray.length - 1];
-            
+
             Time firstEntryTime = ((TimedEvent) entryArray[0]).timeStamp;
             Time lastEntryTime = ((TimedEvent) entryArray[entryArray.length - 1]).timeStamp;
-            
-            if (firstEntryTime.isInfinite() 
+
+            if (firstEntryTime.isInfinite()
                     && firstEntryTime.equals(lastEntryTime)) {
                 // To avoid setting NaN or 0.0
                 // for the width, apparently due to simultaneous events,
@@ -181,27 +180,28 @@ public class TimedEvent {
                 return;
             }
 
-            double average = lastEntryTime.subtract(firstEntryTime).getDoubleValue();
+            double average = lastEntryTime.subtract(firstEntryTime)
+                    .getDoubleValue();
             average = average / (entryArray.length - 1);
 
             double effAverage = 0.0;
             int nEffSamples = 0;
-            
+
             for (int i = 1; i < entryArray.length; ++i) {
-                if (diff[i - 1]< 2*average) {
+                if (diff[i - 1] < 2 * average) {
                     nEffSamples++;
                     effAverage = effAverage + diff[i - 1];
                 }
             }
-            
+
             // To avoid returning NaN or 0.0 for the width, if this is
             // the result, leave the bin width unchanged.
             if ((effAverage == 0) || (nEffSamples == 0)) {
                 return;
             }
-            
+
             effAverage = effAverage / nEffSamples;
-            _binWidth = effAverage*3;
+            _binWidth = effAverage * 3;
         }
 
         /** Set the zero reference, to be used in calculating the virtual
@@ -210,7 +210,8 @@ public class TimedEvent {
          *   of TimedEvent.
          */
         public void setZeroReference(Object zeroReference) {
-            _zeroReference = ((TimedEvent) zeroReference).timeStamp.getDoubleValue();
+            _zeroReference = ((TimedEvent) zeroReference).timeStamp
+                    .getDoubleValue();
         }
 
         ///////////////////////////////////////////////////////////////////

@@ -22,44 +22,37 @@
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 
 package ptolemy.data.expr;
 
 public interface MatrixParserConstants {
 
-  int EOF = 0;
-  int CONSTANT = 5;
-  int FLOAT = 6;
-  int INTEGER = 7;
-  int DIGIT = 8;
-  int NAME = 9;
-  int NATURAL = 10;
-  int SIGN = 11;
-  int COMMENT = 12;
+    int EOF = 0;
 
-  int DEFAULT = 0;
+    int CONSTANT = 5;
 
-  String[] tokenImage = {
-    "<EOF>",
-    "\" \"",
-    "\"\\t\"",
-    "\"\\n\"",
-    "\"\\r\"",
-    "<CONSTANT>",
-    "<FLOAT>",
-    "<INTEGER>",
-    "<DIGIT>",
-    "<NAME>",
-    "<NATURAL>",
-    "<SIGN>",
-    "<COMMENT>",
-    "\"[\"",
-    "\";\"",
-    "\"]\"",
-    "\",\"",
-  };
+    int FLOAT = 6;
+
+    int INTEGER = 7;
+
+    int DIGIT = 8;
+
+    int NAME = 9;
+
+    int NATURAL = 10;
+
+    int SIGN = 11;
+
+    int COMMENT = 12;
+
+    int DEFAULT = 0;
+
+    String[] tokenImage = { "<EOF>", "\" \"", "\"\\t\"", "\"\\n\"", "\"\\r\"",
+            "<CONSTANT>", "<FLOAT>", "<INTEGER>", "<DIGIT>", "<NAME>",
+            "<NATURAL>", "<SIGN>", "<COMMENT>", "\"[\"", "\";\"", "\"]\"",
+            "\",\"", };
 
 }

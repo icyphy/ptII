@@ -54,7 +54,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Green (davisj)
  */
 public interface Executable {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

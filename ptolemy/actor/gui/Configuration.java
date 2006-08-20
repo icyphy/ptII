@@ -141,15 +141,16 @@ public class Configuration extends CompositeEntity {
      */
     public String check() throws Exception {
         StringBuffer results = new StringBuffer();
-        Configuration cloneConfiguration = (Configuration)clone();
+        Configuration cloneConfiguration = (Configuration) clone();
         List entityList = allAtomicEntityList();
         Iterator entities = entityList.iterator();
         while (entities.hasNext()) {
             Object entity = entities.next();
             if (entity instanceof TypedAtomicActor) {
-                TypedAtomicActor actor = (TypedAtomicActor)entity;
+                TypedAtomicActor actor = (TypedAtomicActor) entity;
                 String fullName = actor.getName(this);
-                TypedAtomicActor clone = (TypedAtomicActor) cloneConfiguration.getEntity(fullName);
+                TypedAtomicActor clone = (TypedAtomicActor) cloneConfiguration
+                        .getEntity(fullName);
                 if (clone == null) {
                     results.append("Actor " + fullName + " was not cloned!");
                 } else {
@@ -163,80 +164,87 @@ public class Configuration extends CompositeEntity {
                                 + constraints.size() + " constraints that "
                                 + "differ from " + cloneConstraints.size()
                                 + " constraints its clone has.\n");
-                    } 
-                    
+                    }
 
                     // Make sure the constraints are the same.
                     StringBuffer constraintsDescription = new StringBuffer();
                     Iterator constraintIterator = constraints.iterator();
                     while (constraintIterator.hasNext()) {
-                        Inequality constraint =
-                            (Inequality) constraintIterator.next();
+                        Inequality constraint = (Inequality) constraintIterator
+                                .next();
                         constraintsDescription.append(constraint);
                     }
 
-
                     StringBuffer cloneConstraintsDescription = new StringBuffer();
-                    Iterator cloneConstraintIterator = cloneConstraints.iterator();
+                    Iterator cloneConstraintIterator = cloneConstraints
+                            .iterator();
                     while (cloneConstraintIterator.hasNext()) {
-                        Inequality constraint = (Inequality) cloneConstraintIterator.next();                        
+                        Inequality constraint = (Inequality) cloneConstraintIterator
+                                .next();
                         cloneConstraintsDescription.append(constraint);
                     }
 
                     if (!constraintsDescription.toString().equals(
-                                cloneConstraintsDescription.toString())) {
-                        results.append(actor.getFullName() + " and its clone do "
-                                + "not have the same constraints:\n"
-                                + constraintsDescription.toString() + "\nClone:\n" 
-                                + cloneConstraintsDescription.toString() + "\n"); 
+                            cloneConstraintsDescription.toString())) {
+                        results
+                                .append(actor.getFullName()
+                                        + " and its clone do "
+                                        + "not have the same constraints:\n"
+                                        + constraintsDescription.toString()
+                                        + "\nClone:\n"
+                                        + cloneConstraintsDescription
+                                                .toString() + "\n");
                     }
 
-		    // Check that the type constraint is between ports
-		    // and Parameters of the same object.
-                    
+                    // Check that the type constraint is between ports
+                    // and Parameters of the same object.
+
                     cloneConstraintIterator = cloneConstraints.iterator();
                     while (cloneConstraintIterator.hasNext()) {
-                        Inequality constraint = (Inequality) cloneConstraintIterator.next();
-                        InequalityTerm greaterTerm = constraint.getGreaterTerm();
+                        Inequality constraint = (Inequality) cloneConstraintIterator
+                                .next();
+                        InequalityTerm greaterTerm = constraint
+                                .getGreaterTerm();
                         InequalityTerm lesserTerm = constraint.getLesserTerm();
 
-                        Object greaterAssociatedObject = greaterTerm.getAssociatedObject();
-                        Object lesserAssociatedObject = lesserTerm.getAssociatedObject();
-                        if ( greaterAssociatedObject instanceof NamedObj
-                                && lesserAssociatedObject instanceof
-                                NamedObj) {
+                        Object greaterAssociatedObject = greaterTerm
+                                .getAssociatedObject();
+                        Object lesserAssociatedObject = lesserTerm
+                                .getAssociatedObject();
+                        if (greaterAssociatedObject instanceof NamedObj
+                                && lesserAssociatedObject instanceof NamedObj) {
                             // FIXME: what about non-NamedObjs?
-                            NamedObj greaterNamedObj =
-                                (NamedObj) greaterAssociatedObject;
-                            NamedObj lesserNamedObj =
-                                (NamedObj) lesserAssociatedObject;
+                            NamedObj greaterNamedObj = (NamedObj) greaterAssociatedObject;
+                            NamedObj lesserNamedObj = (NamedObj) lesserAssociatedObject;
                             if (greaterNamedObj != null
                                     && lesserNamedObj != null
-                                    && (greaterNamedObj.getContainer()
-                                            != lesserNamedObj.getContainer()
-                                        )) {
-                                results.append(clone.getFullName() 
-                                        + " has type constraints with "
-                                        + "associated objects that don't have "
-                                        + "the same container:\n"
-                                        + greaterNamedObj.getFullName()
-                                        + " has a container:\n"
-                                        + greaterNamedObj.getContainer() + "\n"
-                                        + lesserNamedObj.getFullName()
-                                        + " has a container:\n"
-                                        + lesserNamedObj.getContainer() + "\n"
-                                        + "This can occur if the clone(Workspace) "
-                                        + "method is not present or does not set "
-                                        + "the constraints like the constructor "
-                                        + "does or if a Parameter or Port is not "
-                                        + "declared public.\n"
-                                               );
+                                    && (greaterNamedObj.getContainer() != lesserNamedObj
+                                            .getContainer())) {
+                                results
+                                        .append(clone.getFullName()
+                                                + " has type constraints with "
+                                                + "associated objects that don't have "
+                                                + "the same container:\n"
+                                                + greaterNamedObj.getFullName()
+                                                + " has a container:\n"
+                                                + greaterNamedObj
+                                                        .getContainer()
+                                                + "\n"
+                                                + lesserNamedObj.getFullName()
+                                                + " has a container:\n"
+                                                + lesserNamedObj.getContainer()
+                                                + "\n"
+                                                + "This can occur if the clone(Workspace) "
+                                                + "method is not present or does not set "
+                                                + "the constraints like the constructor "
+                                                + "does or if a Parameter or Port is not "
+                                                + "declared public.\n");
                             }
                         }
                     }
                 }
             }
-    }
+        }
         return results.toString();
     }
 
@@ -340,7 +348,7 @@ public class Configuration extends CompositeEntity {
                 // you try to open a model and you get a text editor.
                 // ex.printStackTrace();
                 // Remove the effigy.  We were unable to open a tableau for it.
-                
+
                 // If we have a link to a missing .htm file, we want to
                 // avoid popping up two MessageHandlers.
                 boolean calledMessageHandler = false;
@@ -370,11 +378,9 @@ public class Configuration extends CompositeEntity {
                             // if a .htm file is not found because the
                             // MessageHandler pops up before we return
                             // from the exception. 
-                            
-                            MessageHandler
-                                    .error("Failed to open "
-                                            + effigy.identifier.getExpression()
-                                            , ex);
+
+                            MessageHandler.error("Failed to open "
+                                    + effigy.identifier.getExpression(), ex);
                             calledMessageHandler = true;
                         }
                     }

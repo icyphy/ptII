@@ -244,9 +244,9 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                 replaceTokenFields(entityClass, depth, unsafeLocalSet, debug);
             }
 
-//             if(depth == 1) {
-//                 break;
-//             }
+            //             if(depth == 1) {
+            //                 break;
+            //             }
 
             for (Iterator classes = classList.iterator(); classes.hasNext();) {
                 SootClass entityClass = (SootClass) classes.next();
@@ -369,16 +369,16 @@ public class TokenToNativeTransformer extends SceneTransformer implements
             SootClass entityClass = (SootClass) classes.next();
 
             // Specialize the code, according to the analyzed types.
-            TypeSpecializer.specializeTypesInMethods(debug, entityClass, unsafeLocalSet,
-                    typeAnalysis);
+            TypeSpecializer.specializeTypesInMethods(debug, entityClass,
+                    unsafeLocalSet, typeAnalysis);
         }
         for (Iterator classes = Scene.v().getApplicationClasses().iterator(); classes
                 .hasNext();) {
             SootClass entityClass = (SootClass) classes.next();
 
             // Specialize the code, according to the analyzed types.
-            TypeSpecializer.specializeTypesOfFields(debug, entityClass, unsafeLocalSet,
-                    typeAnalysis);
+            TypeSpecializer.specializeTypesOfFields(debug, entityClass,
+                    unsafeLocalSet, typeAnalysis);
         }
     }
 
@@ -477,7 +477,6 @@ public class TokenToNativeTransformer extends SceneTransformer implements
             //   debug, entityClass, unsafeLocalSet);
             TypeSpecializerAnalysis typeAnalysis = new TypeSpecializerAnalysis(
                     entityClass, unsafeLocalSet);
-
 
             // Specialize the code, according to the analyzed types.
             //TypeSpecializer.specializeTypes(true, entityClass, unsafeLocalSet, typeAnalysis);
@@ -1660,21 +1659,21 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                 // Hack to work around the presence of NIL fields:
                 // Assume they are null references.
-           //      for (Iterator boxes = unit.getUseAndDefBoxes().iterator(); boxes
-//                         .hasNext();) {
-//                     ValueBox box = (ValueBox) boxes.next();
-//                     Value value = box.getValue();
-//                     if(value instanceof FieldRef) {
-//                         FieldRef ref = (FieldRef)value;
-//                         SootField field = ref.getField();
-//                          if (field.getName().equals("NIL")) {
-//                              doneSomething = true;
-                             
-//                              box.setValue(NullConstant.v());
-//                              System.out.println("replacing as Null");
-//                          }
-//                     }
-//                 }
+                //      for (Iterator boxes = unit.getUseAndDefBoxes().iterator(); boxes
+                //                         .hasNext();) {
+                //                     ValueBox box = (ValueBox) boxes.next();
+                //                     Value value = box.getValue();
+                //                     if(value instanceof FieldRef) {
+                //                         FieldRef ref = (FieldRef)value;
+                //                         SootField field = ref.getField();
+                //                          if (field.getName().equals("NIL")) {
+                //                              doneSomething = true;
+
+                //                              box.setValue(NullConstant.v());
+                //                              System.out.println("replacing as Null");
+                //                          }
+                //                     }
+                //                 }
 
                 if (unit instanceof AssignStmt) {
                     AssignStmt stmt = (AssignStmt) unit;
@@ -1837,14 +1836,15 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                             // initializer of the token class to
                             // figure out what the value is.
                             boolean isSingleton = false;
-                            if (field.getName().equals("TRUE") ||
-                                    field.getName().equals("FALSE") ||
-                                    field.getName().equals("ZERO") ||
-                                    field.getName().equals("ONE")) {
+                            if (field.getName().equals("TRUE")
+                                    || field.getName().equals("FALSE")
+                                    || field.getName().equals("ZERO")
+                                    || field.getName().equals("ONE")) {
                                 isSingleton = true;
                             }
-                                                    
-                            if ((isSingleton) && (fieldToReplacementLocal != null)) {
+
+                            if ((isSingleton)
+                                    && (fieldToReplacementLocal != null)) {
                                 doneSomething = true;
 
                                 // Replace references to fields with
@@ -1853,7 +1853,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                 body.getUnits().insertBefore(
                                         Jimple.v().newAssignStmt(
                                                 (Local) localToIsNotNullLocal
-                                                .get(stmt.getLeftOp()),
+                                                        .get(stmt.getLeftOp()),
                                                 IntConstant.v(1)), unit);
 
                                 if (debug) {
@@ -1872,118 +1872,146 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                                 + localField);
                                     }
 
-                                //     if (localField.getName().equals("_isNil")) {
-//                                         Local replacementLocal = (Local) fieldToReplacementLocal
-//                                                 .get(localField);
+                                    //     if (localField.getName().equals("_isNil")) {
+                                    //                                         Local replacementLocal = (Local) fieldToReplacementLocal
+                                    //                                                 .get(localField);
 
-//                                         body
-//                                                 .getUnits()
-//                                                 .insertBefore(
-//                                                         Jimple
-//                                                                 .v()
-//                                                                 .newAssignStmt(
-//                                                                         replacementLocal,
-//                                                                         IntConstant
-//                                                                                 .v(1)),
-//                                                         unit);
-//                                     } else 
+                                    //                                         body
+                                    //                                                 .getUnits()
+                                    //                                                 .insertBefore(
+                                    //                                                         Jimple
+                                    //                                                                 .v()
+                                    //                                                                 .newAssignStmt(
+                                    //                                                                         replacementLocal,
+                                    //                                                                         IntConstant
+                                    //                                                                                 .v(1)),
+                                    //                                                         unit);
+                                    //                                     } else 
                                     if (localField.getName().equals(
-                                                "_unitCategoryExponents")) {
-                                        
+                                            "_unitCategoryExponents")) {
+
                                         Local replacementLocal = (Local) fieldToReplacementLocal
-                                            .get(localField);
-                                        body.getUnits().insertBefore(
-                                                Jimple.v().newAssignStmt(
-                                                        replacementLocal,
-                                                        NullConstant.v()),
-                                                unit);
+                                                .get(localField);
+                                        body
+                                                .getUnits()
+                                                .insertBefore(
+                                                        Jimple
+                                                                .v()
+                                                                .newAssignStmt(
+                                                                        replacementLocal,
+                                                                        NullConstant
+                                                                                .v()),
+                                                        unit);
                                     } else if (localField.getName().equals(
-                                                "_value")) {
-                                        
+                                            "_value")) {
+
                                         Local replacementLocal = (Local) fieldToReplacementLocal
-                                            .get(localField);
-                                        
-                                        if (field.getSignature()
-                                                .equals("<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken TRUE>")) {
+                                                .get(localField);
+
+                                        if (field
+                                                .getSignature()
+                                                .equals(
+                                                        "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken TRUE>")) {
                                             body.getUnits().insertBefore(
                                                     Jimple.v().newAssignStmt(
                                                             replacementLocal,
                                                             IntConstant.v(1)),
                                                     unit);
-                                        } else if (field.getSignature()
-                                                .equals("<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken FALSE>")) {
-                                            
+                                        } else if (field
+                                                .getSignature()
+                                                .equals(
+                                                        "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken FALSE>")) {
+
                                             body.getUnits().insertBefore(
                                                     Jimple.v().newAssignStmt(
                                                             replacementLocal,
                                                             IntConstant.v(0)),
                                                     unit);
-                                        } else if (field.getSignature()
-                                                .equals("<ptolemy.data.UnsignedByteToken: ptolemy.data.UnsignedByteToken ONE>")) {
+                                        } else if (field
+                                                .getSignature()
+                                                .equals(
+                                                        "<ptolemy.data.UnsignedByteToken: ptolemy.data.UnsignedByteToken ONE>")) {
                                             body.getUnits().insertBefore(
                                                     Jimple.v().newAssignStmt(
                                                             replacementLocal,
                                                             IntConstant.v(1)),
                                                     unit);
-                                        } else if (field.getSignature()
-                                                .equals("<ptolemy.data.UnsignedByteToken: ptolemy.data.UnsignedByteToken ZERO>")) {
-                                            
+                                        } else if (field
+                                                .getSignature()
+                                                .equals(
+                                                        "<ptolemy.data.UnsignedByteToken: ptolemy.data.UnsignedByteToken ZERO>")) {
+
                                             body.getUnits().insertBefore(
                                                     Jimple.v().newAssignStmt(
                                                             replacementLocal,
                                                             IntConstant.v(0)),
                                                     unit);
-                                        } else if (field.getSignature()
-                                                .equals("<ptolemy.data.IntToken: ptolemy.data.IntToken ONE>")) {
+                                        } else if (field
+                                                .getSignature()
+                                                .equals(
+                                                        "<ptolemy.data.IntToken: ptolemy.data.IntToken ONE>")) {
                                             body.getUnits().insertBefore(
                                                     Jimple.v().newAssignStmt(
                                                             replacementLocal,
                                                             IntConstant.v(1)),
                                                     unit);
-                                        } else if (field.getSignature()
-                                                .equals("<ptolemy.data.IntToken: ptolemy.data.IntToken ZERO>")) {
-                                            
+                                        } else if (field
+                                                .getSignature()
+                                                .equals(
+                                                        "<ptolemy.data.IntToken: ptolemy.data.IntToken ZERO>")) {
+
                                             body.getUnits().insertBefore(
                                                     Jimple.v().newAssignStmt(
                                                             replacementLocal,
                                                             IntConstant.v(0)),
                                                     unit);
-                                        } else if (field.getSignature()
-                                                .equals("<ptolemy.data.LongToken: ptolemy.data.LongToken ONE>")) {
+                                        } else if (field
+                                                .getSignature()
+                                                .equals(
+                                                        "<ptolemy.data.LongToken: ptolemy.data.LongToken ONE>")) {
                                             body.getUnits().insertBefore(
                                                     Jimple.v().newAssignStmt(
                                                             replacementLocal,
                                                             LongConstant.v(1)),
                                                     unit);
-                                        } else if (field.getSignature()
-                                                .equals("<ptolemy.data.LongToken: ptolemy.data.LongToken ZERO>")) {
-                                            
+                                        } else if (field
+                                                .getSignature()
+                                                .equals(
+                                                        "<ptolemy.data.LongToken: ptolemy.data.LongToken ZERO>")) {
+
                                             body.getUnits().insertBefore(
                                                     Jimple.v().newAssignStmt(
                                                             replacementLocal,
                                                             LongConstant.v(0)),
                                                     unit);
-                                        } else if (field.getSignature()
-                                                .equals("<ptolemy.data.DoubleToken: ptolemy.data.DoubleToken ONE>")) {
-                                            
+                                        } else if (field
+                                                .getSignature()
+                                                .equals(
+                                                        "<ptolemy.data.DoubleToken: ptolemy.data.DoubleToken ONE>")) {
+
                                             body.getUnits().insertBefore(
                                                     Jimple.v().newAssignStmt(
                                                             replacementLocal,
-                                                            DoubleConstant.v(1.0)),
+                                                            DoubleConstant
+                                                                    .v(1.0)),
                                                     unit);
-                                        } else if (field.getSignature()
-                                                .equals("<ptolemy.data.DoubleToken: ptolemy.data.DoubleToken ZERO>")) {
-                                            
+                                        } else if (field
+                                                .getSignature()
+                                                .equals(
+                                                        "<ptolemy.data.DoubleToken: ptolemy.data.DoubleToken ZERO>")) {
+
                                             body.getUnits().insertBefore(
                                                     Jimple.v().newAssignStmt(
                                                             replacementLocal,
-                                                            DoubleConstant.v(0.0)),
+                                                            DoubleConstant
+                                                                    .v(0.0)),
                                                     unit);
                                         }
                                     } else {
                                         throw new RuntimeException(
                                                 "Unknown Field in Token: "
-                                                + localField.getSignature());
+                                                        + localField
+                                                                .getSignature());
                                     }
                                 }
 
@@ -2429,9 +2457,9 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                 .getOp2().getType());
 
                         if (op1IsToken && op2IsToken) {
-//                             throw new RuntimeException(
-//                                     "Unable to handle expression"
-//                                             + " of two token types: " + unit);
+                            //                             throw new RuntimeException(
+                            //                                     "Unable to handle expression"
+                            //                                             + " of two token types: " + unit);
                         } else if (op1IsToken
                                 && expr.getOp2().getType().equals(NullType.v())) {
                             doneSomething = true;

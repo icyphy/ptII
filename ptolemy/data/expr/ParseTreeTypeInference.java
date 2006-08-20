@@ -35,11 +35,11 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FixType;
 import ptolemy.data.type.FunctionType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeConstant;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.data.type.MatrixType;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -161,8 +161,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 }
             } else if (argCount == 2) {
                 if (baseType instanceof MatrixType) {
-                    _setType(node, ((MatrixType) baseType)
-                            .getElementType());
+                    _setType(node, ((MatrixType) baseType).getElementType());
                     return;
                 } else {
                     _assert(true, node, "Cannot use matrix " + "indexing on '"
@@ -198,31 +197,28 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             //     ((ASTPtRootNode) node.jjtGetChild(0 + 1)).getType());
             //  return;
         }
-        
+
         // A hack, because the result of the 'fix' function is
         // dependent on its arguments, which should be constant.
         if ((functionName.compareTo("fix") == 0) && (argCount == 3)) {
-            ASTPtRootNode lengthNode = ((ASTPtRootNode) node
-                    .jjtGetChild(1 + 1));
+            ASTPtRootNode lengthNode = ((ASTPtRootNode) node.jjtGetChild(1 + 1));
             ASTPtRootNode integerBitsNode = ((ASTPtRootNode) node
                     .jjtGetChild(2 + 1));
             ParseTreeEvaluator parseTreeEvaluator = new ParseTreeEvaluator();
 
             try {
-                ptolemy.data.Token length = parseTreeEvaluator.evaluateParseTree(
-                        lengthNode, _scope);
+                ptolemy.data.Token length = parseTreeEvaluator
+                        .evaluateParseTree(lengthNode, _scope);
 
-                ptolemy.data.Token integerBits = parseTreeEvaluator.evaluateParseTree(
-                        integerBitsNode, _scope);
-                _setType(node, new FixType(
-                                 new Precision(
-                                         ((ScalarToken)length).intValue(), 
-                                         ((ScalarToken)integerBits).intValue())));
+                ptolemy.data.Token integerBits = parseTreeEvaluator
+                        .evaluateParseTree(integerBitsNode, _scope);
+                _setType(node, new FixType(new Precision(((ScalarToken) length)
+                        .intValue(), ((ScalarToken) integerBits).intValue())));
                 return;
             } catch (Exception ex) {
                 // Do nothing... rely on the regular method resolution
                 // to generate the right type.
-            } 
+            }
         }
 
         if (functionName.compareTo("eval") == 0) {
@@ -414,8 +410,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type elementType = (Type) TypeLattice.lattice().leastUpperBound(
                 childTypes);
 
-        Type matrixType = MatrixType
-                .getMatrixTypeForElementType(elementType);
+        Type matrixType = MatrixType.getMatrixTypeForElementType(elementType);
         _setType(node, matrixType);
     }
 
@@ -584,7 +579,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
         Type baseType = childTypes[0];
-        if(node.isMinus()) {
+        if (node.isMinus()) {
             _setType(node, baseType.zero().subtract(baseType));
         } else {
             _setType(node, baseType);

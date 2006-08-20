@@ -405,8 +405,7 @@ public class Precision implements Cloneable, Serializable {
      *  @param precisionB Another precision
      *  @return A precision at least as precise as the two arguments.
      */
-    public static Precision union(Precision precisionA,
-            Precision precisionB) {
+    public static Precision union(Precision precisionA, Precision precisionB) {
 
         int minExponent = (precisionA._exponent < precisionB._exponent) ? precisionA._exponent
                 : precisionB._exponent;
@@ -795,13 +794,14 @@ public class Precision implements Cloneable, Serializable {
     }
 
     /** Precision format for use with the Expression Language. */
-    public static class ExpressionLanguagePrecisionFormat extends LengthIntegerPrecisionFormat {
+    public static class ExpressionLanguagePrecisionFormat extends
+            LengthIntegerPrecisionFormat {
         /** Regular expression for ExpressionLanguagePrecisionFormat.
          *  For example: (3,2).
          */
         public String printPrecisionFormat(Precision p) {
-            return "(" + p.getNumberOfBits() + ","
-                    + p.getIntegerBitLength() + ")";
+            return "(" + p.getNumberOfBits() + "," + p.getIntegerBitLength()
+                    + ")";
         }
     }
 

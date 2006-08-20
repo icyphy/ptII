@@ -44,7 +44,7 @@ import com.sun.j3d.loaders.objectfile.ObjectFile;
 /**
  Load a WaveFront .obj file that contains descriptions of 3-D objects.
  See the 
-<a href="http://download.java.net/media/java3d/javadoc/1.3.2/com/sun/j3d/loaders/objectfile/ObjectFile.html" target="_top">com.sun.j3d.loader.objectfile.ObjectFile</a> documentation for details.
+ <a href="http://download.java.net/media/java3d/javadoc/1.3.2/com/sun/j3d/loaders/objectfile/ObjectFile.html" target="_top">com.sun.j3d.loader.objectfile.ObjectFile</a> documentation for details.
  @author C. Fong
  @version $Id$
  @Pt.ProposedRating Red (cxh)
@@ -113,7 +113,7 @@ public class Loader3D extends GRShadedShape {
             throw new IllegalActionException(this, ex,
                     "File is not a valid Wavefront .obj file.");
         } catch (IncorrectFormatException ex) {
-            throw new IllegalActionException(this ,ex, 
+            throw new IllegalActionException(this, ex,
                     "File is not a valid Wavefront .obj file.");
         }
 

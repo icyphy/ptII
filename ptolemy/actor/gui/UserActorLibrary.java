@@ -26,7 +26,6 @@
  */
 package ptolemy.actor.gui;
 
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -80,7 +79,7 @@ public class UserActorLibrary {
      */
     public static void openUserLibrary(Configuration configuration)
             throws Exception {
-        
+
         // FIXME: If the name is something like
         // "vergilUserLibrary.xml" then when we save an actor in the
         // library and then save the window that comes up the name of
@@ -93,7 +92,7 @@ public class UserActorLibrary {
 
         try {
             libraryName = StringUtilities.preferencesDirectory()
-                + USER_LIBRARY_NAME + ".xml";
+                    + USER_LIBRARY_NAME + ".xml";
         } catch (Exception ex) {
             System.out.println("Warning: Failed to get the preferences "
                     + "directory (-sandbox always causes this): " + ex);
@@ -105,9 +104,8 @@ public class UserActorLibrary {
             if (!file.isFile() || !file.exists()) {
                 // File might exist under an old name.
                 // Try to read it.
-                String oldLibraryName = StringUtilities
-                    .preferencesDirectory()
-                    + "user library.xml";
+                String oldLibraryName = StringUtilities.preferencesDirectory()
+                        + "user library.xml";
                 File oldFile = new File(oldLibraryName);
 
                 if (oldFile.isFile() && oldFile.exists()) {
@@ -124,8 +122,7 @@ public class UserActorLibrary {
                     }
 
                     writer = new FileWriter(file);
-                    writer.write("<entity name=\""
-                            + USER_LIBRARY_NAME
+                    writer.write("<entity name=\"" + USER_LIBRARY_NAME
                             + "\" class=\"ptolemy.moml.EntityLibrary\"/>");
                     writer.close();
                 } catch (Exception ex) {
@@ -141,7 +138,7 @@ public class UserActorLibrary {
         }
     }
 
-   /**                                                                         
+    /**                                                                         
      *  Open the MoML file at the given location as a new library in
      *  the actor library for this application.
      *  
@@ -163,10 +160,10 @@ public class UserActorLibrary {
 
         CompositeEntity library = null;
         final CompositeEntity libraryContainer = (CompositeEntity) configuration
-            .getEntity("actor library");
+                .getEntity("actor library");
 
         final ModelDirectory directory = (ModelDirectory) configuration
-            .getEntity(Configuration._DIRECTORY_NAME);
+                .getEntity(Configuration._DIRECTORY_NAME);
 
         if (directory == null) {
             return;
@@ -177,7 +174,7 @@ public class UserActorLibrary {
         }
 
         StringAttribute alternateLibraryBuilderAttribute = (StringAttribute) libraryContainer
-            .getAttribute("_alternateLibraryBuilder");
+                .getAttribute("_alternateLibraryBuilder");
 
         // If the _alternateLibraryBuilder attribute is present,
         // then we use the specified class to build the library
@@ -186,18 +183,18 @@ public class UserActorLibrary {
         if (alternateLibraryBuilderAttribute != null) {
             // Get the class that will build the library from the plugins
             String libraryBuilderClassName = alternateLibraryBuilderAttribute
-                .getExpression();
+                    .getExpression();
 
             // Dynamically load the library builder and build the library
             Class libraryBuilderClass = Class.forName(libraryBuilderClassName);
             LibraryBuilder libraryBuilder = (LibraryBuilder) libraryBuilderClass
-                .newInstance();
+                    .newInstance();
 
             // Set the attributes defined in the moml to the attributes of the
             // LibraryBuilder
             libraryBuilder.addAttributes(alternateLibraryBuilderAttribute
                     .attributeList());
-                
+
             try {
                 library = libraryBuilder.buildLibrary(libraryContainer
                         .workspace());
@@ -250,7 +247,7 @@ public class UserActorLibrary {
 
             _instantiateLibrary(library, directory, configuration, file,
                     libraryContainer, finalLibraryEffigy);
-                
+
             finalLibraryEffigy.setModel(library);
 
             // Identify the URL from which the model was read
@@ -278,8 +275,7 @@ public class UserActorLibrary {
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) throws IOException, IllegalActionException {
         if (entity == null) {
-            throw new NullPointerException(
-                    "Save in library failed. "
+            throw new NullPointerException("Save in library failed. "
                     + "entity was null, cannot save a null entity.");
         }
         try {
@@ -307,15 +303,15 @@ public class UserActorLibrary {
             // Check whether there is already something existing in the
             // user library with this name.
             if (library == null) {
-                throw new InternalErrorException(
-                        "Save in library failed. "
+                throw new InternalErrorException("Save in library failed. "
                         + "libraryEffigy.getModel() returned null.");
             }
             if (library.getEntity(entity.getName()) != null) {
-                throw new NameDuplicationException(entity, 
+                throw new NameDuplicationException(
+                        entity,
                         "Save In Library failed: An object"
-                        + " already exists in the user library with name "
-                        + "\"" + entity.getName() + "\".");
+                                + " already exists in the user library with name "
+                                + "\"" + entity.getName() + "\".");
             }
 
             entity.exportMoML(buffer, 1);
@@ -338,7 +334,6 @@ public class UserActorLibrary {
      *  in the Vergil left hand tree menu.
      */
     public static String USER_LIBRARY_NAME = "UserLibrary";
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -364,6 +359,5 @@ public class UserActorLibrary {
         libraryContainer.requestChange(request);
         request.waitForCompletion();
     }
-
 
 }

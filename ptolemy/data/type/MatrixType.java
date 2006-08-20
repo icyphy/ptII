@@ -63,9 +63,8 @@ import ptolemy.math.FixPoint;
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red
  */
-public class MatrixType extends StructuredType implements
-        Serializable {
-    
+public class MatrixType extends StructuredType implements Serializable {
+
     /** Construct a new matrix type that represents matrix tokens of the
      *  given class with the given number of rows and columns.
      *  @param c The token class.
@@ -100,8 +99,8 @@ public class MatrixType extends StructuredType implements
         if (token instanceof MatrixToken) {
             return (MatrixToken) token;
         }
-        throw new IllegalActionException(
-                Token.notSupportedIncomparableConversionMessage(token, "matrix"));
+        throw new IllegalActionException(Token
+                .notSupportedIncomparableConversionMessage(token, "matrix"));
     }
 
     /** Determine if the argument represents the same MatrixType as this
@@ -252,9 +251,8 @@ public class MatrixType extends StructuredType implements
     public void updateType(StructuredType newType)
             throws IllegalActionException {
         if (newType._getRepresentative() != _getRepresentative()) {
-            throw new InternalErrorException(
-                    "MatrixType.updateType: Cannot "
-                            + "updateType the element type to " + newType + ".");
+            throw new InternalErrorException("MatrixType.updateType: Cannot "
+                    + "updateType the element type to " + newType + ".");
         }
     }
 
@@ -448,7 +446,7 @@ public class MatrixType extends StructuredType implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The type of MatrixToken that this class represents. */
     private Class _tokenClass;
 

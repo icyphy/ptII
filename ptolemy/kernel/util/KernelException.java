@@ -226,7 +226,7 @@ public class KernelException extends Exception {
         return
         // Do we print the detail?
         (detailNullOrEmpty ? "" : detail)
-                // Do we add a \n?
+        // Do we add a \n?
                 + ((!whereNullOrEmpty && !detailNullOrEmpty) ? "\n" : "")
                 // Do we print the whereString?
                 + (whereNullOrEmpty ? "" : whereString)

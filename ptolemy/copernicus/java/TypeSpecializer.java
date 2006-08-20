@@ -146,15 +146,17 @@ public class TypeSpecializer extends SceneTransformer implements
     public static Map specializeTypes(boolean debug, SootClass theClass,
             Set unsafeLocals, TypeSpecializerAnalysis typeAnalysis) {
         specializeTypesInMethods(debug, theClass, unsafeLocals, typeAnalysis);
-        return specializeTypesOfFields(debug, theClass, unsafeLocals, typeAnalysis);
+        return specializeTypesOfFields(debug, theClass, unsafeLocals,
+                typeAnalysis);
     }
-                
+
     /** Specialize all token types that appear in the given class,
      *  based on the given analysis.  Exclude locals in the given set
      *  from the typing algorithm.
      */
-    public static void specializeTypesInMethods(boolean debug, SootClass theClass,
-            Set unsafeLocals, TypeSpecializerAnalysis typeAnalysis) {
+    public static void specializeTypesInMethods(boolean debug,
+            SootClass theClass, Set unsafeLocals,
+            TypeSpecializerAnalysis typeAnalysis) {
         if (debug) {
             System.out.println("updating method types for " + theClass);
         }
@@ -333,8 +335,9 @@ public class TypeSpecializer extends SceneTransformer implements
      *  based on the given analysis. Return a map from
      *  fields in the class to their new specific Ptolemy type.
      */
-    public static Map specializeTypesOfFields(boolean debug, SootClass theClass,
-            Set unsafeLocals, TypeSpecializerAnalysis typeAnalysis) {
+    public static Map specializeTypesOfFields(boolean debug,
+            SootClass theClass, Set unsafeLocals,
+            TypeSpecializerAnalysis typeAnalysis) {
         if (debug) {
             System.out.println("updating field types for " + theClass);
         }

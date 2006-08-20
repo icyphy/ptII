@@ -105,7 +105,8 @@ public class ArrayType extends StructuredType {
         if (!(token instanceof ArrayToken)) {
             // Cannot convert to unknown element type.
             if (token.getType() == BaseType.UNKNOWN) {
-                throw new IllegalActionException("Cannot convert to type {unknown}");
+                throw new IllegalActionException(
+                        "Cannot convert to type {unknown}");
             }
             // NOTE: Added 7/17/06 by EAL to support type -> {type} conversion.
             Token[] contents = new Token[1];
@@ -139,7 +140,8 @@ public class ArrayType extends StructuredType {
                 return new ArrayToken(argumentArrayElementType);
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex,
-                        "Failed to construct an array of type " + argumentArrayElementType);
+                        "Failed to construct an array of type "
+                                + argumentArrayElementType);
             }
         }
         return new ArrayToken(resultArray);

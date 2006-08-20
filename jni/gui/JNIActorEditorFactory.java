@@ -82,8 +82,7 @@ public class JNIActorEditorFactory extends EditorFactory {
      */
     public void createEditor(NamedObj object, Frame parent) {
         ComponentDialog dialog = new ComponentDialog(parent,
-                "Configure JNI Actor",
-                createEditorPane(), _moreButtons);
+                "Configure JNI Actor", createEditorPane(), _moreButtons);
 
         String button = dialog.buttonPressed();
 
@@ -91,16 +90,16 @@ public class JNIActorEditorFactory extends EditorFactory {
             return;
         }
 
-
         if (button.equals("Configure Parameters")) {
             new EditParametersDialog(parent, object);
             return;
         }
 
-        Configuration configuration =  (Configuration) Configuration.findEffigy(object.getContainer()).toplevel();
+        Configuration configuration = (Configuration) Configuration.findEffigy(
+                object.getContainer()).toplevel();
 
         if (button.equals("Configure Arguments")) {
-            if ( !(object instanceof GenericJNIActor)) {
+            if (!(object instanceof GenericJNIActor)) {
                 throw new InternalErrorException("Tried to configure an "
                         + "object that is not a GenericJNIActor");
             } else {
@@ -121,8 +120,7 @@ public class JNIActorEditorFactory extends EditorFactory {
      */
     public Component createEditorPane() {
         JPanel panel = new JPanel();
-        JTextArea textArea = new JTextArea(
-                "To edit the parameters, select "
+        JTextArea textArea = new JTextArea("To edit the parameters, select "
                 + "\"Configure Parameters\".  To edit the native method "
                 + "arguments, select \"Configure Arguments\"", 3, 40);
         textArea.setEditable(false);
@@ -143,6 +141,7 @@ public class JNIActorEditorFactory extends EditorFactory {
     ////                         private members                   ////
 
     // Button labels.
-    private static String[] _moreButtons = { "Configure Parameters", "Configure Arguments", "Help", "Cancel" };
+    private static String[] _moreButtons = { "Configure Parameters",
+            "Configure Arguments", "Help", "Cancel" };
 
 }

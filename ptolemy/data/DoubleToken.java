@@ -80,8 +80,8 @@ public class DoubleToken extends ScalarToken {
         try {
             _value = Double.parseDouble(init);
         } catch (NumberFormatException e) {
-            throw new IllegalActionException(null, e, 
-                    "Failed to parse \"" + init + "\" as a number.");
+            throw new IllegalActionException(null, e, "Failed to parse \""
+                    + init + "\" as a number.");
         }
     }
 

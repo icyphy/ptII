@@ -37,7 +37,6 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.math.Complex;
 import ptolemy.math.FixPoint;
 import ptolemy.math.Precision;
 import ptolemy.math.Quantizer;
@@ -436,12 +435,12 @@ public class FixMatrixToken extends MatrixToken {
             throws IllegalActionException {
         FixPoint scalar;
         if (rightArgument instanceof FixMatrixToken) {
-            if (((FixMatrixToken)rightArgument).getRowCount() != 1
-                    || ((FixMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((FixMatrixToken) rightArgument).getRowCount() != 1
+                    || ((FixMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((FixMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((FixMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((FixToken) rightArgument).fixValue();
         }
@@ -505,12 +504,12 @@ public class FixMatrixToken extends MatrixToken {
             throws IllegalActionException {
         FixPoint scalar;
         if (rightArgument instanceof FixMatrixToken) {
-            if (((FixMatrixToken)rightArgument).getRowCount() != 1
-                    || ((FixMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((FixMatrixToken) rightArgument).getRowCount() != 1
+                    || ((FixMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((FixMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((FixMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((FixToken) rightArgument).fixValue();
         }
@@ -568,12 +567,12 @@ public class FixMatrixToken extends MatrixToken {
             throws IllegalActionException {
         FixPoint scalar;
         if (rightArgument instanceof FixMatrixToken) {
-            if (((FixMatrixToken)rightArgument).getRowCount() != 1
-                    || ((FixMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((FixMatrixToken) rightArgument).getRowCount() != 1
+                    || ((FixMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((FixMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((FixMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((FixToken) rightArgument).fixValue();
         }
@@ -601,12 +600,12 @@ public class FixMatrixToken extends MatrixToken {
             throws IllegalActionException {
         FixPoint scalar;
         if (rightArgument instanceof FixMatrixToken) {
-            if (((FixMatrixToken)rightArgument).getRowCount() != 1
-                    || ((FixMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((FixMatrixToken) rightArgument).getRowCount() != 1
+                    || ((FixMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((FixMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((FixMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((FixToken) rightArgument).fixValue();
         }
@@ -639,7 +638,8 @@ public class FixMatrixToken extends MatrixToken {
                 if ((_precision != null) && !_precision.equals(precision)) {
                     throw new IllegalActionException(
                             "Attempt to create a FixMatrixToken"
-                                    + " with unequal precisions: " + _precision + " and " + precision);
+                                    + " with unequal precisions: " + _precision
+                                    + " and " + precision);
                 }
 
                 _precision = precision;

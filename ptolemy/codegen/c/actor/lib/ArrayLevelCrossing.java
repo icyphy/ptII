@@ -64,16 +64,15 @@ public class ArrayLevelCrossing extends CCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
-        ptolemy.actor.lib.ArrayLevelCrossing actor = 
-            (ptolemy.actor.lib.ArrayLevelCrossing) getComponent();
-        
+        ptolemy.actor.lib.ArrayLevelCrossing actor = (ptolemy.actor.lib.ArrayLevelCrossing) getComponent();
+
         if (((BooleanToken) actor.forwards.getToken()).booleanValue()) {
             _codeStream.appendCodeBlock("forwardBlock");
         }
 
         String scaleValue = actor.scale.stringValue();
         String aboveValue = ((BooleanToken) actor.above.getToken())
-            .booleanValue() ? "above" : "notAbove";
+                .booleanValue() ? "above" : "notAbove";
 
         if (scaleValue.equals("relative amplitude decibels")) {
             _codeStream.appendCodeBlock("amplitude_" + aboveValue);

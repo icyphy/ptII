@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.util;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SuperdenseTime
 
@@ -124,8 +123,8 @@ public class SuperdenseTime implements Comparable {
      *  @return A description of this superdense time object.
      */
     public final String toString() {
-        return "Superdense Time: time stamp = " + _timestamp 
-                + " and index = " + _index + ".";
+        return "Superdense Time: time stamp = " + _timestamp + " and index = "
+                + _index + ".";
     }
 
     ///////////////////////////////////////////////////////////////////

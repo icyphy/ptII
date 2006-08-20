@@ -96,8 +96,8 @@ public abstract class FunctionDependency extends SingletonAttribute {
      *   attribute with this name, and the class of that container is not
      *   SingletonAttribute.
      */
-    public FunctionDependency(Entity container)
-            throws IllegalActionException, NameDuplicationException {
+    public FunctionDependency(Entity container) throws IllegalActionException,
+            NameDuplicationException {
         super(container, "_functionDependency");
         setPersistent(false);
     }

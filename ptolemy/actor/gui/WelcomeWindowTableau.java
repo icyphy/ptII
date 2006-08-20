@@ -63,7 +63,7 @@ public class WelcomeWindowTableau extends HTMLViewerTableau {
         setFrame(frame);
         frame.setTableau(this);
     }
-    
+
     /** Handle cases where the <i>url</i> attribute is changed,
      *  yet there is no frame. If the argument is the <i>url</i> parameter,
      *  and there is no frame, then do nothing.  Otherwise, call the same 

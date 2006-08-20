@@ -32,7 +32,6 @@ package ptolemy.actor.lib;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -212,7 +211,8 @@ public class GradientAdaptiveLattice extends Lattice {
             _estimatedErrorPowerCache[i] = newError;
         }
 
-        adaptedReflectionCoefficients.send(0, new ArrayToken(BaseType.DOUBLE, outputArray));
+        adaptedReflectionCoefficients.send(0, new ArrayToken(BaseType.DOUBLE,
+                outputArray));
     }
 
     // Reallocate the internal arrays. Extend the base class to

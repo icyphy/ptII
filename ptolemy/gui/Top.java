@@ -291,7 +291,6 @@ public abstract class Top extends JFrame {
         return _modified;
     }
 
-
     /** Size this window to its preferred size and make it
      *  displayable, and override the base class to populate the menu
      *  bar if the menus have not already been populated.  If the

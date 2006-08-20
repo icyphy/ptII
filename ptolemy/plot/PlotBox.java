@@ -4263,7 +4263,7 @@ public class PlotBox extends JPanel implements Printable {
                 break;
 
             default:
-            // None
+                // None
             }
         }
 
@@ -4280,7 +4280,7 @@ public class PlotBox extends JPanel implements Printable {
                 break;
 
             default:
-            // None
+                // None
             }
         }
 

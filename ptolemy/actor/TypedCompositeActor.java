@@ -312,7 +312,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             }
             if (unacceptable.size() > 0) {
                 throw new TypeConflictException(unacceptable,
-                        "Types resolved to unacceptable types in " + topLevel.getFullName()
+                        "Types resolved to unacceptable types in "
+                                + topLevel.getFullName()
                                 + " due to the following inequalities:");
             }
         } catch (IllegalActionException ex) {
@@ -415,11 +416,14 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
             while (extenders.hasNext()) {
                 ScopeExtender extender = (ScopeExtender) extenders.next();
-                Iterator extenderAttributes = extender.attributeList().iterator();
+                Iterator extenderAttributes = extender.attributeList()
+                        .iterator();
                 while (extenderAttributes.hasNext()) {
-                    Attribute extenderAttribute = (Attribute) extenderAttributes.next();
+                    Attribute extenderAttribute = (Attribute) extenderAttributes
+                            .next();
                     if (extenderAttribute instanceof Variable) {
-                        result.addAll( ((Variable) extenderAttribute).typeConstraintList());
+                        result.addAll(((Variable) extenderAttribute)
+                                .typeConstraintList());
                     }
                 }
             }

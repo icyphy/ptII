@@ -38,7 +38,7 @@ import javax.swing.JPanel;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
-import ptolemy.gui.MessageHandler;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// WelcomeWindow

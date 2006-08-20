@@ -144,14 +144,13 @@ public class Minimum extends TypedAtomicActor {
                 } else {
                     inMagnitude = in;
                 }
-                       
+
                 if (result == null) {
                     result = in;
                     resultMagnitude = inMagnitude;
                     channelNum = i;
                 } else {
-                    if (inMagnitude.isLessThan(resultMagnitude).booleanValue()
-                            == true) {
+                    if (inMagnitude.isLessThan(resultMagnitude).booleanValue() == true) {
                         result = in;
                         resultMagnitude = inMagnitude;
                         channelNum = i;

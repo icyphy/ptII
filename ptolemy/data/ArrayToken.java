@@ -71,24 +71,23 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     public ArrayToken(Token[] value) throws IllegalActionException {
         int length = value.length;
-        
+
         if (length < 1) {
             throw new IllegalActionException("ArrayToken(Token[]) called with "
                     + "a an array of length less than 1.  To create an array "
                     + "of length 0, use the ArrayToken(Token) constructor "
                     + "because elements in ArrayToken must have a type.");
         }
-        
+
         _elementType = value[0].getType();
-        
+
         for (int i = 0; i < length; i++) {
             Type valueType = value[i].getType();
-            _elementType = TypeLattice.leastUpperBound(
-                    _elementType, valueType);
+            _elementType = TypeLattice.leastUpperBound(_elementType, valueType);
         }
-        
+
         _value = new Token[length];
-        
+
         for (int i = 0; i < length; i++) {
             _value[i] = _elementType.convert(value[i]);
         }
@@ -138,12 +137,13 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If the tokens in the array
      *   do not have the specified type.
      */
-    public ArrayToken(Type elementType, Token[] value) throws IllegalActionException {
+    public ArrayToken(Type elementType, Token[] value)
+            throws IllegalActionException {
         _elementType = elementType;
         int length = value.length;
 
         _value = new Token[length];
-        
+
         for (int i = 0; i < length; i++) {
             _value[i] = _elementType.convert(value[i]);
         }
@@ -179,7 +179,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     "add", this, rightArgument));
         }
     }
-    
+
     /** Add this array token to the specified argument.
      *  If the argument is an array token and it has
      *  the same length as this array token then addition is elementwise.
@@ -195,8 +195,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   token, or if multiplication is not supported between the elements
      *   of this array and the argument.
      */
-    public Token addReverse(Token leftArgument)
-            throws IllegalActionException {
+    public Token addReverse(Token leftArgument) throws IllegalActionException {
         try {
             return _add(leftArgument);
         } catch (IllegalActionException ex) {
@@ -284,7 +283,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   token, or if division is not supported between the elements
      *   of this array and the argument.
      */
-    public Token divideReverse(Token rightArgument) throws IllegalActionException {
+    public Token divideReverse(Token rightArgument)
+            throws IllegalActionException {
         try {
             return _divideReverse(rightArgument);
         } catch (IllegalActionException ex) {
@@ -620,7 +620,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  this token are implemented in different classes, or the
      *  operation does not make sense for the given types.
      */
-    public Token moduloReverse(Token rightArgument) throws IllegalActionException {
+    public Token moduloReverse(Token rightArgument)
+            throws IllegalActionException {
         try {
             return _moduloReverse(rightArgument);
         } catch (IllegalActionException ex) {
@@ -655,7 +656,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     "multiply", this, rightArgument));
         }
     }
-    
+
     /** Multiply this array token by the specified argument.
      *  If the argument is an array token and it has
      *  the same length as this array token, and the multiplication is elementwise.
@@ -730,7 +731,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             return new ArrayToken(getElementType());
         }
     }
-    
+
     /** Subtract from this array token the specified argument.
      *  If the argument is an array token and it has
      *  the same length as this array token, and the subtraction is elementwise.
@@ -767,7 +768,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   token or length 1, or if division is not supported between the elements
      *   of this array and the argument.
      */
-    public Token subtractReverse(Token rightArgument) throws IllegalActionException {
+    public Token subtractReverse(Token rightArgument)
+            throws IllegalActionException {
         try {
             return _subtractReverse(rightArgument);
         } catch (IllegalActionException ex) {
@@ -827,7 +829,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  supported by an element token.
      */
     public Token zero() throws IllegalActionException {
-        if(_value.length == 0) {
+        if (_value.length == 0) {
             return this;
         }
 
@@ -842,7 +844,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
- 
+
     /** A token that represents a missing value.
      *  Null or missing tokens are common in analytical systems
      *  like R and SAS where they are used to handle sparsely populated data
@@ -880,7 +882,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     Token scalar = rightArray.getElement(0);
                     for (int i = 0; i < _value.length; i++) {
                         result[i] = _value[i].add(scalar);
-                    }            
+                    }
                 } else if (length() == 1) {
                     result = new Token[rightArray.length()];
                     Token scalar = getElement(0);
@@ -896,7 +898,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         } else {
             for (int i = 0; i < _value.length; i++) {
                 result[i] = _value[i].add(rightArgument);
-            }            
+            }
         }
         return new ArrayToken(result);
     }
@@ -929,7 +931,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     Token scalar = rightArray.getElement(0);
                     for (int i = 0; i < _value.length; i++) {
                         result[i] = _value[i].divide(scalar);
-                    }            
+                    }
                 } else if (length() == 1) {
                     result = new Token[rightArray.length()];
                     Token scalar = getElement(0);
@@ -946,7 +948,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             for (int i = 0; i < _value.length; i++) {
                 result[i] = _value[i].divide(rightArgument);
             }
-        }        
+        }
         return new ArrayToken(result);
     }
 
@@ -962,16 +964,17 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   ArrayToken of different length, or calling the divide method
      *   of the element token throws it.
      */
-    protected Token _divideReverse(Token rightArgument) throws IllegalActionException {
+    protected Token _divideReverse(Token rightArgument)
+            throws IllegalActionException {
         if (rightArgument instanceof ArrayToken) {
-            return ((ArrayToken)rightArgument).divide(this);
+            return ((ArrayToken) rightArgument).divide(this);
         } else {
             Token[] result = new Token[_value.length];
             for (int i = 0; i < _value.length; i++) {
                 result[i] = rightArgument.divide(_value[i]);
-            }            
+            }
             return new ArrayToken(result);
-        }        
+        }
     }
 
     /** Test whether the value of this token is close to the first argument,
@@ -1066,7 +1069,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     Token scalar = rightArray.getElement(0);
                     for (int i = 0; i < _value.length; i++) {
                         result[i] = _value[i].modulo(scalar);
-                    }            
+                    }
                 } else if (length() == 1) {
                     result = new Token[rightArray.length()];
                     Token scalar = getElement(0);
@@ -1083,7 +1086,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             for (int i = 0; i < _value.length; i++) {
                 result[i] = _value[i].modulo(rightArgument);
             }
-        }        
+        }
         return new ArrayToken(result);
     }
 
@@ -1099,16 +1102,17 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   ArrayToken of different length, or calling the modulo method
      *   of the element token throws it.
      */
-    protected Token _moduloReverse(Token rightArgument) throws IllegalActionException {
+    protected Token _moduloReverse(Token rightArgument)
+            throws IllegalActionException {
         if (rightArgument instanceof ArrayToken) {
-            return ((ArrayToken)rightArgument).modulo(this);
+            return ((ArrayToken) rightArgument).modulo(this);
         } else {
             Token[] result = new Token[_value.length];
             for (int i = 0; i < _value.length; i++) {
                 result[i] = rightArgument.modulo(_value[i]);
-            }            
+            }
             return new ArrayToken(result);
-        }        
+        }
     }
 
     /** Return a new token whose value is the value of this token
@@ -1140,7 +1144,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     Token scalar = rightArray.getElement(0);
                     for (int i = 0; i < _value.length; i++) {
                         result[i] = _value[i].multiply(scalar);
-                    }            
+                    }
                 } else if (length() == 1) {
                     result = new Token[rightArray.length()];
                     Token scalar = getElement(0);
@@ -1156,7 +1160,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         } else {
             for (int i = 0; i < _value.length; i++) {
                 result[i] = _value[i].multiply(rightArgument);
-            }            
+            }
         }
         return new ArrayToken(result);
     }
@@ -1187,7 +1191,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     Token scalar = rightArray.getElement(0);
                     for (int i = 0; i < _value.length; i++) {
                         result[i] = _value[i].subtract(scalar);
-                    }            
+                    }
                 } else if (length() == 1) {
                     result = new Token[rightArray.length()];
                     Token scalar = getElement(0);
@@ -1204,7 +1208,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             for (int i = 0; i < _value.length; i++) {
                 result[i] = _value[i].subtract(rightArgument);
             }
-        }        
+        }
         return new ArrayToken(result);
     }
 
@@ -1220,16 +1224,17 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   ArrayToken of different length (and not length 1), or calling the subtract method
      *   of the element token throws it.
      */
-    protected Token _subtractReverse(Token rightArgument) throws IllegalActionException {
+    protected Token _subtractReverse(Token rightArgument)
+            throws IllegalActionException {
         if (rightArgument instanceof ArrayToken) {
-            return ((ArrayToken)rightArgument).subtract(this);
+            return ((ArrayToken) rightArgument).subtract(this);
         } else {
             Token[] result = new Token[_value.length];
             for (int i = 0; i < _value.length; i++) {
                 result[i] = rightArgument.subtract(_value[i]);
-            }            
+            }
             return new ArrayToken(result);
-        }        
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1250,7 +1255,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The array of values of this array token. */
     private Token[] _value;
 

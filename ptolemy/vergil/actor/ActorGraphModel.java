@@ -349,7 +349,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             Relation relation = link.getRelation();
 
             // Undo needs this: Check that the relation hasn't been removed
-            if ((relation == null) || (relation.getContainer() == null) || _isHidden(relation)) {
+            if ((relation == null) || (relation.getContainer() == null)
+                    || _isHidden(relation)) {
                 // NOTE: We used to not do the next three lines when
                 // relation == null, but this seems better.
                 // EAL 6/26/05.
@@ -632,7 +633,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The set of all links in the model. */
     private Set _linkSet;
 
@@ -646,7 +647,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     private PortModel _portModel = new PortModel();
 
     private VertexModel _vertexModel = new VertexModel();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -660,9 +661,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             if (hide instanceof Parameter) {
                 Token token;
                 try {
-                    token = ((Parameter)hide).getToken();
+                    token = ((Parameter) hide).getToken();
                     if (token instanceof BooleanToken) {
-                        if (((BooleanToken)token).booleanValue()) {
+                        if (((BooleanToken) token).booleanValue()) {
                             return true;
                         }
                     }

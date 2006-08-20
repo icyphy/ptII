@@ -113,8 +113,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public FixedPointDirector() throws IllegalActionException, 
-        NameDuplicationException {
+    public FixedPointDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
         _init();
     }
@@ -128,8 +128,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public FixedPointDirector(Workspace workspace) throws 
-        IllegalActionException, NameDuplicationException{
+    public FixedPointDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -206,10 +206,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         } while (!_hasIterationConverged() && !_stopRequested);
 
         if (_debugging) {
-            _debug(this.getFullName()
-                    + ": Fixed point found after "
-                    + iterationCount
-                    + " iterations.");
+            _debug(this.getFullName() + ": Fixed point found after "
+                    + iterationCount + " iterations.");
         }
     }
 
@@ -222,7 +220,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     public int getIndex() {
         return _index;
     }
-    
+
     /** Initialize the director and all deeply contained actors by calling
      *  the super.initialize() method. Reset all private variables.
      *  @exception IllegalActionException If the superclass throws it.
@@ -256,14 +254,14 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
         boolean result = true;
 
-        Iterator actors = ((CompositeActor) getContainer()).
-            deepEntityList().iterator();
+        Iterator actors = ((CompositeActor) getContainer()).deepEntityList()
+                .iterator();
 
         while (result && actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor) actors.next();
             result = actor.isFireFunctional() && result;
         }
-        
+
         _cachedFunctionalProperty = result;
         _functionalPropertyVersion = workspace().getVersion();
 
@@ -307,16 +305,16 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         if (_debugging) {
             _debug("FixedPointDirector: Called postfire().");
         }
-        
+
         boolean needMoreIterations = true;
         int numberOfActors = getScheduler().getSchedule().size();
         if ((numberOfActors > 0) && (_actorsFired.size() == 0)) {
-                needMoreIterations = false;
+            needMoreIterations = false;
         }
 
         Iterator actors = _actorsFired.iterator();
         while (actors.hasNext() && !_stopRequested) {
-            Actor actor = (Actor)actors.next();
+            Actor actor = (Actor) actors.next();
             if (!_areAllInputsKnown(actor)) {
                 throw new IllegalActionException(actor,
                         "Unknown inputs remain. Possible causality loop.");
@@ -330,8 +328,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             }
         }
         if (_debugging) {
-            _debug(this.getFullName()
-                    + "Iteration " + _currentIteration
+            _debug(this.getFullName() + "Iteration " + _currentIteration
                     + " is complete.");
         }
 
@@ -361,9 +358,9 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         _actorsFired.clear();
         _cachedAllInputsKnown.clear();
         _lastNumberOfKnownReceivers = -1;
-        
+
         _resetAllReceivers();
-        
+
         return super.prefire();
     }
 
@@ -430,7 +427,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                 }
             }
         }
-        return result; 
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -442,7 +439,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     protected void _receiverChanged() {
         _currentNumberOfKnownReceivers++;
     }
-    
+
     /** Reset all receivers to unknown status.
      */
     protected void _resetAllReceivers() {
@@ -450,7 +447,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             _debug("    FixedPointDirector is resetting all receivers");
         }
         _currentNumberOfKnownReceivers = 0;
-    
+
         Iterator receiverIterator = _receivers.iterator();
         while (receiverIterator.hasNext()) {
             ((FixedPointReceiver) receiverIterator.next()).reset();
@@ -505,20 +502,19 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             boolean prefireReturns = actor.prefire();
             if (_debugging) {
                 _debug("FixedPointDirector: Prefiring: "
-                        + ((Nameable) actor).getFullName()
-                        + ", which returns "
+                        + ((Nameable) actor).getFullName() + ", which returns "
                         + prefireReturns);
             }
             // Check monotonicity constraint.
-            if (!prefireReturns
-                    && _actorsAllowedToFire.contains(actor)) {
-                throw new IllegalActionException(actor,
-                        "prefire() method returns false, but it" +
-                        " has previously returned true in this iteration.");
+            if (!prefireReturns && _actorsAllowedToFire.contains(actor)) {
+                throw new IllegalActionException(
+                        actor,
+                        "prefire() method returns false, but it"
+                                + " has previously returned true in this iteration.");
             }
             if (prefireReturns) {
                 _actorsAllowedToFire.add(actor);
-                
+
                 // Whether all inputs are known must be checked before
                 // firing to handle cases with self-loops, because the
                 // current firing may change the status of some input
@@ -569,8 +565,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // to conclude the convergence of the iteration because if some 
         // receivers just become known, their containers (actors) need to be 
         // fired to react these new inputs. 
-        boolean converged = 
-            _lastNumberOfKnownReceivers == _currentNumberOfKnownReceivers;
+        boolean converged = _lastNumberOfKnownReceivers == _currentNumberOfKnownReceivers;
         _lastNumberOfKnownReceivers = _currentNumberOfKnownReceivers;
         return converged;
     }
@@ -578,10 +573,11 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     /** Initialize the director by creating the parameters and setting their
      *  values and types.
      */
-    private void _init() throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         iterations = new Parameter(this, "iterations", new IntToken(0));
         iterations.setTypeEquals(BaseType.INT);
-        
+
         FixedPointScheduler scheduler = new FixedPointScheduler(this,
                 uniqueName("Scheduler"));
         setScheduler(scheduler);
@@ -594,8 +590,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  false in postfire().
      */
     private boolean _isReadyToFire(Actor actor) throws IllegalActionException {
-        return !_actorsFinishedFiring.contains(actor) &&
-                (!actor.isStrict() || _areAllInputsKnown(actor));
+        return !_actorsFinishedFiring.contains(actor)
+                && (!actor.isStrict() || _areAllInputsKnown(actor));
     }
 
     /** Return the result of the postfire() method of the specified actor
@@ -605,8 +601,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      */
     private boolean _postfireActor(Actor actor) throws IllegalActionException {
         if (_actorsAllowedToFire.contains(actor)) {
-            _debug(getFullName()
-                    + " is postfiring "
+            _debug(getFullName() + " is postfiring "
                     + ((Nameable) actor).getFullName());
             return actor.postfire();
         }
@@ -630,8 +625,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                 if (!outputPort.isKnown(j)) {
                     if (_debugging) {
                         _debug("  FixedPointDirector: Set output "
-                                + outputPort.getFullName()
-                                + " to absent.");
+                                + outputPort.getFullName() + " to absent.");
                     }
                     outputPort.sendClear(j);
                 }
@@ -652,7 +646,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  all inputs known.
      */
     private Set _actorsFinishedFiring;
-    
+
     /** Actors that were fired in the most recent invocation of the fire() method. */
     private Set _actorsFired = new HashSet();
 
@@ -661,7 +655,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
     /** The cache of the functional property of the container of this director. */
     private boolean _cachedFunctionalProperty;
-    
+
     /** The current number of receivers with known state. */
     private int _currentNumberOfKnownReceivers;
 

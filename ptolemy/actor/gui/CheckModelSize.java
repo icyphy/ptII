@@ -120,7 +120,8 @@ public class CheckModelSize {
                             }
 
                             if (height > 768) {
-                                analysis.append(" height(" + height + ") > 768");
+                                analysis
+                                        .append(" height(" + height + ") > 768");
                             }
 
                             if (vergilCenter != null) {

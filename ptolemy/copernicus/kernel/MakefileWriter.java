@@ -35,6 +35,7 @@ import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.JNLPUtilities;
+import ptolemy.codegen.kernel.CodeGeneratorUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
@@ -318,7 +319,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                         + _templateDirectory + "makefile.in'\n\t writing '"
                         + _outputDirectory + "makefile'");
 
-                Copernicus.substitute(_templateDirectory + "makefile.in",
+                CodeGeneratorUtilities.substitute(_templateDirectory + "makefile.in",
                         substituteMap, _outputDirectory + "makefile");
             } catch (Exception ex) {
                 // This exception tends to get eaten by soot, so we print as well.
@@ -338,7 +339,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                 + "obfuscateScript.jos.in";
 
         try {
-            inputFile = Copernicus.openAsFileOrURL(obfuscateTemplate);
+            inputFile = CodeGeneratorUtilities.openAsFileOrURL(obfuscateTemplate);
         } catch (IOException ex) {
             System.out.println("Note: Optional obfuscation template not "
                     + "found (This can be ignored): " + ex);
@@ -346,7 +347,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
         if (inputFile != null) {
             try {
-                Copernicus.substitute(inputFile, substituteMap,
+                CodeGeneratorUtilities.substitute(inputFile, substituteMap,
                         _outputDirectory + "obfuscateScript.jos");
             } catch (Exception ex) {
                 // This exception tends to get eaten by soot, so we print

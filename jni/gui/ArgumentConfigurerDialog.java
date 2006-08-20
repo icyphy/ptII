@@ -200,13 +200,12 @@ public class ArgumentConfigurerDialog extends ComponentDialog implements
         // adds package dependencies, which makes it harder to ship
         // packages.
         String helpFile = "jni/package.html";
-        URL toRead = Thread.currentThread()
-            .getContextClassLoader().getResource(helpFile);
+        URL toRead = Thread.currentThread().getContextClassLoader()
+                .getResource(helpFile);
 
         if ((toRead != null) && (configuration != null)) {
             try {
-                configuration.openModel(null, toRead, toRead
-                        .toExternalForm());
+                configuration.openModel(null, toRead, toRead.toExternalForm());
             } catch (Exception ex) {
                 MessageHandler.error("Help screen failure", ex);
             }

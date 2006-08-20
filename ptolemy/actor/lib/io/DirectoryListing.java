@@ -424,8 +424,8 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         }
 
         StringToken[] results = new StringToken[resultsList.size()];
-        output.broadcast(new ArrayToken(BaseType.STRING, (StringToken[]) (resultsList
-                .toArray(results))));
+        output.broadcast(new ArrayToken(BaseType.STRING,
+                (StringToken[]) (resultsList.toArray(results))));
     }
 
     ///////////////////////////////////////////////////////////////////

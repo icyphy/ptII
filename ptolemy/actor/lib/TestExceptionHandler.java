@@ -61,9 +61,9 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Yellow (hyzheng)
  */
-public class TestExceptionHandler extends TypedAtomicActor 
-    implements ExceptionHandler {
-    
+public class TestExceptionHandler extends TypedAtomicActor implements
+        ExceptionHandler {
+
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -76,13 +76,14 @@ public class TestExceptionHandler extends TypedAtomicActor
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public TestExceptionHandler(CompositeEntity container, String name) 
-        throws NameDuplicationException, IllegalActionException {
+    public TestExceptionHandler(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        correctExceptionMessage = new StringParameter(this, "correctExceptionMessage");
+        correctExceptionMessage = new StringParameter(this,
+                "correctExceptionMessage");
         correctExceptionMessage.setExpression("");
         trainingMode = new SharedParameter(this, "trainingMode", getClass(),
-            "false");
+                "false");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
         _invoked = false;
     }
@@ -116,18 +117,20 @@ public class TestExceptionHandler extends TypedAtomicActor
      *  the traningMode parameter or the exception message is not the same as
      *  the stored message.
      */
-    public boolean handleException(NamedObj context, Throwable exception) 
-        throws IllegalActionException{
+    public boolean handleException(NamedObj context, Throwable exception)
+            throws IllegalActionException {
         if (!(exception instanceof IllegalActionException)) {
             return false;
         }
         _invoked = true;
-        boolean training = ((BooleanToken) trainingMode.getToken()).booleanValue();
+        boolean training = ((BooleanToken) trainingMode.getToken())
+                .booleanValue();
         if (training) {
             correctExceptionMessage.setExpression(exception.getMessage());
             correctExceptionMessage.setPersistent(true);
         } else {
-            if (!exception.getMessage().equals(correctExceptionMessage.stringValue())) {
+            if (!exception.getMessage().equals(
+                    correctExceptionMessage.stringValue())) {
                 throw new IllegalActionException(this, exception, null);
             }
         }
@@ -172,7 +175,7 @@ public class TestExceptionHandler extends TypedAtomicActor
             }
         }
         if (!_invoked) {
-            throw new IllegalActionException(this, " should " 
+            throw new IllegalActionException(this, " should "
                     + "have handled an exception but did not see any.");
         } else {
             _invoked = false;
@@ -195,6 +198,6 @@ public class TestExceptionHandler extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private boolean _invoked = false;
 }

@@ -137,7 +137,7 @@ public class JAIImageReader extends Source {
 
             _outputtedImage = JAI.create("stream", seekableStream);
 
-            /*PlanarImage dummy =*/ _outputtedImage.getRendering();
+            /*PlanarImage dummy =*/_outputtedImage.getRendering();
         } finally {
             if (seekableStream != null) {
                 try {

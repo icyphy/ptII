@@ -124,7 +124,8 @@ public class RelationList {
      *  @return The previous distance of a relation.
      */
     public double getPreviousMaximumDistance() {
-        return ((RelationNode) _relationList.get(_maximumDifferenceIndex)).getPreviousDifference();
+        return ((RelationNode) _relationList.get(_maximumDifferenceIndex))
+                .getPreviousDifference();
     }
 
     /** Return true if there exists an event caused by the type change of

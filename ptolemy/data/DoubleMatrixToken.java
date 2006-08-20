@@ -483,12 +483,12 @@ public class DoubleMatrixToken extends MatrixToken {
             throws IllegalActionException {
         double scalar;
         if (rightArgument instanceof DoubleMatrixToken) {
-            if (((DoubleMatrixToken)rightArgument).getRowCount() != 1
-                    || ((DoubleMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((DoubleMatrixToken) rightArgument).getRowCount() != 1
+                    || ((DoubleMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((DoubleMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((DoubleMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((DoubleToken) rightArgument).doubleValue();
         }
@@ -511,12 +511,12 @@ public class DoubleMatrixToken extends MatrixToken {
             throws IllegalActionException {
         double scalar;
         if (rightArgument instanceof DoubleMatrixToken) {
-            if (((DoubleMatrixToken)rightArgument).getRowCount() != 1
-                    || ((DoubleMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((DoubleMatrixToken) rightArgument).getRowCount() != 1
+                    || ((DoubleMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((DoubleMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((DoubleMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((DoubleToken) rightArgument).doubleValue();
         }
@@ -548,12 +548,12 @@ public class DoubleMatrixToken extends MatrixToken {
             throws IllegalActionException {
         double scalar;
         if (rightArgument instanceof DoubleMatrixToken) {
-            if (((DoubleMatrixToken)rightArgument).getRowCount() != 1
-                    || ((DoubleMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((DoubleMatrixToken) rightArgument).getRowCount() != 1
+                    || ((DoubleMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((DoubleMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((DoubleMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((DoubleToken) rightArgument).doubleValue();
         }
@@ -615,12 +615,12 @@ public class DoubleMatrixToken extends MatrixToken {
             throws IllegalActionException {
         double scalar;
         if (rightArgument instanceof DoubleMatrixToken) {
-            if (((DoubleMatrixToken)rightArgument).getRowCount() != 1
-                    || ((DoubleMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((DoubleMatrixToken) rightArgument).getRowCount() != 1
+                    || ((DoubleMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((DoubleMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((DoubleMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((DoubleToken) rightArgument).doubleValue();
         }
@@ -661,12 +661,12 @@ public class DoubleMatrixToken extends MatrixToken {
             throws IllegalActionException {
         double scalar;
         if (rightArgument instanceof DoubleMatrixToken) {
-            if (((DoubleMatrixToken)rightArgument).getRowCount() != 1
-                    || ((DoubleMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((DoubleMatrixToken) rightArgument).getRowCount() != 1
+                    || ((DoubleMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((DoubleMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((DoubleMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((DoubleToken) rightArgument).doubleValue();
         }
@@ -689,12 +689,12 @@ public class DoubleMatrixToken extends MatrixToken {
             throws IllegalActionException {
         double scalar;
         if (rightArgument instanceof DoubleMatrixToken) {
-            if (((DoubleMatrixToken)rightArgument).getRowCount() != 1
-                    || ((DoubleMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((DoubleMatrixToken) rightArgument).getRowCount() != 1
+                    || ((DoubleMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((DoubleMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((DoubleMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((DoubleToken) rightArgument).doubleValue();
         }

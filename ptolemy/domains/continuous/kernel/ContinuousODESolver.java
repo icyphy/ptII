@@ -94,8 +94,7 @@ public abstract class ContinuousODESolver {
      *  @param integrator The integrator that calls this method.
      *  @return True if the integrator finds the step accurate.
      */
-    public abstract boolean integratorIsAccurate(
-            ContinuousIntegrator integrator);
+    public abstract boolean integratorIsAccurate(ContinuousIntegrator integrator);
 
     /** The suggestedStepSize() method of the integrator delegates to this
      *  method. Derived classes need to implement the details.
@@ -125,14 +124,14 @@ public abstract class ContinuousODESolver {
      *  @return The current round.
      */
     protected abstract int _getRound();
-    
+
     /** Increment the round and return the time increment associated
      *  with the round. The time increment is a factor that will be
      *  multiplied by the step size. It is less than or equal to one.
      *  @return The time increment associated with the next round.
      */
-    protected abstract double _incrementRound() throws IllegalActionException; 
-    
+    protected abstract double _incrementRound() throws IllegalActionException;
+
     /** Return true if debugging is turned on in the director.
      *  @return True if debugging is turned on.
      */
@@ -162,7 +161,7 @@ public abstract class ContinuousODESolver {
      *  we have not converged to a solution if the ODE solver is implicit.
      */
     protected abstract void _reset();
-    
+
     /** Set the round for the next integration step.
      *  This must be between zero and the value returned by
      *  getIntegratorAuxVariableCount().

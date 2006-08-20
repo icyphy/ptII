@@ -395,12 +395,12 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                     // If we are running under Web Start, we
                     // might have a URL that refers to another
                     // jar file.
-                    URL anotherURL = ClassUtilities
-                        .jarURLEntryResource(input.toExternalForm());
-		    if (anotherURL == null) {
-			throw ex;
+                    URL anotherURL = ClassUtilities.jarURLEntryResource(input
+                            .toExternalForm());
+                    if (anotherURL == null) {
+                        throw ex;
 
-		    }
+                    }
                     stream = anotherURL.openStream();
                 }
 

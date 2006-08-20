@@ -37,7 +37,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.Logarithmic;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Logarithmic
 
@@ -76,7 +75,8 @@ public class ColtLogarithmic extends ColtRandomSource {
 
         p = new PortParameter(this, "p", new DoubleToken(0.5));
         p.setTypeEquals(BaseType.DOUBLE);
-        new SingletonParameter(p.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(p.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         p.moveToFirst();
     }

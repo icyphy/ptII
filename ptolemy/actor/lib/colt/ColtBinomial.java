@@ -38,7 +38,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.Binomial;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Binomial
 
@@ -110,11 +109,13 @@ public class ColtBinomial extends ColtRandomSource {
 
         n = new PortParameter(this, "n", new IntToken(1));
         n.setTypeEquals(BaseType.INT);
-        new SingletonParameter(n.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(n.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         p = new PortParameter(this, "p", new DoubleToken(0.5));
         p.setTypeEquals(BaseType.DOUBLE);
-        new SingletonParameter(p.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(p.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         p.moveToFirst();
         n.moveToFirst();

@@ -36,8 +36,6 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.math.Complex;
-import ptolemy.math.FixPoint;
 import ptolemy.math.LongArrayMath;
 import ptolemy.math.LongMatrixMath;
 
@@ -506,12 +504,12 @@ public class LongMatrixToken extends MatrixToken {
             throws IllegalActionException {
         long scalar;
         if (rightArgument instanceof LongMatrixToken) {
-            if (((LongMatrixToken)rightArgument).getRowCount() != 1
-                    || ((LongMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((LongMatrixToken) rightArgument).getRowCount() != 1
+                    || ((LongMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((LongMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((LongMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((LongToken) rightArgument).longValue();
         }
@@ -532,12 +530,12 @@ public class LongMatrixToken extends MatrixToken {
             throws IllegalActionException {
         long scalar;
         if (rightArgument instanceof LongMatrixToken) {
-            if (((LongMatrixToken)rightArgument).getRowCount() != 1
-                    || ((LongMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((LongMatrixToken) rightArgument).getRowCount() != 1
+                    || ((LongMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((LongMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((LongMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((LongToken) rightArgument).longValue();
         }
@@ -568,12 +566,12 @@ public class LongMatrixToken extends MatrixToken {
             throws IllegalActionException {
         long scalar;
         if (rightArgument instanceof LongMatrixToken) {
-            if (((LongMatrixToken)rightArgument).getRowCount() != 1
-                    || ((LongMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((LongMatrixToken) rightArgument).getRowCount() != 1
+                    || ((LongMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((LongMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((LongMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((LongToken) rightArgument).longValue();
         }
@@ -631,12 +629,12 @@ public class LongMatrixToken extends MatrixToken {
             throws IllegalActionException {
         long scalar;
         if (rightArgument instanceof LongMatrixToken) {
-            if (((LongMatrixToken)rightArgument).getRowCount() != 1
-                    || ((LongMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((LongMatrixToken) rightArgument).getRowCount() != 1
+                    || ((LongMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((LongMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((LongMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((LongToken) rightArgument).longValue();
         }
@@ -674,12 +672,12 @@ public class LongMatrixToken extends MatrixToken {
             throws IllegalActionException {
         long scalar;
         if (rightArgument instanceof LongMatrixToken) {
-            if (((LongMatrixToken)rightArgument).getRowCount() != 1
-                    || ((LongMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((LongMatrixToken) rightArgument).getRowCount() != 1
+                    || ((LongMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((LongMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((LongMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((LongToken) rightArgument).longValue();
         }
@@ -700,12 +698,12 @@ public class LongMatrixToken extends MatrixToken {
             throws IllegalActionException {
         long scalar;
         if (rightArgument instanceof LongMatrixToken) {
-            if (((LongMatrixToken)rightArgument).getRowCount() != 1
-                    || ((LongMatrixToken)rightArgument).getColumnCount() != 1) {
+            if (((LongMatrixToken) rightArgument).getRowCount() != 1
+                    || ((LongMatrixToken) rightArgument).getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
-            scalar = ((LongMatrixToken)rightArgument).getElementAt(0, 0);
+            scalar = ((LongMatrixToken) rightArgument).getElementAt(0, 0);
         } else {
             scalar = ((LongToken) rightArgument).longValue();
         }

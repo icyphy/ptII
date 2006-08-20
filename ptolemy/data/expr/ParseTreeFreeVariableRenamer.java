@@ -58,8 +58,8 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
      *  @param variableToRename The variable to rename.
      *  @param name The new name.
      */
-    public void renameVariables(
-            ASTPtRootNode node, Variable dependentVariable, Variable variableToRename, String name)
+    public void renameVariables(ASTPtRootNode node, Variable dependentVariable,
+            Variable variableToRename, String name)
             throws IllegalActionException {
         _scope = dependentVariable.getParserScope();
         _dependentVariable = dependentVariable;
@@ -108,7 +108,8 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
             return;
         }
         String name = node.getName();
-        if (name != null && !_formalParameters.contains(name)
+        if (name != null
+                && !_formalParameters.contains(name)
                 && ModelScope.getScopedVariable(null, _dependentVariable, name) == _variableToRename) {
             node._name = _name;
         }
@@ -165,12 +166,13 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Return the intersection of two collections.
      *  @param collection1 The first collection.
      *  @param collection2 The second collection.
      */
-    protected Collection _intersection(Collection collection1, Collection collection2) {
+    protected Collection _intersection(Collection collection1,
+            Collection collection2) {
         Set result = new HashSet();
         Iterator items = collection1.iterator();
         while (items.hasNext()) {
@@ -206,19 +208,19 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The variable to which the parse tree belongs. */
     protected Variable _dependentVariable;
-    
+
     /** Formal parameters within a function definition. */
     protected Set _formalParameters = new HashSet();
-    
+
     /** The new name. */
     protected String _name;
 
     /** The scope. */
     protected ParserScope _scope;
-    
+
     /** The variable to be renamed. */
     protected Variable _variableToRename;
 }

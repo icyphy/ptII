@@ -289,7 +289,6 @@ public class DocManager extends HandlerBase {
         }
     }
 
-
     /** Given a dot separated class name, return the URL of the
      *  documentation.  
      * 
@@ -331,8 +330,7 @@ public class DocManager extends HandlerBase {
      *  was found, return null.
      */
     public static URL docClassNameToURL(Configuration configuration,
-            String className, 
-            boolean lookForPtDoc, boolean lookForJavadoc,
+            String className, boolean lookForPtDoc, boolean lookForJavadoc,
             boolean lookForSource, boolean lookForActorIndex) {
         URL toRead = null;
         try {
@@ -340,24 +338,28 @@ public class DocManager extends HandlerBase {
             // and that parameter names a class that that implements the
             // DocApplicationSpecializer interface, then we call
             // docClassNameToURL(). 
-            
-            Parameter docApplicationSpecializerParameter =
-                (Parameter) configuration
-                .getAttribute("_docApplicationSpecializer",
-                        Parameter.class);
+
+            Parameter docApplicationSpecializerParameter = (Parameter) configuration
+                    .getAttribute("_docApplicationSpecializer", Parameter.class);
             if (docApplicationSpecializerParameter != null) {
-                String docApplicationSpecializerClassName = 
-                    docApplicationSpecializerParameter.getExpression();
+                String docApplicationSpecializerClassName = docApplicationSpecializerParameter
+                        .getExpression();
 
                 try {
                     Class docApplicationSpecializerClass = Class
-                        .forName(docApplicationSpecializerClassName);
-                    DocApplicationSpecializer docApplicationSpecializer = (DocApplicationSpecializer) docApplicationSpecializerClass.newInstance();
-                    toRead = docApplicationSpecializer.docClassNameToURL(_remoteDocumentationURLBase, className, lookForPtDoc, lookForJavadoc, lookForSource, lookForActorIndex);
+                            .forName(docApplicationSpecializerClassName);
+                    DocApplicationSpecializer docApplicationSpecializer = (DocApplicationSpecializer) docApplicationSpecializerClass
+                            .newInstance();
+                    toRead = docApplicationSpecializer.docClassNameToURL(
+                            _remoteDocumentationURLBase, className,
+                            lookForPtDoc, lookForJavadoc, lookForSource,
+                            lookForActorIndex);
                 } catch (Throwable throwable) {
-                    throw new Exception("Failed to call doc application initializer "
-                        + "class \"" + docApplicationSpecializerClassName
-                        + "\" on class \"" + className + "\".");
+                    throw new Exception(
+                            "Failed to call doc application initializer "
+                                    + "class \""
+                                    + docApplicationSpecializerClassName
+                                    + "\" on class \"" + className + "\".");
                 }
             }
 
@@ -366,9 +368,8 @@ public class DocManager extends HandlerBase {
             // We handle the applicationName specially so that we open
             // only the docs for the app we are running.
             try {
-                StringAttribute applicationNameAttribute =
-                    (StringAttribute) configuration
-                    .getAttribute("_applicationName", StringAttribute.class);
+                StringAttribute applicationNameAttribute = (StringAttribute) configuration
+                        .getAttribute("_applicationName", StringAttribute.class);
 
                 if (applicationNameAttribute != null) {
                     applicationName = applicationNameAttribute.getExpression();
@@ -378,56 +379,52 @@ public class DocManager extends HandlerBase {
                 // which means we look in doc.codeDoc.
             }
 
-
             // We search first on the local machine and then ask
             // the user and then possibly look on the remote machine.
             // So, we define the strings in an array for ease of reuse.
 
-            String docNames [] = {
-                "doc/codeDoc"
-                + (applicationName.equals("") ?
-                        "/" : applicationName + "/doc/codeDoc/")
-                + className.replace('.', '/') + ".xml",
+            String docNames[] = {
+                    "doc/codeDoc"
+                            + (applicationName.equals("") ? "/"
+                                    : applicationName + "/doc/codeDoc/")
+                            + className.replace('.', '/') + ".xml",
 
-                "doc/codeDoc/" + className.replace('.', '/')
-                + ".xml",
+                    "doc/codeDoc/" + className.replace('.', '/') + ".xml",
 
-                "doc/codeDoc"
-                + (applicationName.equals("") ?
-                        "/" : applicationName + "/doc/codeDoc/")
-                + className.replace('.', '/') + ".html",
+                    "doc/codeDoc"
+                            + (applicationName.equals("") ? "/"
+                                    : applicationName + "/doc/codeDoc/")
+                            + className.replace('.', '/') + ".html",
 
-                "doc/codeDoc/" + className.replace('.', '/')
-                + ".html",
+                    "doc/codeDoc/" + className.replace('.', '/') + ".html",
 
-                className.replace('.', '/') + ".java",
+                    className.replace('.', '/') + ".java",
 
-                "doc/codeDoc"
-                + (applicationName == null
-                        || applicationName.equals("") ?
-                        "/" : applicationName + "/doc/codeDoc/")
+                    "doc/codeDoc"
+                            + (applicationName == null
+                                    || applicationName.equals("") ? "/"
+                                    : applicationName + "/doc/codeDoc/")
 
-                + className.replace('.', '/') + "Idx.htm"
-            };
+                            + className.replace('.', '/') + "Idx.htm" };
 
             // List of docNames we use if we don't find anything locally.
             List docNameList = new LinkedList();
 
             // We look for the documentation relative to this classLoader.n
-            ClassLoader referenceClassLoader = Class.forName("ptolemy.vergil.actor.DocManager").getClassLoader();
+            ClassLoader referenceClassLoader = Class.forName(
+                    "ptolemy.vergil.actor.DocManager").getClassLoader();
 
             // Rather than using a deeply nested set of if/else's, we
             // just keep checking toRead == null.p
 
             // If applicationName is not "", then look in
             // doc/codeDoc_applicationName/doc/codeDoc.
-            if (toRead == null && lookForPtDoc ) {
+            if (toRead == null && lookForPtDoc) {
                 docNameList.add(docNames[0]);
                 toRead = referenceClassLoader.getResource(docNames[0]);
             }
 
-            if (toRead == null && lookForPtDoc
-                    && applicationName != null
+            if (toRead == null && lookForPtDoc && applicationName != null
                     && !applicationName.equals("")) {
                 // applicationName was set, try looking in the
                 // documentation for the default application (vergil).
@@ -440,7 +437,7 @@ public class DocManager extends HandlerBase {
                 // the javadoc .html
                 Class targetClass = Class.forName(className);
                 if (!_namedObjClass.isAssignableFrom(targetClass)
-                    || !lookForPtDoc) {
+                        || !lookForPtDoc) {
 
                     // Look in the Application specific codeDoc directory.
                     docNameList.add(docNames[2]);
@@ -453,8 +450,8 @@ public class DocManager extends HandlerBase {
                 }
             }
 
-            if (toRead == null && lookForSource
-                    && !lookForPtDoc && !lookForJavadoc ) {
+            if (toRead == null && lookForSource && !lookForPtDoc
+                    && !lookForJavadoc) {
                 // Look for the source _ONLY_ if we are not looking for
                 // ptdoc or javadoc.
                 docNameList.add(docNames[4]);
@@ -473,10 +470,9 @@ public class DocManager extends HandlerBase {
                 // Loop through each docNamesIterator and try to open
                 // a stream.  Stop if once we open a stream.
                 Iterator docNameIterator = docNameList.iterator();
-                while(docNameIterator.hasNext()) {
+                while (docNameIterator.hasNext()) {
                     String docName = (String) docNameIterator.next();
-                    toRead = new URL(_remoteDocumentationURLBase
-                            + docName);
+                    toRead = new URL(_remoteDocumentationURLBase + docName);
 
                     if (toRead != null) {
                         InputStream toReadStream = null;
@@ -767,7 +763,6 @@ public class DocManager extends HandlerBase {
         return _version;
     }
 
-
     /** Return "see also" information. This includes a link
      *  to the javadoc documentation, the source code, and the
      *  superclass information.
@@ -801,11 +796,11 @@ public class DocManager extends HandlerBase {
                         .append("<li><a href=\"#parentClass\">Class documentation</a></li>");
             }
             // Get either the PtDoc, javadoc, or source.
-            URL toRead = docClassNameToURL(_configuration, className,
-                    true, true, true, false);
+            URL toRead = docClassNameToURL(_configuration, className, true,
+                    true, true, false);
             if (toRead != null) {
                 result.append("<li><a href=\"" + toRead.toExternalForm()
-                            + "\">");
+                        + "\">");
                 if (toRead.toExternalForm().endsWith(".html")) {
                     result.append("Javadoc Documentation");
                 } else if (toRead.toExternalForm().endsWith(".java")) {
@@ -847,20 +842,17 @@ public class DocManager extends HandlerBase {
                 if (lastDot >= 0) {
                     baseClassName = baseClassName.substring(lastDot + 1);
                 }
-                if (toRead != null
-                        && toRead.toExternalForm().endsWith(".xml")) {
+                if (toRead != null && toRead.toExternalForm().endsWith(".xml")) {
                     result.append("<li><a href=\"" + toRead.toExternalForm()
                             + "\">Base class (" + baseClassName + ")</a></li>");
                 } else if (toRead != null
                         && toRead.toExternalForm().endsWith(".html")) {
-                    result.append("<li><a href=\""
-                            + toRead.toExternalForm()
+                    result.append("<li><a href=\"" + toRead.toExternalForm()
                             + "\">Base class Javadoc (" + baseClassName
                             + ")</a></li>");
                 } else if (toRead != null
                         && toRead.toExternalForm().endsWith(".java")) {
-                    result.append("<li><a href=\""
-                            + toRead.toExternalForm()
+                    result.append("<li><a href=\"" + toRead.toExternalForm()
                             + "\">Base class Java (" + baseClassName
                             + ")</a></li>");
                 }
@@ -880,15 +872,14 @@ public class DocManager extends HandlerBase {
             } catch (Exception ex) {
                 // Do not report anything.
             }
-       }
+        }
 
         // FIXME: Need see also fields from the doclet analysis.
         // FIXME: Include demos? How?
 
-
         try {
-            URL toRead = docClassNameToURL(_configuration, className,
-                    false, false, false, true);
+            URL toRead = docClassNameToURL(_configuration, className, false,
+                    false, false, true);
             if (toRead != null) {
                 result.append("<li><a href=\"" + toRead.toExternalForm()
                         + "\">Demo Usage</a></li>");
@@ -1061,7 +1052,7 @@ public class DocManager extends HandlerBase {
      *  @param remoteDocumentationURLBase The remote location of the class
      *  documentation.
      *  @see #getRemoteDocumentationURLBase()
-     */ 
+     */
     public static void setRemoteDocumentationURLBase(
             String remoteDocumentationURLBase) {
         _remoteDocumentationURLBase = remoteDocumentationURLBase;
@@ -1215,13 +1206,13 @@ public class DocManager extends HandlerBase {
     }
 
     /** Initialize fields.  We assume _target was set by the caller
-        
-    private void _init() {
+     
+     private void _init() {
 
-        _isInstanceDoc = false;
-    }
+     _isInstanceDoc = false;
+     }
 
-    /** Return true if the specified class is either equal to
+     /** Return true if the specified class is either equal to
      *  NamedObj or is a subclass of NamedObj.
      */
     private boolean _isNamedObj(Class candidate) {
@@ -1244,8 +1235,8 @@ public class DocManager extends HandlerBase {
         // FIXME: If file is not found, then instead of an
         // exception, probably want to delegate to the base class.
         // Read the .xml file, but not the java or source 
-        URL toRead = docClassNameToURL(_configuration, _className,
-                true, false, false, false);
+        URL toRead = docClassNameToURL(_configuration, _className, true, false,
+                false, false);
 
         try {
             if (toRead != null) {

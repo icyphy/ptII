@@ -547,7 +547,8 @@ public class ActorRecursion extends TypedCompositeActor {
                 }
             }
 
-            rateVariable.setToken(new ArrayToken(BaseType.INT, productionRateToken));
+            rateVariable.setToken(new ArrayToken(BaseType.INT,
+                    productionRateToken));
         }
     }
 

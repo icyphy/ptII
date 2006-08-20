@@ -63,7 +63,8 @@ import ptolemy.kernel.util.Nameable;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public interface WirelessChannel extends Actor, Nameable, PropertyTransformer, TokenProcessor {
+public interface WirelessChannel extends Actor, Nameable, PropertyTransformer,
+        TokenProcessor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -143,7 +144,7 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer, T
      */
     public void registerTokenProcessor(TokenProcessor processor,
             WirelessIOPort port);
-    
+
     /** Return a list of input ports that can potentially send data
      *  to this channel.  This must include input ports contained by
      *  the container of this channel that
@@ -191,7 +192,7 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer, T
      */
     public void unregisterPropertyTransformer(PropertyTransformer transformer,
             WirelessIOPort port);
-    
+
     /** Unregister a token processor for transmissions from the specified
      *  port (or from null for a generic token processor). If the processor
      *  has not been registered, then do nothing.

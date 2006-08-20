@@ -88,7 +88,7 @@ public class HTMLViewerTableau extends Tableau {
         HTMLViewer frame = new HTMLViewer(this);
         setFrame(frame);
         frame.setTableau(this);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -210,12 +210,13 @@ public class HTMLViewerTableau extends Tableau {
                         }
                     }
 
-                    if (anotherURL == null && 
-                            urlString.indexOf("$CLASSPATH") != -1) {
+                    if (anotherURL == null
+                            && urlString.indexOf("$CLASSPATH") != -1) {
                         // The URL contains $CLASSPATH
-                        String classpathString = urlString.substring(
-                                urlString.indexOf("$CLASSPATH"));
-                        anotherURL = FileUtilities.nameToURL(classpathString, null, null);
+                        String classpathString = urlString.substring(urlString
+                                .indexOf("$CLASSPATH"));
+                        anotherURL = FileUtilities.nameToURL(classpathString,
+                                null, null);
                     }
 
                     if (anotherURL == null) {
