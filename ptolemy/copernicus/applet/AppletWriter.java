@@ -437,7 +437,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // filters, use them, remove our filters,
         // and then readd the old filters in the finally clause.
         List oldFilters = parser.getMoMLFilters();
-        parser.setMoMLFilters(null);
+        MoMLParser.setMoMLFilters(null);
 
         // Parse the model and get the name of the model.
         try {

@@ -245,7 +245,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
             // We do something
             // similar in GeneratorAttribute.updateModelAttributes()
             List oldFilters = parser.getMoMLFilters();
-            parser.setMoMLFilters(null);
+            MoMLParser.setMoMLFilters(null);
 
             try {
                 // Handle Backward Compatibility.
@@ -257,7 +257,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                         _generatorAttributeFileName).toURL());
             } finally {
                 // Restore the saved momlfilters
-                parser.setMoMLFilters(oldFilters);
+                MoMLParser.setMoMLFilters(oldFilters);
             }
 
             generatorAttribute = (GeneratorAttribute) toplevel.getAttribute(
@@ -302,7 +302,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
         Map substituteMap;
 
         try {
-            substituteMap = Copernicus.newMap(generatorAttribute);
+            substituteMap = CodeGeneratorUtilities.newMap(generatorAttribute);
             substituteMap.put("@outDir@", _outputDirectory);
             substituteMap.put("@targetPackage@", _targetPackage);
             substituteMap.put("@templateDirectory@", _templateDirectory);
@@ -392,7 +392,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
     private static Map _addedSubstitutions = new HashMap();
 
     // The relative path to $PTII, for example "../../..".
-    private String _codeBase;
+    //private String _codeBase;
 
     // The file name of the MoML file that contains the GeneratorAttribute
     // that contains the key/value pairs we will use when substituting
@@ -406,17 +406,17 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
     private String _outputDirectory;
 
     // The sanitized modelName
-    private String _sanitizedModelName;
+    //private String _sanitizedModelName;
 
     // The value of the ptolemy.ptII.dir property.
-    private String _ptIIDirectory;
+    //private String _ptIIDirectory;
 
     // The user directory where we are writing.  _ptIIUserDirectory
     // will be a parent directory of _outputDirectory.
-    private String _ptIIUserDirectory;
+    //private String _ptIIUserDirectory;
 
     // Map used to map @model@ to MyModel.
-    private Map _substituteMap;
+    //private Map _substituteMap;
 
     // The parent package relative to $PTII to generate the code in
     // The code itself is generated in a child package of the parent package
