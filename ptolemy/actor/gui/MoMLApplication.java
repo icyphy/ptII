@@ -738,7 +738,7 @@ public class MoMLApplication implements ExecutionListener {
             System.out.println(_usage());
 
             // NOTE: This means the test suites cannot test -help
-            System.exit(0);
+            StringUtilities.exit(0);
         } else if (arg.equals("-run")) {
             _run = true;
         } else if (arg.equals("-runThenExit")) {

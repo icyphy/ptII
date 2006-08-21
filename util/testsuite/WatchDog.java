@@ -32,6 +32,8 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import ptolemy.util.StringUtilities;
+
 //////////////////////////////////////////////////////////////////////////
 //// WatchDog
 
@@ -104,7 +106,7 @@ public class WatchDog {
                                 + "util.testsuite.WatchDog went off");
 
                         // Do not pass go, do not collect $200
-                        System.exit(4);
+                        StringUtilities.exit(4);
                     }
                 }
             }

@@ -116,7 +116,7 @@ public class FigureTest extends TestSuite {
     public void testHit() {
         runTestCase(new RegionTestCase("Figure hit") {
             public void run() throws Exception {
-                result = figure.hit(region);
+                /*result =*/ figure.hit(region);
             }
         });
     }
@@ -127,7 +127,7 @@ public class FigureTest extends TestSuite {
     public void testIntersects() {
         runTestCase(new RegionTestCase("Figure intersects") {
             public void run() throws Exception {
-                result = figure.intersects(region);
+                /*result = */ figure.intersects(region);
             }
         });
     }
@@ -283,7 +283,7 @@ public class FigureTest extends TestSuite {
     public abstract class RegionTestCase extends TestCase {
         Figure figure;
 
-        boolean result;
+        //boolean result;
 
         Rectangle2D region;
 

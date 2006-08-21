@@ -244,30 +244,27 @@ public class PtolemyQuery extends Query implements QueryListener,
                     boolean allowFiles = true;
                     boolean allowDirectories = false;
 
-                    if (attribute instanceof NamedObj) {
-                        Parameter marker = (Parameter) ((NamedObj) attribute)
-                                .getAttribute("allowFiles", Parameter.class);
+                    // attribute is always a NamedObj
+                    Parameter marker = (Parameter) ((NamedObj) attribute)
+                            .getAttribute("allowFiles", Parameter.class);
 
-                        if (marker != null) {
-                            Token value = marker.getToken();
+                    if (marker != null) {
+                        Token value = marker.getToken();
 
-                            if (value instanceof BooleanToken) {
-                                allowFiles = ((BooleanToken) value)
-                                        .booleanValue();
-                            }
+                        if (value instanceof BooleanToken) {
+                            allowFiles = ((BooleanToken) value).booleanValue();
                         }
+                    }
 
-                        marker = (Parameter) ((NamedObj) attribute)
-                                .getAttribute("allowDirectories",
-                                        Parameter.class);
+                    marker = (Parameter) ((NamedObj) attribute).getAttribute(
+                            "allowDirectories", Parameter.class);
 
-                        if (marker != null) {
-                            Token value = marker.getToken();
+                    if (marker != null) {
+                        Token value = marker.getToken();
 
-                            if (value instanceof BooleanToken) {
-                                allowDirectories = ((BooleanToken) value)
-                                        .booleanValue();
-                            }
+                        if (value instanceof BooleanToken) {
+                            allowDirectories = ((BooleanToken) value)
+                                    .booleanValue();
                         }
                     }
 

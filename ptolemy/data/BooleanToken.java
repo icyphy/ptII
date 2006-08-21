@@ -147,6 +147,9 @@ public class BooleanToken extends ScalarToken implements BitwiseOperationToken {
      *  return false.
      */
     public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
         // This test rules out subclasses.
         if (object.getClass() != getClass()) {
             return false;

@@ -39,6 +39,8 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import ptolemy.util.StringUtilities;
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotApplication
 
@@ -238,7 +240,7 @@ public class PlotApplication extends PlotFrame {
     /** Exit the application.
      */
     protected void _close() {
-        System.exit(0);
+        StringUtilities.exit(0);
     }
 
     /** Display more detailed information than given by _about().
@@ -281,7 +283,7 @@ public class PlotApplication extends PlotFrame {
                 continue;
             } else if (arg.equals("-help")) {
                 System.out.println(_usage());
-                System.exit(0);
+                StringUtilities.exit(0);
                 continue;
             } else if (arg.equals("-test")) {
                 _test = true;
@@ -291,7 +293,7 @@ public class PlotApplication extends PlotFrame {
                         .println("Version "
                                 + PlotBox.PTPLOT_RELEASE
                                 + ", Build $Id$");
-                System.exit(0);
+                StringUtilities.exit(0);
                 continue;
             } else if (arg.equals("-width")) {
                 if (i > (args.length - 1)) {

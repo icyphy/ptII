@@ -234,7 +234,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 // on the undo, and a deadlock could result if
                 // the model is running.
                 MoMLUndoEntry newEntry = new MoMLUndoEntry(toplevel,
-                        finalUndoMoML.toString());
+                        finalUndoMoML);
                 UndoStackAttribute undoInfo = UndoStackAttribute
                         .getUndoInfo(toplevel);
                 undoInfo.push(newEntry);

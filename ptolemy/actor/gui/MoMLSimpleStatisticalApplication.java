@@ -46,6 +46,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.StreamErrorHandler;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLSimpleStatisticalApplication
@@ -164,7 +165,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
             System.out.println(_usage());
 
             // NOTE: This means the test suites cannot test -help
-            System.exit(0);
+            StringUtilities.exit(0);
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {

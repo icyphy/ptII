@@ -848,7 +848,7 @@ doccheck/index.html:
 #
 
 # Location of the FindBugs sources
-FINDBUGS=$(PTII)/vendors/findbugs-1.0.0-rc1
+FINDBUGS=$(PTII)/vendors/findbugs-0.8.6
 
 findbugs: findbugs.htm findbugs.xml
 
@@ -870,22 +870,22 @@ ptII.fb:
 FINDBUGS_ARGS = -textui -exclude findbugs-exclude.xml -project ptII.fb
 
 findbugs.htm:  ptII.fb findbugs-exclude.xml makefile
-	@if [ -f $(FINDBUGS)/bin/findbugs ]; then \
+	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \
 	    echo "Invoking findbugs program, please wait."; \
-	    $(FINDBUGS)/bin/findbugs \
+	    "$(FINDBUGS)/bin/findbugs" \
 		$(FINDBUGS_ARGS) \
-		-html:fancy.xsl $(PTII) > $@; \
+		-html:fancy.xsl "$(PTII)" > $@; \
 	else \
 	    echo "BTW - FindBugs program not found, skipping."; \
 	fi
 
 
 findbugs.xml:  ptII.fb findbugs-exclude.xml makefile
-	@if [ -f $(FINDBUGS)/bin/findbugs ]; then \
+	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \
 	    echo "Invoking findbugs program, please wait."; \
-	    $(FINDBUGS)/bin/findbugs \
+	    "$(FINDBUGS)/bin/findbugs" \
 		$(FINDBUGS_ARGS) \
-		-xml $(PTII) > $@; \
+		-xml "$(PTII)" > $@; \
 	else \
 	    echo "BTW - FindBugs program not found, skipping."; \
 	fi

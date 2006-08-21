@@ -103,7 +103,7 @@ public class RunTableau extends Tableau {
                                 + "toplevel window.");
             }
 
-            manager = actor.getManager();
+            //manager = actor.getManager();
         }
 
         ModelFrame frame = new RunFrame(actor, this);

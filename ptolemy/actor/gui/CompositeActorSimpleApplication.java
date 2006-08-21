@@ -291,7 +291,7 @@ public class CompositeActorSimpleApplication {
 
                 if (manager == null) {
                     model.setManager(new Manager(model.workspace(), "manager"));
-                    manager = model.getManager();
+                    //manager = model.getManager();
                 }
             } else {
                 // Argument not recognized.

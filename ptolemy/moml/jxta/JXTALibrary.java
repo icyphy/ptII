@@ -84,6 +84,7 @@ import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// JXTALibrary
@@ -409,7 +410,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
 
             if (_outputPipe == null) {
                 System.out.println("Error resolving pipe endpoint");
-                System.exit(1);
+                StringUtilities.exit(1);
             }
 
             _sendMsg();

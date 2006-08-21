@@ -32,6 +32,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import ptolemy.actor.Manager;
+import ptolemy.util.StringUtilities;
 import soot.HasPhaseOptions;
 import soot.PhaseOptions;
 import soot.SceneTransformer;
@@ -163,7 +164,7 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
                             + Manager.timeAndMemory(startTime));
 
                     // Do not pass go, do not collect $200
-                    System.exit(4);
+                    StringUtilities.exit(4);
                 }
             }
         };

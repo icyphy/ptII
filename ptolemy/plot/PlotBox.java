@@ -78,6 +78,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import ptolemy.util.StringUtilities;
+
 // TO DO:
 //   - Augment getColorByName to support a full complement of colors
 //     (get the color list from Tycho).
@@ -4209,7 +4211,7 @@ public class PlotBox extends JPanel implements Printable {
 
                 if (_control) {
                     // xgraph and many other Unix apps use Control-D to exit
-                    System.exit(1);
+                    StringUtilities.exit(1);
                 }
 
                 break;

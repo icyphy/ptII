@@ -205,6 +205,9 @@ public class UnsignedByteToken extends ScalarToken {
      *  or the argument is a nil Token, return false.
      */
     public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
         // This test rules out subclasses.
         if (object.getClass() != getClass()) {
             return false;

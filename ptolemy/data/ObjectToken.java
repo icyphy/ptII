@@ -99,6 +99,9 @@ public class ObjectToken extends Token {
      *   contained object is equal to the object contained in this token.
      */
     public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
         // This test rules out subclasses.
         if (object.getClass() != getClass()) {
             return false;

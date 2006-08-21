@@ -45,6 +45,7 @@ import ptolemy.plot.CmdLineArgException;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotApplication;
 import ptolemy.plot.PlotBox;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PxgraphApplication
@@ -184,7 +185,7 @@ public class PxgraphApplication extends PlotApplication {
             if (arg.equals("-help")) {
                 // -help is not in the original X11 pxgraph.
                 System.out.println(_usage());
-                System.exit(0);
+                StringUtilities.exit(0);
                 continue;
             } else if (arg.equals("-test")) {
                 // -test is not in the original X11 pxgraph.

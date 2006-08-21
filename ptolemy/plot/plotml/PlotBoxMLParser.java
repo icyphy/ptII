@@ -342,7 +342,7 @@ public class PlotBoxMLParser extends HandlerBase {
             } else if (elementName.equals("yTicks")) {
                 _xtick = false;
             }
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             if (ex instanceof XmlException) {
                 throw (XmlException) ex;
             } else {

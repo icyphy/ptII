@@ -77,21 +77,21 @@ public class Main extends KernelMain {
         _outputDirectory = attribute.getParameter("outputDirectory");
         _targetPackage = attribute.getParameter("targetPackage");
         _templateDirectory = attribute.getParameter("templateDirectory");
-        _watchDogTimeout = attribute.getParameter("watchDogTimeout");
+        //_watchDogTimeout = attribute.getParameter("watchDogTimeout");
 
         //String sootArgs = attribute.getParameter("sootArgs");
         return new String[0];
     }
 
-    private static String _generatorAttributeFileName = "unsetParameter";
+    private String _generatorAttributeFileName = "unsetParameter";
 
-    private static String _modelPath = "unsetParameter";
+    private String _modelPath = "unsetParameter";
 
-    private static String _outputDirectory = "unsetParameter";
+    private String _outputDirectory = "unsetParameter";
 
-    private static String _targetPackage = "unsetParameter";
+    private String _targetPackage = "unsetParameter";
 
-    private static String _templateDirectory = "ptolemy/copernicus/java";
+    private String _templateDirectory = "ptolemy/copernicus/java";
 
-    private static String _watchDogTimeout = "unsetParameter";
+    //private String _watchDogTimeout = "unsetParameter";
 }

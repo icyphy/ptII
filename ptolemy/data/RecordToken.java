@@ -120,6 +120,9 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @see #hashCode()
      */
     public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
         // This test rules out instances of a subclass.
         if (object.getClass() != getClass()) {
             return false;

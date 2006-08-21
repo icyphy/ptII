@@ -221,7 +221,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         // interface lookup.
         if (stmt.getRightOp() instanceof InterfaceInvokeExpr) {
             if (castType.equals("short")) {
-                castType = new String("long");
+                castType = "long";
             }
         }
 
@@ -332,11 +332,11 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
         if ((constant.compareTo("#Infinity") == 0)
                 || ((constant.compareTo("#NaN")) == 0)) {
-            constant = new String("_MAX_DOUBLE");
+            constant = "_MAX_DOUBLE";
 
             //as close to +infinity as we can get
         } else if (constant.compareTo("#-Infinity") == 0) {
-            constant = new String("-_MAX_DOUBLE");
+            constant = "-_MAX_DOUBLE";
 
             // as close to -inf as we can get
         }
@@ -376,11 +376,11 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
         if ((constant.compareTo("#InfinityF") == 0)
                 || (constant.compareTo("#NaNF") == 0)) {
-            constant = new String("_MAX_FLOAT");
+            constant = "_MAX_FLOAT";
 
             //as close to +infinity as we can get
         } else if (constant.compareTo("#-InfinityF") == 0) {
-            constant = new String("-_MAX_FLOAT");
+            constant = "-_MAX_FLOAT";
 
             // as close to -inf as we can get
         }
@@ -423,8 +423,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             rightOp.apply(this);
             stmt.getLeftOp().apply(this);
 
-            String cast = new String("("
-                    + CNames.typeNameOf(stmt.getLeftOp().getType()) + ")");
+            String cast = "("
+                    + CNames.typeNameOf(stmt.getLeftOp().getType()) + ")";
 
             _push(_pop().append(" = " + cast).append(_pop()));
         }
@@ -504,10 +504,10 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         String returnType = CNames.typeNameOf(method.getReturnType());
 
         if (!method.isStatic()) {
-            cast = new String("(" + returnType + " (*) (void*, ...))");
+            cast = "(" + returnType + " (*) (void*, ...))";
         } else {
-            cast = new String("(" + returnType + " (*) "
-                    + CNames.typeNameOf(method.getParameterType(0)) + ", ...))");
+            cast = "(" + returnType + " (*) "
+                    + CNames.typeNameOf(method.getParameterType(0)) + ", ...))";
         }
 
         _push("(" + cast + "(" + instanceName + "->class->lookup("
@@ -774,8 +774,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      *  @param stmt The statement.
      */
     public void caseReturnVoidStmt(ReturnVoidStmt stmt) {
-        String indent = new String();
-
+        String indent = "";
         if (indentLevel == 1) {
             indent = "    ";
         } else if (indentLevel == 2) {
@@ -884,7 +883,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         SootMethod method = v.getMethod();
 
         // Generate cast for first argument of method.
-        String cast = new String();
+        String cast = "";
 
         SootClass declaringClass = method.getDeclaringClass();
 

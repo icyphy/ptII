@@ -151,8 +151,7 @@ public class CruiseLinearizer extends TypedAtomicActor {
 
         paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP));
 
-        String sV = new String();
-
+        String sV = "";
         for (int i = 0; i < 4; i++) {
             sV = sV + _alphaV[i] + " ";
         }

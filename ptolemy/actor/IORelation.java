@@ -232,7 +232,7 @@ public class IORelation extends ComponentRelation {
 
             Receiver[][] result = new Receiver[0][0];
             Iterator inputs = linkedDestinationPortList(except).iterator();
-            Receiver[][] receivers = new Receiver[0][0];
+            Receiver[][] receivers; //= new Receiver[0][0];
 
             // NOTE: We have to be careful here to keep track of
             // multiple occurrences of a port in this list.

@@ -6,3 +6,5 @@ config.cache
 codeDoc
 build
 ptKeystore
+.fbwarnings
+.fbprefs
