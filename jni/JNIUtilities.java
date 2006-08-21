@@ -1409,6 +1409,7 @@ public class JNIUtilities {
 
     /** Get the names of the out args name belonging to a GenericJNIActor.
      *  @param actor The GenericJNIActor object.
+     *  @param separator The separator used between multiple arguments.
      *  @return the name of the out arguments.
      */
     protected static String _getArgumentsOut(GenericJNIActor actor,

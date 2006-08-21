@@ -112,10 +112,11 @@ public class JNLPUtilities {
 
     /** Given a jar url of the format jar:{url}!/{entry}, return
      *  the resource, if any of the {entry}.
-     *  If the string does not contain <code>!/</code>, then return null.
-     *  Web Start uses jar URL, and there are some cases where
-     *  if we have a jar URL, then we may need to strip off the jar:<url>!/
-     *  part so that we can search for the {entry} as a resource.
+     *  If the string does not contain <code>!/</code>, then return
+     *  null.  Web Start uses jar URL, and there are some cases where
+     *  if we have a jar URL, then we may need to strip off the
+     *  <code>jar:<i>url</i>!/</code> part so that we can search for
+     *  the {entry} as a resource.
      *
      *  @param spec The string containing the jar url.
      *  @exception IOException If it cannot convert the specification to

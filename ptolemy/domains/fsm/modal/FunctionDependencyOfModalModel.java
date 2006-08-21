@@ -83,7 +83,8 @@ public class FunctionDependencyOfModalModel extends
      *  The elements of the returned array are instances of IOPort.
      *  Note that the returned result is actually an object array instead
      *  of an array of IOPorts.
-     *  @param flag 
+     *  @param flag True if we are to perform a conservative approximation
+     *  in {@link #_getEntities()}.
      */
     public void setConservativeAnalysis(boolean flag) {
         _conservativeAnalysis = flag;

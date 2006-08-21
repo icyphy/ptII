@@ -45,10 +45,14 @@ package ptolemy.domains.fsm.kernel;
  @Pt.AcceptedRating Red (hyzheng)
  */
 public final class RelationNode {
-    /** Constructor to construct a relation node with given type and
-     *  difference information.
+
+    /** Construct a relation node with given type and difference
+     *  information.
+     *  @param type The type, one of {@link ptolemy.domains.fsm.kernel.RelationType}.
+     *  @param difference The difference.
      */
     public RelationNode(int type, double difference) {
+        // FIXME: Perhaps the type argument should be a type safe enum?
         _currentType = type;
         _previousType = type;
         _difference = difference;
@@ -77,6 +81,7 @@ public final class RelationNode {
     /** Return the difference information from the current evaluation of the
      *  relation node.
      *  @return The current difference information.
+     *  @see #setDifference(double)
      */
     public double getDifference() {
         return _difference;
@@ -115,6 +120,7 @@ public final class RelationNode {
     /** Set the difference information with the current evaluation result 
      *  of the relation node.
      *  @param difference The current difference information.
+     *  @see #getDifference()
      */
     public void setDifference(double difference) {
         _difference = difference;

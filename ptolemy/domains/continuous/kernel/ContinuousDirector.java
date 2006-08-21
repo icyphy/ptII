@@ -945,6 +945,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  this director handles transfering outputs.
      *  @param port The port to transfer tokens from.
      *  @return False.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         return false;
@@ -1063,7 +1064,9 @@ public class ContinuousDirector extends FixedPointDirector implements
         return _debugging;
     }
 
-    /** Expose the debug method to the package. */
+    /** Expose the debug method to the package.
+     *  @param message The message that is to be reported.
+     */
     protected void _reportDebugMessage(String message) {
         _debug(message);
     }
