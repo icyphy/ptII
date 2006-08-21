@@ -4250,7 +4250,7 @@ public class PlotBox extends JPanel implements Printable {
 
                 if (!_control) {
                     // xv uses q to quit.
-                    System.exit(1);
+                    StringUtilities.exit(1);
                 }
 
                 break;

@@ -768,14 +768,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         processCode(parseTreeCodeGenerator.generateFireCode()),
                         castType, codeGenType(variable.getType()));
 
-            } else if (attribute instanceof Settable) {
+            } else /* if (attribute instanceof Settable)*/ {
                 return ((Settable) attribute).getExpression();
             }
 
             // FIXME: Are there any other values that a
             // parameter might have?
-            throw new IllegalActionException(_component,
-                    "Attribute does not have a value: " + name);
+            //throw new IllegalActionException(_component,
+            //        "Attribute does not have a value: " + name);
         } else {
             // FIXME: if offset != null, for now we assume the value of 
             // the parameter is fixed during execution.
@@ -1086,7 +1086,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             return "";
         }
 
-        String result = new String();
+        String result = "";
         Object offsetObject;
         String temp;
 

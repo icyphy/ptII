@@ -501,7 +501,7 @@ public class CodeStream {
                     + "\" is not well-formed.\n"
                     + "Parameter name for code block needs to starts with '$'");
         }
-        name.matches("[a-zA-Z_0-9]");
+        //name.matches("[a-zA-Z_0-9]");
         return '\\' + name;
     }
 

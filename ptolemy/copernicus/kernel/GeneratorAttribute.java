@@ -531,7 +531,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
                     } else {
                         throw new Exception("1. Failed to find '"
                                 + modelURL.toExternalForm() + "'\n"
-                                + "2. Failed to find '" + anotherURL + "'");
+                                + "2. Failed to find '" + modelPathOrURL + "'");
                     }
                 } catch (Exception ex1) {
                     throw new IllegalActionException(this, ex1,

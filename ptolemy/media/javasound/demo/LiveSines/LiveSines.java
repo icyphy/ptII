@@ -137,8 +137,8 @@ public class LiveSines {
             }
 
             LiveSound.stopPlayback(_producer);
-        } catch (Exception ex) {
-            System.err.println(ex);
+        } catch (Throwable throwable) {
+            System.err.println(throwable);
         }
     }
 

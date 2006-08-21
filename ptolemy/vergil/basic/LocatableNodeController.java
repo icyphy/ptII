@@ -172,11 +172,10 @@ public class LocatableNodeController extends BasicNodeController {
      */
     public void setLocation(Object node, double[] location)
             throws IllegalActionException {
-        if (location != null) {
+        if (location == null) {
             throw new RuntimeException("The location is not valid, it should "
                     + "not be null.");
-        }
-        if (location.length != 2) {
+        } else if (location.length != 2) {
             throw new RuntimeException("The location is not valid, the length "
                     + "should be 2, but it is " + location.length);
         }

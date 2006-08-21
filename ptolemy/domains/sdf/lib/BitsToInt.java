@@ -122,7 +122,7 @@ public class BitsToInt extends SDFConverter {
         super.fire();
 
         int rate = ((IntToken) numberOfBits.getToken()).intValue();
-        Token[] bits = new BooleanToken[rate];
+        Token[] bits /* Dead Store: = new BooleanToken[rate]*/;
         bits = input.get(0, rate);
 
         int integer = 0;

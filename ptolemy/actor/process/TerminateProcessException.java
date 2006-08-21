@@ -90,7 +90,7 @@ public class TerminateProcessException extends RuntimeException {
 
         if (!object1String.equals("")) {
             if (!object2String.equals("")) {
-                prefix = new String(object1String + " and " + object2String);
+                prefix = object1String + " and " + object2String;
             } else {
                 prefix = object1String;
             }
@@ -158,7 +158,7 @@ public class TerminateProcessException extends RuntimeException {
             name = object.getName();
 
             if (name.equals("")) {
-                name = new String("<Unnamed Object>");
+                name = "<Unnamed Object>";
             }
         }
 

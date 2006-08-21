@@ -594,7 +594,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         CodeStream[] typeStreams = new CodeStream[types.size()];
 
         // Generate type map.
-        String typeMembers = new String();
+        String typeMembers = "";
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .c file for each type.
             typeStreams[i] = new CodeStream(
@@ -1124,7 +1124,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             }
             return FileUtilities.nameToFile(codeFileName,
                     codeDirectory.getBaseDirectory()).getCanonicalPath();
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             throw new IllegalActionException(this, ex, "Failed to write \""
                     + codeFileName + "\" in "
                     + codeDirectory.getBaseDirectory());

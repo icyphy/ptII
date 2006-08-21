@@ -144,7 +144,11 @@ public class PlotMLFrame extends PlotFrame {
 
         // Read 8 bytes in case 16-bit encoding is being used.
         byte[] peek = new byte[8];
-        bin.read(peek);
+        int bytesRead = bin.read(peek);
+        if (bytesRead != peek.length) {
+            throw new IOException("Read only " + bytesRead 
+                    + "bytes, expecting " + peek.length);
+        }
         bin.reset();
 
         if ((new String(peek)).startsWith("<?xm")) {

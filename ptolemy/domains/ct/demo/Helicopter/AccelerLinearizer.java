@@ -151,7 +151,7 @@ public class AccelerLinearizer extends TypedAtomicActor {
 
         paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP));
 
-        String sA = new String();
+        String sA = "";
 
         for (int i = 0; i < 3; i++) {
             sA = sA + _alphaA[i] + " ";

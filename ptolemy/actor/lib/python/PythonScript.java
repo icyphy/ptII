@@ -566,12 +566,13 @@ public class PythonScript extends TypedAtomicActor {
                 String classpath = StringUtilities
                         .getProperty("java.class.path");
 
+                int jythonIndex = -1;
                 if (classpath == null) {
                     System.setProperty("python.home", StringUtilities
                             .getProperty("user.home"));
+                } else {
+                    jythonIndex = classpath.toLowerCase().indexOf("jython.jar");
                 }
-
-                int jythonIndex = classpath.toLowerCase().indexOf("jython.jar");
 
                 if (jythonIndex == -1) {
                     // We did not find jython.jar, so set it to user.home.

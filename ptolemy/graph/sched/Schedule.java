@@ -382,7 +382,7 @@ public class Schedule extends ScheduleElement {
      *  @return A nested parenthesis expression of the schedule.
      */
     public String toParenthesisString(Map nameMap, String delimiter) {
-        String result = new String() + "(";
+        String result = "(";
         int iterations = getIterationCount();
 
         if (iterations > 1) {

@@ -183,7 +183,7 @@ public class CASDFComposite extends TypedCompositeActor {
                     actors[i].input.link(relation);
                 } // end of if (1(i ==0))
             }
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             //  System.out.println("Exception Caught while generating the random " + "graph. It is " + ex);
         }
 

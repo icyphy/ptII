@@ -144,7 +144,8 @@ public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants,
                     info.getDataSize(), 600 / _frameRateValue, // frameDuration, in 1/600ths of a second.
                     desc, 1, // one sample
                     (isKeyFrame ? 0 : mediaSampleNotSync)); // no flags
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
         }
     }
 
@@ -216,8 +217,8 @@ public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants,
 
             _imageDrawer.setGWorld(_gw);
             _imageDrawer.setDisplayBounds(_videoSize);
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Initialization failed.");
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable, "Initialization failed.");
         }
     }
 

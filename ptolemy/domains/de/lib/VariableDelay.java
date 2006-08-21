@@ -67,6 +67,7 @@ public class VariableDelay extends TimedDelay {
     ///////////////////////////////////////////////////////////////////
     ////                       ports and parameters                ////
 
+    // FIXME: VariableDelay.delay overrides TimedDelay.delay.
     /** The amount specifying delay. Its default value is 1.0.
      */
     public PortParameter delay;

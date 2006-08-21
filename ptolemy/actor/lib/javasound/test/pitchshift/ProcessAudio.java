@@ -29,6 +29,7 @@ package ptolemy.actor.lib.javasound.test.pitchshift;
 
 import ptolemy.media.javasound.SoundCapture;
 import ptolemy.media.javasound.SoundPlayback;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessAudio
@@ -99,7 +100,7 @@ public class ProcessAudio implements Runnable {
             thread = null;
 
             // Now exit.
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 

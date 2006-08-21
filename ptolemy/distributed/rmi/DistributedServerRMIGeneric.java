@@ -242,8 +242,8 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
             serviceID = new ServiceID(din);
             System.out.println("Found service ID in file " + serviceIdFile);
             din.close();
-        } catch (Exception e) {
-            System.out.println("Not Found.");
+        } catch (Throwable throwable) {
+            System.out.println("Not Found: " + throwable);
         }
     }
 

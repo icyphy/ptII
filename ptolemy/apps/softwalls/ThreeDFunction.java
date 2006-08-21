@@ -280,7 +280,7 @@ public class ThreeDFunction implements Serializable {
                     }
                 }
             }
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             throw new IllegalActionException(null, ex, "Failed to parse '"
                     + reader + "'");
         } finally {

@@ -201,7 +201,7 @@ public class PxgraphApplication extends PlotApplication {
                         .println("Version "
                                 + PlotBox.PTPLOT_RELEASE
                                 + ", Build $Id$");
-                System.exit(0);
+                StringUtilities.exit(0);
                 continue;
             } else if (arg.startsWith("=")) {
                 // Process =WxH+X+Y

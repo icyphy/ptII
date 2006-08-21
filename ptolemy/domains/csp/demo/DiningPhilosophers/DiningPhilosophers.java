@@ -163,9 +163,8 @@ public class DiningPhilosophers {
             //System.out.println(univ.description(1023));
             System.out.println(univ.getFullName() + " starting!");
             univ.getManager().startRun();
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + ": " + e.getClass().getName());
-            throw new InvalidStateException(e.getMessage());
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
         }
     }
 }

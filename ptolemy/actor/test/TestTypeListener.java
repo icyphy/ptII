@@ -59,7 +59,7 @@ public class TestTypeListener implements TypeListener {
      *  @return A String including the type change information.
      */
     public String getMessage() {
-        String temp = new String(_message);
+        String temp = _message;
         _message = "no type change";
         return temp;
     }

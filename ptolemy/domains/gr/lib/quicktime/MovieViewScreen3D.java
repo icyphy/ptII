@@ -227,8 +227,8 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
 
             _imageDrawer.setGWorld(_gw);
             _imageDrawer.setDisplayBounds(_videoSize);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
         }
     }
 

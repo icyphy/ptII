@@ -293,7 +293,7 @@ public class AudioReadBuffer extends Transformer {
 
         // Read the number of audio channels and set
         // parameter accordingly.
-        _channels = _soundReader.getChannels();
+        //_channels = _soundReader.getChannels();
 
         int length = ((IntToken) bufferLength.getToken()).intValue();
         _audioBuffer = new double[length];
@@ -320,7 +320,7 @@ public class AudioReadBuffer extends Transformer {
     ////                         private variables                 ////
     private SoundReader _soundReader;
 
-    private int _channels;
+    //private int _channels;
 
     private boolean _safeToInitialize = false;
 

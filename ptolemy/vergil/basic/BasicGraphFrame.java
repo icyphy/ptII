@@ -743,10 +743,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                             + relation.getName() + "\"/>\n");
                                 }
                             }
-                        } else if (!headOK && !tailOK) {
-                            // We only selected an edge. Build one input
-                            // port, one output port for it, and build
-                            // a direct connection.
+//                        } else if (!headOK && !tailOK) {
+//                            // We only selected an edge. Build one input
+//                            // port, one output port for it, and build
+//                            // a direct connection.
                         }
                     }
                 }

@@ -170,24 +170,24 @@ public class MoMLViewerApplet extends MoMLApplet {
             }
         }
 
-        if (_configuration != null) {
-            // We have a configuration
-            try {
-                //URL docBase = getDocumentBase();
-                //URL inURL = new URL(docBase, _modelURL);
-                //String key = inURL.toExternalForm();
-                // Now defer to the model reader.
-                //Tableau tableau = _configuration.openModel(inURL, inURL,
-                //        key);
-                //JFrame frame = new JFrame();
-                //tableau.setFrame(frame);
-                //getContentPane().add(tableau.getFrame().getContentPane(),
-                //        BorderLayout.NORTH);
-            } catch (Exception ex) {
-                throw new RuntimeException("Failed to open '" + _modelURL
-                        + "'.", ex);
-            }
-        }
+//        if (_configuration != null) {
+//            // We have a configuration
+//            try {
+//                //URL docBase = getDocumentBase();
+//                //URL inURL = new URL(docBase, _modelURL);
+//                //String key = inURL.toExternalForm();
+//                // Now defer to the model reader.
+//                //Tableau tableau = _configuration.openModel(inURL, inURL,
+//                //        key);
+//                //JFrame frame = new JFrame();
+//                //tableau.setFrame(frame);
+//                //getContentPane().add(tableau.getFrame().getContentPane(),
+//                //        BorderLayout.NORTH);
+//            } catch (Exception ex) {
+//                throw new RuntimeException("Failed to open '" + _modelURL
+//                        + "'.", ex);
+//            }
+//        }
 
         GraphPane pane = null;
 

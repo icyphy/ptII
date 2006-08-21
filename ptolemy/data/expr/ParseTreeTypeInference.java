@@ -215,7 +215,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 _setType(node, new FixType(new Precision(((ScalarToken) length)
                         .intValue(), ((ScalarToken) integerBits).intValue())));
                 return;
-            } catch (Exception ex) {
+            } catch (Throwable throwable) {
                 // Do nothing... rely on the regular method resolution
                 // to generate the right type.
             }

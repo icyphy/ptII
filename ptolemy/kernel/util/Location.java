@@ -408,8 +408,8 @@ public class Location extends SingletonAttribute implements Locatable {
     private boolean _setLocation(double[] location)
             throws IllegalActionException {
         // If the location is unchanged, return false.
-        if ((_location != null) && (location != null)
-                && (_location.length == location.length)) {
+        if (_location != null) {
+            if (_location.length == location.length) {
             boolean match = true;
 
             for (int i = 0; i < location.length; i++) {
@@ -422,11 +422,13 @@ public class Location extends SingletonAttribute implements Locatable {
             if (match) {
                 return false;
             }
-        }
-
-        if (_location == null
-                || _location.length != location.length) {
-            // If location is of size 3, then we end up here.
+            if (_location.length != location.length) {
+                // If location is of size 3, then we end up here.
+                _location = new double[location.length];
+            }
+            }
+        } else {
+            // _location == null
             _location = new double[location.length];
         }
 

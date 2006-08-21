@@ -264,8 +264,10 @@ public class MessageHandler {
 
         try {
             String reply = stdIn.readLine();
-
-            if (reply.trim().toLowerCase().equals("yes")) {
+            
+            if (reply == null) {
+                return false;
+            } else if (reply.trim().toLowerCase().equals("yes")) {
                 return true;
             }
         } catch (IOException ex) {

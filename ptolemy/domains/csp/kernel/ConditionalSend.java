@@ -416,7 +416,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 // This should be called at most once, after all puts in
                 // a forked set have suceeded.
                 controller._branchSucceeded(getID());
-            } catch (Exception ex) {
+            } catch (Throwable throwable) {
                 controller._branchFailed(getID());
                 // If we exited with an exception, we may not have set the
                 // state of the receiver properly.

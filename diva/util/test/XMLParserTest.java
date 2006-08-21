@@ -106,6 +106,14 @@ public class XMLParserTest extends TestSuite {
                             "/java/diva/util/test/xml1.xml"));
                     line = input.readLine();
                 } catch (Exception e) {
+                } finally {
+                    if (input != null) {
+                        try {
+                            input.close();
+                        } catch (Exception ex) {
+                            System.err.println("Failed to close: " + ex);
+                        }
+                    }
                 }
 
                 while (line != null) {

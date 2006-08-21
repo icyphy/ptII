@@ -238,6 +238,7 @@ public class NonStrictFSMDirector extends FSMDirector {
                 while (transitions.hasNext()) {
                     Transition transition = (Transition) transitions.next();
 
+                    // FIXME: Won't enabledTransition always be null?
                     if (!enabledTransition.isNondeterministic()) {
                         throw new MultipleEnabledTransitionsException(
                                 controller.currentState(),
@@ -349,7 +350,7 @@ public class NonStrictFSMDirector extends FSMDirector {
 
         if (!string.equals("")) {
             Map map = parser.generateAssignmentMap(string);
-            Set set = new HashSet();
+            Set set /* Dead Local Store: = new HashSet()*/;
 
             for (Iterator names = map.keySet().iterator(); names.hasNext();) {
                 String name = (String) names.next();
@@ -454,7 +455,7 @@ public class NonStrictFSMDirector extends FSMDirector {
 
         if (!string.equals("")) {
             Map map = parser.generateAssignmentMap(string);
-            Set set = new HashSet();
+            Set set /* Dead Local Store: = new HashSet()*/ ;
 
             for (Iterator names = map.keySet().iterator(); names.hasNext();) {
                 String name = (String) names.next();

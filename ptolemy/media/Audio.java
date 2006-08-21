@@ -133,7 +133,11 @@ public class Audio {
      *   (e.g. a premature end of file).
      */
     public Audio(DataInputStream input) throws IOException {
-        input.read(magic, 0, 4);
+        int bytesRead = input.read(magic, 0, 4);
+        if (bytesRead != 4) {
+            throw new IOException("Read only " + bytesRead 
+                    + "bytes, expecting " + 4);
+        }
 
         // Check the magic number, which should be 0x2E736E64, '.snd'
         // in ASCII.
@@ -156,7 +160,11 @@ public class Audio {
         }
 
         info = new byte[offset - 24];
-        input.read(info, 0, offset - 24);
+        bytesRead = input.read(info, 0, offset - 24);
+        if (bytesRead != offset - 24) {
+            throw new IOException("Read only " + bytesRead 
+                    + "bytes, expecting " + (offset - 24));
+        }
 
         if (format != 1) {
             throw new IllegalArgumentException("ptolemy.media.Audio:"

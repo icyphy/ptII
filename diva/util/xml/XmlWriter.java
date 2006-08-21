@@ -207,7 +207,7 @@ public class XmlWriter extends LoggableOp {
             case XmlParser.ENTITY_TEXT:
                 value = makeExternalIdentifiers(_parser
                         .getEntityPublicId(ename), _parser.getEntitySystemId(
-                        ename).toString());
+                        ename));
                 break;
             }
 

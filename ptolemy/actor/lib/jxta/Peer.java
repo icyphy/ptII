@@ -252,8 +252,9 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
         if (_actorListFileName != null) {
             StringBuffer actorListText = new StringBuffer();
 
+            BufferedReader fileReader = null;
             try {
-                BufferedReader fileReader = new BufferedReader(new FileReader(
+                fileReader = new BufferedReader(new FileReader(
                         _actorListFileName));
                 String newline = System.getProperty("line.separator");
 
@@ -274,6 +275,15 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
             } catch (IOException ex) {
                 System.out.println("Warning: error reading actor list file.\n"
                         + ex.getMessage());
+            } finally {
+                if (fileReader != null) {
+                    try {
+                        fileReader.close();
+                    } catch (Exception ex) {
+                        System.out.println("Failed to close: "
+                            + ex.getMessage());
+                    }
+                }
             }
         }
     }

@@ -199,9 +199,9 @@ public class DiningApplet extends Applet implements Runnable,
 
             univ.connect((TypedIOPort) p5.getPort("rightOut"), (TypedIOPort) f5
                     .getPort("leftIn"));
-        } catch (Exception ex) {
-            System.err.println("Setup failed: " + ex.getMessage());
-            ex.printStackTrace();
+        } catch (Throwable throwable) {
+            System.err.println("Setup failed: " + throwable.getMessage());
+            throwable.printStackTrace();
         }
 
         // The applet has two panels, stacked vertically

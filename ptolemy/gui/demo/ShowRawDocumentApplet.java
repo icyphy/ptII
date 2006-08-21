@@ -116,23 +116,38 @@ public class ShowRawDocumentApplet extends BasicJApplet {
 
         String newline = System.getProperty("line.separator");
 
-        // Read in the data one line at a time.
-        try {
-            InputStream in = sourceURL.openStream();
-            _bufferedReader = new BufferedReader(new InputStreamReader(in));
+        if (sourceURL == null) {
+            showStatus("Failed to open " + sourceURLString);
+            System.err.println("Failed to open " + sourceURLString);
+        } else {
+            // Read in the data one line at a time.
+            InputStream in = null;
+            try {
+                in = sourceURL.openStream();
+                _bufferedReader = new BufferedReader(new InputStreamReader(in));
 
-            String line = _bufferedReader.readLine();
+                String line = _bufferedReader.readLine();
 
-            while (line != null) {
-                _jTextArea.append(line + newline);
-                line = _bufferedReader.readLine();
+                while (line != null) {
+                    _jTextArea.append(line + newline);
+                    line = _bufferedReader.readLine();
+                }
+
+                showStatus("Done");
+            } catch (FileNotFoundException e) {
+                System.err.println("File not found: " + e);
+            } catch (IOException e) {
+                System.err.println("Error reading input file: " + e);
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (Exception ex) {
+                        System.err.println("Failed to close " + sourceURLString
+                                + ":" + ex);
+                    }
+                }
             }
-
-            showStatus("Done");
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found: " + e);
-        } catch (IOException e) {
-            System.err.println("Error reading input file: " + e);
         }
 
         //getContentPane().add(_frame);
