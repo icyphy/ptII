@@ -57,6 +57,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
@@ -697,8 +698,15 @@ public class TableauFrame extends Top {
                 // Note that PtolemyIISmallIcon.gif is also in doc/img.
                 // We place a duplicate copy here to make it easy to ship
                 // jar files that contain all the appropriate images.
-                url = getClass().getResource(
-                        "/ptolemy/actor/gui/PtolemyIISmallIcon.gif");
+                try {
+                        // Use nameToURL so this will work with WebStart
+                        // and so that this class can be extended and we
+                        // will still find the gif.
+                        url = FileUtilities.nameToURL(
+                                "/ptolemy/actor/gui/PtolemyIISmallIcon.gif", null, null);
+                } catch (Throwable throwable) {
+                    // Ignore.
+                }
             }
             if (url == null) {
                 return null;
@@ -812,7 +820,7 @@ public class TableauFrame extends Top {
         Effigy effigy = getEffigy();
         File file = effigy.getWritableFile();
 
-        if (((effigy != null) && !effigy.isModifiable()) || (file == null)) {
+        if (( /*(effigy != null) && */ !effigy.isModifiable()) || (file == null)) {
             return _saveAs();
         } else {
             try {
