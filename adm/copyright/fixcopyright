@@ -11,6 +11,7 @@
 #    Metro: cd ~/tmp; cvs -d  :ext:ic:/projects/hwsw/hwsw/common/src co metro)
 #
 # 2. Remove ptII/vendors
+#    PtII: cd $PTII; make cleanDerivedJavaFiles clean_shipping
 #
 # 3. Generate a list of text files
 #    cd ptII; $PTII/adm/bin/ptIItxtfiles > /tmp/f
