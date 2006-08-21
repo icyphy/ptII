@@ -97,6 +97,7 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'ActorGraphModel$$LinkModel$$1.class' \
 	'ActorGraphModel$$LinkModel$$2.class' \
+	'ActorController$$OpenInstanceAction.class' \
 	'DocBuilderEffigy$$Factory.class DocBuilderGUI$$1.class' \
 	'DocBuilderGUI$$2.class DocBuilderGUI$$3.class' \
 	'DocBuilderGUI$$4.class DocBuilderTableau$$Factory.class' \

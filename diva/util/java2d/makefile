@@ -81,6 +81,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	svg \
 	$(PTCLASSJAR) \
 	$(PTCLASSALLJAR) \
 	'Polygon2D$$Double.class' \

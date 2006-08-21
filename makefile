@@ -222,6 +222,7 @@ clean_shipping:
 		diva/canvas/tutorial/doc-files \
 		doc/img/PtolemyIICD.ec3 \
 		jni/launcher/launcher.exe \
+		jni/launcher/launcher \
 		ptolemy/apps ptolemy/actor/lib/ptp \
 		ptolemy/actor/lib/gui/KeystrokeSensor* \
 		ptolemy/actor/lib/python/demo/HelloWorld \
@@ -243,6 +244,7 @@ clean_shipping:
 		ptolemy/domains/wireless/demo/Network \
 		ptolemy/domains/wireless/lib/network \
 		ptolemy/domains/wireless/lib/tinyOS \
+		ptolemy/matlab/libptmatlab.so \
 		ptolemy/matlab/ptmatlab.dll \
 		ptolemy/matlab/ptmatlab.exp \
 		ptolemy/matlab/ptmatlab.h \

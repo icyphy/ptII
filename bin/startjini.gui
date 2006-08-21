@@ -124,7 +124,7 @@ else
 fi
 
 # Default JDK Home, may have /cygdrive in it
-PTJAVA_DIR="/cygdrive/c/Program Files/Java/jdk1.5.0_06"
+PTJAVA_DIR="/usr/sww/pkg/j2sdk"
 
 # PTJAVA_DIR without /cygdrive
 PTJAVA_DIR_CLEAN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
@@ -132,7 +132,7 @@ PTJAVA_DIR_CLEAN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 # Java CLASSPATH separator
 # For Unix, this would be :
 # For Cygwin, this would be ;
-CLASSPATHSEPARATOR=";"
+CLASSPATHSEPARATOR=":"
 
 
 ##################################################################
@@ -157,7 +157,7 @@ PTJACL_DIR=ptjacl
 PTJACL_JARS=""
 if [ "$PTJACL_DIR" = "ptjacl" ]; then
 
-    PTJACL_JARS="${CLASSPATHSEPARATOR}c:/cxh/ptII/lib/ptjacl.jar"
+    PTJACL_JARS="${CLASSPATHSEPARATOR}/tmp/cxh/ptII/lib/ptjacl.jar"
 
     # Flag to pass to java.  Solaris JDK1.2 reference version needs -native
     PTJACL_JFLAG="@PTJACL_JFLAG@"
@@ -186,7 +186,7 @@ CALTROP_JARS=""
 if [ "$PTCALTROP_DIR" = "caltrop" ]; then
     # Directory that contains the Cal jar file ptCal.jar
     # used by bin/ptinvoke.in
-    CALTROP_DIR="c:/cxh/ptII/lib"
+    CALTROP_DIR="/tmp/cxh/ptII/lib"
     CALTROP_JARS="${CLASSPATHSEPARATOR}${CALTROP_DIR}/ptCal.jar${CLASSPATHSEPARATOR}${CALTROP_DIR}/java_cup.jar"
 fi
 
@@ -196,7 +196,7 @@ fi
 PTCHIC_DIR=chic
 CHIC_JARS=""
 if [ "$PTCHIC_DIR" = "chic" ]; then
-    CHIC_DIR="c:/cxh/ptII/lib"
+    CHIC_DIR="/tmp/cxh/ptII/lib"
     CHIC_JARS="${CLASSPATHSEPARATOR}${CHIC_DIR}/chic.jar"
 fi
 
@@ -209,7 +209,7 @@ COLT_JARS=""
 if [ "$PTCOLT_DIR" = "colt" ]; then
     # Colt jar files.  We ship $PTII/lib/ptcolt.jar, which is a subset
     # of $PTII/vendors/misc/colt.jar
-    PTCOLT_JARS="c:/cxh/ptII/lib/ptcolt.jar"
+    PTCOLT_JARS="/tmp/cxh/ptII/lib/ptcolt.jar"
     COLT_JARS="${CLASSPATHSEPARATOR}${PTCOLT_JARS}"
 fi
 
@@ -222,7 +222,7 @@ COMMAPI_JARS=""
 if [ "$COMMAPI_PRESENT" = "yes" ]; then
     # Directory that contains the Java Serial Comm API, see
     # http://java.sun.com/products/javacomm/
-    COMMAPI_DIR="c:/cxh/ptII/vendors/sun/commapi"
+    COMMAPI_DIR="/usr/sww/pkg/j2sdk1.4.1_01/jre/../commapi/jar"
 
     COMMAPI_JARS="${CLASSPATHSEPARATOR}${COMMAPI_DIR}/comm.jar"
 fi
@@ -234,13 +234,13 @@ PTDISTRIBUTED_DIR="distributed"
 JINI_JARS=""
 if [ "$PTDISTRIBUTED_DIR" = "distributed" ]; then
     # Jini directory
-    JINI_DIR="c:/cxh/ptII/ptolemy/distributed/jini"
+    JINI_DIR="/tmp/cxh/ptII/ptolemy/distributed/jini"
 
     # Flags needed for Jini
     JINI_JFLAG='"-Djava.security.policy=${PTII}/bin/policy.all" "-Doutrigger.spacename=JavaSpaces" "-Dcom.sun.jini.lookup.groups=public" "-Djava.rmi.server.codebase=http://localhost:4444/"'
 
     # Jini Jar files
-    JINI_JARS=";c:/cxh/ptII/ptolemy/distributed/jini/jar/jini-core.jar;c:/cxh/ptII/ptolemy/distributed/jini/jar/jini-ext.jar;c:/cxh/ptII/ptolemy/distributed/jini/jar/sun-util.jar"
+    JINI_JARS=":/tmp/cxh/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/tmp/cxh/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/tmp/cxh/ptII/ptolemy/distributed/jini/jar/sun-util.jar"
 fi
 
 
@@ -262,7 +262,7 @@ TINICLASSES_JAR='${PTII}/vendors/dalsemi/tini/bin/tiniclasses.jar'
 TINI_JFLAG=
 
 # JDK Version determined by running confTest.class and getting java.version
-JVERSION=1.5.0_06
+JVERSION=1.4.1_01
 
 # See if we are running under JDK1.4.1 with XP
 if test "`uname -s`" = "CYGWIN_NT-5.1"; then
@@ -294,7 +294,7 @@ fi
 # The jode jar file.
 # JODE_JAR might contain ${JODE_DIR)
 JODE_DIR="@JODE_DIR@"
-JODE_JAR="${JODE_DIR}/jode.jar"
+JODE_JAR="/tmp/cxh/ptII/vendors/jode/1.1.2-pre1/jode.jar"
 
 JODE_JFLAG=
 
@@ -304,7 +304,7 @@ JODE_JFLAG=
 PTPTALON_DIR=
 PTALON_JARS=""
 if [ "$PTPTALON_DIR" = "ptalon" ]; then
-    PTALON_JARS="${CLASSPATHSEPARATOR}${PTII}/ptolemy/actor/ptalon/antlr/antlr.jar"
+    PTALON_JARS="${CLASSPATHSEPARATOR}/tmp/cxh/ptII/ptolemy/actor/ptalon/antlr/antlr.jar"
 fi
 
 #### QuickTime ..  QuickTime for Java
@@ -312,18 +312,18 @@ fi
 # c:/Program Files/Java/j2re1.4.1_02/lib/ext/QTJava.zip
 
 # PTQUICKTIME_DIR is set to quicktime by configure if QTJava.zip was found
-PTQUICKTIME_DIR=quicktime
+PTQUICKTIME_DIR=
 QTJAVA_JARS=""
 if [ "$PTQUICKTIME_DIR" = "quicktime" ]; then
-    QTJAVA_ZIP="C:/Program Files/java/jre1.5.0_05/lib/ext/QTJava.zip"
+    QTJAVA_ZIP=""
     QTJAVA_JARS="${CLASSPATHSEPARATOR}$QTJAVA_ZIP"
 fi
 
 
 #### Soot..  Java compiler and optimizer package.  Jasmin: a java assembler.
 # The soot and jasmin jar files.
-SOOT_DIR="c:/cxh/ptII/lib"
-JAVA_SYSTEM_JAR="c:\Program Files\Java\jdk1.5.0_06\jre\lib\rt.jar"
+SOOT_DIR="/tmp/cxh/ptII/lib"
+JAVA_SYSTEM_JAR="/usr/sww/pkg/j2sdk1.4.1_01/jre/lib/rt.jar"
 # Java 1.5 has javax.crypto.Cipher in jce.jar, Soot needs this
 JAVAX_CRYPTO_JAR="${PTJAVA_HOME}/lib/jce.jar"
 SOOT_JAR="${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/polyglotclasses-1.3.2.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}"
@@ -356,7 +356,7 @@ PTJNI_PROPERTIES=""
 #if [ "$PTJNI_DIR" = "jni" ]; then
     # Properties for compiling
     # These properties are now set in $PTII/lib/ptII.properties
-    #JNI_PROPERTIES="-Dptolemy.ptII.jni.architecture=win32 -Dptolemy.ptII.java.dir=\"${PTJAVA_DIR_CLEAN}\""
+    #JNI_PROPERTIES="-Dptolemy.ptII.jni.architecture=linux -Dptolemy.ptII.java.dir=\"${PTJAVA_DIR_CLEAN}\""
 #fi
 
 #### Joystick
@@ -375,7 +375,7 @@ fi
 PTJYTHON_DIR=python
 JYTHON_JARS=""
 if [ "$PTJYTHON_DIR" = "python" ]; then
-    JYTHON_DIR="c:/cxh/ptII/lib"
+    JYTHON_DIR="/tmp/cxh/ptII/lib"
     # Jar file that contains Joystick interface,
     # see http://sourceforge.net/projects/javajoystick/
     JYTHON_JARS="${CLASSPATHSEPARATOR}${JYTHON_DIR}/jython.jar"
@@ -384,7 +384,7 @@ fi
 
 #### JXTA
 # PTJXTA_DIR is set to jxta if configure found jxta
-PTJXTA_DIR=
+PTJXTA_DIR=jxta
 JXTA_JARS=""
 if [ "$PTJXTA_DIR" = "jxta" ]; then 
     JXTA_DIR="${PTII}/vendors/sun/jxta"
@@ -399,7 +399,7 @@ fi
 PTPSDF_DIR=psdf
 PSDF_JARS=""
 if [ "$PTPSDF_DIR" = "psdf" ]; then 
-    PSDF_DIR="c:/cxh/ptII/lib"
+    PSDF_DIR="/tmp/cxh/ptII/lib"
     PSDF_JARS="${CLASSPATHSEPARATOR}${PSDF_DIR}/mapss.jar"
 fi
 

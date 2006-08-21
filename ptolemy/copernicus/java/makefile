@@ -122,6 +122,7 @@ OPTIONAL_FILES = \
 	'TypeSpecializerAnalysis$$VariableTerm.class' \
 	'TypeSpecializerAnalysis$$1.class' \
 	'TypeSpecializerAnalysis$$2.class' \
+	'TypeSpecializerAnalysis$$3.class' \
 	'TypeSpecializerAnalysis$$JavaTypeLattice.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

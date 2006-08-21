@@ -34,7 +34,7 @@ ME =		ptolemy/domains/ct/demo
 # PTJSPACES_DIR is set by configure to jspaces if Jini was found
 DIRS = 		BouncingBall Brownian \
 		CarTracking CartPendulum ComparedClocks ContinuousClock \
-		Helicopter HierarchicalExecution Hysteresis \
+		Helicopter HierarchicalExecution HybridPlant Hysteresis \
 		LevelCrossingDetector \
 		LevelCrossingDetectorDetectsGlitches \
 		Lorenz NewtonsCradle Pendulum3D\
