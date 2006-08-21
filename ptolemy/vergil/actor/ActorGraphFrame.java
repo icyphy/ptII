@@ -469,7 +469,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                             .getContainer();
                     Configuration configuration = (Configuration) effigy
                             .toplevel();
-                    VergilApplication.openLibrary(configuration, file);
+                    UserActorLibrary.openLibrary(configuration, file);
 
                     _setDirectory(chooser.getCurrentDirectory());
                 } catch (Throwable throwable) {
