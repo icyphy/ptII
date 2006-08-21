@@ -108,6 +108,25 @@ public class ColtSeedParameter extends SharedParameter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to set the declared type before
+     *  attempting to infer the value.  This is necessary because
+     *  this method is called in the constructor of the base class,
+     *  before the delcared type has been set.
+     *  @param defaultValue The default parameter value to give.
+     *  @exception InternalErrorException If there are multiple
+     *   shared parameters in the model, but their values
+     *   do not match.
+     */
+    public void inferValueFromContext(String defaultValue) {
+        try {
+            setTypeEquals(BaseType.LONG);
+        } catch (IllegalActionException e) {
+            // This should have been caught before.
+            throw new InternalErrorException(e);
+        }
+        super.inferValueFromContext(defaultValue);
+    }
+
     /** Override the base class to also set the expression of shared
      *  parameters.
      */
