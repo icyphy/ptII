@@ -64,7 +64,6 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-import ptolemy.vergil.VergilApplication;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import diva.graph.GraphController;
