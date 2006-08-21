@@ -177,7 +177,6 @@ public class ConstructorSpecializer extends SceneTransformer implements
                     // Keep track of the modification, so we know to
                     // modify invocations of that constructor.
                     modifiedConstructorClassList.add(theClass);
-                    System.out.println("modifiedConstructor = " + theClass);
                 }
             }
         }
@@ -206,23 +205,23 @@ public class ConstructorSpecializer extends SceneTransformer implements
                         Value value = box.getValue();
 
                         if (value instanceof SpecialInvokeExpr) {
-                            System.out.println("invoke = " + unit);
+                            // System.out.println("invoke = " + unit);
 
                             // If we're constructing one of our actor classes,
                             // then switch to the modified constructor.
                             SpecialInvokeExpr expr = (SpecialInvokeExpr) value;
                             SootClass declaringClass = expr.getMethodRef()
                                     .declaringClass();
-                            System.out.println("declaringClass = "
-                                    + declaringClass);
+                            // System.out.println("declaringClass = "
+                            //        + declaringClass);
                             if (expr.getMethod().getName().equals("<init>")
                                     && modifiedConstructorClassList
                                             .contains(declaringClass)) {
-                                System.out
-                                        .println("replacing constructor invocation = "
-                                                + unit + " in method " + method);
-                                SootMethod newConstructor = (SootMethod) classToConstructorMap
-                                        .get(declaringClass);//                                        .getMethodByName("<init>");
+                                //  System.out.println(
+                                //  "replacing constructor invocation = "
+                                //               + unit + " in method " + method);
+                                SootMethod newConstructor = (SootMethod)classToConstructorMap.get(declaringClass);
+
                                 if (newConstructor.getParameterCount() == 2) {
                                     SpecialInvokeExpr r = (SpecialInvokeExpr) value;
                                     r.setMethodRef(newConstructor.makeRef());

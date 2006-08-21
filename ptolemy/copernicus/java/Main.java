@@ -321,7 +321,6 @@ public class Main extends KernelMain {
         }
 
         if (_unboxing) {
-
             addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(toplevel)); //, "debug:true");//level:1");
 
             addStandardOptimizations(pack, 8);
@@ -350,10 +349,23 @@ public class Main extends KernelMain {
             addStandardOptimizations(pack, 11);
             addTransform(pack, "wjtp.doe6", new TransformerAdapter(
                     DeadObjectEliminator.v()));
+            addTransform(pack, "wjtp.cie5", new TransformerAdapter(
+                                 CastAndInstanceofEliminator.v()));
             addStandardOptimizations(pack, 12);
             addTransform(pack, "wjtp.doe7", new TransformerAdapter(
                     DeadObjectEliminator.v()));
+            addTransform(pack, "wjtp.cie6", new TransformerAdapter(
+                                 CastAndInstanceofEliminator.v()));
             addStandardOptimizations(pack, 13);
+            addTransform(pack, "wjtp.cie7", new TransformerAdapter(
+                                 CastAndInstanceofEliminator.v()));
+            addStandardOptimizations(pack, 14);
+            addStandardOptimizations(pack, 15);
+
+            addTransform(pack, "wjtp.ptr1", PtolemyTypeRemover.v(toplevel));
+            addStandardOptimizations(pack, 16);
+            addTransform(pack, "wjtp.ufr3", UnusedFieldRemover.v());
+            addStandardOptimizations(pack, 17);
 
             // The library usage reporter also pulls in all depended
             // classes for analysis.

@@ -792,7 +792,6 @@ public class PtolemyUtilities {
      *  derives from ptolemy.data.Token, then return that
      *  token type.  Otherwise return null.
      */
-
     // FIXME: should throw exception.
     public static RefType getBaseTokenType(Type type) {
         RefType returnType;
@@ -818,6 +817,40 @@ public class PtolemyUtilities {
         if (SootUtilities.derivesFrom(objectClass, PtolemyUtilities.tokenClass)
                 || objectClass.getName().equals(
                         "ptolemy.data.BitwiseOperationToken")) {
+            return returnType;
+        }
+
+        return null;
+    }
+
+    /** If the given type is a reference type to a class that
+     *  derives from ptolemy.data.Type, or array whose element type
+     *  derives from ptolemy.data.Type, then return that
+     *  token type.  Otherwise return null.
+     */
+    // FIXME: should throw exception.
+    public static RefType getBaseTokenTypeType(Type type) {
+        RefType returnType;
+
+        if (type instanceof RefType) {
+            returnType = (RefType) type;
+        } else if (type instanceof ArrayType) {
+            ArrayType arrayType = (ArrayType) type;
+
+            if (arrayType.baseType instanceof RefType) {
+                returnType = (RefType) arrayType.baseType;
+            } else {
+                return null;
+            }
+        } else {
+            // If we have a native type, then ignore because it can't
+            // be a token type.
+            return null;
+        }
+
+        SootClass objectClass = returnType.getSootClass();
+
+        if (SootUtilities.derivesFrom(objectClass, PtolemyUtilities.typeClass)) {
             return returnType;
         }
 
@@ -890,7 +923,6 @@ public class PtolemyUtilities {
      *  associated with the token class.  If the type is an array token, then
      *  the returned type will have an indeterminate element type.
      */
-
     // FIXME Records!
     // FIXME: this is hacked to return unknown types for token types that
     // are abstract.
@@ -931,6 +963,49 @@ public class PtolemyUtilities {
             }
 
             return tokenType;
+        }
+    }
+
+    /** Given a soot type that references a
+     *  type class, return the ptolemy token type
+     *  associated with the type class.  If the type is an array token, then
+     *  the returned type will have an indeterminate element type.
+     */
+    // FIXME Records!
+    // FIXME: this is hacked to return unknown types for token types that
+    // are abstract.
+    public static ptolemy.data.type.Type getTokenTypeTypeForSootType(RefType type) {
+        String className = type.getSootClass().getName();
+
+        //  System.out.println("className = " + className);
+        if (className.equals("ptolemy.data.type.ArrayType")) {
+            return new ptolemy.data.type.ArrayType(
+                    ptolemy.data.type.BaseType.UNKNOWN);
+        } else if (className.equals("ptolemy.data.type.RecordType")) {
+            return new ptolemy.data.type.RecordType(new String[0],
+                    new ptolemy.data.type.Type[0]);
+        } else if (className.equals("ptolemy.data.type.FunctionType")) {
+            return new ptolemy.data.type.FunctionType(
+                    new ptolemy.data.type.Type[0],
+                    ptolemy.data.type.BaseType.UNKNOWN);
+        } else if (className.equals("ptolemy.data.type.Type")) {
+            return ptolemy.data.type.BaseType.UNKNOWN;
+        } else if (className.equals("ptolemy.data.type.BaseType")) {
+            return ptolemy.data.type.BaseType.UNKNOWN;
+        } else if (className.equals("ptolemy.data.type.FixType")) {
+            return ptolemy.data.type.BaseType.FIX;
+        } else if (className.startsWith("ptolemy.data.type.BaseType$")) {
+            return ptolemy.data.type.BaseType.UNKNOWN;
+//             ptolemy.data.type.Type tokenType = ptolemy.data.type.BaseType
+//                     .forClassName(className);
+
+//             if (tokenType == null) {
+//                 throw new RuntimeException("unknown type = " + type + ".");
+//             }
+
+//             return tokenType;
+        } else {
+            throw new RuntimeException("unknown type = " + type + ".");
         }
     }
 
@@ -1200,7 +1275,7 @@ public class PtolemyUtilities {
 
     /** Return true if the given type references a
      *  ptolemy token type.  In other words It is either a direct
-     *  reference to a token, or an array of tokens.
+     *  reference to a Token, or an array of Tokens.
      */
     public static boolean isTokenType(Type type) {
         RefType refType;
@@ -1221,6 +1296,31 @@ public class PtolemyUtilities {
 
         return SootUtilities.derivesFrom(refType.getSootClass(),
                 PtolemyUtilities.tokenClass);
+    }
+
+    /** Return true if the given type references a
+     *  ptolemy token type type.  In other words It is either a direct
+     *  reference to a Type, or an array of Types.
+     */
+    public static boolean isTypeType(Type type) {
+        RefType refType;
+
+        if (type instanceof RefType) {
+            refType = (RefType) type;
+        } else if (type instanceof ArrayType) {
+            ArrayType arrayType = (ArrayType) type;
+
+            if (arrayType.baseType instanceof RefType) {
+                refType = (RefType) arrayType.baseType;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        return SootUtilities.derivesFrom(refType.getSootClass(),
+                PtolemyUtilities.typeClass);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -531,8 +531,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                         if (!flag) {
                             doneSomething |= _inlineTypeMethodsIn(method, body,
-                                    stmt, box, localDefs, localUses, depth,
-                                    unsafeLocalSet, debug);
+                                    stmt, box, localDefs, localUses, typeAnalysis,
+                                    depth, unsafeLocalSet, debug);
                         }
                     }
                 }
@@ -679,6 +679,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                     }
                 } else if (inlinee.getName().equals("isNil")) {
                     box.setValue(IntConstant.v(0));
+//                 } else if (inlinee.getSignature().equals(PtolemyUtilities.arrayTokenConstructor.getSignature())) {
+//                     System.out.println("method = " + method);
+//                     System.out.println("inlinee = " + inlinee.getSignature());
+//                     throw new RuntimeException("Cannot inline arrayTokens that do not have a type explicitly specified.");
                 } else {
                     SootClass declaringClass = inlinee.getDeclaringClass();
 
@@ -877,6 +881,14 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                         + " iteration " + count + " depth = " + depth);
             }
 
+            // Now run the type specialization algorithm...  This
+            // allows us to resolve the methods that we are inlining
+            // with better precision.
+            // Map objectToTokenType = TypeSpecializer.specializeTypes(
+            //   debug, entityClass, unsafeLocalSet);
+            TypeSpecializerAnalysis typeAnalysis = new TypeSpecializerAnalysis(
+                    entityClass, unsafeLocalSet);
+
             for (Iterator methods = entityClass.getMethods().iterator(); methods
                     .hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
@@ -912,8 +924,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                         Value value = box.getValue();
 
                         doneSomething |= _inlineTypeMethodsIn(method, body,
-                                unit, box, localDefs, localUses, depth,
-                                unsafeLocalSet, debug);
+                                unit, box, localDefs, localUses, typeAnalysis,
+                                depth, unsafeLocalSet, debug);
                     }
                 }
             }
@@ -922,7 +934,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
     public boolean _inlineTypeMethodsIn(SootMethod method, JimpleBody body,
             Unit unit, ValueBox box, SimpleLocalDefs localDefs,
-            SimpleLocalUses localUses, int depth, Set unsafeLocalSet,
+            SimpleLocalUses localUses, TypeSpecializerAnalysis typeAnalysis, 
+            int depth, Set unsafeLocalSet,
             boolean debug) {
         boolean doneSomething = false;
         Hierarchy hierarchy = Scene.v().getActiveHierarchy();
@@ -1002,18 +1015,23 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                 }
 
                                 // Handle Type.equals
-                                ptolemy.data.type.Type baseTokenType = PtolemyUtilities
-                                        .getTypeValue(method, (Local) r
-                                                .getBase(), unit, localDefs,
-                                                localUses);
+                                ptolemy.data.type.Type baseTokenType =
+//                                     PtolemyUtilities
+//                                         .getTypeValue(method, (Local) r
+//                                                 .getBase(), unit, localDefs,
+//                                                 localUses);
 
-                                //typeAnalysis.getSpecializedType((Local)r.getBase());
-                                ptolemy.data.type.Type argumentTokenType = PtolemyUtilities
-                                        .getTypeValue(method, (Local) r
-                                                .getArg(0), unit, localDefs,
-                                                localUses);
+                                    typeAnalysis.getSpecializedType((Local)r.getBase());
+                                ptolemy.data.type.Type argumentTokenType =
+//                                     PtolemyUtilities
+//                                         .getTypeValue(method, (Local) r
+//                                                 .getArg(0), unit, localDefs,
+//                                                 localUses);
 
-                                //      typeAnalysis.getSpecializedType((Local)r.getBase());
+                                   
+                                    typeAnalysis.getSpecializedType((Local)r.getArg(0));
+                                System.out.println("baseTokenType = " + baseTokenType);
+                                System.out.println("argumentTokenType = " + baseTokenType);
                                 //    if (baseTokenType.isInstantiable()) {
                                 //                                                     continue;
                                 //                                                 }

@@ -159,8 +159,9 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                 _insertPoint);
         _units.insertBefore(Jimple.v().newInvokeStmt(
                 Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                        PtolemyUtilities.arrayTokenConstructor.makeRef(),
-                        elementTypeLocal, local)), _insertPoint);
+                        PtolemyUtilities.arrayTokenWithTypeConstructor.makeRef(),
+                        elementTypeLocal, local)),
+                _insertPoint);
 
         _nodeToLocal.put(node, tokenLocal);
     }

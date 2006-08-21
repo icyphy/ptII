@@ -530,8 +530,8 @@ public class NamedObjEliminator extends SceneTransformer implements
                         Type type = value.getType();
 
                         if (_isRemovableType(type)) {
-                            System.out.println("Unit with removable type "
-                                    + type + ": " + unit);
+                            //  System.out.println("Unit with removable type "
+                            //        + type + ": " + unit);
                             body.getUnits().remove(unit);
                             break;
                         }

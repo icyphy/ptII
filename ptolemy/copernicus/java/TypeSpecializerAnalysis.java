@@ -338,6 +338,8 @@ public class TypeSpecializerAnalysis {
                 .getMethod("int compare(ptolemy.data.type.Type,ptolemy.data.type.Type)");
         SootMethod leastUpperBoundMethod = PtolemyUtilities.typeLatticeClass
                 .getMethod("ptolemy.data.type.Type leastUpperBound(ptolemy.data.type.Type,ptolemy.data.type.Type)");
+        SootMethod latticeMethod = PtolemyUtilities.typeLatticeClass
+            .getMethod("ptolemy.graph.CPO lattice()");
 
         ptolemy.data.type.Type type1;
         ptolemy.data.type.Type type2;
@@ -350,36 +352,45 @@ public class TypeSpecializerAnalysis {
         } else if (expr.getMethod().equals(typeTokenCompareMethod)) {
             Local typeLocal = (Local) expr.getArg(0);
             Local tokenLocal = (Local) expr.getArg(1);
-            type1 = PtolemyUtilities.getTypeValue(method, typeLocal, unit,
-                    localDefs, localUses);
+//             type1 = PtolemyUtilities.getTypeValue(method, typeLocal, unit,
+//                     localDefs, localUses);
+            type1 = getSpecializedType(typeLocal);
             type2 = getSpecializedType(tokenLocal);
         } else if (expr.getMethod().equals(tokenTypeCompareMethod)) {
             Local tokenLocal = (Local) expr.getArg(0);
             Local typeLocal = (Local) expr.getArg(1);
             type1 = getSpecializedType(tokenLocal);
-            type2 = PtolemyUtilities.getTypeValue(method, typeLocal, unit,
-                    localDefs, localUses);
+            type2 = getSpecializedType(typeLocal);
+//             type2 = PtolemyUtilities.getTypeValue(method, typeLocal, unit,
+//                     localDefs, localUses);
         } else if (expr.getMethod().equals(typeTypeCompareMethod)) {
             Local typeLocal1 = (Local) expr.getArg(0);
             Local typeLocal2 = (Local) expr.getArg(1);
-            type1 = PtolemyUtilities.getTypeValue(method, typeLocal1, unit,
-                    localDefs, localUses);
-            type2 = PtolemyUtilities.getTypeValue(method, typeLocal2, unit,
-                    localDefs, localUses);
+            type1 = getSpecializedType(typeLocal1);
+            type2 = getSpecializedType(typeLocal2);
+//             type1 = PtolemyUtilities.getTypeValue(method, typeLocal1, unit,
+//                     localDefs, localUses);
+//             type2 = PtolemyUtilities.getTypeValue(method, typeLocal2, unit,
+//                     localDefs, localUses);
         } else if (expr.getMethod().equals(leastUpperBoundMethod)) {
             System.out.println("Found LUB method!");
 
             Local typeLocal1 = (Local) expr.getArg(0);
             Local typeLocal2 = (Local) expr.getArg(1);
-            type1 = PtolemyUtilities.getTypeValue(method, typeLocal1, unit,
-                    localDefs, localUses);
-            type2 = PtolemyUtilities.getTypeValue(method, typeLocal2, unit,
-                    localDefs, localUses);
+            type1 = getSpecializedType(typeLocal1);
+            type2 = getSpecializedType(typeLocal2);
+//             type1 = PtolemyUtilities.getTypeValue(method, typeLocal1, unit,
+//                     localDefs, localUses);
+//             type2 = PtolemyUtilities.getTypeValue(method, typeLocal2, unit,
+//                     localDefs, localUses);
 
             Local newTypeLocal = PtolemyUtilities.buildConstantTypeLocal(method
                     .getActiveBody(), unit, TypeLattice.leastUpperBound(type1,
                     type2));
             box.setValue(newTypeLocal);
+            return;
+        } else if (expr.getMethod().equals(latticeMethod)) {
+            // Do nothing...
             return;
         } else {
             throw new RuntimeException(
@@ -658,16 +669,27 @@ public class TypeSpecializerAnalysis {
             if (SootUtilities
                     .derivesFrom(baseClass, PtolemyUtilities.typeClass)) {
                 if (methodName.equals("convert")) {
-                    try {
-                        ptolemy.data.type.Type baseType = PtolemyUtilities
-                                .getTypeValue(method, (Local) r.getBase(),
-                                        unit, localDefs, localUses);
-                        InequalityTerm baseTypeTerm = new ConstantTerm(
-                                baseType, r);
-                        return baseTypeTerm;
-                    } catch (RuntimeException ex) {
-                        // Ignore..
-                    }
+                    return baseTerm;
+//                     try {
+//                         ptolemy.data.type.Type baseType = PtolemyUtilities
+//                                 .getTypeValue(method, (Local) r.getBase(),
+//                                         unit, localDefs, localUses);
+//                         InequalityTerm baseTypeTerm = new ConstantTerm(
+//                                 baseType, r);
+//                         return baseTypeTerm;
+//                     } catch (RuntimeException ex) {
+//                         // Ignore..
+//                     }
+                } else if (r.getMethod().getSignature().equals(
+                                   "<ptolemy.data.type.ArrayType: void <init>(ptolemy.data.type.Type)>")) {
+                    InequalityTerm elementTerm = 
+                        (InequalityTerm) objectToInequalityTerm.get(r.getArg(0));
+                    ptolemy.data.type.ArrayType arrayType = new ptolemy.data.type.ArrayType(
+                            ptolemy.data.type.BaseType.UNKNOWN);
+                    InequalityTerm variableTerm = new VariableTerm(arrayType, r);
+                    _addInequality(debug, solver, elementTerm, arrayType.getElementTypeTerm());
+                    _addInequality(debug, solver, arrayType.getElementTypeTerm(), elementTerm);
+                    return variableTerm;
                 }
             }
 
@@ -690,11 +712,8 @@ public class TypeSpecializerAnalysis {
                     return baseTerm;
                 } else if (r.getMethod().equals(
                         PtolemyUtilities.arrayTokenWithTypeConstructor)) {
-                    ptolemy.data.type.Type elementType = PtolemyUtilities
-                            .getTypeValue(method, (Local) r.getArg(0), unit,
-                                    localDefs, localUses);
-                    InequalityTerm elementTypeTerm = new ConstantTerm(
-                            elementType, r);
+                    InequalityTerm elementTypeTerm = (InequalityTerm) objectToInequalityTerm
+                            .get(r.getArg(0));
                     ptolemy.data.type.ArrayType arrayType = new ptolemy.data.type.ArrayType(
                             ptolemy.data.type.BaseType.UNKNOWN);
                     VariableTerm newTerm = new VariableTerm(arrayType, r);
@@ -791,7 +810,8 @@ public class TypeSpecializerAnalysis {
                     _addInequality(debug, solver, firstArgTerm, baseTerm);
                     return baseTerm;
                 } else if (methodName.equals("getElement")
-                        || methodName.equals("arrayValue")) {
+                        || methodName.equals("arrayValue")
+                        || methodName.equals("getElementType")) {
                     // If we call getElement or arrayValue on an array
                     // token, then the returned type is the element
                     // type of the array.
@@ -830,10 +850,36 @@ public class TypeSpecializerAnalysis {
                     return returnTypeTerm;
                 } else if (methodName.equals("absolute")) {
                     // Return the same as the input type, unless
-                    // complex, in which case, return double.  FIXME:
-                    // This is WRONG for complex.  need a monotonic
-                    // function.
-                    return baseTerm;
+                    // complex, in which case, return double.
+                    final InequalityTerm finalBaseTerm = baseTerm;
+                    final InstanceInvokeExpr finalExpression = r;
+                    InequalityTerm returnValueTerm = new MonotonicFunction() {
+                        public Object getValue() throws IllegalActionException {
+                            if (finalBaseTerm.getValue().equals(
+                                        BaseType.COMPLEX)) {
+                                return BaseType.DOUBLE;
+                            }
+                            return finalBaseTerm.getValue();
+                        }
+
+                        public InequalityTerm[] getVariables() {
+                            ArrayList list = new ArrayList();
+                            
+                            if (finalBaseTerm.isSettable()) {
+                                list.add(finalBaseTerm);
+                            }
+
+                            InequalityTerm[] terms = (InequalityTerm[]) list
+                                    .toArray(new InequalityTerm[list.size()]);
+                            return terms;
+                        }
+
+                        public Object getAssociatedObject() {
+                            return finalExpression;
+                        }
+                    };
+
+                    return returnValueTerm;
                 }
             } else if (SootUtilities.derivesFrom(baseClass,
                     PtolemyUtilities.componentPortClass)) {
@@ -1029,7 +1075,9 @@ public class TypeSpecializerAnalysis {
 
             // FIXME: UGH: This is the same as elementType...
             if (field.getSignature().equals(
-                    "<ptolemy.data.ArrayToken: ptolemy.data.Token[] _value>")) {
+                        "<ptolemy.data.ArrayToken: ptolemy.data.Token[] _value>") ||
+                    field.getSignature().equals(
+                            "<ptolemy.data.ArrayToken: ptolemy.data.type.Type _elementType>")) {
                 InequalityTerm baseTerm = (InequalityTerm) objectToInequalityTerm
                         .get(((InstanceFieldRef) r).getBase());
                 ptolemy.data.type.ArrayType arrayType = new ptolemy.data.type.ArrayType(
@@ -1041,6 +1089,54 @@ public class TypeSpecializerAnalysis {
                 InequalityTerm returnTypeTerm = (InequalityTerm) arrayType
                         .getElementTypeTerm();
                 return returnTypeTerm;
+            } else if (field.equals(PtolemyUtilities.unknownTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.UNKNOWN, r);
+            } else if (field.equals(PtolemyUtilities.booleanTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.BOOLEAN, r);
+            } else if (field.equals(PtolemyUtilities.booleanMatrixTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.BOOLEAN_MATRIX, r);
+            } else if (field.equals(PtolemyUtilities.byteTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.UNSIGNED_BYTE, r);
+            } else if (field.equals(PtolemyUtilities.complexTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.COMPLEX, r);
+            } else if (field.equals(PtolemyUtilities.complexMatrixTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.COMPLEX_MATRIX, r);
+            } else if (field.equals(PtolemyUtilities.doubleTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.DOUBLE, r);
+            } else if (field.equals(PtolemyUtilities.doubleMatrixTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.DOUBLE_MATRIX, r);
+            } else if (field.equals(PtolemyUtilities.fixTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.FIX, r);
+            } else if (field.equals(PtolemyUtilities.fixMatrixTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.FIX_MATRIX, r);
+            } else if (field.equals(PtolemyUtilities.intTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.INT, r);
+            } else if (field.equals(PtolemyUtilities.intMatrixTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.INT_MATRIX, r);
+            } else if (field.equals(PtolemyUtilities.longTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.LONG, r);
+            } else if (field.equals(PtolemyUtilities.longMatrixTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.LONG_MATRIX, r);
+            } else if (field.equals(PtolemyUtilities.objectTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.OBJECT, r);
+            } else if (field.equals(PtolemyUtilities.stringTypeField)) {
+                return new ConstantTerm(
+                        ptolemy.data.type.BaseType.STRING, r);
             }
 
             return (InequalityTerm) objectToInequalityTerm.get(field);
@@ -1085,7 +1181,10 @@ public class TypeSpecializerAnalysis {
             Type type, Map objectToInequalityTerm) {
         RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
 
-        if ((tokenType != null) && (objectToInequalityTerm.get(object) == null)) {
+        if (objectToInequalityTerm.get(object) != null) {
+            return;
+        }
+        if (tokenType != null) {
             if (debug) {
                 System.out.println("creating inequality term for " + object);
             }
@@ -1097,7 +1196,26 @@ public class TypeSpecializerAnalysis {
             InequalityTerm term = new VariableTerm(PtolemyUtilities
                     .getTokenTypeForSootType(tokenType), object);
             objectToInequalityTerm.put(object, term);
+            return;
         }
+
+        RefType typeType = PtolemyUtilities.getBaseTokenTypeType(type);
+
+        if (typeType != null) {
+            if (debug) {
+                System.out.println("creating inequality term for " + object);
+            }
+
+            if (debug) {
+                System.out.println("type " + type);
+            }
+
+            InequalityTerm term = new VariableTerm(PtolemyUtilities
+                    .getTokenTypeTypeForSootType(typeType), object);
+            objectToInequalityTerm.put(object, term);
+            return;
+        }
+        
     }
 
     private void _printSolverVariables() {
@@ -1428,16 +1546,20 @@ public class TypeSpecializerAnalysis {
          *   specified Objects is not an element of this CPO.
          */
         public Object leastUpperBound(Object e1, Object e2) {
+            // System.out.println("e1 = " + e1 + " e2 = " + e2);
+            Object retVal = null;
             if (e1.equals(e2)) {
-                return e1;
+                retVal = e1;
             } else if (((ptolemy.data.type.Type) e1).isInstantiable()
                     && !((ptolemy.data.type.Type) e1).equals(BaseType.GENERAL)
                     && ((ptolemy.data.type.Type) e2).isInstantiable()
                     && !((ptolemy.data.type.Type) e2).equals(BaseType.GENERAL)) {
-                return top();
+                retVal = top();
             } else {
-                return TypeLattice.lattice().leastUpperBound(e1, e2);
+                retVal = TypeLattice.lattice().leastUpperBound(e1, e2);
             }
+            // System.out.println("return = " + retVal);
+            return retVal;
         }
 
         /** Compute the least upper bound (LUB) of a subset.

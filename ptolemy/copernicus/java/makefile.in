@@ -142,9 +142,6 @@ compareAll: treeShakeAll profileAll compareTreeShakeJars
 treeShakeAll: treeShakeWithoutCodegen  \
 		treeShake
 
-# obfuscate has problems with jode 1.1.1 and 1.1.2pre-1 and Java 1.5
-#	 	obfuscate
-
 #		treeShakeSnapshots
 
 # Profile all versions of the generated code.

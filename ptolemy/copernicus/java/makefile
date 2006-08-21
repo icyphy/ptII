@@ -80,6 +80,7 @@ JSRCS = \
 	NamedObjEliminator.java \
 	NamedObjEqualityEliminator.java \
 	ParseTreeCodeGenerator.java \
+	PtolemyTypeRemover.java \
 	PortInliner.java \
 	ReplaceComplexParameters.java \
 	SDFPortInliner.java \
