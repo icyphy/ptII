@@ -309,7 +309,7 @@ public class MobileModel extends TypedCompositeActor {
 
         try {
             _parser = new MoMLParser();
-            _parser.setMoMLFilters(BackwardCompatibility.allFilters());
+            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
 
             // When no model applied, output the default value.
             if (((BooleanToken) connectPorts.getToken()).booleanValue()) {

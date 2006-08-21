@@ -101,21 +101,21 @@ public class ActorIndex {
             MoMLParser parser = new MoMLParser();
 
             // Handle backward compatibility issues
-            parser.setMoMLFilters(BackwardCompatibility.allFilters());
+            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
 
             // Add a MoML filter that updates the values of classesToBeIndexed
             // with models that contain classes named by the key of
             // classesToBeIndexed
             NamedObjClassesSeen namedObjClassesSeen = new NamedObjClassesSeen(
                     classesToBeIndexed);
-            parser.addMoMLFilter(namedObjClassesSeen);
+            MoMLParser.addMoMLFilter(namedObjClassesSeen);
 
             // Add a filter to remove the graphical classes
             // This is safe to do because our NamedObjClassesSeen filter
             // runs before we then remove the graphical classes.
             RemoveGraphicalClasses removeGraphicalClasses = new RemoveGraphicalClasses();
             removeGraphicalClasses.setRemoveGR(true);
-            parser.addMoMLFilter(removeGraphicalClasses);
+            MoMLParser.addMoMLFilter(removeGraphicalClasses);
 
             while ((modelName = modelReader.readLine()) != null) {
                 // Reset the list of classes seen, read the model

@@ -83,10 +83,10 @@ public class CheckModelSize {
             StringBuffer analysis = new StringBuffer();
 
             MoMLParser parser = new MoMLParser();
-            parser.setMoMLFilters(BackwardCompatibility.allFilters());
+            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
 
             // Filter out any graphical classes.
-            parser.addMoMLFilter(new RemoveGraphicalClasses());
+            MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
 
             if (!(fileName.endsWith(".xml") || fileName.endsWith(".moml"))) {
                 continue;

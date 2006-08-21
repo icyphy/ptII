@@ -170,7 +170,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
 
         try {
             MoMLParser parser = new MoMLParser();
-            parser.setMoMLFilters(BackwardCompatibility.allFilters());
+            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
 
             File file = new File(_configDir + "/" + _DISCOVERED_ACTORS);
 

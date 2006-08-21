@@ -176,7 +176,7 @@ public class MoMLApplication implements ExecutionListener {
         _parser = new MoMLParser();
 
         // We set the list of MoMLFilters to handle Backward Compatibility.
-        _parser.setMoMLFilters(BackwardCompatibility.allFilters());
+        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
 
         // 2/03: Moved the setMessageHandler() to before parseArgs() so
         // that if we get an error in parseArgs() we will get a graphical

@@ -351,8 +351,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         // See MoMLSimpleApplication for similar code
         MoMLParser parser = new MoMLParser();
-        parser.setMoMLFilters(BackwardCompatibility.allFilters());
-        parser.addMoMLFilter(new RemoveGraphicalClasses());
+        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+        MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
 
         for (int i = 0; i < args.length; i++) {
             // Note: the code below uses explicit try catch blocks

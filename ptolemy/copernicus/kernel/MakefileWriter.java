@@ -244,12 +244,12 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
             // and then readd the old filters in the finally clause.
             // We do something
             // similar in GeneratorAttribute.updateModelAttributes()
-            List oldFilters = parser.getMoMLFilters();
+            List oldFilters = MoMLParser.getMoMLFilters();
             MoMLParser.setMoMLFilters(null);
 
             try {
                 // Handle Backward Compatibility.
-                parser.addMoMLFilters(BackwardCompatibility.allFilters());
+                MoMLParser.addMoMLFilters(BackwardCompatibility.allFilters());
 
                 // We don't call parseFile() here because it calls gets
                 // the user.dir property.

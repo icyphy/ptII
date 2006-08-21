@@ -152,10 +152,10 @@ public class GiottoCodeGeneratorUtilities {
             MoMLParser parser = new MoMLParser();
 
             // We set the list of MoMLFilters to handle Backward Compatibility.
-            parser.setMoMLFilters(BackwardCompatibility.allFilters());
+            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
 
             // Filter out any graphical classes.
-            parser.addMoMLFilter(new RemoveGraphicalClasses());
+            MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
 
             // If there is a MoML error, then throw the exception as opposed
             // to skipping the error.  If we call StreamErrorHandler instead,

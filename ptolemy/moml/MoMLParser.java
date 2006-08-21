@@ -267,7 +267,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @see #getMoMLFilters()
      *  @see #setMoMLFilters(List filterList)
      */
-    public void addMoMLFilter(MoMLFilter filter) {
+    public static void addMoMLFilter(MoMLFilter filter) {
         if (_filterList == null) {
             _filterList = new LinkedList();
         }
@@ -289,7 +289,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @see #getMoMLFilters()
      *  @see #setMoMLFilters(List filterList)
      */
-    public void addMoMLFilters(List filterList) {
+    public static void addMoMLFilters(List filterList) {
         if (_filterList == null) {
             _filterList = new LinkedList();
         }
@@ -1150,7 +1150,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @see #addMoMLFilter(MoMLFilter filter)
      *  @see #setMoMLFilters(List filterList)
      */
-    public List getMoMLFilters() {
+    public static List getMoMLFilters() {
         return _filterList;
     }
 

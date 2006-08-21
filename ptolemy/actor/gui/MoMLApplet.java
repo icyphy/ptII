@@ -172,9 +172,9 @@ public class MoMLApplet extends PtolemyApplet {
         // FIXME: if we call _createModel twice, then we will add
         // this filter twice.  We reset the filter list here,
         // though we will lose any other filters.
-        parser.setMoMLFilters(null);
+        MoMLParser.setMoMLFilters(null);
 
-        parser.setMoMLFilters(BackwardCompatibility.allFilters());
+        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
 
         RemoveGraphicalClasses removeNonAppletClasses = new RemoveGraphicalClasses();
         // If filterGraphicalClasses is true, then we filter out
@@ -182,7 +182,7 @@ public class MoMLApplet extends PtolemyApplet {
         // it is false, then we clear the filter.  In both cases we
         // add some classes that are always filtered.
         if (!filterGraphicalClasses) {
-            removeNonAppletClasses.clear();
+            RemoveGraphicalClasses.clear();
         }
 
         // Exclude the code generator 
@@ -191,7 +191,7 @@ public class MoMLApplet extends PtolemyApplet {
         removeNonAppletClasses
                 .put("ptolemy.vergil.kernel.attributes.DocumentationAttribute",
                         null);
-        parser.addMoMLFilter(removeNonAppletClasses);
+        MoMLParser.addMoMLFilter(removeNonAppletClasses);
 
         URL docBase = getDocumentBase();
         URL xmlFile = new URL(docBase, _modelURL);

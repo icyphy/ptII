@@ -507,7 +507,7 @@ public class Copernicus {
         _parser = new MoMLParser();
 
         // Handle Backward Compatibility.
-        _parser.addMoMLFilters(BackwardCompatibility.allFilters());
+        MoMLParser.addMoMLFilters(BackwardCompatibility.allFilters());
 
         // Filter out any graphical classes and the GeneratorAttribute
         // itself.  If we don't filter out GeneratorAttribute, then
@@ -531,7 +531,7 @@ public class Copernicus {
         // because Test has a SharedParameter
         //         removeGraphicalClasses.put("ptolemy.actor.lib.Test",
         //                 "ptolemy.copernicus.java.test.CGTest");
-        _parser.addMoMLFilter(removeGraphicalClasses);
+        MoMLParser.addMoMLFilter(removeGraphicalClasses);
 
         //         PropertyClassChanges propertyClassChanges =
         //             new PropertyClassChanges();

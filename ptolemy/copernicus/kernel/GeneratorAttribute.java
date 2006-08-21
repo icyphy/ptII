@@ -496,13 +496,13 @@ public class GeneratorAttribute extends SingletonAttribute implements
         // Get the old filters, save them, add our own
         // filters, use them, remove our filters,
         // and then readd the old filters in the finally clause.
-        List oldFilters = parser.getMoMLFilters();
-        parser.setMoMLFilters(null);
+        List oldFilters = MoMLParser.getMoMLFilters();
+        MoMLParser.setMoMLFilters(null);
 
         // Parse the model and get the name of the model.
         try {
             // Handle Backward Compatibility.
-            parser.addMoMLFilters(BackwardCompatibility.allFilters());
+            MoMLParser.addMoMLFilters(BackwardCompatibility.allFilters());
 
             // Filter out any graphical classes
             RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
@@ -510,7 +510,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
             // FIXME: Not sure why this is necessary, but it helps
             // when generating an applet for moml/demo/spectrum.xml
             filter.put("ptolemy.kernel.util.Location", null);
-            parser.addMoMLFilter(filter);
+            MoMLParser.addMoMLFilter(filter);
 
             NamedObj toplevel = null;
 
@@ -592,7 +592,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
             throw new IllegalActionException(this, ex, "Failed to parse '"
                     + modelPathOrURL + "'");
         } finally {
-            parser.setMoMLFilters(oldFilters);
+            MoMLParser.setMoMLFilters(oldFilters);
         }
     }
 

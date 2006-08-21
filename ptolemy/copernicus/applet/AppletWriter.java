@@ -436,22 +436,22 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // Get the old filters, save them, add our own
         // filters, use them, remove our filters,
         // and then readd the old filters in the finally clause.
-        List oldFilters = parser.getMoMLFilters();
+        List oldFilters = MoMLParser.getMoMLFilters();
         MoMLParser.setMoMLFilters(null);
 
         // Parse the model and get the name of the model.
         try {
             // Handle Backward Compatibility.
-            parser.addMoMLFilters(BackwardCompatibility.allFilters());
+            MoMLParser.addMoMLFilters(BackwardCompatibility.allFilters());
 
             // This is a bit of a misnomer, we remove only
             // GeneratorTableauAttribute here so that the Vergil applet has
             // the graphical classes
             RemoveGraphicalClasses removeGraphicalClasses = new RemoveGraphicalClasses();
-            removeGraphicalClasses.clear();
+            RemoveGraphicalClasses.clear();
             removeGraphicalClasses.put(
                     "ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
-            parser.addMoMLFilter(removeGraphicalClasses);
+            MoMLParser.addMoMLFilter(removeGraphicalClasses);
 
             // Parse the model.
             CompositeActor toplevel = null;
@@ -469,7 +469,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 }
             }
         } finally {
-            parser.setMoMLFilters(oldFilters);
+            MoMLParser.setMoMLFilters(oldFilters);
         }
     }
 
