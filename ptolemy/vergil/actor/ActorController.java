@@ -143,6 +143,8 @@ public abstract class ActorController extends AttributeController {
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
                     _lookInsideAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _openInstanceAction));
 
             if (access == FULL) {
                 // Create an Appearance submenu.
@@ -222,6 +224,8 @@ public abstract class ActorController extends AttributeController {
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
                     _lookInsideAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _openInstanceAction));
 
             if (_access == FULL) {
                 // Create an Appearance submenu.
@@ -253,6 +257,10 @@ public abstract class ActorController extends AttributeController {
      *  compatibility with subclasses.
      */
     protected LookInsideAction _lookInsideAction = new LookInsideAction();
+
+    /** The action that handles opening an instance.
+     */
+    protected OpenInstanceAction _openInstanceAction = new OpenInstanceAction();
 
     /** The action that handles removing a custom icon. */
     protected RemoveIconAction _removeIconAction = new RemoveIconAction();
@@ -736,6 +744,39 @@ public abstract class ActorController extends AttributeController {
                 _configuration.openModel(object);
             } catch (Exception ex) {
                 MessageHandler.error("Open actor failed.", ex);
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// OpenInstanceAction
+    
+    /** An action to open an instance.  This is similar to LookInsideAction
+     *  except that it does not open the class definition, but rather opens
+     *  the instance.
+     */
+    private class OpenInstanceAction extends FigureAction {
+        public OpenInstanceAction() {
+            super("Open Instance");
+        }
+        public void actionPerformed(ActionEvent event) {
+            if (_configuration == null) {
+                MessageHandler.error("Cannot open an instance "
+                        + "without a configuration.");
+                return;
+            }
+
+            // Determine which entity was selected for the open actor action.
+            super.actionPerformed(event);
+            NamedObj object = getTarget();
+
+            // FIXME: If this is not a CompositeEntity, need to
+            // do something different here as the method below will
+            // open the source code as a last resort.
+            try {
+                _configuration.openInstance(object);
+            } catch (Exception ex) {
+                MessageHandler.error("Open instance failed.", ex);
             }
         }
     }
