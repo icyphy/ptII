@@ -106,7 +106,7 @@ public class PlotLiveDemo extends PlotLive {
                         }
                     });
                     frame.getContentPane().add("Center", plotLiveDemo);
-                    frame.show();
+                    frame.setVisible(true);
                     plotLiveDemo.setButtons(true);
                     plotLiveDemo.start();
                     frame.pack();

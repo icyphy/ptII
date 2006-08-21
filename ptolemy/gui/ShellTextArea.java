@@ -189,7 +189,7 @@ public class ShellTextArea extends JPanel {
         final ShellTextArea exec = new ShellTextArea();
         jFrame.getContentPane().add(exec);
         jFrame.pack();
-        jFrame.show();
+        jFrame.setVisible(true);
     }
 
     /** Replace a range in the JTextArea.

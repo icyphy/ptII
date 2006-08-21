@@ -482,7 +482,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         // Create a frame, if placeable was not called.
         if (_container == null) {
             _frame = new JFrame("ViewScreen");
-            _frame.show();
+            _frame.setVisible(true);
             _frame.validate();
             _frame.setSize(horizontalDimension + 50, verticalDimension);
             _container = _frame.getContentPane();

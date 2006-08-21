@@ -381,7 +381,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
         // Create a frame, if placeable was not called.
         if (_container == null) {
             _frame = new JFrame("ViewScreen2D");
-            _frame.show();
+            _frame.setVisible(true);
             _frame.validate();
 
             //  _frame.setSize(horizontalDimension+50,verticalDimension);

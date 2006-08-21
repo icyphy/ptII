@@ -140,7 +140,7 @@ public class VideoPlayer extends Sink implements ControllerListener {
         _container.add(controlPanel, BorderLayout.SOUTH);
         _container.validate();
         _frame.pack();
-        _frame.show();
+        _frame.setVisible(true);
 
         _player.start();
         return super.postfire();

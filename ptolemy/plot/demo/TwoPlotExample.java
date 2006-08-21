@@ -147,7 +147,7 @@ public class TwoPlotExample extends JFrame {
         gridbag.setConstraints(rightPlot, c);
         getContentPane().add(rightPlot);
 
-        show();
+        setVisible(true);
     }
 
     /** main method called in a standalone java application.

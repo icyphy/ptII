@@ -125,7 +125,7 @@ public class AudioPlayer extends Sink implements ControllerListener {
         Component controlPanel = _player.getControlPanelComponent();
         _container.add(controlPanel);
         _frame.pack();
-        _frame.show();
+        _frame.setVisible(true);
 
         return super.postfire();
     }

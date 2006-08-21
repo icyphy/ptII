@@ -211,7 +211,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
         exec.setCommands(execCommands);
         jFrame.getContentPane().add(exec);
         jFrame.pack();
-        jFrame.show();
+        jFrame.setVisible(true);
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {

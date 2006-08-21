@@ -514,7 +514,7 @@ public abstract class Top extends JFrame {
                 // override any manual changes in sizing that had been
                 // made.
                 setState(Frame.NORMAL);
-                Top.super.show();
+                Top.super.setVisible(true);
             }
         };
 

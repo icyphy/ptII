@@ -218,7 +218,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
             // Note that the location is of the frame, while the size
             // is of the scrollpane.
             pack();
-            show();
+            setVisible(true);
         }
     }
 }

@@ -129,7 +129,7 @@ public class JCanvasTest extends TestSuite {
             canvas.setSize(600, 400);
             frame.getContentPane().add(canvas);
             frame.pack();
-            frame.show();
+            frame.setVisible(true);
         }
     }
 
