@@ -32,6 +32,8 @@
 # Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/actor/lib/test
 
+DIRS =		performance 
+
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
@@ -94,7 +96,8 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	alljtests.tcl \
-	auto
+	auto \
+	performance
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

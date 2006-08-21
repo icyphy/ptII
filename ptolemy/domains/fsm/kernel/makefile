@@ -96,6 +96,7 @@ OPTIONAL_FILES = \
 	'FSMDirector$$2.class' \
 	'InterfaceAutomaton$$1.class' \
 	'InterfaceAutomaton$$Triple.class' \
+	'ModalDirector$$1.class' \
 	'RelationList$$RelationNode.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

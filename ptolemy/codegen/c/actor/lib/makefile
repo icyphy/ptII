@@ -169,6 +169,7 @@ OTHER_FILES_TO_BE_JARED = \
 	TrigFunction.c \
 	UnaryMathFunction.c \
 	Uniform.c \
+	aggregators.xml \
 	array.xml \
 	booleanflowcontrol.xml \
 	executioncontrol.xml \

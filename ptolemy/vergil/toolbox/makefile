@@ -100,6 +100,7 @@ OPTIONAL_FILES = \
 	'MoveAction$$1.class' \
 	'MoveAction$$2.class' \
 	'MoveAction$$3.class' \
+	'MoveAction$$2$$1.class' \
 	'MoveAction$$MoveType.class' \
 	'VisibleParameterEditorFactory$$1.class'
 

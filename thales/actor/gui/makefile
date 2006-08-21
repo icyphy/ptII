@@ -69,6 +69,7 @@ OPTIONAL_FILES = \
 	'ModelValidator$$MyEntityResolver.class' \
 	'NavigableEffigy$$Factory.class' \
 	'NavigableEffigy$$FactoryWithoutNew.class' \
+	'SingleWindowHTMLViewer$$1$$1.class' \
 	'SingleWindowHTMLViewer$$1.class' \
 	'SingleWindowHTMLViewer$$2.class' \
 	'SingleWindowHTMLViewer$$3.class' \

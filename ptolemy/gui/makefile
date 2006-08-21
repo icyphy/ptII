@@ -96,6 +96,8 @@ OPTIONAL_FILES = \
 	'JTextAreaExec$$7.class' \
 	'JTextAreaExec$$8.class' \
 	'JTextAreaExec$$9.class' \
+	'JTextAreaExec$$5$$1.class' \
+	'JTextAreaExec$$7$$1.class' \
 	'JTextAreaExec$$_StreamReaderThread.class' \
 	'Message$$1.class' \
 	'Message$$2.class' \

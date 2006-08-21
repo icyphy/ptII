@@ -101,6 +101,7 @@ OPTIONAL_FILES = \
 	'BasicZList$$2.class' \
 	'BasicZList$$EnclosedGSet.class' \
 	'BasicZList$$GSet.class' \
+	'BasicZList$$GSet$$1.class' \
 	'BasicZList$$IntersectedGSet.class' \
 	'CanvasUtilities$$1.class' \
 	'DamageRegion$$1.class' \

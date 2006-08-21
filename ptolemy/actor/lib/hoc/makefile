@@ -95,6 +95,7 @@ OPTIONAL_FILES = \
 	'IterateOverArray$$2.class' \
 	'IterateOverArray$$3.class' \
 	'IterateOverArray$$IterateComposite.class' \
+	'IterateOverArray$$IterateComposite$$1.class' \
 	'IterateOverArray$$IterateDirector.class' \
 	'IterateOverArray$$IteratePort.class' \
 	'ModelReference$$1.class'

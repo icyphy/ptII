@@ -124,7 +124,7 @@ else
 fi
 
 # Default JDK Home, may have /cygdrive in it
-PTJAVA_DIR="/cygdrive/c/Program Files/java/jdk1.5.0_05"
+PTJAVA_DIR="/cygdrive/c/Program Files/Java/jdk1.5.0_06"
 
 # PTJAVA_DIR without /cygdrive
 PTJAVA_DIR_CLEAN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
@@ -171,10 +171,10 @@ JHDL_JAR="${PTII}/vendors/jhdl/ptjhdllib/JHDL.jar"
 #### Backtracking facility
 # The Backtracking facility uses Eclipse jar files
 # Set to backtrack and used in $PTII/ptolemy/makefile if Eclipse was found
-PTBACKTRACK_DIR=
+PTBACKTRACK_DIR=@PTBACKTRACK_DIR@
 BACKTRACK_JARS=""
 if [ "$PTBACKTRACK_DIR" = "backtrack" ]; then
-    PTBACKTRACK_JARS=""
+    PTBACKTRACK_JARS="@PTBACKTRACK_JARS@"
     # PTBACKTRACK_JARS will always have a CLASSPATHSEPARATOR prefix
     BACKTRACK_JARS="${PTBACKTRACK_JARS}"
 fi
@@ -216,7 +216,7 @@ fi
 
 #### Serial port stuff
 # If Commapi is present, then set to yes, otherwise set to no
-COMMAPI_PRESENT="yes"
+COMMAPI_PRESENT="no"
 COMMAPI_JARS=""
 #### Serial Port Communications API
 if [ "$COMMAPI_PRESENT" = "yes" ]; then
@@ -262,7 +262,7 @@ TINICLASSES_JAR='${PTII}/vendors/dalsemi/tini/bin/tiniclasses.jar'
 TINI_JFLAG=
 
 # JDK Version determined by running confTest.class and getting java.version
-JVERSION=1.5.0_05
+JVERSION=1.5.0_06
 
 # See if we are running under JDK1.4.1 with XP
 if test "`uname -s`" = "CYGWIN_NT-5.1"; then
@@ -294,9 +294,18 @@ fi
 # The jode jar file.
 # JODE_JAR might contain ${JODE_DIR)
 JODE_DIR="@JODE_DIR@"
-JODE_JAR="c:/cxh/ptII/vendors/jode/1.1.1/jode.jar"
+JODE_JAR="${JODE_DIR}/jode.jar"
 
 JODE_JFLAG=
+
+#### Ptalon
+# Ptalon uses antlr.jar, found in ptolemy/actor/ptalon/antlr/antlr.jar
+# PTPTALON_DIR is set to ptalon by configure if antlr.jar was found
+PTPTALON_DIR=
+PTALON_JARS=""
+if [ "$PTPTALON_DIR" = "ptalon" ]; then
+    PTALON_JARS="${CLASSPATHSEPARATOR}${PTII}/ptolemy/actor/ptalon/antlr/antlr.jar"
+fi
 
 #### QuickTime ..  QuickTime for Java
 # The QuickTime jar file, usually found in somewhere like:
@@ -306,7 +315,7 @@ JODE_JFLAG=
 PTQUICKTIME_DIR=quicktime
 QTJAVA_JARS=""
 if [ "$PTQUICKTIME_DIR" = "quicktime" ]; then
-    QTJAVA_ZIP=""
+    QTJAVA_ZIP="C:/Program Files/java/jre1.5.0_05/lib/ext/QTJava.zip"
     QTJAVA_JARS="${CLASSPATHSEPARATOR}$QTJAVA_ZIP"
 fi
 
@@ -314,10 +323,10 @@ fi
 #### Soot..  Java compiler and optimizer package.  Jasmin: a java assembler.
 # The soot and jasmin jar files.
 SOOT_DIR="c:/cxh/ptII/lib"
-JAVA_SYSTEM_JAR="c:\Program Files\java\jdk1.5.0_05\jre\lib\rt.jar"
+JAVA_SYSTEM_JAR="c:\Program Files\Java\jdk1.5.0_06\jre\lib\rt.jar"
 # Java 1.5 has javax.crypto.Cipher in jce.jar, Soot needs this
 JAVAX_CRYPTO_JAR="${PTJAVA_HOME}/lib/jce.jar"
-SOOT_JAR="${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}"
+SOOT_JAR="${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/polyglotclasses-1.3.2.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}"
 
 SOOT_JFLAG=
 
@@ -375,7 +384,7 @@ fi
 
 #### JXTA
 # PTJXTA_DIR is set to jxta if configure found jxta
-PTJXTA_DIR=jxta
+PTJXTA_DIR=
 JXTA_JARS=""
 if [ "$PTJXTA_DIR" = "jxta" ]; then 
     JXTA_DIR="${PTII}/vendors/sun/jxta"
@@ -437,11 +446,11 @@ fi
 #### X10 is the interface library for power line communication, see
 # http://x10.homelinux.org/download.html
 # PTX10_DIR is set to x10 if configure found x10
-PTX10_DIR=x10
+PTX10_DIR=
 X10_JARS=""
 if [ "$PTX10_DIR" = "x10" ]; then 
-    X10_DIR="c:/cxh/ptII/vendors/misc/x10"
-    X10_JARS="${CLASSPATHSEPARATOR}c:/cxh/ptII/vendors/misc/x10/tjx10p-12/lib/x10.jar"
+    X10_DIR="${PTII}/vendors/misc/x10"
+    X10_JARS="${CLASSPATHSEPARATOR}${X10_DIR}/tjx10p-12/lib/x10.jar"
 fi
 
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
@@ -452,7 +461,7 @@ fi
 # a version of java cup
 #
 # If you update ALL_JARS, please update ptolemy/configs/test/makefile
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${PTALON_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
 
 #### Sandbox
@@ -592,6 +601,7 @@ case $commandname in
     ;;
 esac
 
+classpatharg="-classpath "
 error="none"
 # Keep these alphabetical
 case $commandname in
@@ -621,10 +631,16 @@ case $commandname in
 	help="Do deep codegen"
 	javastartupclass=ptolemy.copernicus.kernel.Copernicus
 	javasourcedir=
-        # Shallow cg of fsm/test/auto/ABPTest.xml,
-	# hdf/kernel/test/auto/TwoLevelHierarchyNullStates.xml
-	# wireless/test/auto/performance.xml all fail if we use Xmx256
-	javaflag="-Xmx384M"
+        # Shallow cg of
+	# actor/lib/hoc/test/auto/DFTSubSetTest.xml
+	# domains/ct/test/auto/CarTrackingTest.xml
+	# domains/ct/test/auto/HelicopterTest.xml
+	# domains/fsm/test/auto/ABPTest.xml
+	# domains/hdf/kernel/test/auto/TwoLevelHierarchyNullStates.xml
+	# domains/hdf/kernel/test/auto/TwoLevelHierarchyWithResetsNullStates.xml
+	# domains/wireless/test/auto/performance.xml
+	# all fail if we use Xmx384
+	javaflag="-Xmx512M"
         ;;
     copernicusjhdl)
 	help="Do deep jhdl codegen"
@@ -725,7 +741,7 @@ and run:
 	help="This command generates C code for a given model \
             For example: \
             $commandname [commonOptions] $PTII/ptolemy/codegen/demo/Butterfly/Butterfly.xml"
-	invokeHelp="Usage: $commandname model.xml"          
+	invokeHelp="Usage: $commandname model.xml [model2.xml . . .]"          
 	javastartupclass=ptolemy.codegen.kernel.CodeGenerator
 	javasourcedir=
 	jarfile="$ALL_JAR"
@@ -921,9 +937,28 @@ and run:
 		    echo ""
 		fi    
             fi
+	    if [ -x "$PTII/jni/launcher/launcher" -a "`uname -s`" != "Linux" ]; then
+   	        javac="$PTII/jni/launcher/launcher"
+	        javastartupclass=ptolemy/vergil/VergilApplication
+	        classpatharg=-Djava.class.path=
+            else		
+		if [ $windows = "yes" ]; then
+		    echo "$0: Warning: Under Windows, Viptos requires "
+                    echo " \$PTII/jni/launcher/launcher,"
+		    echo " which is not present.  If launcher is not present,"
+		    echo " then running PtinyOS demos will fail to run."
+                fi		    
+            fi
 	    javaflag="\"-Dptolemy.ptII.tosroot=$TOSROOT\" \"-Dptolemy.ptII.tosdir=$TOSDIR\" $ALL_JFLAG"
 	else    
-	    javaflag="$ALL_JFLAG"
+	    if [ "$1" = "-jni" -a -x "$PTII/jni/launcher/launcher" -a "`uname -s`" != "Linux" ]; then
+		javac="$PTII/jni/launcher/launcher"
+		javaflag="$ALL_JFLAG -Djava.class.path=\"$CLASSPATH\""
+		javastartupclass=ptolemy/vergil/VergilApplication
+		classpatharg=-Djava.class.path=
+	    else
+		javaflag="$ALL_JFLAG"
+	    fi	
 	fi	    
 	javasourcedir=ptolemy/vergil
 	jarfile="$ALL_JAR${SINGLE_WINDOW_JARS}"
@@ -1076,7 +1111,7 @@ if [ "$error" = "none" ]; then
     else
     # If JAVAHOME has spaces in it, we need to jump through hoops
     # Use double quotes around ptflag to handle the case where PTII=c:\\ptII
-	str="\"$javac\" $jdbflags $javaflag $ptflag $localeflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
+	str="\"$javac\" $jdbflags $javaflag $ptflag $localeflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND $classpatharg\"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
     fi 
     if [ "$quiet" = "0" ]; then echo $str; fi
     

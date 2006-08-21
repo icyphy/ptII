@@ -77,7 +77,17 @@ EXTRA_SRCS =	\
 # want make checkjunk to barf on them.
 MISC_FILES =	alljtests.tcl \
 	alljsimpletests.tcl \
-	CompositeActorApplication.tcl
+	CompositeActorApplication.tcl \
+	'SimpleTableau$$Factory.class' \
+	'SimpleTableau$$TopFactory.class' \
+	badMoML.moml \
+	hideNameTestModel.xml \
+	hideNameTestSinewave.xml \
+	model.xml \
+	testCheckModelSize.xml \
+	testConfiguration.xml \
+	testDemos.htm \
+	testSingleton.xml
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

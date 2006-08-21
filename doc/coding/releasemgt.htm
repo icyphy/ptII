@@ -97,12 +97,15 @@ and the most recent <code>src.ex</code> file in
 <li> Run <a href="../../util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> on the java files and fix problems
 <br>Shortcut: Run it only the most recent files added
 
-<br>Create a list of java files with:
+<br>Create a list of java files by
+either running 
 <pre>
-# Then, either run "make cleanDerivedJavaFiles", or remove
-# the files by hand:
-#
-# Remove files created by JavaCC 
+
+cd $PTII
+make cleanDerivedJavaFiles
+</pre>
+Or removing the files by hand:
+<pre>
 cd $PTII/ptolemy/data/expr
 rm `make echo_OPTIONAL_JSRCS`
 cd $PTII/ptolemy/data/unit

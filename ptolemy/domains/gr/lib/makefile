@@ -122,6 +122,9 @@ MISC_FILES = 	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	quicktime \
+	'IconViewScreen3D$$CapturingCanvas3D.class' \
+	'ViewScreen2D$$ViewScreen2DListener.class'\
+	'ViewScreen3D$$MouseRotateView.class' \
 	'KeyInput3D$$_React.class' \
 	'MouseInput3D$$_React.class' \
 	'KeyInput3D$$1.class' \

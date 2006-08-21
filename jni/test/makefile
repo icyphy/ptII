@@ -71,6 +71,9 @@ MISC_FILES =	$(DIRS) \
 	meaningOfLife.h \
 	meaningOfLife.xml \
 	sizeof.c \
+	Streaming.c \
+	Streaming.h \
+	Streaming.xml \
 	testDeux.c \
 	testDeux.h \
 	testDeux.xml \

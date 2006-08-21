@@ -71,6 +71,8 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'EntityTreeModel$$1.class' \
 	'EntityTreeModel$$TreeUpdateListener.class' \
+	'EntityTreeModel$$TreeUpdateListener$$1.class' \
+	'PTree$$PTreeDragGestureListener$$1.class' \
 	'PTree$$1.class' \
 	'PTree$$DesignTreeDragGestureListener.class' \
 	'PTree$$PTreeDragGestureListener.class' \

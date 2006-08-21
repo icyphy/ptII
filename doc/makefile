@@ -102,6 +102,7 @@ EXTRA_SRCS = \
 	doctoc.htm \
 	domainCompatibility.htm \
 	domains.htm \
+	findbugs-exclude.xml \
 	footer.htm \
 	help.htm \
 	hyVisualHtml.awk \
@@ -449,7 +450,12 @@ KRUFT = \
 	codeDoc.jar \
 	codeDocHyVisual.jar \
 	codeDocVisualSense.jar \
-	docConfig.jar
+	codeDocViptos.jar \
+	docConfig.jar \
+	findbugs.htm \
+	findbugs.xml \
+	ptII.fb
+
 
 all: suball whatsnew.htm whatsnewVergil.htm
 	@echo "   To build the javadoc and actor indexes for the full version,"
@@ -855,7 +861,7 @@ findbugs: findbugs.htm findbugs.xml
 ptII.fb:
 	echo "[Jar files]" > ptII.fb
 	echo "[Source dirs]" >> ptII.fb
-	echo $(PTII) >> ptII.fb
+	echo "$(PTII)" >> ptII.fb
 	echo "[Aux classpath entries]" >> ptII.fb
 	for file in `ls $(PTII)/lib/*.jar`; do \
 	echo "$$file" >> ptII.fb; \

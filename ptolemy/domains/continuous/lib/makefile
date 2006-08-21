@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	DiscreteClock.java \
+	EventSource.java \
 	Integrator.java 
 
 OTHER_FILES_TO_BE_JARED = \

@@ -67,7 +67,9 @@ OPTIONAL_FILES = \
 	'Polygon2D$$Double.class' \
 	'Polygon2D$$Float.class' \
 	'Polyline2D$$Double.class' \
-	'Polyline2D$$Float.class'
+	'Polyline2D$$Float.class' \
+	'SVGPaintedObject$$1.class' \
+	'SVGPaintedObject$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -64,6 +64,8 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'HierarchicalStateController$$AddRefinementAction$$1.class' \
+	'ModalTransitionController$$AddRefinementAction$$1.class' \
 	'HierarchicalStateController$$1.class' \
 	'HierarchicalStateController$$AddRefinementAction.class' \
 	'HierarchicalStateController$$RemoveRefinementAction.class' \

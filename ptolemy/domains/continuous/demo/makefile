@@ -34,7 +34,7 @@ ME =		ptolemy/domains/continuous/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		Integration
+DIRS =		Integration Lorenz Sinusoid Switch
 
 CLASSPATH =	$(ROOT)
 

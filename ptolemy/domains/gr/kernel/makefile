@@ -68,6 +68,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'Scene2DToken$$Scene2DType.class' \
+	'SceneGraphToken$$SceneGraphType.class' \
 	'GRDirector$$1.class' \
 	'GRDirector$$_DD3DActor.class' \
 	'GRDirector$$_GRActor.class' \

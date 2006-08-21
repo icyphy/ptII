@@ -95,6 +95,19 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'ActorGraphModel$$LinkModel$$1.class' \
+	'ActorGraphModel$$LinkModel$$2.class' \
+	'DocBuilderEffigy$$Factory.class DocBuilderGUI$$1.class' \
+	'DocBuilderGUI$$2.class DocBuilderGUI$$3.class' \
+	'DocBuilderGUI$$4.class DocBuilderTableau$$Factory.class' \
+	'DocViewer$$BuildMenuListener.class' \
+	'ExternalIOPortController$$PortRenderer$$1.class' \
+	'ExternalIOPortController$$PortRenderer$$2.class' \
+	'FindPackages$$1.class' \
+	'FindPackages$$ClassFileFilter.class' \
+	'FindPackages$$DirectoryFileFilter.class' \
+	'IOPortController$$EntityPortRenderer$$1.class' \
+	'IOPortController$$EntityPortRenderer$$2.class' \
 	'ActorController$$1.class' \
 	'ActorController$$DebugListenerAction.class' \
 	'ActorController$$EntityLayout.class' \

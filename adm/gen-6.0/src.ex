@@ -59,6 +59,7 @@ bin/tiniconverter
 brass
 collections
 com/microstar/xml/driver
+com/microstar/xml/SAXDriver.*
 config/*.class
 config/*.jar
 config.cache
@@ -67,6 +68,7 @@ config.status
 core
 core.*
 core.[0-9]*
+diva/build.xml
 doc/design/src
 doc/design/html
 doc/doccheck
@@ -76,6 +78,7 @@ doc/uml/*
 doc/img/*.psd
 java.hprof.txt
 jsdatabase
+jni/launcher/launcher.exe
 jni/test/jni
 junk
 lib/cachedir

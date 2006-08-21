@@ -63,6 +63,11 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'GeneratorTableau$$GeneratorFrame$$1.class' \
+	'GeneratorTableau$$GeneratorFrame$$2.class' \
+	'GeneratorTableau$$GeneratorFrame$$3.class' \
+	'GeneratorTableau$$GeneratorFrame$$4.class' \
+	'GeneratorTableau$$GeneratorFrame$$5.class' \
 	'GeneratorTableau$$1.class' \
 	'GeneratorTableau$$2.class' \
 	'GeneratorTableau$$3.class' \

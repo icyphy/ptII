@@ -210,6 +210,13 @@ Simple:
 	@echo "The generated source files are Simple.c, Simple.i.h, and "
 	@echo "Simple.h. The resulting object file is Simple.o"
 
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	DataItem.class \
+	'InnerField$$Inner.class' \
+	'InnerLocal$$1Inner.class'
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 

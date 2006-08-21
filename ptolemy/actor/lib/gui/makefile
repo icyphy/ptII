@@ -83,6 +83,14 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'ArrowKeySensor$$MyFrame$$1.class' \
+	'ArrowKeySensor$$MyFrame$$2.class' \
+	'ArrowKeySensor$$MyFrame$$3.class' \
+	'ArrowKeySensor$$MyFrame$$4.class' \
+	'ArrowKeySensor$$MyFrame$$5.class' \
+	'ArrowKeySensor$$MyFrame$$6.class' \
+	'ArrowKeySensor$$MyFrame$$7.class' \
+	'ArrowKeySensor$$MyFrame$$8.class' \
 	'ArrowKeySensor$$1.class' \
 	'ArrowKeySensor$$2.class' \
 	'ArrowKeySensor$$3.class' \

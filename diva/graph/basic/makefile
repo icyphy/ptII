@@ -81,6 +81,8 @@ OPTIONAL_FILES = \
 	'BasicGraphModel$$BasicEdge.class' \
 	'BasicGraphModel$$BasicNode.class' \
 	'BasicGraphModel$$Intermediate.class' \
+	'BasicGraphModel$$BasicNode$$1.class' \
+	'BasicGraphModel$$BasicNode$$2.class' \
 	'BasicLayoutTarget$$1.class' \
 	'BasicLayoutTarget$$2.class' \
 	'BasicLayoutTarget$$3.class' \

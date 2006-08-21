@@ -166,7 +166,15 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'Configurer$$2$$1.class' \
+	'JVMTableau$$JVMFrame$$1.class' \
+	'PortConfigurerDialog$$ValidatingComboBoxCellEditor$$1.class' \
+	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor$$1.class' \
+	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor$$2.class' \
+	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor$3.class' \
+	'UserActorLibrary$$1.class' \
 	'BrowserEffigy$$Factory.class' \
+	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor$$3.class' \
 	'BrowserTableau$$Factory.class' \
 	'CompositeActorApplication$$1.class' \
 	'CompositeActorApplication$$StateReporter.class' \

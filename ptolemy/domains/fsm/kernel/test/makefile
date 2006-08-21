@@ -49,16 +49,17 @@ JSRCS = \
         AlternatingSimulation.java \
         CombineInternalTransitions.java \
         Compose.java \
-		DeadlockStates.java \
+	DeadlockStates.java \
         GetInfo.java \
-		Project.java \
-		ZeroOneSource.java
+	Project.java \
+	ZeroOneSource.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	FSMActor.tcl \
 	FSM-ConstVariableModelAnalysis.tcl \
 	FSMDirector.tcl \
+	HSDirector.tcl \
 	State.tcl \
 	Transition.tcl
 

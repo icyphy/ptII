@@ -93,6 +93,7 @@ OPTIONAL_FILES = \
 	'CollisionDetector$$Reception.class' \
 	'DelayChannel$$1.class' \
 	'DelayChannel$$Reception.class' \
+	'LinkVisualizer$$1.class' \
 	'NodeRandomizer$$1.class' \
 	'TerrainProperty$$1.class'
 

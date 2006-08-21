@@ -86,7 +86,9 @@ OPTIONAL_FILES = \
 	'LocalZenoApplet$$LocalEdgeRenderer.class' \
 	'LocalZenoApplet$$LocalZenoGraphController.class' \
 	'LocalZenoApplet$$StateListener.class' \
+	'LocalZenoApplet$$StateListener$$1.class' \
 	'LocalZenoApplet$$ThreadRenderer.class'
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 

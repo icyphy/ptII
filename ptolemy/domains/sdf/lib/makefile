@@ -119,6 +119,8 @@ OPTIONAL_FILES = \
 	'Autocorrelation$$FunctionTerm.class' \
 	'DotProduct$$1.class' \
 	'DotProduct$$PortFunction.class' \
+	'FIR$$1.class' \
+	'FIR$$OutputTypeFunction.class' \
 	'MatrixToSequence$$1.class' \
 	'MatrixToSequence$$FunctionTerm.class' \
 	'SequenceToMatrix$$1.class' \

@@ -100,6 +100,7 @@ EXTRA_SRCS = \
 	copyright.txt \
 	configure.in \
 	configure \
+	plugin.xml \
 	vergil.jnlp.in \
 	vergilDSP.jnlp.in \
 	vergilHyVisual.jnlp.in \
@@ -211,18 +212,46 @@ update:
 cleanDerivedJavaFiles:
 	(cd $(PTII)/ptolemy/data/expr; rm -f `make -s echo_OPTIONAL_JSRCS`)
 	(cd $(PTII)/ptolemy/data/unit; rm -f `make -s echo_OPTIONAL_JSRCS`)
-	(cd $(PTII)/ptolemy/copernicus/kernel/fragment; rm -f `make -s echo_OPTIONAL_JSRCS`)
+	-(cd $(PTII)/ptolemy/copernicus/kernel/fragment; rm -f `make -s echo_OPTIONAL_JSRCS`)
 	rm -rf vendors apps
 	rm -rf ptolemy/domains/ct/demo/Corba/util/*.java
 
 clean_shipping:
-	rm -rf ptolemy/apps ptolemy/actor/lib/ptp \
+	rm -rf com/microstar/xml/SAXDriver.* \
+		diva/build.xml \
+		diva/canvas/tutorial/doc-files \
+		doc/img/PtolemyIICD.ec3 \
+		jni/launcher/launcher.exe \
+		ptolemy/apps ptolemy/actor/lib/ptp \
 		ptolemy/actor/lib/gui/KeystrokeSensor* \
 		ptolemy/actor/lib/python/demo/HelloWorld \
 		ptolemy/actor/lib/python/demo/NotifyFailedTest \
+		ptolemy/actor/ptalon \
+		ptolemy/backtrack \
 		ptolemy/copernicus/jhdl \
-		ptolemy/domains/cont ptolemy/domains/fairdf \
-		ptolemy/domains/fp ptolemy/domains/pdf
+		ptolemy/copernicus/kernel/fragment \
+		ptolemy/domains/cont \
+		ptolemy/domains/csp/demo/DiningPhilosophers/checkDeadlock \
+		ptolemy/domains/ct/lib/IPCInterface.class \
+		ptolemy/domains/ct/lib/IPCInterface.java \
+		ptolemy/domains/dde/kernel/test/test.tcl \
+		ptolemy/domains/fairdf \
+		ptolemy/domains/fp ptolemy/domains/pdf \
+		ptolemy/domains/gr/lib/Loader3D.* \
+		ptolemy/domains/gr/lib/experimental \
+		ptolemy/domains/tm/lib/PeriodicTrigger* \
+		ptolemy/domains/wireless/demo/Network \
+		ptolemy/domains/wireless/lib/network \
+		ptolemy/domains/wireless/lib/tinyOS \
+		ptolemy/matlab/ptmatlab.dll \
+		ptolemy/matlab/ptmatlab.exp \
+		ptolemy/matlab/ptmatlab.h \
+		ptolemy/matlab/ptmatlab.lib \
+		ptolemy/matlab/ptmatlab.obj \
+		ptolemy/moml/filter/test/testModels.txt \
+		ptolemy/moml/filter/test/testNamedObjs.txt \
+		ptolemy/ptalon \
+		ptolemy/ptp
 
 # Include rules to build Web Start JNLP files
 include $(ROOT)/mk/jnlp.mk

@@ -90,6 +90,7 @@ OPTIONAL_FILES = \
 	doc \
 	TwoPlotExample.class \
 	'TwoPlotExample$$1.class' \
+	'PlotLiveDemo$$1$$1.class' \
 	'PlotLiveDemo$$1.class' \
 	'PlotLiveDemo$$2.class'
 

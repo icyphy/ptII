@@ -75,6 +75,7 @@ OPTIONAL_FILES = \
 	'BusContentionApplet$$LayoutListener.class' \
 	'BusContentionApplet$$LocalEdgeRenderer.class' \
 	'BusContentionApplet$$StateListener.class' \
+	'BusContentionApplet$$StateListener$$1.class' \
 	'BusContentionApplet$$ThreadRenderer.class' \
 	'ExecEvent$$1.class' \
 	'ExecEvent$$ExecEventType.class'

@@ -51,6 +51,7 @@ JSRCS =
 EXTRA_SRCS =	$(JSRCS) \
 	jsk-all.policy \
 	start-transient-jeri-services.config \
+	start-transient-jeri-services-local.config \
 	transient-reggie.config 
 
 # Sources that may or may not be present, but if they are present, we don't
