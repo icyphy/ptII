@@ -137,6 +137,12 @@ cat /tmp/f | egrep '*.htm' | xargs $PTII/adm/bin/addtrailingnl -n
 cat /tmp/f | egrep '*.tcl' | xargs $PTII/adm/bin/addtrailingnl -n
 cat /tmp/f | egrep '*.xml' | xargs $PTII/adm/bin/addtrailingnl -n
 </pre>
+
+<li> Fix common problems in java files:
+<pre>
+cat /tmp/j | xargs $PTII/adm/bin/fix-files -n
+</pre>
+
 <li> On a Unix box, check for files with control-Ms:
 <pre>
 cat /tmp/f | xargs $PTII/util/testsuite/controlm
