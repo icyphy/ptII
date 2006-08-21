@@ -1,6 +1,6 @@
 /* The base type of matrix token classes.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -59,7 +59,7 @@ import ptolemy.math.FixPoint;
 
  @author Steve Neuendorffer and Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red
  */

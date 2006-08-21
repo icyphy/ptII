@@ -54,7 +54,7 @@ import ptolemy.util.StringUtilities;
 
  @author Christopher Brooks, based on work by Steve Neuendorffer, Edward A. Lee, Contributor: Chad Berkeley (Kepler)
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (neuendor)
  */
@@ -270,7 +270,7 @@ public class UserActorLibrary {
      *  @exception IOException if the user library cannot be found.
      *  @exception IllegalActionException If there is a problem creating
      *  the entity in the library.
-     *  @since Ptolemy 2.1
+     *  @since Ptolemy II 5.2
      */
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) throws IOException, IllegalActionException {

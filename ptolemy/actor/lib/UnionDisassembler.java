@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Yang Zhao
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (ellen_zh)
  @Pt.AcceptedRating Red (cxh)
  @see RecordAssembler

@@ -1,6 +1,6 @@
 /* A transformer that unboxes tokens
 
- Copyright (c) 2001-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -125,7 +125,7 @@ import soot.toolkits.scalar.UnusedLocalEliminator;
 
  @author Stephen Neuendorffer
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
@@ -199,19 +199,19 @@ public class PtolemyTypeRemover extends SceneTransformer
 
                 if (unit instanceof AssignStmt ) {
                     AssignStmt stmt = (AssignStmt) unit;
-                    if(stmt.getRightOp() instanceof ArrayRef &&
+                    if (stmt.getRightOp() instanceof ArrayRef &&
                             PtolemyUtilities.isTypeType(
                                     stmt.getRightOp().getType())) {
                         stmt.getRightOpBox().setValue(NullConstant.v());
-                    } else if((stmt.getRightOp() instanceof InstanceFieldRef ||
+                    } else if ((stmt.getRightOp() instanceof InstanceFieldRef ||
                             stmt.getRightOp() instanceof StaticFieldRef) &&
                             PtolemyUtilities.isTypeType(
                                     stmt.getRightOp().getType())) {
                         stmt.getRightOpBox().setValue(NullConstant.v());
-                    } else if(stmt.getLeftOp() instanceof ArrayRef &&
+                    } else if (stmt.getLeftOp() instanceof ArrayRef &&
                             PtolemyUtilities.isTypeType(stmt.getRightOp().getType())) {
                         body.getUnits().remove(stmt);
-                    } else if((stmt.getRightOp() instanceof NewExpr ||
+                    } else if ((stmt.getRightOp() instanceof NewExpr ||
                             stmt.getRightOp() instanceof NewArrayExpr ||
                             stmt.getRightOp() instanceof NewMultiArrayExpr) &&
                             PtolemyUtilities.isTypeType(

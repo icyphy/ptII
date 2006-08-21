@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

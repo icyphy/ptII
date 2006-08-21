@@ -121,7 +121,7 @@ public class DocViewer extends HTMLViewer {
     /** Construct a documentation viewer for the specified class name.
      *  @param className The class name to get documentation for.
      *  @param configuration The configuration in charge of this viewer.
-     *  @throws ClassNotFoundException If the class cannot be found.
+     *  @exception ClassNotFoundException If the class cannot be found.
      */
     public DocViewer(String className, Configuration configuration)
             throws ClassNotFoundException {
@@ -235,8 +235,8 @@ public class DocViewer extends HTMLViewer {
      * @param container The container of the sample instance.
      * @param graphPane The graph pane in which it is displayed.
      * @param jgraph The jgraph.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     private void _adjustIconDisplay(final NamedObj sample,
             final CompositeEntity container, final GraphPane graphPane,

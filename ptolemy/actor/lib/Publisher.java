@@ -1,6 +1,6 @@
 /* A publisher that transparently tunnels messages to subscribers.
 
- Copyright (c) 2003-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -76,7 +76,7 @@ import ptolemy.kernel.util.NamedObj;
  
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

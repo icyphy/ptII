@@ -1,6 +1,6 @@
 /* Utility that checks the size of a model.
 
- Copyright (c) 2004-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -49,7 +49,7 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
  Class that checks the size, zoom, and location of a model.
  @author Rowland R Johnson
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (rowland)
  @Pt.AcceptedRating Red (rowland)
  */

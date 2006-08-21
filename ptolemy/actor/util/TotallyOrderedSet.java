@@ -1,6 +1,6 @@
 /* An object of this class is a totally ordered set.
 
- Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,7 +48,7 @@ import java.util.List;
 
  @author  Jie Liu, Haiyang Zheng
  @version $Id$
- @since Ptolemy II 0.2
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (hyzheng)
  */

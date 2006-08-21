@@ -38,7 +38,7 @@ import ptolemy.util.ExecuteCommands;
 /** Look for class files under a directory and return package names.
  *  @author Christopher Brooks
  *  @version $Id$
- *  @since Ptolemy II 6.0
+ *  @since Ptolemy II 5.2
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */

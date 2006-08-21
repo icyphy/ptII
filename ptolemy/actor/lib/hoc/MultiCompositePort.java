@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
  @see MultiCompositeActor
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (liuxj)
  */

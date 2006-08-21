@@ -1,6 +1,6 @@
 /** A token that contains a FixPoint number.
 
- Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -45,7 +45,7 @@ import ptolemy.math.FixPoint;
  @author Steve Neuendorffer
  @see ptolemy.data.FixToken
  @version $Id$
- @since Ptolemy II 0.4
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Yellow (neuendor)
  @Pt.AcceptedRating Yellow (neuendor)
  */

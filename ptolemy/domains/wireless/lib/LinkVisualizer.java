@@ -63,7 +63,7 @@ import ptolemy.vergil.kernel.attributes.LineAttribute;
 
  @author Heather Taylor
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (htaylor)
  @Pt.AcceptedRating Red (htaylor)
  */

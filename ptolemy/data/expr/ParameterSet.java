@@ -74,6 +74,7 @@ import ptolemy.util.StringUtilities;
 
  @author Christopher Brooks, contributor: Edward A. Lee
  @version $Id$
+@since Ptolemy II 5.2
  @see ptolemy.data.expr.Variable
  */
 public class ParameterSet extends ScopeExtendingAttribute {
@@ -123,7 +124,7 @@ public class ParameterSet extends ScopeExtendingAttribute {
     /** If the parameter is <i>fileOrURL</i>, and the specified file
      *  name is not null, then open and read the file.
      *  @param attribute The attribute that changed.
-     *  @throws IllegalActionException If the superclass throws it, or
+     *  @exception IllegalActionException If the superclass throws it, or
      *   if the file cannot be read, or if the file parameters cannot
      *   be evaluated.
      */

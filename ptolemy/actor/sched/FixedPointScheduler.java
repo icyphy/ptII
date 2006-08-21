@@ -1,6 +1,6 @@
 /* A scheduler for fixed point directors.
 
- Copyright (c) 2000-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -63,7 +63,7 @@ import ptolemy.kernel.util.Nameable;
  
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (reviewModerator)
  */

@@ -1,6 +1,6 @@
 /* An actor that outputs a random sequence with a triangular distribution.
 
- Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Raymond A. Cardillo
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  @see ptolemy.actor.lib.Bernoulli

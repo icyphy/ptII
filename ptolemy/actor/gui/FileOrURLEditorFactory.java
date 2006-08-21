@@ -56,7 +56,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Christopher Brooks, based on AnnotationEditorFactory by Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
