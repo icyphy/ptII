@@ -62,7 +62,10 @@ EXTRA_SRCS = \
 	NewtonsCradle.htm \
 	NewtonsCradleComplicated.htm \
 	NewtonsCradleNondeterministic.htm \
-	NewtonsCradleAnimated.htm
+	NewtonsCradleAnimated.htm \
+	NewtonsCradlePerfectlyInelastic1.htm \
+	ParameterizedNewtonsCradleAnimated.htm \
+	ParameterizedNewtonsCradleAnimatedNondeterministic.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
