@@ -84,8 +84,8 @@ public class ImageToString extends Transformer {
             if (input.hasToken(i)) {
                 ImageToken imageToken = (ImageToken) input.get(i);
                 Image image = imageToken.asAWTImage();
-                String description = new String("Image: "
-                        + image.getWidth(null) + " x " + image.getHeight(null));
+                String description = "Image: "
+                        + image.getWidth(null) + " x " + image.getHeight(null);
                 Token out = new StringToken(description);
                 output.broadcast(out);
             }

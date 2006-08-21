@@ -223,7 +223,7 @@ public class MoMLApplication implements ExecutionListener {
                     Thread waitThread = new Thread() {
                         public void run() {
                             waitForFinish();
-                            System.exit(0);
+                            StringUtilities.exit(0);
                         }
                     };
 
@@ -753,7 +753,7 @@ public class MoMLApplication implements ExecutionListener {
                             + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
-            System.exit(0);
+            StringUtilities.exit(0);
         } else if (arg.equals("")) {
             // Ignore blank argument.
         } else {

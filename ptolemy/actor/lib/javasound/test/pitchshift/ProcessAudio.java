@@ -145,7 +145,7 @@ public class ProcessAudio implements Runnable {
             System.err.println(ex);
         }
 
-        double[][] capturedSamplesArray = new double[channels][getSamplesSize];
+        double[][] capturedSamplesArray /* Avoid Dead Store: = new double[channels][getSamplesSize] */;
 
         // Initialize the pitch detector.
         int vectorSize = getSamplesSize * channels;

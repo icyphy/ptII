@@ -162,7 +162,7 @@ public class XmlWriter extends LoggableOp {
         while (notationNames.hasMoreElements()) {
             nname = (String) notationNames.nextElement();
             extId = makeExternalIdentifiers(_parser.getNotationPublicId(nname),
-                    _parser.getNotationSystemId(nname).toString());
+                    _parser.getNotationSystemId(nname));
             out.write("<!NOTATION " + nname + +' ' + extId + ">\n");
         }
     }
@@ -199,7 +199,7 @@ public class XmlWriter extends LoggableOp {
             case XmlParser.ENTITY_NDATA:
                 value = makeExternalIdentifiers(_parser
                         .getEntityPublicId(ename), _parser.getEntitySystemId(
-                        ename).toString())
+                        ename))
                         + "NDATA " + _parser.getEntityNotationName(ename);
                 break;
 

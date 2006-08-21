@@ -283,7 +283,7 @@ class CSpec {
     char[] m_type_name = { 'Y', 'y', 't', 'o', 'k', 'e', 'n' };
 
     /* Lexical Generator. */
-    private CLexGen m_lexGen;
+    //private CLexGen m_lexGen;
 
     /***************************************************************
      Constants
@@ -299,7 +299,7 @@ class CSpec {
      Description: Constructor.
      **************************************************************/
     CSpec(CLexGen lexGen) {
-        m_lexGen = lexGen;
+        //m_lexGen = lexGen;
 
         /* Initialize regular expression token variables. */
         m_current_token = CLexGen.EOS;
@@ -309,7 +309,7 @@ class CSpec {
 
         /* Initialize hashtable for lexer states. */
         m_states = new Hashtable();
-        m_states.put(new String("YYINITIAL"), new Integer(m_states.size()));
+        m_states.put("YYINITIAL", new Integer(m_states.size()));
 
         /* Initialize hashtable for lexical macros. */
         m_macros = new Hashtable();
@@ -392,7 +392,7 @@ class CEmit {
      **************************************************************/
 
     //private final boolean EDBG = true;
-    private final boolean NOT_EDBG = false;
+    private static final boolean NOT_EDBG = false;
 
     /***************************************************************
      Function: CEmit
@@ -2660,6 +2660,7 @@ class CNfa2Dfa {
 
     private int m_unmarked_dfa;
 
+    // m_lexGen is used in debugging.
     private CLexGen m_lexGen;
 
     /***************************************************************
@@ -2679,7 +2680,7 @@ class CNfa2Dfa {
      Description:
      **************************************************************/
     private void set(CLexGen lexGen, CSpec spec) {
-        m_lexGen = lexGen;
+        //m_lexGen = lexGen;
         m_spec = spec;
         m_unmarked_dfa = 0;
     }
@@ -2689,7 +2690,7 @@ class CNfa2Dfa {
      Description:
      **************************************************************/
     private void reset() {
-        m_lexGen = null;
+        //m_lexGen = null;
         m_spec = null;
         m_unmarked_dfa = 0;
     }
@@ -3290,7 +3291,7 @@ class CDfa {
     /***************************************************************
      Member Variables
      ***********************************************************/
-    int m_group;
+    //int m_group;
 
     boolean m_mark;
 
@@ -3308,7 +3309,7 @@ class CDfa {
      Function: CDfa
      **************************************************************/
     CDfa(int label) {
-        m_group = 0;
+        //m_group = 0;
         m_mark = false;
 
         m_accept = null;
@@ -3391,16 +3392,16 @@ class CAcceptAnchor {
     /***************************************************************
      Member Variables
      **************************************************************/
-    CAccept m_accept;
+    //CAccept m_accept;
 
-    int m_anchor;
+    //int m_anchor;
 
     /***************************************************************
      Function: CAcceptAnchor
      **************************************************************/
     CAcceptAnchor() {
-        m_accept = null;
-        m_anchor = CSpec.NONE;
+        //m_accept = null;
+        //m_anchor = CSpec.NONE;
     }
 }
 
@@ -4480,19 +4481,19 @@ class CLexGen {
         return buffer;
     }
 
-    private final int CLASS_CODE = 0;
+    private static final int CLASS_CODE = 0;
 
-    private final int INIT_CODE = 1;
+    private static final int INIT_CODE = 1;
 
-    private final int EOF_CODE = 2;
+    private static final int EOF_CODE = 2;
 
-    private final int INIT_THROW_CODE = 3;
+    private static final int INIT_THROW_CODE = 3;
 
-    private final int YYLEX_THROW_CODE = 4;
+    private static final int YYLEX_THROW_CODE = 4;
 
-    private final int EOF_THROW_CODE = 5;
+    private static final int EOF_THROW_CODE = 5;
 
-    private final int EOF_VALUE_CODE = 6;
+    private static final int EOF_VALUE_CODE = 6;
 
     /***************************************************************
      Function: packCode
@@ -5053,7 +5054,7 @@ class CLexGen {
         int index;
 
         if (null == state) {
-            return (new String("--"));
+            return "--";
         }
 
         index = m_spec.m_nfa_states.indexOf(state);
@@ -5068,22 +5069,22 @@ class CLexGen {
     private String interp_int(int i) {
         switch (i) {
         case '\b':
-            return (new String("\\b"));
+            return "\\b";
 
         case '\t':
-            return (new String("\\t"));
+            return "\\t";
 
         case '\n':
-            return (new String("\\n"));
+            return "\\n";
 
         case '\f':
-            return (new String("\\f"));
+            return "\\f";
 
         case '\r':
-            return (new String("\\r"));
+            return "\\r";
 
         case ' ':
-            return (new String("\\ "));
+            return "\\ ";
 
         default:
             return ((new Character((char) i)).toString());

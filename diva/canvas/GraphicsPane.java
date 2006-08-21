@@ -27,6 +27,7 @@
 package diva.canvas;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import diva.canvas.event.EventLayer;
 
@@ -185,7 +186,10 @@ public class GraphicsPane extends CanvasPane {
                 return cursor < _layers.length;
             }
 
-            public Object next() {
+            public Object next() throws NoSuchElementException {
+                if (cursor > _layers.length) {
+                    throw new NoSuchElementException();
+                }
                 return _layers[cursor++];
             }
 
@@ -207,7 +211,10 @@ public class GraphicsPane extends CanvasPane {
                 return cursor >= 0;
             }
 
-            public Object next() {
+            public Object next() throws NoSuchElementException {
+                if (cursor < 0) {
+                    throw new NoSuchElementException();
+                }
                 return _layers[cursor--];
             }
 

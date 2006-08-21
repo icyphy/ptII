@@ -109,8 +109,9 @@ public class Effigy extends CompositeEntity {
             identifier = new StringAttribute(this, "identifier");
             identifier.setExpression("Unnamed");
             uri = new URIAttribute(this, "uri");
-        } catch (Exception ex) {
-            throw new InternalErrorException("Can't create identifier!");
+        } catch (Throwable throwable) {
+            throw new InternalErrorException(this, throwable,
+                    "Can't create identifier!");
         }
     }
 

@@ -318,7 +318,7 @@ public class ConvolutionalCoder extends Transformer {
 
         // Compute the parities for all polynomials respectively.
         BooleanToken[] result = new BooleanToken[_maskNumber];
-        int[] parity = new int[_maskNumber];
+        int[] parity; /*= new int[_maskNumber];*/
         parity = _calculateParity(_mask, _maskNumber, reg);
 
         // Send the parity results to the output.

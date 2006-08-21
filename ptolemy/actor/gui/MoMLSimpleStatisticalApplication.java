@@ -175,7 +175,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                             + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
-            System.exit(0);
+            StringUtilities.exit(0);
         } else if (arg.equals("")) {
             // Ignore blank argument.
         } else {

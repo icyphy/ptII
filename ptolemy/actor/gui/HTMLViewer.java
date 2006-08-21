@@ -440,7 +440,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
             Field propertyField = swingUtilities
                     .getDeclaredField("AA_TEXT_PROPERTY_KEY");
             pane.putClientProperty(propertyField.get(null), Boolean.TRUE);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             // Ignore, we just wont have anti-aliased fonts then.
         }
 

@@ -1211,7 +1211,8 @@ public class PtolemyPlatform implements Platform {
 
         public Object toJavaObject(Object o) {
             if (o instanceof BooleanToken) {
-                return new Boolean(booleanValue(o));
+                //return new Boolean(booleanValue(o));
+                return Boolean.valueOf(booleanValue(o));
             } else if (o instanceof DoubleToken) {
                 return new Double(realValue(o));
             } else if (o instanceof IntToken) {

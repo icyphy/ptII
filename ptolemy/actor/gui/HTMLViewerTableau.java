@@ -238,7 +238,7 @@ public class HTMLViewerTableau extends Tableau {
                             effigy.uri.setURI(new URI(canonicalizedURL
                                     .toString()));
                             tableau.setTitle(canonicalizedURL.toString());
-                        } catch (Exception ex2) {
+                        } catch (Throwable ex2) {
                             throw ex;
                         }
                     }

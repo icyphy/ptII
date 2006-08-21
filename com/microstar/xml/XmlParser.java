@@ -5,6 +5,7 @@ package com.microstar.xml;
 
 import java.io.BufferedInputStream;
 import java.io.EOFException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
@@ -1813,7 +1814,7 @@ public class XmlParser {
             int lineAugment = 0;
             int columnAugment = 0;
 
-            loop: for (int i = readBufferPos; i < readBufferLength; i++) {
+            /*loop:*/ for (int i = readBufferPos; i < readBufferLength; i++) {
                 switch (readBuffer[i]) {
                 case '\n':
                     lineAugment++;
@@ -2006,7 +2007,7 @@ public class XmlParser {
         nameBufferPos = 0;
 
         // Read the first character.
-        loop: while (true) {
+        /*loop: */ while (true) {
             c = readCh();
 
             switch (c) {
@@ -3302,7 +3303,13 @@ public class XmlParser {
         // Read the first four bytes for
         // autodetection.
         is.mark(4);
-        is.read(signature);
+        int bytesRead = is.read(signature);
+        if (bytesRead != signature.length) {
+            throw new IOException("Read only "
+                    + bytesRead + " bytes instead of "
+                    + signature.length);
+
+        }
         is.reset();
 
         // Look for a known signature.

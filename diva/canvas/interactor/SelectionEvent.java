@@ -26,6 +26,7 @@
 package diva.canvas.interactor;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import diva.util.IteratorAdapter;
 import diva.util.NullIterator;
@@ -91,7 +92,10 @@ public class SelectionEvent extends java.util.EventObject {
                     return (i < _added.length);
                 }
 
-                public Object next() {
+                public Object next() throws NoSuchElementException {
+                    if (i > _added.length) {
+                        throw new NoSuchElementException();
+                    }
                     return _added[i++];
                 }
             };
@@ -113,7 +117,10 @@ public class SelectionEvent extends java.util.EventObject {
                     return (i < _removed.length);
                 }
 
-                public Object next() {
+                public Object next() throws NoSuchElementException {
+                    if (i > _removed.length) {
+                        throw new NoSuchElementException();
+                    }
                     return _removed[i++];
                 }
             };

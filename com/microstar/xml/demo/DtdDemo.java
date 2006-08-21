@@ -135,7 +135,7 @@ public class DtdDemo extends XmlApp {
             case XmlParser.ENTITY_TEXT:
                 value = makeExternalIdentifiers(
                         parser.getEntityPublicId(ename), parser
-                                .getEntitySystemId(ename).toString());
+                                .getEntitySystemId(ename));
                 break;
             }
 

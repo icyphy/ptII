@@ -299,7 +299,7 @@ public class AudioReadBuffer extends Transformer {
         _audioBuffer = new double[length];
 
         // Read all of the samples into an array.
-        double[][] samples = new double[_channels][getSamplesArraySize];
+        double[][] samples /* Avoid Dead Store: = new double[_channels][getSamplesArraySize]*/;
         boolean done = false;
 
         for (int i = 0; i < length; i++) {
