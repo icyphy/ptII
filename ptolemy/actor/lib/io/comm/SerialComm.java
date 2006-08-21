@@ -413,7 +413,13 @@ public class SerialComm extends TypedAtomicActor implements
                     _debug("Reading bytes from the serial port: " + outputSize);
                 }
 
-                in.read(dataBytes, 0, outputSize);
+                int bytesRead = in.read(dataBytes, 0, outputSize);
+                // FindBugs asks us to check the return value of in.read().
+                if (bytesRead != outputSize) {
+                    throw new IllegalActionException(this, 
+                            "Read only " + bytesRead + " bytes, expecting"
+                            + outputSize + " bytes.");
+                }
 
                 Token[] dataTokens = new Token[outputSize];
 
