@@ -485,6 +485,48 @@ public class Configuration extends CompositeEntity {
         }
     }
 
+    /** Open the specified instance. If the instance already has
+     *  open tableaux, then put those in the foreground and
+     *  return the first one.  Otherwise, create a new tableau and if
+     *  necessary, a new effigy.  Unless there is a more natural container
+     *  for the effigy (e.g. it is a hierarchical model), then if a new
+     *  effigy is created, it is put into the directory of the configuration.
+     *  Any new tableau created will be contained by that effigy.
+     *  @param entity The entity to open.
+     *  @return The tableau that is created, or the first one found,
+     *   or null if none is created or found.
+     *  @exception IllegalActionException If constructing an effigy or tableau
+     *   fails.
+     *  @exception NameDuplicationException If a name conflict occurs (this
+     *   should not be thrown).
+     */
+    public Tableau openInstance(NamedObj entity) throws IllegalActionException,
+            NameDuplicationException {
+        return openInstance(entity, null);
+    }
+
+    /** Open the specified instance. If the instance already has
+     *  open tableaux, then put those in the foreground and
+     *  return the first one.  Otherwise, create a new tableau and,
+     *  if necessary, a new effigy. Unless there is a more natural
+     *  place for the effigy (e.g. it is a hierarchical model), then if a new
+     *  effigy is created, it is put into the <i>container</i> argument,
+     *  or if that is null, into the directory of the configuration.
+     *  Any new tableau created will be contained by that effigy.
+     *  @param entity The model.
+     *  @param container The container for any new effigy.
+     *  @return The tableau that is created, or the first one found,
+     *   or null if none is created or found.
+     *  @exception IllegalActionException If constructing an effigy or tableau
+     *   fails.
+     *  @exception NameDuplicationException If a name conflict occurs (this
+     *   should not be thrown).
+     */
+    public Tableau openInstance(NamedObj entity, CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        return _openModel(entity, container);
+    }
+
     /** Open the specified URL.
      *  If a model with the specified identifier is present in the directory,
      *  then find all the tableaux of that model and make them
