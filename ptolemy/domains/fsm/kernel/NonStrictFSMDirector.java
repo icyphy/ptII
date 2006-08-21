@@ -1,7 +1,7 @@
 /* This director extends FSMDirector by consuming only input tokens
  that are needed in the current state.
 
- Copyright (c) 2004-2005 The Regents of the University of California.
+ Copyright (c) 2004-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -321,7 +321,7 @@ public class NonStrictFSMDirector extends FSMDirector {
     /** Given a state, get a set of input ports referred in the guards of
      *  the preemptive transitions leaving that state.
      *  @param state The given state.
-     *  @throws IllegalActionException If there is no controller or
+     *  @exception IllegalActionException If there is no controller or
      *   if any guard expression is illegal.
      */
     public void getNonpreemptiveTransitionsReferredInputPorts(State state)
@@ -366,7 +366,7 @@ public class NonStrictFSMDirector extends FSMDirector {
     /** Given a state, get a set of input ports referred in the guards of
      *  the nonpreemptive transitions leaving that state.
      *  @param state The given state.
-     *  @throws IllegalActionException If there is no controller or
+     *  @exception IllegalActionException If there is no controller or
      *   if any guard expression is illegal.
      */
     public void getPreemptiveTransitionsReferredInputPorts(State state)
@@ -397,7 +397,7 @@ public class NonStrictFSMDirector extends FSMDirector {
     /** Given a state, get a set of input ports referred by the refinements
      *  of that state.
      * @param state The given state.
-     * @throws IllegalActionException If refinement with given name is not
+     * @exception IllegalActionException If refinement with given name is not
      *  found, or if the port rate does not contain a valid expression.
      */
     public void getRefinementReferredInputPorts(State state)
@@ -439,7 +439,7 @@ public class NonStrictFSMDirector extends FSMDirector {
     /** Given a transition, get a set of input ports referred in the set
      *  actions of that transition.
      *  @param transition The given transition.
-     *  @throws IllegalActionException If there is no controller or
+     *  @exception IllegalActionException If there is no controller or
      *   if any set action expression is illegal.
      */
     public void getSetActionsReferredInputPorts(Transition transition)

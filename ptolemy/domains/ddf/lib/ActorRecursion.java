@@ -1,6 +1,6 @@
 /* An actor that clones a composite actor containing itself into itself.
 
- Copyright (c) 2003-2005 The Regents of the University of California.
+ Copyright (c) 2003-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -383,7 +383,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *  an opaque output port, return the production rate for that receiver.
      *  @param receiver The receiver to get token consumption rate.
      *  @return The token consumption rate of the given receiver.
-     *  @throws IllegalActionException If any called method throws
+     *  @exception IllegalActionException If any called method throws
      *   IllegalActionException.
      */
     private int _getTokenConsumptionRate(Receiver receiver)

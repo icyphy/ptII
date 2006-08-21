@@ -1,6 +1,6 @@
 /* An atomic actor that filter an array via applying a model specified by a file or URL.
 
- Copyright (c) 2004-2005 The Regents of the University of California.
+ Copyright (c) 2004-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -429,7 +429,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
     /** Set the parameter "inputArrayElement" of the model to an element
      *  of the input array.
      *  @param t The element value.
-     *  @throws IllegalActionException If the model does not have a
+     *  @exception IllegalActionException If the model does not have a
      *   settable attribute named "inputArrayElement".
      */
     private void _updateParameter(Token t) throws IllegalActionException {
@@ -456,7 +456,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
 
     /** Retrieve the value of the parameter "evaluatedValue" of the model.
      *  @return The value of the "evaluatedValue" parameter.
-     *  @throws IllegalActionException If the model does not have a
+     *  @exception IllegalActionException If the model does not have a
      *   settable attribute named "evaluatedValue".
      */
     private boolean _getResult() throws IllegalActionException {

@@ -1,6 +1,6 @@
 /* A publisher that transparently tunnels messages to subscribers.
 
- Copyright (c) 2003-2005 The Regents of the University of California.
+ Copyright (c) 2003-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -221,7 +221,7 @@ public class Publisher extends TypedAtomicActor {
 
     /** Find subscribers.
      *  @return A list of subscribers.
-     *  @throws IllegalActionException If there is already a publisher
+     *  @exception IllegalActionException If there is already a publisher
      *   using the same channel.
      */
     private List _findSubscribers() throws IllegalActionException {

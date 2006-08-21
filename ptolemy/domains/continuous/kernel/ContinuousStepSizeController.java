@@ -1,6 +1,6 @@
 /* Interface for actors that control integration step sizes.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -108,7 +108,7 @@ public interface ContinuousStepSizeController {
      *  If the actor does not need a smaller step size, then
      *  this method should return the current step size.
      *  @return The suggested refined step size.
-     *  @throws IllegalActionException If the step size cannot be further refined.
+     *  @exception IllegalActionException If the step size cannot be further refined.
      */
     public double refinedStepSize() throws IllegalActionException;
 }
