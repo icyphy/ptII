@@ -92,7 +92,7 @@ public class PasswordAttribute extends StringParameter {
      */
     public void setPassword(char[] password) {
         // FindBugs: Don't incorporate reference to a mutable object.
-        char[] returnValue = new char[_password.length];
+        //char[] returnValue = new char[_password.length];
         for (int i = 0; i < _password.length; i++) {
             _password[i] = password[i];
         }
