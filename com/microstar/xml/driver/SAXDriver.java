@@ -523,7 +523,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
 
     public void setFeature(String name, boolean value) {
         // Not Yet Implemented
-        features.put(name, new Boolean(value));
+        features.put(name, Boolean.valueOf(value));
     }
 
     public Object getProperty(String name) {

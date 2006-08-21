@@ -2543,7 +2543,7 @@ public class PlotBox extends JPanel implements Printable {
         // If you modify this method, you should also modify write()
         // We convert the line to lower case so that the command
         // names are case insensitive.
-        String lcLine = new String(line.toLowerCase());
+        String lcLine = line.toLowerCase();
 
         if (lcLine.startsWith("#")) {
             // comment character

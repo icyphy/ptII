@@ -248,20 +248,20 @@ public class PropertyClassChanges implements MoMLFilter {
     private static HashMap _actorsWithPropertyClassChanges;
 
     // The the full name of the actor we are currently processing
-    private static String _currentActorFullName;
+    private String _currentActorFullName;
 
     // Set to true if we are currently processing an actor with parameter
     // class changes, set to false when we are done.
-    private static boolean _currentlyProcessingActorWithPropertyClassChanges = false;
+    private boolean _currentlyProcessingActorWithPropertyClassChanges = false;
 
     // Last "name" value seen, for use if we see a "class".
-    private static String _lastNameSeen;
+    private String _lastNameSeen;
 
     // The new class name for the property we are working on.
-    private static String _newClass;
+    private String _newClass;
 
     // Keep track of whether a change was found.
-    private static boolean _foundChange;
+    private boolean _foundChange;
 
     // Cache of map from old property names to new class names for
     // the actor we are working on.

@@ -330,7 +330,7 @@ public class JTreePane extends JSplitPane {
      * the selected pane's component.
      */
     public void setSelectedTitle(String title) {
-        if (title != _selectedTitle) { //(index >= 0) &&
+        if (title.equals(_selectedTitle)) { //(index >= 0) &&
             _selectedTitle = title;
             System.out.println("SELECTING: " + _selectedTitle);
 

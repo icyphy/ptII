@@ -173,7 +173,7 @@ public class AddIcon implements MoMLFilter {
     private static HashMap _actorsThatShouldHaveIcons;
 
     // The the full name of the actor we are currently processing
-    private static String _currentActorFullName;
+    private String _currentActorFullName;
 
     // Set to true if we are currently processing an actor that may
     // need _icon added, set to false when we are done.
@@ -181,10 +181,10 @@ public class AddIcon implements MoMLFilter {
 
     // The moml that we should substitute in if we need to add
     // an _icon
-    private static String _iconMoML;
+    private String _iconMoML;
 
     // Last "name" value seen, for use if we see a "class".
-    private static String _lastNameSeen;
+    private String _lastNameSeen;
 
     // The parser we use to parse the MoML when we add an _icon.
     private static MoMLParser _parser;

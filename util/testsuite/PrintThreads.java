@@ -206,7 +206,7 @@ public class PrintThreads {
     private final static String _stringFormat(String inputString, int length) {
         StringBuffer results;
         if (inputString == null) {
-            results = new StringBuffer(" ");
+            return " ";
         } else {
             results = new StringBuffer(inputString);
         }

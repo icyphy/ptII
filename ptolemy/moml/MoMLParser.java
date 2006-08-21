@@ -1709,7 +1709,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @see #addMoMLFilter(MoMLFilter filter)
      *  @see #getMoMLFilters()
      */
-    public void setMoMLFilters(List filterList) {
+    public static void setMoMLFilters(List filterList) {
         _filterList = filterList;
     }
 

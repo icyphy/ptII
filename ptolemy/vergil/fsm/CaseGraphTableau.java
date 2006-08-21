@@ -114,6 +114,11 @@ public class CaseGraphTableau extends Tableau {
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
+        if (!(model instanceof Case)) {
+            throw new InternalErrorException(this, null,
+                    "Composite Entity \"" + model.getFullName() 
+                    + "\" is not an instance of Case.");
+        }
         CaseGraphFrame frame = new CaseGraphFrame((Case) model, this,
                 defaultLibrary);
 

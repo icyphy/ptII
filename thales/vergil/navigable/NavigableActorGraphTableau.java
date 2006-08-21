@@ -115,9 +115,8 @@ public class NavigableActorGraphTableau extends Tableau {
             if (!frame.isVisible()) {
                 frame.pack();
             }
+            SingleWindowApplication._mainFrame.selectTab(frame.getName());
         }
-
-        SingleWindowApplication._mainFrame.selectTab(frame.getName());
     }
 
     ///////////////////////////////////////////////////////////////////

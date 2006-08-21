@@ -174,12 +174,12 @@ public class AddEditorFactory implements MoMLFilter {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The the full name of the actor we are currently processing
-    private static String _currentActorFullName;
+    private String _currentActorFullName;
 
     // Set to true if the current attribute has a _location attribute.
     // This variable is used to determine whether we need to add  a
     // _editorFactory.
-    private static boolean _currentAttributeHasLocation = false;
+    private boolean _currentAttributeHasLocation = false;
 
     // Set to true if we are currently processing an actor that may
     // need _editorFactory added, set to false when we are done.

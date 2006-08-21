@@ -85,7 +85,7 @@ public class DtdDemo extends XmlApp {
         while (notationNames.hasMoreElements()) {
             nname = (String) notationNames.nextElement();
             extId = makeExternalIdentifiers(parser.getNotationPublicId(nname),
-                    parser.getNotationSystemId(nname).toString());
+                    parser.getNotationSystemId(nname));
             displayText("<!NOTATION " + nname + +' ' + extId + ">\n");
         }
     }
@@ -127,7 +127,7 @@ public class DtdDemo extends XmlApp {
             case XmlParser.ENTITY_NDATA:
                 value = makeExternalIdentifiers(
                         parser.getEntityPublicId(ename), parser
-                                .getEntitySystemId(ename).toString())
+                                .getEntitySystemId(ename))
                         + "NDATA " + parser.getEntityNotationName(ename);
                 break;
 

@@ -451,6 +451,7 @@ public class Argument extends AbstractSettableAttribute {
                     throw new InternalErrorException("Expecting a container "
                             + "of type GenericJNIActor, got " + container);
                 } else {
+                    _container = (GenericJNIActor) container;
                     if (((GenericJNIActor) container).getArgument(getName()) == null) {
                         // Only add if the argument is not already present.
                         ((GenericJNIActor) container)._addArgument(this);
@@ -460,8 +461,6 @@ public class Argument extends AbstractSettableAttribute {
                     }
                 }
             }
-
-            _container = (GenericJNIActor) container;
 
             if (previousContainer != null) {
                 // This is safe now because it does not

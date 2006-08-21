@@ -53,7 +53,7 @@ import ptolemy.moml.MoMLParser;
 public class RemoveGraphicalClasses implements MoMLFilter {
     /** Clear the map of graphical classes to be removed.
      */
-    public void clear() {
+    public static void clear() {
         _graphicalClasses = new HashMap();
     }
 

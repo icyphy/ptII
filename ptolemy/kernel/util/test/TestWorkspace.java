@@ -52,7 +52,7 @@ public class TestWorkspace extends Thread {
     public static void main(String[] args) {
         Workspace w = new Workspace("test");
         TestWorkspace tw = new TestWorkspace("test", w);
-        tw.run();
+        tw.start();
         System.out.println(tw._profile);
     }
 

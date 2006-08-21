@@ -301,12 +301,6 @@ public class ComponentActor extends TypedCompositeActor implements Component {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Indicator that a stop has been requested by a call to stop(). */
-    protected boolean _stopRequested = false;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /*  Create receivers for each input port.

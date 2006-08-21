@@ -174,23 +174,23 @@ public class PortClassChanges implements MoMLFilter {
 
     // Cache of map from old port classes to new port classes for
     // the port we are working on.
-    private static HashMap _classMap;
+    private HashMap _classMap;
 
     // Set to true if we are currently processing an actor with port class
     // changes, set to false when we are done.
-    private static boolean _currentlyProcessingActorWithPortClassChanges = false;
+    private boolean _currentlyProcessingActorWithPortClassChanges = false;
 
-    private static boolean _foundPort = false;
+    private boolean _foundPort = false;
 
     // Last "name" value seen, for use if we see an actor with "class" changes.
-    private static String _lastNameSeen;
+    private String _lastNameSeen;
 
     // Cache of map from actor to port for
     // the actor we are working on.
-    private static HashMap _portMap;
+    private HashMap _portMap;
 
     // the name of the port that has its class changed.
-    private static String _portName;
+    private String _portName;
 
     static {
         ///////////////////////////////////////////////////////////

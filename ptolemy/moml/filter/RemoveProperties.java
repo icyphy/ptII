@@ -189,13 +189,13 @@ public class RemoveProperties implements MoMLFilter {
     private static HashMap _propertiesToBeRemoved;
 
     // Flag indicating whether a property to be removed is truly found.
-    private static boolean _propertyToBeRemovedConfirmed = false;
+    private boolean _propertyToBeRemovedConfirmed = false;
 
     // Flag indicating whether a potential property to be removed is found.
-    private static boolean _foundPropertyToBeRemoved = false;
+    private boolean _foundPropertyToBeRemoved = false;
 
     // Cache of map from the property to be removed to its detailed information.
-    private static HashMap _propertyMap;
+    private HashMap _propertyMap;
 
     static {
         ///////////////////////////////////////////////////////////

@@ -154,7 +154,7 @@ public class XmlApp implements XmlHandler {
      */
     public void error(String message, String url, int line, int column) {
         displayText("FATAL ERROR: " + message);
-        displayText("  at " + url.toString() + ": line " + line + " column "
+        displayText("  at " + url + ": line " + line + " column "
                 + column);
         throw new Error(message);
     }

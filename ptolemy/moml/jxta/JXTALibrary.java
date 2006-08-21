@@ -302,9 +302,10 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                         ex.printStackTrace();
                     }
 
-                    String clsName = cls.getName();
+                    String clsName = "<Unknown>";
 
                     if (cls != null) {
+                        clsName = cls.getName();
                         System.out.println("created class object " + clsName);
                     }
 
@@ -459,8 +460,9 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
         if (actorListFileName != null) {
             StringBuffer actorListText = new StringBuffer();
 
+            BufferedReader fileReader = null;
             try {
-                BufferedReader fileReader = new BufferedReader(new FileReader(
+                fileReader = new BufferedReader(new FileReader(
                         actorListFileName));
                 String newline = System.getProperty("line.separator");
                 String peerID = (_group.getPeerID()).toString();
@@ -485,6 +487,14 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             } catch (IOException ex) {
                 System.out.println("Warning: error reading actor list file.\n"
                         + ex.getMessage());
+            } finally {
+                if (fileReader != null) {
+                    try {
+                            fileReader.close();
+                    } catch (Exception ex2) {
+                        // Ignored, we are trying to close.
+                    }
+                }
             }
         }
     }

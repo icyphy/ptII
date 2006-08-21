@@ -206,20 +206,20 @@ public class MultiportToSinglePort implements MoMLFilter {
     private static HashMap _actorsWithMultiPortToSinglePortChanges;
 
     // The the full name of the actor we are currently processing
-    private static String _currentActorFullName;
+    private String _currentActorFullName;
 
     // Set to true if we are currently processing an actor with parameter
     // class changes, set to false when we are done.
-    private static boolean _currentlyProcessingActorWithPropertyClassChanges = false;
+    private boolean _currentlyProcessingActorWithPropertyClassChanges = false;
 
     // Last "name" value seen, for use if we see a "class".
-    private static String _lastNameSeen;
+    private String _lastNameSeen;
 
     // Keep track of whether a change was found.
     //private static boolean _foundChange;
 
     // The name of the port we are looking for.
-    private static String _portName;
+    private String _portName;
 
     static {
         ///////////////////////////////////////////////////////////

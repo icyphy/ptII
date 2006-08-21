@@ -346,7 +346,7 @@ public class FixPoint implements Cloneable, Serializable {
     }
 
     /** Return this, that is, return the reference to this object.
-     *  @return This XixPoint.
+     *  @return This FixPoint.
      */
     public Object clone() {
         return this;

@@ -224,12 +224,9 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
                     _attribute.removeValueListener(this);
                 }
 
-                if (newAttribute instanceof Settable) {
-                    _attribute = (Settable) newAttribute;
-                    _attribute.addValueListener(this);
-                } else {
-                    _attribute = null;
-                }
+                // newAttribute will always be a Settable.
+                _attribute = (Settable) newAttribute;
+                _attribute.addValueListener(this);
             }
         }
 

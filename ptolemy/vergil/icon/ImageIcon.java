@@ -30,6 +30,7 @@ package ptolemy.vergil.icon;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 
@@ -39,6 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.FileUtilities;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.ImageFigure;
 
@@ -110,9 +112,14 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         if (_scaledImage == null) {
             // NOTE: This default has to be an ImageFigure, since it
             // will later have its image set. Create a default image.
-            URL url = getClass().getResource("/doc/img/PtolemyIISmall.gif");
-            Toolkit tk = Toolkit.getDefaultToolkit();
-            setImage(tk.getImage(url));
+            try {
+                // Use nameToURL so this works in WebStart.
+                URL url = FileUtilities.nameToURL("/doc/img/PtolemyIISmall.gif", null, null);
+                Toolkit tk = Toolkit.getDefaultToolkit();
+                setImage(tk.getImage(url));
+            } catch (IOException ex) {
+                // Ignore, we can't find the icon.
+            }
         }
 
         Figure newFigure = new ImageFigure(_scaledImage);

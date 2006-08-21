@@ -424,12 +424,12 @@ public class FSMGraphController extends FSMViewerGraphController {
             }
 
             if (moml == null) {
-                moml = new String("<entity name=\"" + stateName
+                moml = "<entity name=\"" + stateName
                         + "\" class=\"ptolemy.domains.fsm.kernel.State\">\n"
                         + "<property name=\"" + locationName
                         + "\" class=\"ptolemy.kernel.util.Location\""
                         + " value=\"[" + x + ", " + y + "]\"/>\n"
-                        + "</entity>\n");
+                        + "</entity>\n";
             }
 
             ChangeRequest request = new MoMLChangeRequest(this, toplevel, moml);

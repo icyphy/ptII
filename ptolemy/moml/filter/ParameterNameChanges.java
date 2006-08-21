@@ -216,17 +216,17 @@ public class ParameterNameChanges implements MoMLFilter {
     private static HashMap _classesWithParameterNameChanges;
 
     // The the full name of the actor we are currently processing
-    private static String _currentActorFullName;
+    private String _currentActorFullName;
 
     // Set to true if we are currently processing an actor with parameter
     // class changes, set to false when we are done.
-    private static boolean _currentlyProcessingActorWithParameterNameChanges = false;
+    private boolean _currentlyProcessingActorWithParameterNameChanges = false;
 
     // Last "name" value seen, for use if we see a "class".
-    private static String _lastNameSeen;
+    private String _lastNameSeen;
 
     // The new name for the property we are working on.
-    private static String _newName;
+    private String _newName;
 
     // Cache of map from old property names to new class names for
     // the actor we are working on.

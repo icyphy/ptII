@@ -1756,7 +1756,7 @@ public class IOPort extends ComponentPort {
             }
         }
 
-        if ((receivers != null) && (receivers[channelIndex] != null)) {
+        if (receivers[channelIndex] != null) {
             for (int j = 0; j < receivers[channelIndex].length; j++) {
                 if (receivers[channelIndex][j].hasToken()) {
                     result = true;
@@ -2016,7 +2016,7 @@ public class IOPort extends ComponentPort {
                             "Channel index is out of range: " + channelIndex);
                 }
 
-                if ((receivers != null) && (receivers[channelIndex] != null)) {
+                if (receivers[channelIndex] != null) {
                     for (int j = 0; j < receivers[channelIndex].length; j++) {
                         if (!receivers[channelIndex][j].isKnown()) {
                             result = false;
@@ -2034,7 +2034,7 @@ public class IOPort extends ComponentPort {
                             "Channel index is out of range: " + channelIndex);
                 }
 
-                if ((receivers != null) && (receivers[channelIndex] != null)) {
+                if (receivers[channelIndex] != null) {
                     for (int j = 0; j < receivers[channelIndex].length; j++) {
                         if (!receivers[channelIndex][j].isKnown()) {
                             result = false;

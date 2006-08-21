@@ -228,17 +228,17 @@ public class PortNameChanges implements MoMLFilter {
     private static HashMap _containerPortMap;
 
     // The the full name of the actor we are currently processing
-    private static String _currentActorFullName;
+    private String _currentActorFullName;
 
     // Set to true if we are currently processing an actor with port name
     // changes, set to false when we are done.
-    private static boolean _currentlyProcessingActorWithPortNameChanges = false;
+    private boolean _currentlyProcessingActorWithPortNameChanges = false;
 
     // Set to true if we are done processing an actor.
-    private static boolean _doneProcessingActorWithPortNameChanges = false;
+    private boolean _doneProcessingActorWithPortNameChanges = false;
 
     // Last "name" value seen, for use if we see a "class".
-    private static String _lastNameSeen;
+    private String _lastNameSeen;
 
     // Cache of map from old port names to new port names for
     // the actor we are working on.
