@@ -185,7 +185,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
              */
             public void windowActivated(WindowEvent e) {
                 JFrame frame = (JFrame) e.getSource();
-                frame.hide();
+                frame.setVisible(false);
 
                 try {
                     selectTab(frame.getName());

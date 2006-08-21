@@ -395,7 +395,7 @@ public class VisualModelReference extends ModelReference implements
                                 ((ExtendedGraphFrame) frame).cancelFullScreen();
                             }
 
-                            frame.hide();
+                            frame.setVisible(true);
                         }
                     };
 

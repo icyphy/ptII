@@ -240,7 +240,7 @@ public class Tableau extends CompositeEntity {
                 // Note that we call hide instead of dispose . . .
                 // The windowListener set in setFrame()
                 // will trigger dispose() to get called.
-                _frame.hide();
+                _frame.setVisible(false);
             }
 
             if (isMaster() && (oldContainer != null)) {

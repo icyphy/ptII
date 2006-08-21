@@ -181,7 +181,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         // Remove association with the graph panner.
         _graphPanner.setCanvas(null);
 
-        hide();
+        setVisible(false);
     }
 
     ///////////////////////////////////////////////////////////////////
