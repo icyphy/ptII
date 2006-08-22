@@ -54,10 +54,10 @@
     <input source="ptolemy/configs/caseTableauFactory.xml"/>
     <input source="ptolemy/configs/graphTableauFactory.xml"/>
     <!-- Add the code generator to the full configuration. -->
-    <property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory">
-       <property name="Code Generator"
-             class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/>
-    </property>
+    <!-- property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory" -->
+       <!--property name="Code Generator"
+             class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/-->
+    <!-- /property -->
     <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>
 
@@ -94,10 +94,9 @@
             <input source="ptolemy/configs/automataActorLibrary.xml"/>
 	    <!-- Chic actors are not being shipped in 4.0 -->
             <!-- input source="ptolemy/chic/chic.xml"/ -->
-            <input source="ptolemy/codegen/codegen.xml"/>
+            <input source="ptolemy/configs/codegen.xml"/>
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
             <input source="ptolemy/actor/lib/io/comm/comm.xml"/>
-            <!-- input source="ptolemy/copernicus/copernicus.xml"/ -->
 	    <!-- Corba actors are not being shipped in 4.0 -->
             <!--input source="ptolemy/actor/corba/corba.xml"/-->
             <input source="ptolemy/actor/lib/esoteric.xml"/>
