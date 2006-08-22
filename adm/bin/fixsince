@@ -65,6 +65,10 @@ do
       -e 's/Copyright (c) 199[0-9]-200[0-9]/Copyright (c) 2006/' \
 	< $tmpfile > $tmpfile2
     diff $file $tmpfile2
+  # If everything looks alright, edit newJavaFiles and remove the 
+  # leading adm/dists/ptIIX.Y.devel and then uncomment the lines below
+  # and rerun in $PTII
+   
   #cp $tmpfile2 $file
   #cvs commit -m "This file is new since Ptolemy 5.2, so the copyright and @since tag should reflect that" $file
 done
