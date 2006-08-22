@@ -75,7 +75,7 @@ PTAUXALLJARS = \
 		ci/ci.jar \
 		dde/dde.jar \
 		ddf/ddf.jar \
-        dt/dt.jar \
+	        dt/dt.jar \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
 		hdf/hdf.jar \
@@ -100,7 +100,7 @@ PTCLASSALLJARS = \
 		de/de.jar \
 		fsm/fsm.jar \
 		pn/pn.jar \
-	    rendezvous/rendezvous.jar \
+		rendezvous/rendezvous.jar \
 		sdf/sdf.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
