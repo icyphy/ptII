@@ -71,7 +71,7 @@ MISC_FILES = 	$(DIRS) \
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	index.xml 
+	index.xml \
 	'MovieViewScreen2D$$1.class' \
 	'MovieViewScreen2D$$Painter.class' \
 	'MovieViewScreen3D$$1.class' \
