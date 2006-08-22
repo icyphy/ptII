@@ -47,7 +47,13 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	actor
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =    $(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	lib/lib.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	DistributedDirector.java \
