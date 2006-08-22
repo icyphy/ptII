@@ -185,6 +185,7 @@ test Audio-2.5 {Audio(DataInputStream): .snd header, bogus offset} {
     set fis [java::new {java.io.FileInputStream String} "tmp2_5.au"]
     set dis [java::new java.io.DataInputStream $fis]
     catch {set audio [java::new {ptolemy.media.Audio java.io.DataInputStream} $dis]} errMsg
+    $fis close
     list $errMsg
 } {{java.lang.IllegalArgumentException: ptolemy.media.Audio: offset value '99999' is out of range 0-10000}}
 
@@ -193,26 +194,62 @@ test Audio-2.5 {Audio(DataInputStream): .snd header, bogus offset} {
 ####
 #
 test Audio-2.6 {Audio(DataInputStream): .snd header, bogus format} {
-    Audio_CreateAUFile tmp2.au 99 1000 2 8000 1
+    #  The 2 means two formats, which is bogus
+    Audio_CreateAUFile tmp2.au 24 1000 2 8000 1
     set fis [java::new {java.io.FileInputStream String} "tmp2.au"]
     set dis [java::new java.io.DataInputStream $fis]
     catch {set audio [java::new {ptolemy.media.Audio java.io.DataInputStream} $dis]} errMsg
+    $fis close	
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.media.Audio: Sorry, only 8-bit mu-law encoded data can be read.}}
+} {{java.lang.IllegalArgumentException: ptolemy.media.Audio: Sorry, only 8-bit mu-law encoded data can be read, 2 formats seen, 1 expected.}}
 
 
 ######################################################################
 ####
 #
 test Audio-2.7 {Audio(DataInputStream): .snd header, bogus channels} {
-    Audio_CreateAUFile tmp2_7.au 99 1000 1 8000 2
+    Audio_CreateAUFile tmp2_7.au 24 1000 1 8000 2
     set fis [java::new {java.io.FileInputStream String} "tmp2_7.au"]
     set dis [java::new java.io.DataInputStream $fis]
     catch {set audio [java::new {ptolemy.media.Audio java.io.DataInputStream} $dis]} errMsg
+    $fis close
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.media.Audio: Sorry, only one-channel audio data can be read.}}
+} {{java.lang.IllegalArgumentException: ptolemy.media.Audio: Sorry, only one-channel audio data can be read, 2 channels seen, 1 expected.}}
 
 
+######################################################################
+####
+#
+test Audio-2.8 {Audio(DataInputStream): .snd header, offset wrong} {
+    Audio_CreateAUFile tmp2_8.au 99 1000 1 8000 1
+    set fis [java::new {java.io.FileInputStream String} "tmp2_8.au"]
+    set dis [java::new java.io.DataInputStream $fis]
+    catch {set audio [java::new {ptolemy.media.Audio java.io.DataInputStream} $dis]} errMsg
+    $fis close
+    list $errMsg
+} {{java.io.IOException: Read only -1 bytes, expecting 75}}
+
+######################################################################
+####
+#
+test Audio-2.9 {Audio(DataInputStream): read only three bytes} {
+    set name "tmp2_9.au"
+    file delete -force $name
+    set fos [java::new {java.io.FileOutputStream java.lang.String} $name]
+    set dos [java::new java.io.DataOutputStream $fos]
+    # Write only three bytes
+    $dos writeByte 0x2E
+    $dos writeByte 0x73
+    $dos writeByte 0x6E
+    $dos close
+    $fos close
+
+    set fis [java::new {java.io.FileInputStream String} $name]
+    set dis [java::new java.io.DataInputStream $fis]
+    catch {set audio [java::new {ptolemy.media.Audio java.io.DataInputStream} $dis]} errMsg
+    $fis close
+    list $errMsg
+} {{java.io.IOException: Read only 3 bytes, expecting 4}}
 
 ######################################################################
 ####
