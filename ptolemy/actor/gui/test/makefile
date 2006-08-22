@@ -78,8 +78,6 @@ EXTRA_SRCS =	\
 MISC_FILES =	alljtests.tcl \
 	alljsimpletests.tcl \
 	CompositeActorApplication.tcl \
-	'SimpleTableau$$Factory.class' \
-	'SimpleTableau$$TopFactory.class' \
 	badMoML.moml \
 	hideNameTestModel.xml \
 	hideNameTestSinewave.xml \
@@ -91,7 +89,9 @@ MISC_FILES =	alljtests.tcl \
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'SimpleTableau$$Factory.class' \
+	'SimpleTableau$$TopFactory.class' \
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
