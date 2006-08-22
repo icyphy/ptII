@@ -59,7 +59,6 @@ JSIMPLE_TESTS = \
 	FSMActor.tcl \
 	FSM-ConstVariableModelAnalysis.tcl \
 	FSMDirector.tcl \
-	HSDirector.tcl \
 	State.tcl \
 	Transition.tcl
 
