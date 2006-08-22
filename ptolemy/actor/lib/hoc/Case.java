@@ -119,6 +119,7 @@ public class Case extends MultiCompositeActor {
         Case newObject = (Case) super.clone(workspace);
         newObject._default = (Refinement) newObject.getEntity("default");
         newObject._current = newObject._default;
+        newObject._director = (CaseDirector) newObject.getAttribute("_director");
         return newObject;
     }
 
