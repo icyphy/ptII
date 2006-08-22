@@ -410,22 +410,22 @@ public class Location extends SingletonAttribute implements Locatable {
         // If the location is unchanged, return false.
         if (_location != null) {
             if (_location.length == location.length) {
-            boolean match = true;
+                boolean match = true;
 
-            for (int i = 0; i < location.length; i++) {
-                if (_location[i] != location[i]) {
-                    match = false;
-                    break;
+                for (int i = 0; i < location.length; i++) {
+                    if (_location[i] != location[i]) {
+                        match = false;
+                        break;
+                    }
                 }
-            }
 
-            if (match) {
-                return false;
-            }
-            if (_location.length != location.length) {
+                if (match) {
+                    return false;
+                }
+            } else {
+                // _location.length != location.length
                 // If location is of size 3, then we end up here.
                 _location = new double[location.length];
-            }
             }
         } else {
             // _location == null
