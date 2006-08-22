@@ -59,7 +59,6 @@ public class GrimpTransformer extends SceneTransformer {
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        int localCount = 0;
         System.out.println("GrimpTransformer.internalTransform(" + phaseName
                 + ", " + options + ")");
 

@@ -95,7 +95,6 @@ public class LibraryUsageReporter extends SceneTransformer implements
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        int localCount = 0;
         String outFile = PhaseOptions.getString(options, "outFile");
         boolean analyzeAllReachables = PhaseOptions.getBoolean(options,
                 "analyzeAllReachables");
@@ -119,7 +118,7 @@ public class LibraryUsageReporter extends SceneTransformer implements
         for (Iterator reachables = reachableMethods.listener(); reachables
                 .hasNext();) {
             SootMethod method = (SootMethod) reachables.next();
-            String methodName = method.getSignature();
+            //String methodName = method.getSignature();
 
             if (method.getName().equals("<init>")
                     && !method.getDeclaringClass().getName().startsWith("java")) {
