@@ -120,8 +120,8 @@ public class CalInterpreter extends AbstractCalInterpreter {
                         ex,
                         "Failed to read in actor in:\n  "
                                 + s
-                                + "\n"
-                                + "This sometimes occurs if saxon7.jar is not in "
+                                + "\nThis sometimes occurs if saxon8.jar "
+                                + "or saxon8-dom.jar are not in "
                                 + "your classpath.");
             }
 
