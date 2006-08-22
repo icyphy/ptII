@@ -211,8 +211,7 @@ public class PtolemyTypeRemover extends SceneTransformer
                     } else if (stmt.getLeftOp() instanceof ArrayRef &&
                             PtolemyUtilities.isTypeType(stmt.getRightOp().getType())) {
                         body.getUnits().remove(stmt);
-                    } else if ((stmt.getRightOp() instanceof NewExpr ||
-                            stmt.getRightOp() instanceof NewArrayExpr ||
+                    } else if ((stmt.getRightOp() instanceof NewArrayExpr ||
                             stmt.getRightOp() instanceof NewMultiArrayExpr) &&
                             PtolemyUtilities.isTypeType(
                                     stmt.getRightOp().getType())) {

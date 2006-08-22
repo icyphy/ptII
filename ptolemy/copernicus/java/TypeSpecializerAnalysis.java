@@ -689,6 +689,7 @@ public class TypeSpecializerAnalysis {
                     InequalityTerm variableTerm = new VariableTerm(arrayType, r);
                     _addInequality(debug, solver, elementTerm, arrayType.getElementTypeTerm());
                     _addInequality(debug, solver, arrayType.getElementTypeTerm(), elementTerm);
+                    _addInequality(debug, solver, variableTerm, baseTerm);
                     return variableTerm;
                 }
             }
