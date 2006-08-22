@@ -171,12 +171,13 @@ and run make.  See the top of the file for the appropriate make command.
 
 <li>Run
 <CODE>$PTII/adm/copyright/chkcopyright</CODE> on all the nightly buildfiles.
-<br>First, edit <code>chkcopyright</code> and update the year.
+<br>First, edit <code>$PTII/adm/copyright/chkcopyright</code> and update the year.
 <br>Then, do:
 <pre>
-cat /tmp/ff | grep -v .class | grep -v codeDoc | grep -v xml | grep -v
-alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v
-gif | xargs sh $PTII/adm/copyright/chkcopyright &gt;&amp /tmp/copycheck
+
+cat /tmp/f | grep -v .class | grep -v codeDoc | grep -v xml | grep -v \
+alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v \
+gif | grep -v .cvsignore | xargs sh $PTII/adm/copyright/chkcopyright &gt;&amp  /tmp/copycheck 
 grep "does not contain a Copyright" /tmp/copycheck | grep -v README
 </pre>
 
@@ -208,9 +209,11 @@ it is still worth getting the other error messages.
 <BLOCKQUOTE>
 cd $PTII
 make clean
-make -k JAVAC=gcj JFLAGS="-O2 -Wunused -Wextraneous-semicolon -Wno-deprecated -C" all &gt;&amp; make.out &amp;
-grep error: make.out | awk -F: '{for(i=3;i<=NF;i++) {printf("%s ",$i)} printf("\n");}' | sort  | uniq | grep -v "not found in the decl"
+make -k JAVAC=gcj JFLAGS="-O2 -Wunused -Wextraneous-semicolon -Wno-deprecated -C" all &gt;&amp; gcj.out &amp;
+grep error: gcj.out | awk -F: '{for(i=3;i<=NF;i++) {printf("%s ",$i)} printf("\n");}' | sort  | uniq | grep -v "not found in the decl"
 </BLOCKQUOTE>
+<li> Consider building with the 
+<a href="http://www-128.ibm.com/developerworks/java/jdk/linux/">IBM JDK</a>
 
 <li> Currently, we use 
 <a href="http://www.zerog.com" target="_top">Zerog's InstallAnywhere</a>
@@ -240,16 +243,16 @@ find . -name "*.xml,v" -exec chmod a-x {} \;
 For more information about CVS, see the
 <a href="http://www.gigascale.org/softdevel/faq/1/" target="_top">Gigascale CVS Pages</a>
 
- <p>To make a branch for 5.1-devel, use the following command:
+ <p>To make a branch for 6.0-devel, use the following command:
 <pre>
 cd $PTII
-cvs tag -b rel-5-1-devel
+cvs tag -b rel-6-0-devel
 </pre>
 Then check out the release branch  with
 <pre>
 cd ~/src
-cvs co -r rel-5-1-devel ptII
-mv ptII ptII5-1-devel
+cvs co -r rel-6-0-devel ptII
+mv ptII ptII6-0-devel
 </pre>
 <I>Note that you should avoid dots in the tag name</I>
 <li> Update the version numbers, see
@@ -263,22 +266,22 @@ set up a new tree for the release tree.
 <li> We build a separate src.tar.gz file under Unix so that the line
 endings are correct. 
 <pre>
-cvs co -r rel-5.1-devel ptII
-mv ptII ptII5.1-devel
+cvs co -r rel-6-0-devel ptII
+mv ptII ptII6.0-devel
 cd ptII5.1-devel
 setenv PTII `pwd`
-cd $PTII/adm/gen-5.1
-make USER=cxh PTIIHOME=/tmp/ptII5.1-devel PTIIADM=/tmp/ptII5.1-devel/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar clean all >& make.out &
+cd $PTII/adm/gen-6.0
+make USER=cxh PTIIHOME=/tmp/ptII6.0-devel PTIIADM=/tmp/ptII5.1-devel/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar clean all >& make.out &
 </pre>
 The resulting file with the .class files gets copied to the website
 and untar'd.
 <pre>
-make USER=cxh PTIIHOME=/tmp/ptII5.1-devel PTIIADM=/tmp/ptII5.1-devel/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar update_ftp
+make USER=cxh PTIIHOME=/tmp/ptII5.1-devel PTIIADM=/tmp/ptII6.0-devel/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar update_ftp
 </pre>
 <ol>
 <li> Fix the links to ptplot downloads:
 <pre>
-cd /export/home/pt0/ptweb/ptolemyII/ptII5.0/ptII5.0.1/ptolemy/plot
+cd /export/home/pt0/ptweb/ptolemyII/ptII6.0/ptII6.0.1/ptolemy/plot
 ln -s ../../../../../java/ptplot5.5/ptolemy/plot/ptplot5.5* .
 cd doc
 rm -rf download
@@ -293,10 +296,10 @@ ln -s ../../../../../../java/ptplot5.5-beta/ptolemy/plot/doc/download .
 
 <li> We build the webstart jar files under Windows
 <pre>
-cvs co -r rel-5.1-devel ptII
-mv ptII ptII5.1-devel
-cd ptII5.1-devel
-export PTII=c:/src/ptII5.1-devel
+cvs co -r rel-6-0-devel ptII
+mv ptII ptII6.0-devel
+cd ptII6.0-devel
+export PTII=c:/src/ptII6.0-devel
 ./configure
 <I>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime</I>
 ./configure
@@ -310,8 +313,8 @@ make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
 
 <li> Create the src.jar file: 
 <pre>
-cd $PTII/adm/gen-5.1
-make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII5.1-devel COMPRESS=gzip TAR=tar clean all src.jar 
+cd $PTII/adm/gen-6.0
+make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII6.0-devel COMPRESS=gzip TAR=tar clean all src.jar 
 </pre>
 
 
