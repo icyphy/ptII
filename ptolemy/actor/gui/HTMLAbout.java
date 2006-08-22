@@ -263,9 +263,11 @@ public class HTMLAbout {
             URL demosURL = _getDemoURL(aboutURI.getFragment());
             // Third arg is true so modelList should contain absolute URLs.
             List modelList = _getURLs(demosURL, ".*(.htm|.html|.xml)", true, 2);
+            // Convert the list to a Set and avoid duplicates.
+            Set modelSet = new HashSet(modelList);
             newURL = _temporaryHTMLFile("checkModelSizes", ".htm",
-                    CheckModelSize.checkModelSize((String[]) modelList
-                            .toArray(new String[0])));
+                    CheckModelSize.checkModelSize(
+                            (String[]) modelSet.toArray(new String[0])));
         } else if (event.getDescription().equals("about:copyright")) {
             // Note that if we have a link that is
             // <a href="about:copyright">about:copyright</a>
@@ -591,6 +593,8 @@ public class HTMLAbout {
                                     '/');
                         } catch (URISyntaxException ex) {
                             ex1 = ex;
+                        } catch (NullPointerException ex2) {
+                            // model == null, probably a jar url in Webstart
                         }
                         if (model == null) {
                             try {
