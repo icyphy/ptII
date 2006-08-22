@@ -514,7 +514,11 @@ public abstract class Top extends JFrame {
                 // override any manual changes in sizing that had been
                 // made.
                 setState(Frame.NORMAL);
-                Top.super.setVisible(true);
+                // FIXME: show() is deprecated, but calling setVisible()
+                // here results in a loop.
+                //Top.super.setVisible(true);
+                Top.super.show();
+
             }
         };
 
