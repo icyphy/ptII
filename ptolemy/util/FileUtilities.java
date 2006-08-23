@@ -322,9 +322,9 @@ public class FileUtilities {
                     // like "$PTII/doc/img/PtolemyII.jpg", then resolve()
                     // bombs.
                     String name2 = StringUtilities.substitute(name, "%20", " ");
-
                     try {
                         newURI = baseDirectory.resolve(name2);
+
                         name = name2;
                     } catch (Exception ex2) {
                         IOException io = new IOException(
@@ -361,6 +361,15 @@ public class FileUtilities {
 
                     return new URL(urlString);
                 } catch (Exception ex3) {
+                    try {
+                        // Under Webstart, opening 
+                        // hoc/demo/ModelReference/ModelReference.xml
+                        // requires this because the URL is relative.
+                        return new URL(baseDirectory.toURL(), urlString);
+                    } catch (Exception ex4) {
+                        // Ignore
+                    }
+
                     IOException io = new IOException(
                             "Problem with URI format in '"
                                     + urlString
