@@ -54,6 +54,20 @@ DOC_CODEDOC_JAR = \
 
 SIGNED_DIR =		signed
 
+# Jar file that contains win32com.dll for the Java Serial Communications API
+lib/commWindows.jar: 
+	if [ -d vendors/sun/commapi ]; then \
+		(cd vendors/sun/commapi; \
+	 	"$(JAR)" -cvf ../../../lib/commWindows.jar win32com.dll); \
+	else \
+		echo "vendors/sun/commapi not found, creating dummy jar"; \
+		echo "vendors/sun/commapi not found, see PTII/mk/jnlp.mk" \
+			> README_comm.txt; \
+		"$(JAR)" -cvf ../../../lib/commWindows.jar \
+			README_comm.txt; \
+		rm -f README_comm.txt; \
+	fi
+
 lib/joystickWindows.jar: 
 	if [ -d vendors/misc/joystick/lib/ ]; then \
 		(cd vendors/misc/joystick/lib/; \
@@ -67,12 +81,14 @@ lib/joystickWindows.jar:
 		rm -f README_joystick.txt; \
 	fi
 
+
 # NATIVE_SIGNED_LIB_JARS is a separate vaiable so that we can
 # include it in ALL_JNLP_JARS
 NATIVE_SIGNED_LIB_JARS = \
+	lib/commWindows.jar \
 	lib/joystickWindows.jar \
 	lib/matlabWindows.jar \
-	lib/matlabSunOS.jar
+	lib/matlabSunOS.jar \
 
 # Not all hosts have matlab
 MATLAB_JARS = \
@@ -93,7 +109,8 @@ SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 # work, the jars you want to load eagerly need to be at the front of the
 # list.  In general, large jars such as diva.jar and ptsupport.jar
 # should be loaded eagerly.
-NUMBER_OF_JARS_TO_LOAD_EAGERLY = 11
+#NUMBER_OF_JARS_TO_LOAD_EAGERLY = 11
+NUMBER_OF_JARS_TO_LOAD_EAGERLY = 999
 
 # Jar files that will appear in most Ptolemy II JNLP files.
 # HyVisual has its own set of core jars
@@ -241,6 +258,13 @@ COPERNICUS_JARS = \
 	ptolemy/copernicus/copernicus.jar
 
 
+BACKTRACK_JARS = 
+
+#BACKTRACK_JARS = \
+#	ptolemy/backtrack/backtrack.jar \
+#	ptolemy/backtrack/demo/demo.jar
+
+
 EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
 
 PTJACL_JARS =	ptolemy/actor/gui/ptjacl/ptjacl.jar \
@@ -262,6 +286,7 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTJACL_JARS) \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
+	vendors/sun/commapi/comm.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jai/demo/demo.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
@@ -274,9 +299,12 @@ FULL_ONLY_JNLP_JARS = \
 	vendors/misc/x10/tjx10p-12/lib/x10.jar \
 	lib/ptCal.jar \
 	lib/saxon8.jar \
+	lib/saxon8-dom.jar \
 	lib/java_cup.jar \
 	ptolemy/caltrop/caltrop.jar \
 	ptolemy/caltrop/demo/demo.jar \
+	ptolemy/distributed/distributed.jar \
+	ptolemy/distributed/demo/demo.jar \
 	ptolemy/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
@@ -298,8 +326,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/sr/doc/doc.jar \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
-	ptolemy/backtrack/backtrack.jar \
-	ptolemy/backtrack/demo/demo.jar \
 	$(WIRELESS_JARS)
 
 FULL_MAIN_JAR = \
