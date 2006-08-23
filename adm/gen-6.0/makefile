@@ -1089,7 +1089,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous/kernel/solver \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous/lib \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/kernel/solver \
@@ -1182,6 +1181,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/hdf \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/ \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ddf \
