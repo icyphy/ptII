@@ -69,6 +69,7 @@ PTCLASSALLJARS = \
 	ContinuousClock/ContinuousClock.jar \
 	Helicopter/Helicopter.jar \
 	HierarchicalExecution/HierarchicalExecution.jar \
+	HybridPlant/HybridPlant.jar \
 	Hysteresis/Hysteresis.jar \
 	LevelCrossingDetector/LevelCrossingDetector.jar \
 	LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.jar \
