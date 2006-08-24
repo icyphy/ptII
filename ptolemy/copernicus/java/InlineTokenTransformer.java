@@ -89,7 +89,7 @@ public class InlineTokenTransformer extends SceneTransformer implements
     /** Construct a new transformer
      */
     private InlineTokenTransformer(CompositeActor model) {
-        _model = model;
+        //_model = model;
     }
 
     /** Return an instance of this transformer that will operate on
@@ -115,7 +115,7 @@ public class InlineTokenTransformer extends SceneTransformer implements
 
     protected void internalTransform(String phaseName, Map options) {
         _debug = PhaseOptions.getBoolean(options, "debug");
-        _options = options;
+        //_options = options;
         System.out.println("InlineTokenTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
@@ -367,11 +367,11 @@ public class InlineTokenTransformer extends SceneTransformer implements
         return null;
     }
 
-    private CompositeActor _model;
+    //private CompositeActor _model;
 
     private boolean _debug;
 
-    private Map _options;
+    //private Map _options;
 
     private LocalDefs _localDefs;
 

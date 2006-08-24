@@ -42,7 +42,6 @@ import soot.SootMethod;
 import soot.Unit;
 import soot.Value;
 import soot.jimple.DefinitionStmt;
-import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
 import soot.jimple.StaticInvokeExpr;
 import soot.jimple.Stmt;

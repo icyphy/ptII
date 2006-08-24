@@ -32,7 +32,6 @@ import java.util.Map;
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import soot.HasPhaseOptions;
-import soot.Hierarchy;
 import soot.PhaseOptions;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -64,7 +63,7 @@ public class PtolemyTypeRemover extends SceneTransformer
     /** Construct a new transformer
      */
     private PtolemyTypeRemover(CompositeActor model) {
-        _model = model;
+        //_model = model;
     }
 
     /** Return an instance of this transformer that will operate on
@@ -89,15 +88,15 @@ public class PtolemyTypeRemover extends SceneTransformer
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        _phaseName = phaseName;
+        //_phaseName = phaseName;
         System.out.println("PtolemyTypeRemover.internalTransform("
                 + phaseName + ", " + options + ")");
 
         boolean debug = PhaseOptions.getBoolean(options, "debug");
-        int level = PhaseOptions.getInt(options, "level");
+        //int level = PhaseOptions.getInt(options, "level");
 
-        boolean doneSomething = false;
-        Hierarchy hierarchy = Scene.v().getActiveHierarchy();
+        //boolean doneSomething = false;
+        /*Hierarchy hierarchy =*/ Scene.v().getActiveHierarchy();
 
         // Inline all methods on tokens that have the given depth.
         for (Iterator classes = Scene.v().getApplicationClasses()
@@ -151,17 +150,17 @@ public class PtolemyTypeRemover extends SceneTransformer
             }
         }
     }
-    private CompositeActor _model;
+    //private CompositeActor _model;
 
-    private String _phaseName;
+    //private String _phaseName;
 
-    private Map entityFieldToTokenFieldToReplacementField;
+    //private Map entityFieldToTokenFieldToReplacementField;
 
-    private Map entityFieldToIsNotNullField;
+    //private Map entityFieldToIsNotNullField;
 
-    private Map localToFieldToLocal;
+    //private Map localToFieldToLocal;
 
-    private Map localToIsNotNullLocal;
+    //private Map localToIsNotNullLocal;
 
-    private boolean _mangleExceptionMessages = true;
+    //private boolean _mangleExceptionMessages = true;
 }

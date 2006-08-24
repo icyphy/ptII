@@ -69,7 +69,7 @@ public class ConstructorSpecializer extends SceneTransformer implements
     /** Construct a new transformer
      */
     private ConstructorSpecializer(CompositeActor model) {
-        _model = model;
+        //_model = model;
     }
 
     /** Return an instance of this transformer that will operate on
@@ -94,7 +94,6 @@ public class ConstructorSpecializer extends SceneTransformer implements
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        int localCount = 0;
         System.out.println("ConstructorSpecializer.internalTransform("
                 + phaseName + ", " + options + ")");
 
@@ -250,5 +249,5 @@ public class ConstructorSpecializer extends SceneTransformer implements
         }
     }
 
-    private CompositeActor _model;
+    //private CompositeActor _model;
 }

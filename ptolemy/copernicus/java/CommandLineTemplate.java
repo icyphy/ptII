@@ -281,7 +281,7 @@ public class CommandLineTemplate {
 
     public static void timeAndMemory(long startTime, long totalMemory,
             long freeMemory, StringBuffer buffer) {
-        Runtime runtime = Runtime.getRuntime();
+        //Runtime runtime = Runtime.getRuntime();
         buffer.append(System.currentTimeMillis() - startTime);
         buffer.append(" ms. Memory: ");
         buffer.append(totalMemory);
@@ -339,5 +339,5 @@ public class CommandLineTemplate {
     ////                         private variables                 ////
     // Flag indicating that the previous argument was -class.
     // Exists to mirror CompositeActorApplication.
-    private boolean _expectingClass = false;
+    //private boolean _expectingClass = false;
 }
