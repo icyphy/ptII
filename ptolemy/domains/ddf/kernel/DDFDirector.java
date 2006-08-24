@@ -291,7 +291,9 @@ public class DDFDirector extends Director {
      */
     public void fire() throws IllegalActionException {
         boolean repeatBasicIteration = false;
-
+        if (_debugging) {
+            _debug("DDFDirector.fire()");
+        }
         do {
             // The List to store actors that are enabled and not deferrable.
             List toBeFiredActors = new LinkedList();
@@ -434,6 +436,9 @@ public class DDFDirector extends Director {
                     outputPort.send(i, token);
                 }
             }
+        }
+        if (_debugging) {
+            _debug("DDFDirector.initialize() finished.");
         }
     }
 
@@ -608,7 +613,7 @@ public class DDFDirector extends Director {
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
-            _debug("\niterationCount " + _iterationCount);
+            _debug("DDFDirector.prefire()\niterationCount " + _iterationCount);
         }
 
         super.prefire();
@@ -635,7 +640,9 @@ public class DDFDirector extends Director {
                                 + " does not have enough tokens: " + rate[i]
                                 + ". Prefire returns false.");
                     }
-
+                    if (_debugging) {
+                        _debug("DDFDirector.prefire() returns false.");
+                    }
                     return false;
                 }
             }
@@ -648,7 +655,9 @@ public class DDFDirector extends Director {
             ActorInfo actorInfo = (ActorInfo) _actorsInfo.get(actor);
             actorInfo.numberOfFirings = 0;
         }
-
+        if (_debugging) {
+            _debug("DDFDirector.prefire() returns true.");
+        }
         return true;
     }
 
@@ -741,7 +750,9 @@ public class DDFDirector extends Director {
                     // _getTokeConsumptionRate(port) returns an array of int
                     // each with vaule -1.
                 } else {
-                    while (port.hasToken(i)) {
+                    // If no rate was specified, then we transfer at most
+                    // one token.
+                    if (port.hasToken(i)) {
                         Token token = port.get(i);
 
                         if (_debugging) {

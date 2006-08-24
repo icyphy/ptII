@@ -135,49 +135,62 @@ Invoking initialize():  .E1.Consumer
 Initializing actor: .E1.Consumer.
 Ramp: ENABLED_NOT_DEFERRABLE
 Consumer: NOT_ENABLED
-
+DDFDirector.initialize() finished.
+DDFDirector.prefire()
 iterationCount 0
 Director: Called prefire().
+DDFDirector.prefire() returns true.
+DDFDirector.fire()
 The actor .E1.Ramp will be iterated.
 The actor .E1.Ramp was iterated.
 Consumer: ENABLED_NOT_DEFERRABLE
 Ramp: ENABLED_DEFERRABLE
 Director: Called postfire().
-
+DDFDirector.prefire()
 iterationCount 1
 Director: Called prefire().
+DDFDirector.prefire() returns true.
+DDFDirector.fire()
 The actor .E1.Consumer will be iterated.
 The actor .E1.Consumer was iterated.
 Ramp: ENABLED_NOT_DEFERRABLE
 Consumer: NOT_ENABLED
 Director: Called postfire().
-
+DDFDirector.prefire()
 iterationCount 2
 Director: Called prefire().
+DDFDirector.prefire() returns true.
+DDFDirector.fire()
 The actor .E1.Ramp will be iterated.
 The actor .E1.Ramp was iterated.
 Consumer: ENABLED_NOT_DEFERRABLE
 Ramp: ENABLED_DEFERRABLE
 Director: Called postfire().
-
+DDFDirector.prefire()
 iterationCount 3
 Director: Called prefire().
+DDFDirector.prefire() returns true.
+DDFDirector.fire()
 The actor .E1.Consumer will be iterated.
 The actor .E1.Consumer was iterated.
 Ramp: ENABLED_NOT_DEFERRABLE
 Consumer: NOT_ENABLED
 Director: Called postfire().
-
+DDFDirector.prefire()
 iterationCount 4
 Director: Called prefire().
+DDFDirector.prefire() returns true.
+DDFDirector.fire()
 The actor .E1.Ramp will be iterated.
 The actor .E1.Ramp was iterated.
 Consumer: ENABLED_NOT_DEFERRABLE
 Ramp: ENABLED_DEFERRABLE
 Director: Called postfire().
-
+DDFDirector.prefire()
 iterationCount 5
 Director: Called prefire().
+DDFDirector.prefire() returns true.
+DDFDirector.fire()
 The actor .E1.Consumer will be iterated.
 The actor .E1.Consumer was iterated.
 Ramp: ENABLED_NOT_DEFERRABLE
