@@ -1029,7 +1029,7 @@ public class CTMultiSolverDirector extends CTDirector {
         try {
             _normalSolverClassName = "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
             ODESolver = new Parameter(this, "ODESolver", new StringToken(
-                    "ExplicitRK45Solver"));
+                    "ExplicitRK23Solver"));
             ODESolver.setTypeEquals(BaseType.STRING);
             ODESolver.addChoice(new StringToken("ExplicitRK23Solver")
                     .toString());
