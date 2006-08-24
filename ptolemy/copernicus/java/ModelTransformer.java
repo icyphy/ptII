@@ -203,9 +203,9 @@ public class ModelTransformer extends SceneTransformer implements
             }
 
             String className = attribute.getClass().getName();
-            Type attributeType = RefType.v(className);
+            /* Type attributeType =*/ RefType.v(className);
             String attributeName = attribute.getName(context);
-            String fieldName = getFieldNameForAttribute(attribute, context);
+            /*String fieldName =*/ getFieldNameForAttribute(attribute, context);
 
             Local local = attributeLocal;
             body.getUnits().insertBefore(

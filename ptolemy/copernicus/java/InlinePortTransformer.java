@@ -360,7 +360,7 @@ public class InlinePortTransformer extends SceneTransformer implements
                         }
                     }
 
-                    boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
+                    //boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
 
                     if (SootUtilities.derivesFrom(type.getSootClass(),
                             PtolemyUtilities.componentPortClass)) {
@@ -679,7 +679,7 @@ public class InlinePortTransformer extends SceneTransformer implements
                         }
                     }
 
-                    boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
+                    //boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
 
                     if (SootUtilities.derivesFrom(type.getSootClass(),
                             PtolemyUtilities.componentPortClass)) {

@@ -523,50 +523,50 @@ public class TypeSpecializerAnalysis {
     // the given type, look into the given map and retrieve the
     // inequality term for the object.  retrieve the resolved type,
     // and return it.
-    private static Type _getUpdateType(boolean debug, Object object, Type type,
-            Map objectToInequalityTerm) throws IllegalActionException {
-        RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
-
-        if (tokenType != null) {
-            if (debug) {
-                System.out.println("type of value " + object + " = " + type);
-            }
-
-            InequalityTerm term = (InequalityTerm) objectToInequalityTerm
-                    .get(object);
-
-            if (term == null) {
-                return null;
-            }
-
-            ptolemy.data.type.Type newTokenType = (ptolemy.data.type.Type) term
-                    .getValue();
-            RefType newType = PtolemyUtilities
-                    .getSootTypeForTokenType(newTokenType);
-
-            if (debug) {
-                System.out.println("newType = " + newType);
-            }
-
-            if (!SootUtilities.derivesFrom(newType.getSootClass(), tokenType
-                    .getSootClass())) {
-                // If the new Type is less specific, in Java terms,
-                // than what we had before, then the resulting code is
-                // likely not correct.  FIXME: hack to get around the
-                // bogus type lattice.  This should be an exception.
-                System.out.println("Warning! Resolved type of " + object
-                        + " to " + newType
-                        + " which is more general than the old type " + type);
-                newType = tokenType;
-            }
-
-            // create a new type isomorphic with the old type.
-            return SootUtilities.createIsomorphicType(type, newType);
-        }
-
-        // If this is not a token class, then we don't change it.
-        return null;
-    }
+//    private static Type _getUpdateType(boolean debug, Object object, Type type,
+//            Map objectToInequalityTerm) throws IllegalActionException {
+//        RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
+//
+//        if (tokenType != null) {
+//            if (debug) {
+//                System.out.println("type of value " + object + " = " + type);
+//            }
+//
+//            InequalityTerm term = (InequalityTerm) objectToInequalityTerm
+//                    .get(object);
+//
+//            if (term == null) {
+//                return null;
+//            }
+//
+//            ptolemy.data.type.Type newTokenType = (ptolemy.data.type.Type) term
+//                    .getValue();
+//            RefType newType = PtolemyUtilities
+//                    .getSootTypeForTokenType(newTokenType);
+//
+//            if (debug) {
+//                System.out.println("newType = " + newType);
+//            }
+//
+//            if (!SootUtilities.derivesFrom(newType.getSootClass(), tokenType
+//                    .getSootClass())) {
+//                // If the new Type is less specific, in Java terms,
+//                // than what we had before, then the resulting code is
+//                // likely not correct.  FIXME: hack to get around the
+//                // bogus type lattice.  This should be an exception.
+//                System.out.println("Warning! Resolved type of " + object
+//                        + " to " + newType
+//                        + " which is more general than the old type " + type);
+//                newType = tokenType;
+//            }
+//
+//            // create a new type isomorphic with the old type.
+//            return SootUtilities.createIsomorphicType(type, newType);
+//        }
+//
+//        // If this is not a token class, then we don't change it.
+//        return null;
+//    }
 
     // Given an object (which must be either a local, or a field) of
     // the given type, look into the given map and retrieve the
@@ -1289,7 +1289,7 @@ public class TypeSpecializerAnalysis {
         }
 
         public void fixValue() {
-            _fixed = true;
+            //_fixed = true;
         }
 
         public Object getValue() {
@@ -1360,7 +1360,7 @@ public class TypeSpecializerAnalysis {
         }
 
         public void unfixValue() {
-            _fixed = false;
+            //_fixed = false;
         }
 
         private ptolemy.data.type.Type _declaredType;
@@ -1369,7 +1369,7 @@ public class TypeSpecializerAnalysis {
 
         private Object _object;
 
-        private boolean _fixed = false;
+        //private boolean _fixed = false;
     }
 
     public static class JavaTypeLattice implements ptolemy.graph.CPO {

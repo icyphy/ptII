@@ -89,7 +89,7 @@ import soot.toolkits.scalar.LocalUses;
 public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
     public TokenTypeAnalysis(SootMethod method, CompleteUnitGraph g) {
         super(g);
-        _method = method;
+        //_method = method;
 
         NamedObj thisBinding = ModelTransformer.getObjectForClass(method
                 .getDeclaringClass());
@@ -583,7 +583,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         //      System.out.println("result = " + out);
     }
 
-    private SootMethod _method;
+    //private SootMethod _method;
 
     private NamedObjAnalysis _namedObjAnalysis;
 }

@@ -1510,7 +1510,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                     }
                 } else if (unit instanceof AssignStmt) {
                     AssignStmt stmt = (AssignStmt) unit;
-                    Type assignmentType = stmt.getLeftOp().getType();
+                    /*Type assignmentType =*/ stmt.getLeftOp().getType();
 
                     if (stmt.getLeftOp() instanceof Local
                             && stmt.getRightOp() instanceof LengthExpr) {
