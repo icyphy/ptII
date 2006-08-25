@@ -337,7 +337,11 @@ public class CommandLineTemplate {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Flag indicating that the previous argument was -class.
-    // Exists to mirror CompositeActorApplication.
-    //private boolean _expectingClass = false;
+
+    /* Flag indicating that the previous argument was -class.
+     * Exists to mirror CompositeActorApplication.
+     * CommandLineTransformer uses reflection on the main class
+     * and looks for _expectingClass, so don't remove this variable.  
+     */ 
+    private boolean _expectingClass = false;
 }
