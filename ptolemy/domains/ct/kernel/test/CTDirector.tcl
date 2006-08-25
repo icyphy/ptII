@@ -85,7 +85,7 @@ test CTDirector-2.1 {Get default values} {
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Runge_Kutta_4_5_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 Infinity 0.1 1e-10 1e-06}
+} {.System.DIR.CT_Runge_Kutta_2_3_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 Infinity 0.1 1e-10 1e-06}
 
 
 ######################################################################
