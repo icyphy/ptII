@@ -171,25 +171,21 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 195.0}">
         </property>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={436, 359, 508, 355}, maximized=false}">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{360, 85}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{490, 85}">
         </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="5.5"/>
-<yRange min="0.0" max="2.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 295.0]">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -216,6 +212,6 @@
     <link port="NonStrictTest.input" relation="relation"/>
     <link port="CurrentTime.output" relation="relation"/>
     <link port="CurrentTime.trigger" relation="relation3"/>
-    <link port="TimedPlotter.input" relation="relation3"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="Test2.input" relation="relation4"/>
 </entity>
