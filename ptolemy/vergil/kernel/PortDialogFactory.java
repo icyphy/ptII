@@ -52,6 +52,7 @@ import diva.gui.toolbox.JContextMenu;
  A factory that creates a dialog to configure, add, or remove ports
  from objects.
 
+ @deprecated Use PortDialogAction.
  @author Edward A. Lee and Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 2.0

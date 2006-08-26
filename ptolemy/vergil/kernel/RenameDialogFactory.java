@@ -46,6 +46,7 @@ import diva.gui.toolbox.JContextMenu;
 /**
  A factory that creates a dialog to rename an object.
 
+ @deprecated Use RenameDialogAction instead.
  @author Edward A. Lee and Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 2.0

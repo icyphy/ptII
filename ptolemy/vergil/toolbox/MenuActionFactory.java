@@ -66,6 +66,56 @@ public class MenuActionFactory implements MenuItemFactory {
         _actions = actions;
         _label = label;
     }
+    
+    /** Add an action to the pre-existing group of actions.
+     *  If this was constructed with the single argument, then this
+     *  converts the menu action into a submenu with the specified label.
+     *  @param action The action to add.
+     *  @param label The label to give to the menu group.
+     */
+    public void addAction(Action action, String label) {
+        if (_action != null) {
+            // Previously, there was only one action.
+            // Convert to a subaction.
+            _actions = new Action[2];
+            _actions[0] = _action;
+            _actions[1] = action;
+            _action = null;
+        } else {
+            // Create a new actions array.
+            Action[] newActions = new Action[_actions.length + 1];
+            System.arraycopy(_actions, 0, newActions, 0, _actions.length);
+            newActions[_actions.length] = action;
+            _actions = newActions;
+        }
+        _label = label;
+    }
+
+    /** Add a set of action to the pre-existing group of actions.
+     *  If this was constructed with the single argument, then this
+     *  converts the menu action into a submenu with the specified label.
+     *  @param actions The actions to add.
+     *  @param label The label to give to the menu group if it
+     *   previously not a menu group.
+     */
+    public void addActions(Action[] actions, String label) {
+        int start = 0;
+        if (_action != null) {
+            // Previously, there was only one action.
+            // Convert to a subaction.
+            _actions = new Action[actions.length + 1];
+            _actions[0] = _action;
+            start = 1;
+            _action = null;
+        } else {
+            Action[] newActions = new Action[_actions.length + actions.length];
+            System.arraycopy(_actions, 0, newActions, 0, _actions.length);
+            start = _actions.length;
+            _actions = newActions;
+        }
+        System.arraycopy(actions, 0, _actions, start, actions.length);
+        _label = label;
+    }
 
     /** Add an item to the given context menu that will configure the
      *  parameters on the given target.

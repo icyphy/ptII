@@ -58,10 +58,13 @@ JSRCS = \
 	AttributeNodeModel.java \
 	AttributeController.java \
 	CompositePtolemyModel.java \
+	ConfigureUnitsAction.java \
 	DebugRenderer.java \
 	Link.java \
 	PortDialogFactory.java \
+	PortDialogAction.java \
 	RelationController.java \
+	RenameDialogAction.java \
 	RenameDialogFactory.java \
 	VergilUtilities.java
 

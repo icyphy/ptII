@@ -74,34 +74,23 @@ public class AttributeController extends IconController {
         super(controller);
 
         if (access == FULL) {
-            // Add to the context menu.
-            _menuFactory.addMenuItemFactory(new RenameDialogFactory());
+            // Add to the context menu, confiure submenu.
+            _configureMenuFactory.addAction(new RenameDialogAction("Rename"), "Customize");
+            
             Action[] actions = { _getDocumentationAction,
                     new CustomizeDocumentationAction(),
                     new RemoveCustomDocumentationAction() };
             _menuFactory.addMenuItemFactory(new MenuActionFactory(actions,
                     "Documentation"));
-            // Note that we 
-            // Note that we also have "Send to Back" in
-            // vergil/basic/BasicGraphFrame.java
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    new MoveAction("Send to Back", MoveAction.TO_FIRST)));
 
-            /* The following doesn't work, and seems confusing anyway.
-             _menuFactory.addMenuItemFactory(
-             new MenuActionFactory(
-             new MoveAction("Move towards first", MoveAction.UP)));
-             */
-            // Note that we also have "Bring to Front" in
+            // Note that we also have "Send to Back" and "Bring to Front" in
             // vergil/basic/BasicGraphFrame.java
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    new MoveAction("Bring to Front", MoveAction.TO_LAST)));
-
-            /* The following doesn't work, and seems confusing anyway.
-             _menuFactory.addMenuItemFactory(
-             new MenuActionFactory(
-             new MoveAction("Move towards last", MoveAction.DOWN)));
-             */
+            Action[] appearanceActions = {
+                    new MoveAction("Send to Back", MoveAction.TO_FIRST),
+                    new MoveAction("Bring to Front", MoveAction.TO_LAST)
+            };
+            _appearanceMenuActionFactory = new MenuActionFactory(appearanceActions, "Appearance");
+            _menuFactory.addMenuItemFactory(_appearanceMenuActionFactory);
         }
     }
 
@@ -128,6 +117,12 @@ public class AttributeController extends IconController {
 
     /** Indicator to give partial access to the attribute. */
     public static final Access PARTIAL = new Access();
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected members                     ////
+
+    /** The appearance menu factory. */
+    protected MenuActionFactory _appearanceMenuActionFactory;
 
     ///////////////////////////////////////////////////////////////////
     ////                     private members                       ////

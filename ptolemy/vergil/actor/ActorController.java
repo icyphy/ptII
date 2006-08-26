@@ -68,7 +68,8 @@ import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.debugger.BreakpointDialogFactory;
 import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.kernel.PortDialogFactory;
+import ptolemy.vergil.kernel.ConfigureUnitsAction;
+import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.toolbox.EditIconAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -133,9 +134,11 @@ public abstract class ActorController extends AttributeController {
 
         // "Configure Ports"
         if (access == FULL) {
-            // Add to the context menu.
-            _portDialogFactory = new PortDialogFactory();
-            _menuFactory.addMenuItemFactory(_portDialogFactory);
+            // Add to the context menu, configure submenu.
+            _portDialogAction = new PortDialogAction("Ports");
+            _configureMenuFactory.addAction(_portDialogAction, "Customize");
+            _configureUnitsAction = new ConfigureUnitsAction("Units Constraints");
+            _configureMenuFactory.addAction(_configureUnitsAction, "Customize");
         }
 
         if (_configuration != null) {
@@ -211,8 +214,11 @@ public abstract class ActorController extends AttributeController {
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
 
-        if (_portDialogFactory != null) {
-            _portDialogFactory.setConfiguration(configuration);
+        if (_portDialogAction != null) {
+            _portDialogAction.setConfiguration(configuration);
+        }
+        if (_configureUnitsAction != null) {
+            _configureUnitsAction.setConfiguration(configuration);
         }
 
         if (_listenToActorAction != null) {
@@ -337,18 +343,19 @@ public abstract class ActorController extends AttributeController {
         Action[] actions = { _editIconAction, _removeIconAction,
                 _flipPortsHorizontal, _flipPortsVertical,
                 _rotatePortsClockwise, _rotatePortsCounterclockwise };
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(actions,
-                "Appearance"));
+        _appearanceMenuActionFactory.addActions(actions, "Appearance");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private BreakpointDialogFactory _breakpointDialogFactory;
+    
+    private ConfigureUnitsAction _configureUnitsAction;
 
     private ListenToActorAction _listenToActorAction;
 
-    private PortDialogFactory _portDialogFactory;
+    private PortDialogAction _portDialogAction;
 
     private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 8);
 

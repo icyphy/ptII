@@ -73,8 +73,10 @@ public class ParameterizedNodeController extends NamedObjController {
         // Derived classes can add menu items to it.
         _menuFactory = new PtolemyMenuFactory(controller);
 
-        _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_configureAction));
+        // In this base class, there is only one configure command, so
+        // there won't be a submenu. Subclasses convert this to a submenu.
+        _configureMenuFactory = new MenuActionFactory(_configureAction);
+        _menuFactory.addMenuItemFactory(_configureMenuFactory);
         _menuCreator.setMenuFactory(_menuFactory);
 
         // Add a double click interactor.
@@ -97,6 +99,9 @@ public class ParameterizedNodeController extends NamedObjController {
     ///////////////////////////////////////////////////////////////////
     ////                     protected members                     ////
 
+    /** The submenu for configure actions. */
+    protected MenuActionFactory _configureMenuFactory;
+    
     /** The factory belonging to the menu creator. */
     protected PtolemyMenuFactory _menuFactory;
 
