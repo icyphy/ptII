@@ -1,3 +1,6 @@
-Ramp is {
-	$actorSource ptolemy.actor.lib.Ramp$
+Foo is {
+
+parameter a;
+a();
+
 }

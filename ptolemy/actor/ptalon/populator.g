@@ -40,9 +40,9 @@ options {
 }
 
 {
-	private CodeManager info;
+	private NestedActorManager info;
 
-	public CodeManager getCodeManager() {
+	public NestedActorManager getCodeManager() {
 		return info;
 	}
 	
@@ -124,70 +124,54 @@ attribute
 	#(ATTRIBUTE qualified_identifier)
 ;
 
-assignment [String actorName, boolean set] throws PtalonRuntimeException
+assignment throws PtalonRuntimeException
 {
 	int x;
 	boolean y;
 }
 :
-	#(ASSIGN a:ID (b:ID 
-	{
-		if (set) {
-			info.assign(actorName, a.getText(), b.getText());
-		}
-	}
-	| actor_declaration | x=arithmetic_expression | y=boolean_expression))
+	#(ASSIGN a:ID (b:ID	| nested_actor_declaration
+	| x=arithmetic_expression | y=boolean_expression))
 ;
 
-actor_declaration! throws PtalonRuntimeException
-{
-	String actorName = "";
-	boolean set = false;
-}
+/**
+ * This is for a top level actor declaration, which 
+ * requires seperate treatement from a nested actor
+ * declaration.
+ */
+actor_declaration throws PtalonRuntimeException
 :
 	#(a:ACTOR_DECLARATION 
 	{
-		String name = a.getText();
-		try {
-			if (info.isReady() && info.getType(name).equals("import")) {
-    			actorName = info.addActor(name);
-    			#actor_declaration = #[ACTOR_DECLARATION, actorName];
-    			StringTokenizer tokenizer = new StringTokenizer(actorName, "+");
-    			try {
-    				tokenizer.nextToken();
-    				actorName = tokenizer.nextToken();
-    			} catch (NullPointerException e) {
-    				throw new PtalonRuntimeException("Bad name " + actorName + " given as name");
-    			}
-    			set = true;
-    		} else if (info.isReady() && info.getType(name).equals("parameter")) {
-    			if (info.paramHasValue(name)) {    				
-        			actorName = info.addActor(name);
-        			#actor_declaration = #[ACTOR_DECLARATION, actorName];
-        			StringTokenizer tokenizer = new StringTokenizer(actorName, "+");
-        			try {
-        				tokenizer.nextToken();
-        				actorName = tokenizer.nextToken();
-        			} catch (NullPointerException e) {
-        				throw new PtalonRuntimeException("Bad name " + actorName + " given as name");
-        			}
-        			set = true;
-    			} else {
-    				#actor_declaration = #[ACTOR_DECLARATION, name];
-    			}
-			} else {
-    			#actor_declaration = #[ACTOR_DECLARATION, name];
-    		}
-		} catch (Exception e) {
-			throw new PtalonRuntimeException("Problem with actor declaration " + name, e);
+		info.enterActorDeclaration(a.getText());
+		if (info.isActorReady()) {
+			info.addActor(a.getText());
 		}
 	}
-	(b:assignment[actorName, set]
+	(b:assignment)*
 	{
-		#actor_declaration.addChild(#b);
+		info.exitActorDeclaration();
 	}
-	)*)
+	)
 ;
+
+/**
+ * In this case we do not add any actors, but rather
+ * defer this decision to any generated actors.
+ */
+nested_actor_declaration throws PtalonRuntimeException
+:
+	#(a:ACTOR_DECLARATION 
+	{
+		info.enterActorDeclaration(a.getText());
+	}
+	(b:assignment)*
+	{
+		info.exitActorDeclaration();
+	}
+	)
+;
+
 
 arithmetic_factor returns [int i] throws PtalonRuntimeException
 {
@@ -453,18 +437,12 @@ conditional_statement throws PtalonRuntimeException
 	}
 ;	
 
-actor_definition[CodeManager info] throws PtalonRuntimeException
+actor_definition[NestedActorManager info] throws PtalonRuntimeException
 {
 	this.info = info;
 	this.info.startAtTop();
 }
 :
-	#(a:ACTOR_DEFINITION 
-	{
-		if (!this.info.isActorSet()) {
-			this.info.setActor(a.getText());
-		}
-	}
-	(import_declaration)* ((atomic_statement | 
+	#(a:ACTOR_DEFINITION (import_declaration)* ((atomic_statement | 
 		conditional_statement)* | attribute))
 ;

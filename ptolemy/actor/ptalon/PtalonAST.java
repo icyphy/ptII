@@ -1,7 +1,10 @@
 package ptolemy.actor.ptalon;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.util.StringUtilities;
 
@@ -24,18 +27,29 @@ public class PtalonAST extends CommonAST {
      */
     public PtalonAST() {
         super();
-        // TODO Auto-generated constructor stub
     }
-    
+
     /**
      * Call the default constructor.
      * @param tok The token for this node.
      */
     public PtalonAST(Token tok) {
         super(tok);
-        // TODO Auto-generated constructor stub
     }
-    
+
+    /**
+     * @return An XML String version of this AST.
+     */
+    public String toString() {
+        StringWriter writer = new StringWriter();
+        try {
+            xmlSerialize(writer, 0);
+        } catch (IOException e) {
+            return "";
+        }
+        return writer.toString();
+    }
+
     /**
      * Generate the XML for this AST.
      * @param out The writer to write to.
@@ -62,7 +76,7 @@ public class PtalonAST extends CommonAST {
             }
         }
     }
-    
+
     /** Return a number of spaces that is proportional to the argument.
      *  If the argument is negative or zero, return an empty string.
      *  @param level The level of indenting represented by the spaces.

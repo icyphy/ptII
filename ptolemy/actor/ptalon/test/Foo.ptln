@@ -1,0 +1,4 @@
+Foo is {
+	parameter a;
+	a();
+}

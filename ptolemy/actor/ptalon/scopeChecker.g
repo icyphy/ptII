@@ -40,9 +40,9 @@ options {
 }
 
 {
-	private CodeManager info;
+	private NestedActorManager info;
 
-	public CodeManager getCodeManager() {
+	public NestedActorManager getCodeManager() {
 		return info;
 	}
 	
@@ -113,25 +113,37 @@ attribute
 
 assignment throws PtalonScopeException
 :
-	#(ASSIGN ID (ID | actor_declaration | arithmetic_expression | boolean_expression))
+	#(ASSIGN a:ID (ID | nested_actor_declaration[a.getText()]
+	| arithmetic_expression | boolean_expression))
 ;
 
-actor_declaration throws PtalonScopeException
+actor_declaration throws PtalonScopeException	
 :
 	#(a:ACTOR_DECLARATION 
 	{
-		String type = info.getType(a.getText());
-		LinkedList<String> types = new LinkedList<String>();
-		types.add("parameter");
-		types.add("import");
-		types.add("this");
-		if (!types.contains(type)) {
-			throw new PtalonScopeException(a.getText() + 
-				" should have type parameter, import or this, but instead has type " + type);
-		}
+		info.pushActorDeclaration(a.getText());
 	}
-	(assignment)*)
+	(b:assignment)*)
+	{
+		String uniqueName = info.popActorDeclaration();
+		#actor_declaration.setText(uniqueName);
+	}	
 ;
+
+nested_actor_declaration [String paramValue] throws PtalonScopeException	
+:
+	#(a:ACTOR_DECLARATION 
+	{
+		info.pushActorDeclaration(a.getText());
+		info.setActorParameter(paramValue);
+	}
+	(b:assignment)*)
+	{
+		String uniqueName = info.popActorDeclaration();
+		#nested_actor_declaration.setText(uniqueName);
+	}	
+;
+
 
 arithmetic_factor throws PtalonScopeException
 :
@@ -218,14 +230,14 @@ conditional_statement throws PtalonScopeException
 	}
 ;	
 
-actor_definition [CodeManager manager] throws PtalonScopeException
+actor_definition [NestedActorManager manager] throws PtalonScopeException
 {
 	info = manager;
 }
 :
 	#(a:ACTOR_DEFINITION 
 	{
-		info.addSymbol(a.getText(), "this");
+		info.setActorSymbol(a.getText());
 	}
 	(import_declaration)* ((atomic_statement | 
 		conditional_statement)* | attribute))

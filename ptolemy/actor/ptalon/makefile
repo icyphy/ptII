@@ -47,6 +47,8 @@ include $(CONFIG)
 # Keep this list alphabetized.
 JSRCS = \
 	CodeManager.java \
+	NamedTree.java \
+	NestedActorManager.java \
 	PtalonActor.java \
 	PtalonAST.java \
 	PtalonBoolParameter.java \

@@ -58,11 +58,11 @@ public class PtalonParameter extends Parameter {
      * @param expr The expression to set.
      */
     public void setExpression(String expr) {
-        super.setExpression(expr);
         if ((expr == null) || (expr.trim().equals(""))) {
             return;
         }
         _hasValue = true;
+        super.setExpression(expr);
     }
     
     /**
@@ -73,8 +73,8 @@ public class PtalonParameter extends Parameter {
      * @throws IllegalActionException If the superclass throws one.
      */
     public void setToken(Token token) throws IllegalActionException {
-        super.setToken(token);
         _hasValue = true;
+        super.setToken(token);
     }
     
     /**
@@ -85,11 +85,11 @@ public class PtalonParameter extends Parameter {
      * @throws IllegalActionException If the superclass throws one.
      */
     public void setToken(String expression) throws IllegalActionException {
-        super.setToken(expression);
         if ((expression == null) || (expression.trim().equals(""))) {
             return;
         }
         _hasValue = true;
+        super.setToken(expression);
     }
     
     
@@ -101,7 +101,5 @@ public class PtalonParameter extends Parameter {
      * True if this parameter has a value.
      */
     private boolean _hasValue;
-    
-    
-    
+        
 }
