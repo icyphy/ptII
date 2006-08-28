@@ -3245,6 +3245,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  relative to the classpath.
      *  @param className The class name.
      *  @param source The source as specified in the XML.
+     *  @return The class definition.
      */
     private ComponentEntity _attemptToFindMoMLClass(String className,
             String source) throws Exception {
@@ -3318,10 +3319,24 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         if (!className.equals(referenceName)
                 && !className.endsWith("." + referenceName)) {
-            throw new XmlException("File " + classAsFile
-                    + " does not define a class named " + className,
-                    _currentExternalEntity(), _getLineNumber(),
-                    _getColumnNumber());
+            // The className might reference an inner class defined in
+            // the reference.  Try to find that.
+            if (reference instanceof CompositeEntity) {
+                if (className.startsWith(referenceName + ".")) {
+                    reference = ((CompositeEntity)reference).getEntity(
+                            className.substring(referenceName.length() + 1));
+                } else {
+                    reference = null;
+                }
+            } else {
+                reference = null;
+            }
+            if (reference == null) {
+                throw new XmlException("File " + classAsFile
+                        + " does not define a class named " + className,
+                        _currentExternalEntity(), _getLineNumber(),
+                        _getColumnNumber());
+            }
         }
 
         // Load an associated icon, if there is one.
