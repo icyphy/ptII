@@ -82,16 +82,16 @@ test Documentation-2.1 {call consolidate on a NamedObj w/o documentation}  {
 	    == [java::null]}
 } {1}
 
-test Documentation-3.0 {call toString, getValue, setValue} {
+test Documentation-3.0 {call toString, getValueAsString, setValue} {
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser reset
     set toplevel [$parser parse $moml_3_1]
     set documentation [java::cast ptolemy.moml.Documentation \
 	    [$toplevel getAttribute "_doc"]]
     set r1 [$documentation toString]
-    set r2 [$documentation getValue]
+    set r2 [$documentation getValueAsString]
     $documentation setValue "new doc"
-    set r3 [$documentation getValue]
+    set r3 [$documentation getValueAsString]
     list $r1 $r2 $r3
 } {{(ptolemy.moml.Documentation, aaa doc)} {aaa doc} {new doc}}
 
@@ -103,7 +103,7 @@ test Documentation-4.1 {setValue with a unescaped ampersand, as per Ned Stoffel}
     set documentation [java::cast ptolemy.moml.Documentation \
 	    [$toplevel getAttribute "_doc"]]
     set r1 [$documentation toString]
-    set r2 [$documentation getValue]
+    set r2 [$documentation getValueAsString]
     $documentation setValue \
 	{    
 	    if (Is_sin =1 & Is_noise=0) then \{
@@ -114,7 +114,7 @@ test Documentation-4.1 {setValue with a unescaped ampersand, as per Ned Stoffel}
         }
 
     set moml_4_1 [$toplevel exportMoML]
-    list [$documentation getValue] \
+    list [$documentation getValueAsString] \
 	[$documentation exportMoML]
 } {{    
 	    if (Is_sin =1 & Is_noise=0) then \{
@@ -132,7 +132,7 @@ test Documentation-4.2 {parse the moml from 4.1 above} {
     set documentation [java::cast ptolemy.moml.Documentation \
 	    [$toplevel_4_2 getAttribute "_doc"]]
     set r1 [$documentation toString]
-    set r2 [$documentation getValue]
+    set r2 [$documentation getValueAsString]
     set r3 [$documentation exportMoML]
     list $r1 $r2 $r3
 } {{(ptolemy.moml.Documentation,     
