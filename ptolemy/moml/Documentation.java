@@ -95,7 +95,7 @@ public class Documentation extends StringAttribute {
 
             while (segments.hasNext()) {
                 Documentation segment = (Documentation) segments.next();
-                doc.append(segment.getValue());
+                doc.append(segment.getValueAsString());
 
                 if (segments.hasNext()) {
                     doc.append("\n");
@@ -140,14 +140,6 @@ public class Documentation extends StringAttribute {
         }
     }
 
-    /** Get the documentation as a string.
-     *  @return The documentation.
-     *  @see #setValue(String)
-     */
-    public String getValue() {
-        return getExpression();
-    }
-
     /** Override the base class to remove this instance from
      *  its container if the argument is an empty string.
      *  The removal is done in a change request, so it may
@@ -173,7 +165,7 @@ public class Documentation extends StringAttribute {
 
     /** Set the documentation string.
      *  @param value The documentation.
-     *  @see #getValue()
+     *  @see #getValueAsString()
      */
     public void setValue(String value) {
         try {

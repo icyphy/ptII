@@ -253,6 +253,14 @@ public class Location extends SingletonAttribute implements Locatable {
         return _location;
     }
 
+    /** Get the value of the attribute, which is the evaluated expression.
+     *  @return The same as getExpression().
+     *  @see #getExpression()
+     */
+    public String getValueAsString() {
+        return getExpression();
+    }
+
     /** Get the visibility of this attribute, as set by setVisibility().
      *  The visibility is set by default to NONE.
      *  @return The visibility of this attribute.

@@ -758,7 +758,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 String previousValue = null;
 
                 if (previous != null) {
-                    previousValue = previous.getValue();
+                    previousValue = previous.getValueAsString();
                 }
 
                 // Set the doc value only if it differs from the previous.

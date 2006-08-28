@@ -404,7 +404,7 @@ public class PtolemyQuery extends Query implements QueryListener,
             if ((tooltipAttribute != null)
                     && tooltipAttribute instanceof Documentation) {
                 setToolTip(entryName, ((Documentation) tooltipAttribute)
-                        .getValue());
+                        .getValueAsString());
             } else {
                 String tip = Documentation.consolidate((NamedObj) attribute);
 

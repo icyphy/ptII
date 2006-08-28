@@ -618,6 +618,26 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         return _typeTerm;
     }
 
+    /** Get the value of the attribute, which is the evaluated expression.
+     *  If the value is null, this returns the string "null"
+     *  @see #getExpression()
+     */
+    public String getValueAsString() {
+        ptolemy.data.Token value = null;
+        try {
+            value = getToken();
+        } catch (IllegalActionException ex) {
+            // The value of this variable is undefined.
+        }
+        String tokenString;
+        if (value == null) {
+            tokenString = "null";
+        } else {
+            tokenString = value.toString();
+        }
+        return tokenString;
+    }
+
     /** Get the visibility of this variable, as set by setVisibility().
      *  The visibility is set by default to EXPERT.
      *  @return The visibility of this variable.

@@ -136,7 +136,7 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                     // FIXME: This doesn't work with calling this
                     // on either this or component.
                     this.setToolTipText(((Documentation) tooltipAttribute)
-                            .getValue());
+                            .getValueAsString());
                 } else {
                     String tip = Documentation.consolidate(object);
 

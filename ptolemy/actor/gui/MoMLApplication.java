@@ -667,7 +667,7 @@ public class MoMLApplication implements ExecutionListener {
                                     && configuration.getAttribute("_doc") instanceof Documentation) {
                                 Documentation doc = (Documentation) configuration
                                         .getAttribute("_doc");
-                                result.append("\t\t" + doc.getValue() + "\n");
+                                result.append("\t\t" + doc.getValueAsString() + "\n");
                                 printDefaultConfigurationMessage = false;
                             }
                         }

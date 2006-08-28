@@ -157,6 +157,14 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
         return "";
     }
 
+    /** Get the value of the attribute, which is the evaluated expression.
+     *  @return The same as getExpression().
+     *  @see #getExpression()
+     */
+    public String getValueAsString() {
+        return getExpression();
+    }
+
     /** Get the visibility of this Settable, as set by setVisibility().
      *  If setVisibility() has not been called, then implementations of
      *  this interface should return some default, not null, indicating

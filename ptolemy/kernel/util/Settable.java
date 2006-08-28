@@ -107,12 +107,18 @@ public interface Settable extends Nameable {
      */
     public String getDisplayName();
 
-    /** Get the value of the attribute that has been set by setExpression(),
+    /** Get the expression of the attribute that has been set by setExpression(),
      *  or null if there is none.
      *  @return The expression.
      *  @see #setExpression(String)
      */
     public String getExpression();
+
+    /** Get the value of the attribute, which is the evaluated expression.
+     *  @return The value.
+     *  @see #getExpression()
+     */
+    public String getValueAsString();
 
     /** Get the visibility of this Settable, as set by setVisibility().
      *  If setVisibility() has not been called, then implementations of

@@ -120,6 +120,14 @@ public abstract class AbstractSettableAttribute extends Attribute implements
         return _default;
     }
 
+    /** Get the value of the attribute, which is the evaluated expression.
+     *  @return The same as getExpression().
+     *  @see #getExpression()
+     */
+    public String getValueAsString() {
+        return getExpression();
+    }
+
     /** Set the value of this attribute to the specified expression.
      *  This base class implementation merely records the first
      *  value to serve as the default value if needed.
