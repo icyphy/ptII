@@ -140,16 +140,24 @@ assignment throws PtalonRuntimeException
  * declaration.
  */
 actor_declaration throws PtalonRuntimeException
+{
+	boolean oldEvalBool = false;
+}
 :
 	#(a:ACTOR_DECLARATION 
 	{
 		info.enterActorDeclaration(a.getText());
 		if (info.isActorReady()) {
-			info.addActor(a.getText());
+			oldEvalBool = evalBool;
+			evalBool = true;
 		}
 	}
 	(b:assignment)*
 	{
+		if (info.isActorReady()) {
+			evalBool = oldEvalBool;
+			info.addActor(a.getText());
+		}
 		info.exitActorDeclaration();
 	}
 	)
@@ -243,7 +251,7 @@ arithmetic_expression returns [int i] throws PtalonRuntimeException
 	int x, y;
 }
 :
-	#(PLUS x=arithmetic_term y=arithmetic_term
+	#(a:ARITHMETIC_EXPRESSION (#(PLUS x=arithmetic_term y=arithmetic_term
 	{
 		if (evalBool) {
 			i = x + y;
@@ -260,7 +268,14 @@ arithmetic_expression returns [int i] throws PtalonRuntimeException
 		if (evalBool) {
 			i = x;
 		}
-	}		
+	}
+	)
+	{
+		if (evalBool) {
+			info.setArithExpr(a.getText(), i);
+		}
+	}
+	)
 ;
 
 relational_expression returns [boolean b] throws PtalonRuntimeException
@@ -378,7 +393,7 @@ boolean_expression returns [boolean b] throws PtalonRuntimeException
 	boolean x, y;
 }
 :
-	#(LOGICAL_OR x=boolean_term y=boolean_term
+	#(e:BOOLEAN_EXPRESSION (#(LOGICAL_OR x=boolean_term y=boolean_term
 	{
 		if (evalBool) {
 			b = x || y;
@@ -389,7 +404,14 @@ boolean_expression returns [boolean b] throws PtalonRuntimeException
 		if (evalBool) {
 			b = x;
 		}
-	}			
+	}
+	)
+	{
+		if (evalBool) {
+			info.setBoolExpr(e.getText(), b);
+		}	
+	}
+	)
 ;
 
 atomic_statement throws PtalonRuntimeException

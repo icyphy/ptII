@@ -77,7 +77,7 @@ public PtalonLexer(LexerSharedInputState state) {
 	literals.put(new ANTLRHashString("else", this), new Integer(40));
 	literals.put(new ANTLRHashString("import", this), new Integer(4));
 	literals.put(new ANTLRHashString("true", this), new Integer(33));
-	literals.put(new ANTLRHashString("boolparameter", this), new Integer(42));
+	literals.put(new ANTLRHashString("boolparameter", this), new Integer(12));
 	literals.put(new ANTLRHashString("outport", this), new Integer(8));
 	literals.put(new ANTLRHashString("false", this), new Integer(34));
 	literals.put(new ANTLRHashString("is", this), new Integer(41));
@@ -731,7 +731,7 @@ tryAgain:
 		}
 		}
 		{
-		_loop357:
+		_loop2217:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -770,7 +770,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop357;
+				break _loop2217;
 			}
 			}
 		} while (true);
@@ -789,34 +789,34 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt360=0;
-		_loop360:
+		int _cnt2220=0;
+		_loop2220:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt360>=1 ) { break _loop360; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt2220>=1 ) { break _loop2220; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt360++;
+			_cnt2220++;
 		} while (true);
 		}
 		{
 		if ((LA(1)=='.')) {
 			match('.');
 			{
-			int _cnt363=0;
-			_loop363:
+			int _cnt2223=0;
+			_loop2223:
 			do {
 				if (((LA(1) >= '0' && LA(1) <= '9'))) {
 					matchRange('0','9');
 				}
 				else {
-					if ( _cnt363>=1 ) { break _loop363; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+					if ( _cnt2223>=1 ) { break _loop2223; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
 				
-				_cnt363++;
+				_cnt2223++;
 			} while (true);
 			}
 		}
@@ -851,7 +851,7 @@ tryAgain:
 		
 		match('"');
 		{
-		_loop368:
+		_loop2228:
 		do {
 			switch ( LA(1)) {
 			case '\\':
@@ -898,7 +898,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop368;
+				break _loop2228;
 			}
 			}
 		} while (true);

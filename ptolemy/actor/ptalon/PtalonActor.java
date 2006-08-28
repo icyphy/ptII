@@ -202,6 +202,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 PtalonMLHandler handler = new PtalonMLHandler(this);
                 parser.setHandler(handler);
                 parser.parse(_configureSource, null, new StringReader(text));
+                _removeEntity(null);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -245,6 +246,16 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     }
     
     /**
+     * Get the unique name for the symbol in the PtalonActor. 
+     * @param ptalonName The symbol to test.
+     * @return The unique name.
+     * @throws PtalonRuntimeException If no such symbol exists.
+     */
+    public String getMappedName(String ptalonName) throws PtalonRuntimeException {
+        return _codeManager.getMappedName(ptalonName);
+    }
+
+    /**
      * Return the depth of this actor declaration
      * with respect to its creator.  If this is 
      * not created by another PtalonActor's code, then the
@@ -278,7 +289,6 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     + name, e);
         }
     }
-    
     
     /**
      * Set the depth of this actor declaration

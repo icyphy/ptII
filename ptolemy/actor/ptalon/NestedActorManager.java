@@ -9,8 +9,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -66,7 +71,8 @@ public class NestedActorManager extends CodeManager {
                 File file = _imports.get(symbol);
                 location.setToken(new StringToken(file.toString()));
                 actor.setNestedDepth(_actor.getNestedDepth() + 1);
-                _currentTree.assignParameters(actor);
+                _currentTree.assignPtalonParameters(actor);
+                _currentTree.makeConnections(actor);
             } else if (getType(symbol).equals("parameter")) {
                 PtalonParameter parameter = (PtalonParameter) _actor
                         .getAttribute(getMappedName(symbol));
@@ -81,7 +87,8 @@ public class NestedActorManager extends CodeManager {
                     ptalonActor.ptalonCodeLocation.setToken(new StringToken(
                             file.toString()));
                     ptalonActor.setNestedDepth(_actor.getNestedDepth() + 1);
-                    _currentTree.assignParameters(ptalonActor);
+                    _currentTree.assignPtalonParameters(ptalonActor);
+                    _currentTree.makeConnections(ptalonActor);
                 } else if (expression.startsWith("createWith:")) {
                     PtalonActor container = _actor;
                     int depth = _actor.getNestedDepth();
@@ -92,8 +99,9 @@ public class NestedActorManager extends CodeManager {
                     ComponentEntity newInstance = container.createNestedActor(_actor,
                             expression.substring(11));
                     if (newInstance instanceof PtalonActor) {
-                        _currentTree.assignParameters((PtalonActor) newInstance);
+                        _currentTree.assignPtalonParameters((PtalonActor) newInstance);
                     }
+                    _currentTree.makeConnections(newInstance);
                 } else {
                     Class<?> genericClass = Class.forName(expression);
                     Class<? extends ComponentEntity> entityClass = genericClass
@@ -102,6 +110,7 @@ public class NestedActorManager extends CodeManager {
                             .getConstructor(CompositeEntity.class, String.class);
                     ComponentEntity entity = entityConstructor.newInstance(
                             _actor, uniqueName);
+                    _currentTree.makeConnections(entity);
                 }
             } else { // type of name not "import" or "parameter".
                 throw new PtalonRuntimeException("Invalid type for " + name);
@@ -111,6 +120,32 @@ public class NestedActorManager extends CodeManager {
         }
     }
     
+    /**
+     * Set the given parameter in the current nested actor declaration to
+     * have the specified expression label.  This label will be
+     * used to reference the arithmetic value of the expression
+     * assigned during runtime.
+     * @param paramName The parameter name.
+     * @param expressionLabel The arithmetic expression label.
+     * @throws PtalonScopeException If not in an actor declaration.
+     */
+    public void addArithParam(String paramName, String expressionLabel) throws PtalonScopeException {
+        _currentTree.addArithParam(paramName, expressionLabel);
+    }
+    
+    /**
+     * Set the given parameter in the current nested actor declaration to
+     * have the specified expression label.  This label will be
+     * used to reference the boolean value of the expression
+     * assigned during runtime.
+     * @param paramName The parameter name.
+     * @param expressionLabel The boolean expression label.
+     * @throws PtalonScopeException If not in an actor declaration.
+     */
+    public void addBoolParam(String paramName, String expressionLabel) throws PtalonScopeException {
+        _currentTree.addBoolParam(paramName, expressionLabel);
+    }
+
     
     /**
      * Add a symbol for an import statement.  The statement has form
@@ -146,6 +181,28 @@ public class NestedActorManager extends CodeManager {
             throws PtalonScopeException {
         super.addImport(name, filename);
         _instanceNumbers.put(name, -1);
+    }
+    
+    /**
+     * Add an assignment of the specified port of this actor
+     * declaration to the containing Ptalon actor connection point,
+     * which is either a port or a relation. 
+     * This is not allowed in nested actor declarations, only top-level declarations.
+     * For instance,
+     * Foo(port := containing)
+     * port is okay, but not
+     * Bar(a := Foo(port := containing))
+     *  
+     * @param portName The name of the port in this 
+     * @param connectPoint The name of the container's port or relation.
+     * @throws PtalonScopeException If this is not a top-level actor declaration with respect
+     * to the assignment, or if connectPoint is not a port or relation.
+     */
+    public void addPortAssign(String portName, String connectPoint) throws PtalonScopeException {
+        if (_currentTree == null) {
+            throw new PtalonScopeException("Not in an actor declartion");
+        }
+        _currentTree.addPortAssign(portName, connectPoint);
     }
     
     /**
@@ -245,6 +302,24 @@ public class NestedActorManager extends CodeManager {
             throw new PtalonRuntimeException("Already at top level");
         }
         _currentTree = _currentTree.getParent();
+    }
+    
+    /**
+     * @return A new string such as "_arithmetic2" to 
+     * represent an arithmetic expression label.  Each
+     * arithmetic expression should recieve a new label.
+     */
+    public String getNextArithExpr() {
+        return "_arithmetic" + _arithmeticIndex++; 
+    }
+    
+    /**
+     * @return A new string such as "_boolean2" to 
+     * represent an boolean expression label.  Each
+     * boolean expression should recieve a new label.
+     */
+    public String getNextBoolExpr() {
+        return "_boolean" + _booleanIndex++;
     }
     
     /**
@@ -348,6 +423,28 @@ public class NestedActorManager extends CodeManager {
         }
     }
     
+    /**
+     * Set the given named arithmetic expression to have the specifed
+     * value.  This will be called at runtime to set the value
+     * of an arithmetic expression. 
+     * @param expressionName The name of the arithmetic expression.
+     * @param value The value to set it to.
+     */
+    public void setArithExpr(String expressionName, int value) {
+        _arithmeticExpressions.put(expressionName, value);
+    }
+    
+    /**
+     * Set the given named boolean expression to have the specifed
+     * value.  This will be called at runtime to set the value
+     * of an boolean expression. 
+     * @param expressionName The name of the boolean expression.
+     * @param value The value to set it to.
+     */
+    public void setBoolExpr(String expressionName, boolean value) {
+        _booleanExpressions.put(expressionName, value);
+    }
+
     /**
      * Set the symbol in the PtalonCode which represents this
      * CodeManager's actor.
@@ -476,6 +573,35 @@ public class NestedActorManager extends CodeManager {
     ////                        private members                    ////
     
     /**
+     * Each key is an arithmetic expression label, such as
+     * "_arithmetic2", and it's value is what it evaluates
+     * to in the current runtime environment.
+     */
+    private Map<String, Integer> _arithmeticExpressions = new Hashtable<String, Integer>();
+
+    /**
+     * A variable used as a counter for the labels of arithmetic
+     * expressions, such as "_arithmetic2", which label arithmetic
+     * expressions in the AST.
+     */    
+    private int _arithmeticIndex = 0;   
+
+    /**
+     * Each key is a boolean expression label, such as
+     * "_boolean2", and it's value is what it evaluates
+     * to in the current runtime environment.
+     */
+    private Map<String, Boolean> _booleanExpressions = new Hashtable<String, Boolean>();
+
+    
+    /**
+     * A variable used as a counter for the labels of boolean
+     * expressions, such as "_boolean2", which label boolean
+     * expressions in the AST.
+     */    
+    private int _booleanIndex = 0;
+    
+    /**
      * This represents the current point in the scope
      * of a nested actor declaration.  It is null
      * when not inside an actor declaration.
@@ -529,6 +655,30 @@ public class NestedActorManager extends CodeManager {
         ////                         public methods                    ////
 
         /**
+         * Set the given parameter in this nested actor declaration to
+         * have the specified expression label.  This label will be
+         * used to reference the arithmetic value of the expression
+         * assigned during runtime.
+         * @param paramName The parameter name.
+         * @param expressionLabel The arithmetic expression label.
+         */
+        public void addArithParam(String paramName, String expressionLabel) {
+            _arithmeticLabels.put(paramName, expressionLabel);
+        }
+        
+        /**
+         * Set the given parameter in this nested actor declaration to
+         * have the specified expression label.  This label will be
+         * used to reference the boolean value of the expression
+         * assigned during runtime.
+         * @param paramName The parameter name.
+         * @param expressionLabel The boolean expression label.
+         */
+        public void addBoolParam(String paramName, String expressionLabel) {
+            _booleanLabels.put(paramName, expressionLabel);
+        }
+
+        /**
          * Create a new child tree to this tree with the specified
          * name and return it. 
          * @param name The name of the child.
@@ -538,10 +688,37 @@ public class NestedActorManager extends CodeManager {
             ActorTree tree = new ActorTree(this, name);
             _children.add(tree);
             return tree;
-        }        
-
+        }  
+        
         /**
-         * Assign all pararamters of the specified actor
+         * Add an assignment of the specified port of this actor
+         * declaration to the containing Ptalon actor connection point,
+         * which is either a port or a relation. 
+         * This is not allowed in nested actor declarations, only top-level declarations.
+         * For instance,
+         * Foo(port := containing)
+         * port is okay, but not
+         * Bar(a := Foo(port := containing))
+         *  
+         * @param portName The name of the port in this 
+         * @param connectPoint The name of the container's port or relation.
+         * @throws PtalonScopeException If this is not a top-level actor declaration with respect
+         * to the assignment, or if connectPoint is not a port or relation.
+         */
+        public void addPortAssign(String portName, String connectPoint) throws PtalonScopeException {
+            if (_parent != null) {
+                throw new PtalonScopeException("This is not a top-level actor declaration.");
+            }
+            if (getType(connectPoint).equals("relation")) {
+                _relations.put(portName, connectPoint);
+            } else if (getType(connectPoint).endsWith("port")) {
+                _ports.put(portName, connectPoint);
+            } else {
+                throw new PtalonScopeException(connectPoint + " is not a port or relation.");
+            }
+        }
+        /**
+         * Assign all Ptalon pararamters of the specified actor
          * their corresponding value, which should be something
          * like "createWith:Foo12", where "Foo12" is the 
          * unique name of the corresponding actor for this
@@ -550,7 +727,7 @@ public class NestedActorManager extends CodeManager {
          * @throws PtalonRuntimeException If thrown trying to access the parameter,
          * or if unable to set the token for the corresponding paramter.
          */
-        public void assignParameters(PtalonActor actor) throws PtalonRuntimeException {
+        public void assignPtalonParameters(PtalonActor actor) throws PtalonRuntimeException {
             for (ActorTree child : _children) {
                 String paramName = child.getActorParameter();
                 PtalonParameter param = actor.getPtalonParameter(paramName);
@@ -559,7 +736,46 @@ public class NestedActorManager extends CodeManager {
                     param.setToken(new StringToken(token));
                 } catch (IllegalActionException e) {
                     throw new PtalonRuntimeException("Unable to set token for name " + paramName, e);
-                } 
+                }
+            }
+            try {
+                for (String boolParam : _booleanLabels.keySet()) {
+                    String expressionLabel = _booleanLabels.get(boolParam);
+                    if (expressionLabel == null) {
+                        throw new PtalonRuntimeException("Unable to find expression label for parameter " + boolParam);
+                    }
+                    boolean value = _booleanExpressions.get(expressionLabel);
+                    Parameter parameter = (Parameter) actor.getAttribute(boolParam);
+                    parameter.setToken(new BooleanToken(value));
+                }
+                for (String intParam : _arithmeticLabels.keySet()) {
+                    String expressionLabel = _arithmeticLabels.get(intParam);
+                    if (expressionLabel == null) {
+                        throw new PtalonRuntimeException("Unable to find expression label for parameter " + intParam);
+                    }
+                    int value = _arithmeticExpressions.get(expressionLabel);
+                    Parameter parameter = (Parameter) actor.getAttribute(intParam);
+                    parameter.setToken(new IntToken(value));
+                }
+                for (String portName : _relations.keySet()) {
+                    String relationName = _actor.getMappedName(_relations.get(portName));
+                    String portCodeName = actor.getMappedName(portName);
+                    TypedIORelation relation = (TypedIORelation) _actor.getRelation(relationName);
+                    TypedIOPort port = (TypedIOPort) actor.getPort(portCodeName);
+                    port.link(relation);
+                }
+                for (String portName : _ports.keySet()) {
+                    String portCodeName = actor.getMappedName(portName);
+                    TypedIOPort port = (TypedIOPort) actor.getPort(portCodeName);
+                    String containerPortName = _actor.getMappedName(_ports.get(portName));
+                    TypedIOPort containerPort = (TypedIOPort) _actor.getPort(containerPortName);
+                    String relationName = _actor.uniqueName("relation");
+                    TypedIORelation relation = new TypedIORelation(_actor, relationName);
+                    port.link(relation);
+                    containerPort.link(relation);
+                }
+            } catch (Exception e) {
+                throw new PtalonRuntimeException("Trouble assigning parameter values", e);
             }
         }  
         
@@ -573,7 +789,8 @@ public class NestedActorManager extends CodeManager {
                     File file = _imports.get(_symbol);
                     location.setToken(new StringToken(file.toString()));
                     actor.setNestedDepth(container.getNestedDepth() + 1);
-                    assignParameters(actor);
+                    assignPtalonParameters(actor);
+                    makeConnections(actor);
                 } else if (getType(_symbol).equals("parameter")) {
                     PtalonParameter parameter = (PtalonParameter) _actor
                             .getAttribute(getMappedName(_symbol));
@@ -589,7 +806,8 @@ public class NestedActorManager extends CodeManager {
                         ptalonActor.ptalonCodeLocation
                                 .setToken(new StringToken(file.toString()));
                         ptalonActor.setNestedDepth(container.getNestedDepth() + 1);
-                        assignParameters(ptalonActor);
+                        assignPtalonParameters(ptalonActor);
+                        makeConnections(ptalonActor);
                     } else if (expression.startsWith("createWith:")) {
                         PtalonActor newContainer = container;
                         int depth = _actor.getNestedDepth();
@@ -601,8 +819,9 @@ public class NestedActorManager extends CodeManager {
                                 .createNestedActor(container, expression
                                         .substring(11));
                         if (newInstance instanceof PtalonActor) {
-                            assignParameters((PtalonActor) newInstance);
+                            assignPtalonParameters((PtalonActor) newInstance);
                         }
+                        makeConnections(newInstance);
                     } else {
                         Class<?> genericClass = Class.forName(expression);
                         Class<? extends ComponentEntity> entityClass = genericClass
@@ -612,6 +831,7 @@ public class NestedActorManager extends CodeManager {
                                         String.class);
                         ComponentEntity entity = entityConstructor.newInstance(
                                 container, uniqueName);
+                        makeConnections(entity);
                     }
                 } else { // type of name not "import" or "parameter".
                     throw new PtalonRuntimeException("Invalid type for " + _symbol);
@@ -665,6 +885,55 @@ public class NestedActorManager extends CodeManager {
         public String getSymbol() {
             return _symbol;
         }
+
+        /**
+         * Assign all non-Ptalon pararamters and make all connections
+         * for this nested actor.
+         * @param actor The actor that contains these parameters.
+         * @throws PtalonRuntimeException If thrown trying to access the parameter,
+         * or if unable to set the token for the corresponding paramter.
+         */
+        public void makeConnections(ComponentEntity actor) throws PtalonRuntimeException {
+            try {
+                for (String boolParam : _booleanLabels.keySet()) {
+                    String expressionLabel = _booleanLabels.get(boolParam);
+                    if (expressionLabel == null) {
+                        throw new PtalonRuntimeException("Unable to find expression label for parameter " + boolParam);
+                    }
+                    boolean value = _booleanExpressions.get(expressionLabel);
+                    Parameter parameter = (Parameter) actor.getAttribute(boolParam);
+                    parameter.setToken(new BooleanToken(value));
+                }
+                for (String intParam : _arithmeticLabels.keySet()) {
+                    String expressionLabel = _arithmeticLabels.get(intParam);
+                    if (expressionLabel == null) {
+                        throw new PtalonRuntimeException("Unable to find expression label for parameter " + intParam);
+                    }
+                    int value = _arithmeticExpressions.get(expressionLabel);
+                    Parameter parameter = (Parameter) actor.getAttribute(intParam);
+                    parameter.setToken(new IntToken(value));
+                }
+                for (String portName : _relations.keySet()) {
+                    String relationName = _actor.getMappedName(_relations.get(portName));
+                    TypedIORelation relation = (TypedIORelation) _actor.getRelation(relationName);
+                    TypedIOPort port = (TypedIOPort) actor.getPort(portName);
+                    port.link(relation);
+                }
+                for (String portName : _ports.keySet()) {
+                    TypedIOPort port = (TypedIOPort) actor.getPort(portName);
+                    String containerPortName = _actor.getMappedName(_ports.get(portName));
+                    TypedIOPort containerPort = (TypedIOPort) _actor.getPort(containerPortName);
+                    String relationName = _actor.uniqueName("relation");
+                    TypedIORelation relation = new TypedIORelation(_actor, relationName);
+                    port.link(relation);
+                    containerPort.link(relation);
+                }
+            } catch (Exception e) {
+                throw new PtalonRuntimeException("Trouble making connections", e);
+            }
+        }
+
+
         
         /**
          * Set the paramter name for the current actor declaration, if
@@ -717,6 +986,32 @@ public class NestedActorManager extends CodeManager {
         ///////////////////////////////////////////////////////////////////
         ////                        private members                    ////        
         
+        /**
+         * Each key represents a parameter name for this part of the actor
+         * declaration, and it's value is its corresponding arithmetic expression
+         * label.
+         */
+        private Map<String, String> _arithmeticLabels = new Hashtable<String, String>();
+        
+        /**
+         * Each key represents a parameter name for this part of the actor
+         * declaration, and it's value is its corresponding boolean expression
+         * label.
+         */
+        private Map<String, String> _booleanLabels = new Hashtable<String, String>();
+
+        /**
+         * Each key is a port in this actor declaration, and each port
+         * is a port in its container to be connected to at runtime.
+         */
+        private Map<String, String> _ports = new Hashtable<String, String>();
+
+        /**
+         * Each key is a port in this actor declaration, and each relation
+         * is a relation in its container to be connected to at runtime.
+         */
+        private Map<String, String> _relations = new Hashtable<String, String>();
+                
         /**
          * This is the symbol stored with the CodeManager
          * that this actor declaration refers to.  It's

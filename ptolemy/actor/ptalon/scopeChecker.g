@@ -112,9 +112,44 @@ attribute
 ;
 
 assignment throws PtalonScopeException
+{
+	String arith, bool;
+}
 :
-	#(ASSIGN a:ID (ID | nested_actor_declaration[a.getText()]
-	| arithmetic_expression | boolean_expression))
+	#(ASSIGN a:ID (! b:ID 
+	{
+		if (info.getType(b.getText()).equals("intparameter")) {
+			String arithmetic_label = info.getNextArithExpr();
+			PtalonAST temp = #([ARITHMETIC_EXPRESSION, arithmetic_label],
+			([ARITHMETIC_FACTOR, "arithmetic_factor"],
+			[POSITIVE_SIGN, "positive"], b));
+			#assignment = #([ASSIGN], a, temp);
+			info.addArithParam(a.getText(), arithmetic_label);
+		} else if (info.getType(b.getText()).equals("boolparameter")) {
+			String boolean_label = info.getNextBoolExpr();
+			PtalonAST temp = #([BOOLEAN_EXPRESSION, boolean_label],
+			([BOOLEAN_FACTOR, "boolean_factor"],
+			[LOGICAL_BUFFER, "!!"], b));
+			#assignment = #([ASSIGN], a, temp);
+			info.addBoolParam(a.getText(), boolean_label);
+		} else if (info.getType(b.getText()).endsWith("port")) {
+			info.addPortAssign(a.getText(), b.getText());
+			#assignment = #([ASSIGN], a, b);
+		} else if (info.getType(b.getText()).equals("relation")) {
+			info.addPortAssign(a.getText(), b.getText());
+			#assignment = #([ASSIGN], a, b);
+		}
+	}
+	| nested_actor_declaration[a.getText()]
+	| arith=arithmetic_expression 
+	{
+		info.addArithParam(a.getText(), arith);
+	}
+	| bool=boolean_expression
+	{
+		info.addBoolParam(a.getText(), bool);
+	}
+	))
 ;
 
 actor_declaration throws PtalonScopeException	
@@ -146,6 +181,9 @@ nested_actor_declaration [String paramValue] throws PtalonScopeException
 
 
 arithmetic_factor throws PtalonScopeException
+{
+	String foo;
+}
 :
 	#(ARITHMETIC_FACTOR (POSITIVE_SIGN | NEGATIVE_SIGN) 
 		(a:ID
@@ -156,7 +194,7 @@ arithmetic_factor throws PtalonScopeException
 					" should have type intparameter, but instead has type " + type);
 			}
 		}
-		| NUMBER_LITERAL | arithmetic_expression))
+		| NUMBER_LITERAL | foo=arithmetic_expression))
 ;
 
 arithmetic_term throws PtalonScopeException
@@ -167,27 +205,52 @@ arithmetic_term throws PtalonScopeException
 	arithmetic_factor
 ;
 
-arithmetic_expression throws PtalonScopeException
+arithmetic_expression! returns [String expressionLabel] throws PtalonScopeException
+{
+	expressionLabel = "";
+}
 :
-	#(PLUS arithmetic_term arithmetic_term) |
-	#(MINUS arithmetic_term arithmetic_term) |
-	arithmetic_term
+	#(p:PLUS a:arithmetic_term b:arithmetic_term
+	{
+		expressionLabel = info.getNextBoolExpr();
+		#arithmetic_expression = #([ARITHMETIC_EXPRESSION, expressionLabel],
+		(p, a, b));
+	}
+	) | #(m:MINUS c:arithmetic_term d:arithmetic_term
+	{
+		expressionLabel = info.getNextBoolExpr();
+		#arithmetic_expression = #([ARITHMETIC_EXPRESSION, expressionLabel],
+		(m, c, d));
+	}	
+	) | e:arithmetic_term
+	{
+		expressionLabel = info.getNextBoolExpr();
+		#arithmetic_expression = #([ARITHMETIC_EXPRESSION, expressionLabel],
+		e);
+	}
+	
 ;
 
 relational_expression throws PtalonScopeException
+{
+	String foo;
+}
 :
-	#(EQUAL arithmetic_expression arithmetic_expression) | 
-	#(NOT_EQUAL arithmetic_expression arithmetic_expression) | 
-	#(LESS_THAN arithmetic_expression arithmetic_expression) | 
-	#(GREATER_THAN arithmetic_expression arithmetic_expression) | 
-	#(LESS_EQUAL arithmetic_expression arithmetic_expression) | 
-	#(GREATER_EQUAL arithmetic_expression arithmetic_expression)
+	#(EQUAL foo=arithmetic_expression foo=arithmetic_expression) | 
+	#(NOT_EQUAL foo=arithmetic_expression foo=arithmetic_expression) | 
+	#(LESS_THAN foo=arithmetic_expression foo=arithmetic_expression) | 
+	#(GREATER_THAN foo=arithmetic_expression foo=arithmetic_expression) | 
+	#(LESS_EQUAL foo=arithmetic_expression foo=arithmetic_expression) | 
+	#(GREATER_EQUAL foo=arithmetic_expression foo=arithmetic_expression)
 ;
 
 boolean_factor throws PtalonScopeException
+{
+	String foo;
+}
 :
 	#(BOOLEAN_FACTOR (LOGICAL_NOT | LOGICAL_BUFFER)
-		(boolean_expression | relational_expression | TRUE | FALSE | 
+		(foo=boolean_expression | relational_expression | TRUE | FALSE | 
 		a:ID
 		{
 			String type = info.getType(a.getText());
@@ -205,10 +268,23 @@ boolean_term throws PtalonScopeException
 	boolean_factor
 ;
 
-boolean_expression throws PtalonScopeException
+boolean_expression! returns [String expressionLabel] throws PtalonScopeException
+{
+	expressionLabel = "";
+}
 :
-	#(LOGICAL_OR boolean_term boolean_term) |
-	boolean_term
+	#(l:LOGICAL_OR a:boolean_term b:boolean_term) |
+	{
+		expressionLabel = info.getNextBoolExpr();
+		#boolean_expression = #([BOOLEAN_EXPRESSION, expressionLabel],
+		(l, a, b));
+	}
+	c:boolean_term
+	{
+		expressionLabel = info.getNextBoolExpr();
+		#boolean_expression = #([BOOLEAN_EXPRESSION, expressionLabel],
+		c);
+	}
 ;
 
 atomic_statement throws PtalonScopeException
@@ -218,12 +294,15 @@ atomic_statement throws PtalonScopeException
 ;
 
 conditional_statement throws PtalonScopeException
+{
+	String foo;
+}
 :
 	#(IF 
 	{
 		info.pushIfStatement();
 	}
-	boolean_expression #(TRUEBRANCH (atomic_statement | conditional_statement)*)
+	foo=boolean_expression #(TRUEBRANCH (atomic_statement | conditional_statement)*)
 		#(FALSEBRANCH (atomic_statement | conditional_statement)*))
 	{
 		#conditional_statement.setText(info.popIfStatement());

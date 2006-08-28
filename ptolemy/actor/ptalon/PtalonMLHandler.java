@@ -66,7 +66,7 @@ public class PtalonMLHandler extends HandlerBase {
                 file = new File(file, name);
                 _actor.ptalonCodeLocation.setToken(new StringToken(file.toString()));
             }
-        } else if (elname.equals("ptalonParamter")) {
+        } else if (elname.equals("ptalonParameter")) {
             if (_attributes.containsKey("name") && _attributes.containsKey("value")) {
                 PtalonParameter param = (PtalonParameter) _actor.getAttribute(_attributes.get("name"));
                 if (param instanceof PtalonBoolParameter) {

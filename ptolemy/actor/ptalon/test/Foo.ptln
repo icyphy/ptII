@@ -1,4 +1,7 @@
 Foo is {
-	parameter a;
-	a();
+	boolparameter a;
+	if (a) {
+		Foo(a := false);
+	} else {
+	}
 }

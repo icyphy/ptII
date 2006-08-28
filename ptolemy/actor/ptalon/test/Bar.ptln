@@ -1,5 +1,5 @@
 import ptolemy.actor.ptalon.test.Foo;
 
 Bar is {
-	Foo(a := Foo(a := Foo(a := Foo())));
+	Foo(continue := true);
 }

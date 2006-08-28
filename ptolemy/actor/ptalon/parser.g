@@ -192,11 +192,11 @@ boolean_factor!
 	{
 		#boolean_factor.addChild(#c);	
 	}
-	| d:FALSE | 
+	| d:FALSE 
 	{
 		#boolean_factor.addChild(#d);	
 	}
-	e:ID
+	| e:ID
 	{
 		#boolean_factor.addChild(#e);	
 	}
@@ -293,7 +293,7 @@ tokens {
 	OUTPORT = "outport";
 	PARAMETER = "parameter";
 	INTPARAMETER = "intparameter";
-	OUTPARAMETER = "boolparameter";
+	BOOLPARAMETER = "boolparameter";
 	RELATION = "relation";
 	TRUE = "true";
 	TRUEBRANCH;
@@ -311,6 +311,8 @@ tokens {
 	ARITHMETIC_FACTOR;
 	BOOLEAN_FACTOR;
 	LOGICAL_BUFFER;
+	ARITHMETIC_EXPRESSION;
+	BOOLEAN_EXPRESSION;
 }
 
 
