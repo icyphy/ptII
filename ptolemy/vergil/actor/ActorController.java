@@ -29,6 +29,7 @@ package ptolemy.vergil.actor;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -47,14 +48,19 @@ import javax.swing.SwingUtilities;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DebugListenerTableau;
+import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.OpenInstanceDialog;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.TextEffigy;
+import ptolemy.actor.gui.UnitConstraintsDialog;
 import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
@@ -777,13 +783,25 @@ public abstract class ActorController extends AttributeController {
             super.actionPerformed(event);
             NamedObj object = getTarget();
 
-            // FIXME: If this is not a CompositeEntity, need to
-            // do something different here as the method below will
-            // open the source code as a last resort.
-            try {
-                _configuration.openInstance(object);
-            } catch (Exception ex) {
-                MessageHandler.error("Open instance failed.", ex);
+            if (object instanceof CompositeEntity) {
+                try {
+                    _configuration.openInstance(object);
+                } catch (Exception ex) {
+                    MessageHandler.error("Open instance failed.", ex);
+                }
+            } else if (object instanceof Entity) {
+                // If this is not a CompositeEntity, need to
+                // do something different here as the method above will
+                // open the source code as a last resort.
+                Frame parent = getFrame();
+                DialogTableau dialogTableau = DialogTableau.createDialog(
+                        (Frame) parent, _configuration,
+                        ((TableauFrame) parent).getEffigy(),
+                        OpenInstanceDialog.class, (Entity) object);
+
+                if (dialogTableau != null) {
+                    dialogTableau.show();
+                }
             }
         }
     }

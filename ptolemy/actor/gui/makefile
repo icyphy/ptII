@@ -112,6 +112,7 @@ JSRCS = \
 	MoMLApplication.java \
 	MoMLSimpleApplication.java \
 	MoMLSimpleStatisticalApplication.java \
+	OpenInstanceDialog.java \
 	PasswordAttribute.java \
 	Placeable.java \
 	PlotEffigy.java \
