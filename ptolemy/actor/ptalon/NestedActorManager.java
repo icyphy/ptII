@@ -20,6 +20,7 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
@@ -926,9 +927,8 @@ public class NestedActorManager extends CodeManager {
         }
         
         /**
-         * Assign all non-Ptalon pararamters and make all connections
-         * for this nested actor.
-         * @param actor The actor that contains these parameters.
+         * Make all connections for this nested actor.
+         * @param actor The actor for to connect to others.
          * @throws PtalonRuntimeException If thrown trying to access the parameter,
          * or if unable to set the token for the corresponding paramter.
          */
@@ -948,6 +948,20 @@ public class NestedActorManager extends CodeManager {
                     TypedIORelation relation = new TypedIORelation(_actor, relationName);
                     port.link(relation);
                     containerPort.link(relation);
+                }
+                PtalonActor container = (PtalonActor) actor.getContainer();
+                for (Object port : actor.portList()) {
+                    if (port instanceof TypedIOPort) {
+                        TypedIOPort ioport = (TypedIOPort) port;
+                        if (ioport.numLinks() == 0) {
+                            String name = container.uniqueName(actor.getName() + "_" + ioport.getName());
+                            TypedIOPort newPort = new TypedIOPort(container, name);
+                            String rel = container.uniqueName("relation");
+                            TypedIORelation relation = new TypedIORelation(container, rel);
+                            ioport.link(relation);
+                            newPort.link(relation);
+                        }
+                    }
                 }
             } catch (Exception e) {
                 throw new PtalonRuntimeException("Trouble making connections", e);
