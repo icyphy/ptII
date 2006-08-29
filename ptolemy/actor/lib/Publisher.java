@@ -63,14 +63,14 @@ import ptolemy.kernel.util.NamedObj;
  It is an error to have two instances of Publisher using the same
  channel under the control of the same director. When you create a
  new Publisher, by default, it assigns a channel name that is unique.
- You can re-use channel names withing opaque composite actors.
+ You can re-use channel names within opaque composite actors.
  <p>
  This actor actually has a hidden output port that is connected
  to all subcribers via hidden "liberal links" (links that are
  allowed to cross levels of the hierarchy).  Consequently,
  any data dependencies that the director might assume on a regular
  "wired" connection will also be assumed across Publisher-Subscriber
- pairs. Similarly, type constraints will probagate across
+ pairs. Similarly, type constraints will propagate across
  Publisher-Subscriber pairs. That is, the type of the Subscriber
  output will match the type of the Publisher input.
  
