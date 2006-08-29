@@ -1,7 +1,9 @@
+import ptolemy.actor.ptalon.test.Link;
+
 Foo is {
-	boolparameter a;
-	if (a) {
-		Foo(a := false);
-	} else {
-	}
+	parameter transformer;
+	inport input;
+	outport output;
+	Link(input := input, output := output, a := transformer(), 
+		b := transformer());
 }

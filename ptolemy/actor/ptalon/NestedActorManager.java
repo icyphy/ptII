@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
@@ -98,9 +100,6 @@ public class NestedActorManager extends CodeManager {
                     }
                     ComponentEntity newInstance = container.createNestedActor(_actor,
                             expression.substring(11));
-                    if (newInstance instanceof PtalonActor) {
-                        _currentTree.assignPtalonParameters((PtalonActor) newInstance);
-                    }
                     _currentTree.makeConnections(newInstance);
                 } else {
                     Class<?> genericClass = Class.forName(expression);
@@ -112,6 +111,7 @@ public class NestedActorManager extends CodeManager {
                             _actor, uniqueName);
                     _currentTree.makeConnections(entity);
                 }
+                _currentTree.created = true;
             } else { // type of name not "import" or "parameter".
                 throw new PtalonRuntimeException("Invalid type for " + name);
             }
@@ -334,24 +334,10 @@ public class NestedActorManager extends CodeManager {
         if (_currentTree.created) {
             return false;
         }
-        String symbol = _currentTree.getSymbol();
-        try {
-            if (getType(symbol).equals("import")) {
-                return isReady();
-            } else if (getType(symbol).equals("parameter")) {
-                PtalonParameter param = _actor.getPtalonParameter(symbol);
-                if (param.hasValue()) {
-                    return isReady();
-                } else {
-                    return false;
-                }
-            } else {
-                throw new PtalonRuntimeException("Symbol " + symbol + " does not have valid type.");
-            }
-        } catch (Exception e) {
-            throw new PtalonRuntimeException("Problem with symbol " + symbol, e);
+        if (isReady()) {
+            return _currentTree.isReady();
         }
-        
+        return false;
     }
     
     /**
@@ -409,6 +395,30 @@ public class NestedActorManager extends CodeManager {
         }
     }
     
+    /**
+     * Puts the specified boolean parameter in the scope of the current
+     * nested actor declaration, if there is any.
+     * @param param The parameter name.
+     */
+    public void putBoolParamInScope(String param) {
+        if (_currentTree == null) {
+            return;
+        }
+        _currentTree.putBoolParamInScope(param);
+    }
+    
+    /**
+     * Puts the specified integer parameter in the scope of the current
+     * nested actor declaration, if there is any.
+     * @param param The parameter name.
+     */
+    public void putIntParamInScope(String param) {
+        if (_currentTree == null) {
+            return;
+        }
+        _currentTree.putIntParamInScope(param);
+    }
+
     /**
      * Sets the current actor's symbol, which should be a symbol
      * name in the Ptalon code for a parameter or import.
@@ -757,30 +767,14 @@ public class NestedActorManager extends CodeManager {
                     Parameter parameter = (Parameter) actor.getAttribute(intParam);
                     parameter.setToken(new IntToken(value));
                 }
-                for (String portName : _relations.keySet()) {
-                    String relationName = _actor.getMappedName(_relations.get(portName));
-                    String portCodeName = actor.getMappedName(portName);
-                    TypedIORelation relation = (TypedIORelation) _actor.getRelation(relationName);
-                    TypedIOPort port = (TypedIOPort) actor.getPort(portCodeName);
-                    port.link(relation);
-                }
-                for (String portName : _ports.keySet()) {
-                    String portCodeName = actor.getMappedName(portName);
-                    TypedIOPort port = (TypedIOPort) actor.getPort(portCodeName);
-                    String containerPortName = _actor.getMappedName(_ports.get(portName));
-                    TypedIOPort containerPort = (TypedIOPort) _actor.getPort(containerPortName);
-                    String relationName = _actor.uniqueName("relation");
-                    TypedIORelation relation = new TypedIORelation(_actor, relationName);
-                    port.link(relation);
-                    containerPort.link(relation);
-                }
             } catch (Exception e) {
-                throw new PtalonRuntimeException("Trouble assigning parameter values", e);
+                throw new PtalonRuntimeException("Trouble making connections", e);
             }
         }  
         
         public ComponentEntity createNestedActor(PtalonActor container)
                 throws PtalonRuntimeException {
+            ComponentEntity entity;
             try {
                 String uniqueName = container.uniqueName(_symbol);
                 if (getType(_symbol).equals("import")) {
@@ -790,7 +784,7 @@ public class NestedActorManager extends CodeManager {
                     location.setToken(new StringToken(file.toString()));
                     actor.setNestedDepth(container.getNestedDepth() + 1);
                     assignPtalonParameters(actor);
-                    makeConnections(actor);
+                    entity = actor;
                 } else if (getType(_symbol).equals("parameter")) {
                     PtalonParameter parameter = (PtalonParameter) _actor
                             .getAttribute(getMappedName(_symbol));
@@ -807,21 +801,7 @@ public class NestedActorManager extends CodeManager {
                                 .setToken(new StringToken(file.toString()));
                         ptalonActor.setNestedDepth(container.getNestedDepth() + 1);
                         assignPtalonParameters(ptalonActor);
-                        makeConnections(ptalonActor);
-                    } else if (expression.startsWith("createWith:")) {
-                        PtalonActor newContainer = container;
-                        int depth = _actor.getNestedDepth();
-                        while (depth > 0) {
-                            newContainer = (PtalonActor) newContainer.getContainer();
-                            depth--;
-                        }
-                        ComponentEntity newInstance = newContainer
-                                .createNestedActor(container, expression
-                                        .substring(11));
-                        if (newInstance instanceof PtalonActor) {
-                            assignPtalonParameters((PtalonActor) newInstance);
-                        }
-                        makeConnections(newInstance);
+                        entity = ptalonActor;
                     } else {
                         Class<?> genericClass = Class.forName(expression);
                         Class<? extends ComponentEntity> entityClass = genericClass
@@ -829,9 +809,8 @@ public class NestedActorManager extends CodeManager {
                         Constructor<? extends ComponentEntity> entityConstructor = entityClass
                                 .getConstructor(CompositeEntity.class,
                                         String.class);
-                        ComponentEntity entity = entityConstructor.newInstance(
+                        entity = entityConstructor.newInstance(
                                 container, uniqueName);
-                        makeConnections(entity);
                     }
                 } else { // type of name not "import" or "parameter".
                     throw new PtalonRuntimeException("Invalid type for " + _symbol);
@@ -840,7 +819,7 @@ public class NestedActorManager extends CodeManager {
                 throw new PtalonRuntimeException(
                         "Unable to add nested actor to " + container, e);
             }
-            return null;
+            return entity;
         }
            
         /**
@@ -885,7 +864,67 @@ public class NestedActorManager extends CodeManager {
         public String getSymbol() {
             return _symbol;
         }
+        
+        /**
+         * @return True if this nested actor is ready to 
+         * be created.
+         * @throws PtalonRuntimeException If there is
+         * problem accessing any parameters.
+         */
+        public boolean isReady() throws PtalonRuntimeException {
+            try {
+                if (getType(_symbol).equals("parameter")) {
+                    PtalonParameter param = _actor.getPtalonParameter(_symbol);
+                    if (!param.hasValue()) {
+                        return false;
+                    }
+                }
+                else if (!getType(_symbol).equals("import")) {
+                    throw new PtalonRuntimeException("Bad type for symbol " + _symbol);
+                }
+                for (String bool : _boolParams) {
+                    PtalonBoolParameter param = (PtalonBoolParameter) 
+                            _actor.getAttribute(getMappedName(bool));
+                    if (!param.hasValue()) {
+                        return false;
+                    }
+                }
+                for (String integer : _intParams) {
+                    PtalonIntParameter param = (PtalonIntParameter) 
+                            _actor.getAttribute(getMappedName(integer));
+                    if (!param.hasValue()) {
+                        return false;
+                    }
+                }
+                for (ActorTree child : _children) {
+                    if (!child.isReady()) {
+                        return false;
+                    }
+                }
+                return true;
+            } catch (Exception e) {
+                throw new PtalonRuntimeException("Unable to check if this actor declaration is ready.");
+            }
+        }
 
+        /**
+         * Puts the specified boolean parameter in the scope of the current
+         * nested actor declaration.
+         * @param param The parameter name.
+         */
+        public void putBoolParamInScope(String param) {
+            _boolParams.add(param);
+        }
+        
+        /**
+         * Puts the specified integer parameter in the scope of the current
+         * nested actor declaration.
+         * @param param The parameter name.
+         */
+        public void putIntParamInScope(String param) {
+            _intParams.add(param);
+        }
+        
         /**
          * Assign all non-Ptalon pararamters and make all connections
          * for this nested actor.
@@ -895,24 +934,6 @@ public class NestedActorManager extends CodeManager {
          */
         public void makeConnections(ComponentEntity actor) throws PtalonRuntimeException {
             try {
-                for (String boolParam : _booleanLabels.keySet()) {
-                    String expressionLabel = _booleanLabels.get(boolParam);
-                    if (expressionLabel == null) {
-                        throw new PtalonRuntimeException("Unable to find expression label for parameter " + boolParam);
-                    }
-                    boolean value = _booleanExpressions.get(expressionLabel);
-                    Parameter parameter = (Parameter) actor.getAttribute(boolParam);
-                    parameter.setToken(new BooleanToken(value));
-                }
-                for (String intParam : _arithmeticLabels.keySet()) {
-                    String expressionLabel = _arithmeticLabels.get(intParam);
-                    if (expressionLabel == null) {
-                        throw new PtalonRuntimeException("Unable to find expression label for parameter " + intParam);
-                    }
-                    int value = _arithmeticExpressions.get(expressionLabel);
-                    Parameter parameter = (Parameter) actor.getAttribute(intParam);
-                    parameter.setToken(new IntToken(value));
-                }
                 for (String portName : _relations.keySet()) {
                     String relationName = _actor.getMappedName(_relations.get(portName));
                     TypedIORelation relation = (TypedIORelation) _actor.getRelation(relationName);
@@ -1001,25 +1022,39 @@ public class NestedActorManager extends CodeManager {
         private Map<String, String> _booleanLabels = new Hashtable<String, String>();
 
         /**
-         * Each key is a port in this actor declaration, and each port
+         * Each member of this set is a boolean parameter,
+         * which must have it's value before this actor declaration
+         * is ready to be created.
+         */
+        private Set<String> _boolParams = new HashSet<String>();
+        
+        /**
+         * Each member of this set is an integet parameter,
+         * which must have it's value before this actor declaration
+         * is ready to be created.
+         */
+        private Set<String> _intParams = new HashSet<String>();
+
+        
+        /**
+         * Each key is a port in this actor declaration, and each value
          * is a port in its container to be connected to at runtime.
          */
         private Map<String, String> _ports = new Hashtable<String, String>();
 
         /**
-         * Each key is a port in this actor declaration, and each relation
+         * Each key is a port in this actor declaration, and each value
          * is a relation in its container to be connected to at runtime.
          */
         private Map<String, String> _relations = new Hashtable<String, String>();
                 
         /**
          * This is the symbol stored with the CodeManager
-         * that this actor declaration refers to.  It's
-         * either a "parameter" or "import" symbol.
+         * that this actor declaration refers 
+         * to.  It's either a "parameter" or "import" symbol.
          */
         private String _symbol;
         
         private String _actorParameter = null;
     }
-
 }

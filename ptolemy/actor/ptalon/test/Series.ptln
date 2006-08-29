@@ -9,12 +9,13 @@ Series is {
 		transformer(input := input, output := output);
 	} else {
 		if (n == 2) {
-			Link(input := input, output := output);
+			Link(input := input, output := output, a := transformer(), 
+				b := transformer());
 		} else {
 			if (n >= 3) {
-				parameter bigThree;
+				Link(a := Series(transformer := transformer(), n := n - 1), 
+					b := transformer(), input := input, output := output);
 			} else {
-				transformer(input := input, output := output);
 			}
 		}
 	}

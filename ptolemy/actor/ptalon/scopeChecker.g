@@ -125,6 +125,7 @@ assignment throws PtalonScopeException
 			[POSITIVE_SIGN, "positive"], b));
 			#assignment = #([ASSIGN], a, temp);
 			info.addArithParam(a.getText(), arithmetic_label);
+			info.putIntParamInScope(b.getText());
 		} else if (info.getType(b.getText()).equals("boolparameter")) {
 			String boolean_label = info.getNextBoolExpr();
 			PtalonAST temp = #([BOOLEAN_EXPRESSION, boolean_label],
@@ -132,6 +133,7 @@ assignment throws PtalonScopeException
 			[LOGICAL_BUFFER, "!!"], b));
 			#assignment = #([ASSIGN], a, temp);
 			info.addBoolParam(a.getText(), boolean_label);
+			info.putBoolParamInScope(b.getText());
 		} else if (info.getType(b.getText()).endsWith("port")) {
 			info.addPortAssign(a.getText(), b.getText());
 			#assignment = #([ASSIGN], a, b);
@@ -193,6 +195,7 @@ arithmetic_factor throws PtalonScopeException
 				throw new PtalonScopeException(a.getText() + 
 					" should have type intparameter, but instead has type " + type);
 			}
+			info.putIntParamInScope(a.getText());
 		}
 		| NUMBER_LITERAL | foo=arithmetic_expression))
 ;
@@ -258,6 +261,7 @@ boolean_factor throws PtalonScopeException
 				throw new PtalonScopeException(a.getText() + 
 					" should have type boolparameter, but instead has type " + type);
 			}
+			info.putBoolParamInScope(a.getText());
 		}
 		))
 ;
