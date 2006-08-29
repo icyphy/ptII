@@ -1,9 +1,0 @@
-Link is {
-	parameter a;
-	parameter b;
-	inport input;
-	outport output;
-	relation r;
-	a(input := input, output := r);
-	b(input := r, output := output);
-}

@@ -1,3 +1,0 @@
-AddSubtract is {
-	$actorSource ptolemy.actor.lib.AddSubtract$
-}

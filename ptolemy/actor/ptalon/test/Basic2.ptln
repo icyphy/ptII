@@ -1,3 +1,0 @@
-Basic2 is {
-	Scale(input := input, output := output);
-}

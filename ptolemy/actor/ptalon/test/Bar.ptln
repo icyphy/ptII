@@ -1,5 +1,0 @@
-import ptolemy.actor.ptalon.test.Foo;
-
-Bar is {
-	Foo(continue := true);
-}

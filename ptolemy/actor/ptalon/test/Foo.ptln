@@ -1,9 +1,0 @@
-import ptolemy.actor.ptalon.test.Link;
-
-Foo is {
-	parameter transformer;
-	inport input;
-	outport output;
-	Link(input := input, output := output, a := transformer(), 
-		b := transformer());
-}

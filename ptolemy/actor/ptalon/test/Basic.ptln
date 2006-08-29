@@ -1,5 +1,0 @@
-Basic is {
-	inport input;
-	outport output;
-	Scale(input := input, output := output);
-}
