@@ -150,7 +150,6 @@ public class OpenInstanceDialog extends PtolemyDialog implements
     ////                         protected methods                 ////
 
     /** Do nothing. This dialog doesn't need additional buttons.
-     *  @see ptolemy.actor.gui.PtolemyDialog#_createExtendedButtons()
      */
     protected void _createExtendedButtons(JPanel _buttons) {
     }
