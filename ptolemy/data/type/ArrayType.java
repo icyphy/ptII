@@ -93,7 +93,7 @@ public class ArrayType extends StructuredType {
     }
 
     /** Convert the argument token into an ArrayToken having this
-     *  type, if losslessly conversion can be done.  If the argument
+     *  type, if lossless conversion can be done.  If the argument
      *  is not an ArrayToken, then the result is an array token with
      *  one entry, the argument.
      *  @param token A token.
