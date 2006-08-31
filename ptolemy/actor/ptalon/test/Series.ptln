@@ -5,18 +5,12 @@ Series is {
 	intparameter n;
 	inport input;
 	outport output;
-	if (n == 1) {
+	if (n <= 1) {
 		transformer(input := input, output := output);
 	} else {
-		if (n == 2) {
-			Link(input := input, output := output, a := transformer(), 
-				b := transformer());
-		} else {
-			if (n >= 3) {
-				Link(a := Series(transformer := transformer(), n := n - 1), 
-					b := transformer(), input := input, output := output);
-			} else {
-			}
-		}
+		relation r;
+		transformer(input := input, output := r);
+		Series(transformer := transformer(), n := n - 1,
+			input := r, output := output);
 	}
 }
