@@ -3,17 +3,10 @@ import ptolemy.actor.ptalon.test.Combine;
 Parallel is {
 	parameter repeater;
 	intparameter n;
-	if (n == 1) {
+	if (n <= 1) {
 		repeater();
 	} else {
-		if (n == 2) {
-			Combine(a := repeater(), b := repeater());
-		} else {
-			if (n >= 3) {
-				Combine(a := repeater(), b := Parallel(repeater := repeater(), 
-					n := n - 1));
-			} else {
-			}
-		}
+		repeater();
+		Parallel(repeater := repeater(), n := n - 1);
 	}
 }
