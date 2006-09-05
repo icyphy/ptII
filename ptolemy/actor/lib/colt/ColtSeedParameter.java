@@ -164,38 +164,25 @@ public class ColtSeedParameter extends SharedParameter {
                     // parameter value, and only this one, is saved.
                     // The shared parameters are made non-persistent below.
                     setPersistent(true);
-
-                    NamedObj toplevel = getRoot();
-
-                    // Do not do sharing if this is within an EntityLibrary.
-                    if (toplevel != null) {
-                        Iterator sharedParameters = sharedParameterList(
-                                toplevel).iterator();
-
-                        while (sharedParameters.hasNext()) {
-                            ColtSeedParameter sharedParameter = (ColtSeedParameter) sharedParameters
-                                    .next();
-
-                            if (sharedParameter != this) {
-                                try {
-                                    sharedParameter
-                                            .setSuppressingPropagation(true);
-                                    value++;
-
-                                    String newExpression = value + "L";
-
-                                    if (!sharedParameter.getExpression()
-                                            .equals(newExpression)) {
-                                        sharedParameter
-                                                .setExpression(newExpression);
-
-                                        // Make sure the new value is not persistent.
-                                        sharedParameter.setPersistent(false);
-                                    }
-                                } finally {
-                                    sharedParameter
-                                            .setSuppressingPropagation(previousSuppress);
+                    Iterator sharedParameters = sharedParameterList().iterator();
+                    
+                    while (sharedParameters.hasNext()) {
+                        ColtSeedParameter sharedParameter = (ColtSeedParameter) sharedParameters.next();
+                        if (sharedParameter != this) {
+                            try {
+                                sharedParameter.setSuppressingPropagation(true);
+                                value++;
+                                
+                                String newExpression = value + "L";
+                                
+                                if (!sharedParameter.getExpression().equals(newExpression)) {
+                                    sharedParameter.setExpression(newExpression);
+                                    
+                                    // Make sure the new value is not persistent.
+                                    sharedParameter.setPersistent(false);
                                 }
+                            } finally {
+                                sharedParameter.setSuppressingPropagation(previousSuppress);
                             }
                         }
                     }

@@ -34,7 +34,6 @@ import java.util.List;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -196,27 +195,22 @@ public class SharedParameter extends Parameter {
      *   do not match.
      */
     public void inferValueFromContext(String defaultValue) {
-        NamedObj root = getRoot();
-
-        if (root != null) {
-            Iterator sharedParameters = sharedParameterList(root).iterator();
-            String value = null;
-
-            while (sharedParameters.hasNext()) {
-                SharedParameter candidate = (SharedParameter) sharedParameters
-                        .next();
-
-                if (candidate != this) {
-                    defaultValue = candidate.getExpression();
-
-                    if (value != null) {
-                        if (!defaultValue.equals(value)) {
-                            throw new InternalErrorException(
-                                    "SharedParameter found with a value that is"
-                                            + " inconsistent with other instances of SharedParameter"
-                                            + " in the model: "
-                                            + candidate.getFullName());
-                        }
+        Iterator sharedParameters = sharedParameterList().iterator();
+        String value = null;
+        
+        while (sharedParameters.hasNext()) {
+            SharedParameter candidate = (SharedParameter) sharedParameters.next();
+            
+            if (candidate != this) {
+                defaultValue = candidate.getExpression();
+                
+                if (value != null) {
+                    if (!defaultValue.equals(value)) {
+                        throw new InternalErrorException(
+                                "SharedParameter found with a value that is"
+                                + " inconsistent with other instances of SharedParameter"
+                                + " in the model: "
+                                + candidate.getFullName());
                     }
                 }
             }
@@ -250,28 +244,20 @@ public class SharedParameter extends Parameter {
         super.setExpression(expression);
 
         if (!_suppressingPropagation) {
-            NamedObj toplevel = getRoot();
-
-            // Do not do sharing if this is within an EntityLibrary.
-            if (toplevel != null) {
-                Iterator sharedParameters = sharedParameterList(toplevel)
-                        .iterator();
-
-                while (sharedParameters.hasNext()) {
-                    SharedParameter sharedParameter = (SharedParameter) sharedParameters
-                            .next();
-
-                    if (sharedParameter != this) {
-                        try {
-                            sharedParameter._suppressingPropagation = true;
-
-                            if (!sharedParameter.getExpression().equals(
-                                    expression)) {
-                                sharedParameter.setExpression(expression);
-                            }
-                        } finally {
-                            sharedParameter._suppressingPropagation = false;
+            Iterator sharedParameters = sharedParameterList().iterator();
+            
+            while (sharedParameters.hasNext()) {
+                SharedParameter sharedParameter = (SharedParameter) sharedParameters.next();
+                
+                if (sharedParameter != this) {
+                    try {
+                        sharedParameter._suppressingPropagation = true;
+                        
+                        if (!sharedParameter.getExpression().equals(expression)) {
+                            sharedParameter.setExpression(expression);
                         }
+                    } finally {
+                        sharedParameter._suppressingPropagation = false;
                     }
                 }
             }
@@ -289,42 +275,31 @@ public class SharedParameter extends Parameter {
         _suppressingPropagation = propagation;
     }
 
-    /** Return a list of all the shared parameters deeply contained by
-     *  the specified container.  If there are no such parameters, then
+    /** Return a list of all the shared parameters within the
+     *  same model as this parameter.  If there are no such parameters
+     *  or if this parameter is deeply contained within an EntityLibrary, then
      *  return an empty list. The list will include this instance if
-     *  this instance is deeply contained by the specified container.
+     *  this instance.
      *  A shared parameter is one that is an instance of SharedParameter,
      *  has the same name as this one, and is contained by the container
      *  class specified in the constructor.
-     *  @param container The container
-     *  @return A list of actors.
+     *  @return A list of parameters.
      */
-    public List sharedParameterList(NamedObj container) {
-        LinkedList result = new LinkedList();
-
-        // First check all the attributes of the specified container.
-        if (_containerClass.isInstance(container)) {
-            // If the attribute is not of the right class, get an exception.
+    public synchronized List sharedParameterList() {
+        if (workspace().getVersion() != _sharedParameterListVersion) {
             try {
-                Attribute candidate = container.getAttribute(getName(),
-                        SharedParameter.class);
-
-                if (candidate != null) {
-                    result.add(candidate);
+                workspace().getReadAccess();
+                _sharedParameterList = new LinkedList();
+                _sharedParameterListVersion = workspace().getVersion();
+                NamedObj toplevel = getRoot();
+                if (toplevel != null) {
+                    _sharedParameterList(toplevel, _sharedParameterList);
                 }
-            } catch (IllegalActionException ex) {
-                // Ignore. Candidate doesn't match.
+            } finally {
+                workspace().doneReading();
             }
         }
-
-        Iterator containedObjects = container.containedObjectsIterator();
-
-        while (containedObjects.hasNext()) {
-            NamedObj candidateContainer = (NamedObj) containedObjects.next();
-            result.addAll(sharedParameterList(candidateContainer));
-        }
-
-        return result;
+        return _sharedParameterList;
     }
 
     /** Override the base class to also validate the shared instances.
@@ -348,27 +323,60 @@ public class SharedParameter extends Parameter {
         }
 
         if (!_suppressingPropagation) {
-            NamedObj toplevel = getRoot();
-
-            // Do not do sharing if this is within an EntityLibrary.
-            if (toplevel != null) {
-                Iterator sharedParameters = sharedParameterList(toplevel)
-                        .iterator();
-
-                while (sharedParameters.hasNext()) {
-                    SharedParameter sharedParameter = (SharedParameter) sharedParameters
-                            .next();
-
-                    if (sharedParameter != this) {
-                        try {
-                            sharedParameter._suppressingPropagation = true;
-                            sharedParameter.validate();
-                        } finally {
-                            sharedParameter._suppressingPropagation = false;
-                        }
+            Iterator sharedParameters = sharedParameterList().iterator();
+            while (sharedParameters.hasNext()) {
+                SharedParameter sharedParameter = (SharedParameter) sharedParameters.next();
+                if (sharedParameter != this) {
+                    try {
+                        sharedParameter._suppressingPropagation = true;
+                        sharedParameter.validate();
+                    } finally {
+                        sharedParameter._suppressingPropagation = false;
                     }
                 }
             }
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Populate the specified list with
+     *  all the shared parameters deeply contained by
+     *  the specified container.  If there are no such parameters, then
+     *  return an unmodified list. The list will include this instance if
+     *  this instance is deeply contained by the specified container.
+     *  A shared parameter is one that is an instance of SharedParameter,
+     *  has the same name as this one, and is contained by the container
+     *  class specified in the constructor.
+     *  @param container The container.
+     *  @param list The list to update.
+     */
+    private void _sharedParameterList(NamedObj container, List list) {
+        // First check all the attributes of the specified container.
+        if (_containerClass.isInstance(container)) {
+            // If the attribute is not of the right class, get an exception.
+            try {
+                SharedParameter candidate = (SharedParameter)container.getAttribute(getName(),
+                        SharedParameter.class);
+
+                if (candidate != null) {
+                    list.add(candidate);
+                    // To avoid recronstructing the list again for each
+                    // of the other shared parameters, we set its cache
+                    // as well now.  It is for this reason that the calling
+                    // method must be synchronized.
+                    candidate._sharedParameterList = list;
+                    candidate._sharedParameterListVersion = workspace().getVersion();
+                }
+            } catch (IllegalActionException ex) {
+                // Ignore. Candidate doesn't match.
+            }
+        }
+        Iterator containedObjects = container.containedObjectsIterator();
+        while (containedObjects.hasNext()) {
+            NamedObj candidateContainer = (NamedObj) containedObjects.next();
+            _sharedParameterList(candidateContainer, list);
         }
     }
 
@@ -377,6 +385,12 @@ public class SharedParameter extends Parameter {
 
     /** The container class. */
     private Class _containerClass;
+    
+    /** Cached version of the shared parameter list. */
+    private List _sharedParameterList;
+    
+    /** Version for the cache. */
+    private long _sharedParameterListVersion = -1L;
 
     /** Indicator to suppress propagation. */
     private boolean _suppressingPropagation = false;

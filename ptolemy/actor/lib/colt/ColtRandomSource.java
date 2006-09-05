@@ -364,32 +364,21 @@ public abstract class ColtRandomSource extends Source {
         }
 
         String seedValue = "0L";
-        NamedObj root = seed.getRoot();
-
-        if (root != null) {
-            Iterator sharedParameters = seed.sharedParameterList(root)
-                    .iterator();
-            long value = 0L;
-
-            while (sharedParameters.hasNext()) {
-                ColtSeedParameter candidate = (ColtSeedParameter) sharedParameters
-                        .next();
-
-                if (candidate != seed) {
-                    long candidateValue = ((LongToken) candidate.getToken())
-                            .longValue();
-
-                    if (candidateValue != 0L) {
-                        if (candidateValue >= value) {
-                            value = candidateValue + 1L;
-                        }
+        Iterator sharedParameters = seed.sharedParameterList().iterator();
+        long value = 0L;
+        while (sharedParameters.hasNext()) {
+            ColtSeedParameter candidate = (ColtSeedParameter) sharedParameters.next();
+            if (candidate != seed) {
+                long candidateValue = ((LongToken) candidate.getToken()).longValue();
+                if (candidateValue != 0L) {
+                    if (candidateValue >= value) {
+                        value = candidateValue + 1L;
                     }
                 }
             }
-
-            seedValue = value + "L";
         }
-
+        
+        seedValue = value + "L";
         seed.setSuppressingPropagation(true);
         seed.setExpression(seedValue);
         seed.setSuppressingPropagation(false);
