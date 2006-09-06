@@ -119,8 +119,18 @@ else
     # XMLToken includes org.w3c.dom.Document
     ptolemyFiles=`cat "$fileListingClasses" |
         egrep -v '^java|^org.w3c|^sun|^com.sun' | \
-        sed 's@\.@/@g' | awk '{print $1 ".class"}'`
+        sed 's@\.@/@g' | awk '{print $1 ".class"}' `
+
+    # Check that EventToken.class is present.  If not,
+    # then add it.
+    grep EventToken $fileListingClasses
+    result=$?
+    if [ $result -eq 1 ] ; then
+        ptolemyFiles="$ptolemyFiles ptolemy/data/EventToken.class"
+    fi	
 fi
+
+
 
 # Determine if we are on windows and try to set JAVAHOME
 windows=no
