@@ -191,8 +191,7 @@ public class PtinyOSIntegerParameter extends SharedParameter {
 
                     // Do not do sharing if this is within an EntityLibrary.
                     if (toplevel != null) {
-                        Iterator sharedParameters = sharedParameterList(
-                                toplevel).iterator();
+                        Iterator sharedParameters = sharedParameterList().iterator();
 
                         while (sharedParameters.hasNext()) {
                             PtinyOSIntegerParameter sharedParameter = (PtinyOSIntegerParameter) sharedParameters
