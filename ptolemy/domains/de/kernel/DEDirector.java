@@ -1845,7 +1845,7 @@ public class DEDirector extends Director implements TimedDirector {
                 if (_synchronizeToRealTime) {
                     // If synchronized to the real time.
                     synchronized (_eventQueue) {
-                        while (true) {
+                        while (!_stopRequested) {
                             lastFoundEvent = _eventQueue.get();
                             currentTime = lastFoundEvent.timeStamp();
 
