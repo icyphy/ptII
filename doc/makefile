@@ -265,7 +265,6 @@ HYVISUAL_DOCS = \
 	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
 	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
 
-
 # Currently, there are no .java files in fsm.lib
 #			ptolemy.domains.fsm.lib
 
@@ -433,10 +432,12 @@ ALL1_4PACKAGES = \
 # All the packages
 ALLPACKAGES = \
 	$(ALL1_4PACKAGES) \
+	$(PTPTALON_PACKAGES) \
 	ptolemy.caltrop \
 	ptolemy.caltrop.actors \
 	ptolemy.caltrop.ddi \
 	ptolemy.caltrop.util
+
 
 # All the Vergil "full"  generated documentation
 FULL_DOCS = \

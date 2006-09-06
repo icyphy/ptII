@@ -2567,6 +2567,8 @@ else
     if test -f "$ANTLR_DIR/antlr.jar"; then
 	AC_MSG_RESULT([$ANTLR_DIR])
 	PTPTALON_DIR=ptalon
+	# PTALON_PACKAGES is used in $PTII/doc/makefile
+	PTPTALON_PACKAGES="ptolemy.actor.ptalon ptolemy.ptalon"
     else  
         AC_MSG_WARN([Failed to find PTII/ptolemy/actor/ptalon/antlr/antlr.jar
     If it is not present, you will not be able to use the 
@@ -2579,6 +2581,7 @@ else
         AC_MSG_WARN([You are running Java $JVERSION, which does not
     support generics.  Thus, ptolemy/actor/ptalon will not compile.])
         PTPTALON_DIR=
+	PTPTALON_PACKAGES=
     fi
 fi
 
@@ -3574,6 +3577,9 @@ AC_SUBST(PTSVG_JAR)
 # PTPTALON_DIR is set to ptalon and used in
 # $PTII/ptolemy/actor/makefile if antlr.jar was found.
 AC_SUBST(PTPTALON_DIR)
+
+# PTALON_PACKAGES is used in $PTII/doc/makefile
+AC_SUBST(PTPTALON_PACKAGES)
 
 # Directory that contains the antlr.jar file, used by ptalon
 AC_SUBST(ANTLR_DIR)

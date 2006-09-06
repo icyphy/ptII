@@ -539,6 +539,9 @@ PTSVG_JAR =	@PTSVG_JAR@
 # $PTII/ptolemy/actor/makefile if antlr.jar was found.
 PTPTALON_DIR =  @PTPTALON_DIR@
 
+# PTALON_PACKAGES is used in $PTII/doc/makefile
+PTPTALON_PACKAGES =  @PTPTALON_PACKAGES@
+
 # Directory that contains the antlr.jar file, used by ptalon
 ANTLR_DIR =	@ANTLR_DIR@
 
