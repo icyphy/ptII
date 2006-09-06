@@ -53,15 +53,19 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
 /**
- * This is just a code manager that manages the extra
- * complexity of dealing with nested actors.  It became
- * clear that several methods would need to be added to
- * CodeManager to make properly deal with nested actors,
- * so this class is seperated simply to make the code
- * a bit more digestable.
- * 
- * @author acataldo
- *
+ This is just a code manager that manages the extra
+ complexity of dealing with nested actors.  It became
+ clear that several methods would need to be added to
+ CodeManager to make properly deal with nested actors,
+ so this class is seperated simply to make the code
+ a bit more digestable.
+
+ @author Adam Cataldo
+ @version $Id$
+ @since Ptolemy II 6.1
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+
  */
 public class NestedActorManager extends CodeManager {
 
@@ -85,7 +89,7 @@ public class NestedActorManager extends CodeManager {
      * PtalonActor.  In the case of an actor specified by a 
      * parameter, the actor will be arbitrary.
      * @param name The unique name of the actor declaration.
-     * @throws PtalonRuntimeException If there is any trouble
+     * @exception PtalonRuntimeException If there is any trouble
      * loading the actor.
      */
     public void addActor(String name) throws PtalonRuntimeException {
@@ -156,7 +160,7 @@ public class NestedActorManager extends CodeManager {
      * assigned during runtime.
      * @param paramName The parameter name.
      * @param expressionLabel The arithmetic expression label.
-     * @throws PtalonScopeException If not in an actor declaration.
+     * @exception PtalonScopeException If not in an actor declaration.
      */
     public void addArithParam(String paramName, String expressionLabel) throws PtalonScopeException {
         _currentTree.addArithParam(paramName, expressionLabel);
@@ -169,7 +173,7 @@ public class NestedActorManager extends CodeManager {
      * assigned during runtime.
      * @param paramName The parameter name.
      * @param expressionLabel The boolean expression label.
-     * @throws PtalonScopeException If not in an actor declaration.
+     * @exception PtalonScopeException If not in an actor declaration.
      */
     public void addBoolParam(String paramName, String expressionLabel) throws PtalonScopeException {
         _currentTree.addBoolParam(paramName, expressionLabel);
@@ -187,7 +191,7 @@ public class NestedActorManager extends CodeManager {
      * @param name The qualified identifier in the import statement.
      * @return The name of the symbol in the rest of the code refering to this
      * import. 
-     * @throws PtalonScopeException If there was any trouble locating
+     * @exception PtalonScopeException If there was any trouble locating
      * the file.
      */
     public String addImport(String name) throws PtalonScopeException {
@@ -203,7 +207,7 @@ public class NestedActorManager extends CodeManager {
      *
      * @param name The qualified identifier in the import statement.
      * @param filename The filename for the import.
-     * @throws PtalonScopeException If there was any trouble locating
+     * @exception PtalonScopeException If there was any trouble locating
      * the file.
      */
     public void addImport(String name, String filename)
@@ -224,7 +228,7 @@ public class NestedActorManager extends CodeManager {
      *  
      * @param portName The name of the port in this 
      * @param connectPoint The name of the container's port or relation.
-     * @throws PtalonScopeException If this is not a top-level actor declaration with respect
+     * @exception PtalonScopeException If this is not a top-level actor declaration with respect
      * to the assignment, or if connectPoint is not a port or relation.
      */
     public void addPortAssign(String portName, String connectPoint) throws PtalonScopeException {
@@ -239,7 +243,7 @@ public class NestedActorManager extends CodeManager {
      * at the current level of the if-tree hierachy.
      * @param name The symbol name.
      * @param type The symbol type.
-     * @throws PtalonScopeException If a symbol with this name has already
+     * @exception PtalonScopeException If a symbol with this name has already
      * been added somewhere in the current scope.
      */
     public void addSymbol(String name, String type) throws PtalonScopeException {
@@ -272,7 +276,7 @@ public class NestedActorManager extends CodeManager {
      * @param uniqueName The unqique name for the nested actor declaration
      * this actor refers to.
      * @return The created actor.
-     * @throws PtalonRuntimeException If there is any trouble creating this actor.
+     * @exception PtalonRuntimeException If there is any trouble creating this actor.
      */
     public ComponentEntity createNestedActor(PtalonActor container, String uniqueName) throws PtalonRuntimeException {
         ActorTree decendant = null;
@@ -295,7 +299,7 @@ public class NestedActorManager extends CodeManager {
     /**
      * Enter the named actor declaration.
      * @param scope The name of the actor declaration.
-     * @throws PtalonRuntimeException If such an actor declaration does not exist.
+     * @exception PtalonRuntimeException If such an actor declaration does not exist.
      */
     public void enterActorDeclaration(String name) throws PtalonRuntimeException {
         boolean exists = false;
@@ -324,7 +328,7 @@ public class NestedActorManager extends CodeManager {
     
     /**
      * Exit the current actor declaration.
-     * @throws PtalonRuntimeException If already at the top-level if scope.
+     * @exception PtalonRuntimeException If already at the top-level if scope.
      */
     public void exitActorDeclaration() throws PtalonRuntimeException {
         if (_currentTree == null) {
@@ -353,7 +357,7 @@ public class NestedActorManager extends CodeManager {
     
     /**
      * @return true if the current actor declaration is ready to be created.
-     * @throws PtalonRuntimeException If it is thrown trying to access a parameter,
+     * @exception PtalonRuntimeException If it is thrown trying to access a parameter,
      * or if there is no actor declaration to create..
      */
     public boolean isActorReady() throws PtalonRuntimeException {
@@ -374,7 +378,7 @@ public class NestedActorManager extends CodeManager {
      * tree if entering a new nested actor declaration.
      * 
      * @return The unique name of the actor declaration being popped from.
-     * @throws PtalonScopeException If not inside an actor declaration.
+     * @exception PtalonScopeException If not inside an actor declaration.
      */
     public String popActorDeclaration() throws PtalonScopeException {
         if (_currentTree == null) {
@@ -390,7 +394,7 @@ public class NestedActorManager extends CodeManager {
      * tree if entering a new nested actor declaration.
      * 
      * @param actorName The name of the actor.
-     * @throws PtalonScopeException If actorName is not a valid
+     * @exception PtalonScopeException If actorName is not a valid
      * parameter or import in the current scope.
      */
     public void pushActorDeclaration(String actorName) throws PtalonScopeException {
@@ -412,7 +416,7 @@ public class NestedActorManager extends CodeManager {
      * setCurrentSymbol should also get called.
      * 
      * @param actorName The unique name of the actor.
-     * @throws PtalonScopeException If actorName is not a valid
+     * @exception PtalonScopeException If actorName is not a valid
      * parameter or import in the current scope.
      */
     public void pushUniqueActorDeclaration(String actorName) throws PtalonScopeException {
@@ -452,7 +456,7 @@ public class NestedActorManager extends CodeManager {
      * Sets the current actor's symbol, which should be a symbol
      * name in the Ptalon code for a parameter or import.
      * @param name The symbol.
-     * @throws PtalonRuntimeException If not in the scope of an actor declaration.
+     * @exception PtalonRuntimeException If not in the scope of an actor declaration.
      */
     public void setCurrentSymbol(String name) throws PtalonRuntimeException {
         if (_currentTree != null) {
@@ -489,7 +493,7 @@ public class NestedActorManager extends CodeManager {
      * CodeManager's actor.
      * 
      * @param symbol The name of this actor in the Ptalon file.
-     * @throws PtalonScopeException If the symbol has been added already,
+     * @exception PtalonScopeException If the symbol has been added already,
      * or if there is some problem accessing its associated file.
      */
     public void setActorSymbol(String symbol) throws PtalonScopeException {
@@ -501,7 +505,7 @@ public class NestedActorManager extends CodeManager {
      * Set the paramter name for the current actor declaration, if
      * any, to the given paramter name. 
      * @param paramName The name of the paramter.
-     * @throws PtalonScopeException If not inside the scope of an
+     * @exception PtalonScopeException If not inside the scope of an
      * actor declaration.
      */
     public void setActorParameter(String paramName) throws PtalonScopeException {
@@ -550,7 +554,7 @@ public class NestedActorManager extends CodeManager {
      * @param importName The symbol name of the import in the
      * CodeManager.
      * @return The parameter string form of the import file.
-     * @throws PtalonRuntimeException If this an invalid
+     * @exception PtalonRuntimeException If this an invalid
      * import symbol is given.
      */
     private String _importToParameter(String importName) throws PtalonRuntimeException {
@@ -589,7 +593,7 @@ public class NestedActorManager extends CodeManager {
      * previously declared parameter or import statement.
      * @symbol The symbol from which to derive the unique symbol.
      * @return A unique name.
-     * @throws PtalonScopeException If the symbol does not refer
+     * @exception PtalonScopeException If the symbol does not refer
      * to a parameter or import valid in the current scope.
      */
     private String _uniqueSymbol(String symbol) throws PtalonScopeException {
@@ -741,7 +745,7 @@ public class NestedActorManager extends CodeManager {
          *  
          * @param portName The name of the port in this 
          * @param connectPoint The name of the container's port or relation.
-         * @throws PtalonScopeException If this is not a top-level actor declaration with respect
+         * @exception PtalonScopeException If this is not a top-level actor declaration with respect
          * to the assignment, or if connectPoint is not a port or relation.
          */
         public void addPortAssign(String portName, String connectPoint) throws PtalonScopeException {
@@ -763,7 +767,7 @@ public class NestedActorManager extends CodeManager {
          * unique name of the corresponding actor for this
          * parameter.
          * @param actor The actor that contains these parameters.
-         * @throws PtalonRuntimeException If thrown trying to access the parameter,
+         * @exception PtalonRuntimeException If thrown trying to access the parameter,
          * or if unable to set the token for the corresponding paramter.
          */
         public void assignPtalonParameters(PtalonActor actor) throws PtalonRuntimeException {
@@ -855,7 +859,7 @@ public class NestedActorManager extends CodeManager {
          * Get the name of the actor parameter, or throw an exception if
          * there is none.
          * @return The name of the actor paramter.
-         * @throws PtalonRuntimeException If no parameter name has been
+         * @exception PtalonRuntimeException If no parameter name has been
          * assigned to this actor.
          */
         public String getActorParameter() throws PtalonRuntimeException {
@@ -897,7 +901,7 @@ public class NestedActorManager extends CodeManager {
         /**
          * @return True if this nested actor is ready to 
          * be created.
-         * @throws PtalonRuntimeException If there is
+         * @exception PtalonRuntimeException If there is
          * problem accessing any parameters.
          */
         public boolean isReady() throws PtalonRuntimeException {
@@ -957,7 +961,7 @@ public class NestedActorManager extends CodeManager {
         /**
          * Make all connections for this nested actor.
          * @param actor The actor for to connect to others.
-         * @throws PtalonRuntimeException If thrown trying to access the parameter,
+         * @exception PtalonRuntimeException If thrown trying to access the parameter,
          * or if unable to set the token for the corresponding paramter.
          */
         public void makeConnections(ComponentEntity actor) throws PtalonRuntimeException {
@@ -1023,7 +1027,7 @@ public class NestedActorManager extends CodeManager {
          * Write an xml version of this actor to the given output.
          * @param output The writer to send the output to.
          * @param depth The depth of indents to start with.
-         * @throws IOException If there is a problem writing to the output.
+         * @exception IOException If there is a problem writing to the output.
          */
         public void xmlSerialize(Writer output, int depth) throws IOException {
             String text;

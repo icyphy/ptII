@@ -54,10 +54,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.StringUtilities;
 
 /**
- * A helper class to store information, like variable
- * scope info, about the compiler.
- * @author acataldo
- *
+ A helper class to store information, like variable
+ scope info, about the compiler.
+
+ @author Adam Cataldo
+ @version $Id$
+ @since Ptolemy II 6.1
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class CodeManager {
 
@@ -92,7 +96,7 @@ public class CodeManager {
      * Add a PtalonBoolParameter to the PtalonActor
      * with the specified name.
      * @param name The name of the boolean parameter.
-     * @throws PtalonRuntimeException If the symbol does not exist, or if
+     * @exception PtalonRuntimeException If the symbol does not exist, or if
      * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
      * trying to create the parameter.
      */
@@ -114,7 +118,7 @@ public class CodeManager {
      * Add a TypedIOPort to the PtalonActor
      * with the specified name, and input flow type
      * @param name The name of the port.
-     * @throws PtalonRuntimeException If the symbol does not exist, or if
+     * @exception PtalonRuntimeException If the symbol does not exist, or if
      * the symbol already has a port associated with it, or if an IllegalActionException is thrown
      * trying to create the port.
      */
@@ -137,7 +141,7 @@ public class CodeManager {
      * Add a PtalonIntParameter to the PtalonActor
      * with the specified name.
      * @param name The name of the integer parameter.
-     * @throws PtalonRuntimeException If the symbol does not exist, or if
+     * @exception PtalonRuntimeException If the symbol does not exist, or if
      * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
      * trying to create the parameter.
      */
@@ -166,7 +170,7 @@ public class CodeManager {
      * @param name The qualified identifier in the import statement.
      * @return The name of the symbol in the rest of the code refering to this
      * import. 
-     * @throws PtalonScopeException If there was any trouble locating
+     * @exception PtalonScopeException If there was any trouble locating
      * the file.
      */
     public String addImport(String name) throws PtalonScopeException {
@@ -203,7 +207,7 @@ public class CodeManager {
      *
      * @param name The qualified identifier in the import statement.
      * @param filename The filename for the import.
-     * @throws PtalonScopeException If there was any trouble locating
+     * @exception PtalonScopeException If there was any trouble locating
      * the file.
      */
     public void addImport(String name, String filename)
@@ -228,7 +232,7 @@ public class CodeManager {
      * Add a TypedIOPort to the PtalonActor
      * with the specified name, and output flow type
      * @param name The name of the port.
-     * @throws PtalonRuntimeException If the symbol does not exist, or if
+     * @exception PtalonRuntimeException If the symbol does not exist, or if
      * the symbol already has a port associated with it, or if an IllegalActionException is thrown
      * trying to create the port.
      */
@@ -251,7 +255,7 @@ public class CodeManager {
      * Add a PtalonParameter to the PtalonActor
      * with the specified name.
      * @param name The name of the parameter.
-     * @throws PtalonRuntimeException If the symbol does not exist, or if
+     * @exception PtalonRuntimeException If the symbol does not exist, or if
      * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
      * trying to create the parameter.
      */
@@ -272,7 +276,7 @@ public class CodeManager {
      * Add a TypedIOPort to the PtalonActor
      * with the specified name.
      * @param name The name of the port.
-     * @throws PtalonRuntimeException If the symbol does not exist, or if
+     * @exception PtalonRuntimeException If the symbol does not exist, or if
      * the symbol already has a port associated with it, or if an IllegalActionException is thrown
      * trying to create the port.
      */
@@ -295,7 +299,7 @@ public class CodeManager {
      * Add a TypedIORelation to the PtalonActor
      * with the specified name.
      * @param name The name of the relation.
-     * @throws PtalonRuntimeException If the symbol does not exist, or if
+     * @exception PtalonRuntimeException If the symbol does not exist, or if
      * the symbol already has a relation associated with it, or if an IllegalActionException is thrown
      * trying to create the relation.
      */
@@ -317,7 +321,7 @@ public class CodeManager {
      * at the current level of the if-tree hierachy.
      * @param name The symbol name.
      * @param type The symbol type.
-     * @throws PtalonScopeException If a symbol with this name has already
+     * @exception PtalonScopeException If a symbol with this name has already
      * been added somewhere in the current scope.
      */
     public void addSymbol(String name, String type) throws PtalonScopeException {
@@ -355,7 +359,7 @@ public class CodeManager {
      * by this manager's actor.
      * @param lvalue The value in the contained actor.
      * @param rvalue The value in the containing actor.
-     * @throws PtalonRuntimeException If there is a problem assigning
+     * @exception PtalonRuntimeException If there is a problem assigning
      * the values.
      */
     public void assign(String actorName, String lvalue, String rvalue)
@@ -415,7 +419,7 @@ public class CodeManager {
     /**
      * Enter the named subscope.
      * @param scope The named subscope.
-     * @throws PtalonRuntimeException If the subscope does not exist.
+     * @exception PtalonRuntimeException If the subscope does not exist.
      */
     public void enterIfScope(String scope) throws PtalonRuntimeException {
         boolean exists = false;
@@ -434,7 +438,7 @@ public class CodeManager {
 
     /**
      * Exit the current if scope.
-     * @throws PtalonRuntimeException If already at the top-level if scope.
+     * @exception PtalonRuntimeException If already at the top-level if scope.
      */
     public void exitIfScope() throws PtalonRuntimeException {
         if (_currentTree.getParent() == null) {
@@ -447,7 +451,7 @@ public class CodeManager {
      * Get the boolean value associated with the specified parameter.
      * @param param The parameter's name in the Ptalon code.
      * @return It's unique value.
-     * @throws PtalonRuntimeException If the paramter does not exist or have
+     * @exception PtalonRuntimeException If the paramter does not exist or have
      * a boolean value. 
      */
     public boolean getBooleanValueOf(String param)
@@ -467,7 +471,7 @@ public class CodeManager {
      * Get the int value associated with the specified parameter.
      * @param param The parameter's name in the Ptalon code.
      * @return It's unique value.
-     * @throws PtalonRuntimeException If the paramter does not exist or have
+     * @exception PtalonRuntimeException If the paramter does not exist or have
      * a boolean value. 
      */
     public int getIntValueOf(String param) throws PtalonRuntimeException {
@@ -486,7 +490,7 @@ public class CodeManager {
      * Get the unique name for the symbol in the PtalonActor. 
      * @param symbol The symbol to test.
      * @return The unique name.
-     * @throws PtalonRuntimeException If no such symbol exists.
+     * @exception PtalonRuntimeException If no such symbol exists.
      */
     public String getMappedName(String symbol) throws PtalonRuntimeException {
         for (IfTree tree : _currentTree.getAncestors()) {
@@ -503,7 +507,7 @@ public class CodeManager {
      * Return the type associated with the given symbol in the current scope.
      * @param symbol The symbol under test.
      * @return The type associated with the given symbol.
-     * @throws PtalonScopeException If the symbol is not in the current scope.
+     * @exception PtalonScopeException If the symbol is not in the current scope.
      */
     public String getType(String symbol) throws PtalonScopeException {
         List<IfTree> ancestors = _currentTree.getAncestors();
@@ -548,7 +552,7 @@ public class CodeManager {
      * in the containing scope have been assigned values, and when in
      * a branch of an if-block that is active.  
      * @return true if the current if-block scope is ready to be entered.
-     * @throws PtalonRuntimeException If it is thrown trying to access a parameter.
+     * @exception PtalonRuntimeException If it is thrown trying to access a parameter.
      */
     public boolean isIfReady() throws PtalonRuntimeException {
         IfTree parent = _currentTree.getParent();
@@ -576,7 +580,7 @@ public class CodeManager {
      * in the containing scope have been assigned values, and when in
      * a branch of an if-block that is active.  
      * @return true if the current if-block scope is ready to be entered.
-     * @throws PtalonRuntimeException If it is thrown trying to access a parameter.
+     * @exception PtalonRuntimeException If it is thrown trying to access a parameter.
      */
     public boolean isReady() throws PtalonRuntimeException {
         IfTree parent = _currentTree.getParent();
@@ -601,7 +605,7 @@ public class CodeManager {
      * symbol.  This symbol is assumed to be in the current scope.
      * @param symbol The symbol to test.
      * @return true if an entity was created for this symbol.
-     * @throws PtalonRuntimeException If the symbol is not in the current
+     * @exception PtalonRuntimeException If the symbol is not in the current
      * scope.
      */
     public boolean isCreated(String symbol) throws PtalonRuntimeException {
@@ -619,7 +623,7 @@ public class CodeManager {
      * PtalonActor which creates it.
      * @param symbol The name for the symbol in the Ptalon program.
      * @param uniqueName The unique name for the symbol in the PtalonActor.
-     * @throws PtalonScopeException If the symbol does not exist.
+     * @exception PtalonScopeException If the symbol does not exist.
      */
     public void mapName(String symbol, String uniqueName)
             throws PtalonRuntimeException {
@@ -630,7 +634,7 @@ public class CodeManager {
      * Tests to see if the given parameter has it's value set yet.
      * @param name The name of the parameter.
      * @return true if the parameter has been given a value, false otherwise.
-     * @throws PtalonRuntimeException If there is no parameter with the given
+     * @exception PtalonRuntimeException If there is no parameter with the given
      * name in the given scope.
      */
     public boolean paramHasValue(String name) throws PtalonRuntimeException {
@@ -657,7 +661,7 @@ public class CodeManager {
      * Pop out of the scope of the current if statement and into
      * its container block's scope.
      * @return The unique name of the if-statement block being exited.
-     * @throws PtalonScopeException If the current scope is already
+     * @exception PtalonScopeException If the current scope is already
      * the outermost scope.
      */
     public String popIfStatement() throws PtalonScopeException {
@@ -708,11 +712,11 @@ public class CodeManager {
      * Set the PtalonActor in which this PtalonCompilerInfo is used.
      * @param name The desired name for the actor.  In case of a name
      * conflict, the actual name will have the desired name as a prefix.
-     * @throws PtalonRuntimeException If an exception is thrown trying to
+     * @exception PtalonRuntimeException If an exception is thrown trying to
      * change the name.
      *
      * @param name
-     * @throws PtalonRuntimeException
+     * @exception PtalonRuntimeException
      */
     public void setActor(String name) throws PtalonRuntimeException {
         try {
@@ -734,7 +738,7 @@ public class CodeManager {
      * CodeManager's actor.
      * 
      * @param symbol The name of this actor in the Ptalon file.
-     * @throws PtalonScopeException If the symbol has been added already,
+     * @exception PtalonScopeException If the symbol has been added already,
      * or if there is some problem accessing its associated file.
      */
     public void setActorSymbol(String symbol) throws PtalonScopeException {
@@ -782,7 +786,7 @@ public class CodeManager {
      * Write an xml version of this code manager to the given output.
      * @param output The writer to send the output to.
      * @param depth The depth of indents to start with.
-     * @throws IOException If there is a problem writing to the output.
+     * @exception IOException If there is a problem writing to the output.
      */
     public void xmlSerialize(Writer output, int depth) throws IOException {
         for (String imp : _imports.keySet()) {
@@ -954,7 +958,7 @@ public class CodeManager {
          * Get the unique name for the symbol in the PtalonActor. 
          * @param symbol The symbol to test.
          * @return The unique name.
-         * @throws PtalonRuntimeException If no such symbol exists.
+         * @exception PtalonRuntimeException If no such symbol exists.
          */
         public String getMappedName(String symbol)
                 throws PtalonRuntimeException {
@@ -971,7 +975,7 @@ public class CodeManager {
          * symbol.  This symbol is assumed to be in the current scope.
          * @param symbol The symbol to test.
          * @return true if an entity was created for this symbol.
-         * @throws PtalonRuntimeException If the symbol is not in the current
+         * @exception PtalonRuntimeException If the symbol is not in the current
          * scope.
          */
         public boolean isCreated(String symbol) throws PtalonRuntimeException {
@@ -993,7 +997,7 @@ public class CodeManager {
          * Return the type associated with the given symbol.
          * @param symbol The symbol under test.
          * @return The type associated with the given symbol.
-         * @throws PtalonScopeException If the symbol is not in the scope
+         * @exception PtalonScopeException If the symbol is not in the scope
          * of the if statement associated with this IfTree.
          */
         public String getType(String symbol) throws PtalonScopeException {
@@ -1015,7 +1019,7 @@ public class CodeManager {
          * 
          * @return True if all the symbols in this if block
          * have been assigned a value. 
-         * @throws PtalonRuntimeException If there is any problem accessing
+         * @exception PtalonRuntimeException If there is any problem accessing
          * a parameter.
          */
         public boolean isFullyAssigned() throws PtalonRuntimeException {
@@ -1044,7 +1048,7 @@ public class CodeManager {
          * PtalonActor which creates it.
          * @param symbol The name for the symbol in the Ptalon program.
          * @param uniqueName The unique name for the symbol in the PtalonActor.
-         * @throws PtalonRuntimeException If the symbol does not exist.
+         * @exception PtalonRuntimeException If the symbol does not exist.
          */
         public void mapName(String symbol, String uniqueName)
                 throws PtalonRuntimeException {
@@ -1105,7 +1109,7 @@ public class CodeManager {
          * Write an xml version of this if tree to the given output.
          * @param output The writer to send the output to.
          * @param depth The depth of indents to start with.
-         * @throws IOException If there is a problem writing to the output.
+         * @exception IOException If there is a problem writing to the output.
          */
         public void xmlSerialize(Writer output, int depth) throws IOException {
             String activeBranch;

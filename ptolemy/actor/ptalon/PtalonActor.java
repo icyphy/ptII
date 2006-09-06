@@ -220,7 +220,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      * @param uniqueName The unqique name for the nested actor declaration
      * this actor refers to.
      * @return The created actor.
-     * @throws PtalonRuntimeException If there is any trouble creating this actor.
+     * @exception PtalonRuntimeException If there is any trouble creating this actor.
      */
     public ComponentEntity createNestedActor(PtalonActor container, String uniqueName) throws PtalonRuntimeException {
         return _codeManager.createNestedActor(container, uniqueName);
@@ -252,7 +252,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      * Get the unique name for the symbol in the PtalonActor. 
      * @param ptalonName The symbol to test.
      * @return The unique name.
-     * @throws PtalonRuntimeException If no such symbol exists.
+     * @exception PtalonRuntimeException If no such symbol exists.
      */
     public String getMappedName(String ptalonName) throws PtalonRuntimeException {
         return _codeManager.getMappedName(ptalonName);
@@ -279,7 +279,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      * @param name The name of the parameter in the Ptalon code,
      * which may be a prefix of the actual parameter's name.
      * @return The PtalonParameter
-     * @throws PtalonRuntimeException If no such PtalonParameter exists.
+     * @exception PtalonRuntimeException If no such PtalonParameter exists.
      */
     public PtalonParameter getPtalonParameter(String name)
             throws PtalonRuntimeException {
@@ -330,7 +330,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     /**
      * Add the attribute, and if attribute is a PtalonParameter,
      * add it to a list of Ptalon parameters.
-     * @throws NameDuplicationException If the superclass throws it.
+     * @exception NameDuplicationException If the superclass throws it.
      * @thrwos IllegalActionException If the superclass throws it.
      */
     protected void _addAttribute(Attribute p) throws NameDuplicationException,
@@ -412,7 +412,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     /**
      * This helper method is used to begin the Ptalon compiler
      * if the ptalonCodeLocation attribute has been updated.
-     * @throws IllegalActionException If any exception is thrown.
+     * @exception IllegalActionException If any exception is thrown.
      */
     private void _initializePtalonCodeLocation() throws IllegalActionException {
         try {
