@@ -187,45 +187,40 @@ public class PtinyOSIntegerParameter extends SharedParameter {
             } else {
                 // Need to assign unique values.
                 if (!isSuppressingPropagation()) {
-                    NamedObj toplevel = getRoot();
-
-                    // Do not do sharing if this is within an EntityLibrary.
-                    if (toplevel != null) {
-                        Iterator sharedParameters = sharedParameterList().iterator();
-
-                        while (sharedParameters.hasNext()) {
-                            PtinyOSIntegerParameter sharedParameter = (PtinyOSIntegerParameter) sharedParameters
-                                    .next();
-
-                            if (sharedParameter != this) {
-                                try {
-                                    sharedParameter
-                                            .setSuppressingPropagation(true);
-                                    if (((IntToken) sharedParameter.getToken())
-                                            .intValue() != 0) {
-                                        // Only auto increment value
-                                        // if the current value is not
-                                        // 0.
-                                        value += _incrementValue;
-
-                                        String newExpression = String
-                                                .valueOf(value);
-
-                                        if (!sharedParameter.getExpression()
-                                                .equals(newExpression)) {
-                                            sharedParameter
-                                                    .setExpression(newExpression);
-
-                                            // Make sure the new value
-                                            // is not persistent.
-                                            sharedParameter
-                                                    .setPersistent(false);
-                                        }
+                    Iterator sharedParameters = sharedParameterList().iterator();
+                    
+                    while (sharedParameters.hasNext()) {
+                        PtinyOSIntegerParameter sharedParameter = (PtinyOSIntegerParameter) sharedParameters
+                        .next();
+                        
+                        if (sharedParameter != this) {
+                            try {
+                                sharedParameter
+                                .setSuppressingPropagation(true);
+                                if (((IntToken) sharedParameter.getToken())
+                                        .intValue() != 0) {
+                                    // Only auto increment value
+                                    // if the current value is not
+                                    // 0.
+                                    value += _incrementValue;
+                                    
+                                    String newExpression = String
+                                    .valueOf(value);
+                                    
+                                    if (!sharedParameter.getExpression()
+                                            .equals(newExpression)) {
+                                        sharedParameter
+                                        .setExpression(newExpression);
+                                        
+                                        // Make sure the new value
+                                        // is not persistent.
+                                        sharedParameter
+                                        .setPersistent(false);
                                     }
-                                } finally {
-                                    sharedParameter
-                                            .setSuppressingPropagation(previousSuppress);
                                 }
+                            } finally {
+                                sharedParameter
+                                .setSuppressingPropagation(previousSuppress);
                             }
                         }
                     }
