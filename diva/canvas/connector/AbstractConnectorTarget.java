@@ -81,6 +81,7 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * manually creating new figures.  In this base class, assume that
      * tails are treated the same way as heads, so call the
      * getHeadSite method with the same arguments.
+     * @deprecated Use getTailSite that takes a connector.
      */
     public Site getTailSite(Figure f, double x, double y) {
         return getHeadSite(f, x, y);
@@ -94,6 +95,7 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * can be the same as the passed site, which signals that the
      * passed site is the best one available.  In this base class, just
      * return the same site.
+     * @deprecated Use getHeadSite that takes a connector.
      */
     public Site getHeadSite(Site s, double x, double y) {
         return s;
