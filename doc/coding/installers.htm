@@ -33,6 +33,18 @@ the internet or from a bundled one. To sum-up, the IzPack native
 launcher will allow your users to install your software even if they
 don't have a JRE at first sight.
 <blockquote>
+The IzPack native launcher is a .exe file that looks for a file called
+<code>launcher.ini</code> in the current directory.  The
+<code>launcher.ini</code> specifies:
+<ul>
+<li> which jar file contains the IzPack installer.  
+<li> The setup .exe or script to run to install the JRE.
+<br> Unfortunately, this does not meet our needs, since we want to use
+a custom JRE that includes packages like Java3D etc.  For us to use
+this, we would need to create a JRE setup script.
+</ul>
+
+
 <dt><a href="http://launch4j.sourceforge.net/" target="_top">launch4j</a>
 <dd>Can include a JRE, but really only for one application?
 We need to add multiple apps to the Start Menu.
