@@ -221,7 +221,9 @@ JDOCCHECKFLAG = -doclet com.sun.tools.doclets.doccheck.DocCheck  \
 	-docletpath $(DOCCHECKJAR)
 
 # caltrop uses the assert keyword, which is new in Java 1.4
-JDOCSOURCEFLAGS = -source 1.4
+# ptalon uses generics, which are new in Java 1.5, so if
+# Java 1.5 is present, use -source 1.5
+JDOCSOURCEFLAGS = @JDOCSOURCEFLAGS@
 
 # Doccheck is a doclet that checks for bugs, see
 # http://java.sun.com/developer/earlyAccess/doccheck/

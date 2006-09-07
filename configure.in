@@ -445,15 +445,27 @@ case "$JVERSION" in
 	1.4.*)
 		# If we call the jdk1.4 javadoc without -breakiterator,
 		# then we get lots of warnings
+	        # -breakiterator is only present in jdk1.4 and later
 		JDOCBREAKITERATOR=-breakiterator
+		JDOCSOURCEFLAGS="-source 1.4"
 		AC_MSG_RESULT([ok, you are running 1.4 or later])
         ;;
 	1.5.*) 
+		# If we call the jdk1.4 javadoc without -breakiterator,
+		# then we get lots of warnings
+	        # -breakiterator is only present in jdk1.4 and later
+		JDOCBREAKITERATOR=-breakiterator
                 # Ptalon uses generics
+		JDOCSOURCEFLAGS="-source 1.5"
                 HAS_GENERICS=yes
 		AC_MSG_RESULT([ok, you are running $JVERSION])
 	;;	
-	*) AC_MSG_RESULT([ok, you are running $JVERSION])
+	*)      
+	        # -breakiterator is only present in jdk1.4 and later
+		JDOCBREAKITERATOR=-breakiterator
+                # Ptalon uses generics, assume 1.6 or greater here
+                HAS_GENERICS=yes
+		AC_MSG_RESULT([ok, you are running $JVERSION])
 	;;
 esac
 
@@ -3289,6 +3301,10 @@ AC_SUBST(JAVAX_CRYPTO_JAR)
 
 # If we are running under JDK1.4, then set JDOCBREAKITERATOR = -breakiterator
 AC_SUBST(JDOCBREAKITERATOR)
+
+# Ptalon uses generics, if we are running JDK1.5,
+# then JDOCSOURCEFLAGS = -source 1.5
+AC_SUBST(JDOCSOURCEFLAGS)
 
 # If we can compile in doc/doclets, we set JDOCTAGLET appropriately
 # and use JDOCTAGLET in doc/makefile
