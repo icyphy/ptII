@@ -76,7 +76,7 @@ import ptolemy.vergil.basic.GetDocumentationAction;
  configuration.
 
  <p>If the URL starts with <code>ptdoc:</code>, then the Ptolemy
- documentation is opened.  For example <code>
+ documentation is opened.  For example
  <pre>
  &lt; a href="ptdoc:ptolemy.actor.gui.HTMLViewer"&gt;HTMLViewer&lt;/a&gt;
  </pre>

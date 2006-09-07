@@ -257,6 +257,7 @@ public class RecordType extends StructuredType {
     }
 
     /** Return the class for tokens that this type represents.
+     *  @return The class for tokens that this type represents.
      */
     public Class getTokenClass() {
         return RecordToken.class;

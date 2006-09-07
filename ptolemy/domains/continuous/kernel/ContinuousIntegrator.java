@@ -263,6 +263,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     /** Get the current value of the derivative input port.
      *  @return The current value at the derivative input port.
      *  @exception NoTokenException If reading the input throws it.
+     *  @exception IllegalActionException If thrown while reading
+     *  the input.
      */
     public double getDerivative() throws NoTokenException,
             IllegalActionException {

@@ -118,6 +118,8 @@ public class LabeledList implements List {
     }
 
     /** Unsupported optional method of the List interface.
+     *  @param int Unused.
+     *  @param element Unused.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public void add(int index, Object element) {
@@ -125,14 +127,19 @@ public class LabeledList implements List {
     }
 
     /** Unsupported optional method of the List interface.
+     *  @param collection Unused.
      *  @exception UnsupportedOperationException Always thrown.
+     *  @return never returns.
      */
     public boolean addAll(Collection collection) {
         throw new UnsupportedOperationException();
     }
 
     /** Unsupported optional method of the List interface.
+     *  @param index Unused.
+     *  @param collection Unused.
      *  @exception UnsupportedOperationException Always thrown.
+     *  @return never returns.
      */
     public boolean addAll(int index, Collection collection) {
         throw new UnsupportedOperationException();
@@ -340,20 +347,27 @@ public class LabeledList implements List {
     }
 
     /** Unsupported optional method of the List interface.
+     *  @param collection Unused.
+     *  @return never returns.
      *  @exception UnsupportedOperationException Always thrown.
      */
-    public boolean removeAll(Collection c) {
+    public boolean removeAll(Collection collection) {
         throw new UnsupportedOperationException();
     }
 
     /** Unsupported optional method of the List interface.
+     *  @param collection Unused.
+     *  @return never returns.
      *  @exception UnsupportedOperationException Always thrown.
      */
-    public boolean retainAll(Collection c) {
+    public boolean retainAll(Collection collection) {
         throw new UnsupportedOperationException();
     }
 
     /** Unsupported optional method of the List interface.
+     *  @param index Unused.
+     *  @param element Unused.
+     *  @return never returns.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public Object set(int index, Object element) {
@@ -368,6 +382,9 @@ public class LabeledList implements List {
     }
 
     /** Unsupported method of the List interface.
+     *  @param fromIndex Unused.
+     *  @param toIndex Unused.
+     *  @return never returns.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public List subList(int fromIndex, int toIndex) {
@@ -437,15 +454,17 @@ public class LabeledList implements List {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Return a dump of a list element that is suitable for inclusion
-    // in an error message.
+    /** Return a dump of a list element that is suitable for inclusion
+     *  in an error message.
+     */
     private String _elementDump(Object element) {
         return "The offending element follows:\n"
                 + ((element == null) ? "null" : element) + "\n";
     }
 
-    // Fill in the labels map with the appropriate indices of
-    // the array list, starting at a specified index.
+    /** Fill in the labels map with the appropriate indices of
+     *  the array list, starting at a specified index.
+     */
     private void _labelElements(int startIndex) {
         for (int i = startIndex; i < _elements.size(); i++) {
             _labels.put(_elements.get(i), new Integer(i));
@@ -454,13 +473,14 @@ public class LabeledList implements List {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The elements that are associated with this list.
+    /** The elements that are associated with this list. */
     private ArrayList _elements;
 
-    // Translation from list element to label. The keys of this HashMap
-    // are list elements (instances of Object), and the values are
-    // the corresponding element labels (instances of Integer).
-    // This translation can also be
-    // done with indexOf(), but a HashMap is faster.
+    /** Translation from list element to label. The keys of this HashMap
+     * are list elements (instances of Object), and the values are
+     * the corresponding element labels (instances of Integer).
+     * This translation can also be
+     * done with indexOf(), but a HashMap is faster.
+     */
     private HashMap _labels;
 }

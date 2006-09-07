@@ -66,8 +66,16 @@ public class DFUtilities {
     /** A comparator for named objects.
      */
     public static class NamedObjComparator implements Comparator {
-        // Note: This is rather slow, because getFullName is not cached.
+        /** Compare two objects.
+         *  If the objects are not NamedObjs, then an InternalErrorException
+         *  is thrown.
+         *  @param object1 The first object to be compared.   
+         *  @param object2 The second object to be compared.   
+         *  @return 0 if the objects are the same.
+         */
         public int compare(Object object1, Object object2) {
+        // Note: This is rather slow, because getFullName is not cached.
+
             if ((object1 instanceof NamedObj) && (object2 instanceof NamedObj)) {
                 // Compare full names.
                 NamedObj namedObject1 = (NamedObj) object1;
