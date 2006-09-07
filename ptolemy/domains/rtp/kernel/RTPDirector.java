@@ -126,6 +126,8 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
     /** Return the time count of the computer in the number of milliseconds,
      *  starting from 1/1/1970 (UTC).
      *  @return The current computer time.
+     *  @deprecated As of Ptolemy II 4.1, replaced by
+     *  {@link #getModelTime()}
      */
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
