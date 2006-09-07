@@ -258,6 +258,8 @@ public class DDEDirector extends CompositeProcessDirector implements
      * return the current time as specified by the superclass of this method.
      *
      * @return The current time of the DDEThread that calls this method.
+     *  @deprecated As of Ptolemy II 4.1, replaced by
+     *  {@link #getModelTime()}
      */
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
