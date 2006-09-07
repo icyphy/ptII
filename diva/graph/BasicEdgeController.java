@@ -127,6 +127,7 @@ public class BasicEdgeController implements EdgeController {
 
             /** If we have any terminals, then return the connection
              *  site of the terminal instead of a new perimeter site.
+             * @deprecated Use getHeadSite that takes a connector.
              */
             public Site getHeadSite(Figure f, double x, double y) {
                 if (f instanceof Terminal) {
