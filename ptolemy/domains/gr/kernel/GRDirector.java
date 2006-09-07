@@ -189,6 +189,8 @@ public class GRDirector extends StaticSchedulingDirector {
      *  impression of advancement of time.
      *
      *  @return The current "time"
+     *  @deprecated As of Ptolemy II 4.1, replaced by
+     *  {@link #getModelTime()}
      */
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
