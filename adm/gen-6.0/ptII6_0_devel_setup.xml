@@ -26,7 +26,7 @@
     <!-- 
         The gui preferences indication.
     -->
-    <guiprefs width="640" height="480" resizable="no"/>
+    <guiprefs width="640" height="480" resizable="yes"/>
     
     <!-- 
         The locale section.
@@ -69,109 +69,243 @@
             <file src="../../README.txt" targetdir="$INSTALL_PATH"/>
             <file src="../../copyright.txt" targetdir="$INSTALL_PATH"/>
             <file src="../../ptiny.exe" targetdir="$INSTALL_PATH"/>
+
+	    <!-- Run (cd $PTII; make echo_jars JARS=PTINY_JNLP_JARS) -->
             <file src="../../jar_dist/doc/docConfig.jar"
-                  targetdir="$INSTALL_PATH//doc"/>
+                  targetdir="$INSTALL_PATH/doc"/>
             <file src="../../jar_dist/lib/diva.jar"
-                  targetdir="$INSTALL_PATH//lib"/>
+                  targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/ptolemy/ptsupport.jar"
-                  targetdir="$INSTALL_PATH//ptolemy"/>
+                  targetdir="$INSTALL_PATH/ptolemy"/>
             <file src="../../jar_dist/ptolemy/vergil/vergil.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/vergil"/>
+                  targetdir="$INSTALL_PATH/ptolemy/vergil"/>
             <file src="../../jar_dist/ptolemy/domains/domains.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains"/>
             <file src="../../jar_dist/ptolemy/actor/parameters/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/actor/parameters/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/actor/parameters/demo"/>
             <file src="../../jar_dist/ptolemy/domains/sdf/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains/sdf/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/demo"/>
             <file src="../../jar_dist/ptolemy/domains/sdf/doc/doc.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains/sdf/doc"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/doc"/>
             <file src="../../jar_dist/ptolemy/matlab/matlab.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/matlab"/>
+                  targetdir="$INSTALL_PATH/ptolemy/matlab"/>
             <file src="../../jar_dist/ptolemy/matlab/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/matlab/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/matlab/demo"/>
             <file src="../../jar_dist/lib/matlab.jar"
-                  targetdir="$INSTALL_PATH//lib"/>
+                  targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/ptolemy/ptsupport.jar"
-                  targetdir="$INSTALL_PATH//ptolemy"/>
+                  targetdir="$INSTALL_PATH/ptolemy"/>
             <file src="../../jar_dist/ptolemy/vergil/vergil.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/vergil"/>
-            <file src="../../jar_dist/doc/codeDoc.jar"
-                  targetdir="$INSTALL_PATH//doc"/>
+                  targetdir="$INSTALL_PATH/ptolemy/vergil"/>
             <file src="../../jar_dist/doc/design/usingVergil/usingVergil.jar"
-                  targetdir="$INSTALL_PATH//doc/design/usingVergil"/>
+                  targetdir="$INSTALL_PATH/doc/design/usingVergil"/>
             <file src="../../jar_dist/lib/jython.jar"
-                  targetdir="$INSTALL_PATH//lib"/>
+                  targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/lib/ptcolt.jar"
-                  targetdir="$INSTALL_PATH//lib"/>
+                  targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/ptolemy/actor/lib/colt/colt.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/colt"/>
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/colt"/>
             <file src="../../jar_dist/ptolemy/actor/lib/colt/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/colt/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/colt/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/comm/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/comm/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/comm/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/hoc/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/hoc/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/hoc/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/javasound/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/javasound/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/javasound/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/python/python.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/python"/>
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/python"/>
             <file src="../../jar_dist/ptolemy/actor/lib/python/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/python/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/python/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/security/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/security/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/security/demo"/>
             <file src="../../jar_dist/ptolemy/codegen/codegen.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/codegen"/>
+                  targetdir="$INSTALL_PATH/ptolemy/codegen"/>
             <file src="../../jar_dist/ptolemy/data/type/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/data/type/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/data/type/demo"/>
             <file src="../../jar_dist/ptolemy/data/unit/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/data/unit/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/data/unit/demo"/>
             <file src="../../jar_dist/ptolemy/domains/csp/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains/csp/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/csp/demo"/>
             <file src="../../jar_dist/ptolemy/domains/csp/doc/doc.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains/csp/doc"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/csp/doc"/>
             <file src="../../jar_dist/ptolemy/domains/ct/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains/ct/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ct/demo"/>
             <file src="../../jar_dist/ptolemy/domains/ct/doc/doc.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains/ct/doc"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ct/doc"/>
             <file src="../../jar_dist/ptolemy/domains/de/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains/de/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/de/demo"/>
             <file src="../../jar_dist/ptolemy/domains/de/doc/doc.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains/de/doc"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/de/doc"/>
             <file src="../../jar_dist/ptolemy/domains/fsm/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains/fsm/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/fsm/demo"/>
             <file src="../../jar_dist/ptolemy/domains/fsm/doc/doc.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains/fsm/doc"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/fsm/doc"/>
             <file src="../../jar_dist/ptolemy/domains/pn/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains/pn/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/pn/demo"/>
             <file src="../../jar_dist/ptolemy/domains/pn/doc/doc.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains/pn/doc"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/pn/doc"/>
             <file src="../../jar_dist/ptolemy/domains/rendezvous/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains/rendezvous/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/rendezvous/demo"/>
             <file src="../../jar_dist/ptolemy/domains/rendezvous/doc/doc.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/domains/rendezvous/doc"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/rendezvous/doc"/>
             <file src="../../jar_dist/ptolemy/moml/demo/demo.jar"
-                  targetdir="$INSTALL_PATH//ptolemy/moml/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/moml/demo"/>
+            <file src="../../jar_dist/ptolemy/vergil/kernel/attributes/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/kernel/attributs/demo"/>
             <!-- file src="script.bat" targetdir="$INSTALL_PATH"/ -->
             <!-- parsable targetfile="$INSTALL_PATH/script.bat"/ --> <!-- The file will be parsed -->
 
         </pack>
         <pack name="Full" required="no">
-            <description>All of the domains.</description>
+            <description>All of the domains, HyVisual, VisualSense and Viptos</description>
             <file src="../../hyvisual.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../vergil.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../visualsense.exe" targetdir="$INSTALL_PATH"/>
-	    <!-- FIXME: include all other jars here -->
+            <file src="../../viptos.exe" targetdir="$INSTALL_PATH"/>
+	    <!-- Run (make full_jars) and put the output here -->
+            <file src="../../jar_dist/ptolemy/hsif/hsif.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/hsif"/>
+            <file src="../../jar_dist/ptolemy/hsif/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/hsif/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/ct/ct.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ct"/>
+            <file src="../../jar_dist/ptolemy/domains/de/de.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/de"/>
+            <file src="../../jar_dist/ptolemy/domains/fsm/fsm.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/fsm"/>
+            <file src="../../jar_dist/ptolemy/domains/gr/gr.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/gr"/>
+            <file src="../../jar_dist/ptolemy/domains/gr/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/gr/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/sdf/lib/lib.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/lib"/>
+            <file src="../../jar_dist/ptolemy/domains/sdf/kernel/kernel.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/kernel"/>
+            <file src="../../jar_dist/lib/jasminclasses.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../../jar_dist/lib/sootclasses.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../../jar_dist/ptolemy/copernicus/copernicus.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/copernicus"/>
+            <file src="../../jar_dist/doc/img/img.jar"
+                  targetdir="$INSTALL_PATH/doc/img"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/io/comm/comm.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/comm"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/io/comm/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/comm/demo"/>
+            <file src="../../jar_dist/vendors/sun/commapi/comm.jar"
+                  targetdir="$INSTALL_PATH/vendors/sun/commapi"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/jai/jai.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jai"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/jai/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jai/demo"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/jmf/jmf.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jmf"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/jmf/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jmf/demo"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/joystick/joystick.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/joystick"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/jxta/jxta.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jxta"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/x10/x10.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/x10"/>
+            <file src="../../jar_dist/vendors/misc/joystick/Joystick.jar"
+                  targetdir="$INSTALL_PATH/vendors/misc/joystick"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/x10/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/x10/demo"/>
+            <file src="../../jar_dist/vendors/misc/x10/tjx10p-12/lib/x10.jar"
+                  targetdir="$INSTALL_PATH/vendors/misc/x10/tjx10p-12/lib"/>
+            <file src="../../jar_dist/lib/ptCal.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../../jar_dist/lib/saxon8.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../../jar_dist/lib/saxon8-dom.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../../jar_dist/lib/java_cup.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../../jar_dist/ptolemy/caltrop/caltrop.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/caltrop"/>
+            <file src="../../jar_dist/ptolemy/caltrop/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/caltrop/demo"/>
+            <file src="../../jar_dist/ptolemy/distributed/distributed.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/distributed"/>
+            <file src="../../jar_dist/ptolemy/distributed/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/distributed/demo"/>
+            <file src="../../jar_dist/ptolemy/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/experimentalDomains.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains"/>
+            <file src="../../jar_dist/ptolemy/domains/ci/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ci/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/dde/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/dde/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/ddf/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ddf/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/dt/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/dt/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/dt/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/dt/doc"/>
+            <file src="../../jar_dist/ptolemy/domains/giotto/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/giotto/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/giotto/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/giotto/doc"/>
+            <file src="../../jar_dist/ptolemy/domains/gr/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/gr/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/gr/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/gr/doc"/>
+            <file src="../../jar_dist/ptolemy/domains/gr/lib/quicktime/quicktime.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/gr/lib/quicktime"/>
+            <file src="../../jar_dist/ptolemy/domains/hdf/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/hdf/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/psdf/psdf.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/psdf"/>
+            <file src="../../jar_dist/ptolemy/domains/psdf/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/psdf/demo"/>
+            <file src="../../jar_dist/lib/mapss.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../../jar_dist/ptolemy/domains/sdf/lib/vq/data/data.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/lib/vq/data"/>
+            <file src="../../jar_dist/ptolemy/domains/sr/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sr/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/sr/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sr/doc"/>
+            <file src="../../jar_dist/ptolemy/domains/tm/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/tm/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/tm/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/tm/doc"/>
+            <file src="../../jar_dist/ptolemy/domains/wireless/wireless.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/wireless"/>
+            <file src="../../jar_dist/ptolemy/domains/wireless/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/wireless/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/ptinyos/ptinyos.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ptinyos"/>
+            <file src="../../jar_dist/ptolemy/domains/ptinyos/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ptinyos/demo"/>
         </pack>
 
         <pack name="Docs" required="no">
             <description>The documentation</description>
-            <file src="../../doc/design" targetdir="$INSTALL_PATH/doc/design"/>
             <file src="../../designdocv1.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../designdocv2.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../designdocv3.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../hyvisualdoc.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../visualsensedoc.exe"
 	          targetdir="$INSTALL_PATH/bin"/>
+            <file src="../../doc/design/hyvisual.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
+            <file src="../../doc/design/ptIIdesign1-intro.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
+            <file src="../../doc/design/ptIIdesign2-software.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
+            <file src="../../doc/design/ptIIdesign3-domains.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
+            <file src="../../doc/design/visualsense.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
+            <file src="../../jar_dist/doc/codeDoc.jar"
+                  targetdir="$INSTALL_PATH/doc"/>
+            <file src="../../jar_dist/doc/codeDocHyVisual.jar"
+                  targetdir="$INSTALL_PATH/doc"/>
+            <file src="../../jar_dist/doc/codeDocViptos.jar"
+                  targetdir="$INSTALL_PATH/doc"/>
+            <file src="../../jar_dist/doc/codeDocVisualSense.jar"
+                  targetdir="$INSTALL_PATH/doc"/>
+
         </pack>
         <pack name="JRE" required="no">
             <description>Java Runtime Environment (JRE) v1.5.0_08.  This JRE includes JAI, Java 3D, Joystick  JMF, JavaComm, and X10</description>

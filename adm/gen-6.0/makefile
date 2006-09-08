@@ -2358,3 +2358,10 @@ $(PTSETUP).exe: $(PTSETUP)_l4j.xml $(PTSETUP).jar
 		"$(L4JC)" `cygpath --windows $$PWD/$<`
 
 setup: $(PTSETUP).exe
+
+# Echo the jars needed for the full package in izpack
+full_jars:
+	@(cd $(PTII); make -s echo_jars JARS=HYBRID_SYSTEMS_ONLY0_JNLP_JARS)
+	@(cd $(PTII); make -s echo_jars JARS=FULL_ONLY_JNLP_JARS)
+	@(cd $(PTII); make -s echo_jars JARS=VIPTOS_ONLY_JNLP_JARS)
+	@(cd $(PTII); make -s echo_jars JARS=VISUAL_SENSE_ONLY_JNLP_JARS)

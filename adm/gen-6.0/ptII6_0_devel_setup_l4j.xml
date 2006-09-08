@@ -1,7 +1,7 @@
 <launch4jConfig>
   <headerType>gui</headerType>
   <dontWrapJar>true</dontWrapJar>
-  <jar>ptIIsetup.jar</jar>
+  <jar>ptII6_0_devel_setup.jar</jar>
   <outfile>ptII6_0_devel_setup.exe</outfile>
   <errTitle>ptIIsetup</errTitle>
   <chdir>.</chdir>
@@ -10,7 +10,8 @@
   <stayAlive>true</stayAlive>
   <icon>../../doc/img/ptIIplanet.ico</icon>
   <jre>
-    <minVersion>1.4.0</minVersion>
+    <path>jre</path> 
+    <minVersion>1.6.0</minVersion>
   </jre>
   <versionInfo>
     <fileVersion>6.0.0.1</fileVersion>

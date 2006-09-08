@@ -41,8 +41,8 @@
     -->
     <resources>
         <res id="LicencePanel.licence" src="../../copyright.txt"/>
-        <res id="InfoPanel.info" src="../../README.txt"/>
-        <res id="TargetPanel.dir.windows" src="c:/Ptolemy/"/>
+        <res id="HTMLInfoPanel.info" src="../../README.txt"/>
+        <!res id="TargetPanel.dir.windows" src="c:/Ptolemy/ptII6.0-alpha/"/!>
     </resources>
     
     <!-- 
@@ -51,7 +51,7 @@
     -->
     <panels>
         <panel classname="HelloPanel"/>
-        <panel classname="InfoPanel"/>
+        <panel classname="HTMLInfoPanel"/>
         <panel classname="LicencePanel"/>
         <panel classname="TargetPanel"/> 
         <panel classname="PacksPanel"/>
