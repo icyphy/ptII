@@ -269,8 +269,14 @@ public class BrowserLauncher {
         // 0 usually indicates normal execution.
         int exitCode = 0;
 
+        String errorMessage = "";
+        String args[];
+
         switch (jvm) {
         case MRJ_2_0:
+
+            errorMessage = "Command was a call to aeDescConstructor("
+                + url + ")";
 
             Object aeDesc = null;
 
@@ -299,10 +305,16 @@ public class BrowserLauncher {
             break;
 
         case MRJ_2_1:
-            Runtime.getRuntime().exec(new String[] { (String) browser, url });
+            args = new String[] { (String) browser, url };
+            errorMessage = "Command was: " + args[0]
+                + " " + args[1];
+            Runtime.getRuntime().exec(args);
             break;
 
         case MRJ_3_0:
+
+            errorMessage = "Command was a call to ICLaunchURL("
+                + url + ")";
 
             int[] instance = new int[1];
             int result = ICStart(instance, 0);
@@ -330,14 +342,19 @@ public class BrowserLauncher {
 
         case MRJ_3_1:
 
+            errorMessage = "Command was a call to openURL(" +
+                url + ")";
+
             try {
                 openURL.invoke(null, new Object[] { url });
             } catch (InvocationTargetException ite) {
                 throw new IOException("InvocationTargetException while "
-                        + "calling openURL: " + ite.getMessage());
+                        + "calling openURL() on " + url
+                        + " " + ite.getMessage());
             } catch (IllegalAccessException iae) {
                 throw new IOException("IllegalAccessException while "
-                        + "calling openURL: " + iae.getMessage());
+                        + "calling openURL() on: " + url
+                        + " " + iae.getMessage());
             }
 
             break;
@@ -347,10 +364,20 @@ public class BrowserLauncher {
 
             // Add quotes around the URL to allow ampersands and other special
             // characters to work.
-            Process process = Runtime.getRuntime().exec(
-                    new String[] { (String) browser, FIRST_WINDOWS_PARAMETER,
+            args = new String[] { (String) browser,
+                            FIRST_WINDOWS_PARAMETER,
                             SECOND_WINDOWS_PARAMETER, THIRD_WINDOWS_PARAMETER,
-                            '"' + url + '"' });
+                            '"' + url + '"' };
+            Process process = Runtime.getRuntime().exec(args);
+
+
+            errorMessage = "Command was: " + args[0]
+                + " " + args[1]
+                + " " + args[2]
+                + " " + args[3]
+                + " " + args[4]
+                + "\nNote: Under Windows, make sure that the file named by "
+                + "the url is executable.";
 
             // This avoids a memory leak on some versions of Java on Windows.
             // That's hinted at in
@@ -370,13 +397,18 @@ public class BrowserLauncher {
             // Assume that we're on Unix and that firefox is installed
             // First, attempt to open the URL in a currently running
             // session of Netscape
-            process = Runtime.getRuntime().exec(
-                    new String[] {
+            args = new String[] {
                             (String) browser,
                             NETSCAPE_REMOTE_PARAMETER,
-
                             NETSCAPE_OPEN_PARAMETER_START + url
-                                    + NETSCAPE_OPEN_PARAMETER_END });
+                            + NETSCAPE_OPEN_PARAMETER_END };
+            process = Runtime.getRuntime().exec(args);
+
+
+            errorMessage = "Command was: " + args[0]
+                + " " + args[1]
+                + " " + args[2];
+
 
             try {
                 exitCode = process.waitFor();
@@ -404,7 +436,8 @@ public class BrowserLauncher {
         if (exitCode != 0) {
             throw new IOException("Process exec'd by BrowserLauncher returned "
                     + exitCode + "." + "\n url was: " + url
-                    + "\n browser was: " + browser);
+                    + "\n browser was: " + browser
+                    + "\n " + errorMessage);
         }
     }
 
