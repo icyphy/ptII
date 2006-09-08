@@ -60,6 +60,19 @@ We need to add multiple apps to the Start Menu.
 
 </ul>
 
+<h2>Ptolemy installers</h2>
+To install Ptolemy under Windows, we require an optional custom JRE.
+<p>The way we do this is based on
+<a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher">Notes about IzPack Launcher and possible alternatives</a>.
+<ol>
+<li>We create an 
+<a href="http://www.izforge.com/izpack/" target="_top">izPack</a>
+installer that installs Ptolemy II
+<li>We use 
+<a href="http://launch4j.sourceforge.net/" target="_top">launch4j</a>
+to invoke the izPack installer.  The launch4j installer includes
+an optional JRE.
+</ol>
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
