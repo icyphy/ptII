@@ -72,7 +72,6 @@ JSRCS = \
 	GRTransform.java \
 	GRTransform2D.java \
 	FigureInteractor.java \
-	IconViewScreen3D.java \
 	Image2D.java \
 	KeyInput3D.java \
 	Line2D.java \
