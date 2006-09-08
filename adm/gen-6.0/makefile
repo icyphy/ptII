@@ -37,7 +37,7 @@ MINOR_VERSION =		devel
 
 VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	6.0_devel
+WINDOWS_VERSION =	6_0_devel
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -2340,3 +2340,21 @@ softwalls.tar.gz: softwalls
 	rm -f softwalls.tar.gz softwalls.tar
 	(cd softwalls; tar -cf ../softwalls.tar .)
 	gzip -9 softwalls.tar
+
+
+PTSETUP=ptII$(WINDOWS_VERSION)_setup
+# IzPack installer
+$(PTSETUP).jar: $(PTSETUP).xml
+	"c:/Program Files/IzPack/bin/compile" $<
+
+# Location of Launch4J, see http://launch4j.sourceforge.net/
+L4J_DIR=c:/Program Files/Launch4j
+
+# Launch4J console application that reads in .xml files and creates .exe files.
+L4JC=$(L4J_DIR)/launch4jc.exe
+
+# Launch4J
+$(PTSETUP).exe: $(PTSETUP)_l4j.xml
+		"$(L4JC)" `cygpath --windows $$PWD/$<`
+
+setup: $(PTSETUP).exe
