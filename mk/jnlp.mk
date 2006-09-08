@@ -166,17 +166,23 @@ DSP_JNLP_JARS =	\
 #
 # The full version of Vergil should not include any of the jar files below
 # because the hsif conversion does not work here
-HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
+HYBRID_SYSTEMS_ONLY0_JNLP_JARS = \
 	doc/design/hyvisual.jar \
 	doc/codeDocHyVisual.jar \
-	lib/saxon8.jar \
+	ptolemy/hsif/hsif.jar \
+	ptolemy/hsif/demo/demo.jar \
 	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/de/de.jar \
 	ptolemy/domains/fsm/fsm.jar \
+	ptolemy/domains/gr/gr.jar \
+	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/sdf/lib/lib.jar \
-	ptolemy/domains/sdf/kernel/kernel.jar \
-	ptolemy/hsif/hsif.jar \
-	ptolemy/hsif/demo/demo.jar
+	ptolemy/domains/sdf/kernel/kernel.jar
+
+
+HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
+	$(HYBRID_SYSTEMS_ONLY0_JNLP_JARS) \
+	lib/saxon8.jar
 
 HYBRID_SYSTEMS_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/HyVisualApplication.jar
@@ -338,6 +344,31 @@ FULL_JNLP_JARS = \
 	$(DSP_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(FULL_ONLY_JNLP_JARS)
+
+#######
+# Viptos
+#
+# Jar files that will appear in a VisualSense only JNLP Ptolemy II Runtime.
+# ct, fsm, de, sdf
+
+# FIXME: experimentalDomains.jar also includes wireless.jar
+# Jar files that are only used in JNLP
+VIPTOS_ONLY_JNLP_JARS = \
+	doc/codeDocViptos.jar \
+	ptolemy/domains/ptinyos/ptinyos.jar \
+	ptolemy/domains/ptinyos/demo/demo.jar
+
+#	doc/design/viptos.jar 
+
+VIPTOS_MAIN_JAR = \
+	ptolemy/actor/gui/jnlp/VisualSenseApplication.jar
+
+VIPTOS_JNLP_JARS =	\
+	$(VIPTOS_MAIN_JAR) \
+	$(CORE_JNLP_JARS) \
+	$(WIRELESS_JARS) \
+	$(PTINY_ONLY_JNLP_JARS) \
+	$(VIPTOS_ONLY_JNLP_JARS)
 
 #######
 # VisualSense
@@ -864,23 +895,25 @@ clean_exes:
 	rm -f $(L4J_EXES)
 	rm -f $(L4J_CONFIGS)
 
+DOC_JNLP_JARS = \
+	ptolemy/ptsupport.jar
 designdocv1_l4j.xml:
 	$(MKL4J) designdocv1 ptolemy.actor.gui.BrowserLauncher \
-		 doc/design/ptIIdesign1-intro.pdf > $@
+		 doc/design/ptIIdesign1-intro.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/ptIIdesign1-intro.pdf
 designdocv1.exe: designdocv1_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$<`
 
 designdocv2_l4j.xml:
 	$(MKL4J) designdocv2 ptolemy.actor.gui.BrowserLauncher \
-		doc/design/ptIIdesign2-software.pdf > $@
+		doc/design/ptIIdesign2-software.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/ptIIdesign2-software.pdf
 designdocv2.exe: designdocv2_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$<`
 
 designdocv3_l4j.xml:
 	$(MKL4J) designdocv3 ptolemy.actor.gui.BrowserLauncher \
-		doc/design/ptIIdesign3-domains.pdf > $@
+		doc/design/ptIIdesign3-domains.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/ptIIdesign3-domains.pdf
 designdocv3.exe: designdocv3_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$<`
@@ -891,19 +924,19 @@ histogram.exe: histogram_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$^`
 
 hyvisual_l4j.xml:
-	$(MKL4J) hyvisual ptolemy.vergil.VergilApplication -hyvisual > $@
+	$(MKL4J) hyvisual ptolemy.vergil.VergilApplication -hyvisual $(HYBRID_SYSTEMS_JNLP_JARS) > $@> $@
 hyvisual.exe: hyvisual_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$^`
 
 hyvisualdoc_l4j.xml:
 	$(MKL4J) hyvisualdoc ptolemy.actor.gui.BrowserLauncher \
-		doc/design/hyvisual.pdf > $@
+		doc/design/hyvisual.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/hyvisual.pdf
 hyvisualdoc.exe: hyvisualdoc_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$<`
 
-ptiny_l4j.xml:
-	$(MKL4J) ptiny ptolemy.vergil.VergilApplication -ptiny > $@
+ptiny_l4j.xml: $(MKL4J)
+	$(MKL4J) ptiny ptolemy.vergil.VergilApplication -ptiny $(PTINY_JNLP_JARS) > $@
 ptiny.exe: ptiny_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$^`
 
@@ -914,19 +947,39 @@ ptplot.exe: ptplot_l4j.xml
 
 
 vergil_l4j.xml:
-	$(MKL4J) > $@
+	$(MKL4J) vergil ptolemy.vergil.VergilApplication "" $(FULL_JNLP_JARS) > $@
 vergil.exe: vergil_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$^`
 
+viptos_l4j.xml:
+	$(MKL4J) viptos ptolemy.vergil.VergilApplication -viptos $(VIPTOS_JNLP_JARS) > $@
+
+viptos.exe: viptos_l4j.xml
+	"$(L4JC)" `cygpath --windows $$PWD/$^`
+
 visualsense_l4j.xml:
-	$(MKL4J) visualsense ptolemy.vergil.VergilApplication -ptiny > $@
+	$(MKL4J) visualsense ptolemy.vergil.VergilApplication -visualsense $(VISUAL_SENSE_JNLP_JARS) > $@
+
 visualsense.exe: visualsense_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$^`
 
 visualsensedoc_l4j.xml:
 	$(MKL4J) visualsensedoc ptolemy.actor.gui.BrowserLauncher \
-		doc/design/visualsense.pdf > $@
+		doc/design/visualsense.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/visualsense.pdf
 visualsensedoc.exe: visualsensedoc_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$<`
+
+################################################################
+################################################################
+################################################################
+# We use IzPack (http://www.izforge.com/izpack/) to set up the start menu.
+
+# Used to build installers in adm/gen-X.Y
+
+# Echo the jar files in a format suitable for izpack. 
+# Certain jar files from the doc/ directory are not echoed.
+# For example:  make echo_jars JARS=PTINY_JNLP_JARS
+echo_jars:
+	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" |  awk '{for(i=1;i<=NF;i++){ print "            <file src=\"../../jar_dist/" $$i "\""; ns = split($$i, f, "/"); dir = ""; for(s=1;s<ns;s++) {dir = dir "/" f[s]}  print "                  targetdir=\"$$INSTALL_PATH" dir "\"/>"  } }'
 
