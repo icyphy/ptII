@@ -205,6 +205,7 @@ public class KeyToken extends Token {
         }
 
         /** Return the class for tokens that this basetype represents.
+         *  @return the class for tokens that this basetype represents.
          */
         public Class getTokenClass() {
             return KeyToken.class;

@@ -118,7 +118,7 @@ public class LabeledList implements List {
     }
 
     /** Unsupported optional method of the List interface.
-     *  @param int Unused.
+     *  @param index Unused.
      *  @param element Unused.
      *  @exception UnsupportedOperationException Always thrown.
      */
