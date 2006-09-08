@@ -123,7 +123,14 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                     }
 
                     // Wow.. this is a confusing line of code.. :)
-                    component.setIcon(icon.createIcon());
+                    try {
+                        component.setIcon(icon.createIcon());
+                    } catch (Throwable throwable) {
+                        throw new InternalErrorException(null, throwable,
+                                "Failed to create or "
+                                + "set icon " + icon + " for component "
+                                + component);
+                    }
                 }
 
                 // FIXME: The following is not called on EntityLibrary,
