@@ -36,7 +36,7 @@ ME =		ptolemy/actor/test
 ROOT =		../../..
 
 # PTJACL_JARS is defined in $PTII/mk/ptII.mk.in
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJACL_JARS)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJACL_JARS)$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/ptCal.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/java_cup.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/saxon8.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/saxon8-dom.jar.$(CLASSPATHSEPARATOR)$(JMF_JARS)$(CLASSPATHSEPARATOR)$(JOYSTICK_JAR)$(CLASSPATHSEPARATOR)$(X10_JAR)
 
 # AUXCLASSPATH is used by jtclsh
 AUXCLASSPATH =	$(CLASSPATH)
@@ -86,8 +86,8 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests consume quite a bit of memory, so we increase the maximum
-# stack size to 120Mb
-JAVAFLAGS = -Xmx120m
+# stack size to 300Mb
+JAVAFLAGS = -Xmx300m
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
