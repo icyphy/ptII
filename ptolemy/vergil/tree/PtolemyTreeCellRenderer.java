@@ -126,10 +126,11 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                     try {
                         component.setIcon(icon.createIcon());
                     } catch (Throwable throwable) {
-                        throw new InternalErrorException(null, throwable,
-                                "Failed to create or "
+                        // Ignore this, but print a message
+                        System.err.println("Warning: Failed to create or "
                                 + "set icon " + icon + " for component "
                                 + component);
+                        throwable.printStackTrace();
                     }
                 }
 
