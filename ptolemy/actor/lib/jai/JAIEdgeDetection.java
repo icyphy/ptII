@@ -79,9 +79,9 @@ public class JAIEdgeDetection extends Transformer {
         secondMask.setExpression("Sobel Vertical");
         _secondMask = _SOBEL_VERTICAL;
 
-        specifiedFirstMask = new Parameter(this, "userSpecifiedFirstMask",
+        userSpecifiedFirstMask = new Parameter(this, "userSpecifiedFirstMask",
                 new DoubleMatrixToken(_initialMatrix));
-        specifiedSecondMask = new Parameter(this, "userSpecifiedSecondMask",
+        userSpecifiedSecondMask = new Parameter(this, "userSpecifiedSecondMask",
                 new DoubleMatrixToken(_initialMatrix));
     }
 
@@ -124,7 +124,7 @@ public class JAIEdgeDetection extends Transformer {
      *  y dimensions.  The Default mask is the transparent mask,
      *  and the default x and y dimensions is 3.
      */
-    public Parameter specifiedFirstMask;
+    public Parameter userSpecifiedFirstMask;
 
     //public Parameter specifiedFirstXDim;
     //public Parameter specifiedFirstYDim;
@@ -133,7 +133,7 @@ public class JAIEdgeDetection extends Transformer {
      *  y dimensions.  The Default mask is the transparent mask,
      *  and the default x and y dimensions is 3.
      */
-    public Parameter specifiedSecondMask;
+    public Parameter userSpecifiedSecondMask;
 
     //public Parameter specifiedSecondXDim;
     //public Parameter specifiedSecondYDim;
@@ -154,10 +154,10 @@ public class JAIEdgeDetection extends Transformer {
         } else if (attribute == secondMask) {
             String secondName = secondMask.getExpression();
             _secondMask = _maskNumberer(secondName);
-        } else if (attribute == specifiedFirstMask) {
-            _firstMaskData = ((DoubleMatrixToken) specifiedFirstMask.getToken());
-        } else if (attribute == specifiedSecondMask) {
-            _secondMaskData = ((DoubleMatrixToken) specifiedSecondMask
+        } else if (attribute == userSpecifiedFirstMask) {
+            _firstMaskData = ((DoubleMatrixToken) userSpecifiedFirstMask.getToken());
+        } else if (attribute == userSpecifiedSecondMask) {
+            _secondMaskData = ((DoubleMatrixToken) userSpecifiedSecondMask
                     .getToken());
         } else {
             super.attributeChanged(attribute);
