@@ -12,7 +12,7 @@ int $actorSymbol(length);
 int $actorSymbol(i);
 int $actorSymbol(tapsIndex);
 int $actorSymbol(dataIndex);
-int $actorSymbol(bufferIndex);
+int $actorSymbol(bufferIndex);		// for keeping track of the output offset in a single firing.
 /**/
 
 
