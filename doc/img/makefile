@@ -134,8 +134,18 @@ OTHER_FILES_TO_BE_JARED = \
 	PtolemyII.jpg \
 	PtolemyIISmall.gif
 
+ICONS = \
+	histogram.ico \
+	hyvisual.ico \
+	pdf.ico \
+	ptiny.ico \
+	ptplot.ico \
+	vergil.ico \
+	visualsense.ico
+
 
 EXTRA_SRCS = \
+	$(ICONS) \
 	$(OTHER_FILES_TO_BE_JARED) \
 	HTML.gif \
 	HyVisualSplash.gif \
