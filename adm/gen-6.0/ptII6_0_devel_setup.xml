@@ -64,23 +64,118 @@
         We specify here our packs.
     -->
     <packs>
-        <pack name="Base" required="yes">
-            <description>The base files</description>
+        <pack name="Ptiny" required="yes">
+            <description>Ptiny: The common domains: CSP, CT, DE, FSM, PN and SDF.</description>
             <file src="../../README.txt" targetdir="$INSTALL_PATH"/>
             <file src="../../copyright.txt" targetdir="$INSTALL_PATH"/>
-            <!--file src="../../unjar_dist" targetdir="$INSTALL_PATH"/-->
-            <file src="script.bat" targetdir="$INSTALL_PATH"/>
-            <parsable targetfile="$INSTALL_PATH/script.bat"/> <!-- The file will be parsed -->
+            <file src="../../ptiny.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../jar_dist/doc/docConfig.jar"
+                  targetdir="$INSTALL_PATH//doc"/>
+            <file src="../../jar_dist/lib/diva.jar"
+                  targetdir="$INSTALL_PATH//lib"/>
+            <file src="../../jar_dist/ptolemy/ptsupport.jar"
+                  targetdir="$INSTALL_PATH//ptolemy"/>
+            <file src="../../jar_dist/ptolemy/vergil/vergil.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/vergil"/>
+            <file src="../../jar_dist/ptolemy/domains/domains.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains"/>
+            <file src="../../jar_dist/ptolemy/actor/parameters/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/actor/parameters/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/sdf/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains/sdf/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/sdf/doc/doc.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains/sdf/doc"/>
+            <file src="../../jar_dist/ptolemy/matlab/matlab.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/matlab"/>
+            <file src="../../jar_dist/ptolemy/matlab/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/matlab/demo"/>
+            <file src="../../jar_dist/lib/matlab.jar"
+                  targetdir="$INSTALL_PATH//lib"/>
+            <file src="../../jar_dist/ptolemy/ptsupport.jar"
+                  targetdir="$INSTALL_PATH//ptolemy"/>
+            <file src="../../jar_dist/ptolemy/vergil/vergil.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/vergil"/>
+            <file src="../../jar_dist/doc/codeDoc.jar"
+                  targetdir="$INSTALL_PATH//doc"/>
+            <file src="../../jar_dist/doc/design/usingVergil/usingVergil.jar"
+                  targetdir="$INSTALL_PATH//doc/design/usingVergil"/>
+            <file src="../../jar_dist/lib/jython.jar"
+                  targetdir="$INSTALL_PATH//lib"/>
+            <file src="../../jar_dist/lib/ptcolt.jar"
+                  targetdir="$INSTALL_PATH//lib"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/colt/colt.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/colt"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/colt/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/colt/demo"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/comm/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/comm/demo"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/hoc/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/hoc/demo"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/javasound/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/javasound/demo"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/python/python.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/python"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/python/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/python/demo"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/security/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/actor/lib/security/demo"/>
+            <file src="../../jar_dist/ptolemy/codegen/codegen.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/codegen"/>
+            <file src="../../jar_dist/ptolemy/data/type/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/data/type/demo"/>
+            <file src="../../jar_dist/ptolemy/data/unit/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/data/unit/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/csp/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains/csp/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/csp/doc/doc.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains/csp/doc"/>
+            <file src="../../jar_dist/ptolemy/domains/ct/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains/ct/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/ct/doc/doc.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains/ct/doc"/>
+            <file src="../../jar_dist/ptolemy/domains/de/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains/de/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/de/doc/doc.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains/de/doc"/>
+            <file src="../../jar_dist/ptolemy/domains/fsm/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains/fsm/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/fsm/doc/doc.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains/fsm/doc"/>
+            <file src="../../jar_dist/ptolemy/domains/pn/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains/pn/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/pn/doc/doc.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains/pn/doc"/>
+            <file src="../../jar_dist/ptolemy/domains/rendezvous/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains/rendezvous/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/rendezvous/doc/doc.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/domains/rendezvous/doc"/>
+            <file src="../../jar_dist/ptolemy/moml/demo/demo.jar"
+                  targetdir="$INSTALL_PATH//ptolemy/moml/demo"/>
+            <!-- file src="script.bat" targetdir="$INSTALL_PATH"/ -->
+            <!-- parsable targetfile="$INSTALL_PATH/script.bat"/ --> <!-- The file will be parsed -->
+
         </pack>
+        <pack name="Full" required="no">
+            <description>All of the domains.</description>
+            <file src="../../hyvisual.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../vergil.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../visualsense.exe" targetdir="$INSTALL_PATH"/>
+	    <!-- FIXME: include all other jars here -->
+        </pack>
+
         <pack name="Docs" required="no">
             <description>The documentation</description>
             <file src="../../doc/design" targetdir="$INSTALL_PATH/doc/design"/>
-            <file src="../../designdocv1.exe" targetdir="$INSTALL_PATH/bin"/>
-            <file src="../../designdocv2.exe" targetdir="$INSTALL_PATH/bin"/>
-            <file src="../../designdocv3.exe" targetdir="$INSTALL_PATH/bin"/>
-            <file src="../../hyvisualdoc.exe" targetdir="$INSTALL_PATH/bin"/>
+            <file src="../../designdocv1.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../designdocv2.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../designdocv3.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../hyvisualdoc.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../visualsensedoc.exe"
 	          targetdir="$INSTALL_PATH/bin"/>
+        </pack>
+        <pack name="JRE" required="no">
+            <description>Java Runtime Environment (JRE) v1.5.0_08.  This JRE includes JAI, Java 3D, Joystick  JMF, JavaComm, and X10</description>
+            <file src="jre" targetdir="$INSTALL_PATH"/>
         </pack>
         <pack name="Sources" required="no">
             <description>The sources</description>
