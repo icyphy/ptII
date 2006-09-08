@@ -141,6 +141,7 @@ ICONS = \
 	ptiny.ico \
 	ptplot.ico \
 	vergil.ico \
+	viptos.ico \
 	visualsense.ico
 
 
