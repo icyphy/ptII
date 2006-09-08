@@ -999,6 +999,7 @@ bldmastrcoverage:
 		remote1ChangeLog \
 		remote1doc \
 		remote1doccheck \
+		remote1findbugs \
 		remote1jnlp
 
 #		remote4
