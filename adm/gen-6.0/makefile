@@ -2354,7 +2354,7 @@ L4J_DIR=c:/Program Files/Launch4j
 L4JC=$(L4J_DIR)/launch4jc.exe
 
 # Launch4J
-$(PTSETUP).exe: $(PTSETUP)_l4j.xml
+$(PTSETUP).exe: $(PTSETUP)_l4j.xml $(PTSETUP).jar
 		"$(L4JC)" `cygpath --windows $$PWD/$<`
 
 setup: $(PTSETUP).exe
