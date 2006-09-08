@@ -175,7 +175,7 @@ HYBRID_SYSTEMS_ONLY0_JNLP_JARS = \
 	ptolemy/domains/de/de.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/gr/gr.jar \
-	ptolemy/domains/gr/demo/demo.jar \
+	ptolemy/domains/gr/demo/demoo.jar \
 	ptolemy/domains/sdf/lib/lib.jar \
 	ptolemy/domains/sdf/kernel/kernel.jar
 
@@ -899,6 +899,7 @@ DOC_JNLP_JARS = \
 	ptolemy/ptsupport.jar
 designdocv1_l4j.xml:
 	$(MKL4J) designdocv1 ptolemy.actor.gui.BrowserLauncher \
+		 doc/img/pdf.ico \
 		 doc/design/ptIIdesign1-intro.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/ptIIdesign1-intro.pdf
 designdocv1.exe: designdocv1_l4j.xml
@@ -906,59 +907,74 @@ designdocv1.exe: designdocv1_l4j.xml
 
 designdocv2_l4j.xml:
 	$(MKL4J) designdocv2 ptolemy.actor.gui.BrowserLauncher \
-		doc/design/ptIIdesign2-software.pdf $(DOC_JNLP_JARS) > $@
+		doc/img/pdf.ico \
+	        doc/design/ptIIdesign2-software.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/ptIIdesign2-software.pdf
 designdocv2.exe: designdocv2_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$<`
 
 designdocv3_l4j.xml:
 	$(MKL4J) designdocv3 ptolemy.actor.gui.BrowserLauncher \
+		doc/img/pdf.ico \
 		doc/design/ptIIdesign3-domains.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/ptIIdesign3-domains.pdf
 designdocv3.exe: designdocv3_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$<`
 
 histogram_l4j.xml:
-	$(MKL4J) ptplot ptolemy.plot.plotml.HistogramMLApplication > $@
+	$(MKL4J) ptplot ptolemy.plot.plotml.HistogramMLApplication \
+		doc/img/histogram.ico > $@
 histogram.exe: histogram_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$^`
 
 hyvisual_l4j.xml:
-	$(MKL4J) hyvisual ptolemy.vergil.VergilApplication -hyvisual $(HYBRID_SYSTEMS_JNLP_JARS) > $@> $@
+	$(MKL4J) hyvisual ptolemy.vergil.VergilApplication \
+		doc/img/hyvisual.ico \
+		-hyvisual $(HYBRID_SYSTEMS_JNLP_JARS) > $@> $@
 hyvisual.exe: hyvisual_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$^`
 
 hyvisualdoc_l4j.xml:
 	$(MKL4J) hyvisualdoc ptolemy.actor.gui.BrowserLauncher \
+		doc/img/pdf.ico \
 		doc/design/hyvisual.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/hyvisual.pdf
 hyvisualdoc.exe: hyvisualdoc_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$<`
 
 ptiny_l4j.xml: $(MKL4J)
-	$(MKL4J) ptiny ptolemy.vergil.VergilApplication -ptiny $(PTINY_JNLP_JARS) > $@
+	$(MKL4J) ptiny ptolemy.vergil.VergilApplication \
+		doc/img/ptiny.ico \
+		-ptiny $(PTINY_JNLP_JARS) > $@
 ptiny.exe: ptiny_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$^`
 
 ptplot_l4j.xml:
-	$(MKL4J) ptplot ptolemy.plot.plotml.EditablePlotMLApplication > $@
+	$(MKL4J) ptplot ptolemy.plot.plotml.EditablePlotMLApplication \
+		doc/img/ptplot.ico > $@
 ptplot.exe: ptplot_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$^`
 
 
 vergil_l4j.xml:
-	$(MKL4J) vergil ptolemy.vergil.VergilApplication "" $(FULL_JNLP_JARS) > $@
+	$(MKL4J) vergil ptolemy.vergil.VergilApplication \
+		doc/img/vergil.ico \
+		"" $(FULL_JNLP_JARS) > $@
 vergil.exe: vergil_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$^`
 
 viptos_l4j.xml:
-	$(MKL4J) viptos ptolemy.vergil.VergilApplication -viptos $(VIPTOS_JNLP_JARS) > $@
+	$(MKL4J) viptos ptolemy.vergil.VergilApplication \
+		doc/img/viptos.ico \
+		-viptos $(VIPTOS_JNLP_JARS) > $@
 
 viptos.exe: viptos_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$^`
 
 visualsense_l4j.xml:
-	$(MKL4J) visualsense ptolemy.vergil.VergilApplication -visualsense $(VISUAL_SENSE_JNLP_JARS) > $@
+	$(MKL4J) visualsense ptolemy.vergil.VergilApplication \
+		doc/img/visualsense.ico \
+		-visualsense $(VISUAL_SENSE_JNLP_JARS) > $@
 
 visualsense.exe: visualsense_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$^`
