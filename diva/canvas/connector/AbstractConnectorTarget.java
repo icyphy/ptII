@@ -104,6 +104,7 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
     /** Return a suitable site to connect a connector's tail to.
      * See the description for getheadSite().  In this base class, just
      * return the same site.
+     * @deprecated Use getTailSite that takes a connector.
      */
     public Site getTailSite(Site s, double x, double y) {
         return s;
