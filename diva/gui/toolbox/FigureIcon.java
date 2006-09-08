@@ -121,8 +121,13 @@ public class FigureIcon extends ImageIcon {
         if (figure instanceof ImageFigure && (border == 0)) {
             ImageFigure imageFigure = (ImageFigure) figure;
             Image image = imageFigure.getImage();
-            image = image.getScaledInstance(x, y, Image.SCALE_DEFAULT);
-            setImage(image);
+            if (image != null) {
+                image = image.getScaledInstance(x, y, Image.SCALE_DEFAULT);
+                setImage(image);
+            } else {
+                throw new NullPointerException("Failed to get an image from "
+                        + imageFigure);
+            }
         } else {
             Rectangle2D bounds = figure.getBounds();
             Rectangle2D size = new Rectangle2D.Double(border, border, x
