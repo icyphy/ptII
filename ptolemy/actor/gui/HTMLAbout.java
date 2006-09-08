@@ -637,10 +637,15 @@ public class HTMLAbout {
                             }
                             modelURL = new File(model).toURL();
                         }
-                        modelList.add(model);
-                        if (depth > 0 && model.matches(".*(.htm|.html)")) {
-                            modelList.addAll(_getURLs(modelURL, regexp,
-                                    absoluteURLs, depth - 1));
+                        boolean sawModel = modelList.contains(model);
+                        if (!sawModel) {
+                            modelList.add(model);
+                            if (depth > 0 && model.matches(".*(.htm|.html)")) {
+                                System.out.println("HTMLAbout: _getURLs() "
+                                        + "checking: " + modelURL);
+                                modelList.addAll(_getURLs(modelURL, regexp,
+                                                         absoluteURLs, depth - 1));
+                            }
                         }
                     }
                 }
