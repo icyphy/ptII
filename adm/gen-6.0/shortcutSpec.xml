@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<shortcuts>
+  <skipIfNotSupported/>
+
+  <programGroup defaultName="Ptolemy\ptII6.0-alpha"
+                location="applications"/>
+
+  <shortcut
+    name="vergil -ptiny"
+    programGroup="yes"
+    desktop="no"
+    applications="no"
+    startMenu="no"
+    startup="no"
+    target="$INSTALL_PATH\ptiny.exe"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH"
+    description="Ptiny, the subset of Ptolemy II GUI"
+    iconFile="$INSTALL_PATH\doc\img\ptiny.ico"
+    iconIndex="0"
+    initialState="normal">
+
+    <createForPack name="Full"/>
+  </shortcut>
+
+  <shortcut
+    name="vergil -full"
+    programGroup="yes"
+    desktop="no"
+    applications="no"
+    startMenu="no"
+    startup="no"
+    target="$INSTALL_PATH\vergil.exe"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH"
+    description="Vergil, the full Ptolemy II GUI"
+    iconFile="$INSTALL_PATH\doc\img\vergil.ico"
+    iconIndex="0"
+    initialState="normal">
+
+    <createForPack name="Full"/>
+  </shortcut>
+
+  <shortcut
+    name="HyVisual"
+    programGroup="yes"
+    desktop="no"
+    applications="no"
+    startMenu="no"
+    startup="no"
+    target="$INSTALL_PATH\hyvisual.exe"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH"
+    description="HyVisual, the Hybrid System GUI"
+    iconFile="$INSTALL_PATH\doc\img\hyvisual.ico"
+    iconIndex="0"
+    initialState="normal">
+
+    <createForPack name="Full"/>
+  </shortcut>
+
+  <shortcut
+    name="VisualSense"
+    programGroup="yes"
+    desktop="no"
+    applications="no"
+    startMenu="no"
+    startup="no"
+    target="$INSTALL_PATH\visualsense.exe"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH"
+    description="VisualSense, the Wireless Design GUI"
+    iconFile="$INSTALL_PATH\doc\img\visualsense.ico"
+    iconIndex="0"
+    initialState="normal">
+
+    <createForPack name="Full"/>
+  </shortcut>
+
+
+  <shortcut
+    name="Viptos"
+    programGroup="yes"
+    desktop="no"
+    applications="no"
+    startMenu="no"
+    startup="no"
+    target="$INSTALL_PATH\viptos.exe"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH"
+    description="Viptos, the Ptolemy/TinyOS GUI"
+    iconFile="$INSTALL_PATH\doc\img\viptos.ico"
+    iconIndex="0"
+    initialState="normal">
+
+    <createForPack name="Full"/>
+  </shortcut>
+
+   <shortcut
+     name="Design Document Vol 1 - Intro"
+     programGroup="yes"
+     desktop="no"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     target="$INSTALL_PATH\doc\design\ptIIdesign1-intro.pdf"
+     commandLine=""
+	   iconFile="%SystemRoot%\system32\SHELL32.dll"
+     iconIndex="23" 
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print the IzPack @build.number@ (PDF) user documentation">
+     
+     <createForPack name="Docs" />
+   </shortcut>
+
+</shortcuts>
