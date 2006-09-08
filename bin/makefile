@@ -86,6 +86,7 @@ EXTRA_EXECUTABLE_SRCS = \
 	hyvisual \
 	startjini \
 	mkjnlp \
+	mkl4j \
 	viptos
 
 EXTRA_SRCS = \
