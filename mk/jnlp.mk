@@ -981,7 +981,7 @@ visualsense.exe: visualsense_l4j.xml
 
 visualsensedoc_l4j.xml:
 	$(MKL4J) visualsensedoc ptolemy.actor.gui.BrowserLauncher \
-		doc/design/visualsense.pdf $(DOC_JNLP_JARS) > $@
+		doc/img/pdf.ico $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/visualsense.pdf
 visualsensedoc.exe: visualsensedoc_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$<`
