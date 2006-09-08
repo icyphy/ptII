@@ -40,9 +40,10 @@
         The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
     -->
     <resources>
-        <res id="LicencePanel.licence" src="../../copyright.txt"/>
-        <res id="HTMLInfoPanel.info" src="../../README.txt"/>
+        <res id="LicencePanel.licence" src="copyright.txt"/>
+        <res id="InfoPanel.info" src="../../README.txt"/>
         <!res id="TargetPanel.dir.windows" src="c:/Ptolemy/ptII6.0-alpha/"/!>
+	<res id="Installer.image" src="../../doc/img/PtolemyIISmallIcon.gif" />
     </resources>
     
     <!-- 
@@ -51,7 +52,7 @@
     -->
     <panels>
         <panel classname="HelloPanel"/>
-        <panel classname="HTMLInfoPanel"/>
+        <panel classname="InfoPanel"/>
         <panel classname="LicencePanel"/>
         <panel classname="TargetPanel"/> 
         <panel classname="PacksPanel"/>

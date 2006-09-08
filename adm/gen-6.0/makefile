@@ -2359,6 +2359,9 @@ $(PTSETUP).exe: $(PTSETUP)_l4j.xml $(PTSETUP).jar
 
 setup: $(PTSETUP).exe
 
+clean_setup: 
+	rm -f $(PTSETUP).jar $(PTSETUP).exe
+
 # Echo the jars needed for the full package in izpack
 full_jars:
 	@(cd $(PTII); make -s echo_jars JARS=HYBRID_SYSTEMS_ONLY0_JNLP_JARS)
