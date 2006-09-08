@@ -42,7 +42,7 @@
     <resources>
         <res id="LicencePanel.licence" src="../../copyright.txt"/>
         <res id="InfoPanel.info" src="../../README.txt"/>
-        <res id="TargetPanel.dir.windows" src="c:\\Ptolemy"/>
+        <res id="TargetPanel.dir.windows" src="c:/Ptolemy/"/>
     </resources>
     
     <!-- 
