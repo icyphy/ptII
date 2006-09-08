@@ -109,16 +109,18 @@ if [ "$fileListingClasses" = "" ]; then
     #set -x
     shift
     # XMLToken includes org.w3c.dom.Document
+    # org.xml.sax.InputSource is in the file by mistake.
     ptolemyFiles=`"$javaCommand" -verbose ${1+"$@"} | \
         egrep '^\[Loaded ' | \
-        egrep -v 'Loaded (java|org.w3c|sun|com.sun)' | \
+        egrep -v 'Loaded (java|org.w3c|org.xml.sax|sun|com.sun)' | \
         awk '{print substr($2, 1, length($2)-1)}' | \
         sed 's@\.@/@g' | awk '{print $1 ".class"}'`
     #set +x
 else
     # XMLToken includes org.w3c.dom.Document
+    # org.xml.sax.InputSource is in the file by mistake.
     ptolemyFiles=`cat "$fileListingClasses" |
-        egrep -v '^java|^org.w3c|^sun|^com.sun' | \
+        egrep -v '^java|^org.w3c|^org.xml.sax|^sun|^com.sun' | \
         sed 's@\.@/@g' | awk '{print $1 ".class"}' `
 
     # Check that EventToken.class is present.  If not,
