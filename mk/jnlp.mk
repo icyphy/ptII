@@ -824,3 +824,109 @@ sign_jar_dist:
 
 sign_jar_dist_update_remote: sign_jar_dist
 	scp $(JARFILE) messier:$(DIST_DIR)/$(JARFILE)
+
+################################################################
+################################################################
+################################################################
+
+# Launch4j rules
+# We use Launch4j http://launch4j.sourceforge.net/ to create
+# .exe files that run Vergil etc. and then use
+# IzPack (http://www.izforge.com/izpack/) to set up the start menu.
+
+
+# mkl4j is a script that generates an xml file that is then read by Launch4j 
+MKL4J = $(ROOT)/bin/mkl4j
+
+# Location of Launch4J, see http://launch4j.sourceforge.net/
+L4J_DIR=c:/Program Files/Launch4j
+
+# Launch4J console application that reads in .xml files and creates .exe files.
+L4JC=$(L4J_DIR)/launch4jc.exe
+
+# .exe files to be created by Launch4J
+L4J_DOC_EXES = 		designdocv1.exe designdocv2.exe designdocv3.exe \
+				hyvisualdoc.exe visualsensedoc.exe
+L4J_PTOLEMY_EXES = 	hyvisual.exe ptiny.exe vergil.exe visualsense.exe
+L4J_PTPLOT_EXES = 	histogram.exe ptplot.exe
+
+L4J_EXES =		$(L4J_DOC_EXES) $(L4J_PTOLEMY_EXES) $(L4J_PTPLOT_EXES)
+
+# .xml files used to create .exe files.  
+# These files are created by $(MKL4J)
+L4J_CONFIGS =		$(L4J_EXES:%.exe=%_l4j.xml)
+
+# Create all the .exe files
+exes: $(L4J_EXES)
+
+# Remove the .exe files and the .xml files used to create the .exe files
+clean_exes:
+	rm -f $(L4J_EXES)
+	rm -f $(L4J_CONFIGS)
+
+designdocv1_l4j.xml:
+	$(MKL4J) designdocv1 ptolemy.actor.gui.BrowserLauncher \
+		 doc/design/ptIIdesign1-intro.pdf > $@
+	chmod a+x doc/design/ptIIdesign1-intro.pdf
+designdocv1.exe: designdocv1_l4j.xml
+	"$(L4JC)" `cygpath --windows $$PWD/$<`
+
+designdocv2_l4j.xml:
+	$(MKL4J) designdocv2 ptolemy.actor.gui.BrowserLauncher \
+		doc/design/ptIIdesign2-software.pdf > $@
+	chmod a+x doc/design/ptIIdesign2-software.pdf
+designdocv2.exe: designdocv2_l4j.xml
+	"$(L4JC)" `cygpath --windows $$PWD/$<`
+
+designdocv3_l4j.xml:
+	$(MKL4J) designdocv3 ptolemy.actor.gui.BrowserLauncher \
+		doc/design/ptIIdesign3-domains.pdf > $@
+	chmod a+x doc/design/ptIIdesign3-domains.pdf
+designdocv3.exe: designdocv3_l4j.xml
+	"$(L4JC)" `cygpath --windows $$PWD/$<`
+
+histogram_l4j.xml:
+	$(MKL4J) ptplot ptolemy.plot.plotml.HistogramMLApplication > $@
+histogram.exe: histogram_l4j.xml
+	"$(L4JC)" `cygpath --windows $$PWD/$^`
+
+hyvisual_l4j.xml:
+	$(MKL4J) hyvisual ptolemy.vergil.VergilApplication -hyvisual > $@
+hyvisual.exe: hyvisual_l4j.xml
+	"$(L4JC)" `cygpath --windows $$PWD/$^`
+
+hyvisualdoc_l4j.xml:
+	$(MKL4J) hyvisualdoc ptolemy.actor.gui.BrowserLauncher \
+		doc/design/hyvisual.pdf > $@
+	chmod a+x doc/design/hyvisual.pdf
+hyvisualdoc.exe: hyvisualdoc_l4j.xml
+	"$(L4JC)" `cygpath --windows $$PWD/$<`
+
+ptiny_l4j.xml:
+	$(MKL4J) ptiny ptolemy.vergil.VergilApplication -ptiny > $@
+ptiny.exe: ptiny_l4j.xml
+	"$(L4JC)" `cygpath --windows $$PWD/$^`
+
+ptplot_l4j.xml:
+	$(MKL4J) ptplot ptolemy.plot.plotml.EditablePlotMLApplication > $@
+ptplot.exe: ptplot_l4j.xml
+	"$(L4JC)" `cygpath --windows $$PWD/$^`
+
+
+vergil_l4j.xml:
+	$(MKL4J) > $@
+vergil.exe: vergil_l4j.xml
+	"$(L4JC)" `cygpath --windows $$PWD/$^`
+
+visualsense_l4j.xml:
+	$(MKL4J) visualsense ptolemy.vergil.VergilApplication -ptiny > $@
+visualsense.exe: visualsense_l4j.xml
+	"$(L4JC)" `cygpath --windows $$PWD/$^`
+
+visualsensedoc_l4j.xml:
+	$(MKL4J) visualsensedoc ptolemy.actor.gui.BrowserLauncher \
+		doc/design/visualsense.pdf > $@
+	chmod a+x doc/design/visualsense.pdf
+visualsensedoc.exe: visualsensedoc_l4j.xml
+	"$(L4JC)" `cygpath --windows $$PWD/$<`
+
