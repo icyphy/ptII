@@ -31,10 +31,11 @@
 
 ME =		ptolemy/actor
 
+
 # $PTII/configure looks for antlr and sets PTPTALON_DIR in 
 # $PTII/mk/ptII.mk to ptalon if it is found.
 #
-DIRS = 		util sched process gui lib corba parameters test
+DIRS = 		util sched process gui lib corba parameters test ptalon
 # At Adam's request, temporarily exclude actor/ptalon
 #		$(PTPTALON_DIR)
 
