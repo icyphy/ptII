@@ -21,11 +21,28 @@ if [ $# -gt 0 ]; then
 fi
 
 if [ $# -gt 0 ]; then
+   icon=$1
+   shift
+fi
+
+if [ $# -gt 0 ]; then
    cmdLine=$1
    shift
 fi
 
-
+if [ $# -eq 0 ]; then
+   classPath="<cp>$ROOT</cp>"
+else
+   # Collect up remaining arguments as classpath
+   while test $# -gt 0; do
+       if [ ! -f $1 ]; then
+	   echo "$0: warning: $1 does not exist"
+	   exit 2
+       fi	   
+       classPath="$classPath <cp>$1</cp>"
+       shift
+   done
+fi
 cat <<EOF
 <launch4jConfig>
   <headerType>gui</headerType>
@@ -40,10 +57,11 @@ cat <<EOF
   <icon>${icon}</icon>
   <jre>
     <minVersion>1.4.0</minVersion>
+    <maxHeapSize>512</maxHeapSize>
   </jre>
   <classPath>
     <mainClass>${mainClass}</mainClass>
-    <cp>${ROOT}</cp>
+    $classPath
   </classPath>
   <versionInfo>
     <fileVersion>${fileVersion}</fileVersion>
