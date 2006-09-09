@@ -26,7 +26,7 @@
     <!-- 
         The gui preferences indication.
     -->
-    <guiprefs width="640" height="480" resizable="yes"/>
+    <guiprefs width="640" height="500" resizable="yes"/>
     
     <!-- 
         The locale section.
@@ -35,29 +35,46 @@
         <langpack iso3="eng"/>
     </locale>
 
+    <native type="izpack" name="ShellLink.dll"/>
+
     <!-- 
         The resources section.
         The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
     -->
     <resources>
+        <res id="HTMLInfoPanel.info" src="index.htm"/> 
         <res id="LicencePanel.licence" src="copyright.txt"/>
         <res id="InfoPanel.info" src="../../README.txt"/>
         <!res id="TargetPanel.dir.windows" src="c:/Ptolemy/ptII6.0-alpha/"/!>
-	<res id="Installer.image" src="../../doc/img/PtolemyIISmallIcon.gif" />
+	<res id="Installer.image" src="../../doc/img/PtolemyIISmall.gif" />
+	<res id="shortcutSpec.xml" src="shortcutSpec.xml" /> 
+        <!--res src="border1.png" id="Installer.image.0"/-->
+        <res src="border2.png" id="Installer.image.0"/>
+        <res src="border3.png" id="Installer.image.1"/>
+        <res src="border4.png" id="Installer.image.2"/>
+        <res src="border5.png" id="Installer.image.3"/>
+        <res src="border5.png" id="Installer.image.4"/>
+        <res src="border6.png" id="Installer.image.5"/>
+        <res src="border7.png" id="Installer.image.6"/>
+        <res src="border8.png" id="Installer.image.7"/>
     </resources>
     
+
     <!-- 
         The panels section.
         We indicate here which panels we want to use. The order will be respected.
     -->
     <panels>
-        <panel classname="HelloPanel"/>
-        <panel classname="InfoPanel"/>
+        <!-- panel classname="HelloPanel"/ -->
+        <panel classname="HTMLInfoPanel"/>
         <panel classname="LicencePanel"/>
         <panel classname="TargetPanel"/> 
         <panel classname="PacksPanel"/>
+        <panel classname="SummaryPanel"/>
         <panel classname="InstallPanel"/>
-        <panel classname="FinishPanel"/>
+        <panel classname="ShortcutPanel"/>
+        <panel classname="SimpleFinishPanel"/>
+
     </panels>
     
     <!-- 
@@ -66,10 +83,23 @@
     -->
     <packs>
         <pack name="Ptiny" required="yes">
-            <description>Ptiny: The common domains: CSP, CT, DE, FSM, PN and SDF.</description>
+            <description>Ptiny: The common domains: CSP, CT, DE, FSM, PN and SDF.
+The Ptiny pack is required. 
+</description>
             <file src="../../README.txt" targetdir="$INSTALL_PATH"/>
             <file src="../../copyright.txt" targetdir="$INSTALL_PATH"/>
+
             <file src="../../ptiny.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../doc/img/ptiny.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/>
+
+            <file src="../../histogram.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../doc/img/histogram.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/>
+
+            <file src="../../ptplot.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../doc/img/ptplot.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/>
 
 	    <!-- Run (cd $PTII; make echo_jars JARS=PTINY_JNLP_JARS) -->
             <file src="../../jar_dist/doc/docConfig.jar"
@@ -159,11 +189,23 @@
 
         </pack>
         <pack name="Full" required="no">
-            <description>All of the domains, HyVisual, VisualSense and Viptos</description>
+            <description>All of the domains, HyVisual, VisualSense and Viptos.  </description>
             <file src="../../hyvisual.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../doc/img/hyvisual.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/>
+
             <file src="../../vergil.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../doc/img/vergil.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/>
+
             <file src="../../visualsense.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../doc/img/visualsense.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/>
+
             <file src="../../viptos.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../doc/img/viptos.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/>
+
 	    <!-- Run (make full_jars) and put the output here -->
             <file src="../../jar_dist/ptolemy/hsif/hsif.jar"
                   targetdir="$INSTALL_PATH/ptolemy/hsif"/>
@@ -286,13 +328,14 @@
         </pack>
 
         <pack name="Docs" required="no">
-            <description>The documentation</description>
+            <description>The documentation including user documentation and java documentation.</description>
             <file src="../../designdocv1.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../designdocv2.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../designdocv3.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../hyvisualdoc.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../visualsensedoc.exe"
 	          targetdir="$INSTALL_PATH/bin"/>
+            <file src="../../doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
             <file src="../../doc/design/hyvisual.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../doc/design/ptIIdesign1-intro.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../doc/design/ptIIdesign2-software.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
@@ -309,12 +352,12 @@
 
         </pack>
         <pack name="JRE" required="no">
-            <description>Java Runtime Environment (JRE) v1.5.0_08.  This JRE includes JAI, Java 3D, Joystick  JMF, JavaComm, and X10</description>
+            <description>Java Runtime Environment (JRE) v1.5.0_08.  This JRE includes JAI, Java 3D, Joystick  JMF, JavaComm, and X10.  Ptolemy II requires either a Java Runtime Environment (JRE) or Java Development Kit (JDK).</description>
             <file src="jre" targetdir="$INSTALL_PATH"/>
         </pack>
         <pack name="Sources" required="no">
-            <description>The sources</description>
-            <file src="src" targetdir="$INSTALL_PATH"/>
+            <description>The Ptolemy II sources.</description>
+            <file src="srctmp" targetdir="$INSTALL_PATH"/>
         </pack>
     </packs>
     

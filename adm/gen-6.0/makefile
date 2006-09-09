@@ -74,7 +74,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 #   for pid 0, Win32 error 6
 
 # 1.14 can be found at ftp://ftp.gnu.org/pub/gnu/tar
-# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII-4.0 COMPRESS=gzip TAR=/usr/local/bin/tar clean all src.jar 
+# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
@@ -516,7 +516,7 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
-JAR=c:/j2sdk1.4.2_05/bin/jar
+JAR=c:/j2sdk1.4.2_08/bin/jar
 
 # The Jar file that we create.
 src.jar: $(PTII_SRC_JAR)

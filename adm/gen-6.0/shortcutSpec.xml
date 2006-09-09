@@ -21,8 +21,25 @@
     iconIndex="0"
     initialState="normal">
 
-    <createForPack name="Full"/>
+    <createForPack name="Ptiny"/>
   </shortcut>
+
+   <shortcut
+     name="Ptolemy II $APP_VER Uninstaller"
+     programGroup="yes"
+     desktop="no"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     workingDirectory="$INSTALL_PATH"
+     target="$INSTALL_PATH\Uninstaller\uninstaller.jar"     
+     commandLine=""
+     iconFile="%SystemRoot%\system32\SHELL32.dll"
+     iconIndex="31" 
+     description="This uninstalls Ptolemy II @build.number@">
+     
+     <createForPack name="Ptiny" />
+   </shortcut>
 
   <shortcut
     name="vergil -full"
@@ -106,10 +123,75 @@
      startup="no"
      target="$INSTALL_PATH\doc\design\ptIIdesign1-intro.pdf"
      commandLine=""
-	   iconFile="%SystemRoot%\system32\SHELL32.dll"
-     iconIndex="23" 
-     description="This opens Adobe (Acrobat) Reader (if available) to look into or print the IzPack @build.number@ (PDF) user documentation">
-     
+     iconFile="$INSTALL_PATH\doc\img\pdf.ico"
+     iconIndex="0"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print Volume 1 - Introduction - of the Ptolemy Design Document (PDF)"
+     >
+     <createForPack name="Docs" />
+   </shortcut>
+
+   <shortcut
+     name="Design Document Vol 2 - Software"
+     programGroup="yes"
+     desktop="no"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     target="$INSTALL_PATH\doc\design\ptIIdesign2-software.pdf"
+     commandLine=""
+     iconFile="$INSTALL_PATH\doc\img\pdf.ico"
+     iconIndex="0"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print Volume 2 - Software - of the Ptolemy Design Document (PDF)"
+     >
+     <createForPack name="Docs" />
+   </shortcut>
+
+   <shortcut
+     name="Design Document Vol 3 - Domains"
+     programGroup="yes"
+     desktop="no"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     target="$INSTALL_PATH\doc\design\ptIIdesign3-domains.pdf"
+     commandLine=""
+     iconFile="$INSTALL_PATH\doc\img\pdf.ico"
+     iconIndex="0"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print Volume 3 - Domains - of the Ptolemy Design Document (PDF)"
+     >
+     <createForPack name="Docs" />
+   </shortcut>
+
+
+   <shortcut
+     name="HyVisual Documentation"
+     programGroup="yes"
+     desktop="no"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     target="$INSTALL_PATH\doc\design\hyvisual.pdf"
+     commandLine=""
+     iconFile="$INSTALL_PATH\doc\img\pdf.ico"
+     iconIndex="0"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print the HyVisual (PDF) user documentation"
+     >     
+     <createForPack name="Docs" />
+   </shortcut>
+
+   <shortcut
+     name="VisualSense Documentation"
+     programGroup="yes"
+     desktop="no"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     target="$INSTALL_PATH\doc\design\visualsense.pdf"
+     commandLine=""
+     iconFile="$INSTALL_PATH\doc\img\pdf.ico"
+     iconIndex="0"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print the VisualSense (PDF) user documentation"
+     >	  
      <createForPack name="Docs" />
    </shortcut>
 
