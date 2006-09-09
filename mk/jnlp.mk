@@ -175,7 +175,7 @@ HYBRID_SYSTEMS_ONLY0_JNLP_JARS = \
 	ptolemy/domains/de/de.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/gr/gr.jar \
-	ptolemy/domains/gr/demo/demoo.jar \
+	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/sdf/lib/lib.jar \
 	ptolemy/domains/sdf/kernel/kernel.jar
 
@@ -922,7 +922,7 @@ designdocv3.exe: designdocv3_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$<`
 
 histogram_l4j.xml:
-	$(MKL4J) ptplot ptolemy.plot.plotml.HistogramMLApplication \
+	$(MKL4J) histogram ptolemy.plot.plotml.HistogramMLApplication \
 		doc/img/histogram.ico > $@
 histogram.exe: histogram_l4j.xml
 	"$(L4JC)" `cygpath --windows $$PWD/$^`
