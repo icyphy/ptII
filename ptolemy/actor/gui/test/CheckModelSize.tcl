@@ -96,8 +96,8 @@ Below are the results from checking the sizes of and centering of models
 <table>
 <tr>
   <td><a href="ptolemy/actor/gui/test/badMoML.moml">ptolemy/actor/gui/test/badMoML.moml</a></td>
-  <td> can't be parsed because java.net.MalformedURLException: no protocol: badMoML.moml}}
-	
+  <td> can't be parsed because java.lang.Exception: Failed to parse "badMoML.moml"
+	at p}}
 
 ######################################################################
 ####
