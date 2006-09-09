@@ -69,8 +69,7 @@
         <!-- panel classname="HelloPanel"/ -->
         <panel classname="HTMLInfoPanel"/>
         <panel classname="HTMLLicencePanel"/>
-        <panel classname="TargetPanel"> 
-	</panel>
+        <panel classname="TargetPanel"/> 
         <panel classname="PacksPanel"/>
         <panel classname="SummaryPanel"/>
         <panel classname="InstallPanel"/>
@@ -185,7 +184,7 @@ The Ptiny pack is required.
             <file src="../../jar_dist/ptolemy/moml/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/moml/demo"/>
             <file src="../../jar_dist/ptolemy/vergil/kernel/attributes/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/vergil/kernel/attributs/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/kernel/attributes/demo"/>
             <!-- file src="script.bat" targetdir="$INSTALL_PATH"/ -->
             <!-- parsable targetfile="$INSTALL_PATH/script.bat"/ --> <!-- The file will be parsed -->
 
