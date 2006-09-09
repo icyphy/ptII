@@ -74,6 +74,63 @@ to invoke the izPack installer.  The launch4j installer includes
 an optional JRE.
 </ol>
 
+<ol>
+<li>Create a jre that has JAI, Java 3D, Joystick  JMF, JavaComm, X10 etc.
+in it.
+See <a href="../install.htm#notshippedPackages">Optional packages not shipped with Ptolemy used at runtime</a>
+<li>Copy this jre to <code>$PTII/adm/gen-<i>X.Y</i>/jre</code>
+</ol>
+
+<h2>IzPack notes</h2>
+<h3>Things I wish were different</h2> 
+<ul>
+<li>IzPack should be easier to use with a custom JRE.
+The IzPack native launcher will allow me to invoke the JRE installer,
+but I want to use a JRE that is in the current directory.
+<a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher">Notes about IzPack Launcher and possible alternatives</a> describes
+using <a href="http://launch4j.sourceforge.net/" target="_top">Launch4j</a>.
+<br>I ended up using Launch4j to create a .exe that invokes
+the jar file created by IzPack.  I also used Launch4j to create
+my .exe files that are added to the Start menu.
+
+<li>There should be an easy way to ask the user if they want to
+invoke a binary after the installation is complete.
+
+<li>I'd like to add a message to the TargetPanel that describes why
+the default location in C:/Program Files won't work.
+
+<li>In HTMLInfoPanel, the packing seems to change depending on
+my html file.  Sometimes the pane that displays the HTML does not
+fill the width of the screen.
+
+<li>I'd like there to be a JREPathPanel that is like the JDKPathPanel.
+In one of the installers, I provide a custom JRE that includes JAI,
+Java 3D, Joystick JMF, JavaComm, and X10.  I'd like to give the user
+the opportunity to use the custom JRE, or to choose their own JRE or
+JDK.
+
+<li>It would be nice if there was a way for the installer to unjar
+files on command.  I provide source in a jar file, if the user
+chooses to install the sources, then that file should be uninstalled.
+The reason I use a jar file is because it makes it easier (faster) to
+build installers - my sources are a few thousand files, it is
+faster to copy one file around at installer build time than
+it is to copy lots of files.
+
+<li> The <a href="http://www.izforge.com/izpack/developers">IzPack Developer's page</a> should state clearly how to build.  Yah, I know, if you don't
+know svn, you probably can't devel, but I find quick instructions useful.
+The instructions should point to an online copy of the most recent 
+Eclipse instructions.
+
+<h3>Building IzPack</h2> 
+<a href="http://www.izforge.com/izpack/developers">IzPack Developer's page</a>
+<ol>
+<li> Download from the trunk
+<pre>
+svn co http://svn.berlios.de/svnroot/repos/izpack/izpack-src/trunk
+</pre>
+</ol>
+
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
 </html>
