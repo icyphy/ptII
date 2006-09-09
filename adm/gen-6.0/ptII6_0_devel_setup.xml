@@ -43,10 +43,11 @@
     -->
     <resources>
         <res id="HTMLInfoPanel.info" src="index.htm"/> 
-        <res id="LicencePanel.licence" src="copyright.txt"/>
+        <res id="HTMLLicencePanel.licence" src="copyright.htm"/>
         <res id="InfoPanel.info" src="../../README.txt"/>
-        <!res id="TargetPanel.dir.windows" src="c:/Ptolemy/ptII6.0-alpha/"/!>
+        <res id="TargetPanel.dir.windows" src="TargetPanel.dir.windows"/>
 	<res id="Installer.image" src="../../doc/img/PtolemyIISmall.gif" />
+	<res id="StyleSheet" src="../../doc/default.css" />
 	<res id="shortcutSpec.xml" src="shortcutSpec.xml" /> 
         <!--res src="border1.png" id="Installer.image.0"/-->
         <res src="border2.png" id="Installer.image.0"/>
@@ -67,8 +68,9 @@
     <panels>
         <!-- panel classname="HelloPanel"/ -->
         <panel classname="HTMLInfoPanel"/>
-        <panel classname="LicencePanel"/>
-        <panel classname="TargetPanel"/> 
+        <panel classname="HTMLLicencePanel"/>
+        <panel classname="TargetPanel"> 
+	</panel>
         <panel classname="PacksPanel"/>
         <panel classname="SummaryPanel"/>
         <panel classname="InstallPanel"/>
