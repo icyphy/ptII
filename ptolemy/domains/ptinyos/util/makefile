@@ -46,6 +46,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+		ncapp2moml/ncapp2moml.jar \
 		nc2moml/nc2moml.jar
 
 
