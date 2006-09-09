@@ -29,6 +29,8 @@ package ptolemy.codegen.c.domains.sdf.lib;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+
 import ptolemy.data.type.ArrayType;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -42,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit) 
  @Pt.AcceptedRating Red (mankit)
  */
-public class FIR extends SDFTransformer {
+public class FIR extends CCodeGeneratorHelper {
 
     /**
      * Construct a FIR helper.
