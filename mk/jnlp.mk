@@ -380,7 +380,8 @@ VIPTOS_JNLP_JARS =	\
 # Jar files that are only used in JNLP
 VISUAL_SENSE_ONLY_JNLP_JARS = \
 	doc/design/visualsense.jar \
-	doc/codeDocVisualSense.jar
+	doc/codeDocVisualSense.jar \
+	ptolemy/domains/ptinyos/doc/doc.jar
 
 VISUAL_SENSE_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/VisualSenseApplication.jar
