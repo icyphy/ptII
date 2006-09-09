@@ -83,11 +83,13 @@ See <a href="../install.htm#notshippedPackages">Optional packages not shipped wi
 
 <h2>IzPack notes</h2>
 <h3>Things I wish were different</h2> 
+These notes are for IzPack 3.9.0-M1, from September 9, 2006.  
 <ul>
 <li>IzPack should be easier to use with a custom JRE.
 The IzPack native launcher will allow me to invoke the JRE installer,
 but I want to use a JRE that is in the current directory.
-<a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher">Notes about IzPack Launcher and possible alternatives</a> describes
+<a href="http://www.izforge.com/izpack/wiki/native_launcher_and_alternatives">the IzPack wiki</a> (see also
+<a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher">Notes about IzPack Launcher and possible alternatives</a>) describe
 using <a href="http://launch4j.sourceforge.net/" target="_top">Launch4j</a>.
 <br>I ended up using Launch4j to create a .exe that invokes
 the jar file created by IzPack.  I also used Launch4j to create
@@ -120,7 +122,11 @@ it is to copy lots of files.
 <li> The <a href="http://www.izforge.com/izpack/developers">IzPack Developer's page</a> should state clearly how to build.  Yah, I know, if you don't
 know svn, you probably can't devel, but I find quick instructions useful.
 The instructions should point to an online copy of the most recent 
-Eclipse instructions.
+Eclipse instructions.  I found the TeX docs, but is there
+an online version of the manual? 
+ 
+<br>There should also be a link to 
+<a href="http://www.izforge.com/izpack/wiki/building_native_launcher">How to build the native launcher</a>
 
 <h3>Building IzPack</h2> 
 <a href="http://www.izforge.com/izpack/developers">IzPack Developer's page</a>
@@ -129,6 +135,66 @@ Eclipse instructions.
 <pre>
 svn co http://svn.berlios.de/svnroot/repos/izpack/izpack-src/trunk
 </pre>
+<li> I followed the Eclipse instructions from the IzPack 3.9.0-M1 release
+One change was that when setting up the debug, I used
+<pre>
+c:\cxh\ptII\adm\gen-6.0\ptII6_0-devel_setup.xml \
+-b c:\cxh\ptII\adm\gen-6.0 \
+-o c:\cxh\ptII\adm\gen-6.0\ptII6_0-devel_setup.jar \
+-h c:\cxh\src\izpack\trunk
+<pre>
+Where
+<dl>
+<dt> <code>c:\cxh\ptII\adm\gen-6.0\ptII6_0-devel_setup.xml</code>
+<dd> My IzPack configuration file, usually called <code>install.xml</code>
+<dt> <code>-b c:\cxh\ptII\adm\gen-6.0</code>
+<dd> The base for my build
+<dt> <code>-o c:\cxh\ptII\adm\gen-6.0\ptII6_0-devel_setup.jar</code>
+<dd> The file to output
+<dt> <code>-h c:\cxh\src\izpack\trunk</code>
+<dd> The IzPack source directory.  
+
+</dl>
+
+<li> <b>Problems</b>:
+<dl>
+<dt> <code>No valid IzPack home directory found</code>
+<dd>
+Building in Eclipse fails with:
+<pre>
+-> Fatal error :
+   No valid IzPack home directory found
+java.lang.IllegalArgumentException: No valid IzPack home directory found
+	at com.izforge.izpack.compiler.CompilerConfig.resolveIzPackHome(CompilerConfig.java:1908)
+	at com.izforge.izpack.compiler.CompilerConfig.main(CompilerConfig.java:1835)
+	at com.izforge.izpack.compiler.Compiler.main(Compiler.java:622)
+</pre>
+The solution is to copy <code>ShellLink.dll</code>
+<pre>
+cp c:/Pro*/izpack/bin/native/izpack/ShellLink.dll izpack
+</pre>
+
+<dt><code>Uninstaller not found: c:\cxh\src\izpack\trunk\lib\uninstaller.jar</code>
+<dd> Building in Eclipse fails with:
+<pre>
+-> Fatal error :
+   c:\cxh\ptII\adm\gen-6.0\ptII6_0_devel_setup.xml:18: Uninstaller not found: c:\cxh\src\izpack\trunk\lib\uninstaller.jar
+com.izforge.izpack.compiler.CompilerException: c:\cxh\ptII\adm\gen-6.0\ptII6_0_devel_setup.xml:18: Uninstaller not found: c:\cxh\src\izpack\trunk\lib\uninstaller.jar
+	at com.izforge.izpack.compiler.CompilerConfig.parseError(CompilerConfig.java:1523)
+	at com.izforge.izpack.compiler.CompilerConfig.findIzPackResource(CompilerConfig.java:1488)
+	at com.izforge.izpack.compiler.CompilerConfig.addInfo(CompilerConfig.java:1199)
+	at com.izforge.izpack.compiler.CompilerConfig.executeCompiler(CompilerConfig.java:316)
+	at com.izforge.izpack.compiler.CompilerConfig.main(CompilerConfig.java:1854)
+	at com.izforge.izpack.compiler.Compiler.main(Compiler.java:622)
+</pre>
+Solution, use ant:
+<pre>
+cd trunk/src
+ant dist
+</dl>
+I'm not sure how to do this from Eclipse.  Eclipse can run ant but
+the setup instructions have us include files from <code>src/lib</code>,
+not <code>src</code>.
 </ol>
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
