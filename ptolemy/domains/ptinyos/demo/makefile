@@ -32,7 +32,7 @@ ME =		ptolemy/domains/ptinyos/demo
 
 # Keep these alphabetical please.
 DIRS = 		CntToLeds CntToLedsAndRfm HelloWorld RfmToLeds \
-		SendAndReceiveCnt SenseToLeds
+		SendAndReceiveCnt SenseToLeds Surge
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -52,7 +52,8 @@ PTCLASSALLJARS = \
 	HelloWorld/HelloWorld.jar \
 	RfmToLeds/RfmToLeds.jar \
 	SendAndReceiveCnt/SendAndReceiveCnt.jar \
-	SenseToLeds/SenseToLeds.jar
+	SenseToLeds/SenseToLeds.jar \
+	Surge/Surge.xml
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
