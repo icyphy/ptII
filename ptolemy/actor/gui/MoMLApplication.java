@@ -357,6 +357,8 @@ public class MoMLApplication implements ExecutionListener {
      *  instantiate the class named by that parameter.  The
      *  _applicationInitializer parameter contains a string that names
      *  a class to be initialized.
+     *  <p>If the configuration has already been read in, then the old
+     *  configuration will be deleted.  Note that this may exit the application.
      *  @param specificationURL A string describing a URL.
      *  @return A configuration.
      *  @exception Exception If the configuration cannot be opened, or
@@ -364,6 +366,9 @@ public class MoMLApplication implements ExecutionListener {
      */
     public static Configuration readConfiguration(URL specificationURL)
             throws Exception {
+        if (_initialSpecificationURL == null) {
+            _initialSpecificationURL = specificationURL;
+        }
         MoMLParser parser = new MoMLParser();
         parser.reset();
 
@@ -626,13 +631,11 @@ public class MoMLApplication implements ExecutionListener {
             // This will likely fail if ptolemy/configs is in a jar file
             // We use a URI here so that we cause call File(URI).
             URI configurationURI = new URI(specToURL(_basePath)
-                    .toExternalForm());
+                    .toExternalForm().replaceAll(" ", "%20"));
             File configurationDirectory = new File(configurationURI);
             ConfigurationFilenameFilter filter = new ConfigurationFilenameFilter();
             File[] configurationDirectories = configurationDirectory
                     .listFiles(filter);
-
-            System.out.println("MoMLApplication: " + configurationURI);
 
             if (configurationDirectories != null) {
                 result.append("\nThe following (mutually exclusive) flags "
@@ -650,6 +653,7 @@ public class MoMLApplication implements ExecutionListener {
 
                     String configurationFileName = configurationDirectories[i]
                             + File.separator + "configuration.xml";
+                    
                     boolean printDefaultConfigurationMessage = true;
 
                     try {
@@ -660,7 +664,14 @@ public class MoMLApplication implements ExecutionListener {
                         // tools.
                         if (!configurationName.equals("jxta")) {
                             URL specificationURL = specToURL(configurationFileName);
-                            Configuration configuration = readConfiguration(specificationURL);
+                            Configuration configuration;
+                                if (specificationURL.equals(_initialSpecificationURL)) {
+                                    // Avoid rereading the configuration, which will result
+                                    // in the old configuration being removed, which exits the app.
+                                    configuration = _configuration;
+                                } else {
+                                    configuration = readConfiguration(specificationURL);
+                                }
 
                             if ((configuration != null)
                                     && (configuration.getAttribute("_doc") != null)
@@ -685,7 +696,7 @@ public class MoMLApplication implements ExecutionListener {
             }
         } catch (Exception ex) {
             result.append("Warning: Failed to find configuration(s) in '"
-                    + _basePath + "'" + ex);
+                    + _basePath + "': " + ex);
         }
 
         return result.toString();
@@ -1154,4 +1165,7 @@ public class MoMLApplication implements ExecutionListener {
 
     // List of parameter values seen on the command line.
     private List _parameterValues = new LinkedList();
+    
+    // URL from which the configuration was read.
+    private static URL _initialSpecificationURL;
 }
