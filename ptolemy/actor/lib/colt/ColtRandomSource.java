@@ -364,7 +364,7 @@ public abstract class ColtRandomSource extends Source {
         }
 
         String seedValue = "0L";
-        Iterator sharedParameters = seed.sharedParameterList().iterator();
+        Iterator sharedParameters = seed.sharedParameterSet().iterator();
         long value = 0L;
         while (sharedParameters.hasNext()) {
             ColtSeedParameter candidate = (ColtSeedParameter) sharedParameters.next();

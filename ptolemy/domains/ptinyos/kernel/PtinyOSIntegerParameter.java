@@ -187,7 +187,7 @@ public class PtinyOSIntegerParameter extends SharedParameter {
             } else {
                 // Need to assign unique values.
                 if (!isSuppressingPropagation()) {
-                    Iterator sharedParameters = sharedParameterList().iterator();
+                    Iterator sharedParameters = sharedParameterSet().iterator();
                     
                     while (sharedParameters.hasNext()) {
                         PtinyOSIntegerParameter sharedParameter = (PtinyOSIntegerParameter) sharedParameters

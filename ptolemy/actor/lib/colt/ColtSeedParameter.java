@@ -164,7 +164,7 @@ public class ColtSeedParameter extends SharedParameter {
                     // parameter value, and only this one, is saved.
                     // The shared parameters are made non-persistent below.
                     setPersistent(true);
-                    Iterator sharedParameters = sharedParameterList().iterator();
+                    Iterator sharedParameters = sharedParameterSet().iterator();
                     
                     while (sharedParameters.hasNext()) {
                         ColtSeedParameter sharedParameter = (ColtSeedParameter) sharedParameters.next();
