@@ -74,7 +74,7 @@ import ptolemy.util.StringUtilities;
 
  @author Christopher Brooks, contributor: Edward A. Lee
  @version $Id$
-@since Ptolemy II 5.2
+ @since Ptolemy II 5.2
  @see ptolemy.data.expr.Variable
  */
 public class ParameterSet extends ScopeExtendingAttribute {
@@ -131,11 +131,15 @@ public class ParameterSet extends ScopeExtendingAttribute {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileOrURL) {
-            try {
-                read();
-            } catch (Exception exception) {
-                throw new IllegalActionException(this, exception,
-                        "Failed to read file: " + fileOrURL.getExpression());
+            // Do not read the file if the name is the same as
+            // what was previously read. EAL 9/8/06
+            if (!fileOrURL.getExpression().equals(_fileName)) {
+                try {
+                    read();
+                } catch (Exception exception) {
+                    throw new IllegalActionException(this, exception,
+                            "Failed to read file: " + fileOrURL.getExpression());
+                }
             }
         } else {
             super.attributeChanged(attribute);
@@ -149,39 +153,32 @@ public class ParameterSet extends ScopeExtendingAttribute {
     public void read() throws IllegalActionException, NameDuplicationException,
             IOException {
 
-        String fileName = fileOrURL.getExpression();
-        if (fileName == null || fileName.trim().equals("")) {
+        _fileName = fileOrURL.getExpression();
+        
+        if (_fileName == null || _fileName.trim().equals("")) {
+            // Delete all previously defined attributes.
             if (_properties != null) {
-                // Remove previous parameters named in the properties file
                 Iterator attributeNames = _properties.keySet().iterator();
                 while (attributeNames.hasNext()) {
                     String attributeName = (String) attributeNames.next();
                     getAttribute(attributeName).setContainer(null);
-
-                    // FIXME: should we delete the parameter in the parent?
-                    //                     NamedObj parent = getContainer();
-                    //                     String moml = "<deleteProperty name=\"" + attributeName
-                    //                         + "\"/>";
-                    //                     MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
-                    //                             parent, // context
-                    //                             moml, // MoML code
-                    //                             null); // base
-                    //                     request.execute();
                 }
                 _properties = null;
-
             }
             return;
         }
-        URL url = FileUtilities.nameToURL(fileName, fileOrURL
+
+        URL url = FileUtilities.nameToURL(_fileName, fileOrURL
                 .getBaseDirectory(), getClass().getClassLoader());
         if (url == null) {
             throw new IOException("Could not convert \""
                     + fileOrURL.getExpression() + "\" with base \""
                     + fileOrURL.getBaseDirectory() + "\" to a URL.");
         }
-
-        // FIXME: Properties are unordered, is this a problem?
+        // NOTE: Properties are unordered, which is not
+        // strictly right in Ptolemy II semantics.  However,
+        // we wait until all are loaded before validating them,
+        // so it should be OK.
         Properties properties = new Properties();
         InputStream inputStream = null;
         try {
@@ -196,45 +193,44 @@ public class ParameterSet extends ScopeExtendingAttribute {
                 }
             }
         }
+
+        if (_properties != null) {
+            // Remove previous parameters that are not defined
+            // in the new set.
+            Iterator attributeNames = _properties.keySet().iterator();
+            while (attributeNames.hasNext()) {
+                String attributeName = (String) attributeNames.next();
+                if (!properties.containsKey(attributeName)) {
+                    getAttribute(attributeName).setContainer(null);
+                }
+            }
+        }
+
         _properties = properties;
 
         // Iterate through all the properties and either create new parameters
-        // or set current parameters
+        // or set current parameters.
         Iterator attributeNames = properties.keySet().iterator();
         while (attributeNames.hasNext()) {
             String attributeName = (String) attributeNames.next();
             String attributeValue = (String) properties.get(attributeName);
-
-            // The context for the MoML should be the first container
-            // above this attribute in the hierarchy that defers its
-            // MoML definition, or the immediate parent if there is none.
-            NamedObj parent = getContainer();
-            // Instantiate Variables so that they are not preserved
-            // in the MoML output.
-            String moml = "<property name=\"" + attributeName
-                    + "\" class=\"ptolemy.data.expr.Variable\" value=\""
-                    + StringUtilities.escapeForXML(attributeValue) + "\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
-                    parent, // context
-                    moml, // MoML code
-                    null); // base
-            request.execute();
-
-            Variable variable = null;
-
-            if (getAttribute(attributeName) == null) {
+            Variable variable = (Variable) getAttribute(attributeName);
+            if (variable == null) {
                 variable = new Variable(this, attributeName);
-            } else {
-                variable = (Variable) getAttribute(attributeName);
             }
-
             variable.setExpression(attributeValue);
         }
+        // Validate only after setting all expressions, in case
+        // there are cross dependencies.
+        validateSettables();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
+    /** The previously read file name. */
+    private String _fileName;
+    
     /** Cached copy of the last hashset of properties, used to remove old
      *  properties.
      */
