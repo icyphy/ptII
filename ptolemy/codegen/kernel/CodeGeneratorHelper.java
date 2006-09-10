@@ -185,14 +185,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         : ptType == BaseType.STRING ? "String"
                                 : ptType == BaseType.DOUBLE ? "Double"
                                         : ptType == BaseType.BOOLEAN ? "Boolean"
-                                                : ptType instanceof ArrayType ? "Array"
+                                                 : ptType instanceof ArrayType ? "Array"
                                                         : ptType instanceof MatrixType ? "Matrix"
-                                                                : ptType == BaseType.GENERAL ? "Token"
-                                                                        : "";
-        if (result.length() == 0) {
-            throw new IllegalActionException(
-                    "Cannot resolved codegen type from Ptolemy type: " + ptType);
-        }
+                                                                : "Token";
+                                                                        
+        //if (result.length() == 0) {
+        //    throw new IllegalActionException(
+        //            "Cannot resolved codegen type from Ptolemy type: " + ptType);
+        //}
         return result;
     }
 
@@ -1862,15 +1862,23 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         + "))";
             }
 
-            if (sinkType != BaseType.GENERAL && !isPrimitive(sinkType)) {
+            if (sinkType != BaseType.SCALAR && sinkType != BaseType.GENERAL 
+                    && !isPrimitive(sinkType)) {
                 if (sinkType instanceof ArrayType) {
-                    result = "$typeFunc(TYPE_"
-                            + codeGenType(sinkType)
-                            + "::convert("
-                            + result
-                            + ", (int) TYPE_"
-                            + codeGenType(((ArrayType) sinkType)
-                                    .getElementType()) + "))";
+                    if (isPrimitive(sourceType)) {
+                        result = "$new(Array(1, 1, " + result + ", TYPE_" 
+                                + codeGenType(sourceType) + "))";
+                    }
+                    Type elementType = ((ArrayType) sinkType).getElementType();
+                    if (elementType != BaseType.SCALAR) {
+                        result = "$typeFunc(TYPE_"
+                                + codeGenType(sinkType)
+                                + "::convert("
+                                + result
+                                + ", (int) TYPE_"
+                                + codeGenType(((ArrayType) sinkType)
+                                        .getElementType()) + "))";
+                    }
                 } else {
                     result = "$typeFunc(TYPE_" + codeGenType(sinkType)
                             + "::convert(" + result + "))";

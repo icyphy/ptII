@@ -297,8 +297,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         }
 
         // Insert the elementType of the array as the last argument.
-        _fireCode.append(", TYPE_"
-                + CodeGeneratorHelper.codeGenType(elementType));
+        if (CodeGeneratorHelper.codeGenType(elementType).equals("Token")) { 
+            _fireCode.append(", -1");
+        } else {
+            _fireCode.append(", TYPE_"
+                    + CodeGeneratorHelper.codeGenType(elementType));
+        }
         _fireCode.append("))");
 
         _evaluatedChildToken = (new ArrayToken(elementType, tokens));

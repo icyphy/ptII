@@ -595,6 +595,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         // Generate type map.
         String typeMembers = "";
+        code.append("#define TYPE_Token -1 \n");
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .c file for each type.
             typeStreams[i] = new CodeStream(
