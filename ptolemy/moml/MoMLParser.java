@@ -602,8 +602,19 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // depends on.
             Iterator parameters = _paramsToParse.iterator();
 
+            // As an optimization, if there are multiple instances of
+            // SharedParameter in the list that are shared, we only
+            // validate the first of these. This prevents a square-law
+            // increase in complexity, because each validation of an
+            // instance of SharedParameter causes validation of all
+            // its shared instances. EAL 9/10/06.
+            HashSet parametersValidated = new HashSet();
             while (parameters.hasNext()) {
                 Settable param = (Settable) parameters.next();
+                
+                if (parametersValidated.contains(param)) {
+                    continue;
+                }
 
                 // NOTE: We used to catch exceptions here and issue
                 // a warning only, but this has the side effect of blocking
@@ -619,6 +630,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     while (derivedParams.hasNext()) {
                         Settable derivedParam = (Settable) derivedParams.next();
                         derivedParam.validate();
+                        parametersValidated.add(derivedParam);
+                    }
+                    
+                    if (param instanceof SharedParameter) {
+                        parametersValidated.addAll(
+                                ((SharedParameter)param).sharedParameterSet());
                     }
                 } catch (Exception ex) {
                     if (_handler != null) {

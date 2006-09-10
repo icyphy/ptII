@@ -28,9 +28,9 @@
  */
 package ptolemy.moml;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.data.expr.Parameter;
@@ -195,7 +195,7 @@ public class SharedParameter extends Parameter {
      *   do not match.
      */
     public void inferValueFromContext(String defaultValue) {
-        Iterator sharedParameters = sharedParameterList().iterator();
+        Iterator sharedParameters = sharedParameterSet().iterator();
         String value = null;
         
         while (sharedParameters.hasNext()) {
@@ -244,7 +244,7 @@ public class SharedParameter extends Parameter {
         super.setExpression(expression);
 
         if (!_suppressingPropagation) {
-            Iterator sharedParameters = sharedParameterList().iterator();
+            Iterator sharedParameters = sharedParameterSet().iterator();
             
             while (sharedParameters.hasNext()) {
                 SharedParameter sharedParameter = (SharedParameter) sharedParameters.next();
@@ -275,31 +275,31 @@ public class SharedParameter extends Parameter {
         _suppressingPropagation = propagation;
     }
 
-    /** Return a list of all the shared parameters within the
+    /** Return a collection of all the shared parameters within the
      *  same model as this parameter.  If there are no such parameters
      *  or if this parameter is deeply contained within an EntityLibrary, then
-     *  return an empty list. The list will include this instance if
+     *  return an empty collection. The list will include this instance if
      *  this instance.
      *  A shared parameter is one that is an instance of SharedParameter,
      *  has the same name as this one, and is contained by the container
      *  class specified in the constructor.
      *  @return A list of parameters.
      */
-    public synchronized List sharedParameterList() {
-        if (workspace().getVersion() != _sharedParameterListVersion) {
+    public synchronized Collection sharedParameterSet() {
+        if (workspace().getVersion() != _sharedParameerSetVersion) {
             try {
                 workspace().getReadAccess();
-                _sharedParameterList = new LinkedList();
-                _sharedParameterListVersion = workspace().getVersion();
+                _sharedParameerSet = new HashSet();
+                _sharedParameerSetVersion = workspace().getVersion();
                 NamedObj toplevel = getRoot();
                 if (toplevel != null) {
-                    _sharedParameterList(toplevel, _sharedParameterList);
+                    _sharedParameerSet(toplevel, _sharedParameerSet);
                 }
             } finally {
                 workspace().doneReading();
             }
         }
-        return _sharedParameterList;
+        return _sharedParameerSet;
     }
 
     /** Override the base class to also validate the shared instances.
@@ -323,7 +323,7 @@ public class SharedParameter extends Parameter {
         }
 
         if (!_suppressingPropagation) {
-            Iterator sharedParameters = sharedParameterList().iterator();
+            Iterator sharedParameters = sharedParameterSet().iterator();
             while (sharedParameters.hasNext()) {
                 SharedParameter sharedParameter = (SharedParameter) sharedParameters.next();
                 if (sharedParameter != this) {
@@ -337,7 +337,24 @@ public class SharedParameter extends Parameter {
             }
         }
     }
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Override the base class to do the propagation only if
+     *  the specified destination is not shared.
+     *  @param destination Object to which to propagate the
+     *   value.
+     *  @exception IllegalActionException If the value cannot
+     *   be propagated.
+     */
+    protected void _propagateValue(NamedObj destination)
+            throws IllegalActionException {
+        if (!sharedParameterSet().contains(destination)) {
+            super._propagateValue(destination);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -350,9 +367,9 @@ public class SharedParameter extends Parameter {
      *  has the same name as this one, and is contained by the container
      *  class specified in the constructor.
      *  @param container The container.
-     *  @param list The list to update.
+     *  @param set The list to update.
      */
-    private void _sharedParameterList(NamedObj container, List list) {
+    private void _sharedParameerSet(NamedObj container, HashSet set) {
         // First check all the attributes of the specified container.
         if (_containerClass.isInstance(container)) {
             // If the attribute is not of the right class, get an exception.
@@ -361,13 +378,13 @@ public class SharedParameter extends Parameter {
                         SharedParameter.class);
 
                 if (candidate != null) {
-                    list.add(candidate);
+                    set.add(candidate);
                     // To avoid recronstructing the list again for each
                     // of the other shared parameters, we set its cache
                     // as well now.  It is for this reason that the calling
                     // method must be synchronized.
-                    candidate._sharedParameterList = list;
-                    candidate._sharedParameterListVersion = workspace().getVersion();
+                    candidate._sharedParameerSet = set;
+                    candidate._sharedParameerSetVersion = workspace().getVersion();
                 }
             } catch (IllegalActionException ex) {
                 // Ignore. Candidate doesn't match.
@@ -376,7 +393,7 @@ public class SharedParameter extends Parameter {
         Iterator containedObjects = container.containedObjectsIterator();
         while (containedObjects.hasNext()) {
             NamedObj candidateContainer = (NamedObj) containedObjects.next();
-            _sharedParameterList(candidateContainer, list);
+            _sharedParameerSet(candidateContainer, set);
         }
     }
 
@@ -386,11 +403,11 @@ public class SharedParameter extends Parameter {
     /** The container class. */
     private Class _containerClass;
     
-    /** Cached version of the shared parameter list. */
-    private List _sharedParameterList;
+    /** Cached version of the shared parameter set. */
+    private HashSet _sharedParameerSet;
     
     /** Version for the cache. */
-    private long _sharedParameterListVersion = -1L;
+    private long _sharedParameerSetVersion = -1L;
 
     /** Indicator to suppress propagation. */
     private boolean _suppressingPropagation = false;
