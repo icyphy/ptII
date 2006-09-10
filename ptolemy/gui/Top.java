@@ -681,7 +681,12 @@ public abstract class Top extends JFrame {
                 // not permit this, regrettably.  So we have a separate
                 // menu item for this.
                 File file = fileDialog.getSelectedFile().getCanonicalFile();
+                // Report on the time it takes to open the model.
+                long startTime = System.currentTimeMillis();
                 _read(file.toURL());
+                System.out.println("Opened " + file + " in " 
+                        + (System.currentTimeMillis() - startTime)
+                        + " ms.");
             } catch (Error error) {
                 // Be sure to catch Error here so that if we throw an
                 // Error, then we will report it to with a window.
