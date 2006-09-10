@@ -43,11 +43,13 @@ Token Array_new(int size, int given, ...) {
         elementType = va_arg(argp, int);			
         //result.payload.Array->elementType = elementType;
 
-        // convert the elements if needed.
-        for (i = 0; i < given; i++) {
-            if (Array_get(result, i).type != elementType) {
-                result.payload.Array->elements[i] = functionTable[elementType][FUNC_convert](Array_get(result, i));
-            }
+        if (elementType >= 0) {
+            // convert the elements if needed.
+            for (i = 0; i < given; i++) {
+                if (Array_get(result, i).type != elementType) {
+                    result.payload.Array->elements[i] = functionTable[elementType][FUNC_convert](Array_get(result, i));
+                }
+            }    
         }
 
         va_end(argp);
@@ -319,16 +321,17 @@ Token Array_convert(Token token, ...) {
 
     va_start(argp, token);
     targetType = va_arg(argp, int);
-
-    if (targetType != token.type) {		
-        result = Array_new(token.payload.Array->size, 0);
+    
+    	
+    result = Array_new(token.payload.Array->size, 0);
 	
-        for (i = 0; i < token.payload.Array->size; i++) {
-            element = Array_get(token, i);
-            if (targetType != element.type) {
-                result.payload.Array->elements[i] = functionTable[targetType][FUNC_convert](element);
-            }
-        }
+    for (i = 0; i < token.payload.Array->size; i++) {
+        element = Array_get(token, i);
+        if (targetType != element.type) {
+            result.payload.Array->elements[i] = functionTable[targetType][FUNC_convert](element);
+        } else {
+            result.payload.Array->elements[i] = element;
+        }    
     }
 
     va_end(argp);
