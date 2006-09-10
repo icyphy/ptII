@@ -254,32 +254,6 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return result.toString();
     }
 
-    /** Generate a set of shared code fragments of the associated
-     *  composite actor.  It returns the result of calling
-     *  getSharedCode() method of the helpers of all contained actors.
-     *  
-     *  @return a set of shared code fragments.
-     *  @exception IllegalActionException If the helper associated with
-     *  an actor throws it while generating shared code for the actor.
-     */
-    public Set getSharedCode() throws IllegalActionException {
-
-        // Use LinkedHashSet to give order to the shared code.
-        Set sharedCode = new LinkedHashSet();
-        sharedCode.addAll(super.getSharedCode());
-
-        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
-                .deepEntityList().iterator();
-
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            sharedCode.addAll(helperObject.getSharedCode());
-        }
-
-        return sharedCode;
-    }
-
     /** Generate variable declarations for input ports, output ports and 
      *  parameters if necessary.
      *  @return code The generated code.
@@ -344,6 +318,18 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return code.toString();
     }
 
+    /** Return an int array of firings per global iteration. For each
+     *  internal configuration of this composite actor, the array
+     *  contains a corresponding element representing the number of
+     *  firings of this composite actor per global iteration.
+     * 
+     *  @return An int array of firings per global iteration.
+     *  @see #setFiringsPerGlobalIteration(int[])
+     */
+    public int[] getFiringsPerGlobalIteration() {
+        return _firingsPerGlobalIteration;
+    }
+
     /** Get the header files needed by the code generated from this helper 
      *  class. It returns the result of calling getHeaderFiles() method of 
      *  the helpers of all contained actors.
@@ -366,18 +352,6 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         }
 
         return files;
-    }
-
-    /** Return an int array of firings per global iteration. For each
-     *  internal configuration of this composite actor, the array
-     *  contains a corresponding element representing the number of
-     *  firings of this composite actor per global iteration.
-     * 
-     *  @return An int array of firings per global iteration.
-     *  @see #setFiringsPerGlobalIteration(int[])
-     */
-    public int[] getFiringsPerGlobalIteration() {
-        return _firingsPerGlobalIteration;
     }
 
     /** Return a set of parameters that will be modified during the
@@ -411,6 +385,32 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public int[][] getRates() {
         return _rates;
+    }
+
+    /** Generate a set of shared code fragments of the associated
+     *  composite actor.  It returns the result of calling
+     *  getSharedCode() method of the helpers of all contained actors.
+     *  
+     *  @return a set of shared code fragments.
+     *  @exception IllegalActionException If the helper associated with
+     *  an actor throws it while generating shared code for the actor.
+     */
+    public Set getSharedCode() throws IllegalActionException {
+    
+        // Use LinkedHashSet to give order to the shared code.
+        Set sharedCode = new LinkedHashSet();
+        sharedCode.addAll(super.getSharedCode());
+    
+        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+                .deepEntityList().iterator();
+    
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            sharedCode.addAll(helperObject.getSharedCode());
+        }
+    
+        return sharedCode;
     }
 
     /** Reset the offsets of all inside buffers of all output ports of the
