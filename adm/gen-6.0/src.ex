@@ -109,6 +109,7 @@ ptolemy/actor/lib/security/test/auto/foo.keystore
 ptolemy/actor/lib/test/auto/FileWriter1Output.txt
 ptolemy/actor/lib/test/Const.txt
 ptolemy/actor/lib/test/ReadFile1Output.txt
+ptolemy/actor/ptalon
 ptolemy/actor/xslt
 ptolemy/apps
 ptolemy/automata
@@ -222,6 +223,7 @@ ptolemy/plot/build.xml
 ptolemy/plot/Render
 ptolemy/plot/RenderApplication.*
 ptolemy/plotml/build.xml
+ptolemy/ptalon
 ptolemy/schematic
 ptolemy/system
 ptolemy/vergil/JModelViewer.java
