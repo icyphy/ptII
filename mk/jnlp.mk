@@ -56,7 +56,7 @@ SIGNED_DIR =		signed
 
 # Jar file that contains win32com.dll for the Java Serial Communications API
 lib/commWindows.jar: 
-	if [ -d vendors/sun/commapi/win32com.dll ]; then \
+	if [ -f vendors/sun/commapi/win32com.dll ]; then \
 		(cd vendors/sun/commapi; \
 	 	"$(JAR)" -cvf ../../../lib/commWindows.jar win32com.dll); \
 	else \
