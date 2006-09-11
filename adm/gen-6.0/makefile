@@ -387,6 +387,7 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/security/test/foo.keystore \
 		ptolemy/actor/lib/test/Const.txt \
 		ptolemy/actor/lib/test/ReadFile1Output.txt \
+		ptolemy/actor/lib/ptalon \
 		ptolemy/actor/lib/x10/ApplianceController.class \
 		ptolemy/actor/lib/x10/CommandListener.class \
 		ptolemy/actor/lib/x10/LampController.class \
@@ -415,6 +416,7 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/moml/jxta/JXTALibrary.class \
 	        ptolemy/plot/ptplotlocales \
 		ptolemy/util/test/FileUtilities-1.1.tmp \
+		ptolemy/ptalon \
 		ptolemy/vergil/toolbox/test/alljsimpletests.tcl
 
 
