@@ -36,7 +36,7 @@ else
    # Collect up remaining arguments as classpath
    while test $# -gt 0; do
        if [ ! -f $1 ]; then
-	   echo "$0: warning: $1 does not exist"
+	   echo "$0: warning: $1 does not exist" 1>&2
 	   exit 2
        fi	   
        classPath="$classPath <cp>$1</cp>"
@@ -58,6 +58,7 @@ cat <<EOF
   <jre>
     <minVersion>1.4.0</minVersion>
     <maxHeapSize>512</maxHeapSize>
+    <path>jre</path>
   </jre>
   <classPath>
     <mainClass>${mainClass}</mainClass>
