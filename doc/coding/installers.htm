@@ -192,11 +192,35 @@ Solution, use ant:
 <pre>
 cd trunk/src
 ant dist
-</dl>
+</pre>
 I'm not sure how to do this from Eclipse.  Eclipse can run ant but
 the setup instructions have us include files from <code>src/lib</code>,
 not <code>src</code>.
+
+<dt>Problems with the uninstaller
+<dd>The Uninstaller was failing for me, see
+<a href="http://lists.berlios.de/pipermail/izpack-users/2006-September/002637.html">The Unistaller.jar is not working</a>
+<pr>I had a problem with <code>OsVersion</code> missing when I ran
+<pre>
+java -version uninstaller.jar
+</pre>
+The solution was to check out the 3.9 branch and rebuild:
+<pre>
+svn co http://svn.berlios.de/svnroot/repos/izpack/izpack-src/branches/branch-3.9/
+cd 3.9.0-M1/src
+ant
+</pre>
+I also had to edit <code>build.xml</code> so that we included izpack/util/os/*.class as per <a href="http://lists.berlios.de/pipermail/izpack-users/2006-September/002637.html">The Unistaller.jar is not working</a>
+
+<p>It turns out that part of the install process updates <code>uninstaller.jar</code>.  So, I had to copy the <code>uninstaller.jar</code> file
+over to the installed version of IzPack - copying <code>uninstaller.jar</code>
+to the installed application will not do it.
+ 
+
+</dl>
+
 </ol>
+
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
