@@ -302,7 +302,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/x10/x10.jar \
 	vendors/misc/joystick/Joystick.jar \
 	ptolemy/actor/lib/x10/demo/demo.jar \
-	vendors/misc/x10/tjx10p-12/lib/x10.jar \
+	vendors/misc/x10/tjx10p-13/lib/x10.jar \
 	lib/ptCal.jar \
 	lib/saxon8.jar \
 	lib/saxon8-dom.jar \
@@ -838,16 +838,16 @@ jnlp_dist_1:
 jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
-		ssh messier "cd $(DIST_DIR); tar -xpf -"
-	scp doc/webStartHelp.htm messier:$(DIST_DIR)
+		ssh bennett "cd $(DIST_DIR); tar -xpf -"
+	scp doc/webStartHelp.htm bennett:$(DIST_DIR)
 
 #make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
 
 jnlp_dist_update_remote:
-	scp doc/webStartHelp.htm messier:$(DIST_DIR)
+	scp doc/webStartHelp.htm bennett:$(DIST_DIR)
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
-		ssh messier "cd $(DIST_DIR); tar -xpf -"
+		ssh bennett "cd $(DIST_DIR); tar -xpf -"
 
 
 sign_jar_dist: 
@@ -856,7 +856,7 @@ sign_jar_dist:
 		$(JARFILE) $(KEYALIAS2)
 
 sign_jar_dist_update_remote: sign_jar_dist
-	scp $(JARFILE) messier:$(DIST_DIR)/$(JARFILE)
+	scp $(JARFILE) bennett:$(DIST_DIR)/$(JARFILE)
 
 ################################################################
 ################################################################
