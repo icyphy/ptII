@@ -345,7 +345,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		bin/emachine.bat \
 		bin/giottoc.bat \
 		bin/histogram.bat \
-		bin/hyvisual \
 		bin/jode.bat \
 		bin/mescal.bat \
 		bin/moml.bat \
