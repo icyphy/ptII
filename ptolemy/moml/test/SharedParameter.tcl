@@ -831,9 +831,14 @@ propagateValueCount: 0}}
 test SharedParameter-18.1.1 {call validateSettables} {
     # Uses 18.1 above
     set r1 [$param1 getCounts]
+    set r2 [$param2 getCounts]
+    set r3 [$param3 getCounts]
 
     $c18 validateSettables
-    set r2 [$param1 getCounts]
+
+    set r4 [$param1 getCounts]
+    set r5 [$param2 getCounts]
+    set r6 [$param3 getCounts]
 
     # Formerly, r2 would have these values 
     #  sharedParameterSetCount: 3
@@ -844,16 +849,43 @@ test SharedParameter-18.1.1 {call validateSettables} {
     #  sharedParameterSetCount: 4
     #  validateCount: 2
 
-    list $r1 "\n" $r2
-} {{inferValueFromContextCount: 1
+    list "r1=" $r1 "\nr2=" $r2 "\nr3=" $r3 "\n...\nr4=" \
+	$r4 "\nr5=" $r5 "\nr6=" $r6
+
+} {r1= {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 2
 validateCount: 1
 propagateValueCount: 0} {
-} {inferValueFromContextCount: 1
+r2=} {inferValueFromContextCount: 1
+isSuppressingPropagationCount: 0
+setExpressionCount: 3
+sharedParameterSetCount: 2
+validateCount: 1
+propagateValueCount: 0} {
+r3=} {inferValueFromContextCount: 1
+isSuppressingPropagationCount: 0
+setExpressionCount: 3
+sharedParameterSetCount: 1
+validateCount: 1
+propagateValueCount: 0} {
+...
+r4=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 4
+validateCount: 2
+propagateValueCount: 0} {
+r5=} {inferValueFromContextCount: 1
+isSuppressingPropagationCount: 0
+setExpressionCount: 3
+sharedParameterSetCount: 2
+validateCount: 2
+propagateValueCount: 0} {
+r6=} {inferValueFromContextCount: 1
+isSuppressingPropagationCount: 0
+setExpressionCount: 3
+sharedParameterSetCount: 1
 validateCount: 2
 propagateValueCount: 0}}
