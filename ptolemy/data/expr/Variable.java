@@ -1764,20 +1764,24 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 ((StructuredType) _varType)
                         .updateType((StructuredType) newToken.getType());
             } else {
-                Type newTokenType = newToken.getType();
-                // FIXME: What about other structured types?
-                if (_varType instanceof ArrayType && newTokenType instanceof ArrayType) {
-                    // Need to do an update instead of a replacement of _varType
-                    // because inequalities may have been set up that refer to this
-                    // particular instance _varType.
-                    // NOTE: updateType() won't update to an incompatible type!
-                    ((ArrayType)_varType).setType((ArrayType)newToken.getType());                    
-                } else {
-                    // It is OK now to replace _varType because either the
-                    // type is not a structured type or it was previously
-                    // not a structured type.
-                    _varType = newTokenType;
-                }
+                // _declaredType is a BaseType
+                _varType = newToken.getType();
+
+                // FIXME: This is Edward's array optimization for Rome.
+//                 Type newTokenType = newToken.getType();
+//                 // FIXME: What about other structured types?
+//                 if (_varType instanceof ArrayType && newTokenType instanceof ArrayType) {
+//                     // Need to do an update instead of a replacement of _varType
+//                     // because inequalities may have been set up that refer to this
+//                     // particular instance _varType.
+//                     // NOTE: updateType() won't update to an incompatible type!
+//                     ((ArrayType)_varType).setType((ArrayType)newToken.getType());                    
+//                 } else {
+//                     // It is OK now to replace _varType because either the
+//                     // type is not a structured type or it was previously
+//                     // not a structured type.
+//                     _varType = newTokenType;
+//                 }
             }
 
             // Check setTypeAtMost constraint.
