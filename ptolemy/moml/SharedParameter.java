@@ -310,7 +310,21 @@ public class SharedParameter extends Parameter implements ShareableSettable {
      *   Also thrown if the change is not acceptable to the container.
      */
     public void validate() throws IllegalActionException {
+        validateShareableSettable();
+    }
+
+    /** Override the base class to also validate the shared instances.
+     *  @return A Collection of all the shared parameters within the same
+     *  model as this parameter {@link #sharedParameterSet}.
+     *  @exception IllegalActionException If this variable or a
+     *   variable dependent on this variable cannot be evaluated (and is
+     *   not lazy) and the model error handler throws an exception.
+     *   Also thrown if the change is not acceptable to the container.
+     */
+    public Collection validateShareableSettable() throws IllegalActionException {
         super.validate();
+
+        Collection sharedParameterSet = null;
 
         // NOTE: This is called by setContainer(), which is called from
         // within a base class constructor. That call occurs before this
@@ -320,23 +334,25 @@ public class SharedParameter extends Parameter implements ShareableSettable {
         // from those instances if there are any. So in that case, we
         // just return.
         if (_containerClass == null) {
-            return;
+            return sharedParameterSet;
         }
 
         if (!_suppressingPropagation) {
-            Iterator sharedParameters = sharedParameterSet().iterator();
+            sharedParameterSet = sharedParameterSet();
+            Iterator sharedParameters = sharedParameterSet.iterator();
             while (sharedParameters.hasNext()) {
                 SharedParameter sharedParameter = (SharedParameter) sharedParameters.next();
                 if (sharedParameter != this) {
                     try {
                         sharedParameter._suppressingPropagation = true;
-                        sharedParameter.validate();
+                        sharedParameter.validateShareableSettable();
                     } finally {
                         sharedParameter._suppressingPropagation = false;
                     }
                 }
             }
         }
+        return sharedParameterSet;
     }
 
     ///////////////////////////////////////////////////////////////////

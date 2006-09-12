@@ -2576,19 +2576,28 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 continue;
             }
 
-            if (attribute instanceof Settable) {
+            if (attribute instanceof ShareableSettable) {
+                // MoMLParser.endDocument has similar code
                 try {
-                    ((Settable) attribute).validate();
+                    // Get all the shared parameters within the
+                    // the same model as this one.
+                    attributesValidated.addAll(
+                            ((ShareableSettable) attribute).validateShareableSettable());
                 } catch (IllegalActionException ex) {
                     handleModelError(this, ex);
                 }
+                //attributesValidated.addAll(
+                //        ((ShareableSettable)attribute).sharedParameterSet());
+            } else {
+                if (attribute instanceof Settable) {
+                    try {
+                        ((Settable) attribute).validate();
+                    } catch (IllegalActionException ex) {
+                        handleModelError(this, ex);
+                    }
+                }
             }
 
-            if (attribute instanceof ShareableSettable) {
-                // MoMLParser.endDocument has similar code
-                attributesValidated.addAll(
-                        ((ShareableSettable)attribute).sharedParameterSet());
-            }
             attributesValidated.add(attribute);
             attribute._validateSettables(attributesValidated);
         }

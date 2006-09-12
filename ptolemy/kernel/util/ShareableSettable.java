@@ -55,4 +55,14 @@ public interface ShareableSettable {
      *  @return A list of parameters.
      */
     public /*synchronized*/ Collection sharedParameterSet();
+
+    /** Override the base class to also validate the shared instances.
+     *  @return A Collection of all the shared parameters with the same
+     *  model as this parameter {@link #sharedParameterSet}.
+     *  @exception IllegalActionException If this variable or a
+     *   variable dependent on this variable cannot be evaluated (and is
+     *   not lazy) and the model error handler throws an exception.
+     *   Also thrown if the change is not acceptable to the container.
+     */
+    public Collection validateShareableSettable() throws IllegalActionException;
 }
