@@ -187,38 +187,21 @@ public class SharedParameter extends Parameter implements ShareableSettable {
     /** Infer the value of this parameter from the container
      *  context. That is, search for parameters that are
      *  shared with this one, and set the value of this parameter
-     *  to match the last one encountered.
+     *  to match the first one encountered.
      *  If there are no shared parameters, then assign the
      *  default value given as an argument.
      *  @param defaultValue The default parameter value to give.
-     *  @exception InternalErrorException If there are multiple
-     *   shared parameters in the model, but their values
-     *   do not match.
      */
     public void inferValueFromContext(String defaultValue) {
         Iterator sharedParameters = sharedParameterSet().iterator();
-        String value = null;
-        
         while (sharedParameters.hasNext()) {
             SharedParameter candidate = (SharedParameter) sharedParameters.next();
-            
             if (candidate != this) {
                 defaultValue = candidate.getExpression();
-                
-                if (value != null) {
-                    if (!defaultValue.equals(value)) {
-                        throw new InternalErrorException(
-                                "SharedParameter found with a value that is"
-                                + " inconsistent with other instances of SharedParameter"
-                                + " in the model: "
-                                + candidate.getFullName());
-                    }
-                }
+                break;
             }
         }
-
         boolean previousSuppressing = _suppressingPropagation;
-
         try {
             _suppressingPropagation = true;
             setExpression(defaultValue);
@@ -287,20 +270,20 @@ public class SharedParameter extends Parameter implements ShareableSettable {
      *  @return A list of parameters.
      */
     public synchronized Collection sharedParameterSet() {
-        if (workspace().getVersion() != _sharedParameerSetVersion) {
+        if (workspace().getVersion() != _sharedParameterSetVersion) {
             try {
                 workspace().getReadAccess();
-                _sharedParameerSet = new HashSet();
-                _sharedParameerSetVersion = workspace().getVersion();
+                _sharedParameterSet = new HashSet();
+                _sharedParameterSetVersion = workspace().getVersion();
                 NamedObj toplevel = getRoot();
                 if (toplevel != null) {
-                    _sharedParameerSet(toplevel, _sharedParameerSet);
+                    _sharedParameterSet(toplevel, _sharedParameterSet);
                 }
             } finally {
                 workspace().doneReading();
             }
         }
-        return _sharedParameerSet;
+        return _sharedParameterSet;
     }
 
     /** Override the base class to also validate the shared instances.
@@ -386,7 +369,7 @@ public class SharedParameter extends Parameter implements ShareableSettable {
      *  @param container The container.
      *  @param set The list to update.
      */
-    private void _sharedParameerSet(NamedObj container, HashSet set) {
+    private void _sharedParameterSet(NamedObj container, HashSet set) {
         // First check all the attributes of the specified container.
         if (_containerClass.isInstance(container)) {
             // If the attribute is not of the right class, get an exception.
@@ -400,8 +383,8 @@ public class SharedParameter extends Parameter implements ShareableSettable {
                     // of the other shared parameters, we set its cache
                     // as well now.  It is for this reason that the calling
                     // method must be synchronized.
-                    candidate._sharedParameerSet = set;
-                    candidate._sharedParameerSetVersion = workspace().getVersion();
+                    candidate._sharedParameterSet = set;
+                    candidate._sharedParameterSetVersion = workspace().getVersion();
                 }
             } catch (IllegalActionException ex) {
                 // Ignore. Candidate doesn't match.
@@ -410,7 +393,7 @@ public class SharedParameter extends Parameter implements ShareableSettable {
         Iterator containedObjects = container.containedObjectsIterator();
         while (containedObjects.hasNext()) {
             NamedObj candidateContainer = (NamedObj) containedObjects.next();
-            _sharedParameerSet(candidateContainer, set);
+            _sharedParameterSet(candidateContainer, set);
         }
     }
 
@@ -421,10 +404,10 @@ public class SharedParameter extends Parameter implements ShareableSettable {
     private Class _containerClass;
     
     /** Cached version of the shared parameter set. */
-    private HashSet _sharedParameerSet;
+    private HashSet _sharedParameterSet;
     
     /** Version for the cache. */
-    private long _sharedParameerSetVersion = -1L;
+    private long _sharedParameterSetVersion = -1L;
 
     /** Indicator to suppress propagation. */
     private boolean _suppressingPropagation = false;
