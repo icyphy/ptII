@@ -38,6 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.ShareableSettable;
 
 //////////////////////////////////////////////////////////////////////////
 //// SharedParameter
@@ -87,7 +88,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (acataldo)
  */
-public class SharedParameter extends Parameter {
+public class SharedParameter extends Parameter implements ShareableSettable {
     /** Construct a parameter with the given container and name.
      *  The container class will be used to determine which other
      *  instances of SharedParameter are shared with this one.

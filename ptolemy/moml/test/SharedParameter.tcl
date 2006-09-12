@@ -835,7 +835,15 @@ test SharedParameter-18.1.1 {call validateSettables} {
     $c18 validateSettables
     set r2 [$param1 getCounts]
 
-    # Note that validateCount went from 1 to 4 for just this param
+    # Formerly, r2 would have these values 
+    #  sharedParameterSetCount: 3
+    #  validateCount: 4
+    # Now, with changes
+    # to {CompositeEntity,Entity,NamedObj}.validateSettables()
+    # we get 
+    #  sharedParameterSetCount: 4
+    #  validateCount: 2
+
     list $r1 "\n" $r2
 } {{inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
@@ -846,8 +854,6 @@ propagateValueCount: 0} {
 } {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
-sharedParameterSetCount: 3
-validateCount: 4
+sharedParameterSetCount: 4
+validateCount: 2
 propagateValueCount: 0}}
-
-

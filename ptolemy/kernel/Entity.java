@@ -32,6 +32,7 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -528,23 +529,8 @@ public class Entity extends InstantiableNamedObj {
      *  @see NamedObj#handleModelError(NamedObj context, IllegalActionException exception)
      */
     public void validateSettables() throws IllegalActionException {
-        super.validateSettables();
-
-        Iterator ports = portList().iterator();
-
-        while (ports.hasNext()) {
-            Port port = (Port) ports.next();
-
-            if (port instanceof Settable) {
-                try {
-                    ((Settable) port).validate();
-                } catch (IllegalActionException ex) {
-                    handleModelError(this, ex);
-                }
-            }
-
-            port.validateSettables();
-        }
+        HashSet attributesValidated = new HashSet();
+        _validateSettables(attributesValidated);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -656,6 +642,38 @@ public class Entity extends InstantiableNamedObj {
      */
     protected void _removePort(Port port) {
         _portList.remove(port);
+    }
+
+    /** Validate attributes deeply contained by this object if they
+     *  implement the Settable interface by calling their validate() method.
+     *  This method overrides the base class to check attributes contained
+     *  by the contained ports.
+     *  Errors that are triggered by this validation are handled by calling
+     *  handleModelError().
+     *  @param attributesValidated A HashSet of Attributes that have
+     *  already been validated.  For example, Settables that implement
+     *  the SharedSettable interface are validated only once.
+     *  @see NamedObj#handleModelError(NamedObj context, IllegalActionException exception)
+     */
+    protected void _validateSettables(HashSet attributesValidated) throws IllegalActionException {
+
+        super._validateSettables(attributesValidated);
+
+        Iterator ports = portList().iterator();
+
+        while (ports.hasNext()) {
+            Port port = (Port) ports.next();
+
+            if (port instanceof Settable) {
+                try {
+                    ((Settable) port).validate();
+                } catch (IllegalActionException ex) {
+                    handleModelError(this, ex);
+                }
+            }
+
+            port.validateSettables();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

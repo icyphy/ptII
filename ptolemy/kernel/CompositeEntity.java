@@ -1298,55 +1298,8 @@ public class CompositeEntity extends ComponentEntity {
      *  @see ptolemy.kernel.util.NamedObj#handleModelError(NamedObj, IllegalActionException)
      */
     public void validateSettables() throws IllegalActionException {
-        super.validateSettables();
-
-        Iterator classes = classDefinitionList().iterator();
-
-        while (classes.hasNext()) {
-            Entity entity = (Entity) classes.next();
-
-            if (entity instanceof Settable) {
-                try {
-                    ((Settable) entity).validate();
-                } catch (IllegalActionException ex) {
-                    handleModelError(this, ex);
-                }
-            }
-
-            entity.validateSettables();
-        }
-
-        Iterator entities = entityList().iterator();
-
-        while (entities.hasNext()) {
-            Entity entity = (Entity) entities.next();
-
-            if (entity instanceof Settable) {
-                try {
-                    ((Settable) entity).validate();
-                } catch (IllegalActionException ex) {
-                    handleModelError(this, ex);
-                }
-            }
-
-            entity.validateSettables();
-        }
-
-        Iterator relations = relationList().iterator();
-
-        while (relations.hasNext()) {
-            Relation relation = (Relation) relations.next();
-
-            if (relation instanceof Settable) {
-                try {
-                    ((Settable) relation).validate();
-                } catch (IllegalActionException ex) {
-                    handleModelError(this, ex);
-                }
-            }
-
-            relation.validateSettables();
-        }
+        HashSet attributesValidated = new HashSet();
+        _validateSettables(attributesValidated);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1614,6 +1567,71 @@ public class CompositeEntity extends ComponentEntity {
     protected void _removeRelation(ComponentRelation relation) {
         _containedRelations.remove(relation);
     }
+
+    /** Validate attributes deeply contained by this object if they
+     *  implement the Settable interface by calling their validate() method.
+     *  This method overrides the base class to check attributes contained
+     *  by the contained entities and relations.
+     *  Errors that are triggered by this validation are handled by calling
+     *  handleModelError().
+     *  @param attributesValidated A HashSet of Attributes that have
+     *  already been validated.  For example, Settables that implement
+     *  the SharedSettable interface are validated only once.
+     *  @see ptolemy.kernel.util.NamedObj#handleModelError(NamedObj, IllegalActionException)
+     */
+    protected void _validateSettables(HashSet attributesValidated) throws IllegalActionException {
+
+        super._validateSettables(attributesValidated);
+
+        Iterator classes = classDefinitionList().iterator();
+
+        while (classes.hasNext()) {
+            Entity entity = (Entity) classes.next();
+
+            if (entity instanceof Settable) {
+                try {
+                    ((Settable) entity).validate();
+                } catch (IllegalActionException ex) {
+                    handleModelError(this, ex);
+                }
+            }
+
+            entity._validateSettables(attributesValidated);
+        }
+
+        Iterator entities = entityList().iterator();
+
+        while (entities.hasNext()) {
+            Entity entity = (Entity) entities.next();
+
+            if (entity instanceof Settable) {
+                try {
+                    ((Settable) entity).validate();
+                } catch (IllegalActionException ex) {
+                    handleModelError(this, ex);
+                }
+            }
+
+            entity._validateSettables(attributesValidated);
+        }
+
+        Iterator relations = relationList().iterator();
+
+        while (relations.hasNext()) {
+            Relation relation = (Relation) relations.next();
+
+            if (relation instanceof Settable) {
+                try {
+                    ((Settable) relation).validate();
+                } catch (IllegalActionException ex) {
+                    handleModelError(this, ex);
+                }
+            }
+
+            relation.validateSettables();
+        }
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

@@ -47,7 +47,8 @@ TCL_SRCS = \
 
 JSRCS = \
 	MoMLParserLeak.java \
-	RecorderErrorHandler.java
+	RecorderErrorHandler.java \
+	TestSharedParameter.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \

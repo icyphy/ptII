@@ -84,6 +84,7 @@ JSRCS = \
 	PtolemyThread.java \
 	RecorderListener.java \
 	Settable.java \
+	ShareableSettable.java \
 	Singleton.java \
 	SingletonAttribute.java \
 	SingletonConfigurableAttribute.java \
