@@ -813,22 +813,25 @@ isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 2
 validateCount: 1
+validateShareableSettableCount: 1
 propagateValueCount: 0} {
 } {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 2
 validateCount: 1
+validateShareableSettableCount: 1
 propagateValueCount: 0} {
 } {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 1
 validateCount: 1
+validateShareableSettableCount: 1
 propagateValueCount: 0}}
 
 
-test SharedParameter-18.1.1 {call validateSettables} {
+test SharedParameter-18.1.2 {call validateSettables} {
     # Uses 18.1 above
     set r1 [$param1 getCounts]
     set r2 [$param2 getCounts]
@@ -857,35 +860,41 @@ isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 2
 validateCount: 1
+validateShareableSettableCount: 1
 propagateValueCount: 0} {
 r2=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 2
 validateCount: 1
+validateShareableSettableCount: 1
 propagateValueCount: 0} {
 r3=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 1
 validateCount: 1
+validateShareableSettableCount: 1
 propagateValueCount: 0} {
 ...
 r4=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
-sharedParameterSetCount: 4
-validateCount: 2
+sharedParameterSetCount: 3
+validateCount: 1
+validateShareableSettableCount: 2
 propagateValueCount: 0} {
 r5=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 2
-validateCount: 2
+validateCount: 1
+validateShareableSettableCount: 2
 propagateValueCount: 0} {
 r6=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 1
-validateCount: 2
+validateCount: 1
+validateShareableSettableCount: 2
 propagateValueCount: 0}}

@@ -160,6 +160,9 @@ public class TestSharedParameter extends SharedParameter {
      */
     public synchronized Collection sharedParameterSet() {
         sharedParameterSetCount++;
+        //new Exception("TestSharedParameter.sharedParameterSet(): "
+        //    + getFullName() + " " + sharedParameterSetCount).printStackTrace();
+
         return super.sharedParameterSet();
     }
 
@@ -174,6 +177,19 @@ public class TestSharedParameter extends SharedParameter {
         //new Exception("TestSharedParameter.validate(): "
         //    + getFullName() + " " + validateCount).printStackTrace();
         super.validate();
+    }
+
+    /** Override the base class to also validate the shared instances.
+     *  @return A Collection of all the shared parameters within the same
+     *  model as this parameter {@link #sharedParameterSet}.
+     *  @exception IllegalActionException If this variable or a
+     *   variable dependent on this variable cannot be evaluated (and is
+     *   not lazy) and the model error handler throws an exception.
+     *   Also thrown if the change is not acceptable to the container.
+     */
+    public Collection validateShareableSettable() throws IllegalActionException {
+        validateShareableSettableCount++;
+        return super.validateShareableSettable();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -203,6 +219,7 @@ public class TestSharedParameter extends SharedParameter {
             + "\nsetExpressionCount: " + setExpressionCount
             + "\nsharedParameterSetCount: " + sharedParameterSetCount
             + "\nvalidateCount: " + validateCount
+            + "\nvalidateShareableSettableCount: " + validateShareableSettableCount
             + "\npropagateValueCount: " + propagateValueCount;
     }
     ///////////////////////////////////////////////////////////////////
@@ -213,5 +230,6 @@ public class TestSharedParameter extends SharedParameter {
     public int setExpressionCount;
     public int sharedParameterSetCount;
     public int validateCount;
+    public int validateShareableSettableCount;
     public int propagateValueCount;
 }
