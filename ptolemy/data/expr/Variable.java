@@ -39,6 +39,7 @@ import java.util.Set;
 
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.StructuredType;
 import ptolemy.data.type.Type;
@@ -799,10 +800,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
-        Nameable cont = getContainer();
+        Nameable previousContainer = getContainer();
         super.setContainer(container);
 
-        if (container != cont) {
+        if (container != previousContainer) {
             // Every variable that this may shadow in its new location
             // must invalidate all their dependents.
             _invalidateShadowedSettables(container);
@@ -816,7 +817,17 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             // NOTE: This is too early for attributeChanged() to be called
             // since typically the public variable referring to an attribute
             // has not been set yet.
-            validate();
+            // Optimization: During construction, the previous
+            // container will be null. It doesn't make sense
+            // to validate at this point, since there shouldn't
+            // actually be any contained settables.
+            // If the container is being set to null, then we
+            // do have to validate as there might be variables
+            // that depend on this one that are no longer valid. EAL 9/6/06
+            // FIXME: Is this right?
+            if (previousContainer != null) {
+                validate();
+            }
         }
     }
 
@@ -1733,7 +1744,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 throw new InternalErrorException("Variable._setToken: "
                         + "Cannot clone the declared type of this Variable.");
             }
-
+            
             if (declaredType instanceof StructuredType) {
                 ((StructuredType) declaredType).initialize(BaseType.UNKNOWN);
             }
@@ -1753,8 +1764,20 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 ((StructuredType) _varType)
                         .updateType((StructuredType) newToken.getType());
             } else {
-                // _declaredType is a BaseType
-                _varType = newToken.getType();
+                Type newTokenType = newToken.getType();
+                // FIXME: What about other structured types?
+                if (_varType instanceof ArrayType && newTokenType instanceof ArrayType) {
+                    // Need to do an update instead of a replacement of _varType
+                    // because inequalities may have been set up that refer to this
+                    // particular instance _varType.
+                    // NOTE: updateType() won't update to an incompatible type!
+                    ((ArrayType)_varType).setType((ArrayType)newToken.getType());                    
+                } else {
+                    // It is OK now to replace _varType because either the
+                    // type is not a structured type or it was previously
+                    // not a structured type.
+                    _varType = newTokenType;
+                }
             }
 
             // Check setTypeAtMost constraint.
