@@ -51,34 +51,34 @@ import ptolemy.vergil.kernel.attributes.LineAttribute;
 //// SurgeVisualizer
 
 /**
- This actor is used with the Surge TinyOS application to visualize 
+ This actor is used with the Surge TinyOS application to visualize
  links between nodes in a multihop network.  In Surge, there are two
- types of packets transmitted.  The first type is a beacon message sent 
+ types of packets transmitted.  The first type is a beacon message sent
  from the base station.  The second type is a Surge message, which originates
  from a sensing node and contains sensor data.  The beginning of the packet
  format is as follows:
- 
+
    bits  1-16: address field
    bits 17-24: type field
- 
- The address field is set to 0xFFFF if it is a broadcast message.  Otherwise, 
+
+ The address field is set to 0xFFFF if it is a broadcast message.  Otherwise,
  it contains the destination node id.
- 
+
  The type field is set to 0xFA if it is a beacon message (implemented in
- TinyOS as MultiHopMsg).  Beacon messages are sent with address field set 
+ TinyOS as MultiHopMsg).  Beacon messages are sent with address field set
  to 0xFFFF.  The type field is set to 0x11 if it is a Surge message.
- 
+
   FIXME: Surge doesn't correctly set the type field for Surge messages.
-  The value that we see is 0x00, so we filter for this instead.  
- 
- This actor extends LinkVisualizer and implements the 
- TokenProcessor interface.  It processes the token being 
- transmitted and, based on the data, may create a line between 
- two communicating nodes that are within range of one 
- another. It registers itself with the wireless channel 
- specified by the <i>channelName</i> parameter. The default 
+  The value that we see is 0x00, so we filter for this instead.
+
+ This actor extends LinkVisualizer and implements the
+ TokenProcessor interface.  It processes the token being
+ transmitted and, based on the data, may create a line between
+ two communicating nodes that are within range of one
+ another. It registers itself with the wireless channel
+ specified by the <i>channelName</i> parameter. The default
  channel is set to AtomicWirelessChannel.
- 
+
  @author Heather Taylor
  @version $Id$
  @since Ptolemy II 4.0
@@ -102,14 +102,14 @@ public class SurgeVisualizer extends LinkVisualizer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** This method parses the token and creates a line between the 
+    /** This method parses the token and creates a line between the
      * sender and the destination containers, by creating a MoMLChangeRequest.
-     * We only create a line if the type field in the packet stored in 
-     * <i>token</i> corresponds to a Surge packet AND  
-     * the nodeID of the <i>destination</i> node 
-     * (i.e., the node that contains the <i>destination</i> WirelessIOPort) 
+     * We only create a line if the type field in the packet stored in
+     * <i>token</i> corresponds to a Surge packet AND
+     * the nodeID of the <i>destination</i> node
+     * (i.e., the node that contains the <i>destination</i> WirelessIOPort)
      * is the same as the address field in the Surge packet.
-     * 
+     *
      * @param properties The properties of this transmission.
      * @param token The token of this transmission, which is processed here.
      * @param sender The sending port.
@@ -127,7 +127,7 @@ public class SurgeVisualizer extends LinkVisualizer {
 
                 // The "00" corresponds to Messages of type SurgeMsg (Should be 0x11).
 
-                // Note: When processTokens() is called a second time 
+                // Note: When processTokens() is called a second time
                 // (see AtomicWirelessChannel#_transmitTo()) abd a line
                 // was not created the first time, we recheck the type field
                 // of the same packet (stored in "token").
