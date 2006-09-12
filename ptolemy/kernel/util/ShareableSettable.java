@@ -43,19 +43,6 @@ import java.util.Collection;
  @Pt.AcceptedRating Red (cxh)
  */
 public interface ShareableSettable {
-
-    /** Return a collection of all the shared parameters within the
-     *  same model as this parameter.  If there are no such parameters
-     *  or if this parameter is deeply contained within an EntityLibrary, then
-     *  return an empty collection. The list will include this instance if
-     *  this instance.
-     *  A shared parameter is one that is an instance of SharedParameter,
-     *  has the same name as this one, and is contained by the container
-     *  class specified in the constructor.
-     *  @return A list of parameters.
-     */
-    public /*synchronized*/ Collection sharedParameterSet();
-
     /** Override the base class to also validate the shared instances.
      *  @return A Collection of all the shared parameters with the same
      *  model as this parameter {@link #sharedParameterSet}.
