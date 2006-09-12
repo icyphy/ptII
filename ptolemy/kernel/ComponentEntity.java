@@ -189,6 +189,8 @@ public class ComponentEntity extends Entity {
         // right values, since the child has been cloned
         // from the parent. However, this will set the override
         // levels appropriately in the child.
+        // FIXME: This also propagates to previously created instances,
+        // which is extremely inefficient!
         propagateValues();
 
         return clone;
@@ -552,7 +554,20 @@ public class ComponentEntity extends Entity {
 
             // Validate all deeply contained settables, since
             // they may no longer be valid in the new context.
-            validateSettables();
+            // Optimization: During construction, the previous
+            // container will be null. It doesn't make sense
+            // to validate at this point, since there shouldn't
+            // actually be any contained settables. Moreover,
+            // if the container is being set to null, then the
+            // component is being discarded. It shouldn't be
+            // necessary to validate settables at this point
+            // since all dependents should be within this
+            // scope. EAL 9/6/06
+            if (previousContainer != null && container != null) {
+                // FIXME: This somehow prevents CompositeEntity.validateSettables
+                // from ever being called when a model is loaded.
+                validateSettables();
+            }
         } finally {
             _workspace.doneWriting();
         }

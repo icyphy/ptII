@@ -1916,8 +1916,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  the deeply contained attributes.
      */
     public void validateSettables() throws IllegalActionException {
-        HashSet attributesValidated = new HashSet();
-        _validateSettables(attributesValidated);
+        _validateSettables(new HashSet());
     }
 
 
@@ -2557,17 +2556,15 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     /** Validate attributes deeply contained by this object if they
      *  implement the Settable interface by calling their validate() method.
      *  Errors that are triggered by this validation are handled by calling
-     *  handleModelError().  Normally this should be called after constructing
-     *  a model or after making changes to it.  It is called, for example,
-     *  by the MoMLParser.
-     *  @param attributesValidated A HashSet of Attributes that have
+     *  handleModelError().
+     *  @param attributesValidated A collection of Settables that have
      *  already been validated.  For example, Settables that implement
-     *  the SharedSettable interface are validated only once.
+     *  the ShareableSettable interface are validated only once.
      *  @see #handleModelError(NamedObj context, IllegalActionException exception)
      *  @exception IllegalActionException If there is a problem validating
      *  the deeply contained attributes.
      */
-    protected void _validateSettables(HashSet attributesValidated) throws IllegalActionException {
+    protected void _validateSettables(Collection attributesValidated) throws IllegalActionException {
         Iterator attributes = attributeList().iterator();
 
         while (attributes.hasNext()) {
@@ -2586,19 +2583,16 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 } catch (IllegalActionException ex) {
                     handleModelError(this, ex);
                 }
-                //attributesValidated.addAll(
-                //        ((ShareableSettable)attribute).sharedParameterSet());
             } else {
                 if (attribute instanceof Settable) {
                     try {
                         ((Settable) attribute).validate();
+                        attributesValidated.add(attribute);
                     } catch (IllegalActionException ex) {
                         handleModelError(this, ex);
                     }
                 }
             }
-
-            attributesValidated.add(attribute);
             attribute._validateSettables(attributesValidated);
         }
     }
@@ -2691,7 +2685,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @exception IllegalActionException If propagate is true
      *   and propagation fails.
      */
-    private List _getDerivedList(HashSet visited, boolean propagate,
+    private List _getDerivedList(Collection visited, boolean propagate,
             boolean force, NamedObj context, int depth, List override,
             String relativeName) throws IllegalActionException {
         try {

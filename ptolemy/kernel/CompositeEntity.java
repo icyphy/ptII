@@ -1289,19 +1289,6 @@ public class CompositeEntity extends ComponentEntity {
         return candidate;
     }
 
-    /** Validate attributes deeply contained by this object if they
-     *  implement the Settable interface by calling their validate() method.
-     *  This method overrides the base class to check attributes contained
-     *  by the contained entities and relations.
-     *  Errors that are triggered by this validation are handled by calling
-     *  handleModelError().
-     *  @see ptolemy.kernel.util.NamedObj#handleModelError(NamedObj, IllegalActionException)
-     */
-    public void validateSettables() throws IllegalActionException {
-        HashSet attributesValidated = new HashSet();
-        _validateSettables(attributesValidated);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1581,7 +1568,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @exception IllegalActionException If the superclass throws it
      *  or if handleModelError() throws it.
      */
-    protected void _validateSettables(HashSet attributesValidated)
+    protected void _validateSettables(Collection attributesValidated)
             throws IllegalActionException {
         super._validateSettables(attributesValidated);
 

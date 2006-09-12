@@ -30,9 +30,9 @@ package ptolemy.kernel;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -520,21 +520,6 @@ public class Entity extends InstantiableNamedObj {
         return candidate;
     }
 
-    /** Validate attributes deeply contained by this object if they
-     *  implement the Settable interface by calling their validate() method.
-     *  This method overrides the base class to check attributes contained
-     *  by the contained ports.
-     *  Errors that are triggered by this validation are handled by calling
-     *  handleModelError().
-     *  @see NamedObj#handleModelError(NamedObj context, IllegalActionException exception)
-     *  @exception IllegalActionException If the superclass throws it
-     *  or if handleModelError() throws it.
-     */
-    public void validateSettables() throws IllegalActionException {
-        HashSet attributesValidated = new HashSet();
-        _validateSettables(attributesValidated);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -659,7 +644,7 @@ public class Entity extends InstantiableNamedObj {
      *  @exception IllegalActionException If the superclass throws it
      *  or if handleModelError() throws it.
      */
-    protected void _validateSettables(HashSet attributesValidated) throws IllegalActionException {
+    protected void _validateSettables(Collection attributesValidated) throws IllegalActionException {
 
         super._validateSettables(attributesValidated);
 
