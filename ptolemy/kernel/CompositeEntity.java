@@ -1578,9 +1578,11 @@ public class CompositeEntity extends ComponentEntity {
      *  already been validated.  For example, Settables that implement
      *  the SharedSettable interface are validated only once.
      *  @see ptolemy.kernel.util.NamedObj#handleModelError(NamedObj, IllegalActionException)
+     *  @exception IllegalActionException If the superclass throws it
+     *  or if handleModelError() throws it.
      */
-    protected void _validateSettables(HashSet attributesValidated) throws IllegalActionException {
-
+    protected void _validateSettables(HashSet attributesValidated)
+            throws IllegalActionException {
         super._validateSettables(attributesValidated);
 
         Iterator classes = classDefinitionList().iterator();

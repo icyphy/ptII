@@ -527,6 +527,8 @@ public class Entity extends InstantiableNamedObj {
      *  Errors that are triggered by this validation are handled by calling
      *  handleModelError().
      *  @see NamedObj#handleModelError(NamedObj context, IllegalActionException exception)
+     *  @exception IllegalActionException If the superclass throws it
+     *  or if handleModelError() throws it.
      */
     public void validateSettables() throws IllegalActionException {
         HashSet attributesValidated = new HashSet();
@@ -654,6 +656,8 @@ public class Entity extends InstantiableNamedObj {
      *  already been validated.  For example, Settables that implement
      *  the SharedSettable interface are validated only once.
      *  @see NamedObj#handleModelError(NamedObj context, IllegalActionException exception)
+     *  @exception IllegalActionException If the superclass throws it
+     *  or if handleModelError() throws it.
      */
     protected void _validateSettables(HashSet attributesValidated) throws IllegalActionException {
 
