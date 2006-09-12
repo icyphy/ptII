@@ -289,9 +289,11 @@ test SharedParameter-9.0 {Check that notification works properly when a SharedPa
     $param2 setContainer [java::null]
 
     set res2 [[$param3 getToken] toString]
+    	
+    # With a regular Parameter, res2 would be 1100	
+    list $res1 $res2 [[$param1 getToken] toString]
+} {6600 6600 66}
 
-    list $res1 $res2
-} {6600 1100}
 
 #################################
 ####
@@ -338,7 +340,8 @@ test SharedParameter-13.0 {Test exportMoML} {
 <entity name="A" class="ptolemy.kernel.util.NamedObj">
     <property name="A1" class="ptolemy.moml.SharedParameter" value="">
     </property>
-</entity>}
+</entity>
+}
 
 test SharedParameter-13.1 {Test exportMoML} {
     $a1 setExpression {3}
@@ -396,8 +399,9 @@ test SharedParameter-14.0 {Test the mechanism for extending scope} {
 
     catch {$p4 getToken} msg2
 
+    # With regular parameters, we would have 5 0 5
     list [$r1 toString] [$r2 toString] [$r3 toString] $msg1 $msg2
-} {5 0 5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
+} {0 0 0 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
 The ID p is undefined.
@@ -491,8 +495,9 @@ test SharedParameter-15.3 {Changing container of parameter depends on scope.} {
 
     set r2 [$p3 getToken]
 
+    # With a regular parameter, r1 toString would be 5
     list [$r1 toString] [$r2 toString]
-} {5 7}
+} {7 7}
 
 test SharedParameter-15.4 {Changing container of parameter that depends on scope to an invalid scope.} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
@@ -518,8 +523,9 @@ test SharedParameter-15.4 {Changing container of parameter that depends on scope
 
     catch {set msg3 [[$p3 getToken] toString]} msg3
     
+    # With a regular parameter, msg1 would be 5 
     list $msg1 $msg2 $msg3
-} {5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
+} {7 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
 The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
@@ -548,8 +554,9 @@ test SharedParameter-15.5 {Changing container of parameter depends on scope.} {
 
     catch {set msg3 [[$p3 getToken] toString]} msg3
     
+    # With a regular parameter, msg1 would be 5 
     list $msg1 $msg2 $msg3
-} {5 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
+} {7 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .p3
 Because:
 The ID p is undefined.}}
@@ -559,9 +566,9 @@ test SharedParameter-15.6 {Changing container of container of parameter that dep
     set e2 [java::new ptolemy.kernel.CompositeEntity $e1 "e2"]
     set e3 [java::new ptolemy.kernel.ComponentEntity $e2 "e3"]
  
-    set p1 [java::new ptolemy.moml.SharedParameter $e1 "p"]
-    set p2 [java::new ptolemy.moml.SharedParameter $e2 "p"]
-    set p3 [java::new ptolemy.moml.SharedParameter $e3 "p3"]
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
+    set p2 [java::new ptolemy.data.expr.Parameter $e2 "p"]
+    set p3 [java::new ptolemy.data.expr.Parameter $e3 "p3"]
 
     $p1 setExpression "5"
     $p2 setExpression "7"
@@ -573,8 +580,25 @@ test SharedParameter-15.6 {Changing container of container of parameter that dep
 
     set r2 [$p3 getToken]
 
-    list [$r1 toString] [$r2 toString]
-} {7 5}
+
+    set sp1 [java::new ptolemy.moml.SharedParameter $e1 "sp"]
+    set sp2 [java::new ptolemy.moml.SharedParameter $e2 "sp"]
+    set sp3 [java::new ptolemy.moml.SharedParameter $e3 "sp3"]
+
+    $sp1 setExpression "55"
+    $sp2 setExpression "77"
+    $sp3 setExpression "sp"
+    
+    set r3 [$sp3 getToken]
+
+    $e3 setContainer $e1
+
+    set r4 [$sp3 getToken]
+
+    # When we change the container of a Parameter, we get different
+    # values, but not when we change the container of a SharedParmeter
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
+} {7 5 77 77}
 
 test SharedParameter-15.7 {Removing parameter invalidate dependants.} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
@@ -732,3 +756,98 @@ test SharedParameter-17.6 {String mode parameters} {
     set t [$p2 getToken]
     [java::cast ptolemy.data.StringToken $t] stringValue
 } {a a a a a a $a}
+
+test SharedParameter-18.0 {simple setExpression} {
+    set c18 [java::new ptolemy.kernel.CompositeEntity] 
+    set c18_1 [java::new ptolemy.kernel.CompositeEntity $c18 c18_1] 
+    set c18_2 [java::new ptolemy.kernel.CompositeEntity $c18 c18_2] 
+    set param1 [java::new ptolemy.moml.SharedParameter $c18_1 param1 \
+	[$c18_2 getClass] 1]
+    set param2 [java::new ptolemy.moml.SharedParameter $c18_2 param1]
+    set r1 [$param1 getExpression]
+    set r2 [$param2 getExpression]
+
+    $param1 setExpression 2
+    set r3 [$param1 getExpression]
+    set r4 [$param2 getExpression]
+
+    $param2 setExpression 3
+    set r5 [$param1 getExpression]
+    set r6 [$param2 getExpression]
+    list $r1 $r2 $r3 $r4 $r5 $r6
+
+} {1 1 2 2 3 3}
+
+test SharedParameter-18.1.1 {simple setExpression with TestSharedParameter} {
+    set c18 [java::new ptolemy.kernel.CompositeEntity] 
+    set c18_1 [java::new ptolemy.kernel.CompositeEntity $c18 c18_1] 
+    set c18_2 [java::new ptolemy.kernel.CompositeEntity $c18 c18_2] 
+    set c18_3 [java::new ptolemy.kernel.CompositeEntity $c18 c18_3] 
+    set param1 [java::new ptolemy.moml.test.TestSharedParameter $c18_1 param1 \
+	[$c18_2 getClass] 1]
+    set param2 [java::new ptolemy.moml.test.TestSharedParameter $c18_2 param1]
+    set param3 [java::new ptolemy.moml.test.TestSharedParameter $c18_3 param1]
+
+    set r1 [$param1 getExpression]
+    set r2 [$param2 getExpression]
+    set r3 [$param3 getExpression]
+
+    $param1 setExpression 2
+    set r4 [$param1 getExpression]
+    set r5 [$param2 getExpression]
+    set r6 [$param3 getExpression]
+
+    $param2 setExpression 3
+    set r7 [$param1 getExpression]
+    set r8 [$param2 getExpression]
+    set r9 [$param3 getExpression]
+
+    # List all the counts just to be sure we are not bogus
+    list [list $r1 $r2 $r3 $r4 $r5 $r6 $r7 $r8 $r9] "\n" \
+	[$param1 getCounts] "\n" \
+	[$param2 getCounts] "\n" \
+	[$param3 getCounts]
+} {{1 1 1 2 2 2 3 3 3} {
+} {inferValueFromContextCount: 1
+isSuppressingPropagationCount: 0
+setExpressionCount: 3
+sharedParameterSetCount: 2
+validateCount: 1
+propagateValueCount: 0} {
+} {inferValueFromContextCount: 1
+isSuppressingPropagationCount: 0
+setExpressionCount: 3
+sharedParameterSetCount: 2
+validateCount: 1
+propagateValueCount: 0} {
+} {inferValueFromContextCount: 1
+isSuppressingPropagationCount: 0
+setExpressionCount: 3
+sharedParameterSetCount: 1
+validateCount: 1
+propagateValueCount: 0}}
+
+
+test SharedParameter-18.1.1 {call validateSettables} {
+    # Uses 18.1 above
+    set r1 [$param1 getCounts]
+
+    $c18 validateSettables
+    set r2 [$param1 getCounts]
+
+    # Note that validateCount went from 1 to 4 for just this param
+    list $r1 "\n" $r2
+} {{inferValueFromContextCount: 1
+isSuppressingPropagationCount: 0
+setExpressionCount: 3
+sharedParameterSetCount: 2
+validateCount: 1
+propagateValueCount: 0} {
+} {inferValueFromContextCount: 1
+isSuppressingPropagationCount: 0
+setExpressionCount: 3
+sharedParameterSetCount: 3
+validateCount: 4
+propagateValueCount: 0}}
+
+
