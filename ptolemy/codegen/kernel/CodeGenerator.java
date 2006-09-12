@@ -578,16 +578,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Determine the total number of referenced polymorphic functions.
         HashSet functions = new HashSet();
         functions.add("delete");
-        functions.add("toString");
-        //functions.add("print");
+        //functions.add("toString");    // for debugging.
         functions.add("convert");
         functions.addAll(_typeFuncUsed);
         functions.addAll(_tokenFuncUsed);
 
         // Determine the total number of referenced types.
         HashSet types = new HashSet();
-        types.add("String");
-        types.add("Boolean");
+        //types.add("String");      // for debugging.
         types.addAll(_newTypesUsed);
 
         Object[] typesArray = types.toArray();
