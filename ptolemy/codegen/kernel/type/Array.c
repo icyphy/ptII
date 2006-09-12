@@ -9,9 +9,19 @@ typedef struct array* ArrayToken;
 
 /***funcDeclareBlock***/
 Token Array_new(int size, int given, ...);   
-Token Array_get(Token token, int i) {   
-    return token.payload.Array->elements[i];
+Token Array_get(Token array, int i) {   
+    return array.payload.Array->elements[i];
 }
+
+void Array_set(Token array, int i, Token element) {
+	array.payload.Array->elements[i] = element;
+}
+
+void Array_resize(Token array, int size) {
+	array.payload.Array->size = size;
+	array.payload.Array->elements = (Token*) realloc(array.payload.Array->elements, size * sizeof(Token));
+}
+
 /**/
 
 /***newBlock***/
