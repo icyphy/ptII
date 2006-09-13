@@ -41,7 +41,7 @@ ME =		.
 PTTHALES_DIR = thales
 
 DIRS = util com diva ptolemy $(PTJNI_DIR) $(PTMESCAL_DIR) $(PTTHALES_DIR) \
-	bin doc
+	contrib bin doc
 
 # Root of Ptolemy II directory
 ROOT =		.
