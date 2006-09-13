@@ -53,6 +53,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	ColtBeta.java \
 	ColtBinomial.java \
+	ColtBinomialSelector.java \
 	ColtBreitWigner.java \
 	ColtChiSquare.java \
 	ColtExponential.java \
