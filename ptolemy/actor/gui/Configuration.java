@@ -34,6 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.Manager;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
@@ -582,7 +583,15 @@ public class Configuration extends CompositeEntity {
                         "No effigy factories in the configuration!");
             }
 
+            // Print the time it takes to open the model if it is more
+            // than 10 seconds.
+            long startTime = System.currentTimeMillis();
             effigy = factory.createEffigy(directory, base, in);
+            long endTime = System.currentTimeMillis();
+            if (endTime - startTime > 10000) {
+                System.out.println("Opened \"" + base + "\": " +
+                        Manager.timeAndMemory(startTime));
+            }
 
             if (effigy == null) {
                 MessageHandler
