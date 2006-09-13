@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 40.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={161, 159, 878, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 54, 878, 652}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[663, 534]">
     </property>
@@ -67,12 +67,6 @@
     </entity>
     <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 125.0]">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={426, 363, 348, 232}, maximized=false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 125.0]">
         </property>
     </entity>
     <entity name="ColtBinomialSelector2" class="ptolemy.actor.lib.colt.ColtBinomialSelector">
@@ -131,12 +125,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 240.0]">
         </property>
     </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={426, 363, 348, 232}, maximized=false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 240.0]">
-        </property>
-    </entity>
     <entity name="ColtBinomialSelector" class="ptolemy.actor.lib.colt.ColtBinomialSelector">
         <property name="trials" class="ptolemy.actor.parameters.PortParameter" value="6">
         </property>
@@ -193,12 +181,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 355.0]">
         </property>
     </entity>
-    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={426, 363, 348, 232}, maximized=false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 355.0]">
-        </property>
-    </entity>
     <entity name="ColtBinomialSelector3" class="ptolemy.actor.lib.colt.ColtBinomialSelector">
         <property name="trials" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
@@ -206,10 +188,30 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 355.0]">
         </property>
     </entity>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0, 0, 6}}, {{0, 0, 6}}, {{0, 0, 6}}, {{0, 3, 3}}, {{0, 1, 5}}, {{0, 0, 6}}, {{0, 1, 5}}, {{0, 1, 5}}, {{0, 1, 5}}, {{0, 3, 3}}}">
         </property>
-    </relation>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{5, 1, 0}}, {{5, 1, 0}}, {{5, 1, 0}}, {{4, 2, 0}}, {{5, 1, 0}}, {{5, 1, 0}}, {{5, 1, 0}}, {{6, 0, 0}}, {{5, 1, 0}}, {{6, 0, 0}}}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 355.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -223,10 +225,6 @@
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
@@ -246,10 +244,6 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -266,12 +260,23 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <link port="Const.output" relation="relation2"/>
     <link port="Const2.output" relation="relation3"/>
     <link port="Const3.output" relation="relation4"/>
     <link port="ElementsToArray.input" relation="relation"/>
     <link port="ElementsToArray.output" relation="relation8"/>
-    <link port="Display.input" relation="relation8"/>
     <link port="ColtBinomialSelector2.output" relation="relation"/>
     <link port="ColtBinomialSelector2.populations" relation="relation2"/>
     <link port="ColtBinomialSelector2.populations" relation="relation3"/>
@@ -280,8 +285,7 @@
     <link port="Const5.output" relation="relation9"/>
     <link port="Const6.output" relation="relation10"/>
     <link port="ElementsToArray2.input" relation="relation6"/>
-    <link port="ElementsToArray2.output" relation="relation5"/>
-    <link port="Display2.input" relation="relation5"/>
+    <link port="ElementsToArray2.output" relation="relation11"/>
     <link port="ColtBinomialSelector.output" relation="relation6"/>
     <link port="ColtBinomialSelector.populations" relation="relation7"/>
     <link port="ColtBinomialSelector.populations" relation="relation9"/>
@@ -290,10 +294,12 @@
     <link port="Const8.output" relation="relation14"/>
     <link port="Const9.output" relation="relation15"/>
     <link port="ElementsToArray3.input" relation="relation12"/>
-    <link port="ElementsToArray3.output" relation="relation11"/>
-    <link port="Display3.input" relation="relation11"/>
+    <link port="ElementsToArray3.output" relation="relation5"/>
     <link port="ColtBinomialSelector3.output" relation="relation12"/>
     <link port="ColtBinomialSelector3.populations" relation="relation13"/>
     <link port="ColtBinomialSelector3.populations" relation="relation14"/>
     <link port="ColtBinomialSelector3.populations" relation="relation15"/>
+    <link port="Test.input" relation="relation8"/>
+    <link port="Test2.input" relation="relation11"/>
+    <link port="Test3.input" relation="relation5"/>
 </entity>
