@@ -14,6 +14,11 @@
 	        class="ptolemy.actor.lib.colt.ColtBinomial">
 		<doc>Create a sequence of Binomial random variables</doc>
 	</entity>
+	<entity name="ColtBinomialSelector"
+	        class="ptolemy.actor.lib.colt.ColtBinomialSelector">
+		<doc> Assign trials from several populations using a
+	conditional Binomial selection process.</doc>
+	</entity>
 	<entity name="ColtBreitWigner"
 	        class="ptolemy.actor.lib.colt.ColtBreitWigner">
 		<doc>Create a sequence of BreitWigner random variables</doc>
