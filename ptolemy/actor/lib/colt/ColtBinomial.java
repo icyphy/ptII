@@ -162,9 +162,26 @@ public class ColtBinomial extends ColtRandomSource {
      *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
+
+        // The following logic protects the binomial generation call
+        // because the Colt library will throw an exception (even
+        // though they are valid limit cases).  The limits can occur
+        // during the course of a simulation, and this actor should
+        // produce valid results if they do occur.
+
         int nValue = ((IntToken) n.getToken()).intValue();
-        double pValue = ((DoubleToken) p.getToken()).doubleValue();
-        _current = _generator.nextInt(nValue, pValue);
+        if (nValue == 0) {
+            _current = 0;
+        } else {
+            double pValue = ((DoubleToken) p.getToken()).doubleValue();
+            if (pValue == 0.0) {
+                _current = 0;
+            } else if (pValue == 1.0) {
+                _current = nValue;
+            } else {
+                _current = _generator.nextInt(nValue, pValue);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
