@@ -678,7 +678,11 @@ public class PtinyOSDirector extends Director {
     // Methods for accessing sockets in external_comm.c
     ///////////////////////////////////////////////////////////////////////
 
-    // Create a non-blocking server socket and check for connections
+     /** Create a non-blocking server socket and check for connections on the 
+     *   port specified by <i>port</i>.
+     *   @param port The port on which to create a server socket.
+     *   @return The ServerSocket created.
+     */
     public ServerSocket serverSocketCreate(short port) {
         ServerSocket serverSocket = null;
         try {
@@ -697,7 +701,10 @@ public class PtinyOSDirector extends Director {
         }
         return serverSocket;
     }
-
+    /** Close the ServerSocket.
+     * 
+     *  @param serverSocket The ServerSocket to be closed.
+     */
     public void serverSocketClose(ServerSocket serverSocket) {
         if (serverSocket != null) {
             try {
@@ -710,8 +717,21 @@ public class PtinyOSDirector extends Director {
         }
     }    
 
-    // Create a selector and register the ServerSocketChannel of the
-    // ServerSocket with the selector.
+    /** Create a selector and register the ServerSocketChannel of the 
+     *  ServerSocket with the selector.
+     * 
+     *  @param serverSocket The ServerSocket whose channel should be registered
+     *      with the Selector created.
+     *  @param opAccept True if this SelectionKey option that should be enabled 
+     *      when registering the ServerSocketChannel to the Selector.
+     *  @param opConnect True if this SelectionKey option that should be enabled 
+     *      when registering the ServerSocketChannel to the Selector.
+     *  @param opRead True if this SelectionKey option that should be enabled 
+     *      when registering the ServerSocketChannel to the Selector.
+     *  @param opWrite True if this SelectionKey option that should be enabled 
+     *      when registering the ServerSocketChannel to the Selector.
+     *  @return The Selector created.
+     */
     public Selector selectorCreate(ServerSocket serverSocket, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {
         Selector selector = null;
         try {
@@ -746,7 +766,19 @@ public class PtinyOSDirector extends Director {
         return selector;
     }
     
-    // Register channel with selector.
+    /** Register channel with selector.
+     * 
+     *  @param selector The selector to which the channel should be registered.
+     *  @param socketChannel The SocketChannel that should be registered.
+     *  @param opAccept True if this SelectionKey option that should be enabled 
+     *      when registering the SocketChannel to the Selector.
+     *  @param opConnect True if this SelectionKey option that should be enabled 
+     *      when registering the SocketChannel to the Selector.
+     *  @param opRead True if this SelectionKey option that should be enabled 
+     *      when registering the SocketChannel to the Selector.
+     *  @param opWrite True if this SelectionKey option that should be enabled 
+     *      when registering the SocketChannel to the Selector.
+     */
     public void selectorRegister(Selector selector, SelectableChannel socketChannel, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {
         
         if (selector != null && socketChannel != null) {
@@ -770,6 +802,10 @@ public class PtinyOSDirector extends Director {
         }
     }
 
+    /** Close the selector.
+     * 
+     *  @param selector The selector that should be closed.
+     */
     public void selectorClose(Selector selector) {
         if (selector != null) {
             try {
@@ -796,9 +832,22 @@ public class PtinyOSDirector extends Director {
         }
     }       
 
-    // notNullIfClosing is set to TRUE if returning NULL, otherwise left as is.
-    // We use notNullIfClosing because of threading issues discussed in:
-    // @see selectorClose(Selector selector)
+    /** Returns a selected channel, or null if none.
+     *  
+     *  @param selector
+     *  @param notNullIfClosing TRUE if returning NULL, otherwise left as is.  
+     *      We use notNullIfClosing because of threading issues discussed in:
+     *      @see selectorClose(Selector selector)
+     *  @param opAccept True if this SelectionKey option that should be enabled 
+     *      when returning a non-null SelectableChannel.
+     *  @param opConnect True if this SelectionKey option that should be enabled 
+     *      when returning a non-null SelectableChannel.
+     *  @param opRead True if this SelectionKey option that should be enabled 
+     *      when returning a non-null SelectableChannel.
+     *  @param opWrite True if this SelectionKey option that should be enabled 
+     *      when returning a non-null SelectableChannel.
+     *  @return The selected channel, or null if none.
+     */
     public SelectableChannel selectSocket(Selector selector, boolean[] notNullIfClosing, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {
         notNullIfClosing[0] = false;
         try {
@@ -843,6 +892,12 @@ public class PtinyOSDirector extends Director {
         return null;
     }
 
+    /** Accept a connection on a ServerSocketChannel.  If serverSocketChannel 
+     *  is blocking, this method blocks.
+     * 
+     * @param serverSocketChannel The ServerSocketChannel on which connections are accepted.
+     * @return The SocketChannel for the connection that was accepted.
+     */
     public SocketChannel acceptConnection(SelectableChannel serverSocketChannel) {
         if (serverSocketChannel instanceof ServerSocketChannel) {
             SocketChannel socketChannel = null;
@@ -861,6 +916,10 @@ public class PtinyOSDirector extends Director {
         }
     }
 
+    /** Close the SocketChannel.
+     * 
+     * @param socketChannel The SocketChannel to close.
+     */
     public void socketChannelClose(SelectableChannel socketChannel) {
         if (socketChannel instanceof SocketChannel) {
             try {
@@ -873,7 +932,13 @@ public class PtinyOSDirector extends Director {
         }
     }
 
-    // Returns number of bytes written.  -1 if error.
+    /** Write the bytes in writeBuffer to a SocketChannel.
+     *  Returns number of bytes written.  -1 if error.
+     * 
+     *  @param socketChannel The SocketChannel on which to write.
+     *  @param writeBuffer The bytes to write.
+     *  @return Number of bytes written.  -1 if error.
+     */
     public int socketChannelWrite(SocketChannel socketChannel, byte[] writeBuffer) {
         // Create a direct buffer to write bytes to socket.
         // Direct buffers should be long-lived and be reused as much as possible.
@@ -890,7 +955,13 @@ public class PtinyOSDirector extends Director {
         }
     }
 
-    // Returns number of bytes read.  0 if end of stream reached.  -1 if error.
+    /** Read from a SocketChannel into readBuffer.  
+     *  Returns number of bytes read.  0 if end of stream reached.  -1 if error.
+     * 
+     * @param socketChannel SocketChannel from which to read.
+     * @param readBuffer The bytes read.
+     * @return Number of bytes read.  0 if end of stream reached.  -1 if error.
+     */
     public int socketChannelRead(SocketChannel socketChannel, byte[] readBuffer) {
         // Create a direct buffer to get bytes from socket.
         // Direct buffers should be long-lived and be reused as much as possible.
@@ -914,7 +985,6 @@ public class PtinyOSDirector extends Director {
             return -1;
         }
     }
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
