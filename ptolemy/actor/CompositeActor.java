@@ -365,8 +365,17 @@ public class CompositeActor extends CompositeEntity implements Actor {
             if (_director != null) {
                 return _director;
             }
-
-            return getExecutiveDirector();
+            // NOTE: It is slightly more efficient to
+            // call this directly, rather than using
+            // getExecutiveDirector(), and this gets
+            // called alot.
+            // NOTE: Cast should be safe because this
+            // has to be contained by an actor to be run.
+            Nameable container = getContainer();
+            if (container instanceof Actor) {
+                return ((Actor)container).getDirector();
+            }
+            return null;
         } finally {
             _workspace.doneReading();
         }
