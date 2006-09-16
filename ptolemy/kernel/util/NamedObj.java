@@ -200,6 +200,23 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     public NamedObj(Workspace workspace, String name)
             throws IllegalActionException {
+        this(workspace, name, true);
+    }
+
+    /** Construct an object in the given workspace with the given name.
+     *  If the workspace argument is null, use the default workspace.
+     *  The object is added to the list of objects in the workspace.
+     *  If the name argument is null, then the name is set to the
+     *  empty string. Increment the version number of the workspace.
+     *  @param workspace Object for synchronization and version tracking
+     *  @param name Name of this object.
+     *  @param incrementWorkspaceVersion False to not add this to the workspace 
+     *   or do anything else that might change the workspace version number.
+     *  @exception IllegalActionException If the name has a period.
+     */
+    protected NamedObj(
+            Workspace workspace, String name, boolean incrementWorkspaceVersion)
+            throws IllegalActionException {
         if (workspace == null) {
             workspace = _DEFAULT_WORKSPACE;
         }
@@ -212,20 +229,17 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         // because the only side effect is adding to the directory,
         // and methods for adding and reading from the directory are
         // synchronized.
-        try {
-            workspace.add(this);
-        } catch (IllegalActionException ex) {
-            // This exception should not be thrown.
-            throw new InternalErrorException(null, ex,
-                    "Internal error in NamedObj constructor!");
-        }
-
-        try {
-            setName(name);
-        } catch (NameDuplicationException ex) {
-            // This exception should not be thrown.
-            throw new InternalErrorException(null, ex,
-                    "Internal error in NamedObj constructor!");
+        if (incrementWorkspaceVersion) {
+            try {
+                workspace.add(this);
+                setName(name);
+            } catch (NameDuplicationException ex) {
+                // This exception should not be thrown.
+                throw new InternalErrorException(null, ex,
+                        "Internal error in NamedObj constructor!");
+            }
+        } else {
+            _name = name;
         }
     }
 

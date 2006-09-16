@@ -281,17 +281,40 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      */
     public Variable(NamedObj container, String name, ptolemy.data.Token token)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+        this(container, name, token, true);
+    }
 
-        // Notification is important here so that the attributeChanged()
-        // method of the container is called.
-        _setToken(token);
+    /** Construct a variable with the given container, name, and token.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown. This variable will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string. Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name.
+     *  @param token The token contained by this variable.
+     *  @param incrementWorkspaceVersion False to not add this to the workspace 
+     *   or do anything else that might change the workspace version number.
+     *  @exception IllegalActionException If the container does not accept
+     *   a variable as its attribute.
+     *  @exception NameDuplicationException If the name coincides with a
+     *   variable already in the container.
+     */
+    protected Variable(
+            NamedObj container, String name, ptolemy.data.Token token, boolean incrementWorkspaceVersion)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name, incrementWorkspaceVersion);
+        if (token != null) {
+            // Notification is important here so that the attributeChanged()
+            // method of the container is called.
+            _setToken(token);
+            
+            // Record the initial value so "Restore Defaults" works.
+            // Note that we call the superclass only to avoid getting the
+            // other effects of setting the expression.
+            super.setExpression(token.toString());
+        }
         setPersistent(false);
-
-        // Record the initial value so "Restore Defaults" works.
-        // Note that we call the superclass only to avoid getting the
-        // other effects of setting the expression.
-        super.setExpression(token.toString());
     }
 
     ///////////////////////////////////////////////////////////////////

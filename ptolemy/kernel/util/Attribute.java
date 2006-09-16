@@ -83,8 +83,42 @@ public class Attribute extends NamedObj {
      */
     public Attribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container.workspace(), name);
-        setContainer(container);
+        this(container, name, true);
+    }
+    
+    /** Construct an attribute with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @param incrementWorkspaceVersion False to not add this to the workspace 
+     *   or do anything else that might change the workspace version number.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
+    protected Attribute(
+            NamedObj container, String name, boolean incrementWorkspaceVersion)
+            throws IllegalActionException, NameDuplicationException {
+        super(container.workspace(), name, incrementWorkspaceVersion);
+        if (incrementWorkspaceVersion) {
+            setContainer(container);
+        } else {
+            // Avoid methods that increment the workspace version.
+            if (container._attributes == null) {
+                container._attributes = new NamedList();
+            }
+            container._attributes.append(this);
+            _container = container;
+            // Make sure even the debugging messages are unchanged.
+            if (container._debugging) {
+                container._debug("Added attribute", getName(), "to", container.getFullName());
+            }
+        }
         _elementName = "property";
     }
 
