@@ -106,6 +106,7 @@ JSRCS = \
         ScopeExtendingAttribute.java \
         SingletonParameter.java \
         StringParameter.java \
+        TemporaryVariable.java \
 	TokenMgrError.java \
 	UnknownResultException.java \
 	UtilityFunctions.java \
