@@ -173,7 +173,7 @@ public class Configuration extends CompositeEntity {
                     while (constraintIterator.hasNext()) {
                         Inequality constraint = (Inequality) constraintIterator
                                 .next();
-                        constraintsDescription.append(constraint);
+                        constraintsDescription.append(constraint.toString());
                     }
 
                     StringBuffer cloneConstraintsDescription = new StringBuffer();
@@ -182,7 +182,7 @@ public class Configuration extends CompositeEntity {
                     while (cloneConstraintIterator.hasNext()) {
                         Inequality constraint = (Inequality) cloneConstraintIterator
                                 .next();
-                        cloneConstraintsDescription.append(constraint);
+                        cloneConstraintsDescription.append(constraint.toString());
                     }
 
                     if (!constraintsDescription.toString().equals(
