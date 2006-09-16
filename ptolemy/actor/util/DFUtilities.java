@@ -35,6 +35,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.TemporaryVariable;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
@@ -508,7 +509,7 @@ public class DFUtilities {
 
         if (variable == null) {
             try {
-                variable = new Variable(container, name);
+                variable = new TemporaryVariable(container, name);
                 variable.setVisibility(Settable.NOT_EDITABLE);
                 variable.setPersistent(false);
             } catch (KernelException ex) {
