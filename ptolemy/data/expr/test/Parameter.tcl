@@ -446,10 +446,10 @@ test Parameter-15.1 {Removing an actor that contains a parameter should not thro
 
     catch {$e2 setContainer [java::null]} msg
     $p1 setExpression "6"
-    catch {$p1 validate} msg2
+    $p1 validate
 
-    list [$r1 toString] $msg $msg2
-} {5 {} {}}
+    list [$r1 toString] $msg
+} {5 {}}
 
 test Parameter-15.2 {Failure to Shadow, including scopeeEtending} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]

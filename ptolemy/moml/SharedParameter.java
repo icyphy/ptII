@@ -35,10 +35,8 @@ import java.util.Iterator;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.ShareableSettable;
 
 //////////////////////////////////////////////////////////////////////////
 //// SharedParameter
@@ -88,7 +86,7 @@ import ptolemy.kernel.util.ShareableSettable;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (acataldo)
  */
-public class SharedParameter extends Parameter implements ShareableSettable {
+public class SharedParameter extends Parameter {
     /** Construct a parameter with the given container and name.
      *  The container class will be used to determine which other
      *  instances of SharedParameter are shared with this one.
@@ -287,27 +285,18 @@ public class SharedParameter extends Parameter implements ShareableSettable {
     }
 
     /** Override the base class to also validate the shared instances.
-     *  @exception IllegalActionException If this variable or a
-     *   variable dependent on this variable cannot be evaluated (and is
-     *   not lazy) and the model error handler throws an exception.
-     *   Also thrown if the change is not acceptable to the container.
-     */
-    public void validate() throws IllegalActionException {
-        validateShareableSettable();
-    }
-
-    /** Override the base class to also validate the shared instances.
      *  @return A Collection of all the shared parameters within the same
-     *  model as this parameter {@link #sharedParameterSet}.
+     *   model as this parameter, see {@link #sharedParameterSet}.
      *  @exception IllegalActionException If this variable or a
      *   variable dependent on this variable cannot be evaluated (and is
      *   not lazy) and the model error handler throws an exception.
      *   Also thrown if the change is not acceptable to the container.
      */
-    public Collection validateShareableSettable() throws IllegalActionException {
-        super.validate();
-
-        Collection sharedParameterSet = null;
+    public Collection validate() throws IllegalActionException {
+        Collection result = super.validate();
+        if (result == null) {
+            result = new HashSet();
+        }
 
         // NOTE: This is called by setContainer(), which is called from
         // within a base class constructor. That call occurs before this
@@ -317,32 +306,34 @@ public class SharedParameter extends Parameter implements ShareableSettable {
         // from those instances if there are any. So in that case, we
         // just return.
         if (_containerClass == null) {
-            return sharedParameterSet;
+            return result;
         }
 
         if (!_suppressingPropagation) {
-            sharedParameterSet = sharedParameterSet();
-            Iterator sharedParameters = sharedParameterSet.iterator();
+            Iterator sharedParameters = sharedParameterSet().iterator();
             while (sharedParameters.hasNext()) {
                 SharedParameter sharedParameter = (SharedParameter) sharedParameters.next();
                 if (sharedParameter != this) {
                     try {
                         sharedParameter._suppressingPropagation = true;
-                        sharedParameter.validateShareableSettable();
+                        result.addAll(sharedParameter.validate());
+                        result.add(sharedParameter);
                     } finally {
                         sharedParameter._suppressingPropagation = false;
                     }
                 }
             }
         }
-        return sharedParameterSet;
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Override the base class to do the propagation only if
-     *  the specified destination is not shared.
+     *  the specified destination is not shared, because if
+     *  it is shared, then the value will be propagated
+     *  in through the sharing mechanism.
      *  @param destination Object to which to propagate the
      *   value.
      *  @exception IllegalActionException If the value cannot

@@ -27,6 +27,8 @@
  */
 package ptolemy.kernel.util.test;
 
+import java.util.Collection;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -93,7 +95,7 @@ public class InvalidStringAttribute extends StringAttribute {
      *  @exception IllegalActionException If the expression is not valid, or
      *   its value is not acceptable to the container or the listeners.
      */
-    public void validate() throws IllegalActionException {
+    public Collection validate() throws IllegalActionException {
         if (getName().equals("KernelRuntimeException")) {
             throw new KernelRuntimeException(this,
                     "Name was \"KernelRuntimeException\", so we throw it");

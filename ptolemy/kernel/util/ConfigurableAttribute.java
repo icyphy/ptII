@@ -33,6 +33,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Writer;
 import java.net.URL;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -132,7 +134,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
     /** Configure the object with data from the specified input source
      *  (a URL) and/or textual data.  The input source, if any, is assumed
      *  to contain textual data as well.  Note that the URL is not read
-     *  until the value() method is called.
+     *  until the value() or validate() method is called.
      *  @param base The base relative to which references within the input
      *   are found, or null if this is not known, or there is none.
      *   This argument is ignored in this method.
@@ -149,9 +151,6 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
         _base = base;
         _configureSource = source;
         _configureText = text;
-
-        // NOTE: Do we really want to call this right away?
-        validate();
     }
 
     /** Return the base specified in the most recent call to the
@@ -283,6 +282,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
     public void setExpression(String expression) throws IllegalActionException {
         try {
             configure(null, null, expression);
+            validate();
         } catch (IllegalActionException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -299,35 +299,45 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
         _visibility = visibility;
     }
 
-    /** Validate any instances of Settable that this attribute may contain.
-     *  Notify listeners that the value of this attribute has changed.
+    /** Validate this attribute by calling {@link value()}.
+     *  Notify the container and listeners that the value of this attribute has changed.
+     *  @return A list of contained instances of Settable.
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
      */
-    public void validate() throws IllegalActionException {
-        // Validate contained attributes, if any.
-        Iterator attributes = attributeList(Settable.class).iterator();
-
-        while (attributes.hasNext()) {
-            Settable attribute = (Settable) attributes.next();
-            attribute.validate();
+    public Collection validate() throws IllegalActionException {
+        // Validate by obtaining the value.
+        try {
+            value();
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to read configuration at: "
+                    + _configureSource);
         }
-
         // Notify the container that the attribute has changed.
         NamedObj container = getContainer();
-
         if (container != null) {
             container.attributeChanged(this);
         }
-
+        // Notify value listeners.
+        Collection result = new HashSet();
         if (_valueListeners != null) {
             Iterator listeners = _valueListeners.iterator();
 
             while (listeners.hasNext()) {
                 ValueListener listener = (ValueListener) listeners.next();
-                listener.valueChanged(this);
+                if (listener instanceof Settable) {
+                    Collection validated = ((Settable)listener).validate();
+                    if (validated != null) {
+                        result.addAll(validated);
+                    }
+                    result.add(listener);
+                } else {
+                    listener.valueChanged(this);
+                }
             }
         }
+        return result;
     }
 
     /** Return the value given by the configure tag.  This is the text

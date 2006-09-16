@@ -28,6 +28,7 @@ package ptolemy.kernel.util;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -236,20 +237,17 @@ public class StringAttribute extends AbstractSettableAttribute {
         _visibility = visibility;
     }
 
-    /** Validate any instances of Settable that this attribute may contain.
+    /** Do nothing.
      *  There is no need to notify the container or listeners of this
      *  attribute because they have presumably already been notified
      *  in setExpression().
+     *  @return Null, indicating that no other instances of Settable are
+     *   validated.
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
      */
-    public void validate() throws IllegalActionException {
-        Iterator attributes = attributeList(Settable.class).iterator();
-
-        while (attributes.hasNext()) {
-            Settable attribute = (Settable) attributes.next();
-            attribute.validate();
-        }
+    public Collection validate() throws IllegalActionException {
+        return null;
     }
 
     ///////////////////////////////////////////////////////////////////

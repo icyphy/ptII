@@ -29,8 +29,10 @@
  */
 package ptolemy.data.expr;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -1362,12 +1364,14 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  result in evaluation of this variable, and hence will not ensure
      *  that the expression giving its value is valid.  Call getToken()
      *  or getType() to accomplish that.
+     *  @return The current list of value listeners, which are evaluated
+     *   as a consequence of this call to validate().
      *  @exception IllegalActionException If this variable or a
      *   variable dependent on this variable cannot be evaluated (and is
      *   not lazy) and the model error handler throws an exception.
      *   Also thrown if the change is not acceptable to the container.
      */
-    public void validate() throws IllegalActionException {
+    public Collection validate() throws IllegalActionException {
         if (_debugging) {
             _debug("validate");
         }
@@ -1420,6 +1424,23 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 container.attributeChanged(this);
             }
         }
+        
+        // The propagate call has evaluated all the value
+        // listeners that are instances of Variable,
+        // so we can assume they are validated as well.
+        // EAL 9/14/06.
+        Collection result = null;
+        if (_valueListeners != null) {
+            result = new HashSet();
+            Iterator listeners = _valueListeners.iterator();
+            while (listeners.hasNext()) {
+                Object listener = listeners.next();
+                if (listener instanceof Variable) {
+                    result.add(listener);
+                }
+            }
+        }
+        return result;
     }
 
     /** React to the change in the specified instance of Settable.

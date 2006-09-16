@@ -27,6 +27,8 @@
  */
 package ptolemy.vergil.kernel.attributes;
 
+import java.util.Collection;
+
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
@@ -202,16 +204,15 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
     public void setVisibility(Settable.Visibility visibility) {
     }
 
-    /** Check the validity of the expression set in setExpression().
-     *  Implementations of this method should notify the container
-     *  by calling attributeChanged(), unless the container has already
-     *  been notified in setExpression().  They should also notify any
-     *  registered value listeners if they have not already been notified.
+    /** Set the attribute name to match the current expression.
+     *  @return Null, indicating that no other instances of Settable
+     *   are validated.
      *  @exception IllegalActionException If the expression is not valid, or
      *   its value is not acceptable to the container or the listeners.
      */
-    public void validate() throws IllegalActionException {
+    public Collection validate() throws IllegalActionException {
         _setAttributeName(attributeName.getExpression());
+        return null;
     }
 
     ///////////////////////////////////////////////////////////////////

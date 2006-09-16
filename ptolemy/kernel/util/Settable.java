@@ -28,6 +28,7 @@
 package ptolemy.kernel.util;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 //////////////////////////////////////////////////////////////////////////
 //// Settable
@@ -164,10 +165,16 @@ public interface Settable extends Nameable {
      *  by calling attributeChanged(), unless the container has already
      *  been notified in setExpression().  They should also notify any
      *  registered value listeners if they have not already been notified.
+     *  If any other instances of Settable are validated as a side effect,
+     *  then an implementation should return a Collection containing those
+     *  instances. This can be used by the caller to avoid validating those
+     *  again. The list may contain this instance of Settable.
+     *  @return A collection of settables that are also validated as a
+     *   side effect, or null if there are none.
      *  @exception IllegalActionException If the expression is not valid, or
      *   its value is not acceptable to the container or the listeners.
      */
-    public void validate() throws IllegalActionException;
+    public Collection validate() throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////

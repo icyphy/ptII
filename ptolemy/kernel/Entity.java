@@ -647,20 +647,22 @@ public class Entity extends InstantiableNamedObj {
     protected void _validateSettables(Collection attributesValidated) throws IllegalActionException {
 
         super._validateSettables(attributesValidated);
-
         Iterator ports = portList().iterator();
-
         while (ports.hasNext()) {
             Port port = (Port) ports.next();
-
             if (port instanceof Settable) {
                 try {
-                    ((Settable) port).validate();
+                    Collection validated = ((Settable) port).validate();
+                    if (validated != null) {
+                        attributesValidated.addAll(validated);
+                    }
+                    attributesValidated.add(port);
                 } catch (IllegalActionException ex) {
-                    handleModelError(this, ex);
+                    if (!handleModelError(this, ex)) {
+                        throw ex;
+                    }
                 }
             }
-
             port.validateSettables();
         }
     }

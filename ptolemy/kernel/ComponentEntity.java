@@ -191,7 +191,7 @@ public class ComponentEntity extends Entity {
         // levels appropriately in the child.
         // FIXME: This also propagates to previously created instances,
         // which is extremely inefficient!
-        propagateValues();
+        _propagateValues(clone);
 
         return clone;
     }

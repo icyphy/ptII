@@ -451,10 +451,10 @@ test SharedParameter-15.1 {Removing an actor that contains a parameter should no
 
     catch {$e2 setContainer [java::null]} msg
     $p1 setExpression "6"
-    catch {$p1 validate} msg2
+	$p1 validate
 
-    list [$r1 toString] $msg $msg2
-} {5 {} {}}
+    list [$r1 toString] $msg
+} {5 {}}
 
 test SharedParameter-15.2 {Failure to Shadow, including scopeeEtending} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
@@ -812,22 +812,19 @@ test SharedParameter-18.1.1 {simple setExpression with TestSharedParameter} {
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 2
-validateCount: 1
-validateShareableSettableCount: 1
+validateCount: 0
 propagateValueCount: 0} {
 } {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 2
-validateCount: 1
-validateShareableSettableCount: 1
+validateCount: 0
 propagateValueCount: 0} {
 } {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 1
-validateCount: 1
-validateShareableSettableCount: 1
+validateCount: 0
 propagateValueCount: 0}}
 
 
@@ -859,22 +856,19 @@ test SharedParameter-18.1.2 {call validateSettables} {
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 2
-validateCount: 1
-validateShareableSettableCount: 1
+validateCount: 0
 propagateValueCount: 0} {
 r2=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 2
-validateCount: 1
-validateShareableSettableCount: 1
+validateCount: 0
 propagateValueCount: 0} {
 r3=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 1
-validateCount: 1
-validateShareableSettableCount: 1
+validateCount: 0
 propagateValueCount: 0} {
 ...
 r4=} {inferValueFromContextCount: 1
@@ -882,19 +876,16 @@ isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 3
 validateCount: 1
-validateShareableSettableCount: 2
 propagateValueCount: 0} {
 r5=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 2
 validateCount: 1
-validateShareableSettableCount: 2
 propagateValueCount: 0} {
 r6=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 1
 validateCount: 1
-validateShareableSettableCount: 2
 propagateValueCount: 0}}

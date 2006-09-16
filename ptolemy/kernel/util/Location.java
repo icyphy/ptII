@@ -29,6 +29,7 @@ package ptolemy.kernel.util;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -348,13 +349,15 @@ public class Location extends SingletonAttribute implements Locatable {
      *  Notify the container and any value listeners of the new location,
      *  if it has changed.
      *  See the class comment for a description of the format.
+     *  @return Null, indicating that no other instances of Settable are
+     *   validated.
      *  @exception IllegalActionException If the expression is invalid.
      */
-    public void validate() throws IllegalActionException {
+    public Collection validate() throws IllegalActionException {
         // If the value has not been set via setExpression(), there is
         // nothing to do.
         if (!_expressionSet) {
-            return;
+            return null;
         }
 
         double[] location;
@@ -383,6 +386,8 @@ public class Location extends SingletonAttribute implements Locatable {
 
         // FIXME: If _setLocation() returns true, should we call
         // setModifiedFromClass() like we do elsewhere?
+        
+        return null;
     }
 
     ///////////////////////////////////////////////////////////////////

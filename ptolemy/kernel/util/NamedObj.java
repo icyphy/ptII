@@ -1042,7 +1042,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     public List getDerivedList() {
         try {
-            return _getDerivedList(null, false, false, this, 0, null, null);
+            return _getDerivedList(null, false, false, this, 0, null, null, null);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex);
         }
@@ -1487,7 +1487,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #setDerivedLevel(int)
      */
     public List propagateExistence() throws IllegalActionException {
-        return _getDerivedList(null, false, true, this, 0, null, null);
+        return _getDerivedList(null, false, true, this, 0, null, null, null);
     }
 
     /** Propagate the value (if any) held by this
@@ -1506,7 +1506,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         _override = new LinkedList();
         _override.add(new Integer(0));
 
-        return _getDerivedList(null, true, false, this, 0, _override, null);
+        return _getDerivedList(null, true, false, this, 0, _override, null, null);
     }
 
     /** If this object has a value that has been set directly,
@@ -1524,7 +1524,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         // by propagation into it, then there is no need to do
         // any propagation.
         if (_override != null) {
-            _getDerivedList(null, true, false, this, 0, _override, null);
+            _getDerivedList(null, true, false, this, 0, _override, null, null);
         }
 
         Iterator containedObjects = containedObjectsIterator();
@@ -2475,6 +2475,34 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             throws IllegalActionException {
     }
 
+    /** If this object has a value that has been set directly,
+     *  or if it has a value that has propagated in, then
+     *  propagate that value to all derived objects, and
+     *  then repeat this for all objects this object contains.
+     *  Unlike propagateValue(), this does not assume this
+     *  object or any of its contained objects is having
+     *  its value set directly. Instead, it uses the current
+     *  state of override of this object as the starting point.
+     *  @param child If non-null, limit the propagation to
+     *   the specified child.
+     *  @exception IllegalActionException If propagation fails.
+     */
+    protected void _propagateValues(NamedObj child) throws IllegalActionException {
+        // If this object has not had its value set directly or
+        // by propagation into it, then there is no need to do
+        // any propagation.
+        if (_override != null) {
+            _getDerivedList(null, true, false, this, 0, _override, null, child);
+        }
+
+        Iterator containedObjects = containedObjectsIterator();
+
+        while (containedObjects.hasNext()) {
+            NamedObj containedObject = (NamedObj) containedObjects.next();
+            containedObject.propagateValues();
+        }
+    }
+
     /** Remove the given attribute.
      *  If there is no such attribute, do nothing.
      *  This method is write-synchronized on the workspace and increments its
@@ -2565,38 +2593,26 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  the deeply contained attributes.
      */
     protected void _validateSettables(Collection attributesValidated) throws IllegalActionException {
-        Iterator attributes = attributeList().iterator();
-
+        Iterator attributes = attributeList(Settable.class).iterator();
         while (attributes.hasNext()) {
-            Attribute attribute = (Attribute) attributes.next();
+            Settable attribute = (Settable) attributes.next();
             if (attributesValidated.contains(attribute)) {
                 continue;
             }
-
-            if (attribute instanceof ShareableSettable) {
-                // MoMLParser.endDocument has similar code
-                try {
-                    // Get all the shared parameters within the
-                    // the same model as this one.
-                    attributesValidated.addAll(
-                            ((ShareableSettable) attribute).validateShareableSettable());
-                } catch (IllegalActionException ex) {
-                    handleModelError(this, ex);
+            try {
+                Collection validated = ((Settable) attribute).validate();
+                if (validated != null) {
+                    attributesValidated.addAll(validated);
                 }
-            } else {
-                if (attribute instanceof Settable) {
-                    try {
-                        ((Settable) attribute).validate();
-                        attributesValidated.add(attribute);
-                    } catch (IllegalActionException ex) {
-                        handleModelError(this, ex);
-                    }
+                attributesValidated.add(attribute);
+            } catch (IllegalActionException ex) {
+                if (!handleModelError(this, ex)) {
+                    throw ex;
                 }
             }
-            attribute._validateSettables(attributesValidated);
+            ((NamedObj)attribute)._validateSettables(attributesValidated);
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -2677,6 +2693,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   If propagate is true, then this should be a list with with
      *   a single Integer 0 for outside callers, and otherwise it
      *   should be null.
+     *  @param child If non-null, limit to this one child of the
+     *   context. It is an error if the specified child is not
+     *   a child of the context.
      *  @return A list of instances of the same class as this object
      *   which are derived from
      *   this object. The list is empty in this base class, but
@@ -2687,7 +2706,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     private List _getDerivedList(Collection visited, boolean propagate,
             boolean force, NamedObj context, int depth, List override,
-            String relativeName) throws IllegalActionException {
+            String relativeName, NamedObj child) throws IllegalActionException {
         try {
             workspace().getReadAccess();
 
@@ -2741,7 +2760,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 }
 
                 result.addAll(_getDerivedList(visited, propagate, force,
-                        container, depth + 1, newOverride, newRelativeName));
+                        container, depth + 1, newOverride, newRelativeName, null));
             }
 
             if (!(context instanceof Instantiable)) {
@@ -2758,7 +2777,13 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             }
 
             // Iterate over the children.
-            List othersList = ((Instantiable) context).getChildren();
+            List othersList;
+            if (child == null) {
+                othersList = ((Instantiable) context).getChildren();
+            } else {
+                othersList = new LinkedList();
+                othersList.add(new WeakReference(child));
+            }
 
             if (othersList != null) {
                 Iterator others = othersList.iterator();
@@ -2876,7 +2901,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                         // this candidate.
                         result.addAll(candidate._getDerivedList(visited,
                                 propagate, force, candidate, 0, newOverride,
-                                null));
+                                null, null));
 
                         // Note that the above recursive call will
                         // add the candidate to the HashSet, so we

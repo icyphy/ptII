@@ -28,6 +28,7 @@ package ptolemy.data.unit;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -243,9 +244,12 @@ public class UnitAttribute extends AbstractSettableAttribute {
 
     /* Not really relevant to current capability.
      * But has to be included this class implements the Settable interface.
+     * @return Null, indicating that no other instances of Settable are
+     *   validated.
      * @see ptolemy.kernel.util.Settable#validate()
      */
-    public void validate() throws IllegalActionException {
+    public Collection validate() throws IllegalActionException {
+        return null;
     }
 
     ///////////////////////////////////////////////////////////////////

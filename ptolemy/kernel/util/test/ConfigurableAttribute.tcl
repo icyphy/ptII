@@ -185,17 +185,17 @@ test ConfigurableAttribute-4.3 {getExpression from a real file} {
 } {Test file for ConfigurableAttribute
 My Test String}
 
-test ConfigurableAttribute-4.4 {setExpression exception} {
+test ConfigurableAttribute-4.4 {validateSettables exception} {
     set n [java::new ptolemy.kernel.util.NamedObj]
     set c1 [java::new ptolemy.kernel.util.ConfigurableAttribute $n c1]
     set c2 [java::new ptolemy.kernel.util.test.InvalidStringAttribute $c1 c2]
-    catch {$c1 setExpression foo} msg1
+    catch {$c1 validateSettables} msg1
     set c3 [java::new ptolemy.kernel.util.ConfigurableAttribute $n c3]
     set c4 [java::new ptolemy.kernel.util.test.InvalidStringAttribute $c3 \
 	KernelRuntimeException]
-    catch {$c3 setExpression foo} msg2
+    catch {$c3 validateSettables} msg2
 
     list $msg1 $msg2
 } {{ptolemy.kernel.util.IllegalActionException: InvalidStringAttributeAlways throws an exception in validate()
-  in .<Unnamed Object>.c1.c2} {ptolemy.kernel.util.InternalErrorException: Unexpected exception: ptolemy.kernel.util.KernelRuntimeException: Name was "KernelRuntimeException", so we throw it
+  in .<Unnamed Object>.c1.c2} {ptolemy.kernel.util.KernelRuntimeException: Name was "KernelRuntimeException", so we throw it
   in .<Unnamed Object>.c3.KernelRuntimeException}}

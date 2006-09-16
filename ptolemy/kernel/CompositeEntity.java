@@ -1571,56 +1571,63 @@ public class CompositeEntity extends ComponentEntity {
     protected void _validateSettables(Collection attributesValidated)
             throws IllegalActionException {
         super._validateSettables(attributesValidated);
-
         Iterator classes = classDefinitionList().iterator();
-
         while (classes.hasNext()) {
             Entity entity = (Entity) classes.next();
-
             if (entity instanceof Settable) {
                 try {
-                    ((Settable) entity).validate();
+                    Collection validated = ((Settable) entity).validate();
+                    if (validated != null) {
+                        attributesValidated.addAll(validated);
+                    }
+                    attributesValidated.add(entity);
                 } catch (IllegalActionException ex) {
-                    handleModelError(this, ex);
+                    if (!handleModelError(this, ex)) {
+                        throw ex;
+                    }
                 }
             }
-
             entity._validateSettables(attributesValidated);
         }
 
         Iterator entities = entityList().iterator();
-
         while (entities.hasNext()) {
             Entity entity = (Entity) entities.next();
-
             if (entity instanceof Settable) {
                 try {
-                    ((Settable) entity).validate();
+                    Collection validated = ((Settable) entity).validate();
+                    if (validated != null) {
+                        attributesValidated.addAll(validated);
+                    }
+                    attributesValidated.add(entity);
                 } catch (IllegalActionException ex) {
-                    handleModelError(this, ex);
+                    if (!handleModelError(this, ex)) {
+                        throw ex;
+                    }
                 }
             }
-
             entity._validateSettables(attributesValidated);
         }
 
         Iterator relations = relationList().iterator();
-
         while (relations.hasNext()) {
             Relation relation = (Relation) relations.next();
-
             if (relation instanceof Settable) {
                 try {
-                    ((Settable) relation).validate();
+                    Collection validated = ((Settable) relation).validate();
+                    if (validated != null) {
+                        attributesValidated.addAll(validated);
+                    }
+                    attributesValidated.add(relation);
                 } catch (IllegalActionException ex) {
-                    handleModelError(this, ex);
+                    if (!handleModelError(this, ex)) {
+                        throw ex;
+                    }
                 }
             }
-
             relation.validateSettables();
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
