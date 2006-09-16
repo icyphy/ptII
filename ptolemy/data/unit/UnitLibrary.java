@@ -30,7 +30,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Vector;
 
-import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.util.FileUtilities;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
@@ -236,7 +236,7 @@ public class UnitLibrary {
             NamedObj container = new NamedObj();
             momlParser.setContext(container);
 
-            URL inURL = MoMLApplication.specToURL("ptolemy/data/unit/SI.xml");
+            URL inURL = FileUtilities.nameToURL("ptolemy/data/unit/SI.xml", null, null);
 
             // Strangely, the XmlParser does not want as base the
             // directory containing the file, but rather the
