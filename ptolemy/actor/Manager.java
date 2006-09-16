@@ -372,6 +372,7 @@ public class Manager extends NamedObj implements Runnable {
 
                 // This is done again here because actors may throw exceptions
                 // during wrapup().
+                // FIXME: Huh??? Why does this need to be done?  EAL 9/16/06
                 _workspace.incrVersion();
 
                 // Reset this for the next run.
@@ -982,12 +983,12 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         try {
-            _workspace.getWriteAccess();
+            _workspace.getReadAccess();
             _setState(RESOLVING_TYPES);
 
             TypedCompositeActor.resolveTypes((TypedCompositeActor) _container);
         } finally {
-            _workspace.doneWriting();
+            _workspace.doneReading();
         }
     }
 
@@ -1250,6 +1251,8 @@ public class Manager extends NamedObj implements Runnable {
         // change requests.
         setDeferringChangeRequests(false);
 
+        // FIXME: Why is the workspace version incremented?
+        // EAL 9/16/06.
         _workspace.incrVersion();
 
         if (_exitAfterWrapup) {
