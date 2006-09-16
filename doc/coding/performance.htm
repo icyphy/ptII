@@ -9,9 +9,75 @@
 <h1>Performance</h1>
 Contents
 <menu>
+<li> <a href="#eclipse">Eclipse</a>
 <li> <a href="#profiling">Profiling</a>
 <li> <a href="#remoteresources">Remote resources</a>
 </menu>
+
+<h2><a name="Eclipse">Eclipse</a></h2>
+In <a href="http://www.eclipse.org/">Eclipse</a>, use the
+<a href="http://www.eclipse.org/">Test & Performance Tools Platform (TPTP) Project</a>
+<p>See the <a
+href="http://www.eclipse.org/tptp/home/documents/index.html">TPTP Documentation</a>
+<ol>
+<li> Use the <a href="http://www.eclipse.org/emf/updates/">update manager to install EMF"</a>
+<blockquote>
+				Help
+				<ul>
+					<li>
+						Software Updates
+						<ul>
+
+							<li>
+								Find and Install...
+								<ul>
+									<li>
+										Search for new features to install
+										<ul>
+											<li>
+											Add Update Site...<br>
+											* Name: <b>EMF Update Manager Site</b><br>
+
+											* URL: <b><a href="http://download.eclipse.org/tools/emf/updates/site.xml" target="_um">http://download.eclipse.org/tools/emf/updates/site.xml</a></b> (Releases)<br>
+											(or): <b><a href="http://download.eclipse.org/tools/emf/updates/site-interim.xml" target="_um">http://download.eclipse.org/tools/emf/updates/site-interim.xml</a></b> (I, M and S Builds)
+											</li>
+										</ul>
+
+</blockquote>
+
+<li> Use the <a href="http://www.eclipse.org/tptp/home/downloads/installguide/InstallGuide42.html#install_update_manager">update manager to install tptp</a>
+<blockquote>
+<ol>
+	<li>From the <b>Help</b> menu in Eclipse, select <b>Software Updates</b> &gt; <b>Find and Install</b>.</li>
+	<li>Select the <b>Search for new features to install</b> radio button. Click <b>Next</b>.</li>
+
+	<li>Add a new update site by clicking on <b>New Remote Site</b>.</li>
+	<li>Enter the following name and URL and click <b>OK</b>:
+	<ul>
+		<li>Name: TPTP Update site</li>
+		<li>URL: http://eclipse.org/tptp/updates/site.xml</li>
+	</ul>
+
+	</li>
+	<li>Click <b>Finish</b>.</li>
+	<li>In the "Search Results" dialog box, select the features to
+	install. 
+<blockquote>
+<ol>
+<li>Select TPTP 4.2.0
+<li>Unselect the BIRT and Web profiling packages
+</ol>
+</blockquote>
+
+Then click <b>Next</b>.</li>
+	<li>In the "Feature License" dialog box, accept the license and click <b>Next</b>.</li>
+
+	<li>In the "Installation" dialog box, verify the features to be installed and change install location if necessary. Then click <b>Finish</b>.</li>
+	<li>After you click Finish, you will be presented a confirmation about a digital signature. Click <b>Install All</b>.</li>
+	<li>When done, restart your workbench.</li>
+  </ol>
+</blockquote>
+</ol>
 
 <h2><a name="profiling">Profiling</a></h2>
  <p>In JDK1.3, try
