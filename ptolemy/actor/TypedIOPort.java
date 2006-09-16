@@ -196,7 +196,11 @@ public class TypedIOPort extends IOPort implements Typeable {
             Type type = ((TypeAttribute) attribute).getType();
 
             if (type != null) {
-                setTypeEquals(type);
+                // Avoid incrementing the workspace version if the type has
+                // not changed.
+                if (!type.equals(_declaredType) || !type.equals(_resolvedType)) {
+                    setTypeEquals(type);
+                }
             }
         } else {
             super.attributeChanged(attribute);
