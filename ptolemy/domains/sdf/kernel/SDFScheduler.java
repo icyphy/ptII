@@ -34,7 +34,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -487,10 +486,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // It gets populated with the fractional production ratios
         // and is used in the end to set final rates on external ports.
         // This map is initialized to zero.
-        // FIXME: Why a TreeMap?
-        // Why not get this via the container of the receivers?
+        // NOTE: This used to be a TreeMap using DFUtilities.NamedObjComparator().
+        // However, that comparator is very slow.
+        // FIXME: Why not get this via the container of the receivers?
         // or better yet, cache it in the receivers?
-        Map externalRates = new TreeMap(new DFUtilities.NamedObjComparator());
+        Map externalRates = new HashMap();
 
         // Initialize externalRates to zero.
         for (Iterator ports = container.portList().iterator(); ports.hasNext();) {
@@ -565,9 +565,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // The map that we will return.
         // This will be populated with the fraction firing ratios for
         // each actor.
-        // FIXME: Why is this a TreeMap?
-        Map entityToFiringsPerIteration = new TreeMap(
-                new DFUtilities.NamedObjComparator());
+        // NOTE: This used to be a TreeMap using DFUtilities.NamedObjComparator().
+        // However, that comparator is very slow.
+        // Map entityToFiringsPerIteration = new TreeMap(
+        //        new DFUtilities.NamedObjComparator());
+        Map entityToFiringsPerIteration = new HashMap();
 
         if (actorList.size() == 0) {
             // If we've been given
@@ -1207,9 +1209,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
         // An association between each actor and the number of firings
         // for that actor that remain to be simulated.
-        // FIXME: Why a TreeMap?
-        Map firingsRemainingVector = new TreeMap(
-                new DFUtilities.NamedObjComparator());
+        // NOTE: This used to be a TreeMap using DFUtilities.NamedObjComparator().
+        // However, that comparator is very slow.
+        // Map firingsRemainingVector = new TreeMap(
+        //        new DFUtilities.NamedObjComparator());
+        Map firingsRemainingVector = new HashMap();
 
         // Initialized the firingsRemainingVector to the current
         // firing vector.
@@ -1698,8 +1702,9 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      * It gets populated with the fractional production ratios
      * and is used in the end to set final rates on external ports.
      */
-    protected Map _externalRates = new TreeMap(
-            new DFUtilities.NamedObjComparator());
+    protected Map _externalRates = new HashMap();
+    // NOTE: This used to be a TreeMap using DFUtilities.NamedObjComparator().
+    // However, that comparator is very slow.
 
     //private Set _clusteredActors = new HashSet();
     //private Set _clusteredExternalPorts = new HashSet();
