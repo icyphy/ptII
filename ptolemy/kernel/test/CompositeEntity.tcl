@@ -496,13 +496,14 @@ test CompositeEntity-11.1.1 {Test allCompositeEntities and statistics} {
 } {{E1 E2 E5 E6 E8 E9} {E3 E4 E7 E10} {E1 E2 E5 E6 E8 E9} {Size Statistics for .E0
 AtomicEntities: 6
 CompositeEntities: 4
-Relations: 10
+Relations: 12
 Attributes: 6} {Size Statistics for .E0
 AtomicEntities: 6
 CompositeEntities: 4
-Relations: 10
+Relations: 12
 Attributes: 6
 Entities of type "ptolemy.kernel.CompositeEntity": 4}}
+
 ######################################################################
 ####
 # NOTE:  Uses the setup constructed in 11.1.
