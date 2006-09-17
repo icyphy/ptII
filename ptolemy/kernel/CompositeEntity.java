@@ -1323,8 +1323,18 @@ public class CompositeEntity extends ComponentEntity {
                     }
                 }
             }
-           
-            int compositeEntityCount = 0, relationCount = 0;
+            List relationList = relationList();
+            int compositeEntityCount = 0, relationCount = relationList.size();
+            if (clazz != null) {
+                // Search the relations
+                Iterator relations = relationList.iterator();
+                while (relations.hasNext()) {
+                    Relation relation = (Relation) relations.next();
+                    if (clazz.isAssignableFrom(relation.getClass())) {
+                        entityClassCount++;  
+                    }
+                }
+            }
             
             entities = allCompositeEntityList().iterator();
 
@@ -1332,7 +1342,7 @@ public class CompositeEntity extends ComponentEntity {
                 Entity entity = (Entity) entities.next();
                 if (entity instanceof CompositeEntity) {
                     compositeEntityCount++;
-                    List relationList = ((CompositeEntity) entity).relationList();
+                    relationList = ((CompositeEntity) entity).relationList();
                     relationCount += relationList.size(); 
                     if (clazz != null) {
                         if (clazz.isAssignableFrom(entity.getClass())) {
