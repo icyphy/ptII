@@ -110,8 +110,60 @@ New Technology Agent Controller.
 <p>To configure the hostname, navigate to the Preferences menu ( Window > Preferences ) in the Eclipse Workbench and click on "Profiling and Logging". Change the "Agent Controller local port" to 10006. You will also need to select "Host" under "Profiling and Logging" to add a localhost entry with port 10006. 
 (<a href="http://www.eclipse.org/tptp/platform/documents/tutorials/jvmti/jvmti-images/img2-1.png">fig 2.1</a>)
 </blockquote>
-<li>
+</ol> Do Run -&gt; Profiler -&gt; Monitor and select 
+<code>Java Profiling with Instrumentation</code>.
+<li> Run the profiler
+
+<li> In the Profile view, you should be able
+to start and stop the profiler
 </ol>
+
+<h4>Problems</h4>
+<dl>
+<dt> <code>org.eclipse.core.runtime.CoreException</code>
+<dd>
+<pre>
+org.eclipse.core.runtime.CoreException
+The process launcher seems to be inactive.  Restart the Agent Controller and try again.
+
+org.eclipse.core.runtime.CoreException: The process launcher seems to be inactive.  Restart the Agent Controller and try again.
+  at org.eclipse.tptp.trace.ui.internal.launcher.core.LauncherUtility.createCoreException(LauncherUtility.java:115)
+  at org.eclipse.tptp.trace.ui.internal.launcher.core.LauncherUtility.createCoreException(LauncherUtility.java:123)
+  at org.eclipse.tptp.platform.jvmti.client.internal.launcher.TIDelegateHelper.handleError(TIDelegateHelper.java:278)
+  at org.eclipse.tptp.platform.jvmti.client.internal.launcher.TIDelegateHelper.launchProcess(TIDelegateHelper.java:264)
+  at org.eclipse.tptp.platform.jvmti.client.internal.launcher.TIDelegateHelper.launch(TIDelegateHelper.java:173)
+  at org.eclipse.tptp.platform.jvmti.client.internal.launcher.TIJavaLauncherDelegate.launch(TIJavaLauncherDelegate.java:37)
+  at org.eclipse.tptp.trace.ui.provisional.launcher.PrimaryLaunchDelegate.run(PrimaryLaunchDelegate.java:249)
+  at java.lang.Thread.run(Thread.java:595)
+</pre>
+<ol>
+<li>In Window -&gt; Preferences -&gt; "Profiling and Logging", make sure that
+port 10006 is selected and click on the test button.
+<li>In Run -&gt; Profile -&gt; Monitor, select "Java Profilin with Instrumentation" and click on the "Test availability" button.
+<pre> 
+The JVMTI agent org.eclipse.tptp.jvmti is not available.
+Make sure that the agent's libraries are available and that
+it is configured properly
+<pre>
+<p>See <a href="http://dev.eclipse.org/newslists/news.eclipse.tptp/msg02385.html">Re: jvmti agent</a>
+<p>It looks like the <code>javaprofiler.all_platforms-TPTP-4.2.0.2.zip</code>
+file should not be extracted in the Agent Controller home directory, it
+does not put the files in the plugin directory, instead it created a 
+<code>tptp</code> directory that has platform specific files in it.
+In the Agent Controller directory, either
+<ul>
+<li move the 
+<code>tptp/javaprofiler/win_ia32/plugins/org.eclipse.tptp.javaprofiler/</code>
+directory to
+<code>plugins</code>
+<li><b>or</b>
+Download the <a href="http://www.eclipse.org/downloads/download.php?file=/tptp/4.2.0.2/TPTP-4.2.0.2-200608021100/javaprofiler.win_ia32-TPTP-4.2.0.2.zip">JVMTI Agent controller extension for Windows-IA32 Runtime</a> and unzip it in
+the Agent Controller directory.
+<li>In the Agent Controller <code>bin</code> directory,
+rerun <code>SetConfig.bat</code> and restart <code>ACServer</code>
+<li>In Eclipse: run -&gt; Profile -&gt; Monitor, select "Java Profilin with Instrumentation" and click on the "Test availability" button.
+
+</dl>
 
 <h2>Simple timing</h2>
 One simple way to time a run is to modify
