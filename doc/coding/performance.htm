@@ -85,6 +85,34 @@ Then click <b>Next</b>.</li>
 java -Xrunhprof:help
 </pre>
 
+<h3>Java 1.5 profiler and Eclipse</h3>
+<a href="http://www.eclipse.org/tptp/platform/documents/tutorials/jvmti/Java_Application_Profiling_using_TPTP-v2.0.html">Profiling J2SW 5.0 based applications using Eclipse</a>
+
+<ol>
+<li> Install the New Technology Agent Controller version 4.2+.
+  <ol>
+  <li>See the <a href="http://www.eclipse.org/tptp/home/downloads/installguide/agentcontroller_42/win_ia32/getting_started.html">Agent Controller 4.2 Windows IA32 Getting Started Guide</a>
+  <li> Download the TPTP New Technology Agent Controller version 4.2+.
+  (<a href="http://www.eclipse.org/downloads/download.php?file=/tptp/4.2.0.2/TPTP-4.2.0.2-200608021100/agntctrl.win_ia32-TPTP-4.2.0.2.zip">Agent Controller 4.2.0.2 Windows-IA32</a>) and unzip in any directory.
+  <li> Go to the <code>bin/</code> directory of the Agent Controller and
+  run <code>SetConfig.bat</code>.
+  <li>While in the Agent Controller <code>bin/</code> directory,
+   start the Agent Controller with <code>./ACServer.exe</code>.
+</ol>
+<li> Download the <a href="http://www.eclipse.org/downloads/download.php?file=/tptp/4.2.0.2/TPTP-4.2.0.2-200608021100/jvmti-client-TPTP-4.2.0.2.zip">JVMTI Client</a> and unzip it in the Eclipse directory
+<li> Download the <a href="http://www.eclipse.org/downloads/download.php?file=/tptp/4.2.0.2/TPTP-4.2.0.2-200608021100/javaprofiler.win_ia32-TPTP-4.2.0.2.zip">New Java Profiler</a> and unzip it in the same directory as the
+New Technology Agent Controller.
+<li> Restart Eclipse
+<li> See <a href="http://www.eclipse.org/tptp/platform/documents/tutorials/jvmti/Java_Application_Profiling_using_TPTP-v2.0.html#2.4">2.4 Configuring The Eclipse Client</a>:
+<blockquote>
+ The New Java Profiler works with the New Technology Agent Controller. The client should be configured to connect to the New Technology Agent Controller port. This is configured in the file "serviceConfig.xml" in the <New Technology Agent Controller install-home>/config directory. The default client connection port number of the New Technology Agent Controller is 10006.
+
+<p>To configure the hostname, navigate to the Preferences menu ( Window > Preferences ) in the Eclipse Workbench and click on "Profiling and Logging". Change the "Agent Controller local port" to 10006. You will also need to select "Host" under "Profiling and Logging" to add a localhost entry with port 10006. 
+(<a href="http://www.eclipse.org/tptp/platform/documents/tutorials/jvmti/jvmti-images/img2-1.png">fig 2.1</a>)
+</blockquote>
+<li>
+</ol>
+
 <h2>Simple timing</h2>
 One simple way to time a run is to modify
 the <CODE>run()</CODE> method in ptolemy.actor.Manager so that
