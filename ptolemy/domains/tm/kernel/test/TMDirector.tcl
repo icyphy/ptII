@@ -196,8 +196,8 @@ test TMDirector-5.1 {run a simple model } {
     # This hack is necessary because of problems with crnl under windows
     regsub -all [java::call System getProperty "line.separator"] \
 	        [$stream toString] "\n" debugOutput
-    # Only get the first 18 chars
-    set shortDebugOutput [string range "$debugOutput" 0 18]
+    # Only get the first 35 chars
+    set shortDebugOutput [string range "$debugOutput" 0 34]
     list \
 	[enumToTokenValues [$rec1 getRecord 0]] \
 	[enumToTokenValues [$rec2 getRecord 0]] \
@@ -228,7 +228,8 @@ ramp1	2.0	3
 ramp1	2.0	1
 rec1	2.0	3
 rec1	2.0	1
-} {Updating TMDirector}}
+} {.top.TMDirector Preinitializing ...}}
+
 test TMDirector-5.2 {run a simple model with different priorities } {
     # Uses test 5.1 above
     $priorityRamp1 setToken [java::new ptolemy.data.IntToken 2]
