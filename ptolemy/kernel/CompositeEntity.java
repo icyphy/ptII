@@ -1284,6 +1284,8 @@ public class CompositeEntity extends ComponentEntity {
      */
     public String statistics(String className) 
         throws IllegalActionException {
+        // FIXME: The right way to do this is to have each class 
+        // in the hierarchy have a statistics method.
         try {
             _workspace.getReadAccess();
             
@@ -1367,7 +1369,7 @@ public class CompositeEntity extends ComponentEntity {
                 + "\nRelations: " + relationCount
                 + "\nAttributes: " + attributeCount
                 + (clazz == null ? "" :
-                    "\nEntities of type \"" + clazz 
+                    "\nEntities of type \"" + clazz.getName() 
                     + "\": " + entityClassCount);   
         } finally {
             _workspace.doneReading();
