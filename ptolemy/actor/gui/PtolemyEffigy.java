@@ -468,11 +468,12 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         }
 
                         if (toplevel != null) {
-                            if (endTime > startTime + 10000 && toplevel instanceof CompositeEntity) {
+                            String entityClassName = StringUtilities.getProperty("entityClassName");
+                            if ((entityClassName.length() > 0 || endTime > startTime + 10000) && toplevel instanceof CompositeEntity) {
                                 //System.out.println("Opened " + input + " in " 
                                 //        + (System.currentTimeMillis() - startTime)
                                 //        + " ms.");
-                                String entityClassName = StringUtilities.getProperty("entityClassName");
+                                
                                 System.out.println(((CompositeEntity)toplevel).statistics(entityClassName));
                             }
                             effigy.setModel(toplevel);
