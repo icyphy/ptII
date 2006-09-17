@@ -443,9 +443,14 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 
                 try {
                     try {
+                        long startTime = 0;
+                        long endTime = 0;
                         // If the following fails, we should remove the effigy.
                         try {
+//                          Report on the time it takes to open the model.
+                            startTime = System.currentTimeMillis();
                             toplevel = parser.parse(base, input);
+                            endTime = System.currentTimeMillis();
                         } catch (IOException io) {
                             // If we are running under Web Start, we
                             // might have a URL that refers to another
@@ -454,13 +459,22 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                     .jarURLEntryResource(input.toString());
 
                             if (anotherURL != null) {
+                                startTime = System.currentTimeMillis();
                                 toplevel = parser.parse(base, anotherURL);
+                                endTime = System.currentTimeMillis();
                             } else {
                                 throw io;
                             }
                         }
 
                         if (toplevel != null) {
+                            if (endTime > startTime + 10000 && toplevel instanceof CompositeEntity) {
+                                //System.out.println("Opened " + input + " in " 
+                                //        + (System.currentTimeMillis() - startTime)
+                                //        + " ms.");
+                                String entityClassName = StringUtilities.getProperty("entityClassName");
+                                System.out.println(((CompositeEntity)toplevel).statistics(entityClassName));
+                            }
                             effigy.setModel(toplevel);
 
                             // A MoMLFilter may have modified the model
