@@ -79,12 +79,6 @@ Then click <b>Next</b>.</li>
 </blockquote>
 </ol>
 
-<h2><a name="profiling">Profiling</a></h2>
- <p>In JDK1.3, try
-<pre>
-java -Xrunhprof:help
-</pre>
-
 <h3>Java 1.5 profiler and Eclipse</h3>
 <a href="http://www.eclipse.org/tptp/platform/documents/tutorials/jvmti/Java_Application_Profiling_using_TPTP-v2.0.html">Profiling J2SW 5.0 based applications using Eclipse</a>
 
@@ -110,7 +104,7 @@ New Technology Agent Controller.
 <p>To configure the hostname, navigate to the Preferences menu ( Window > Preferences ) in the Eclipse Workbench and click on "Profiling and Logging". Change the "Agent Controller local port" to 10006. You will also need to select "Host" under "Profiling and Logging" to add a localhost entry with port 10006. 
 (<a href="http://www.eclipse.org/tptp/platform/documents/tutorials/jvmti/jvmti-images/img2-1.png">fig 2.1</a>)
 </blockquote>
-</ol> Do Run -&gt; Profiler -&gt; Monitor and select 
+<li> Do Run -&gt; Profiler -&gt; Monitor and select 
 <code>Java Profiling with Instrumentation</code>.
 <li> Run the profiler
 
@@ -164,6 +158,14 @@ rerun <code>SetConfig.bat</code> and restart <code>ACServer</code>
 <li>In Eclipse: run -&gt; Profile -&gt; Monitor, select "Java Profilin with Instrumentation" and click on the "Test availability" button.
 
 </dl>
+
+
+<h2><a name="profiling">Profiling</a></h2>
+ <p>In JDK1.3, try
+<pre>
+java -Xrunhprof:help
+</pre>
+
 
 <h2>Simple timing</h2>
 One simple way to time a run is to modify
