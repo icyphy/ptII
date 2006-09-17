@@ -29,6 +29,7 @@ package jni;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.StringTokenizer;
 
 import ptolemy.kernel.util.AbstractSettableAttribute;
@@ -584,14 +585,17 @@ public class Argument extends AbstractSettableAttribute {
     }
 
     /** Notify the container that an attribute has changed.
-     *   @exception IllegalActionException If a error occurs
+     *  @return A collection of settables that are also validated as a
+     *  side effect, or null if there are none.
+     *  @exception IllegalActionException If a error occurs
      */
-    public void validate() throws IllegalActionException {
+    public Collection validate() throws IllegalActionException {
         NamedObj container = getContainer();
 
         if (container != null) {
             container.attributeChanged(this);
         }
+        return null;
     }
 
     ///////////////////////////////////////////////////////////////////
