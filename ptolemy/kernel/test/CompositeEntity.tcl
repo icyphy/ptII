@@ -127,6 +127,22 @@ test CompositeEntity-3.1 {Test deepGetEntities} {
 ######################################################################
 ####
 #
+test CompositeEntity-3.1.1 {Test allCompositeEntityList} {
+    # Uses 3.1 above
+    list [listToNames [$a allCompositeEntityList]] \
+            [listToNames [$c allCompositeEntityList]] \
+            [listToNames [$a allAtomicEntityList]] \
+            [listToNames [$c allAtomicEntityList]] \
+            [$a statistics ""]
+} {C {} {B D} D {Size Statistics for .A
+AtomicEntities: 2
+CompositeEntities: 1
+Relations: 0
+Attributes: 2}}
+
+######################################################################
+####
+#
 test CompositeEntity-3.2 {Test numEntities} {
     set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
@@ -468,6 +484,25 @@ test CompositeEntity-11.1 {Test deepLinkedEntities on component relations} {
             $r10 $r11 $r12
 } {P1 {P1 P9 P14 P10 P5 P3} {P1 P2} {P1 P3 P9 P14 P10} {P1 P3 P5} {P3 P6} {P1 P3 P9 P14 P10} {P9 P1 P3 P10} {P10 P1 P3 P9 P14} {P9 P1 P3 P10} {P9 P1 P3 P10} {P14 P1 P3 P10}}
 
+######################################################################
+####
+# NOTE:  Uses the setup constructed in 11.1.
+test CompositeEntity-11.1.1 {Test allCompositeEntities and statistics} {
+    list [listToNames [$e0 allAtomicEntityList]] \
+         [listToNames [$e0 allCompositeEntityList]] \
+         [listToNames [$e0 deepEntityList]] \
+            [$e0 statistics [java::null]] \
+            [$e0 statistics ptolemy.kernel.CompositeEntity]
+} {{E1 E2 E5 E6 E8 E9} {E3 E4 E7 E10} {E1 E2 E5 E6 E8 E9} {Size Statistics for .E0
+AtomicEntities: 6
+CompositeEntities: 4
+Relations: 10
+Attributes: 6} {Size Statistics for .E0
+AtomicEntities: 6
+CompositeEntities: 4
+Relations: 10
+Attributes: 6
+Entities of type "ptolemy.kernel.CompositeEntity": 4}}
 ######################################################################
 ####
 # NOTE:  Uses the setup constructed in 11.1.

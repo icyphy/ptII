@@ -197,6 +197,43 @@ public class CompositeEntity extends ComponentEntity {
         return entities;
     }
 
+    /** Return a list that consists of all the composite entities in a model.
+     *  This method differs from allAtomicEntityList() in that this method
+     *  returns CompositeEntities and allAtomicEntityList() returns atomic entities.
+     *  This method differs from {@link #deepEntityList()} in that
+     *  this method looks inside opaque entities, whereas deepEntityList()
+     *  does not. The returned list does not include any entities that
+     *  are class definitions.
+     *  @return a List of all Composite entities in the model.
+     */
+    public List allCompositeEntityList() {
+        try {
+            _workspace.getReadAccess();
+
+            LinkedList result = new LinkedList();
+
+            // This might be called from within a superclass constructor,
+            // in which case there are no contained entities yet.
+            if (_containedEntities != null) {
+                Iterator entities = _containedEntities.elementList().iterator();
+
+                while (entities.hasNext()) {
+                    ComponentEntity entity = (ComponentEntity) entities.next();
+                    if (/*!entity.isClassDefinition()&& */ !entity.isOpaque() /*entity instanceof CompositeEntity*/) {
+                        result.add((CompositeEntity) entity);
+                        result.addAll(((CompositeEntity) entity)
+                                    .allCompositeEntityList());
+
+                    }
+                }
+            }
+
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     /** Allow or disallow connections that are created using the connect()
      *  method to cross levels of the hierarchy.
      *  The default is that such connections are disallowed.
@@ -522,6 +559,7 @@ public class CompositeEntity extends ComponentEntity {
      *  This method is read-synchronized on the workspace.
      *  @return A list of opaque ComponentEntity objects.
      *  @see #classDefinitionList()
+     *  @see #allAtomicEntityList()
      */
     public List deepEntityList() {
         try {
@@ -1236,6 +1274,69 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** Return a string describing how many actors, parameters,
+     * ports, and relations it has.
+     * @param entityClassName If non-null and non-empty, then also
+     * include the number of entity with the give name.
+     * @return a string describing the number of components.
+     * @exception IllegalActionException If the class named by
+     * actorClassName cannot be found.
+     */
+    public String statistics(String entityClassName) 
+        throws IllegalActionException {
+        try {
+            _workspace.getReadAccess();
+            
+            Class entityClass = null;
+            try {
+                if (entityClassName != null 
+                        && entityClassName.length() > 0) {
+                    entityClass = Class.forName(entityClassName);
+                }
+            } catch (Exception ex) {
+                throw new IllegalActionException(null, ex,
+                        "Failed to instantiate \"" + entityClassName
+                        + "\"");
+            }
+    
+            List atomicEntities = allAtomicEntityList();
+            int entityCount = atomicEntities.size();
+            
+            int  attributeCount = 0, entityClassCount = 0;
+            Iterator entities = atomicEntities.iterator();
+            while (entities.hasNext()) {
+                ComponentEntity entity = (ComponentEntity) entities.next();
+                attributeCount += entity.attributeList().size();
+                if (entityClass != null && entityClass.isAssignableFrom(entity.getClass())) {
+                    entityClassCount++;
+                }
+            }
+           
+            int compositeEntityCount = 0, relationCount = 0;
+            
+            entities = allCompositeEntityList().iterator();
+
+            while (entities.hasNext()) {
+                Entity entity = (Entity) entities.next();
+                if (entity instanceof CompositeEntity) {
+                    compositeEntityCount++;
+                    relationCount += ((CompositeEntity) entity).relationList().size(); 
+                }
+            }
+            
+            return  "Size Statistics for " + getFullName()
+                + "\nAtomicEntities: " + entityCount
+                + "\nCompositeEntities: " + compositeEntityCount
+                + "\nRelations: " + relationCount
+                + "\nAttributes: " + attributeCount
+                + (entityClass == null ? "" :
+                    "\nEntities of type \"" + entityClassName 
+                    + "\": " + entityClassCount);   
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+    
     /** Return a name that is guaranteed to not be the name of
      *  any contained attribute, port, class, entity, or relation.
      *  In this implementation, the argument
