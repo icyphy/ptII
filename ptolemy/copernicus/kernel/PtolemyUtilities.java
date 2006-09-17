@@ -1884,7 +1884,7 @@ public class PtolemyUtilities {
         setExpressionMethod = settableClass.getMethodByName("setExpression");
         getExpressionMethod = settableClass
                 .getMethod("java.lang.String getExpression()");
-        validateMethod = settableClass.getMethod("void validate()");
+        validateMethod = settableClass.getMethod("java.util.Collection validate()");
 
         stringAttributeClass = Scene.v().loadClassAndSupport(
                 "ptolemy.kernel.util.StringAttribute");
