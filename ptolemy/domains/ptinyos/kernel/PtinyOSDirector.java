@@ -835,20 +835,22 @@ public class PtinyOSDirector extends Director {
     /** Returns a selected channel, or null if none.
      *  
      *  @param selector
-     *  @param notNullIfClosing TRUE if returning NULL, otherwise left as is.  
-     *      We use notNullIfClosing because of threading issues discussed in:
-     *      @see selectorClose(Selector selector)
-     *  @param opAccept True if this SelectionKey option that should be enabled 
-     *      when returning a non-null SelectableChannel.
-     *  @param opConnect True if this SelectionKey option that should be enabled 
-     *      when returning a non-null SelectableChannel.
-     *  @param opRead True if this SelectionKey option that should be enabled 
-     *      when returning a non-null SelectableChannel.
-     *  @param opWrite True if this SelectionKey option that should be enabled 
-     *      when returning a non-null SelectableChannel.
+     *  @param notNullIfClosing TRUE if returning NULL, otherwise left
+     *  as is.  We use notNullIfClosing because of threading issues
+     *  discussed in {@link #selectorClose(Selector selector)}.
+     *  @param opAccept True if this SelectionKey option that should
+     *  be enabled when returning a non-null SelectableChannel.
+     *  @param opConnect True if this SelectionKey option that should
+     *  be enabled when returning a non-null SelectableChannel.
+     *  @param opRead True if this SelectionKey option that should be
+     *  enabled when returning a non-null SelectableChannel.
+     *  @param opWrite True if this SelectionKey option that should be
+     *  enabled when returning a non-null SelectableChannel.
      *  @return The selected channel, or null if none.
      */
-    public SelectableChannel selectSocket(Selector selector, boolean[] notNullIfClosing, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {
+    public SelectableChannel selectSocket(Selector selector,
+            boolean[] notNullIfClosing, boolean opAccept, boolean opConnect,
+            boolean opRead, boolean opWrite) {
         notNullIfClosing[0] = false;
         try {
             // Wait for an event

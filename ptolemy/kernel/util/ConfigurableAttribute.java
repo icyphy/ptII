@@ -299,8 +299,9 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
         _visibility = visibility;
     }
 
-    /** Validate this attribute by calling {@link value()}.
-     *  Notify the container and listeners that the value of this attribute has changed.
+    /** Validate this attribute by calling {@link #value()}.
+     *  Notify the container and listeners that the value of this
+     *  attribute has changed.
      *  @return A list of contained instances of Settable.
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
