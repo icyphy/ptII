@@ -1276,26 +1276,26 @@ public class CompositeEntity extends ComponentEntity {
 
     /** Return a string describing how many actors, parameters,
      * ports, and relations it has.
-     * @param entityClassName If non-null and non-empty, then also
-     * include the number of entity with the give name.
+     * @param className If non-null and non-empty, then also
+     * include the number of objects with the give name.
      * @return a string describing the number of components.
      * @exception IllegalActionException If the class named by
      * actorClassName cannot be found.
      */
-    public String statistics(String entityClassName) 
+    public String statistics(String className) 
         throws IllegalActionException {
         try {
             _workspace.getReadAccess();
             
-            Class entityClass = null;
+            Class clazz = null;
             try {
-                if (entityClassName != null 
-                        && entityClassName.length() > 0) {
-                    entityClass = Class.forName(entityClassName);
+                if (className != null 
+                        && className.length() > 0) {
+                    clazz = Class.forName(className);
                 }
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex,
-                        "Failed to instantiate \"" + entityClassName
+                        "Failed to instantiate \"" + className
                         + "\"");
             }
     
@@ -1306,9 +1306,21 @@ public class CompositeEntity extends ComponentEntity {
             Iterator entities = atomicEntities.iterator();
             while (entities.hasNext()) {
                 ComponentEntity entity = (ComponentEntity) entities.next();
-                attributeCount += entity.attributeList().size();
-                if (entityClass != null && entityClass.isAssignableFrom(entity.getClass())) {
-                    entityClassCount++;
+                List attributeList = entity.attributeList();
+                attributeCount += attributeList.size();
+                if (clazz != null) {
+                    if (clazz.isAssignableFrom(entity.getClass())) {
+                        entityClassCount++;
+                    } else {
+                        // Search the attributes
+                        Iterator attributes = attributeList.iterator();
+                        while (attributes.hasNext()) {
+                            Attribute attribute = (Attribute) attributes.next();
+                            if (clazz.isAssignableFrom(attribute.getClass())) {
+                                entityClassCount++;
+                            }  
+                        }
+                    }
                 }
             }
            
@@ -1320,7 +1332,22 @@ public class CompositeEntity extends ComponentEntity {
                 Entity entity = (Entity) entities.next();
                 if (entity instanceof CompositeEntity) {
                     compositeEntityCount++;
-                    relationCount += ((CompositeEntity) entity).relationList().size(); 
+                    List relationList = ((CompositeEntity) entity).relationList();
+                    relationCount += relationList.size(); 
+                    if (clazz != null) {
+                        if (clazz.isAssignableFrom(entity.getClass())) {
+                            entityClassCount++;
+                        } else {
+                            // Search the relations
+                            Iterator relations = relationList.iterator();
+                            while (relations.hasNext()) {
+                                Relation relation = (Relation) relations.next();
+                                if (clazz.isAssignableFrom(relation.getClass())) {
+                                    entityClassCount++;
+                                }  
+                            }
+                        }
+                    }
                 }
             }
             
@@ -1329,8 +1356,8 @@ public class CompositeEntity extends ComponentEntity {
                 + "\nCompositeEntities: " + compositeEntityCount
                 + "\nRelations: " + relationCount
                 + "\nAttributes: " + attributeCount
-                + (entityClass == null ? "" :
-                    "\nEntities of type \"" + entityClassName 
+                + (clazz == null ? "" :
+                    "\nEntities of type \"" + clazz 
                     + "\": " + entityClassCount);   
         } finally {
             _workspace.doneReading();
