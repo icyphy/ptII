@@ -110,8 +110,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      * actorName.
      * 
      * @param paramName The parameter name.
-     * @param actorNmae The contained actor name.
-     * @throw PtalonRuntimeException If the parameter or actor
+     * @param actorName The contained actor name.
+     * @throws PtalonRuntimeException If the parameter or actor
      * do not exist.
      */
     public String addActorParameter(String paramName, String actorName)
@@ -331,7 +331,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      * Add the attribute, and if attribute is a PtalonParameter,
      * add it to a list of Ptalon parameters.
      * @exception NameDuplicationException If the superclass throws it.
-     * @thrwos IllegalActionException If the superclass throws it.
+     * @throws IllegalActionException If the superclass throws it.
      */
     protected void _addAttribute(Attribute p) throws NameDuplicationException,
             IllegalActionException {

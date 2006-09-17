@@ -298,7 +298,7 @@ public class NestedActorManager extends CodeManager {
 
     /**
      * Enter the named actor declaration.
-     * @param scope The name of the actor declaration.
+     * @param name The name of the actor declaration.
      * @exception PtalonRuntimeException If such an actor declaration does not exist.
      */
     public void enterActorDeclaration(String name) throws PtalonRuntimeException {

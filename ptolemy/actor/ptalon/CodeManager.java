@@ -688,7 +688,7 @@ public class CodeManager {
      * a sub-block of the current if statement.  This is
      * called when loading an existsing Ptalon actor from
      * a PtalonML description.
-     * @name The name of the if statement.
+     * @param name The name of the if statement.
      */
     public void pushIfStatement(String name) {
         if (_firstPushWithString) {
@@ -715,7 +715,6 @@ public class CodeManager {
      * @exception PtalonRuntimeException If an exception is thrown trying to
      * change the name.
      *
-     * @param name
      * @exception PtalonRuntimeException
      */
     public void setActor(String name) throws PtalonRuntimeException {
