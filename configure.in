@@ -2580,7 +2580,7 @@ else
 	AC_MSG_RESULT([$ANTLR_DIR])
 	PTPTALON_DIR=ptalon
 	# PTALON_PACKAGES is used in $PTII/doc/makefile
-	PTPTALON_PACKAGES="ptolemy.actor.ptalon ptolemy.ptalon"
+	PTPTALON_PACKAGES="ptolemy.actor.ptalon"
     else  
         AC_MSG_WARN([Failed to find PTII/ptolemy/actor/ptalon/antlr/antlr.jar
     If it is not present, you will not be able to use the 
