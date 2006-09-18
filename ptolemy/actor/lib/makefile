@@ -181,6 +181,7 @@ JSRCS = \
 	Stop.java \
 	StringConst.java \
 	Subscriber.java \
+	SubscriptionAggregator.java \
 	Switch.java \
 	Synchronizer.java \
 	Test.java \
