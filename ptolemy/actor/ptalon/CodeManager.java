@@ -745,8 +745,10 @@ public class CodeManager {
         _root.setStatus(symbol, true);
         try {
             _imports.put(symbol, _actor.ptalonCodeLocation.asFile());
-            String uniqueName = _actor.getContainer().uniqueName(symbol);
-            _actor.setName(uniqueName);
+            if (!_actor.getName().startsWith(symbol)) {
+                    String uniqueName = _actor.getContainer().uniqueName(symbol);
+                    _actor.setName(uniqueName);
+            }
         } catch (Exception e) {
             throw new PtalonScopeException("Unable to access file for " + symbol, e);
         }

@@ -35,21 +35,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
-import antlr.debug.misc.ASTFrame;
-
-import com.microstar.xml.XmlParser;
-
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.StringToken;
-import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.FileParameter;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -58,6 +52,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
+
+import com.microstar.xml.XmlParser;
 
 //////////////////////////////////////////////////////////////////////////
 ////PtalonActor
@@ -97,9 +93,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         super(container, name);
         setClassName("ptolemy.actor.ptalon.PtalonActor");
         ptalonCodeLocation = new FileParameter(this, "ptalonCodeLocation");
-        astCreated = new ExpertParameter(this, "astCreated");
-        astCreated.setTypeEquals(BaseType.BOOLEAN);
-        astCreated.setExpression("false");
+        astCreated = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -312,12 +306,10 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     ////                        public members                     ////
 
     /**
-     * An invisible parameter whose value is true if the 
-     * AST has been created.  We use this instead of a boolean
-     * as a way for the value to persist when a PtalonActor is
-     * saved and reopened elsewhere.
+     * An boolean whose value is true if the 
+     * AST has been created.
      */
-    public ExpertParameter astCreated;
+    public boolean astCreated;
 
     /**
      * The location of the Ptalon code.
@@ -352,7 +344,13 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         try {
-            if (astCreated.getExpression().equals("true")) {
+            for (Object att : attributeList()) {
+                if (!(att instanceof Parameter)) {
+                    Attribute attribute = (Attribute) att;
+                    attribute.exportMoML(output, depth);
+                }
+            }
+            if (astCreated) {
                 String filename;
                 try {
                     filename = ptalonCodeLocation.asFile().toURI().toString();
@@ -388,18 +386,6 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 output.write(_getIndentPrefix(depth) + "</configure>\n");
             }
 
-            /*            
-            output.write(_getIndentPrefix(depth + 1) + "<ptaloninfo>\n");
-            if (_ast != null) {
-                _ast.xmlSerialize(output, depth + 2);
-            }
-            if (_codeManager != null) {
-                output.write(_getIndentPrefix(depth + 2) + "<codemanager>\n");
-                _codeManager.xmlSerialize(output, depth + 3);
-                output.write(_getIndentPrefix(depth + 2) + "</codemanager>\n");
-            }
-            output.write(_getIndentPrefix(depth + 1) + "</ptaloninfo>\n");
-            */
         } catch (IOException e) {
             e.printStackTrace();
             throw e;
@@ -416,7 +402,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      */
     private void _initializePtalonCodeLocation() throws IllegalActionException {
         try {
-            if (astCreated.getExpression().equals("true")) {
+            if (astCreated) {
                 ptalonCodeLocation.setVisibility(Settable.NOT_EDITABLE);
                 return;
             }
@@ -441,7 +427,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     .setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
             populator.actor_definition(_ast, _codeManager);
             _ast = (PtalonAST) populator.getAST();
-            astCreated.setExpression("true");
+            astCreated = true;
             ptalonCodeLocation.setVisibility(Settable.NOT_EDITABLE);
         } catch (Exception e) {
             e.printStackTrace();
