@@ -140,10 +140,13 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
             if (castPort.isInput() && (getDirector() != null)) {
                 try {
+                    workspace().getWriteAccess();
                     castPort.createReceivers();
                 } catch (IllegalActionException ex) {
                     // Should never happen.
                     throw new InternalErrorException("cannot create receivers.");
+                } finally {
+                    workspace().doneWriting();
                 }
             }
         }
@@ -633,10 +636,14 @@ public class AtomicActor extends ComponentEntity implements Actor {
      */
     protected void _createReceivers() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-            inputPort.createReceivers();
+        try {
+            workspace().getWriteAccess();
+            while (inputPorts.hasNext()) {
+                IOPort inputPort = (IOPort) inputPorts.next();
+                inputPort.createReceivers();
+            }
+        } finally {
+            workspace().doneWriting();
         }
     }
 

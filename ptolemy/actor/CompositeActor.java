@@ -1226,9 +1226,14 @@ public class CompositeActor extends CompositeEntity implements Actor {
     protected void _createReceivers() throws IllegalActionException {
         Iterator ports = portList().iterator();
 
-        while (ports.hasNext()) {
-            IOPort onePort = (IOPort) ports.next();
-            onePort.createReceivers();
+        try {
+            workspace().getWriteAccess();
+            while (ports.hasNext()) {
+                IOPort onePort = (IOPort) ports.next();
+                onePort.createReceivers();
+            }
+        } finally {
+            workspace().doneWriting();
         }
     }
 
