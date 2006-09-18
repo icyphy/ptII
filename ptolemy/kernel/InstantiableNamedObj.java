@@ -413,6 +413,31 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
         return _isClassDefinition;
     }
 
+    /** Return true if this object is a class definition or is within
+     *  a class definition, which means that
+     *  any container above it in the hierarchy is
+     *  a class definition.
+     *  @return True if this object is within a class definition.
+     *  @see #setClassDefinition(boolean)
+     *  @see Instantiable
+     */
+    public final boolean isWithinClassDefinition() {
+        if (_isClassDefinition) {
+            return true;
+        } else {
+            NamedObj container = getContainer();
+            while (container != null) {
+                if (container instanceof InstantiableNamedObj) {
+                    if (((InstantiableNamedObj)container)._isClassDefinition) {
+                        return true;
+                    }
+                }
+                container = container.getContainer();
+            }
+            return false;
+        }
+    }
+
     /** Specify whether this object is a class definition.
      *  This method is write synchronized on the workspace.
      *  @param isClass True to make this object a class definition, false
