@@ -40,6 +40,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -65,7 +66,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  Publisher-Subscriber pairs. That is, the type of the Subscriber
  output will match the type of the Publisher input.
  
- @author Edward A. Lee
+ @author Edward A. Lee, Raymond A. Cardillo
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Green (cxh)
@@ -73,7 +74,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class Subscriber extends TypedAtomicActor {
 
-    /** Construct a publisher with the specified container and name.
+    /** Construct a subscriber with the specified container and name.
      *  @param container The container actor.
      *  @param name The name of the actor.
      *  @exception IllegalActionException If the actor is not of an acceptable
@@ -134,11 +135,30 @@ public class Subscriber extends TypedAtomicActor {
             String newValue = channel.stringValue();
             if (!newValue.equals(_channel)) {
                 _channel = newValue;
-                _updateLinks();
+                // If we are within a class definition, then we should
+                // not create any links.  The links should only exist
+                // within instances. Otherwise, we could end up creating
+                // a link between a class definition and an instance.
+                if (!isWithinClassDefinition()) {
+                    _updateLinks();
+                }
             }
         } else {
             super.attributeChanged(attribute);
         }
+    }
+    
+    /** Determine whether a channel name matches this subscriber.
+     *  This base class returns true if the specified string
+     *  is equal to the value of the <i>channel</i> parameter.
+     *  @param channelName A channel name.
+     *  @return True if this subscriber subscribes to the specified channel.
+     */
+    protected boolean channelMatches(String channelName) {
+        if (_channel == null) {
+            return false;
+        }
+        return _channel.equals(channelName);
     }
 
     /** Read at most one input token from each input
@@ -189,15 +209,50 @@ public class Subscriber extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         if (container != getContainer()) {
             super.setContainer(container);
-            _updateLinks();
+            // If we are within a class definition, then we should
+            // not create any links.  The links should only exist
+            // within instances. Otherwise, we could end up creating
+            // a link between a class definition and an instance.
+            if (!isWithinClassDefinition()) {
+                _updateLinks();
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+
+    /** Update the connection to the publisher, if there is one.
+     *  @exception IllegalActionException If creating the link
+     *   triggers an exception.
+     */
+    protected void _updateLinks() throws IllegalActionException {
+        // If the channel has not been set, then there is nothing
+        // to do.  This is probably the first setContainer() call,
+        // before the object is fully constructed.
+        if (_channel == null) {
+            return;
+        }
+        Publisher publisher = _findPublisher();
+
+        // Remove the link to a previous relation, if necessary.
+        if (_relation != null) {
+            input.unlink(_relation);
+            _relation = null;
+        }
+        if (publisher != null) {
+            _relation = publisher._relation;
+            input.liberalLink(_relation);
+        }
+        Director director = getDirector();
+        if (director != null) {
+            director.invalidateSchedule();
+            director.invalidateResolvedTypes();
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
-
-    /** The relation used to link to subscribers. */
-    protected TypedIORelation _relation;
 
     /** Cached channel name. */
     protected String _channel;
@@ -228,30 +283,9 @@ public class Subscriber extends TypedAtomicActor {
         return null;
     }
 
-    /** Update the connection to the publisher, if there is one.
-     */
-    private void _updateLinks() throws IllegalActionException {
-        // If the channel has not been set, then there is nothing
-        // to do.  This is probably the first setContainer() call,
-        // before the object is fully constructed.
-        if (_channel == null) {
-            return;
-        }
-        Publisher publisher = _findPublisher();
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-        // Remove the link to a previous relation, if necessary.
-        if (_relation != null) {
-            input.unlink(_relation);
-            _relation = null;
-        }
-        if (publisher != null) {
-            _relation = publisher._relation;
-            input.liberalLink(_relation);
-        }
-        Director director = getDirector();
-        if (director != null) {
-            director.invalidateSchedule();
-            director.invalidateResolvedTypes();
-        }
-    }
+    /** The relation used to link to subscribers. */
+    private TypedIORelation _relation;
 }

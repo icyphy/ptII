@@ -45,6 +45,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -74,7 +75,7 @@ import ptolemy.kernel.util.NamedObj;
  Publisher-Subscriber pairs. That is, the type of the Subscriber
  output will match the type of the Publisher input.
  
- @author Edward A. Lee
+ @author Edward A. Lee, Raymond A. Cardillo
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Green (cxh)
@@ -92,7 +93,6 @@ public class Publisher extends TypedAtomicActor {
      */
     public Publisher(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        // Set this up as input port.
         super(container, name);
 
         channel = new StringParameter(this, "channel");
@@ -148,7 +148,13 @@ public class Publisher extends TypedAtomicActor {
             String newValue = channel.stringValue();
             if (!newValue.equals(_channel)) {
                 _channel = newValue;
-                _updateLinks();
+                // If we are within a class definition, then we should
+                // not create any links.  The links should only exist
+                // within instances. Otherwise, we could end up creating
+                // a link between a class definition and an instance.
+                if (!isWithinClassDefinition()) {
+                    _updateLinks();
+                }
             }
         } else {
             super.attributeChanged(attribute);
@@ -203,7 +209,13 @@ public class Publisher extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         if (container != getContainer()) {
             super.setContainer(container);
-            _updateLinks();
+            // If we are within a class definition, then we should
+            // not create any links.  The links should only exist
+            // within instances. Otherwise, we could end up creating
+            // a link between a class definition and an instance.
+            if (!isWithinClassDefinition()) {
+                _updateLinks();
+            }
         }
     }
 
@@ -236,7 +248,7 @@ public class Publisher extends TypedAtomicActor {
             while (actors.hasNext()) {
                 Object actor = actors.next();
                 if (actor instanceof Subscriber) {
-                    if (_channel.equals(((Subscriber) actor)._channel)) {
+                    if (((Subscriber)actor).channelMatches(_channel)) {
                         result.add(actor);
                     }
                 } else if (actor instanceof Publisher && actor != this) {
