@@ -585,7 +585,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         // Determine the total number of referenced types.
         HashSet types = new HashSet();
-        //types.add("String");      // for debugging.
+        if (functions.contains("equals")) {
+            types.add("Boolean");
+        }
+        if (functions.contains("toString")) {
+            types.add("String");
+        }
         types.addAll(_newTypesUsed);
 
         Object[] typesArray = types.toArray();
