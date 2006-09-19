@@ -33,8 +33,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.ApplicationConfigurer;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.Manager;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
@@ -54,8 +54,7 @@ import ptolemy.util.StringUtilities;
 //// Configuration
 
 /**
- This is a base class for a composite entity that defines the
- configuration of an application that uses Ptolemy II classes.
+ The configuration of an application that uses Ptolemy II classes.
  An instance of this class is in charge of the user interface,
  and coordinates multiple views of multiple models. One of its
  functions, for example, is to manage the opening of new models,
@@ -116,7 +115,7 @@ import ptolemy.util.StringUtilities;
  @see Tableau
  @see TextEditorTableau
  */
-public class Configuration extends CompositeEntity {
+public class Configuration extends CompositeEntity implements ApplicationConfigurer {
     /** Construct an instance in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
