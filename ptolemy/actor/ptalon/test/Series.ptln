@@ -1,5 +1,3 @@
-import ptolemy.actor.ptalon.test.Link;
-
 Series is {
 	parameter transformer;
 	intparameter n;

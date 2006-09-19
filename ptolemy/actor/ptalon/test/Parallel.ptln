@@ -1,5 +1,3 @@
-import ptolemy.actor.ptalon.test.Combine;
-
 Parallel is {
 	parameter repeater;
 	intparameter n;

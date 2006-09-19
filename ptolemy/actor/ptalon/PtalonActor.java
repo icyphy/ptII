@@ -49,6 +49,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
@@ -300,6 +301,61 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      */
     public void setNestedDepth(int depth) {
         _nestedDepth = depth;
+    }
+    
+    /** Return a name that is guaranteed to not be the name of
+     *  any contained attribute, port, class, entity, or relation.
+     *  In this implementation, the argument
+     *  is stripped of any numeric suffix, and then a numeric suffix
+     *  is appended and incremented until a name is found that does not
+     *  conflict with a contained attribute, port, class, entity, or relation.
+     *  If this composite entity or any composite entity that it contains
+     *  defers its MoML definition (i.e., it is an instance of a class or
+     *  a subclass), then the prefix gets appended with "_<i>n</i>_",
+     *  where <i>n</i> is the depth of this deferral. That is, if the object
+     *  deferred to also defers, then <i>n</i> is incremented.  This differs
+     *  from the superclass in that the first "_<i>n</i>_" appended to the
+     *  prefix is "1" rather than "2".
+     *  @param prefix A prefix for the name.
+     *  @return A unique name.
+     */
+    public String uniqueName(String prefix) {
+        if (prefix == null) {
+            prefix = "null";
+        }
+
+        prefix = _stripNumericSuffix(prefix);
+
+        String candidate = prefix;
+
+        // NOTE: The list returned by getPrototypeList() has
+        // length equal to the number of containers of this object
+        // that return non-null to getParent(). That number is
+        // assured to be at least one greater than the corresponding
+        // number for any of the parents returned by getParent().
+        // Hence, we can use that number to minimize the likelyhood
+        // of inadvertent capture.
+        try {
+            int depth = getPrototypeList().size();
+
+            if (depth > 0) {
+                prefix = prefix + "_" + depth + "_";
+            }
+        } catch (IllegalActionException e) {
+            // Derivation invariant is not satisified.
+            throw new InternalErrorException(e);
+        }
+
+        int uniqueNameIndex = 1;
+
+        while ((getAttribute(candidate) != null)
+                || (getPort(candidate) != null)
+                || (getEntity(candidate) != null)
+                || (getRelation(candidate) != null)) {
+            candidate = prefix + uniqueNameIndex++;
+        }
+
+        return candidate;
     }
 
     ///////////////////////////////////////////////////////////////////
