@@ -819,23 +819,23 @@ public class Port extends NamedObj {
         try {
             _workspace.getReadAccess();
 
-            String result;
+            StringBuffer result = new StringBuffer();
 
             if ((bracket == 1) || (bracket == 2)) {
-                result = super._description(detail, indent, 1);
+                result.append(super._description(detail, indent, 1));
             } else {
-                result = super._description(detail, indent, 0);
+                result.append(super._description(detail, indent, 0));
             }
 
             if ((detail & LINKS) != 0) {
-                if (result.trim().length() > 0) {
-                    result += " ";
+                if (result.toString().trim().length() > 0) {
+                     result.append(" ");
                 }
 
                 // To avoid infinite loop, turn off the LINKS flag
                 // when querying the Ports.
                 detail &= ~LINKS;
-                result += "links {\n";
+                result.append("links {\n");
 
                 Enumeration linkedRelations = linkedRelations();
 
@@ -844,22 +844,22 @@ public class Port extends NamedObj {
                             .nextElement();
 
                     if (relation != null) {
-                        result += (relation._description(detail, indent + 1, 2) + "\n");
+                        result.append(relation._description(detail, indent + 1, 2) + "\n");
                     } else {
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.
-                        result += (_getIndentPrefix(indent + 1) + "null\n");
+                        result.append(_getIndentPrefix(indent + 1) + "null\n");
                     }
                 }
 
-                result += (_getIndentPrefix(indent) + "}");
+                result.append(_getIndentPrefix(indent) + "}");
             }
 
             if (bracket == 2) {
-                result += "}";
+                result.append("}");
             }
 
-            return result;
+            return result.toString();
         } finally {
             _workspace.doneReading();
         }

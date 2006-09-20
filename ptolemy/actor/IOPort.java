@@ -3220,98 +3220,98 @@ public class IOPort extends ComponentPort {
         try {
             _workspace.getReadAccess();
 
-            String result;
+            StringBuffer result = new StringBuffer();
 
             if ((bracket == 1) || (bracket == 2)) {
-                result = super._description(detail, indent, 1);
+                result.append(super._description(detail, indent, 1));
             } else {
-                result = super._description(detail, indent, 0);
+                result.append(super._description(detail, indent, 0));
             }
 
             if ((detail & CONFIGURATION) != 0) {
-                if (result.trim().length() > 0) {
-                    result += " ";
+                if (result.toString().trim().length() > 0) {
+                    result.append(" ");
                 }
 
-                result += "configuration {";
+                result.append("configuration {");
 
                 boolean space = false;
 
                 if (isInput()) {
                     space = true;
-                    result += "input";
+                    result.append("input");
                 }
 
                 if (isOutput()) {
                     if (space) {
-                        result += " ";
+                        result.append(" ");
                     }
 
                     space = true;
-                    result += "output";
+                    result.append("output");
                 }
 
                 if (isMultiport()) {
                     if (space) {
-                        result += " ";
+                        result.append(" ");
                     }
 
                     space = true;
-                    result += "multiport";
+                    result.append("multiport");
                 }
 
                 if (isOpaque()) {
                     if (space) {
-                        result += " ";
+                        result.append(" ");
                     }
 
                     space = true;
-                    result += "opaque";
+                    result.append("opaque");
                 }
 
                 if (space) {
-                    result += " ";
+                    result.append(" ");
                 }
 
-                result += ("{width " + getWidth() + "}}");
+                result.append("{width " + getWidth() + "}}");
             }
 
             if ((detail & RECEIVERS) != 0) {
-                if (result.trim().length() > 0) {
-                    result += " ";
+                if (result.toString().trim().length() > 0) {
+                    result.append(" ");
                 }
 
-                result += "receivers {\n";
+                result.append("receivers {\n");
 
                 Receiver[][] receivers = getReceivers();
 
                 for (int i = 0; i < receivers.length; i++) {
                     // One list item per group
-                    result += (_getIndentPrefix(indent + 1) + "{\n");
+                    result.append(_getIndentPrefix(indent + 1) + "{\n");
 
                     for (int j = 0; j < receivers[i].length; j++) {
-                        result += _getIndentPrefix(indent + 2);
-                        result += "{";
+                        result.append(_getIndentPrefix(indent + 2));
+                        result.append("{");
 
                         if (receivers[i][j] != null) {
-                            result += receivers[i][j].getClass().getName();
+                            result.append(receivers[i][j].getClass().getName());
                         }
 
-                        result += "}\n";
+                        result.append("}\n");
                     }
 
-                    result += (_getIndentPrefix(indent + 1) + "}\n");
+                    result.append(_getIndentPrefix(indent + 1) + "}\n");
                 }
 
-                result += (_getIndentPrefix(indent) + "}");
+                result.append(_getIndentPrefix(indent) + "}");
             }
 
             if ((detail & REMOTERECEIVERS) != 0) {
-                if (result.trim().length() > 0) {
-                    result += " ";
+                if (result.toString().trim().length() > 0) {
+                    result.append(" ");
                 }
 
-                result += "remotereceivers {\n";
+                result.append("remotereceivers {\n");
 
                 Receiver[][] receivers = null;
                 receivers = getRemoteReceivers();
@@ -3320,37 +3320,37 @@ public class IOPort extends ComponentPort {
                 if (receivers != null) {
                     for (int i = 0; i < receivers.length; i++) {
                         // One list item per group
-                        result += (_getIndentPrefix(indent + 1) + "{\n");
+                        result.append(_getIndentPrefix(indent + 1) + "{\n");
 
                         if (receivers[i] != null) {
                             for (int j = 0; j < receivers[i].length; j++) {
-                                result += _getIndentPrefix(indent + 2);
-                                result += "{";
+                                result.append(_getIndentPrefix(indent + 2));
+                                result.append("{");
 
                                 if (receivers[i][j] != null) {
-                                    result += receivers[i][j].getClass()
-                                            .getName();
-                                    result += " in ";
-                                    result += receivers[i][j].getContainer()
-                                            .getFullName();
+                                    result.append(receivers[i][j].getClass()
+                                            .getName());
+                                    result.append(" in ");
+                                    result.append(receivers[i][j].getContainer()
+                                            .getFullName());
                                 }
 
-                                result += "}\n";
+                                result.append("}\n");
                             }
                         }
 
-                        result += (_getIndentPrefix(indent + 1) + "}\n");
+                        result.append(_getIndentPrefix(indent + 1) + "}\n");
                     }
                 }
 
-                result += (_getIndentPrefix(indent) + "}");
+                result.append(_getIndentPrefix(indent) + "}");
             }
 
             if (bracket == 2) {
-                result += "}";
+                result.append("}");
             }
 
-            return result;
+            return result.toString();
         } finally {
             _workspace.doneReading();
         }
@@ -3451,7 +3451,7 @@ public class IOPort extends ComponentPort {
                                     + "be determined.");
                 }
 
-                result += relation.getWidth();
+                result +=relation.getWidth();
             }
         }
 

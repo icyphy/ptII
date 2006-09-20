@@ -95,15 +95,15 @@ public class TypeConflictException extends KernelException {
     // Each inequality takes one line, and each line starts
     // with 2 white spaces to make the String more readable.
     private String _listInequalities() {
-        String result = "";
+        StringBuffer result = new StringBuffer();
         Iterator iterator = inequalityList().iterator();
 
         while (iterator.hasNext()) {
             Object inequality = iterator.next();
-            result += ("  " + inequality.toString() + "\n");
+            result.append("  " + inequality.toString() + "\n");
         }
 
-        return result;
+        return result.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

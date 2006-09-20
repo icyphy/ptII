@@ -1538,54 +1538,54 @@ public class CompositeEntity extends ComponentEntity {
         try {
             _workspace.getReadAccess();
 
-            String result;
+            StringBuffer result = new StringBuffer() ;
 
             if ((bracket == 1) || (bracket == 2)) {
-                result = super._description(detail, indent, 1);
+                result.append(super._description(detail, indent, 1));
             } else {
-                result = super._description(detail, indent, 0);
+                result.append(super._description(detail, indent, 0));
             }
 
             if ((detail & CONTENTS) != 0) {
-                if (result.trim().length() > 0) {
-                    result += " ";
+                if (result.toString().trim().length() > 0) {
+                    result.append(" ");
                 }
 
-                result += "classes {\n";
+                result.append("classes {\n");
 
                 Iterator classes = classDefinitionList().iterator();
 
                 while (classes.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) classes.next();
-                    result += (entity._description(detail, indent + 1, 2) + "\n");
+                    result.append(entity._description(detail, indent + 1, 2) + "\n");
                 }
 
-                result += (_getIndentPrefix(indent) + "} entities {\n");
+                result.append(_getIndentPrefix(indent) + "} entities {\n");
 
                 Iterator entities = entityList().iterator();
 
                 while (entities.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) entities.next();
-                    result += (entity._description(detail, indent + 1, 2) + "\n");
+                    result.append(entity._description(detail, indent + 1, 2) + "\n");
                 }
 
-                result += (_getIndentPrefix(indent) + "} relations {\n");
+                result.append(_getIndentPrefix(indent) + "} relations {\n");
 
                 Iterator relations = relationList().iterator();
 
                 while (relations.hasNext()) {
                     Relation relation = (Relation) relations.next();
-                    result += (relation._description(detail, indent + 1, 2) + "\n");
+                    result.append(relation._description(detail, indent + 1, 2) + "\n");
                 }
 
-                result += (_getIndentPrefix(indent) + "}");
+                result.append(_getIndentPrefix(indent) + "}");
             }
 
             if (bracket == 2) {
-                result += "}";
+                result.append("}");
             }
 
-            return result;
+            return result.toString();
         } finally {
             _workspace.doneReading();
         }

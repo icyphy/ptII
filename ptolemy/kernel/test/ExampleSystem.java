@@ -160,16 +160,16 @@ public class ExampleSystem implements Serializable {
      *  @param ComponentRelation Print the linked ports for this relation.
      */
     public String printLinkedPorts(ComponentRelation r) {
-        String st = r.getName() + ": ";
+        StringBuffer st = new StringBuffer(r.getName() + ": ");
         ComponentPort po;
         Enumeration ports = r.linkedPorts();
 
         while (ports.hasMoreElements()) {
             po = (ComponentPort) ports.nextElement();
-            st += (po.getName() + " ");
+            st.append(po.getName() + " ");
         }
 
-        return (st + "\n");
+        return st.toString() + "\n";
     }
 
     /** Print the deeply linked ports for a given
@@ -180,16 +180,16 @@ public class ExampleSystem implements Serializable {
      *  relation.
      */
     public String printDeepLinkedPorts(ComponentRelation r) {
-        String st = r.getName() + ": ";
+        StringBuffer st = new StringBuffer(r.getName() + ": ");
         ComponentPort po;
         Iterator ports = r.deepLinkedPortList().iterator();
 
         while (ports.hasNext()) {
             po = (ComponentPort) ports.next();
-            st += (po.getName() + " ");
+            st.append(po.getName() + " ");
         }
 
-        return (st + "\n");
+        return st.toString() + "\n";
     }
 
     /** Print the connected ports for a given ComponentPort.  Restricted
@@ -198,16 +198,16 @@ public class ExampleSystem implements Serializable {
      *  @param ComponentPort Print the connected ports for this Port.
      */
     public String printConnectedPorts(ComponentPort p) {
-        String st = p.getName() + ": ";
+        StringBuffer st = new StringBuffer(p.getName() + ": ");
         ComponentPort po;
         Iterator ports = p.connectedPortList().iterator();
 
         while (ports.hasNext()) {
             po = (ComponentPort) ports.next();
-            st += (po.getName() + " ");
+            st.append(po.getName() + " ");
         }
 
-        return (st + "\n");
+        return st.toString() + "\n";
     }
 
     /** Print the deeply connected ports for a given
@@ -217,16 +217,16 @@ public class ExampleSystem implements Serializable {
      *  @param ComponentPort Print the deeply connected ports for this Port.
      */
     public String printDeepConnectedPorts(ComponentPort p) {
-        String st = p.getName() + ": ";
+        StringBuffer st = new StringBuffer(p.getName() + ": ");
         ComponentPort po;
         Iterator ports = p.deepConnectedPortList().iterator();
 
         while (ports.hasNext()) {
             po = (ComponentPort) ports.next();
-            st += (po.getName() + " ");
+            st.append(po.getName() + " ");
         }
 
-        return (st + "\n");
+        return st.toString() + "\n";
     }
 
     /** Create an Example System, then print it out.

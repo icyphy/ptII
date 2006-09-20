@@ -2239,30 +2239,30 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         try {
             _workspace.getReadAccess();
 
-            String result = _getIndentPrefix(indent);
+            StringBuffer result = new StringBuffer(_getIndentPrefix(indent));
 
             if ((bracket == 1) || (bracket == 2)) {
-                result += "{";
+                result.append("{");
             }
 
             if ((detail & CLASSNAME) != 0) {
-                result += getClass().getName();
+                result.append(getClass().getName());
 
                 if ((detail & FULLNAME) != 0) {
-                    result += " ";
+                    result.append(" ");
                 }
             }
 
             if ((detail & FULLNAME) != 0) {
-                result += ("{" + getFullName() + "}");
+                result.append("{" + getFullName() + "}");
             }
 
             if ((detail & ATTRIBUTES) != 0) {
                 if ((detail & (CLASSNAME | FULLNAME)) != 0) {
-                    result += " ";
+                    result.append(" ");
                 }
 
-                result += "attributes {\n";
+                result.append("attributes {\n");
 
                 // Do not recursively list attributes unless the DEEP
                 // bit is set.
@@ -2275,19 +2275,19 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
                     while (parameters.hasNext()) {
                         Attribute parameter = (Attribute) parameters.next();
-                        result += (parameter
+                        result.append(parameter
                                 ._description(detail, indent + 1, 2) + "\n");
                     }
                 }
 
-                result += (_getIndentPrefix(indent) + "}");
+                result.append((_getIndentPrefix(indent) + "}"));
             }
 
             if (bracket == 2) {
-                result += "}";
+                result.append("}");
             }
 
-            return result;
+            return result.toString();
         } finally {
             _workspace.doneReading();
         }
@@ -3107,6 +3107,13 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     }
 
     /** Serializable version of the Java Object class. */
-    private class SerializableObject extends Object implements Serializable {
+    private static class SerializableObject extends Object implements Serializable {
+        // FindBugs suggested making this class a static inner class:
+        //
+        // "This class is an inner class, but does not use its embedded
+        // reference to the object which created it.  This reference makes
+        // the instances of the class larger, and may keep the reference
+        // to the creator object alive longer than necessary.  If
+        // possible, the class should be made into a static inner class."
     }
 }
