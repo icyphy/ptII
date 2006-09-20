@@ -54,19 +54,33 @@ import ptolemy.kernel.util.Nameable;
  transmission to take into account channel losses, antenna
  gain, noise, etc.
  <p>
- Token Processors may also register with this channel to inspect
- the token.
+ Channel listeners may also be added to this channel.
 
- @author Yang Zhao, Edward A. Lee and Heather Taylor
+ @author Yang Zhao, Edward A. Lee, Heather Taylor, Elaine Cheong
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
 public interface WirelessChannel extends Actor, Nameable, PropertyTransformer,
-        TokenProcessor {
+        ChannelListener {
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add a channel listener to listen for transmissions on this channel.
+     *  A ChannelListener can read the transmission property and token that
+     *  was transmitted on this channel.
+     *  
+     *  If the channel listener has already been added, then no changes
+     *  are made.
+     *  
+     *  If multiple channel listeners are registered that can operate on a
+     *  given transmission, then the order in which they are applied is arbitrary.
+     *  
+     *  @param listener The channel listener to add.
+      */
+    public void addChannelListener(ChannelListener listener);
 
     /** Return a channel port that can be used to set type constraints
      *  between senders and receivers. An channel contains a single port,
@@ -124,26 +138,12 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer,
     public void registerPropertyTransformer(PropertyTransformer transformer,
             WirelessIOPort port);
 
-    /** Register a token processor for transmissions from the
-     *  specified port. A Token Processor reads the transmitted token.
-     *  If null is
-     *  given for the port, then the token processor will
-     *  be used for all transmissions through this channel.
-     *  If multiple token processors are registered that can operate
-     *  on a given transmission, then the order in which they are applied
-     *  is arbitrary.
-     *  If the token processor is already registered with a particular
-     *  port, then an implementer of this method must not register it again with
-     *  that port.  Similarly, if a token processor is registered with
-     *  no port, then an implementer of this method must not register
-     *  it again with no port.
-     *  @param processor The token processor to be registered.
-     *  @param port The port whose transmissions should be subject to the
-     *   token processor, or null to make them subject to all
-     *   transmissions through this channel.
+    /** Remove a channel listener for transmissions on this channel.  
+     *  If the listener has not been added, then do nothing. 
+     *  @param listener The channel listener to remove.
+     *  @see #addChannelListener(ChannelListener)
      */
-    public void registerTokenProcessor(TokenProcessor processor,
-            WirelessIOPort port);
+    public void removeChannelListener(ChannelListener listener);
 
     /** Return a list of input ports that can potentially send data
      *  to this channel.  This must include input ports contained by
@@ -191,16 +191,5 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer,
      *  @see #registerPropertyTransformer(PropertyTransformer, WirelessIOPort)
      */
     public void unregisterPropertyTransformer(PropertyTransformer transformer,
-            WirelessIOPort port);
-
-    /** Unregister a token processor for transmissions from the specified
-     *  port (or from null for a generic token processor). If the processor
-     *  has not been registered, then do nothing.
-     *  @param processor The token processor to be unregistered.
-     *  @param port The port whose transmissions should be subject to the
-     *   token processor, or null for a generic processor.
-     *  @see #registerTokenProcessor(TokenProcessor, WirelessIOPort)
-     */
-    public void unregisterTokenProcessor(TokenProcessor processor,
             WirelessIOPort port);
 }

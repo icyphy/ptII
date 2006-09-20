@@ -1,20 +1,20 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Surge-WithVisualizer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+<entity name="Surge" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-alpha">
     </property>
     <property name="Wireless Director" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -5.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 174, 729, 721}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 25, 729, 718}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[507, 613]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[507, 608]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9125925925926">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{271.2800324675324, 274.2944399350649}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{271.2800324675324, 271.5549918831168}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains 5 nodes.  Each node is running a version of Surge,&#10;with a unique nodeID which corresponds to the number in their given name.  &#10;Surge is an example application developed for TinyOS that uses MultiHop &#10;ad-hoc routing.  Each Surge node takes light readings and forwards them to &#10;a base station.  The routing protocol uses a windowed average success rate &#10;to perform link estimation, and uses it to choose its parent, to whom the node &#10;forwards all packets. The base station (the node labeled MicaBoard0) &#10;periodically sends out a beacon message so that nodes can update their &#10;position in the network if necessary.">
@@ -1101,32 +1101,6 @@
         <link port="packetOutDisplay.input" relation="relation4"/>
         <link port="packetInDisplay.input" relation="relation5"/>
     </entity>
-    <entity name="SurgeVisualizer" class="ptolemy.domains.ptinyos.lib.SurgeVisualizer">
-        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-22.0, 2.0}">
-                </property>
-            </property>
-            <property name="_line1" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-19.0, -3.0}">
-                </property>
-            </property>
-            <property name="_ellipse1" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-18.0, -2.0}">
-                </property>
-            </property>
-            <property name="_ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{8.0, 14.0}">
-                </property>
-            </property>
-            <property name="_ellipse3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{8.0, -16.0}">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, -5.0]">
-        </property>
-    </entity>
     <entity name="MicaBoard4" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
         </property>
@@ -1597,6 +1571,8 @@
                 </property>
                 <property name="pflags" class="ptolemy.data.expr.StringParameter" value="-I%T/lib/Route -I%T/lib/Queue -I%T/lib/Broadcast -I%T/../apps/Surge/">
                 </property>
+                <property name="commandPort" class="ptolemy.domains.ptinyos.kernel.PtinyOSIntegerParameter" value="10584">
+                </property>
                 <property name="nodeID" class="ptolemy.domains.ptinyos.kernel.PtinyOSIntegerParameter" value="0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 40.0]">
@@ -1834,5 +1810,9 @@
         <link port="MicaCompositeActor.ledYellow" relation="relation3"/>
         <link port="packetOutDisplay.input" relation="relation4"/>
         <link port="packetInDisplay.input" relation="relation5"/>
+    </entity>
+    <entity name="SurgeVisualizer" class="ptolemy.domains.ptinyos.lib.SurgeVisualizer">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, -5.0]">
+        </property>
     </entity>
 </entity>

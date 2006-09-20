@@ -1,0 +1,69 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<property name="LinkVisualizerIcon" class="ptolemy.vergil.icon.EditorIcon">
+    <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-19.0, -3.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-22.0, 2.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="-20.0">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-18.0, -2.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="15">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="15">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{8.0, 14.0}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="15">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="15">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="ellipse3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{8.0, -16.0}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="15">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="15">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={101, 128, 822, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+    </property>
+</property>

@@ -31,7 +31,6 @@ import ptolemy.actor.Director;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.ptinyos.kernel.PtinyOSDirector;
 import ptolemy.domains.ptinyos.kernel.PtinyOSIntegerParameter;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
@@ -39,13 +38,9 @@ import ptolemy.domains.wireless.lib.LinkVisualizer;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.kernel.attributes.LineAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// SurgeVisualizer
@@ -71,19 +66,18 @@ import ptolemy.vergil.kernel.attributes.LineAttribute;
   FIXME: Surge doesn't correctly set the type field for Surge messages.
   The value that we see is 0x00, so we filter for this instead.
 
- This actor extends LinkVisualizer and implements the
- TokenProcessor interface.  It processes the token being
- transmitted and, based on the data, may create a line between
+ This actor extends LinkVisualizer and by inheritance, implements the 
+ ChannelListener interface.  It inspects the token transmitted,
+ and based on the data, may create a line between
  two communicating nodes that are within range of one
  another. It registers itself with the wireless channel
- specified by the <i>channelName</i> parameter. The default
- channel is set to AtomicWirelessChannel.
+ specified by the <i>channelName</i> parameter.
 
- @author Heather Taylor
+ @author Heather Taylor, Elaine Cheong
  @version $Id$
  @since Ptolemy II 4.0
- @Pt.ProposedRating Red (htaylor)
- @Pt.AcceptedRating Red (htaylor)
+ @Pt.ProposedRating Yellow (celaine)
+ @Pt.AcceptedRating Yellow (celaine)
  */
 public class SurgeVisualizer extends LinkVisualizer {
     /** Construct an actor with the specified container and name.
@@ -102,119 +96,71 @@ public class SurgeVisualizer extends LinkVisualizer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** This method parses the token and creates a line between the
-     * sender and the destination containers, by creating a MoMLChangeRequest.
-     * We only create a line if the type field in the packet stored in
-     * <i>token</i> corresponds to a Surge packet AND
-     * the nodeID of the <i>destination</i> node
-     * (i.e., the node that contains the <i>destination</i> WirelessIOPort)
-     * is the same as the address field in the Surge packet.
-     *
-     * @param properties The properties of this transmission.
-     * @param token The token of this transmission, which is processed here.
-     * @param sender The sending port.
-     * @param destination The receiving port.
-     * @exception IllegalActionException If failed to execute the model.
+    /** Parse the token, and visualize a line between the sender and destination 
+     *  container only if the type field in the packet stored in
+     *  <i>token</i> corresponds to a Surge packet AND
+     *  the nodeID of the <i>destination</i> node
+     *  (i.e., the node that contains the <i>destination</i> WirelessIOPort)
+     *  is the same as the address field in the Surge packet.
+     *  
+     *  The line is visualized by starting a thread that will create and 
+     *  remove the line after some amount of time.
+     *  @param properties The properties of this transmission.
+     *  @param token The token of this transmission, which can be processed here.
+     *  @param sender The sending port.
+     *  @param destination The receiving port.
      */
-    public void processTokens(RecordToken properties, Token token,
-            WirelessIOPort sender, WirelessIOPort destination)
-            throws IllegalActionException {
-        synchronized (_isOff) {
-            // If the line is not currently drawn, draw it.
-            if (_isOff.booleanValue()) {
-                String tokenString = (String) token.toString();
-                String type = tokenString.substring(5, 7);
-
-                // The "00" corresponds to Messages of type SurgeMsg (Should be 0x11).
-
-                // Note: When processTokens() is called a second time
-                // (see AtomicWirelessChannel#_transmitTo()) abd a line
-                // was not created the first time, we recheck the type field
-                // of the same packet (stored in "token").
-                if (type.equals("00")) {
-                    // Look for the PtinyOSDirector inside the destination TinyOS node.
-                    NamedObj wirelessNode = destination.getContainer();
-                    if (wirelessNode instanceof CompositeEntity) {
-                        // Note: this relies on the fact that the MicaBoard
-                        // always contains a MicaCompositeActor
-                        ComponentEntity micaCompositeActor = ((CompositeEntity) wirelessNode)
-                                .getEntity("MicaCompositeActor");
-                        if (micaCompositeActor instanceof MicaCompositeActor) {
-                            // Get the director of the MicaCompositeActor.
-                            Director director = ((MicaCompositeActor) micaCompositeActor)
-                                    .getDirector();
-                            if (director instanceof PtinyOSDirector) {
-                                Attribute nodeID = director
-                                        .getAttribute("nodeID");
-                                if (nodeID instanceof PtinyOSIntegerParameter) {
-                                    // Get the token that stores the node ID.
-                                    Token nodeIDToken = ((PtinyOSIntegerParameter) nodeID)
-                                            .getToken();
-                                    if (nodeIDToken instanceof IntToken) {
-                                        // Get the integer value of nodeID
-                                        int nodeIDValue = ((IntToken) nodeIDToken)
-                                                .intValue();
-                                        String addr = tokenString.substring(1,
-                                                5);
-                                        int addrInt = Integer
-                                                .parseInt(addr, 16);
-
-                                        if (addrInt == nodeIDValue) {
-                                            Location senderLocation = (Location) sender
-                                                    .getContainer()
-                                                    .getAttribute("_location");
-                                            Location destinationLocation = (Location) destination
-                                                    .getContainer()
-                                                    .getAttribute("_location");
-                                            double x = (destinationLocation
-                                                    .getLocation())[0]
-                                                    - (senderLocation
-                                                            .getLocation())[0];
-                                            double y = (destinationLocation
-                                                    .getLocation())[1]
-                                                    - (senderLocation
-                                                            .getLocation())[1];
-                                            String moml = "<property name=\"_senderDestLine\" class=\"ptolemy.vergil.kernel.attributes.LineAttribute\">"
-                                                    + senderLocation
-                                                            .exportMoML()
-                                                    + "<property name=\"x\" value=\""
-                                                    + x
-                                                    + "\"/>"
-                                                    + "<property name=\"y\" value=\""
-                                                    + y
-                                                    + "\"/>"
-                                                    + "</property>";
-                                            ChangeRequest request = new MoMLChangeRequest(
-                                                    this, getContainer(), moml) {
-                                                protected void _execute()
-                                                        throws Exception {
-                                                    super._execute();
-                                                    LineAttribute line = (LineAttribute) getContainer()
-                                                            .getAttribute(
-                                                                    "_senderDestLine");
-                                                    line.moveToFirst();
-                                                    line.setPersistent(false);
-                                                }
-                                            };
-                                            requestChange(request);
-                                            // Indicate that the line has been drawn.
-                                            _isOff = Boolean.FALSE;
-                                        }
+    public void channelNotify(RecordToken properties, Token token,
+            WirelessIOPort sender, WirelessIOPort destination) {
+        String tokenString = (String) token.toString();
+        String type = tokenString.substring(5, 7);
+        
+        // The "00" corresponds to Messages of type SurgeMsg (Should be 0x11).
+        if (type.equals("00")) {
+            // Look for the PtinyOSDirector inside the destination TinyOS node.
+            NamedObj wirelessNode = destination.getContainer();
+            if (wirelessNode instanceof CompositeEntity) {
+                // Note: this relies on the fact that the MicaBoard
+                // always contains a MicaCompositeActor
+                ComponentEntity micaCompositeActor = ((CompositeEntity) wirelessNode)
+                    .getEntity("MicaCompositeActor");
+                if (micaCompositeActor instanceof MicaCompositeActor) {
+                    // Get the director of the MicaCompositeActor.
+                    Director director = ((MicaCompositeActor) micaCompositeActor)
+                    .getDirector();
+                    if (director instanceof PtinyOSDirector) {
+                        Attribute nodeID = director
+                        .getAttribute("nodeID");
+                        if (nodeID instanceof PtinyOSIntegerParameter) {
+                            // Get the token that stores the node ID.
+                            try {
+                                Token nodeIDToken = ((PtinyOSIntegerParameter) nodeID)
+                                    .getToken();
+                                
+                                if (nodeIDToken instanceof IntToken) {
+                                    // Get the integer value of nodeID
+                                    int nodeIDValue = ((IntToken) nodeIDToken)
+                                    .intValue();
+                                    String addr = tokenString.substring(1,
+                                            5);
+                                    int addrInt = Integer
+                                    .parseInt(addr, 16);
+                                    
+                                    if (addrInt == nodeIDValue) {
+                                        // Create a name for the line to be visualized.
+                                        String lineName = getContainer().uniqueName("_senderDestLine");
+                                        // Create a thread to visualize the line.
+                                        _LinkVisualizerThread linkVisualizerThread = 
+                                            new _LinkVisualizerThread(sender, destination, lineName);
+                                        // Start the thread.
+                                        linkVisualizerThread.start();
                                     }
                                 }
+                            } catch (Exception e) {
+                                // Do nothing.
                             }
                         }
                     }
-                }
-            } else {
-                // If the line was drawn previously, remove it.
-                if (getContainer().getAttribute("_senderDestLine") != null) {
-                    String moml = "<deleteProperty name=\"_senderDestLine\"/>";
-                    ChangeRequest request = new MoMLChangeRequest(this,
-                            getContainer(), moml);
-                    requestChange(request);
-                    // Indicate that the line is not drawn.
-                    _isOff = Boolean.TRUE;
                 }
             }
         }

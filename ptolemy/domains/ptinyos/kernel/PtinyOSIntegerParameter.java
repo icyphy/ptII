@@ -68,7 +68,7 @@ import ptolemy.moml.SharedParameter;
  EntityLibrary, which would defeat the lazy instantiation
  of EntityLibrary.
 
- <p> This parameter is always of type Int.
+ <p> This parameter is always of type int.
 
  <p> This parameter is based on ColtSeedParameter.
  @see ptolemy.actor.lib.colt.ColtSeedParameter
@@ -156,6 +156,25 @@ public class PtinyOSIntegerParameter extends SharedParameter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to set the declared type before
+     *  attempting to infer the value.  This is necessary because
+     *  this method is called in the constructor of the base class,
+     *  before the delcared type has been set.
+     *  @param defaultValue The default parameter value to give.
+     *  @exception InternalErrorException If there are multiple
+     *   shared parameters in the model, but their values
+     *   do not match.
+     */
+    public void inferValueFromContext(String defaultValue) {
+        try {
+            setTypeEquals(BaseType.INT);
+        } catch (IllegalActionException e) {
+            // This should have been caught before.
+            throw new InternalErrorException(e);
+        }
+        super.inferValueFromContext(defaultValue);
+    }
+
     /** Override the base class to also set the expression of shared
      *  parameters.
      */
@@ -184,9 +203,15 @@ public class PtinyOSIntegerParameter extends SharedParameter {
             if (value == _defaultValue) {
                 // Call again without suppression of propagation.
                 super.setExpression(expression);
+                // No need to record this, as it is the default value.
+                setPersistent(false);
             } else {
                 // Need to assign unique values.
                 if (!isSuppressingPropagation()) {
+                    // Ensure that when the model is saved, that this
+                    // parameter value, and only this one, is saved.
+                    // The shared parameters are made non-persistent below.
+                    setPersistent(true);
                     Iterator sharedParameters = sharedParameterSet().iterator();
                     
                     while (sharedParameters.hasNext()) {

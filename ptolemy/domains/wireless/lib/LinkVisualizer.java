@@ -28,10 +28,12 @@
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.domains.wireless.kernel.TokenProcessor;
+import ptolemy.domains.wireless.kernel.ChannelListener;
 import ptolemy.domains.wireless.kernel.WirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
@@ -41,33 +43,29 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 import ptolemy.vergil.kernel.attributes.LineAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// LinkVisualizer
 
 /**
- This actor implements the TokenProcessor interface.
+ This actor implements the ChannelListener interface.
  It creates a line between two communicating nodes that 
  are within range of one another. It registers itself 
  with the wireless channel specified by the 
- <i>channelName</i> parameter. The default channel is 
- set to AtomicWirelessChannel. The channel may call its
- getProperty() method to get the property.
+ <i>channelName</i> parameter. This is notified whenever a transmission
+ occurs on the channel on which it is listening.
  
- @see ptolemy.domains.wireless.kernel.AtomicWirelessChannel#_transmitTo
+ This is an actor because it registers itself with the channel in the
+ initialize() method.
  
- FIXME: What if we want multiple lines visualized at the same time?
-
- @author Heather Taylor
+ @author Heather Taylor, Elaine Cheong
  @version $Id$
  @since Ptolemy II 5.2
- @Pt.ProposedRating Red (htaylor)
- @Pt.AcceptedRating Red (htaylor)
+ @Pt.ProposedRating Yellow (celaine)
+ @Pt.AcceptedRating Yellow (celaine)
  */
-public class LinkVisualizer extends TypedAtomicActor implements TokenProcessor {
+public class LinkVisualizer extends TypedAtomicActor implements ChannelListener {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -81,59 +79,8 @@ public class LinkVisualizer extends TypedAtomicActor implements TokenProcessor {
         super(container, name);
         channelName = new StringParameter(this, "channelName");
         channelName.setExpression("AtomicWirelessChannel");
-
-        // Create the icon for this entity.
-        EditorIcon link_icon = new EditorIcon(this, "_icon");
-
-        // Set up line 1 of the icon.
-        _line1 = new LineAttribute(link_icon, "_line1");
-        Location line1Loc = new Location(_line1, "_location");
-        double[] line1LocVal = { -19.0, -3.0 };
-        line1Loc.setLocation(line1LocVal);
-        _line1.lineColor.setToken("{0.0, 0.0, 1.0, 1.0}");
-        _line1.x.setToken("30.0");
-        _line1.y.setToken("20.0");
-        _line1.moveToFirst();
-
-        // Set up line 2 of the icon.
-        _line2 = new LineAttribute(link_icon, "_line2");
-        Location line2Loc = new Location(_line2, "_location");
-        double[] line2LocVal = { -22.0, 2.0 };
-        line2Loc.setLocation(line2LocVal);
-        _line2.lineColor.setToken("{0.0, 0.0, 1.0, 1.0}");
-        _line2.x.setToken("30.0");
-        _line2.y.setToken("-20.0");
-        _line2.moveToFirst();
-
-        // Set up circle 1 of the icon.
-        _ellipse1 = new EllipseAttribute(link_icon, "_ellipse1");
-        Location ellipse1Loc = new Location(_ellipse1, "_location");
-        double[] ellipse1LocVal = { -18.0, -2.0 };
-        ellipse1Loc.setLocation(ellipse1LocVal);
-        _ellipse1.fillColor.setToken("{1.0, 1.0, 0.0, 1.0}");
-        _ellipse1.width.setToken("15.0");
-        _ellipse1.height.setToken("15.0");
-        _ellipse1.centered.setToken("true");
-
-        // Set up circle 2 of the icon.
-        _ellipse2 = new EllipseAttribute(link_icon, "_ellipse2");
-        Location ellipse2Loc = new Location(_ellipse2, "_location");
-        double[] ellipse2LocVal = { 8.0, 14.0 };
-        ellipse2Loc.setLocation(ellipse2LocVal);
-        _ellipse2.fillColor.setToken("{1.0, 0.0, 1.0, 1.0}");
-        _ellipse2.width.setToken("15.0");
-        _ellipse2.height.setToken("15.0");
-        _ellipse2.centered.setToken("true");
-
-        // Set up circle 3 of the icon.
-        _ellipse3 = new EllipseAttribute(link_icon, "_ellipse3");
-        Location ellipse3Loc = new Location(_ellipse3, "_location");
-        double[] ellipse3LocVal = { 8.0, -16.0 };
-        ellipse3Loc.setLocation(ellipse3LocVal);
-        _ellipse3.fillColor.setToken("{1.0, 0.0, 1.0, 1.0}");
-        _ellipse3.width.setToken("15.0");
-        _ellipse3.height.setToken("15.0");
-        _ellipse3.centered.setToken("true");
+        
+        sleepTime = new Parameter(this, "sleepTime", new IntToken(500));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -142,12 +89,16 @@ public class LinkVisualizer extends TypedAtomicActor implements TokenProcessor {
     /** The name of the channel.  The default name is "AtomicWirelessChannel".
      */
     public StringParameter channelName;
+    
+    public Parameter sleepTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Register TokenProcessors with the WirelessChannel 
+    /** Register ChannelListeners with the WirelessChannel 
      *  specified in the channelName parameter.
+     *  
+     *  @exception IllegalActionException If the super class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -160,78 +111,166 @@ public class LinkVisualizer extends TypedAtomicActor implements TokenProcessor {
 
         if (channel instanceof WirelessChannel) {
             _channel = (WirelessChannel) channel;
-            ((WirelessChannel) channel).registerTokenProcessor(this, null);
+            ((WirelessChannel) channel).addChannelListener(this);
         } else {
             throw new IllegalActionException(this,
                     "The channel name does not refer to a valid channel.");
         }
     }
 
-    /** This method creates & removes a line between the sender and
-     *  the destination containers, by creating a MoMLChangeRequest.
+    /** Visualize a line between the sender and destination containers
+     *  by starting a thread that will create and remove the line after some 
+     *  amount of time.
      *  @param properties The properties of this transmission.
      *  @param token The token of this transmission, which can be processed here.
      *  @param sender The sending port.
      *  @param destination The receiving port.
-     *  @exception IllegalActionException If failed to execute the model.
      */
-    public void processTokens(RecordToken properties, Token token,
-            WirelessIOPort sender, WirelessIOPort destination)
-            throws IllegalActionException {
-        synchronized (_isOff) {
-            if (_isOff.booleanValue()) {
-                Location senderLocation = (Location) sender.getContainer()
-                        .getAttribute("_location");
-                Location destinationLocation = (Location) destination
-                        .getContainer().getAttribute("_location");
-                double x = (destinationLocation.getLocation())[0]
-                        - (senderLocation.getLocation())[0];
-                double y = (destinationLocation.getLocation())[1]
-                        - (senderLocation.getLocation())[1];
-                String moml = "<property name=\"_senderDestLine\" class=\"ptolemy.vergil.kernel.attributes.LineAttribute\">"
-                        + senderLocation.exportMoML()
-                        + "<property name=\"x\" value=\""
-                        + x
-                        + "\"/>"
-                        + "<property name=\"y\" value=\""
-                        + y
-                        + "\"/>"
-                        + "</property>";
-                ChangeRequest request = new MoMLChangeRequest(this,
-                        getContainer(), moml) {
-                    protected void _execute() throws Exception {
-                        super._execute();
-                        LineAttribute line = (LineAttribute) getContainer()
-                                .getAttribute("_senderDestLine");
-                        line.moveToFirst();
-                        line.setPersistent(false);
-                    }
-                };
-                requestChange(request);
-                _isOff = Boolean.FALSE;
-            } else {
-                if (getContainer().getAttribute("_senderDestLine") != null) {
-                    String moml = "<deleteProperty name=\"_senderDestLine\"/>";
-                    ChangeRequest request = new MoMLChangeRequest(this,
-                            getContainer(), moml);
-                    requestChange(request);
-                    _isOff = Boolean.TRUE;
-                }
+    public void channelNotify(RecordToken properties, Token token,
+            WirelessIOPort sender, WirelessIOPort destination) {
+        // Create a name for the line to be visualized.
+        String lineName = getContainer().uniqueName("_senderDestLine");
+        // Create a thread to visualize the line.
+        _LinkVisualizerThread linkVisualizerThread = 
+            new _LinkVisualizerThread(sender, destination, lineName);
+        // Start the thread.
+        linkVisualizerThread.start();
+     }
+
+    /** Override the base class to remove this channel listener.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace.
+     *  @exception NameDuplicationException If the container already has
+     *   an entity with the name of this entity.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+        if (container == null) {
+            if (_channel != null) {
+                _channel.removeChannelListener(this);
             }
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
 
-    /** Override the base class to call wrap up to unregister this with the
-     *  channel.
+    /** Draw a line from the sender container to the destination container
+     *  with name lineName.
+     *  @param sender The sender port.
+     *  @param destination The destination port.
+     *  @param lineName The name of the line attribute to create.
      */
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-
-        if (_channel != null) {
-            _channel.unregisterTokenProcessor(this, null);
-        }
+    protected void _drawLine(WirelessIOPort sender, WirelessIOPort destination, final String lineName) {
+        Location senderLocation = (Location) sender.getContainer()
+        .getAttribute("_location");
+        Location destinationLocation = (Location) destination
+                .getContainer().getAttribute("_location");
+        double x = (destinationLocation.getLocation())[0]
+                - (senderLocation.getLocation())[0];
+        double y = (destinationLocation.getLocation())[1]
+                - (senderLocation.getLocation())[1];
+        String moml = "<property name=\""
+                + lineName
+                + "\" class=\"ptolemy.vergil.kernel.attributes.LineAttribute\">"
+                + senderLocation.exportMoML()
+                + "<property name=\"x\" value=\""
+                + x
+                + "\"/>"
+                + "<property name=\"y\" value=\""
+                + y
+                + "\"/>"
+                + "</property>";
+        ChangeRequest request = new MoMLChangeRequest(this,
+                getContainer(), moml) {
+              protected void _execute() throws Exception {
+                  try {
+                      super._execute();
+                      LineAttribute line = (LineAttribute) getContainer()
+                      .getAttribute(lineName);
+                      line.moveToFirst();
+                      line.setPersistent(false);
+                  } catch (Exception e) {
+                      // Do nothing.
+                  }
+            }
+        };
+        requestChange(request);
     }
+    
+    /** Remove the line previously created with name lineName.
+     * 
+     * @param lineName Name of line previously created.
+     */
+    protected void _removeLine(String lineName) {
+        String moml = "<deleteProperty name=\""
+            + lineName 
+            + "\"/>";
+        ChangeRequest request = new MoMLChangeRequest(this,
+                getContainer(), moml) {
+            protected void _execute() throws Exception {
+                try {
+                    super._execute();
+                } catch (Exception e) {
+                    // Do nothing.
+                }
+            }
+        };
+        requestChange(request);
+    }
+    
+    /** Private class that visualizes a link in a thread.
+     */
+    protected class _LinkVisualizerThread extends Thread {
+        /** Create a _LinkVisualizerThread.
+         *  @param inputStream The stream to read from.
+         *  @param name The name of this _LinkVisualizerThread.
+         *  @param stringWriter The StringWriter that is written.
+         */
+        
+        /** Create a _LinkVisualizerThread.
+         *  @param sender The sender port.
+         *  @param destination The destination port.
+         *  @param lineName The name of the line attribute to create.
+         */
+        public _LinkVisualizerThread(WirelessIOPort sender, WirelessIOPort destination, final String lineName) {
+            _sender = sender;
+            _destination = destination;
+            _lineName = lineName;
+        }
 
+        /** Draw a line, sleep for specified amount of time, 
+         *  and then remove the line.
+         */
+        public void run() {
+            _drawLine(_sender, _destination, _lineName);
+            try {
+                int time;
+                try {
+                    time = ((IntToken)sleepTime.getToken()).intValue();
+                } catch (IllegalActionException e) {
+                    // If getting the parameter value was unsuccessful, 
+                    // use the default value instead.
+                    time = _millisToSleep;
+                }
+                Thread.sleep(time);
+            } catch (InterruptedException e) {
+                // Do nothing.
+            }
+            _removeLine(_lineName);
+        }
+        
+        WirelessIOPort _sender;
+        WirelessIOPort _destination;
+        final String _lineName;
+        // Default value of time to sleep.
+        final int _millisToSleep = 500;
+    }
+    
+    
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
@@ -244,19 +283,4 @@ public class LinkVisualizer extends TypedAtomicActor implements TokenProcessor {
 
     /** Channel specified by the channelName parameter. */
     private WirelessChannel _channel;
-
-    /** Graphical icon for line1 */
-    private LineAttribute _line1;
-
-    /** Graphical icon for line1 */
-    private LineAttribute _line2;
-
-    /** Graphical icon for ellipse1 */
-    private EllipseAttribute _ellipse1;
-
-    /** Graphical icon for ellipse2 */
-    private EllipseAttribute _ellipse2;
-
-    /** Graphical icon for ellipse3 */
-    private EllipseAttribute _ellipse3;
 }

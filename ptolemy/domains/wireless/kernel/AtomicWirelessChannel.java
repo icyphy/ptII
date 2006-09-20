@@ -82,15 +82,20 @@ import ptolemy.kernel.util.ValueListener;
  may also introduce random losses or corruption of data.  To do this,
  derived classes can override the _isInRange() protected method,
  or the transmit() public method.
+ 
+ <p>
+ Other classes may register a property transformer that allows them 
+ to modify meta data prior to transmission of the data token on the channel.
 
- @author Xiaojun Liu, Edward A. Lee, Yang Zhao, Heather Taylor
+ @author Xiaojun Liu, Edward A. Lee, Yang Zhao, Heather Taylor, Elaine Cheong
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class AtomicWirelessChannel extends TypedAtomicActor implements
-        WirelessChannel, ValueListener {
+public class AtomicWirelessChannel extends TypedAtomicActor implements 
+    WirelessChannel, ValueListener {
+    
     /** Construct a relation with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This relation will use the
@@ -139,6 +144,25 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a channel listener to listen for transmissions on this channel.
+     *  A ChannelListener can read the transmission property and token that
+     *  was transmitted on this channel.
+     *  
+     *  If the channel listener has already been added, then no changes
+     *  are made.
+     *  
+     *  If multiple channel listeners are registered that can operate on a
+     *  given transmission, then the order in which they are applied is arbitrary.
+     *  
+     *  @param listener The channel listener to add.
+      */
+    public void addChannelListener(ChannelListener listener) {
+        if (_channelListeners == null) {
+            _channelListeners = new HashSet();
+        }
+        _channelListeners.add(listener);
+     }
+
     /** If the attribute is defaultProperties, make sure
      *  its value is a record token.
      *  @param attribute The attribute that changed.
@@ -157,6 +181,25 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
             }
         } else {
             super.attributeChanged(attribute);
+        }
+    }
+
+    /** Notify any channel listeners that have been added.
+     *  @param properties The transmission properties.
+     *  @param token The token to be processed.
+     *  @param source The sending port.
+     *  @param destination The receiving port.
+     *  @see #addChannelListener(ChannelListener, WirelessIOPort)
+     */
+    public void channelNotify(RecordToken properties, Token token,
+            WirelessIOPort source, WirelessIOPort destination) {
+        if (_channelListeners != null) {
+            Iterator iterator = _channelListeners.iterator();
+    
+            while (iterator.hasNext()) {
+                ChannelListener listener = (ChannelListener) iterator.next();
+                listener.channelNotify(properties, token, source, destination);
+            }
         }
     }
 
@@ -276,58 +319,6 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         }
     }
 
-    /** Any token processors that have been registered will be applied
-     *  in this method.
-     *  @param properties The transmission properties.
-     *  @param token The token to be processed.
-     *  @param source The sending port.
-     *  @param destination The receiving port.
-     *  @exception IllegalActionException If the properties cannot
-     *   be transformed. Not thrown in this base class.
-     *  @see #registerTokenProcessor(TokenProcessor, WirelessIOPort)
-     */
-    public void processTokens(RecordToken properties, Token token,
-            WirelessIOPort source, WirelessIOPort destination)
-            throws IllegalActionException {
-
-        if (_tokenProcessorsByPort != null) {
-            // Apply token processor for the sender.
-            Set processors = (Set) _tokenProcessorsByPort.get(source);
-
-            if (processors != null) {
-                Iterator iterator = processors.iterator();
-
-                while (iterator.hasNext()) {
-                    TokenProcessor processor = (TokenProcessor) iterator.next();
-                    processor.processTokens(properties, token, source,
-                            destination);
-                }
-            }
-
-            // Apply token processor for the receiver.
-            processors = (Set) _tokenProcessorsByPort.get(destination);
-
-            if (processors != null) {
-                Iterator iterator = processors.iterator();
-
-                while (iterator.hasNext()) {
-                    TokenProcessor processor = (TokenProcessor) iterator.next();
-                    processor.processTokens(properties, token, source,
-                            destination);
-                }
-            }
-        }
-
-        if (_tokenProcessors != null) {
-            Iterator iterator = _tokenProcessors.iterator();
-
-            while (iterator.hasNext()) {
-                TokenProcessor processor = (TokenProcessor) iterator.next();
-                processor.processTokens(properties, token, source, destination);
-            }
-        }
-    }
-
     /** Override the base class to declare that the dummy port
      *  returned by getChannelPort() does not depend on itself
      *  in a firing. This port is both an input and an output,
@@ -372,37 +363,14 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         }
     }
 
-    /** Register a token processor for transmissions from the specified
-     *  port.  If null is given for the port, then the token processor
-     *  will be used for all transmissions through this channel.
-     *  If the token processor is already registered, then no changes
-     *  are made.
-     *  @param processor The token processor to be registered.
-     *  @param port The port whose transmissions should be subject to the
-     *   token processor, or null to make them subject to all
-     *   transmissions through this channel.
+    /** Remove a channel listener for transmissions on this channel.  
+     *  If the listener has not been added, then do nothing. 
+     *  @param listener The channel listener to remove.
+     *  @see #addChannelListener(ChannelListener)
      */
-    public void registerTokenProcessor(TokenProcessor processor,
-            WirelessIOPort port) {
-        if (port != null) {
-            if (_tokenProcessorsByPort == null) {
-                _tokenProcessorsByPort = new HashMap();
-            }
-
-            Set processors = (Set) _tokenProcessorsByPort.get(port);
-
-            if (processors == null) {
-                processors = new HashSet();
-                _tokenProcessorsByPort.put(port, processors);
-            }
-
-            processors.add(processor);
-        } else {
-            if (_tokenProcessors == null) {
-                _tokenProcessors = new HashSet();
-            }
-
-            _tokenProcessors.add(processor);
+    public void removeChannelListener(ChannelListener listener) {
+        if (_channelListeners != null) {
+            _channelListeners.remove(listener);
         }
     }
 
@@ -669,32 +637,6 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         }
     }
 
-    /** Unregister a token processor for transmissions from the specified
-     *  port (or from null for a generic token processor). If the processor
-     *  has not been registered, then do nothing.
-     *  @param processor The token processor to be unregistered.
-     *  @param port The port whose transmissions should be subject to the
-     *   token processor, or null for a generic processor.
-     *  @see #registerTokenProcessor(TokenProcessor, WirelessIOPort)
-     *  (htaylor)
-     */
-    public void unregisterTokenProcessor(TokenProcessor processor,
-            WirelessIOPort port) {
-        if (port != null) {
-            if (_tokenProcessorsByPort != null) {
-                Set processors = (Set) _tokenProcessorsByPort.get(port);
-
-                if (processors != null) {
-                    processors.remove(processor);
-                }
-            }
-        } else {
-            if (_tokenProcessors != null) {
-                _tokenProcessors.remove(processor);
-            }
-        }
-    }
-
     /** React to changes of the specified Settable.
      *  This base class registers as a listener to attributes that
      *  specify the location of objects (and implement the Locatable
@@ -919,11 +861,9 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
                 // Transform the properties.
                 Token transformedProperties = transformProperties(properties,
                         sender, destination);
-                // Process the tokens.
-                processTokens(properties, token, sender, destination);
                 receiver.put(newToken, transformedProperties);
-                // Process the tokens again.
-                processTokens(properties, token, sender, destination);
+                // Notify any channel listeners after the transmission occurs.
+                channelNotify(properties, token, sender, destination);
             }
         } else {
             receiver.clear();
@@ -966,16 +906,9 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      */
     private HashMap _propertyTransformersByPort;
 
-    /** The token processors that have been registered without
-     *  specifying a port.
+    /** The channel listeners that have been added.
      */
-    private Set _tokenProcessors;
-
-    /** The token processors that have been registered to
-     *  operate on transmissions from a particular port,
-     *  indexed by port.
-     */
-    private HashMap _tokenProcessorsByPort;
+    private Set _channelListeners;
 
     private HashMap _receiversInRangeCache;
 
