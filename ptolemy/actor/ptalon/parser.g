@@ -39,22 +39,53 @@ options {
 	ASTLabelType = "PtalonAST";
 }
 
+/**
+ * Parse for statement:
+ * <p>import <i>qualified_identifier</i>;
+ * <p>Generate tree #(IMPORT <i>qualified_identifier</i>).
+ */
 import_declaration:
 	(IMPORT^ qualified_identifier SEMI!)
 ;
 
+/**
+ * Parse for statement:
+ * <p><i>portType</i> <i>ID</i>
+ * <p>where portType is either "port", "inport", or "outport".
+ * Generate corresponding tree #(PORT ID), #(INPORT ID), or #(OUTPORT ID).
+ */
 port_declaration:
 	(PORT^ | INPORT^ | OUTPORT^) ID
 ;
 
+/**
+ * Parse for statement:
+ * <p><i>parameterType</i> <i>ID</i>
+ * <p>where parameterType is either "parameter", "intparameter", or 
+ * "outparameter".
+ * Generate corresponding tree #(PARAMETER ID), #(INTPARAMETER ID), or 
+ * #(BOOLPARAMETER ID).
+ */
 parameter_declaration:
 	(PARAMETER^ | INTPARAMETER^ | BOOLPARAMETER^) ID
 ;
 
+/**
+ * Parse for statement:
+ * <p>relation <i>ID</i>
+ * <p>Generate tree #(RELATION ID)
+ */
 relation_declaration:
 	RELATION^ ID
 ;
 
+/**
+ * Parse for statement
+ * <p><i>ID</i>
+ * <p>or
+ * <p><i>ID</i>.qualified_identifier
+ * <p>Generate tree #(QUALID)
+ */
 qualified_identifier!
 {
 	String identifier = "";
@@ -73,14 +104,19 @@ qualified_identifier!
 	}
 ;
 
-attribute!
-:
-	ATTRIBUTE_MARKER! a:ID b:qualified_identifier ATTRIBUTE_MARKER!
-	{
-		#attribute = #([ATTRIBUTE, a.getText()], b);
-	}
-;
-
+/**
+ * Parse statements of one of form:
+ * <p><i>ID</i> := <i>ID</i>
+ * <p><i>ID</i> := <i>actor_declaration</i>
+ * <p><i>ID</i> := <i>arithmetic_expression</i>
+ * <p><i>ID</i> := <i>boolean_expression</i>
+ * <p>with preference given in that order.  Generate corresponding
+ * tree:
+ * <p>#(ASSIGN ID ID)
+ * <p>#(ASSIGN ID <i>actor_declaration</i>)
+ * <p>#(ASSIGN ID <i>arithmetic_expression</i>)
+ * <p>#(ASSIGN ID <i>boolean_expression</i>)
+ */
 assignment:
 	ID ASSIGN^ ((ID (RPAREN | COMMA)) => ID |
 		((ID LPAREN) => actor_declaration | 
@@ -92,6 +128,14 @@ assignment:
 	)
 ;
 
+/**
+ * Parse statements of one of form:
+ * <p><i>ID</i>(<i>assignment</i>, <i>assignment</i>, ...)
+ * <p>Generate tree:
+ * <p>#(ACTOR_DELCARATION <i>assignment</i> <i>assignment</i> ...)
+ * <p>where the text for token ACTOR_DECLARATION is the leftmost
+ * <i>ID</i> in the statement, or the name of the declared actor.
+ */
 actor_declaration!
 :
 	a:ID
@@ -264,7 +308,7 @@ actor_definition!
 	{
 		#actor_definition.setText(a.getText());
 	}
-	IS! LCURLY! ((b:atomic_statement 
+	IS! LCURLY! (b:atomic_statement 
 	{
 		#actor_definition.addChild(#b);
 	}
@@ -272,7 +316,7 @@ actor_definition!
 	{
 		#actor_definition.addChild(#c);
 	}
-	)* | attribute) RCURLY!
+	)* RCURLY!
 
 ;
 

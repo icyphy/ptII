@@ -119,11 +119,6 @@ qualified_identifier
 	QUALID
 ;
 
-attribute
-:
-	#(ATTRIBUTE qualified_identifier)
-;
-
 assignment throws PtalonRuntimeException
 {
 	int x;
@@ -465,6 +460,6 @@ actor_definition[NestedActorManager info] throws PtalonRuntimeException
 	this.info.startAtTop();
 }
 :
-	#(a:ACTOR_DEFINITION (import_declaration)* ((atomic_statement | 
-		conditional_statement)* | attribute))
+	#(a:ACTOR_DEFINITION (import_declaration)* (atomic_statement | 
+		conditional_statement)*)
 ;

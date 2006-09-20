@@ -106,11 +106,6 @@ qualified_identifier
 	QUALID
 ;
 
-attribute
-:
-	#(ATTRIBUTE qualified_identifier)
-;
-
 assignment throws PtalonScopeException
 {
 	String arith, bool;
@@ -322,6 +317,6 @@ actor_definition [NestedActorManager manager] throws PtalonScopeException
 	{
 		info.setActorSymbol(a.getText());
 	}
-	(import_declaration)* ((atomic_statement | 
-		conditional_statement)* | attribute))
+	(import_declaration)* (atomic_statement | 
+		conditional_statement)*)
 ;
