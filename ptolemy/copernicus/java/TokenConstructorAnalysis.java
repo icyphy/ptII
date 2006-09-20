@@ -128,7 +128,7 @@ public class TokenConstructorAnalysis {
 
     private Unit _findConstructor(Local local, Unit location,
             LocalDefs localDefs) {
-        NewExpr newExpr = null;
+        //NewExpr newExpr = null;
         List definitionList = localDefs.getDefsOfAt(local, location);
 
         if (definitionList.size() == 1) {

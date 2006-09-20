@@ -622,7 +622,7 @@ public class GiottoDirectorInliner implements DirectorInliner {
             Stmt insertPoint = body.getFirstNonIdentityStmt();
 
             Chain units = body.getUnits();
-            Local thisLocal = body.getThisLocal();
+            /*Local thisLocal =*/ body.getThisLocal();
 
             Local prefireReturnsLocal = Jimple.v().newLocal("preReturns",
                     BooleanType.v());
@@ -851,7 +851,7 @@ public class GiottoDirectorInliner implements DirectorInliner {
             Stmt insertPoint = body.getFirstNonIdentityStmt();
 
             Chain units = body.getUnits();
-            Local thisLocal = body.getThisLocal();
+            /*Local thisLocal =*/ body.getThisLocal();
 
             Local postfireReturnsLocal = Jimple.v().newLocal("postfireReturns",
                     BooleanType.v());

@@ -188,7 +188,7 @@ public class TypeSpecializer extends SceneTransformer implements
 
                 while (boxes.hasNext()) {
                     ValueBox box = (ValueBox) boxes.next();
-                    Value value = box.getValue();
+                    /*Value value = */ box.getValue();
 
                     // Replace Array creations with a more specific
                     // type, if possible.
@@ -413,24 +413,24 @@ public class TypeSpecializer extends SceneTransformer implements
         return map;
     }
 
-    private static ptolemy.data.type.Type _getReplacementTokenType(Value value,
-            TypeSpecializerAnalysis typeAnalysis) {
-        if (value instanceof FieldRef) {
-            FieldRef ref = (FieldRef) value;
-            SootField field = ref.getField();
-            return typeAnalysis.getSpecializedType(field);
-        } else if (value instanceof Local) {
-            Local local = (Local) value;
-            return typeAnalysis.getSpecializedType(local);
-
-            //   } else if (value.getType().equals(NullType.v())) {
-            //             return tokenClass
-        } else {
-            return null;
-
-            //throw new RuntimeException("Unrecognized value:" + value);
-        }
-    }
+//    private static ptolemy.data.type.Type _getReplacementTokenType(Value value,
+//            TypeSpecializerAnalysis typeAnalysis) {
+//        if (value instanceof FieldRef) {
+//            FieldRef ref = (FieldRef) value;
+//            SootField field = ref.getField();
+//            return typeAnalysis.getSpecializedType(field);
+//        } else if (value instanceof Local) {
+//            Local local = (Local) value;
+//            return typeAnalysis.getSpecializedType(local);
+//
+//            //   } else if (value.getType().equals(NullType.v())) {
+//            //             return tokenClass
+//        } else {
+//            return null;
+//
+//            //throw new RuntimeException("Unrecognized value:" + value);
+//        }
+//    }
 
     private CompositeActor _model;
 }

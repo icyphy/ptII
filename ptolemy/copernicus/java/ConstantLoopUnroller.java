@@ -108,7 +108,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
     }
 
     protected void internalTransform(Body body, String phaseName, Map options) {
-        Chain units = body.getUnits();
+        /*Chain units = */body.getUnits();
 
         BlockGraph graph = new CompleteBlockGraph(body);
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
@@ -390,15 +390,15 @@ public class ConstantLoopUnroller extends BodyTransformer {
         }
     }
 
-    private static boolean _blockContains(Block block, Object object) {
-        for (Iterator i = block.iterator(); i.hasNext();) {
-            if (i.next().equals(object)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
+//    private static boolean _blockContains(Block block, Object object) {
+//        for (Iterator i = block.iterator(); i.hasNext();) {
+//            if (i.next().equals(object)) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 
     private static ConstantLoopUnroller instance = new ConstantLoopUnroller();
 }

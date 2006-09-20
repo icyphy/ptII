@@ -921,7 +921,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                     while (boxes.hasNext()) {
                         ValueBox box = (ValueBox) boxes.next();
-                        Value value = box.getValue();
+                        /*Value value =*/ box.getValue();
 
                         doneSomething |= _inlineTypeMethodsIn(method, body,
                                 unit, box, localDefs, localUses, typeAnalysis,
@@ -2382,7 +2382,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                 System.out.println("handling as new object");
                             }
 
-                            NewExpr newExpr = (NewExpr) stmt.getRightOp();
+                            /* NewExpr newExpr = (NewExpr)*/ stmt.getRightOp();
 
                             // We have an assignment from one local token to another.
                             Map map = (Map) localToFieldToLocal.get(stmt

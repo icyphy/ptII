@@ -716,7 +716,7 @@ public class InlinePortTransformer extends SceneTransformer implements
                             box.setValue(StringConstant.v(port.getName()));
                         }
 
-                        String methodName = r.getMethod().getName();
+                        //String methodName = r.getMethod().getName();
 
                         //   if (port.getWidth() == 0 &&
                         //                                     (methodName.equals("hasToken") ||

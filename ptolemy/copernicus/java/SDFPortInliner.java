@@ -334,7 +334,7 @@ public class SDFPortInliner implements PortInliner {
      */
     public void inlineGet(JimpleBody body, Stmt stmt, ValueBox box,
             InvokeExpr expr, TypedIOPort port) {
-        SootClass theClass = body.getMethod().getDeclaringClass();
+        /*SootClass theClass =*/ body.getMethod().getDeclaringClass();
 
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
@@ -492,7 +492,7 @@ public class SDFPortInliner implements PortInliner {
      */
     public void inlineGetInside(JimpleBody body, Stmt stmt, ValueBox box,
             InvokeExpr expr, TypedIOPort port) {
-        SootClass theClass = body.getMethod().getDeclaringClass();
+        /*SootClass theClass =*/ body.getMethod().getDeclaringClass();
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
         body.getLocals().add(bufferLocal);
@@ -648,7 +648,7 @@ public class SDFPortInliner implements PortInliner {
      */
     public void inlineSend(JimpleBody body, Stmt stmt, InvokeExpr expr,
             TypedIOPort port) {
-        SootClass theClass = body.getMethod().getDeclaringClass();
+        /*SootClass theClass =*/ body.getMethod().getDeclaringClass();
 
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
@@ -831,7 +831,7 @@ public class SDFPortInliner implements PortInliner {
      */
     public void inlineSendInside(JimpleBody body, Stmt stmt, InvokeExpr expr,
             TypedIOPort port) {
-        SootClass theClass = body.getMethod().getDeclaringClass();
+        /*SootClass theClass =*/ body.getMethod().getDeclaringClass();
 
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));

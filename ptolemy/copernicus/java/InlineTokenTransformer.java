@@ -146,10 +146,10 @@ public class InlineTokenTransformer extends SceneTransformer implements
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
             // Add a this local...  note that we might not have one.
-            Local thisLocal;
+            //Local thisLocal;
 
             try {
-                thisLocal = body.getThisLocal();
+                /*thisLocal =*/ body.getThisLocal();
             } catch (Exception ex) {
                 //FIXME: what if no thisLocal?
                 continue;
