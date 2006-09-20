@@ -936,17 +936,35 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                                     + "was called with a null name");
                 }
 
-                String[] subnames = _splitName(name);
+                // This method gets called often,
+                // so avoid the call to _splitName().  
+                // This change is good for a 2-3% speed up
+                // in ptesdf mini-model-aggregator.
+                // Below is the old code:
 
-                if (subnames[1] == null) {
+                // String[] subnames = _splitName(name);
+                // if (subnames[1] == null) {
+                //   return (Attribute) _attributes.get(name);
+                // else {
+                //   Attribute match = (Attribute) _attributes.get(subnames[0]);
+
+                //   if (match == null) {
+                //       return null;
+                //   } else {
+                //       return match.getAttribute(subnames[1]);
+                //   }
+                // }
+
+                final int period = name.indexOf(".");
+
+                if (period < 0) {
                     return (Attribute) _attributes.get(name);
                 } else {
-                    Attribute match = (Attribute) _attributes.get(subnames[0]);
-
+                    final Attribute match = (Attribute) _attributes.get(name.substring(0, period));
                     if (match == null) {
                         return null;
                     } else {
-                        return match.getAttribute(subnames[1]);
+                        return match.getAttribute(name.substring(period + 1));
                     }
                 }
             }
