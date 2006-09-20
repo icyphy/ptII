@@ -139,6 +139,7 @@ public class DoubleToken extends ScalarToken {
             IntToken intToken = IntToken.convert(token);
             DoubleToken result = new DoubleToken(intToken.doubleValue());
             result._unitCategoryExponents = intToken._copyOfCategoryExponents();
+            result._isUnitless = intToken._isUnitless;
             return result;
         } else {
             throw new IllegalActionException(notSupportedConversionMessage(

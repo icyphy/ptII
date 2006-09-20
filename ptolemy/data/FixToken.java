@@ -255,7 +255,10 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
     public final FixToken quantize(Quantization quant) {
         //FIXME: Move this to ScalarToken.
         FixToken result = _quantize(quant);
-        result._unitCategoryExponents = this._copyOfCategoryExponents();
+        if (!_isUnitless) {
+            result._unitCategoryExponents = _copyOfCategoryExponents();
+            result._isUnitless = false;
+        }
         return result;
     }
 

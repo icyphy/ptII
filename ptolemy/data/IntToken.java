@@ -133,6 +133,7 @@ public class IntToken extends ScalarToken {
             IntToken result = new IntToken(unsignedByteToken.intValue());
             result._unitCategoryExponents = unsignedByteToken
                     ._copyOfCategoryExponents();
+            result._isUnitless = unsignedByteToken._isUnitless;
             return result;
         }
 
