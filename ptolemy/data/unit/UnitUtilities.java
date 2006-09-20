@@ -31,6 +31,7 @@
 package ptolemy.data.unit;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import ptolemy.kernel.util.NamedObj;
@@ -255,11 +256,8 @@ public class UnitUtilities {
     public static int[] newUnitArrayInCategory(int index) {
         int[] units = new int[index + 1];
 
-        // Note: java.util.Arrays not available on Tini Arrays.fill(units, 0);
-        for (int i = 0; i < units.length; i++) {
-            units[i] = 0;
-        }
-
+        // No need to initialize the array values to zero, it happens
+        // for us.
         units[index] = 1;
         return units;
     }
