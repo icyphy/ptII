@@ -60,7 +60,7 @@ public class IntToken extends ScalarToken {
     /** Construct a token with the specified value.
      *  @param value The specified value.   
      */
-    public IntToken(int value) {
+    public IntToken(final int value) {
         _value = value;
     }
 
@@ -472,5 +472,5 @@ public class IntToken extends ScalarToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private int _value;
+    private final int _value;
 }
