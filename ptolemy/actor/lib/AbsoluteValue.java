@@ -118,7 +118,16 @@ public class AbsoluteValue extends Transformer {
     // This class implements a monotonic function of the input port
     // type. The result of the function is the same as the input type
     // if is not Complex; otherwise, the result is Double.
-    private class FunctionTerm extends MonotonicFunction {
+    private static class FunctionTerm extends MonotonicFunction {
+
+        // FindBugs suggested making this class a static inner class:
+        //
+        // "This class is an inner class, but does not use its embedded
+        // reference to the object which created it.  This reference makes
+        // the instances of the class larger, and may keep the reference
+        // to the creator object alive longer than necessary.  If
+        // possible, the class should be made into a static inner class."
+
         // The constructor takes a port argument so that the clone()
         // method can construct an instance of this class for the
         // input port on the clone.

@@ -219,7 +219,15 @@ public class Scale extends Transformer {
     // function value is also an array. The element type of the function value
     // array is the result of a recursive call to this function. This allows
     // the port type to be an array or array, for example.
-    private class PortParameterFunction extends MonotonicFunction {
+    private static class PortParameterFunction extends MonotonicFunction {
+        // FindBugs suggested making this class a static inner class:
+        //
+        // "This class is an inner class, but does not use its embedded
+        // reference to the object which created it.  This reference makes
+        // the instances of the class larger, and may keep the reference
+        // to the creator object alive longer than necessary.  If
+        // possible, the class should be made into a static inner class."
+
         private PortParameterFunction(TypedIOPort port, Parameter param) {
             _port = port;
             _param = param;
