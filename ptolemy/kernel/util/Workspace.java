@@ -653,30 +653,30 @@ public final class Workspace implements Nameable, Serializable {
      */
     protected synchronized String _description(int detail, int indent,
             int bracket) {
-        String result = NamedObj._getIndentPrefix(indent);
+        StringBuffer result = new StringBuffer(NamedObj._getIndentPrefix(indent));
 
         if ((bracket == 1) || (bracket == 2)) {
-            result += "{";
+            result.append("{");
         }
 
         if ((detail & NamedObj.CLASSNAME) != 0) {
-            result += getClass().getName();
+            result.append(getClass().getName());
 
             if ((detail & NamedObj.FULLNAME) != 0) {
-                result += " ";
+                result.append(" ");
             }
         }
 
         if ((detail & NamedObj.FULLNAME) != 0) {
-            result += ("{" + getFullName() + "}");
+            result.append(("{" + getFullName() + "}"));
         }
 
         if ((detail & NamedObj.CONTENTS) != 0) {
             if ((detail & (NamedObj.CLASSNAME | NamedObj.FULLNAME)) != 0) {
-                result += " ";
+                result.append(" ");
             }
 
-            result += "directory {\n";
+            result.append("directory {\n");
 
             Enumeration enumeration = directory();
 
@@ -689,17 +689,17 @@ public final class Workspace implements Nameable, Serializable {
                     detail &= ~NamedObj.CONTENTS;
                 }
 
-                result += (obj._description(detail, indent + 1, 2) + "\n");
+                result.append((obj._description(detail, indent + 1, 2) + "\n"));
             }
 
-            result += "}";
+            result.append("}");
         }
 
         if (bracket == 2) {
-            result += "}";
+            result.append("}");
         }
 
-        return result;
+        return result.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -885,7 +885,17 @@ public final class Workspace implements Nameable, Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    private final class AccessRecord {
+
+    private static final class AccessRecord {
+
+        // FindBugs suggested making this class a static inner class:
+        //
+        // "This class is an inner class, but does not use its embedded
+        // reference to the object which created it.  This reference makes
+        // the instances of the class larger, and may keep the reference
+        // to the creator object alive longer than necessary.  If
+        // possible, the class should be made into a static inner class."
+
         // the number of failed calls to getReadAccess() performed
         // by a thread and not yet matched by a call to doneReading()
         public int failedReadAttempts = 0;
