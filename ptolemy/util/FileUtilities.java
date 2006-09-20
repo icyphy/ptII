@@ -265,7 +265,7 @@ public class FileUtilities {
             URL result = classLoader.getResource(trimmedName);
 
             if (result == null) {
-                new IOException("Cannot find file '" + trimmedName
+                throw new IOException("Cannot find file '" + trimmedName
                         + "' in classpath");
             }
 

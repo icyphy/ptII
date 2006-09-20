@@ -285,7 +285,7 @@ public class ClassWrapper extends TypedAtomicActor {
             throw new IllegalActionException(this, ex.getTargetException(),
                     "Error invoking method " + m.getName());
         } catch (Exception ex) {
-            new IllegalActionException(this, ex, "Error invoking method "
+            throw new IllegalActionException(this, ex, "Error invoking method "
                     + m.getName());
         }
 
