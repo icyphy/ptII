@@ -227,10 +227,12 @@ clean_shipping:
 		ptolemy/actor/lib/gui/KeystrokeSensor* \
 		ptolemy/actor/lib/python/demo/HelloWorld \
 		ptolemy/actor/lib/python/demo/NotifyFailedTest \
+		ptolemy/actor/lib/security/test/foo.keystore \
 		ptolemy/actor/ptalon \
 		ptolemy/backtrack \
 		ptolemy/codegen/c/actor/lib/javasound/test/outfile.wav \
 		ptolemy/codegen/c/domains/sdf/kernel/test/foo.c \
+		ptolemy/codegen/kernel/test/substitute.out \
 		ptolemy/copernicus/*/test/codeGenerator.tmp \
 		ptolemy/copernicus/jhdl \
 		ptolemy/copernicus/kernel/fragment \
