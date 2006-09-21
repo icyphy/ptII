@@ -229,7 +229,7 @@ clean_shipping:
 		ptolemy/actor/lib/python/demo/NotifyFailedTest \
 		ptolemy/actor/ptalon \
 		ptolemy/backtrack \
-		ptolemy/copernicus/interpreted/test/codeGenerator.tmp \
+		ptolemy/copernicus/*/test/codeGenerator.tmp \
 		ptolemy/copernicus/jhdl \
 		ptolemy/copernicus/kernel/fragment \
 		ptolemy/copernicus/*/cg \
