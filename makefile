@@ -229,9 +229,12 @@ clean_shipping:
 		ptolemy/actor/lib/python/demo/NotifyFailedTest \
 		ptolemy/actor/ptalon \
 		ptolemy/backtrack \
+		ptolemy/codegen/c/actor/lib/javasound/test/outfile.wav \
+		ptolemy/codegen/c/domains/sdf/kernel/test/foo.c \
 		ptolemy/copernicus/*/test/codeGenerator.tmp \
 		ptolemy/copernicus/jhdl \
 		ptolemy/copernicus/kernel/fragment \
+		ptolemy/copernicus/kernel/test/substitute.out \
 		ptolemy/copernicus/*/cg \
 		ptolemy/domains/cont \
 		ptolemy/domains/csp/demo/DiningPhilosophers/checkDeadlock \
