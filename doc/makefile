@@ -363,6 +363,7 @@ ALL1_4PACKAGES = \
 	ptolemy.actor \
 	ptolemy.actor.gui \
 	ptolemy.actor.gui.style \
+	ptolemy.actor.gui.unit \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.hoc \
 	ptolemy.actor.lib.net \
@@ -583,6 +584,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/*.java \
 			../ptolemy/actor/gui/*.java \
 			../ptolemy/actor/gui/style/*.java \
+			../ptolemy/actor/gui/unit/*.java \
 			../ptolemy/actor/lib/*.java \
 			../ptolemy/actor/lib/comm/*.java \
 			../ptolemy/actor/lib/conversions/*.java \
@@ -855,7 +857,8 @@ doccheck/index.html:
 #
 
 # Location of the FindBugs sources
-FINDBUGS=$(PTII)/vendors/findbugs-1.0.0-rc1
+#FINDBUGS=$(PTII)/vendors/findbugs-1.0.0-rc1
+FINDBUGS=c:/cxh/src/findbugs-0.8.6
 
 findbugs: findbugs.htm findbugs.xml
 
@@ -869,6 +872,11 @@ ptII.fb:
 	done
 	if [ -d "$(JXTA_DIR)" ]; then \
 		for file in `ls $(JXTA_DIR)/*.jar`; do \
+		echo "$$file" >> ptII.fb; \
+		done; \
+	fi
+	if [ -d "$(ANTLR_DIR)" ]; then \
+		for file in `ls $(ANTLR_DIR)/*.jar`; do \
 		echo "$$file" >> ptII.fb; \
 		done; \
 	fi
