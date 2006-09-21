@@ -113,7 +113,7 @@
 
 	    <!-- matlab depends on Matlab being present -->
             <input source="ptolemy/matlab/matlab.xml"/>
-            <input source="ptolemy/actor/lib/ptalon/ptalon.xml"/>
+            <input source="ptolemy/actor/ptalon/ptalon.xml"/>
             <input source="ptolemy/ptp/lib/ptpentities.xml"/>
             <input source="ptolemy/actor/lib/python/python.xml"/>
             <input source="ptolemy/actor/lib/test.xml"/>
