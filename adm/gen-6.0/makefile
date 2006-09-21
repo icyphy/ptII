@@ -1083,6 +1083,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/data/unit \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/gui/unit \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/process \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/sched \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/util \
