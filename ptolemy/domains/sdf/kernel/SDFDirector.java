@@ -438,7 +438,20 @@ public class SDFDirector extends StaticSchedulingDirector {
                         // locks on the workspace, which would block
                         // UI interactions and may cause deadlocks.
                         // SOLUTION: workspace.wait(object, long).
-                        _workspace.wait(this, timeToWait);
+                        if (timeToWait > 0) {
+                            // Bug fix from J. S. Senecal:
+                            //
+                            //  The problem was that sometimes, the
+                            //  method Object.wait(timeout) was called
+                            //  with timeout = 0. According to java
+                            //  documentation:
+                            //
+                            // " If timeout is zero, however, then
+                            // real time is not taken into
+                            // consideration and the thread simply
+                            // waits until notified."
+                            _workspace.wait(this, timeToWait);
+                        }
                     } catch (InterruptedException ex) {
                         // Continue executing.
                     }

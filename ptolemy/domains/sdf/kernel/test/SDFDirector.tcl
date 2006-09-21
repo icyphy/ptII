@@ -461,3 +461,93 @@ Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestConsumer {.E0.Consumer} 3 time
 }}}
 
 
+######################################################################
+####
+#
+test SDFDirector-9.3 {SynchronizeToRealTimeConstructor test} {
+    # Based on an example by J. S. Senecal
+        set w [java::new ptolemy.kernel.util.Workspace W]
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set e9 [java::new ptolemy.actor.TypedCompositeActor $w]
+    $e9 setName E9
+    set d9 [java::new ptolemy.domains.sdf.kernel.SDFDirector $e9 D9]
+
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    $e9 setManager $manager
+
+   set attribute [$d9 getAttribute iterations]
+    set parameter [java::cast ptolemy.data.expr.Parameter $attribute]
+    $parameter setExpression 50
+    $parameter validate
+
+    set attribute [$d9 getAttribute period]
+    set parameter [java::cast ptolemy.data.expr.Parameter $attribute]
+    $parameter setExpression 0.001
+    $parameter validate
+
+    set attribute [$d9 getAttribute synchronizeToRealTime]
+    set parameter [java::cast ptolemy.data.expr.Parameter $attribute]
+    $parameter setExpression true
+    $parameter validate
+
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e9 Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e9 Consumer]
+    $e9 connect [java::field $a1 output] [java::field $a2 input] R1
+
+    set iter [$d3 getAttribute iterations]
+
+    # _testSetToken is defined in $PTII/util/testsuite/testParams.tcl
+    _testSetToken $iter [java::new {ptolemy.data.IntToken int} 6]
+    $manager run
+    list [$a2 getHistory]
+} {{0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+}}
