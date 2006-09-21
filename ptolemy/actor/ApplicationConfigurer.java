@@ -36,7 +36,7 @@ example of a class that implements this interface.
 
 @author Christopher Brooks      
 @version $Id$
-@since Ptolemy II 4.1
+@since Ptolemy II 5.2
 @Pt.ProposedRating Red (cxh)
 @Pt.AcceptedRating Red (cxh)
 */

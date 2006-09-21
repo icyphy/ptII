@@ -47,7 +47,7 @@ import ptolemy.moml.SharedParameter;
 A test suite parameter that is shared globally in a model.
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 4.1
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (acataldo)
  */
