@@ -212,6 +212,10 @@ OPTIONAL_FILES = \
 	'ModelPane$$CommandListener.class' \
 	'MoMLApplication$$ConfigurationFilenameFilter.class' \
 	'MoMLApplication$$1.class' \
+	'OpenInstanceDialog$$1.class' \
+	'OpenInstanceDialog$$ColumnNames.class' \
+	'OpenInstanceDialog$$ParametersTableModel.class' \
+	'OpenInstanceDialog$$StringCellRenderer.class' \
 	'PlotEffigy$$Factory.class' \
 	'PlotTableau$$Factory.class' \
 	'PlotTableauFrame$$EPSFileFilter.class' \
