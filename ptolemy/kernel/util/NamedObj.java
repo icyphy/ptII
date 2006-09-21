@@ -3117,9 +3117,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         // FindBugs suggested making this class a static inner class:
         //
         // "This class is an inner class, but does not use its embedded
-        // reference to the object which created it.  This reference makes
+        // reference to the object which created it. This reference makes
         // the instances of the class larger, and may keep the reference
-        // to the creator object alive longer than necessary.  If
+        // to the creator object alive longer than necessary. If
         // possible, the class should be made into a static inner class."
     }
 }
