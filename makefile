@@ -246,6 +246,8 @@ clean_shipping:
 		ptolemy/domains/wireless/demo/Network \
 		ptolemy/domains/wireless/lib/network \
 		ptolemy/domains/wireless/lib/tinyOS \
+		ptolemy/hsif/Thermostat_moml.xml \
+		ptolemy/hsif/SwimmingPool_moml.xml \
 		ptolemy/matlab/libptmatlab.so \
 		ptolemy/matlab/ptmatlab.dll \
 		ptolemy/matlab/ptmatlab.exp \
