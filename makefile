@@ -223,6 +223,7 @@ clean_shipping:
 		doc/img/PtolemyIICD.ec3 \
 		jni/launcher/launcher.exe \
 		jni/launcher/launcher \
+		lib/cachedir \
 		ptolemy/apps ptolemy/actor/lib/ptp \
 		ptolemy/actor/lib/gui/KeystrokeSensor* \
 		ptolemy/actor/lib/python/demo/HelloWorld \
