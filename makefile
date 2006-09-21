@@ -231,6 +231,7 @@ clean_shipping:
 		ptolemy/backtrack \
 		ptolemy/copernicus/jhdl \
 		ptolemy/copernicus/kernel/fragment \
+		ptolemy/copernicus/*/cg \
 		ptolemy/domains/cont \
 		ptolemy/domains/csp/demo/DiningPhilosophers/checkDeadlock \
 		ptolemy/domains/ct/lib/IPCInterface.class \
