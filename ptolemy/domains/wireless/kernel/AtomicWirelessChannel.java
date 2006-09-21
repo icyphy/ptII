@@ -189,7 +189,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  @param token The token to be processed.
      *  @param source The sending port.
      *  @param destination The receiving port.
-     *  @see #addChannelListener(ChannelListener, WirelessIOPort)
+     *  @see #addChannelListener(ChannelListener)
      */
     public void channelNotify(RecordToken properties, Token token,
             WirelessIOPort source, WirelessIOPort destination) {
