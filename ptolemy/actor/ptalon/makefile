@@ -62,8 +62,12 @@ JSRCS = \
 	PtalonScopeChecker.java \
 	PtalonScopeException.java \
 	PtalonTokenTypes.java 
-	
-EXTRA_SRCS =	$(JSRCS)
+
+OTHER_FILES_TO_BE_JARED = \
+	ptalon.xml
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
 
 
 
