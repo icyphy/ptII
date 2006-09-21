@@ -27,20 +27,13 @@
  */
 package ptolemy.vergil.kernel;
 
-import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JMenuItem;
 
 import ptolemy.actor.gui.RenameDialog;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.MenuItemFactory;
-import diva.gui.toolbox.JContextMenu;
 
 //////////////////////////////////////////////////////////////////////////
 //// RenameDialogAction

@@ -29,7 +29,6 @@ package contrib.actor.lib.ptesdf;
 
 import java.util.Iterator;
 
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
@@ -47,7 +46,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Publisher

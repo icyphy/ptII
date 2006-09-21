@@ -51,7 +51,6 @@ import soot.toolkits.graph.CompleteBlockGraph;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.SimpleLiveLocals;
 import soot.toolkits.scalar.SimpleLocalDefs;
-import soot.util.Chain;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConstantLoopUnroller

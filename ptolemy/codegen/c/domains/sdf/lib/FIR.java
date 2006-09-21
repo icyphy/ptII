@@ -26,13 +26,7 @@
  */
 package ptolemy.codegen.c.domains.sdf.lib;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-
-import ptolemy.data.type.ArrayType;
-import ptolemy.kernel.util.IllegalActionException;
 
 
 /**

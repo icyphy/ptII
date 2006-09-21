@@ -52,7 +52,6 @@ import soot.SootFieldRef;
 import soot.SootMethod;
 import soot.Type;
 import soot.Unit;
-import soot.Value;
 import soot.ValueBox;
 import soot.jimple.AssignStmt;
 import soot.jimple.FieldRef;

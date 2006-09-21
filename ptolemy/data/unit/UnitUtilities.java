@@ -31,7 +31,6 @@
 package ptolemy.data.unit;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import ptolemy.kernel.util.NamedObj;

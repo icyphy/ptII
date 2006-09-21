@@ -41,7 +41,6 @@ import java.util.Set;
 
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.StructuredType;
 import ptolemy.data.type.Type;

@@ -55,7 +55,6 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.actor.gui.UserActorLibrary;
-import ptolemy.actor.gui.unit.UnitConstraintsDialog;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;

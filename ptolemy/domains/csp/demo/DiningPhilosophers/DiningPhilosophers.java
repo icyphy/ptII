@@ -32,7 +32,6 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.csp.kernel.CSPDirector;
-import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Implementation of the Dining Philosophers problem.

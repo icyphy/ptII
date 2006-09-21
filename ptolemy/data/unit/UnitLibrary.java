@@ -30,11 +30,11 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Vector;
 
-import ptolemy.util.FileUtilities;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.FileUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnitLibrary

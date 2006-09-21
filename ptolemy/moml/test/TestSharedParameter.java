@@ -29,11 +29,7 @@
 package ptolemy.moml.test;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 
-import ptolemy.actor.gui.Configuration;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
