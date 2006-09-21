@@ -246,16 +246,16 @@ find . -name "*.xml,v" -exec chmod a-x {} \;
 For more information about CVS, see the
 <a href="http://www.gigascale.org/softdevel/faq/1/" target="_top">Gigascale CVS Pages</a>
 
- <p>To make a branch for 6.0-devel, use the following command:
+ <p>To make a branch for 6.0-alpha, use the following command:
 <pre>
 cd $PTII
-cvs tag -b rel-6-0-devel
+cvs tag -b rel-6-0-alpha
 </pre>
 Then check out the release branch  with
 <pre>
 cd ~/src
-cvs co -r rel-6-0-devel ptII
-mv ptII ptII6-0-devel
+cvs co -r rel-6-0-alpha ptII
+mv ptII ptII6-0-alpha
 </pre>
 <I>Note that you should avoid dots in the tag name</I>
 <li> Update the version numbers, see
@@ -269,26 +269,32 @@ set up a new tree for the release tree.
 <li> We build a separate src.tar.gz file under Unix so that the line
 endings are correct. 
 <pre>
-cvs co -r rel-6-0-devel ptII
-mv ptII ptII6.0-devel
-cd ptII5.1-devel
+cvs co -r rel-6-0-alpha ptII
+mv ptII ptII6.0-alpha
+cd ptII5.1-alpha
 setenv PTII `pwd`
+cvs update -P -d
 cd $PTII/adm/gen-6.0
-make USER=cxh PTIIHOME=/tmp/ptII6.0-devel PTIIADM=/tmp/ptII5.1-devel/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar clean all >& make.out &
+make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar clean all src.jar fortytwo_test
 </pre>
 The resulting file with the .class files gets copied to the website
-and untar'd.
+and untar'd.  Note that this does not require Java 3D on the build machine.
+Java 3D is needed for the applets, we copy the jars over later.
 <pre>
-make USER=cxh PTIIHOME=/tmp/ptII5.1-devel PTIIADM=/tmp/ptII6.0-devel/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar update_ftp
+make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar update_ftp
+</pre>
+or
+<pre>
+make USER=cxh PTIIHOME=/tmp/ptII5.1-alpha PTIIADM=/tmp/ptII6.0-alpha/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar update_ftp
 </pre>
 <ol>
 <li> Fix the links to ptplot downloads:
 <pre>
-cd /export/home/pt0/ptweb/ptolemyII/ptII6.0/ptII6.0.1/ptolemy/plot
-ln -s ../../../../../java/ptplot5.5/ptolemy/plot/ptplot5.5* .
+cd /export/home/pt0/ptweb/ptolemyII/ptII6.0/ptII6.0-alpha/ptolemy/plot
+ln -s ../../../../../java/ptplot5.6/ptolemy/plot/ptplot5.6* .
 cd doc
 rm -rf download
-ln -s ../../../../../../java/ptplot5.5-beta/ptolemy/plot/doc/download .
+ln -s ../../../../../../java/ptplot5.6-alpha/ptolemy/plot/doc/download .
 </pre>
 
 <li> Copy gr.jar from a Windows box to <CODE>ptolemy/domains/gr</CODE>
@@ -299,10 +305,11 @@ ln -s ../../../../../../java/ptplot5.5-beta/ptolemy/plot/doc/download .
 
 <li> We build the webstart jar files under Windows
 <pre>
-cvs co -r rel-6-0-devel ptII
-mv ptII ptII6.0-devel
-cd ptII6.0-devel
-export PTII=c:/src/ptII6.0-devel
+cvs co -r rel-6-0-alpha ptII
+cvs update -P -d
+mv ptII ptII6.0-alpha
+cd ptII6.0-alpha
+export PTII=c:/src/ptII6.0-alpha
 ./configure
 <I>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime</I>
 ./configure
@@ -317,7 +324,7 @@ make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
 <li> Create the src.jar file: 
 <pre>
 cd $PTII/adm/gen-6.0
-make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII6.0-devel COMPRESS=gzip TAR=tar clean all src.jar 
+make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII6.0-alpha COMPRESS=gzip TAR=tar clean all src.jar 
 </pre>
 
 
