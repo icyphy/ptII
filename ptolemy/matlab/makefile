@@ -107,6 +107,12 @@ include $(ROOT)/mk/ptcommon.mk
 
 #--- Specialized part of the makefile: ---
 
+# Under Windows, if cl fails, you may need to set INCLUDE and LIB
+# export VCINSTALLDIR="C:/Program Files/Microsoft Visual Studio .NET 2003"
+# export MSVCDir=${VCINSTALLDIR}/VC7
+# export INCLUDE="${MSVCDir}/ATLMFC/INCLUDE;${MSVCDir}/INCLUDE;${MSVCDir}/PlatformSDK/include/prerelease;${SVCDir}/PlatformSDK/include;C:/Program Files/Microsoft Visual Studio .NET 2003/SDK/v1.1/include;${INCLUDE}"
+# export LIB="${MSVCDir}/ATLMFC/LIB;${MSVCDir}/LIB;${MSVCDir}/PlatformSDK/lib/prerelease;${MSVCDir}/PlatformSDK/lib;${FrameworkSDKDir}/lib;${LIB}"
+
 # $(PTMATLAB_cC) is set to cl or gcc by configure in $PTII/mk/ptII.mk
 $(PTLIB): ptmatlab.cc Engine.class
 	CLASSPATH="$(CLASSPATH)" "$(PTJAVA_DIR)/bin/javah" -jni -o ptmatlab.h ptolemy.matlab.Engine
