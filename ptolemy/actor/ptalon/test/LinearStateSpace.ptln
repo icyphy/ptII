@@ -1,0 +1,9 @@
+LinearStateSpace is {
+	parameter A;
+	parameter B;
+	parameter C;
+	parameter D;
+	parameter initialStates;
+	inport[] input;
+	outport[] output;
+}

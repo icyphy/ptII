@@ -72,6 +72,18 @@ port_declaration throws PtalonScopeException
 	{
 		info.addSymbol(c.getText(), "outport");
 	}
+	) | #(MULTIPORT d:ID
+	{
+		info.addSymbol(d.getText(), "multiport");
+	}
+	) | #(MULTIINPORT e:ID
+	{
+		info.addSymbol(e.getText(), "multiinport");
+	}
+	) | #(MULTIOUTPORT f:ID
+	{
+		info.addSymbol(f.getText(), "multioutport");
+	}
 	)
 ;
 

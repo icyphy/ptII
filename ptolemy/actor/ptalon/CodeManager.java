@@ -32,10 +32,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.lang.reflect.Constructor;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -44,16 +42,10 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.FileParameter;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.ParserScope;
 import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -134,12 +126,17 @@ public class CodeManager {
             TypedIOPort port = new TypedIOPort(_actor, uniqueName);
             port.setInput(true);
             port.setOutput(false);
+            if (_currentTree.getType(name).equals("multiinport")) {
+                port.setMultiport(true);
+            }
             _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
         } catch (IllegalActionException e) {
             throw new PtalonRuntimeException("IllegalActionException", e);
+        } catch (PtalonScopeException e) {
+            throw new PtalonRuntimeException("Couldn't find symbol " + name, e);
         }
     }
 
@@ -248,12 +245,17 @@ public class CodeManager {
             TypedIOPort port = new TypedIOPort(_actor, uniqueName);
             port.setInput(false);
             port.setOutput(true);
+            if (_currentTree.getType(name).equals("multioutport")) {
+                port.setMultiport(true);
+            }
             _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
         } catch (IllegalActionException e) {
             throw new PtalonRuntimeException("IllegalActionException", e);
+        } catch (PtalonScopeException e) {
+            throw new PtalonRuntimeException("Couldn't find symbol " + name, e);
         }
     }
 
@@ -313,12 +315,17 @@ public class CodeManager {
             TypedIOPort port = new TypedIOPort(_actor, uniqueName);
             port.setInput(true);
             port.setOutput(true);
+            if (_currentTree.getType(name).equals("multiport")) {
+                port.setMultiport(true);
+            }
             _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
         } catch (IllegalActionException e) {
             throw new PtalonRuntimeException("IllegalActionException", e);
+        } catch (PtalonScopeException e) {
+            throw new PtalonRuntimeException("Couldn't find symbol " + name, e);
         }
     }
 

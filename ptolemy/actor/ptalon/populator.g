@@ -77,6 +77,24 @@ port_declaration throws PtalonRuntimeException
 			info.addOutPort(c.getText());
 		}
 	}
+	) | #(MULTIPORT d:ID
+	{
+		if (info.isReady() && !info.isCreated(d.getText())) {
+			info.addPort(d.getText());
+		}
+	}
+	) | #(MULTIINPORT e:ID
+	{
+		if (info.isReady() && !info.isCreated(e.getText())) {
+			info.addInPort(e.getText());
+		}
+	}
+	) | #(MULTIOUTPORT f:ID
+	{
+		if (info.isReady() && !info.isCreated(f.getText())) {
+			info.addOutPort(f.getText());
+		}
+	}
 	)
 ;
 

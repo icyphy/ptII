@@ -54,8 +54,36 @@ import_declaration:
  * <p>where portType is either "port", "inport", or "outport".
  * Generate corresponding tree #(PORT ID), #(INPORT ID), or #(OUTPORT ID).
  */
-port_declaration:
-	(PORT^ | INPORT^ | OUTPORT^) ID
+port_declaration!
+:
+	(a:PORT
+	{
+		#port_declaration = #a;
+	}
+	(! LBRACKET RBRACKET
+	{
+		#port_declaration = #[MULTIPORT, "multiport"];
+	}	
+	)? | b:INPORT
+	{
+		#port_declaration = #b;
+	}
+	(! LBRACKET RBRACKET
+	{
+		#port_declaration = #[MULTIINPORT, "multiinport"];
+	}
+	)? | c:OUTPORT
+	{
+		#port_declaration = #c;
+	}
+	(! LBRACKET RBRACKET
+	{
+		#port_declaration = #[MULTIOUTPORT, "multioutport"];
+	}
+	)? ) d:ID
+	{
+		#port_declaration.addChild(#d);
+	}
 ;
 
 /**
@@ -275,6 +303,9 @@ tokens {
 	LOGICAL_BUFFER;
 	ARITHMETIC_EXPRESSION;
 	BOOLEAN_EXPRESSION;
+	MULTIPORT;
+	MULTIINPORT;
+	MULTIOUTPORT;
 }
 
 
@@ -298,38 +329,6 @@ RCURLY: '}';
 RPAREN: ')';
 
 SEMI: ';';
-
-// Operators
-
-LOGICAL_OR: "||";
-
-LOGICAL_AND: "&&";
-
-EQUAL: "==";
-
-NOT_EQUAL: "!=";
-
-LESS_THAN: '<';
-
-GREATER_THAN: '>';
-
-LESS_EQUAL: "<=";
-
-GREATER_EQUAL: ">=";
-
-PLUS: '+';
-
-MINUS: '-';
-
-STAR: '*';
-
-DIVIDE: '/';
-
-MOD: '%';
-
-BINARY_NOT: '~';
-
-LOGICAL_NOT: '!';
 
 // Escape sequence
 ESC:
