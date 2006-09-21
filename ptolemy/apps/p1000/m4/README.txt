@@ -1,1 +1,0 @@
-autoreconf requires this directory

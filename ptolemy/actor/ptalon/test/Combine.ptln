@@ -1,6 +1,0 @@
-Combine is {
-	parameter a;
-	parameter b;
-	a();
-	b();
-}

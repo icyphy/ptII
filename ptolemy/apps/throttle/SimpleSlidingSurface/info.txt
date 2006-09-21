@@ -1,3 +1,0 @@
-Max step size set to 2(ms).
-n, which brings us to the sliding surface, is set to 1.5 Volts.
-The sliding surface is (omega-omega_des)+lambda*(theta-theta_des) with lambda = 30.
