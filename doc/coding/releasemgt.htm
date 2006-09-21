@@ -334,7 +334,13 @@ make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII6.0-alpha COMPRESS=gzip TAR=tar clean
 </pre>
 
 
-<li> Run InstallAnywhere and create the installer
+<li> Under Windows, build the installer.
+<pre>
+cd $PTII
+make exes
+cd $PTII/adm/gen-<i>x.y</i>
+make setup
+</pre>
 
 <li> <a href="testing.htm#installer">Test the installer</a>
 </ol>
