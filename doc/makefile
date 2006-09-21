@@ -220,9 +220,9 @@ DIVAPACKAGES = \
 	diva.util.xml
 
 # Experimental packages that are not shipped
-EXPERIMENTALPACKAGES = \
-	ptolemy.domains.rtp.kernel \
-	ptolemy.domains.rtp.lib
+EXPERIMENTALPACKAGES =
+#	ptolemy.domains.rtp.kernel \
+#	ptolemy.domains.rtp.lib
 
 
 # Packages used by HyVisual
@@ -315,14 +315,15 @@ VISUALSENSE_DOCS = \
 
 
 # PTBACKTRACK_ECLPISE_PACKAGES is set by configure
-PTBACKTRACK_PACKAGES = \
-	ptolemy.backtrack \
-	ptolemy.backtrack.manual.ptolemy.domains.ct.kernel \
-	ptolemy.backtrack.manual.ptolemy.actor.lib \
-	ptolemy.backtrack.ui \
-	ptolemy.backtrack.util \
-	ptolemy.backtrack.xmlparser \
-	$(PTBACKTRACK_ECLIPSE_PACKAGES) 
+PTBACKTRACK_PACKAGES =
+
+#	ptolemy.backtrack \
+#	ptolemy.backtrack.manual.ptolemy.domains.ct.kernel \
+#	ptolemy.backtrack.manual.ptolemy.actor.lib \
+#	ptolemy.backtrack.ui \
+#	ptolemy.backtrack.util \
+#	ptolemy.backtrack.xmlparser \
+#	$(PTBACKTRACK_ECLIPSE_PACKAGES) 
 
 # Exclude ptolemy.backtrack.automatic.*, to fix these we would need
 # to modify the Eclipse transformer so that we can get comments from
@@ -415,7 +416,6 @@ ALL1_4PACKAGES = \
 	ptolemy.media \
 	ptolemy.moml \
 	ptolemy.moml.filter \
-	ptolemy.ptp.lib \
 	ptolemy.vergil \
 	ptolemy.vergil.actor \
 	ptolemy.vergil.actor.lib \
