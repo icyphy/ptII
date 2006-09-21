@@ -653,7 +653,7 @@ public class MoMLApplication implements ExecutionListener {
 
                     String configurationFileName = configurationDirectories[i]
                             + File.separator + "configuration.xml";
-                    
+
                     boolean printDefaultConfigurationMessage = true;
 
                     try {
@@ -665,20 +665,22 @@ public class MoMLApplication implements ExecutionListener {
                         if (!configurationName.equals("jxta")) {
                             URL specificationURL = specToURL(configurationFileName);
                             Configuration configuration;
-                                if (specificationURL.equals(_initialSpecificationURL)) {
-                                    // Avoid rereading the configuration, which will result
-                                    // in the old configuration being removed, which exits the app.
-                                    configuration = _configuration;
-                                } else {
-                                    configuration = readConfiguration(specificationURL);
-                                }
+                            if (specificationURL
+                                    .equals(_initialSpecificationURL)) {
+                                // Avoid rereading the configuration, which will result
+                                // in the old configuration being removed, which exits the app.
+                                configuration = _configuration;
+                            } else {
+                                configuration = readConfiguration(specificationURL);
+                            }
 
                             if ((configuration != null)
                                     && (configuration.getAttribute("_doc") != null)
                                     && configuration.getAttribute("_doc") instanceof Documentation) {
                                 Documentation doc = (Documentation) configuration
                                         .getAttribute("_doc");
-                                result.append("\t\t" + doc.getValueAsString() + "\n");
+                                result.append("\t\t" + doc.getValueAsString()
+                                        + "\n");
                                 printDefaultConfigurationMessage = false;
                             }
                         }
@@ -1165,7 +1167,7 @@ public class MoMLApplication implements ExecutionListener {
 
     // List of parameter values seen on the command line.
     private List _parameterValues = new LinkedList();
-    
+
     // URL from which the configuration was read.
     private static URL _initialSpecificationURL;
 }

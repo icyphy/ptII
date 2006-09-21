@@ -121,9 +121,9 @@ public class DocumentationAttribute extends VisibleAttribute {
         public void createEditor(NamedObj object, Frame parent) {
             try {
                 FileParameter docAttribute = null;
-                if (! (parent instanceof TableauFrame)) {
-                    throw new InternalErrorException("Frame \""
-                            + parent + "\" is not a TableauFrame");
+                if (!(parent instanceof TableauFrame)) {
+                    throw new InternalErrorException("Frame \"" + parent
+                            + "\" is not a TableauFrame");
                 }
                 Configuration configuration = ((TableauFrame) parent)
                         .getConfiguration();

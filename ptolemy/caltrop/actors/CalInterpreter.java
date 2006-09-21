@@ -115,11 +115,8 @@ public class CalInterpreter extends AbstractCalInterpreter {
             } catch (Throwable ex) {
                 // FIXME: It would be nice if _stringToActor threw
                 // something other than Throwable here.
-                throw new IllegalActionException(
-                        this,
-                        ex,
-                        "Failed to read in actor in:\n  "
-                                + s
+                throw new IllegalActionException(this, ex,
+                        "Failed to read in actor in:\n  " + s
                                 + "\nThis sometimes occurs if saxon8.jar "
                                 + "or saxon8-dom.jar are not in "
                                 + "your classpath.");

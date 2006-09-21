@@ -92,7 +92,7 @@ public class TypedDecorator extends FigureDecorator {
             return d.newInstance(f);
         }
 
-        return _defaultDecorator.newInstance(/* d */ null);
+        return _defaultDecorator.newInstance(/* d */null);
     }
 
     /**

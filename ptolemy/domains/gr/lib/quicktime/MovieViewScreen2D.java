@@ -218,7 +218,8 @@ public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants,
             _imageDrawer.setGWorld(_gw);
             _imageDrawer.setDisplayBounds(_videoSize);
         } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable, "Initialization failed.");
+            throw new IllegalActionException(this, throwable,
+                    "Initialization failed.");
         }
     }
 

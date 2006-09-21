@@ -135,7 +135,7 @@ public class Audio {
     public Audio(DataInputStream input) throws IOException {
         int bytesRead = input.read(magic, 0, 4);
         if (bytesRead != 4) {
-            throw new IOException("Read only " + bytesRead 
+            throw new IOException("Read only " + bytesRead
                     + " bytes, expecting " + 4);
         }
 
@@ -162,7 +162,7 @@ public class Audio {
         info = new byte[offset - 24];
         bytesRead = input.read(info, 0, offset - 24);
         if (bytesRead != offset - 24) {
-            throw new IOException("Read only " + bytesRead 
+            throw new IOException("Read only " + bytesRead
                     + " bytes, expecting " + (offset - 24));
         }
 

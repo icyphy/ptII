@@ -75,8 +75,9 @@ public class AttributeController extends IconController {
 
         if (access == FULL) {
             // Add to the context menu, confiure submenu.
-            _configureMenuFactory.addAction(new RenameDialogAction("Rename"), "Customize");
-            
+            _configureMenuFactory.addAction(new RenameDialogAction("Rename"),
+                    "Customize");
+
             Action[] actions = { _getDocumentationAction,
                     new CustomizeDocumentationAction(),
                     new RemoveCustomDocumentationAction() };
@@ -87,9 +88,9 @@ public class AttributeController extends IconController {
             // vergil/basic/BasicGraphFrame.java
             Action[] appearanceActions = {
                     new MoveAction("Send to Back", MoveAction.TO_FIRST),
-                    new MoveAction("Bring to Front", MoveAction.TO_LAST)
-            };
-            _appearanceMenuActionFactory = new MenuActionFactory(appearanceActions, "Appearance");
+                    new MoveAction("Bring to Front", MoveAction.TO_LAST) };
+            _appearanceMenuActionFactory = new MenuActionFactory(
+                    appearanceActions, "Appearance");
             _menuFactory.addMenuItemFactory(_appearanceMenuActionFactory);
         }
     }
@@ -117,7 +118,7 @@ public class AttributeController extends IconController {
 
     /** Indicator to give partial access to the attribute. */
     public static final Access PARTIAL = new Access();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected members                     ////
 

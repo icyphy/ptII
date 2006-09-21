@@ -319,8 +319,9 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                         + _templateDirectory + "makefile.in'\n\t writing '"
                         + _outputDirectory + "makefile'");
 
-                CodeGeneratorUtilities.substitute(_templateDirectory + "makefile.in",
-                        substituteMap, _outputDirectory + "makefile");
+                CodeGeneratorUtilities.substitute(_templateDirectory
+                        + "makefile.in", substituteMap, _outputDirectory
+                        + "makefile");
             } catch (Exception ex) {
                 // This exception tends to get eaten by soot, so we print as well.
                 System.err.println("Problem writing makefile:" + ex);
@@ -339,7 +340,8 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                 + "obfuscateScript.jos.in";
 
         try {
-            inputFile = CodeGeneratorUtilities.openAsFileOrURL(obfuscateTemplate);
+            inputFile = CodeGeneratorUtilities
+                    .openAsFileOrURL(obfuscateTemplate);
         } catch (IOException ex) {
             System.out.println("Note: Optional obfuscation template not "
                     + "found (This can be ignored): " + ex);

@@ -447,7 +447,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         long endTime = 0;
                         // If the following fails, we should remove the effigy.
                         try {
-//                          Report on the time it takes to open the model.
+                            //                          Report on the time it takes to open the model.
                             startTime = System.currentTimeMillis();
                             toplevel = parser.parse(base, input);
                             endTime = System.currentTimeMillis();
@@ -468,13 +468,16 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         }
 
                         if (toplevel != null) {
-                            String entityClassName = StringUtilities.getProperty("entityClassName");
-                            if ((entityClassName.length() > 0 || endTime > startTime + 10000) && toplevel instanceof CompositeEntity) {
+                            String entityClassName = StringUtilities
+                                    .getProperty("entityClassName");
+                            if ((entityClassName.length() > 0 || endTime > startTime + 10000)
+                                    && toplevel instanceof CompositeEntity) {
                                 //System.out.println("Opened " + input + " in " 
                                 //        + (System.currentTimeMillis() - startTime)
                                 //        + " ms.");
-                                
-                                System.out.println(((CompositeEntity)toplevel).statistics(entityClassName));
+
+                                System.out.println(((CompositeEntity) toplevel)
+                                        .statistics(entityClassName));
                             }
                             effigy.setModel(toplevel);
 

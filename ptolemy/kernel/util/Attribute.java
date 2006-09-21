@@ -85,7 +85,7 @@ public class Attribute extends NamedObj {
             throws IllegalActionException, NameDuplicationException {
         this(container, name, true);
     }
-    
+
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -101,9 +101,9 @@ public class Attribute extends NamedObj {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    protected Attribute(
-            NamedObj container, String name, boolean incrementWorkspaceVersion)
-            throws IllegalActionException, NameDuplicationException {
+    protected Attribute(NamedObj container, String name,
+            boolean incrementWorkspaceVersion) throws IllegalActionException,
+            NameDuplicationException {
         super(container.workspace(), name, incrementWorkspaceVersion);
         if (incrementWorkspaceVersion) {
             setContainer(container);
@@ -116,7 +116,8 @@ public class Attribute extends NamedObj {
             _container = container;
             // Make sure even the debugging messages are unchanged.
             if (container._debugging) {
-                container._debug("Added attribute", getName(), "to", container.getFullName());
+                container._debug("Added attribute", getName(), "to", container
+                        .getFullName());
             }
         }
         _elementName = "property";

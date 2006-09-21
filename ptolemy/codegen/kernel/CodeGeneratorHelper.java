@@ -185,10 +185,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         : ptType == BaseType.STRING ? "String"
                                 : ptType == BaseType.DOUBLE ? "Double"
                                         : ptType == BaseType.BOOLEAN ? "Boolean"
-                                                 : ptType instanceof ArrayType ? "Array"
+                                                : ptType instanceof ArrayType ? "Array"
                                                         : ptType instanceof MatrixType ? "Matrix"
                                                                 : "Token";
-                                                                        
+
         //if (result.length() == 0) {
         //    throw new IllegalActionException(
         //            "Cannot resolved codegen type from Ptolemy type: " + ptType);
@@ -768,7 +768,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         processCode(parseTreeCodeGenerator.generateFireCode()),
                         castType, codeGenType(variable.getType()));
 
-            } else /* if (attribute instanceof Settable)*/ {
+            } else /* if (attribute instanceof Settable)*/{
                 return ((Settable) attribute).getExpression();
             }
 
@@ -1862,11 +1862,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         + "))";
             }
 
-            if (sinkType != BaseType.SCALAR && sinkType != BaseType.GENERAL 
+            if (sinkType != BaseType.SCALAR && sinkType != BaseType.GENERAL
                     && !isPrimitive(sinkType)) {
                 if (sinkType instanceof ArrayType) {
                     if (isPrimitive(sourceType)) {
-                        result = "$new(Array(1, 1, " + result + ", TYPE_" 
+                        result = "$new(Array(1, 1, " + result + ", TYPE_"
                                 + codeGenType(sourceType) + "))";
                     }
                     Type elementType = ((ArrayType) sinkType).getElementType();

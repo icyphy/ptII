@@ -161,8 +161,7 @@ public class XmlApplet extends Applet implements XmlHandler {
      */
     public void error(String message, String url, int line, int column) {
         displayText("FATAL ERROR: " + message);
-        displayText("  at " + url + ": line " + line + " column "
-                + column);
+        displayText("  at " + url + ": line " + line + " column " + column);
         throw new Error(message);
     }
 

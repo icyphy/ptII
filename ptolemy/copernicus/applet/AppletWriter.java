@@ -380,21 +380,22 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         // Read in the templates and generate new files.
         try {
-            CodeGeneratorUtilities.substitute(_templateDirectory + "model.htm.in",
-                    _substituteMap, _outputDirectory + "/"
-                            + _sanitizedModelName + ".htm");
-            CodeGeneratorUtilities.substitute(_templateDirectory + "modelVergil.htm.in",
-                    _substituteMap, _outputDirectory + "/"
-                            + _sanitizedModelName + "Vergil.htm");
+            CodeGeneratorUtilities.substitute(_templateDirectory
+                    + "model.htm.in", _substituteMap, _outputDirectory + "/"
+                    + _sanitizedModelName + ".htm");
+            CodeGeneratorUtilities.substitute(_templateDirectory
+                    + "modelVergil.htm.in", _substituteMap, _outputDirectory
+                    + "/" + _sanitizedModelName + "Vergil.htm");
 
             // Copy $PTII/doc/default.css as well.
             File defaultStyleSheetDirectory = new File(_outputDirectory
                     + "/doc");
             defaultStyleSheetDirectory.mkdirs();
 
-            CodeGeneratorUtilities.substitute(_templateDirectory + "default.css",
-                    _substituteMap, defaultStyleSheetDirectory.toString()
-                            + "/default.css");
+            CodeGeneratorUtilities.substitute(_templateDirectory
+                    + "default.css", _substituteMap, defaultStyleSheetDirectory
+                    .toString()
+                    + "/default.css");
         } catch (IOException ex) {
             // This exception tends to get eaten by soot, so we print as well.
             System.err.println("Problem writing makefile or html files:" + ex);

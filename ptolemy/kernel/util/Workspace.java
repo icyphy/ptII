@@ -653,7 +653,8 @@ public final class Workspace implements Nameable, Serializable {
      */
     protected synchronized String _description(int detail, int indent,
             int bracket) {
-        StringBuffer result = new StringBuffer(NamedObj._getIndentPrefix(indent));
+        StringBuffer result = new StringBuffer(NamedObj
+                ._getIndentPrefix(indent));
 
         if ((bracket == 1) || (bracket == 2)) {
             result.append("{");

@@ -63,9 +63,8 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class OpenInstanceDialog extends PtolemyDialog implements
-        ChangeListener {
-    
+public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener {
+
     /** Construct a dialog that presents the parameters as a table. Each row of the
      *  table corresponds to one parameter. The table shows the expression and its
      *  current evaluated value.
@@ -78,8 +77,8 @@ public class OpenInstanceDialog extends PtolemyDialog implements
      */
     public OpenInstanceDialog(DialogTableau tableau, Frame owner,
             Entity target, Configuration configuration) {
-        super("Instance: " + target.getFullName(), tableau, owner,
-                target, configuration);
+        super("Instance: " + target.getFullName(), tableau, owner, target,
+                configuration);
 
         // Listen for changes that may need to be reflected in the table.
         // FIXME: Should we just selectively listen to each parameter?
@@ -92,7 +91,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements
 
         // Create the TableModel and set certain cell editors and renderers
         _setupTableModel();
-        
+
         // The height of the window depends on the number of columns.
         // FIXME: How to know the height of each row? 16 is a guess.
         int height = _parameterTableModel.getRowCount() * 16;
@@ -101,19 +100,19 @@ public class OpenInstanceDialog extends PtolemyDialog implements
         } else if (height > 256) {
             height = 256;
         }
-        _parameterTable.setPreferredScrollableViewportSize(new Dimension(600, height));
+        _parameterTable.setPreferredScrollableViewportSize(new Dimension(600,
+                height));
 
         // Initialize the displayed column widths.
         _initColumnSizes();
 
         // Make the contents of the table scrollable
         setScrollableContents(_parameterTable);
-        
+
         _parameterTable.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent event) {
                 int code = event.getKeyCode();
-                if (code == KeyEvent.VK_ENTER
-                        || code == KeyEvent.VK_ESCAPE) {
+                if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_ESCAPE) {
                     _cancel();
                 }
             }
@@ -133,7 +132,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements
     public void changeExecuted(ChangeRequest change) {
         // The ports of the _target may have changed.
         _setupTableModel();
-        
+
         // Given a new renderer, need to do this as well.
         _initColumnSizes();
     }
@@ -159,7 +158,8 @@ public class OpenInstanceDialog extends PtolemyDialog implements
      *  @return A URL that points to the help page
      */
     protected URL _getHelpURL() {
-        URL doc = getClass().getClassLoader().getResource("doc/openInstanceHelp.htm");
+        URL doc = getClass().getClassLoader().getResource(
+                "doc/openInstanceHelp.htm");
         return doc;
     }
 
@@ -169,8 +169,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements
     /** Initialize which columns will be visible for this target.
      */
     private void _initColumnNames() {
-        String[] temp = { ColumnNames.COL_NAME,
-                ColumnNames.COL_EXPRESSION,
+        String[] temp = { ColumnNames.COL_NAME, ColumnNames.COL_EXPRESSION,
                 ColumnNames.COL_VALUE };
         // Store the column names as an ArrayList.
         List columnList = Arrays.asList(temp);
@@ -198,7 +197,8 @@ public class OpenInstanceDialog extends PtolemyDialog implements
     private void _setupTableModel() {
         _parameterTableModel = new ParametersTableModel(getTarget());
         _parameterTable.setModel(_parameterTableModel);
-        _parameterTable.setDefaultRenderer(String.class, new StringCellRenderer());
+        _parameterTable.setDefaultRenderer(String.class,
+                new StringCellRenderer());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -206,7 +206,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements
 
     /** List of names of columns that will be used for this target. */
     private ArrayList _columnNames;
-    
+
     /** The background color for expert parameters. */
     private static Color _EXPERT_COLOR = new Color(1.0f, 0.9f, 0.9f);
 
@@ -230,14 +230,14 @@ public class OpenInstanceDialog extends PtolemyDialog implements
 
         public final static String COL_VALUE = "Value";
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** The table model.
      */
     private class ParametersTableModel extends AbstractTableModel {
-        
+
         /** Create a table model for the specified target.
          *  @param The target.
          */
@@ -314,17 +314,19 @@ public class OpenInstanceDialog extends PtolemyDialog implements
 
     /** Default renderer for table cells.
      */
-    private class StringCellRenderer extends JLabel implements TableCellRenderer {
+    private class StringCellRenderer extends JLabel implements
+            TableCellRenderer {
         public StringCellRenderer() {
             super();
         }
+
         public Component getTableCellRendererComponent(JTable table,
                 Object value, boolean isSelected, boolean hasFocus, int row,
                 int col) {
             setOpaque(true);
             setText((String) value);
             // The color depends on the properties of the parameter.
-            Settable parameter = (Settable)_parameters.get(row);
+            Settable parameter = (Settable) _parameters.get(row);
             if (parameter.getVisibility() == Settable.EXPERT) {
                 setBackground(_EXPERT_COLOR);
             } else if (parameter.getVisibility() == Settable.NONE) {

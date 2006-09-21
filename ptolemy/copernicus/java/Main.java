@@ -350,24 +350,24 @@ public class Main extends KernelMain {
             addTransform(pack, "wjtp.doe6", new TransformerAdapter(
                     DeadObjectEliminator.v()));
             addTransform(pack, "wjtp.cie5", new TransformerAdapter(
-                                 CastAndInstanceofEliminator.v()));
+                    CastAndInstanceofEliminator.v()));
             addStandardOptimizations(pack, 12);
             addTransform(pack, "wjtp.doe7", new TransformerAdapter(
                     DeadObjectEliminator.v()));
             addTransform(pack, "wjtp.cie6", new TransformerAdapter(
-                                 CastAndInstanceofEliminator.v()));
+                    CastAndInstanceofEliminator.v()));
             addStandardOptimizations(pack, 13);
             addTransform(pack, "wjtp.cie7", new TransformerAdapter(
-                                 CastAndInstanceofEliminator.v()));
+                    CastAndInstanceofEliminator.v()));
             addStandardOptimizations(pack, 14);
             addStandardOptimizations(pack, 15);
 
-//             addTransform(pack, "wjtp.ptr1", PtolemyTypeRemover.v(toplevel));
-//             addStandardOptimizations(pack, 16);
-//             addTransform(pack, "wjtp.ufr3", UnusedFieldRemover.v());
-//             addTransform(pack, "wjtp.doe8", new TransformerAdapter(
-//                     DeadObjectEliminator.v()));
-//              addStandardOptimizations(pack, 17);
+            //             addTransform(pack, "wjtp.ptr1", PtolemyTypeRemover.v(toplevel));
+            //             addStandardOptimizations(pack, 16);
+            //             addTransform(pack, "wjtp.ufr3", UnusedFieldRemover.v());
+            //             addTransform(pack, "wjtp.doe8", new TransformerAdapter(
+            //                     DeadObjectEliminator.v()));
+            //              addStandardOptimizations(pack, 17);
 
             // The library usage reporter also pulls in all depended
             // classes for analysis.

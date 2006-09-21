@@ -193,7 +193,8 @@ public class SharedParameter extends Parameter {
     public void inferValueFromContext(String defaultValue) {
         Iterator sharedParameters = sharedParameterSet().iterator();
         while (sharedParameters.hasNext()) {
-            SharedParameter candidate = (SharedParameter) sharedParameters.next();
+            SharedParameter candidate = (SharedParameter) sharedParameters
+                    .next();
             if (candidate != this) {
                 defaultValue = candidate.getExpression();
                 break;
@@ -227,14 +228,15 @@ public class SharedParameter extends Parameter {
 
         if (!_suppressingPropagation) {
             Iterator sharedParameters = sharedParameterSet().iterator();
-            
+
             while (sharedParameters.hasNext()) {
-                SharedParameter sharedParameter = (SharedParameter) sharedParameters.next();
-                
+                SharedParameter sharedParameter = (SharedParameter) sharedParameters
+                        .next();
+
                 if (sharedParameter != this) {
                     try {
                         sharedParameter._suppressingPropagation = true;
-                        
+
                         if (!sharedParameter.getExpression().equals(expression)) {
                             sharedParameter.setExpression(expression);
                         }
@@ -312,7 +314,8 @@ public class SharedParameter extends Parameter {
         if (!_suppressingPropagation) {
             Iterator sharedParameters = sharedParameterSet().iterator();
             while (sharedParameters.hasNext()) {
-                SharedParameter sharedParameter = (SharedParameter) sharedParameters.next();
+                SharedParameter sharedParameter = (SharedParameter) sharedParameters
+                        .next();
                 if (sharedParameter != this) {
                     try {
                         sharedParameter._suppressingPropagation = true;
@@ -365,8 +368,8 @@ public class SharedParameter extends Parameter {
         if (_containerClass.isInstance(container)) {
             // If the attribute is not of the right class, get an exception.
             try {
-                SharedParameter candidate = (SharedParameter)container.getAttribute(getName(),
-                        SharedParameter.class);
+                SharedParameter candidate = (SharedParameter) container
+                        .getAttribute(getName(), SharedParameter.class);
 
                 if (candidate != null) {
                     set.add(candidate);
@@ -375,7 +378,8 @@ public class SharedParameter extends Parameter {
                     // as well now.  It is for this reason that the calling
                     // method must be synchronized.
                     candidate._sharedParameterSet = set;
-                    candidate._sharedParameterSetVersion = workspace().getVersion();
+                    candidate._sharedParameterSetVersion = workspace()
+                            .getVersion();
                 }
             } catch (IllegalActionException ex) {
                 // Ignore. Candidate doesn't match.
@@ -393,10 +397,10 @@ public class SharedParameter extends Parameter {
 
     /** The container class. */
     private Class _containerClass;
-    
+
     /** Cached version of the shared parameter set. */
     private HashSet _sharedParameterSet;
-    
+
     /** Version for the cache. */
     private long _sharedParameterSetVersion = -1L;
 

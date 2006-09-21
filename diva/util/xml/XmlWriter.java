@@ -198,16 +198,16 @@ public class XmlWriter extends LoggableOp {
             // External binary entity
             case XmlParser.ENTITY_NDATA:
                 value = makeExternalIdentifiers(_parser
-                        .getEntityPublicId(ename), _parser.getEntitySystemId(
-                        ename))
+                        .getEntityPublicId(ename), _parser
+                        .getEntitySystemId(ename))
                         + "NDATA " + _parser.getEntityNotationName(ename);
                 break;
 
             // External text entity
             case XmlParser.ENTITY_TEXT:
                 value = makeExternalIdentifiers(_parser
-                        .getEntityPublicId(ename), _parser.getEntitySystemId(
-                        ename));
+                        .getEntityPublicId(ename), _parser
+                        .getEntitySystemId(ename));
                 break;
             }
 

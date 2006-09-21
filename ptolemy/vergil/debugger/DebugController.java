@@ -141,8 +141,8 @@ public class DebugController extends SingletonConfigurableAttribute implements
                         // wait for the user to press the Resume
                         // button.
                         if (debugProfile.isListening(event.getType())) {
-                            String message = objToHighlight.getName()
-                                    + " " + event.getType().getName();
+                            String message = objToHighlight.getName() + " "
+                                    + event.getType().getName();
                             Manager manager = ((Actor) objToHighlight)
                                     .getManager();
                             render(figure, manager, message);

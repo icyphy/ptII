@@ -423,8 +423,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             rightOp.apply(this);
             stmt.getLeftOp().apply(this);
 
-            String cast = "("
-                    + CNames.typeNameOf(stmt.getLeftOp().getType()) + ")";
+            String cast = "(" + CNames.typeNameOf(stmt.getLeftOp().getType())
+                    + ")";
 
             _push(_pop().append(" = " + cast).append(_pop()));
         }

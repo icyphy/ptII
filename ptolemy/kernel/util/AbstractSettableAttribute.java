@@ -103,9 +103,9 @@ public abstract class AbstractSettableAttribute extends Attribute implements
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    protected AbstractSettableAttribute(
-            NamedObj container, String name, boolean incrementWorkspaceVersion)
-            throws IllegalActionException, NameDuplicationException {
+    protected AbstractSettableAttribute(NamedObj container, String name,
+            boolean incrementWorkspaceVersion) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name, incrementWorkspaceVersion);
     }
 

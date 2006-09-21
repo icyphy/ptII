@@ -699,11 +699,12 @@ public class TableauFrame extends Top {
                 // We place a duplicate copy here to make it easy to ship
                 // jar files that contain all the appropriate images.
                 try {
-                        // Use nameToURL so this will work with WebStart
-                        // and so that this class can be extended and we
-                        // will still find the gif.
-                        url = FileUtilities.nameToURL(
-                                "/ptolemy/actor/gui/PtolemyIISmallIcon.gif", null, null);
+                    // Use nameToURL so this will work with WebStart
+                    // and so that this class can be extended and we
+                    // will still find the gif.
+                    url = FileUtilities.nameToURL(
+                            "/ptolemy/actor/gui/PtolemyIISmallIcon.gif", null,
+                            null);
                 } catch (Throwable throwable) {
                     // Ignore.
                 }
@@ -820,7 +821,8 @@ public class TableauFrame extends Top {
         Effigy effigy = getEffigy();
         File file = effigy.getWritableFile();
 
-        if (( /*(effigy != null) && */ !effigy.isModifiable()) || (file == null)) {
+        if (( /*(effigy != null) && */!effigy.isModifiable())
+                || (file == null)) {
             return _saveAs();
         } else {
             try {

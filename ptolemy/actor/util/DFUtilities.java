@@ -75,7 +75,7 @@ public class DFUtilities {
          *  @return 0 if the objects are the same.
          */
         public int compare(Object object1, Object object2) {
-        // Note: This is rather slow, because getFullName is not cached.
+            // Note: This is rather slow, because getFullName is not cached.
 
             if ((object1 instanceof NamedObj) && (object2 instanceof NamedObj)) {
                 // Compare full names.

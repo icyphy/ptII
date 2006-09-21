@@ -28,7 +28,6 @@ package ptolemy.codegen.c.domains.sdf.lib;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
-
 /**
  A code generation helper class for ptolemy.domains.sdf.lib.FIR. 
 

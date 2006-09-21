@@ -79,7 +79,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
         super(container, name);
         channelName = new StringParameter(this, "channelName");
         channelName.setExpression("AtomicWirelessChannel");
-        
+
         sleepTime = new Parameter(this, "sleepTime", new IntToken(500));
     }
 
@@ -89,7 +89,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
     /** The name of the channel.  The default name is "AtomicWirelessChannel".
      */
     public StringParameter channelName;
-    
+
     public Parameter sleepTime;
 
     ///////////////////////////////////////////////////////////////////
@@ -131,11 +131,11 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
         // Create a name for the line to be visualized.
         String lineName = getContainer().uniqueName("_senderDestLine");
         // Create a thread to visualize the line.
-        _LinkVisualizerThread linkVisualizerThread = 
-            new _LinkVisualizerThread(sender, destination, lineName);
+        _LinkVisualizerThread linkVisualizerThread = new _LinkVisualizerThread(
+                sender, destination, lineName);
         // Start the thread.
         linkVisualizerThread.start();
-     }
+    }
 
     /** Override the base class to remove this channel listener.
      *  @param container The proposed container.
@@ -154,7 +154,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
@@ -164,11 +164,12 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
      *  @param destination The destination port.
      *  @param lineName The name of the line attribute to create.
      */
-    protected void _drawLine(WirelessIOPort sender, WirelessIOPort destination, final String lineName) {
+    protected void _drawLine(WirelessIOPort sender, WirelessIOPort destination,
+            final String lineName) {
         Location senderLocation = (Location) sender.getContainer()
-        .getAttribute("_location");
-        Location destinationLocation = (Location) destination
-                .getContainer().getAttribute("_location");
+                .getAttribute("_location");
+        Location destinationLocation = (Location) destination.getContainer()
+                .getAttribute("_location");
         double x = (destinationLocation.getLocation())[0]
                 - (senderLocation.getLocation())[0];
         double y = (destinationLocation.getLocation())[1]
@@ -176,41 +177,34 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
         String moml = "<property name=\""
                 + lineName
                 + "\" class=\"ptolemy.vergil.kernel.attributes.LineAttribute\">"
-                + senderLocation.exportMoML()
-                + "<property name=\"x\" value=\""
-                + x
-                + "\"/>"
-                + "<property name=\"y\" value=\""
-                + y
-                + "\"/>"
+                + senderLocation.exportMoML() + "<property name=\"x\" value=\""
+                + x + "\"/>" + "<property name=\"y\" value=\"" + y + "\"/>"
                 + "</property>";
-        ChangeRequest request = new MoMLChangeRequest(this,
-                getContainer(), moml) {
-              protected void _execute() throws Exception {
-                  try {
-                      super._execute();
-                      LineAttribute line = (LineAttribute) getContainer()
-                      .getAttribute(lineName);
-                      line.moveToFirst();
-                      line.setPersistent(false);
-                  } catch (Exception e) {
-                      // Do nothing.
-                  }
+        ChangeRequest request = new MoMLChangeRequest(this, getContainer(),
+                moml) {
+            protected void _execute() throws Exception {
+                try {
+                    super._execute();
+                    LineAttribute line = (LineAttribute) getContainer()
+                            .getAttribute(lineName);
+                    line.moveToFirst();
+                    line.setPersistent(false);
+                } catch (Exception e) {
+                    // Do nothing.
+                }
             }
         };
         requestChange(request);
     }
-    
+
     /** Remove the line previously created with name lineName.
      * 
      * @param lineName Name of line previously created.
      */
     protected void _removeLine(String lineName) {
-        String moml = "<deleteProperty name=\""
-            + lineName 
-            + "\"/>";
-        ChangeRequest request = new MoMLChangeRequest(this,
-                getContainer(), moml) {
+        String moml = "<deleteProperty name=\"" + lineName + "\"/>";
+        ChangeRequest request = new MoMLChangeRequest(this, getContainer(),
+                moml) {
             protected void _execute() throws Exception {
                 try {
                     super._execute();
@@ -221,7 +215,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
         };
         requestChange(request);
     }
-    
+
     /** Private class that visualizes a link in a thread.
      */
     protected class _LinkVisualizerThread extends Thread {
@@ -230,13 +224,14 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
          *  @param name The name of this _LinkVisualizerThread.
          *  @param stringWriter The StringWriter that is written.
          */
-        
+
         /** Create a _LinkVisualizerThread.
          *  @param sender The sender port.
          *  @param destination The destination port.
          *  @param lineName The name of the line attribute to create.
          */
-        public _LinkVisualizerThread(WirelessIOPort sender, WirelessIOPort destination, final String lineName) {
+        public _LinkVisualizerThread(WirelessIOPort sender,
+                WirelessIOPort destination, final String lineName) {
             _sender = sender;
             _destination = destination;
             _lineName = lineName;
@@ -250,7 +245,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
             try {
                 int time;
                 try {
-                    time = ((IntToken)sleepTime.getToken()).intValue();
+                    time = ((IntToken) sleepTime.getToken()).intValue();
                 } catch (IllegalActionException e) {
                     // If getting the parameter value was unsuccessful, 
                     // use the default value instead.
@@ -262,15 +257,17 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
             }
             _removeLine(_lineName);
         }
-        
+
         WirelessIOPort _sender;
+
         WirelessIOPort _destination;
+
         final String _lineName;
+
         // Default value of time to sleep.
         final int _millisToSleep = 500;
     }
-    
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 

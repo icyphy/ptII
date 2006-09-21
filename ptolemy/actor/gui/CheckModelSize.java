@@ -100,8 +100,8 @@ public class CheckModelSize {
                     try {
                         top = parser.parse(null, new URL(fileName));
                     } catch (Exception ex2) {
-                        throw new Exception("Failed to parse \"" 
-                                + fileName + "\"", ex2);
+                        throw new Exception("Failed to parse \"" + fileName
+                                + "\"", ex2);
                     }
                 }
                 if (top instanceof CompositeActor) {

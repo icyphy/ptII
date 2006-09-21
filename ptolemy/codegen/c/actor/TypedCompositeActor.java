@@ -396,20 +396,20 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  an actor throws it while generating shared code for the actor.
      */
     public Set getSharedCode() throws IllegalActionException {
-    
+
         // Use LinkedHashSet to give order to the shared code.
         Set sharedCode = new LinkedHashSet();
         sharedCode.addAll(super.getSharedCode());
-    
+
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
-    
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             sharedCode.addAll(helperObject.getSharedCode());
         }
-    
+
         return sharedCode;
     }
 

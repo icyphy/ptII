@@ -342,6 +342,6 @@ public class CommandLineTemplate {
      * Exists to mirror CompositeActorApplication.
      * CommandLineTransformer uses reflection on the main class
      * and looks for _expectingClass, so don't remove this variable.  
-     */ 
+     */
     private boolean _expectingClass = false;
 }

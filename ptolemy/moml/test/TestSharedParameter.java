@@ -40,7 +40,7 @@ import ptolemy.moml.SharedParameter;
 //// SharedParameter
 
 /**
-A test suite parameter that is shared globally in a model.
+ A test suite parameter that is shared globally in a model.
  @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 5.2
@@ -78,8 +78,9 @@ public class TestSharedParameter extends SharedParameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public TestSharedParameter(NamedObj container, String name, Class containerClass)
-            throws IllegalActionException, NameDuplicationException {
+    public TestSharedParameter(NamedObj container, String name,
+            Class containerClass) throws IllegalActionException,
+            NameDuplicationException {
         this(container, name, containerClass, "");
     }
 
@@ -140,7 +141,7 @@ public class TestSharedParameter extends SharedParameter {
      *  @param expression The expression.
      */
     public void setExpression(String expression) {
-        setExpressionCount++; 
+        setExpressionCount++;
         super.setExpression(expression);
     }
 
@@ -196,21 +197,26 @@ public class TestSharedParameter extends SharedParameter {
      *  have been invoked.
      */
     public String getCounts() {
-        return
-            "inferValueFromContextCount: " + inferValueFromContextCount +
-            "\nisSuppressingPropagationCount: " + isSuppressingPropagationCount
-            + "\nsetExpressionCount: " + setExpressionCount
-            + "\nsharedParameterSetCount: " + sharedParameterSetCount
-            + "\nvalidateCount: " + validateCount
-            + "\npropagateValueCount: " + propagateValueCount;
+        return "inferValueFromContextCount: " + inferValueFromContextCount
+                + "\nisSuppressingPropagationCount: "
+                + isSuppressingPropagationCount + "\nsetExpressionCount: "
+                + setExpressionCount + "\nsharedParameterSetCount: "
+                + sharedParameterSetCount + "\nvalidateCount: " + validateCount
+                + "\npropagateValueCount: " + propagateValueCount;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
     public int inferValueFromContextCount;
+
     public int isSuppressingPropagationCount;
+
     public int setExpressionCount;
+
     public int sharedParameterSetCount;
+
     public int validateCount;
+
     public int propagateValueCount;
 }

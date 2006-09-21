@@ -213,10 +213,10 @@ public class PerimeterSite extends AbstractSite {
                 yout = y;
             }
         } else {
-//            if (!(shape instanceof Rectangle2D)) {
-//                // Anything that's not a rectangle looks like one...
-//                shape = bounds;
-//            }
+            //            if (!(shape instanceof Rectangle2D)) {
+            //                // Anything that's not a rectangle looks like one...
+            //                shape = bounds;
+            //            }
 
             // The angle of the top-right corner
             double t = Math.atan2(height, width);

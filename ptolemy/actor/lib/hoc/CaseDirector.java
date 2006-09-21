@@ -115,7 +115,8 @@ public class CaseDirector extends Director {
         }
         Case container = (Case) getContainer();
         if (container._current == null) {
-            throw new IllegalActionException(container, "Has no current refinement");
+            throw new IllegalActionException(container,
+                    "Has no current refinement");
         }
         container._current.fire();
         if (_debugging) {

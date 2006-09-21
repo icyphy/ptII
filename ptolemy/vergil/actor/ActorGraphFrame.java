@@ -663,13 +663,13 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
             Entity entity = (Entity) object;
             Configuration configuration = (Configuration) effigy.toplevel();
-            try { 
+            try {
                 UserActorLibrary.saveComponentInLibrary(configuration, entity);
             } catch (Exception ex) {
                 // We catch exceptions here because this method used to
                 // not throw Exceptions, and we don't want to break compatibility.
-                MessageHandler
-                .error("Failed to save \"" + entity.getName() + "\".");
+                MessageHandler.error("Failed to save \"" + entity.getName()
+                        + "\".");
             }
         }
     }

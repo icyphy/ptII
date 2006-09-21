@@ -149,7 +149,7 @@ public class InlineTokenTransformer extends SceneTransformer implements
             //Local thisLocal;
 
             try {
-                /*thisLocal =*/ body.getThisLocal();
+                /*thisLocal =*/body.getThisLocal();
             } catch (Exception ex) {
                 //FIXME: what if no thisLocal?
                 continue;

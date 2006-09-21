@@ -435,7 +435,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
 
                         Entity container = FieldsForEntitiesTransformer
                                 .getEntityContainerOfObject(attribute);
-                        /*Local thisLocal =*/ body.getThisLocal();
+                        /*Local thisLocal =*/body.getThisLocal();
 
                         Local containerLocal = getAttributeContainerRef(
                                 container, method, (Local) r.getBase(), stmt,

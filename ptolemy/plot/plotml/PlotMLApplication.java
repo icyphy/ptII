@@ -191,7 +191,7 @@ public class PlotMLApplication extends PlotApplication {
         byte[] peek = new byte[8];
         int bytesRead = bin.read(peek);
         if (bytesRead != peek.length) {
-            throw new IOException("Read only " + bytesRead 
+            throw new IOException("Read only " + bytesRead
                     + "bytes, expecting " + peek.length);
         }
         bin.reset();

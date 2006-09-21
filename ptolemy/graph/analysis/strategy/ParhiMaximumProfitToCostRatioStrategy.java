@@ -165,8 +165,8 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                 int delays = _edgeCosts.toInt(edge);
 
                 for (int i = 0; i < delays; i++) {
-                    Node addedNode = graphPlusDelaysAsNodes
-                            .addNodeWeight("D" + j + i);
+                    Node addedNode = graphPlusDelaysAsNodes.addNodeWeight("D"
+                            + j + i);
                     _delayNodeList.add(addedNode);
 
                     Edge addedEdge = graphPlusDelaysAsNodes.addEdge(source,

@@ -691,9 +691,10 @@ public abstract class Top extends JFrame {
                     // Perhaps this code should be in PtolemyEffigy, but
                     // if it is here, we get the time it takes to read any file, not
                     // just a Ptolemy model.
-                    System.out.println("Opened " + file + " in " 
-                        + (System.currentTimeMillis() - startTime)
-                        + " ms.");
+                    System.out
+                            .println("Opened " + file + " in "
+                                    + (System.currentTimeMillis() - startTime)
+                                    + " ms.");
                 }
             } catch (Error error) {
                 // Be sure to catch Error here so that if we throw an

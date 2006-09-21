@@ -281,7 +281,7 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
                         fileReader.close();
                     } catch (Exception ex) {
                         System.out.println("Failed to close: "
-                            + ex.getMessage());
+                                + ex.getMessage());
                     }
                 }
             }

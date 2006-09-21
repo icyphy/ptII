@@ -152,7 +152,7 @@ public class ParameterSet extends ScopeExtendingAttribute {
             IOException {
 
         _fileName = fileOrURL.getExpression();
-        
+
         if (_fileName == null || _fileName.trim().equals("")) {
             // Delete all previously defined attributes.
             if (_properties != null) {
@@ -228,7 +228,7 @@ public class ParameterSet extends ScopeExtendingAttribute {
 
     /** The previously read file name. */
     private String _fileName;
-    
+
     /** Cached copy of the last hashset of properties, used to remove old
      *  properties.
      */

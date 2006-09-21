@@ -262,7 +262,8 @@ public class XSLTransformer extends Transformer {
                 _transformer = null;
             }
         } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable, "Failed to initialize.");
+            throw new IllegalActionException(this, throwable,
+                    "Failed to initialize.");
         }
     }
 

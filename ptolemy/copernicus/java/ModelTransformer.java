@@ -203,9 +203,9 @@ public class ModelTransformer extends SceneTransformer implements
             }
 
             String className = attribute.getClass().getName();
-            /* Type attributeType =*/ RefType.v(className);
+            /* Type attributeType =*/RefType.v(className);
             String attributeName = attribute.getName(context);
-            /*String fieldName =*/ getFieldNameForAttribute(attribute, context);
+            /*String fieldName =*/getFieldNameForAttribute(attribute, context);
 
             Local local = attributeLocal;
             body.getUnits().insertBefore(
@@ -1956,53 +1956,53 @@ public class ModelTransformer extends SceneTransformer implements
         return deferredObject;
     }
 
-//    private static void _createEntityInstanceFields(SootClass actorClass,
-//            ComponentEntity actor, Map options) {
-//        // Create a static field in the actor class.  This field
-//        // will reference the singleton instance of the actor class.
-//        SootField field = new SootField("_CGInstance", RefType.v(actorClass),
-//                Modifier.PUBLIC | Modifier.STATIC);
-//        actorClass.addField(field);
-//
-//        field.addTag(new ValueTag(actor));
-//        _entityToFieldMap.put(actor, field);
-//        _fieldToEntityMap.put(field, actor);
-//
-//        // Add code to the end of each class initializer to set the
-//        // instance field.
-//        for (Iterator methods = actorClass.getMethods().iterator(); methods
-//                .hasNext();) {
-//            SootMethod method = (SootMethod) methods.next();
-//
-//            if (method.getName().equals("<init>")) {
-//                JimpleBody body = (JimpleBody) method.getActiveBody();
-//                body.getUnits()
-//                        .insertBefore(
-//                                Jimple.v().newAssignStmt(
-//                                        Jimple.v().newStaticFieldRef(
-//                                                field.makeRef()),
-//                                        body.getThisLocal()),
-//                                body.getUnits().getLast());
-//            }
-//        }
-//
-//        _classToObjectMap.put(actorClass, actor);
-//
-//        // Loop over all the actor instance classes and get
-//        // fields for ports.
-//        if (actor instanceof CompositeActor) {
-//            // Then recurse
-//            CompositeEntity model = (CompositeEntity) actor;
-//
-//            for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
-//                ComponentEntity entity = (ComponentEntity) i.next();
-//                String className = getInstanceClassName(entity, options);
-//                SootClass entityClass = Scene.v()
-//                        .loadClassAndSupport(className);
-//                _createEntityInstanceFields(entityClass, entity, options);
-//            }
-//        }
-//    }
+    //    private static void _createEntityInstanceFields(SootClass actorClass,
+    //            ComponentEntity actor, Map options) {
+    //        // Create a static field in the actor class.  This field
+    //        // will reference the singleton instance of the actor class.
+    //        SootField field = new SootField("_CGInstance", RefType.v(actorClass),
+    //                Modifier.PUBLIC | Modifier.STATIC);
+    //        actorClass.addField(field);
+    //
+    //        field.addTag(new ValueTag(actor));
+    //        _entityToFieldMap.put(actor, field);
+    //        _fieldToEntityMap.put(field, actor);
+    //
+    //        // Add code to the end of each class initializer to set the
+    //        // instance field.
+    //        for (Iterator methods = actorClass.getMethods().iterator(); methods
+    //                .hasNext();) {
+    //            SootMethod method = (SootMethod) methods.next();
+    //
+    //            if (method.getName().equals("<init>")) {
+    //                JimpleBody body = (JimpleBody) method.getActiveBody();
+    //                body.getUnits()
+    //                        .insertBefore(
+    //                                Jimple.v().newAssignStmt(
+    //                                        Jimple.v().newStaticFieldRef(
+    //                                                field.makeRef()),
+    //                                        body.getThisLocal()),
+    //                                body.getUnits().getLast());
+    //            }
+    //        }
+    //
+    //        _classToObjectMap.put(actorClass, actor);
+    //
+    //        // Loop over all the actor instance classes and get
+    //        // fields for ports.
+    //        if (actor instanceof CompositeActor) {
+    //            // Then recurse
+    //            CompositeEntity model = (CompositeEntity) actor;
+    //
+    //            for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
+    //                ComponentEntity entity = (ComponentEntity) i.next();
+    //                String className = getInstanceClassName(entity, options);
+    //                SootClass entityClass = Scene.v()
+    //                        .loadClassAndSupport(className);
+    //                _createEntityInstanceFields(entityClass, entity, options);
+    //            }
+    //        }
+    //    }
 
     private static void _createActorsIn(CompositeActor model,
             HashMap objectNameToCreatorName, String phaseName,

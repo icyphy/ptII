@@ -373,7 +373,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // has to be contained by an actor to be run.
             Nameable container = getContainer();
             if (container instanceof Actor) {
-                return ((Actor)container).getDirector();
+                return ((Actor) container).getDirector();
             }
             return null;
         } finally {

@@ -214,9 +214,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   or do anything else that might change the workspace version number.
      *  @exception IllegalActionException If the name has a period.
      */
-    protected NamedObj(
-            Workspace workspace, String name, boolean incrementWorkspaceVersion)
-            throws IllegalActionException {
+    protected NamedObj(Workspace workspace, String name,
+            boolean incrementWorkspaceVersion) throws IllegalActionException {
         if (workspace == null) {
             workspace = _DEFAULT_WORKSPACE;
         }
@@ -960,7 +959,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 if (period < 0) {
                     return (Attribute) _attributes.get(name);
                 } else {
-                    final Attribute match = (Attribute) _attributes.get(name.substring(0, period));
+                    final Attribute match = (Attribute) _attributes.get(name
+                            .substring(0, period));
                     if (match == null) {
                         return null;
                     } else {
@@ -1074,7 +1074,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     public List getDerivedList() {
         try {
-            return _getDerivedList(null, false, false, this, 0, null, null, null);
+            return _getDerivedList(null, false, false, this, 0, null, null,
+                    null);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex);
         }
@@ -1538,7 +1539,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         _override = new LinkedList();
         _override.add(new Integer(0));
 
-        return _getDerivedList(null, true, false, this, 0, _override, null, null);
+        return _getDerivedList(null, true, false, this, 0, _override, null,
+                null);
     }
 
     /** If this object has a value that has been set directly,
@@ -1951,7 +1953,6 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         _validateSettables(new HashSet());
     }
 
-
     /** Get the workspace. This method never returns null, since there
      *  is always a workspace.
      *  @return The workspace responsible for this object.
@@ -2275,8 +2276,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
                     while (parameters.hasNext()) {
                         Attribute parameter = (Attribute) parameters.next();
-                        result.append(parameter
-                                ._description(detail, indent + 1, 2) + "\n");
+                        result.append(parameter._description(detail,
+                                indent + 1, 2)
+                                + "\n");
                     }
                 }
 
@@ -2519,7 +2521,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   the specified child.
      *  @exception IllegalActionException If propagation fails.
      */
-    protected void _propagateValues(NamedObj child) throws IllegalActionException {
+    protected void _propagateValues(NamedObj child)
+            throws IllegalActionException {
         // If this object has not had its value set directly or
         // by propagation into it, then there is no need to do
         // any propagation.
@@ -2624,7 +2627,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @exception IllegalActionException If there is a problem validating
      *  the deeply contained attributes.
      */
-    protected void _validateSettables(Collection attributesValidated) throws IllegalActionException {
+    protected void _validateSettables(Collection attributesValidated)
+            throws IllegalActionException {
         Iterator attributes = attributeList(Settable.class).iterator();
         while (attributes.hasNext()) {
             Settable attribute = (Settable) attributes.next();
@@ -2642,7 +2646,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     throw ex;
                 }
             }
-            ((NamedObj)attribute)._validateSettables(attributesValidated);
+            ((NamedObj) attribute)._validateSettables(attributesValidated);
         }
     }
 
@@ -2792,7 +2796,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 }
 
                 result.addAll(_getDerivedList(visited, propagate, force,
-                        container, depth + 1, newOverride, newRelativeName, null));
+                        container, depth + 1, newOverride, newRelativeName,
+                        null));
             }
 
             if (!(context instanceof Instantiable)) {
@@ -3107,7 +3112,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     }
 
     /** Serializable version of the Java Object class. */
-    private static class SerializableObject extends Object implements Serializable {
+    private static class SerializableObject extends Object implements
+            Serializable {
         // FindBugs suggested making this class a static inner class:
         //
         // "This class is an inner class, but does not use its embedded

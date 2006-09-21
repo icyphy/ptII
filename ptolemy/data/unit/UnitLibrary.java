@@ -236,7 +236,8 @@ public class UnitLibrary {
             NamedObj container = new NamedObj();
             momlParser.setContext(container);
 
-            URL inURL = FileUtilities.nameToURL("$CLASSPATH/ptolemy/data/unit/SI.xml", null, null);
+            URL inURL = FileUtilities.nameToURL(
+                    "$CLASSPATH/ptolemy/data/unit/SI.xml", null, null);
 
             // Strangely, the XmlParser does not want as base the
             // directory containing the file, but rather the

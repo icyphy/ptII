@@ -167,7 +167,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
 
         // this will help us figure out where locals are defined.
-        /*SimpleLocalDefs localDefs = */ new SimpleLocalDefs(unitGraph);
+        /*SimpleLocalDefs localDefs = */new SimpleLocalDefs(unitGraph);
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
 
         for (Iterator units = body.getUnits().snapshotIterator(); units

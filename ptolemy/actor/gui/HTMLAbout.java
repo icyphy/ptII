@@ -266,8 +266,8 @@ public class HTMLAbout {
             // Convert the list to a Set and avoid duplicates.
             Set modelSet = new HashSet(modelList);
             newURL = _temporaryHTMLFile("checkModelSizes", ".htm",
-                    CheckModelSize.checkModelSize(
-                            (String[]) modelSet.toArray(new String[0])));
+                    CheckModelSize.checkModelSize((String[]) modelSet
+                            .toArray(new String[0])));
         } else if (event.getDescription().equals("about:copyright")) {
             // Note that if we have a link that is
             // <a href="about:copyright">about:copyright</a>
@@ -644,7 +644,7 @@ public class HTMLAbout {
                                 System.out.println("HTMLAbout: _getURLs() "
                                         + "checking: " + modelURL);
                                 modelList.addAll(_getURLs(modelURL, regexp,
-                                                         absoluteURLs, depth - 1));
+                                        absoluteURLs, depth - 1));
                             }
                         }
                     }

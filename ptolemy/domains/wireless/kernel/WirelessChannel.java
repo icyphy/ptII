@@ -64,7 +64,7 @@ import ptolemy.kernel.util.Nameable;
  */
 public interface WirelessChannel extends Actor, Nameable, PropertyTransformer,
         ChannelListener {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -79,7 +79,7 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer,
      *  given transmission, then the order in which they are applied is arbitrary.
      *  
      *  @param listener The channel listener to add.
-      */
+     */
     public void addChannelListener(ChannelListener listener);
 
     /** Return a channel port that can be used to set type constraints

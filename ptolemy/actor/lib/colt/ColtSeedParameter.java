@@ -165,24 +165,28 @@ public class ColtSeedParameter extends SharedParameter {
                     // The shared parameters are made non-persistent below.
                     setPersistent(true);
                     Iterator sharedParameters = sharedParameterSet().iterator();
-                    
+
                     while (sharedParameters.hasNext()) {
-                        ColtSeedParameter sharedParameter = (ColtSeedParameter) sharedParameters.next();
+                        ColtSeedParameter sharedParameter = (ColtSeedParameter) sharedParameters
+                                .next();
                         if (sharedParameter != this) {
                             try {
                                 sharedParameter.setSuppressingPropagation(true);
                                 value++;
-                                
+
                                 String newExpression = value + "L";
-                                
-                                if (!sharedParameter.getExpression().equals(newExpression)) {
-                                    sharedParameter.setExpression(newExpression);
-                                    
+
+                                if (!sharedParameter.getExpression().equals(
+                                        newExpression)) {
+                                    sharedParameter
+                                            .setExpression(newExpression);
+
                                     // Make sure the new value is not persistent.
                                     sharedParameter.setPersistent(false);
                                 }
                             } finally {
-                                sharedParameter.setSuppressingPropagation(previousSuppress);
+                                sharedParameter
+                                        .setSuppressingPropagation(previousSuppress);
                             }
                         }
                     }

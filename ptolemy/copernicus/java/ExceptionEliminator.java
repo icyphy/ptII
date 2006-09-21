@@ -161,7 +161,7 @@ public class ExceptionEliminator extends SceneTransformer implements
 
                 // FIXME: This is currently way too simple.
                 Value value = box.getValue();
-                /*Type type = */ value.getType();
+                /*Type type = */value.getType();
 
                 if (value instanceof NewExpr) {
                     // Fix kernel exceptions to be runtime exceptions.

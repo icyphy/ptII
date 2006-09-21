@@ -219,10 +219,10 @@ public class CompositeEntity extends ComponentEntity {
 
                 while (entities.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) entities.next();
-                    if (/*!entity.isClassDefinition()&& */ !entity.isOpaque() /*entity instanceof CompositeEntity*/) {
+                    if (/*!entity.isClassDefinition()&& */!entity.isOpaque() /*entity instanceof CompositeEntity*/) {
                         result.add((CompositeEntity) entity);
                         result.addAll(((CompositeEntity) entity)
-                                    .allCompositeEntityList());
+                                .allCompositeEntityList());
 
                     }
                 }
@@ -1282,29 +1282,26 @@ public class CompositeEntity extends ComponentEntity {
      * @exception IllegalActionException If the class named by
      * actorClassName cannot be found.
      */
-    public String statistics(String className) 
-        throws IllegalActionException {
+    public String statistics(String className) throws IllegalActionException {
         // FIXME: The right way to do this is to have each class 
         // in the hierarchy have a statistics method.
         try {
             _workspace.getReadAccess();
-            
+
             Class clazz = null;
             try {
-                if (className != null 
-                        && className.length() > 0) {
+                if (className != null && className.length() > 0) {
                     clazz = Class.forName(className);
                 }
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex,
-                        "Failed to instantiate \"" + className
-                        + "\"");
+                        "Failed to instantiate \"" + className + "\"");
             }
-    
+
             List atomicEntities = allAtomicEntityList();
             int entityCount = atomicEntities.size();
-            
-            int  attributeCount = 0, entityClassCount = 0;
+
+            int attributeCount = 0, entityClassCount = 0;
             Iterator entities = atomicEntities.iterator();
             while (entities.hasNext()) {
                 ComponentEntity entity = (ComponentEntity) entities.next();
@@ -1320,7 +1317,7 @@ public class CompositeEntity extends ComponentEntity {
                             Attribute attribute = (Attribute) attributes.next();
                             if (clazz.isAssignableFrom(attribute.getClass())) {
                                 entityClassCount++;
-                            }  
+                            }
                         }
                     }
                 }
@@ -1333,11 +1330,11 @@ public class CompositeEntity extends ComponentEntity {
                 while (relations.hasNext()) {
                     Relation relation = (Relation) relations.next();
                     if (clazz.isAssignableFrom(relation.getClass())) {
-                        entityClassCount++;  
+                        entityClassCount++;
                     }
                 }
             }
-            
+
             entities = allCompositeEntityList().iterator();
 
             while (entities.hasNext()) {
@@ -1345,7 +1342,7 @@ public class CompositeEntity extends ComponentEntity {
                 if (entity instanceof CompositeEntity) {
                     compositeEntityCount++;
                     relationList = ((CompositeEntity) entity).relationList();
-                    relationCount += relationList.size(); 
+                    relationCount += relationList.size();
                     if (clazz != null) {
                         if (clazz.isAssignableFrom(entity.getClass())) {
                             entityClassCount++;
@@ -1356,26 +1353,30 @@ public class CompositeEntity extends ComponentEntity {
                                 Relation relation = (Relation) relations.next();
                                 if (clazz.isAssignableFrom(relation.getClass())) {
                                     entityClassCount++;
-                                }  
+                                }
                             }
                         }
                     }
                 }
             }
-            
-            return  "Size Statistics for " + getFullName()
-                + "\nAtomicEntities: " + entityCount
-                + "\nCompositeEntities: " + compositeEntityCount
-                + "\nRelations: " + relationCount
-                + "\nAttributes: " + attributeCount
-                + (clazz == null ? "" :
-                    "\nEntities of type \"" + clazz.getName() 
-                    + "\": " + entityClassCount);   
+
+            return "Size Statistics for "
+                    + getFullName()
+                    + "\nAtomicEntities: "
+                    + entityCount
+                    + "\nCompositeEntities: "
+                    + compositeEntityCount
+                    + "\nRelations: "
+                    + relationCount
+                    + "\nAttributes: "
+                    + attributeCount
+                    + (clazz == null ? "" : "\nEntities of type \""
+                            + clazz.getName() + "\": " + entityClassCount);
         } finally {
             _workspace.doneReading();
         }
     }
-    
+
     /** Return a name that is guaranteed to not be the name of
      *  any contained attribute, port, class, entity, or relation.
      *  In this implementation, the argument
@@ -1538,7 +1539,7 @@ public class CompositeEntity extends ComponentEntity {
         try {
             _workspace.getReadAccess();
 
-            StringBuffer result = new StringBuffer() ;
+            StringBuffer result = new StringBuffer();
 
             if ((bracket == 1) || (bracket == 2)) {
                 result.append(super._description(detail, indent, 1));
@@ -1557,7 +1558,8 @@ public class CompositeEntity extends ComponentEntity {
 
                 while (classes.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) classes.next();
-                    result.append(entity._description(detail, indent + 1, 2) + "\n");
+                    result.append(entity._description(detail, indent + 1, 2)
+                            + "\n");
                 }
 
                 result.append(_getIndentPrefix(indent) + "} entities {\n");
@@ -1566,7 +1568,8 @@ public class CompositeEntity extends ComponentEntity {
 
                 while (entities.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) entities.next();
-                    result.append(entity._description(detail, indent + 1, 2) + "\n");
+                    result.append(entity._description(detail, indent + 1, 2)
+                            + "\n");
                 }
 
                 result.append(_getIndentPrefix(indent) + "} relations {\n");
@@ -1575,7 +1578,8 @@ public class CompositeEntity extends ComponentEntity {
 
                 while (relations.hasNext()) {
                     Relation relation = (Relation) relations.next();
-                    result.append(relation._description(detail, indent + 1, 2) + "\n");
+                    result.append(relation._description(detail, indent + 1, 2)
+                            + "\n");
                 }
 
                 result.append(_getIndentPrefix(indent) + "}");

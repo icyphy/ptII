@@ -611,7 +611,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             HashSet parametersValidated = new HashSet();
             while (parameters.hasNext()) {
                 Settable param = (Settable) parameters.next();
-                
+
                 if (parametersValidated.contains(param)) {
                     continue;
                 }
@@ -632,10 +632,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         derivedParam.validate();
                         parametersValidated.add(derivedParam);
                     }
-                    
+
                     if (param instanceof SharedParameter) {
-                        parametersValidated.addAll(
-                                ((SharedParameter)param).sharedParameterSet());
+                        parametersValidated.addAll(((SharedParameter) param)
+                                .sharedParameterSet());
                     }
                 } catch (Exception ex) {
                     if (_handler != null) {
@@ -3340,8 +3340,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // the reference.  Try to find that.
             if (reference instanceof CompositeEntity) {
                 if (className.startsWith(referenceName + ".")) {
-                    reference = ((CompositeEntity)reference).getEntity(
-                            className.substring(referenceName.length() + 1));
+                    reference = ((CompositeEntity) reference)
+                            .getEntity(className.substring(referenceName
+                                    .length() + 1));
                 } else {
                     reference = null;
                 }
@@ -3434,7 +3435,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // Allow the class name to be local in the current context
                 // or defined in scope. Search for a class definition that
                 // matches in the current context.
-                reference = _searchForClassInContext(className, /* source*/ null);
+                reference = _searchForClassInContext(className, /* source*/
+                        null);
             }
 
             if (reference == null) {
@@ -6074,7 +6076,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (context == null) {
                 // The name might be a top-level name, but without
                 // the leading period.
-                return _searchForEntity("." + name, /* context*/ null);
+                return _searchForEntity("." + name, /* context*/null);
             }
 
             return null;

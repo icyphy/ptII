@@ -974,7 +974,8 @@ public class PtolemyUtilities {
     // FIXME Records!
     // FIXME: this is hacked to return unknown types for token types that
     // are abstract.
-    public static ptolemy.data.type.Type getTokenTypeTypeForSootType(RefType type) {
+    public static ptolemy.data.type.Type getTokenTypeTypeForSootType(
+            RefType type) {
         String className = type.getSootClass().getName();
 
         //  System.out.println("className = " + className);
@@ -996,14 +997,14 @@ public class PtolemyUtilities {
             return ptolemy.data.type.BaseType.FIX;
         } else if (className.startsWith("ptolemy.data.type.BaseType$")) {
             return ptolemy.data.type.BaseType.UNKNOWN;
-//             ptolemy.data.type.Type tokenType = ptolemy.data.type.BaseType
-//                     .forClassName(className);
+            //             ptolemy.data.type.Type tokenType = ptolemy.data.type.BaseType
+            //                     .forClassName(className);
 
-//             if (tokenType == null) {
-//                 throw new RuntimeException("unknown type = " + type + ".");
-//             }
+            //             if (tokenType == null) {
+            //                 throw new RuntimeException("unknown type = " + type + ".");
+            //             }
 
-//             return tokenType;
+            //             return tokenType;
         } else {
             throw new RuntimeException("unknown type = " + type + ".");
         }
@@ -1884,7 +1885,8 @@ public class PtolemyUtilities {
         setExpressionMethod = settableClass.getMethodByName("setExpression");
         getExpressionMethod = settableClass
                 .getMethod("java.lang.String getExpression()");
-        validateMethod = settableClass.getMethod("java.util.Collection validate()");
+        validateMethod = settableClass
+                .getMethod("java.util.Collection validate()");
 
         stringAttributeClass = Scene.v().loadClassAndSupport(
                 "ptolemy.kernel.util.StringAttribute");

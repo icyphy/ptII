@@ -1537,7 +1537,7 @@ public abstract class ScalarToken extends Token implements
         if (!_isUnitless) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
             result._isUnitless = false;
-        } 
+        }
         return result;
     }
 
@@ -1568,7 +1568,8 @@ public abstract class ScalarToken extends Token implements
         // compute units
         if (!_isUnitless || !convertedArgument._isUnitless) {
             result._unitCategoryExponents = _subtractCategoryExponents(convertedArgument);
-            result._isUnitless = UnitUtilities.isUnitless(result._unitCategoryExponents);
+            result._isUnitless = UnitUtilities
+                    .isUnitless(result._unitCategoryExponents);
         }
         return result;
     }
@@ -1729,7 +1730,8 @@ public abstract class ScalarToken extends Token implements
         // compute units
         if (!_isUnitless || !convertedArgument._isUnitless) {
             result._unitCategoryExponents = _addCategoryExponents(convertedArgument);
-            result._isUnitless = UnitUtilities.isUnitless(result._unitCategoryExponents);
+            result._isUnitless = UnitUtilities
+                    .isUnitless(result._unitCategoryExponents);
         }
         return result;
     }

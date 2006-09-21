@@ -142,7 +142,8 @@ public abstract class ActorController extends AttributeController {
             // Add to the context menu, configure submenu.
             _portDialogAction = new PortDialogAction("Ports");
             _configureMenuFactory.addAction(_portDialogAction, "Customize");
-            _configureUnitsAction = new ConfigureUnitsAction("Units Constraints");
+            _configureUnitsAction = new ConfigureUnitsAction(
+                    "Units Constraints");
             _configureMenuFactory.addAction(_configureUnitsAction, "Customize");
         }
 
@@ -355,7 +356,7 @@ public abstract class ActorController extends AttributeController {
     ////                         private variables                 ////
 
     private BreakpointDialogFactory _breakpointDialogFactory;
-    
+
     private ConfigureUnitsAction _configureUnitsAction;
 
     private ListenToActorAction _listenToActorAction;
@@ -762,7 +763,7 @@ public abstract class ActorController extends AttributeController {
 
     ///////////////////////////////////////////////////////////////////
     //// OpenInstanceAction
-    
+
     /** An action to open an instance.  This is similar to LookInsideAction
      *  except that it does not open the class definition, but rather opens
      *  the instance.
@@ -771,6 +772,7 @@ public abstract class ActorController extends AttributeController {
         public OpenInstanceAction() {
             super("Open Instance");
         }
+
         public void actionPerformed(ActionEvent event) {
             if (_configuration == null) {
                 MessageHandler.error("Cannot open an instance "
@@ -794,9 +796,9 @@ public abstract class ActorController extends AttributeController {
                 // open the source code as a last resort.
                 Frame parent = getFrame();
                 DialogTableau dialogTableau = DialogTableau.createDialog(
-                        (Frame) parent, _configuration,
-                        ((TableauFrame) parent).getEffigy(),
-                        OpenInstanceDialog.class, (Entity) object);
+                        (Frame) parent, _configuration, ((TableauFrame) parent)
+                                .getEffigy(), OpenInstanceDialog.class,
+                        (Entity) object);
 
                 if (dialogTableau != null) {
                     dialogTableau.show();
@@ -867,14 +869,15 @@ public abstract class ActorController extends AttributeController {
             if (object instanceof Entity) {
                 Entity entity = (Entity) object;
                 try {
-                    UserActorLibrary.saveComponentInLibrary(_configuration, entity);
+                    UserActorLibrary.saveComponentInLibrary(_configuration,
+                            entity);
                 } catch (Exception ex) {
                     // We catch exceptions here because this method used to
                     // not throw Exceptions, and we don't want to break compatibility.
-                    MessageHandler
-                            .error("Failed to save \"" + entity.getName() + "\".");
+                    MessageHandler.error("Failed to save \"" + entity.getName()
+                            + "\".");
                 }
-                }
+            }
         }
     }
 }

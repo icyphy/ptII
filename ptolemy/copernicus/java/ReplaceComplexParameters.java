@@ -326,7 +326,7 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                     theClass.addField(oldField);
 
                     oldSignatureToFieldMap.put(oldFieldSignature, oldField);
-                    if(_debug) {
+                    if (_debug) {
                         System.out.println("replacing " + oldFieldSignature);
                     }
                     //  } else if (refClass.getName()
@@ -625,8 +625,8 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                         String signature = r.getFieldRef().getSignature();
                         if (oldSignatureToFieldMap.containsKey(signature)) {
                             // System.out.println("comparing " + signature);
-                            r.setFieldRef(((SootField)oldSignatureToFieldMap
-                                            .get(signature)).makeRef());
+                            r.setFieldRef(((SootField) oldSignatureToFieldMap
+                                    .get(signature)).makeRef());
                         }
                     }
                 }

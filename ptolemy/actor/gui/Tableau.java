@@ -233,7 +233,7 @@ public class Tableau extends CompositeEntity {
             throws IllegalActionException, NameDuplicationException {
         if (container == null) {
             Effigy oldContainer = (Effigy) getContainer();
-            super.setContainer(/* container*/ null);
+            super.setContainer(/* container*/null);
 
             // Blow away the frame.
             if (_frame != null) {
@@ -279,9 +279,9 @@ public class Tableau extends CompositeEntity {
      */
     public void setFrame(JFrame frame) throws IllegalActionException {
         _frame = frame;
-        
+
         size.setSize(frame);
-        
+
         // Truncate the name so that dialogs under Web Start on the Mac
         // work better.
         frame.setTitle(getTitle());

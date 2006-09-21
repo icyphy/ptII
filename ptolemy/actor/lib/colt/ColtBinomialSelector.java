@@ -60,7 +60,7 @@ import cern.jet.random.Binomial;
  generated are independent and the expected values of the assignments
  will have expected values that are representative of the population
  proportions.
-  
+ 
  @see ptolemy.actor.lib.colt.ColtBinomial
  @see cern.jet.random.Binomial
  @author Raymond A. Cardillo, Matthew J. Robbins
@@ -130,7 +130,6 @@ public class ColtBinomialSelector extends ColtRandomSource {
         _generator = new Binomial(1, 0.5, _randomNumberGenerator);
     }
 
-
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
@@ -169,28 +168,28 @@ public class ColtBinomialSelector extends ColtRandomSource {
         }
     }
 
-//     protected void _generateRandomNumber() throws IllegalActionException {
+    //     protected void _generateRandomNumber() throws IllegalActionException {
 
-//         // The following logic protects the binomial generation call
-//         // because the Colt library will throw an exception (even
-//         // though they are valid limit cases).  The limits can occur
-//         // during the course of a simulation, and this actor should
-//         // produce valid results if they do occur.
+    //         // The following logic protects the binomial generation call
+    //         // because the Colt library will throw an exception (even
+    //         // though they are valid limit cases).  The limits can occur
+    //         // during the course of a simulation, and this actor should
+    //         // produce valid results if they do occur.
 
-//         int nValue = ((IntToken) n.getToken()).intValue();
-//         if (nValue == 0) {
-//             _current = 0;
-//         } else {
-//             double pValue = ((DoubleToken) p.getToken()).doubleValue();
-//             if (pValue == 0.0) {
-//                 _current = 0;
-//             } else if (pValue == 1.0) {
-//                 _current = nValue;
-//             } else {
-//                 _current = _generator.nextInt(nValue, pValue);
-//             }
-//         }
-//     }
+    //         int nValue = ((IntToken) n.getToken()).intValue();
+    //         if (nValue == 0) {
+    //             _current = 0;
+    //         } else {
+    //             double pValue = ((DoubleToken) p.getToken()).doubleValue();
+    //             if (pValue == 0.0) {
+    //                 _current = 0;
+    //             } else if (pValue == 1.0) {
+    //                 _current = nValue;
+    //             } else {
+    //                 _current = _generator.nextInt(nValue, pValue);
+    //             }
+    //         }
+    //     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

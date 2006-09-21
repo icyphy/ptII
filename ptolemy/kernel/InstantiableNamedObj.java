@@ -428,7 +428,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
             NamedObj container = getContainer();
             while (container != null) {
                 if (container instanceof InstantiableNamedObj) {
-                    if (((InstantiableNamedObj)container)._isClassDefinition) {
+                    if (((InstantiableNamedObj) container)._isClassDefinition) {
                         return true;
                     }
                 }

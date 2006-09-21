@@ -491,7 +491,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             } finally {
                 if (fileReader != null) {
                     try {
-                            fileReader.close();
+                        fileReader.close();
                     } catch (Exception ex2) {
                         // Ignored, we are trying to close.
                     }

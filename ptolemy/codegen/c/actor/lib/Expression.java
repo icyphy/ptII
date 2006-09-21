@@ -78,15 +78,15 @@ public class Expression extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
 
-//        Type portType = ((ptolemy.actor.lib.Expression) this.getComponent()).output
-//                .getType();
-//
-//        // if port type is not primitive, then we use token type
-//        if ((portType != BaseType.DOUBLE) && (portType != BaseType.INT)
-//                && (portType != BaseType.STRING)
-//                && (portType != BaseType.BOOLEAN)) {
-//            portType = BaseType.GENERAL;
-//        }
+        //        Type portType = ((ptolemy.actor.lib.Expression) this.getComponent()).output
+        //                .getType();
+        //
+        //        // if port type is not primitive, then we use token type
+        //        if ((portType != BaseType.DOUBLE) && (portType != BaseType.INT)
+        //                && (portType != BaseType.STRING)
+        //                && (portType != BaseType.BOOLEAN)) {
+        //            portType = BaseType.GENERAL;
+        //        }
 
         //code.append(processCode("    $ref(output)." + portType + "Port = ("
         //        + _cParseTreeCodeGenerator.generateFireCode()) + ");\n");

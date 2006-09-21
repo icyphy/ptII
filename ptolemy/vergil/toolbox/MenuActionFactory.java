@@ -66,7 +66,7 @@ public class MenuActionFactory implements MenuItemFactory {
         _actions = actions;
         _label = label;
     }
-    
+
     /** Add an action to the pre-existing group of actions.
      *  If this was constructed with the single argument, then this
      *  converts the menu action into a submenu with the specified label.

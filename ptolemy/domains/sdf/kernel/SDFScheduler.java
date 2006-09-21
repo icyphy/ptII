@@ -1125,16 +1125,15 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                         currentRate, 1));
                 Fraction previousRate = (Fraction) externalRates
                         .get(connectedPort);
-                
+
                 if (previousRate == null) {
                     // This can happen if we somehow have a link to a port
                     // within a class definition.
                     // Give better error message than null pointer exception.
                     throw new InternalErrorException(
                             "Invalid connection found between ports: "
-                            + currentPort.getFullName()
-                            + " and "
-                            + connectedPort.getFullName());
+                                    + currentPort.getFullName() + " and "
+                                    + connectedPort.getFullName());
                 }
 
                 if (previousRate.equals(Fraction.ZERO)) {
@@ -1714,6 +1713,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      * and is used in the end to set final rates on external ports.
      */
     protected Map _externalRates = new HashMap();
+
     // NOTE: This used to be a TreeMap using DFUtilities.NamedObjComparator().
     // However, that comparator is very slow.
 

@@ -582,7 +582,8 @@ public class Entity extends InstantiableNamedObj {
 
                 while (portLists.hasNext()) {
                     Port port = (Port) portLists.next();
-                    result.append(port._description(detail, indent + 1, 2) + "\n");
+                    result.append(port._description(detail, indent + 1, 2)
+                            + "\n");
                 }
 
                 result.append(_getIndentPrefix(indent) + "}");
@@ -644,7 +645,8 @@ public class Entity extends InstantiableNamedObj {
      *  @exception IllegalActionException If the superclass throws it
      *  or if handleModelError() throws it.
      */
-    protected void _validateSettables(Collection attributesValidated) throws IllegalActionException {
+    protected void _validateSettables(Collection attributesValidated)
+            throws IllegalActionException {
 
         super._validateSettables(attributesValidated);
         Iterator ports = portList().iterator();

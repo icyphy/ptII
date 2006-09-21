@@ -114,7 +114,8 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
             // will later have its image set. Create a default image.
             try {
                 // Use nameToURL so this works in WebStart.
-                URL url = FileUtilities.nameToURL("/doc/img/PtolemyIISmall.gif", null, null);
+                URL url = FileUtilities.nameToURL(
+                        "/doc/img/PtolemyIISmall.gif", null, null);
                 Toolkit tk = Toolkit.getDefaultToolkit();
                 setImage(tk.getImage(url));
             } catch (IOException ex) {

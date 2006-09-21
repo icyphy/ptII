@@ -48,7 +48,7 @@ import ptolemy.vergil.toolbox.FigureAction;
  @Pt.AcceptedRating Red (johnr)
  */
 public class RenameDialogAction extends FigureAction {
-    
+
     /** Construct a rename dialog action with the specified name,
      *  which will appear in the menu that uses this action.
      *  @param name The name.
@@ -56,7 +56,7 @@ public class RenameDialogAction extends FigureAction {
     public RenameDialogAction(String name) {
         super(name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -79,8 +79,8 @@ public class RenameDialogAction extends FigureAction {
             // Giotto code generator on giotto/demo/Hierarchy/Hierarchy.xml
             // was throwing an exception here that was not being displayed
             // in the UI.
-            MessageHandler.error("Failed to open a dialog to rename the target.",
-                    throwable);
+            MessageHandler.error(
+                    "Failed to open a dialog to rename the target.", throwable);
         }
     }
 }

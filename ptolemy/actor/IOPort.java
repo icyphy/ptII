@@ -3331,8 +3331,8 @@ public class IOPort extends ComponentPort {
                                     result.append(receivers[i][j].getClass()
                                             .getName());
                                     result.append(" in ");
-                                    result.append(receivers[i][j].getContainer()
-                                            .getFullName());
+                                    result.append(receivers[i][j]
+                                            .getContainer().getFullName());
                                 }
 
                                 result.append("}\n");
@@ -3451,7 +3451,7 @@ public class IOPort extends ComponentPort {
                                     + "be determined.");
                 }
 
-                result +=relation.getWidth();
+                result += relation.getWidth();
             }
         }
 

@@ -1048,7 +1048,7 @@ public class SootUtilities {
         for (Iterator pairs = useList.iterator(); pairs.hasNext();) {
             UnitValueBoxPair pair = (UnitValueBoxPair) pairs.next();
             Stmt useStmt = (Stmt) pair.getUnit();
-            /*ValueBox useBox = (ValueBox)*/ pair.getValueBox();
+            /*ValueBox useBox = (ValueBox)*/pair.getValueBox();
             System.out.println("used at = " + useStmt);
         }
 
@@ -1151,7 +1151,7 @@ public class SootUtilities {
         }
 
         // Copy the field declarations.
-        /*List collidedFieldList =*/ _copyFields(theClass, superClass);
+        /*List collidedFieldList =*/_copyFields(theClass, superClass);
 
         // Now create new methods in the given class for methods that
         // exist in the super class, but not in the given class.
@@ -2007,7 +2007,7 @@ public class SootUtilities {
                 // remove the conditional
                 for (Iterator blockStmts = whileCond.iterator(); blockStmts
                         .hasNext();) {
-                    /*Stmt original = (Stmt)*/ blockStmts.next();
+                    /*Stmt original = (Stmt)*/blockStmts.next();
                     blockStmts.remove();
                 }
 

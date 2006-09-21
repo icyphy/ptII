@@ -247,7 +247,7 @@ public class Publisher extends TypedAtomicActor {
             while (actors.hasNext()) {
                 Object actor = actors.next();
                 if (actor instanceof Subscriber) {
-                    if (((Subscriber)actor).channelMatches(_channel)) {
+                    if (((Subscriber) actor).channelMatches(_channel)) {
                         result.add(actor);
                     }
                 } else if (actor instanceof Publisher && actor != this) {

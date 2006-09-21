@@ -53,7 +53,7 @@ import ptolemy.vergil.toolbox.FigureAction;
  @Pt.AcceptedRating Red (johnr)
  */
 public class PortDialogAction extends FigureAction {
-    
+
     /** Construct a rename dialog action with the specified name,
      *  which will appear in the menu that uses this action.
      *  @param name The name.
@@ -80,9 +80,9 @@ public class PortDialogAction extends FigureAction {
             // First, identify the top parent frame.
             Frame parent = getFrame();
             DialogTableau dialogTableau = DialogTableau.createDialog(
-                    (Frame) parent, _configuration,
-                    ((TableauFrame) parent).getEffigy(),
-                    PortConfigurerDialog.class, (Entity) target);
+                    (Frame) parent, _configuration, ((TableauFrame) parent)
+                            .getEffigy(), PortConfigurerDialog.class,
+                    (Entity) target);
 
             if (dialogTableau != null) {
                 dialogTableau.show();
@@ -91,8 +91,10 @@ public class PortDialogAction extends FigureAction {
             // Giotto code generator on giotto/demo/Hierarchy/Hierarchy.xml
             // was throwing an exception here that was not being displayed
             // in the UI.
-            MessageHandler.error("Failed to open a dialog to configure the ports the target.",
-                    throwable);
+            MessageHandler
+                    .error(
+                            "Failed to open a dialog to configure the ports the target.",
+                            throwable);
         }
     }
 

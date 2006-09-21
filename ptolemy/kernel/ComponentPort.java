@@ -1045,7 +1045,9 @@ public class ComponentPort extends Port {
                     Relation relation = (Relation) insideRelations.next();
 
                     if (relation != null) {
-                        result.append(relation._description(detail, indent + 1, 2) + "\n");
+                        result.append(relation._description(detail, indent + 1,
+                                2)
+                                + "\n");
                     } else {
                         result.append(_getIndentPrefix(indent + 1) + "null\n");
                     }

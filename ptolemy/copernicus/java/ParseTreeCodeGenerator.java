@@ -158,9 +158,10 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                         RefType.v(PtolemyUtilities.arrayTokenClass))),
                 _insertPoint);
         _units.insertBefore(Jimple.v().newInvokeStmt(
-                Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                        PtolemyUtilities.arrayTokenWithTypeConstructor.makeRef(),
-                        elementTypeLocal, local)),
+                Jimple.v().newSpecialInvokeExpr(
+                        tokenLocal,
+                        PtolemyUtilities.arrayTokenWithTypeConstructor
+                                .makeRef(), elementTypeLocal, local)),
                 _insertPoint);
 
         _nodeToLocal.put(node, tokenLocal);
@@ -1699,7 +1700,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         _body.getLocals().add(baseLocal);
 
         if (cachedMethod instanceof CachedMethod.BaseConvertCachedMethod) {
-            /*RefType tempBaseType =*/ PtolemyUtilities
+            /*RefType tempBaseType =*/PtolemyUtilities
                     .getSootTypeForTokenType(argTypes[0]);
             Local tempBaseLocal = _convertTokenArgToJavaArg(originalBaseLocal,
                     argTypes[0],

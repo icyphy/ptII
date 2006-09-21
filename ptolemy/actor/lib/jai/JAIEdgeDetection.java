@@ -81,7 +81,8 @@ public class JAIEdgeDetection extends Transformer {
 
         userSpecifiedFirstMask = new Parameter(this, "userSpecifiedFirstMask",
                 new DoubleMatrixToken(_initialMatrix));
-        userSpecifiedSecondMask = new Parameter(this, "userSpecifiedSecondMask",
+        userSpecifiedSecondMask = new Parameter(this,
+                "userSpecifiedSecondMask",
                 new DoubleMatrixToken(_initialMatrix));
     }
 
@@ -155,7 +156,8 @@ public class JAIEdgeDetection extends Transformer {
             String secondName = secondMask.getExpression();
             _secondMask = _maskNumberer(secondName);
         } else if (attribute == userSpecifiedFirstMask) {
-            _firstMaskData = ((DoubleMatrixToken) userSpecifiedFirstMask.getToken());
+            _firstMaskData = ((DoubleMatrixToken) userSpecifiedFirstMask
+                    .getToken());
         } else if (attribute == userSpecifiedSecondMask) {
             _secondMaskData = ((DoubleMatrixToken) userSpecifiedSecondMask
                     .getToken());

@@ -275,8 +275,8 @@ public class BrowserLauncher {
         switch (jvm) {
         case MRJ_2_0:
 
-            errorMessage = "Command was a call to aeDescConstructor("
-                + url + ")";
+            errorMessage = "Command was a call to aeDescConstructor(" + url
+                    + ")";
 
             Object aeDesc = null;
 
@@ -306,15 +306,13 @@ public class BrowserLauncher {
 
         case MRJ_2_1:
             args = new String[] { (String) browser, url };
-            errorMessage = "Command was: " + args[0]
-                + " " + args[1];
+            errorMessage = "Command was: " + args[0] + " " + args[1];
             Runtime.getRuntime().exec(args);
             break;
 
         case MRJ_3_0:
 
-            errorMessage = "Command was a call to ICLaunchURL("
-                + url + ")";
+            errorMessage = "Command was a call to ICLaunchURL(" + url + ")";
 
             int[] instance = new int[1];
             int result = ICStart(instance, 0);
@@ -342,19 +340,18 @@ public class BrowserLauncher {
 
         case MRJ_3_1:
 
-            errorMessage = "Command was a call to openURL(" +
-                url + ")";
+            errorMessage = "Command was a call to openURL(" + url + ")";
 
             try {
                 openURL.invoke(null, new Object[] { url });
             } catch (InvocationTargetException ite) {
                 throw new IOException("InvocationTargetException while "
-                        + "calling openURL() on " + url
-                        + " " + ite.getMessage());
+                        + "calling openURL() on " + url + " "
+                        + ite.getMessage());
             } catch (IllegalAccessException iae) {
                 throw new IOException("IllegalAccessException while "
-                        + "calling openURL() on: " + url
-                        + " " + iae.getMessage());
+                        + "calling openURL() on: " + url + " "
+                        + iae.getMessage());
             }
 
             break;
@@ -364,20 +361,23 @@ public class BrowserLauncher {
 
             // Add quotes around the URL to allow ampersands and other special
             // characters to work.
-            args = new String[] { (String) browser,
-                            FIRST_WINDOWS_PARAMETER,
-                            SECOND_WINDOWS_PARAMETER, THIRD_WINDOWS_PARAMETER,
-                            '"' + url + '"' };
+            args = new String[] { (String) browser, FIRST_WINDOWS_PARAMETER,
+                    SECOND_WINDOWS_PARAMETER, THIRD_WINDOWS_PARAMETER,
+                    '"' + url + '"' };
             Process process = Runtime.getRuntime().exec(args);
 
-
-            errorMessage = "Command was: " + args[0]
-                + " " + args[1]
-                + " " + args[2]
-                + " " + args[3]
-                + " " + args[4]
-                + "\nNote: Under Windows, make sure that the file named by "
-                + "the url is executable.";
+            errorMessage = "Command was: "
+                    + args[0]
+                    + " "
+                    + args[1]
+                    + " "
+                    + args[2]
+                    + " "
+                    + args[3]
+                    + " "
+                    + args[4]
+                    + "\nNote: Under Windows, make sure that the file named by "
+                    + "the url is executable.";
 
             // This avoids a memory leak on some versions of Java on Windows.
             // That's hinted at in
@@ -398,17 +398,14 @@ public class BrowserLauncher {
             // First, attempt to open the URL in a currently running
             // session of Netscape
             args = new String[] {
-                            (String) browser,
-                            NETSCAPE_REMOTE_PARAMETER,
-                            NETSCAPE_OPEN_PARAMETER_START + url
+                    (String) browser,
+                    NETSCAPE_REMOTE_PARAMETER,
+                    NETSCAPE_OPEN_PARAMETER_START + url
                             + NETSCAPE_OPEN_PARAMETER_END };
             process = Runtime.getRuntime().exec(args);
 
-
-            errorMessage = "Command was: " + args[0]
-                + " " + args[1]
-                + " " + args[2];
-
+            errorMessage = "Command was: " + args[0] + " " + args[1] + " "
+                    + args[2];
 
             try {
                 exitCode = process.waitFor();
@@ -436,8 +433,7 @@ public class BrowserLauncher {
         if (exitCode != 0) {
             throw new IOException("Process exec'd by BrowserLauncher returned "
                     + exitCode + "." + "\n url was: " + url
-                    + "\n browser was: " + browser
-                    + "\n " + errorMessage);
+                    + "\n browser was: " + browser + "\n " + errorMessage);
         }
     }
 

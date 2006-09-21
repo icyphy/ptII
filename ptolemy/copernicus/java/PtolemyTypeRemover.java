@@ -58,8 +58,8 @@ import soot.jimple.StaticFieldRef;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class PtolemyTypeRemover extends SceneTransformer 
-    implements HasPhaseOptions {
+public class PtolemyTypeRemover extends SceneTransformer implements
+        HasPhaseOptions {
     /** Construct a new transformer
      */
     private PtolemyTypeRemover(CompositeActor model) {
@@ -89,20 +89,20 @@ public class PtolemyTypeRemover extends SceneTransformer
 
     protected void internalTransform(String phaseName, Map options) {
         //_phaseName = phaseName;
-        System.out.println("PtolemyTypeRemover.internalTransform("
-                + phaseName + ", " + options + ")");
+        System.out.println("PtolemyTypeRemover.internalTransform(" + phaseName
+                + ", " + options + ")");
 
         boolean debug = PhaseOptions.getBoolean(options, "debug");
         //int level = PhaseOptions.getInt(options, "level");
 
         //boolean doneSomething = false;
-        /*Hierarchy hierarchy =*/ Scene.v().getActiveHierarchy();
+        /*Hierarchy hierarchy =*/Scene.v().getActiveHierarchy();
 
         // Inline all methods on tokens that have the given depth.
-        for (Iterator classes = Scene.v().getApplicationClasses()
-                 .iterator(); classes.hasNext();) {
+        for (Iterator classes = Scene.v().getApplicationClasses().iterator(); classes
+                .hasNext();) {
             SootClass entityClass = (SootClass) classes.next();
-            
+
             fixTypes(entityClass, debug);
         }
     }
@@ -119,31 +119,32 @@ public class PtolemyTypeRemover extends SceneTransformer
 
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
             for (Iterator units = body.getUnits().snapshotIterator(); units
-                     .hasNext();) {
+                    .hasNext();) {
                 Unit unit = (Unit) units.next();
-                
+
                 if (debug) {
                     System.out.println("unit = " + unit);
                 }
 
-                if (unit instanceof AssignStmt ) {
+                if (unit instanceof AssignStmt) {
                     AssignStmt stmt = (AssignStmt) unit;
-                    if (stmt.getRightOp() instanceof ArrayRef &&
-                            PtolemyUtilities.isTypeType(
-                                    stmt.getRightOp().getType())) {
+                    if (stmt.getRightOp() instanceof ArrayRef
+                            && PtolemyUtilities.isTypeType(stmt.getRightOp()
+                                    .getType())) {
                         stmt.getRightOpBox().setValue(NullConstant.v());
-                    } else if ((stmt.getRightOp() instanceof InstanceFieldRef ||
-                            stmt.getRightOp() instanceof StaticFieldRef) &&
-                            PtolemyUtilities.isTypeType(
-                                    stmt.getRightOp().getType())) {
+                    } else if ((stmt.getRightOp() instanceof InstanceFieldRef || stmt
+                            .getRightOp() instanceof StaticFieldRef)
+                            && PtolemyUtilities.isTypeType(stmt.getRightOp()
+                                    .getType())) {
                         stmt.getRightOpBox().setValue(NullConstant.v());
-                    } else if (stmt.getLeftOp() instanceof ArrayRef &&
-                            PtolemyUtilities.isTypeType(stmt.getRightOp().getType())) {
+                    } else if (stmt.getLeftOp() instanceof ArrayRef
+                            && PtolemyUtilities.isTypeType(stmt.getRightOp()
+                                    .getType())) {
                         body.getUnits().remove(stmt);
-                    } else if ((stmt.getRightOp() instanceof NewArrayExpr ||
-                            stmt.getRightOp() instanceof NewMultiArrayExpr) &&
-                            PtolemyUtilities.isTypeType(
-                                    stmt.getRightOp().getType())) {
+                    } else if ((stmt.getRightOp() instanceof NewArrayExpr || stmt
+                            .getRightOp() instanceof NewMultiArrayExpr)
+                            && PtolemyUtilities.isTypeType(stmt.getRightOp()
+                                    .getType())) {
                         stmt.getRightOpBox().setValue(NullConstant.v());
                     }
                 }

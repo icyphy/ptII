@@ -80,13 +80,13 @@ public class CodeFileGenerator extends CodeGenerator {
 
         // The location of time.h is different for the C6000
         //if (Options.v().get("target").equals("C6000")) {
-            _context.addIncludeFile("<time.h>");
+        _context.addIncludeFile("<time.h>");
         //} else {
-            // This used to include sys/time.h, but
-            // under Linux, CLOCKS_PER_SEC is defined in
-            // /usr/include/bits/time.h, which is included by
-            // /usr/include/time.h
-            //_context.addIncludeFile("<time.h>");
+        // This used to include sys/time.h, but
+        // under Linux, CLOCKS_PER_SEC is defined in
+        // /usr/include/bits/time.h, which is included by
+        // /usr/include/time.h
+        //_context.addIncludeFile("<time.h>");
         //}
 
         // This file cannot be auto-detected because its called from a

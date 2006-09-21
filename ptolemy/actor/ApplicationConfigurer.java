@@ -1,5 +1,5 @@
 /* A marker interface indicating that a class is used to configure a
-   Ptolemy II application.
+ Ptolemy II application.
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -30,19 +30,18 @@
 package ptolemy.actor;
 
 /**
-A marker interface indicating that a class is used to configure
-a Ptolemy IIapplication.  The ptolemy.actor.gui.Configuration class is an 
-example of a class that implements this interface.
+ A marker interface indicating that a class is used to configure
+ a Ptolemy IIapplication.  The ptolemy.actor.gui.Configuration class is an 
+ example of a class that implements this interface.
 
-@author Christopher Brooks      
-@version $Id$
-@since Ptolemy II 5.2
-@Pt.ProposedRating Red (cxh)
-@Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Brooks      
+ @version $Id$
+ @since Ptolemy II 5.2
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public interface ApplicationConfigurer {
     // This interface is present so as to avoid
     // package dependencies between ptolemy.moml.SharedParameter
     // and actor.gui.Configuration.
 }
-

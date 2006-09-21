@@ -94,9 +94,9 @@ public class ReceiverComparator implements Comparator {
             }
         } else {
             throw new ClassCastException(object1
-                    + " is not a PrioritizedTimedQueue.");          
+                    + " is not a PrioritizedTimedQueue.");
         }
-        
+
         //
         // Compare Receiver Time
         //

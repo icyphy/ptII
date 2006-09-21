@@ -93,9 +93,9 @@ import ptolemy.kernel.util.ValueListener;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class AtomicWirelessChannel extends TypedAtomicActor implements 
-    WirelessChannel, ValueListener {
-    
+public class AtomicWirelessChannel extends TypedAtomicActor implements
+        WirelessChannel, ValueListener {
+
     /** Construct a relation with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This relation will use the
@@ -155,13 +155,13 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  given transmission, then the order in which they are applied is arbitrary.
      *  
      *  @param listener The channel listener to add.
-      */
+     */
     public void addChannelListener(ChannelListener listener) {
         if (_channelListeners == null) {
             _channelListeners = new HashSet();
         }
         _channelListeners.add(listener);
-     }
+    }
 
     /** If the attribute is defaultProperties, make sure
      *  its value is a record token.
@@ -195,7 +195,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
             WirelessIOPort source, WirelessIOPort destination) {
         if (_channelListeners != null) {
             Iterator iterator = _channelListeners.iterator();
-    
+
             while (iterator.hasNext()) {
                 ChannelListener listener = (ChannelListener) iterator.next();
                 listener.channelNotify(properties, token, source, destination);

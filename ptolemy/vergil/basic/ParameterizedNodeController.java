@@ -101,7 +101,7 @@ public class ParameterizedNodeController extends NamedObjController {
 
     /** The submenu for configure actions. */
     protected MenuActionFactory _configureMenuFactory;
-    
+
     /** The factory belonging to the menu creator. */
     protected PtolemyMenuFactory _menuFactory;
 

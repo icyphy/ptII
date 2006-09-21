@@ -115,7 +115,8 @@ import ptolemy.util.StringUtilities;
  @see Tableau
  @see TextEditorTableau
  */
-public class Configuration extends CompositeEntity implements ApplicationConfigurer {
+public class Configuration extends CompositeEntity implements
+        ApplicationConfigurer {
     /** Construct an instance in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
@@ -181,7 +182,8 @@ public class Configuration extends CompositeEntity implements ApplicationConfigu
                     while (cloneConstraintIterator.hasNext()) {
                         Inequality constraint = (Inequality) cloneConstraintIterator
                                 .next();
-                        cloneConstraintsDescription.append(constraint.toString());
+                        cloneConstraintsDescription.append(constraint
+                                .toString());
                     }
 
                     if (!constraintsDescription.toString().equals(
@@ -582,9 +584,7 @@ public class Configuration extends CompositeEntity implements ApplicationConfigu
                         "No effigy factories in the configuration!");
             }
 
-            
             effigy = factory.createEffigy(directory, base, in);
-            
 
             if (effigy == null) {
                 MessageHandler

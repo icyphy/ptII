@@ -219,7 +219,8 @@ public class ConstructorSpecializer extends SceneTransformer implements
                                 //  System.out.println(
                                 //  "replacing constructor invocation = "
                                 //               + unit + " in method " + method);
-                                SootMethod newConstructor = (SootMethod)classToConstructorMap.get(declaringClass);
+                                SootMethod newConstructor = (SootMethod) classToConstructorMap
+                                        .get(declaringClass);
 
                                 if (newConstructor.getParameterCount() == 2) {
                                     SpecialInvokeExpr r = (SpecialInvokeExpr) value;

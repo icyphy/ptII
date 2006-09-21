@@ -167,7 +167,7 @@ public class Publisher extends TypedAtomicActor {
             }
         }
     }
-    
+
     /** Remove the relation after every run so we can re-wire it on the next execution.
      *
      *  @exception IllegalActionException If there was an error while trying to remove relation.
@@ -175,7 +175,6 @@ public class Publisher extends TypedAtomicActor {
     public void wrapup() throws IllegalActionException {
         _removeRelation();
     }
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
@@ -233,9 +232,8 @@ public class Publisher extends TypedAtomicActor {
             }
         }
     }
-    
-    private void _removeRelation() throws IllegalActionException
-    {
+
+    private void _removeRelation() throws IllegalActionException {
         // Remove the previous relation, if necessary.
         if (_relation != null) {
             try {
@@ -244,7 +242,7 @@ public class Publisher extends TypedAtomicActor {
                 throw new InternalErrorException(e);
             }
             _relation = null;
-        }        
+        }
     }
 
     /** Update connections to subscribers.
@@ -256,7 +254,7 @@ public class Publisher extends TypedAtomicActor {
         if (_channel == null) {
             return;
         }
-        
+
         _removeRelation();
 
         // If the container is not a typed composite actor, then don't create

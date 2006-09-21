@@ -146,7 +146,7 @@ public class Subscriber extends TypedAtomicActor {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Determine whether a channel name matches this subscriber.
      *  This base class returns true if the specified string
      *  is equal to the value of the <i>channel</i> parameter.

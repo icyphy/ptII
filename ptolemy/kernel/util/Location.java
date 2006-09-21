@@ -386,7 +386,7 @@ public class Location extends SingletonAttribute implements Locatable {
 
         // FIXME: If _setLocation() returns true, should we call
         // setModifiedFromClass() like we do elsewhere?
-        
+
         return null;
     }
 

@@ -442,7 +442,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 Type type = castExpr.getType();
 
                 // FIXME: what if downcast???
-                /*RefType tokenType =*/ PtolemyUtilities.getBaseTokenType(type);
+                /*RefType tokenType =*/PtolemyUtilities.getBaseTokenType(type);
 
                 //       System.out.println("castType = " + tokenType);
                 //                 System.out.println("castOp = " + castExpr.getOp());

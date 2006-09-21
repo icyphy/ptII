@@ -312,8 +312,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
             value();
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to read configuration at: "
-                    + _configureSource);
+                    "Failed to read configuration at: " + _configureSource);
         }
         // Notify the container that the attribute has changed.
         NamedObj container = getContainer();
@@ -328,7 +327,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
             while (listeners.hasNext()) {
                 ValueListener listener = (ValueListener) listeners.next();
                 if (listener instanceof Settable) {
-                    Collection validated = ((Settable)listener).validate();
+                    Collection validated = ((Settable) listener).validate();
                     if (validated != null) {
                         result.addAll(validated);
                     }

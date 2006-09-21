@@ -216,8 +216,8 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                     _toplevel = (CompositeActor) _parser.parse(base, inURL);
                     long endTime = System.currentTimeMillis();
                     if (endTime - startTime > 10000) {
-                        System.out.println("Opened \"" + base + "\": " +
-                                Manager.timeAndMemory(startTime));
+                        System.out.println("Opened \"" + base + "\": "
+                                + Manager.timeAndMemory(startTime));
                     }
                 } else {
                     // Argument not recognized.

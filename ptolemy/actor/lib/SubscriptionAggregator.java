@@ -71,7 +71,7 @@ public class SubscriptionAggregator extends Subscriber {
     public SubscriptionAggregator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         output.setMultiport(false);
 
         operation = new StringParameter(this, "operation");
@@ -179,15 +179,15 @@ public class SubscriptionAggregator extends Subscriber {
         // Unlink to all previous relations, if any.
         Iterator relations = _relations.iterator();
         while (relations.hasNext()) {
-            Relation relation = (Relation)relations.next();
+            Relation relation = (Relation) relations.next();
             input.unlink(relation);
         }
         _relations.clear();
-        
+
         // Link to all matching publishers.
         Iterator publishers = _findPublishers().iterator();
         while (publishers.hasNext()) {
-            Publisher publisher = (Publisher)publishers.next();
+            Publisher publisher = (Publisher) publishers.next();
             ComponentRelation relation = publisher._relation;
             input.liberalLink(relation);
         }
@@ -195,7 +195,7 @@ public class SubscriptionAggregator extends Subscriber {
         if (director != null) {
             director.invalidateSchedule();
             director.invalidateResolvedTypes();
-        }            
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -230,7 +230,7 @@ public class SubscriptionAggregator extends Subscriber {
 
     /** Indicator that the operation is "add" rather than "multiply". */
     private boolean _addOperation = true;
-    
+
     /** The list of relations used to link to subscribers. */
     private List _relations = new LinkedList();
 }

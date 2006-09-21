@@ -890,8 +890,9 @@ public class ShallowModelTransformer extends SceneTransformer implements
                         try {
                             int i = 0;
 
-                            for (Iterator momlFilters = MoMLParser.getMoMLFilters().iterator();
-                                momlFilters.hasNext();) {
+                            for (Iterator momlFilters = MoMLParser
+                                    .getMoMLFilters().iterator(); momlFilters
+                                    .hasNext();) {
                                 MoMLFilter momlFilter = (MoMLFilter) momlFilters
                                         .next();
                                 results.append("\nFilter " + (++i) + "\n"

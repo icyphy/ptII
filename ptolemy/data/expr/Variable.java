@@ -299,15 +299,15 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  @exception NameDuplicationException If the name coincides with a
      *   variable already in the container.
      */
-    protected Variable(
-            NamedObj container, String name, ptolemy.data.Token token, boolean incrementWorkspaceVersion)
+    protected Variable(NamedObj container, String name,
+            ptolemy.data.Token token, boolean incrementWorkspaceVersion)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, incrementWorkspaceVersion);
         if (token != null) {
             // Notification is important here so that the attributeChanged()
             // method of the container is called.
             _setToken(token);
-            
+
             // Record the initial value so "Restore Defaults" works.
             // Note that we call the superclass only to avoid getting the
             // other effects of setting the expression.
@@ -1446,7 +1446,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 container.attributeChanged(this);
             }
         }
-        
+
         // The propagate call has evaluated all the value
         // listeners that are instances of Variable,
         // so we can assume they are validated as well.
@@ -1787,7 +1787,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 throw new InternalErrorException("Variable._setToken: "
                         + "Cannot clone the declared type of this Variable.");
             }
-            
+
             if (declaredType instanceof StructuredType) {
                 ((StructuredType) declaredType).initialize(BaseType.UNKNOWN);
             }
@@ -1811,20 +1811,20 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 _varType = newToken.getType();
 
                 // FIXME: This is Edward's array optimization for Rome.
-//                 Type newTokenType = newToken.getType();
-//                 // FIXME: What about other structured types?
-//                 if (_varType instanceof ArrayType && newTokenType instanceof ArrayType) {
-//                     // Need to do an update instead of a replacement of _varType
-//                     // because inequalities may have been set up that refer to this
-//                     // particular instance _varType.
-//                     // NOTE: updateType() won't update to an incompatible type!
-//                     ((ArrayType)_varType).setType((ArrayType)newToken.getType());                    
-//                 } else {
-//                     // It is OK now to replace _varType because either the
-//                     // type is not a structured type or it was previously
-//                     // not a structured type.
-//                     _varType = newTokenType;
-//                 }
+                //                 Type newTokenType = newToken.getType();
+                //                 // FIXME: What about other structured types?
+                //                 if (_varType instanceof ArrayType && newTokenType instanceof ArrayType) {
+                //                     // Need to do an update instead of a replacement of _varType
+                //                     // because inequalities may have been set up that refer to this
+                //                     // particular instance _varType.
+                //                     // NOTE: updateType() won't update to an incompatible type!
+                //                     ((ArrayType)_varType).setType((ArrayType)newToken.getType());                    
+                //                 } else {
+                //                     // It is OK now to replace _varType because either the
+                //                     // type is not a structured type or it was previously
+                //                     // not a structured type.
+                //                     _varType = newTokenType;
+                //                 }
             }
 
             // Check setTypeAtMost constraint.

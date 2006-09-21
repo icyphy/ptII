@@ -531,8 +531,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                         if (!flag) {
                             doneSomething |= _inlineTypeMethodsIn(method, body,
-                                    stmt, box, localDefs, localUses, typeAnalysis,
-                                    depth, unsafeLocalSet, debug);
+                                    stmt, box, localDefs, localUses,
+                                    typeAnalysis, depth, unsafeLocalSet, debug);
                         }
                     }
                 }
@@ -679,10 +679,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                     }
                 } else if (inlinee.getName().equals("isNil")) {
                     box.setValue(IntConstant.v(0));
-//                 } else if (inlinee.getSignature().equals(PtolemyUtilities.arrayTokenConstructor.getSignature())) {
-//                     System.out.println("method = " + method);
-//                     System.out.println("inlinee = " + inlinee.getSignature());
-//                     throw new RuntimeException("Cannot inline arrayTokens that do not have a type explicitly specified.");
+                    //                 } else if (inlinee.getSignature().equals(PtolemyUtilities.arrayTokenConstructor.getSignature())) {
+                    //                     System.out.println("method = " + method);
+                    //                     System.out.println("inlinee = " + inlinee.getSignature());
+                    //                     throw new RuntimeException("Cannot inline arrayTokens that do not have a type explicitly specified.");
                 } else {
                     SootClass declaringClass = inlinee.getDeclaringClass();
 
@@ -921,7 +921,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                     while (boxes.hasNext()) {
                         ValueBox box = (ValueBox) boxes.next();
-                        /*Value value =*/ box.getValue();
+                        /*Value value =*/box.getValue();
 
                         doneSomething |= _inlineTypeMethodsIn(method, body,
                                 unit, box, localDefs, localUses, typeAnalysis,
@@ -934,9 +934,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
     public boolean _inlineTypeMethodsIn(SootMethod method, JimpleBody body,
             Unit unit, ValueBox box, SimpleLocalDefs localDefs,
-            SimpleLocalUses localUses, TypeSpecializerAnalysis typeAnalysis, 
-            int depth, Set unsafeLocalSet,
-            boolean debug) {
+            SimpleLocalUses localUses, TypeSpecializerAnalysis typeAnalysis,
+            int depth, Set unsafeLocalSet, boolean debug) {
         boolean doneSomething = false;
         Hierarchy hierarchy = Scene.v().getActiveHierarchy();
         Value value = box.getValue();
@@ -1016,22 +1015,25 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                                 // Handle Type.equals
                                 ptolemy.data.type.Type baseTokenType =
-//                                     PtolemyUtilities
-//                                         .getTypeValue(method, (Local) r
-//                                                 .getBase(), unit, localDefs,
-//                                                 localUses);
+                                //                                     PtolemyUtilities
+                                //                                         .getTypeValue(method, (Local) r
+                                //                                                 .getBase(), unit, localDefs,
+                                //                                                 localUses);
 
-                                    typeAnalysis.getSpecializedType((Local)r.getBase());
+                                typeAnalysis.getSpecializedType((Local) r
+                                        .getBase());
                                 ptolemy.data.type.Type argumentTokenType =
-//                                     PtolemyUtilities
-//                                         .getTypeValue(method, (Local) r
-//                                                 .getArg(0), unit, localDefs,
-//                                                 localUses);
+                                //                                     PtolemyUtilities
+                                //                                         .getTypeValue(method, (Local) r
+                                //                                                 .getArg(0), unit, localDefs,
+                                //                                                 localUses);
 
-                                   
-                                    typeAnalysis.getSpecializedType((Local)r.getArg(0));
-                                System.out.println("baseTokenType = " + baseTokenType);
-                                System.out.println("argumentTokenType = " + baseTokenType);
+                                typeAnalysis.getSpecializedType((Local) r
+                                        .getArg(0));
+                                System.out.println("baseTokenType = "
+                                        + baseTokenType);
+                                System.out.println("argumentTokenType = "
+                                        + baseTokenType);
                                 //    if (baseTokenType.isInstantiable()) {
                                 //                                                     continue;
                                 //                                                 }
@@ -1510,7 +1512,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                     }
                 } else if (unit instanceof AssignStmt) {
                     AssignStmt stmt = (AssignStmt) unit;
-                    /*Type assignmentType =*/ stmt.getLeftOp().getType();
+                    /*Type assignmentType =*/stmt.getLeftOp().getType();
 
                     if (stmt.getLeftOp() instanceof Local
                             && stmt.getRightOp() instanceof LengthExpr) {
@@ -2382,7 +2384,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                 System.out.println("handling as new object");
                             }
 
-                            /* NewExpr newExpr = (NewExpr)*/ stmt.getRightOp();
+                            /* NewExpr newExpr = (NewExpr)*/stmt.getRightOp();
 
                             // We have an assignment from one local token to another.
                             Map map = (Map) localToFieldToLocal.get(stmt

@@ -829,7 +829,7 @@ public class Port extends NamedObj {
 
             if ((detail & LINKS) != 0) {
                 if (result.toString().trim().length() > 0) {
-                     result.append(" ");
+                    result.append(" ");
                 }
 
                 // To avoid infinite loop, turn off the LINKS flag
@@ -844,7 +844,9 @@ public class Port extends NamedObj {
                             .nextElement();
 
                     if (relation != null) {
-                        result.append(relation._description(detail, indent + 1, 2) + "\n");
+                        result.append(relation._description(detail, indent + 1,
+                                2)
+                                + "\n");
                     } else {
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.
