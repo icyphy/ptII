@@ -69,18 +69,17 @@ public PtalonLexer(LexerSharedInputState state) {
 	setCaseSensitive(true);
 	literals = new Hashtable();
 	literals.put(new ANTLRHashString("port", this), new Integer(6));
-	literals.put(new ANTLRHashString("intparameter", this), new Integer(11));
-	literals.put(new ANTLRHashString("relation", this), new Integer(13));
-	literals.put(new ANTLRHashString("if", this), new Integer(36));
+	literals.put(new ANTLRHashString("relation", this), new Integer(12));
+	literals.put(new ANTLRHashString("if", this), new Integer(19));
 	literals.put(new ANTLRHashString("inport", this), new Integer(7));
+	literals.put(new ANTLRHashString("actor", this), new Integer(11));
 	literals.put(new ANTLRHashString("parameter", this), new Integer(10));
-	literals.put(new ANTLRHashString("else", this), new Integer(39));
+	literals.put(new ANTLRHashString("else", this), new Integer(22));
 	literals.put(new ANTLRHashString("import", this), new Integer(4));
-	literals.put(new ANTLRHashString("true", this), new Integer(32));
-	literals.put(new ANTLRHashString("boolparameter", this), new Integer(12));
+	literals.put(new ANTLRHashString("true", this), new Integer(24));
 	literals.put(new ANTLRHashString("outport", this), new Integer(8));
-	literals.put(new ANTLRHashString("false", this), new Integer(33));
-	literals.put(new ANTLRHashString("is", this), new Integer(40));
+	literals.put(new ANTLRHashString("false", this), new Integer(26));
+	literals.put(new ANTLRHashString("is", this), new Integer(23));
 }
 
 public Token nextToken() throws TokenStreamException {
@@ -260,11 +259,15 @@ tryAgain:
 					break;
 				}
 				default:
-					if ((LA(1)=='!') && (LA(2)=='=')) {
+					if ((LA(1)=='<') && ((LA(2) >= '\u0000' && LA(2) <= '\u007f')) && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
+						mEXPRESSION(true);
+						theRetToken=_returnToken;
+					}
+					else if ((LA(1)=='!') && (LA(2)=='=')) {
 						mNOT_EQUAL(true);
 						theRetToken=_returnToken;
 					}
-					else if ((LA(1)=='<') && (LA(2)=='=')) {
+					else if ((LA(1)=='<') && (LA(2)=='=') && (true)) {
 						mLESS_EQUAL(true);
 						theRetToken=_returnToken;
 					}
@@ -731,7 +734,7 @@ tryAgain:
 		}
 		}
 		{
-		_loop95:
+		_loop2374:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -770,7 +773,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop95;
+				break _loop2374;
 			}
 			}
 		} while (true);
@@ -789,34 +792,34 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt98=0;
-		_loop98:
+		int _cnt2377=0;
+		_loop2377:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt98>=1 ) { break _loop98; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt2377>=1 ) { break _loop2377; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt98++;
+			_cnt2377++;
 		} while (true);
 		}
 		{
 		if ((LA(1)=='.')) {
 			match('.');
 			{
-			int _cnt101=0;
-			_loop101:
+			int _cnt2380=0;
+			_loop2380:
 			do {
 				if (((LA(1) >= '0' && LA(1) <= '9'))) {
 					matchRange('0','9');
 				}
 				else {
-					if ( _cnt101>=1 ) { break _loop101; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+					if ( _cnt2380>=1 ) { break _loop2380; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
 				
-				_cnt101++;
+				_cnt2380++;
 			} while (true);
 			}
 		}
@@ -851,7 +854,7 @@ tryAgain:
 		
 		match('"');
 		{
-		_loop106:
+		_loop2385:
 		do {
 			switch ( LA(1)) {
 			case '\\':
@@ -898,7 +901,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop106;
+				break _loop2385;
 			}
 			}
 		} while (true);
@@ -955,6 +958,35 @@ tryAgain:
 		}
 		}
 		_ttype = Token.SKIP;
+		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
+			_token = makeToken(_ttype);
+			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));
+		}
+		_returnToken = _token;
+	}
+	
+	public final void mEXPRESSION(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
+		int _ttype; Token _token=null; int _begin=text.length();
+		_ttype = EXPRESSION;
+		int _saveIndex;
+		
+		match('<');
+		{
+		_loop2390:
+		do {
+			// nongreedy exit test
+			if ((LA(1)=='/') && (LA(2)=='>') && (true)) break _loop2390;
+			if (((LA(1) >= '\u0000' && LA(1) <= '\u007f')) && ((LA(2) >= '\u0000' && LA(2) <= '\u007f')) && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
+				matchNot(EOF_CHAR);
+			}
+			else {
+				break _loop2390;
+			}
+			
+		} while (true);
+		}
+		match('/');
+		match('>');
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
 			_token = makeToken(_ttype);
 			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));

@@ -1,6 +1,6 @@
 Link is {
-	parameter a;
-	parameter b;
+	actor a;
+	actor b;
 	inport input;
 	outport output;
 	relation r;

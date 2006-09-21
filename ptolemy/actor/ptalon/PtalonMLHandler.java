@@ -68,7 +68,7 @@ public class PtalonMLHandler extends HandlerBase {
             }
         } else if (elname.equals("ptalonParameter")) {
             if (_attributes.containsKey("name") && _attributes.containsKey("value")) {
-                PtalonParameter param = (PtalonParameter) _actor.getAttribute(_attributes.get("name"));
+                PtalonActorParameter param = (PtalonActorParameter) _actor.getAttribute(_attributes.get("name"));
                 if (param instanceof PtalonBoolParameter) {
                     param.setToken(new BooleanToken(_attributes.get("value")));
                 } else if (param instanceof PtalonIntParameter) {

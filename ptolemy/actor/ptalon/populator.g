@@ -88,16 +88,10 @@ parameter_declaration throws PtalonRuntimeException
 			info.addParameter(a.getText());
 		}
 	}
-	) | #(INTPARAMETER b:ID
+	) | #(ACTOR b:ID
 	{
 		if (info.isReady() && !info.isCreated(b.getText())) {
-			info.addIntParameter(b.getText());
-		}
-	}
-	) | #(BOOLPARAMETER c:ID
-	{
-		if (info.isReady() && !info.isCreated(c.getText())) {
-			info.addBoolParameter(c.getText());
+			info.addActorParameter(b.getText());
 		}
 	}
 	)
@@ -120,13 +114,9 @@ qualified_identifier
 ;
 
 assignment throws PtalonRuntimeException
-{
-	int x;
-	boolean y;
-}
 :
 	#(ASSIGN a:ID (b:ID	| nested_actor_declaration
-	| x=arithmetic_expression | y=boolean_expression))
+	| EXPRESSION))
 ;
 
 /**
@@ -175,240 +165,6 @@ nested_actor_declaration throws PtalonRuntimeException
 	)
 ;
 
-
-arithmetic_factor returns [int i] throws PtalonRuntimeException
-{
-	i = 0;
-	int x;
-	int sign = 1;
-}
-:
-	#(ARITHMETIC_FACTOR (POSITIVE_SIGN | NEGATIVE_SIGN
-	{
-		sign = -1;
-	}
-	) (a:ID 
-	{
-		if (evalBool) {
-			i = sign * info.getIntValueOf(a.getText());
-		}
-	}
-	| b:NUMBER_LITERAL 
-	{
-		if (evalBool) {
-			i = sign * (new Integer(b.getText()));
-		}
-	}
-	| x=arithmetic_expression
-	{
-		if (evalBool) {
-			i = sign * x;
-		}
-	}	
-	))
-;
-
-arithmetic_term returns [int i] throws PtalonRuntimeException
-{
-	i = 0;
-	int x, y;
-}
-:
-	#(STAR x=arithmetic_factor y=arithmetic_factor
-	{
-		if (evalBool) {
-			i = x * y;
-		}
-	}	
-	) | #(DIVIDE x=arithmetic_factor y=arithmetic_factor
-	{
-		if (evalBool) {
-			i = x / y;
-		}
-	}		
-	) | #(MOD x=arithmetic_factor y=arithmetic_factor
-	{
-		if (evalBool) {
-			i = x % y;
-		}
-	}		
-	) | x=arithmetic_factor
-	{
-		if (evalBool) {
-			i = x;
-		}
-	}		
-;
-
-arithmetic_expression returns [int i] throws PtalonRuntimeException
-{
-	i = 0;
-	int x, y;
-}
-:
-	#(a:ARITHMETIC_EXPRESSION (#(PLUS x=arithmetic_term y=arithmetic_term
-	{
-		if (evalBool) {
-			i = x + y;
-		}
-	}			
-	) | #(MINUS x=arithmetic_term y=arithmetic_term
-	{
-		if (evalBool) {
-			i = x - y;
-		}
-	}		
-	) |	x=arithmetic_term
-	{
-		if (evalBool) {
-			i = x;
-		}
-	}
-	)
-	{
-		if (evalBool) {
-			info.setArithExpr(a.getText(), i);
-		}
-	}
-	)
-;
-
-relational_expression returns [boolean b] throws PtalonRuntimeException
-{
-	b = false;
-	int x,y;
-}
-:
-	#(EQUAL x=arithmetic_expression y=arithmetic_expression
-	{
-		if (evalBool) {
-			b = (x == y);
-		}
-	}			
-	) | #(NOT_EQUAL x=arithmetic_expression y=arithmetic_expression
-	{
-		if (evalBool) {
-			b = (x != y);
-		}
-	}			
-	) | #(LESS_THAN x=arithmetic_expression y=arithmetic_expression
-	{
-		if (evalBool) {
-			b = (x < y);
-		}
-	}				
-	) | #(GREATER_THAN x=arithmetic_expression y=arithmetic_expression
-	{
-		if (evalBool) {
-			b = (x > y);
-		}
-	}			
-	) | #(LESS_EQUAL x=arithmetic_expression y=arithmetic_expression
-	{
-		if (evalBool) {
-			b = (x <= y);
-		}
-	}			
-	) | #(GREATER_EQUAL x=arithmetic_expression y=arithmetic_expression
-	{
-		if (evalBool) {
-			b = (x >= y);
-		}
-	}			
-	)
-;
-
-boolean_factor returns [boolean b] throws PtalonRuntimeException
-{
-	boolean x;
-	b = false;
-	boolean sign = true;
-}
-:
-	#(BOOLEAN_FACTOR (LOGICAL_NOT 
-	{
-		sign = false;
-	}
-	| LOGICAL_BUFFER) (x=boolean_expression 
-	{
-		if (evalBool) {
-			b = !(sign ^ x);
-		}
-	}			
-	| x=relational_expression 
-	{
-		if (evalBool) {
-			b = !(sign ^ x);
-		}
-	}				
-	| TRUE 
-	{
-		if (evalBool) {
-			b = !(sign ^ true);
-		}
-	}			
-	| FALSE 
-	{
-		if (evalBool) {
-			b = !(sign ^ false);
-		}
-	}			
-	| a:ID
-	{
-		if (evalBool) {
-			b = !(sign ^ info.getBooleanValueOf(a.getText()));
-		}
-	}			
-	))
-;
-
-boolean_term returns [boolean b] throws PtalonRuntimeException
-{
-	boolean x, y;
-	b = false;
-}
-:
-	#(LOGICAL_AND x=boolean_factor y=boolean_factor
-	{
-		if (evalBool) {
-			b = x && y;
-		}
-	}			
-	) |	x=boolean_factor
-	{
-		if (evalBool) {
-			b = x;
-		}
-	}			
-;
-
-boolean_expression returns [boolean b] throws PtalonRuntimeException
-{
-	b = false;
-	boolean x, y;
-}
-:
-	#(e:BOOLEAN_EXPRESSION (#(LOGICAL_OR x=boolean_term y=boolean_term
-	{
-		if (evalBool) {
-			b = x || y;
-		}
-	}			
-	) |	x=boolean_term
-	{
-		if (evalBool) {
-			b = x;
-		}
-	}
-	)
-	{
-		if (evalBool) {
-			info.setBoolExpr(e.getText(), b);
-		}	
-	}
-	)
-;
-
 atomic_statement throws PtalonRuntimeException
 :
 	(port_declaration | parameter_declaration |
@@ -429,10 +185,10 @@ conditional_statement throws PtalonRuntimeException
 			evalBool = true;
 		}
 	}
-	b=boolean_expression 
+	e:EXPRESSION 
 	{
 		if (ready) {
-			info.setActiveBranch(b);
+			info.setActiveBranch(info.evaluateBoolean(e.getText()));
 			evalBool = false;
 		}
 	}

@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,7 +45,12 @@ import ptolemy.actor.TypedIORelation;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.type.Type;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -252,7 +258,28 @@ public class CodeManager {
     }
 
     /**
-     * Add a PtalonParameter to the PtalonActor
+     * Add a PtalonActorParameter to the PtalonActor
+     * with the specified name.
+     * @param name The name of the parameter.
+     * @exception PtalonRuntimeException If the symbol does not exist, or if
+     * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
+     * trying to create the parameter.
+     */
+    public void addActorParameter(String name) throws PtalonRuntimeException {
+        String uniqueName = _actor.uniqueName(name);
+        try {
+            PtalonActorParameter parameter = new PtalonActorParameter(_actor, uniqueName);
+            _currentTree.setStatus(name, true);
+            _currentTree.mapName(name, uniqueName);
+        } catch (NameDuplicationException e) {
+            throw new PtalonRuntimeException("NameDuplicationException", e);
+        } catch (IllegalActionException e) {
+            throw new PtalonRuntimeException("IllegalActionException", e);
+        }
+    }
+
+    /**
+     * Add a Parameter to the PtalonActor
      * with the specified name.
      * @param name The name of the parameter.
      * @exception PtalonRuntimeException If the symbol does not exist, or if
@@ -271,7 +298,7 @@ public class CodeManager {
             throw new PtalonRuntimeException("IllegalActionException", e);
         }
     }
-
+    
     /**
      * Add a TypedIOPort to the PtalonActor
      * with the specified name.
@@ -487,6 +514,86 @@ public class CodeManager {
     }
 
     /**
+     * Get the value associated with the specified parameter.
+     * @param param The parameter's name in the Ptalon code.
+     * @return It's unique value.
+     * @exception PtalonRuntimeException If the paramter does not exist. 
+     */
+    public Token getValueOf(String param) throws PtalonRuntimeException {
+        try {
+            String uniqueName = getMappedName(param);
+            PtalonActorParameter att = (PtalonActorParameter) _actor
+                    .getAttribute(uniqueName);
+            att.toString(); 
+            /*This previous line seems to cause some evaluation that
+             * is necessary for the next line to not throw an exception.  
+             * I don't exactly know why, but things seemed to only work 
+             * when I was in the debugger, and only when I viewed the "att"
+             * value in the debugger.  Since I figured this would require 
+             * toString() to be called, I tried adding this line, and the 
+             * exception went away.
+             */
+            return att.getToken();
+        } catch (Exception e) {
+            throw new PtalonRuntimeException("Unable to access int value for "
+                    + param, e);
+        }
+    }
+
+    /**
+     * Get the type associated with the specified parameter.
+     * @param param The parameter's name in the Ptalon code.
+     * @return It's type.
+     * @exception PtalonRuntimeException If the paramter does not exist. 
+     */
+    public Type getTypeOf(String param) throws PtalonRuntimeException {
+        try {
+            String uniqueName = getMappedName(param);
+            PtalonActorParameter att = (PtalonActorParameter) _actor
+                    .getAttribute(uniqueName);
+            return att.getType();
+        } catch (Exception e) {
+            throw new PtalonRuntimeException("Unable to access int value for "
+                    + param, e);
+        }
+    }
+    
+    /**
+     * Get the type term associated with the specified parameter.
+     * @param param The parameter's name in the Ptalon code.
+     * @return It's type.
+     * @exception PtalonRuntimeException If the paramter does not exist. 
+     */
+    public InequalityTerm getTypeTermOf(String param) throws PtalonRuntimeException {
+        try {
+            String uniqueName = getMappedName(param);
+            PtalonActorParameter att = (PtalonActorParameter) _actor
+                    .getAttribute(uniqueName);
+            return att.getTypeTerm();
+        } catch (Exception e) {
+            throw new PtalonRuntimeException("Unable to access int value for "
+                    + param, e);
+        }
+    }
+    
+    /**
+     * @return The parameters in the current scope.
+     * @throws PtalonScopeException If there is any problem getting
+     * the type of a symbol.
+     */
+    public Set<String> getParameters() throws PtalonScopeException {
+        Set<String> output = new HashSet<String>();
+        for (IfTree tree : _currentTree.getAncestors()) {
+            for (String symbol : tree.getSymbols()) {
+                if (tree.getType(symbol).equals("parameter")) {
+                    output.add(symbol);
+                }
+            }
+        }
+        return output;
+    }
+
+    /**
      * Get the unique name for the symbol in the PtalonActor. 
      * @param symbol The symbol to test.
      * @return The unique name.
@@ -639,10 +746,10 @@ public class CodeManager {
      */
     public boolean paramHasValue(String name) throws PtalonRuntimeException {
         try {
-            if (getType(name).equals("parameter")) {
+            if (getType(name).equals("actorparameter")) {
                 if (isCreated(name)) {
                     String uniqueName = getMappedName(name);
-                    PtalonParameter param = (PtalonParameter) _actor
+                    PtalonActorParameter param = (PtalonActorParameter) _actor
                             .getAttribute(uniqueName);
                     if (param.hasValue()) {
                         return true;
@@ -813,6 +920,18 @@ public class CodeManager {
      */
     protected static String _getIndentPrefix(int level) {
         return StringUtilities.getIndentPrefix(level);
+    }
+    
+    /**
+     * Return the type associated with the given symbol in the current scope.
+     * This is the same as getType, but it is used to avoid a name conflict
+     * in NestedActorManager.PtalonExpressionScope
+     * @param symbol The symbol under test.
+     * @return The type associated with the given symbol.
+     * @exception PtalonScopeException If the symbol is not in the current scope.
+     */
+    protected String getTypeForScope(String symbol) throws PtalonScopeException {
+        return getType(symbol);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1030,7 +1149,7 @@ public class CodeManager {
                 }
                 if (_symbols.get(symbol).endsWith("parameter")) {
                     try {
-                        PtalonParameter param = (PtalonParameter) _actor
+                        PtalonActorParameter param = (PtalonActorParameter) _actor
                                 .getAttribute(_nameMappings.get(symbol));
                         if (!param.hasValue()) {
                             return false;
@@ -1164,4 +1283,5 @@ public class CodeManager {
         private Hashtable<String, String> _symbols;
 
     }
+
 }

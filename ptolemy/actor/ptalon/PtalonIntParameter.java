@@ -17,7 +17,7 @@ import ptolemy.kernel.util.Settable;
  * @author acataldo
  *
  */
-public class PtalonIntParameter extends PtalonParameter {
+public class PtalonIntParameter extends PtalonActorParameter {
 
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a

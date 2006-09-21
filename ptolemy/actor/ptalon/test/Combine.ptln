@@ -1,6 +1,6 @@
 Combine is {
-	parameter a;
-	parameter b;
+	actor a;
+	actor b;
 	a();
 	b();
 }

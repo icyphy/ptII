@@ -59,15 +59,16 @@ port_declaration:
 ;
 
 /**
- * Parse for statement:
- * <p><i>parameterType</i> <i>ID</i>
+ * Parse for one of:
+ * <p>parameter <i>ID</i>
+ * <p>actor <i>ID</i>
  * <p>where parameterType is either "parameter", "intparameter", or 
  * "outparameter".
  * Generate corresponding tree #(PARAMETER ID), #(INTPARAMETER ID), or 
  * #(BOOLPARAMETER ID).
  */
 parameter_declaration:
-	(PARAMETER^ | INTPARAMETER^ | BOOLPARAMETER^) ID
+	(PARAMETER^ | ACTOR^) ID
 ;
 
 /**
@@ -114,18 +115,35 @@ qualified_identifier!
  * tree:
  * <p>#(ASSIGN ID ID)
  * <p>#(ASSIGN ID <i>actor_declaration</i>)
- * <p>#(ASSIGN ID <i>arithmetic_expression</i>)
- * <p>#(ASSIGN ID <i>boolean_expression</i>)
+ * <p>#(ASSIGN ID expression)
  */
 assignment:
 	ID ASSIGN^ ((ID (RPAREN | COMMA)) => ID |
-		((ID LPAREN) => actor_declaration | 
-			((arithmetic_expression) =>
-				arithmetic_expression |
-				boolean_expression
-			)
-		)
+		(actor_declaration | expression)
 	)
+;
+
+/**
+ * Parse anything inside XML-like block
+ * <p>&lt  /&gt
+ * <p>Generate the tree
+ * <p>#(EXPRESSION)
+ * <p>where the text of the token EXPRESSION is the expression
+ * inside the XML-like block.
+ * 
+ */
+expression!
+{
+	String out = "";
+}
+:
+	b:EXPRESSION
+	{
+		String full = b.getText();
+		int length = full.length();
+		out += full.substring(1, length - 2);
+		#expression = #[EXPRESSION, out];
+	}
 ;
 
 /**
@@ -156,105 +174,6 @@ actor_declaration!
 	)? RPAREN!
 ;
 
-arithmetic_factor!
-{
-	int sign = 1;
-}
-:
-	(MINUS
-	{
-		sign = -sign;
-	}
-	)*
-	{
-		if (sign == 1) {
-			#arithmetic_factor = #([ARITHMETIC_FACTOR, "arithmetic_factor"], 
-				[POSITIVE_SIGN, "positive"]);
-		} else {
-			#arithmetic_factor = #([ARITHMETIC_FACTOR, "arithmetic_factor"], 
-				[NEGATIVE_SIGN, "negative"]);
-		}
-	}
-	(a:ID 
-	{
-		#arithmetic_factor.addChild(#a);
-	}
-	| b:NUMBER_LITERAL 
-	{
-		#arithmetic_factor.addChild(#b);
-	}
-	| LPAREN! c:arithmetic_expression RPAREN!
-	{
-		#arithmetic_factor.addChild(#c);
-	}
-	)
-;
-
-arithmetic_term:
-	arithmetic_factor ((STAR^ | DIVIDE^ | MOD^) arithmetic_factor)*
-;
-
-arithmetic_expression:
-	arithmetic_term ((PLUS^ | MINUS^) arithmetic_term)*
-;
-
-relational_expression:
-	arithmetic_expression (
-		EQUAL^ | NOT_EQUAL^ | LESS_THAN^ | GREATER_THAN^ |
-		LESS_EQUAL^ | GREATER_EQUAL^
-	) arithmetic_expression
-;
-
-boolean_factor!
-{
-	boolean sign = true;
-}
-:
-	(LOGICAL_NOT
-	{
-		sign = !sign;
-	}
-	)* 
-	{
-		if (sign) {
-			#boolean_factor = #([BOOLEAN_FACTOR, "boolean_factor"], 
-			[LOGICAL_BUFFER, "!!"]);
-		} else {
-			#boolean_factor = #([BOOLEAN_FACTOR, "boolean_factor"],
-			[LOGICAL_NOT, "!"]);
-		}
-	}
-	( ( (LPAREN boolean_expression) => LPAREN! a:boolean_expression RPAREN! 
-	{
-		#boolean_factor.addChild(#a);	
-	}
-	| b:relational_expression 
-    {
-		#boolean_factor.addChild(#b);	
-    }
-	) | c:TRUE 
-	{
-		#boolean_factor.addChild(#c);	
-	}
-	| d:FALSE 
-	{
-		#boolean_factor.addChild(#d);	
-	}
-	| e:ID
-	{
-		#boolean_factor.addChild(#e);	
-	}
-	)
-;
-
-boolean_term:
-	boolean_factor (LOGICAL_AND^ boolean_factor)*
-;
-
-boolean_expression:
-	boolean_term (LOGICAL_OR^ boolean_term)*
-;
-
 atomic_statement : 
 	(port_declaration | parameter_declaration |
 	relation_declaration | actor_declaration) SEMI!
@@ -266,7 +185,7 @@ conditional_statement!
 	AST falseTree = null;
 }
 :
-	i:IF LPAREN! b:boolean_expression RPAREN! 
+	i:IF b:expression 
 	{
 		#conditional_statement = #(i, b);
 		trueTree = #[TRUEBRANCH, "true branch"];
@@ -336,8 +255,7 @@ tokens {
 	INPORT = "inport";
 	OUTPORT = "outport";
 	PARAMETER = "parameter";
-	INTPARAMETER = "intparameter";
-	BOOLPARAMETER = "boolparameter";
+	ACTOR = "actor";
 	RELATION = "relation";
 	TRUE = "true";
 	TRUEBRANCH;
@@ -450,4 +368,14 @@ WHITE_SPACE :
 		| '\n' { newline(); }
 	)
 	{ $setType(Token.SKIP); }
+;
+
+EXPRESSION :
+	'<' (
+		options {
+			greedy = false;
+		} :
+			.
+		)* 
+	'/' '>'
 ;
