@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/unit
 
-DIRS = 		gui test demo 
+DIRS = 		test demo 
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -44,12 +44,8 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	unit
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		gui/gui.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	BaseUnit.java \
@@ -128,7 +124,7 @@ JCLASS =  \
 
 
 all: $(OPTIONAL_JSRCS) $(JCLASS)
-install: jclass jars
+install: jclass $(PTCLASSJAR)
 
 UParser.java: UParser.jj
 	@echo "This command runs JavaCC, which can be downloaded from"
