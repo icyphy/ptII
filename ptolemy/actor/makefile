@@ -69,6 +69,7 @@ JSRCS = \
 	AbstractReceiver.java \
 	Actor.java \
 	AtomicActor.java \
+	ApplicationConfigurer.java \
 	CompositeActor.java \
 	Director.java \
 	Executable.java \
