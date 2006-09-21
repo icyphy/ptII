@@ -326,7 +326,7 @@ export PTII=c:/tmp/cxh/ptII6.0.alpha
 <I>Use an older javac so that the .class files are compatible.  For
 example,  use java 1.4.x so that java 1.4.x and 1.5.x can use the
 .class files.</i> 
-
+<pre>
 export PATH=/cygdrive/c/j2sdk1.4.2_12/bin:${PATH}
 java -version
 ./configure
@@ -334,9 +334,17 @@ make clean fast install &gt;&amp; make.out
 
 <I>Copy <CODE>~ptII/adm/certs/ptkeystore</CODE> to $PTII.  Note you will
 need access to the ptII account on bennett </I>
+
 make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
 </pre>
 <I>xxx</I> is the ptkeystore password.
+
+<li>Create the webstart and installer files.
+<pre>
+cd $PTII
+make jar_dist
+</pre>
+Look for missing jar files in the output.
 
 <li> Create the src.jar file: 
 <pre>
