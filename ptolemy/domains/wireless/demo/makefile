@@ -36,6 +36,7 @@ DIRS = \
 	CircularRange \
 	Collisions \
 	EvaderAndPursuer \
+	LinkVisualizer \
 	MatlabWirelessSoundDetection \
 	PowerVariability \
 	SmallWorld \
@@ -70,6 +71,7 @@ PTCLASSALLJARS = \
 	Collisions/Collisions.jar \
 	EvaderAndPursuer/EvaderAndPursuer.jar \
 	MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.jar \
+	LinkVisualizer/LinkVisualizer.jar \
 	PowerVariability/PowerVariability.jar \
 	SmallWorld/SmallWorld.jar \
 	SmartParking/SmartParking.jar \
