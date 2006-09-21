@@ -834,7 +834,7 @@ public class PtinyOSDirector extends Director {
 
     /** Returns a selected channel, or null if none.
      *  
-     *  @param selector
+     *  @param selector The channel selector.
      *  @param notNullIfClosing TRUE if returning NULL, otherwise left
      *  as is.  We use notNullIfClosing because of threading issues
      *  discussed in {@link #selectorClose(Selector selector)}.
