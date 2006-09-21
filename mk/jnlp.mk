@@ -724,7 +724,7 @@ sign_jar:
 
 JAR_DIST_DIR = jar_dist
 
-$(JAR_DIST_DIR):
+$(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)x
 	if [ ! -d $(JAR_DIST_DIR) ]; then \
 		mkdir -p $(JAR_DIST_DIR); \
 	fi
@@ -818,8 +818,8 @@ jnlp_verify:
 	done;
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII4.0/jnlp-4.0-beta
-DIST_DIR = /vol/ptolemy/pt0/ptweb/$(DIST_BASE)
+DIST_BASE = ptolemyII/ptII6.0/jnlp-6.0.alpha
+DIST_DIR = /export/home/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
 	ptolemy/configs/hyvisual/hyvisualPlanet.gif
@@ -838,7 +838,7 @@ jnlp_dist_1:
 jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
-		ssh bennett "cd $(DIST_DIR); tar -xpf -"
+		ssh bennett "cd $(DIST_DIR); gtar -xvpf -"
 	scp doc/webStartHelp.htm bennett:$(DIST_DIR)
 
 #make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
