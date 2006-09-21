@@ -75,7 +75,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	channels.xml \
-	wirelessentities.xml
+	wirelessentities.xml \
+	LinkVisualizerIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -94,6 +95,8 @@ OPTIONAL_FILES = \
 	'DelayChannel$$1.class' \
 	'DelayChannel$$Reception.class' \
 	'LinkVisualizer$$1.class' \
+	'LinkVisualizer$$2.class' \
+	'LinkVisualizer$$_LinkVisualizerThread.class' \
 	'NodeRandomizer$$1.class' \
 	'TerrainProperty$$1.class'
 
