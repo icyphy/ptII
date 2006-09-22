@@ -841,6 +841,12 @@ jnlp_dist_update:
 		ssh bennett "cd $(DIST_DIR); gtar -xvpf -"
 	scp doc/webStartHelp.htm bennett:$(DIST_DIR)
 
+# Used to update gr and codeDoc.jar
+update_gr_codeDoc:
+	scp ptolemy/domains/gr/gr.jar bennett:$(DIST_DIR)/ptII6.0/ptolemy/domains/gr
+	cat doc/codeDoc.jar | ssh bennett "cd $(DIST_DIR)/ptII6.0/doc; jar -xf -"
+
+
 #make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
 
 jnlp_dist_update_remote:
