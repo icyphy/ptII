@@ -190,7 +190,7 @@ The Ptiny pack is required.
 
         </pack>
         <pack name="Full" required="no">
-            <description>All of the domains, HyVisual, VisualSense and Viptos.  </description>
+            <description>All of the domains, HyVisual and VisualSense.</description>
             <file src="../../hyvisual.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../doc/img/hyvisual.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
@@ -203,9 +203,10 @@ The Ptiny pack is required.
             <file src="../../doc/img/visualsense.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
 
-            <file src="../../viptos.exe" targetdir="$INSTALL_PATH"/>
-            <file src="../../doc/img/viptos.ico"
-	          targetdir="$INSTALL_PATH/doc/img/"/>
+            <!-- No Viptos, it does not work, it requires ptinyos -->
+            <!-- file src="../../viptos.exe" targetdir="$INSTALL_PATH"/ -->
+            <!-- file src="../../doc/img/viptos.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/ -->
 
 	    <!-- Run (make full_jars) and put the output here -->
             <file src="../../jar_dist/ptolemy/hsif/hsif.jar"
@@ -346,8 +347,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/doc"/>
             <file src="../../jar_dist/doc/codeDocHyVisual.jar"
                   targetdir="$INSTALL_PATH/doc"/>
-            <file src="../../jar_dist/doc/codeDocViptos.jar"
-                  targetdir="$INSTALL_PATH/doc"/>
+            <!-- file src="../../jar_dist/doc/codeDocViptos.jar"
+                  targetdir="$INSTALL_PATH/doc"/ -->
             <file src="../../jar_dist/doc/codeDocVisualSense.jar"
                   targetdir="$INSTALL_PATH/doc"/>
 
