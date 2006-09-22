@@ -79,18 +79,18 @@ do
 		   } 
                    printf(".*\n")
 	}' | $SORT | uniq |
-	awk '{if (NR > 1) {
+	awk '{if (NR > 1 && NR < 50) {
 		printf(",%s", $0)
 	     } else {
 	        printf("%s",$0)
              }
 	}' - `
-    echo "packages: $packages"
+    echo "packages: `echo $packages| wc` $packages"
     otherjarspackages="$otherjarspackages $file:${packages}"
 done
 
 echo $otherjarspackages | awk -F " " '{for(i=1;i<NF;i++) print i, $i}'
-
+otherjarspackages=""
 # Read in the jar files and generate jar and package lines for them
 # * We need to take in to account that one of the jar files
 # will need main="true"
