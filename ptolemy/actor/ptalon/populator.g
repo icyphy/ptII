@@ -115,6 +115,24 @@ parameter_declaration throws PtalonRuntimeException
 	)
 ;
 
+assigned_parameter_declaration throws PtalonRuntimeException
+:
+	#(PARAM_EQUALS #(PARAMETER a:ID) e:EXPRESSION
+	{
+		if (info.isReady() && !info.isCreated(a.getText())) {
+			info.addParameter(a.getText(), e.getText());
+		}
+	}
+	) | #(ACTOR_EQUALS #(ACTOR b:ID) q:qualified_identifier
+	{
+		if (info.isReady() && !info.isCreated(b.getText())) {
+			info.addActorParameter(b.getText(), q.getText());
+		}
+	}
+	)
+;
+
+
 relation_declaration throws PtalonRuntimeException
 :
 	#(RELATION a:ID
@@ -186,6 +204,7 @@ nested_actor_declaration throws PtalonRuntimeException
 atomic_statement throws PtalonRuntimeException
 :
 	(port_declaration | parameter_declaration |
+	 assigned_parameter_declaration | 
 		relation_declaration | actor_declaration)
 ;
 

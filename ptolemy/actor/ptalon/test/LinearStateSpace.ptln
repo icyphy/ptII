@@ -1,9 +1,11 @@
 LinearStateSpace is {
-	parameter A;
-	parameter B;
-	parameter C;
-	parameter D;
-	parameter initialStates;
-	inport[] input;
-	outport[] output;
+
+	actor trueBranch = ptolemy.domains.ct.lib.Integrator;
+	
+	parameter n = < 0 />;
+	
+	if <n > 0/> {
+		trueBranch();
+	} else {
+	}
 }

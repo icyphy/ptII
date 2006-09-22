@@ -95,8 +95,34 @@ port_declaration!
  * Generate corresponding tree #(PARAMETER ID), #(INTPARAMETER ID), or 
  * #(BOOLPARAMETER ID).
  */
-parameter_declaration:
-	(PARAMETER^ | ACTOR^) ID
+parameter_declaration!
+{
+	boolean addChild = true;
+}
+:
+	(p:PARAMETER c:ID (EQUALS e:expression
+	{
+		#parameter_declaration = #([PARAM_EQUALS, "="], (p, c), e);
+		addChild = false;
+	}
+	)? 
+	{
+		if (addChild) {
+			#parameter_declaration = #(p, c);
+		}
+	}
+	| a:ACTOR d:ID (EQUALS q:qualified_identifier
+	{
+		#parameter_declaration = #([ACTOR_EQUALS, "="], (a, d), q);
+		addChild = false;
+	}
+	)?
+	{
+		if (addChild) {
+			#parameter_declaration = #(a, d);
+		}
+	}
+	) 
 ;
 
 /**
@@ -306,6 +332,8 @@ tokens {
 	MULTIPORT;
 	MULTIINPORT;
 	MULTIOUTPORT;
+	PARAM_EQUALS;
+	ACTOR_EQUALS;
 }
 
 
@@ -329,6 +357,8 @@ RCURLY: '}';
 RPAREN: ')';
 
 SEMI: ';';
+
+EQUALS: '=';
 
 // Escape sequence
 ESC:

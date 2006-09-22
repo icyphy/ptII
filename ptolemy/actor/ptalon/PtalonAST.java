@@ -39,7 +39,7 @@ public class PtalonAST extends CommonAST {
 
     /**
      * @return An XML String version of this AST.
-     */
+     *
     public String toString() {
         StringWriter writer = new StringWriter();
         try {
@@ -48,7 +48,7 @@ public class PtalonAST extends CommonAST {
             return "";
         }
         return writer.toString();
-    }
+    }*/
 
     /**
      * Generate the XML for this AST.

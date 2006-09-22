@@ -163,6 +163,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                                 .setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
                         populator.actor_definition(_ast, _codeManager);
                         _ast = (PtalonAST) populator.getAST();
+                        _codeManager.assignInternalParameters();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -463,7 +464,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     private void _initializePtalonCodeLocation() throws IllegalActionException {
         try {
             if (astCreated) {
-                ptalonCodeLocation.setVisibility(Settable.NOT_EDITABLE);
+                ptalonCodeLocation.setVisibility(Settable.NONE);
                 return;
             }
             File inputFile = ptalonCodeLocation.asFile();
@@ -489,6 +490,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             _ast = (PtalonAST) populator.getAST();
             astCreated = true;
             ptalonCodeLocation.setVisibility(Settable.NOT_EDITABLE);
+            _codeManager.assignInternalParameters();
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalActionException(this, e, e.getMessage());

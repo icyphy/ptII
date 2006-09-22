@@ -633,8 +633,6 @@ public class NestedActorManager extends CodeManager {
      * to in the current runtime environment.
      */
     private Map<String, Boolean> _booleanExpressions = new Hashtable<String, Boolean>();
-
-
     
     /**
      * This represents the current point in the scope
@@ -661,7 +659,7 @@ public class NestedActorManager extends CodeManager {
      * 
      */
     private List<ActorTree> _trees;
-    
+   
     ///////////////////////////////////////////////////////////////////
     ////                        private classes                    ////
     
@@ -995,8 +993,24 @@ public class NestedActorManager extends CodeManager {
                             TypedIOPort newPort = new TypedIOPort(container, name);
                             String rel = container.uniqueName("relation");
                             TypedIORelation relation = new TypedIORelation(container, rel);
-                            ioport.link(relation);
-                            newPort.link(relation);
+                            if (ioport.isMultiport()) {
+                                relation.setWidth(ioport.getWidth());
+                                newPort.setMultiport(true);
+                                if (ioport.getWidth() == 0) {
+                                    ioport.link(relation);
+                                    newPort.link(relation);
+                                } else {
+                                    int width = ioport.getWidth();
+                                    while (width > 0) {
+                                        ioport.link(relation);
+                                        newPort.link(relation);
+                                        width--;
+                                    }
+                                }
+                            } else {
+                                ioport.link(relation);
+                                newPort.link(relation);
+                            }
                         }
                     }
                 }

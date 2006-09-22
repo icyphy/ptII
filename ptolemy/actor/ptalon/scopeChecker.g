@@ -37,6 +37,7 @@ options {
 	buildAST = true;
 	defaultErrorHandler  = false;
 	ASTLabelType = "PtalonAST";
+	k = 2;
 }
 
 {
@@ -94,6 +95,19 @@ parameter_declaration throws PtalonScopeException
 		info.addSymbol(a.getText(), "parameter");
 	}
 	) | #(ACTOR b:ID
+	{
+		info.addSymbol(b.getText(), "actorparameter");
+	}
+	)
+;
+
+assigned_parameter_declaration throws PtalonScopeException
+:
+	#(PARAM_EQUALS #(PARAMETER a:ID) e:EXPRESSION
+	{
+		info.addSymbol(a.getText(), "parameter");
+	}
+	) | #(ACTOR_EQUALS #(ACTOR b:ID) q:qualified_identifier
 	{
 		info.addSymbol(b.getText(), "actorparameter");
 	}
@@ -165,6 +179,7 @@ nested_actor_declaration [String paramValue] throws PtalonScopeException
 atomic_statement throws PtalonScopeException
 :
 	(port_declaration | parameter_declaration |
+		assigned_parameter_declaration |
 		relation_declaration | actor_declaration)
 ;
 

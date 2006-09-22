@@ -34,6 +34,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -49,6 +50,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
 
 /**
@@ -88,6 +90,51 @@ public class CodeManager {
      */
     public void actorNameSet(boolean set) {
         _actorSet = set;
+    }
+    /**
+     * Add a PtalonActorParameter to the PtalonActor
+     * with the specified name.
+     * @param name The name of the parameter.
+     * @exception PtalonRuntimeException If the symbol does not exist, or if
+     * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
+     * trying to create the parameter.
+     */
+    public void addActorParameter(String name) throws PtalonRuntimeException {
+        String uniqueName = _actor.uniqueName(name);
+        try {
+            PtalonActorParameter parameter = new PtalonActorParameter(_actor, uniqueName);
+            _currentTree.setStatus(name, true);
+            _currentTree.mapName(name, uniqueName);
+        } catch (NameDuplicationException e) {
+            throw new PtalonRuntimeException("NameDuplicationException", e);
+        } catch (IllegalActionException e) {
+            throw new PtalonRuntimeException("IllegalActionException", e);
+        }
+    }
+    
+    /**
+     * Add an invisible PtalonActorParameter to the PtalonActor
+     * with the specified name.
+     * @param name The name of the parameter.
+     * @param expression The expression representing the parameter.
+     * @exception PtalonRuntimeException If the symbol does not exist, or if
+     * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
+     * trying to create the parameter.
+     */
+    public void addActorParameter(String name, String expression) throws PtalonRuntimeException {
+        String uniqueName = _actor.uniqueName(name);
+        try {
+            PtalonActorParameter parameter = new PtalonActorParameter(_actor, uniqueName);
+            parameter.setVisibility(Settable.NONE);
+            _currentTree.setStatus(name, true);
+            _currentTree.mapName(name, uniqueName);
+            _unassignedParameters.add(parameter);
+            _unassignedParameterValues.add(expression);
+        } catch (NameDuplicationException e) {
+            throw new PtalonRuntimeException("NameDuplicationException", e);
+        } catch (IllegalActionException e) {
+            throw new PtalonRuntimeException("IllegalActionException", e);
+        }
     }
 
     /**
@@ -260,30 +307,10 @@ public class CodeManager {
     }
 
     /**
-     * Add a PtalonActorParameter to the PtalonActor
-     * with the specified name.
-     * @param name The name of the parameter.
-     * @exception PtalonRuntimeException If the symbol does not exist, or if
-     * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
-     * trying to create the parameter.
-     */
-    public void addActorParameter(String name) throws PtalonRuntimeException {
-        String uniqueName = _actor.uniqueName(name);
-        try {
-            PtalonActorParameter parameter = new PtalonActorParameter(_actor, uniqueName);
-            _currentTree.setStatus(name, true);
-            _currentTree.mapName(name, uniqueName);
-        } catch (NameDuplicationException e) {
-            throw new PtalonRuntimeException("NameDuplicationException", e);
-        } catch (IllegalActionException e) {
-            throw new PtalonRuntimeException("IllegalActionException", e);
-        }
-    }
-
-    /**
      * Add a Parameter to the PtalonActor
      * with the specified name.
      * @param name The name of the parameter.
+     * @param expression The expression to set the parameter value to.
      * @exception PtalonRuntimeException If the symbol does not exist, or if
      * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
      * trying to create the parameter.
@@ -294,6 +321,30 @@ public class CodeManager {
             PtalonParameter parameter = new PtalonParameter(_actor, uniqueName);
             _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
+        } catch (NameDuplicationException e) {
+            throw new PtalonRuntimeException("NameDuplicationException", e);
+        } catch (IllegalActionException e) {
+            throw new PtalonRuntimeException("IllegalActionException", e);
+        }
+    }
+    
+    /**
+     * Add an invisible Parameter to the PtalonActor
+     * with the specified name and the given expression as its value.
+     * @param name The name of the parameter.
+     * @exception PtalonRuntimeException If the symbol does not exist, or if
+     * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
+     * trying to create the parameter.
+     */
+    public void addParameter(String name, String expression) throws PtalonRuntimeException {
+        String uniqueName = _actor.uniqueName(name);
+        try {
+            PtalonParameter parameter = new PtalonParameter(_actor, uniqueName);
+            parameter.setVisibility(Settable.NONE);
+            _currentTree.setStatus(name, true);
+            _currentTree.mapName(name, uniqueName);
+            _unassignedParameters.add(parameter);
+            _unassignedParameterValues.add(expression);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
         } catch (IllegalActionException e) {
@@ -382,7 +433,7 @@ public class CodeManager {
     public void addSymbol(String symbol, String type, boolean status,
             String uniqueName) {
         _currentTree.addSymbol(symbol, type, status, uniqueName);
-    }
+    }    
 
     /**
      * Assign the lvalue in the specifed actor to the
@@ -447,6 +498,24 @@ public class CodeManager {
                     + " to rvalue " + rvalue + " in contained actor "
                     + actorName;
             throw new PtalonRuntimeException(message, e);
+        }
+    }
+    
+    /**
+     * Assign any internal parameters in the order they were set.
+     * @throws PtalonRuntimeException If there is any trouble assigning
+     * parameter values.
+     */
+    public void assignInternalParameters() throws PtalonRuntimeException {
+        try {
+            while (!_unassignedParameters.isEmpty()) {
+        
+                PtalonActorParameter parameter = _unassignedParameters.remove(0);
+                String expression = _unassignedParameterValues.remove(0);
+                parameter.setToken(expression);
+            }
+        } catch (Exception e) {
+            throw new PtalonRuntimeException("Trouble assigning parameter", e);
         }
     }
 
@@ -1001,6 +1070,17 @@ public class CodeManager {
      * of the if-statement hierarchy.
      */
     private IfTree _root;
+    
+    /**
+     * These two lists are used to store parameters which need to be set
+     * by Ptalon; i.e. constant parameters.  The first list are the parameters,
+     * and the second list are the expressions to assign to the parameters.
+     */
+    private List<PtalonActorParameter> _unassignedParameters = new 
+            LinkedList<PtalonActorParameter>();
+    private List<String> _unassignedParameterValues = new LinkedList<String>();
+    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                       private classes                     ////
