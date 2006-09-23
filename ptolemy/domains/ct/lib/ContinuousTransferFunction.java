@@ -324,6 +324,10 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         } finally {
             _workspace.doneWriting();
         }
+        
+        // NOTE: Cannot call super.preinitialize() because the actor is not
+        // opaque.
+        // super.preinitialize();
 
         // preinitialize all contained actors.
         for (Iterator i = deepEntityList().iterator(); i.hasNext();) {

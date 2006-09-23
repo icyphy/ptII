@@ -421,7 +421,10 @@ public class LinearStateSpace extends TypedCompositeActor {
             _workspace.doneWriting();
         }
 
-        // FIXME: super.preinitialize()?
+        // NOTE: Cannot call super.preinitialize() because the actor is not
+        // opaque.
+        // super.preinitialize();
+        
         // preinitialize all contained actors.
         for (Iterator i = deepEntityList().iterator(); i.hasNext();) {
             Actor actor = (Actor) i.next();
