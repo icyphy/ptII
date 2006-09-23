@@ -41,6 +41,7 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -97,13 +98,10 @@ public class EventSource extends TypedAtomicActor {
 
         // set the values parameter
         values = new Parameter(this, "values");
-        values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         values.setExpression("{1, 0}");
 
-        // set type constraint
-        ArrayType valuesArrayType = (ArrayType) values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        // Set type constraints.
+        output.setTypeAtLeast(ArrayType.elementType(values));
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
@@ -190,9 +188,12 @@ public class EventSource extends TypedAtomicActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         EventSource newObject = (EventSource) super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType) newObject.values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
+        
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
 
         return newObject;
     }

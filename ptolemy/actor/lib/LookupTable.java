@@ -32,9 +32,9 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -88,11 +88,7 @@ public class LookupTable extends Transformer {
 
         // Set type constraints.
         input.setTypeEquals(BaseType.INT);
-        table.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-
-        ArrayType tableType = (ArrayType) table.getType();
-        InequalityTerm elemTerm = tableType.getElementTypeTerm();
-        output.setTypeAtLeast(elemTerm);
+        output.setTypeAtLeast(ArrayType.elementType(table));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,12 +112,12 @@ public class LookupTable extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         LookupTable newObject = (LookupTable) (super.clone(workspace));
 
-        // One of the Parameters contains ArrayTokens, so we need
-        // to handle cloning it.
-        ArrayType tableType = (ArrayType) newObject.table.getType();
-        InequalityTerm elemTerm = tableType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elemTerm);
-
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.table));
+        } catch (IllegalActionException e) {
+            // Should have been caught before this.
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 

@@ -27,9 +27,6 @@
  */
 package ptolemy.domains.sdf.lib;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -41,11 +38,11 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
-import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -144,8 +141,7 @@ public class Autocorrelation extends SDFTransformer {
         input.setTypeAtLeast(new FunctionTerm(input));
 
         // Set the output type to be an ArrayType.
-        // This is refined further by the typeConstraintList method.
-        output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        output.setTypeAtLeast(ArrayType.arrayOf(input));
 
         attributeChanged(numberOfInputs);
     }
@@ -230,6 +226,12 @@ public class Autocorrelation extends SDFTransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Autocorrelation newObject = (Autocorrelation) super.clone(workspace);
         newObject.input.setTypeAtLeast(new FunctionTerm(newObject.input));
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.input));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
+
         return newObject;
     }
 
@@ -305,25 +307,6 @@ public class Autocorrelation extends SDFTransformer {
         } else {
             return super.prefire();
         }
-    }
-
-    /** Return the type constraint that the type of the elements of the
-     *  output array is no less than the type of the input port.
-     *  @return A list of inequalities.
-     */
-    public List typeConstraintList() {
-        List result = super.typeConstraintList();
-
-        if (result == null) {
-            result = new LinkedList();
-        }
-
-        ArrayType outArrType = (ArrayType) output.getType();
-        InequalityTerm elementTerm = outArrType.getElementTypeTerm();
-        Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
-
-        result.add(ineq);
-        return result;
     }
 
     ///////////////////////////////////////////////////////////////////

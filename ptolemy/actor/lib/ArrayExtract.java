@@ -75,7 +75,7 @@ public class ArrayExtract extends Transformer {
         super(container, name);
 
         // Set type constraints.
-        input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         output.setTypeAtLeast(input);
 
         // Set parameters.
@@ -132,6 +132,7 @@ public class ArrayExtract extends Transformer {
         ArrayExtract newObject = (ArrayExtract) (super.clone(workspace));
 
         // Set the type constraints.
+        newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         newObject.output.setTypeAtLeast(newObject.input);
 
         return newObject;

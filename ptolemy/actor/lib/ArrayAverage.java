@@ -26,21 +26,13 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.data.type.Typeable;
-import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -75,11 +67,7 @@ public class ArrayAverage extends Transformer {
         super(container, name);
 
         // set type constraints.
-        input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-
-        ArrayType inputArrayType = (ArrayType) input.getType();
-        InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        output.setTypeAtLeast(ArrayType.elementType(input));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,11 +81,12 @@ public class ArrayAverage extends Transformer {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayAverage newObject = (ArrayAverage) super.clone(workspace);
-        newObject.input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-
-        ArrayType inputArrayType = (ArrayType) newObject.input.getType();
-        InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.input));
+        } catch (IllegalActionException e) {
+            // Should have been caught before.
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 
@@ -124,52 +113,5 @@ public class ArrayAverage extends Transformer {
 
             output.send(0, sum.divide(new IntToken(token.length())));
         }
-    }
-
-    /** Return the type constraints of this actor.
-     *  In this class, the constraints are that the type of the input port
-     *  is an array type, and the type of the output port is no less than
-     *  the type of the elements of the input array.
-     *  @return A list of instances of Inequality.
-     *  @see ptolemy.actor.TypedAtomicActor#typeConstraintList
-     */
-    public List typeConstraintList() {
-        Type inputType = input.getType();
-
-        if (inputType == BaseType.UNKNOWN) {
-            input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        } else if (!(inputType instanceof ArrayType)) {
-            throw new IllegalStateException("ArrayElement.typeConstraintList: "
-                    + "The input type, " + inputType.toString() + " is not an "
-                    + "array type.");
-        }
-
-        // NOTE: superclass will put in type constraints for
-        // the input and output, so we can't invoke the superclass.
-        List result = new LinkedList();
-
-        // collect constraints from contained Typeables
-        Iterator ports = portList().iterator();
-
-        while (ports.hasNext()) {
-            Typeable port = (Typeable) ports.next();
-            result.addAll(port.typeConstraintList());
-        }
-
-        Iterator typeables = attributeList(Typeable.class).iterator();
-
-        while (typeables.hasNext()) {
-            Typeable typeable = (Typeable) typeables.next();
-            result.addAll(typeable.typeConstraintList());
-        }
-
-        // Add type constraint for the input.
-        ArrayType inputArrayType = (ArrayType) input.getType();
-        InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
-        Inequality inequality = new Inequality(elementTerm, output
-                .getTypeTerm());
-
-        result.add(inequality);
-        return result;
     }
 }

@@ -34,10 +34,10 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -102,7 +102,6 @@ public class Pulse extends SequenceSource {
         // set values parameter
         values = new Parameter(this, "values");
         values.setExpression("{1, 0}");
-        values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         // Set the Repeat Flag.
         repeat = new Parameter(this, "repeat", new BooleanToken(false));
@@ -110,9 +109,7 @@ public class Pulse extends SequenceSource {
         attributeChanged(repeat);
 
         // set type constraint
-        ArrayType valuesArrayType = (ArrayType) values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        output.setTypeAtLeast(ArrayType.elementType(values));
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
@@ -194,9 +191,11 @@ public class Pulse extends SequenceSource {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Pulse newObject = (Pulse) super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType) newObject.values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 

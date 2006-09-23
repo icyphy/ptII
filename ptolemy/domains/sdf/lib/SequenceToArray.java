@@ -27,21 +27,17 @@
  */
 package ptolemy.domains.sdf.lib;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// SequenceToArray
@@ -77,8 +73,9 @@ public class SequenceToArray extends SDFTransformer {
 
         input_tokenConsumptionRate.setExpression("arrayLength");
 
-        // set the output type to be an ArrayType.
-        output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        // Set the output type to be an ArrayType with element types
+        // at least as general as the input type.
+        output.setTypeAtLeast(ArrayType.arrayOf(input));
 
         // Set parameters.
         arrayLength = new PortParameter(this, "arrayLength");
@@ -119,6 +116,23 @@ public class SequenceToArray extends SDFTransformer {
         }
     }
 
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SequenceToArray newObject = (SequenceToArray) (super.clone(workspace));
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.input));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
+        return newObject;
+    }
+
     /** Consume the inputs and produce the output ArrayToken.
      *  @exception IllegalActionException If not enough tokens are available.
      */
@@ -155,19 +169,5 @@ public class SequenceToArray extends SDFTransformer {
         } else {
             return super.prefire();
         }
-    }
-
-    /** Return the type constraint that the type of the elements of the
-     *  output array is no less than the type of the input port.
-     *  @return A list of inequalities.
-     */
-    public List typeConstraintList() {
-        ArrayType outArrType = (ArrayType) output.getType();
-        InequalityTerm elementTerm = outArrType.getElementTypeTerm();
-        Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
-
-        List result = new LinkedList();
-        result.add(ineq);
-        return result;
     }
 }

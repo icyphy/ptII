@@ -34,6 +34,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayLength
@@ -62,12 +63,29 @@ public class ArrayLength extends Transformer {
         super(container, name);
 
         // set type constraints.
-        input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         output.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets up the type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ArrayLength newObject = (ArrayLength) (super.clone(workspace));
+
+        // Set the type constraints.
+        newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
+
+        return newObject;
+    }
 
     /** Consume at most one array from the input port and produce
      *  its length on the output port.  If there is no token

@@ -32,10 +32,9 @@ import java.util.List;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -77,11 +76,8 @@ public class ArrayToElements extends Transformer {
         super(container, name);
 
         // Set type constraints.
-        input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        output.setTypeAtLeast(ArrayType.elementType(input));
 
-        ArrayType inputType = (ArrayType) input.getType();
-        InequalityTerm elementTerm = inputType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
         output.setMultiport(true);
 
         // Set the icon.
@@ -102,11 +98,12 @@ public class ArrayToElements extends Transformer {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayToElements newObject = (ArrayToElements) (super.clone(workspace));
-
-        // set the type constraints
-        ArrayType inputType = (ArrayType) newObject.input.getType();
-        InequalityTerm elementTerm = inputType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.input));
+        } catch (IllegalActionException e) {
+            // Should have been caught before.
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 

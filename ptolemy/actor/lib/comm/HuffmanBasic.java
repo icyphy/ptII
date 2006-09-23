@@ -42,6 +42,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// HuffmanBasic
@@ -80,7 +81,7 @@ public class HuffmanBasic extends Transformer {
 
         alphabet = new Parameter(this, "alphabet");
         alphabet.setExpression("{0, 1}");
-        alphabet.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        alphabet.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
 
         // Declare port types.
         huffmanCodeBook = new TypedIOPort(this, "huffmanCodeBook", false, true);
@@ -106,6 +107,21 @@ public class HuffmanBasic extends Transformer {
      *  of strings.
      */
     public TypedIOPort huffmanCodeBook;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+
+    /** Override the base class to set type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new instance of ArrayElement.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HuffmanBasic newObject = (HuffmanBasic) super.clone(workspace);
+        newObject.alphabet.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
+        return newObject;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                  public inner classes                      ////

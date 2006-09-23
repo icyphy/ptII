@@ -32,9 +32,9 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -70,9 +70,7 @@ public class HuffmanDecoder extends HuffmanBasic {
         super(container, name);
 
         // Declare port types.
-        ArrayType alphabetArrayType = (ArrayType) alphabet.getType();
-        InequalityTerm elementTerm = alphabetArrayType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        output.setTypeAtLeast(ArrayType.elementType(alphabet));
         input.setTypeEquals(BaseType.BOOLEAN);
     }
 
@@ -88,15 +86,18 @@ public class HuffmanDecoder extends HuffmanBasic {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HuffmanDecoder newObject = (HuffmanDecoder) super.clone(workspace);
-        InequalityTerm elementTerm = ((ArrayType) newObject.alphabet.getType())
-                .getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.alphabet));
+        } catch (IllegalActionException e) {
+            // Should have been caught before.
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 
     /** Generate the Huffman codebook for the given <i>pmf</i>, and
      *  encode the input into booleans and send them to the output port.
-     *  @exception If the input is not a decodable code.
+     *  @exception IllegalActionException If the input is not a decodable code.
      */
     public void fire() throws IllegalActionException {
         super.fire();

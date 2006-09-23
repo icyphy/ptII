@@ -36,15 +36,14 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
 import ptolemy.domains.csp.kernel.CSPActor;
 import ptolemy.domains.csp.kernel.ConditionalBranch;
 import ptolemy.domains.csp.kernel.ConditionalReceive;
 import ptolemy.domains.csp.kernel.ConditionalSend;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -109,13 +108,10 @@ public class ResourcePool extends CSPActor {
         release.setMultiport(true);
 
         initialPool = new Parameter(this, "initialPool");
-        initialPool.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         initialPool.setExpression("{1}");
 
-        // set type constraints.
-        ArrayType paramType = (ArrayType) initialPool.getType();
-        InequalityTerm elementTerm = paramType.getElementTypeTerm();
-        grant.setTypeAtLeast(elementTerm);
+        // Set type constraints.
+        grant.setTypeAtLeast(ArrayType.elementType(initialPool));
         grant.setTypeAtLeast(release);
     }
 
@@ -173,10 +169,13 @@ public class ResourcePool extends CSPActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ResourcePool newObject = (ResourcePool) super.clone(workspace);
         // set type constraints.
-        ArrayType paramType = (ArrayType) newObject.initialPool.getType();
-        InequalityTerm elementTerm = paramType.getElementTypeTerm();
-        newObject.grant.setTypeAtLeast(elementTerm);
+        try {
+            newObject.grant.setTypeAtLeast(ArrayType.elementType(newObject.initialPool));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         newObject.grant.setTypeAtLeast(newObject.release);
+
         return newObject;
     }
 

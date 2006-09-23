@@ -34,10 +34,10 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -69,16 +69,14 @@ public class LineCoder extends SDFTransformer {
         input.setTypeEquals(BaseType.BOOLEAN);
 
         table = new Parameter(this, "table");
-        table.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         table.setExpression("{-1.0, 1.0}");
         attributeChanged(table);
 
         wordLength = new Parameter(this, "wordLength", new IntToken(1));
         wordLength.setTypeEquals(BaseType.INT);
 
-        ArrayType paramType = (ArrayType) table.getType();
-        InequalityTerm elementTerm = paramType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        // Type constraints.
+        output.setTypeAtLeast(ArrayType.elementType(table));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -135,9 +133,12 @@ public class LineCoder extends SDFTransformer {
         LineCoder newObject = (LineCoder) (super.clone(workspace));
 
         // set the type constraints
-        ArrayType paramType = (ArrayType) newObject.table.getType();
-        InequalityTerm elementTerm = paramType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.table));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
+
         return newObject;
     }
 

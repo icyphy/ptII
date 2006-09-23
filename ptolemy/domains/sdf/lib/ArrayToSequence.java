@@ -40,6 +40,7 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -82,11 +83,7 @@ public class ArrayToSequence extends SDFTransformer {
         super(container, name);
 
         // Set type constraints.
-        input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-
-        ArrayType inputType = (ArrayType) input.getType();
-        InequalityTerm elementTerm = inputType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        output.setTypeAtLeast(ArrayType.elementType(input));
 
         // Set parameters.
         arrayLength = new Parameter(this, "arrayLength");
@@ -148,11 +145,11 @@ public class ArrayToSequence extends SDFTransformer {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayToSequence newObject = (ArrayToSequence) (super.clone(workspace));
-
-        // set the type constraints
-        ArrayType inputType = (ArrayType) newObject.input.getType();
-        InequalityTerm elementTerm = inputType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.input));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 

@@ -31,11 +31,10 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -73,15 +72,12 @@ public class SampleDelay extends SDFTransformer {
         super(container, name);
 
         initialOutputs = new Parameter(this, "initialOutputs");
-        initialOutputs.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         initialOutputs.setExpression("{0}");
 
         output_tokenInitProduction.setExpression("initialOutputs.length()");
 
         // set type constraints.
-        ArrayType paramType = (ArrayType) initialOutputs.getType();
-        InequalityTerm elementTerm = paramType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        output.setTypeAtLeast(ArrayType.elementType(initialOutputs));
         output.setTypeAtLeast(input);
     }
 
@@ -122,10 +118,13 @@ public class SampleDelay extends SDFTransformer {
         SampleDelay newObject = (SampleDelay) (super.clone(workspace));
 
         // set the type constraints
-        ArrayType paramType = (ArrayType) newObject.initialOutputs.getType();
-        InequalityTerm elementTerm = paramType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.initialOutputs));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         newObject.output.setTypeAtLeast(newObject.input);
+
         return newObject;
     }
 

@@ -41,6 +41,7 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -128,12 +129,9 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
         ArrayToken defaultValueToken = new ArrayToken(BaseType.INT,
                 defaultValues);
         values = new Parameter(this, "values", defaultValueToken);
-        values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         // set type constraint
-        ArrayType valuesArrayType = (ArrayType) values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        output.setTypeAtLeast(ArrayType.elementType(values));
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
@@ -220,10 +218,11 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SequentialClock newObject = (SequentialClock) super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType) newObject.values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
-
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 

@@ -38,7 +38,9 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArraySort
@@ -71,7 +73,7 @@ public class ArraySort extends Transformer {
         super(container, name);
 
         // Set Type Constraints.
-        input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         output.setTypeAtLeast(input);
 
         // NOTE: Consider constraining input element types.
@@ -102,6 +104,19 @@ public class ArraySort extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Override the base class to set type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new instance of ArrayElement.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ArraySort newObject = (ArraySort) super.clone(workspace);
+        newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
+        newObject.output.setTypeAtLeast(newObject.input);
+        return newObject;
+    }
 
     /** Consume at most one array from the input port and produce
      *  a sorted array on the <i>output</i> port.

@@ -88,19 +88,8 @@ public class IIR extends Transformer {
         denominator.setExpression("{1.0}");
         attributeChanged(denominator);
 
-        numerator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        denominator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-
-        // Set the type of the output port.
-        // Set type constraints.
-        ArrayType numeratorType = (ArrayType) numerator.getType();
-        InequalityTerm elementTerm = numeratorType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
-
-        ArrayType denominatorType = (ArrayType) denominator.getType();
-        InequalityTerm elementTerm2 = denominatorType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm2);
-
+        output.setTypeAtLeast(ArrayType.elementType(numerator));
+        output.setTypeAtLeast(ArrayType.elementType(denominator));
         input.setTypeAtLeast(output);
         output.setTypeAtLeast(input);
     }
@@ -181,19 +170,8 @@ public class IIR extends Transformer {
         IIR newObject = (IIR) super.clone(workspace);
 
         try {
-            newObject.numerator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-            newObject.denominator
-                    .setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-
-            ArrayType numeratorType = (ArrayType) newObject.numerator.getType();
-            InequalityTerm elementTerm = numeratorType.getElementTypeTerm();
-            newObject.output.setTypeAtLeast(elementTerm);
-
-            ArrayType denominatorType = (ArrayType) newObject.denominator
-                    .getType();
-            InequalityTerm elementTerm2 = denominatorType.getElementTypeTerm();
-            newObject.output.setTypeAtLeast(elementTerm2);
-
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.numerator));
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.denominator));
             newObject.input.setTypeAtLeast(newObject.output);
             newObject.output.setTypeAtLeast(newObject.input);
         } catch (IllegalActionException ex) {

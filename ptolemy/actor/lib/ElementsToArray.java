@@ -28,18 +28,14 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ElementsToArray
@@ -75,7 +71,7 @@ public class ElementsToArray extends Transformer {
         super(container, name);
 
         // set the output type to be an ArrayType.
-        output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        output.setTypeAtLeast(ArrayType.arrayOf(input));
         input.setMultiport(true);
 
         // Set the icon.
@@ -86,6 +82,23 @@ public class ElementsToArray extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Override the base class to set type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new instance of ArrayElement.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ElementsToArray newObject = (ElementsToArray) super.clone(workspace);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.input));
+        } catch (IllegalActionException e) {
+            // Should have been caught before.
+            throw new InternalErrorException(e);
+        }
+        return newObject;
+    }
 
     /** Consume one token from each channel of the input port,
      *  assemble those tokens into an ArrayToken, and send the
@@ -121,19 +134,5 @@ public class ElementsToArray extends Transformer {
         }
 
         return true;
-    }
-
-    /** Return the type constraint that the type of the elements of
-     *  the output array is no less than the type of the input port.
-     *  @return A list of inequalities.
-     */
-    public List typeConstraintList() {
-        ArrayType outArrType = (ArrayType) output.getType();
-        InequalityTerm elementTerm = outArrType.getElementTypeTerm();
-        Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
-
-        List result = new LinkedList();
-        result.add(ineq);
-        return result;
     }
 }

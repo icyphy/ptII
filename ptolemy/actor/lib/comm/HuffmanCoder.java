@@ -32,9 +32,9 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -69,10 +69,8 @@ public class HuffmanCoder extends HuffmanBasic {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        // Declare port types.
-        ArrayType alphabetArrayType = (ArrayType) alphabet.getType();
-        InequalityTerm elementTerm = alphabetArrayType.getElementTypeTerm();
-        input.setTypeAtLeast(elementTerm);
+        // Declare type constraints.
+        alphabet.setTypeAtLeast(ArrayType.arrayOf(input));
         output.setTypeEquals(BaseType.BOOLEAN);
     }
 
@@ -88,9 +86,12 @@ public class HuffmanCoder extends HuffmanBasic {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HuffmanCoder newObject = (HuffmanCoder) super.clone(workspace);
-        InequalityTerm elementTerm = ((ArrayType) newObject.alphabet.getType())
-                .getElementTypeTerm();
-        newObject.input.setTypeAtLeast(elementTerm);
+        try {
+            newObject.alphabet.setTypeAtLeast(ArrayType.arrayOf(newObject.input));
+        } catch (IllegalActionException e) {
+            // Should have been caught before.
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 

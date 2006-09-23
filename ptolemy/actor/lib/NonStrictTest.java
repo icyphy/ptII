@@ -43,7 +43,9 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.SharedParameter;
 import ptolemy.util.StringUtilities;
 
@@ -116,7 +118,7 @@ public class NonStrictTest extends Sink {
 
         correctValues = new Parameter(this, "correctValues");
         correctValues.setExpression("{true}");
-        correctValues.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        correctValues.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
 
         tolerance = new Parameter(this, "tolerance");
         tolerance.setExpression("1.0E-9");
@@ -153,6 +155,18 @@ public class NonStrictTest extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Override the base class to set type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new instance of ArrayAverage.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        NonStrictTest newObject = (NonStrictTest) super.clone(workspace);
+        newObject.correctValues.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
+        return newObject;
+    }
 
     /** If the attribute being changed is <i>tolerance</i>, then check
      *  that it is increasing and nonnegative.

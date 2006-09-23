@@ -71,6 +71,26 @@ public class ArrayType extends StructuredType {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a type constraint that can be used to contrain
+     *  another typeable object to have a type related to an
+     *  array whose element type is the type of the specified
+     *  typeable.  A typical usage of this is as follows:
+     *  <pre>
+     *      output.setTypeAtLeast(ArrayType.arrayOf(input));
+     *  </pre>
+     *  where input and output are ports (this is the type
+     *  constraint of SequenceToArray, for example).
+     *  @param typeable A typeable.
+     *  @return An InequalityTerm that can be passed to methods
+     *   like setTypeAtLeast() of the Typeable interface.
+     *  @throws IllegalActionException If the specified typeable
+     *   cannot be set to an array type.
+     */
+    public static InequalityTerm arrayOf(Typeable typeable)
+            throws IllegalActionException {
+        return new TypeableArrayTypeTerm(typeable);
+    }
+
     /** Return a deep copy of this ArrayType if it is a variable, or
      *  itself if it is a constant.
      *  @return An ArrayType.
@@ -102,21 +122,29 @@ public class ArrayType extends StructuredType {
      *   cannot be done.
      */
     public Token convert(Token token) throws IllegalActionException {
-        if (!(token instanceof ArrayToken)) {
-            // Cannot convert to unknown element type.
-            if (token.getType() == BaseType.UNKNOWN) {
-                throw new IllegalActionException(
-                        "Cannot convert to type {unknown}");
+        Type myElementType = getElementType();
+        // Cannot convert to unknown element type.
+        if (myElementType == BaseType.UNKNOWN) {
+            if (token instanceof ArrayToken) {
+                // Following the logic implemented in BaseType for UNKNOWN,
+                // since every array token is a substitution instance for
+                // {unknown}, just return the token.
+                return token;
             }
+            // If it's not an ArrayToken, then something is wrong.
+            throw new IllegalActionException(
+                    "Cannot convert " + token + " to type {unknown}");
+        }
+        if (!(token instanceof ArrayToken)) {
             // NOTE: Added 7/17/06 by EAL to support type -> {type} conversion.
             Token[] contents = new Token[1];
             contents[0] = token;
-            return new ArrayToken(token.getType(), contents);
+            return new ArrayToken(myElementType, contents);
         }
 
         ArrayToken argumentArrayToken = (ArrayToken) token;
 
-        if (getElementType().equals(argumentArrayToken.getElementType())) {
+        if (myElementType.equals(argumentArrayToken.getElementType())) {
             return token;
         }
 
@@ -125,7 +153,7 @@ public class ArrayType extends StructuredType {
 
         try {
             for (int i = 0; i < argumentArray.length; i++) {
-                resultArray[i] = getElementType().convert(argumentArray[i]);
+                resultArray[i] = myElementType.convert(argumentArray[i]);
             }
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(null, ex, Token
@@ -144,7 +172,7 @@ public class ArrayType extends StructuredType {
                                 + argumentArrayElementType);
             }
         }
-        return new ArrayToken(resultArray);
+        return new ArrayToken(myElementType, resultArray);
     }
 
     /** Return the depth of an array type. The depth of an
@@ -174,6 +202,29 @@ public class ArrayType extends StructuredType {
         }
 
         return _elementType.equals(((ArrayType) object).getElementType());
+    }
+    
+    /** Return a type constraint that can be used to contrain
+     *  another typeable object to have a type related to the
+     *  element type of the specified typeable.  As a side
+     *  effect, the specified typeable is constrained to have an array
+     *  type.  A typical usage of this is as follows:
+     *  <pre>
+     *      output.setTypeAtLeast(ArrayType.elementType(input));
+     *  </pre>
+     *  where input and output are ports. This forces the input
+     *  port to have an array type and the output port to have
+     *  a type at least that of the elements of input arrays.
+     *  @param typeable An array-valued typeable.
+     *  @return An InequalityTerm that can be passed to methods
+     *   like setTypeAtLeast() of the Typeable interface.
+     *  @throws IllegalActionException If the specified typeable
+     *   cannot be set to an array type.
+     */
+    public static InequalityTerm elementType(Typeable typeable)
+            throws IllegalActionException {
+        typeable.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
+        return new TypeableElementTypeTerm(typeable);
     }
 
     /** Return the type of the array elements.
@@ -273,6 +324,25 @@ public class ArrayType extends StructuredType {
         Type argElemType = ((ArrayType) type).getElementType();
         return _declaredElementType.isSubstitutionInstance(argElemType);
     }
+    
+    /** Set the type to the specified type, which is required to be
+     *  an array type.
+     *  @param type The new type.
+     *  @exception IllegalActionException If the specified type is not
+     *   an instance of ArrayType.
+     */
+    public void setType(Type type) throws IllegalActionException {
+        if (!(type instanceof ArrayType)) {
+            throw new IllegalActionException("Cannot change an array type to a non-array type.");
+        }
+        try {
+            Type clone = (Type)((ArrayType)type).getElementType().clone();
+            _elementType = clone;
+            _declaredElementType = clone;
+        } catch (CloneNotSupportedException e) {
+            throw new InternalErrorException(e);
+        }
+    }
 
     /** Return the string representation of this type. The format is
      *  {<i>type</i>}, where <i>type</i> is the element type.
@@ -329,6 +399,31 @@ public class ArrayType extends StructuredType {
                     .updateType((StructuredType) newElemType);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** A term to use when declaring the type of some parameter or port
+     *  to be an array.  The way to use this is to declare:
+     *  <pre>
+     *     param.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
+     *  </pre>
+     *  for a parameter "param".
+     */
+    public static InequalityTerm ARRAY_BOTTOM = (new ArrayType(BaseType.UNKNOWN) {
+        // This particular inequality term always has an acceptable type
+        // because it has no visible array that will ever be evaluated.
+        // It is essential that isValueAcceptable() return true, or the
+        // idiom above will result in reported type errors.
+        public InequalityTerm getElementTypeTerm() {
+            return _replacementElementTerm;
+        }
+        private InequalityTerm _replacementElementTerm = new ElementTypeTerm() {
+            public boolean isValueAcceptable() {
+                return true;
+            }
+        };
+    }).getElementTypeTerm();
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -412,7 +507,9 @@ public class ArrayType extends StructuredType {
     private static ArrayType _representative = new ArrayType(BaseType.UNKNOWN);
 
     ///////////////////////////////////////////////////////////////////
-    ////                         inner class                       ////
+    ////                         inner classes                     ////
+    
+    /** An InequalityTerm associated with an instance of ArrayType. */
     private class ElementTypeTerm implements InequalityTerm {
         ///////////////////////////////////////////////////////////////
         ////                   public inner methods                ////
@@ -533,5 +630,246 @@ public class ArrayType extends StructuredType {
             return "(ArrayElementType(" + getAssociatedObject() + "), "
                     + getValue() + ")";
         }
+    }
+
+    /** An InequalityTerm representing an array types whose elements
+     *  have the type of the specified typeable.  The purpose of this class
+     *  is to defer to as late as possible actually accessing
+     *  the type of the typeable, since it may change dynamically.
+     *  This term is not variable and cannot be set.
+     */
+    private static class TypeableArrayTypeTerm implements InequalityTerm {
+        
+        /** Construct a term that will defer to the type of the
+         *  specified typeable.
+         *  @param typeable The object to defer requests to.
+         */
+        public TypeableArrayTypeTerm(Typeable typeable) {
+            _typeable = typeable;
+        }
+        
+        ///////////////////////////////////////////////////////////////
+        ////                   public inner methods                ////
+
+        /** Return an array type with element types given by the associated typeable.
+         *  @return An ArrayType.
+         */
+        public Object getAssociatedObject() {
+            return _getArrayType();
+        }
+
+        /** Return an array type with element types given by the associated typeable.
+         *  @return An ArrayType.
+         *  @throws IllegalActionException If the type of the associated typeable
+         *   cannot be determined.
+         */
+        public Object getValue() throws IllegalActionException {
+            return _getArrayTypeRaw();
+        }
+
+        /** Return an array of size zero.
+         *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+            return (new InequalityTerm[0]);
+        }
+
+        /** Throw an exception. This term cannot be set.
+         *  @parameter e A Type.
+         *  @exception IllegalActionException If this type is a constant,
+         *   or the argument is not a Type.
+         */
+        public void initialize(Object e) throws IllegalActionException {
+            throw new IllegalActionException(
+                    "ArrayType$TypeableArrayTypeTerm.initialize: "
+                    + "This array type given with elements given by "
+                    + _typeable + " is not settable.");
+        }
+
+        /** Return false.
+         *  @return False.
+         */
+        public boolean isSettable() {
+            return false;
+        }
+
+        /** Delegate to an array type with elements given by the
+         *  type of the associated typeable.
+         *  @return True if the element type is acceptable.
+         */
+        public boolean isValueAcceptable() {
+            ArrayType type = _getArrayType();
+            return type.getElementTypeTerm().isValueAcceptable();
+        }
+
+        /** Throw an exception.
+         *  @param type a Type.
+         *  @exception IllegalActionException Always
+         */
+        public void setValue(Object type) throws IllegalActionException {
+            throw new IllegalActionException(
+                    "ArrayType$TypeableArrayTypeTerm.setValue: "
+                    + "The array type with element type given by "
+                    + _typeable
+                    + " is not settable.");
+        }
+
+        /** Delegate to an array type with elements given by the
+         *  type of the associated typeable.
+         *  @return A String.
+         */
+        public String toString() {
+            return _getArrayType().toString();
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                   private methods                     ////
+
+        /** Get an array type with element type matching the type
+         *  of the associated typeable.
+         *  @return An array type for the associated typeable.
+         */
+        private ArrayType _getArrayType() {
+            try {
+                return _getArrayTypeRaw();
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
+        }
+        
+        /** Get an array type with element type matching the type
+         *  of the associated typeable.
+         *  @return An array type for the associated typeable.
+         *  @throws IllegalActionException If the type of the typeable
+         *   cannot be determined.
+         */
+        private ArrayType _getArrayTypeRaw() throws IllegalActionException {
+            Type type = _typeable.getType();
+            if (_arrayType == null || !_arrayType.getElementType().equals(type)) {
+                _arrayType = new ArrayType(type);
+            }
+            return _arrayType;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                   private members                     ////
+
+        /** The associated typeable. */
+        private Typeable _typeable;
+        
+        /** The array type with element types matching the typeable. */
+        private ArrayType _arrayType;
+    }
+
+    /** An InequalityTerm representing the element types
+     *  of an instance of Typeable.  The purpose of this class
+     *  is to defer to as late as possible actually accessing
+     *  the type of the typeable, since it may change dynamically.
+     */
+    private static class TypeableElementTypeTerm implements InequalityTerm {
+        
+        /** Construct a term that will defer to the type of the
+         *  specified typeable.
+         *  @param typeable The object to defer requests to.
+         */
+        public TypeableElementTypeTerm(Typeable typeable) {
+            _typeable = typeable;
+        }
+        
+        ///////////////////////////////////////////////////////////////
+        ////                   public inner methods                ////
+
+        /** Delegate to the element type term of the associated typeable.
+         *  @return an ArrayType.
+         */
+        public Object getAssociatedObject() {
+            return _getElementTypeTerm().getAssociatedObject();
+        }
+
+        /** Delegate to the element type term of the associated typeable.
+         *  @return a Type.
+         *  @throws IllegalActionException If the delegate throws it.
+         */
+        public Object getValue() throws IllegalActionException {
+            return _getElementTypeTerm().getValue();
+        }
+
+        /** Delegate to the element type term of the associated typeable.
+         *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+            return _getElementTypeTerm().getVariables();
+        }
+
+        /** Delegate to the element type term of the associated typeable.
+         *  @return an ArrayType.
+         *  @param type A Type.
+         *  @throws IllegalActionException If the delegate throws it.
+         */
+        public void initialize(Object type) throws IllegalActionException {
+            _getElementTypeTerm().initialize(type);
+        }
+
+        /** Delegate to the element type term of the associated typeable.
+         *  @return True if the element type is a type variable.
+         */
+        public boolean isSettable() {
+            return _getElementTypeTerm().isSettable();
+        }
+
+        /** Delegate to the element type term of the associated typeable.
+         *  @return True if the element type is acceptable.
+         */
+        public boolean isValueAcceptable() {
+            return _getElementTypeTerm().isValueAcceptable();
+        }
+
+        /** Delegate to the element type term of the associated typeable.
+         *  @param type a Type.
+         *  @exception IllegalActionException If the specified type violates
+         *   the declared type of the element.
+         */
+        public void setValue(Object type) throws IllegalActionException {
+            _getElementTypeTerm().setValue(type);
+        }
+
+        /** Delegate to the element type term of the associated typeable.
+         *  @return A String.
+         */
+        public String toString() {
+            return _getElementTypeTerm().toString();
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                   private methods                     ////
+
+        /** Get an inequality term for elements of the
+         *  associated typeable. If the associated typeable does
+         *  not already have an array type, then assign it the type
+         *  {unknown} and return its element type term.
+         *  @return An array type for the associated typeable.
+         */
+        private InequalityTerm _getElementTypeTerm() {
+            try {
+                Type type = _typeable.getType();
+                if (!(type instanceof ArrayType)) {
+                    // Have to also declare the type equal to {unknown} to get
+                    // a type term.  This will be changed to a more specific type
+                    // during type resolution.
+                    _typeable.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+                    // Have to get the type again because it gets cloned.
+                    type = _typeable.getType();
+                }
+                return ((ArrayType) type).getElementTypeTerm();
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
+        }
+        
+        ///////////////////////////////////////////////////////////////
+        ////                   private members                     ////
+
+        /** The associated typeable. */
+        private Typeable _typeable;
     }
 }

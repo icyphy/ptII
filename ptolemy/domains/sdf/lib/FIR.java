@@ -39,6 +39,7 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -130,8 +131,8 @@ public class FIR extends SDFTransformer {
         interpolation.setTypeEquals(BaseType.INT);
 
         taps = new Parameter(this, "taps");
-        taps.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         taps.setExpression("{1.0}");
+        taps.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
 
         input_tokenConsumptionRate.setExpression("decimation");
         output_tokenProductionRate.setExpression("interpolation");
@@ -231,6 +232,7 @@ public class FIR extends SDFTransformer {
         FIR newObject = (FIR) (super.clone(workspace));
 
         // Set the type constraints.
+        newObject.taps.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         newObject._initTypeConstraints();
         return newObject;
     }
@@ -434,10 +436,12 @@ public class FIR extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    // This class implements a monotonic function of the input port
-    // type.  The result type of this actor is generally the input type,
-    // unless the input type is a FixType, in which case the output
-    // type will ba a FixType with (in most cases) a different precision.
+    
+    /** This class implements a monotonic function of the input port
+     *  type.  The result type of this actor is generally the input type,
+     *  unless the input type is a FixType, in which case the output
+     *  type will ba a FixType with (in most cases) a different precision.
+     */
     private class OutputTypeFunction extends MonotonicFunction {
 
         ///////////////////////////////////////////////////////////////
@@ -448,8 +452,10 @@ public class FIR extends SDFTransformer {
          */
         public Object getValue() {
             Type inputType = input.getType();
-            Type tapsElementType = ((ArrayType) taps.getType())
-                    .getElementType();
+            Type tapsElementType = BaseType.UNKNOWN;
+            if (taps.getType() != BaseType.UNKNOWN) {
+                tapsElementType = ((ArrayType) taps.getType()).getElementType();
+            }
             Type productType = inputType.multiply(tapsElementType);
             Type outputType = productType;
 
@@ -471,23 +477,26 @@ public class FIR extends SDFTransformer {
          *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-            ArrayType paramType = (ArrayType) taps.getType();
-            InequalityTerm elementTerm = paramType.getElementTypeTerm();
-            if (input.getTypeTerm().isSettable() && elementTerm.isSettable()) {
-                InequalityTerm[] variable = new InequalityTerm[2];
-                variable[0] = input.getTypeTerm();
-                variable[1] = elementTerm;
-                return variable;
-            } else if (elementTerm.isSettable()) {
-                InequalityTerm[] variable = new InequalityTerm[1];
-                variable[0] = elementTerm;
-                return variable;
-            } else if (input.getTypeTerm().isSettable()) {
-                InequalityTerm[] variable = new InequalityTerm[1];
-                variable[0] = input.getTypeTerm();
-                return variable;
-            } else {
-                return new InequalityTerm[0];
+            try {
+                InequalityTerm elementTerm = ArrayType.elementType(taps);
+                if (input.getTypeTerm().isSettable() && elementTerm.isSettable()) {
+                    InequalityTerm[] variable = new InequalityTerm[2];
+                    variable[0] = input.getTypeTerm();
+                    variable[1] = elementTerm;
+                    return variable;
+                } else if (elementTerm.isSettable()) {
+                    InequalityTerm[] variable = new InequalityTerm[1];
+                    variable[0] = elementTerm;
+                    return variable;
+                } else if (input.getTypeTerm().isSettable()) {
+                    InequalityTerm[] variable = new InequalityTerm[1];
+                    variable[0] = input.getTypeTerm();
+                    return variable;
+                } else {
+                    return new InequalityTerm[0];
+                }
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
             }
         }
     }

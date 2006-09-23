@@ -26,23 +26,17 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.data.type.Typeable;
-import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayMinimum
@@ -77,6 +71,9 @@ public class ArrayMinimum extends Transformer {
         // Create index port
         index = new TypedIOPort(this, "index", false, true);
         index.setTypeEquals(BaseType.INT);
+
+        // Type constraints.
+        output.setTypeAtLeast(ArrayType.elementType(input));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,6 +86,23 @@ public class ArrayMinimum extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Override the base class to set type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new instance of ArrayElement.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ArrayMinimum newObject = (ArrayMinimum) super.clone(workspace);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.input));
+        } catch (IllegalActionException e) {
+            // Should have been caught before.
+            throw new InternalErrorException(e);
+        }
+        return newObject;
+    }
 
     /** Consume at most one array from the input port and produce
      *  the minimum of its elements on the <i>output</i> port and the index
@@ -118,52 +132,5 @@ public class ArrayMinimum extends Transformer {
             output.send(0, currentMin);
             index.broadcast(new IntToken(indexValue));
         }
-    }
-
-    /** Return the type constraints of this actor.
-     *  In this class, the constraints are that the type of the input port
-     *  is an array type, and the type of the output port is no less than
-     *  the type of the elements of the input array.
-     *  @return A list of instances of Inequality.
-     *  @see ptolemy.actor.TypedAtomicActor#typeConstraintList
-     */
-    public List typeConstraintList() {
-        Type inputType = input.getType();
-
-        if (inputType == BaseType.UNKNOWN) {
-            input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        } else if (!(inputType instanceof ArrayType)) {
-            throw new IllegalStateException("ArrayElement.typeConstraintList: "
-                    + "The input type, " + inputType.toString() + " is not an "
-                    + "array type.");
-        }
-
-        // NOTE: superclass will put in type constraints for
-        // the input and output, so we can't invoke the superclass.
-        List result = new LinkedList();
-
-        // collect constraints from contained Typeables
-        Iterator ports = portList().iterator();
-
-        while (ports.hasNext()) {
-            Typeable port = (Typeable) ports.next();
-            result.addAll(port.typeConstraintList());
-        }
-
-        Iterator typeables = attributeList(Typeable.class).iterator();
-
-        while (typeables.hasNext()) {
-            Typeable typeable = (Typeable) typeables.next();
-            result.addAll(typeable.typeConstraintList());
-        }
-
-        // Add type constraint for the input.
-        ArrayType inputArrayType = (ArrayType) input.getType();
-        InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
-        Inequality inequality = new Inequality(elementTerm, output
-                .getTypeTerm());
-
-        result.add(inequality);
-        return result;
     }
 }

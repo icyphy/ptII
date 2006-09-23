@@ -71,7 +71,7 @@ public class ArrayAppend extends Transformer {
         input.setMultiport(true);
 
         // Set type constraints.
-        input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         output.setTypeAtLeast(input);
     }
 
@@ -89,6 +89,7 @@ public class ArrayAppend extends Transformer {
         ArrayAppend newObject = (ArrayAppend) (super.clone(workspace));
 
         // Set the type constraints.
+        newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }

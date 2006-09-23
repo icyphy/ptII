@@ -65,6 +65,12 @@
     <entity name="Case" class="ptolemy.actor.lib.hoc.Case">
         <property name="control" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
+        <property name="CaseIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 357, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{185, 150}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
@@ -73,7 +79,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.5, 186.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{271.3923611111111, 192.1076388888889}">
         </property>
         <port name="input" class="ptolemy.actor.lib.hoc.MultiCompositePort">
             <property name="input"/>
@@ -187,7 +193,7 @@
             <link port="Scale2.input" relation="relation4"/>
             <link port="Scale2.output" relation="relation2"/>
         </entity>
-        <entity name="default" class="ptolemy.actor.lib.hoc.Refinement">
+        <entity name="default" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 40}">
                 </property>
@@ -261,8 +267,8 @@
 <title>SequencePlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="99.0"/>
+<yRange min="-9.824526126243327" max="141.1749639214755"/>
 <noGrid/>
 <default stems="yes"/>
 </plot>?>

@@ -296,11 +296,9 @@ public class IterateOverArray extends TypedCompositeActor implements
 
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
-            ArrayType arrayType = new ArrayType(BaseType.UNKNOWN);
-            port.setTypeEquals(arrayType);
+            port.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         }
 
-        super.getDirector();
         return super.typeConstraintList();
     }
 
@@ -764,37 +762,30 @@ public class IterateOverArray extends TypedCompositeActor implements
                         continue;
                     }
 
-                    Type sourcePortType = sourcePort.getType();
+                    // Require the source port to be an array.
+                    Inequality arrayInequality = new Inequality(
+                            sourcePort.getTypeTerm(), ArrayType.ARRAY_BOTTOM);
+                    result.add(arrayInequality);
 
-                    if (!(sourcePortType instanceof ArrayType)) {
-                        throw new InternalErrorException(
-                                "Source port was expected to be an array type: "
-                                        + sourcePort.getFullName()
-                                        + ", but it had type: "
-                                        + sourcePortType);
+                    // Next require that the element type of the source port array
+                    // be compatible with the destination port.
+                    try {
+                        Inequality ineq = new Inequality(
+                                ArrayType.elementType(sourcePort), destinationPort.getTypeTerm());
+                        result.add(ineq);
+                    } catch (IllegalActionException e) {
+                        throw new InternalErrorException(e);
                     }
-
-                    InequalityTerm elementTerm = ((ArrayType) sourcePortType)
-                            .getElementTypeTerm();
-                    Inequality ineq = new Inequality(elementTerm,
-                            destinationPort.getTypeTerm());
-                    result.add(ineq);
                 } else if (destinationPort.getContainer().equals(this)) {
-                    Type destinationPortType = destinationPort.getType();
-
-                    if (!(destinationPortType instanceof ArrayType)) {
-                        throw new InternalErrorException(
-                                "Destination port was expected to be an array type: "
-                                        + destinationPort.getFullName()
-                                        + ", but it had type: "
-                                        + destinationPortType);
+                    // Require that the destination port type be an array
+                    // with elements compatible with the source port.
+                    try {
+                        Inequality ineq = new Inequality(
+                                ArrayType.arrayOf(sourcePort), destinationPort.getTypeTerm());
+                        result.add(ineq);
+                    } catch (IllegalActionException e) {
+                        throw new InternalErrorException(e);
                     }
-
-                    InequalityTerm elementTerm = ((ArrayType) destinationPortType)
-                            .getElementTypeTerm();
-                    Inequality ineq = new Inequality(sourcePort.getTypeTerm(),
-                            elementTerm);
-                    result.add(ineq);
                 }
             }
         }

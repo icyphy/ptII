@@ -122,15 +122,14 @@ public class LMSAdaptive extends FIR {
         // taps parameter of the base class.  Setting it will just
         // cause the base class to be set.
         initialTaps = new Parameter(this, "initialTaps");
-
-        ArrayType tapTypes = new ArrayType(BaseType.UNKNOWN);
-        initialTaps.setTypeEquals(tapTypes);
+        initialTaps.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         initialTaps.setExpression("{1.0, 0.0, 0.0, 0.0}");
 
         // set type constraints.
         error.setTypeSameAs(input);
         stepSize.setTypeSameAs(input);
         tapValues.setTypeSameAs(taps);
+        taps.setTypeAtLeast(initialTaps);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -195,9 +194,11 @@ public class LMSAdaptive extends FIR {
         LMSAdaptive newObject = (LMSAdaptive) (super.clone(workspace));
 
         // set the type constraints
+        newObject.initialTaps.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         newObject.error.setTypeSameAs(newObject.input);
         newObject.tapValues.setTypeSameAs(newObject.taps);
         newObject.stepSize.setTypeSameAs(newObject.input);
+        newObject.taps.setTypeAtLeast(newObject.initialTaps);
         return newObject;
     }
 

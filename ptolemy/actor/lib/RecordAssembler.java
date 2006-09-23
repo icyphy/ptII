@@ -136,6 +136,18 @@ public class RecordAssembler extends TypedAtomicActor {
 
         return true;
     }
+    
+    /** Override the base class to compute the type constraints.
+     *  It is an optimization to force this to happen before scheduling
+     *  because this has the side effect of incrementing the workspace
+     *  version number, which will force recalculation of the schedule
+     *  on the next run.
+     *  @exception IllegalActionException If the base class throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        typeConstraintList();
+    }
 
     /** Return the type constraints of this actor. The type constraint is
      *  that the type of the fields of the output RecordToken is no less
@@ -143,6 +155,9 @@ public class RecordAssembler extends TypedAtomicActor {
      *  @return a list of Inequality.
      */
     public List typeConstraintList() {
+        if (workspace().getVersion() == _typeConstraintListVersion) {
+            return _typeConstraintList;
+        }
         Object[] portArray = inputPortList().toArray();
         int size = portArray.length;
         String[] labels = new String[size];
@@ -159,7 +174,7 @@ public class RecordAssembler extends TypedAtomicActor {
         output.setTypeEquals(declaredType);
 
         // set the constraints between record fields and input ports
-        List constraints = new LinkedList();
+        _typeConstraintList = new LinkedList();
 
         // since the output port has a clone of the above RecordType, need to
         // get the type from the output port.
@@ -172,9 +187,18 @@ public class RecordAssembler extends TypedAtomicActor {
             String label = inputPort.getName();
             Inequality inequality = new Inequality(inputPort.getTypeTerm(),
                     outputType.getTypeTerm(label));
-            constraints.add(inequality);
+            _typeConstraintList.add(inequality);
         }
-
-        return constraints;
+        _typeConstraintListVersion = workspace().getVersion();
+        return _typeConstraintList;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** Cached list of type constraints. */
+    private List _typeConstraintList;
+    
+    /** Version number when the cache was last updated. */
+    private long _typeConstraintListVersion = -1;
 }

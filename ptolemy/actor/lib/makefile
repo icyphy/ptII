@@ -98,6 +98,7 @@ JSRCS = \
 	Accumulator.java \
 	ArrayAppend.java \
 	ArrayAverage.java \
+	ArrayContains.java \
 	ArrayElement.java \
 	ArrayExtract.java \
 	ArrayLength.java \

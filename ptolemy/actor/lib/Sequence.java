@@ -34,9 +34,9 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -80,7 +80,6 @@ public class Sequence extends TypedAtomicActor {
         // set values parameter
         values = new Parameter(this, "values");
         values.setExpression("{1}");
-        values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         // Set the Repeat Flag.
         repeat = new Parameter(this, "repeat", new BooleanToken(false));
@@ -92,9 +91,7 @@ public class Sequence extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
 
         // set type constraint
-        ArrayType valuesArrayType = (ArrayType) values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        output.setTypeAtLeast(ArrayType.elementType(values));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,9 +130,11 @@ public class Sequence extends TypedAtomicActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Sequence newObject = (Sequence) super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType) newObject.values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 

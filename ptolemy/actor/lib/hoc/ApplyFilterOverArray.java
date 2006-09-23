@@ -117,7 +117,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
         super(container, name);
 
         inputArray = new TypedIOPort(this, "inputArray", true, false);
-        inputArray.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        inputArray.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         outputArray = new TypedIOPort(this, "outputArray", false, true);
         outputArray.setTypeSameAs(inputArray);
 
@@ -226,6 +226,11 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
         newActor._manager = null;
         newActor._model = null;
         newActor._throwable = null;
+        
+        // Set type constraints.
+        newActor.inputArray.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
+        newActor.outputArray.setTypeSameAs(newActor.inputArray);
+
         return newActor;
     }
 
