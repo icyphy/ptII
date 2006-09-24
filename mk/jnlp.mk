@@ -822,7 +822,9 @@ DIST_BASE = ptolemyII/ptII6.0/jnlp-6.0.alpha
 DIST_DIR = /export/home/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
-	ptolemy/configs/hyvisual/hyvisualPlanet.gif
+	ptolemy/configs/hyvisual/hyvisualPlanet.gif \
+	ptolemy/vergil/vergilApplet.jar
+
 KEYSTORE2=/users/ptII/adm/certs/ptkeystore
 KEYALIAS2=ptolemy
 # make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
