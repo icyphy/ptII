@@ -829,9 +829,6 @@ DIST_DIR = /export/home/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
 	ptolemy/configs/hyvisual/hyvisualPlanet.gif \
-	$(CODEGEN_DOMAIN_JARS) \
-	ptolemy/vergil/vergilApplet.jar \
-	ptolemy/gui/demo/ShowRawDocumentApplet.class
 
 KEYSTORE2=/users/ptII/adm/certs/ptkeystore
 KEYALIAS2=ptolemy
@@ -856,6 +853,15 @@ DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII6.0/ptII6.0.alpha
 update_gr_codeDoc:
 	scp ptolemy/domains/gr/gr.jar bennett:$(DIST_JAR)/ptolemy/domains/gr
 	ssh bennett "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-6.0.alpha/signed/doc/codeDoc.jar"
+
+APPLET_FILES_TO_BE_UPDATED = \
+	$(CODEGEN_DOMAIN_JARS) \
+	ptolemy/vergil/vergilApplet.jar \
+	ptolemy/gui/demo/ShowRawDocumentApplet.class
+
+update_applet_files:
+	tar -cf - $(APPLET_FILES_TO_BE_UPDATED) | ssh bennett "cd $(DIST_JAR); gtar -xvf -"
+	ssh bennett "cd $(DIST_JAR)/doc; jar -xf codeDoc.jar"
 
 #make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
 
