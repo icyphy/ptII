@@ -823,6 +823,7 @@ DIST_DIR = /export/home/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
 	ptolemy/configs/hyvisual/hyvisualPlanet.gif \
+	$(CODEGEN_DOMAIN_JARS) \
 	ptolemy/vergil/vergilApplet.jar
 
 KEYSTORE2=/users/ptII/adm/certs/ptkeystore
