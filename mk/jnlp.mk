@@ -459,21 +459,22 @@ $(SIGNED_DIR):
 	fi
 
 $(KEYSTORE): 
-	"$(KEYTOOL)" -genkey \
+	if [ ! -f $(KEYSTORE) ]; then \
+	   "$(KEYTOOL)" -genkey \
 		-dname $(KEYDNAME) \
 		-keystore $(KEYSTORE) \
 		-alias $(KEYALIAS) \
 		$(STOREPASSWORD) \
-		$(KEYPASSWORD)
-	"$(KEYTOOL)" -selfcert \
+		$(KEYPASSWORD); \
+	   "$(KEYTOOL)" -selfcert \
 		-keystore $(KEYSTORE) \
 		-alias $(KEYALIAS) \
 		$(STOREPASSWORD) \
-		$(KEYPASSWORD)
-	"$(KEYTOOL)" -list \
+		$(KEYPASSWORD); \
+	   "$(KEYTOOL)" -list \
 		-keystore $(KEYSTORE) \
-		$(STOREPASSWORD)
-
+		$(STOREPASSWORD); \
+	fi
 
 # Web Start: DSP version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
@@ -661,6 +662,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergil.jnlp.in > $@
+	ls -l $@
 	if [ ! -f $(SIGNED_DIR)/$(FULL_MAIN_JAR) ]; then \
 		echo "$(SIGNED_DIR)$(FULL_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
@@ -670,11 +672,13 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	fi
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
+	ls -l $@
 	"$(MKJNLP)" $@ \
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(SIGNED_DIR) \
 		$(FULL_MAIN_JAR) \
 		$(FULL_JNLP_JARS)
+	ls -l $@
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
@@ -684,11 +688,13 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(FULL_MAIN_JAR)`; \
 	cp -p $(FULL_MAIN_JAR) `dirname $(SIGNED_DIR)/$(FULL_MAIN_JAR)`; \
+	ls -l $@
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
 		$(SIGNED_DIR)/$(FULL_MAIN_JAR) $(KEYALIAS)
+	ls -l $@
 
 
 # We first copy the jars, then sign them so as to avoid
@@ -824,7 +830,8 @@ DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
 	ptolemy/configs/hyvisual/hyvisualPlanet.gif \
 	$(CODEGEN_DOMAIN_JARS) \
-	ptolemy/vergil/vergilApplet.jar
+	ptolemy/vergil/vergilApplet.jar \
+	ptolemy/gui/demo/ShowRawDocumentApplet.class
 
 KEYSTORE2=/users/ptII/adm/certs/ptkeystore
 KEYALIAS2=ptolemy
