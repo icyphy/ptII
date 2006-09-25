@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<processing>
+  <job name="unjar sources">
+    <executeclass name="ptolemy.util.FileUtilities">
+      <arg>foo.jar</arg>
+    </executeclass>
+  </job>
+</processing>

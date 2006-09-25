@@ -73,9 +73,9 @@
         <panel classname="PacksPanel"/>
         <panel classname="SummaryPanel"/>
         <panel classname="InstallPanel"/>
+        <panel classname="ProcessPanel"/>
         <panel classname="ShortcutPanel"/>
         <panel classname="SimpleFinishPanel"/>
-
     </panels>
     
     <!-- 
@@ -259,8 +259,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/vendors/misc/joystick"/>
             <file src="../../jar_dist/ptolemy/actor/lib/x10/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/x10/demo"/>
-            <file src="../../jar_dist/vendors/misc/x10/tjx10p-12/lib/x10.jar"
-                  targetdir="$INSTALL_PATH/vendors/misc/x10/tjx10p-12/lib"/>
+            <file src="../../jar_dist/vendors/misc/x10/tjx10p-13/lib/x10.jar"
+                  targetdir="$INSTALL_PATH/vendors/misc/x10/tjx10p-13/lib"/>
             <file src="../../jar_dist/lib/ptCal.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/lib/saxon8.jar"

@@ -11,7 +11,7 @@
   <icon>../../doc/img/ptIIplanet.ico</icon>
   <jre>
     <path>jre</path> 
-    <minVersion>1.6.0</minVersion>
+    <minVersion>1.4.0</minVersion>
   </jre>
   <versionInfo>
     <fileVersion>6.0.0.2</fileVersion>
