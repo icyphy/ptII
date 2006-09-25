@@ -95,7 +95,7 @@ public abstract class ScalarToken extends Token implements
         }
         ScalarToken result = _absolute();
         
-        if (_isUnitless()) {
+        if (_unitCategoryExponents != null && !_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
         }
         return result;
@@ -257,7 +257,7 @@ public abstract class ScalarToken extends Token implements
      */
     public BitwiseOperationToken bitwiseNot() throws IllegalActionException {
         ScalarToken result = _bitwiseNot();
-        if (_isUnitless()) {
+        if (_unitCategoryExponents != null && !_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
         }
         return result;
@@ -1412,7 +1412,7 @@ public abstract class ScalarToken extends Token implements
         }
 
         ScalarToken result = _add(convertedArgument);
-        if (!_isUnitless()) {
+        if (_unitCategoryExponents != null && !_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
         }
         return result;
@@ -1450,7 +1450,7 @@ public abstract class ScalarToken extends Token implements
         }
 
         ScalarToken result = _bitwiseAnd(convertedArgument);
-        if (!_isUnitless()) {
+        if (_unitCategoryExponents != null && !_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
         }
         return result;
@@ -1489,7 +1489,7 @@ public abstract class ScalarToken extends Token implements
         }
 
         ScalarToken result = _bitwiseOr(convertedArgument);
-        if (_isUnitless()) {
+        if (_unitCategoryExponents != null && !_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
         }
         return result;
@@ -1528,7 +1528,7 @@ public abstract class ScalarToken extends Token implements
         }
 
         ScalarToken result = _bitwiseXor(convertedArgument);
-        if (!_isUnitless()) {
+        if (_unitCategoryExponents != null && !_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
         }
         return result;
@@ -1559,7 +1559,9 @@ public abstract class ScalarToken extends Token implements
         ScalarToken result = _divide(convertedArgument);
 
         // compute units
-        if (!_isUnitless() || !convertedArgument._isUnitless()) {
+        if ( (_unitCategoryExponents != null && !_isUnitless())
+                || (convertedArgument._unitCategoryExponents != null
+                        && !convertedArgument._isUnitless())) {
             result._unitCategoryExponents = _subtractCategoryExponents(convertedArgument);
         }
         return result;
@@ -1687,7 +1689,7 @@ public abstract class ScalarToken extends Token implements
         }
 
         ScalarToken result = _modulo(convertedArgument);
-        if (!_isUnitless()) {
+        if (_unitCategoryExponents != null && !_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
         }
         return result;
@@ -1718,7 +1720,9 @@ public abstract class ScalarToken extends Token implements
         ScalarToken result = _multiply(convertedArgument);
 
         // compute units
-        if (!_isUnitless() || !convertedArgument._isUnitless()) {
+        if ( (_unitCategoryExponents != null && !_isUnitless())
+                || (convertedArgument._unitCategoryExponents != null
+                        && !convertedArgument._isUnitless())) {
             result._unitCategoryExponents = _addCategoryExponents(convertedArgument);
 
         }
@@ -1756,7 +1760,7 @@ public abstract class ScalarToken extends Token implements
 
         ScalarToken result = _subtract(convertedArgument);
 
-        if (!_isUnitless()) {
+        if (_unitCategoryExponents != null && !_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
         }
         return result;

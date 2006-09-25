@@ -139,8 +139,8 @@ public class DoubleToken extends ScalarToken {
         if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
             IntToken intToken = IntToken.convert(token);
             DoubleToken result = new DoubleToken(intToken.doubleValue());
-            if (!UnitUtilities.isUnitless(intToken._unitCategoryExponents)) {
-                result._unitCategoryExponents = intToken._copyOfCategoryExponents();
+            if (intToken._unitCategoryExponents != null
+                && !UnitUtilities.isUnitless(intToken._unitCategoryExponents)) {                result._unitCategoryExponents = intToken._copyOfCategoryExponents();
             }
             return result;
         } else {

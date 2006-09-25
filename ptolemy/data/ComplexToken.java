@@ -134,8 +134,8 @@ public class ComplexToken extends ScalarToken {
         if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
             DoubleToken doubleToken = DoubleToken.convert(token);
             ComplexToken result = new ComplexToken(doubleToken.complexValue());
-            if (!UnitUtilities.isUnitless(doubleToken._unitCategoryExponents)) {
-                result._unitCategoryExponents = doubleToken
+            if (doubleToken._unitCategoryExponents != null
+                && !UnitUtilities.isUnitless(doubleToken._unitCategoryExponents)) {                result._unitCategoryExponents = doubleToken
                         ._copyOfCategoryExponents();
             }
             return result;

@@ -132,7 +132,8 @@ public class IntToken extends ScalarToken {
             UnsignedByteToken unsignedByteToken = UnsignedByteToken
                     .convert(token);
             IntToken result = new IntToken(unsignedByteToken.intValue());
-            if (!UnitUtilities.isUnitless(unsignedByteToken._unitCategoryExponents)) {
+            if (unsignedByteToken._unitCategoryExponents != null
+                && !UnitUtilities.isUnitless(unsignedByteToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = unsignedByteToken
                     ._copyOfCategoryExponents();
             }
