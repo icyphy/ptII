@@ -35,6 +35,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FixType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
+import ptolemy.data.unit.UnitUtilities;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.FixPoint;
@@ -255,9 +256,8 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
     public final FixToken quantize(Quantization quant) {
         //FIXME: Move this to ScalarToken.
         FixToken result = _quantize(quant);
-        if (!_isUnitless) {
+        if (!_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
-            result._isUnitless = false;
         }
         return result;
     }

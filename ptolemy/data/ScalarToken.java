@@ -94,9 +94,9 @@ public abstract class ScalarToken extends Token implements
             return this;
         }
         ScalarToken result = _absolute();
-        if (!_isUnitless) {
+        
+        if (_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
-            result._isUnitless = false;
         }
         return result;
     }
@@ -257,9 +257,8 @@ public abstract class ScalarToken extends Token implements
      */
     public BitwiseOperationToken bitwiseNot() throws IllegalActionException {
         ScalarToken result = _bitwiseNot();
-        if (!_isUnitless) {
+        if (_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
-            result._isUnitless = false;
         }
         return result;
     }
@@ -1020,7 +1019,6 @@ public abstract class ScalarToken extends Token implements
         // FIXME: shouldn't this be protected???  it violates the
         // immutability of tokens.
         _unitCategoryExponents = UnitUtilities.newUnitArrayInCategory(index);
-        _isUnitless = false;
     }
 
     /** Return a new token whose value is the value of the argument
@@ -1306,8 +1304,7 @@ public abstract class ScalarToken extends Token implements
      *  @return True if this token does not have a unit.
      */
     protected boolean _isUnitless() {
-        return _isUnitless;
-        //return UnitUtilities.isUnitless(_unitCategoryExponents);
+        return UnitUtilities.isUnitless(_unitCategoryExponents);
     }
 
     /** Return a new token whose value is the value of this token
@@ -1415,9 +1412,8 @@ public abstract class ScalarToken extends Token implements
         }
 
         ScalarToken result = _add(convertedArgument);
-        if (!_isUnitless) {
+        if (!_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
-            result._isUnitless = false;
         }
         return result;
     }
@@ -1454,9 +1450,8 @@ public abstract class ScalarToken extends Token implements
         }
 
         ScalarToken result = _bitwiseAnd(convertedArgument);
-        if (!_isUnitless) {
+        if (!_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
-            result._isUnitless = false;
         }
         return result;
     }
@@ -1494,9 +1489,8 @@ public abstract class ScalarToken extends Token implements
         }
 
         ScalarToken result = _bitwiseOr(convertedArgument);
-        if (!_isUnitless) {
+        if (_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
-            result._isUnitless = false;
         }
         return result;
     }
@@ -1534,9 +1528,8 @@ public abstract class ScalarToken extends Token implements
         }
 
         ScalarToken result = _bitwiseXor(convertedArgument);
-        if (!_isUnitless) {
+        if (!_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
-            result._isUnitless = false;
         }
         return result;
     }
@@ -1566,10 +1559,8 @@ public abstract class ScalarToken extends Token implements
         ScalarToken result = _divide(convertedArgument);
 
         // compute units
-        if (!_isUnitless || !convertedArgument._isUnitless) {
+        if (!_isUnitless() || !convertedArgument._isUnitless()) {
             result._unitCategoryExponents = _subtractCategoryExponents(convertedArgument);
-            result._isUnitless = UnitUtilities
-                    .isUnitless(result._unitCategoryExponents);
         }
         return result;
     }
@@ -1696,9 +1687,8 @@ public abstract class ScalarToken extends Token implements
         }
 
         ScalarToken result = _modulo(convertedArgument);
-        if (!_isUnitless) {
+        if (!_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
-            result._isUnitless = false;
         }
         return result;
     }
@@ -1728,10 +1718,9 @@ public abstract class ScalarToken extends Token implements
         ScalarToken result = _multiply(convertedArgument);
 
         // compute units
-        if (!_isUnitless || !convertedArgument._isUnitless) {
+        if (!_isUnitless() || !convertedArgument._isUnitless()) {
             result._unitCategoryExponents = _addCategoryExponents(convertedArgument);
-            result._isUnitless = UnitUtilities
-                    .isUnitless(result._unitCategoryExponents);
+
         }
         return result;
     }
@@ -1766,18 +1755,10 @@ public abstract class ScalarToken extends Token implements
         }
 
         ScalarToken result = _subtract(convertedArgument);
-        if (!_isUnitless) {
+
+        if (!_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
-            result._isUnitless = false;
         }
         return result;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** True if this token is unitless.  If setUnitCategory() is called,
-     *  then this token has units and this variable will be false.
-     */
-    protected boolean _isUnitless = true;
 }

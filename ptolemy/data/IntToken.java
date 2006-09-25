@@ -31,6 +31,7 @@ package ptolemy.data;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
+import ptolemy.data.unit.UnitUtilities;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
@@ -131,9 +132,10 @@ public class IntToken extends ScalarToken {
             UnsignedByteToken unsignedByteToken = UnsignedByteToken
                     .convert(token);
             IntToken result = new IntToken(unsignedByteToken.intValue());
-            result._unitCategoryExponents = unsignedByteToken
+            if (!UnitUtilities.isUnitless(unsignedByteToken._unitCategoryExponents)) {
+                result._unitCategoryExponents = unsignedByteToken
                     ._copyOfCategoryExponents();
-            result._isUnitless = unsignedByteToken._isUnitless;
+            }
             return result;
         }
 

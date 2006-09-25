@@ -33,6 +33,7 @@ package ptolemy.data;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
+import ptolemy.data.unit.UnitUtilities;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -134,10 +135,9 @@ public class LongToken extends ScalarToken {
         if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
             IntToken intToken = IntToken.convert(token);
             LongToken result = new LongToken(intToken.longValue());
-            if (!intToken._isUnitless) {
+            if (!UnitUtilities.isUnitless(intToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = intToken
                         ._copyOfCategoryExponents();
-                result._isUnitless = false;
             }
             return result;
         }

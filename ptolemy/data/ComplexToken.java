@@ -33,6 +33,7 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
+import ptolemy.data.unit.UnitUtilities;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
@@ -133,10 +134,9 @@ public class ComplexToken extends ScalarToken {
         if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
             DoubleToken doubleToken = DoubleToken.convert(token);
             ComplexToken result = new ComplexToken(doubleToken.complexValue());
-            if (!doubleToken._isUnitless) {
+            if (!UnitUtilities.isUnitless(doubleToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = doubleToken
                         ._copyOfCategoryExponents();
-                result._isUnitless = false;
             }
             return result;
         }
