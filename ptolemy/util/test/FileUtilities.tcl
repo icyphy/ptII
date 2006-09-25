@@ -248,3 +248,33 @@ test FileUtilities-8.7 {nameToURL: with http:/www} {
 	[$url toString] [java::null] [java::null]]
     list [$file1 toString]
 } {http://www}
+
+######################################################################
+####
+#
+test FileUtilities-9.1 {extractJarFile in current directory} {
+    file delete -force a
+    set r0 [list [file exists a/1] [file exists a/b/2] [file isdirectory a/c]]
+    java::call ptolemy.util.FileUtilities extractJarFile \
+		  extractJarFileTest.jar [java::null]
+    set r1 [list [file exists a/1] [file exists a/b/2] [file isdirectory a/c]]
+    file delete -force a
+    list $r0 $r1
+} {{0 0 0} {1 1 1}}
+
+######################################################################
+####
+#
+test FileUtilities-9.2 {extractJarFile in subdirectory} {
+    file delete -force extractJarFileTestDir
+    set r0 [list [file exists extractJarFileTestDir/a/1] \
+		[file exists extractJarFileTestDir/a/b/2] \
+		[file isdirectory extractJarFileTestDir/a/c]]
+    java::call ptolemy.util.FileUtilities extractJarFile \
+		  extractJarFileTest.jar extractJarFileTestDir
+    set r1 [list [file exists extractJarFileTestDir/a/1] \
+		[file exists extractJarFileTestDir/a/b/2] \
+		[file isdirectory extractJarFileTestDir/a/c]]
+    file delete -force extractJarFileTestDir
+    list $r0 $r1
+} {{0 0 0} {1 1 1}}
