@@ -988,7 +988,7 @@ bldmastrcoverage:
 		JFLAGS="-deprecation -g -source 1.5" \
 		JSDATABASE=/home/bldmastr/jsdatabase \
 		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
-		JSCLASSPATH=/usr/local/JavaScope/JavaScope.zip \
+		JSCLASSPATH=/usr/local/JavaScope/JavaScope.jar \
 		clean \
 		all \
 		remote1distclean \
