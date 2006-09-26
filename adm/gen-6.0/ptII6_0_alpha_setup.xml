@@ -58,6 +58,7 @@
         <res src="border6.png" id="Installer.image.5"/>
         <res src="border7.png" id="Installer.image.6"/>
         <res src="border8.png" id="Installer.image.7"/>
+        <res src="ProcessPanel.Spec.xml" id="ProcessPanel.Spec.xml"/>
     </resources>
     
 
@@ -359,7 +360,8 @@ The Ptiny pack is required.
         </pack>
         <pack name="Sources" required="no">
             <description>The Ptolemy II sources.</description>
-            <file src="srctmp" targetdir="$INSTALL_PATH"/>
+            <file src="ptII6.0.alpha.src.jar" targetdir="$INSTALL_PATH"/>
+            <file src="ExtractJarFile.class" targetdir="$INSTALL_PATH"/>
         </pack>
     </packs>
     

@@ -58,10 +58,6 @@ import java.util.jar.JarFile;
  @Pt.AcceptedRating Red (cxh)
  */
 public class ExtractJarFile {
-    /** Instances of this class cannot be created.
-     */
-    private ExtractJarFile() {
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -165,7 +161,7 @@ public class ExtractJarFile {
 
             try {
                 File parent = destinationFile.getParentFile();
-                if (!parent.exists()) {
+                if (parent != null && !parent.exists()) {
                     if (!parent.mkdirs()) {
                         throw new IOException("Failed to create directories "
                                 + "for \"" + parent + "\".");

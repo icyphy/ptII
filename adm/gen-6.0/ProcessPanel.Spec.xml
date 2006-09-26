@@ -2,8 +2,9 @@
 
 <processing>
   <job name="unjar sources">
-    <executeclass name="ptolemy.util.FileUtilities">
-      <arg>foo.jar</arg>
+    <executeclass name="ExtractJarFile">
+      <arg>ptII6.0.alpha.src.jar</arg>
+      <arg>$INSTALL_PATH</arg>
     </executeclass>
   </job>
 </processing>
