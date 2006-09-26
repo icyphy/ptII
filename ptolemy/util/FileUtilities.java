@@ -548,7 +548,7 @@ public class FileUtilities {
 
             try {
                 File parent = destinationFile.getParentFile();
-                if (!parent.exists()) {
+                if (parent != null && !parent.exists()) {
                     if (!parent.mkdirs()) {
                         throw new IOException("Failed to create directories "
                                 + "for \"" + parent + "\".");
