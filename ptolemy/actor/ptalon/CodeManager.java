@@ -310,7 +310,6 @@ public class CodeManager {
      * Add a Parameter to the PtalonActor
      * with the specified name.
      * @param name The name of the parameter.
-     * @param expression The expression to set the parameter value to.
      * @exception PtalonRuntimeException If the symbol does not exist, or if
      * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
      * trying to create the parameter.
