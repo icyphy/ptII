@@ -46,7 +46,9 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	lib
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 #Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
