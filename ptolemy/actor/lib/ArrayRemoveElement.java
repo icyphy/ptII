@@ -120,7 +120,7 @@ public class ArrayRemoveElement extends TypedAtomicActor {
      *  @return A new ComponentEntity.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayContains newObject = (ArrayContains) super.clone(workspace);
+        ArrayRemoveElement newObject = (ArrayRemoveElement) super.clone(workspace);
         try {
 			newObject.array.setTypeAtLeast(ArrayType.arrayOf(newObject.element));
 	        newObject.output.setTypeAtLeast(newObject.array);
