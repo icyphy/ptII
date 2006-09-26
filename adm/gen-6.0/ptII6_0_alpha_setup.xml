@@ -17,8 +17,8 @@
     -->
     <info>
         <appname>Ptolemy II</appname>
-        <appversion>6.0-alpha</appversion>
-	<appsubpath>Ptolemy/ptII6.0-alpha</appsubpath>
+        <appversion>6.0.alpha</appversion>
+	<appsubpath>Ptolemy/ptII6.0.alpha</appsubpath>
         <url>http://ptolemy.eecs.berkeley.edu/ptolemyII</url>
 	<javaversion>1.4</javaversion>
     </info>

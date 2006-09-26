@@ -34,6 +34,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -65,23 +67,48 @@ public class ExtractJarFile {
             String jarFileName, String directoryName) throws IOException,
             SecurityException {
 
-        JarFile jarFile = new JarFile(jarFileName);
-        Enumeration entries = jarFile.entries();
-        while (entries.hasMoreElements()) {
-            JarEntry jarEntry = (JarEntry) entries.nextElement();
-            File destinationFile = new File(directoryName, jarEntry.getName());
-            if (handler != null) {
-                handler.logOutput("Extracting \"" + destinationFile + "\".",
-                        false);
-            }
-            if (jarEntry.isDirectory()) {
-                if (!destinationFile.isDirectory() && !destinationFile.mkdirs()) {
-                    throw new IOException("Warning, failed to create "
-                            + "directory for \"" + destinationFile + "\".");
+        JarFile jarFile = null;
+        try {
+            jarFile = new JarFile(jarFileName);
+            Enumeration entries = jarFile.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry jarEntry = (JarEntry) entries.nextElement();
+                File destinationFile = new File(directoryName,
+                        jarEntry.getName());
+                if (handler != null) {
+                    handler.logOutput("Extracting \"" + destinationFile
+                            + "\".", false);
                 }
-            } else {
-                _binaryCopyStream(jarFile.getInputStream(jarEntry),
-                        destinationFile);
+                if (jarEntry.isDirectory()) {
+                    if (!destinationFile.isDirectory()
+                            && !destinationFile.mkdirs()) {
+                        throw new IOException("Warning, failed to create "
+                                + "directory for \"" + destinationFile
+                                + "\".");
+                    }
+                } else {
+                    InputStream jarInputStream = null;
+                    try {
+                        jarInputStream = jarFile.getInputStream(jarEntry);
+                        _binaryCopyStream(jarInputStream, destinationFile);
+                    } finally {
+                        if (jarInputStream != null) {
+                            try {
+                                jarInputStream.close();
+                            } catch (Throwable throwable) {
+                                throw new RuntimeException(throwable);
+                            }
+                        }
+                    }
+                }
+            } 
+        } finally {
+            if (jarFile != null) {
+                try {
+                    jarFile.close();
+                } catch (Throwable throwable) {
+                    throw new RuntimeException(throwable);
+                }
             }
         }
     }
@@ -116,6 +143,13 @@ public class ExtractJarFile {
         }
     }
 
+    /** Extract files from a jar file and delete the jar file after extraction.
+     *  @param handler The handler to which progress messages are sent.
+     *  @param args The arguments.  The first argument, which is required,
+     *  is the path to the jar file to be expanded.  The second argument,
+     *  which is not required, is the directory in which to expand the jar
+     *  file.
+     */
     public void run(AbstractUIProcessHandler handler, String[] args) {
         String jarFileName = args[0];
         String directoryName = null;
@@ -123,12 +157,26 @@ public class ExtractJarFile {
             directoryName = args[1];
         }
         try {
+            File jarFile = new File(directoryName, jarFileName);
+            handler.logOutput("Extracting " + jarFile, false);
             extractJarFile(handler, jarFileName, directoryName);
+            handler.logOutput("Deleting " + jarFileName
+                    + " so as to save space.", false);
+            jarFile.delete();
+            if (jarFile.exists()) {
+                handler.logOutput("Problem deleting " + jarFileName
+                        + ", it still exists?\n"
+                        + "Setting up for deletion on exit.", true);
+                jarFile.deleteOnExit();
+            } 
         } catch (Throwable throwable) {
-            handler
-                    .logOutput("Failed to extract \"" + jarFileName
-                            + "\" into + \"" + directoryName + "\": "
-                            + throwable, true);
+            StringWriter stringWriter = new StringWriter();
+            PrintWriter printWriter = new PrintWriter(stringWriter);
+            throwable.printStackTrace(printWriter);
+            
+            handler.logOutput("Failed to extract \"" + jarFileName
+                            + "\" into \"" + directoryName + "\": "
+                            + stringWriter.toString(), true);
         }
     }
 
