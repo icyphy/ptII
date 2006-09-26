@@ -106,6 +106,7 @@ JSRCS = \
 	ArrayMaximum.java \
 	ArrayMinimum.java \
 	ArrayPeakSearch.java \
+	ArrayRemoveElement.java \
 	ArraySort.java \
 	ArrayToElements.java \
 	Average.java \
