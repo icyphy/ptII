@@ -7,7 +7,7 @@
                 location="applications"/>
 
   <shortcut
-    name="vergil -ptiny"
+    name="Vergil -ptiny"
     programGroup="yes"
     desktop="no"
     applications="no"
@@ -42,7 +42,7 @@
    </shortcut>
 
   <shortcut
-    name="vergil -full"
+    name="Vergil"
     programGroup="yes"
     desktop="no"
     applications="no"
@@ -89,25 +89,6 @@
     workingDirectory="$INSTALL_PATH"
     description="VisualSense, the Wireless Design GUI"
     iconFile="$INSTALL_PATH\doc\img\visualsense.ico"
-    iconIndex="0"
-    initialState="normal">
-
-    <createForPack name="Full"/>
-  </shortcut>
-
-
-  <shortcut
-    name="Viptos"
-    programGroup="yes"
-    desktop="no"
-    applications="no"
-    startMenu="no"
-    startup="no"
-    target="$INSTALL_PATH\viptos.exe"
-    commandLine=""
-    workingDirectory="$INSTALL_PATH"
-    description="Viptos, the Ptolemy/TinyOS GUI"
-    iconFile="$INSTALL_PATH\doc\img\viptos.ico"
     iconIndex="0"
     initialState="normal">
 

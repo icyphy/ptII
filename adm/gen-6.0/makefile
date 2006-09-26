@@ -83,7 +83,10 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 
-#make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
+#make USER=cxh PTIIHOME=${PTII} PTIIADM=${PTII}/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
+
+windows_ransom:
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII6.0.alpha PTIIADM=/cygdrive/c/tmp/cxh/ptII6.0.alpha/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_12/bin/jar clean all src.jar
 
 USER =		ptII
 PTIIHOME =	/users/ptII
@@ -2344,12 +2347,28 @@ softwalls.tar.gz: softwalls
 	gzip -9 softwalls.tar
 
 
+IZPACKDIR=c:/Program Files/IzPack
+
 PTSETUP=ptII$(WINDOWS_VERSION)_setup
 # IzPack installer
-$(PTSETUP).jar: $(PTSETUP).xml
-	c:/cxh/src/izpack/izpack3.9.0/bin/compile $<
+$(PTSETUP).jar: $(PTSETUP).xml ExtractJarFile.jar
+	"${IZPACKDIR}/bin/compile" $<
 
-	#"c:/Program Files/IzPack/bin/compile" $<
+#	c:/cxh/src/izpack/izpack3.9.0/bin/compile $<
+
+
+CLASSPATHSEPARATOR=;
+IZPACK_CLASSDIR=${IZPACKDIR}/lib/compiler.jar${CLASSPATHSEPARATOR}${IZPACKDIR}/lib/installer.jar${CLASSPATHSEPARATOR}
+#IZPACK_CLASSDIR=c:/cxh/src/izpack/trunk/src/lib
+ExtractJarFile.class: ExtractJarFile.java
+	javac -classpath "$(IZPACK_CLASSDIR)" $^
+
+Echo.class: Echo.java
+	javac -classpath "$(IZPACK_CLASSDIR)" $^
+
+ExtractJarFile.jar: ExtractJarFile.class Echo.class
+	jar -cf $@ $^
+
 
 # Location of Launch4J, see http://launch4j.sourceforge.net/
 L4J_DIR=c:/Program Files/Launch4j
@@ -2361,16 +2380,6 @@ L4JC=$(L4J_DIR)/launch4jc.exe
 $(PTSETUP).exe: $(PTSETUP)_l4j.xml $(PTSETUP).jar ExtractJarFile.class
 		"$(L4JC)" `cygpath --windows $$PWD/$<`
 
-IZPACK_CLASSDIR=c:/cxh/src/izpack/trunk/src/lib
-ExtractJarFile.class: ExtractJarFile.java
-	javac -classpath $(IZPACK_CLASSDIR) $^
-
-Echo.class: Echo.java
-	javac -classpath $(IZPACK_CLASSDIR) $^
-
-
-ExtractJarFile.jar: ExtractJarFile.class Echo.class
-	jar -cf $@ $^
 
 setup: $(PTSETUP).exe
 

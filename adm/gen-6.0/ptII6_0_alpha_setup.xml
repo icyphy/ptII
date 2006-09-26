@@ -206,8 +206,7 @@ The Ptiny pack is required.
 
             <!-- No Viptos, it does not work, it requires ptinyos -->
             <!-- file src="../../viptos.exe" targetdir="$INSTALL_PATH"/ -->
-            <!-- file src="../../doc/img/viptos.ico"
-	          targetdir="$INSTALL_PATH/doc/img/"/ -->
+            <!-- file src="../../doc/img/viptos.ico" targetdir="$INSTALL_PATH/doc/img/"/ -->
 
 	    <!-- Run (make full_jars) and put the output here -->
             <file src="../../jar_dist/ptolemy/hsif/hsif.jar"
@@ -348,8 +347,7 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/doc"/>
             <file src="../../jar_dist/doc/codeDocHyVisual.jar"
                   targetdir="$INSTALL_PATH/doc"/>
-            <!-- file src="../../jar_dist/doc/codeDocViptos.jar"
-                  targetdir="$INSTALL_PATH/doc"/ -->
+            <!-- file src="../../jar_dist/doc/codeDocViptos.jar" targetdir="$INSTALL_PATH/doc"/ -->
             <file src="../../jar_dist/doc/codeDocVisualSense.jar"
                   targetdir="$INSTALL_PATH/doc"/>
 

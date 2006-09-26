@@ -75,10 +75,10 @@ public class ExtractJarFile {
                 JarEntry jarEntry = (JarEntry) entries.nextElement();
                 File destinationFile = new File(directoryName,
                         jarEntry.getName());
-                if (handler != null) {
-                    handler.logOutput("Extracting \"" + destinationFile
-                            + "\".", false);
-                }
+                //if (handler != null) {
+                //    handler.logOutput("Extracting \"" + destinationFile
+                //            + "\".", false);
+                //}
                 if (jarEntry.isDirectory()) {
                     if (!destinationFile.isDirectory()
                             && !destinationFile.mkdirs()) {
