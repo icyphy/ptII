@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
@@ -115,40 +116,57 @@ public class NestedActorManager extends CodeManager {
                 _currentTree.assignPtalonParameters(actor);
                 _currentTree.makeConnections(actor);
             } else if (getType(symbol).equals("actorparameter")) {
-                PtalonActorParameter parameter = (PtalonActorParameter) _actor
+                PtalonParameter parameter = (PtalonParameter) _actor
                         .getAttribute(getMappedName(symbol));
                 if (!parameter.hasValue()) {
                     throw new PtalonRuntimeException("Parameter" + symbol + "has no value");
                 }
                 String expression = parameter.getExpression();
-                if (expression.startsWith("ptalonActor:")) {
-                    File file = new File(_parameterToImport(expression));
+                String[] parsedExpression;
+                if (expression.contains("(")) {
+                    parsedExpression = _parseActorExpression(expression);
+                } else {
+                    parsedExpression = new String[1];
+                    parsedExpression[0] = expression;
+                }
+                String actor = parsedExpression[0];
+                if (actor.startsWith("ptalonActor:")) {
+                    File file = new File(_parameterToImport(actor));
                     PtalonActor ptalonActor = new PtalonActor(_actor,
                             uniqueName);
                     ptalonActor.ptalonCodeLocation.setToken(new StringToken(
                             file.toString()));
                     ptalonActor.setNestedDepth(_actor.getNestedDepth() + 1);
+                    for (int i = 1; i < parsedExpression.length; i = i + 2) {
+                        String lhs = parsedExpression[i];
+                        String rhs = parsedExpression[i+1];
+                        if (rhs.startsWith("<")) {
+                            rhs = rhs.substring(1, rhs.length()-2);
+                        }
+                        Parameter param = (Parameter) ptalonActor.getAttribute(lhs);
+                        param.setExpression(rhs);
+                    }
                     _currentTree.assignPtalonParameters(ptalonActor);
                     _currentTree.makeConnections(ptalonActor);
-                } else if (expression.startsWith("createWith:")) {
-                    PtalonActor container = _actor;
-                    int depth = _actor.getNestedDepth();
-                    while (depth > 0) {
-                        container = (PtalonActor) container.getContainer();
-                        depth--;
-                    }
-                    ComponentEntity newInstance = container.createNestedActor(_actor,
-                            expression.substring(11));
-                    _currentTree.makeConnections(newInstance);
                 } else {
-                    Class<?> genericClass = Class.forName(expression);
+                    Class<?> genericClass = Class.forName(actor);
                     Class<? extends ComponentEntity> entityClass = genericClass
                             .asSubclass(ComponentEntity.class);
                     Constructor<? extends ComponentEntity> entityConstructor = entityClass
                             .getConstructor(CompositeEntity.class, String.class);
                     ComponentEntity entity = entityConstructor.newInstance(
                             _actor, uniqueName);
+                    for (int i = 1; i < parsedExpression.length; i = i + 2) {
+                        String lhs = parsedExpression[i];
+                        String rhs = parsedExpression[i+1];
+                        if (rhs.startsWith("<")) {
+                            rhs = rhs.substring(1, rhs.length()-2);
+                        }
+                        Parameter param = (Parameter) entity.getAttribute(lhs);
+                        param.setExpression(rhs);
+                    }
                     _currentTree.makeConnections(entity);
+                    _currentTree.assignNonPtalonParameters(entity);
                 }
                 _currentTree.created = true;
             } else { // type of name not "import" or "parameter".
@@ -591,6 +609,57 @@ public class NestedActorManager extends CodeManager {
     }
     
     /**
+     * Break an expression like:
+     * <p>a(x := <1/>, y := <2/>)(z := b(y := <2/>, z := <2/>))
+     * <p>into an array of expressions like:
+     * <p>a
+     * <p>x
+     * <p><1/>
+     * <p>y
+     * <p><2/>
+     * <p>z
+     * <p>b(y : = <2/>, z := <2/>)
+     * 
+     * @param expression 
+     * @return The array of expression components.
+     */
+    private String[] _parseActorExpression(String expression) {
+        expression = expression.replaceAll("\\)(\\p{Blank})*\\(", ",");
+        String[] actorSeperated = expression.split("\\(", 2);
+        String actor = actorSeperated[0];
+        String remains = actorSeperated[1];
+        remains = remains.trim().substring(0, remains.length() - 1);
+        LinkedList<Integer> markers = new LinkedList<Integer>();
+        int parenthesis = 0;
+        for (int i = 0; i < remains.length() - 1; i++) {
+            if (remains.charAt(i) == '(') {
+                parenthesis++;
+            } else if (remains.charAt(i) == ')') {
+                parenthesis--;
+            } else if ((remains.charAt(i) == ',') && (parenthesis == 0)) {
+                markers.add(i);
+            }
+        }
+        String[] assignments = new String[markers.size() + 1];
+        int lastMarker = -1;
+        int index = 0;
+        for (int thisMarker : markers) {
+            assignments[index] = remains.substring(lastMarker+1, thisMarker);
+            index++;
+            lastMarker = thisMarker;
+        }
+        assignments[index] = remains.substring(lastMarker+1, remains.length());
+        String[] output = new String[2 * assignments.length + 1];
+        output[0] = actor;
+        for (int i = 0; i < assignments.length; i++) {
+            String[] equation = assignments[i].split(":=", 2);
+            output[2*i + 1] = equation[0].trim();
+            output[2*i + 2] = equation[1].trim();
+        }
+        return output;
+    }
+
+    /**
      * Return a unique symbol for the given symbol.
      * The symbol will always end with a whole number.  For
      * instance _uniqueSymbol("Foo") may return "Foo0", "Foo1",
@@ -614,8 +683,7 @@ public class NestedActorManager extends CodeManager {
         } catch (Exception e) {
             throw new PtalonScopeException("Unable to get unique name for " + symbol, e);
         }
-    }
-
+    }    
     
     ///////////////////////////////////////////////////////////////////
     ////                        private members                    ////
@@ -770,10 +838,7 @@ public class NestedActorManager extends CodeManager {
         
         /**
          * Assign all Ptalon pararamters of the specified actor
-         * their corresponding value, which should be something
-         * like "createWith:Foo12", where "Foo12" is the 
-         * unique name of the corresponding actor for this
-         * parameter.
+         * their corresponding value.
          * @param actor The actor that contains these parameters.
          * @exception PtalonRuntimeException If thrown trying to access the parameter,
          * or if unable to set the token for the corresponding paramter.
@@ -781,10 +846,9 @@ public class NestedActorManager extends CodeManager {
         public void assignPtalonParameters(PtalonActor actor) throws PtalonRuntimeException {
             for (ActorTree child : _children) {
                 String paramName = child.getActorParameter();
-                PtalonActorParameter param = actor.getPtalonParameter(paramName);
+                PtalonParameter param = actor.getPtalonParameter(paramName);
                 try {
-                    String token = "createWith:" + child.getName();
-                    param.setToken(new StringToken(token));
+                    param.setToken(new StringToken(child.getExpression()));
                 } catch (IllegalActionException e) {
                     throw new PtalonRuntimeException("Unable to set token for name " + paramName, e);
                 }
@@ -800,6 +864,10 @@ public class NestedActorManager extends CodeManager {
                     }
                     ASTPtRootNode _parseTree = parser.generateParseTree(expression);
                     Parameter parameter = (Parameter) actor.getAttribute(boolParam);
+                    if (parameter == null) {
+                        String uniqueName = actor.uniqueName(boolParam);
+                        parameter = new PtalonExpressionParameter(actor, uniqueName);
+                    }
                     Token result = _parseTreeEvaluator.evaluateParseTree(_parseTree, _scope);
                     parameter.setToken(result);
                 }
@@ -808,6 +876,37 @@ public class NestedActorManager extends CodeManager {
             }
         }  
         
+        /**
+         * Assign all non-Ptalon pararamters of the specified non-Ptalon actor
+         * their corresponding value.
+         * @param actor The actor that contains these parameters.
+         * @exception PtalonRuntimeException If thrown trying to access the parameter,
+         * or if unable to set the token for the corresponding paramter.
+         */
+        public void assignNonPtalonParameters(ComponentEntity actor) throws PtalonRuntimeException {
+            try {
+                PtParser parser = new PtParser();
+                ParseTreeEvaluator  _parseTreeEvaluator = new ParseTreeEvaluator();
+                PtalonExpressionScope _scope = new PtalonExpressionScope(_actor);
+                for (String boolParam : _parameters.keySet()) {
+                    String expression = _parameters.get(boolParam);
+                    if (expression == null) {
+                        throw new PtalonRuntimeException("Unable to find expression label for parameter " + boolParam);
+                    }
+                    ASTPtRootNode _parseTree = parser.generateParseTree(expression);
+                    Parameter parameter = (Parameter) actor.getAttribute(boolParam);
+                    if (parameter == null) {
+                        String uniqueName = actor.uniqueName(boolParam);
+                        parameter = new Parameter(actor, uniqueName);
+                    }
+                    Token result = _parseTreeEvaluator.evaluateParseTree(_parseTree, _scope);
+                    parameter.setToken(result);
+                }
+            } catch (Exception e) {
+                throw new PtalonRuntimeException("Trouble making connections", e);
+            }
+        }  
+
         public ComponentEntity createNestedActor(PtalonActor container)
                 throws PtalonRuntimeException {
             ComponentEntity entity;
@@ -822,7 +921,7 @@ public class NestedActorManager extends CodeManager {
                     assignPtalonParameters(actor);
                     entity = actor;
                 } else if (getType(_symbol).equals("actorparameter")) {
-                    PtalonActorParameter parameter = (PtalonActorParameter) _actor
+                    PtalonParameter parameter = (PtalonParameter) _actor
                             .getAttribute(getMappedName(_symbol));
                     if (!parameter.hasValue()) {
                         throw new PtalonRuntimeException(
@@ -873,6 +972,40 @@ public class NestedActorManager extends CodeManager {
         }
         
         /**
+         * Get an expression representing this actor tree, like
+         * a := b(c := d())(n := <2/>)
+         * @return
+         * @throws PtalonRuntimeException
+         */
+        public String getExpression() throws PtalonRuntimeException {
+            if (_actorParameter == null) {
+                throw new PtalonRuntimeException("Not assigned a paramter name");
+            }
+            String type = "";
+            try {
+                type = getType(_symbol);
+            } catch (PtalonScopeException e) {
+                throw new PtalonRuntimeException("Scope Exception", e);
+            }
+            String output = "";
+            if (type.equals("import")) {
+                output += "ptalonActor:" + _imports.get(_symbol);
+            } else if (type.equals("actorparameter")) {
+                Parameter parameter = _actor.getPtalonParameter(_symbol);
+                output += parameter.getExpression();
+            } else {
+                throw new PtalonRuntimeException("Not assigned a paramter name");
+            }
+            for (ActorTree child : _children) {
+                output += "(" + child.getExpression() + ")";
+            }
+            for (String param : _parameters.keySet()) {
+                output += "(" + param + " := " + _parameters.get(param) + ")";
+            }
+            return output;
+        }
+        
+        /**
          * Get the first actor tree decendant of this
          * actor tree with the specified name.  This
          * should be unique, as each subtree should have
@@ -910,7 +1043,7 @@ public class NestedActorManager extends CodeManager {
         public boolean isReady() throws PtalonRuntimeException {
             try {
                 if (getType(_symbol).equals("actorparameter")) {
-                    PtalonActorParameter param = _actor.getPtalonParameter(_symbol);
+                    PtalonParameter param = _actor.getPtalonParameter(_symbol);
                     if (!param.hasValue()) {
                         return false;
                     }
@@ -1126,6 +1259,10 @@ public class NestedActorManager extends CodeManager {
          */
         private String _symbol;
         
+        /**
+         * The left hand side in the Ptalon expression
+         * param := ...
+         */
         private String _actorParameter = null;
     }
 

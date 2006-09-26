@@ -92,7 +92,7 @@ public class CodeManager {
         _actorSet = set;
     }
     /**
-     * Add a PtalonActorParameter to the PtalonActor
+     * Add a PtalonParameter to the PtalonActor
      * with the specified name.
      * @param name The name of the parameter.
      * @exception PtalonRuntimeException If the symbol does not exist, or if
@@ -102,7 +102,7 @@ public class CodeManager {
     public void addActorParameter(String name) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
         try {
-            PtalonActorParameter parameter = new PtalonActorParameter(_actor, uniqueName);
+            PtalonParameter parameter = new PtalonParameter(_actor, uniqueName);
             _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
@@ -113,7 +113,7 @@ public class CodeManager {
     }
     
     /**
-     * Add an invisible PtalonActorParameter to the PtalonActor
+     * Add an invisible PtalonParameter to the PtalonActor
      * with the specified name.
      * @param name The name of the parameter.
      * @param expression The expression representing the parameter.
@@ -124,7 +124,7 @@ public class CodeManager {
     public void addActorParameter(String name, String expression) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
         try {
-            PtalonActorParameter parameter = new PtalonActorParameter(_actor, uniqueName);
+            PtalonParameter parameter = new PtalonParameter(_actor, uniqueName);
             parameter.setVisibility(Settable.NONE);
             _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
@@ -318,7 +318,7 @@ public class CodeManager {
     public void addParameter(String name) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
         try {
-            PtalonParameter parameter = new PtalonParameter(_actor, uniqueName);
+            PtalonExpressionParameter parameter = new PtalonExpressionParameter(_actor, uniqueName);
             _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
@@ -339,7 +339,7 @@ public class CodeManager {
     public void addParameter(String name, String expression) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
         try {
-            PtalonParameter parameter = new PtalonParameter(_actor, uniqueName);
+            PtalonExpressionParameter parameter = new PtalonExpressionParameter(_actor, uniqueName);
             parameter.setVisibility(Settable.NONE);
             _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
@@ -510,7 +510,7 @@ public class CodeManager {
         try {
             while (!_unassignedParameters.isEmpty()) {
         
-                PtalonActorParameter parameter = _unassignedParameters.remove(0);
+                PtalonParameter parameter = _unassignedParameters.remove(0);
                 String expression = _unassignedParameterValues.remove(0);
                 parameter.setToken(expression);
             }
@@ -598,7 +598,7 @@ public class CodeManager {
     public Token getValueOf(String param) throws PtalonRuntimeException {
         try {
             String uniqueName = getMappedName(param);
-            PtalonActorParameter att = (PtalonActorParameter) _actor
+            PtalonParameter att = (PtalonParameter) _actor
                     .getAttribute(uniqueName);
             att.toString(); 
             /*This previous line seems to cause some evaluation that
@@ -625,7 +625,7 @@ public class CodeManager {
     public Type getTypeOf(String param) throws PtalonRuntimeException {
         try {
             String uniqueName = getMappedName(param);
-            PtalonActorParameter att = (PtalonActorParameter) _actor
+            PtalonParameter att = (PtalonParameter) _actor
                     .getAttribute(uniqueName);
             return att.getType();
         } catch (Exception e) {
@@ -643,7 +643,7 @@ public class CodeManager {
     public InequalityTerm getTypeTermOf(String param) throws PtalonRuntimeException {
         try {
             String uniqueName = getMappedName(param);
-            PtalonActorParameter att = (PtalonActorParameter) _actor
+            PtalonParameter att = (PtalonParameter) _actor
                     .getAttribute(uniqueName);
             return att.getTypeTerm();
         } catch (Exception e) {
@@ -825,7 +825,7 @@ public class CodeManager {
             if (getType(name).equals("actorparameter")) {
                 if (isCreated(name)) {
                     String uniqueName = getMappedName(name);
-                    PtalonActorParameter param = (PtalonActorParameter) _actor
+                    PtalonParameter param = (PtalonParameter) _actor
                             .getAttribute(uniqueName);
                     if (param.hasValue()) {
                         return true;
@@ -1076,8 +1076,8 @@ public class CodeManager {
      * by Ptalon; i.e. constant parameters.  The first list are the parameters,
      * and the second list are the expressions to assign to the parameters.
      */
-    private List<PtalonActorParameter> _unassignedParameters = new 
-            LinkedList<PtalonActorParameter>();
+    private List<PtalonParameter> _unassignedParameters = new 
+            LinkedList<PtalonParameter>();
     private List<String> _unassignedParameterValues = new LinkedList<String>();
     
 
@@ -1236,7 +1236,7 @@ public class CodeManager {
                 }
                 if (_symbols.get(symbol).endsWith("parameter")) {
                     try {
-                        PtalonActorParameter param = (PtalonActorParameter) _actor
+                        PtalonParameter param = (PtalonParameter) _actor
                                 .getAttribute(_nameMappings.get(symbol));
                         if (!param.hasValue()) {
                             return false;

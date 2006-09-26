@@ -41,15 +41,6 @@ options {
 
 /**
  * Parse for statement:
- * <p>import <i>qualified_identifier</i>;
- * <p>Generate tree #(IMPORT <i>qualified_identifier</i>).
- */
-import_declaration:
-	(IMPORT^ qualified_identifier SEMI!)
-;
-
-/**
- * Parse for statement:
  * <p><i>portType</i> <i>ID</i>
  * <p>where portType is either "port", "inport", or "outport".
  * Generate corresponding tree #(PORT ID), #(INPORT ID), or #(OUTPORT ID).
@@ -146,17 +137,28 @@ qualified_identifier!
 	String identifier = "";
 }
 :
-	a:ID {
-		identifier = identifier + a.getText();
-	}
-	(DOT b:ID
+	(p:ID COLON
 	{
-		identifier = identifier + "." +  b.getText();
+		identifier = identifier + #p.getText() + ":";
+	}
+	)?	
+	a:keyword_or_identifier 
+	{
+		identifier = identifier + #a.getText();
+	} 
+	(DOT b:keyword_or_identifier
+	{
+		identifier = identifier + "." +  #b.getText();
 	}
 	)*
 	{
 		#qualified_identifier = #[QUALID, identifier];
 	}
+;
+
+keyword_or_identifier:
+	ID | IMPORT | PORT | INPORT | OUTPORT | PARAMETER 
+	| ACTOR | RELATION | TRUE | FALSE	
 ;
 
 /**
@@ -273,11 +275,7 @@ actor_definition!
 	{
 		#actor_definition = #[ACTOR_DEFINITION];
 	}
-	(i:import_declaration
-	{
-		#actor_definition.addChild(#i);
-	}
-	)* a:ID
+	a:ID
 	{
 		#actor_definition.setText(a.getText());
 	}
@@ -359,6 +357,8 @@ RPAREN: ')';
 SEMI: ';';
 
 EQUALS: '=';
+
+COLON: ':';
 
 // Escape sequence
 ESC:

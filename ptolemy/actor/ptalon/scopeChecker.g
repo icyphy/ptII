@@ -50,15 +50,6 @@ options {
 	private String scopeName;
 }
 
-import_declaration throws PtalonScopeException
-:
-	#(IMPORT a:qualified_identifier
-	{
-		info.addImport(a.getText());
-	}
-	)
-;
-
 port_declaration throws PtalonScopeException
 :
 	#(PORT a:ID
@@ -205,6 +196,5 @@ actor_definition [NestedActorManager manager] throws PtalonScopeException
 	{
 		info.setActorSymbol(a.getText());
 	}
-	(import_declaration)* (atomic_statement | 
-		conditional_statement)*)
+	(atomic_statement | conditional_statement)*)
 ;

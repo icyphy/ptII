@@ -52,11 +52,6 @@ options {
 	
 }
 
-import_declaration throws PtalonRuntimeException
-:
-	#(IMPORT qualified_identifier)
-;
-
 port_declaration throws PtalonRuntimeException
 :
 	#(PORT a:ID
@@ -253,6 +248,5 @@ actor_definition[NestedActorManager info] throws PtalonRuntimeException
 	this.info.startAtTop();
 }
 :
-	#(a:ACTOR_DEFINITION (import_declaration)* (atomic_statement | 
-		conditional_statement)*)
+	#(a:ACTOR_DEFINITION (atomic_statement | conditional_statement)*)
 ;

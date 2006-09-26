@@ -1,12 +1,8 @@
 package ptolemy.actor.ptalon;
 
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 
 /**
  * @author acataldo
@@ -17,7 +13,7 @@ import ptolemy.kernel.util.Settable;
  * @author acataldo
  *
  */
-public class PtalonIntParameter extends PtalonParameter {
+public class PtalonExpressionParameter extends PtalonParameter {
 
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -34,10 +30,10 @@ public class PtalonIntParameter extends PtalonParameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public PtalonIntParameter(NamedObj container, String name)
+    public PtalonExpressionParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setStringMode(false);
-        setTypeEquals(BaseType.INT);
-    }
+    }        
+        
 }

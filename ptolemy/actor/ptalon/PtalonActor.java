@@ -115,7 +115,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         if (actor == null) {
             throw new PtalonRuntimeException("No such actor " + actorName);
         }
-        PtalonActorParameter param = (PtalonActorParameter) getAttribute(paramName);
+        PtalonParameter param = (PtalonParameter) getAttribute(paramName);
         if (param == null) {
             throw new PtalonRuntimeException("No such parameter " + paramName);
         }
@@ -140,18 +140,20 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         super.attributeChanged(att);
         if (att == ptalonCodeLocation) {
             _initializePtalonCodeLocation();
-        } else if (att instanceof PtalonActorParameter) {
-            PtalonActorParameter p = (PtalonActorParameter) att;
+        } else if (att instanceof PtalonParameter) {
+            PtalonParameter p = (PtalonParameter) att;
             if ((p.hasValue())
                     && (!p.getVisibility().equals(Settable.NOT_EDITABLE))) {
                 try {
-                    p.setVisibility(Settable.NOT_EDITABLE);
+                    if (p.getVisibility().equals(Settable.FULL)) {
+                        p.setVisibility(Settable.NOT_EDITABLE);
+                    }
                     _assignedPtalonParameters.add(p);
                     if ((_ast == null) || (_codeManager == null)) {
                         return;
                     }
                     boolean ready = true;
-                    for (PtalonActorParameter param : _ptalonParameters) {
+                    for (PtalonParameter param : _ptalonParameters) {
                         if (!param.hasValue()) {
                             ready = false;
                             break;
@@ -274,18 +276,18 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     }
     
     /**
-     * Get the PtalonActorParameter with the name specified in
+     * Get the PtalonParameter with the name specified in
      * the Ptalon code.
      * @param name The name of the parameter in the Ptalon code,
      * which may be a prefix of the actual parameter's name.
-     * @return The PtalonActorParameter
-     * @exception PtalonRuntimeException If no such PtalonActorParameter exists.
+     * @return The PtalonParameter
+     * @exception PtalonRuntimeException If no such PtalonParameter exists.
      */
-    public PtalonActorParameter getPtalonParameter(String name)
+    public PtalonParameter getPtalonParameter(String name)
             throws PtalonRuntimeException {
         try {
             String uniqueName = _codeManager.getMappedName(name);
-            PtalonActorParameter param = (PtalonActorParameter) getAttribute(uniqueName);
+            PtalonParameter param = (PtalonParameter) getAttribute(uniqueName);
             return param;
         } catch (Exception e) {
             throw new PtalonRuntimeException("Unable to access parameter "
@@ -381,7 +383,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     ////                        protected methods                    ////
 
     /**
-     * Add the attribute, and if attribute is a PtalonActorParameter,
+     * Add the attribute, and if attribute is a PtalonParameter,
      * add it to a list of Ptalon parameters.
      * @exception NameDuplicationException If the superclass throws it.
      * @throws IllegalActionException If the superclass throws it.
@@ -389,8 +391,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     protected void _addAttribute(Attribute p) throws NameDuplicationException,
             IllegalActionException {
         super._addAttribute(p);
-        if (p instanceof PtalonActorParameter) {
-            _ptalonParameters.add((PtalonActorParameter) p);
+        if (p instanceof PtalonParameter) {
+            _ptalonParameters.add((PtalonParameter) p);
         }
     }
 
@@ -439,7 +441,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 output.write(_getIndentPrefix(depth) + "<configure>\n");
                 output.write(_getIndentPrefix(depth + 1) + "<ptalon file=\"" + 
                         displayName + "\">\n");
-                for (PtalonActorParameter param : _assignedPtalonParameters) {
+                for (PtalonParameter param : _assignedPtalonParameters) {
                     output.write(_getIndentPrefix(depth + 2) + "<ptalonParameter name=\"" + 
                             param.getName() + "\" value=\"" + param.getExpression() + "\"/>\n");
                 }
@@ -500,7 +502,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     /**
      * A list of all ptalon paramters who have been assinged a value.
      */
-    private List<PtalonActorParameter> _assignedPtalonParameters = new LinkedList<PtalonActorParameter>();
+    private List<PtalonParameter> _assignedPtalonParameters = new LinkedList<PtalonParameter>();
 
     /**
      * The abstract syntax tree for the PtalonActor.
@@ -527,7 +529,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     /**
      * A list of all ptalon parameters for this actor.
      */
-    private List<PtalonActorParameter> _ptalonParameters = new LinkedList<PtalonActorParameter>();
+    private List<PtalonParameter> _ptalonParameters = new LinkedList<PtalonParameter>();
     
 
 }
