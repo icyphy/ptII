@@ -2361,8 +2361,16 @@ L4JC=$(L4J_DIR)/launch4jc.exe
 $(PTSETUP).exe: $(PTSETUP)_l4j.xml $(PTSETUP).jar ExtractJarFile.class
 		"$(L4JC)" `cygpath --windows $$PWD/$<`
 
+IZPACK_CLASSDIR=c:/cxh/src/izpack/trunk/src/lib
 ExtractJarFile.class: ExtractJarFile.java
-	javac -classpath c:/cxh/src/izpack/trunk/src/lib ExtractJarFile.java
+	javac -classpath $(IZPACK_CLASSDIR) $^
+
+Echo.class: Echo.java
+	javac -classpath $(IZPACK_CLASSDIR) $^
+
+
+ExtractJarFile.jar: ExtractJarFile.class Echo.class
+	jar -cf $@ $^
 
 setup: $(PTSETUP).exe
 

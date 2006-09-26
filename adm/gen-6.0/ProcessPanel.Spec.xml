@@ -2,9 +2,15 @@
 
 <processing>
   <job name="unjar sources">
+    <executeForPack name="Sources"/>
     <executeclass name="ExtractJarFile">
       <arg>ptII6.0.alpha.src.jar</arg>
       <arg>$INSTALL_PATH</arg>
+    </executeclass>
+  </job>
+  <job name="Done">
+    <executeclass name="Echo">
+      <arg>Processing completed, please press Next.</arg>
     </executeclass>
   </job>
 </processing>
