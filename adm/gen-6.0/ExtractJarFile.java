@@ -30,17 +30,10 @@ import com.izforge.izpack.util.AbstractUIProcessHandler;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.net.URI;
-import java.net.URL;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -69,7 +62,8 @@ public class ExtractJarFile {
      *  is null, then the files are extracted in the current directory.
      */
     public static void extractJarFile(AbstractUIProcessHandler handler,
-            String jarFileName, String directoryName) throws IOException, SecurityException {
+            String jarFileName, String directoryName) throws IOException,
+            SecurityException {
 
         JarFile jarFile = new JarFile(jarFileName);
         Enumeration entries = jarFile.entries();
@@ -81,8 +75,7 @@ public class ExtractJarFile {
                         false);
             }
             if (jarEntry.isDirectory()) {
-                if (!destinationFile.isDirectory()
-                        && !destinationFile.mkdirs()) {
+                if (!destinationFile.isDirectory() && !destinationFile.mkdirs()) {
                     throw new IOException("Warning, failed to create "
                             + "directory for \"" + destinationFile + "\".");
                 }
@@ -100,7 +93,7 @@ public class ExtractJarFile {
      *  which to extract the files from the jar file.  The second
      *  argument is optional.
      */
-    public static void main(String [] args) {
+    public static void main(String[] args) {
         if (args.length < 1 || args.length > 2) {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.util.FileUtilities jarFile [directory]\n"
@@ -111,7 +104,7 @@ public class ExtractJarFile {
         }
         String jarFileName = args[0];
         String directoryName = null;
-        if ( args.length >=2) {
+        if (args.length >= 2) {
             directoryName = args[1];
         }
         try {
@@ -123,18 +116,19 @@ public class ExtractJarFile {
         }
     }
 
-    public void run( AbstractUIProcessHandler handler, String[] args) {
+    public void run(AbstractUIProcessHandler handler, String[] args) {
         String jarFileName = args[0];
         String directoryName = null;
-        if ( args.length >=2) {
+        if (args.length >= 2) {
             directoryName = args[1];
         }
         try {
-            extractJarFile(handler, jarFileName, directoryName);    
+            extractJarFile(handler, jarFileName, directoryName);
         } catch (Throwable throwable) {
-            handler.logOutput("Failed to extract \"" + jarFileName 
-                    + "\" into + \"" + directoryName + "\": " + throwable,
-                    true); 
+            handler
+                    .logOutput("Failed to extract \"" + jarFileName
+                            + "\" into + \"" + directoryName + "\": "
+                            + throwable, true);
         }
     }
 
@@ -156,7 +150,7 @@ public class ExtractJarFile {
 
         try {
             input = new BufferedInputStream(inputStream);
-            
+
             BufferedOutputStream output = null;
 
             try {
