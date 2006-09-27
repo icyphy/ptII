@@ -115,7 +115,8 @@
             <input source="ptolemy/matlab/matlab.xml"/>
 	    <!-- No Ptalon in 6.0.alpha -->
             <!-- input source="ptolemy/actor/ptalon/ptalon.xml"/ -->
-            <input source="ptolemy/ptp/lib/ptpentities.xml"/>
+	    <!-- No ptp in 6.0.alpha -->
+            <!-- input source="ptolemy/ptp/lib/ptpentities.xml"/ -->
             <input source="ptolemy/actor/lib/python/python.xml"/>
             <input source="ptolemy/actor/lib/test.xml"/>
             <input source="ptolemy/actor/lib/security/security.xml"/>
