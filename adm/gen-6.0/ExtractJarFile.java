@@ -69,7 +69,8 @@ public class ExtractJarFile {
 
         JarFile jarFile = null;
         try {
-            jarFile = new JarFile(jarFileName);
+	    File jar = new File(directoryName, jarFileName);
+            jarFile = new JarFile(jar.getPath());
             Enumeration entries = jarFile.entries();
             while (entries.hasMoreElements()) {
                 JarEntry jarEntry = (JarEntry) entries.nextElement();
@@ -80,6 +81,11 @@ public class ExtractJarFile {
                 //            + "\".", false);
                 //}
                 if (jarEntry.isDirectory()) {
+		    if (handler != null) {
+			handler.logOutput("Extracting \"" + jarEntry
+					  + "\".", false);
+		    }
+
                     if (!destinationFile.isDirectory()
                             && !destinationFile.mkdirs()) {
                         throw new IOException("Warning, failed to create "

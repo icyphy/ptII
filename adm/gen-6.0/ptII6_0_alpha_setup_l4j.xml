@@ -1,6 +1,6 @@
 <launch4jConfig>
   <headerType>gui</headerType>
-  <dontWrapJar>true</dontWrapJar>
+  <dontWrapJar>false</dontWrapJar>
   <jar>ptII6_0_alpha_setup.jar</jar>
   <outfile>ptII6_0_alpha_setup.exe</outfile>
   <errTitle>ptIIsetup</errTitle>

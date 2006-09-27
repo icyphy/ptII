@@ -157,7 +157,7 @@
      iconIndex="0"
      description="This opens Adobe (Acrobat) Reader (if available) to look into or print the HyVisual (PDF) user documentation"
      >     
-     <createForPack name="Docs" />
+     <createForPack name="FullDocs" />
    </shortcut>
 
    <shortcut
@@ -173,7 +173,7 @@
      iconIndex="0"
      description="This opens Adobe (Acrobat) Reader (if available) to look into or print the VisualSense (PDF) user documentation"
      >	  
-     <createForPack name="Docs" />
+     <createForPack name="FullDocs" />
    </shortcut>
 
 </shortcuts>
