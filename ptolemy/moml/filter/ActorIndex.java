@@ -122,13 +122,13 @@ public class ActorIndex {
                 // The filter updates the classesToBeIndexed hashMap
                 namedObjClassesSeen.reset(modelName);
                 //URL modelURL = new File(modelName).toURL();
-                URL modelURL = FileUtilities.nameToURL(modelName, null, null);
-                System.out.println("Parsing: " + modelURL);
-                parser.reset();
                 try {
+                    URL modelURL = FileUtilities.nameToURL(modelName, null, null);
+                    System.out.println("Parsing: " + modelURL);
+                    parser.reset();
                     parser.parse(null, modelURL);
                 } catch (Exception ex) {
-                    System.err.println("Warning, failed to parse " + modelURL);
+                    System.err.println("Warning, failed to parse " + modelName);
                     ex.printStackTrace();
                 }
             }
