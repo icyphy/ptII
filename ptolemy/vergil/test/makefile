@@ -35,7 +35,7 @@ ME =		ptolemy/actor/test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJACL_JARS)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJACL_JARS)$(CLASSPATHSEPARATOR)$(ANTLR_DIR)/antlr.jar
 
 # AUXCLASSPATH is used by jtclsh
 AUXCLASSPATH =	$(CLASSPATH)
