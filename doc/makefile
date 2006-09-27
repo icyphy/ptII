@@ -891,6 +891,7 @@ findbugs.htm:  ptII.fb findbugs-exclude.xml makefile
 		-html:fancy.xsl "$(PTII)" > $@; \
 	else \
 	    echo "BTW - FindBugs program not found, skipping."; \
+	    echo "BTW - FindBugs program not found, skipping." > $@; \
 	fi
 
 
