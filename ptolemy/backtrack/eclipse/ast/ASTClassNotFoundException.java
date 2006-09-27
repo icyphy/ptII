@@ -56,9 +56,29 @@ public class ASTClassNotFoundException extends ASTRuntimeException {
     /** Construct an exception representing a failure occurred when
      *  trying to load a class during AST building or transformation.
      *
+     *  @param className The name of the class that causes the failure.
+     *  @param cause The cause.
+     */
+    public ASTClassNotFoundException(String className, Throwable cause) {
+        super("Class \"" + className + "\" not found.", cause);
+    }
+
+    /** Construct an exception representing a failure occurred when
+     *  trying to load a class during AST building or transformation.
+     *
      *  @param type The type that cannot be loaded as a class.
      */
     public ASTClassNotFoundException(Type type) {
         this(type.getName());
+    }
+
+    /** Construct an exception representing a failure occurred when
+     *  trying to load a class during AST building or transformation.
+     *
+     *  @param type The type that cannot be loaded as a class.
+     *  @param cause The cause.
+     */
+    public ASTClassNotFoundException(Type type, Throwable cause) {
+        this(type.getName(), cause);
     }
 }

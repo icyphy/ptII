@@ -241,8 +241,8 @@ public class TypeAnalyzer extends ASTVisitor {
         try {
             Type.setType(node, arrayType.removeOneDimension());
             Type.propagateOwner(node, node.getArray());
-        } catch (ClassNotFoundException e) {
-            throw new UnknownASTException();
+        } catch (ClassNotFoundException ex) {
+            throw new UnknownASTException(ex);
         }
     }
 
@@ -619,8 +619,8 @@ public class TypeAnalyzer extends ASTVisitor {
 
             try {
                 owner = ownerType.toClass(_state.getClassLoader());
-            } catch (ClassNotFoundException e) {
-                throw new ASTClassNotFoundException(ownerType);
+            } catch (ClassNotFoundException ex) {
+                throw new ASTClassNotFoundException(ownerType, ex);
             }
         }
 
@@ -921,8 +921,8 @@ public class TypeAnalyzer extends ASTVisitor {
 
             try {
                 owner = ownerType.toClass(_state.getClassLoader());
-            } catch (ClassNotFoundException e) {
-                throw new ASTClassNotFoundException(ownerType);
+            } catch (ClassNotFoundException ex) {
+                throw new ASTClassNotFoundException(ownerType, ex);
             }
         } else {
             owner = _state.getCurrentClass();
@@ -966,8 +966,8 @@ public class TypeAnalyzer extends ASTVisitor {
 
             try {
                 owner = ownerType.toClass(_state.getClassLoader());
-            } catch (ClassNotFoundException e) {
-                throw new ASTClassNotFoundException(ownerType);
+            } catch (ClassNotFoundException ex) {
+                throw new ASTClassNotFoundException(ownerType, ex);
             }
         } else {
             owner = _state.getCurrentClass();
@@ -1169,7 +1169,7 @@ public class TypeAnalyzer extends ASTVisitor {
                         currentClass.getName() + "$"
                                 + _state.nextAnonymousCount());
                 _state.nextTotalAnonymousCount();
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException ex) {
                 _eclipse_anonymous_scheme = true;
             }
         }
@@ -1189,8 +1189,8 @@ public class TypeAnalyzer extends ASTVisitor {
                 currentClass = _state.getClassLoader().searchForClass(
                         currentName.toString());
                 _state.enterClass(currentClass);
-            } catch (ClassNotFoundException e) {
-                throw new ASTClassNotFoundException(currentName.toString());
+            } catch (ClassNotFoundException ex) {
+                throw new ASTClassNotFoundException(currentName.toString(), ex);
             }
         }
 
@@ -1359,8 +1359,8 @@ public class TypeAnalyzer extends ASTVisitor {
         if (currentClass == null) {
             try {
                 currentClass = _state.getClassLoader().searchForClass(typeName);
-            } catch (ClassNotFoundException e) {
-                throw new ASTClassNotFoundException(typeName);
+            } catch (ClassNotFoundException ex) {
+                throw new ASTClassNotFoundException(typeName, ex);
             }
         } else {
             if (!_eclipse_anonymous_scheme) {
@@ -1385,8 +1385,8 @@ public class TypeAnalyzer extends ASTVisitor {
                     typeName = currentClass.getName() + "$" + typeName;
                     currentClass = _state.getClassLoader().searchForClass(
                             typeName);
-                } catch (ClassNotFoundException e) {
-                    throw new ASTClassNotFoundException(typeName);
+                } catch (ClassNotFoundException ex) {
+                    throw new ASTClassNotFoundException(typeName, ex);
                 }
             }
         }
@@ -1537,9 +1537,9 @@ public class TypeAnalyzer extends ASTVisitor {
                                 } else {
                                     compatibility += comp;
                                 }
-                            } catch (ClassNotFoundException e) {
+                            } catch (ClassNotFoundException ex) {
                                 // Not exact.
-                                throw new ASTClassNotFoundException(args[j]);
+                                throw new ASTClassNotFoundException(args[j], ex);
                             }
                         }
 
@@ -1740,8 +1740,8 @@ public class TypeAnalyzer extends ASTVisitor {
         try {
             _importedClasses.put(simpleName, _state.getClassLoader().loadClass(
                     classFullName));
-        } catch (ClassNotFoundException e) {
-            throw new ASTClassNotFoundException(classFullName);
+        } catch (ClassNotFoundException ex) {
+            throw new ASTClassNotFoundException(classFullName, ex);
         }
     }
 
@@ -1996,8 +1996,8 @@ public class TypeAnalyzer extends ASTVisitor {
             try {
                 typeAndOwner = _resolveNameFromClass(lastType.toClass(_state
                         .getClassLoader()), name);
-            } catch (ClassNotFoundException e) {
-                throw new ASTClassNotFoundException(lastType);
+            } catch (ClassNotFoundException ex) {
+                throw new ASTClassNotFoundException(lastType, ex);
             }
         }
 

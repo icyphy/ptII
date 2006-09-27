@@ -45,4 +45,11 @@ public class UnknownASTException extends ASTRuntimeException {
     public UnknownASTException() {
         super("Unknown AST exception.");
     }
+
+    /** Constrcut an unknown exception caused by the AST analyzer.
+     *  @param cause The cause.
+     */
+    public UnknownASTException(Throwable cause) {
+        super("Unknown AST exception.", cause );
+    }
 }
