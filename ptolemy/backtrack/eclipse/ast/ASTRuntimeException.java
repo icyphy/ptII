@@ -42,6 +42,9 @@ package ptolemy.backtrack.eclipse.ast;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class ASTRuntimeException extends RuntimeException {
+
+    // FIXME: Shouldn't this extend ptolemy.kernel.util.KernelRuntimeException?
+
     /** Create an exception with no message or cause.
      */
     public ASTRuntimeException() {
