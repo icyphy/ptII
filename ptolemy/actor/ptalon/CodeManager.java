@@ -36,14 +36,21 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+
+import antlr.RecognitionException;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
@@ -173,11 +180,12 @@ public class CodeManager {
             TypedIOPort port = new TypedIOPort(_actor, uniqueName);
             port.setInput(true);
             port.setOutput(false);
-            if (_currentTree.getType(name).equals("multiinport")) {
+            IfTree tree = _currentTree;
+            if (tree.getType(name).equals("multiinport")) {
                 port.setMultiport(true);
             }
-            _currentTree.setStatus(name, true);
-            _currentTree.mapName(name, uniqueName);
+            tree.setStatus(name, true);
+            tree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
         } catch (IllegalActionException e) {
@@ -539,6 +547,74 @@ public class CodeManager {
     }
 
     /**
+     * Enter the named for-block subscope.
+     * @param scope The named subscope.
+     * @param forBlock The AST for the subscope.
+     * @param populator The PtalonPopulator that called this statement. 
+     * @exception PtalonRuntimeException If the subscope does not exist.
+     */
+    public void enterForScope(String scope, PtalonAST forBlock, PtalonPopulator populator)
+            throws PtalonRuntimeException {
+        enterIfScope(scope);
+        _currentTree.forBlock = forBlock;
+        _currentTree.populator = populator;
+    }
+
+    
+    /**
+     * Evaluate the given expression and return its boolean value.
+     * The expression should return a boolean value, otherwise
+     * an exception is thrown.
+     * @param expression The expression to evaluate.
+     * @return The boolean result of evaluation.
+     * @throws PtalonRuntimeException If the result is not a boolean.
+     */
+    public boolean evaluateBoolean(String expression)
+            throws PtalonRuntimeException {
+        try {
+            BooleanToken result = (BooleanToken) evaluateExpression(expression);
+            return result.booleanValue();
+        } catch (ClassCastException e) {
+            throw new PtalonRuntimeException("Not a boolean token.");
+        }
+    }
+    
+    /**
+     * Evaluate the given expression and return the corresponding token.
+     * @param expression The expression to evaluate.
+     * @return The result of evaluation.
+     * @throws PtalonRuntimeException If unable to evaluate the expression.
+     */
+    public Token evaluateExpression(String expression)
+            throws PtalonRuntimeException {
+        try {
+            PtParser parser = new PtParser();
+
+            ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
+            ASTPtRootNode _parseTree = parser.generateParseTree(expression);
+            Token result = _parseTreeEvaluator.evaluateParseTree(_parseTree,
+                    _scope);
+            return result;
+        } catch (Exception e) {
+            throw new PtalonRuntimeException("Unable to evaluate expression\n"
+                    + expression, e);
+        }
+    }
+    
+    /**
+     * Evaluate the current for block, assuming there is
+     * one.
+     * @throws PtalonRuntimeException If there is
+     * any trouble evaluating this for block.
+     */
+    public void evaluateForScope() throws PtalonRuntimeException {
+        if (!_currentTree.isForStatement) {
+            throw new PtalonRuntimeException("Not in a for statement");
+        }
+        _currentTree.evaluateForScope();
+    }
+
+    /**
      * Exit the current if scope.
      * @exception PtalonRuntimeException If already at the top-level if scope.
      */
@@ -547,6 +623,17 @@ public class CodeManager {
             throw new PtalonRuntimeException("Already at top level");
         }
         _currentTree = _currentTree.getParent();
+    }
+    
+    /**
+     * Exit the current for scope.
+     * @exception PtalonRuntimeException If not in a for-block scope.
+     */
+    public void exitForScope() throws PtalonRuntimeException {
+        if (!_currentTree.isForStatement) {
+            throw new PtalonRuntimeException("Not in a for-block.");
+        }
+        exitIfScope();
     }
 
     /**
@@ -682,7 +769,7 @@ public class CodeManager {
             } catch (PtalonRuntimeException e) {
             }
         }
-        throw new PtalonRuntimeException("Symbol " + symbol + " not found");
+        return _currentTree.getDeepMappedName(symbol);
     }
 
     /**
@@ -702,7 +789,7 @@ public class CodeManager {
                 //sub-scope
             }
         }
-        throw new PtalonScopeException("Symbol " + symbol + " not found.");
+        return _currentTree.getDeepType(symbol);
     }
 
     /**
@@ -755,6 +842,19 @@ public class CodeManager {
     }
 
     /**
+     * Return true if the boolean for the current conditional is ready to be
+     * entered.  It is ready when all ports, parameters, and relations
+     * in the containing scope have been created, when all parameters
+     * in the containing scope have been assigned values, and when in
+     * a branch of an if-block or for-block that is active.  
+     * @return true if the current for-block scope is ready to be entered.
+     * @exception PtalonRuntimeException If it is thrown trying to access a parameter.
+     */
+    public boolean isForReady() throws PtalonRuntimeException {
+        return isIfReady();
+    }
+
+    /**
      * Return true if the current peice of code is ready to be
      * entered.  This is used by port, parameter, and relation
      * declarations only.  It is ready when all ports, parameters, and relations
@@ -791,6 +891,9 @@ public class CodeManager {
      * scope.
      */
     public boolean isCreated(String symbol) throws PtalonRuntimeException {
+        if (inNewWhileIteration()) {
+            return false;
+        }
         List<IfTree> ancestors = _currentTree.getAncestors();
         for (IfTree parent : ancestors) {
             if (parent.isCreated(symbol)) {
@@ -855,6 +958,17 @@ public class CodeManager {
         }
         return name;
     }
+    
+    /**
+     * Pop out of the scope of the current for statement and into
+     * its container block's scope.
+     * @return The unique name of the for-statement block being exited.
+     * @exception PtalonScopeException If the current scope is already
+     * the outermost scope.
+     */
+    public String popForStatement() throws PtalonScopeException {
+        return popIfStatement();
+    }
 
     /**
      * Push into the scope of a new if statement contained as
@@ -863,6 +977,24 @@ public class CodeManager {
     public void pushIfStatement() {
         String name = getNextIfSymbol();
         _currentTree = _currentTree.addChild(name);
+    }
+
+    /**
+     * Push into the scope of a new for statement contained
+     * @param variable The variable associated with the for statement.
+     * @param initExpr The expression representing the initial value for the 
+     * variable. 
+     * @param satExpr The expression evaluated before executing the for statement 
+     * body.
+     */
+    public void pushForStatement(String variable, String initExpr,
+            String satExpr) {
+        String name = getNextIfSymbol();
+        _currentTree = _currentTree.addChild(name);
+        _currentTree.isForStatement = true;
+        _currentTree.variable = variable;
+        _currentTree.initExpr = initExpr;
+        _currentTree.satExpr = satExpr;
     }
 
     /**
@@ -943,6 +1075,17 @@ public class CodeManager {
     public void setCurrentBranch(boolean branch) {
         _currentTree.setCurrentBranch(branch);
     }
+    
+    /**
+     * Set the next expression for the current for
+     * statement scope, assuming the current scope
+     * is a for statement and not an if statement.
+     * @param nextExpr The expression to represent
+     * the next statement.
+     */
+    public void setNextExpression(String nextExpr) {
+        _currentTree.nextExpr = nextExpr;
+    }
 
     /**
      * Prepare the compiler to start at the outermost scope 
@@ -1008,6 +1151,13 @@ public class CodeManager {
     protected String getTypeForScope(String symbol) throws PtalonScopeException {
         return getType(symbol);
     }
+    
+    /**
+     * @return true if in a new iteration of a while block.
+     */
+    protected boolean inNewWhileIteration() {
+        return _currentTree.inNewWhileIteration();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected members                    ////
@@ -1022,6 +1172,12 @@ public class CodeManager {
      * files.
      */
     protected Hashtable<String, File> _imports;
+    
+    /**
+     * The expression scope for this code manager.
+     */
+    protected PtalonExpressionScope _scope = new PtalonExpressionScope();
+
     
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
@@ -1139,6 +1295,31 @@ public class CodeManager {
         }
 
         /**
+         * Evaluate this for block, assuming this is
+         * a for block.
+         * @throws PtalonRuntimeException If there is
+         * any trouble evaluating this for block.
+         */
+        public void evaluateForScope() throws PtalonRuntimeException {
+            Token initialValue = evaluateExpression(initExpr);
+            _scope.addVariable(variable, initialValue);
+            _currentBranch = true;
+            _inNewWhileIteration = true;
+            while (evaluateBoolean(satExpr)) {
+                try {
+                    populator.iterative_statement_evaluator(forBlock);
+                } catch (RecognitionException e) {
+                    throw new PtalonRuntimeException("Could not recognize for block", e);
+                }
+                Token nextValue = evaluateExpression(nextExpr);
+                _scope.addVariable(variable, nextValue);
+            }
+            _inNewWhileIteration = false;
+            _scope.removeVariable(variable);
+            _currentBranch = false;
+        }
+        
+        /**
          * Return the active branch, which may be null if it has not
          * yet been set.
          * @return
@@ -1160,6 +1341,62 @@ public class CodeManager {
             return _currentBranch;
         }
 
+        /**
+         * Get the unique name for the symbol in the PtalonActor,
+         * looking deep into for loops for potential matches. 
+         * @param symbol The symbol to test.
+         * @return The unique name.
+         * @exception PtalonRuntimeException If no such symbol exists.
+         */
+        public String getDeepMappedName(String symbol)
+                throws PtalonRuntimeException {
+            try {
+                String name = getMappedName(symbol);
+                return name;
+            } catch (PtalonRuntimeException e) {
+            }
+            for (IfTree child : _children) {
+                if (child.isForStatement) {
+                    try {
+                        String name = child.getDeepMappedName(symbol);
+                        return name;
+                    } catch (PtalonRuntimeException e) {
+                    }
+                }
+            }
+            String message = symbol.concat(" not found.");
+            throw new PtalonRuntimeException(message);
+        }
+        
+        /**
+         * Return the type associated with the given symbol, looking
+         * deep into for loops that might add symbols to this scope.
+         * @param symbol The symbol under test.
+         * @return The type associated with the given symbol.
+         * @exception PtalonScopeException If the symbol is not in the scope
+         * of the if statement associated with this IfTree.
+         */
+        public String getDeepType(String symbol) throws PtalonScopeException {
+            try {
+                String type = getType(symbol);
+                return type;
+            } catch (PtalonScopeException e) {
+            }
+            for (IfTree child : _children) {
+                if (child.isForStatement) {
+                    try {
+                        String type = child.getDeepType(symbol);
+                        return type;
+                    } catch (PtalonScopeException e) {
+                    }
+                }
+            }
+            String message = symbol.concat(" not found.");
+            throw new PtalonScopeException(message);
+        }
+        
+
+        
         /**
          * Get the unique name for the symbol in the PtalonActor. 
          * @param symbol The symbol to test.
@@ -1247,6 +1484,16 @@ public class CodeManager {
                 }
             }
             return true;
+        }
+        
+        public boolean inNewWhileIteration() {
+            if (isForStatement) {
+                return _inNewWhileIteration;
+            }
+            if (_parent == null) {
+                return false;
+            }
+            return _parent.inNewWhileIteration();
         }
 
         /**
@@ -1338,7 +1585,49 @@ public class CodeManager {
             }
             output.write(_getIndentPrefix(depth) + "</if>\n");
         }
+        
+        /**
+         * This is the AST for this for block, if this is a 
+         * for block.
+         */
+        public PtalonAST forBlock = null;
 
+        /**
+         * This is the initially expression for the for statement,
+         * if this is a for statement.
+         */
+        public String initExpr = "";
+        
+        /**
+         * This is true if this if statement is actually used
+         * to represent a for statement.
+         */
+        public boolean isForStatement = false;
+        
+        /**
+         * This is the next expression for the for statement,
+         * if this is a for statement.
+         */
+        public String nextExpr = "";
+        
+        /**
+         * This is the PtalonPopulator that accesses this
+         * for statement, if this is a for statement.
+         */
+        public PtalonPopulator populator = null;
+        
+        /**
+         * This is the satisfies expression for the for statement,
+         * if this is a for statement.
+         */
+        public String satExpr = "";
+        
+        /**
+         * This is the variable for the for statement, if this
+         * is a for statement.
+         */
+        public String variable = "";
+        
         /**
          * This is true when the active branch for this if statement
          * is true, false when it is false, and null when it is unknown.
@@ -1351,6 +1640,11 @@ public class CodeManager {
          */
         private boolean _currentBranch = true;
 
+        /**
+         * This is true if in a new iteration of a while block.
+         */
+        private boolean _inNewWhileIteration = false;
+        
         /**
          * Each symbol gets mapped to its unique name in the
          * Ptalon Actor.
@@ -1368,6 +1662,122 @@ public class CodeManager {
          */
         private Hashtable<String, String> _symbols;
 
+    }
+
+    protected class PtalonExpressionScope implements ParserScope {
+        
+        /**
+         * Add the specified variable with the given value.
+         * @param name The variable name.
+         * @param value The variable's value.
+         */
+        public void addVariable(String name, Token value) {
+            _variables.put(name, value);
+        }
+
+        /** Look up and return the value with the specified name in the
+         *  scope. Return null if the name is not defined in this scope.
+         *  @return The token associated with the given name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public Token get(String name) throws IllegalActionException {
+            try {
+                if (_variables.containsKey(name)) {
+                    return _variables.get(name);
+                }
+                if (!getTypeForScope(name).equals("parameter")) {
+                    throw new IllegalActionException(name + " not a parameter.");
+                }
+                return getValueOf(name);
+            } catch (PtalonScopeException e) {
+                return null;
+            } catch (PtalonRuntimeException e) {
+                return null;
+            }
+        }
+
+        /** Look up and return the type of the value with the specified
+         *  name in the scope. Return null if the name is not defined in
+         *  this scope.
+         *  @return The token associated with the given name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+
+        public Type getType(String name) throws IllegalActionException {
+            try {
+                if (_variables.containsKey(name)) {
+                    return _variables.get(name).getType();
+                }
+                if (!getTypeForScope(name).equals("parameter")) {
+                    throw new IllegalActionException(name + " not a parameter.");
+                }
+                return getTypeOf(name);
+            } catch (PtalonScopeException e) {
+                return null;
+            } catch (PtalonRuntimeException e) {
+                return null;
+            }
+        }
+
+        /** Look up and return the type term for the specified name
+         *  in the scope. Return null if the name is not defined in this
+         *  scope, or is a constant type.
+         *  @return The InequalityTerm associated with the given name in
+         *  the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public InequalityTerm getTypeTerm(String name) throws IllegalActionException {
+            try {
+                if (_variables.containsKey(name)) {
+                    return null;
+                }
+                if (!getTypeForScope(name).equals("parameter")) {
+                    throw new IllegalActionException(name + " not a parameter.");
+                }
+                return getTypeTermOf(name);
+            } catch (PtalonScopeException e) {
+                return null;
+            } catch (PtalonRuntimeException e) {
+                return null;
+            }
+        }
+
+        /** Return a list of names corresponding to the identifiers
+         *  defined by this scope.  If an identifier is returned in this
+         *  list, then get() and getType() will return a value for the
+         *  identifier.  Note that generally speaking, this list is
+         *  extremely expensive to compute, and users should avoid calling
+         *  it.  It is primarily used for debugging purposes.
+         *  @exception IllegalActionException If constructing the list causes
+         *  it.
+         */
+        public Set identifierSet() throws IllegalActionException {
+            try {
+                ;
+                Set<String> out = getParameters();
+                out.addAll(_variables.keySet());
+                return out;
+            } catch (PtalonScopeException e) {
+                throw new IllegalActionException("Trouble constructing list");
+            }
+        }
+        
+        /**
+         * Remove the specified variable from this scope.
+         * @param name The name of this variable.
+         */
+        public void removeVariable(String name) {
+            _variables.remove(name);
+        }
+        
+        /**
+         * A map from variables to Tokens.
+         */
+        private Map<String, Token> _variables = new Hashtable<String, Token>();
+        
     }
 
 }

@@ -54,6 +54,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
 
+import antlr.debug.misc.ASTFrame;
+
 import com.microstar.xml.XmlParser;
 
 //////////////////////////////////////////////////////////////////////////

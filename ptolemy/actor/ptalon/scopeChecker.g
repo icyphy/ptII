@@ -180,12 +180,32 @@ conditional_statement throws PtalonScopeException
 	{
 		info.pushIfStatement();
 	}
-	EXPRESSION #(TRUEBRANCH (atomic_statement | conditional_statement)*)
-		#(FALSEBRANCH (atomic_statement | conditional_statement)*))
+	EXPRESSION 
+		#(TRUEBRANCH 
+			(atomic_statement | conditional_statement | iterative_statement)*)
+		#(FALSEBRANCH 
+			(atomic_statement | conditional_statement | iterative_statement)*))
 	{
 		#conditional_statement.setText(info.popIfStatement());
 	}
 ;	
+
+iterative_statement throws PtalonScopeException
+:
+	#(FOR #(VARIABLE a:ID) #(INITIALLY b:expression) #(SATISFIES c:expression)
+	{
+		info.pushForStatement(a.getText(), b.getText(), c.getText());
+	}
+		(atomic_statement | conditional_statement | iterative_statement)*
+		#(NEXT n:expression
+		{
+			info.setNextExpression(n.getText());
+		}
+		))
+	{
+		#iterative_statement.setText(info.popForStatement());
+	}
+;
 
 actor_definition [NestedActorManager manager] throws PtalonScopeException
 {
@@ -196,5 +216,5 @@ actor_definition [NestedActorManager manager] throws PtalonScopeException
 	{
 		info.setActorSymbol(a.getText());
 	}
-	(atomic_statement | conditional_statement)*)
+	(atomic_statement | conditional_statement | iterative_statement)*)
 ;

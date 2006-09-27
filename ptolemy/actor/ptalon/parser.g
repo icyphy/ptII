@@ -158,7 +158,7 @@ qualified_identifier!
 
 keyword_or_identifier:
 	ID | IMPORT | PORT | INPORT | OUTPORT | PARAMETER 
-	| ACTOR | RELATION | TRUE | FALSE	
+	| ACTOR | RELATION | TRUE | FALSE | IF | ELSE | IS | FOR
 ;
 
 /**
@@ -255,6 +255,10 @@ conditional_statement!
 	{
 		trueTree.addChild(#c1);
 	}
+	| i1:iterative_statement
+	{
+		trueTree.addChild(#i1);
+	}
 	)* RCURLY! ELSE! LCURLY! (a2:atomic_statement 
 	{
 		falseTree.addChild(#a2);
@@ -263,12 +267,42 @@ conditional_statement!
 	{
 		falseTree.addChild(#c2);
 	}
+	| i2:iterative_statement
+	{
+		trueTree.addChild(#i2);
+	}
 	)* RCURLY!
 	{
 		#conditional_statement.addChild(trueTree);
 		#conditional_statement.addChild(falseTree);
 	}
-;	
+;
+
+iterative_statement!
+:
+	f:FOR a:ID b:INITIALLY init:expression sat:expression LCURLY
+	{
+		#iterative_statement = #(f, ([VARIABLE, "variable"], a), (b, init), 
+		([SATISFIES, "satisfies"], sat));
+	}
+	(it:iterative_statement 
+	{
+		#iterative_statement.addChild(#it);
+	}
+	| cond:conditional_statement 
+	{
+		#iterative_statement.addChild(#cond);
+	}
+	| at:atomic_statement
+	{
+		#iterative_statement.addChild(#at);
+	}
+	)*
+	RCURLY c:NEXT next:expression
+	{
+		#iterative_statement.addChild(#(c, next));
+	}
+;
 
 actor_definition!
 :
@@ -287,8 +321,11 @@ actor_definition!
 	{
 		#actor_definition.addChild(#c);
 	}
+	| i:iterative_statement
+	{
+		#actor_definition.addChild(#i);
+	}
 	)* RCURLY!
-
 ;
 
 ///////////////////////////////////////////////////////////////////
@@ -310,12 +347,15 @@ tokens {
 	ACTOR = "actor";
 	RELATION = "relation";
 	TRUE = "true";
-	TRUEBRANCH;
 	FALSE = "false";
-	FALSEBRANCH;
 	IF = "if";
 	ELSE = "else";
 	IS = "is";
+	FOR = "for";
+	INITIALLY = "initially";
+	NEXT = "next";
+	TRUEBRANCH;
+	FALSEBRANCH;
 	QUALID;
 	ATTRIBUTE;
 	ACTOR_DECLARATION;
@@ -332,6 +372,8 @@ tokens {
 	MULTIOUTPORT;
 	PARAM_EQUALS;
 	ACTOR_EQUALS;
+	SATISFIES;
+	VARIABLE;
 }
 
 

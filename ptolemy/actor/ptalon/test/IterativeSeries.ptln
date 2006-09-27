@@ -1,0 +1,15 @@
+IterativeSeries is {
+	actor Scale = ptolemy.actor.lib.Scale;
+	parameter n;
+	inport input;
+	outport output;
+	if <n >= 0/> {
+		relation r<0.toString/>;
+		for i initially <1> <i <= n> {
+			relation r<i.toString/>;
+			Scale(input := r<(i - 1).toString/>, output := r<i.toString/>);
+		} next <i + 1/>
+		this(input := r<0.toString/>, output := r<n.toString/>);
+	} else {
+	}
+}

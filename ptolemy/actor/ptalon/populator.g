@@ -205,7 +205,6 @@ atomic_statement throws PtalonRuntimeException
 
 conditional_statement throws PtalonRuntimeException
 {
-	boolean b;
 	boolean ready;
 }
 :
@@ -236,11 +235,44 @@ conditional_statement throws PtalonRuntimeException
 			info.setCurrentBranch(false);
 		}
 	}
-	(atomic_statement | conditional_statement)*))
+	(atomic_statement | conditional_statement | iterative_statement)*))
 	{
 		info.exitIfScope();
 	}
-;	
+;
+
+iterative_statement throws PtalonRuntimeException
+{
+	boolean ready;
+	PtalonAST inputAST = (PtalonAST)_t;
+}
+:
+	#(f:FOR #(VARIABLE a:ID) #(INITIALLY b:EXPRESSION) #(SATISFIES c:EXPRESSION)
+	{
+		info.enterForScope(f.getText(), inputAST, this);
+		ready = info.isForReady();
+		if (ready) {
+			info.setActiveBranch(true);
+			info.setCurrentBranch(false);
+		}
+	}
+		(atomic_statement | conditional_statement | iterative_statement)*
+		#(NEXT n:EXPRESSION))
+	{
+		if (ready) {
+			info.evaluateForScope();
+		}
+		info.exitForScope();
+	}
+;
+
+iterative_statement_evaluator throws PtalonRuntimeException
+:
+	#(f:FOR #(VARIABLE a:ID) #(INITIALLY b:EXPRESSION) #(SATISFIES c:EXPRESSION)
+		(atomic_statement | conditional_statement | iterative_statement)*
+		#(NEXT n:EXPRESSION))
+;
+
 
 actor_definition[NestedActorManager info] throws PtalonRuntimeException
 {
@@ -248,5 +280,6 @@ actor_definition[NestedActorManager info] throws PtalonRuntimeException
 	this.info.startAtTop();
 }
 :
-	#(a:ACTOR_DEFINITION (atomic_statement | conditional_statement)*)
+	#(a:ACTOR_DEFINITION 
+		(atomic_statement | conditional_statement | iterative_statement)*)
 ;

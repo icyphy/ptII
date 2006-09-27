@@ -70,16 +70,19 @@ public PtalonLexer(LexerSharedInputState state) {
 	literals = new Hashtable();
 	literals.put(new ANTLRHashString("port", this), new Integer(4));
 	literals.put(new ANTLRHashString("relation", this), new Integer(13));
-	literals.put(new ANTLRHashString("if", this), new Integer(25));
+	literals.put(new ANTLRHashString("for", this), new Integer(22));
+	literals.put(new ANTLRHashString("if", this), new Integer(19));
 	literals.put(new ANTLRHashString("inport", this), new Integer(7));
 	literals.put(new ANTLRHashString("actor", this), new Integer(12));
 	literals.put(new ANTLRHashString("parameter", this), new Integer(10));
-	literals.put(new ANTLRHashString("else", this), new Integer(28));
+	literals.put(new ANTLRHashString("else", this), new Integer(20));
+	literals.put(new ANTLRHashString("initially", this), new Integer(31));
 	literals.put(new ANTLRHashString("import", this), new Integer(16));
 	literals.put(new ANTLRHashString("true", this), new Integer(17));
+	literals.put(new ANTLRHashString("next", this), new Integer(32));
 	literals.put(new ANTLRHashString("outport", this), new Integer(8));
 	literals.put(new ANTLRHashString("false", this), new Integer(18));
-	literals.put(new ANTLRHashString("is", this), new Integer(29));
+	literals.put(new ANTLRHashString("is", this), new Integer(21));
 }
 
 public Token nextToken() throws TokenStreamException {
@@ -497,7 +500,7 @@ tryAgain:
 		}
 		}
 		{
-		_loop298:
+		_loop451:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -536,7 +539,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop298;
+				break _loop451;
 			}
 			}
 		} while (true);
@@ -555,34 +558,34 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt301=0;
-		_loop301:
+		int _cnt454=0;
+		_loop454:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt301>=1 ) { break _loop301; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt454>=1 ) { break _loop454; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt301++;
+			_cnt454++;
 		} while (true);
 		}
 		{
 		if ((LA(1)=='.')) {
 			match('.');
 			{
-			int _cnt304=0;
-			_loop304:
+			int _cnt457=0;
+			_loop457:
 			do {
 				if (((LA(1) >= '0' && LA(1) <= '9'))) {
 					matchRange('0','9');
 				}
 				else {
-					if ( _cnt304>=1 ) { break _loop304; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+					if ( _cnt457>=1 ) { break _loop457; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
 				
-				_cnt304++;
+				_cnt457++;
 			} while (true);
 			}
 		}
@@ -617,7 +620,7 @@ tryAgain:
 		
 		match('"');
 		{
-		_loop309:
+		_loop462:
 		do {
 			switch ( LA(1)) {
 			case '\\':
@@ -664,7 +667,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop309;
+				break _loop462;
 			}
 			}
 		} while (true);
@@ -735,15 +738,15 @@ tryAgain:
 		
 		match('<');
 		{
-		_loop314:
+		_loop467:
 		do {
 			// nongreedy exit test
-			if ((LA(1)=='/') && (LA(2)=='>') && (true)) break _loop314;
+			if ((LA(1)=='/') && (LA(2)=='>') && (true)) break _loop467;
 			if (((LA(1) >= '\u0000' && LA(1) <= '\u007f')) && ((LA(2) >= '\u0000' && LA(2) <= '\u007f')) && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
 				matchNot(EOF_CHAR);
 			}
 			else {
-				break _loop314;
+				break _loop467;
 			}
 			
 		} while (true);

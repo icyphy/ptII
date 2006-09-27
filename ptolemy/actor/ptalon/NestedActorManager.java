@@ -371,31 +371,6 @@ public class NestedActorManager extends CodeManager {
     }
     
     /**
-     * Evaluate the given expression and return its boolean value.
-     * The expression should return a boolean value, otherwise
-     * an exception is thrown.
-     * @param expression The expression to evaluate.
-     * @return The boolean result of evaluation.
-     * @throws PtalonRuntimeException If the result is not a boolean.
-     */
-    public boolean evaluateBoolean(String expression)
-            throws PtalonRuntimeException {
-        try {
-            PtParser parser = new PtParser();
-
-            ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
-            PtalonExpressionScope _scope = new PtalonExpressionScope(_actor);
-            ASTPtRootNode _parseTree = parser.generateParseTree(expression);
-            BooleanToken result = (BooleanToken) _parseTreeEvaluator
-                    .evaluateParseTree(_parseTree, _scope);
-            return result.booleanValue();
-        } catch (Exception e) {
-            throw new PtalonRuntimeException("Unable to evaluate expression\n"
-                    + expression, e);
-        }
-    }
-    
-    /**
      * Exit the current actor declaration.
      * @exception PtalonRuntimeException If already at the top-level if scope.
      */
@@ -415,7 +390,7 @@ public class NestedActorManager extends CodeManager {
         if (_currentTree == null) {
             throw new PtalonRuntimeException("No actor to create.");
         }
-        if (_currentTree.created) {
+        if ((_currentTree.created) && (!inNewWhileIteration())) {
             return false;
         }
         if (isReady()) {
@@ -856,7 +831,6 @@ public class NestedActorManager extends CodeManager {
             try {
                 PtParser parser = new PtParser();
                 ParseTreeEvaluator  _parseTreeEvaluator = new ParseTreeEvaluator();
-                PtalonExpressionScope _scope = new PtalonExpressionScope(_actor);
                 for (String boolParam : _parameters.keySet()) {
                     String expression = _parameters.get(boolParam);
                     if (expression == null) {
@@ -887,7 +861,6 @@ public class NestedActorManager extends CodeManager {
             try {
                 PtParser parser = new PtParser();
                 ParseTreeEvaluator  _parseTreeEvaluator = new ParseTreeEvaluator();
-                PtalonExpressionScope _scope = new PtalonExpressionScope(_actor);
                 for (String boolParam : _parameters.keySet()) {
                     String expression = _parameters.get(boolParam);
                     if (expression == null) {
@@ -1265,93 +1238,4 @@ public class NestedActorManager extends CodeManager {
          */
         private String _actorParameter = null;
     }
-
-    private class PtalonExpressionScope implements ParserScope {
-        
-        public PtalonExpressionScope(PtalonActor container) {
-            _container = container;
-        }
-        
-        private PtalonActor _container;
-
-        /** Look up and return the value with the specified name in the
-         *  scope. Return null if the name is not defined in this scope.
-         *  @return The token associated with the given name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public Token get(String name) throws IllegalActionException {
-            try {
-                if (!getTypeForScope(name).equals("parameter")) {
-                    throw new IllegalActionException(name + " not a parameter.");
-                }
-                return _container.getActorManager().getValueOf(name);
-            } catch (PtalonScopeException e) {
-                return null;
-            } catch (PtalonRuntimeException e) {
-                return null;
-            }
-        }
-
-        /** Look up and return the type of the value with the specified
-         *  name in the scope. Return null if the name is not defined in
-         *  this scope.
-         *  @return The token associated with the given name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-
-        public Type getType(String name) throws IllegalActionException {
-            try {
-                if (!getTypeForScope(name).equals("parameter")) {
-                    throw new IllegalActionException(name + " not a parameter.");
-                }
-                return _container.getActorManager().getTypeOf(name);
-            } catch (PtalonScopeException e) {
-                return null;
-            } catch (PtalonRuntimeException e) {
-                return null;
-            }
-        }
-
-        /** Look up and return the type term for the specified name
-         *  in the scope. Return null if the name is not defined in this
-         *  scope, or is a constant type.
-         *  @return The InequalityTerm associated with the given name in
-         *  the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public InequalityTerm getTypeTerm(String name) throws IllegalActionException {
-            try {
-                if (!getTypeForScope(name).equals("parameter")) {
-                    throw new IllegalActionException(name + " not a parameter.");
-                }
-                return _container.getActorManager().getTypeTermOf(name);
-            } catch (PtalonScopeException e) {
-                return null;
-            } catch (PtalonRuntimeException e) {
-                return null;
-            }
-        }
-
-        /** Return a list of names corresponding to the identifiers
-         *  defined by this scope.  If an identifier is returned in this
-         *  list, then get() and getType() will return a value for the
-         *  identifier.  Note that generally speaking, this list is
-         *  extremely expensive to compute, and users should avoid calling
-         *  it.  It is primarily used for debugging purposes.
-         *  @exception IllegalActionException If constructing the list causes
-         *  it.
-         */
-        public Set identifierSet() throws IllegalActionException {
-            try {
-                return _container.getActorManager().getParameters();
-            } catch (PtalonScopeException e) {
-                throw new IllegalActionException("Trouble constructing list");
-            }
-        }
-        
-    }
-
 }
