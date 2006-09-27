@@ -857,8 +857,7 @@ doccheck/index.html:
 #
 
 # Location of the FindBugs sources
-#FINDBUGS=$(PTII)/vendors/findbugs-1.0.0-rc1
-FINDBUGS=c:/cxh/src/findbugs-0.8.6
+FINDBUGS=$(PTII)/vendors/findbugs-1.0.0-rc1
 
 findbugs: findbugs.htm findbugs.xml
 
