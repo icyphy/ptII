@@ -258,12 +258,16 @@ We also have to update the <code>standalone-compiler.jar</code> file
 with the new <code>installer.jar</code> file.  My solution was to rebuild
 izPack and run
 <pre>
-cd izpack/trunk/source
+cd izpack/trunk/src
+rm ../lib/installer.jar
 ant build.installer
 jar -uf ../lib/installer.jar ExtractJarFile.class
 ant build.standalone-compiler
 cp ../lib/standalone-compiler.jar ../../izpack3.9.0/lib/standalone-compiler.jar
 </pre>
+However, a better solution is to use 
+<code>&ltjar src="ExtractJarFile.jar"&gt;</code> in the
+<code>install.xml</code> file
 
 <dt><code>Error accessing processing class</code>
 <dd>I modified <code>src/lib/com/izforge/izpack/installer/ProcessPanelWorker.java</code> so that it printed the exception, which was
