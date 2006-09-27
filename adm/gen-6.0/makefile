@@ -80,10 +80,12 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar 
-#make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 
 #make USER=cxh PTIIHOME=${PTII} PTIIADM=${PTII}/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
+
+fortytwo:
+	$(MAKE) USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.alpha PTIIADM=/tmp/cxh/ptII6.0.alpha/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar clean all src.jar fortytwo_test
 
 windows_ransom:
 	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII6.0.alpha PTIIADM=/cygdrive/c/tmp/cxh/ptII6.0.alpha/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_12/bin/jar clean all src.jar
@@ -776,10 +778,10 @@ update_ftp: update_ptii_ftp untar
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
 	scp -p $(PTII_FULL) $(PTII_SRC) \
-		messier:$(PTII_FTP)
+		bennett:$(PTII_FTP)
 untar:
-	ssh messier rm -rf $(PTII_FTP)/ptII$(VERSION)
-	ssh messier "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
+	ssh bennett rm -rf $(PTII_FTP)/ptII$(VERSION)
+	ssh bennett "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
 
 # Make the distribution, run htmlchek
