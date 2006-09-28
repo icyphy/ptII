@@ -724,7 +724,8 @@ codeDocHyVisual/doc/codeDoc/allNamedObjs.txt: \
 		codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Build the index of actors 
-codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/codeDoc/allNamedObjs.txt ${PTII}/ptolemy/configs/hyvisual/hyvisualModels.txt
+#codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/codeDoc/allNamedObjs.txt ${PTII}/ptolemy/configs/hyvisual/hyvisualModels.txt
+codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/hyvisual/hyvisualModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
@@ -734,8 +735,8 @@ codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/c
 		$(PTII)/ptolemy/configs/hyvisual/hyvisualModels.txt \
 		codeDocHyVisual/doc/codeDoc
 
-$(PTII)/ptolemy/configs/hyvisual/hyvisualModels.txt: \
-		$(PTII)/ptolemy/configs/hyvisual/intro.htm
+../ptolemy/configs/hyvisual/hyvisualModels.txt: \
+		../ptolemy/configs/hyvisual/intro.htm
 	(cd $(PTII)/ptolemy/configs/hyvisual; make hyvisualModels.txt)
 
 #############################################################################
@@ -772,7 +773,7 @@ codeDocViptos/doc/codeDoc/allNamedObjs.txt: codeDocViptos/doc/codeDoc/ptolemy/ac
 # Build the index of actors 
 codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 		codeDocViptos/doc/codeDoc/allNamedObjs.txt \
-		$(PTII)/ptolemy/configs/viptos/viptosModels.txt
+		../ptolemy/configs/viptos/viptosModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
@@ -782,7 +783,7 @@ codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 		$(PTII)/ptolemy/configs/viptos/viptosModels.txt \
 		codeDocViptos/doc/codeDoc
 
-$(ROOT)/ptolemy/configs/viptos/viptosModels.txt": ${PTII}/ptolemy/configs/viptos/intro.htm
+$(ROOT)/ptolemy/configs/viptos/viptosModels.txt: ../ptolemy/configs/viptos/intro.htm
 	(cd $(PTII)/ptolemy/configs/viptos; make viptosModels.txt)
 
 #############################################################################
@@ -819,7 +820,7 @@ codeDocVisualSense/doc/codeDoc/allNamedObjs.txt: codeDocVisualSense/doc/codeDoc/
 # Build the index of actors 
 codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 		codeDocVisualSense/doc/codeDoc/allNamedObjs.txt \
-		$(PTII)/ptolemy/configs/visualsense/visualsenseModels.txt
+		../ptolemy/configs/visualsense/visualsenseModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
@@ -830,7 +831,7 @@ codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 		codeDocVisualSense/doc/codeDoc
 
 $(ROOT)/ptolemy/configs/visualsense/visualsenseModels.txt: \
-		$(PTII)/ptolemy/configs/visualsense/intro.htm
+		../ptolemy/configs/visualsense/intro.htm
 	(cd $(PTII)/ptolemy/configs/visualsense; make visualsenseModels.txt)
 
 #############################################################################
