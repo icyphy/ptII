@@ -54,7 +54,7 @@
 			<fileset dir="${build.result.folder}" includes="ptIIbacktrack.jar"			/>
 		</copy>
 		<copy todir="${destination.temp.folder}/ptolemy.backtrack_${version}" failonerror="true">
-			<fileset dir="${basedir}" includes="plugin.xml,ptIIbacktrack.jar,ptolemy/backtrack/eclipse/plugin/doc/,ptolemy/backtrack/eclipse/plugin/icons/,ptolemy/backtrack/eclipse/plugin/images/"/>
+			<fileset dir="${basedir}" includes="plugin.xml,ptolemy/backtrack/eclipse/plugin/doc/,ptolemy/backtrack/eclipse/plugin/icons/,ptolemy/backtrack/eclipse/plugin/images/"/>
 		</copy>
 	</target>
 

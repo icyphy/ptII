@@ -63,7 +63,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
 import ptolemy.backtrack.eclipse.ast.Transformer;
@@ -149,6 +148,13 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
                 }
             }
         });
+    }
+
+    /** Dispose the two views in this editor.
+     */
+    public void dispose() {
+    	_preview.dispose();
+    	super.dispose();
     }
 
     /** Set the active tab of the editor.
@@ -257,6 +263,11 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
                 OutputConsole.outputError(e.getMessage());
             }
         }
+    }
+    
+    public void test() {
+    	//_preview.setInput(new FileEditorInput(previewFile));
+        _preview.getViewer().setEditable(false);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -382,7 +393,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
             }
         // }
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                    private inner classes                  ////
 
