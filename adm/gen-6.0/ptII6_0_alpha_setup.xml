@@ -17,8 +17,8 @@
     -->
     <info>
         <appname>Ptolemy II</appname>
-        <appversion>6.0-alpha</appversion>
-	<appsubpath>Ptolemy/ptII6.0-alpha</appsubpath>
+        <appversion>6.0.alpha</appversion>
+	<appsubpath>Ptolemy/ptII6.0.alpha</appsubpath>
         <url>http://ptolemy.eecs.berkeley.edu/ptolemyII</url>
 	<javaversion>1.4</javaversion>
     </info>
@@ -49,15 +49,16 @@
 	<res id="Installer.image" src="../../doc/img/PtolemyIISmall.gif" />
 	<res id="StyleSheet" src="../../doc/default.css" />
 	<res id="shortcutSpec.xml" src="shortcutSpec.xml" /> 
-        <!--res src="border1.png" id="Installer.image.0"/-->
-        <res src="border2.png" id="Installer.image.0"/>
-        <res src="border3.png" id="Installer.image.1"/>
-        <res src="border4.png" id="Installer.image.2"/>
-        <res src="border5.png" id="Installer.image.3"/>
+        <res src="border1.png" id="Installer.image.0"/>
+        <res src="border2.png" id="Installer.image.1"/>
+        <res src="border3.png" id="Installer.image.2"/>
+        <res src="border4.png" id="Installer.image.3"/>
         <res src="border5.png" id="Installer.image.4"/>
-        <res src="border6.png" id="Installer.image.5"/>
-        <res src="border7.png" id="Installer.image.6"/>
-        <res src="border8.png" id="Installer.image.7"/>
+        <res src="border5.png" id="Installer.image.5"/>
+        <res src="border6.png" id="Installer.image.6"/>
+        <res src="border7.png" id="Installer.image.7"/>
+        <res src="border8.png" id="Installer.image.8"/>
+        <res src="ProcessPanel.Spec.xml" id="ProcessPanel.Spec.xml"/>
     </resources>
     
 
@@ -66,16 +67,17 @@
         We indicate here which panels we want to use. The order will be respected.
     -->
     <panels>
-        <!-- panel classname="HelloPanel"/ -->
+        <panel classname="HelloPanel"/>
         <panel classname="HTMLInfoPanel"/>
         <panel classname="HTMLLicencePanel"/>
         <panel classname="TargetPanel"/> 
+        <panel classname="JDKPathPanel"/>
         <panel classname="PacksPanel"/>
         <panel classname="SummaryPanel"/>
         <panel classname="InstallPanel"/>
+        <panel classname="ProcessPanel"/>
         <panel classname="ShortcutPanel"/>
         <panel classname="SimpleFinishPanel"/>
-
     </panels>
     
     <!-- 
@@ -125,6 +127,9 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/matlab/demo"/>
             <file src="../../jar_dist/lib/matlab.jar"
                   targetdir="$INSTALL_PATH/lib"/>
+            <file src="../../ptolemy/matlab/ptmatlab.dll"
+                  targetdir="$INSTALL_PATH/ptolemy/matlab"
+		  os="windows"/>
             <file src="../../jar_dist/ptolemy/ptsupport.jar"
                   targetdir="$INSTALL_PATH/ptolemy"/>
             <file src="../../jar_dist/ptolemy/vergil/vergil.jar"
@@ -190,7 +195,7 @@ The Ptiny pack is required.
 
         </pack>
         <pack name="Full" required="no">
-            <description>All of the domains, HyVisual, VisualSense and Viptos.  </description>
+            <description>All of the domains, HyVisual and VisualSense.</description>
             <file src="../../hyvisual.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../doc/img/hyvisual.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
@@ -203,9 +208,9 @@ The Ptiny pack is required.
             <file src="../../doc/img/visualsense.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
 
-            <file src="../../viptos.exe" targetdir="$INSTALL_PATH"/>
-            <file src="../../doc/img/viptos.ico"
-	          targetdir="$INSTALL_PATH/doc/img/"/>
+            <!-- No Viptos, it does not work, it requires ptinyos -->
+            <!-- file src="../../viptos.exe" targetdir="$INSTALL_PATH"/ -->
+            <!-- file src="../../doc/img/viptos.ico" targetdir="$INSTALL_PATH/doc/img/"/ -->
 
 	    <!-- Run (make full_jars) and put the output here -->
             <file src="../../jar_dist/ptolemy/hsif/hsif.jar"
@@ -258,8 +263,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/vendors/misc/joystick"/>
             <file src="../../jar_dist/ptolemy/actor/lib/x10/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/x10/demo"/>
-            <file src="../../jar_dist/vendors/misc/x10/tjx10p-12/lib/x10.jar"
-                  targetdir="$INSTALL_PATH/vendors/misc/x10/tjx10p-12/lib"/>
+            <file src="../../jar_dist/vendors/misc/x10/tjx10p-13/lib/x10.jar"
+                  targetdir="$INSTALL_PATH/vendors/misc/x10/tjx10p-13/lib"/>
             <file src="../../jar_dist/lib/ptCal.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/lib/saxon8.jar"
@@ -329,25 +334,30 @@ The Ptiny pack is required.
         </pack>
 
         <pack name="Docs" required="no">
-            <description>The documentation including user documentation and java documentation.</description>
+            <description>The documentation for Ptiny and the full version of Vergil including user documentation and java documentation.</description>
             <file src="../../designdocv1.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../designdocv2.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../designdocv3.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../hyvisualdoc.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
+            <file src="../../doc/design/ptIIdesign1-intro.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
+            <file src="../../doc/design/ptIIdesign2-software.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
+            <file src="../../doc/design/ptIIdesign3-domains.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
+            <file src="../../jar_dist/doc/codeDoc.jar"
+                  targetdir="$INSTALL_PATH/doc"/>
+        </pack>
+
+        <pack name="FullDocs" required="no">
+            <description>The documentation for HyVisual and VisualSense, including user documentation and java documentation.</description>
             <file src="../../hyvisualdoc.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../visualsensedoc.exe"
 	          targetdir="$INSTALL_PATH/bin"/>
             <file src="../../doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
             <file src="../../doc/design/hyvisual.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
-            <file src="../../doc/design/ptIIdesign1-intro.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
-            <file src="../../doc/design/ptIIdesign2-software.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
-            <file src="../../doc/design/ptIIdesign3-domains.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../doc/design/visualsense.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
-            <file src="../../jar_dist/doc/codeDoc.jar"
-                  targetdir="$INSTALL_PATH/doc"/>
             <file src="../../jar_dist/doc/codeDocHyVisual.jar"
                   targetdir="$INSTALL_PATH/doc"/>
-            <file src="../../jar_dist/doc/codeDocViptos.jar"
-                  targetdir="$INSTALL_PATH/doc"/>
+            <!-- file src="../../jar_dist/doc/codeDocViptos.jar" targetdir="$INSTALL_PATH/doc"/ -->
             <file src="../../jar_dist/doc/codeDocVisualSense.jar"
                   targetdir="$INSTALL_PATH/doc"/>
 
@@ -358,8 +368,12 @@ The Ptiny pack is required.
         </pack>
         <pack name="Sources" required="no">
             <description>The Ptolemy II sources.</description>
-            <file src="srctmp" targetdir="$INSTALL_PATH"/>
+            <file src="ptII6.0.alpha.src.jar" targetdir="$INSTALL_PATH"/>
+            <file src="ExtractJarFile.class" targetdir="$INSTALL_PATH"/>
         </pack>
     </packs>
+
+    <!-- Include ExtractJarFile.class for the Process Panel -->
+    <jar src="ExtractJarFile.jar" stage="install"/>
     
 </installation>
