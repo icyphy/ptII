@@ -124,10 +124,9 @@ assignment throws PtalonScopeException
 	{
 		info.addPortAssign(a.getText(), b.getText());
 	}
-	| #(d:DYNAMIC_NAME ID EXPRESSION)
+	| #(DYNAMIC_NAME c:ID d:EXPRESSION)
 	{
-		String assignmentName = info.addUnknownPortAssign();
-		#d.setText(assignmentName);
+		info.addPortAssign(a.getText(), c.getText(), d.getText());
 	}
 	)| nested_actor_declaration[a.getText()]
 	| e:EXPRESSION

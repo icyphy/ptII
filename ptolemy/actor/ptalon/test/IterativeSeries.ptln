@@ -5,10 +5,10 @@ IterativeSeries is {
 	outport output;
 	if <n >= 0/> {
 		relation r<0/>;
-		for i initially <1/> <i <= n/> {
-			relation r<i.toString/>;
-			Scale(input := r<i - 1/>, output := r<i/>);
-		} next <i + 1/>
+		for a initially <1/> <a <= n/> {
+			relation r<a/>;
+			Scale(input := r<a - 1/>, output := r<a/>);
+		} next <a + 1/>
 		this(input := r<0/>, output := r<n/>);
 	} else {
 	}

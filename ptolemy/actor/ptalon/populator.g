@@ -310,20 +310,7 @@ qualified_identifier
 assignment throws PtalonRuntimeException
 :
 	#(ASSIGN l:ID (ID | #(d:DYNAMIC_NAME i:ID e:EXPRESSION)
-	{
-		if (!info.addedAssignment(d.getText())) {
-			String value = info.evaluateString(e.getText());
-			if (value != null) {
-				info.addPortAssign(d.getText(), l.getText(), i.getText() + value);
-			}
-		}
-	}
 	| nested_actor_declaration | EXPRESSION))
-	exception
-	catch [PtalonScopeException excep]
-	{
-		throw new PtalonRuntimeException("", excep);
-	}
 ;
 
 /**
@@ -405,7 +392,7 @@ conditional_statement throws PtalonRuntimeException
 			info.setCurrentBranch(true);
 		}
 	}
-	(atomic_statement | conditional_statement)*) #(FALSEBRANCH
+	(atomic_statement | conditional_statement | iterative_statement)*) #(FALSEBRANCH
 	{
 		if (ready) {
 			info.setCurrentBranch(false);
