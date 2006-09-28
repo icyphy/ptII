@@ -482,10 +482,18 @@ public class LocalClassLoader extends URLClassLoader {
 
         int firstDotPos = -2;
 
+        // Keep track of info so as to provide better error messages.
+        StringBuffer namesTried = new StringBuffer("Tried these classes: "
+                + nameBuffer);
+        ClassNotFoundException firstException = null;
+
         while (true) {
             try {
                 return super.loadClass(nameBuffer.toString(), resolve);
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException ex) {
+                if (firstException == null) {
+                    firstException = ex;
+                }
             }
 
             int lastDotPos = nameBuffer.lastIndexOf(".");
@@ -495,9 +503,11 @@ public class LocalClassLoader extends URLClassLoader {
             }
 
             if ((lastDotPos == -1) || (lastDotPos == firstDotPos)) {
-                throw new ClassNotFoundException(name);
+                throw new ClassNotFoundException(namesTried.toString(),
+                        firstException);
             } else {
                 nameBuffer.setCharAt(lastDotPos, '$');
+                namesTried.append(", " + nameBuffer);
             }
         }
     }
