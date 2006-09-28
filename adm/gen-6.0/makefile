@@ -2343,10 +2343,29 @@ softwalls.tar.gz: softwalls
 	gzip -9 softwalls.tar
 
 
+
+IZPACKDIR=c:/Program Files/IzPack
+
 PTSETUP=ptII$(WINDOWS_VERSION)_setup
 # IzPack installer
-$(PTSETUP).jar: $(PTSETUP).xml
-	"c:/Program Files/IzPack/bin/compile" $<
+$(PTSETUP).jar: $(PTSETUP).xml ExtractJarFile.jar
+	"${IZPACKDIR}/bin/compile" $<
+
+#	c:/cxh/src/izpack/izpack3.9.0/bin/compile $<
+
+
+CLASSPATHSEPARATOR=;
+IZPACK_CLASSDIR=${IZPACKDIR}/lib/compiler.jar${CLASSPATHSEPARATOR}${IZPACKDIR}/lib/installer.jar${CLASSPATHSEPARATOR}
+#IZPACK_CLASSDIR=c:/cxh/src/izpack/trunk/src/lib
+ExtractJarFile.class: ExtractJarFile.java
+	javac -classpath "$(IZPACK_CLASSDIR)" $^
+
+Echo.class: Echo.java
+	javac -classpath "$(IZPACK_CLASSDIR)" $^
+
+ExtractJarFile.jar: ExtractJarFile.class Echo.class
+	jar -cf $@ $^
+
 
 # Location of Launch4J, see http://launch4j.sourceforge.net/
 L4J_DIR=c:/Program Files/Launch4j
@@ -2355,8 +2374,9 @@ L4J_DIR=c:/Program Files/Launch4j
 L4JC=$(L4J_DIR)/launch4jc.exe
 
 # Launch4J
-$(PTSETUP).exe: $(PTSETUP)_l4j.xml $(PTSETUP).jar
+$(PTSETUP).exe: $(PTSETUP)_l4j.xml $(PTSETUP).jar ExtractJarFile.class
 		"$(L4JC)" `cygpath --windows $$PWD/$<`
+
 
 setup: $(PTSETUP).exe
 
