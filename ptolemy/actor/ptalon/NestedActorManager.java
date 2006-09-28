@@ -87,6 +87,8 @@ public class NestedActorManager extends CodeManager {
         super(actor);
         _trees = new LinkedList<ActorTree>();
         _instanceNumbers = new Hashtable<String, Integer>();
+        _instanceNumbers.put("this", 0);
+        addSymbol("this", "this", true, "this");
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -108,6 +110,12 @@ public class NestedActorManager extends CodeManager {
                 throw new PtalonRuntimeException("Not in an actor declaration.");
             }
             String symbol = _currentTree.getSymbol();
+            if (symbol.equals("this")) {
+                _currentTree.created = true;
+                _currentTree.assignPtalonParameters(_actor);
+                _currentTree.makeThisConnections();
+                return;
+            }
             String uniqueName = _actor.uniqueName(symbol);
             if (getType(symbol).equals("import")) {
                 PtalonActor actor = new PtalonActor(_actor, uniqueName);
@@ -390,6 +398,9 @@ public class NestedActorManager extends CodeManager {
      * @exception PtalonRuntimeException If such an actor declaration does not exist.
      */
     public void enterActorDeclaration(String name) throws PtalonRuntimeException {
+        if (name.equals("this")) {
+            return;
+        }
         boolean exists = false;
         if (_currentTree == null) {
             for (ActorTree tree : _trees) {
@@ -691,7 +702,7 @@ public class NestedActorManager extends CodeManager {
      */
     private String _uniqueSymbol(String symbol) throws PtalonScopeException {
         String type = getType(symbol);
-        if (!(type.equals("import") || type.equals("actorparameter"))) {
+        if (!(type.equals("import") || type.equals("actorparameter") || type.equals("this"))) {
             throw new PtalonScopeException("Symbol " + symbol + " not an import or paramter");
         }
         try {
@@ -1091,7 +1102,7 @@ public class NestedActorManager extends CodeManager {
                         return false;
                     }
                 }
-                else if (!getType(_symbol).equals("import")) {
+                else if (!(getType(_symbol).equals("import") || getType(_symbol).equals("this"))) {
                     throw new PtalonRuntimeException("Bad type for symbol " + _symbol);
                 }
                 for (String bool : _boolParams) {
@@ -1204,6 +1215,33 @@ public class NestedActorManager extends CodeManager {
             }
         }
 
+        /**
+         * Make all connections for this nested actor.
+         * @param actor The actor for to connect to others.
+         * @exception PtalonRuntimeException If thrown trying to access the parameter,
+         * or if unable to set the token for the corresponding paramter.
+         */
+        public void makeThisConnections() throws PtalonRuntimeException {
+            try {
+                for (String portName : _relations.keySet()) {
+                    String relationName = _actor.getMappedName(_relations.get(portName));
+                    TypedIORelation relation = (TypedIORelation) _actor.getRelation(relationName);
+                    TypedIOPort port = (TypedIOPort) _actor.getPort(portName);
+                    port.link(relation);
+                }
+                for (String portName : _ports.keySet()) {
+                    TypedIOPort port = (TypedIOPort) _actor.getPort(portName);
+                    String containerPortName = _actor.getMappedName(_ports.get(portName));
+                    TypedIOPort containerPort = (TypedIOPort) _actor.getPort(containerPortName);
+                    String relationName = _actor.uniqueName("relation");
+                    TypedIORelation relation = new TypedIORelation(_actor, relationName);
+                    port.link(relation);
+                    containerPort.link(relation);
+                }
+            } catch (Exception e) {
+                throw new PtalonRuntimeException("Trouble making connections", e);
+            }
+        }
 
         
         /**

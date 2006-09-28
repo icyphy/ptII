@@ -5,7 +5,7 @@ IterativeSeries is {
 	outport output;
 	if <n >= 0/> {
 		relation r<0/>;
-		for i initially <1> <i <= n> {
+		for i initially <1/> <i <= n/> {
 			relation r<i.toString/>;
 			Scale(input := r<i - 1/>, output := r<i/>);
 		} next <i + 1/>
