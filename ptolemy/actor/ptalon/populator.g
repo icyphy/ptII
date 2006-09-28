@@ -54,68 +54,206 @@ options {
 
 port_declaration throws PtalonRuntimeException
 :
-	#(PORT a:ID
+	#(PORT (a:ID
 	{
 		if (info.isReady() && !info.isCreated(a.getText())) {
 			info.addPort(a.getText());
 		}
 	}
-	) | #(INPORT b:ID
+	| #(DYNAMIC_NAME g:ID h:EXPRESSION)
+	{
+		if (info.isReady()) {
+			String value = info.evaluateString(h.getText());
+			if (value != null) {
+				String name = g.getText() + value;
+				if (!info.inScope(name)) {
+					info.addSymbol(name, "port");
+				}
+    			if (!info.isCreated(name)) {
+    				info.addPort(name);
+    			}
+    		}
+		}
+	}
+	)) | #(INPORT (b:ID
 	{
 		if (info.isReady() && !info.isCreated(b.getText())) {
 			info.addInPort(b.getText());
 		}
 	}
-	) | #(OUTPORT c:ID
+	| #(DYNAMIC_NAME i:ID j:EXPRESSION)
+	{
+		if (info.isReady()) {
+			String value = info.evaluateString(j.getText());
+			if (value != null) {
+				String name = i.getText() + value;
+				if (!info.inScope(name)) {
+					info.addSymbol(name, "inport");
+				}
+    			if (!info.isCreated(name)) {
+    				info.addInPort(name);
+    			}
+    		}
+		}
+	}
+	)) | #(OUTPORT (c:ID
 	{
 		if (info.isReady() && !info.isCreated(c.getText())) {
 			info.addOutPort(c.getText());
 		}
 	}
-	) | #(MULTIPORT d:ID
+	| #(DYNAMIC_NAME k:ID l:EXPRESSION)
+	{
+		if (info.isReady()) {
+			String value = info.evaluateString(l.getText());
+			if (value != null) {
+				String name = k.getText() + value;
+				if (!info.inScope(name)) {
+					info.addSymbol(name, "outport");
+				}
+    			if (!info.isCreated(name)) {
+    				info.addOutPort(name);
+    			}
+    		}
+		}
+	}
+	)) | #(MULTIPORT (d:ID
 	{
 		if (info.isReady() && !info.isCreated(d.getText())) {
 			info.addPort(d.getText());
 		}
 	}
-	) | #(MULTIINPORT e:ID
+	| #(DYNAMIC_NAME m:ID n:EXPRESSION)
+	{
+		if (info.isReady()) {
+			String value = info.evaluateString(n.getText());
+			if (value != null) {
+				String name = m.getText() + value;
+				if (!info.inScope(name)) {
+					info.addSymbol(name, "multiport");
+				}
+    			if (!info.isCreated(name)) {
+    				info.addPort(name);
+    			}
+    		}
+		}
+	}
+	)) | #(MULTIINPORT (e:ID
 	{
 		if (info.isReady() && !info.isCreated(e.getText())) {
 			info.addInPort(e.getText());
 		}
 	}
-	) | #(MULTIOUTPORT f:ID
+	| #(DYNAMIC_NAME o:ID p:EXPRESSION)
+	{
+		if (info.isReady()) {
+			String value = info.evaluateString(p.getText());
+			if (value != null) {
+				String name = o.getText() + value;
+				if (!info.inScope(name)) {
+					info.addSymbol(name, "multiinport");
+				}
+    			if (!info.isCreated(name)) {
+    				info.addInPort(name);
+    			}
+    		}
+		}
+	}
+	)) | #(MULTIOUTPORT (f:ID
 	{
 		if (info.isReady() && !info.isCreated(f.getText())) {
 			info.addOutPort(f.getText());
 		}
 	}
-	)
+	| #(DYNAMIC_NAME q:ID r:EXPRESSION)
+	{
+		if (info.isReady()) {
+			String value = info.evaluateString(r.getText());
+			if (value != null) {
+				String name = q.getText() + value;
+				if (!info.inScope(name)) {
+					info.addSymbol(name, "multioutport");
+				}
+    			if (!info.isCreated(name)) {
+    				info.addOutPort(name);
+    			}
+    		}
+		}
+	}
+	))
+	exception
+	catch [PtalonScopeException excep]
+	{
+		throw new PtalonRuntimeException("", excep);
+	}
 ;
 
 parameter_declaration throws PtalonRuntimeException
 :
-	#(PARAMETER a:ID
+	#(PARAMETER (a:ID
 	{
 		if (info.isReady() && !info.isCreated(a.getText())) {
 			info.addParameter(a.getText());
 		}
 	}
-	) | #(ACTOR b:ID
+	| #(DYNAMIC_NAME c:ID d:EXPRESSION)
+	{
+		if (info.isReady()) {
+			String value = info.evaluateString(d.getText());
+			if (value != null) {
+				String name = c.getText() + value;
+				if (!info.inScope(name)) {
+					info.addSymbol(name, "parameter");
+				}
+    			if (!info.isCreated(name)) {
+    				info.addParameter(name);
+    			}
+    		}
+		}
+	}
+	)) | #(ACTOR b:ID
 	{
 		if (info.isReady() && !info.isCreated(b.getText())) {
 			info.addActorParameter(b.getText());
 		}
 	}
 	)
+	exception
+	catch [PtalonScopeException excep]
+	{
+		throw new PtalonRuntimeException("", excep);
+	}
+	
 ;
 
 assigned_parameter_declaration throws PtalonRuntimeException
+{
+	boolean dynamic_name = false;
+}
 :
-	#(PARAM_EQUALS #(PARAMETER a:ID) e:EXPRESSION
+	#(PARAM_EQUALS #(PARAMETER (a:ID | #(DYNAMIC_NAME c:ID d:EXPRESSION)
 	{
-		if (info.isReady() && !info.isCreated(a.getText())) {
-			info.addParameter(a.getText(), e.getText());
+		dynamic_name = true;
+	}
+	)) e:EXPRESSION
+	{
+		if (dynamic_name) {
+    		if (info.isReady()) {
+    			String value = info.evaluateString(d.getText());
+    			if (value != null) {
+    				String name = c.getText() + value;
+    				if (!info.inScope(name)) {
+    					info.addSymbol(name, "parameter");
+    				}
+        			if (!info.isCreated(name)) {
+        				info.addParameter(name, e.getText());
+        			}
+        		}
+    		}
+		} else {
+    		if (info.isReady() && !info.isCreated(a.getText())) {
+    			info.addParameter(a.getText(), e.getText());
+    		}
 		}
 	}
 	) | #(ACTOR_EQUALS #(ACTOR b:ID) q:qualified_identifier
@@ -125,18 +263,43 @@ assigned_parameter_declaration throws PtalonRuntimeException
 		}
 	}
 	)
+	exception
+	catch [PtalonScopeException excep]
+	{
+		throw new PtalonRuntimeException("", excep);
+	}
 ;
 
 
 relation_declaration throws PtalonRuntimeException
 :
-	#(RELATION a:ID
+	#(RELATION (a:ID
 	{
 		if (info.isReady() && !info.isCreated(a.getText())) {
 			info.addRelation(a.getText());
 		}
 	}	
-	)
+	| #(DYNAMIC_NAME c:ID d:EXPRESSION)
+	{
+		if (info.isReady()) {
+			String value = info.evaluateString(d.getText());
+			if (value != null) {
+				String name = c.getText() + value;
+				if (!info.inScope(name)) {
+					info.addSymbol(name, "relation");
+				}
+    			if (!info.isCreated(name)) {
+    				info.addRelation(name);
+    			}
+    		}
+		}
+	}
+	))
+	exception
+	catch [PtalonScopeException excep]
+	{
+		throw new PtalonRuntimeException("", excep);
+	}
 ;
 
 qualified_identifier
@@ -146,8 +309,21 @@ qualified_identifier
 
 assignment throws PtalonRuntimeException
 :
-	#(ASSIGN a:ID (b:ID	| nested_actor_declaration
-	| EXPRESSION))
+	#(ASSIGN l:ID (ID | #(d:DYNAMIC_NAME i:ID e:EXPRESSION)
+	{
+		if (!info.addedAssignment(d.getText())) {
+			String value = info.evaluateString(e.getText());
+			if (value != null) {
+				info.addPortAssign(d.getText(), l.getText(), i.getText() + value);
+			}
+		}
+	}
+	| nested_actor_declaration | EXPRESSION))
+	exception
+	catch [PtalonScopeException excep]
+	{
+		throw new PtalonRuntimeException("", excep);
+	}
 ;
 
 /**

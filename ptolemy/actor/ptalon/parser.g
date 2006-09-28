@@ -46,6 +46,9 @@ options {
  * Generate corresponding tree #(PORT ID), #(INPORT ID), or #(OUTPORT ID).
  */
 port_declaration!
+{
+	boolean dynamic_name = false;
+}
 :
 	(a:PORT
 	{
@@ -71,9 +74,17 @@ port_declaration!
 	{
 		#port_declaration = #[MULTIOUTPORT, "multioutport"];
 	}
-	)? ) d:ID
+	)? ) d:ID (e:expression
 	{
-		#port_declaration.addChild(#d);
+		dynamic_name = true;
+	}
+	)?
+	{
+		if (dynamic_name) {
+			#port_declaration.addChild(#([DYNAMIC_NAME, "dynamic"], d, e));
+		} else {
+			#port_declaration.addChild(#d);
+		}
 	}
 ;
 
@@ -89,17 +100,31 @@ port_declaration!
 parameter_declaration!
 {
 	boolean addChild = true;
+	boolean dynamic_name = false;
 }
 :
-	(p:PARAMETER c:ID (EQUALS e:expression
+	(p:PARAMETER c:ID (n:expression
 	{
-		#parameter_declaration = #([PARAM_EQUALS, "="], (p, c), e);
+		dynamic_name = true;
+	}
+	)? (EQUALS e:expression
+	{
+		if (dynamic_name) {
+			#parameter_declaration = #([PARAM_EQUALS, "="], (p, 
+				([DYNAMIC_NAME, "dynamic"], c, n)), e);
+		} else {
+			#parameter_declaration = #([PARAM_EQUALS, "="], (p, c), e);
+		}
 		addChild = false;
 	}
 	)? 
 	{
 		if (addChild) {
-			#parameter_declaration = #(p, c);
+			if (dynamic_name) {
+				#parameter_declaration = #(p, ([DYNAMIC_NAME, "dynamic"], c, n));
+			} else {
+				#parameter_declaration = #(p, c);
+			}
 		}
 	}
 	| a:ACTOR d:ID (EQUALS q:qualified_identifier
@@ -121,8 +146,13 @@ parameter_declaration!
  * <p>relation <i>ID</i>
  * <p>Generate tree #(RELATION ID)
  */
-relation_declaration:
-	RELATION^ ID
+relation_declaration
+:
+	r:RELATION^ i:ID (! e:expression
+	{
+		#relation_declaration = #(r, ([DYNAMIC_NAME, "dynamic"], i, e));
+	}
+	)?
 ;
 
 /**
@@ -158,7 +188,8 @@ qualified_identifier!
 
 keyword_or_identifier:
 	ID | IMPORT | PORT | INPORT | OUTPORT | PARAMETER 
-	| ACTOR | RELATION | TRUE | FALSE | IF | ELSE | IS | FOR
+	| ACTOR | RELATION | TRUE | FALSE | IF | ELSE | IS | FOR |
+	INITIALLY | NEXT
 ;
 
 /**
@@ -173,9 +204,33 @@ keyword_or_identifier:
  * <p>#(ASSIGN ID <i>actor_declaration</i>)
  * <p>#(ASSIGN ID expression)
  */
-assignment:
-	ID ASSIGN^ ((ID (RPAREN | COMMA)) => ID |
-		(actor_declaration | expression)
+assignment!
+{
+	boolean dynamic_name = false;
+}
+:
+	l:ID a:ASSIGN ((ID (expression)? (RPAREN | COMMA)) => r:ID (e:expression
+	{
+		dynamic_name = true;
+	}
+	)? 
+	{
+		if (dynamic_name) {
+			#assignment = #(a, l, ([DYNAMIC_NAME, "dynamic"], r, e));
+		} else {
+			#assignment = #(a, l, r);
+		}
+	}
+	|
+		(d:actor_declaration 
+    	{
+    		#assignment = #(a, l, d);
+    	}		
+		| f:expression
+    	{
+    		#assignment = #(a, l, f);
+    	}		
+		)
 	)
 ;
 
@@ -217,17 +272,17 @@ actor_declaration!
 		#a = #[ACTOR_DECLARATION, a.getText()];
 		#actor_declaration = #(a);
 	} 
-	LPAREN! (
+	LPAREN (
 		b:assignment 
 		{
 			#actor_declaration.addChild(#b);
 		}
-		(COMMA! c:assignment
+		(COMMA c:assignment
 		{
 			#actor_declaration.addChild(#c);
 		}
 		)*
-	)? RPAREN!
+	)? RPAREN
 ;
 
 atomic_statement : 
@@ -374,6 +429,7 @@ tokens {
 	ACTOR_EQUALS;
 	SATISFIES;
 	VARIABLE;
+	DYNAMIC_NAME;
 }
 
 

@@ -39,7 +39,7 @@ public class PtalonParameter extends Parameter {
         setStringMode(true);
         _hasValue = false;
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     

@@ -4,12 +4,12 @@ IterativeSeries is {
 	inport input;
 	outport output;
 	if <n >= 0/> {
-		relation r<0.toString/>;
+		relation r<0/>;
 		for i initially <1> <i <= n> {
 			relation r<i.toString/>;
-			Scale(input := r<(i - 1).toString/>, output := r<i.toString/>);
+			Scale(input := r<i - 1/>, output := r<i/>);
 		} next <i + 1/>
-		this(input := r<0.toString/>, output := r<n.toString/>);
+		this(input := r<0/>, output := r<n/>);
 	} else {
 	}
 }

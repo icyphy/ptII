@@ -46,6 +46,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
@@ -613,6 +614,29 @@ public class CodeManager {
         }
         _currentTree.evaluateForScope();
     }
+    
+    /**
+     * Evaluate the given input expression and return a string
+     * representation of it, or null, if there is some reason
+     * it cannot be evaluated.
+     * @param expression The input expression.
+     * @return The evaluated value, or null if there is not.
+     */
+    public String evaluateString(String expression) {
+        try {
+            PtParser parser = new PtParser();
+            ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
+            ASTPtRootNode _parseTree = parser.generateParseTree(expression);
+            Token result = _parseTreeEvaluator.evaluateParseTree(_parseTree,
+                    _scope);
+            if (result instanceof StringToken) {
+                return ((StringToken)result).stringValue();
+            }
+            return result.toString();
+        } catch (IllegalActionException e) {
+            return null;
+        }
+    }
 
     /**
      * Exit the current if scope.
@@ -791,7 +815,7 @@ public class CodeManager {
         }
         return _currentTree.getDeepType(symbol);
     }
-
+    
     /**
      * Return true if the given symbol exists in the current scope.
      * @param symbol The symbol to test.
@@ -804,7 +828,7 @@ public class CodeManager {
                 return true;
             }
         }
-        return false;
+        return _currentTree.inDeepScope(symbol);
     }
 
     /**
@@ -1427,6 +1451,26 @@ public class CodeManager {
                 return false;
             }
             return status;
+        }
+        
+        /**
+         * Return true if the given symbol is in this scope, or
+         * deeply in this scope through some for loop.
+         * @param symbol The symbol to test.
+         * @return true if symbol is in the right scope.
+         */
+        public boolean inDeepScope(String symbol) {
+            if (_symbols.containsKey(symbol)) {
+                return true;
+            }
+            for (IfTree child : _children) {
+                if (child.isForStatement) {
+                    if (child.inDeepScope(symbol)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         /**

@@ -76,10 +76,10 @@ public PtalonLexer(LexerSharedInputState state) {
 	literals.put(new ANTLRHashString("actor", this), new Integer(12));
 	literals.put(new ANTLRHashString("parameter", this), new Integer(10));
 	literals.put(new ANTLRHashString("else", this), new Integer(20));
-	literals.put(new ANTLRHashString("initially", this), new Integer(31));
+	literals.put(new ANTLRHashString("initially", this), new Integer(23));
 	literals.put(new ANTLRHashString("import", this), new Integer(16));
 	literals.put(new ANTLRHashString("true", this), new Integer(17));
-	literals.put(new ANTLRHashString("next", this), new Integer(32));
+	literals.put(new ANTLRHashString("next", this), new Integer(24));
 	literals.put(new ANTLRHashString("outport", this), new Integer(8));
 	literals.put(new ANTLRHashString("false", this), new Integer(18));
 	literals.put(new ANTLRHashString("is", this), new Integer(21));
@@ -500,7 +500,7 @@ tryAgain:
 		}
 		}
 		{
-		_loop451:
+		_loop1054:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -539,7 +539,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop451;
+				break _loop1054;
 			}
 			}
 		} while (true);
@@ -558,34 +558,34 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt454=0;
-		_loop454:
+		int _cnt1057=0;
+		_loop1057:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt454>=1 ) { break _loop454; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt1057>=1 ) { break _loop1057; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt454++;
+			_cnt1057++;
 		} while (true);
 		}
 		{
 		if ((LA(1)=='.')) {
 			match('.');
 			{
-			int _cnt457=0;
-			_loop457:
+			int _cnt1060=0;
+			_loop1060:
 			do {
 				if (((LA(1) >= '0' && LA(1) <= '9'))) {
 					matchRange('0','9');
 				}
 				else {
-					if ( _cnt457>=1 ) { break _loop457; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+					if ( _cnt1060>=1 ) { break _loop1060; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
 				
-				_cnt457++;
+				_cnt1060++;
 			} while (true);
 			}
 		}
@@ -620,7 +620,7 @@ tryAgain:
 		
 		match('"');
 		{
-		_loop462:
+		_loop1065:
 		do {
 			switch ( LA(1)) {
 			case '\\':
@@ -667,7 +667,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop462;
+				break _loop1065;
 			}
 			}
 		} while (true);
@@ -738,15 +738,15 @@ tryAgain:
 		
 		match('<');
 		{
-		_loop467:
+		_loop1070:
 		do {
 			// nongreedy exit test
-			if ((LA(1)=='/') && (LA(2)=='>') && (true)) break _loop467;
+			if ((LA(1)=='/') && (LA(2)=='>') && (true)) break _loop1070;
 			if (((LA(1) >= '\u0000' && LA(1) <= '\u007f')) && ((LA(2) >= '\u0000' && LA(2) <= '\u007f')) && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
 				matchNot(EOF_CHAR);
 			}
 			else {
-				break _loop467;
+				break _loop1070;
 			}
 			
 		} while (true);

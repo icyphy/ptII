@@ -52,40 +52,40 @@ options {
 
 port_declaration throws PtalonScopeException
 :
-	#(PORT a:ID
+	#(PORT (a:ID
 	{
 		info.addSymbol(a.getText(), "port");
 	}
-	) | #(INPORT b:ID
+	| #(DYNAMIC_NAME ID EXPRESSION))) | #(INPORT (b:ID
 	{
 		info.addSymbol(b.getText(), "inport");
 	}
-	) | #(OUTPORT c:ID
+	| #(DYNAMIC_NAME ID EXPRESSION))) | #(OUTPORT (c:ID
 	{
 		info.addSymbol(c.getText(), "outport");
 	}
-	) | #(MULTIPORT d:ID
+	| #(DYNAMIC_NAME ID EXPRESSION))) | #(MULTIPORT (d:ID
 	{
 		info.addSymbol(d.getText(), "multiport");
 	}
-	) | #(MULTIINPORT e:ID
+	| #(DYNAMIC_NAME ID EXPRESSION))) | #(MULTIINPORT (e:ID
 	{
 		info.addSymbol(e.getText(), "multiinport");
 	}
-	) | #(MULTIOUTPORT f:ID
+	| #(DYNAMIC_NAME ID EXPRESSION))) | #(MULTIOUTPORT (f:ID
 	{
 		info.addSymbol(f.getText(), "multioutport");
 	}
-	)
+	| #(DYNAMIC_NAME ID EXPRESSION)))
 ;
 
 parameter_declaration throws PtalonScopeException
 :
-	#(PARAMETER a:ID
+	#(PARAMETER (a:ID
 	{
 		info.addSymbol(a.getText(), "parameter");
 	}
-	) | #(ACTOR b:ID
+	| #(DYNAMIC_NAME ID EXPRESSION))) | #(ACTOR b:ID
 	{
 		info.addSymbol(b.getText(), "actorparameter");
 	}
@@ -94,29 +94,25 @@ parameter_declaration throws PtalonScopeException
 
 assigned_parameter_declaration throws PtalonScopeException
 :
-	#(PARAM_EQUALS #(PARAMETER a:ID) e:EXPRESSION
+	#(PARAM_EQUALS #(PARAMETER (a:ID
 	{
 		info.addSymbol(a.getText(), "parameter");
 	}
-	) | #(ACTOR_EQUALS #(ACTOR b:ID) q:qualified_identifier
+	| #(DYNAMIC_NAME ID EXPRESSION))) EXPRESSION) | 
+	#(ACTOR_EQUALS #(ACTOR b:ID
 	{
 		info.addSymbol(b.getText(), "actorparameter");
 	}
-	)
+	) QUALID)
 ;
 
 relation_declaration throws PtalonScopeException
 :
-	#(RELATION a:ID
+	#(RELATION (a:ID
 	{
 		info.addSymbol(a.getText(), "relation");
 	}
-	)
-;
-
-qualified_identifier
-:
-	QUALID
+	| #(DYNAMIC_NAME ID EXPRESSION)))
 ;
 
 assignment throws PtalonScopeException
@@ -124,15 +120,16 @@ assignment throws PtalonScopeException
 	String arith, bool;
 }
 :
-	#(ASSIGN a:ID (b:ID 
+	#(ASSIGN a:ID ((b:ID 
 	{
-		if (info.getType(b.getText()).endsWith("port")) {
-			info.addPortAssign(a.getText(), b.getText());
-		} else if (info.getType(b.getText()).equals("relation")) {
-			info.addPortAssign(a.getText(), b.getText());
-		}
+		info.addPortAssign(a.getText(), b.getText());
 	}
-	| nested_actor_declaration[a.getText()]
+	| #(d:DYNAMIC_NAME ID EXPRESSION)
+	{
+		String assignmentName = info.addUnknownPortAssign();
+		#d.setText(assignmentName);
+	}
+	)| nested_actor_declaration[a.getText()]
 	| e:EXPRESSION
 	{
 		info.addParameterAssign(a.getText(), e.getText());
@@ -155,7 +152,7 @@ actor_declaration throws PtalonScopeException
 
 nested_actor_declaration [String paramValue] throws PtalonScopeException	
 :
-	#(a:ACTOR_DECLARATION 
+	#(a:ACTOR_DECLARATION
 	{
 		info.pushActorDeclaration(a.getText());
 		info.setActorParameter(paramValue);
@@ -192,12 +189,12 @@ conditional_statement throws PtalonScopeException
 
 iterative_statement throws PtalonScopeException
 :
-	#(FOR #(VARIABLE a:ID) #(INITIALLY b:expression) #(SATISFIES c:expression)
+	#(FOR #(VARIABLE a:ID) #(INITIALLY b:EXPRESSION) #(SATISFIES c:EXPRESSION)
 	{
 		info.pushForStatement(a.getText(), b.getText(), c.getText());
 	}
 		(atomic_statement | conditional_statement | iterative_statement)*
-		#(NEXT n:expression
+		#(NEXT n:EXPRESSION
 		{
 			info.setNextExpression(n.getText());
 		}

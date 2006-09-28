@@ -333,8 +333,6 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             prefix = "null";
         }
 
-        prefix = _stripNumericSuffix(prefix);
-
         String candidate = prefix;
 
         // NOTE: The list returned by getPrototypeList() has

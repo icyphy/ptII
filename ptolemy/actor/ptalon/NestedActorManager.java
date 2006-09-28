@@ -40,6 +40,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import javax.print.DocFlavor.STRING;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.data.BooleanToken;
@@ -204,6 +206,16 @@ public class NestedActorManager extends CodeManager {
     }
     
     /**
+     * Return true if the given unknown assignment marker 
+     * corresponds to a port that has already been assigned a connection.
+     * @param marker The test marker.
+     * @return true if the given marker has already been assigned a value.
+     */
+    public boolean addedAssignment(String marker) {
+        return _currentTree.addedAssignment(marker);
+    }
+    
+    /**
      * Add a symbol for an import statement.  The statement has form
      * > import foo.bar.baz
      * where $PTII\foo\bar\baz.ptln is a valid Ptalon file.
@@ -283,6 +295,27 @@ public class NestedActorManager extends CodeManager {
     }
     
     /**
+     * Add an assignment of the specified port of this actor
+     * declaration to the containing Ptalon actor connection point,
+     * which is either a port or a relation. 
+     * This is not allowed in nested actor declarations, only top-level declarations.
+     * For instance,
+     * Foo(port := containing)
+     * port is okay, but not
+     * Bar(a := Foo(port := containing))
+     * 
+     * @param unknownMarker The marker corresponding to this assignment.
+     * @param portName The name of the port in this 
+     * @param connectPoint The name of the container's port or relation.
+     * @exception PtalonScopeException If this is not a top-level actor declaration with respect
+     * to the assignment, or if connectPoint is not a port or relation.
+     */
+    public void addPortAssign(String unknownMarker, String portName, String connectPoint) throws PtalonScopeException {
+        addPortAssign(portName, connectPoint);
+        _currentTree.removeMarker(unknownMarker);
+    }
+
+    /**
      * Add a symbol with the given name and type to the sybol table
      * at the current level of the if-tree hierachy.
      * @param name The symbol name.
@@ -310,6 +343,17 @@ public class NestedActorManager extends CodeManager {
         if (type.equals("actorparameter")) {
             _instanceNumbers.put(symbol, -1);
         }
+    }
+    
+    /**
+     * Notify the current actor tree that a port will
+     * later be assigned a yet-unknown value.  Return
+     * a string that marks this value, like
+     * _assignemnet2.
+     * @return The marker string.
+     */
+    public String addUnknownPortAssign() {
+        return _currentTree.addUnknownPortAssign();
     }
     
     /**
@@ -764,7 +808,16 @@ public class NestedActorManager extends CodeManager {
             ActorTree tree = new ActorTree(this, name);
             _children.add(tree);
             return tree;
-        }  
+        }
+        
+        /**
+         * Return true if the given marker has already been assigned a value.
+         * @param marker The test marker.
+         * @return true if the given marker has already been assigned a value.
+         */
+        public boolean addedAssignment(String marker) {
+            return !_unknownAssignments.contains(marker);
+        }
         
         /**
          * Add an assignment of the specified port of this actor
@@ -809,6 +862,20 @@ public class NestedActorManager extends CodeManager {
             } else {
                 throw new PtalonScopeException(connectPoint + " is not a port or relation.");
             }
+        }
+        
+        /**
+         * Notify this actor tree that a port will
+         * later be assigned a yet-unknown value.  Return
+         * a string that marks this value, like
+         * _assignemnet2.
+         * @return The marker string.
+         */
+        public String addUnknownPortAssign() {
+            int nextValue = _unknownAssignments.size() + 1;
+            String output = "_assignemnt" + nextValue;
+            _unknownAssignments.add(output);
+            return output;
         }
         
         /**
@@ -1014,6 +1081,9 @@ public class NestedActorManager extends CodeManager {
          * problem accessing any parameters.
          */
         public boolean isReady() throws PtalonRuntimeException {
+            if (_unknownAssignments.size() > 0) {
+                return false;
+            }
             try {
                 if (getType(_symbol).equals("actorparameter")) {
                     PtalonParameter param = _actor.getPtalonParameter(_symbol);
@@ -1065,6 +1135,15 @@ public class NestedActorManager extends CodeManager {
          */
         public void putIntParamInScope(String param) {
             _intParams.add(param);
+        }
+        
+        /**
+         * Remove the specified marker from the list of
+         * unknown assignments.
+         * @param marker The marker to remove.
+         */
+        public void removeMarker(String marker) {
+            _unknownAssignments.remove(marker);
         }
         
         /**
@@ -1179,6 +1258,12 @@ public class NestedActorManager extends CodeManager {
         ////                        private members                    ////        
         
         /**
+         * The left hand side in the Ptalon expression
+         * param := ...
+         */
+        private String _actorParameter = null;
+        
+        /**
          * Each key represents a parameter name for this part of the actor
          * declaration, and it's value is its corresponding arithmetic expression
          * label.
@@ -1233,9 +1318,8 @@ public class NestedActorManager extends CodeManager {
         private String _symbol;
         
         /**
-         * The left hand side in the Ptalon expression
-         * param := ...
+         * A list of unknown assignment markers.
          */
-        private String _actorParameter = null;
+        private HashSet<String> _unknownAssignments = new HashSet<String>();
     }
 }
