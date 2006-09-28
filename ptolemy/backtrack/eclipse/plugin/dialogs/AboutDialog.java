@@ -76,7 +76,7 @@ public class AboutDialog extends Dialog {
         // Your code goes here (widget creation, set result, etc).
         Label logo = new Label(_shell, SWT.NULL);
         ImageDescriptor descriptor = EclipsePlugin
-                .getImageDescriptor("ptolemy/backtrack/plugin/images/ptolemy.gif");
+                .getImageDescriptor("ptolemy/backtrack/eclipse/plugin/images/ptolemy.gif");
         Image image = descriptor.createImage();
         logo.setImage(image);
 
