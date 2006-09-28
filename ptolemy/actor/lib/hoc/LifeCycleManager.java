@@ -283,7 +283,10 @@ public class LifeCycleManager extends TypedCompositeActor {
                 executeChangeRequests();
 
                 if (super.prefire()) {
-                    super.fire();
+                    // Cannot use super.fire() here because it does
+                    // some inappropriate things like reading port parameters
+                    // and transferring inputs.
+                    _fireInsideModel();
 
                     if (!super.postfire()) {
                         lastIterateResult = STOP_ITERATING;
@@ -316,6 +319,28 @@ public class LifeCycleManager extends TypedCompositeActor {
         }
     }
 
+    /** Invoke the fire() method of its local director.
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's fire() method throws it.
+     */
+    protected void _fireInsideModel() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Firing the inside model.");
+        }
+
+        try {
+            _workspace.getReadAccess();
+            if (!_stopRequested) {
+                getDirector().fire();
+            }
+        } finally {
+            _workspace.doneReading();
+        }
+        if (_debugging) {
+            _debug("Done firing inside model.");
+        }
+    }
+
     /** Iterate over input ports and read any available values into
      *  the referenced model parameters.
      *  @exception IllegalActionException If reading the ports or
@@ -333,6 +358,7 @@ public class LifeCycleManager extends TypedCompositeActor {
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();
 
+            // Do not
             if (port instanceof ParameterPort) {
                 PortParameter parameter = ((ParameterPort) port).getParameter();
 
