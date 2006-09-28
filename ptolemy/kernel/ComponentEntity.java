@@ -189,9 +189,11 @@ public class ComponentEntity extends Entity {
         // right values, since the child has been cloned
         // from the parent. However, this will set the override
         // levels appropriately in the child.
-        // FIXME: This also propagates to previously created instances,
-        // which is extremely inefficient!
-        _propagateValues(clone);
+        // NOTE: This could be done by calling propagateValues(),
+        // but that would be extremely inefficient since it would
+        // propagate to all previously instantiated instances as
+        // well as to the one new clone.
+        clone._adjustOverride(0);
 
         return clone;
     }
@@ -564,7 +566,7 @@ public class ComponentEntity extends Entity {
             // since all dependents should be within this
             // scope. EAL 9/6/06
             if (previousContainer != null && container != null) {
-                // FIXME: This somehow prevents CompositeEntity.validateSettables
+                // NOTE: This somehow prevents CompositeEntity.validateSettables
                 // from ever being called when a model is loaded.
                 validateSettables();
             }
@@ -805,10 +807,12 @@ public class ComponentEntity extends Entity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    /** Define the icon. */
     private void _addIcon() {
         _attachText("_iconDescription", _defaultIcon);
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

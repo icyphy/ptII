@@ -1074,8 +1074,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     public List getDerivedList() {
         try {
-            return _getDerivedList(null, false, false, this, 0, null, null,
-                    null);
+            return _getDerivedList(null, false, false, this, 0, null, null);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex);
         }
@@ -1520,7 +1519,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #setDerivedLevel(int)
      */
     public List propagateExistence() throws IllegalActionException {
-        return _getDerivedList(null, false, true, this, 0, null, null, null);
+        return _getDerivedList(null, false, true, this, 0, null, null);
     }
 
     /** Propagate the value (if any) held by this
@@ -1539,8 +1538,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         _override = new LinkedList();
         _override.add(new Integer(0));
 
-        return _getDerivedList(null, true, false, this, 0, _override, null,
-                null);
+        return _getDerivedList(null, true, false, this, 0, _override, null);
     }
 
     /** If this object has a value that has been set directly,
@@ -1558,7 +1556,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         // by propagation into it, then there is no need to do
         // any propagation.
         if (_override != null) {
-            _getDerivedList(null, true, false, this, 0, _override, null, null);
+            _getDerivedList(null, true, false, this, 0, _override, null);
         }
 
         Iterator containedObjects = containedObjectsIterator();
@@ -1759,7 +1757,14 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
         // Setting override to null indicates that no override has
         // occurred.
-        _override = null;
+        // NOTE: This is no longer the right thing to do.
+        // Upon instantiating, the clone method creates a copy
+        // of the _override field.  Then the _adjustOverrides()
+        // method adjusts the value of that field to reflect
+        // that the new object gets its value from the object
+        // from which it was cloned, or from whatever that
+        // gets it from.
+        // _override = null;
     }
 
     /** Set a name to present to the user.
@@ -2044,6 +2049,33 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             }
         } finally {
             _workspace.doneWriting();
+        }
+    }
+
+    /** Adjust the _override field of this object, if there is
+     *  one, by incrementing the value at the specified depth
+     *  by one, and do the same for all contained objects, with
+     *  one larger depth.
+     *  @param depth The depth.
+     */
+    protected void _adjustOverride(int depth) {
+        // This method is called after cloning, so having a non-null
+        // _override means that this object was cloned from and
+        // is derived from an object whose value is set from some
+        // other object according to the _override field.
+        if (_override != null) {
+            // If the _override field is not long enough,
+            // then we need to make it long enough.
+            while (_override.size() <= depth) {
+                _override.add(new Integer(0));
+            }
+            int breadth = ((Integer)_override.get(depth)).intValue();
+            _override.set(depth, new Integer(breadth + 1));
+        }
+        Iterator objects = containedObjectsIterator();
+        while (objects.hasNext()) {
+            NamedObj object = (NamedObj) objects.next();
+            object._adjustOverride(depth + 1);
         }
     }
 
@@ -2509,35 +2541,6 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             throws IllegalActionException {
     }
 
-    /** If this object has a value that has been set directly,
-     *  or if it has a value that has propagated in, then
-     *  propagate that value to all derived objects, and
-     *  then repeat this for all objects this object contains.
-     *  Unlike propagateValue(), this does not assume this
-     *  object or any of its contained objects is having
-     *  its value set directly. Instead, it uses the current
-     *  state of override of this object as the starting point.
-     *  @param child If non-null, limit the propagation to
-     *   the specified child.
-     *  @exception IllegalActionException If propagation fails.
-     */
-    protected void _propagateValues(NamedObj child)
-            throws IllegalActionException {
-        // If this object has not had its value set directly or
-        // by propagation into it, then there is no need to do
-        // any propagation.
-        if (_override != null) {
-            _getDerivedList(null, true, false, this, 0, _override, null, child);
-        }
-
-        Iterator containedObjects = containedObjectsIterator();
-
-        while (containedObjects.hasNext()) {
-            NamedObj containedObject = (NamedObj) containedObjects.next();
-            containedObject.propagateValues();
-        }
-    }
-
     /** Remove the given attribute.
      *  If there is no such attribute, do nothing.
      *  This method is write-synchronized on the workspace and increments its
@@ -2726,12 +2729,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @param relativeName The name of the object relative to the
      *   context (null except in recursive calls).
      *  @param override The list of override breadths (one per depth).
-     *   If propagate is true, then this should be a list with with
+     *   If propagate is true, then this should be a list with
      *   a single Integer 0 for outside callers, and otherwise it
      *   should be null.
-     *  @param child If non-null, limit to this one child of the
-     *   context. It is an error if the specified child is not
-     *   a child of the context.
      *  @return A list of instances of the same class as this object
      *   which are derived from
      *   this object. The list is empty in this base class, but
@@ -2742,7 +2742,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     private List _getDerivedList(Collection visited, boolean propagate,
             boolean force, NamedObj context, int depth, List override,
-            String relativeName, NamedObj child) throws IllegalActionException {
+            String relativeName) throws IllegalActionException {
         try {
             workspace().getReadAccess();
 
@@ -2796,8 +2796,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 }
 
                 result.addAll(_getDerivedList(visited, propagate, force,
-                        container, depth + 1, newOverride, newRelativeName,
-                        null));
+                        container, depth + 1, newOverride, newRelativeName));
             }
 
             if (!(context instanceof Instantiable)) {
@@ -2814,21 +2813,13 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             }
 
             // Iterate over the children.
-            List othersList;
-            if (child == null) {
-                othersList = ((Instantiable) context).getChildren();
-            } else {
-                othersList = new LinkedList();
-                othersList.add(new WeakReference(child));
-            }
-
+            List othersList = ((Instantiable) context).getChildren();
             if (othersList != null) {
                 Iterator others = othersList.iterator();
 
                 while (others.hasNext()) {
                     WeakReference reference = (WeakReference) others.next();
                     NamedObj other = (NamedObj) reference.get();
-
                     if (other != null) {
                         // Found a deferral.
                         // Look for an object with the relative name.
@@ -2849,11 +2840,11 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                                 if (lastPeriod > 0) {
                                     String containerName = relativeName
                                             .substring(0, lastPeriod);
-                                    // FIXME: The following may return null
+                                    // NOTE: The following may return null
                                     // if the propagation hasn't occurred yet.
                                     // This happens when invoking createHierarchy
-                                    // in classes. Why hasn't propagation of the
-                                    // container happened?
+                                    // in classes. It is a bug if propagation of the
+                                    // container hasn't happened.
                                     remoteContainer = getContainer()
                                             ._getContainedObject(other,
                                                     containerName);
@@ -2867,6 +2858,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                                 // current depth.
                                 candidate.setDerivedLevel(depth);
                                 candidate._markContentsDerived(depth);
+                                candidate._adjustOverride(depth);
                             } else {
                                 // No candidate and no error.
                                 // We can reach this line if this method
@@ -2937,8 +2929,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                         // will be determined by the depth of propagation from
                         // this candidate.
                         result.addAll(candidate._getDerivedList(visited,
-                                propagate, force, candidate, 0, newOverride,
-                                null, null));
+                                propagate, force, candidate, 0, newOverride, null));
 
                         // Note that the above recursive call will
                         // add the candidate to the HashSet, so we
