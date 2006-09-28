@@ -443,6 +443,6 @@ actor_definition[NestedActorManager info] throws PtalonRuntimeException
 	this.info.startAtTop();
 }
 :
-	#(a:ACTOR_DEFINITION 
+	#(a:ACTOR_DEFINITION (DANGLING_PORTS_OKAY)?
 		(atomic_statement | conditional_statement | iterative_statement)*)
 ;

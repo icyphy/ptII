@@ -1,3 +1,8 @@
+/* This actor uses iteration to make
+ * n copies of the Scale actor in
+ * series, where n is a parameter
+ * specified by the user
+ */
 IterativeSeries is {
 	actor Scale = ptolemy.actor.lib.Scale;
 	parameter n;
@@ -5,6 +10,10 @@ IterativeSeries is {
 	outport output;
 	if <n >= 0/> {
 		relation r<0/>;
+		
+		/* This is the Ptalon for loop,
+		 * which leverages the expression language
+		 */
 		for a initially <1/> <a <= n/> {
 			relation r<a/>;
 			Scale(input := r<a - 1/>, output := r<a/>);
@@ -13,3 +22,6 @@ IterativeSeries is {
 	} else {
 	}
 }
+
+/* Does this actor make sense?
+ */

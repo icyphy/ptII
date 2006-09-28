@@ -68,21 +68,22 @@ public PtalonLexer(LexerSharedInputState state) {
 	caseSensitiveLiterals = true;
 	setCaseSensitive(true);
 	literals = new Hashtable();
-	literals.put(new ANTLRHashString("port", this), new Integer(4));
-	literals.put(new ANTLRHashString("relation", this), new Integer(13));
 	literals.put(new ANTLRHashString("for", this), new Integer(22));
-	literals.put(new ANTLRHashString("if", this), new Integer(19));
-	literals.put(new ANTLRHashString("inport", this), new Integer(7));
-	literals.put(new ANTLRHashString("actor", this), new Integer(12));
-	literals.put(new ANTLRHashString("parameter", this), new Integer(10));
-	literals.put(new ANTLRHashString("else", this), new Integer(20));
-	literals.put(new ANTLRHashString("initially", this), new Integer(23));
-	literals.put(new ANTLRHashString("import", this), new Integer(16));
-	literals.put(new ANTLRHashString("true", this), new Integer(17));
-	literals.put(new ANTLRHashString("next", this), new Integer(24));
 	literals.put(new ANTLRHashString("outport", this), new Integer(8));
+	literals.put(new ANTLRHashString("parameter", this), new Integer(10));
 	literals.put(new ANTLRHashString("false", this), new Integer(18));
+	literals.put(new ANTLRHashString("true", this), new Integer(17));
+	literals.put(new ANTLRHashString("actor", this), new Integer(12));
+	literals.put(new ANTLRHashString("import", this), new Integer(16));
+	literals.put(new ANTLRHashString("next", this), new Integer(24));
+	literals.put(new ANTLRHashString("inport", this), new Integer(7));
+	literals.put(new ANTLRHashString("port", this), new Integer(4));
+	literals.put(new ANTLRHashString("initially", this), new Integer(23));
 	literals.put(new ANTLRHashString("is", this), new Integer(21));
+	literals.put(new ANTLRHashString("danglingPortsOkay", this), new Integer(25));
+	literals.put(new ANTLRHashString("relation", this), new Integer(13));
+	literals.put(new ANTLRHashString("if", this), new Integer(19));
+	literals.put(new ANTLRHashString("else", this), new Integer(20));
 }
 
 public Token nextToken() throws TokenStreamException {
@@ -210,6 +211,12 @@ tryAgain:
 				case '<':
 				{
 					mEXPRESSION(true);
+					theRetToken=_returnToken;
+					break;
+				}
+				case '/':
+				{
+					mCOMMENT(true);
 					theRetToken=_returnToken;
 					break;
 				}
@@ -500,7 +507,7 @@ tryAgain:
 		}
 		}
 		{
-		_loop1054:
+		_loop868:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -539,7 +546,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop1054;
+				break _loop868;
 			}
 			}
 		} while (true);
@@ -558,34 +565,34 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt1057=0;
-		_loop1057:
+		int _cnt871=0;
+		_loop871:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt1057>=1 ) { break _loop1057; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt871>=1 ) { break _loop871; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt1057++;
+			_cnt871++;
 		} while (true);
 		}
 		{
 		if ((LA(1)=='.')) {
 			match('.');
 			{
-			int _cnt1060=0;
-			_loop1060:
+			int _cnt874=0;
+			_loop874:
 			do {
 				if (((LA(1) >= '0' && LA(1) <= '9'))) {
 					matchRange('0','9');
 				}
 				else {
-					if ( _cnt1060>=1 ) { break _loop1060; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+					if ( _cnt874>=1 ) { break _loop874; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
 				
-				_cnt1060++;
+				_cnt874++;
 			} while (true);
 			}
 		}
@@ -620,7 +627,7 @@ tryAgain:
 		
 		match('"');
 		{
-		_loop1065:
+		_loop879:
 		do {
 			switch ( LA(1)) {
 			case '\\':
@@ -667,7 +674,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop1065;
+				break _loop879;
 			}
 			}
 		} while (true);
@@ -738,21 +745,51 @@ tryAgain:
 		
 		match('<');
 		{
-		_loop1070:
+		_loop884:
 		do {
 			// nongreedy exit test
-			if ((LA(1)=='/') && (LA(2)=='>') && (true)) break _loop1070;
+			if ((LA(1)=='/') && (LA(2)=='>') && (true)) break _loop884;
 			if (((LA(1) >= '\u0000' && LA(1) <= '\u007f')) && ((LA(2) >= '\u0000' && LA(2) <= '\u007f')) && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
 				matchNot(EOF_CHAR);
 			}
 			else {
-				break _loop1070;
+				break _loop884;
 			}
 			
 		} while (true);
 		}
 		match('/');
 		match('>');
+		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
+			_token = makeToken(_ttype);
+			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));
+		}
+		_returnToken = _token;
+	}
+	
+	public final void mCOMMENT(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
+		int _ttype; Token _token=null; int _begin=text.length();
+		_ttype = COMMENT;
+		int _saveIndex;
+		
+		match('/');
+		match('*');
+		{
+		_loop887:
+		do {
+			// nongreedy exit test
+			if ((LA(1)=='*') && (LA(2)=='/') && (true)) break _loop887;
+			if (((LA(1) >= '\u0000' && LA(1) <= '\u007f')) && ((LA(2) >= '\u0000' && LA(2) <= '\u007f')) && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
+				matchNot(EOF_CHAR);
+			}
+			else {
+				break _loop887;
+			}
+			
+		} while (true);
+		}
+		match('*');
+		match('/');
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
 			_token = makeToken(_ttype);
 			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));

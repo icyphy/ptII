@@ -189,7 +189,7 @@ qualified_identifier!
 keyword_or_identifier:
 	ID | IMPORT | PORT | INPORT | OUTPORT | PARAMETER 
 	| ACTOR | RELATION | TRUE | FALSE | IF | ELSE | IS | FOR |
-	INITIALLY | NEXT
+	INITIALLY | NEXT | DANGLING_PORTS_OKAY
 ;
 
 /**
@@ -286,8 +286,9 @@ actor_declaration!
 ;
 
 atomic_statement : 
-	(port_declaration | parameter_declaration |
-	relation_declaration | actor_declaration) SEMI!
+	((port_declaration | parameter_declaration |
+	relation_declaration | actor_declaration) SEMI! |
+	COMMENT!)
 ;
 
 conditional_statement!
@@ -360,13 +361,24 @@ iterative_statement!
 ;
 
 actor_definition!
+{
+	boolean danglingPortsOkay = false;
+}
 :
 	{
 		#actor_definition = #[ACTOR_DEFINITION];
 	}
+	(COMMENT)*
+	(d:danglingPortsOkay
+	{
+		danglingPortsOkay = true;
+	}
+	)?
+	(COMMENT)*
 	a:ID
 	{
 		#actor_definition.setText(a.getText());
+		#actor_definition.addChild(#d);
 	}
 	IS! LCURLY! (b:atomic_statement 
 	{
@@ -381,6 +393,11 @@ actor_definition!
 		#actor_definition.addChild(#i);
 	}
 	)* RCURLY!
+	(COMMENT)*
+;
+
+danglingPortsOkay :
+	DANGLING_PORTS_OKAY SEMI!
 ;
 
 ///////////////////////////////////////////////////////////////////
@@ -409,6 +426,7 @@ tokens {
 	FOR = "for";
 	INITIALLY = "initially";
 	NEXT = "next";
+	DANGLING_PORTS_OKAY = "danglingPortsOkay";
 	TRUEBRANCH;
 	FALSEBRANCH;
 	QUALID;
@@ -505,4 +523,14 @@ EXPRESSION :
 			.
 		)* 
 	'/' '>'
+;
+
+COMMENT :
+	'/' '*' (
+		options {
+			greedy = false;
+		} :
+			.
+		)*
+	'*' '/'
 ;

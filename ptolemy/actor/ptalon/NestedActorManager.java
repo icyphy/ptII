@@ -561,6 +561,17 @@ public class NestedActorManager extends CodeManager {
     public void setBoolExpr(String expressionName, boolean value) {
         _booleanExpressions.put(expressionName, value);
     }
+    
+    /**
+     * Set whether or not dangling ports are okay.  If this input
+     * is false, then dangling ports will be connected to the outside
+     * of this PtalonActor, the default behavoir.  Setting this
+     * to true means that this is not desired.
+     * @param value true if dangling ports should be left alone.
+     */
+    public void setDanglingPortsOkay(boolean value) {
+        _danglingPortsOkay = value;
+    }
 
     /**
      * Set the symbol in the PtalonCode which represents this
@@ -734,6 +745,15 @@ public class NestedActorManager extends CodeManager {
      * when not inside an actor declaration.
      */
     private ActorTree _currentTree = null;
+    
+    /**
+     * If this is true, then dangling, or unconnected
+     * ports of actors contained in the PtalonActor
+     * should be left alone.  This is false by default,
+     * which means that unconnected ports will be
+     * "brought to the outside" of the PtalonActor.
+     */
+    private boolean _danglingPortsOkay = false;
 
     /**
      * This map gives the number for the next instance
@@ -1224,6 +1244,9 @@ public class NestedActorManager extends CodeManager {
                         throw new PtalonRuntimeException(name
                                 + " not a port or relation");
                     }
+                }
+                if (_danglingPortsOkay) {
+                    return;
                 }
                 PtalonActor container = (PtalonActor) actor.getContainer();
                 for (Object port : actor.portList()) {

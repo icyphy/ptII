@@ -212,5 +212,9 @@ actor_definition [NestedActorManager manager] throws PtalonScopeException
 	{
 		info.setActorSymbol(a.getText());
 	}
-	(atomic_statement | conditional_statement | iterative_statement)*)
+	(DANGLING_PORTS_OKAY
+	{
+		info.setDanglingPortsOkay(true);
+	}
+	)?	(atomic_statement | conditional_statement | iterative_statement)*)
 ;
