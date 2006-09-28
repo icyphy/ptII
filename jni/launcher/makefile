@@ -108,10 +108,16 @@ demo: launcher jclass
 		./launcher -Djava.class.path=$(ROOT) jni/launcher/Hello
 
 # $(PTMATLAB_cC) is set to cl or gcc by configure in $PTII/mk/ptII.mk
+#
+# To test finding jvm.dll by using PTJAVA_HOME, compile
+# with make TESTFLAGS=-DTESTING_PTJAVAHOME demo
+#
 launcher: $(CPPSRCS) $(HEADERS)
 	g++ -g -I. \
 		"-I$(PTJAVA_HOME)/../include" \
 		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
+		-DPTJAVA_HOME="\"$(PTJAVA_HOME)\"" \
+		$(TESTFLAGS) \
 		-o launcher \
 		$(CPPSRCS) $(PTJNI_DL_LIBRARY)
 

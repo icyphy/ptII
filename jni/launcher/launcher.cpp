@@ -26,6 +26,14 @@
 #include <unistd.h>
 #include <vector>
 
+// PTJAVA_HOME is defined by configure. 
+// Typical value for PTJAVA_HOME is c:/Program Files/Java/jdk1.5.0_06/jre
+// We use PTJAVA_HOME to avoid problems if for some reason we can't
+// read from the registry.
+#ifndef PTJAVA_HOME
+#define PTJAVA_HOME "c:/Program Files/Java/jdk1.5.0_08/jre"
+#endif
+
 const char* programName;
 const char* jdkRegistryPath = "/proc/registry/HKEY_LOCAL_MACHINE/SOFTWARE/JavaSoft/Java Development Kit";
 const char* jreRegistryPath = "/proc/registry/HKEY_LOCAL_MACHINE/SOFTWARE/JavaSoft/Java Runtime Environment";
@@ -93,6 +101,12 @@ public:
     return version;
   }
   
+  std::string findJvmLibraryUsingDefine() const {
+    // PTJAVA_HOME is defined by configure. 
+    std::string ptjava_home = PTJAVA_HOME;
+    return ptjava_home + "/bin/client/jvm.dll";
+  }
+
   std::string findJvmLibraryUsingJreRegistry() const {
     std::string version = chooseVersionFromRegistry(jreRegistryPath);
     // What should we do if this points to "client" when we want "server"?
@@ -122,14 +136,30 @@ public:
     os << "Error messages were:";
     os << std::endl;
     try {
+#ifdef TESTING_PTJAVA_HOME
+        std::cout << "Testing PTJAVA_HOME, skipping findJvmLibraryUsingJdkRegistry();" << std::endl;
+#else
         return findJvmLibraryUsingJdkRegistry();
+#endif
     } catch (const std::exception& ex) {
       os << "  ";
       os << ex.what();
       os << std::endl;
     }
     try {
+#ifdef TESTING_PTJAVA_HOME
+        std::cout << "Testing PTJAVA_HOME, skipping findJvmLibraryUsingJreRegistry();" << std::endl;
+#else
       return findJvmLibraryUsingJreRegistry();
+#endif
+    } catch (const std::exception& ex) {
+      os << "  ";
+      os << ex.what();
+      os << std::endl;
+    }
+    try {
+      // To test this method, compile with -DTESTING_PTJAVA_HOME
+      return findJvmLibraryUsingDefine();
     } catch (const std::exception& ex) {
       os << "  ";
       os << ex.what();
