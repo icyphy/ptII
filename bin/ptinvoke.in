@@ -895,14 +895,14 @@ and run:
 	    if [ -z "TOSROOT" ]; then
 		echo "$0: Warning the TOSROOT environment variable is not set?"
 		echo "TOSROOT should be set to the tinyos-1.x directory."
-		echo "See $PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm"
+		echo "See $PTII/ptolemy/domains/ptinyos/doc/installation.htm"
 		echo ""
 	    else 
 		if [ ! -d "$TOSROOT" ]; then
 		    echo "$0: Warning the \$TOSROOT directory '$TOSROOT'"
 		    echo "cannot be found."
 		    echo "\$TOSROOT should be set to the tinyos-1.x directory."
-		    echo "See $PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm"
+                    echo "See $PTII/ptolemy/domains/ptinyos/doc/installation.htm"
 		    echo ""
 		fi    
             fi
@@ -910,14 +910,14 @@ and run:
 	    if [ -z "TOSDIR" ]; then
 		echo "$0: Warning the TOSDIR environment variable is not set?"
 		echo "\$TOSDIR should be set to the tos/ directory in TinyOS"
-		echo "See $PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm"
+                echo "See $PTII/ptolemy/domains/ptinyos/doc/installation.htm"
 		echo ""
 	    else 	
 	        if [ ! -d "$TOSDIR" ]; then
 		    echo "$0: Warning the \$TOSDIR directory '$TOSDIR'"
 		    echo "cannot be found."
 		    echo "\$TOSDIR should be set to the tos/ directory in TinyOS"
-		    echo "See $PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm"
+                    echo "See $PTII/ptolemy/domains/ptinyos/doc/installation.htm"
 		    echo ""
                  fi
 	    fi	
@@ -925,7 +925,7 @@ and run:
 		echo "$0: Warning the PTINYOS_MOMLROOT environment variable is not set?"
 		echo "\$PTINYOS_MOMLROOT should be set to the location of the "
 		echo "moml files created by running nc2moml."
-		echo "See $PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm"
+                echo "See $PTII/ptolemy/domains/ptinyos/doc/installation.htm"
 		echo ""
 	    else
 	        if [ ! -d "$PTINYOS_MOMLROOT" ]; then
@@ -933,7 +933,7 @@ and run:
 		    echo "cannot be found."
 		    echo "\$PTINYOS_MOMLROOT should be set to the location of the "
 		    echo "moml files created by running nc2moml."
-		    echo "See $PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm"
+                    echo "See $PTII/ptolemy/domains/ptinyos/doc/installation.htm"
 		    echo ""
 		fi    
             fi
