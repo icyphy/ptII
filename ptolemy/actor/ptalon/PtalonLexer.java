@@ -508,7 +508,7 @@ tryAgain:
 		}
 		}
 		{
-		_loop3425:
+		_loop3886:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -547,7 +547,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop3425;
+				break _loop3886;
 			}
 			}
 		} while (true);
@@ -566,34 +566,34 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt3428=0;
-		_loop3428:
+		int _cnt3889=0;
+		_loop3889:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt3428>=1 ) { break _loop3428; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt3889>=1 ) { break _loop3889; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt3428++;
+			_cnt3889++;
 		} while (true);
 		}
 		{
 		if ((LA(1)=='.')) {
 			match('.');
 			{
-			int _cnt3431=0;
-			_loop3431:
+			int _cnt3892=0;
+			_loop3892:
 			do {
 				if (((LA(1) >= '0' && LA(1) <= '9'))) {
 					matchRange('0','9');
 				}
 				else {
-					if ( _cnt3431>=1 ) { break _loop3431; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+					if ( _cnt3892>=1 ) { break _loop3892; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
 				
-				_cnt3431++;
+				_cnt3892++;
 			} while (true);
 			}
 		}
@@ -628,7 +628,7 @@ tryAgain:
 		
 		match('"');
 		{
-		_loop3436:
+		_loop3897:
 		do {
 			switch ( LA(1)) {
 			case '\\':
@@ -675,7 +675,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop3436;
+				break _loop3897;
 			}
 			}
 		} while (true);
@@ -746,15 +746,15 @@ tryAgain:
 		
 		match('<');
 		{
-		_loop3441:
+		_loop3902:
 		do {
 			// nongreedy exit test
-			if ((LA(1)=='/') && (LA(2)=='>') && (true)) break _loop3441;
+			if ((LA(1)=='/') && (LA(2)=='>') && (true)) break _loop3902;
 			if (((LA(1) >= '\u0000' && LA(1) <= '\u007f')) && ((LA(2) >= '\u0000' && LA(2) <= '\u007f')) && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
 				matchNot(EOF_CHAR);
 			}
 			else {
-				break _loop3441;
+				break _loop3902;
 			}
 			
 		} while (true);
@@ -776,15 +776,15 @@ tryAgain:
 		match('/');
 		match('*');
 		{
-		_loop3444:
+		_loop3905:
 		do {
 			// nongreedy exit test
-			if ((LA(1)=='*') && (LA(2)=='/') && (true)) break _loop3444;
+			if ((LA(1)=='*') && (LA(2)=='/') && (true)) break _loop3905;
 			if (((LA(1) >= '\u0000' && LA(1) <= '\u007f')) && ((LA(2) >= '\u0000' && LA(2) <= '\u007f')) && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
 				matchNot(EOF_CHAR);
 			}
 			else {
-				break _loop3444;
+				break _loop3905;
 			}
 			
 		} while (true);

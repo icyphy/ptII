@@ -363,7 +363,6 @@ public class NestedActorManager extends CodeManager {
         _currentTree.addUnknownLeftSide(prefix, expression);
     }
 
-    
     /**
      * Create a nested actor with respect to this code manager's
      * actor.
@@ -920,7 +919,7 @@ public class NestedActorManager extends CodeManager {
             _unknownPrefixes.put(portName, connectPointPrefix);
             _unknownExpressions.put(portName, connectPointExpression);
         }
-        
+
         /**
          * Add the unknown left side to this actor declaration.
          * @param prefix The prefix for the unknown left side.
@@ -1238,11 +1237,12 @@ public class NestedActorManager extends CodeManager {
                     String shortName = _transparencies.get(portName);
                     if (_transparentRelations.containsKey(shortName)) {
                         TypedIOPort connectionPoint = _transparentRelations
-                            .get(shortName);
+                                .get(shortName);
                         String relationName = _actor.uniqueName("relation");
-                        TypedIORelation rel = new TypedIORelation(_actor, relationName);
+                        TypedIORelation rel = new TypedIORelation(_actor,
+                                relationName);
                         port.link(rel);
-                        connectionPoint.link(rel);;
+                        connectionPoint.link(rel);
                     } else {
                         _transparentRelations.put(shortName, port);
                     }
@@ -1286,6 +1286,19 @@ public class NestedActorManager extends CodeManager {
                         TypedIOPort port = (TypedIOPort) actor
                                 .getPort(portName);
                         port.link(relation);
+                    } else if (getType(name).equals("transparent")) {
+                        TypedIOPort port = (TypedIOPort) actor.getPort(portName);
+                        if (_transparentRelations.containsKey(name)) {
+                            TypedIOPort connectionPoint = _transparentRelations
+                                    .get(name);
+                            String relationName = _actor.uniqueName("relation");
+                            TypedIORelation rel = new TypedIORelation(_actor,
+                                    relationName);
+                            port.link(rel);
+                            connectionPoint.link(rel);
+                        } else {
+                            _transparentRelations.put(name, port);
+                        }
                     } else {
                         throw new PtalonRuntimeException(name
                                 + " not a port or relation");
@@ -1354,9 +1367,10 @@ public class NestedActorManager extends CodeManager {
                     String shortName = _transparencies.get(portName);
                     if (_transparentRelations.containsKey(shortName)) {
                         TypedIOPort connectionPoint = _transparentRelations
-                            .get(shortName);
+                                .get(shortName);
                         String relationName = _actor.uniqueName("relation");
-                        TypedIORelation rel = new TypedIORelation(_actor, relationName);
+                        TypedIORelation rel = new TypedIORelation(_actor,
+                                relationName);
                         port.link(rel);
                         connectionPoint.link(rel);
                     } else {
@@ -1402,7 +1416,20 @@ public class NestedActorManager extends CodeManager {
                         TypedIOPort port = (TypedIOPort) _actor
                                 .getPort(portName);
                         port.link(relation);
-                    } else {
+                    } else if (getType(name).equals("transparent")) {
+                        TypedIOPort port = (TypedIOPort) _actor.getPort(portName);
+                        if (_transparentRelations.containsKey(name)) {
+                            TypedIOPort connectionPoint = _transparentRelations
+                                    .get(name);
+                            String relationName = _actor.uniqueName("relation");
+                            TypedIORelation rel = new TypedIORelation(_actor,
+                                    relationName);
+                            port.link(rel);
+                            connectionPoint.link(rel);
+                        } else {
+                            _transparentRelations.put(name, port);
+                        }
+                    }else {
                         throw new PtalonRuntimeException(name
                                 + " not a port or relation");
                     }
@@ -1412,7 +1439,7 @@ public class NestedActorManager extends CodeManager {
                         e);
             }
         }
-        
+
         /**
          * Clean up any dynamic left hand sides added.
          */
@@ -1570,7 +1597,7 @@ public class NestedActorManager extends CodeManager {
         private Map<String, String> _unknownPrefixes = new Hashtable<String, String>();
 
         private Map<String, String> _unknownExpressions = new Hashtable<String, String>();
-        
+
         /**
          * Each key is a prefix and value is an expression corresponding to
          * a left hand side of an assignment which may change dynamically.

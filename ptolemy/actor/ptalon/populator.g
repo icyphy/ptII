@@ -318,7 +318,7 @@ transparent_relation_declaration throws PtalonRuntimeException
 					info.addSymbol(name, "transparent");
 				}
     			if (!info.isCreated(name)) {
-    				info.addRelation(name);
+    				info.addTransparentRelation(name);
     			}
     		}
 		}

@@ -566,7 +566,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
 				
 		}
 		{
-		_loop3372:
+		_loop3833:
 		do {
 			if ((LA(1)==DOT)) {
 				PtalonAST tmp10_AST = null;
@@ -581,7 +581,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
 				}
 			}
 			else {
-				break _loop3372;
+				break _loop3833;
 			}
 			
 		} while (true);
@@ -947,10 +947,10 @@ public PtalonRecognizer(ParserSharedInputState state) {
 		a_AST = (PtalonAST)astFactory.create(a);
 		match(ASSIGN);
 		{
-		boolean synPredMatched3380 = false;
+		boolean synPredMatched3841 = false;
 		if (((LA(1)==ID) && ((LA(2) >= RPAREN && LA(2) <= EXPRESSION)))) {
-			int _m3380 = mark();
-			synPredMatched3380 = true;
+			int _m3841 = mark();
+			synPredMatched3841 = true;
 			inputState.guessing++;
 			try {
 				{
@@ -994,12 +994,12 @@ public PtalonRecognizer(ParserSharedInputState state) {
 				}
 			}
 			catch (RecognitionException pe) {
-				synPredMatched3380 = false;
+				synPredMatched3841 = false;
 			}
-			rewind(_m3380);
+			rewind(_m3841);
 inputState.guessing--;
 		}
-		if ( synPredMatched3380 ) {
+		if ( synPredMatched3841 ) {
 			r = LT(1);
 			r_AST = (PtalonAST)astFactory.create(r);
 			match(ID);
@@ -1146,7 +1146,7 @@ inputState.guessing--;
 					
 			}
 			{
-			_loop3387:
+			_loop3848:
 			do {
 				if ((LA(1)==COMMA)) {
 					PtalonAST tmp31_AST = null;
@@ -1162,7 +1162,7 @@ inputState.guessing--;
 					}
 				}
 				else {
-					break _loop3387;
+					break _loop3848;
 				}
 				
 			} while (true);
@@ -1299,7 +1299,7 @@ inputState.guessing--;
 		}
 		match(LCURLY);
 		{
-		_loop3393:
+		_loop3854:
 		do {
 			switch ( LA(1)) {
 			case PORT:
@@ -1345,7 +1345,7 @@ inputState.guessing--;
 			}
 			default:
 			{
-				break _loop3393;
+				break _loop3854;
 			}
 			}
 		} while (true);
@@ -1354,7 +1354,7 @@ inputState.guessing--;
 		match(ELSE);
 		match(LCURLY);
 		{
-		_loop3395:
+		_loop3856:
 		do {
 			switch ( LA(1)) {
 			case PORT:
@@ -1400,7 +1400,7 @@ inputState.guessing--;
 			}
 			default:
 			{
-				break _loop3395;
+				break _loop3856;
 			}
 			}
 		} while (true);
@@ -1463,7 +1463,7 @@ inputState.guessing--;
 			currentAST.advanceChildToEnd();
 		}
 		{
-		_loop3398:
+		_loop3859:
 		do {
 			switch ( LA(1)) {
 			case FOR:
@@ -1512,7 +1512,7 @@ inputState.guessing--;
 			}
 			default:
 			{
-				break _loop3398;
+				break _loop3859;
 			}
 			}
 		} while (true);
@@ -1560,6 +1560,20 @@ inputState.guessing--;
 			currentAST.advanceChildToEnd();
 		}
 		{
+		_loop3862:
+		do {
+			if ((LA(1)==COMMENT)) {
+				PtalonAST tmp42_AST = null;
+				tmp42_AST = (PtalonAST)astFactory.create(LT(1));
+				match(COMMENT);
+			}
+			else {
+				break _loop3862;
+			}
+			
+		} while (true);
+		}
+		{
 		switch ( LA(1)) {
 		case DANGLING_PORTS_OKAY:
 		{
@@ -1573,7 +1587,6 @@ inputState.guessing--;
 			break;
 		}
 		case ID:
-		case COMMENT:
 		{
 			break;
 		}
@@ -1582,20 +1595,6 @@ inputState.guessing--;
 			throw new NoViableAltException(LT(1), getFilename());
 		}
 		}
-		}
-		{
-		_loop3402:
-		do {
-			if ((LA(1)==COMMENT)) {
-				PtalonAST tmp42_AST = null;
-				tmp42_AST = (PtalonAST)astFactory.create(LT(1));
-				match(COMMENT);
-			}
-			else {
-				break _loop3402;
-			}
-			
-		} while (true);
 		}
 		a = LT(1);
 		a_AST = (PtalonAST)astFactory.create(a);
@@ -1610,7 +1609,7 @@ inputState.guessing--;
 		match(IS);
 		match(LCURLY);
 		{
-		_loop3404:
+		_loop3865:
 		do {
 			switch ( LA(1)) {
 			case PORT:
@@ -1659,14 +1658,14 @@ inputState.guessing--;
 			}
 			default:
 			{
-				break _loop3404;
+				break _loop3865;
 			}
 			}
 		} while (true);
 		}
 		match(RCURLY);
 		{
-		_loop3406:
+		_loop3867:
 		do {
 			if ((LA(1)==COMMENT)) {
 				PtalonAST tmp46_AST = null;
@@ -1674,7 +1673,7 @@ inputState.guessing--;
 				match(COMMENT);
 			}
 			else {
-				break _loop3406;
+				break _loop3867;
 			}
 			
 		} while (true);

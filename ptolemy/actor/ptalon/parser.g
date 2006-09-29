@@ -388,12 +388,12 @@ actor_definition!
 	{
 		#actor_definition = #[ACTOR_DEFINITION];
 	}
+	(COMMENT)*
 	(d:danglingPortsOkay
 	{
 		danglingPortsOkay = true;
 	}
 	)?
-	(COMMENT)*
 	a:ID
 	{
 		#actor_definition.setText(a.getText());

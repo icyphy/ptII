@@ -804,12 +804,12 @@ public class CodeManager {
     public String getMappedName(String symbol) throws PtalonRuntimeException {
         for (IfTree tree : _currentTree.getAncestors()) {
             try {
-                String output = tree.getMappedName(symbol);
+                String output = tree.getDeepMappedName(symbol);
                 return output;
             } catch (PtalonRuntimeException e) {
             }
         }
-        return _currentTree.getDeepMappedName(symbol);
+        throw new PtalonRuntimeException("Could not find mapped name for" + symbol);
     }
 
     /**
@@ -822,14 +822,14 @@ public class CodeManager {
         List<IfTree> ancestors = _currentTree.getAncestors();
         for (IfTree tree : ancestors) {
             try {
-                String type = tree.getType(symbol);
+                String type = tree.getDeepType(symbol);
                 return type;
             } catch (PtalonScopeException e) {
                 //Do nothing here, just go on to check the next if-block
                 //sub-scope
             }
         }
-        return _currentTree.getDeepType(symbol);
+        throw new PtalonScopeException("Symbol " + symbol + " not in current scope.");
     }
 
     /**
