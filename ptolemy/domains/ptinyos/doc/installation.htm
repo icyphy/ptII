@@ -78,7 +78,7 @@ PATH=/usr/local/bin:${PATH}
               href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm#settingptII">Set
               the value of the PTII environment variable</a>).
 
-            <p>If you use the Ptolemy II 5.0 cygwinDevel, you may also need
+            <p>If you use the Ptolemy II 6.0 cygwinDevel, you may also need
               to upgrade to 
             <ul> 
               <li>autoconf-2.53 or later, (2.59 preferred)
@@ -88,7 +88,6 @@ PATH=/usr/local/bin:${PATH}
               <li> emacs-el 
               <li> gperf 
               <li> make-3.80 or later (3.80 preferred)
-              <li> perl 
               <li> rpm 
             </ul>
 
@@ -281,6 +280,8 @@ rpm -ivh *.rpm
 
         <ul>
           <li>Windows (Cygwin):
+	    Either rerun set up or od
+ 
             <br>
 	    Download make-3.80 from
 	    <a href="http://www.gnu.org/order/ftp.html">one of the GNU Mirrors</a>
@@ -293,7 +294,9 @@ make install
 cd /usr/local/bin
 cp make.exe gmake.exe
 	    </pre>
+
             <p><b>or</b>
+
             <p><i>Ptolemy II 3.0 CygwinDevel users will not have rpm installed,
 	    so this step won't work.  Grab the tar file instead.</i>
 	    Download 
@@ -339,13 +342,14 @@ mkdir -p $PTII/vendors/ptinyos
 
     <h3><a name="nesCfromtargz">Getting nesC from a .tar.gz distribution</a></h3>
     <ol> 
-      <li>Download <a href="http://prdownloads.sourceforge.net/nescc/nesc-1.2.7a.tar.gz?download#in_browser">nesc-1.2.7a.tar.gz</a> or later version.
+      <li>Download <a href="http://prdownloads.sourceforge.net/nescc/nesc-1.2.7a.tar.gz?download#in_browser">nesc-1.2.7a.tar.gz</a> or later version
+      to <CODE>$PTII/vendors/ptinyos</CODE>
         
       <li> Unzip and untar the nesc .tar.gz file:
         <pre>
 cd $PTII/vendors/ptinyos
 gunzip nesc-1.2.7a.tar.gz
-tar zxf nesc-1.2.7a.tar  
+tar xf nesc-1.2.7a.tar  
         </pre>
         This should create a directory called <code>nesc-1.2.7a</code>.
 
@@ -377,7 +381,6 @@ cd nesc-1.2.7a
       <li> emacs-el 
       <li> gperf 
       <li> make-3.80 or later (3.80 preferred)
-      <li> perl 
       <li> rpm 
     </ul>
         
@@ -441,7 +444,7 @@ cp -r /usr/local/lib/ncc .
       </code>c:/cygwin</code> and the WinAVR binaries don't know how
       to handle that.
 
-      <p>Under Windows with WinAVR-20040404, we also had to modify <code>c:/usr/local/lib/ncc/nesc_nx.h</code> so that 
+      <p>Under Windows with WinAVR-20040404, we also had to modify <code>c:\usr\local\lib\ncc\nesc_nx.h</code> so that 
 <pre>
 #include &lt;inttypes.h&gt;
 </pre>
