@@ -9,3 +9,4 @@ ptKeystore
 .fbwarnings
 .fbprefs
 autom4te.cache
+.antlr-eclipse
