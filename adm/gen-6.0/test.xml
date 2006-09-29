@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<installation version="1.0">
+
+    <info>
+        <appname>Test</appname>
+        <appversion>sqrt(-1)</appversion>
+	<appsubpath>Ptolemy/test</appsubpath>
+        <url>http://ptolemy.eecs.berkeley.edu/ptolemyII</url>
+	<javaversion>1.4</javaversion>
+    </info>
+    
+    <guiprefs width="640" height="500" resizable="yes"/>
+    
+    <locale>
+        <langpack iso3="eng"/>
+    </locale>
+
+    <resources>
+        <res id="HTMLLicencePanel.licence" src="copyright.htm"/>
+	<res id="StyleSheet" src="../../doc/default.css" />
+        <res src="border1.png" id="Installer.image.0"/>
+        <res src="border2.png" id="Installer.image.1"/>
+        <res src="border3.png" id="Installer.image.2"/>
+    </resources>
+    
+    <panels>
+        <panel classname="HTMLLicencePanel"/>
+        <panel classname="TargetPanel"/> 
+        <panel classname="PacksPanel"/>
+    </panels>
+    
+    <packs>
+        <pack name="Sources" required="no">
+            <description>Test sources</description>
+            <file src="README.txt" targetdir="$INSTALL_PATH"/>
+        </pack>
+    </packs>
+    
+</installation>

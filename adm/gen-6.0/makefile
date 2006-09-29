@@ -2367,6 +2367,12 @@ ExtractJarFile.jar: ExtractJarFile.class Echo.class
 	jar -cf $@ $^
 
 
+# Recompile izpack
+izpack:	
+	cd ~/src/izpack/trunk/src/; ant build.standalone-compiler; cp C:/cxh/src/izpack/trunk/lib/standalone-compiler.jar c:/cxh/src/izpack/izpack3.9.0/lib/standalone-compiler.jar 
+	c:/cxh/src/izpack/izpack3.9.0/bin/compile test.xml
+	"$(L4JC)" `cygpath --windows $$PWD/test_l4j.xml`
+
 # Location of Launch4J, see http://launch4j.sourceforge.net/
 L4J_DIR=c:/Program Files/Launch4j
 
