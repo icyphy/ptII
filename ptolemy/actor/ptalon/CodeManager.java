@@ -1,31 +1,31 @@
 /*
-@Copyright (c) 1998-2006 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1998-2006 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor.ptalon;
 
 import java.io.File;
@@ -39,8 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-
-import antlr.RecognitionException;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
@@ -60,6 +58,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
+import antlr.RecognitionException;
 
 /**
  A helper class to store information, like variable
@@ -75,7 +74,6 @@ public class CodeManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /**
      * Create a new CodeManager in the specified actor.
@@ -99,6 +97,7 @@ public class CodeManager {
     public void actorNameSet(boolean set) {
         _actorSet = set;
     }
+
     /**
      * Add a PtalonParameter to the PtalonActor
      * with the specified name.
@@ -119,7 +118,7 @@ public class CodeManager {
             throw new PtalonRuntimeException("IllegalActionException", e);
         }
     }
-    
+
     /**
      * Add an invisible PtalonParameter to the PtalonActor
      * with the specified name.
@@ -129,7 +128,8 @@ public class CodeManager {
      * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
      * trying to create the parameter.
      */
-    public void addActorParameter(String name, String expression) throws PtalonRuntimeException {
+    public void addActorParameter(String name, String expression)
+            throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
         try {
             PtalonParameter parameter = new PtalonParameter(_actor, uniqueName);
@@ -326,7 +326,8 @@ public class CodeManager {
     public void addParameter(String name) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
         try {
-            PtalonExpressionParameter parameter = new PtalonExpressionParameter(_actor, uniqueName);
+            PtalonExpressionParameter parameter = new PtalonExpressionParameter(
+                    _actor, uniqueName);
             _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
@@ -335,7 +336,7 @@ public class CodeManager {
             throw new PtalonRuntimeException("IllegalActionException", e);
         }
     }
-    
+
     /**
      * Add an invisible Parameter to the PtalonActor
      * with the specified name and the given expression as its value.
@@ -344,10 +345,12 @@ public class CodeManager {
      * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
      * trying to create the parameter.
      */
-    public void addParameter(String name, String expression) throws PtalonRuntimeException {
+    public void addParameter(String name, String expression)
+            throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
         try {
-            PtalonExpressionParameter parameter = new PtalonExpressionParameter(_actor, uniqueName);
+            PtalonExpressionParameter parameter = new PtalonExpressionParameter(
+                    _actor, uniqueName);
             parameter.setVisibility(Settable.NONE);
             _currentTree.setStatus(name, true);
             _currentTree.mapName(name, uniqueName);
@@ -359,7 +362,7 @@ public class CodeManager {
             throw new PtalonRuntimeException("IllegalActionException", e);
         }
     }
-    
+
     /**
      * Add a TypedIOPort to the PtalonActor
      * with the specified name.
@@ -441,7 +444,20 @@ public class CodeManager {
     public void addSymbol(String symbol, String type, boolean status,
             String uniqueName) {
         _currentTree.addSymbol(symbol, type, status, uniqueName);
-    }    
+    }
+
+    /**
+     * Add a transparent to the PtalonActor
+     * with the specified name.  A transparent relation is not 
+     * really a relation.  Instead, it provides a means for connecting
+     * multiple ports to an input port.  It is transparent in that
+     * it provides an invisible means to connect to the specified 
+     * 
+     * @param name The name of the relation.
+     */
+    public void addTransparentRelation(String name) {
+        _currentTree.setStatus(name, true);
+    }
 
     /**
      * Assign the lvalue in the specifed actor to the
@@ -508,7 +524,7 @@ public class CodeManager {
             throw new PtalonRuntimeException(message, e);
         }
     }
-    
+
     /**
      * Assign any internal parameters in the order they were set.
      * @throws PtalonRuntimeException If there is any trouble assigning
@@ -517,7 +533,7 @@ public class CodeManager {
     public void assignInternalParameters() throws PtalonRuntimeException {
         try {
             while (!_unassignedParameters.isEmpty()) {
-        
+
                 PtalonParameter parameter = _unassignedParameters.remove(0);
                 String expression = _unassignedParameterValues.remove(0);
                 parameter.setToken(expression);
@@ -554,14 +570,13 @@ public class CodeManager {
      * @param populator The PtalonPopulator that called this statement. 
      * @exception PtalonRuntimeException If the subscope does not exist.
      */
-    public void enterForScope(String scope, PtalonAST forBlock, PtalonPopulator populator)
-            throws PtalonRuntimeException {
+    public void enterForScope(String scope, PtalonAST forBlock,
+            PtalonPopulator populator) throws PtalonRuntimeException {
         enterIfScope(scope);
         _currentTree.forBlock = forBlock;
         _currentTree.populator = populator;
     }
 
-    
     /**
      * Evaluate the given expression and return its boolean value.
      * The expression should return a boolean value, otherwise
@@ -579,7 +594,7 @@ public class CodeManager {
             throw new PtalonRuntimeException("Not a boolean token.");
         }
     }
-    
+
     /**
      * Evaluate the given expression and return the corresponding token.
      * @param expression The expression to evaluate.
@@ -601,7 +616,7 @@ public class CodeManager {
                     + expression, e);
         }
     }
-    
+
     /**
      * Evaluate the current for block, assuming there is
      * one.
@@ -614,7 +629,7 @@ public class CodeManager {
         }
         _currentTree.evaluateForScope();
     }
-    
+
     /**
      * Evaluate the given input expression and return a string
      * representation of it, or null, if there is some reason
@@ -630,7 +645,7 @@ public class CodeManager {
             Token result = _parseTreeEvaluator.evaluateParseTree(_parseTree,
                     _scope);
             if (result instanceof StringToken) {
-                return ((StringToken)result).stringValue();
+                return ((StringToken) result).stringValue();
             }
             return result.toString();
         } catch (IllegalActionException e) {
@@ -648,7 +663,7 @@ public class CodeManager {
         }
         _currentTree = _currentTree.getParent();
     }
-    
+
     /**
      * Exit the current for scope.
      * @exception PtalonRuntimeException If not in a for-block scope.
@@ -710,7 +725,7 @@ public class CodeManager {
             String uniqueName = getMappedName(param);
             PtalonParameter att = (PtalonParameter) _actor
                     .getAttribute(uniqueName);
-            att.toString(); 
+            att.toString();
             /*This previous line seems to cause some evaluation that
              * is necessary for the next line to not throw an exception.  
              * I don't exactly know why, but things seemed to only work 
@@ -743,14 +758,15 @@ public class CodeManager {
                     + param, e);
         }
     }
-    
+
     /**
      * Get the type term associated with the specified parameter.
      * @param param The parameter's name in the Ptalon code.
      * @return It's type.
      * @exception PtalonRuntimeException If the paramter does not exist. 
      */
-    public InequalityTerm getTypeTermOf(String param) throws PtalonRuntimeException {
+    public InequalityTerm getTypeTermOf(String param)
+            throws PtalonRuntimeException {
         try {
             String uniqueName = getMappedName(param);
             PtalonParameter att = (PtalonParameter) _actor
@@ -761,7 +777,7 @@ public class CodeManager {
                     + param, e);
         }
     }
-    
+
     /**
      * @return The parameters in the current scope.
      * @throws PtalonScopeException If there is any problem getting
@@ -815,7 +831,7 @@ public class CodeManager {
         }
         return _currentTree.getDeepType(symbol);
     }
-    
+
     /**
      * Return true if the given symbol exists in the current scope.
      * @param symbol The symbol to test.
@@ -982,7 +998,7 @@ public class CodeManager {
         }
         return name;
     }
-    
+
     /**
      * Pop out of the scope of the current for statement and into
      * its container block's scope.
@@ -1069,7 +1085,7 @@ public class CodeManager {
         }
         _actorSet = true;
     }
-    
+
     /**
      * Set the symbol in the PtalonCode which represents this
      * CodeManager's actor.
@@ -1084,11 +1100,12 @@ public class CodeManager {
         try {
             _imports.put(symbol, _actor.ptalonCodeLocation.asFile());
             if (!_actor.getName().startsWith(symbol)) {
-                    String uniqueName = _actor.getContainer().uniqueName(symbol);
-                    _actor.setName(uniqueName);
+                String uniqueName = _actor.getContainer().uniqueName(symbol);
+                _actor.setName(uniqueName);
             }
         } catch (Exception e) {
-            throw new PtalonScopeException("Unable to access file for " + symbol, e);
+            throw new PtalonScopeException("Unable to access file for "
+                    + symbol, e);
         }
     }
 
@@ -1099,7 +1116,7 @@ public class CodeManager {
     public void setCurrentBranch(boolean branch) {
         _currentTree.setCurrentBranch(branch);
     }
-    
+
     /**
      * Set the next expression for the current for
      * statement scope, assuming the current scope
@@ -1154,7 +1171,7 @@ public class CodeManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
-    
+
     /** Return a number of spaces that is proportional to the argument.
      *  If the argument is negative or zero, return an empty string.
      *  @param level The level of indenting represented by the spaces.
@@ -1163,7 +1180,7 @@ public class CodeManager {
     protected static String _getIndentPrefix(int level) {
         return StringUtilities.getIndentPrefix(level);
     }
-    
+
     /**
      * Return the type associated with the given symbol in the current scope.
      * This is the same as getType, but it is used to avoid a name conflict
@@ -1175,7 +1192,7 @@ public class CodeManager {
     protected String getTypeForScope(String symbol) throws PtalonScopeException {
         return getType(symbol);
     }
-    
+
     /**
      * @return true if in a new iteration of a while block.
      */
@@ -1190,22 +1207,28 @@ public class CodeManager {
      * The actor in which this PtalonCompilerInfo is used.
      */
     protected PtalonActor _actor;
-    
+
     /**
      * A list of the import symbols and their corresponding
      * files.
      */
     protected Hashtable<String, File> _imports;
-    
+
     /**
      * The expression scope for this code manager.
      */
     protected PtalonExpressionScope _scope = new PtalonExpressionScope();
 
-    
+    /**
+     * Maps names of transparent relations to ports, which should be
+     * multiports.  A key may map to null if no port has been assigned to it.
+     */
+    protected Map<String, TypedIOPort> _transparentRelations = new 
+            Hashtable<String, TypedIOPort>();
+
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
-    
+
     /**
      * @return The next symbol of form "_ifN" where
      * N is 0 if this funciton has not been called and
@@ -1220,7 +1243,6 @@ public class CodeManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                       private members                     ////
-    
 
     /**
      * True if the actor has been set.
@@ -1249,21 +1271,19 @@ public class CodeManager {
      * of the if-statement hierarchy.
      */
     private IfTree _root;
-    
+
     /**
      * These two lists are used to store parameters which need to be set
      * by Ptalon; i.e. constant parameters.  The first list are the parameters,
      * and the second list are the expressions to assign to the parameters.
      */
-    private List<PtalonParameter> _unassignedParameters = new 
-            LinkedList<PtalonParameter>();
-    private List<String> _unassignedParameterValues = new LinkedList<String>();
-    
+    private List<PtalonParameter> _unassignedParameters = new LinkedList<PtalonParameter>();
 
+    private List<String> _unassignedParameterValues = new LinkedList<String>();
 
     ///////////////////////////////////////////////////////////////////
     ////                       private classes                     ////
-    
+
     private class IfTree extends NamedTree<IfTree> {
 
         /**
@@ -1278,7 +1298,7 @@ public class CodeManager {
             _setStatus = new Hashtable<String, Boolean>();
             _symbols = new Hashtable<String, String>();
         }
-        
+
         /**
          * Create a new child tree to this tree with the specified
          * name and return it.
@@ -1333,7 +1353,8 @@ public class CodeManager {
                 try {
                     populator.iterative_statement_evaluator(forBlock);
                 } catch (RecognitionException e) {
-                    throw new PtalonRuntimeException("Could not recognize for block", e);
+                    throw new PtalonRuntimeException(
+                            "Could not recognize for block", e);
                 }
                 Token nextValue = evaluateExpression(nextExpr);
                 _scope.addVariable(variable, nextValue);
@@ -1342,7 +1363,7 @@ public class CodeManager {
             _scope.removeVariable(variable);
             _currentBranch = false;
         }
-        
+
         /**
          * Return the active branch, which may be null if it has not
          * yet been set.
@@ -1360,7 +1381,7 @@ public class CodeManager {
             list.add(this);
             return list;
         }
-        
+
         public boolean getCurrentBranch() {
             return _currentBranch;
         }
@@ -1391,7 +1412,7 @@ public class CodeManager {
             String message = symbol.concat(" not found.");
             throw new PtalonRuntimeException(message);
         }
-        
+
         /**
          * Return the type associated with the given symbol, looking
          * deep into for loops that might add symbols to this scope.
@@ -1418,9 +1439,7 @@ public class CodeManager {
             String message = symbol.concat(" not found.");
             throw new PtalonScopeException(message);
         }
-        
 
-        
         /**
          * Get the unique name for the symbol in the PtalonActor. 
          * @param symbol The symbol to test.
@@ -1452,7 +1471,7 @@ public class CodeManager {
             }
             return status;
         }
-        
+
         /**
          * Return true if the given symbol is in this scope, or
          * deeply in this scope through some for loop.
@@ -1529,7 +1548,7 @@ public class CodeManager {
             }
             return true;
         }
-        
+
         public boolean inNewWhileIteration() {
             if (isForStatement) {
                 return _inNewWhileIteration;
@@ -1629,7 +1648,7 @@ public class CodeManager {
             }
             output.write(_getIndentPrefix(depth) + "</if>\n");
         }
-        
+
         /**
          * This is the AST for this for block, if this is a 
          * for block.
@@ -1641,37 +1660,37 @@ public class CodeManager {
          * if this is a for statement.
          */
         public String initExpr = "";
-        
+
         /**
          * This is true if this if statement is actually used
          * to represent a for statement.
          */
         public boolean isForStatement = false;
-        
+
         /**
          * This is the next expression for the for statement,
          * if this is a for statement.
          */
         public String nextExpr = "";
-        
+
         /**
          * This is the PtalonPopulator that accesses this
          * for statement, if this is a for statement.
          */
         public PtalonPopulator populator = null;
-        
+
         /**
          * This is the satisfies expression for the for statement,
          * if this is a for statement.
          */
         public String satExpr = "";
-        
+
         /**
          * This is the variable for the for statement, if this
          * is a for statement.
          */
         public String variable = "";
-        
+
         /**
          * This is true when the active branch for this if statement
          * is true, false when it is false, and null when it is unknown.
@@ -1688,7 +1707,7 @@ public class CodeManager {
          * This is true if in a new iteration of a while block.
          */
         private boolean _inNewWhileIteration = false;
-        
+
         /**
          * Each symbol gets mapped to its unique name in the
          * Ptalon Actor.
@@ -1709,7 +1728,7 @@ public class CodeManager {
     }
 
     protected class PtalonExpressionScope implements ParserScope {
-        
+
         /**
          * Add the specified variable with the given value.
          * @param name The variable name.
@@ -1773,7 +1792,8 @@ public class CodeManager {
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
-        public InequalityTerm getTypeTerm(String name) throws IllegalActionException {
+        public InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
             try {
                 if (_variables.containsKey(name)) {
                     return null;
@@ -1808,7 +1828,7 @@ public class CodeManager {
                 throw new IllegalActionException("Trouble constructing list");
             }
         }
-        
+
         /**
          * Remove the specified variable from this scope.
          * @param name The name of this variable.
@@ -1816,12 +1836,12 @@ public class CodeManager {
         public void removeVariable(String name) {
             _variables.remove(name);
         }
-        
+
         /**
          * A map from variables to Tokens.
          */
         private Map<String, Token> _variables = new Hashtable<String, Token>();
-        
+
     }
 
 }

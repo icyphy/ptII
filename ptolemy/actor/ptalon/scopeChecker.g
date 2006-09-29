@@ -115,23 +115,43 @@ relation_declaration throws PtalonScopeException
 	| #(DYNAMIC_NAME ID EXPRESSION)))
 ;
 
+transparent_relation_declaration throws PtalonScopeException
+:
+	#(TRANSPARENT (a:ID
+	{
+		info.addSymbol(a.getText(), "transparent");
+	}
+	| #(DYNAMIC_NAME ID EXPRESSION)))
+;
+
 assignment throws PtalonScopeException
 {
-	String arith, bool;
+	boolean leftDynamic = false;
 }
 :
-	#(ASSIGN a:ID ((b:ID 
+	#(ASSIGN (a:ID | #(DYNAMIC_NAME left:ID leftExp:EXPRESSION
 	{
-		info.addPortAssign(a.getText(), b.getText());
+		leftDynamic = true;
+		info.addUnknownLeftSide(left.getText(), leftExp.getText());
+	}
+	)) ((b:ID 
+	{
+		if (!leftDynamic) {
+			info.addPortAssign(a.getText(), b.getText());
+		}
 	}
 	| #(DYNAMIC_NAME c:ID d:EXPRESSION)
 	{
-		info.addPortAssign(a.getText(), c.getText(), d.getText());
+		if (!leftDynamic) {
+			info.addPortAssign(a.getText(), c.getText(), d.getText());
+		}
 	}
 	)| nested_actor_declaration[a.getText()]
 	| e:EXPRESSION
 	{
-		info.addParameterAssign(a.getText(), e.getText());
+		if (!leftDynamic) {
+			info.addParameterAssign(a.getText(), e.getText());
+		}
 	}
 	))
 ;
@@ -167,7 +187,8 @@ atomic_statement throws PtalonScopeException
 :
 	(port_declaration | parameter_declaration |
 		assigned_parameter_declaration |
-		relation_declaration | actor_declaration)
+		relation_declaration | transparent_relation_declaration | 
+		actor_declaration)
 ;
 
 conditional_statement throws PtalonScopeException

@@ -48,8 +48,6 @@ options {
 	
 	private String scopeName;
 	
-	private boolean evalBool = false;
-	
 }
 
 port_declaration throws PtalonRuntimeException
@@ -302,15 +300,82 @@ relation_declaration throws PtalonRuntimeException
 	}
 ;
 
+transparent_relation_declaration throws PtalonRuntimeException
+:
+	#(TRANSPARENT (a:ID
+	{
+		if (info.isReady() && !info.isCreated(a.getText())) {
+			info.addTransparentRelation(a.getText());
+		}
+	}	
+	| #(DYNAMIC_NAME c:ID d:EXPRESSION)
+	{
+		if (info.isReady()) {
+			String value = info.evaluateString(d.getText());
+			if (value != null) {
+				String name = c.getText() + value;
+				if (!info.inScope(name)) {
+					info.addSymbol(name, "transparent");
+				}
+    			if (!info.isCreated(name)) {
+    				info.addRelation(name);
+    			}
+    		}
+		}
+	}
+	))
+	exception
+	catch [PtalonScopeException excep]
+	{
+		throw new PtalonRuntimeException("", excep);
+	}
+;
+
+
 qualified_identifier
 :
 	QUALID
 ;
 
 assignment throws PtalonRuntimeException
+{
+	boolean addAssignment = false;
+	String name = "";
+}
 :
-	#(ASSIGN l:ID (ID | #(d:DYNAMIC_NAME i:ID e:EXPRESSION)
-	| nested_actor_declaration | EXPRESSION))
+	#(ASSIGN (ID | #(DYNAMIC_NAME left:ID leftExp:EXPRESSION
+	{
+		String value = info.evaluateString(leftExp.getText());
+		if (value != null) {
+			name = left.getText() + value;
+			addAssignment = true;
+		}
+	}
+	)) (b:ID 
+	{
+		if (addAssignment) {
+			info.addPortAssign(name, b.getText());
+		}
+	}
+	| #(d:DYNAMIC_NAME i:ID e:EXPRESSION
+	{
+		if (addAssignment) {
+			info.addPortAssign(name, i.getText(), e.getText());
+		}
+	}
+	)
+	| nested_actor_declaration | p:EXPRESSION
+	{
+		if (addAssignment) {
+			info.addParameterAssign(name, p.getText());
+		}
+	}
+	))
+	exception
+	catch [PtalonScopeException excep]
+	{
+		throw new PtalonRuntimeException("", excep);
+	}
 ;
 
 /**
@@ -326,15 +391,10 @@ actor_declaration throws PtalonRuntimeException
 	#(a:ACTOR_DECLARATION 
 	{
 		info.enterActorDeclaration(a.getText());
-		if (info.isActorReady()) {
-			oldEvalBool = evalBool;
-			evalBool = true;
-		}
 	}
 	(b:assignment)*
 	{
 		if (info.isActorReady()) {
-			evalBool = oldEvalBool;
 			info.addActor(a.getText());
 		}
 		info.exitActorDeclaration();
@@ -362,8 +422,8 @@ nested_actor_declaration throws PtalonRuntimeException
 atomic_statement throws PtalonRuntimeException
 :
 	(port_declaration | parameter_declaration |
-	 assigned_parameter_declaration | 
-		relation_declaration | actor_declaration)
+	assigned_parameter_declaration | relation_declaration | 
+	transparent_relation_declaration | actor_declaration)
 ;
 
 conditional_statement throws PtalonRuntimeException
@@ -375,15 +435,11 @@ conditional_statement throws PtalonRuntimeException
 	{
 		info.enterIfScope(a.getText());
 		ready = info.isIfReady();
-		if (ready) {
-			evalBool = true;
-		}
 	}
 	e:EXPRESSION 
 	{
 		if (ready) {
 			info.setActiveBranch(info.evaluateBoolean(e.getText()));
-			evalBool = false;
 		}
 	}
 	#(TRUEBRANCH 

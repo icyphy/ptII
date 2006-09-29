@@ -113,6 +113,7 @@ public class NestedActorManager extends CodeManager {
                 _currentTree.created = true;
                 _currentTree.assignPtalonParameters(_actor);
                 _currentTree.makeThisConnections();
+                _currentTree.removeDynamicLeftHandSides();
                 return;
             }
             String uniqueName = _actor.uniqueName(symbol);
@@ -124,6 +125,7 @@ public class NestedActorManager extends CodeManager {
                 actor.setNestedDepth(_actor.getNestedDepth() + 1);
                 _currentTree.assignPtalonParameters(actor);
                 _currentTree.makeConnections(actor);
+                _currentTree.removeDynamicLeftHandSides();
             } else if (getType(symbol).equals("actorparameter")) {
                 PtalonParameter parameter = (PtalonParameter) _actor
                         .getAttribute(getMappedName(symbol));
@@ -159,6 +161,7 @@ public class NestedActorManager extends CodeManager {
                     }
                     _currentTree.assignPtalonParameters(ptalonActor);
                     _currentTree.makeConnections(ptalonActor);
+                    _currentTree.removeDynamicLeftHandSides();
                 } else {
                     Class<?> genericClass = Class.forName(actor);
                     Class<? extends ComponentEntity> entityClass = genericClass
@@ -178,6 +181,7 @@ public class NestedActorManager extends CodeManager {
                     }
                     _currentTree.makeConnections(entity);
                     _currentTree.assignNonPtalonParameters(entity);
+                    _currentTree.removeDynamicLeftHandSides();
                 }
                 _currentTree.created = true;
             } else { // type of name not "import" or "parameter".
@@ -350,6 +354,16 @@ public class NestedActorManager extends CodeManager {
         }
     }
 
+    /**
+     * Add the unknown left side to this actor declaration.
+     * @param prefix The prefix for the unknown left side.
+     * @param expression The suffix expression for the unknown left side.
+     */
+    public void addUnknownLeftSide(String prefix, String expression) {
+        _currentTree.addUnknownLeftSide(prefix, expression);
+    }
+
+    
     /**
      * Create a nested actor with respect to this code manager's
      * actor.
@@ -561,7 +575,7 @@ public class NestedActorManager extends CodeManager {
     public void setBoolExpr(String expressionName, boolean value) {
         _booleanExpressions.put(expressionName, value);
     }
-    
+
     /**
      * Set whether or not dangling ports are okay.  If this input
      * is false, then dangling ports will be connected to the outside
@@ -745,7 +759,7 @@ public class NestedActorManager extends CodeManager {
      * when not inside an actor declaration.
      */
     private ActorTree _currentTree = null;
-    
+
     /**
      * If this is true, then dangling, or unconnected
      * ports of actors contained in the PtalonActor
@@ -876,6 +890,8 @@ public class NestedActorManager extends CodeManager {
             }
             if (getType(connectPoint).equals("relation")) {
                 _relations.put(portName, connectPoint);
+            } else if (getType(connectPoint).equals("transparent")) {
+                _transparencies.put(portName, connectPoint);
             } else if (getType(connectPoint).endsWith("port")) {
                 _ports.put(portName, connectPoint);
             } else {
@@ -903,6 +919,15 @@ public class NestedActorManager extends CodeManager {
             }
             _unknownPrefixes.put(portName, connectPointPrefix);
             _unknownExpressions.put(portName, connectPointExpression);
+        }
+        
+        /**
+         * Add the unknown left side to this actor declaration.
+         * @param prefix The prefix for the unknown left side.
+         * @param expression The suffix expression for the unknown left side.
+         */
+        public void addUnknownLeftSide(String prefix, String expression) {
+            _unknownLeftSides.put(prefix, expression);
         }
 
         /**
@@ -1126,6 +1151,11 @@ public class NestedActorManager extends CodeManager {
          * problem accessing any parameters.
          */
         public boolean isReady() throws PtalonRuntimeException {
+            for (String portName : _unknownLeftSides.keySet()) {
+                if (evaluateString(_unknownLeftSides.get(portName)) == null) {
+                    return false;
+                }
+            }
             for (String portName : _unknownExpressions.keySet()) {
                 if (evaluateString(_unknownExpressions.get(portName)) == null) {
                     return false;
@@ -1203,6 +1233,20 @@ public class NestedActorManager extends CodeManager {
                     TypedIOPort port = (TypedIOPort) actor.getPort(portName);
                     port.link(relation);
                 }
+                for (String portName : _transparencies.keySet()) {
+                    TypedIOPort port = (TypedIOPort) actor.getPort(portName);
+                    String shortName = _transparencies.get(portName);
+                    if (_transparentRelations.containsKey(shortName)) {
+                        TypedIOPort connectionPoint = _transparentRelations
+                            .get(shortName);
+                        String relationName = _actor.uniqueName("relation");
+                        TypedIORelation rel = new TypedIORelation(_actor, relationName);
+                        port.link(rel);
+                        connectionPoint.link(rel);;
+                    } else {
+                        _transparentRelations.put(shortName, port);
+                    }
+                }
                 for (String portName : _ports.keySet()) {
                     TypedIOPort port = (TypedIOPort) actor.getPort(portName);
                     String containerPortName = _actor.getMappedName(_ports
@@ -1225,7 +1269,8 @@ public class NestedActorManager extends CodeManager {
                     }
                     String name = _unknownPrefixes.get(portName) + suffix;
                     if (getType(name).endsWith("port")) {
-                        TypedIOPort port = (TypedIOPort) actor.getPort(portName);
+                        TypedIOPort port = (TypedIOPort) actor
+                                .getPort(portName);
                         String containerPortName = _actor.getMappedName(name);
                         TypedIOPort containerPort = (TypedIOPort) _actor
                                 .getPort(containerPortName);
@@ -1233,12 +1278,13 @@ public class NestedActorManager extends CodeManager {
                         TypedIORelation relation = new TypedIORelation(_actor,
                                 relationName);
                         port.link(relation);
-                        containerPort.link(relation);                        
+                        containerPort.link(relation);
                     } else if (getType(name).equals("relation")) {
                         String relationName = _actor.getMappedName(name);
                         TypedIORelation relation = (TypedIORelation) _actor
                                 .getRelation(relationName);
-                        TypedIOPort port = (TypedIOPort) actor.getPort(portName);
+                        TypedIOPort port = (TypedIOPort) actor
+                                .getPort(portName);
                         port.link(relation);
                     } else {
                         throw new PtalonRuntimeException(name
@@ -1303,6 +1349,20 @@ public class NestedActorManager extends CodeManager {
                     TypedIOPort port = (TypedIOPort) _actor.getPort(portName);
                     port.link(relation);
                 }
+                for (String portName : _transparencies.keySet()) {
+                    TypedIOPort port = (TypedIOPort) _actor.getPort(portName);
+                    String shortName = _transparencies.get(portName);
+                    if (_transparentRelations.containsKey(shortName)) {
+                        TypedIOPort connectionPoint = _transparentRelations
+                            .get(shortName);
+                        String relationName = _actor.uniqueName("relation");
+                        TypedIORelation rel = new TypedIORelation(_actor, relationName);
+                        port.link(rel);
+                        connectionPoint.link(rel);
+                    } else {
+                        _transparentRelations.put(shortName, port);
+                    }
+                }
                 for (String portName : _ports.keySet()) {
                     TypedIOPort port = (TypedIOPort) _actor.getPort(portName);
                     String containerPortName = _actor.getMappedName(_ports
@@ -1325,7 +1385,8 @@ public class NestedActorManager extends CodeManager {
                     }
                     String name = _unknownPrefixes.get(portName) + suffix;
                     if (getType(name).endsWith("port")) {
-                        TypedIOPort port = (TypedIOPort) _actor.getPort(portName);
+                        TypedIOPort port = (TypedIOPort) _actor
+                                .getPort(portName);
                         String containerPortName = _actor.getMappedName(name);
                         TypedIOPort containerPort = (TypedIOPort) _actor
                                 .getPort(containerPortName);
@@ -1333,12 +1394,13 @@ public class NestedActorManager extends CodeManager {
                         TypedIORelation relation = new TypedIORelation(_actor,
                                 relationName);
                         port.link(relation);
-                        containerPort.link(relation);                        
+                        containerPort.link(relation);
                     } else if (getType(name).equals("relation")) {
                         String relationName = _actor.getMappedName(name);
                         TypedIORelation relation = (TypedIORelation) _actor
                                 .getRelation(relationName);
-                        TypedIOPort port = (TypedIOPort) _actor.getPort(portName);
+                        TypedIOPort port = (TypedIOPort) _actor
+                                .getPort(portName);
                         port.link(relation);
                     } else {
                         throw new PtalonRuntimeException(name
@@ -1348,6 +1410,37 @@ public class NestedActorManager extends CodeManager {
             } catch (Exception e) {
                 throw new PtalonRuntimeException("Trouble making connections",
                         e);
+            }
+        }
+        
+        /**
+         * Clean up any dynamic left hand sides added.
+         */
+        public void removeDynamicLeftHandSides() {
+            for (String prefix : _unknownLeftSides.keySet()) {
+                String suffix = evaluateString(_unknownLeftSides.get(prefix));
+                if (suffix == null) {
+                    break;
+                }
+                String name = prefix + suffix;
+                if (_parameters.containsKey(name)) {
+                    _parameters.remove(name);
+                }
+                if (_ports.containsKey(name)) {
+                    _parameters.remove(name);
+                }
+                if (_relations.containsKey(name)) {
+                    _relations.remove(name);
+                }
+                if (_transparencies.containsKey(name)) {
+                    _transparencies.remove(name);
+                }
+                if (_unknownExpressions.containsKey(name)) {
+                    _unknownExpressions.remove(name);
+                }
+                if (_unknownPrefixes.containsKey(name)) {
+                    _unknownExpressions.remove(name);
+                }
             }
         }
 
@@ -1463,6 +1556,12 @@ public class NestedActorManager extends CodeManager {
         private String _symbol;
 
         /**
+         * Each key is a port in this actor declaration, and each value
+         * is a transparent relation in its container to be connected to at runtime.
+         */
+        private Map<String, String> _transparencies = new Hashtable<String, String>();
+
+        /**
          * The _unknownPrefixes maps port names in this actor
          * declaration instance to prefixes of unknown 
          * connection points, and _unknownExpressions maps the
@@ -1471,6 +1570,12 @@ public class NestedActorManager extends CodeManager {
         private Map<String, String> _unknownPrefixes = new Hashtable<String, String>();
 
         private Map<String, String> _unknownExpressions = new Hashtable<String, String>();
+        
+        /**
+         * Each key is a prefix and value is an expression corresponding to
+         * a left hand side of an assignment which may change dynamically.
+         */
+        private Map<String, String> _unknownLeftSides = new Hashtable<String, String>();
 
     }
 }

@@ -68,22 +68,23 @@ public PtalonLexer(LexerSharedInputState state) {
 	caseSensitiveLiterals = true;
 	setCaseSensitive(true);
 	literals = new Hashtable();
-	literals.put(new ANTLRHashString("for", this), new Integer(22));
+	literals.put(new ANTLRHashString("for", this), new Integer(23));
 	literals.put(new ANTLRHashString("outport", this), new Integer(8));
+	literals.put(new ANTLRHashString("transparent", this), new Integer(14));
 	literals.put(new ANTLRHashString("parameter", this), new Integer(10));
-	literals.put(new ANTLRHashString("false", this), new Integer(18));
-	literals.put(new ANTLRHashString("true", this), new Integer(17));
+	literals.put(new ANTLRHashString("false", this), new Integer(19));
+	literals.put(new ANTLRHashString("true", this), new Integer(18));
 	literals.put(new ANTLRHashString("actor", this), new Integer(12));
-	literals.put(new ANTLRHashString("import", this), new Integer(16));
-	literals.put(new ANTLRHashString("next", this), new Integer(24));
+	literals.put(new ANTLRHashString("import", this), new Integer(17));
+	literals.put(new ANTLRHashString("next", this), new Integer(25));
 	literals.put(new ANTLRHashString("inport", this), new Integer(7));
 	literals.put(new ANTLRHashString("port", this), new Integer(4));
-	literals.put(new ANTLRHashString("initially", this), new Integer(23));
-	literals.put(new ANTLRHashString("is", this), new Integer(21));
-	literals.put(new ANTLRHashString("danglingPortsOkay", this), new Integer(25));
+	literals.put(new ANTLRHashString("initially", this), new Integer(24));
+	literals.put(new ANTLRHashString("is", this), new Integer(22));
+	literals.put(new ANTLRHashString("danglingPortsOkay", this), new Integer(26));
 	literals.put(new ANTLRHashString("relation", this), new Integer(13));
-	literals.put(new ANTLRHashString("if", this), new Integer(19));
-	literals.put(new ANTLRHashString("else", this), new Integer(20));
+	literals.put(new ANTLRHashString("if", this), new Integer(20));
+	literals.put(new ANTLRHashString("else", this), new Integer(21));
 }
 
 public Token nextToken() throws TokenStreamException {
@@ -507,7 +508,7 @@ tryAgain:
 		}
 		}
 		{
-		_loop868:
+		_loop3425:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -546,7 +547,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop868;
+				break _loop3425;
 			}
 			}
 		} while (true);
@@ -565,34 +566,34 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt871=0;
-		_loop871:
+		int _cnt3428=0;
+		_loop3428:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt871>=1 ) { break _loop871; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt3428>=1 ) { break _loop3428; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt871++;
+			_cnt3428++;
 		} while (true);
 		}
 		{
 		if ((LA(1)=='.')) {
 			match('.');
 			{
-			int _cnt874=0;
-			_loop874:
+			int _cnt3431=0;
+			_loop3431:
 			do {
 				if (((LA(1) >= '0' && LA(1) <= '9'))) {
 					matchRange('0','9');
 				}
 				else {
-					if ( _cnt874>=1 ) { break _loop874; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+					if ( _cnt3431>=1 ) { break _loop3431; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
 				
-				_cnt874++;
+				_cnt3431++;
 			} while (true);
 			}
 		}
@@ -627,7 +628,7 @@ tryAgain:
 		
 		match('"');
 		{
-		_loop879:
+		_loop3436:
 		do {
 			switch ( LA(1)) {
 			case '\\':
@@ -674,7 +675,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop879;
+				break _loop3436;
 			}
 			}
 		} while (true);
@@ -745,15 +746,15 @@ tryAgain:
 		
 		match('<');
 		{
-		_loop884:
+		_loop3441:
 		do {
 			// nongreedy exit test
-			if ((LA(1)=='/') && (LA(2)=='>') && (true)) break _loop884;
+			if ((LA(1)=='/') && (LA(2)=='>') && (true)) break _loop3441;
 			if (((LA(1) >= '\u0000' && LA(1) <= '\u007f')) && ((LA(2) >= '\u0000' && LA(2) <= '\u007f')) && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
 				matchNot(EOF_CHAR);
 			}
 			else {
-				break _loop884;
+				break _loop3441;
 			}
 			
 		} while (true);
@@ -775,15 +776,15 @@ tryAgain:
 		match('/');
 		match('*');
 		{
-		_loop887:
+		_loop3444:
 		do {
 			// nongreedy exit test
-			if ((LA(1)=='*') && (LA(2)=='/') && (true)) break _loop887;
+			if ((LA(1)=='*') && (LA(2)=='/') && (true)) break _loop3444;
 			if (((LA(1) >= '\u0000' && LA(1) <= '\u007f')) && ((LA(2) >= '\u0000' && LA(2) <= '\u007f')) && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
 				matchNot(EOF_CHAR);
 			}
 			else {
-				break _loop887;
+				break _loop3444;
 			}
 			
 		} while (true);

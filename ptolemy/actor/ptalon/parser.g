@@ -155,6 +155,16 @@ relation_declaration
 	)?
 ;
 
+transparent_relation_declaration
+:
+	t:TRANSPARENT^ RELATION! i:ID (! e:expression
+	{
+		#transparent_relation_declaration = 
+			#(t, ([DYNAMIC_NAME, "dynamic"], i, e));
+	}
+	)?
+;
+
 /**
  * Parse for statement
  * <p><i>ID</i>
@@ -171,7 +181,7 @@ qualified_identifier!
 	{
 		identifier = identifier + #p.getText() + ":";
 	}
-	)?	
+	)?
 	a:keyword_or_identifier 
 	{
 		identifier = identifier + #a.getText();
@@ -189,7 +199,7 @@ qualified_identifier!
 keyword_or_identifier:
 	ID | IMPORT | PORT | INPORT | OUTPORT | PARAMETER 
 	| ACTOR | RELATION | TRUE | FALSE | IF | ELSE | IS | FOR |
-	INITIALLY | NEXT | DANGLING_PORTS_OKAY
+	INITIALLY | NEXT | DANGLING_PORTS_OKAY | TRANSPARENT
 ;
 
 /**
@@ -207,18 +217,29 @@ keyword_or_identifier:
 assignment!
 {
 	boolean dynamic_name = false;
+	boolean dynamic_left = false;
 }
 :
-	l:ID a:ASSIGN ((ID (expression)? (RPAREN | COMMA)) => r:ID (e:expression
+	l:ID (lExp:expression
+	{
+		dynamic_left = true;
+	}
+	)? a:ASSIGN ((ID (expression)? (RPAREN | COMMA)) => r:ID (e:expression
 	{
 		dynamic_name = true;
 	}
 	)? 
 	{
-		if (dynamic_name) {
-			#assignment = #(a, l, ([DYNAMIC_NAME, "dynamic"], r, e));
+		PtalonAST left;
+		if (dynamic_left) {
+			left = #([DYNAMIC_NAME, "dynamic"], l, lExp);
 		} else {
-			#assignment = #(a, l, r);
+			left = #l;
+		}
+		if (dynamic_name) {
+			#assignment = #(a, left, ([DYNAMIC_NAME, "dynamic"], r, e));
+		} else {
+			#assignment = #(a, left, r);
 		}
 	}
 	|
@@ -267,27 +288,26 @@ expression!
  */
 actor_declaration!
 :
-	a:ID
+	a:ID LPAREN 
 	{
 		#a = #[ACTOR_DECLARATION, a.getText()];
 		#actor_declaration = #(a);
 	} 
-	LPAREN (
-		b:assignment 
-		{
-			#actor_declaration.addChild(#b);
-		}
-		(COMMA c:assignment
-		{
-			#actor_declaration.addChild(#c);
-		}
-		)*
-	)? RPAREN
+	(b:assignment 
+	{
+		#actor_declaration.addChild(#b);
+	}
+	(COMMA c:assignment
+	{
+		#actor_declaration.addChild(#c);
+	}
+	)*)? RPAREN
 ;
 
 atomic_statement : 
 	((port_declaration | parameter_declaration |
-	relation_declaration | actor_declaration) SEMI! |
+	relation_declaration | transparent_relation_declaration | 
+	actor_declaration) SEMI! |
 	COMMENT!)
 ;
 
@@ -368,7 +388,6 @@ actor_definition!
 	{
 		#actor_definition = #[ACTOR_DEFINITION];
 	}
-	(COMMENT)*
 	(d:danglingPortsOkay
 	{
 		danglingPortsOkay = true;
@@ -427,6 +446,7 @@ tokens {
 	INITIALLY = "initially";
 	NEXT = "next";
 	DANGLING_PORTS_OKAY = "danglingPortsOkay";
+	TRANSPARENT = "transparent";
 	TRUEBRANCH;
 	FALSEBRANCH;
 	QUALID;
@@ -448,6 +468,8 @@ tokens {
 	SATISFIES;
 	VARIABLE;
 	DYNAMIC_NAME;
+	ACTOR_LABEL;
+	QUALIFIED_PORT;
 }
 
 

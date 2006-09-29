@@ -1,11 +1,24 @@
-LinearStateSpace is {
+danglingPortsOkay;
 
-	actor trueBranch = ptolemy.domains.ct.lib.Integrator;
-	
-	parameter n = < 0 />;
-	
-	if <n > 0/> {
-		trueBranch();
-	} else {
-	}
+LinearStateSpace is {
+	inport[] input;
+	outport[] output;
+	outport[] stateOutput;
+	parameter A;
+	parameter B;
+	parameter C;
+	parameter D;
+	parameter initialStates;
+	actor integrator = ptolemy.domains.ct.lib.Integrator;
+	actor stateAdder = ptolemy.actor.lib.AddSubtract;
+	actor scale = ptolemy.actor.lib.AddSubtract;
+	for a initially <0/> <a < A.getRowCount/> {
+		relation state<a/>;
+		relation adderOut<a/>;
+		integrator(initialState := <initialStates(0, a)/>, input := adderOut<a/>, 
+			output := state<a/>);
+		relation[] adderIn<a/>;
+		stateAdder(input := adderIn<a/>, output := adderIn<a/>);
+		this(stateOutput := state<a/>);
+	} next <a + 1/>
 }
