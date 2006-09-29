@@ -67,14 +67,14 @@
         We indicate here which panels we want to use. The order will be respected.
     -->
     <panels>
-        <panel classname="HelloPanel"/>
+        <!-- panel classname="HelloPanel"/ -->
         <panel classname="HTMLInfoPanel"/>
         <panel classname="HTMLLicencePanel"/>
         <panel classname="TargetPanel"/> 
         <panel classname="PacksPanel"/>
         <panel classname="SummaryPanel"/>
         <panel classname="InstallPanel"/>
-        <panel classname="ProcessPanel"/>
+        <!-- panel classname="ProcessPanel"/ -->
         <panel classname="ShortcutPanel"/>
         <panel classname="SimpleFinishPanel"/>
     </panels>
@@ -367,12 +367,13 @@ The Ptiny pack is required.
         </pack>
         <pack name="Sources" required="no">
             <description>The Ptolemy II sources.</description>
-            <file src="ptII6.0.alpha.src.jar" targetdir="$INSTALL_PATH"/>
-            <file src="ExtractJarFile.class" targetdir="$INSTALL_PATH"/>
+            <file src="src/ptII6.0.alpha" targetdir="$INSTALL_PATH"/>
+            <!-- file src="ptII6.0.alpha.src.jar" targetdir="$INSTALL_PATH"/-->
+            <!-- file src="ExtractJarFile.class" targetdir="$INSTALL_PATH"/ -->
         </pack>
     </packs>
 
     <!-- Include ExtractJarFile.class for the Process Panel -->
-    <jar src="ExtractJarFile.jar" stage="install"/>
+    <!-- jar src="ExtractJarFile.jar" stage="install"/ -->
     
 </installation>
