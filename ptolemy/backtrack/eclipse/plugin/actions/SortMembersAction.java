@@ -1,18 +1,37 @@
 package ptolemy.backtrack.eclipse.plugin.actions;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.Collator;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
+import org.eclipse.jdt.core.dom.AnnotationTypeMemberDeclaration;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
+import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
+import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jdt.core.util.CompilationUnitSorter;
 import org.eclipse.jdt.internal.corext.codemanipulation.SortMembersOperation;
+import org.eclipse.jdt.internal.corext.dom.ASTNodes;
+import org.eclipse.jdt.internal.corext.util.JdtFlags;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.actions.ActionMessages;
 import org.eclipse.jdt.internal.ui.actions.ActionUtil;
 import org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter;
 import org.eclipse.jdt.internal.ui.dialogs.OptionalMessageDialog;
-import org.eclipse.jdt.internal.ui.dialogs.SortMembersMessageDialog;
 import org.eclipse.jdt.internal.ui.javaeditor.IJavaAnnotation;
 import org.eclipse.jdt.internal.ui.util.BusyIndicatorRunnableContext;
 import org.eclipse.jdt.internal.ui.util.ElementValidator;
@@ -25,33 +44,286 @@ import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IEditorActionDelegate;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
 import ptolemy.backtrack.eclipse.plugin.console.OutputConsole;
 import ptolemy.backtrack.eclipse.plugin.editor.MultiPageCompilationUnitEditor;
 
-public class SortMembersAction implements IEditorActionDelegate {
+public class SortMembersAction implements IWorkbenchWindowActionDelegate {
 	
-	private MultiPageCompilationUnitEditor _editor;
-	
-	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
-		if (!(targetEditor instanceof MultiPageCompilationUnitEditor)) {
-			return;
+	protected class PtolemySortMembersOperation extends SortMembersOperation {
+		public PtolemySortMembersOperation(
+				ICompilationUnit compilationUnit, int[] positions,
+				boolean doNotSortFields) {
+			super(compilationUnit, positions, doNotSortFields);
+			
+			_compilationUnit = compilationUnit;
+			_positions = positions;
+			_doNotSortFields = doNotSortFields;
 		}
 		
-		_editor = (MultiPageCompilationUnitEditor) targetEditor;
+		public void run(IProgressMonitor monitor) throws CoreException {
+			CompilationUnitSorter.sort(AST.JLS3, _compilationUnit, _positions,
+					new JavaElementComparator(), 0, monitor);
+		}
+		
+		private ICompilationUnit _compilationUnit;
+		
+		private int[] _positions;
+		
+		private boolean _doNotSortFields;
+		
+		private Collator _collator = Collator.getInstance();
+		
+		protected class JavaElementComparator implements Comparator {
+			public int compare(Object element1, Object element2) {
+				BodyDeclaration bodyDeclaration1 = (BodyDeclaration) element1;
+				BodyDeclaration bodyDeclaration2 = (BodyDeclaration) element2;
+				
+				int type1 = bodyDeclaration1.getNodeType();
+				boolean fieldType1 =
+					(type1 == ASTNode.FIELD_DECLARATION
+							|| type1 == ASTNode.ENUM_CONSTANT_DECLARATION);
+				int type2 = bodyDeclaration1.getNodeType();
+				boolean fieldType2 =
+					(type2 == ASTNode.FIELD_DECLARATION
+							|| type2 == ASTNode.ENUM_CONSTANT_DECLARATION);
+				if (_doNotSortFields && fieldType1 && fieldType2) {
+					return preserveRelativeOrder(bodyDeclaration1,
+							bodyDeclaration2);
+				} else {
+					return compareVisibility(bodyDeclaration1,
+							bodyDeclaration2);
+				}
+			}
+			
+			private int preserveRelativeOrder(BodyDeclaration bodyDeclaration1,
+					BodyDeclaration bodyDeclaration2) {
+				int order1 =
+					((Integer) bodyDeclaration1.getProperty(
+							CompilationUnitSorter.RELATIVE_ORDER)).intValue();
+				int order2 =
+					((Integer) bodyDeclaration2.getProperty(
+							CompilationUnitSorter.RELATIVE_ORDER)).intValue();
+				return order1 - order2;
+			}
+			
+			protected int compareVisibility(BodyDeclaration bodyDeclaration1,
+					BodyDeclaration bodyDeclaration2) {
+				int visibilityCode1 = getVisibilityCode(bodyDeclaration1);
+				int visibilityCode2 = getVisibilityCode(bodyDeclaration2);
+				if (visibilityCode1 == visibilityCode2) {
+					return compareNodeType(bodyDeclaration1, bodyDeclaration2);
+				} else {
+					return visibilityCode1 - visibilityCode2;
+				}
+			}
+			
+			private int compareNodeType(BodyDeclaration bodyDeclaration1,
+					BodyDeclaration bodyDeclaration2) {
+				int typeCode1 = getNodeTypeCode(bodyDeclaration1);
+				int typeCode2 = getNodeTypeCode(bodyDeclaration2);
+				if (typeCode1 != typeCode2) {
+					return typeCode1 - typeCode2;
+				} else {
+					switch (bodyDeclaration1.getNodeType()) {
+					case ASTNode.METHOD_DECLARATION:
+						MethodDeclaration method1 =
+							(MethodDeclaration) bodyDeclaration1;
+						MethodDeclaration method2 =
+							(MethodDeclaration) bodyDeclaration2;
+						
+						if (method1.isConstructor()
+								&& !method2.isConstructor()) {
+							return -1;
+						} else if (!method1.isConstructor()
+								&& method2.isConstructor()) {
+							return 1;
+						}
+						
+						String methodName1 = method1.getName().getIdentifier();
+						String methodName2 = method2.getName().getIdentifier();
+
+						// method declarations (constructors) are sorted by name
+						int nameResult =
+							_collator.compare(methodName1, methodName2);
+						if (nameResult != 0) {
+							return nameResult;
+						}
+
+						// if names equal, sort by parameter types
+						List parameters1 = method1.parameters();
+						List parameters2 = method2.parameters();
+						int length1= parameters1.size();
+						int length2= parameters2.size();
+						int minLength = Math.min(length1, length2);
+						for (int i= 0; i < minLength; i++) {
+							SingleVariableDeclaration param1i =
+								(SingleVariableDeclaration) parameters1.get(i);
+							SingleVariableDeclaration param2i =
+								(SingleVariableDeclaration) parameters2.get(i);
+							int paramResult =
+								_collator.compare(
+										buildSignature(param1i.getType()),
+										buildSignature(param2i.getType()));
+							if (paramResult != 0) {
+								return paramResult;
+							}
+						}
+						if (length1 != length2) {
+							return length1 - length2;
+						}
+						return preserveRelativeOrder(bodyDeclaration1,
+								bodyDeclaration2);
+						
+					case ASTNode.FIELD_DECLARATION:
+						FieldDeclaration field1 =
+							(FieldDeclaration) bodyDeclaration1;
+						FieldDeclaration field2 =
+							(FieldDeclaration) bodyDeclaration2;
+
+						String fieldName1 =
+							((VariableDeclarationFragment)
+									field1.fragments().get(0)).getName()
+									.getIdentifier();
+						String fieldName2 =
+							((VariableDeclarationFragment)
+									field2.fragments().get(0)).getName()
+									.getIdentifier();
+
+						return compareNames(bodyDeclaration1, bodyDeclaration2,
+								fieldName1, fieldName2);
+						
+					case ASTNode.INITIALIZER:
+						return preserveRelativeOrder(bodyDeclaration1, bodyDeclaration2);
+						
+					case ASTNode.TYPE_DECLARATION :
+					case ASTNode.ENUM_DECLARATION :
+					case ASTNode.ANNOTATION_TYPE_DECLARATION :
+						AbstractTypeDeclaration type1 =
+							(AbstractTypeDeclaration) bodyDeclaration1;
+						AbstractTypeDeclaration type2=
+							(AbstractTypeDeclaration) bodyDeclaration2;
+
+						String typeName1 = type1.getName().getIdentifier();
+						String typeName2 = type2.getName().getIdentifier();
+
+						return compareNames(bodyDeclaration1, bodyDeclaration2,
+								typeName1, typeName2);
+						
+					case ASTNode.ENUM_CONSTANT_DECLARATION:
+						EnumConstantDeclaration enum1 =
+							(EnumConstantDeclaration) bodyDeclaration1;
+						EnumConstantDeclaration enum2 =
+							(EnumConstantDeclaration) bodyDeclaration2;
+							
+						String enumName1= enum1.getName().getIdentifier();
+						String enumName2= enum2.getName().getIdentifier();
+							
+						return compareNames(bodyDeclaration1, bodyDeclaration2,
+								enumName1, enumName2);
+						
+					case ASTNode.ANNOTATION_TYPE_MEMBER_DECLARATION:
+						AnnotationTypeMemberDeclaration annotation1 =
+							(AnnotationTypeMemberDeclaration) bodyDeclaration1;
+						AnnotationTypeMemberDeclaration annotation2 =
+							(AnnotationTypeMemberDeclaration) bodyDeclaration2;
+						
+						String annotationName1 =
+							annotation1.getName().getIdentifier();
+						String annotationName2 =
+							annotation2.getName().getIdentifier();
+						
+						return compareNames(bodyDeclaration1, bodyDeclaration2,
+								annotationName1, annotationName2);
+						
+					default:
+						return preserveRelativeOrder(bodyDeclaration1,
+								bodyDeclaration2);
+					}
+				}
+			}
+			
+			private int getVisibilityCode(BodyDeclaration bodyDeclaration) {
+				switch (JdtFlags.getVisibilityCode(bodyDeclaration)) {
+				case Modifier.PUBLIC:
+					return 0;
+				case Modifier.PROTECTED:
+					return 1;
+				case Modifier.NONE:
+					return 2;
+				case Modifier.PRIVATE:
+					return 3;
+				default:
+					return -1;
+				}
+			}
+			
+			private int getNodeTypeCode(BodyDeclaration bodyDeclaration) {
+				switch (bodyDeclaration.getNodeType()) {
+				case ASTNode.METHOD_DECLARATION:
+					return 0;
+				case ASTNode.FIELD_DECLARATION:
+					return 1;
+				case ASTNode.INITIALIZER:
+					return 2;
+				case ASTNode.TYPE_DECLARATION:
+					return 3;
+				case ASTNode.ENUM_DECLARATION:
+					return 4;
+				case ASTNode.ANNOTATION_TYPE_DECLARATION:
+					return 5;
+				case ASTNode.ENUM_CONSTANT_DECLARATION:
+					return 6;
+				case ASTNode.ANNOTATION_TYPE_MEMBER_DECLARATION:
+					return 7;
+				default:
+					return -1;
+				}
+			}
+			
+			private int compareNames(BodyDeclaration bodyDeclaration1,
+					BodyDeclaration bodyDeclaration2, String name1,
+					String name2) {
+				int nameResult = _collator.compare(name1, name2);
+				if (nameResult != 0) {
+					return nameResult;
+				}
+				return preserveRelativeOrder(bodyDeclaration1,
+						bodyDeclaration2);
+			}
+			
+			private String buildSignature(Type type) {
+				return ASTNodes.asString(type);
+			}
+		}
+	}
+	
+	public void dispose() {
 	}
 
-    private boolean containsRelevantMarkers(IEditorPart editor) {
-		IAnnotationModel model= JavaUI.getDocumentProvider().getAnnotationModel(editor.getEditorInput());
+	public void init(IWorkbenchWindow window) {
+		_window = window;
+	}
+	
+	private IWorkbenchWindow _window;
+	
+	private boolean containsRelevantMarkers(IEditorPart editor) {
+		IEditorInput input = editor.getEditorInput();
+		IAnnotationModel model =
+			JavaUI.getDocumentProvider().getAnnotationModel(input);
 		Iterator iterator= model.getAnnotationIterator();
 		while (iterator.hasNext()) {
 			Object element= iterator.next();
 			if (element instanceof IJavaAnnotation) {
 				IJavaAnnotation annot= (IJavaAnnotation) element;
-				if (!annot.isMarkedDeleted() && annot.isPersistent() && !annot.isProblem())
+				if (!annot.isMarkedDeleted()
+						&& annot.isPersistent()
+						&& !annot.isProblem())
 					return true;
 			}
 		}		
@@ -63,53 +335,61 @@ public class SortMembersAction implements IEditorActionDelegate {
      *  @param action The action proxy (not used in this method).
      */
     public void run(IAction action) {
-    	Shell shell= _editor.getSite().getShell();
-		IWorkingCopyManager manager = JavaPlugin.getDefault().getWorkingCopyManager();
-		ICompilationUnit cu= manager.getWorkingCopy(_editor.getEditorInput());
-		if (cu == null) {
-			return;
-		}
-		
-		if (!ActionUtil.isProcessable(shell, cu)) {
-			return;
-		}
-		
-		SortMembersMessageDialog dialog= new SortMembersMessageDialog(shell);
-		if (dialog.open() != Window.OK) {
-			return;
-		}
-		
-		if (!ElementValidator.check(cu, shell, ActionMessages.SortMembersAction_dialog_title, false)) {
-			return;
-		}
-		
-		if (containsRelevantMarkers(_editor)) {
-			int returnCode= OptionalMessageDialog.open(
-					"ptolemy.backtrack.eclipse.plugin.actions.SortMembersAction", 
-					shell, 
-					ActionMessages.SortMembersAction_dialog_title,
-					null,
-					ActionMessages.SortMembersAction_containsmarkers,  
-					MessageDialog.WARNING,
-					new String[] {IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL}, 
-					0);
-			if (returnCode != OptionalMessageDialog.NOT_SHOWN && 
-					returnCode != Window.OK ) return;	
-		}
-		
-		ISchedulingRule schedulingRule = ResourcesPlugin.getWorkspace().getRoot();
-		SortMembersOperation op= new SortMembersOperation(cu, null, false);
-		try {
-			BusyIndicatorRunnableContext context= new BusyIndicatorRunnableContext();
-			PlatformUI.getWorkbench().getProgressService().runInUI(context,
-				new WorkbenchRunnableAdapter(op, schedulingRule),
-				schedulingRule);
-		} catch (InvocationTargetException e) {
-			OutputConsole.outputError(e.getMessage());
-		} catch (InterruptedException e) {
-			// Do nothing. Operation has been canceled by user.
-		}
+    	IEditorPart editorPart = _window.getActivePage().getActiveEditor();
+    	if (editorPart instanceof MultiPageCompilationUnitEditor) {
+    		MultiPageCompilationUnitEditor editor =
+    			(MultiPageCompilationUnitEditor) editorPart;
+    		
+    		Shell shell= _window.getShell();
+    		IWorkingCopyManager manager =
+    			JavaPlugin.getDefault().getWorkingCopyManager();
+    		ICompilationUnit compilationUnit =
+    			manager.getWorkingCopy(editor.getEditorInput());
+    		if (compilationUnit == null) {
+    			return;
+    		}
+    		
+    		if (!ActionUtil.isProcessable(shell, compilationUnit)) {
+    			return;
+    		}
+    		
+    		if (!ElementValidator.check(compilationUnit, shell,
+    				ActionMessages.SortMembersAction_dialog_title, false)) {
+    			return;
+    		}
+    		
+    		if (containsRelevantMarkers(editor)) {
+    			int returnCode= OptionalMessageDialog.open(
+    					"ptolemy.backtrack.eclipse.plugin.actions.SortMembersAction", 
+    					shell, 
+    					ActionMessages.SortMembersAction_dialog_title,
+    					null,
+    					ActionMessages.SortMembersAction_containsmarkers,  
+    					MessageDialog.WARNING,
+    					new String[] {IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL}, 
+    					0);
+    			if (returnCode != OptionalMessageDialog.NOT_SHOWN && 
+    					returnCode != Window.OK ) return;	
+    		}
+    		
+    		ISchedulingRule schedulingRule =
+    			ResourcesPlugin.getWorkspace().getRoot();
+    		PtolemySortMembersOperation operation =
+    			new PtolemySortMembersOperation(compilationUnit, null, false);
+    		try {
+    			BusyIndicatorRunnableContext context =
+    				new BusyIndicatorRunnableContext();
+    			PlatformUI.getWorkbench().getProgressService().runInUI(context,
+    				new WorkbenchRunnableAdapter(operation, schedulingRule),
+    				schedulingRule);
+    		} catch (InvocationTargetException e) {
+    			OutputConsole.outputError(e.getMessage());
+    		} catch (InterruptedException e) {
+    			// Do nothing. Operation has been canceled by user.
+    		}
+        }
     }
+    	
 
     /** Handle the change of selection.
      * 
