@@ -32,6 +32,7 @@ import ptolemy.backtrack.util.Strings;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URLClassLoader;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -503,7 +504,16 @@ public class LocalClassLoader extends URLClassLoader {
             }
 
             if ((lastDotPos == -1) || (lastDotPos == firstDotPos)) {
-                throw new ClassNotFoundException(namesTried.toString(),
+                URL urls[] = getURLs();
+                StringBuffer searchURLs = new StringBuffer();
+                for (int i = 0; i < urls.length; i++) {
+                    if (i > 0) {
+                        searchURLs.append("\n");
+                    }
+                    searchURLs.append(urls[i]);
+                } 
+                throw new ClassNotFoundException(namesTried.toString()
+                        + "URL Search Path:\n" + searchURLs.toString(),
                         firstException);
             } else {
                 nameBuffer.setCharAt(lastDotPos, '$');
