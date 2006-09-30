@@ -170,7 +170,9 @@ public class MultiplyDivide extends TypedAtomicActor {
                 return;
             }
 
-            numerator = denominator.one();
+            // For the benefit of copernicus, this means that
+            // numerator always has the same type.
+            numerator = multiply.getType().convert(denominator.one());
         }
 
         if (denominator != null) {
