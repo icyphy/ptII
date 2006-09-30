@@ -124,7 +124,7 @@ public class ArrayType extends StructuredType {
     public Token convert(Token token) throws IllegalActionException {
         Type myElementType = getElementType();
         // Cannot convert to unknown element type.
-        if (myElementType == BaseType.UNKNOWN) {
+        if (myElementType.equals(BaseType.UNKNOWN)) {
             if (token instanceof ArrayToken) {
                 // Following the logic implemented in BaseType for UNKNOWN,
                 // since every array token is a substitution instance for
@@ -384,7 +384,7 @@ public class ArrayType extends StructuredType {
 
         Type newElemType = ((ArrayType) newType).getElementType();
 
-        if (_declaredElementType == BaseType.UNKNOWN) {
+        if (_declaredElementType.equals(BaseType.UNKNOWN)) {
             try {
                 _elementType = (Type) newElemType.clone();
             } catch (CloneNotSupportedException cnse) {
@@ -562,7 +562,7 @@ public class ArrayType extends StructuredType {
                                 + "The argument " + this + " is not a Type.");
             }
 
-            if (_declaredElementType == BaseType.UNKNOWN) {
+            if (_declaredElementType.equals(BaseType.UNKNOWN)) {
                 _elementType = (Type) e;
             } else {
                 // element type is a structured type.
@@ -609,7 +609,7 @@ public class ArrayType extends StructuredType {
                                 + ", New type: " + e.toString());
             }
 
-            if (_declaredElementType == BaseType.UNKNOWN) {
+            if (_declaredElementType.equals(BaseType.UNKNOWN)) {
                 try {
                     _elementType = (Type) ((Type) e).clone();
                 } catch (CloneNotSupportedException cnse) {
