@@ -373,7 +373,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // has to be contained by an actor to be run.
             Nameable container = getContainer();
             if (container instanceof Actor) {
-                return ((Actor) container).getDirector();
+                return ((Actor)container).getDirector();
             }
             return null;
         } finally {
@@ -474,6 +474,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
         if (_debugging) {
             _debug("Called initialize()");
         }
+        
+        // Update the version only after everything has been
+        // preinitialized because there might have been additional
+        // workspace version updates during preinitialize().
+        // We assume they were properly handled and new receivers
+        // were created if needed.
+        _receiversVersion = workspace().getVersion();
 
         try {
             _workspace.getReadAccess();
@@ -484,7 +491,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             }
 
             // Clear all of the contained actor's input ports.
-            for (Iterator actors = entityList(Actor.class).iterator(); actors
+            for (Iterator actors = deepEntityList().iterator(); actors
                     .hasNext();) {
                 Entity actor = (Entity) actors.next();
                 Iterator ports = actor.portList().iterator();
@@ -879,7 +886,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
         try {
             _workspace.getReadAccess();
-            _createReceivers();
+
+            // As an optimization, avoid creating receivers if
+            // the workspace version has not changed.
+            if (workspace().getVersion() != _receiversVersion) {
+                _createReceivers();
+            }
 
             if (!isOpaque()) {
                 if (getContainer() == null && deepEntityList().size() == 0) {
@@ -1327,4 +1339,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     private transient long _outputPortsVersion = -1;
 
     private transient List _cachedOutputPorts;
+    
+    /** Record of the workspace version the last time receivers were created. */
+    private long _receiversVersion = -1;
 }

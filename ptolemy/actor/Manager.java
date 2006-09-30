@@ -370,10 +370,10 @@ public class Manager extends NamedObj implements Runnable {
                 // change requests when they are requested.
                 setDeferringChangeRequests(false);
 
-                // This is done again here because actors may throw exceptions
-                // during wrapup().
-                // FIXME: Huh??? Why does this need to be done?  EAL 9/16/06
-                _workspace.incrVersion();
+                // NOTE: This used to increment the workspace
+                // version, which would require that everything
+                // be re-done on subsequent runs. EAL 9/16/06
+                // _workspace.incrVersion();
 
                 // Reset this for the next run.
                 _finishRequested = false;
@@ -1251,9 +1251,10 @@ public class Manager extends NamedObj implements Runnable {
         // change requests.
         setDeferringChangeRequests(false);
 
-        // FIXME: Why is the workspace version incremented?
-        // EAL 9/16/06.
-        _workspace.incrVersion();
+        // NOTE: This used to increment the workspace
+        // version, which would require that everything
+        // be re-done on subsequent runs. EAL 9/16/06
+        // _workspace.incrVersion();
 
         if (_exitAfterWrapup) {
             // If the ptolemy.ptII.exitAfterWrapup property is set,

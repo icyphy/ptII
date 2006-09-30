@@ -241,6 +241,12 @@ public class AtomicActor extends ComponentEntity implements Actor {
         if (_debugging) {
             _debug("Called initialize()");
         }
+        // Update the version only after everything has been
+        // preinitialized because there might have been additional
+        // workspace version updates during preinitialize().
+        // We assume they were properly handled and new receivers
+        // were created if needed.
+        _receiversVersion = workspace().getVersion();
     }
 
     /** List all the input ports.
@@ -478,10 +484,14 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
         _stopRequested = false;
 
-        // NOTE:  Receivers are also getting created
-        // in connectionChanged().  Perhaps this is here to ensure
-        // that the receivers are reset?
-        _createReceivers();
+        // As an optimization, avoid creating receivers if
+        // the workspace version has not changed.
+        if (workspace().getVersion() != _receiversVersion) {
+            // NOTE:  Receivers are also getting created
+            // in connectionChanged().  Perhaps this is here to ensure
+            // that the receivers are reset?
+            _createReceivers();
+        }
     }
 
     /** Prune the dependency declarations, which by default state
@@ -666,4 +676,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** The function dependency, if it is present. */
     private FunctionDependency _functionDependency;
+    
+    /** Record of the workspace version the last time receivers were created. */
+    private long _receiversVersion = -1;
 }
