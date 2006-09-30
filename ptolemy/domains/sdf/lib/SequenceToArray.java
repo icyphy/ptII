@@ -145,7 +145,7 @@ public class SequenceToArray extends SDFTransformer {
         Token[] valueArray = new Token[length];
         System.arraycopy(input.get(0, length), 0, valueArray, 0, length);
 
-        output.send(0, new ArrayToken(valueArray));
+        output.send(0, new ArrayToken(input.getType(), valueArray));
     }
 
     /** Return true if the input port has enough tokens for this actor to
