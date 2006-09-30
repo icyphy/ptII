@@ -93,7 +93,7 @@ public class FixToFix extends Converter {
     public FixToFix(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        input.setTypeEquals(BaseType.UNSIZED_FIX);
+        input.setTypeAtMost(BaseType.UNSIZED_FIX);
         output.setTypeEquals(BaseType.UNSIZED_FIX);
 
         precision = new Parameter(this, "precision");
