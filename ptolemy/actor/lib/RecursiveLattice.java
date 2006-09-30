@@ -211,8 +211,10 @@ public class RecursiveLattice extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         for (int i = 0; i < _forward.length; i++) {
-            _forward[i] = 0;
-            _backward[i] = 0;
+            _forward[i] = 0.0;
+            _forwardCache[i] = 0.0;
+            _backward[i] = 0.0;
+            _backwardCache[i] = 0.0;
         }
     }
 
@@ -222,8 +224,7 @@ public class RecursiveLattice extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        System
-                .arraycopy(_backwardCache, 0, _backward, 0,
+        System.arraycopy(_backwardCache, 0, _backward, 0,
                         _backwardCache.length);
         System.arraycopy(_forwardCache, 0, _forward, 0, _forwardCache.length);
         return super.postfire();
@@ -234,8 +235,7 @@ public class RecursiveLattice extends Transformer {
      */
     public boolean prefire() throws IllegalActionException {
         // Get a copy of the current filter state that we can modify.
-        System
-                .arraycopy(_backward, 0, _backwardCache, 0,
+        System.arraycopy(_backward, 0, _backwardCache, 0,
                         _backwardCache.length);
         System.arraycopy(_forward, 0, _forwardCache, 0, _forwardCache.length);
         return super.prefire();

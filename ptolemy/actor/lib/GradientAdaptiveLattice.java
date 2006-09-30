@@ -146,7 +146,18 @@ public class GradientAdaptiveLattice extends Lattice {
         super.initialize();
 
         for (int i = 0; i <= _order; i++) {
-            _estimatedErrorPowerCache[i] = 0;
+            _estimatedErrorPower[i] = 0.0;
+            _estimatedErrorPowerCache[i] = 0.0;
+            if (i < _order) {
+                _reflectionCoefficientsCache[i] = 0.0;
+            }
+        }
+        
+        // Reinitialize the reflection coefficients from the parameter value.
+        ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
+        for (int i = 0; i < _order; i++) {
+            _reflectionCoefficients[i] = ((DoubleToken) value.getElement(i))
+                    .doubleValue();
         }
     }
 

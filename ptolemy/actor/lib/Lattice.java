@@ -188,8 +188,10 @@ public class Lattice extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         for (int i = 0; i < (_order + 1); i++) {
-            _forward[i] = 0;
-            _backward[i] = 0;
+            _forward[i] = 0.0;
+            _forwardCache[i] = 0.0;
+            _backward[i] = 0.0;
+            _backwardCache[i] = 0.0;
         }
     }
 
