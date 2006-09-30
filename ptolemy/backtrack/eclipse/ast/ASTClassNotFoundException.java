@@ -61,8 +61,8 @@ public class ASTClassNotFoundException extends ASTRuntimeException {
      */
     public ASTClassNotFoundException(String className, Throwable cause) {
         super("Class \"" + className + "\" not found, "
-                + "java.lang.classpath property: "
-                + System.getProperty("java.class.spath"),
+                + "java.class.path property: "
+                + System.getProperty("java.class.path"),
                 cause);
     }
 
