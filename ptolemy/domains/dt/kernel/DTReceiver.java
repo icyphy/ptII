@@ -349,6 +349,27 @@ public class DTReceiver extends SDFReceiver {
         super.put(token);
     }
 
+    /** Reset this receiver to its initial state, which includes
+     *  calling clear() and resetting the current time to 0.0.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public void reset() throws IllegalActionException {
+        super.reset();
+        IOPort containerPort = getContainer();
+        if (containerPort != null) {
+            Actor containerActor = (Actor) containerPort.getContainer();
+            if (containerActor != null) {
+                Director director = containerActor.getDirector();
+                if (director != null) {
+                    initializeLocalTime(new Time(director));
+                    return;
+                }
+            }
+        }
+        throw new IllegalActionException(containerPort,
+                "Receiver has no director!");
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                  package-access methods                   ////
 
@@ -378,7 +399,9 @@ public class DTReceiver extends SDFReceiver {
         //    _debug(fromString + " " + toString + " " + _deltaTime);
     }
 
-    /** Initialize the local time to the given time whose time value is 0.0.
+    /** Initialize the local time to the specified time.
+     *  FIXME: The specified time is assumed to have value 0.0.
+     *  Instead, the director should have a startTime parameter.
      *  This method is designed for the newReceiver method of DTDirector only.
      *
      *  @param time The desired local time.

@@ -186,6 +186,18 @@ public class CTReceiver extends Mailbox {
         _token = token;
     }
 
+    /** Reset this receiver so that it contains a zero-valued token
+     *  of the same type as whatever token is currently in the receiver,
+     *  if there is one.
+     *  @exception IllegalActionException If reset() is not supported by
+     *   the domain.
+     */
+    public void reset() throws IllegalActionException {
+        if (_token != null) {
+            _token = _token.zero();
+        }
+    }
+
     /** Set the signal type of this receiver. This method must be called
      *  by the CTScheduler before any get() method are called.
      *  @param type The SignalType to set to the receiver.
