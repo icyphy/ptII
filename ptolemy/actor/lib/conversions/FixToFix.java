@@ -38,6 +38,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.math.FixPoint;
 import ptolemy.math.FixPointQuantization;
 import ptolemy.math.Overflow;
@@ -160,6 +161,24 @@ public class FixToFix extends Converter {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the value public variable in the new
+     *  object to equal the cloned parameter in that new object.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        FixToFix newObject = (FixToFix) super
+                .clone(workspace);
+
+        // Set the type constraint.
+        newObject.input.setTypeAtMost(BaseType.UNSIZED_FIX);
+        return newObject;
     }
 
     /** Read at most one token from the input and convert it to a fixed-point
