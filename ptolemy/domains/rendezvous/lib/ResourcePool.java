@@ -281,6 +281,8 @@ public class ResourcePool extends TypedAtomicActor {
         super.initialize();
         _readThread = null;
         _postfireReturns = true;
+        // Force reinitialization of the pool.
+        attributeChanged(initialPool);
     }
 
     /** Return false if it is time to stop the process.
