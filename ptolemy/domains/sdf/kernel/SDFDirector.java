@@ -300,9 +300,22 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == allowDisconnectedGraphs)
-                || (attribute == vectorizationFactor)) {
-            invalidateSchedule();
+        // NOTE: Invalidate the schedules only if the values of these
+        // parameters have changed.
+        if (attribute == allowDisconnectedGraphs) {
+            Token token = allowDisconnectedGraphs.getToken();
+            boolean newValue = ((BooleanToken) token).booleanValue();
+            if (newValue != _allowDisconnectedGraphs) {
+                _allowDisconnectedGraphs = newValue;
+                invalidateSchedule();
+            }
+        } else if (attribute == vectorizationFactor) {
+            Token token = vectorizationFactor.getToken();
+            int newValue = ((IntToken) token).intValue();
+            if (newValue != _vectorizationFactor) {
+                _vectorizationFactor = newValue;
+                invalidateSchedule();
+            }
         }
 
         super.attributeChanged(attribute);
@@ -788,8 +801,17 @@ public class SDFDirector extends StaticSchedulingDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                package friendly variables                 ////
+
+    /** Cache of the value of allowDisconnectedGraphs. */
+    boolean _allowDisconnectedGraphs = false;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0L;
+    
+    /** Cache of the most recent value of vectorizationFactor. */
+    private int _vectorizationFactor = 1;
 }

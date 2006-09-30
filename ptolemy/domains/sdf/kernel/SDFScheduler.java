@@ -607,9 +607,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         boolean allowDisconnectedGraphs = false;
 
         if (director instanceof SDFDirector) {
-            Token token = ((SDFDirector) director).allowDisconnectedGraphs
-                    .getToken();
-            allowDisconnectedGraphs = ((BooleanToken) token).booleanValue();
+            allowDisconnectedGraphs = ((SDFDirector) director)._allowDisconnectedGraphs;
         }
 
         // Ned Stoffel's change to support disconnected graphs:
