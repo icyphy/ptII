@@ -1021,15 +1021,6 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                 }
 
                                 // Handle Type.equals
-                                ptolemy.data.type.Type baseTokenType =
-                                //                                     PtolemyUtilities
-                                //                                         .getTypeValue(method, (Local) r
-                                //                                                 .getBase(), unit, localDefs,
-                                //                                                 localUses);
-
-                                typeAnalysis.getSpecializedType((Local) r
-                                        .getBase());
-
                                 ptolemy.data.type.Type argumentTokenType =
                                 //                                     PtolemyUtilities
                                 //                                         .getTypeValue(method, (Local) r
@@ -2675,7 +2666,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements
             SootField field = (SootField) fields.next();
             int modifiers = field.getModifiers();
 
-            if (!Modifier.isStatic(modifiers) && !Modifier.isFinal(modifiers)) {
+            // Hmm...  do we have to treat final fields differently?
+            if (!Modifier.isStatic(modifiers)) { // && !Modifier.isFinal(modifiers)) {
                 list.add(field);
             }
         }
