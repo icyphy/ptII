@@ -89,7 +89,6 @@ import soot.toolkits.scalar.LocalUses;
 public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
     public TokenTypeAnalysis(SootMethod method, CompleteUnitGraph g) {
         super(g);
-        //_method = method;
 
         NamedObj thisBinding = ModelTransformer.getObjectForClass(method
                 .getDeclaringClass());
@@ -181,9 +180,9 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                     "attempt to inline unhandled typeLattice method: " + unit);
         }
 
-        System.out.println("type1 = " + type1);
-        System.out.println("type2 = " + type2);
-        System.out.println("result = " + TypeLattice.compare(type1, type2));
+//         System.out.println("type1 = " + type1);
+//         System.out.println("type2 = " + type2);
+//         System.out.println("result = " + TypeLattice.compare(type1, type2));
         box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
     }
 
@@ -201,7 +200,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         Map out = (Map) outValue;
         Stmt stmt = (Stmt) d;
 
-        //  System.out.println("flowing " + d + " " + in);
+        // System.out.println("flowing " + d + " " + in);
         // By default, the out is equal to the in.
         copy(inValue, outValue);
 
@@ -552,7 +551,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         Map in2 = (Map) in2Value;
         Map out = (Map) outValue;
 
-        // System.out.println("merging " + in1 + " and " + in2 + " into " + out);
+//         System.out.println("merging " + in1 + " and " + in2 + " into " + out);
         Set allKeys = new HashSet();
         allKeys.addAll(in1.keySet());
         allKeys.addAll(in2.keySet());
@@ -575,15 +574,17 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
             if (in1Type.equals(in2Type)) {
                 out.put(object, in1Type);
             } else {
-                out.put(object, TypeLattice.lattice().leastUpperBound(in1Type,
-                        in2Type));
+                out.put(object, _javaLattice.leastUpperBound(
+                                in1Type, in2Type));
+//                 out.put(object, TypeLattice.lattice().leastUpperBound(in1Type,
+//                         in2Type));
             }
         }
 
-        //      System.out.println("result = " + out);
+//         System.out.println("result = " + out);
     }
 
-    //private SootMethod _method;
+    private TypeSpecializerAnalysis.JavaTypeLattice _javaLattice = new TypeSpecializerAnalysis.JavaTypeLattice();
 
     private NamedObjAnalysis _namedObjAnalysis;
 }

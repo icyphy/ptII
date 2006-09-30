@@ -1392,13 +1392,20 @@ public class TypeSpecializerAnalysis {
         public int compare(Object e1, Object e2) {
             if (e1.equals(e2)) {
                 return SAME;
-            } else if (((ptolemy.data.type.Type) e1).isInstantiable()
-                    && !((ptolemy.data.type.Type) e1).equals(BaseType.GENERAL)
-                    && ((ptolemy.data.type.Type) e2).isInstantiable()
-                    && !((ptolemy.data.type.Type) e2).equals(BaseType.GENERAL)) {
-                return INCOMPARABLE;
             } else {
-                return TypeLattice.lattice().compare(e1, e2);
+                ptolemy.data.type.Type t1 = (ptolemy.data.type.Type) e1;
+                ptolemy.data.type.Type t2 = (ptolemy.data.type.Type) e2;
+                Class c1 = t1.getTokenClass();
+                Class c2 = t2.getTokenClass();
+                if(t1.equals(top()) || t2.equals(bottom())) {
+                    return HIGHER;
+                } else if(t2.equals(top()) || t1.equals(bottom())) {
+                    return LOWER;
+                } else if(c1.equals(c2)) {
+                    return TypeLattice.lattice().compare(e1, e2);
+                } else {
+                    return INCOMPARABLE;
+                }
             }
         }
 
@@ -1463,13 +1470,22 @@ public class TypeSpecializerAnalysis {
         public Object greatestLowerBound(Object e1, Object e2) {
             if (e1.equals(e2)) {
                 return e1;
-            } else if (((ptolemy.data.type.Type) e1).isInstantiable()
-                    && !((ptolemy.data.type.Type) e1).equals(BaseType.GENERAL)
-                    && ((ptolemy.data.type.Type) e2).isInstantiable()
-                    && !((ptolemy.data.type.Type) e2).equals(BaseType.GENERAL)) {
-                return bottom();
             } else {
-                return TypeLattice.lattice().greatestLowerBound(e1, e2);
+                ptolemy.data.type.Type t1 = (ptolemy.data.type.Type) e1;
+                ptolemy.data.type.Type t2 = (ptolemy.data.type.Type) e2;
+                Class c1 = t1.getTokenClass();
+                Class c2 = t2.getTokenClass();
+                if(t1.equals(bottom()) || t2.equals(bottom())) {
+                    return bottom();
+                } else if(t1.equals(top())) {
+                    return t2;
+                } else if(t2.equals(top())) {
+                    return t1;
+                } else if(c1.equals(c2)) {
+                    return TypeLattice.lattice().greatestLowerBound(e1, e2);
+                } else {
+                    return bottom();
+                }
             }
         }
 
@@ -1549,13 +1565,22 @@ public class TypeSpecializerAnalysis {
             Object retVal = null;
             if (e1.equals(e2)) {
                 retVal = e1;
-            } else if (((ptolemy.data.type.Type) e1).isInstantiable()
-                    && !((ptolemy.data.type.Type) e1).equals(BaseType.GENERAL)
-                    && ((ptolemy.data.type.Type) e2).isInstantiable()
-                    && !((ptolemy.data.type.Type) e2).equals(BaseType.GENERAL)) {
-                retVal = top();
             } else {
-                retVal = TypeLattice.lattice().leastUpperBound(e1, e2);
+                ptolemy.data.type.Type t1 = (ptolemy.data.type.Type) e1;
+                ptolemy.data.type.Type t2 = (ptolemy.data.type.Type) e2;
+                Class c1 = t1.getTokenClass();
+                Class c2 = t2.getTokenClass();
+                if(t1.equals(top()) || t2.equals(top())) {
+                    return top();
+                } else if(t1.equals(bottom())) {
+                    return t2;
+                } else if(t2.equals(bottom())) {
+                    return t1;
+                } else if(c1.equals(c2)) {
+                    retVal = TypeLattice.lattice().leastUpperBound(e1, e2);
+                } else {
+                    retVal = top();
+                }
             }
             // System.out.println("return = " + retVal);
             return retVal;

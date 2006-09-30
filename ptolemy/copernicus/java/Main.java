@@ -319,16 +319,16 @@ public class Main extends KernelMain {
             addTransform(pack, "wjtp.lur4", LibraryUsageReporter.v(),
                     "outFile:" + _outputDirectory + "/jimple4/jarClassList.txt");
         }
-
+        
         if (_unboxing) {
-            addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(toplevel));//, "debug:true level:1");
-
+            addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(toplevel)); //, "debug:true level:2");
+            
             addStandardOptimizations(pack, 8);
-
+            
             addTransform(pack, "wjtp.ufr", UnusedFieldRemover.v());
 
             addTransform(pack, "wjtp.smr", SideEffectFreeInvocationRemover.v());
-
+            
             // Remove references to named objects.
             addTransform(pack, "wjtp.ee2", ExceptionEliminator.v(toplevel));
 
@@ -383,7 +383,7 @@ public class Main extends KernelMain {
             //        addStandardOptimizations(pack, 11);
             //        addTransform(pack, "wjtp.umr5",
             //                UnreachableMethodRemover.v());
-
+             
         }
 
         /* */
