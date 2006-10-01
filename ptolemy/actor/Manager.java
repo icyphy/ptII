@@ -634,11 +634,13 @@ public class Manager extends NamedObj implements Runnable {
                     Actor actor = (Actor) actors.next();
                     actor.preinitialize();
 
-                    // NOTE: To see why this is needed, see the comment
-                    // above for the call to validateSettables().
+                    // NOTE: To see why this is no longer needed, see the comment
+                    // above for the commented out call to validateSettables().
+                    /*
                     if (actor instanceof NamedObj) {
                         ((NamedObj) actor).validateSettables();
                     }
+                    */
                 }
             }
 
@@ -857,6 +859,9 @@ public class Manager extends NamedObj implements Runnable {
 
             _resumeNotifyWaiting = false;
 
+            // NOTE: Used to call validateSettables() here with the following
+            // note.  However, this call is very expensive and means that
+            // second runs are no faster than first runs.
             // NOTE: This is needed because setExpression() on parameters
             // does not necessarily trigger their evaluation. Thus,
             // if one calls setExpression() without calling validate(),
@@ -866,8 +871,7 @@ public class Manager extends NamedObj implements Runnable {
             // for example in a test suite using Tcl or in Java,
             // then the user might not think to call validate(), and
             // it would seem counterintuitive to have to do so.
-            // EAL 5/30/02
-            _container.validateSettables();
+            // _container.validateSettables();
 
             // Initialize the topology.
             // NOTE: Some actors require that parameters be set prior
