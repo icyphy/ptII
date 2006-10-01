@@ -569,6 +569,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // the initialize method is called. So, reset must be
         // called here.
         reset();
+        
+        // Update the receivers version here because there may
+        // other actors (e.g. other instances of this actor) that
+        // increment the workspace version during preinitialize().
+        // Without this, having two instances of FSMActor would
+        // always result in recreating receivers on each
+        // call to preinitialize().
+        _receiversVersion = workspace().getVersion();
 
         // reset the visited status of all states to not visited.
         Iterator states = deepEntityList().iterator();
@@ -798,9 +806,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     public void preinitialize() throws IllegalActionException {
         _stopRequested = false;
         _reachedFinalState = false;
-        _createReceivers();
+        if (_receiversVersion != workspace().getVersion()) {
+            _createReceivers();
+            _receiversVersion = workspace().getVersion();
+        } else {
+            _resetReceivers();
+        }
         _newIteration = true;
         _tokenListArrays = new Hashtable();
+        _initialStateVersion = -1;
 
         // Populate a map from identifier to the input port represented.
         _identifierToPort.clear();
@@ -1397,14 +1411,19 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     /** Create receivers for each input port.
+     *  This method gets write permission on the workspace.
      *  @exception IllegalActionException If any port throws it.
      */
     private void _createReceivers() throws IllegalActionException {
-        Iterator inputPorts = inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort inPort = (IOPort) inputPorts.next();
-            inPort.createReceivers();
+        try {
+            workspace().getWriteAccess();
+            Iterator inputPorts = inputPortList().iterator();
+            while (inputPorts.hasNext()) {
+                IOPort inPort = (IOPort) inputPorts.next();
+                inPort.createReceivers();
+            }
+        } finally {
+            workspace().doneWriting();
         }
     }
 
@@ -1446,6 +1465,26 @@ public class FSMActor extends CompositeEntity implements TypedActor,
          "cannot create default tokenHistorySize parameter:\n" + e);
          }
          */
+    }
+
+    /** Reset receivers for each input port.
+     *  @exception IllegalActionException If any port throws it.
+     */
+    private void _resetReceivers() throws IllegalActionException {
+        Iterator inputPorts = inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inPort = (IOPort) inputPorts.next();
+            Receiver[][] receivers = inPort.getReceivers();
+            for (int i = 0; i < receivers.length; i++) {
+                if (receivers[i] != null) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        if (receivers[i][j] != null) {
+                            receivers[i][j].reset();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // Associate the given identifier as referring to some aspect of
@@ -1610,6 +1649,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     // True if the current state is a final state.
     private boolean _reachedFinalState;
+    
+    // Indicator of when the receivers were last updated.
+    private long _receiversVersion = -1;
 
     // A flag indicating whether this actor supports multirate firing.
     private boolean _supportMultirate = false;
