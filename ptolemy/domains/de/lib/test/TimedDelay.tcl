@@ -83,7 +83,7 @@ test TimedDelay-3.1 {test with zero TimedDelay} {
 test TimedDelay-3.2 {test with negative delay} {
     set TimedDelayAmount [java::field $timedDelay delay]
     $timedDelayAmount setExpression "-1.0"
-    catch {[$e0 getManager] execute} msg
+    catch {$timedDelayAmount validate} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression: -1.0
   in .top.TimedDelay.delay
