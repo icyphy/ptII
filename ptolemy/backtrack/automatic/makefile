@@ -80,6 +80,7 @@ transform:
 	"$(JAVA)" \
 	  -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)$(AUXCLASSPATH)" \
 	  ptolemy.backtrack.eclipse.ast.Transformer \
+	  -classpath "$(AUXCLASSPATH)" \
 	  -prefix ptolemy.backtrack.automatic \
 	  -output "$(ROOT)" \
 	  -config ptolemy/configs/output.xml \
