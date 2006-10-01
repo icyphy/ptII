@@ -306,6 +306,15 @@ public class Chop extends SDFTransformer {
 
         output.send(0, _buffer, _numberToWrite);
     }
+    
+    /** Override the base class to ensure that the past buffer
+     *  gets initialized.
+     *  @throws IllegalActionException If the superclass throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _pastNeedsInitializing = true;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
