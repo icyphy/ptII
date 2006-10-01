@@ -86,8 +86,9 @@ transform:
 	  -config ptolemy/configs/output.xml \
 	  @source.lst
 
+# Don't use $(MAKE) -C here, -C is a gnu make extension
 build: ptolemy_makefile
-	$(MAKE) -C ptolemy
+	(cd ptolemy; $(MAKE))
 
 ptolemy_makefile: 
 	@echo "Generating ptolemy/makefile..."
@@ -111,6 +112,8 @@ ptolemy_makefile:
 	@echo "OPTIONAL_FILES =" >> ptolemy/makefile
 	@echo "JCLASS = \$$(JSRCS:%.java=%.class)" >> ptolemy/makefile
 	@echo "all: jclass" >> ptolemy/makefile
+	@echo "	@echo \"Temp test for nightly build\"" >> ptolemy/makefile
+	@echo "	if [ -f actor/lib/Accumulator.java ]; then cat actor/lib/Accumulator.java; fi"  >> ptolemy/makefile
 	@echo "install: jclass \$$(PTCLASSJAR)" >> ptolemy/makefile
 	@echo "include \$$(ROOT)/mk/ptcommon.mk" >> ptolemy/makefile
 
