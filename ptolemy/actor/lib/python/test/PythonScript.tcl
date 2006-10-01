@@ -140,7 +140,6 @@ set up reference to attribute "_iconDescription" as "_iconDescription"
 set up reference to attribute "firingsPerIteration" as "firingsPerIteration"
 set up reference to port "input" as "input"
 set up reference to port "output" as "output"
-Called stopFire()
 Called initialize()
 Called iterate(1)
 Called prefire(), which returns true
@@ -188,7 +187,6 @@ set up reference to attribute "_iconDescription" as "_iconDescription"
 set up reference to attribute "firingsPerIteration" as "firingsPerIteration"
 set up reference to port "input" as "input"
 set up reference to port "output" as "output"
-Called stopFire()
 Called initialize()
 Called iterate(1)
 Called prefire(), which returns true
@@ -229,7 +227,6 @@ set up reference to attribute "_iconDescription" as "_iconDescription"
 set up reference to attribute "firingsPerIteration" as "firingsPerIteration"
 set up reference to port "input" as "input"
 set up reference to port "output" as "output"
-Called stopFire()
 Called initialize()
 Called iterate(1)
 Called prefire(), which returns true
@@ -271,7 +268,6 @@ set up reference to attribute "_iconDescription" as "_iconDescription"
 set up reference to attribute "firingsPerIteration" as "firingsPerIteration"
 set up reference to port "input" as "input"
 set up reference to port "output" as "output"
-Called stopFire()
 Called initialize()
 Called iterate(1)
 Called prefire(), which returns true
