@@ -1,4 +1,4 @@
-package ptolemy.backtrack.eclipse.plugin.actions;
+package ptolemy.backtrack.eclipse.plugin.actions.codestyle;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.Collator;
@@ -27,7 +27,6 @@ import org.eclipse.jdt.core.util.CompilationUnitSorter;
 import org.eclipse.jdt.internal.corext.codemanipulation.SortMembersOperation;
 import org.eclipse.jdt.internal.corext.dom.ASTNodes;
 import org.eclipse.jdt.internal.corext.util.JdtFlags;
-import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.actions.ActionMessages;
 import org.eclipse.jdt.internal.ui.actions.ActionUtil;
 import org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter;
@@ -35,27 +34,70 @@ import org.eclipse.jdt.internal.ui.dialogs.OptionalMessageDialog;
 import org.eclipse.jdt.internal.ui.javaeditor.IJavaAnnotation;
 import org.eclipse.jdt.internal.ui.util.BusyIndicatorRunnableContext;
 import org.eclipse.jdt.internal.ui.util.ElementValidator;
-import org.eclipse.jdt.ui.IWorkingCopyManager;
 import org.eclipse.jdt.ui.JavaUI;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.source.IAnnotationModel;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
 import ptolemy.backtrack.eclipse.plugin.console.OutputConsole;
-import ptolemy.backtrack.eclipse.plugin.editor.MultiPageCompilationUnitEditor;
 
-public class SortMembersAction implements IWorkbenchWindowActionDelegate {
+public class SortMembersUtility {
 	
-	protected class PtolemySortMembersOperation extends SortMembersOperation {
+	public static void sortICompilationUnit(ICompilationUnit compilationUnit,
+			IEditorPart editor) {
+		Shell shell = editor.getEditorSite().getShell();
+		
+		if (compilationUnit == null) {
+			return;
+		}
+		
+		if (!ActionUtil.isProcessable(shell, compilationUnit)) {
+			return;
+		}
+		
+		if (!ElementValidator.check(compilationUnit, shell,
+				ActionMessages.SortMembersAction_dialog_title, false)) {
+			return;
+		}
+		
+		if (editor != null && containsRelevantMarkers(editor)) {
+			int returnCode= OptionalMessageDialog.open(
+					"ptolemy.backtrack.eclipse.plugin.actions.SortMembersAction", 
+					shell, 
+					ActionMessages.SortMembersAction_dialog_title,
+					null,
+					ActionMessages.SortMembersAction_containsmarkers,  
+					MessageDialog.WARNING,
+					new String[] {IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL}, 
+					0);
+			if (returnCode != OptionalMessageDialog.NOT_SHOWN && 
+					returnCode != Window.OK ) return;	
+		}
+		
+		ISchedulingRule schedulingRule =
+			ResourcesPlugin.getWorkspace().getRoot();
+		PtolemySortMembersOperation operation =
+			new PtolemySortMembersOperation(compilationUnit, null, false);
+		try {
+			BusyIndicatorRunnableContext context =
+				new BusyIndicatorRunnableContext();
+			PlatformUI.getWorkbench().getProgressService().runInUI(context,
+				new WorkbenchRunnableAdapter(operation, schedulingRule),
+				schedulingRule);
+		} catch (InvocationTargetException e) {
+			OutputConsole.outputError(e.getMessage());
+		} catch (InterruptedException e) {
+			// Do nothing. Operation has been canceled by user.
+		}
+	}
+
+	protected static class PtolemySortMembersOperation
+	extends SortMembersOperation {
 		public PtolemySortMembersOperation(
 				ICompilationUnit compilationUnit, int[] positions,
 				boolean doNotSortFields) {
@@ -70,14 +112,6 @@ public class SortMembersAction implements IWorkbenchWindowActionDelegate {
 			CompilationUnitSorter.sort(AST.JLS3, _compilationUnit, _positions,
 					new JavaElementComparator(), 0, monitor);
 		}
-		
-		private ICompilationUnit _compilationUnit;
-		
-		private int[] _positions;
-		
-		private boolean _doNotSortFields;
-		
-		private Collator _collator = Collator.getInstance();
 		
 		protected class JavaElementComparator implements Comparator {
 			public int compare(Object element1, Object element2) {
@@ -101,17 +135,6 @@ public class SortMembersAction implements IWorkbenchWindowActionDelegate {
 				}
 			}
 			
-			private int preserveRelativeOrder(BodyDeclaration bodyDeclaration1,
-					BodyDeclaration bodyDeclaration2) {
-				int order1 =
-					((Integer) bodyDeclaration1.getProperty(
-							CompilationUnitSorter.RELATIVE_ORDER)).intValue();
-				int order2 =
-					((Integer) bodyDeclaration2.getProperty(
-							CompilationUnitSorter.RELATIVE_ORDER)).intValue();
-				return order1 - order2;
-			}
-			
 			protected int compareVisibility(BodyDeclaration bodyDeclaration1,
 					BodyDeclaration bodyDeclaration2) {
 				int visibilityCode1 = getVisibilityCode(bodyDeclaration1);
@@ -121,6 +144,21 @@ public class SortMembersAction implements IWorkbenchWindowActionDelegate {
 				} else {
 					return visibilityCode1 - visibilityCode2;
 				}
+			}
+			
+			private String buildSignature(Type type) {
+				return ASTNodes.asString(type);
+			}
+			
+			private int compareNames(BodyDeclaration bodyDeclaration1,
+					BodyDeclaration bodyDeclaration2, String name1,
+					String name2) {
+				int nameResult = _collator.compare(name1, name2);
+				if (nameResult != 0) {
+					return nameResult;
+				}
+				return preserveRelativeOrder(bodyDeclaration1,
+						bodyDeclaration2);
 			}
 			
 			private int compareNodeType(BodyDeclaration bodyDeclaration1,
@@ -248,21 +286,6 @@ public class SortMembersAction implements IWorkbenchWindowActionDelegate {
 				}
 			}
 			
-			private int getVisibilityCode(BodyDeclaration bodyDeclaration) {
-				switch (JdtFlags.getVisibilityCode(bodyDeclaration)) {
-				case Modifier.PUBLIC:
-					return 0;
-				case Modifier.PROTECTED:
-					return 1;
-				case Modifier.NONE:
-					return 2;
-				case Modifier.PRIVATE:
-					return 3;
-				default:
-					return -1;
-				}
-			}
-			
 			private int getNodeTypeCode(BodyDeclaration bodyDeclaration) {
 				switch (bodyDeclaration.getNodeType()) {
 				case ASTNode.METHOD_DECLARATION:
@@ -286,33 +309,43 @@ public class SortMembersAction implements IWorkbenchWindowActionDelegate {
 				}
 			}
 			
-			private int compareNames(BodyDeclaration bodyDeclaration1,
-					BodyDeclaration bodyDeclaration2, String name1,
-					String name2) {
-				int nameResult = _collator.compare(name1, name2);
-				if (nameResult != 0) {
-					return nameResult;
+			private int getVisibilityCode(BodyDeclaration bodyDeclaration) {
+				switch (JdtFlags.getVisibilityCode(bodyDeclaration)) {
+				case Modifier.PUBLIC:
+					return 0;
+				case Modifier.PROTECTED:
+					return 1;
+				case Modifier.NONE:
+					return 2;
+				case Modifier.PRIVATE:
+					return 3;
+				default:
+					return -1;
 				}
-				return preserveRelativeOrder(bodyDeclaration1,
-						bodyDeclaration2);
 			}
 			
-			private String buildSignature(Type type) {
-				return ASTNodes.asString(type);
+			private int preserveRelativeOrder(BodyDeclaration bodyDeclaration1,
+					BodyDeclaration bodyDeclaration2) {
+				int order1 =
+					((Integer) bodyDeclaration1.getProperty(
+							CompilationUnitSorter.RELATIVE_ORDER)).intValue();
+				int order2 =
+					((Integer) bodyDeclaration2.getProperty(
+							CompilationUnitSorter.RELATIVE_ORDER)).intValue();
+				return order1 - order2;
 			}
 		}
+		
+		private Collator _collator = Collator.getInstance();
+		
+		private ICompilationUnit _compilationUnit;
+		
+		private boolean _doNotSortFields;
+		
+		private int[] _positions;
 	}
 	
-	public void dispose() {
-	}
-
-	public void init(IWorkbenchWindow window) {
-		_window = window;
-	}
-	
-	private IWorkbenchWindow _window;
-	
-	private boolean containsRelevantMarkers(IEditorPart editor) {
+	private static boolean containsRelevantMarkers(IEditorPart editor) {
 		IEditorInput input = editor.getEditorInput();
 		IAnnotationModel model =
 			JavaUI.getDocumentProvider().getAnnotationModel(input);
@@ -329,73 +362,4 @@ public class SortMembersAction implements IWorkbenchWindowActionDelegate {
 		}		
 		return false;
 	}
-
-    /** Sort the source code in the editor.
-     * 
-     *  @param action The action proxy (not used in this method).
-     */
-    public void run(IAction action) {
-    	IEditorPart editorPart = _window.getActivePage().getActiveEditor();
-    	if (editorPart instanceof MultiPageCompilationUnitEditor) {
-    		MultiPageCompilationUnitEditor editor =
-    			(MultiPageCompilationUnitEditor) editorPart;
-    		
-    		Shell shell= _window.getShell();
-    		IWorkingCopyManager manager =
-    			JavaPlugin.getDefault().getWorkingCopyManager();
-    		ICompilationUnit compilationUnit =
-    			manager.getWorkingCopy(editor.getEditorInput());
-    		if (compilationUnit == null) {
-    			return;
-    		}
-    		
-    		if (!ActionUtil.isProcessable(shell, compilationUnit)) {
-    			return;
-    		}
-    		
-    		if (!ElementValidator.check(compilationUnit, shell,
-    				ActionMessages.SortMembersAction_dialog_title, false)) {
-    			return;
-    		}
-    		
-    		if (containsRelevantMarkers(editor)) {
-    			int returnCode= OptionalMessageDialog.open(
-    					"ptolemy.backtrack.eclipse.plugin.actions.SortMembersAction", 
-    					shell, 
-    					ActionMessages.SortMembersAction_dialog_title,
-    					null,
-    					ActionMessages.SortMembersAction_containsmarkers,  
-    					MessageDialog.WARNING,
-    					new String[] {IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL}, 
-    					0);
-    			if (returnCode != OptionalMessageDialog.NOT_SHOWN && 
-    					returnCode != Window.OK ) return;	
-    		}
-    		
-    		ISchedulingRule schedulingRule =
-    			ResourcesPlugin.getWorkspace().getRoot();
-    		PtolemySortMembersOperation operation =
-    			new PtolemySortMembersOperation(compilationUnit, null, false);
-    		try {
-    			BusyIndicatorRunnableContext context =
-    				new BusyIndicatorRunnableContext();
-    			PlatformUI.getWorkbench().getProgressService().runInUI(context,
-    				new WorkbenchRunnableAdapter(operation, schedulingRule),
-    				schedulingRule);
-    		} catch (InvocationTargetException e) {
-    			OutputConsole.outputError(e.getMessage());
-    		} catch (InterruptedException e) {
-    			// Do nothing. Operation has been canceled by user.
-    		}
-        }
-    }
-    	
-
-    /** Handle the change of selection.
-     * 
-     *  @param action The action proxy (not used in this method).
-     *  @param selection The new selection (not used in this method).
-     */
-    public void selectionChanged(IAction action, ISelection selection) {
-    }
 }

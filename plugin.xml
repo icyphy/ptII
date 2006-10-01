@@ -37,32 +37,14 @@
    </extension>
    
    <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            class="ptolemy.backtrack.eclipse.plugin.preferences.PtolemyPreferencePage"
-            id="ptolemy.backtrack.eclipse.plugin.preferences.PtolemyPreferencePage"
-            name="Ptolemy II"/>
-      <page
-            category="ptolemy.backtrack.eclipse.plugin.preferences.PtolemyPreferencePage"
-            class="ptolemy.backtrack.eclipse.plugin.preferences.BacktrackingPreferencePage"
-            id="ptolemy.backtrack.eclipse.plugin.preferences.BacktrackingPreferencePage"
-            name="Backtracking"/>
-      <page
-            category="ptolemy.backtrack.eclipse.plugin.preferences.PtolemyPreferencePage"
-            class="ptolemy.backtrack.eclipse.plugin.preferences.EditorPreferencePage"
-            id="ptolemy.backtrack.eclipse.plugin.preferences.EditorPreferencePage"
-            name="Editor"/>
-   </extension>
-   
-   <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
-            id="ptolemy.backtrack.eclipse.plugin.actionSet"
+            id="ptolemy.backtrack.actions.GlobalActionSet"
             label="Ptolemy Backtracking"
             visible="true">
             
          <menu
-               id="ptolemy"
+               id="ptolemy.backtrack.menus.Ptolemy"
                label="&amp;Ptolemy">
             <separator name="group1"/>
             <separator name="group2"/>
@@ -71,17 +53,17 @@
          
          <!-- Code Style Menu -->
          <menu
-               id="codestyle"
+               id="ptolemy.backtrack.menus.CodeStyle"
                label="&amp;Code Style"
-               path="ptolemy/group1">
+               path="ptolemy.backtrack.menus.Ptolemy/group1">
             <separator name="group1"/>
          </menu>
          
          <!-- Backtracking Menu -->
          <menu
-               id="backtracking"
+               id="ptolemy.backtrack.menus.Backtracking"
                label="&amp;Backtracking"
-               path="ptolemy/group1">
+               path="ptolemy.backtrack.menus.Ptolemy/group1">
             <separator name="group1"/>
          </menu>
          
@@ -90,8 +72,7 @@
                icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
                id="ptolemy.backtrack.eclipse.plugin.refactoraction"
                label="&amp;Batch Refactoring"
-               menubarPath="ptolemy/backtracking/group1"
-               toolbarPath="Ptolemy"
+               menubarPath="ptolemy.backtrack.menus.Ptolemy/ptolemy.backtrack.menus.Backtracking/group1"
                tooltip="Refactor Ptolemy actors"/>
          
          <!-- Options -->
@@ -99,7 +80,7 @@
                class="ptolemy.backtrack.eclipse.plugin.actions.OptionsAction"
                id="ptolemy.backtrack.eclipse.plugin.preferences"
                label="&amp;Options..."
-               menubarPath="ptolemy/group2"
+               menubarPath="ptolemy.backtrack.menus.Ptolemy/group2"
                tooltip="Modify Ptolemy options"/>
                
          <!-- About -->
@@ -107,7 +88,7 @@
                class="ptolemy.backtrack.eclipse.plugin.actions.AboutAction"
                id="ptolemy.backtrack.eclipse.plugin.about"
                label="&amp;About Ptolemy II Plugin"
-               menubarPath="ptolemy/group3"
+               menubarPath="ptolemy.backtrack.menus.Ptolemy/group3"
                tooltip="About Ptolemy II plugin for Eclipse"/>
 
          <!-- Help -->
@@ -115,9 +96,143 @@
                class="ptolemy.backtrack.eclipse.plugin.actions.HelpAction"
                id="ptolemy.backtrack.eclipse.plugin.help"
                label="&amp;Help Contents"
-               menubarPath="ptolemy/group3"
+               menubarPath="ptolemy.backtrack.menus.Ptolemy/group3"
                tooltip="Help for Ptolemy II plugin for Eclipse"/>
       </actionSet>
+      
+      <actionSet
+            id="ptolemy.backtrack.editorActionSet"
+            label="Ptolemy Backtracking"
+            visible="false">
+         <action
+               class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.SortMembersEditorAction"
+               definitionId="ptolemy.backtrack.commands.SortMembersCommand"
+               icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
+               id="ptolemy.backtrack.eclipse.plugin.SortMembersAction"
+               label="&amp;Sort Members"
+               menubarPath="ptolemy.backtrack.menus.Ptolemy/ptolemy.backtrack.menus.CodeStyle/group1"
+               toolbarPath="Ptolemy"
+               tooltip="Soft Java class members"/>
+      </actionSet>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="ptolemy.backtrack.eclipse.plugin.editor.MultiPageCompilationUnitEditor"
+            contributorClass="org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditorActionContributor"
+            default="true"
+            extensions="java"
+            icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
+            id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"
+            name="Ptolemy II Multi-page Editor"
+            symbolicFontName="org.eclipse.jdt.ui.editors.textfont"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            targetID="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"
+            id="org.eclipse.jdt.debug.CompilationUnitEditor.BreakpointRulerActions">
+         <action
+               label="Toggle &amp;Breakpoint"
+               class="ptolemy.backtrack.eclipse.plugin.compatibility.RulerToggleBreakpointActionDelegate"
+               actionID="RulerDoubleClick"
+               id="org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction"/>
+      </editorContribution>
+      <editorContribution
+            targetID="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"
+            id="org.eclipse.ui.texteditor.ruler.actions">
+         <action
+               label="Java Editor Bookmark Ruler Action"
+               helpContextId="org.eclipse.ui.bookmark_action_context"
+               class="org.eclipse.ui.texteditor.BookmarkRulerAction"
+               actionID="RulerDoubleClick"
+               id="org.eclipse.jdt.internal.ui.javaeditor.BookmarkRulerAction"/>
+         <action
+               label="Java Editor Ruler Single-Click"
+               class="org.eclipse.jdt.internal.ui.javaeditor.JavaSelectRulerAction"
+               actionID="RulerClick"
+               id="org.eclipse.jdt.internal.ui.javaeditor.JavaSelectRulerAction"/>
+      </editorContribution>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="ptolemy.backtrack.contribution.PackageExplorer"
+            objectClass="org.eclipse.jdt.core.ICompilationUnit">
+         <menu
+               id="ptolemy.backtrack.menu.PtolemyPackageExplorer"
+               path="additions"
+               label="&amp;Ptolemy Code Style">
+            <separator name="group1"/>
+         </menu>
+         <action
+               class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.SortMembersObjectAction"
+               definitionId="ptolemy.backtrack.commands.SortMembersCommand"
+               icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
+               id="ptolemy.backtrack.actions.SortMembersObjectAction"
+               label="&amp;Sort Members"
+               menubarPath="ptolemy.backtrack.menu.PtolemyPackageExplorer/group1"/>
+      </objectContribution>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="ptolemy.backtrack.eclipse.plugin.preferences.PtolemyPreferencePage"
+            id="ptolemy.backtrack.preferences.Ptolemy"
+            name="Ptolemy II"/>
+      <page
+            category="ptolemy.backtrack.preferences.Ptolemy"
+            class="ptolemy.backtrack.eclipse.plugin.preferences.BacktrackingPreferencePage"
+            id="ptolemy.backtrack.preferences.Backtracking"
+            name="Backtracking"/>
+      <page
+            category="ptolemy.backtrack.preferences.Ptolemy"
+            class="ptolemy.backtrack.eclipse.plugin.preferences.EditorPreferencePage"
+            id="ptolemy.backtrack.preferences.Editor"
+            name="Editor"/>
+   </extension>
+   
+   <extension point="org.eclipse.help.toc">
+      <toc file="ptolemy/backtrack/eclipse/plugin/doc/toc.xml" primary="true"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.jdt.ui.A_OpenActionSet">
+         <part
+               id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.jdt.ui.CodingActionSet">
+         <part
+               id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.jdt.ui.SearchActionSet">
+         <part
+               id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part
+               id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.jdt.ui.text.java.actionSet.presentation">
+         <part
+               id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"/>
+      </actionSetPartAssociation>
+      
+      <actionSetPartAssociation
+            targetID="ptolemy.backtrack.editorActionSet">
+         <part
+               id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"/>
+      </actionSetPartAssociation>
    </extension>
    
    <!-- Eclipse 3.1 only
@@ -131,99 +246,21 @@
    -->
    
    <extension
-         point="org.eclipse.ui.editors">
-      <editor
-            class="ptolemy.backtrack.eclipse.plugin.editor.MultiPageCompilationUnitEditor"
-            contributorClass="org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditorActionContributor"
-            default="true"
-            extensions="java"
-            icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
-            id="ptolemy.backtrack.eclipse.plugin.editor.MultiPageEditor"
-            name="Ptolemy II Multi-page Editor"
-            symbolicFontName="org.eclipse.jdt.ui.editors.textfont"/>
-   </extension>
-   
-   <extension point="org.eclipse.help.toc">
-      <toc file="ptolemy/backtrack/eclipse/plugin/doc/toc.xml" primary="true"/>
+         point="org.eclipse.ui.commands">
+      <category
+            id="ptolemy.backtrack.category"
+            name="Ptolemy"/>
+      <command
+            categoryId="ptolemy.backtrack.category"
+            id="ptolemy.backtrack.commands.SortMembersCommand"
+            name="Sort Members"/>
    </extension>
    
    <extension
-         point="org.eclipse.ui.actionSets">
-      <actionSet
-            id="ptolemy.backtrack.eclipse.plugin.EditorActionSet"
-            label="Ptolemy Backtracking"
-            visible="false">
-         <action
-               class="ptolemy.backtrack.eclipse.plugin.actions.SortMembersAction"
-               icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
-               id="ptolemy.backtrack.eclipse.plugin.SortMembersAction"
-               label="&amp;Sort Members"
-               menubarPath="ptolemy/codestyle/group1"
-               toolbarPath="Ptolemy"
-               tooltip="Soft Java class members"/>
-      </actionSet>
-   </extension>
-   
-   <extension
-         point="org.eclipse.ui.editorActions">
-      <editorContribution
-            targetID="ptolemy.backtrack.eclipse.plugin.editor.MultiPageEditor"
-            id="org.eclipse.jdt.debug.CompilationUnitEditor.BreakpointRulerActions">
-         <action
-               label="Toggle &amp;Breakpoint"
-               class="ptolemy.backtrack.eclipse.plugin.compatibility.RulerToggleBreakpointActionDelegate"
-               actionID="RulerDoubleClick"
-               id="org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction"/>
-      </editorContribution>
-      <editorContribution
-            targetID="ptolemy.backtrack.eclipse.plugin.editor.MultiPageEditor"
-            id="org.eclipse.ui.texteditor.ruler.actions">
-         <action
-               label="%BookmarkRulerAction.label"
-               helpContextId="org.eclipse.ui.bookmark_action_context"
-               class="org.eclipse.ui.texteditor.BookmarkRulerAction"
-               actionID="RulerDoubleClick"
-               id="org.eclipse.jdt.internal.ui.javaeditor.BookmarkRulerAction"/>
-         <action
-               label="%JavaSelectRulerAction.label"
-               class="org.eclipse.jdt.internal.ui.javaeditor.JavaSelectRulerAction"
-               actionID="RulerClick"
-               id="org.eclipse.jdt.internal.ui.javaeditor.JavaSelectRulerAction"/>
-      </editorContribution>
-   </extension>
-   
-   <extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.jdt.ui.A_OpenActionSet">
-         <part
-               id="ptolemy.backtrack.eclipse.plugin.editor.MultiPageEditor"/>
-      </actionSetPartAssociation>
-      <actionSetPartAssociation
-            targetID="org.eclipse.jdt.ui.CodingActionSet">
-         <part
-               id="ptolemy.backtrack.eclipse.plugin.editor.MultiPageEditor"/>
-      </actionSetPartAssociation>
-      <actionSetPartAssociation
-            targetID="org.eclipse.jdt.ui.SearchActionSet">
-         <part
-               id="ptolemy.backtrack.eclipse.plugin.editor.MultiPageEditor"/>
-      </actionSetPartAssociation>
-      <actionSetPartAssociation
-            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
-         <part
-               id="ptolemy.backtrack.eclipse.plugin.editor.MultiPageEditor"/>
-      </actionSetPartAssociation>
-      <actionSetPartAssociation
-            targetID="org.eclipse.jdt.ui.text.java.actionSet.presentation">
-         <part
-               id="ptolemy.backtrack.eclipse.plugin.editor.MultiPageEditor"/>
-      </actionSetPartAssociation>
-      
-      <actionSetPartAssociation
-            targetID="ptolemy.backtrack.eclipse.plugin.EditorActionSet">
-         <part
-               id="ptolemy.backtrack.eclipse.plugin.editor.MultiPageEditor"/>
-      </actionSetPartAssociation>
+         point="org.eclipse.ui.bindings">
+      <key
+            sequence="Ctrl+Alt+S"
+            commandId="ptolemy.backtrack.commands.SortMembersCommand"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
    </extension>
 </plugin>

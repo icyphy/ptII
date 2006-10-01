@@ -131,5 +131,5 @@ public class PreferenceConstants {
     /** ID of the backtracking preferences.
      */
     public static final String PTII_PREFERENCE_ID =
-        "ptolemy.backtrack.eclipse.plugin.preferences.PtolemyPreferencePage";
+        "ptolemy.backtrack.preferences.Ptolemy";
 }
