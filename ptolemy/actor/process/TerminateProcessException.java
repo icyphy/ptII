@@ -103,7 +103,7 @@ public class TerminateProcessException extends RuntimeException {
         if (detail != null) {
             if (!detail.equals("")) {
                 if (!prefix.equals("")) {
-                    _setMessage(new String(prefix + ": " + detail));
+                    _setMessage(prefix + ": " + detail);
                 } else {
                     _setMessage(detail);
                 }
