@@ -170,7 +170,7 @@ public class GUIUtilities {
     public static JMenuItem addMenuItem(JMenu menu, Action action,
             int mnemonic, String tooltip) {
         String label = (String) action.getValue(Action.NAME);
-        return addMenuItem(menu, label.toString(), action, mnemonic, tooltip,
+        return addMenuItem(menu, label, action, mnemonic, tooltip,
                 true);
     }
 
