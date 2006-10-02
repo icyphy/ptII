@@ -298,7 +298,10 @@ public class ElementList extends LabeledList {
         if (oldWeight == null) {
             if (!_unweightedSet.contains(element)) {
                 // This 'dump' of a null weight will also dump the graph.
-                throw new GraphWeightException(oldWeight, null, _graph,
+                // We use null as an argument instead of oldWeight to
+                // avoid FindBugs warnings.
+                throw new GraphWeightException(/*oldWeight*/ null,
+                        null, _graph,
                         "Incorrect previous weight specified.");
             }
 
