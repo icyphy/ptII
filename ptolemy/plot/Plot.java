@@ -2123,7 +2123,7 @@ public class Plot extends PlotBox {
             _drawPlotPoint(graphics, dataset, pts.size() - 1);
         }
 
-        if (_wrap && (x == _wrapHigh)) {
+        if (_wrap && (Math.abs(x - _wrapHigh)) < 0.00001) {
             // Plot a second point at the low end of the range.
             _addPoint(dataset, _wrapLow, y, yLowEB, yHighEB, false, errorBar);
         }
