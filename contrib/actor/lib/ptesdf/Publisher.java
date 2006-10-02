@@ -137,7 +137,11 @@ public class Publisher extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == channel) {
-            _channel = channel.stringValue();
+            String newChannel = channel.stringValue();
+            if (!newChannel.equals(_channel)) {
+                _channel = newChannel;
+                _linksUpdatedVersion = -1;
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -149,8 +153,9 @@ public class Publisher extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-
-        _updateLinks();
+        if (_linksUpdatedVersion != workspace().getVersion()) {
+            _updateLinks();
+        }
     }
 
     /** Read at most one input token from each input channel
@@ -168,12 +173,17 @@ public class Publisher extends TypedAtomicActor {
         }
     }
 
-    /** Remove the relation after every run so we can re-wire it on the next execution.
-     *
-     *  @exception IllegalActionException If there was an error while trying to remove relation.
+    /** Override the base class to record the current workspace version
+     *  so that links do not need to be created again on the next run.
+     *  @exception IllegalActionException If the superclass throws it.
      */
-    public void wrapup() throws IllegalActionException {
-        _removeRelation();
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        // We do this here rather than in preinitialize(), where
+        // we update the links, because if there are multiple
+        // Publishers, then another one of the publishers will
+        // have updated the workspace version.
+        _linksUpdatedVersion = workspace().getVersion();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -233,6 +243,11 @@ public class Publisher extends TypedAtomicActor {
         }
     }
 
+    /** Remove the relation used for publishing an all connections
+     *  to it.
+     *  @throws IllegalActionException If removing the relation
+     *   throws it.
+     */
     private void _removeRelation() throws IllegalActionException {
         // Remove the previous relation, if necessary.
         if (_relation != null) {
@@ -292,8 +307,12 @@ public class Publisher extends TypedAtomicActor {
             director.invalidateSchedule();
             director.invalidateResolvedTypes();
         }
+        _linksUpdatedVersion = workspace().getVersion();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
+    
+    /** Workspace version where links were last updated. */
+    private long _linksUpdatedVersion = -1;
 }
