@@ -382,23 +382,23 @@ public class Schedule extends ScheduleElement {
      *  @return A nested parenthesis expression of the schedule.
      */
     public String toParenthesisString(Map nameMap, String delimiter) {
-        String result = "(";
+        StringBuffer result = new StringBuffer("(");
         int iterations = getIterationCount();
 
         if (iterations > 1) {
-            result += iterations;
+            result.append(iterations);
         }
 
         Iterator schedules = iterator();
 
         while (schedules.hasNext()) {
             ScheduleElement schedule = (ScheduleElement) schedules.next();
-            result += (delimiter + schedule.toParenthesisString(nameMap,
+            result.append(delimiter + schedule.toParenthesisString(nameMap,
                     delimiter));
         }
 
-        result += ")";
-        return result;
+        result.append(")");
+        return result.toString();
     }
 
     /** Output a string representation of this Schedule.
@@ -406,21 +406,21 @@ public class Schedule extends ScheduleElement {
      *  @return Return a string representation of this Schedule.
      */
     public String toString() {
-        String result = "Execute Schedule{\n";
+        StringBuffer result = new StringBuffer("Execute Schedule{\n");
         Iterator i = iterator();
 
         while (i.hasNext()) {
             ScheduleElement e = (ScheduleElement) i.next();
-            result += (e + "\n");
+            result.append((e + "\n"));
         }
 
-        result += "}";
+        result.append("}");
 
         if (getIterationCount() > 1) {
-            result += (" " + getIterationCount() + " times");
+            result.append((" " + getIterationCount() + " times"));
         }
 
-        return result;
+        return result.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
