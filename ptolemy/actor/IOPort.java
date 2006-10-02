@@ -1049,7 +1049,8 @@ public class IOPort extends ComponentPort {
                     occurrence++;
                 }
 
-                seen.put(relation, new Integer(occurrence));
+                // FindBugs: Use Integer.valueOf() instead of new Integer()
+                seen.put(relation, Integer.valueOf(occurrence));
 
                 Receiver[][] receivers = getReceivers(relation, occurrence);
 
@@ -1207,8 +1208,9 @@ public class IOPort extends ComponentPort {
                                     .intValue();
                             occurrence++;
                         }
-
-                        seen.put(relation, new Integer(occurrence));
+                        // FindBugs: Use Integer.valueOf() instead of
+                        // new Integer()
+                        seen.put(relation, Integer.valueOf(occurrence));
 
                         Receiver[][] receiverRelation = getReceivers(relation,
                                 occurrence);
