@@ -1536,7 +1536,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     public List propagateValue() throws IllegalActionException {
         // Mark this object as having been modified directly.
         _override = new LinkedList();
-        _override.add(new Integer(0));
+        // FindBugs: Use Integer.valueOf() instead of new Integer()
+        _override.add(Integer.valueOf(0));
 
         return _getDerivedList(null, true, false, this, 0, _override, null);
     }
@@ -2067,10 +2068,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // If the _override field is not long enough,
             // then we need to make it long enough.
             while (_override.size() <= depth) {
-                _override.add(new Integer(0));
+                // FindBugs: Use Integer.valueOf() instead of new Integer()
+                _override.add(Integer.valueOf(0));
             }
             int breadth = ((Integer)_override.get(depth)).intValue();
-            _override.set(depth, new Integer(breadth + 1));
+            // FindBugs: Use Integer.valueOf() instead of new Integer()
+            _override.set(depth, Integer.valueOf(breadth + 1));
         }
         Iterator objects = containedObjectsIterator();
         while (objects.hasNext()) {
@@ -2791,7 +2794,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     // new depth, make it long enough. It should at most
                     // be one element short.
                     if (newOverride.size() <= (depth + 1)) {
-                        newOverride.add(new Integer(0));
+                        // FindBugs: Use Integer.valueOf() instead of
+                        // new Integer()
+                        newOverride.add(Integer.valueOf(0));
                     }
                 }
 
@@ -2905,7 +2910,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                             // Is it shadowed?  Create a new override
                             // list to pass to the candidate.
                             newOverride = new LinkedList(override);
-                            newOverride.set(depth, new Integer(myBreadth + 1));
+                            // FindBugs: Use Integer.valueOf() instead of
+                            // new Integer()
+                            newOverride.set(depth, Integer.valueOf(myBreadth + 1));
 
                             if (_isShadowed(candidate._override, newOverride)) {
                                 // Yes it is.
