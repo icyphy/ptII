@@ -118,10 +118,11 @@ public class FileUtilities {
      *  @param jarFileName The name of the jar file to extract
      *  @param directoryName The name of the directory.  If this argument
      *  is null, then the files are extracted in the current directory.
+     *  @exception IOException If the jar file cannot be opened, or
+     *  if there are problems extracting the contents of the jar file   
      */
     public static void extractJarFile(String jarFileName,
-            String directoryName) throws IOException, SecurityException {
-
+            String directoryName) throws IOException {
         JarFile jarFile = new JarFile(jarFileName);
         Enumeration entries = jarFile.entries();
         while (entries.hasMoreElements()) {

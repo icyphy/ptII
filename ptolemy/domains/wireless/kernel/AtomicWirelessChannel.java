@@ -155,6 +155,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  given transmission, then the order in which they are applied is arbitrary.
      *  
      *  @param listener The channel listener to add.
+     *  @see #removeChannelListender(ChannelListener)
      */
     public void addChannelListener(ChannelListener listener) {
         if (_channelListeners == null) {

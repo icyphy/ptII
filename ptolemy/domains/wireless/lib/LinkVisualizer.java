@@ -90,6 +90,10 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
      */
     public StringParameter channelName;
 
+    /** The amount of time to sleep in milliseconds between drawing the
+     *  line and then removing the line.  The initial default value
+     *  is an IntToken with a value of 500, meaning sleep for 500 ms.
+     */
     public Parameter sleepTime;
 
     ///////////////////////////////////////////////////////////////////
