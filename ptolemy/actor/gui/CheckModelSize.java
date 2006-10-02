@@ -138,7 +138,10 @@ public class CheckModelSize {
                                     y = ((ScalarToken) vergilCenterToken
                                             .getElement(1)).doubleValue();
 
-                                    if (x != width / 2.0 || y != height / 2.0) {
+                                    // Avoid comparing floats.
+                                    if (Math.abs(x - (width / 2.0)) > 0.1 
+                                            || Math.abs(y  - (height / 2.0))
+                                            > 0.1 ) {
                                         analysis
                                                 .append(" Center(["
                                                         + x
