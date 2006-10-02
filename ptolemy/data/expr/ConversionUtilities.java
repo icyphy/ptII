@@ -355,7 +355,13 @@ public class ConversionUtilities {
         } else if (token instanceof StringToken) {
             returnValue = new String(((StringToken) token).stringValue());
         } else if (token instanceof BooleanToken) {
-            returnValue = new Boolean(((BooleanToken) token).booleanValue());
+
+            // FindBugs: "Creating new instances of java.lang.Boolean
+            // wastes memory, since Boolean objects are immutable and
+            // there are only two useful values of this type.  Use the
+            // Boolean.valueOf() method to create Boolean objects
+            // instead."
+            returnValue = Boolean.valueOf(((BooleanToken) token).booleanValue());
         } else if (token instanceof ComplexToken) {
             returnValue = ((ComplexToken) token).complexValue();
         } else if (token instanceof FixToken) {
