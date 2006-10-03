@@ -827,48 +827,6 @@ public class HDFDirector extends SDFDirector {
         }
     }
 
-    /** Check to see if the buffer size needed in current configuration
-     *  is greater than in previous configurations. If so, set the buffer
-     *  size to the current buffer size needed.
-     *  @exception IllegalActionException If thrown while getting helper
-     *   or buffer size.
-     */
-    protected void _updatePortBufferSize() throws IllegalActionException {
-
-        ptolemy.domains.hdf.kernel.HDFDirector director = (ptolemy.domains.hdf.kernel.HDFDirector) getComponent();
-        CompositeActor container = (CompositeActor) director.getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
-
-        Iterator actors = container.deepEntityList().iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            Iterator inputPorts = actor.inputPortList().iterator();
-            while (inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort) inputPorts.next();
-                for (int k = 0; k < inputPort.getWidth(); k++) {
-                    int newCapacity = getBufferSize(inputPort, k);
-                    int oldCapacity = actorHelper.getBufferSize(inputPort, k);
-                    if (newCapacity > oldCapacity) {
-                        actorHelper.setBufferSize(inputPort, k, newCapacity);
-                    }
-                }
-            }
-        }
-
-        Iterator outputPorts = container.outputPortList().iterator();
-        while (outputPorts.hasNext()) {
-            IOPort outputPort = (IOPort) outputPorts.next();
-            for (int k = 0; k < outputPort.getWidthInside(); k++) {
-                int newCapacity = getBufferSize(outputPort, k);
-                int oldCapacity = containerHelper.getBufferSize(outputPort, k);
-                if (newCapacity > oldCapacity) {
-                    containerHelper.setBufferSize(outputPort, k, newCapacity);
-                }
-            }
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
