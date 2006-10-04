@@ -89,6 +89,15 @@ test Ramp-2.1 {test with strings} {
     enumToTokenValues [$rec getRecord 0]
 } {{"a"} {"ab"} {"abb"} {"abbb"} {"abbbb"}}
 
+test Ramp-2.1.5 {test with NaN} {
+    set init [getParameter $ramp init]
+    set step [getParameter $ramp step]
+    $init setToken [java::new ptolemy.data.DoubleToken "NaN"]
+    $step setToken [java::new ptolemy.data.DoubleToken "NaN"]
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {NaN NaN NaN NaN NaN}
+
 test Ramp-2.2 {test with record} {
     # first record is {name = "a", value = 1, extra1 = 2}
     # Old, very labor intensive way to do this.
