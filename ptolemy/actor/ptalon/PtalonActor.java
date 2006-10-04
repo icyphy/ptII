@@ -147,6 +147,12 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 try {
                     if (p.getVisibility().equals(Settable.FULL)) {
                         p.setVisibility(Settable.NOT_EDITABLE);
+                    } else if (p.getVisibility().equals(Settable.NONE)) {
+                        if (_unsettablePtalonParameters.contains(p)) {
+                            return;
+                        } else {
+                            _unsettablePtalonParameters.add(p);
+                        }
                     }
                     _assignedPtalonParameters.add(p);
                     if ((_ast == null) || (_codeManager == null)) {
@@ -440,8 +446,15 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 output.write(_getIndentPrefix(depth + 1) + "<ptalon file=\"" + 
                         displayName + "\">\n");
                 for (PtalonParameter param : _assignedPtalonParameters) {
-                    output.write(_getIndentPrefix(depth + 2) + "<ptalonParameter name=\"" + 
-                            param.getName() + "\" value=\"" + param.getExpression() + "\"/>\n");
+                    if (!_unsettablePtalonParameters.contains(param)) {
+                        if (param instanceof PtalonExpressionParameter) {
+                            output.write(_getIndentPrefix(depth + 2) + "<ptalonExpressionParameter name=\"" + 
+                                    param.getName() + "\" value=\"" + param.getExpression() + "\"/>\n");                            
+                        } else if (param instanceof PtalonParameter) { 
+                            output.write(_getIndentPrefix(depth + 2) + "<ptalonParameter name=\"" + 
+                                param.getName() + "\" value=\"" + param.getExpression() + "\"/>\n");
+                        } 
+                    }
                 }
                 output.write(_getIndentPrefix(depth + 1) + "</ptalon>\n");
                 output.write(_getIndentPrefix(depth) + "</configure>\n");
@@ -529,5 +542,9 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      */
     private List<PtalonParameter> _ptalonParameters = new LinkedList<PtalonParameter>();
     
+    /**
+     * A list of all ptalon paramters who are not settable by the user.
+     */
+    private List<PtalonParameter> _unsettablePtalonParameters = new LinkedList<PtalonParameter>();
 
 }
