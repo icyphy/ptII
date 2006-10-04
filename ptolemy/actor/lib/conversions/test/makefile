@@ -53,6 +53,7 @@ JSIMPLE_TESTS = \
 	DoubleToFix.tcl\
 	ComplexToCartesian.tcl\
 	PolarToCartesian.tcl\
+	Round.tcl \
 	CartesianToComplex.tcl\
 	CartesianToPolar.tcl
 
