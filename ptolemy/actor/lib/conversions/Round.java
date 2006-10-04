@@ -53,14 +53,13 @@ import ptolemy.kernel.util.StringAttribute;
  <ul>
  <li> <b>ceil</b>: Round towards positive infinity.
  <li> <b>floor</b>: Round towards negative infinity.
- <li> <b>round</b>: Round towards nearest integer.
+ <li> <b>round</b>: Round towards nearest integer.  This is the
+default behavior.  If the input is NaN, then the output will
+be 0.  See the documentation for java.lang.Math.round().
  <li> <b>truncate</b>: Round towards zero.
  </ul>
 
- If the argument is NaN, then the fire() method will throw
- an exception.
-
- @author C. Fong
+ @author C. Fong, Contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Green (chf)
@@ -140,10 +139,6 @@ public class Round extends Transformer {
     public void fire() throws IllegalActionException {
         super.fire();
         double in = ((DoubleToken) input.get(0)).doubleValue();
-        if (in == Double.NaN) {
-            throw new IllegalActionException(this,
-                    "Input is NaN, which can't be rounded.");
-        }
         output.send(0, new IntToken(_doFunction(in)));
     }
 
