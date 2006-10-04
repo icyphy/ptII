@@ -62,52 +62,15 @@ test Round-2.1 {test with the default output values} {
 ######################################################################
 #### Test Round 
 #
-test Round-2.2 {NaNs round to 0} {
+test Round-2.2 {NaNs throw an exception} {
     # uses 2.1 above	
     $init setToken [java::new ptolemy.data.DoubleToken "NaN"]
     set step [getParameter $ramp step]
     $step setToken [java::new ptolemy.data.DoubleToken "NaN"]
 
-    [$e0 getManager] execute
-    enumToTokenValues [$rec getRecord 0]
-} {0 0 0 0 0}
-
-######################################################################
-#### ceil
-#
-test Round-2.3 {NaNs ceils to 0} {
-    # uses 2.1 above	
-    set function [java::field $round function]
-    $function setExpression "ceil"
-
-    [$e0 getManager] execute
-    enumToTokenValues [$rec getRecord 0]
-} {0 0 0 0 0}
-
-######################################################################
-#### floor
-#
-test Round-2.4 {NaNs floors to 0} {
-    # uses 2.1 above	
-    set function [java::field $round function]
-    $function setExpression "floor"
-
-    [$e0 getManager] execute
-    enumToTokenValues [$rec getRecord 0]
-} {0 0 0 0 0}
-
-######################################################################
-#### floor
-#
-test Round-2.4 {NaNs truncates to 0} {
-    # uses 2.1 above	
-    set function [java::field $round function]
-    $function setExpression "truncate"
-
-    [$e0 getManager] execute
-    enumToTokenValues [$rec getRecord 0]
-} {0 0 0 0 0}
-
+    catch {[$e0 getManager] execute} msg
+    list $msg	
+} {{ptolemy.kernel.util.IllegalActionException: Input is Double.NaN, there is no way to represent a NaN as an integer.}}
 
 
 ######################################################################

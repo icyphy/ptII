@@ -54,10 +54,18 @@ import ptolemy.kernel.util.StringAttribute;
  <li> <b>ceil</b>: Round towards positive infinity.
  <li> <b>floor</b>: Round towards negative infinity.
  <li> <b>round</b>: Round towards nearest integer.  This is the
-default behavior.  If the input is NaN, then the output will
-be 0.  See the documentation for java.lang.Math.round().
+default behavior.
  <li> <b>truncate</b>: Round towards zero.
  </ul>
+
+If the input is NaN, then an exception is thrown. 
+The reason for this is that there is no way to represent a NaN
+as an integer.  Thus, even though java.lang.Math.round(Double.NaN)
+returns 0, ceil(Double.NaN), floor(Double.NaN) and truncate(DoubleNaN) all
+return a Double.NaN.  However, this actor has an integer output,
+so there is no way to represent the Double.NaN as an integer, so
+we throw an exception.
+
 
  @author C. Fong, Contributor: Christopher Brooks
  @version $Id$
@@ -139,6 +147,10 @@ public class Round extends Transformer {
     public void fire() throws IllegalActionException {
         super.fire();
         double in = ((DoubleToken) input.get(0)).doubleValue();
+        if (Double.isNaN(in)) {
+            throw new IllegalActionException("Input is Double.NaN, "
+                    + "there is no way to represent a NaN as an integer.");
+        }
         output.send(0, new IntToken(_doFunction(in)));
     }
 
@@ -171,6 +183,11 @@ public class Round extends Transformer {
 
             for (int i = 0; i < count; i++) {
                 double value = ((DoubleToken) (inArray[i])).doubleValue();
+                if (Double.isNaN(value)) {
+                    throw new IllegalActionException("Input is Double.NaN, "
+                            + "there is no way to represent a NaN as an integer.");
+                }
+
                 _resultArray[i] = new IntToken(_doFunction(value));
             }
 
