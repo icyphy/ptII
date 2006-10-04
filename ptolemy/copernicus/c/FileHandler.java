@@ -87,9 +87,10 @@ public class FileHandler {
     public static String readStringFromFile(String fileName) {
         StringBuffer code = new StringBuffer();
 
-        // We assume that its reading code. It can read any kind of text.
+        // We assume that it is reading code. It can read any kind of text.
+        BufferedReader input = null;
         try {
-            BufferedReader input = new BufferedReader(new FileReader(fileName));
+            input = new BufferedReader(new FileReader(fileName));
             String line; // We read from the file one line at a time.
 
             // Keep reading till no more lines are left. Append the lines
@@ -100,6 +101,15 @@ public class FileHandler {
         } catch (IOException e) {
             System.err.println("FileHandler.readStringFromFile(String):\n"
                     + "ERROR!: Unable to access file " + fileName);
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (Exception ex) {
+                    System.err.println("Failed to close \"" + fileName
+                            + "\": " + ex);
+                }
+            }
         }
 
         return code.toString();
