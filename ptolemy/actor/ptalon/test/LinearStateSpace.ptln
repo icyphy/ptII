@@ -21,11 +21,6 @@
  * ports must match the number of rows and columns in corresponding
  * matrices, otherwise, an exception will be thrown.
  * 
- * This actor works like a higher-order function. It is opaque after
- * construction or the change of parameters. Upon preinitialization,
- * the actor will create a subsystem using integrators, adders, and
- * scales. After that, the actor becomes transparent, and the director
- * takes over the control of the actors contained by this actor.
  *
  * @author Adam Cataldo (borrowed example from Jie Liu)
  */

@@ -59,6 +59,7 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
@@ -875,8 +876,11 @@ public class NestedActorManager extends CodeManager {
          * Foo(port := containing)
          * port is okay, but not
          * Bar(a := Foo(port := containing))
+         * 
+         * If the port on the left does not exist, it will be created
+         * and given a flow type if possible.
          *  
-         * @param portName The name of the port in this 
+         * @param portName The name of the port in the specified actor. 
          * @param connectPoint The name of the container's port or relation.
          * @exception PtalonScopeException If this is not a top-level actor declaration with respect
          * to the assignment, or if connectPoint is not a port or relation.
@@ -996,17 +1000,23 @@ public class NestedActorManager extends CodeManager {
                                 "Unable to find expression label for parameter "
                                         + boolParam);
                     }
-                    ASTPtRootNode _parseTree = parser
-                            .generateParseTree(expression);
-                    Parameter parameter = (Parameter) actor
-                            .getAttribute(boolParam);
-                    if (parameter == null) {
-                        String uniqueName = actor.uniqueName(boolParam);
-                        parameter = new Parameter(actor, uniqueName);
+                    try {
+                        Parameter parameter = (Parameter) actor
+                                .getAttribute(boolParam);
+                        if (parameter == null) {
+                            String uniqueName = actor.uniqueName(boolParam);
+                            parameter = new Parameter(actor, uniqueName);
+                        }
+                        ASTPtRootNode _parseTree = parser
+                                .generateParseTree(expression);
+                        Token result = _parseTreeEvaluator.evaluateParseTree(
+                                _parseTree, _scope);
+                        parameter.setToken(result);
+                    } catch (ClassCastException e) {
+                        AbstractSettableAttribute parameter = (AbstractSettableAttribute) actor
+                                .getAttribute(boolParam);
+                        parameter.setExpression(expression);
                     }
-                    Token result = _parseTreeEvaluator.evaluateParseTree(
-                            _parseTree, _scope);
-                    parameter.setToken(result);
                 }
             } catch (Exception e) {
                 throw new PtalonRuntimeException("Trouble making connections",
@@ -1230,6 +1240,32 @@ public class NestedActorManager extends CodeManager {
                     TypedIORelation relation = (TypedIORelation) _actor
                             .getRelation(relationName);
                     TypedIOPort port = (TypedIOPort) actor.getPort(portName);
+                    if (port == null) {
+                        port = new TypedIOPort(actor, actor
+                                .uniqueName(portName));
+                        inner: for (Object connection : relation
+                                .linkedPortList()) {
+                            if (connection instanceof TypedIOPort) {
+                                TypedIOPort testPort = (TypedIOPort) connection;
+                                if (testPort.getContainer().equals(_actor)) {
+                                    if (testPort.isInput()) {
+                                        port.setInput(true);
+                                    }
+                                    if (testPort.isOutput()) {
+                                        port.setOutput(true);
+                                    }
+                                } else {
+                                    if (testPort.isInput()) {
+                                        port.setOutput(true);
+                                    }
+                                    if (testPort.isOutput()) {
+                                        port.setInput(true);
+                                    }
+                                }
+                                break inner;
+                            }
+                        }
+                    }
                     port.link(relation);
                 }
                 for (String portName : _transparencies.keySet()) {
@@ -1241,9 +1277,42 @@ public class NestedActorManager extends CodeManager {
                         String relationName = _actor.uniqueName("relation");
                         TypedIORelation rel = new TypedIORelation(_actor,
                                 relationName);
+                        if (port == null) {
+                            port = new TypedIOPort(actor, actor
+                                    .uniqueName(portName));
+                            inner: for (Object connection : rel
+                                    .linkedPortList()) {
+                                if (connection instanceof TypedIOPort) {
+                                    TypedIOPort testPort = (TypedIOPort) connection;
+                                    if (testPort.getContainer().equals(_actor)) {
+                                        if (testPort.isInput()) {
+                                            port.setInput(true);
+                                        }
+                                        if (testPort.isOutput()) {
+                                            port.setOutput(true);
+                                        }
+                                    } else {
+                                        if (testPort.isInput()) {
+                                            port.setOutput(true);
+                                        }
+                                        if (testPort.isOutput()) {
+                                            port.setInput(true);
+                                        }
+                                    }
+                                    break inner;
+                                }
+                            }
+                        }
                         port.link(rel);
                         connectionPoint.link(rel);
                     } else {
+                        if (port == null) {
+                            port = new TypedIOPort(actor, actor
+                                    .uniqueName(portName));
+                            port.setMultiport(true);
+                            port.setInput(true);
+                            port.setOutput(false);
+                        }
                         _transparentRelations.put(shortName, port);
                     }
                 }
@@ -1253,6 +1322,16 @@ public class NestedActorManager extends CodeManager {
                             .get(portName));
                     TypedIOPort containerPort = (TypedIOPort) _actor
                             .getPort(containerPortName);
+                    if (port == null) {
+                        port = new TypedIOPort(actor, actor
+                                .uniqueName(portName));
+                        if (containerPort.isInput()) {
+                            port.setInput(true);
+                        }
+                        if (containerPort.isOutput()) {
+                            port.setOutput(true);
+                        }
+                    }
                     String relationName = _actor.uniqueName("relation");
                     TypedIORelation relation = new TypedIORelation(_actor,
                             relationName);
@@ -1274,6 +1353,16 @@ public class NestedActorManager extends CodeManager {
                         String containerPortName = _actor.getMappedName(name);
                         TypedIOPort containerPort = (TypedIOPort) _actor
                                 .getPort(containerPortName);
+                        if (port == null) {
+                            port = new TypedIOPort(actor, actor
+                                    .uniqueName(portName));
+                            if (containerPort.isInput()) {
+                                port.setInput(true);
+                            }
+                            if (containerPort.isOutput()) {
+                                port.setOutput(true);
+                            }
+                        }
                         String relationName = _actor.uniqueName("relation");
                         TypedIORelation relation = new TypedIORelation(_actor,
                                 relationName);
@@ -1285,9 +1374,36 @@ public class NestedActorManager extends CodeManager {
                                 .getRelation(relationName);
                         TypedIOPort port = (TypedIOPort) actor
                                 .getPort(portName);
+                        if (port == null) {
+                            port = new TypedIOPort(actor, actor
+                                    .uniqueName(portName));
+                            inner: for (Object connection : relation
+                                    .linkedPortList()) {
+                                if (connection instanceof TypedIOPort) {
+                                    TypedIOPort testPort = (TypedIOPort) connection;
+                                    if (testPort.getContainer().equals(_actor)) {
+                                        if (testPort.isInput()) {
+                                            port.setInput(true);
+                                        }
+                                        if (testPort.isOutput()) {
+                                            port.setOutput(true);
+                                        }
+                                    } else {
+                                        if (testPort.isInput()) {
+                                            port.setOutput(true);
+                                        }
+                                        if (testPort.isOutput()) {
+                                            port.setInput(true);
+                                        }
+                                    }
+                                    break inner;
+                                }
+                            }
+                        }
                         port.link(relation);
                     } else if (getType(name).equals("transparent")) {
-                        TypedIOPort port = (TypedIOPort) actor.getPort(portName);
+                        TypedIOPort port = (TypedIOPort) actor
+                                .getPort(portName);
                         if (_transparentRelations.containsKey(name)) {
                             TypedIOPort connectionPoint = _transparentRelations
                                     .get(name);
@@ -1295,8 +1411,42 @@ public class NestedActorManager extends CodeManager {
                             TypedIORelation rel = new TypedIORelation(_actor,
                                     relationName);
                             port.link(rel);
+                            if (port == null) {
+                                port = new TypedIOPort(actor, actor
+                                        .uniqueName(portName));
+                                inner: for (Object connection : rel
+                                        .linkedPortList()) {
+                                    if (connection instanceof TypedIOPort) {
+                                        TypedIOPort testPort = (TypedIOPort) connection;
+                                        if (testPort.getContainer().equals(
+                                                _actor)) {
+                                            if (testPort.isInput()) {
+                                                port.setInput(true);
+                                            }
+                                            if (testPort.isOutput()) {
+                                                port.setOutput(true);
+                                            }
+                                        } else {
+                                            if (testPort.isInput()) {
+                                                port.setOutput(true);
+                                            }
+                                            if (testPort.isOutput()) {
+                                                port.setInput(true);
+                                            }
+                                        }
+                                        break inner;
+                                    }
+                                }
+                            }
                             connectionPoint.link(rel);
                         } else {
+                            if (port == null) {
+                                port = new TypedIOPort(actor, actor
+                                        .uniqueName(portName));
+                                port.setMultiport(true);
+                                port.setInput(true);
+                                port.setOutput(false);
+                            }
                             _transparentRelations.put(name, port);
                         }
                     } else {
@@ -1360,6 +1510,10 @@ public class NestedActorManager extends CodeManager {
                     TypedIORelation relation = (TypedIORelation) _actor
                             .getRelation(relationName);
                     TypedIOPort port = (TypedIOPort) _actor.getPort(portName);
+                    if (port == null) {
+                        throw new PtalonRuntimeException("No port named "
+                                + portName);
+                    }
                     port.link(relation);
                 }
                 for (String portName : _transparencies.keySet()) {
@@ -1371,9 +1525,17 @@ public class NestedActorManager extends CodeManager {
                         String relationName = _actor.uniqueName("relation");
                         TypedIORelation rel = new TypedIORelation(_actor,
                                 relationName);
+                        if (port == null) {
+                            throw new PtalonRuntimeException("No port named "
+                                    + portName);
+                        }
                         port.link(rel);
                         connectionPoint.link(rel);
                     } else {
+                        if (port == null) {
+                            throw new PtalonRuntimeException("No port named "
+                                    + portName);
+                        }
                         _transparentRelations.put(shortName, port);
                     }
                 }
@@ -1383,6 +1545,10 @@ public class NestedActorManager extends CodeManager {
                             .get(portName));
                     TypedIOPort containerPort = (TypedIOPort) _actor
                             .getPort(containerPortName);
+                    if (port == null) {
+                        throw new PtalonRuntimeException("No port named "
+                                + portName);
+                    }
                     String relationName = _actor.uniqueName("relation");
                     TypedIORelation relation = new TypedIORelation(_actor,
                             relationName);
@@ -1404,6 +1570,10 @@ public class NestedActorManager extends CodeManager {
                         String containerPortName = _actor.getMappedName(name);
                         TypedIOPort containerPort = (TypedIOPort) _actor
                                 .getPort(containerPortName);
+                        if (port == null) {
+                            throw new PtalonRuntimeException("No port named "
+                                    + portName);
+                        }
                         String relationName = _actor.uniqueName("relation");
                         TypedIORelation relation = new TypedIORelation(_actor,
                                 relationName);
@@ -1415,21 +1585,34 @@ public class NestedActorManager extends CodeManager {
                                 .getRelation(relationName);
                         TypedIOPort port = (TypedIOPort) _actor
                                 .getPort(portName);
+                        if (port == null) {
+                            throw new PtalonRuntimeException("No port named "
+                                    + portName);
+                        }
                         port.link(relation);
                     } else if (getType(name).equals("transparent")) {
-                        TypedIOPort port = (TypedIOPort) _actor.getPort(portName);
+                        TypedIOPort port = (TypedIOPort) _actor
+                                .getPort(portName);
                         if (_transparentRelations.containsKey(name)) {
                             TypedIOPort connectionPoint = _transparentRelations
                                     .get(name);
                             String relationName = _actor.uniqueName("relation");
                             TypedIORelation rel = new TypedIORelation(_actor,
                                     relationName);
+                            if (port == null) {
+                                throw new PtalonRuntimeException(
+                                        "No port named " + portName);
+                            }
                             port.link(rel);
                             connectionPoint.link(rel);
                         } else {
+                            if (port == null) {
+                                throw new PtalonRuntimeException(
+                                        "No port named " + portName);
+                            }
                             _transparentRelations.put(name, port);
                         }
-                    }else {
+                    } else {
                         throw new PtalonRuntimeException(name
                                 + " not a port or relation");
                     }

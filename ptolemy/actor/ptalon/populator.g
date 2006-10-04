@@ -351,7 +351,7 @@ assignment throws PtalonRuntimeException
 			addAssignment = true;
 		}
 	}
-	)) (b:ID 
+	)) (b:ID
 	{
 		if (addAssignment) {
 			info.addPortAssign(name, b.getText());
