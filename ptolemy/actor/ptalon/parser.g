@@ -273,7 +273,7 @@ expression!
 	{
 		String full = b.getText();
 		int length = full.length();
-		out += full.substring(1, length - 2);
+		out += full.substring(2, length - 2);
 		#expression = #[EXPRESSION, out];
 	}
 ;
@@ -538,13 +538,13 @@ WHITE_SPACE :
 ;
 
 EXPRESSION :
-	'<' (
+	'[' '[' (
 		options {
 			greedy = false;
 		} :
 			.
 		)* 
-	'/' '>'
+	']' ']'
 ;
 
 COMMENT :

@@ -71,17 +71,17 @@ NonlinearStateSpace is {
 	 * Set up the f0, f1, ..., fn-1 parameters.  Note that the loop won't 
 	 * be iterated until the previous  parameters have been set.
 	 */
-	for a initially < 0 /> < a < numberOfStates /> {
-		parameter f<a/>;		
-	} next < a + 1 />
+	for a initially [[ 0 ]] [[ a < numberOfStates ]] {
+		parameter f[[a]];		
+	} next [[ a + 1 ]]
 	
 	/*
 	 * This loop sets up the h0, h1, ..., hr-1 parameters and
 	 * connects the inputs to the input vector assembler.
 	 */
-	for a initially < 0 /> < a < numberOfOutputs /> {
-		parameter h<a/>;
-	} next < a + 1 />
+	for a initially [[ 0 ]] [[ a < numberOfOutputs ]] {
+		parameter h[[a]];
+	} next [[ a + 1 ]]
 
 	/*
 	 * The relation x and u represent the vector data for
@@ -109,35 +109,35 @@ NonlinearStateSpace is {
 	/*
 	 * Connect the inputs to the vector assembler
 	 */
-	for a initially < 0 /> < a < numberOfInputs /> {
+	for a initially [[ 0 ]] [[ a < numberOfInputs ]] {
 		this(input := inputRelation);
-	} next < a + 1 />
+	} next [[ a + 1 ]]
 	
 	/*
 	 * Create the expression evaluators for f0, f1, ...,
 	 * fn-1 and the corresponding integrators.  Also,
 	 * make the appropriate connectors.
 	 */
-	for a initially < 0 /> < a < numberOfStates /> {
+	for a initially [[ 0 ]] [[ a < numberOfStates ]] {
 		/*
 		 * Note that the expression actor does not
 		 * have ports named x and u, so these ports
 		 * will be created.
 		 */
-		relation x<a/>;
-		expression(x := x, u := u, output := x<a/>,
-			expression := < eval(eval("f" + a.toString)) />);
-		integrator(input := x<a/>, output := stateRelation);
+		relation x[[a]];
+		expression(x := x, u := u, output := x[[a]],
+			expression := [[ eval(eval("f" + a.toString)) ]]);
+		integrator(input := x[[a]], output := stateRelation);
 		this(stateOutput := stateAsOutput);
-	} next < a + 1 />
+	} next [[ a + 1 ]]
 
 	/*
 	 * Create the expression evaluators for h0, h0, ...,
 	 * hm-1.
 	 */
-	for a initially < 0 /> < a < numberOfStates /> {
+	for a initially [[ 0 ]] [[ a < numberOfStates ]] {
 		expression(x := x, u := u, output := output,
-			expression := < eval(eval("h" + a.toString)) />);
-	} next < a + 1 />
+			expression := [[ eval(eval("h" + a.toString)) ]]);
+	} next [[ a + 1 ]]
 
 }

@@ -1,10 +1,10 @@
 Parallel is {
 	actor repeater;
 	parameter n;
-	if <n <= 1/> {
+	if [[n <= 1]] {
 		repeater();
 	} else {
 		repeater();
-		Parallel(repeater := repeater(), n := <n - 1/>);
+		Parallel( repeater := repeater(), n := [[n - 1]] );
 	}
 }

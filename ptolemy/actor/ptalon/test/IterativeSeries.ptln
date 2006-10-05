@@ -8,17 +8,17 @@ IterativeSeries is {
 	parameter n;
 	inport input;
 	outport output;
-	if <n >= 0/> {
-		relation r<0/>;
+	if [[ n >= 0 ]] {
+		relation r[[0]];
 		
 		/* This is the Ptalon for loop,
 		 * which leverages the expression language
 		 */
-		for a initially <1/> <a <= n/> {
-			relation r<a/>;
-			Scale(input := r<a - 1/>, output := r<a/>);
-		} next <a + 1/>
-		this(input := r<0/>, output := r<n/>);
+		for a initially [[ 1 ]] [[ a <= n ]] {
+			relation r[[a]];
+			Scale(input := r[[a - 1]], output := r[[a]] );
+		} next [[ a + 1 ]]
+		this(input := r[[0]], output := r[[n]] );
 	} else {
 	}
 }

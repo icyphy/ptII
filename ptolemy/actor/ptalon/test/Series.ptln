@@ -3,12 +3,12 @@ Series is {
 	parameter n;
 	inport input;
 	outport output;
-	if <n <= 1/> {
+	if [[n <= 1]] {
 		transformer(input := input, output := output);
 	} else {
 		relation r;
 		transformer(input := input, output := r);
-		Series(transformer := transformer(), n := <n - 1/>,
+		Series(transformer := transformer(), n := [[n - 1]],
 			input := r, output := output);
 	}
 }

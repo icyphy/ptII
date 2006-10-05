@@ -6,8 +6,8 @@ MultiInputAdder is {
 	actor adder = ptolemy.actor.lib.AddSubtract;
 	transparent relation addInput;
 	adder(plus := addInput, output := output);
-	for a initially <1/> <a <= numberOfInputs/> {
-		inport input<a/>;
-		this(input<a/> := addInput);
-	} next <a + 1/>
+	for a initially [[1]] [[a <= numberOfInputs]] {
+		inport input[[a]];
+		this(input[[a]] := addInput);
+	} next [[a + 1]]
 }

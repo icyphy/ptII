@@ -62,23 +62,23 @@ LinearStateSpace is {
 	 * This is a for loop in Ptalon.  All evaluation
 	 * of normal data is done by the Ptolemy expression
 	 * language, which we use in a for loop. Anything in
-	 * the XML-like brackets < ... /> will be parsed
+	 * the denotation brackets [[ ... ]] will be parsed
 	 * in the expression language, not Ptalon, but the
 	 * results of evaluation will be used by Ptalon to
 	 * populate the actor.
 	 *
 	 * A for loop structure has form
-	 * for variable initially < initialValueExpression /> 
-	 *       < loopConditionExpression /> {
+	 * for variable initially [[ initialValueExpression ]] 
+	 *       [[ loopConditionExpression ]] {
 	 *    ...
 	 *    loopBody
 	 *    ...
-	 * } next < valueUpdateExpression />
+	 * } next [[ valueUpdateExpression ]]
 	 * 
 	 * The variable can take on any data type the expression
 	 * language supports, although it will often be an integer.
 	 */
-	for a initially < 0 /> < a < A.getRowCount /> {
+	for a initially [[ 0 ]] [[ a < A.getRowCount ]] {
 		
 		/*
 		 * These lines create relations whose names
@@ -86,19 +86,19 @@ LinearStateSpace is {
 		 * will take on names like state0, state1, etc.
 		 * and stateAdderOut0, stateAdderOut1, etc.
 		 */
-		relation state<a/>;
-		relation stateAdderOut<a/>;
+		relation state[[a]];
+		relation stateAdderOut[[a]];
 		
 		/*
 		 * This creates an instance of the integrator.
 		 * It assigns the value of initialStates(0, a)
 		 * to the intialState parameter of the integrator.
 		 * It connects the input port of the integrator to
-		 * the relation stateAdderOut<a/>, where a is the for
+		 * the relation stateAdderOut[[a]], where a is the for
 		 * loop variable.
 		 */
-		integrator(initialState := <initialStates(0, a)/>, 
-			input := stateAdderOut<a/>, output := state<a/>);
+		integrator(initialState := [[initialStates(0, a)]], 
+			input := stateAdderOut[[a]], output := state[[a]] );
 			
 		/*
 		 * This creates a "transparent" relation.  This
@@ -107,9 +107,9 @@ LinearStateSpace is {
 		 * hook for us to link multiple ports to the
 		 * plus multi-input port of the adder we create next.
 		 */
-		transparent relation stateAdderIn<a/>;
-		adder(plus := stateAdderIn<a/>, 
-			output := stateAdderOut<a/>);
+		transparent relation stateAdderIn[[a]];
+		adder(plus := stateAdderIn[[a]], 
+			output := stateAdderOut[[a]] );
 		
 		/*
 		 * The "this" reference refers to the main PtalonActor
@@ -117,55 +117,55 @@ LinearStateSpace is {
 		 * and relations.  In this case, we connect the stateOutput
 		 * multiport to the relations state0, state1, etc.
 		 */
-		this(stateOutput := state<a/>);
-	} next < a + 1 />
+		this(stateOutput := state[[a]] );
+	} next [[ a + 1 ]]
 	
 	/*
 	 * These nested for loops are used to create the scale actors
 	 * in the feedback loops corresponding to the input matrices.
 	 */
-	for a initially < 0 /> < a < A.getRowCount /> {
-		for b initially < 0 /> < b < A.getRowCount /> {
-			scale(factor := < A(a, b) />, input := state<b/>,
-				output := stateAdderIn<a/>);
-		} next < b + 1 />
-	} next < a + 1 />
+	for a initially [[ 0 ]] [[ a < A.getRowCount ]] {
+		for b initially [[ 0 ]] [[ b < A.getRowCount ]] {
+			scale(factor := [[ A(a, b) ]], input := state[[b]],
+				output := stateAdderIn[[a]] );
+		} next [[ b + 1 ]]
+	} next [[ a + 1 ]]
 	
 	/*
 	 * These nested for loops are used to create the scale actors
 	 * on the input side of the system.
 	 */
-	for b initially < 0 /> < b < B.getColumnCount /> {
-		relation scaleIn<b/>;
-		this(input := scaleIn<b/>);
-		for a initially < 0 /> < a < A.getRowCount /> {
-			scale(factor := < B(a, b) />, input := scaleIn<b/>,
-				output := stateAdderIn<a/>);
-		} next < a + 1 />
-	} next < b + 1 />
+	for b initially [[ 0 ]] [[ b < B.getColumnCount ]] {
+		relation scaleIn[[b]];
+		this(input := scaleIn[[b]] );
+		for a initially [[ 0 ]] [[ a < A.getRowCount ]] {
+			scale(factor := [[ B(a, b) ]], input := scaleIn[[b]],
+				output := stateAdderIn[[a]] );
+		} next [[ a + 1 ]]
+	} next [[ b + 1 ]]
 	
 	/*
 	 * These nested for loops are used to create the adder actors
 	 * and scale actors on the output side of the system.
 	 */
-	for c initially < 0 /> < c < C.getRowCount /> {
-        transparent relation outputAdderIn<c/>;
-        adder(plus := outputAdderIn<c/>, output := output);
-		for a initially < 0 /> < a < A.getRowCount /> {
-			scale(factor := < C(c, a) />, input := state<a/>,
-				output := outputAdderIn<c/>);
-		} next < a + 1 />
-	} next < c + 1 />
+	for c initially [[ 0 ]] [[ c < C.getRowCount ]] {
+        transparent relation outputAdderIn[[c]];
+        adder(plus := outputAdderIn[[c]], output := output);
+		for a initially [[ 0 ]] [[ a < A.getRowCount ]] {
+			scale(factor := [[ C(c, a) ]], input := state[[a]],
+				output := outputAdderIn[[c]] );
+		} next [[ a + 1 ]]
+	} next [[ c + 1 ]]
 
 	/*
 	 * These nested for loops are used to create the
 	 * and scale actors for the direct feedthrough subsystem.
 	 */
-	for c initially < 0 /> < c < C.getRowCount /> {
-        for b initially < 0 /> < b < B.getColumnCount /> {
-			scale(factor := < D(c, b) />, input := scaleIn<b/>,
-				output := outputAdderIn<c/>);
-		} next < b + 1 />
-	} next < c + 1 />
+	for c initially [[ 0 ]] [[ c < C.getRowCount ]] {
+        for b initially [[ 0 ]] [[ b < B.getColumnCount ]] {
+			scale(factor := [[ D(c, b) ]], input := scaleIn[[b]],
+				output := outputAdderIn[[c]] );
+		} next [[ b + 1 ]]
+	} next [[ c + 1 ]]
 
 }
