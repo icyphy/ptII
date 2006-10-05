@@ -263,11 +263,14 @@ public class FloatArrayMath {
         return (float) Math.sqrt(sumOfSquares(array));
     }
 
-    /** Return a new array that is a copy of the argument except that the
-     *  elements are limited to lie within the specified range.
-     *  If any value is infinite or NaN (not a number),
-     *  then it is replaced by either the top or the bottom, depending on
-     *  its sign.  To leave either the bottom or the top unconstrained,
+    /** Return a new array that is a copy of the argument except that
+     *  the elements are limited to lie within the specified range.
+     *  If any value is infinite then it is replaced by either the top
+     *  or the bottom, depending on its sign.  If any value is
+     *  infinite, then it is replaced by either the top or the bottom,
+     *  depending on its sign.  If any element of the array is NaN,
+     *  then the corresponding element in the new array will also be
+     *  NaN.  To leave either the bottom or the top unconstrained,
      *  specify Float.NEGATIVE_INFINITY or Float.POSITIVE_INFINITY.
      *
      *  If the length of the array is 0, return a new array of length 0.
@@ -281,10 +284,10 @@ public class FloatArrayMath {
         float[] returnValue = new float[array.length];
 
         for (int i = 0; i < array.length; i++) {
-            if ((array[i] > top) || (array[i] == Float.NaN)
+            if ((array[i] > top)
                     || (array[i] == Float.POSITIVE_INFINITY)) {
                 returnValue[i] = top;
-            } else if ((array[i] < bottom) || (array[i] == -Float.NaN)
+            } else if ((array[i] < bottom)
                     || (array[i] == Float.NEGATIVE_INFINITY)) {
                 returnValue[i] = bottom;
             } else {

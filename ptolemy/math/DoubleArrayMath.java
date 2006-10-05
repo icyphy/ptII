@@ -281,11 +281,13 @@ public class DoubleArrayMath {
 
     /** Return a new array that is a copy of the argument except that
      *  the elements are limited to lie within the specified range.
-     *  If any value is infinite or NaN (not a number), then it is
-     *  replaced by either the top or the bottom, depending on its
-     *  sign.  To leave either the bottom or the top unconstrained,
-     *  specify Double.NEGATIVE_INFINITY or Double.POSITIVE_INFINITY.
-     *  <p>If the length of the array is 0, return a new array of length 0.
+     *  If any value is infinite, then it is replaced by either the
+     *  top or the bottom, depending on its sign.  If any element of
+     *  the array is NaN, then the corresponding element in the new
+     *  array will also be NaN. To leave either the bottom or the top
+     *  unconstrained, specify Double.NEGATIVE_INFINITY or
+     *  Double.POSITIVE_INFINITY.  <p>If the length of the array is 0,
+     *  return a new array of length 0.
      *
      *  @param array An array of doubles.
      *  @param bottom The bottom limit.
@@ -297,10 +299,10 @@ public class DoubleArrayMath {
         double[] returnValue = new double[array.length];
 
         for (int i = 0; i < array.length; i++) {
-            if ((array[i] > top) || (array[i] == Double.NaN)
+            if ((array[i] > top)
                     || (array[i] == Double.POSITIVE_INFINITY)) {
                 returnValue[i] = top;
-            } else if ((array[i] < bottom) || (array[i] == -Double.NaN)
+            } else if ((array[i] < bottom)
                     || (array[i] == Double.NEGATIVE_INFINITY)) {
                 returnValue[i] = bottom;
             } else {
