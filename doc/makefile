@@ -415,7 +415,6 @@ ALL1_4PACKAGES = \
 	ptolemy.media \
 	ptolemy.moml \
 	ptolemy.moml.filter \
-	ptolemy.ptp.lib \
 	ptolemy.vergil \
 	ptolemy.vergil.actor \
 	ptolemy.vergil.actor.lib \
@@ -496,13 +495,16 @@ $(VERGIL_DOCS): javahtml.awk
 mainVergil.htm: main.htm
 	sed -e 's@" target="_top">@#in_browser">@' \
 	    -e 's@body.htm" target="body">@main.htm">@' \
+	    -e 's@(<a href="../ptolemy/domains/\([^/]*\)/doc/toc.htm" target="toc">@(<a href="../ptolemy/configs/doc/completeDemos.htm#\1">@' \
 		main.htm > $@
 
 mainVergilPtiny.htm: mainVergil.htm
-	awk -f $(ROOT)/doc/javahtml.awk mainVergil.htm  > $@  
+	awk -f $(ROOT)/doc/javahtml.awk mainVergil.htm $@ | \
+	sed -e 's@completeDemos.htm@completeDemosPtiny.htm@' > $@  
 
 mainVergilPtinyKepler.htm: mainVergilPtiny.htm
-	awk -f $(ROOT)/doc/ptinyKepler.awk mainVergilPtiny.htm | grep -v rendezvous | grep -v "with synchronous message"   > $@  
+	awk -f $(ROOT)/doc/ptinyKepler.awk mainVergilPtiny.htm | grep -v rendezvous | grep -v "with synchronous message" \
+	sed -e 's@completeDemosPtiny.htm@completeDemosPtinyKepler.htm@' > $@  
 
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
@@ -724,7 +726,7 @@ codeDocHyVisual/doc/codeDoc/allNamedObjs.txt: \
 		codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Build the index of actors 
-codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/codeDoc/allNamedObjs.txt ${PTII}/ptolemy/configs/hyvisual/hyvisualModels.txt
+codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/codeDoc/allNamedObjs.txt "../ptolemy/configs/hyvisual/hyvisualModels.txt"
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
@@ -734,9 +736,9 @@ codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/c
 		$(PTII)/ptolemy/configs/hyvisual/hyvisualModels.txt \
 		codeDocHyVisual/doc/codeDoc
 
-$(PTII)/ptolemy/configs/hyvisual/hyvisualModels.txt: \
-		$(PTII)/ptolemy/configs/hyvisual/intro.htm
-	(cd $(PTII)/ptolemy/configs/hyvisual; make hyvisualModels.txt)
+../ptolemy/configs/hyvisual/hyvisualModels.txt: \
+		../ptolemy/configs/hyvisual/intro.htm
+	(cd ../ptolemy/configs/hyvisual; make hyvisualModels.txt)
 
 #############################################################################
 # Viptos
@@ -772,18 +774,18 @@ codeDocViptos/doc/codeDoc/allNamedObjs.txt: codeDocViptos/doc/codeDoc/ptolemy/ac
 # Build the index of actors 
 codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 		codeDocViptos/doc/codeDoc/allNamedObjs.txt \
-		$(PTII)/ptolemy/configs/viptos/viptosModels.txt
+		../ptolemy/configs/viptos/viptosModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDocViptos/doc/codeDoc/allNamedObjs.txt \
-		$(PTII)/ptolemy/configs/viptos/viptosModels.txt \
+		../ptolemy/configs/viptos/viptosModels.txt \
 		codeDocViptos/doc/codeDoc
 
-$(ROOT)/ptolemy/configs/viptos/viptosModels.txt": ${PTII}/ptolemy/configs/viptos/intro.htm
-	(cd $(PTII)/ptolemy/configs/viptos; make viptosModels.txt)
+$(ROOT)/ptolemy/configs/viptos/viptosModels.txt: ../ptolemy/configs/viptos/intro.htm
+	(cd ../ptolemy/configs/viptos; make viptosModels.txt)
 
 #############################################################################
 # VisualSense
@@ -819,19 +821,19 @@ codeDocVisualSense/doc/codeDoc/allNamedObjs.txt: codeDocVisualSense/doc/codeDoc/
 # Build the index of actors 
 codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 		codeDocVisualSense/doc/codeDoc/allNamedObjs.txt \
-		$(PTII)/ptolemy/configs/visualsense/visualsenseModels.txt
+		../ptolemy/configs/visualsense/visualsenseModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDocVisualSense/doc/codeDoc/allNamedObjs.txt \
-		$(PTII)/ptolemy/configs/visualsense/visualsenseModels.txt \
+		../ptolemy/configs/visualsense/visualsenseModels.txt \
 		codeDocVisualSense/doc/codeDoc
 
 $(ROOT)/ptolemy/configs/visualsense/visualsenseModels.txt: \
-		$(PTII)/ptolemy/configs/visualsense/intro.htm
-	(cd $(PTII)/ptolemy/configs/visualsense; make visualsenseModels.txt)
+		../ptolemy/configs/visualsense/intro.htm
+	(cd ../ptolemy/configs/visualsense; make visualsenseModels.txt)
 
 #############################################################################
 # Doccheck
@@ -839,7 +841,7 @@ $(ROOT)/ptolemy/configs/visualsense/visualsenseModels.txt: \
 # Doccheck is a doclet that checks for bugs
 # Location of the doccheck jar file, available from
 # http://java.sun.com/developer/earlyAccess/doccheck/
-DOCCHECKJAR =	$(PTII)/vendors/sun/doccheck1.2b2/doccheck.jar
+DOCCHECKJAR =	../vendors/sun/doccheck1.2b2/doccheck.jar
 JDOCCHECKDOCLET = -doclet com.sun.tools.doclets.doccheck.DocCheck  \
 	-docletpath $(DOCCHECKJAR)
 
@@ -857,7 +859,7 @@ doccheck/index.html:
 #
 
 # Location of the FindBugs sources
-FINDBUGS=$(PTII)/vendors/findbugs-1.1.1-rc1
+FINDBUGS=../vendors/findbugs-1.1.1-rc1
 
 findbugs: findbugs.htm findbugs.xml
 
