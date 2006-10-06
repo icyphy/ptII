@@ -1184,19 +1184,6 @@ public class ASTFormatter extends ASTVisitor {
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
-    public boolean visit(InstanceofExpression node) {
-        node.getLeftOperand().accept(this);
-        _output(" instanceof ");
-        node.getRightOperand().accept(this);
-        return false;
-    }
-
-    /** Visit an ast node, and return whether its children should be further
-     *  visited.
-     *  
-     *  @param node The AST node.
-     *  @return Whether its children should be further visited.
-     */
     public boolean visit(Initializer node) {
         if (node.getJavadoc() != null) {
             node.getJavadoc().accept(this);
@@ -1213,6 +1200,19 @@ public class ASTFormatter extends ASTVisitor {
         _output(_indent);
         node.getBody().accept(this);
         _output("\n");
+        return false;
+    }
+
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
+     */
+    public boolean visit(InstanceofExpression node) {
+        node.getLeftOperand().accept(this);
+        _output(" instanceof ");
+        node.getRightOperand().accept(this);
         return false;
     }
 
@@ -1302,51 +1302,6 @@ public class ASTFormatter extends ASTVisitor {
         node.getName().accept(this);
         _output(" = ");
         node.getValue().accept(this);
-        return false;
-    }
-
-    /** Visit an ast node, and return whether its children should be further
-     *  visited.
-     *  
-     *  @param node The AST node.
-     *  @return Whether its children should be further visited.
-     */
-    public boolean visit(MethodRef node) {
-        if (node.getQualifier() != null) {
-            node.getQualifier().accept(this);
-        }
-
-        _output("#");
-        node.getName().accept(this);
-        _output("(");
-
-        for (Iterator it = node.parameters().iterator(); it.hasNext();) {
-            MethodRefParameter e = (MethodRefParameter) it.next();
-            e.accept(this);
-
-            if (it.hasNext()) {
-                _output(", ");
-            }
-        }
-
-        _output(")");
-        return false;
-    }
-
-    /** Visit an ast node, and return whether its children should be further
-     *  visited.
-     *  
-     *  @param node The AST node.
-     *  @return Whether its children should be further visited.
-     */
-    public boolean visit(MethodRefParameter node) {
-        node.getType().accept(this);
-
-        if (node.getName() != null) {
-            _output(" ");
-            node.getName().accept(this);
-        }
-
         return false;
     }
 
@@ -1493,6 +1448,51 @@ public class ASTFormatter extends ASTVisitor {
         }
 
         _output(")");
+        return false;
+    }
+
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
+     */
+    public boolean visit(MethodRef node) {
+        if (node.getQualifier() != null) {
+            node.getQualifier().accept(this);
+        }
+
+        _output("#");
+        node.getName().accept(this);
+        _output("(");
+
+        for (Iterator it = node.parameters().iterator(); it.hasNext();) {
+            MethodRefParameter e = (MethodRefParameter) it.next();
+            e.accept(this);
+
+            if (it.hasNext()) {
+                _output(", ");
+            }
+        }
+
+        _output(")");
+        return false;
+    }
+
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
+     */
+    public boolean visit(MethodRefParameter node) {
+        node.getType().accept(this);
+
+        if (node.getName() != null) {
+            _output(" ");
+            node.getName().accept(this);
+        }
+
         return false;
     }
 
@@ -2370,30 +2370,6 @@ public class ASTFormatter extends ASTVisitor {
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
-    public boolean visit(WildcardType node) {
-        _output("?");
-
-        Type bound = node.getBound();
-
-        if (bound != null) {
-            if (node.isUpperBound()) {
-                _output(" extends ");
-            } else {
-                _output(" super ");
-            }
-
-            bound.accept(this);
-        }
-
-        return false;
-    }
-
-    /** Visit an ast node, and return whether its children should be further
-     *  visited.
-     *  
-     *  @param node The AST node.
-     *  @return Whether its children should be further visited.
-     */
     public boolean visit(WhileStatement node) {
         _output(_indent);
         _output("while (");
@@ -2414,6 +2390,30 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
+     */
+    public boolean visit(WildcardType node) {
+        _output("?");
+
+        Type bound = node.getBound();
+
+        if (bound != null) {
+            if (node.isUpperBound()) {
+                _output(" extends ");
+            } else {
+                _output(" super ");
+            }
+
+            bound.accept(this);
+        }
+
+        return false;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
 
@@ -2425,7 +2425,7 @@ public class ASTFormatter extends ASTVisitor {
         while ((_comment != null) && (_commentStartPosition <= startPosition)) {
             // Output the comment.
             _comment.accept(this);
-            startPosition = _comment.getStartPosition() + _comment.getLength();
+            startPosition += _comment.getLength();
 
             try {
                 _nextComment();
@@ -2606,22 +2606,6 @@ public class ASTFormatter extends ASTVisitor {
     /**
      * Appends the text representation of the given modifier flags,
      * followed by a single space.
-     * Used for 3.0 modifiers and annotations.
-     *
-     * @param ext the list of modifier and annotation nodes
-     * (element type: <code>IExtendedModifiers</code>)
-     */
-    private void _outputModifiers(List ext) {
-        for (Iterator it = ext.iterator(); it.hasNext();) {
-            ASTNode p = (ASTNode) it.next();
-            p.accept(this);
-            _output(" ");
-        }
-    }
-
-    /**
-     * Appends the text representation of the given modifier flags,
-     * followed by a single space.
      * Used for JLS2 modifiers.
      *
      * @param modifiers the modifier flags
@@ -2669,6 +2653,22 @@ public class ASTFormatter extends ASTVisitor {
 
         if (Modifier.isTransient(modifiers)) {
             _output("transient ");
+        }
+    }
+
+    /**
+     * Appends the text representation of the given modifier flags,
+     * followed by a single space.
+     * Used for 3.0 modifiers and annotations.
+     *
+     * @param ext the list of modifier and annotation nodes
+     * (element type: <code>IExtendedModifiers</code>)
+     */
+    private void _outputModifiers(List ext) {
+        for (Iterator it = ext.iterator(); it.hasNext();) {
+            ASTNode p = (ASTNode) it.next();
+            p.accept(this);
+            _output(" ");
         }
     }
 

@@ -229,13 +229,13 @@ public class ASTDump extends ASTVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
 
-    /** The current indentation, a string of spaces.
-     */
-    private StringBuffer _indent = new StringBuffer();
-
     /** The string buffer, where the output is added to.
      */
     private StringBuffer _buffer;
+
+    /** The current indentation, a string of spaces.
+     */
+    private StringBuffer _indent = new StringBuffer();
 
     /** The writer, where the output is written to.
      */

@@ -118,7 +118,7 @@ public class HandlerList {
      *
      *  @return The list of alias handlers.
      */
-    public List getAliasHandlers() {
+    public List<AliasHandler> getAliasHandlers() {
         return _aliasHandlers;
     }
 
@@ -126,7 +126,7 @@ public class HandlerList {
      *
      *  @return The list of assignment handlers.
      */
-    public List getAssignmentHandlers() {
+    public List<AssignmentHandler> getAssignmentHandlers() {
         return _assignmentHandlers;
     }
 
@@ -134,7 +134,7 @@ public class HandlerList {
      *
      *  @return The list of class declaration handlers.
      */
-    public List getClassHandlers() {
+    public List<ClassHandler> getClassHandlers() {
         return _classHandlers;
     }
 
@@ -142,7 +142,7 @@ public class HandlerList {
      *
      *  @return The list of constructor handlers.
      */
-    public List getConstructorHandlers() {
+    public List<ConstructorHandler> getConstructorHandlers() {
         return _constructorHandlers;
     }
 
@@ -150,7 +150,7 @@ public class HandlerList {
      *
      *  @return The list of cross-analysis handlers.
      */
-    public List getCrossAnalysisHandlers() {
+    public List<CrossAnalysisHandler> getCrossAnalysisHandlers() {
         return _crossAnalysisHandlers;
     }
 
@@ -158,7 +158,7 @@ public class HandlerList {
      *
      *  @return The list of field declaration handlers.
      */
-    public List getFieldDeclarationHandlers() {
+    public List<FieldDeclarationHandler> getFieldDeclarationHandlers() {
         return _fieldDeclarationHandlers;
     }
 
@@ -166,7 +166,7 @@ public class HandlerList {
      *
      *  @return The list of method declaration handlers.
      */
-    public List getMethodDeclarationHandlers() {
+    public List<MethodDeclarationHandler> getMethodDeclarationHandlers() {
         return _methodDeclarationHandlers;
     }
 
@@ -287,29 +287,35 @@ public class HandlerList {
 
     /** The list of alias handlers.
      */
-    private List _aliasHandlers = new LinkedList();
+    private List<AliasHandler> _aliasHandlers = new LinkedList<AliasHandler>();
 
     /** The list of assignment handlers.
      */
-    private List _assignmentHandlers = new LinkedList();
+    private List<AssignmentHandler> _assignmentHandlers =
+    	new LinkedList<AssignmentHandler>();
 
     /** The list of class declaration handlers.
      */
-    private List _classHandlers = new LinkedList();
+    private List<ClassHandler> _classHandlers =
+    	new LinkedList<ClassHandler>();
 
     /** The list of constructor handlers.
      */
-    private List _constructorHandlers = new LinkedList();
+    private List<ConstructorHandler> _constructorHandlers =
+    	new LinkedList<ConstructorHandler>();
 
     /** The list of cross-analysis handlers.
      */
-    private List _crossAnalysisHandlers = new LinkedList();
+    private List<CrossAnalysisHandler> _crossAnalysisHandlers =
+    	new LinkedList<CrossAnalysisHandler>();
 
     /** The list of field declaration handlers.
      */
-    private List _fieldDeclarationHandlers = new LinkedList();
+    private List<FieldDeclarationHandler> _fieldDeclarationHandlers =
+    	new LinkedList<FieldDeclarationHandler>();
 
     /** The list of method declaration handlers.
      */
-    private List _methodDeclarationHandlers = new LinkedList();
+    private List<MethodDeclarationHandler> _methodDeclarationHandlers =
+    	new LinkedList<MethodDeclarationHandler>();
 }

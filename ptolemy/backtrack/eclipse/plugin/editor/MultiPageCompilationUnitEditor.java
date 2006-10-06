@@ -40,7 +40,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.eclipse.jdt.ui.IWorkingCopyManager;
@@ -344,10 +346,21 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
      *   retrieved from the Eclipse Java editor.
      */
     private CompilationUnit _getCompilationUnit() throws JavaModelException {
-        IWorkingCopyManager manager = JavaPlugin.getDefault()
+
+		IWorkingCopyManager manager = JavaPlugin.getDefault()
                 .getWorkingCopyManager();
         ICompilationUnit unit = manager.getWorkingCopy(getEditorInput());
-        return AST.parseCompilationUnit(unit, false);
+        
+		CompilerOptions options =
+			new CompilerOptions(unit.getJavaProject().getOptions(true));
+		ASTParser parser = ASTParser.newParser(AST.JLS3);
+		parser.setCompilerOptions(options.getMap());
+		parser.setSource(unit.getBuffer().getCharacters());
+		parser.setKind(ASTParser.K_COMPILATION_UNIT);
+		parser.setResolveBindings(false);
+		CompilationUnit result = (CompilationUnit) parser.createAST(null);
+
+		return result; //AST.parseCompilationUnit(unit, false);
     }
 
     /** Get the file containing the transformed code for preview.

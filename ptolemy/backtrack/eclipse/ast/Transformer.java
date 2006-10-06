@@ -27,6 +27,21 @@
  */
 package ptolemy.backtrack.eclipse.ast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.MalformedURLException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import ptolemy.backtrack.eclipse.ast.transform.AssignmentRule;
@@ -38,22 +53,6 @@ import ptolemy.backtrack.util.SourceOutputStream;
 import ptolemy.backtrack.util.Strings;
 import ptolemy.backtrack.xmlparser.ConfigParser;
 import ptolemy.backtrack.xmlparser.XmlOutput;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.net.MalformedURLException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// Transformer
@@ -71,6 +70,7 @@ import java.util.Set;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class Transformer {
+	
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -108,8 +108,8 @@ public class Transformer {
             }
 
             // Set up the list of file names.
-            List fileList = new LinkedList();
-            Set crossAnalysis = new HashSet();
+            List<File> fileList = new LinkedList<File>();
+            Set<String> crossAnalysis = new HashSet<String>();
 
             for (int i = start; i < args.length; i++) {
                 String pathOrFile = args[i];
@@ -123,22 +123,21 @@ public class Transformer {
                     File listPath = listFile.getParentFile();
                     BufferedReader reader = new BufferedReader(
                             new InputStreamReader(new FileInputStream(listName)));
-                    List strings = new LinkedList();
+                    List<String> strings = new LinkedList<String>();
                     String line = reader.readLine();
 
                     while (line != null) {
-                        strings
-                                .add(new File(listPath, line)
+                        strings.add(new File(listPath, line)
                                         .getCanonicalPath());
                         line = reader.readLine();
                     }
 
                     files = new File[strings.size()];
 
-                    Iterator stringsIter = strings.iterator();
+                    Iterator<String> stringsIter = strings.iterator();
 
                     for (int j = 0; stringsIter.hasNext(); j++) {
-                        files[j] = new File((String) stringsIter.next());
+                        files[j] = new File(stringsIter.next());
                     }
                 } else {
                     files = PathFinder.getJavaFiles(pathOrFile, true);
@@ -178,10 +177,10 @@ public class Transformer {
 
             // Compute the array of cross-analyzed types.
             String[] crossAnalyzedTypes = new String[crossAnalysis.size()];
-            Iterator crossAnalysisIter = crossAnalysis.iterator();
+            Iterator<String> crossAnalysisIter = crossAnalysis.iterator();
 
             for (int i = 0; crossAnalysisIter.hasNext(); i++) {
-                crossAnalyzedTypes[i] = (String) crossAnalysisIter.next();
+                crossAnalyzedTypes[i] = crossAnalysisIter.next();
             }
 
             Writer standardWriter = _defaultToStandardOutput ? new OutputStreamWriter(
@@ -189,10 +188,10 @@ public class Transformer {
                     : null;
 
             // Handle files.
-            Iterator filesIter = fileList.iterator();
+            Iterator<File> filesIter = fileList.iterator();
 
             while (filesIter.hasNext()) {
-                File file = (File) filesIter.next();
+                File file = filesIter.next();
                 String fileName = file.getPath();
                 System.err.println("Transforming \"" + fileName + "\"...");
 
@@ -266,67 +265,6 @@ public class Transformer {
         }
 
         return position;
-    }
-
-    /** Transform the Java source in the file given by its name with no
-     *  explicit class path, and output the result to the writer. This
-     *  is the same as calling <tt>transform(fileName, writer, null)</tt>.
-     *
-     *  @param fileName The Java file name.
-     *  @param writer The writer where output is written.
-     *  @exception IOException If IO exception occurs when reading from
-     *   the Java file or riting to the output.
-     *  @exception ASTMalformedException If the Java source is illegal.
-     *  @see #transform(String, Writer, String[])
-     */
-    public static void transform(String fileName, Writer writer)
-            throws IOException, ASTMalformedException {
-        transform(fileName, writer, null);
-    }
-
-    /** Transform the Java source in the file given by its name with
-     *  given class paths, and output the result to the writer.
-     *  <p>
-     *  If a output directory is set with the <tt>-output</tt>
-     *  command-line argument, the output is written to a Java source
-     *  file with that directory as the root directory. The given
-     *  writer is not used in that case.
-     *
-     *  @param fileName The Java file name.
-     *  @param writer The writer where output is written.
-     *  @param classPaths The class paths.
-     *  @exception IOException If IO exception occurs when reading from
-     *   the Java file or riting to the output.
-     *  @exception ASTMalformedException If the Java source is illegal.
-     *  @see #transform(String, Writer)
-     */
-    public static void transform(String fileName, Writer writer,
-            String[] classPaths) throws IOException, ASTMalformedException {
-        transform(fileName, writer, classPaths, null);
-    }
-
-    /** Transform the Java source in the file given by its name with
-     *  given class paths, and output the result to the writer.
-     *  <p>
-     *  If a output directory is set with the <tt>-output</tt>
-     *  command-line argument, the output is written to a Java source
-     *  file with that directory as the root directory. The given
-     *  writer is not used in that case.
-     *
-     *  @param fileName The Java file name.
-     *  @param writer The writer where output is written.
-     *  @param classPaths The class paths.
-     *  @param crossAnalyzedTypes The array of names of types to be added to
-     *   the visitor's cross-analyzed types list.
-     *  @exception IOException If IO exception occurs when reading from
-     *   the Java file or riting to the output.
-     *  @exception ASTMalformedException If the Java source is illegal.
-     *  @see #transform(String, Writer)
-     */
-    public static void transform(String fileName, Writer writer,
-            String[] classPaths, String[] crossAnalyzedTypes)
-            throws IOException, ASTMalformedException {
-        transform(fileName, null, writer, classPaths, crossAnalyzedTypes);
     }
 
     /** Transform the AST with given class paths, and output the result to
@@ -412,6 +350,67 @@ public class Transformer {
         }
     }
 
+    /** Transform the Java source in the file given by its name with no
+     *  explicit class path, and output the result to the writer. This
+     *  is the same as calling <tt>transform(fileName, writer, null)</tt>.
+     *
+     *  @param fileName The Java file name.
+     *  @param writer The writer where output is written.
+     *  @exception IOException If IO exception occurs when reading from
+     *   the Java file or riting to the output.
+     *  @exception ASTMalformedException If the Java source is illegal.
+     *  @see #transform(String, Writer, String[])
+     */
+    public static void transform(String fileName, Writer writer)
+            throws IOException, ASTMalformedException {
+        transform(fileName, writer, null);
+    }
+
+    /** Transform the Java source in the file given by its name with
+     *  given class paths, and output the result to the writer.
+     *  <p>
+     *  If a output directory is set with the <tt>-output</tt>
+     *  command-line argument, the output is written to a Java source
+     *  file with that directory as the root directory. The given
+     *  writer is not used in that case.
+     *
+     *  @param fileName The Java file name.
+     *  @param writer The writer where output is written.
+     *  @param classPaths The class paths.
+     *  @exception IOException If IO exception occurs when reading from
+     *   the Java file or riting to the output.
+     *  @exception ASTMalformedException If the Java source is illegal.
+     *  @see #transform(String, Writer)
+     */
+    public static void transform(String fileName, Writer writer,
+            String[] classPaths) throws IOException, ASTMalformedException {
+        transform(fileName, writer, classPaths, null);
+    }
+
+    /** Transform the Java source in the file given by its name with
+     *  given class paths, and output the result to the writer.
+     *  <p>
+     *  If a output directory is set with the <tt>-output</tt>
+     *  command-line argument, the output is written to a Java source
+     *  file with that directory as the root directory. The given
+     *  writer is not used in that case.
+     *
+     *  @param fileName The Java file name.
+     *  @param writer The writer where output is written.
+     *  @param classPaths The class paths.
+     *  @param crossAnalyzedTypes The array of names of types to be added to
+     *   the visitor's cross-analyzed types list.
+     *  @exception IOException If IO exception occurs when reading from
+     *   the Java file or riting to the output.
+     *  @exception ASTMalformedException If the Java source is illegal.
+     *  @see #transform(String, Writer)
+     */
+    public static void transform(String fileName, Writer writer,
+            String[] classPaths, String[] crossAnalyzedTypes)
+            throws IOException, ASTMalformedException {
+        transform(fileName, null, writer, classPaths, crossAnalyzedTypes);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                       public fields                       ////
 
@@ -455,7 +454,7 @@ public class Transformer {
             // Remove the configuration.
             SourceOutputStream stream = SourceOutputStream.getStream(
                     _configName, _overwrite);
-            Set classSet = new HashSet();
+            Set<String> classSet = new HashSet<String>();
             classSet.addAll(_classes);
 
             ConfigParser parser = new ConfigParser();
@@ -521,64 +520,7 @@ public class Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        nested class                       ////
-    //////////////////////////////////////////////////////////////////////////
-    //// InnerClassFilter
-
-    /**
-     File name filter for inner classes in the given class. Inner classes
-     are saved in class files with names containing "$".
-
-     @author Thomas Feng
-     @version $Id$
-     @since Ptolemy II 5.1
-     @Pt.ProposedRating Red (tfeng)
-     @Pt.AcceptedRating Red (tfeng)
-     */
-    private static class InnerClassFilter implements FilenameFilter {
-        /** Construct an inner class filter.
-         *
-         *  @param className The name of the class whose inner classes (if any)
-         *   are looked for.
-         */
-        InnerClassFilter(String className) {
-            _className = className;
-        }
-
-        /** Test whether a file in a directory is accepted.
-         *
-         *  @param dir The directory where the file is in.
-         *  @param name The simple name of the file.
-         *  @return <tt>true</tt> if the file is accepted; <tt>false</tt>
-         *   otherwise.
-         */
-        public boolean accept(File dir, String name) {
-            return name.startsWith(_className + "$") && name.endsWith(".class");
-        }
-
-        /** The name of the given class whose inner classes (if any) are looked
-         *  for.
-         */
-        private String _className;
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
-
-    /** Construct a transformer. This constructor should not be called from
-     *  outside of this class.
-     *
-     *  @param source The Java source.
-     *  @param writer The writer where the output is written.
-     *  @param classPaths An array of explicit class paths, or <tt>null</tt>
-     *   if none.
-     *  @exception  MalformedURLException If a classpath is not a proper URL.
-     */
-    private Transformer(char[] source, String[] classPaths)
-            throws MalformedURLException{
-        _source = source;
-        _visitor = new TypeAnalyzer(classPaths);
-    }
 
     /** Construct a transformer. This constructor should not be called from
      *  outside of this class.
@@ -602,7 +544,7 @@ public class Transformer {
      *  @param classFileName The file name of the inner class to be added.
      *  @param packageName The name of the package that the inner class is in.
      */
-    private static void _addInnerClasses(Set crossAnalysis,
+    private static void _addInnerClasses(Set<String> crossAnalysis,
             String classFileName, String packageName) {
         File topFile = new File(classFileName);
         File path = topFile.getParentFile();
@@ -654,24 +596,37 @@ public class Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
 
-    /** The Java source file name, if not <tt>null</tt>.
-     */
-    private String _fileName;
-
-    /** The Java source, if not <tt>null</tt>
-     */
-    private char[] _source;
-
     /** The AST. Not <tt>null</tt> after {@link #_parse()} is successfully
      *  called.
      */
     private CompilationUnit _ast;
 
-    /** The visitor used to traverse the AST.
+    /** Class names of all the source parsed.
      */
-    private TypeAnalyzer _visitor;
+    private static List<String> _classes = new LinkedList<String>();
 
-    private InputStream _docStream;
+    /** The name of the output XML configuration.
+     */
+    private static String _configName;
+
+    /** Whether the default output is the standard output. If it is
+     *  <tt>true</tt> and no "-prefix" parameter is given, the result of
+     *  refactoring is printed to the console; otherwise, files are created
+     *  for the output.
+     */
+    private static boolean _defaultToStandardOutput = true;
+
+    /** Extra classpaths to resolve classes.
+     */
+    private static String[] _extraClassPaths = new String[0];
+
+    /** The Java source file name, if not <tt>null</tt>.
+     */
+    private String _fileName;
+
+    /** Whether to overwrite existing file(s).
+     */
+    private static boolean _overwrite = false;
 
     /** The prefix to be added to the package name of the source.
      */
@@ -681,26 +636,54 @@ public class Transformer {
      */
     private static String _rootPath;
 
-    /** Whether to overwrite existing file(s).
+    /** The Java source, if not <tt>null</tt>
      */
-    private static boolean _overwrite = false;
+    private char[] _source;
 
-    /** The name of the output XML configuration.
+    /** The visitor used to traverse the AST.
      */
-    private static String _configName;
+    private TypeAnalyzer _visitor;
 
-    /** Class names of all the source parsed.
-     */
-    private static List _classes = new LinkedList();
+    ///////////////////////////////////////////////////////////////////
+    ////                        nested class                       ////
+    
+    //////////////////////////////////////////////////////////////////////////
+    //// InnerClassFilter
 
-    /** Extra classpaths to resolve classes.
-     */
-    private static String[] _extraClassPaths = new String[0];
+    /**
+     File name filter for inner classes in the given class. Inner classes
+     are saved in class files with names containing "$".
 
-    /** Whether the default output is the standard output. If it is
-     *  <tt>true</tt> and no "-prefix" parameter is given, the result of
-     *  refactoring is printed to the console; otherwise, files are created
-     *  for the output.
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
      */
-    private static boolean _defaultToStandardOutput = true;
+    private static class InnerClassFilter implements FilenameFilter {
+        /** Test whether a file in a directory is accepted.
+         *
+         *  @param dir The directory where the file is in.
+         *  @param name The simple name of the file.
+         *  @return <tt>true</tt> if the file is accepted; <tt>false</tt>
+         *   otherwise.
+         */
+        public boolean accept(File dir, String name) {
+            return name.startsWith(_className + "$") && name.endsWith(".class");
+        }
+
+        /** Construct an inner class filter.
+         *
+         *  @param className The name of the class whose inner classes (if any)
+         *   are looked for.
+         */
+        InnerClassFilter(String className) {
+            _className = className;
+        }
+
+        /** The name of the given class whose inner classes (if any) are looked
+         *  for.
+         */
+        private String _className;
+    }
 }

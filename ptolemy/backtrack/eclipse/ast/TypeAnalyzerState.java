@@ -69,8 +69,7 @@ public class TypeAnalyzerState {
      *  @param type The type of the variable.
      */
     public void addVariable(String name, Type type) {
-        Hashtable table = (Hashtable) _variableStack.peek();
-        table.put(name, type);
+        _variableStack.peek().put(name, type);
     }
 
     /** Enter the scope of a block.
@@ -78,9 +77,9 @@ public class TypeAnalyzerState {
      *  @see #leaveBlock()
      */
     public void enterBlock() {
-        _previousClasses.push(new Hashtable());
+        _previousClasses.push(new Hashtable<String, Class<?>>());
     }
-
+    
     /** Enter the scope of a class. The current class is set to the class
      *  entered and the last current class is pushed to the previous class
      *  stack.
@@ -89,7 +88,11 @@ public class TypeAnalyzerState {
      *  @see #leaveClass()
      */
     public void enterClass(Class c) {
-        _previousClasses.push(_currentClass);
+    	if (_currentClass == null) {
+    		_previousClasses.push(null);
+    	} else {
+    		_previousClasses.push(new CurrentClassElement(_currentClass));
+    	}
         _anonymousCounts.push(new Integer(0));
         _currentClass = c;
         _loader.setCurrentClass(_currentClass, false);
@@ -116,7 +119,7 @@ public class TypeAnalyzerState {
      *
      *  @return The set of names of types to be cross-analyzed.
      */
-    public Set getCrossAnalyzedTypes() {
+    public Set<String> getCrossAnalyzedTypes() {
         return _crossAnalyzedTypes;
     }
 
@@ -144,7 +147,7 @@ public class TypeAnalyzerState {
      *  @return The previous class stack.
      *  @see #setPreviousClasses(Stack)
      */
-    public Stack getPreviousClasses() {
+    public Stack<Hashtable<String, Class<?>>> getPreviousClasses() {
         return _previousClasses;
     }
 
@@ -184,17 +187,17 @@ public class TypeAnalyzerState {
             return null;
         }
 
-        Hashtable table = (Hashtable) _variableStack.peek();
+        Hashtable<String, Type> table = _variableStack.peek();
 
         while (!table.containsKey(name) && (i >= 1)) {
             i--;
 
             if (!variablesOnly || !_classScopes.contains(new Integer(i))) {
-                table = (Hashtable) _variableStack.get(i);
+                table = _variableStack.get(i);
             }
         }
 
-        return (Type) table.get(name);
+        return table.get(name);
     }
 
     /** Get the variable stack. The variable stack is a stack of scopes.
@@ -207,7 +210,7 @@ public class TypeAnalyzerState {
      *  @return The variable stack.
      *  @see #setVariableStack(Stack)
      */
-    public Stack getVariableStack() {
+    public Stack<Hashtable<String, Type>> getVariableStack() {
         return _variableStack;
     }
 
@@ -223,10 +226,10 @@ public class TypeAnalyzerState {
             return false;
         }
 
-        Hashtable table = (Hashtable) _variableStack.peek();
+        Hashtable<String, Type> table = _variableStack.peek();
 
         while (!table.containsKey(name) && (i >= 1)) {
-            table = (Hashtable) _variableStack.get(--i);
+            table = _variableStack.get(--i);
         }
 
         return table.containsKey(name)
@@ -250,11 +253,14 @@ public class TypeAnalyzerState {
     public void leaveClass() {
         int i = _previousClasses.size() - 1;
 
-        while ((i >= 0) && !(_previousClasses.get(i) instanceof Class)) {
+        while ((i >= 0)
+        		&& !(_previousClasses.get(i) instanceof CurrentClassElement)) {
             i--;
         }
 
-        _currentClass = (i >= 0) ? (Class) _previousClasses.get(i) : null;
+        _currentClass = (i >= 0) ?
+        		((CurrentClassElement) _previousClasses.get(i))
+        		.getCurrentClassElement() : null;
         _previousClasses.pop();
         _anonymousCounts.pop();
         _loader.setCurrentClass(_currentClass, false);
@@ -314,7 +320,8 @@ public class TypeAnalyzerState {
      *  @param previousClasses The previous class stack.
      *  @see #getPreviousClasses()
      */
-    public void setPreviousClasses(Stack previousClasses) {
+    public void setPreviousClasses(
+    		Stack<Hashtable<String, Class<?>>> previousClasses) {
         _previousClasses = previousClasses;
     }
 
@@ -328,7 +335,7 @@ public class TypeAnalyzerState {
      *  @param variableStack The variable stack.
      *  @see #getVariableStack()
      */
-    public void setVariableStack(Stack variableStack) {
+    public void setVariableStack(Stack<Hashtable<String, Type>> variableStack) {
         _variableStack = variableStack;
     }
 
@@ -343,19 +350,54 @@ public class TypeAnalyzerState {
         _classScopes.remove(new Integer(_variableStack.size() - 1));
     }
 
+    /** A table to hold the current class, which is the only object in the
+     *  table.
+     * 
+     *  @author tfeng
+     */
+    public static class CurrentClassElement
+    extends Hashtable<String, Class<?>> {
+    	
+    	/** Construct a table with a single element (the current class object)
+    	 *  in it.
+    	 * 
+    	 *  @param currentClass The current class.
+    	 */
+    	public CurrentClassElement(Class<?> currentClass) {
+    		super.put(_EMPTY_NAME, currentClass);
+    	}
+    	
+    	/** Get the current class element recorded in this table.
+    	 * 
+    	 *  @return
+    	 */
+    	public Class<?> getCurrentClassElement() {
+    		return get(_EMPTY_NAME);
+    	}
+    	
+        /** An empty name as the key for the current class in the tables.
+         */
+        private static final String _EMPTY_NAME = "";
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                        private fields                     ////
 
-    /** The stack of currently opened scopes for variable
-     *  declaration. Each element is a {@link Hashtable}. In each table,
-     *  keys are variable names while values are {@link Type}'s of the
-     *  corresponding variables.
+    /** The type analyzer that owns this state.
      */
-    private Stack _variableStack = new Stack();
+    private TypeAnalyzer _analyzer;
 
-    /** The class loader used to load classes.
+    /** The stack of individual anonymous class counts.
      */
-    private LocalClassLoader _loader;
+    private Stack _anonymousCounts = new Stack();
+
+    /** The set of scopes that correspond to class declarations.
+     */
+    private Set _classScopes = new HashSet();
+
+    /** The set of names of types to be cross-analyzed.
+     */
+    private Set<String> _crossAnalyzedTypes = new HashSet<String>();
 
     /** The class currently being analyzed, whose declaration is opened
      *  most recently. <tt>null</tt> only when the analyzer is analyzing
@@ -364,28 +406,25 @@ public class TypeAnalyzerState {
      */
     private Class _currentClass;
 
+    /** The class loader used to load classes.
+     */
+    private LocalClassLoader _loader;
+
     /** The stack of previously opened class, which has not been closed
      *  yet.
      */
-    private Stack _previousClasses = new Stack();
-
-    /** The set of scopes that correspond to class declarations.
-     */
-    private Set _classScopes = new HashSet();
-
-    /** The set of names of types to be cross-analyzed.
-     */
-    private Set _crossAnalyzedTypes = new HashSet();
-
-    /** The type analyzer that owns this state.
-     */
-    private TypeAnalyzer _analyzer;
+    private Stack<Hashtable<String, Class<?>>> _previousClasses =
+    	new Stack<Hashtable<String, Class<?>>>();
 
     /** The counter for anonymous classes.
      */
     private int _totalAnonymousCount = 0;
-
-    /** The stack of individual anonymous class counts.
+    
+    /** The stack of currently opened scopes for variable
+     *  declaration. Each element is a {@link Hashtable}. In each table,
+     *  keys are variable names while values are {@link Type}'s of the
+     *  corresponding variables.
      */
-    private Stack _anonymousCounts = new Stack();
+    private Stack<Hashtable<String, Type>> _variableStack =
+    	new Stack<Hashtable<String, Type>>();
 }

@@ -219,17 +219,17 @@ public class Type {
                 formalType = formalType.removeOneDimension();
             }
 
-            Class class1 = selfType.toClass(loader);
-            Class class2 = formalType.toClass(loader);
+            Class<?> class1 = selfType.toClass(loader);
+            Class<?> class2 = formalType.toClass(loader);
             int i = 0;
 
             while (class1 != null) {
-                List workList = new LinkedList();
-                Set handledSet = new HashSet();
+                List<Class<?>> workList = new LinkedList<Class<?>>();
+                Set<Class<?>> handledSet = new HashSet<Class<?>>();
                 workList.add(class1);
 
                 while (!workList.isEmpty()) {
-                    Class c = (Class) workList.remove(0);
+                    Class<?> c = workList.remove(0);
 
                     if (c.getName().equals(class2.getName())) {
                         return i;
@@ -237,7 +237,7 @@ public class Type {
 
                     handledSet.add(c);
 
-                    Class[] interfaces = c.getInterfaces();
+                    Class<?>[] interfaces = c.getInterfaces();
 
                     for (int k = 0; k < interfaces.length; k++) {
                         if (!handledSet.contains(interfaces[k])) {
@@ -275,12 +275,12 @@ public class Type {
         fullName = toArrayType(fullName);
 
         if (_typeObjects.containsKey(fullName)) {
-            return (Type) _typeObjects.get(fullName);
+            return _typeObjects.get(fullName);
         } else {
             Type type;
 
             if (PRIMITIVE_TYPES.containsKey(fullName)) {
-                type = (Type) PRIMITIVE_TYPES.get(fullName);
+                type = PRIMITIVE_TYPES.get(fullName);
             } else {
                 type = new Type(fullName);
             }
@@ -428,10 +428,10 @@ public class Type {
         String elementType = buffer.toString();
 
         if (isPrimitive && (dimensions > 0)) {
-            Enumeration primitiveEnum = PRIMITIVE_ARRAY_TYPES.keys();
+            Enumeration<String> primitiveEnum = PRIMITIVE_ARRAY_TYPES.keys();
 
             while (primitiveEnum.hasMoreElements()) {
-                String realName = (String) primitiveEnum.nextElement();
+                String realName = primitiveEnum.nextElement();
 
                 if (PRIMITIVE_ARRAY_TYPES.get(realName).equals(elementType)) {
                     elementType = realName;
@@ -549,11 +549,11 @@ public class Type {
         int length = newName.length();
 
         if (length == 1) {
-            Enumeration keys = PRIMITIVE_ARRAY_TYPES.keys();
+            Enumeration<String> keys = PRIMITIVE_ARRAY_TYPES.keys();
 
             while (keys.hasMoreElements()) {
-                String key = (String) keys.nextElement();
-                String value = (String) PRIMITIVE_ARRAY_TYPES.get(key);
+                String key = keys.nextElement();
+                String value = PRIMITIVE_ARRAY_TYPES.get(key);
 
                 if (value.equals(newName)) {
                     return createType(key);
@@ -634,7 +634,7 @@ public class Type {
                 if (elementType.equals("null")) {
                     return "null";
                 } else {
-                    buffer.replace(dims, length, (String) PRIMITIVE_ARRAY_TYPES
+                    buffer.replace(dims, length, PRIMITIVE_ARRAY_TYPES
                             .get(elementType));
                 }
             } else {
@@ -655,13 +655,13 @@ public class Type {
      *   the same name as this type cannot be loaded with the given
      *   class loader.
      */
-    public Class toClass(ClassLoader loader) throws ClassNotFoundException {
+    public Class<?> toClass(ClassLoader loader) throws ClassNotFoundException {
         if (isPrimitive()) {
             if (equals(NULL)) {
                 // Impossible to load "null" type, though primitive.
                 throw new ClassNotFoundException("null");
             } else {
-                return (Class) PRIMITIVE_CLASSES.get(_fullName);
+                return PRIMITIVE_CLASSES.get(_fullName);
             }
         } else {
             if (_classObject == null) {
@@ -809,30 +809,34 @@ public class Type {
 
     /** The {@link Class} object corresponding to this type.
      */
-    private Class _classObject;
+    private Class<?> _classObject;
 
     /** The table of created {@link Type} objects, indexed by
      *  their full name. When a user creates a type object
      *  with the same name again, the first one created and
      *  stored in this table is returned.
      */
-    private static Hashtable _typeObjects = new Hashtable();
+    private static Hashtable<String, Type> _typeObjects =
+    	new Hashtable<String, Type>();
 
     /** Table of primitive types. Keys are names of primitive
      *  types; values are primitive {@link Type} objects.
      */
-    private static final Hashtable PRIMITIVE_TYPES = new Hashtable();
+    private static final Hashtable<String, Type> PRIMITIVE_TYPES =
+    	new Hashtable<String, Type>();
 
     /** Table of primitive {@link Class} objects. Each primitive
      *  type has a {@link Class} object to represent it.
      */
-    private static final Hashtable PRIMITIVE_CLASSES = new Hashtable();
+    private static final Hashtable<String, Class<?>> PRIMITIVE_CLASSES =
+    	new Hashtable<String, Class<?>>();
 
     /** Array nicknames for primitive element types. Keys are
      *  names of primitive types; keys are compact run-time
      *  representations.
      */
-    private static final Hashtable PRIMITIVE_ARRAY_TYPES = new Hashtable();
+    private static final Hashtable<String, String> PRIMITIVE_ARRAY_TYPES =
+    	new Hashtable<String, String>();
 
     // Initialize the constant tables.
     static {
