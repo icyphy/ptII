@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	AnythingToDouble.java \
 	BooleanToAnything.java \
 	CartesianToComplex.java \
 	CartesianToPolar.java \
