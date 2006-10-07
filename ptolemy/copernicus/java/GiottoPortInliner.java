@@ -67,7 +67,6 @@ import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
 import soot.jimple.toolkits.scalar.Evaluator;
-import soot.util.Chain;
 
 //////////////////////////////////////////////////////////////////////////
 //// GiottoPortInliner

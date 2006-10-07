@@ -1,6 +1,5 @@
 package ptolemy.actor.ptalon;
 
-import java.lang.reflect.Constructor;
 import java.util.LinkedList;
 import java.util.List;
 

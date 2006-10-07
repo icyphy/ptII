@@ -1,14 +1,9 @@
 package ptolemy.actor.ptalon;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
-import java.util.LinkedList;
-import java.util.List;
 
 import ptolemy.util.StringUtilities;
-
-import antlr.BaseAST;
 import antlr.CommonAST;
 import antlr.Token;
 import antlr.collections.AST;

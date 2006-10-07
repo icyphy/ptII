@@ -35,7 +35,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FixType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.data.unit.UnitUtilities;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.FixPoint;

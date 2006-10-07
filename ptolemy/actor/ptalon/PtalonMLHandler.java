@@ -2,10 +2,7 @@ package ptolemy.actor.ptalon;
 
 import java.io.File;
 import java.util.Hashtable;
-import java.util.Stack;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.util.StringUtilities;
 
