@@ -733,7 +733,7 @@ codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/c
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDocHyVisual/doc/codeDoc/allNamedObjs.txt \
-		$(PTII)/ptolemy/configs/hyvisual/hyvisualModels.txt \
+		"$(PTII)/ptolemy/configs/hyvisual/hyvisualModels.txt" \
 		codeDocHyVisual/doc/codeDoc
 
 ../ptolemy/configs/hyvisual/hyvisualModels.txt: \
