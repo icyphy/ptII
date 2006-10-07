@@ -952,9 +952,31 @@ public class NestedActorManager extends CodeManager {
                             String uniqueName = actor.uniqueName(boolParam);
                             parameter = new Parameter(actor, uniqueName);
                         }
-                        Token result = _parseTreeEvaluator.evaluateParseTree(
+                        try { 
+                            Token result = _parseTreeEvaluator.evaluateParseTree(
                                 parseTree, _scope);
-                        parameter.setToken(result);
+                            parameter.setToken(result);
+                        } catch (IllegalActionException e) {
+                            ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
+                            Set expressionVariables = collector
+                                    .collectFreeVariables(parseTree);
+                            Set scopeVariables = _scope.identifierSet();
+                            List excludedVariables = new LinkedList();
+                            for (Object variable : expressionVariables) {
+                                if (variable instanceof String) {
+                                    if (!scopeVariables.contains(variable)) {
+                                        excludedVariables.add(variable);
+                                    }
+                                }
+                            }
+                            ParseTreeSpecializer specializer = new ParseTreeSpecializer();
+                            parseTree = specializer.specialize(parseTree,
+                                    excludedVariables, _scope);
+                            ParseTreeWriter writer = new ParseTreeWriter();
+                            String outputExpression = writer
+                                    .printParseTree(parseTree);
+                            parameter.setExpression(outputExpression);
+                        }
                     } catch (ClassCastException e) {
                         AbstractSettableAttribute parameter = (AbstractSettableAttribute) actor
                                 .getAttribute(boolParam);

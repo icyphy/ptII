@@ -87,6 +87,7 @@
                 <ptalonExpressionParameter name="f2" value="&quot;u(0,1)&quot;"/>
                 <ptalonExpressionParameter name="h0" value="&quot;x(0,0)&quot;"/>
                 <ptalonExpressionParameter name="h1" value="&quot;x(0,1)&quot;"/>
+                <ptalonExpressionParameter name="initialStates" value="[0.0; 0.0; 0.0]"/>
             </ptalon>
         </configure>
     </entity>

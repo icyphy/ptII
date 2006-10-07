@@ -16,9 +16,9 @@
  * r, the number of outputs
  *
  * After these are assigned, parameters f1, f2, ..., fn and h1,
- * h2, ..., hr are created.  To these the user can assign expressions
- * to represent the nonlinear system.  Setting the expressions defines
- * the functions
+ * h2, ..., hr are created, as well as an initalStates parameter.  
+ * To these the user can assign expressions to represent the 
+ * nonlinear system.  Setting the expressions defines the functions
  * 
  * f0(x(0, 0), x(0, 1), ..., x(0, n-1), u(0, 0), u(0, 1), ..., u(0, m-1))
  * f1(x(0, 0), x(0, 1), ..., x(0, n-1), u(0, 0), u(0, 1), ..., u(0, m-1))
@@ -32,7 +32,12 @@
  * These expressions must be passed as strings, such as
  * "u(0, 1) * cos(x(0, 1)) + u(0, 1) * sin(x(0, 2))"
  *
- * @author Adam Cataldo (borrowed example from Jie Liu)
+ * The initialStates parameter should be given a column vector whose
+ * length equals the number of states, such as:
+ *
+ * [0.0; 1.0; 0.0]
+ *
+ * @author Adam Cataldo
  */
 
 /*
@@ -83,6 +88,16 @@ NonlinearStateSpace is {
 	for a initially [[ 0 ]] [[ a < numberOfOutputs ]] {
 		parameter h[[a]];
 	} next [[ a + 1 ]]
+	
+	/*
+	 * This if block is used to delay creating this parameter
+	 * until after the numberOfStates parameter is defined.
+	 * It's not really needed, but this way, there's not too
+	 * much clutter on the screen at first.
+	 */
+	if [[ numberOfOutputs > 0 ]] {
+		parameter initialStates;
+	} else {}
 
 	/*
 	 * The relation x and u represent the vector data for
@@ -130,7 +145,8 @@ NonlinearStateSpace is {
 			expression := [[ eval(eval("f" + a.toString)) ]]);
 		relation convertedX[[a]];
 		typeConverter(input := x[[a]], output := convertedX[[a]]);
-		integrator(input := convertedX[[a]], output := stateRelation);
+		integrator(input := convertedX[[a]], output := stateRelation,
+			initialState := [[initialStates(0, a)]]);
 		this(stateOutput := stateAsOutput);
 	} next [[ a + 1 ]]
 
