@@ -29,6 +29,7 @@ package ptolemy.actor.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -147,6 +148,21 @@ public class JVMTableau extends Tableau {
             } catch (java.security.AccessControlException accessControl) {
                 propertyBuffer.append("AccessControlException, probably from "
                         + "System.getProperties():\n" + accessControl);
+            }
+
+            
+            
+            try {
+                // Use reflection to get the thread info so that we
+                // don't have to inciude non-UCB code in this package.
+                Class printThreadsClass = Class.forName("util.testsuite.PrintThreads");
+
+                Method allThreads = printThreadsClass.getMethod("allThreads",
+                        new Class[] { boolean.class });
+                propertyBuffer.append("\nThreads:\n" 
+                        + (String) allThreads.invoke(null, new Object[] {true}));
+            } catch (Throwable throwable) {
+                // Ignore.
             }
 
             final JTextArea messageArea = new JTextArea(propertyBuffer
