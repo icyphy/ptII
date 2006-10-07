@@ -32,24 +32,16 @@ PATH=/usr/local/bin:${PATH}
 	    see <a
               href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm#settingptII">Set
               the value of the PTII environment variable</a>).
-
+<p>
 <li> Download the WinAVR tools:
    <ol> 
-          <li>Go to 
-                    <a href="http://sourceforge.net/project/showfiles.php?group_id=68108#in_browser" target="_top"><code>http://sourceforge.net/project/showfiles.php?group_id=68108</code></a>              
-                  <li>Download
-<a href="http://prdownloads.sourceforge.net/winavr/WinAVR-20040404-bin-install.exe?download" target="_top"><code>WinAVR-20040404-bin-install.exe</code></a>
-                  <br><b>Note:</b> Do <b>not</b> install 
-		  <code>WinAVR-20050214-install.exe</code>, as of 10/05,
-		  it will not work.  When converting .nc files to .moml files,
-		  you will see messages about avr-gcc not being able to find
-		  cc1.  Instead, install
-		  <code>WinAVR-20040404-bin-install.exe</code>.
+          <li>Download 
+	  <a href="http://ptolemy.eecs.berkeley.edu/viptos/viptos1.0/WinAVR-20040404-bin-install.exe"><code>WinAVR-20040404-bin-install.exe</code></a>
                   <li>Install WinAVR in any directory, <code>C:\WinAVR</code>
-		  is preferred.
-                    <i>FIXME: Directories with spaces in the pathname might not work?</i>
+		  is preferred, directories with spaces in the pathname might not work?</i>
                 </ol>
         
+<p>
 <li>Make a directory into which to store the source code for
       TinyOS 1.x and nesC:
         <pre>
@@ -57,10 +49,11 @@ mkdir -p $PTII/vendors/ptinyos
         </pre>
 
 <p>Note that the value of <CODE>$PTII</CODE> should not have spaces in it.
-        
+<p>        
 <li> Install nesC from a .tar.gz distribution
     <ol> 
-      <li>Download <a href="http://prdownloads.sourceforge.net/nescc/nesc-1.2.7a.tar.gz?download#in_browser">nesc-1.2.7a.tar.gz</a> or later version
+      <li>Download 
+	  <a href="http://ptolemy.eecs.berkeley.edu/viptos/viptos1.0/nesc-1.2.7a.tar.gz"><code>nesc-1.2.7a.tar.gz</code></a>
       to <CODE>$PTII/vendors/ptinyos</CODE>
         
       <li> Unzip and untar the nesc .tar.gz file:
