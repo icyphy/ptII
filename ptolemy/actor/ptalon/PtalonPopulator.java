@@ -106,13 +106,13 @@ public PtalonPopulator() {
 			switch ( _t.getType()) {
 			case PORT:
 			{
-				AST __t3908 = _t;
+				AST __t2 = _t;
 				PtalonAST tmp1_AST = null;
 				PtalonAST tmp1_AST_in = null;
 				tmp1_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp1_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp1_AST);
-				ASTPair __currentAST3908 = currentAST.copy();
+				ASTPair __currentAST2 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,PORT);
@@ -137,13 +137,13 @@ public PtalonPopulator() {
 				}
 				case DYNAMIC_NAME:
 				{
-					AST __t3910 = _t;
+					AST __t4 = _t;
 					PtalonAST tmp2_AST = null;
 					PtalonAST tmp2_AST_in = null;
 					tmp2_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 					tmp2_AST_in = (PtalonAST)_t;
 					astFactory.addASTChild(currentAST, tmp2_AST);
-					ASTPair __currentAST3910 = currentAST.copy();
+					ASTPair __currentAST4 = currentAST.copy();
 					currentAST.root = currentAST.child;
 					currentAST.child = null;
 					match(_t,DYNAMIC_NAME);
@@ -160,8 +160,8 @@ public PtalonPopulator() {
 					astFactory.addASTChild(currentAST, h_AST);
 					match(_t,EXPRESSION);
 					_t = _t.getNextSibling();
-					currentAST = __currentAST3910;
-					_t = __t3910;
+					currentAST = __currentAST4;
+					_t = __t4;
 					_t = _t.getNextSibling();
 					
 							if (info.isReady()) {
@@ -185,21 +185,21 @@ public PtalonPopulator() {
 				}
 				}
 				}
-				currentAST = __currentAST3908;
-				_t = __t3908;
+				currentAST = __currentAST2;
+				_t = __t2;
 				_t = _t.getNextSibling();
 				port_declaration_AST = (PtalonAST)currentAST.root;
 				break;
 			}
 			case INPORT:
 			{
-				AST __t3911 = _t;
+				AST __t5 = _t;
 				PtalonAST tmp3_AST = null;
 				PtalonAST tmp3_AST_in = null;
 				tmp3_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp3_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp3_AST);
-				ASTPair __currentAST3911 = currentAST.copy();
+				ASTPair __currentAST5 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,INPORT);
@@ -224,13 +224,13 @@ public PtalonPopulator() {
 				}
 				case DYNAMIC_NAME:
 				{
-					AST __t3913 = _t;
+					AST __t7 = _t;
 					PtalonAST tmp4_AST = null;
 					PtalonAST tmp4_AST_in = null;
 					tmp4_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 					tmp4_AST_in = (PtalonAST)_t;
 					astFactory.addASTChild(currentAST, tmp4_AST);
-					ASTPair __currentAST3913 = currentAST.copy();
+					ASTPair __currentAST7 = currentAST.copy();
 					currentAST.root = currentAST.child;
 					currentAST.child = null;
 					match(_t,DYNAMIC_NAME);
@@ -247,8 +247,8 @@ public PtalonPopulator() {
 					astFactory.addASTChild(currentAST, j_AST);
 					match(_t,EXPRESSION);
 					_t = _t.getNextSibling();
-					currentAST = __currentAST3913;
-					_t = __t3913;
+					currentAST = __currentAST7;
+					_t = __t7;
 					_t = _t.getNextSibling();
 					
 							if (info.isReady()) {
@@ -272,21 +272,21 @@ public PtalonPopulator() {
 				}
 				}
 				}
-				currentAST = __currentAST3911;
-				_t = __t3911;
+				currentAST = __currentAST5;
+				_t = __t5;
 				_t = _t.getNextSibling();
 				port_declaration_AST = (PtalonAST)currentAST.root;
 				break;
 			}
 			case OUTPORT:
 			{
-				AST __t3914 = _t;
+				AST __t8 = _t;
 				PtalonAST tmp5_AST = null;
 				PtalonAST tmp5_AST_in = null;
 				tmp5_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp5_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp5_AST);
-				ASTPair __currentAST3914 = currentAST.copy();
+				ASTPair __currentAST8 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,OUTPORT);
@@ -311,13 +311,13 @@ public PtalonPopulator() {
 				}
 				case DYNAMIC_NAME:
 				{
-					AST __t3916 = _t;
+					AST __t10 = _t;
 					PtalonAST tmp6_AST = null;
 					PtalonAST tmp6_AST_in = null;
 					tmp6_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 					tmp6_AST_in = (PtalonAST)_t;
 					astFactory.addASTChild(currentAST, tmp6_AST);
-					ASTPair __currentAST3916 = currentAST.copy();
+					ASTPair __currentAST10 = currentAST.copy();
 					currentAST.root = currentAST.child;
 					currentAST.child = null;
 					match(_t,DYNAMIC_NAME);
@@ -334,8 +334,8 @@ public PtalonPopulator() {
 					astFactory.addASTChild(currentAST, l_AST);
 					match(_t,EXPRESSION);
 					_t = _t.getNextSibling();
-					currentAST = __currentAST3916;
-					_t = __t3916;
+					currentAST = __currentAST10;
+					_t = __t10;
 					_t = _t.getNextSibling();
 					
 							if (info.isReady()) {
@@ -359,21 +359,21 @@ public PtalonPopulator() {
 				}
 				}
 				}
-				currentAST = __currentAST3914;
-				_t = __t3914;
+				currentAST = __currentAST8;
+				_t = __t8;
 				_t = _t.getNextSibling();
 				port_declaration_AST = (PtalonAST)currentAST.root;
 				break;
 			}
 			case MULTIPORT:
 			{
-				AST __t3917 = _t;
+				AST __t11 = _t;
 				PtalonAST tmp7_AST = null;
 				PtalonAST tmp7_AST_in = null;
 				tmp7_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp7_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp7_AST);
-				ASTPair __currentAST3917 = currentAST.copy();
+				ASTPair __currentAST11 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,MULTIPORT);
@@ -398,13 +398,13 @@ public PtalonPopulator() {
 				}
 				case DYNAMIC_NAME:
 				{
-					AST __t3919 = _t;
+					AST __t13 = _t;
 					PtalonAST tmp8_AST = null;
 					PtalonAST tmp8_AST_in = null;
 					tmp8_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 					tmp8_AST_in = (PtalonAST)_t;
 					astFactory.addASTChild(currentAST, tmp8_AST);
-					ASTPair __currentAST3919 = currentAST.copy();
+					ASTPair __currentAST13 = currentAST.copy();
 					currentAST.root = currentAST.child;
 					currentAST.child = null;
 					match(_t,DYNAMIC_NAME);
@@ -421,8 +421,8 @@ public PtalonPopulator() {
 					astFactory.addASTChild(currentAST, n_AST);
 					match(_t,EXPRESSION);
 					_t = _t.getNextSibling();
-					currentAST = __currentAST3919;
-					_t = __t3919;
+					currentAST = __currentAST13;
+					_t = __t13;
 					_t = _t.getNextSibling();
 					
 							if (info.isReady()) {
@@ -446,21 +446,21 @@ public PtalonPopulator() {
 				}
 				}
 				}
-				currentAST = __currentAST3917;
-				_t = __t3917;
+				currentAST = __currentAST11;
+				_t = __t11;
 				_t = _t.getNextSibling();
 				port_declaration_AST = (PtalonAST)currentAST.root;
 				break;
 			}
 			case MULTIINPORT:
 			{
-				AST __t3920 = _t;
+				AST __t14 = _t;
 				PtalonAST tmp9_AST = null;
 				PtalonAST tmp9_AST_in = null;
 				tmp9_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp9_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp9_AST);
-				ASTPair __currentAST3920 = currentAST.copy();
+				ASTPair __currentAST14 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,MULTIINPORT);
@@ -485,13 +485,13 @@ public PtalonPopulator() {
 				}
 				case DYNAMIC_NAME:
 				{
-					AST __t3922 = _t;
+					AST __t16 = _t;
 					PtalonAST tmp10_AST = null;
 					PtalonAST tmp10_AST_in = null;
 					tmp10_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 					tmp10_AST_in = (PtalonAST)_t;
 					astFactory.addASTChild(currentAST, tmp10_AST);
-					ASTPair __currentAST3922 = currentAST.copy();
+					ASTPair __currentAST16 = currentAST.copy();
 					currentAST.root = currentAST.child;
 					currentAST.child = null;
 					match(_t,DYNAMIC_NAME);
@@ -508,8 +508,8 @@ public PtalonPopulator() {
 					astFactory.addASTChild(currentAST, p_AST);
 					match(_t,EXPRESSION);
 					_t = _t.getNextSibling();
-					currentAST = __currentAST3922;
-					_t = __t3922;
+					currentAST = __currentAST16;
+					_t = __t16;
 					_t = _t.getNextSibling();
 					
 							if (info.isReady()) {
@@ -533,21 +533,21 @@ public PtalonPopulator() {
 				}
 				}
 				}
-				currentAST = __currentAST3920;
-				_t = __t3920;
+				currentAST = __currentAST14;
+				_t = __t14;
 				_t = _t.getNextSibling();
 				port_declaration_AST = (PtalonAST)currentAST.root;
 				break;
 			}
 			case MULTIOUTPORT:
 			{
-				AST __t3923 = _t;
+				AST __t17 = _t;
 				PtalonAST tmp11_AST = null;
 				PtalonAST tmp11_AST_in = null;
 				tmp11_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp11_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp11_AST);
-				ASTPair __currentAST3923 = currentAST.copy();
+				ASTPair __currentAST17 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,MULTIOUTPORT);
@@ -572,13 +572,13 @@ public PtalonPopulator() {
 				}
 				case DYNAMIC_NAME:
 				{
-					AST __t3925 = _t;
+					AST __t19 = _t;
 					PtalonAST tmp12_AST = null;
 					PtalonAST tmp12_AST_in = null;
 					tmp12_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 					tmp12_AST_in = (PtalonAST)_t;
 					astFactory.addASTChild(currentAST, tmp12_AST);
-					ASTPair __currentAST3925 = currentAST.copy();
+					ASTPair __currentAST19 = currentAST.copy();
 					currentAST.root = currentAST.child;
 					currentAST.child = null;
 					match(_t,DYNAMIC_NAME);
@@ -595,8 +595,8 @@ public PtalonPopulator() {
 					astFactory.addASTChild(currentAST, r_AST);
 					match(_t,EXPRESSION);
 					_t = _t.getNextSibling();
-					currentAST = __currentAST3925;
-					_t = __t3925;
+					currentAST = __currentAST19;
+					_t = __t19;
 					_t = _t.getNextSibling();
 					
 							if (info.isReady()) {
@@ -620,8 +620,8 @@ public PtalonPopulator() {
 				}
 				}
 				}
-				currentAST = __currentAST3923;
-				_t = __t3923;
+				currentAST = __currentAST17;
+				_t = __t17;
 				_t = _t.getNextSibling();
 				port_declaration_AST = (PtalonAST)currentAST.root;
 				break;
@@ -661,13 +661,13 @@ public PtalonPopulator() {
 			switch ( _t.getType()) {
 			case PARAMETER:
 			{
-				AST __t3927 = _t;
+				AST __t21 = _t;
 				PtalonAST tmp13_AST = null;
 				PtalonAST tmp13_AST_in = null;
 				tmp13_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp13_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp13_AST);
-				ASTPair __currentAST3927 = currentAST.copy();
+				ASTPair __currentAST21 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,PARAMETER);
@@ -692,13 +692,13 @@ public PtalonPopulator() {
 				}
 				case DYNAMIC_NAME:
 				{
-					AST __t3929 = _t;
+					AST __t23 = _t;
 					PtalonAST tmp14_AST = null;
 					PtalonAST tmp14_AST_in = null;
 					tmp14_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 					tmp14_AST_in = (PtalonAST)_t;
 					astFactory.addASTChild(currentAST, tmp14_AST);
-					ASTPair __currentAST3929 = currentAST.copy();
+					ASTPair __currentAST23 = currentAST.copy();
 					currentAST.root = currentAST.child;
 					currentAST.child = null;
 					match(_t,DYNAMIC_NAME);
@@ -715,8 +715,8 @@ public PtalonPopulator() {
 					astFactory.addASTChild(currentAST, d_AST);
 					match(_t,EXPRESSION);
 					_t = _t.getNextSibling();
-					currentAST = __currentAST3929;
-					_t = __t3929;
+					currentAST = __currentAST23;
+					_t = __t23;
 					_t = _t.getNextSibling();
 					
 							if (info.isReady()) {
@@ -740,21 +740,21 @@ public PtalonPopulator() {
 				}
 				}
 				}
-				currentAST = __currentAST3927;
-				_t = __t3927;
+				currentAST = __currentAST21;
+				_t = __t21;
 				_t = _t.getNextSibling();
 				parameter_declaration_AST = (PtalonAST)currentAST.root;
 				break;
 			}
 			case ACTOR:
 			{
-				AST __t3930 = _t;
+				AST __t24 = _t;
 				PtalonAST tmp15_AST = null;
 				PtalonAST tmp15_AST_in = null;
 				tmp15_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp15_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp15_AST);
-				ASTPair __currentAST3930 = currentAST.copy();
+				ASTPair __currentAST24 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,ACTOR);
@@ -770,8 +770,8 @@ public PtalonPopulator() {
 							info.addActorParameter(b.getText());
 						}
 					
-				currentAST = __currentAST3930;
-				_t = __t3930;
+				currentAST = __currentAST24;
+				_t = __t24;
 				_t = _t.getNextSibling();
 				parameter_declaration_AST = (PtalonAST)currentAST.root;
 				break;
@@ -818,24 +818,24 @@ public PtalonPopulator() {
 			switch ( _t.getType()) {
 			case PARAM_EQUALS:
 			{
-				AST __t3932 = _t;
+				AST __t26 = _t;
 				PtalonAST tmp16_AST = null;
 				PtalonAST tmp16_AST_in = null;
 				tmp16_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp16_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp16_AST);
-				ASTPair __currentAST3932 = currentAST.copy();
+				ASTPair __currentAST26 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,PARAM_EQUALS);
 				_t = _t.getFirstChild();
-				AST __t3933 = _t;
+				AST __t27 = _t;
 				PtalonAST tmp17_AST = null;
 				PtalonAST tmp17_AST_in = null;
 				tmp17_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp17_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp17_AST);
-				ASTPair __currentAST3933 = currentAST.copy();
+				ASTPair __currentAST27 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,PARAMETER);
@@ -855,13 +855,13 @@ public PtalonPopulator() {
 				}
 				case DYNAMIC_NAME:
 				{
-					AST __t3935 = _t;
+					AST __t29 = _t;
 					PtalonAST tmp18_AST = null;
 					PtalonAST tmp18_AST_in = null;
 					tmp18_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 					tmp18_AST_in = (PtalonAST)_t;
 					astFactory.addASTChild(currentAST, tmp18_AST);
-					ASTPair __currentAST3935 = currentAST.copy();
+					ASTPair __currentAST29 = currentAST.copy();
 					currentAST.root = currentAST.child;
 					currentAST.child = null;
 					match(_t,DYNAMIC_NAME);
@@ -878,8 +878,8 @@ public PtalonPopulator() {
 					astFactory.addASTChild(currentAST, d_AST);
 					match(_t,EXPRESSION);
 					_t = _t.getNextSibling();
-					currentAST = __currentAST3935;
-					_t = __t3935;
+					currentAST = __currentAST29;
+					_t = __t29;
 					_t = _t.getNextSibling();
 					
 							dynamic_name = true;
@@ -892,8 +892,8 @@ public PtalonPopulator() {
 				}
 				}
 				}
-				currentAST = __currentAST3933;
-				_t = __t3933;
+				currentAST = __currentAST27;
+				_t = __t27;
 				_t = _t.getNextSibling();
 				e = (PtalonAST)_t;
 				PtalonAST e_AST_in = null;
@@ -921,32 +921,32 @@ public PtalonPopulator() {
 						}
 						}
 					
-				currentAST = __currentAST3932;
-				_t = __t3932;
+				currentAST = __currentAST26;
+				_t = __t26;
 				_t = _t.getNextSibling();
 				assigned_parameter_declaration_AST = (PtalonAST)currentAST.root;
 				break;
 			}
 			case ACTOR_EQUALS:
 			{
-				AST __t3936 = _t;
+				AST __t30 = _t;
 				PtalonAST tmp19_AST = null;
 				PtalonAST tmp19_AST_in = null;
 				tmp19_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp19_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp19_AST);
-				ASTPair __currentAST3936 = currentAST.copy();
+				ASTPair __currentAST30 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,ACTOR_EQUALS);
 				_t = _t.getFirstChild();
-				AST __t3937 = _t;
+				AST __t31 = _t;
 				PtalonAST tmp20_AST = null;
 				PtalonAST tmp20_AST_in = null;
 				tmp20_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp20_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp20_AST);
-				ASTPair __currentAST3937 = currentAST.copy();
+				ASTPair __currentAST31 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,ACTOR);
@@ -957,8 +957,8 @@ public PtalonPopulator() {
 				astFactory.addASTChild(currentAST, b_AST);
 				match(_t,ID);
 				_t = _t.getNextSibling();
-				currentAST = __currentAST3937;
-				_t = __t3937;
+				currentAST = __currentAST31;
+				_t = __t31;
 				_t = _t.getNextSibling();
 				q = _t==ASTNULL ? null : (PtalonAST)_t;
 				qualified_identifier(_t);
@@ -970,8 +970,8 @@ public PtalonPopulator() {
 							info.addActorParameter(b.getText(), q.getText());
 						}
 					
-				currentAST = __currentAST3936;
-				_t = __t3936;
+				currentAST = __currentAST30;
+				_t = __t30;
 				_t = _t.getNextSibling();
 				assigned_parameter_declaration_AST = (PtalonAST)currentAST.root;
 				break;
@@ -1024,13 +1024,13 @@ public PtalonPopulator() {
 		PtalonAST d_AST = null;
 		
 		try {      // for error handling
-			AST __t3939 = _t;
+			AST __t33 = _t;
 			PtalonAST tmp22_AST = null;
 			PtalonAST tmp22_AST_in = null;
 			tmp22_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 			tmp22_AST_in = (PtalonAST)_t;
 			astFactory.addASTChild(currentAST, tmp22_AST);
-			ASTPair __currentAST3939 = currentAST.copy();
+			ASTPair __currentAST33 = currentAST.copy();
 			currentAST.root = currentAST.child;
 			currentAST.child = null;
 			match(_t,RELATION);
@@ -1055,13 +1055,13 @@ public PtalonPopulator() {
 			}
 			case DYNAMIC_NAME:
 			{
-				AST __t3941 = _t;
+				AST __t35 = _t;
 				PtalonAST tmp23_AST = null;
 				PtalonAST tmp23_AST_in = null;
 				tmp23_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp23_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp23_AST);
-				ASTPair __currentAST3941 = currentAST.copy();
+				ASTPair __currentAST35 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,DYNAMIC_NAME);
@@ -1078,8 +1078,8 @@ public PtalonPopulator() {
 				astFactory.addASTChild(currentAST, d_AST);
 				match(_t,EXPRESSION);
 				_t = _t.getNextSibling();
-				currentAST = __currentAST3941;
-				_t = __t3941;
+				currentAST = __currentAST35;
+				_t = __t35;
 				_t = _t.getNextSibling();
 				
 						if (info.isReady()) {
@@ -1103,8 +1103,8 @@ public PtalonPopulator() {
 			}
 			}
 			}
-			currentAST = __currentAST3939;
-			_t = __t3939;
+			currentAST = __currentAST33;
+			_t = __t33;
 			_t = _t.getNextSibling();
 			relation_declaration_AST = (PtalonAST)currentAST.root;
 		}
@@ -1131,13 +1131,13 @@ public PtalonPopulator() {
 		PtalonAST d_AST = null;
 		
 		try {      // for error handling
-			AST __t3943 = _t;
+			AST __t37 = _t;
 			PtalonAST tmp24_AST = null;
 			PtalonAST tmp24_AST_in = null;
 			tmp24_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 			tmp24_AST_in = (PtalonAST)_t;
 			astFactory.addASTChild(currentAST, tmp24_AST);
-			ASTPair __currentAST3943 = currentAST.copy();
+			ASTPair __currentAST37 = currentAST.copy();
 			currentAST.root = currentAST.child;
 			currentAST.child = null;
 			match(_t,TRANSPARENT);
@@ -1162,13 +1162,13 @@ public PtalonPopulator() {
 			}
 			case DYNAMIC_NAME:
 			{
-				AST __t3945 = _t;
+				AST __t39 = _t;
 				PtalonAST tmp25_AST = null;
 				PtalonAST tmp25_AST_in = null;
 				tmp25_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp25_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp25_AST);
-				ASTPair __currentAST3945 = currentAST.copy();
+				ASTPair __currentAST39 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,DYNAMIC_NAME);
@@ -1185,8 +1185,8 @@ public PtalonPopulator() {
 				astFactory.addASTChild(currentAST, d_AST);
 				match(_t,EXPRESSION);
 				_t = _t.getNextSibling();
-				currentAST = __currentAST3945;
-				_t = __t3945;
+				currentAST = __currentAST39;
+				_t = __t39;
 				_t = _t.getNextSibling();
 				
 						if (info.isReady()) {
@@ -1210,8 +1210,8 @@ public PtalonPopulator() {
 			}
 			}
 			}
-			currentAST = __currentAST3943;
-			_t = __t3943;
+			currentAST = __currentAST37;
+			_t = __t37;
 			_t = _t.getNextSibling();
 			transparent_relation_declaration_AST = (PtalonAST)currentAST.root;
 		}
@@ -1250,13 +1250,13 @@ public PtalonPopulator() {
 		
 		
 		try {      // for error handling
-			AST __t3948 = _t;
+			AST __t42 = _t;
 			PtalonAST tmp26_AST = null;
 			PtalonAST tmp26_AST_in = null;
 			tmp26_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 			tmp26_AST_in = (PtalonAST)_t;
 			astFactory.addASTChild(currentAST, tmp26_AST);
-			ASTPair __currentAST3948 = currentAST.copy();
+			ASTPair __currentAST42 = currentAST.copy();
 			currentAST.root = currentAST.child;
 			currentAST.child = null;
 			match(_t,ASSIGN);
@@ -1277,13 +1277,13 @@ public PtalonPopulator() {
 			}
 			case DYNAMIC_NAME:
 			{
-				AST __t3950 = _t;
+				AST __t44 = _t;
 				PtalonAST tmp28_AST = null;
 				PtalonAST tmp28_AST_in = null;
 				tmp28_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 				tmp28_AST_in = (PtalonAST)_t;
 				astFactory.addASTChild(currentAST, tmp28_AST);
-				ASTPair __currentAST3950 = currentAST.copy();
+				ASTPair __currentAST44 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,DYNAMIC_NAME);
@@ -1307,8 +1307,8 @@ public PtalonPopulator() {
 							addAssignment = true;
 						}
 					
-				currentAST = __currentAST3950;
-				_t = __t3950;
+				currentAST = __currentAST44;
+				_t = __t44;
 				_t = _t.getNextSibling();
 				break;
 			}
@@ -1338,12 +1338,12 @@ public PtalonPopulator() {
 			}
 			case DYNAMIC_NAME:
 			{
-				AST __t3952 = _t;
+				AST __t46 = _t;
 				d = _t==ASTNULL ? null :(PtalonAST)_t;
 				PtalonAST d_AST_in = null;
 				d_AST = (PtalonAST)astFactory.create(d);
 				astFactory.addASTChild(currentAST, d_AST);
-				ASTPair __currentAST3952 = currentAST.copy();
+				ASTPair __currentAST46 = currentAST.copy();
 				currentAST.root = currentAST.child;
 				currentAST.child = null;
 				match(_t,DYNAMIC_NAME);
@@ -1365,8 +1365,8 @@ public PtalonPopulator() {
 							info.addPortAssign(name, i.getText(), e.getText());
 						}
 					
-				currentAST = __currentAST3952;
-				_t = __t3952;
+				currentAST = __currentAST46;
+				_t = __t46;
 				_t = _t.getNextSibling();
 				break;
 			}
@@ -1398,8 +1398,8 @@ public PtalonPopulator() {
 			}
 			}
 			}
-			currentAST = __currentAST3948;
-			_t = __t3948;
+			currentAST = __currentAST42;
+			_t = __t42;
 			_t = _t.getNextSibling();
 			assignment_AST = (PtalonAST)currentAST.root;
 		}
@@ -1427,12 +1427,12 @@ public PtalonPopulator() {
 		PtalonAST b_AST = null;
 		PtalonAST b = null;
 		
-		AST __t3958 = _t;
+		AST __t52 = _t;
 		a = _t==ASTNULL ? null :(PtalonAST)_t;
 		PtalonAST a_AST_in = null;
 		a_AST = (PtalonAST)astFactory.create(a);
 		astFactory.addASTChild(currentAST, a_AST);
-		ASTPair __currentAST3958 = currentAST.copy();
+		ASTPair __currentAST52 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,ACTOR_DECLARATION);
@@ -1441,7 +1441,7 @@ public PtalonPopulator() {
 				info.enterActorDeclaration(a.getText());
 			
 		{
-		_loop3960:
+		_loop54:
 		do {
 			if (_t==null) _t=ASTNULL;
 			if ((_t.getType()==ASSIGN)) {
@@ -1452,7 +1452,7 @@ public PtalonPopulator() {
 				astFactory.addASTChild(currentAST, returnAST);
 			}
 			else {
-				break _loop3960;
+				break _loop54;
 			}
 			
 		} while (true);
@@ -1460,8 +1460,8 @@ public PtalonPopulator() {
 		
 				info.exitActorDeclaration();
 			
-		currentAST = __currentAST3958;
-		_t = __t3958;
+		currentAST = __currentAST52;
+		_t = __t52;
 		_t = _t.getNextSibling();
 		nested_actor_declaration_AST = (PtalonAST)currentAST.root;
 		returnAST = nested_actor_declaration_AST;
@@ -1487,12 +1487,12 @@ public PtalonPopulator() {
 			boolean oldEvalBool = false;
 		
 		
-		AST __t3954 = _t;
+		AST __t48 = _t;
 		a = _t==ASTNULL ? null :(PtalonAST)_t;
 		PtalonAST a_AST_in = null;
 		a_AST = (PtalonAST)astFactory.create(a);
 		astFactory.addASTChild(currentAST, a_AST);
-		ASTPair __currentAST3954 = currentAST.copy();
+		ASTPair __currentAST48 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,ACTOR_DECLARATION);
@@ -1501,7 +1501,7 @@ public PtalonPopulator() {
 				info.enterActorDeclaration(a.getText());
 			
 		{
-		_loop3956:
+		_loop50:
 		do {
 			if (_t==null) _t=ASTNULL;
 			if ((_t.getType()==ASSIGN)) {
@@ -1512,7 +1512,7 @@ public PtalonPopulator() {
 				astFactory.addASTChild(currentAST, returnAST);
 			}
 			else {
-				break _loop3956;
+				break _loop50;
 			}
 			
 		} while (true);
@@ -1523,8 +1523,8 @@ public PtalonPopulator() {
 				}
 				info.exitActorDeclaration();
 			
-		currentAST = __currentAST3954;
-		_t = __t3954;
+		currentAST = __currentAST48;
+		_t = __t48;
 		_t = _t.getNextSibling();
 		actor_declaration_AST = (PtalonAST)currentAST.root;
 		returnAST = actor_declaration_AST;
@@ -1615,12 +1615,12 @@ public PtalonPopulator() {
 			boolean ready;
 		
 		
-		AST __t3964 = _t;
+		AST __t58 = _t;
 		a = _t==ASTNULL ? null :(PtalonAST)_t;
 		PtalonAST a_AST_in = null;
 		a_AST = (PtalonAST)astFactory.create(a);
 		astFactory.addASTChild(currentAST, a_AST);
-		ASTPair __currentAST3964 = currentAST.copy();
+		ASTPair __currentAST58 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,IF);
@@ -1640,13 +1640,13 @@ public PtalonPopulator() {
 					info.setActiveBranch(info.evaluateBoolean(e.getText()));
 				}
 			
-		AST __t3965 = _t;
+		AST __t59 = _t;
 		PtalonAST tmp29_AST = null;
 		PtalonAST tmp29_AST_in = null;
 		tmp29_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 		tmp29_AST_in = (PtalonAST)_t;
 		astFactory.addASTChild(currentAST, tmp29_AST);
-		ASTPair __currentAST3965 = currentAST.copy();
+		ASTPair __currentAST59 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,TRUEBRANCH);
@@ -1657,7 +1657,7 @@ public PtalonPopulator() {
 				}
 			
 		{
-		_loop3967:
+		_loop61:
 		do {
 			if (_t==null) _t=ASTNULL;
 			switch ( _t.getType()) {
@@ -1696,21 +1696,21 @@ public PtalonPopulator() {
 			}
 			default:
 			{
-				break _loop3967;
+				break _loop61;
 			}
 			}
 		} while (true);
 		}
-		currentAST = __currentAST3965;
-		_t = __t3965;
+		currentAST = __currentAST59;
+		_t = __t59;
 		_t = _t.getNextSibling();
-		AST __t3968 = _t;
+		AST __t62 = _t;
 		PtalonAST tmp30_AST = null;
 		PtalonAST tmp30_AST_in = null;
 		tmp30_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 		tmp30_AST_in = (PtalonAST)_t;
 		astFactory.addASTChild(currentAST, tmp30_AST);
-		ASTPair __currentAST3968 = currentAST.copy();
+		ASTPair __currentAST62 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,FALSEBRANCH);
@@ -1721,7 +1721,7 @@ public PtalonPopulator() {
 				}
 			
 		{
-		_loop3970:
+		_loop64:
 		do {
 			if (_t==null) _t=ASTNULL;
 			switch ( _t.getType()) {
@@ -1760,16 +1760,16 @@ public PtalonPopulator() {
 			}
 			default:
 			{
-				break _loop3970;
+				break _loop64;
 			}
 			}
 		} while (true);
 		}
-		currentAST = __currentAST3968;
-		_t = __t3968;
+		currentAST = __currentAST62;
+		_t = __t62;
 		_t = _t.getNextSibling();
-		currentAST = __currentAST3964;
-		_t = __t3964;
+		currentAST = __currentAST58;
+		_t = __t58;
 		_t = _t.getNextSibling();
 		
 				info.exitIfScope();
@@ -1800,23 +1800,23 @@ public PtalonPopulator() {
 			PtalonAST inputAST = (PtalonAST)_t;
 		
 		
-		AST __t3972 = _t;
+		AST __t66 = _t;
 		f = _t==ASTNULL ? null :(PtalonAST)_t;
 		PtalonAST f_AST_in = null;
 		f_AST = (PtalonAST)astFactory.create(f);
 		astFactory.addASTChild(currentAST, f_AST);
-		ASTPair __currentAST3972 = currentAST.copy();
+		ASTPair __currentAST66 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,FOR);
 		_t = _t.getFirstChild();
-		AST __t3973 = _t;
+		AST __t67 = _t;
 		PtalonAST tmp31_AST = null;
 		PtalonAST tmp31_AST_in = null;
 		tmp31_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 		tmp31_AST_in = (PtalonAST)_t;
 		astFactory.addASTChild(currentAST, tmp31_AST);
-		ASTPair __currentAST3973 = currentAST.copy();
+		ASTPair __currentAST67 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,VARIABLE);
@@ -1827,16 +1827,16 @@ public PtalonPopulator() {
 		astFactory.addASTChild(currentAST, a_AST);
 		match(_t,ID);
 		_t = _t.getNextSibling();
-		currentAST = __currentAST3973;
-		_t = __t3973;
+		currentAST = __currentAST67;
+		_t = __t67;
 		_t = _t.getNextSibling();
-		AST __t3974 = _t;
+		AST __t68 = _t;
 		PtalonAST tmp32_AST = null;
 		PtalonAST tmp32_AST_in = null;
 		tmp32_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 		tmp32_AST_in = (PtalonAST)_t;
 		astFactory.addASTChild(currentAST, tmp32_AST);
-		ASTPair __currentAST3974 = currentAST.copy();
+		ASTPair __currentAST68 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,INITIALLY);
@@ -1847,16 +1847,16 @@ public PtalonPopulator() {
 		astFactory.addASTChild(currentAST, b_AST);
 		match(_t,EXPRESSION);
 		_t = _t.getNextSibling();
-		currentAST = __currentAST3974;
-		_t = __t3974;
+		currentAST = __currentAST68;
+		_t = __t68;
 		_t = _t.getNextSibling();
-		AST __t3975 = _t;
+		AST __t69 = _t;
 		PtalonAST tmp33_AST = null;
 		PtalonAST tmp33_AST_in = null;
 		tmp33_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 		tmp33_AST_in = (PtalonAST)_t;
 		astFactory.addASTChild(currentAST, tmp33_AST);
-		ASTPair __currentAST3975 = currentAST.copy();
+		ASTPair __currentAST69 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,SATISFIES);
@@ -1867,8 +1867,8 @@ public PtalonPopulator() {
 		astFactory.addASTChild(currentAST, c_AST);
 		match(_t,EXPRESSION);
 		_t = _t.getNextSibling();
-		currentAST = __currentAST3975;
-		_t = __t3975;
+		currentAST = __currentAST69;
+		_t = __t69;
 		_t = _t.getNextSibling();
 		
 				info.enterForScope(f.getText(), inputAST, this);
@@ -1879,7 +1879,7 @@ public PtalonPopulator() {
 				}
 			
 		{
-		_loop3977:
+		_loop71:
 		do {
 			if (_t==null) _t=ASTNULL;
 			switch ( _t.getType()) {
@@ -1918,18 +1918,18 @@ public PtalonPopulator() {
 			}
 			default:
 			{
-				break _loop3977;
+				break _loop71;
 			}
 			}
 		} while (true);
 		}
-		AST __t3978 = _t;
+		AST __t72 = _t;
 		PtalonAST tmp34_AST = null;
 		PtalonAST tmp34_AST_in = null;
 		tmp34_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 		tmp34_AST_in = (PtalonAST)_t;
 		astFactory.addASTChild(currentAST, tmp34_AST);
-		ASTPair __currentAST3978 = currentAST.copy();
+		ASTPair __currentAST72 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,NEXT);
@@ -1940,11 +1940,11 @@ public PtalonPopulator() {
 		astFactory.addASTChild(currentAST, n_AST);
 		match(_t,EXPRESSION);
 		_t = _t.getNextSibling();
-		currentAST = __currentAST3978;
-		_t = __t3978;
+		currentAST = __currentAST72;
+		_t = __t72;
 		_t = _t.getNextSibling();
-		currentAST = __currentAST3972;
-		_t = __t3972;
+		currentAST = __currentAST66;
+		_t = __t66;
 		_t = _t.getNextSibling();
 		
 				if (ready) {
@@ -1974,23 +1974,23 @@ public PtalonPopulator() {
 		PtalonAST n = null;
 		PtalonAST n_AST = null;
 		
-		AST __t3980 = _t;
+		AST __t74 = _t;
 		f = _t==ASTNULL ? null :(PtalonAST)_t;
 		PtalonAST f_AST_in = null;
 		f_AST = (PtalonAST)astFactory.create(f);
 		astFactory.addASTChild(currentAST, f_AST);
-		ASTPair __currentAST3980 = currentAST.copy();
+		ASTPair __currentAST74 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,FOR);
 		_t = _t.getFirstChild();
-		AST __t3981 = _t;
+		AST __t75 = _t;
 		PtalonAST tmp35_AST = null;
 		PtalonAST tmp35_AST_in = null;
 		tmp35_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 		tmp35_AST_in = (PtalonAST)_t;
 		astFactory.addASTChild(currentAST, tmp35_AST);
-		ASTPair __currentAST3981 = currentAST.copy();
+		ASTPair __currentAST75 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,VARIABLE);
@@ -2001,16 +2001,16 @@ public PtalonPopulator() {
 		astFactory.addASTChild(currentAST, a_AST);
 		match(_t,ID);
 		_t = _t.getNextSibling();
-		currentAST = __currentAST3981;
-		_t = __t3981;
+		currentAST = __currentAST75;
+		_t = __t75;
 		_t = _t.getNextSibling();
-		AST __t3982 = _t;
+		AST __t76 = _t;
 		PtalonAST tmp36_AST = null;
 		PtalonAST tmp36_AST_in = null;
 		tmp36_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 		tmp36_AST_in = (PtalonAST)_t;
 		astFactory.addASTChild(currentAST, tmp36_AST);
-		ASTPair __currentAST3982 = currentAST.copy();
+		ASTPair __currentAST76 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,INITIALLY);
@@ -2021,16 +2021,16 @@ public PtalonPopulator() {
 		astFactory.addASTChild(currentAST, b_AST);
 		match(_t,EXPRESSION);
 		_t = _t.getNextSibling();
-		currentAST = __currentAST3982;
-		_t = __t3982;
+		currentAST = __currentAST76;
+		_t = __t76;
 		_t = _t.getNextSibling();
-		AST __t3983 = _t;
+		AST __t77 = _t;
 		PtalonAST tmp37_AST = null;
 		PtalonAST tmp37_AST_in = null;
 		tmp37_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 		tmp37_AST_in = (PtalonAST)_t;
 		astFactory.addASTChild(currentAST, tmp37_AST);
-		ASTPair __currentAST3983 = currentAST.copy();
+		ASTPair __currentAST77 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,SATISFIES);
@@ -2041,11 +2041,11 @@ public PtalonPopulator() {
 		astFactory.addASTChild(currentAST, c_AST);
 		match(_t,EXPRESSION);
 		_t = _t.getNextSibling();
-		currentAST = __currentAST3983;
-		_t = __t3983;
+		currentAST = __currentAST77;
+		_t = __t77;
 		_t = _t.getNextSibling();
 		{
-		_loop3985:
+		_loop79:
 		do {
 			if (_t==null) _t=ASTNULL;
 			switch ( _t.getType()) {
@@ -2084,18 +2084,18 @@ public PtalonPopulator() {
 			}
 			default:
 			{
-				break _loop3985;
+				break _loop79;
 			}
 			}
 		} while (true);
 		}
-		AST __t3986 = _t;
+		AST __t80 = _t;
 		PtalonAST tmp38_AST = null;
 		PtalonAST tmp38_AST_in = null;
 		tmp38_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 		tmp38_AST_in = (PtalonAST)_t;
 		astFactory.addASTChild(currentAST, tmp38_AST);
-		ASTPair __currentAST3986 = currentAST.copy();
+		ASTPair __currentAST80 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,NEXT);
@@ -2106,11 +2106,11 @@ public PtalonPopulator() {
 		astFactory.addASTChild(currentAST, n_AST);
 		match(_t,EXPRESSION);
 		_t = _t.getNextSibling();
-		currentAST = __currentAST3986;
-		_t = __t3986;
+		currentAST = __currentAST80;
+		_t = __t80;
 		_t = _t.getNextSibling();
-		currentAST = __currentAST3980;
-		_t = __t3980;
+		currentAST = __currentAST74;
+		_t = __t74;
 		_t = _t.getNextSibling();
 		iterative_statement_evaluator_AST = (PtalonAST)currentAST.root;
 		returnAST = iterative_statement_evaluator_AST;
@@ -2132,12 +2132,12 @@ public PtalonPopulator() {
 			this.info.startAtTop();
 		
 		
-		AST __t3988 = _t;
+		AST __t82 = _t;
 		a = _t==ASTNULL ? null :(PtalonAST)_t;
 		PtalonAST a_AST_in = null;
 		a_AST = (PtalonAST)astFactory.create(a);
 		astFactory.addASTChild(currentAST, a_AST);
-		ASTPair __currentAST3988 = currentAST.copy();
+		ASTPair __currentAST82 = currentAST.copy();
 		currentAST.root = currentAST.child;
 		currentAST.child = null;
 		match(_t,ACTOR_DEFINITION);
@@ -2181,8 +2181,11 @@ public PtalonPopulator() {
 		}
 		}
 		}
+		
+				this.info.setActiveBranch(true);
+			
 		{
-		_loop3991:
+		_loop85:
 		do {
 			if (_t==null) _t=ASTNULL;
 			switch ( _t.getType()) {
@@ -2221,13 +2224,13 @@ public PtalonPopulator() {
 			}
 			default:
 			{
-				break _loop3991;
+				break _loop85;
 			}
 			}
 		} while (true);
 		}
-		currentAST = __currentAST3988;
-		_t = __t3988;
+		currentAST = __currentAST82;
+		_t = __t82;
 		_t = _t.getNextSibling();
 		actor_definition_AST = (PtalonAST)currentAST.root;
 		returnAST = actor_definition_AST;

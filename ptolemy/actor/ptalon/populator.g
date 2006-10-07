@@ -500,5 +500,8 @@ actor_definition[NestedActorManager info] throws PtalonRuntimeException
 }
 :
 	#(a:ACTOR_DEFINITION (DANGLING_PORTS_OKAY)?
+	{
+		this.info.setActiveBranch(true);
+	}
 		(atomic_statement | conditional_statement | iterative_statement)*)
 ;

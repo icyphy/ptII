@@ -51,6 +51,7 @@ NonlinearStateSpace is {
 	actor assembler = ptolemy.actor.lib.VectorAssembler;
 	actor disassembler = ptolemy.actor.lib.VectorDisassembler;
 	actor expression = ptolemy.actor.lib.Expression;
+	actor typeConverter = ptolemy.actor.lib.conversions.AnythingToDouble;
 	
 	/*
 	 * These lines create the ports for the actor, which are
@@ -127,7 +128,9 @@ NonlinearStateSpace is {
 		relation x[[a]];
 		expression(x := x, u := u, output := x[[a]],
 			expression := [[ eval(eval("f" + a.toString)) ]]);
-		integrator(input := x[[a]], output := stateRelation);
+		relation convertedX[[a]];
+		typeConverter(input := x[[a]], output := convertedX[[a]]);
+		integrator(input := convertedX[[a]], output := stateRelation);
 		this(stateOutput := stateAsOutput);
 	} next [[ a + 1 ]]
 
@@ -135,7 +138,7 @@ NonlinearStateSpace is {
 	 * Create the expression evaluators for h0, h0, ...,
 	 * hm-1.
 	 */
-	for a initially [[ 0 ]] [[ a < numberOfStates ]] {
+	for a initially [[ 0 ]] [[ a < numberOfOutputs ]] {
 		expression(x := x, u := u, output := output,
 			expression := [[ eval(eval("h" + a.toString)) ]]);
 	} next [[ a + 1 ]]

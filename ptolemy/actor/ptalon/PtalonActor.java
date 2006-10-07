@@ -448,8 +448,10 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 for (PtalonParameter param : _assignedPtalonParameters) {
                     if (!_unsettablePtalonParameters.contains(param)) {
                         if (param instanceof PtalonExpressionParameter) {
+                            String expression = param.getExpression();
+                            expression = expression.replaceAll("\"", "\\&quot\\;");
                             output.write(_getIndentPrefix(depth + 2) + "<ptalonExpressionParameter name=\"" + 
-                                    param.getName() + "\" value=\"" + param.getExpression() + "\"/>\n");                            
+                                    param.getName() + "\" value=\"" + expression + "\"/>\n");                            
                         } else if (param instanceof PtalonParameter) { 
                             output.write(_getIndentPrefix(depth + 2) + "<ptalonParameter name=\"" + 
                                 param.getName() + "\" value=\"" + param.getExpression() + "\"/>\n");
