@@ -503,7 +503,7 @@ mainVergilPtiny.htm: mainVergil.htm
 	sed -e 's@completeDemos.htm@completeDemosPtiny.htm@' > $@  
 
 mainVergilPtinyKepler.htm: mainVergilPtiny.htm
-	awk -f $(ROOT)/doc/ptinyKepler.awk mainVergilPtiny.htm | grep -v rendezvous | grep -v "with synchronous message" \
+	awk -f $(ROOT)/doc/ptinyKepler.awk mainVergilPtiny.htm | grep -v rendezvous | grep -v "with synchronous message" | \
 	sed -e 's@completeDemosPtiny.htm@completeDemosPtinyKepler.htm@' > $@  
 
 # Generate a file that consists of only the text within
