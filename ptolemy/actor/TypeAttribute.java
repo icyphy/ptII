@@ -31,6 +31,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.Attribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeAttribute
@@ -113,6 +114,26 @@ public class TypeAttribute extends Parameter {
     public TypeAttribute(TypedIOPort container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+    }
+    
+    /** Construct an attribute with the given name contained by the specified
+     *  port. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string. The object is added to the directory of the workspace
+     *  if the container is null.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
+    public TypeAttribute(Attribute container, String name)
+            throws IllegalActionException, NameDuplicationException {
+      super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
