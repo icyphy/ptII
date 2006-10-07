@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// PoissonClock
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -42,14 +44,12 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-//////////////////////////////////////////////////////////////////////////
-//// PoissonClock
 
 /** 
  * This actor produces a signal that is piecewise constant, with transitions
@@ -99,12 +99,11 @@ public class PoissonClock extends TimedSource implements Rollbackable {
     protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // Set the values parameter
-    // set type constraint
-    /**         // Call this so that we don't have to copy its code here...
-
-     *     ///////////////////////////////////////////////////////////////////
+    // Call this so that we don't have to copy its code here...
+    ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-If true, then this actor will request a firing at the start time.
+    /**     
+     * If true, then this actor will request a firing at the start time.
      * Otherwise, the first firing will be requested at the first random
      * time. This is a boolean-valued parameter that defaults to <i>true</i>.
      */
@@ -125,10 +124,10 @@ If true, then this actor will request a firing at the start time.
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Get the current time and period.
-    private transient     // Indicator whether we've reached the next event.
-int    // In case current time has reached or crossed a boundary to the
+    // Indicator whether we've reached the next event.
+    // In case current time has reached or crossed a boundary to the
     // next output, update it.
-     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     /* Get the specified value, checking the form of the values parameter.
      */
@@ -139,17 +138,17 @@ int    // In case current time has reached or crossed a boundary to the
     // The transient qualifier should probably be removed if this
     // class is made serializable.
     // The length of the values parameter vector.
-_length;
-
     // The index of the current output.
+    // The next firing time requested of the director.
+    // An indicator of whether a boundary is crossed in the fire() method.
+    private transient int _length;
+
     private transient int _tentativeCurrentOutputIndex;
 
     private transient int _currentOutputIndex;
 
-    // The next firing time requested of the director.
     private transient Time _nextFiringTime;
 
-    // An indicator of whether a boundary is crossed in the fire() method.
     private transient boolean _boundaryCrossed;
 
     /**     
@@ -168,10 +167,7 @@ _length;
         meanTime.setTypeEquals(BaseType.DOUBLE);
         values = new Parameter(this, "values");
         values.setExpression("{1, 0}");
-        values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        ArrayType valuesArrayType = (ArrayType)values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        output.setTypeAtLeast(ArrayType.elementType(values));
         attributeChanged(values);
         fireAtStart = new Parameter(this, "fireAtStart");
         fireAtStart.setExpression("true");
@@ -209,9 +205,11 @@ _length;
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         PoissonClock newObject = (PoissonClock)super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 

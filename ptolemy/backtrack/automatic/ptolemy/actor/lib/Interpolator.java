@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Interpolator
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -32,8 +34,6 @@ import ptolemy.actor.lib.SequenceSource;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.automatic.ptolemy.math.Interpolation;
-//////////////////////////////////////////////////////////////////////////
-//// Interpolator
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 import ptolemy.data.ArrayToken;
@@ -92,11 +92,11 @@ public class Interpolator extends SequenceSource implements Rollbackable {
     // function. But since these parameters are public, other objects
     // in the system may use them.
     // Call this so that we don't have to copy its code here...
-    /**         // set values parameter
-
-     *     ///////////////////////////////////////////////////////////////////
+    // set values parameter
+    ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-The indexes at which the specified values will be produced.
+    /**     
+     * The indexes at which the specified values will be produced.
      * This parameter is an array of integers, with default value {0, 1}.
      */
     public Parameter indexes;
@@ -122,16 +122,16 @@ The indexes at which the specified values will be produced.
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Check nondecreasing property.
-    private transient     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Cache of indexes array value.
-int[] _indexes;
+    // Cache of values array value.
+    private transient int[] _indexes;
 
     private int _iterationCount = 0;
 
     private Interpolation _interpolation;
 
-    // Cache of values array value.
     private transient double[] _values;
 
     /**     

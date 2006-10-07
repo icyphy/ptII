@@ -25,6 +25,8 @@
  PT_COPYRIGHT_VERSION 2
  COPYRIGHTENDKEY
  */
+//////////////////////////////////////////////////////////////////////////
+//// LinearDifferenceEquationSystem
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -42,8 +44,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-//////////////////////////////////////////////////////////////////////////
-//// LinearDifferenceEquationSystem
 
 /** 
  * Linear Difference Equation System.
@@ -136,25 +136,25 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Check that it is a square matrix.
-    private     // Check that B is a matrix.
+    // Check that B is a matrix.
     // Check that C is a matrix.
-Token    // The initialStates parameter should be a row vector.
+    // The initialStates parameter should be a row vector.
     // reset initial state.
-     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The internal state.
-_x;
-
     // The next state.
+    // Indicate whether the initial state has beed set.
+    // Indicate whether the output is a scalar.
+    // Indicate whether the state variable is a scalar;
+    private Token _x;
+
     private Token _xPrime;
 
-    // Indicate whether the initial state has beed set.
     private boolean _initialStateChanged;
 
-    // Indicate whether the output is a scalar.
     private boolean _singleOutput;
 
-    // Indicate whether the state variable is a scalar;
     private boolean _singleState;
 
     /**     

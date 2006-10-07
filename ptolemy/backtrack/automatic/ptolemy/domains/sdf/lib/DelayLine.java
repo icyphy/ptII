@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// DelayLine
 package ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib;
 
 import java.lang.Object;
@@ -32,6 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
+import ptolemy.backtrack.automatic.ptolemy.actor.lib.Pulse;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 import ptolemy.data.ArrayToken;
@@ -45,9 +48,9 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-//////////////////////////////////////////////////////////////////////////
-//// DelayLine
+import ptolemy.kernel.util.Workspace;
 
 /** 
  * This actor reads tokens from its input port, and for each token read
@@ -86,11 +89,14 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Shift down.
-    private     // Read the next input.
+    // Read the next input.
     // output the output token.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-Token[] _delayLine = null;
+    /**     
+     * The delay line. 
+     */
+    private Token[] _delayLine = null;
 
     /**     
      * Construct an actor with the given container and name.
@@ -104,9 +110,9 @@ Token[] _delayLine = null;
     public DelayLine(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         initialValues = new Parameter(this, "initialValues");
-        initialValues.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         initialValues.setExpression("{0, 0, 0, 0}");
-        output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        output.setTypeAtLeast(ArrayType.arrayOf(input));
+        output.setTypeAtLeast(initialValues);
     }
 
     /**     
@@ -119,6 +125,25 @@ Token[] _delayLine = null;
         if (attribute != initialValues) {
             super.attributeTypeChanged(attribute);
         }
+    }
+
+    /**     
+     * Clone the actor into the specified workspace. This overrides the
+     * base class to handle type constraints.
+     * @param workspace The workspace for the new object.
+     * @return A new actor.
+     * @exception CloneNotSupportedException If a derived class contains
+     * an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        DelayLine newObject = (DelayLine)super.clone(workspace);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.input));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
+        newObject.output.setTypeAtLeast(newObject.initialValues);
+        return newObject;
     }
 
     /**     
@@ -140,24 +165,6 @@ Token[] _delayLine = null;
     public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_delayLine(((ArrayToken)initialValues.getToken()).arrayValue());
-    }
-
-    /**     
-     * Return the type constraint that the type of the elements of the
-     * output array is no less than the type of the input port.
-     * @return A list of inequalities.
-     */
-    public List typeConstraintList() {
-        List result = new LinkedList();
-        ArrayType outArrType = (ArrayType)output.getType();
-        InequalityTerm outputTerm = outArrType.getElementTypeTerm();
-        ArrayType valuesArrType = (ArrayType)initialValues.getType();
-        InequalityTerm valuesTerm = valuesArrType.getElementTypeTerm();
-        Inequality ineq1 = new Inequality(input.getTypeTerm(), outputTerm);
-        Inequality ineq2 = new Inequality(outputTerm, valuesTerm);
-        result.add(ineq1);
-        result.add(ineq2);
-        return result;
     }
 
     private final Token $ASSIGN$_delayLine(int index0, Token newValue) {

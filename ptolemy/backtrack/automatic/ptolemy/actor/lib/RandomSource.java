@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// RandomSource
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -34,15 +36,15 @@ import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 import ptolemy.backtrack.util.java.util.Random;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-//////////////////////////////////////////////////////////////////////////
-//// RandomSource
 
 /** 
  * A base class for sources of random numbers.
@@ -79,15 +81,15 @@ public abstract class RandomSource extends Source implements Rollbackable {
     // Get an independent random number generator.
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    /**         ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    /**     
      * The Random object. 
      */
     protected Random _random = (Random)new Random().$SET$CHECKPOINT($CHECKPOINT);
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
     /**     
      * Indicator that a new random number is needed. 
      */
@@ -106,6 +108,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
         super(container, name);
         seed = new Parameter(this, "seed", new LongToken(0));
         seed.setTypeEquals(BaseType.LONG);
+        new SingletonParameter(trigger, "_showName").setToken(BooleanToken.TRUE);
     }
 
     /**     

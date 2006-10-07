@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Average
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -41,8 +43,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-//////////////////////////////////////////////////////////////////////////
-//// Average
 
 /** 
  * Output the average of the inputs after the last time a true token is
@@ -82,10 +82,10 @@ public class Average extends Transformer implements Rollbackable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Check whether to reset.
-    private     // Being reset at this firing.
+    // Being reset at this firing.
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-Token _sum;
+    private Token _sum;
 
     private Token _latestSum;
 

@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Ramp
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -41,8 +43,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-//////////////////////////////////////////////////////////////////////////
-//// Ramp
 
 /** 
  * Produce an output token on each firing with a value that is
@@ -89,16 +89,16 @@ public class Ramp extends SequenceSource implements Rollbackable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // set the type constraints.
-    private     // Check whether we need to reallocate the output token array.
+    // Check whether we need to reallocate the output token array.
     // Consume any trigger inputs.
     // NOTE: It might seem that using trigger.numberOfSources() is
     // correct here, but it is not. It is possible for channels
     // to be connected, for example, to other output ports or
     // even back to this same trigger port, in which case higher
     // numbered channels will not have their inputs read.
-Token    ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
- _stateToken = null;
+    private Token _stateToken = null;
 
     private Token[] _resultArray;
 

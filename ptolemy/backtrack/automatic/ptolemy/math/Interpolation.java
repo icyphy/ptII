@@ -25,10 +25,10 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.backtrack.automatic.ptolemy.math;
-
 //////////////////////////////////////////////////////////////////////////
 //// Interpolation
+package ptolemy.backtrack.automatic.ptolemy.math;
+
 import java.lang.Object;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -71,45 +71,45 @@ public class Interpolation implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    private     // convert index to a value within [0, period-1]
+    // convert index to a value within [0, period-1]
     // index is now within [0, period-1]. If it is outside the range of
     // the smallest and the largest index, values must be periodic.
     // Handle a special case where the number of reference points is
     // 1. The code for order 3 later won't work for this case.
-int    // indexIndexStart is the index to _indexes whose entry is the
+    // indexIndexStart is the index to _indexes whose entry is the
     // index to the left of the interpolation point.
-[]    // search though all indexes to find iStart.
-     // Perform interpolation
+    // search though all indexes to find iStart.
+    // Perform interpolation
     // order must be 1 or 3, need at least the two points surrounding
     // the interpolation point.
-_indexes    // order must be 1 or 3, need at least the two points surrounding
+    // order must be 1 or 3, need at least the two points surrounding
     // the interpolation point.
- =     // order is 3. Need the points before Start and the point after End
+    // order is 3. Need the points before Start and the point after End
     // to compute the tangent at Start and End.
- {
-                // order is 3. Need the points before Start and the point after End
-        // to compute the tangent at Start and End.
-0        // Not periodic
-,
-                // Not periodic
-1        // computer the tangent at Start and End.
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         private methods                   ////
-        // Return the Hermite curve interpolation. The arguments are: the
-        // interpolation point index, the index/value/tangent of the starting
-        // reference point, the index/value/tangent of the ending reference
-        // point.
-    }    // forming the Hermite matrix M
+    // order is 3. Need the points before Start and the point after End
+    // to compute the tangent at Start and End.
+    // Not periodic
+    // Not periodic
+    // computer the tangent at Start and End.
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    // Return the Hermite curve interpolation. The arguments are: the
+    // interpolation point index, the index/value/tangent of the starting
+    // reference point, the index/value/tangent of the ending reference
+    // point.
+    // forming the Hermite matrix M
     // forming the column vector of values and tangents
-;
-
     // compute the coefficients vector coef[a, b, c, d] or the 3rd order
     // curve.
     // compute the interpolated value
-    private     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-double[] _values =  {
+    private int[] _indexes =  {
+        0,
+        1
+    };
+
+    private double[] _values =  {
         1.0,
         0.0
     };

@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// PhaseUnwrap
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -38,8 +40,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-//////////////////////////////////////////////////////////////////////////
-//// PhaseUnwrap
 
 /** 
  * This actor unwraps a phase plot, removing discontinuities of
@@ -61,21 +61,21 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    private     // compute the phase change and check for wraparound
-double    ///////////////////////////////////////////////////////////////////
+    // compute the phase change and check for wraparound
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The value of the input in the previous phase.  Needed to work
     // in the CT domain.
- _previousPhaseInput = 0.0;
-
     // The value of the input in the previous phase.
-    private double _tempPreviousPhaseInput = 0.0;
-
     // The value of the output in the previous phase.  Needed to work
     // in the CT domain.
+    // The value of the output in the previous phase.
+    private double _previousPhaseInput = 0.0;
+
+    private double _tempPreviousPhaseInput = 0.0;
+
     private double _previousPhaseOutput = 0.0;
 
-    // The value of the output in the previous phase.
     private double _tempPreviousPhaseOutput = 0.0;
 
     /**     

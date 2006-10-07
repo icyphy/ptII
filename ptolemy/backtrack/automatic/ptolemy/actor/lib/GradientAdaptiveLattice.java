@@ -1,6 +1,6 @@
 /* An IIR filter actor that uses a direct form II implementation.
 
- Copyright (c) 2003-2005 The Regents of the University of California and
+ Copyright (c) 2003-2006 The Regents of the University of California and
  Research in Motion Limited.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -27,6 +27,8 @@
  COPYRIGHTENDKEY
 
  */
+///////////////////////////////////////////////////////////////////
+//// GradientAdaptiveLattice
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -38,7 +40,6 @@ import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -47,8 +48,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-///////////////////////////////////////////////////////////////////
-//// GradientAdaptiveLattice
 
 /** 
  * An adaptive FIR filter with a lattice structure.  This class extends
@@ -70,9 +69,9 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
 
     // Parameters
     // The currently adapted reflection coefficients
-    /**         ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
+    /**     
      * The output port that produces the current reflection
      * coefficients.  The port is of type array of double.
      */
@@ -89,31 +88,32 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
     ////                         public methods                    ////
     // FIXME: there is a bug in either the variable naming or the 
     // two lines below.
-    private     ///////////////////////////////////////////////////////////////////
+    // Reinitialize the reflection coefficients from the parameter value.
+    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     // Compute the filter, updating the caches, based on the current
     // values.  Extend the base class to adapt the reflection coefficients
-double    // NOTE: The following code is ported from Ptolemy Classic.
+    // NOTE: The following code is ported from Ptolemy Classic.
     // Update forward errors.
-     // Backward: Compute the weights for the next round Note:
+    // Backward: Compute the weights for the next round Note:
     // strictly speaking, _backwardCache[_order] is not necessary
     // for computing the output.  It is computed for the use of
     // subclasses which adapt the reflection coefficients.
     // Reallocate the internal arrays. Extend the base class to
     // reallocate the power estimation array.
-_alpha    ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
- = 0.0;
+    // The error power in the output signal.  The length is _order.
+    // Cache of the error power.  The length is _order.
+    // Cache of the reflection coefficients.  The length is _order;
+    private double _alpha = 0.0;
 
     private double _oneMinusAlpha = 1.0;
 
-    // The error power in the output signal.  The length is _order.
     private double[] _estimatedErrorPower;
 
-    // Cache of the error power.  The length is _order.
     private double[] _estimatedErrorPowerCache;
 
-    // Cache of the reflection coefficients.  The length is _order;
     private double[] _reflectionCoefficientsCache;
 
     /**     
@@ -173,7 +173,15 @@ _alpha    ///////////////////////////////////////////////////////////////////
     public void initialize() throws IllegalActionException  {
         super.initialize();
         for (int i = 0; i <= _order; i++) {
-            $ASSIGN$_estimatedErrorPowerCache(i, (double)0);
+            $ASSIGN$_estimatedErrorPower(i, 0.0);
+            $ASSIGN$_estimatedErrorPowerCache(i, 0.0);
+            if (i < _order) {
+                $ASSIGN$_reflectionCoefficientsCache(i, 0.0);
+            }
+        }
+        ArrayToken value = (ArrayToken)reflectionCoefficients.getToken();
+        for (int i = 0; i < _order; i++) {
+            _reflectionCoefficients[i] = ((DoubleToken)value.getElement(i)).doubleValue();
         }
     }
 
@@ -193,7 +201,7 @@ _alpha    ///////////////////////////////////////////////////////////////////
             k = _reflectionCoefficients[i];
             _forwardCache[i + 1] = (-k * _backwardCache[i]) + _forwardCache[i];
         }
-        Token[] outputArray = new Token[_order];
+        DoubleToken[] outputArray = new DoubleToken[_order];
         for (int i = _order; i > 0; i--) {
             k = _reflectionCoefficients[i - 1];
             _backwardCache[i] = (-k * _forwardCache[i - 1]) + _backwardCache[i - 1];
@@ -215,7 +223,7 @@ _alpha    ///////////////////////////////////////////////////////////////////
             $ASSIGN$_reflectionCoefficientsCache(i - 1, newCoefficient);
             $ASSIGN$_estimatedErrorPowerCache(i, newError);
         }
-        adaptedReflectionCoefficients.send(0, new ArrayToken(outputArray));
+        adaptedReflectionCoefficients.send(0, new ArrayToken(BaseType.DOUBLE, outputArray));
     }
 
     protected void _reallocate() {
@@ -237,6 +245,15 @@ _alpha    ///////////////////////////////////////////////////////////////////
             $RECORD$_oneMinusAlpha.add(null, _oneMinusAlpha, $CHECKPOINT.getTimestamp());
         }
         return _oneMinusAlpha = newValue;
+    }
+
+    private final double $ASSIGN$_estimatedErrorPower(int index0, double newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$_estimatedErrorPower.add(new int[] {
+                    index0
+                }, _estimatedErrorPower[index0], $CHECKPOINT.getTimestamp());
+        }
+        return _estimatedErrorPower[index0] = newValue;
     }
 
     private final double[] $ASSIGN$_estimatedErrorPower(double[] newValue) {

@@ -26,6 +26,8 @@
 
  This is similar to Switch and could be design/code reviewed at the same time.
  */
+//////////////////////////////////////////////////////////////////////////
+//// BooleanSwitch
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -42,8 +44,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-//////////////////////////////////////////////////////////////////////////
-//// BooleanSwitch
 
 /** 
  * A type polymorphic switch with boolean valued control.  In an

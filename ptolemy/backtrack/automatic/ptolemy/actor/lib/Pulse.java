@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Pulse
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -40,14 +42,12 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-//////////////////////////////////////////////////////////////////////////
-//// Pulse
 
 /** 
  * Produce a pulse with a shape specified by the parameters.
@@ -90,14 +90,14 @@ public class Pulse extends SequenceSource implements Rollbackable {
 
     // Call this so that we don't have to copy its code here...
     // set values parameter
-    /**         // Set the Repeat Flag.
-
-     *     // set type constraint
-The indexes at which the specified values will be produced.    // Call this so that we don't have to copy its code here...
-
-     *     ///////////////////////////////////////////////////////////////////
+    // Set the Repeat Flag.
+    // set type constraint
+    // Call this so that we don't have to copy its code here...
+    ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-This parameter is an array of integers, with default value {0, 1}.
+    /**     
+     * The indexes at which the specified values will be produced.
+     * This parameter is an array of integers, with default value {0, 1}.
      */
     public Parameter indexes;
 
@@ -116,29 +116,29 @@ This parameter is an array of integers, with default value {0, 1}.
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Check nondecreasing property.
-    private     // Got a match with an index.
-int    // Repeat the pulse sequence again.
-     // We stop incrementing after reaching the top of the indexes
+    // Got a match with an index.
+    // Repeat the pulse sequence again.
+    // We stop incrementing after reaching the top of the indexes
     // vector to avoid possibility of overflow.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Count of the iterations.  This stops incrementing when
     // we exceed the top of the indexes vector.
-_iterationCount = 0;
-
     // Index of the next output in the values array.
+    // Cache of indexes array value.
+    // Zero token of the same type as in the values array.
+    // Indicator of whether the iterations count matches one of the indexes.
+    // Flag to indicate whether or not to repeat the sequence.
+    private int _iterationCount = 0;
+
     private int _indexColCount = 0;
 
-    // Cache of indexes array value.
     private transient int[] _indexes;
 
-    // Zero token of the same type as in the values array.
     private Token _zero;
 
-    // Indicator of whether the iterations count matches one of the indexes.
     private boolean _match = false;
 
-    // Flag to indicate whether or not to repeat the sequence.
     private boolean _repeatFlag;
 
     /**     
@@ -158,13 +158,10 @@ _iterationCount = 0;
         attributeChanged(indexes);
         values = new Parameter(this, "values");
         values.setExpression("{1, 0}");
-        values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         repeat = new Parameter(this, "repeat", new BooleanToken(false));
         repeat.setTypeEquals(BaseType.BOOLEAN);
         attributeChanged(repeat);
-        ArrayType valuesArrayType = (ArrayType)values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        output.setTypeAtLeast(ArrayType.elementType(values));
         attributeChanged(values);
     }
 
@@ -213,9 +210,11 @@ _iterationCount = 0;
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         Pulse newObject = (Pulse)super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 

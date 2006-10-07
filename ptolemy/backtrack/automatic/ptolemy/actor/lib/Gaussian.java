@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Gaussian
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import ptolemy.actor.parameters.PortParameter;
@@ -35,8 +37,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-//////////////////////////////////////////////////////////////////////////
-//// Gaussian
 
 /** 
  * Produce a random sequence with a Gaussian distribution.  On each

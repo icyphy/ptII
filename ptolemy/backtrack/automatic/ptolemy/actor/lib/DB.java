@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// DB
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -41,8 +43,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-//////////////////////////////////////////////////////////////////////////
-//// DB
 
 /** 
  * Produce a token that is the value of the input in decibels.
@@ -87,13 +87,13 @@ public class DB extends Transformer implements Rollbackable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Check whether we need to reallocate the output token array.
-    private     // NOTE: inArray.length may be > count, in which case
+    // NOTE: inArray.length may be > count, in which case
     // only the first count tokens are valid.
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-DoubleToken[] _resultArray = new DoubleToken[1];
+    private DoubleToken[] _resultArray = new DoubleToken[1];
 
     /**     
      * Construct an actor in the specified container with the specified

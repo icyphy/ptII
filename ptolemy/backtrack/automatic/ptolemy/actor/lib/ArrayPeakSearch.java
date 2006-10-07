@@ -1,6 +1,6 @@
 /* An actor that identifies peaks in an array.
 
- Copyright (c) 2003-2005 The Regents of the University of California.
+ Copyright (c) 2003-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,6 +24,8 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
+//////////////////////////////////////////////////////////////////////////
+//// ArrayPeakSearch
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -45,12 +47,11 @@ import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-//////////////////////////////////////////////////////////////////////////
-//// ArrayPeakSearch
 
 /** 
  * This actor outputs the indices and values of peaks in an input array.
@@ -93,13 +94,13 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
 
     // Set Parameters.
     // Ports.
-    /**         // Set Type Constraints.
-
-     *     // NOTE: Consider constraining input element types.
+    // Set Type Constraints.
+    // NOTE: Consider constraining input element types.
     // This is a bit complicated to do, however.
-The amount that the signal must drop below a local maximum before a    ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
+    /**     
+     * The amount that the signal must drop below a local maximum before a
      * peak is detected. This is a double that can be interpreted as an
      * absolute threshold or relative to the local peak, and if relative, on
      * a linear or decibel scale, depending on the <i>scale</i>
@@ -173,15 +174,15 @@ The amount that the signal must drop below a local maximum before a    /////////
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Constrain start and end.
-    private static final     // The following values change since they are relative to
+    // The following values change since they are relative to
     // most recently peaks or values.
-int    // Index of what scale we are dealing with.
-     // Scale is relative so we adjust the thresholds.
+    // Index of what scale we are dealing with.
+    // Scale is relative so we adjust the thresholds.
     // Search for the global maximum value so squelch
     // works properly.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-_ABSOLUTE = 0;
+    private static final int _ABSOLUTE = 0;
 
     private static final int _RELATIVE_DB = 1;
 
@@ -261,6 +262,7 @@ _ABSOLUTE = 0;
         endIndex.update();
         if (input.hasToken(0)) {
             ArrayToken inputArray = (ArrayToken)input.get(0);
+            Type inputElementType = inputArray.getElementType();
             int inputSize = inputArray.length();
             if (inputSize == 0) {
                 peakValues.send(0, inputArray);
@@ -415,8 +417,8 @@ _ABSOLUTE = 0;
             }
             Token[] resultPeaksArray = (Token[])resultPeaks.toArray(new Token[resultPeaks.size()]);
             Token[] resultIndicesArray = (Token[])resultIndices.toArray(new Token[resultIndices.size()]);
-            peakValues.send(0, new ArrayToken(resultPeaksArray));
-            peakIndices.send(0, new ArrayToken(resultIndicesArray));
+            peakValues.send(0, new ArrayToken(inputElementType, resultPeaksArray));
+            peakIndices.send(0, new ArrayToken(BaseType.INT, resultIndicesArray));
         }
     }
 

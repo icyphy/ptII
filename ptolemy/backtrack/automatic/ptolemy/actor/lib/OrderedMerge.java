@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// OrderedMerge
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -42,8 +44,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
-//////////////////////////////////////////////////////////////////////////
-//// OrderedMerge
 
 /** 
  * This actor merges two monotonically nondecreasing streams of tokens into
@@ -104,19 +104,19 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
     ////                         public methods                    ////
     // First firing.  Just record the token.
     // Produce the smaller output.
-    /**         // Token was just read from _nextPort.
-
-     *     // Produce the smaller output.
-The recorded token.     // Swap ports.
+    // Token was just read from _nextPort.
+    // Produce the smaller output.
+    // Swap ports.
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-     */
     // This method is Added by Gang Zhou so that DDFOrderedMerge
     // can extend this class.
-    private     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-ScalarToken _recordedToken = null;
+    /**     
+     * The recorded token. 
+     */
+    private ScalarToken _recordedToken = null;
 
     /**     
      * The port from which to read next. 

@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Multiplexor
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -40,8 +42,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-//////////////////////////////////////////////////////////////////////////
-//// Multiplexor
 
 /** 
  * This actor selects from the channels on the
@@ -70,13 +70,13 @@ public class Multiplexor extends Transformer implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /**     
      * Input for the index of the port to select. The type is IntToken. 
      */
     public TypedIOPort select;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**     

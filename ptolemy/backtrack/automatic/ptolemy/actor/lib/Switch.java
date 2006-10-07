@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Switch
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -41,8 +43,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-//////////////////////////////////////////////////////////////////////////
-//// Switch
 
 /** 
  * A polymorphic switch, which routes inputs to specified output channels.
@@ -75,14 +75,14 @@ public class Switch extends Transformer implements Rollbackable {
     // Put the control input on the bottom of the actor.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /**     
      * Input port for control tokens, which specify the output channel
      * to produce data on.  The type is int. 
      */
     public TypedIOPort control;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The most recently read control token.

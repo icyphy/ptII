@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// RecursiveLattice
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -41,8 +43,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-//////////////////////////////////////////////////////////////////////////
-//// RecursiveLattice
 
 /** 
  * A recursive (all-pole) filter with a lattice structure.
@@ -128,11 +128,11 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Need to allocate or reallocate the arrays.
-    private     // NOTE: The following code is ported from Ptolemy Classic.
+    // NOTE: The following code is ported from Ptolemy Classic.
     // Forward prediction error
-double    // _forward(0) = x(n)
-[]    // Backward:  Compute the w's for the next round
-     // Get a copy of the current filter state that we can modify.
+    // _forward(0) = x(n)
+    // Backward:  Compute the w's for the next round
+    // Get a copy of the current filter state that we can modify.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // We set these to null and then the constructor calls setExpression()
@@ -140,25 +140,25 @@ double    // _forward(0) = x(n)
     // these arrays.
     // Backward prediction errors, represented by "w" in the class
     // comment.
-_backward = null;
-
     // Cache of backward prediction errors, represented by "w" in the class
     // comment.  The fire() method updates _forwardCache and postfire()
     // copies _forwardCache to _forward so this actor will work in domains
     // like SR.
-    private double[] _backwardCache = null;
-
     // Forward prediction errors, represented by "y" in the class
     // comment.
-    private double[] _forward = null;
-
     // Cache of forward prediction errors, represented by "y" in the class
     // comment.  The fire() method updates _forwardCache and postfire()
     // copies _forwardCache to _forward so this actor will work in domains
     // like SR.
+    // Cache of reflection coefficients.
+    private double[] _backward = null;
+
+    private double[] _backwardCache = null;
+
+    private double[] _forward = null;
+
     private double[] _forwardCache = null;
 
-    // Cache of reflection coefficients.
     private double[] _reflectionCoefs = null;
 
     /**     
@@ -233,8 +233,10 @@ _backward = null;
      */
     public void initialize() throws IllegalActionException  {
         for (int i = 0; i < _forward.length; i++) {
-            $ASSIGN$_forward(i, (double)0);
-            $ASSIGN$_backward(i, (double)0);
+            $ASSIGN$_forward(i, 0.0);
+            $ASSIGN$_forwardCache(i, 0.0);
+            $ASSIGN$_backward(i, 0.0);
+            $ASSIGN$_backwardCache(i, 0.0);
         }
     }
 

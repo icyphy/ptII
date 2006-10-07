@@ -25,6 +25,10 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Differential
+///////////////////////////////////////////////////////////////////
+////                         public methods                    ////
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -37,8 +41,6 @@ import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-//////////////////////////////////////////////////////////////////////////
-//// Differential
 
 /** 
  * Output the current input minus the previous input, or if there
@@ -54,10 +56,8 @@ public class Differential extends Transformer implements Rollbackable {
     protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-    private     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-Token _currentInput;
+    private Token _currentInput;
 
     private Token _lastInput;
 

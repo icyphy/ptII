@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Commutator
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -42,8 +44,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-//////////////////////////////////////////////////////////////////////////
-//// Commutator
 
 /** 
  * A polymorphic commutator, which merges a set of input sequences into a
@@ -89,12 +89,12 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
     ////                         public methods                    ////
     // NOTE: schedule is invalidated automatically already
     // by the changed connections.
-    private     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The channel number for the next input.
-int _currentInputPosition;
-
     // The new channel number for the next input as determined by fire().
+    private int _currentInputPosition;
+
     private int _tentativeInputPosition;
 
     /**     

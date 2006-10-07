@@ -27,6 +27,8 @@
  COPYRIGHTENDKEY
 
  */
+///////////////////////////////////////////////////////////////////
+//// IIR
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -48,8 +50,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
-///////////////////////////////////////////////////////////////////
-//// IIR
 
 /** 
  * This actor is an implementation of an infinite impulse response IIR
@@ -74,11 +74,9 @@ public class IIR extends Transformer implements Rollbackable {
     protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // Parameters
-    // Set the type of the output port.
-    // Set type constraints.
-    /**         ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
+    /**     
      * This parameter represents the numerator coefficients as an array
      * of tokens. The format is
      * {b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>}. The default
@@ -100,32 +98,32 @@ public class IIR extends Transformer implements Rollbackable {
     ////                         public methods                    ////
     // Note: a<sub>0</sub> must always be 1.
     // Issue a warning if it isn't.
-    private     // Override the user and just use 1.
+    // Override the user and just use 1.
     // Initialize filter state.
     // CloneNotSupportedException does not have a constructor
     // that takes a cause argument, so we use initCause
-Token    // Save state vector value.
+    // Save state vector value.
     // Compute the current output sample given the input sample.
-[]    // Shadowed state. used in postfire().
-     // Restore state vector to previous state.
+    // Shadowed state. used in postfire().
+    // Restore state vector to previous state.
     // Initialize filter state.
-_numerator    // Update the state vector pointer.
- =     ///////////////////////////////////////////////////////////////////
+    // Update the state vector pointer.
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-new     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Filter parameters
-Token[0];
+    // Filter state vector
+    // State vector pointer
+    // Shadow state.
+    private Token[] _numerator = new Token[0];
 
     private Token[] _denominator = new Token[0];
 
-    // Filter state vector
     private Token[] _stateVector;
 
-    // State vector pointer
     private int _currentTap;
 
-    // Shadow state.
     private Token _latestWindow;
 
     /**     
@@ -145,14 +143,8 @@ Token[0];
         denominator = new Parameter(this, "denominator");
         denominator.setExpression("{1.0}");
         attributeChanged(denominator);
-        numerator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        denominator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        ArrayType numeratorType = (ArrayType)numerator.getType();
-        InequalityTerm elementTerm = numeratorType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
-        ArrayType denominatorType = (ArrayType)denominator.getType();
-        InequalityTerm elementTerm2 = denominatorType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm2);
+        output.setTypeAtLeast(ArrayType.elementType(numerator));
+        output.setTypeAtLeast(ArrayType.elementType(denominator));
         input.setTypeAtLeast(output);
         output.setTypeAtLeast(input);
     }
@@ -200,14 +192,8 @@ Token[0];
     public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         IIR newObject = (IIR)super.clone(workspace);
         try {
-            newObject.numerator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-            newObject.denominator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-            ArrayType numeratorType = (ArrayType)newObject.numerator.getType();
-            InequalityTerm elementTerm = numeratorType.getElementTypeTerm();
-            newObject.output.setTypeAtLeast(elementTerm);
-            ArrayType denominatorType = (ArrayType)newObject.denominator.getType();
-            InequalityTerm elementTerm2 = denominatorType.getElementTypeTerm();
-            newObject.output.setTypeAtLeast(elementTerm2);
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.numerator));
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.denominator));
             newObject.input.setTypeAtLeast(newObject.output);
             newObject.output.setTypeAtLeast(newObject.input);
         } catch (IllegalActionException ex) {

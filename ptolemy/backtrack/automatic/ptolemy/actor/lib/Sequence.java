@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Sequence
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -39,13 +41,11 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-//////////////////////////////////////////////////////////////////////////
-//// Sequence
 
 /** 
  * This actor produces a sequence of values, optionally periodically repeating
@@ -72,11 +72,11 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
 
     // set values parameter
     // Set the Repeat Flag.
-    /**         // set type constraint
-
-     *     ///////////////////////////////////////////////////////////////////
+    // set type constraint
+    ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-The enable input port.  If this port is connected, then its
+    /**     
+     * The enable input port.  If this port is connected, then its
      * input will determine whether an output is produced in any
      * given firing. The type is boolean.
      */
@@ -103,13 +103,13 @@ The enable input port.  If this port is connected, then its
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Note that this will default to null if there is no initialValue set.
-    private     // To prevent overflow...
-int    ///////////////////////////////////////////////////////////////////
+    // To prevent overflow...
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The index of the next value to be produced.
- _currentIndex;
-
     // Indicator that an output was produced.
+    private int _currentIndex;
+
     private boolean _outputProduced;
 
     /**     
@@ -126,15 +126,12 @@ int    ///////////////////////////////////////////////////////////////////
         super(container, name);
         values = new Parameter(this, "values");
         values.setExpression("{1}");
-        values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         repeat = new Parameter(this, "repeat", new BooleanToken(false));
         repeat.setTypeEquals(BaseType.BOOLEAN);
         enable = new TypedIOPort(this, "enable", true, false);
         enable.setTypeEquals(BaseType.BOOLEAN);
         output = new TypedIOPort(this, "output", false, true);
-        ArrayType valuesArrayType = (ArrayType)values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        output.setTypeAtLeast(ArrayType.elementType(values));
     }
 
     /**     
@@ -147,9 +144,11 @@ int    ///////////////////////////////////////////////////////////////////
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         Sequence newObject = (Sequence)super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 

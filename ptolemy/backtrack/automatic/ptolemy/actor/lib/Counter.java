@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Counter
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -40,8 +42,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-//////////////////////////////////////////////////////////////////////////
-//// Counter
 
 /** 
  * This actor implements an up-down counter of received tokens.  Whenever
@@ -88,11 +88,11 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Check the increment port.
-    private     // Check the decrement port.
-int    // Produce an output if we consumed an input.
-     ///////////////////////////////////////////////////////////////////
+    // Check the decrement port.
+    // Produce an output if we consumed an input.
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-_count = 0;
+    private int _count = 0;
 
     private int _latestCount = 0;
 

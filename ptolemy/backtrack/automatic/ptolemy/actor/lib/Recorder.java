@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Recorder
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -47,8 +49,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-//////////////////////////////////////////////////////////////////////////
-//// Recorder
 
 /** 
  * Record all input tokens for later querying.  This actor can be used for
@@ -86,21 +86,21 @@ public class Recorder extends Sink implements Rollbackable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Remove the first element.
-    private     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Count of events seen.
-int _count = 0;
-
     // A linked list of arrays.
+    // The most recent set of inputs.
+    // A linked list of Double objects, which are times.
+    // A token to indicate absence.
+    private int _count = 0;
+
     private List _records;
 
-    // The most recent set of inputs.
     Token[] _latest;
 
-    // A linked list of Double objects, which are times.
     private List _timeRecord;
 
-    // A token to indicate absence.
     private static Token _bottom = new StringToken("_");
 
     /**     

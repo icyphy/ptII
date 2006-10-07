@@ -27,6 +27,8 @@
  (This is similar to Select and BooleanMultiplexor and could be
  design/code reviewed at the same time.
  */
+//////////////////////////////////////////////////////////////////////////
+//// BooleanSelect
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -42,8 +44,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-//////////////////////////////////////////////////////////////////////////
-//// BooleanSelect
 
 /** 
  * A type polymorphic select with boolean valued control.  In an
@@ -103,10 +103,10 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Redo this check in case the control has changed since prefire().
-    private     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The most recently read control token.
-boolean _control = false;
+    private boolean _control = false;
 
     /**     
      * Construct an actor in the specified container with the specified

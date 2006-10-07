@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Sequencer
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -43,8 +45,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-//////////////////////////////////////////////////////////////////////////
-//// Sequencer
 
 /** 
  * This actor takes a sequence of inputs tagged with a sequence number
@@ -87,18 +87,18 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Indicator that an output was produced by the fire() method.
+    // Indicator of the next sequence number for the output.
+    // Token consumed by fire() to be recorded in postfire().
+    // The sorted pending data.
+    // The sequence number of the data read in the fire() method.
     private boolean _fireProducedOutput = false;
 
-    // Indicator of the next sequence number for the output.
     private int _nextSequenceNumber;
 
-    // Token consumed by fire() to be recorded in postfire().
     private Token _nextToken;
 
-    // The sorted pending data.
     private TreeMap _pending = (TreeMap)new TreeMap().$SET$CHECKPOINT($CHECKPOINT);
 
-    // The sequence number of the data read in the fire() method.
     private int _sequenceNumberOfInput;
 
     /**     

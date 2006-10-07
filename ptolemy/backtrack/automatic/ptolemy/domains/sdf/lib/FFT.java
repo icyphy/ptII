@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// FFT
 package ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib;
 
 import java.lang.Object;
@@ -44,8 +46,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Complex;
 import ptolemy.math.SignalProcessing;
-//////////////////////////////////////////////////////////////////////////
-//// FFT
 
 /** 
  * This actor calculates the Fast Fourier Transform of a sequence of
@@ -76,9 +76,9 @@ public class FFT extends SDFTransformer implements Rollbackable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Get the size of the FFT transform
-    private     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-int _transformSize;
+    private int _transformSize;
 
     private int _orderValue;
 

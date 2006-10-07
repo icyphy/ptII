@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Distributor
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -44,8 +46,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-//////////////////////////////////////////////////////////////////////////
-//// Distributor
 
 /** 
  * A polymorphic distributor, which splits an input stream into a set of
@@ -93,12 +93,12 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
     ////                         public methods                    ////
     // NOTE: schedule is invalidated automatically already
     // by the changed connections.
-    private     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The channel number for the next output.
-int _currentOutputPosition;
-
     // The new channel number for the next output as determined by fire().
+    private int _currentOutputPosition;
+
     private int _tentativeOutputPosition;
 
     /**     

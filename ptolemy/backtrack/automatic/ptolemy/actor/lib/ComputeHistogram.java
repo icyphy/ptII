@@ -1,6 +1,6 @@
 /* Compute a histogram of input data.
 
- @Copyright (c) 2003-2005 The Regents of the University of California.
+ @Copyright (c) 2003-2006 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -26,6 +26,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// ComputeHistogram
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -48,8 +50,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-//////////////////////////////////////////////////////////////////////////
-//// ComputeHistogram
 
 /** 
  * Compute a histogram.
@@ -125,12 +125,12 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Send the output array.
-    private     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     // Calculate the bin number.
-int    ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-[] _bins;
+    private int[] _bins;
 
     private double _minimumValue;
 
@@ -199,10 +199,10 @@ int    ///////////////////////////////////////////////////////////////////
     /**     
      * Read at most one input token from each input channel
      * and update the histogram.
-     * This is done in postfire to ensure that data has settled.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean postfire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException  {
+        super.fire();
         $ASSIGN$_bins(new int[_numberOfBins]);
         inputCount.update();
         int count = ((IntToken)inputCount.getToken()).intValue();
@@ -217,8 +217,7 @@ int    ///////////////////////////////////////////////////////////////////
         for (int i = 0; i < _bins.length; i++) {
             values[i] = new IntToken(_bins[i]);
         }
-        output.send(0, new ArrayToken(values));
-        return super.postfire();
+        output.send(0, new ArrayToken(BaseType.INT, values));
     }
 
     /**     

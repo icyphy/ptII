@@ -25,6 +25,8 @@
  PT_COPYRIGHT_VERSION 2
  COPYRIGHTENDKEY
  */
+//////////////////////////////////////////////////////////////////////////
+//// DoubleReader
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.io.IOException;
@@ -39,8 +41,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-//////////////////////////////////////////////////////////////////////////
-//// DoubleReader
 
 /** 
  * This actor reads tokens from an URL, and output them. Each entry in
@@ -82,10 +82,10 @@ public class DoubleReader extends URLReader implements Rollbackable {
     ////                         private members                   ////
     // Cache of one row.
     // FIXME: Should we clone this?
-    private double[] _data;
-
     // Valid enties in the data array.
     // FIXME: Should we clone this?
+    private double[] _data;
+
     private int _dataSize;
 
     /**     

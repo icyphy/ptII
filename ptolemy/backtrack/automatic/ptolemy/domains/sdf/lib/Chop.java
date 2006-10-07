@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Chop
 package ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib;
 
 import java.lang.Object;
@@ -42,8 +44,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-//////////////////////////////////////////////////////////////////////////
-//// Chop
 
 /** 
  * This actor reads a sequence of input tokens of any type, and writes a
@@ -160,28 +160,28 @@ public class Chop extends SDFTransformer implements Rollbackable {
     ////                         public methods                    ////
     // Note: it is important that none of these sections depend on
     // each other.
-    private     // NOTE: The following computation gets repeated when each of
+    // NOTE: The following computation gets repeated when each of
     // these gets set, but it's a simple calculation, so we live
     // with it.
     // The variables _highLimit and _lowLimit indicate the range of
     // output indexes that come directly from the input block
     // that is read.
-int    // Fill past buffer with zeros.
-     // FIXME: This will access past samples...
+    // Fill past buffer with zeros.
+    // FIXME: This will access past samples...
     // Copy input buffer into past buffer.  Have to be careful
     // here because the buffer might be longer than the
     // input window.
-_highLimit    // Shift older data.
+    // Shift older data.
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+    private int _highLimit;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
     private int _inputIndex;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
     private int _lowLimit;
 
     private int _numberToRead;
@@ -316,6 +316,16 @@ _highLimit    // Shift older data.
             System.arraycopy(inBuffer, startCopy, $BACKUP$_pastBuffer(), destination, length);
         }
         output.send(0, $BACKUP$_buffer(), _numberToWrite);
+    }
+
+    /**     
+     * Override the base class to ensure that the past buffer
+     * gets initialized.
+     * @throws IllegalActionException If the superclass throws it.
+     */
+    public void initialize() throws IllegalActionException  {
+        super.initialize();
+        $ASSIGN$_pastNeedsInitializing(true);
     }
 
     private final int $ASSIGN$_highLimit(int newValue) {

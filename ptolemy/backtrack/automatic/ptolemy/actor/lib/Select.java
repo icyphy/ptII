@@ -26,6 +26,8 @@
 
  Code review issue: This actor reads data in prefire.
  */
+//////////////////////////////////////////////////////////////////////////
+//// Select
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -41,8 +43,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-//////////////////////////////////////////////////////////////////////////
-//// Select
 
 /** 
  * A polymorphic select, which routes specified input channels to the
@@ -82,19 +82,19 @@ public class Select extends Transformer implements Rollbackable {
     // Put the control input on the bottom of the actor.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /**     
      * Input port for control tokens, which specify the output channel
      * to produce data on.  The type is int. 
      */
     public TypedIOPort control;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
     // Redo this check in case the control has changed since prefire().
-    private     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The most recently read control token.
-int _control = 0;
+    private int _control = 0;
 
     /**     
      * Construct an actor in the specified container with the specified

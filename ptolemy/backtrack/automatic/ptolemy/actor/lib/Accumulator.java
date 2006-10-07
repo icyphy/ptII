@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Accumulator
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -42,8 +44,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-//////////////////////////////////////////////////////////////////////////
-//// Accumulator
 
 /** 
  * Output the initial value plus the sum of all the inputs since
@@ -82,11 +82,11 @@ public class Accumulator extends Transformer implements Rollbackable {
     ////                         public methods                    ////
     // set the type constraints.
     // Check whether to reset.
-    /**         // Being reset at this firing.
-
-     *     ///////////////////////////////////////////////////////////////////
+    // Being reset at this firing.
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-The running sum. 
+    /**     
+     * The running sum. 
      */
     private Token _sum;
 

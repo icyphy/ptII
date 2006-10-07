@@ -1,6 +1,6 @@
 /* A polymorphic autocorrelation function.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,11 +25,11 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// Autocorrelation
 package ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib;
 
 import java.lang.Object;
-import java.util.LinkedList;
-import java.util.List;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -46,15 +46,13 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
 import ptolemy.domains.sdf.lib.SDFTransformer;
-import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-//////////////////////////////////////////////////////////////////////////
-//// Autocorrelation
 
 /** 
  * This actor calculates the autocorrelation of a sequence of input tokens.
@@ -120,7 +118,6 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
     protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // Set the output type to be an ArrayType.
-    // This is refined further by the typeConstraintList method.
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
     /**     
@@ -156,12 +153,23 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
     ////                         public methods                    ////
     // NOTE: Is there a better way to determine whether the input
     // is complex?
-    private     // Now fill in the first half, which by symmetry is just
+    // Now fill in the first half, which by symmetry is just
     // identical to what was just produced, or its conjugate if
     // the input is complex.
-int    ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
- _numberOfInputs;
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    // This class implements a monotonic function of the input port
+    // type. The result of the function is the same as the input type
+    // if is not Int or IntMatrix; otherwise, the result is Double
+    // or DoubleMatrix, respectively.
+    // The constructor takes a port argument so that the clone()
+    // method can construct an instance of this class for the
+    // input port on the clone.
+    ///////////////////////////////////////////////////////////////
+    ////                       public inner methods            ////
+    private int _numberOfInputs;
 
     private int _numberOfLags;
 
@@ -171,24 +179,13 @@ int    ///////////////////////////////////////////////////////////////////
 
     private Token[] _outputs;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-    // This class implements a monotonic function of the input port
-    // type. The result of the function is the same as the input type
-    // if is not Int or IntMatrix; otherwise, the result is Double
-    // or DoubleMatrix, respectively.
-    private class FunctionTerm extends MonotonicFunction implements Rollbackable {
+    private static class FunctionTerm extends MonotonicFunction implements Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        // The constructor takes a port argument so that the clone()
-        // method can construct an instance of this class for the
-        // input port on the clone.
-        private         ///////////////////////////////////////////////////////////////
-        ////                       public inner methods            ////
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
-TypedIOPort _port;
+        private TypedIOPort _port;
 
         private FunctionTerm(TypedIOPort port) {
             $ASSIGN$_port(port);
@@ -290,7 +287,7 @@ TypedIOPort _port;
         symmetricOutput = new Parameter(this, "symmetricOutput", new BooleanToken(false));
         symmetricOutput.setTypeEquals(BaseType.BOOLEAN);
         input.setTypeAtLeast(new FunctionTerm(input));
-        output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        output.setTypeAtLeast(ArrayType.arrayOf(input));
         attributeChanged(numberOfInputs);
     }
 
@@ -336,6 +333,11 @@ TypedIOPort _port;
     public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         Autocorrelation newObject = (Autocorrelation)super.clone(workspace);
         newObject.input.setTypeAtLeast(new FunctionTerm(newObject.input));
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.input));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 
@@ -394,23 +396,6 @@ TypedIOPort _port;
         } else {
             return super.prefire();
         }
-    }
-
-    /**     
-     * Return the type constraint that the type of the elements of the
-     * output array is no less than the type of the input port.
-     * @return A list of inequalities.
-     */
-    public List typeConstraintList() {
-        List result = super.typeConstraintList();
-        if (result == null) {
-            result = new LinkedList();
-        }
-        ArrayType outArrType = (ArrayType)output.getType();
-        InequalityTerm elementTerm = outArrType.getElementTypeTerm();
-        Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
-        result.add(ineq);
-        return result;
     }
 
     private final int $ASSIGN$_numberOfInputs(int newValue) {

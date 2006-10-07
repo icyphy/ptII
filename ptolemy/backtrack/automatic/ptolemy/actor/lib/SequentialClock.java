@@ -1,6 +1,6 @@
 /* A clock source for sequence-capable domains.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,6 +25,8 @@
  COPYRIGHTENDKEY
 
  */
+//////////////////////////////////////////////////////////////////////////
+//// SequentialClock
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
@@ -47,10 +49,9 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-//////////////////////////////////////////////////////////////////////////
-//// SequentialClock
 
 /** 
  * A clock source for sequence-capable domains.  This actor is considerably
@@ -103,14 +104,14 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
     // input.  This is too bad, since it results in a lot of duplicated
     // code with Clock.
     // Call this so that we don't have to copy its code here...
-    /**         // set the values parameter
-
-     *     // set type constraint
-The output port.  The type of this port is determined by from    // Call this so that we don't have to copy its code here...
-
-     *     ///////////////////////////////////////////////////////////////////
+    // set the values parameter
+    // set type constraint
+    // Call this so that we don't have to copy its code here...
+    ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-the <i>values</i> parameter.
+    /**     
+     * The output port.  The type of this port is determined by from
+     * the <i>values</i> parameter.
      */
     public TypedIOPort output = null;
 
@@ -136,33 +137,33 @@ the <i>values</i> parameter.
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Check nondecreasing property.
-    private transient     // Note: SequentialClock getCurrentTime() calls don't have to rewritten
+    // Note: SequentialClock getCurrentTime() calls don't have to rewritten
     // for DT because this actor is a pure source without any trigger.
     // All calls to getCurrentTime will return the global time of
     // the system.
     // Schedule the first firing.
     // NOTE: This must be the last line, because it could result
     // in an immediate iteration.
-Token    // Set the cycle start time here rather than in initialize
+    // Set the cycle start time here rather than in initialize
     // so that we at least start out well aligned.
     // Increment to the next phase.
-     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The following are all transient because they need not be cloned.
     // Either the clone method or the initialize() method sets them.
     // The current value of the clock output.
-_currentValue;
-
     // The most recent cycle start time.
+    // Indicator of the first firing cycle.
+    // Cache of offsets array value.
+    // The phase of the next output.
+    private transient Token _currentValue;
+
     private transient Time _cycleStartTime;
 
-    // Indicator of the first firing cycle.
     private boolean _firstFiring = true;
 
-    // Cache of offsets array value.
     private transient double[] _offsets;
 
-    // The phase of the next output.
     private transient int _phase;
 
     /**     
@@ -186,12 +187,9 @@ _currentValue;
         IntToken[] defaultValues = new IntToken[2];
         defaultValues[0] = new IntToken(1);
         defaultValues[1] = new IntToken(0);
-        ArrayToken defaultValueToken = new ArrayToken(defaultValues);
+        ArrayToken defaultValueToken = new ArrayToken(BaseType.INT, defaultValues);
         values = new Parameter(this, "values", defaultValueToken);
-        values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        ArrayType valuesArrayType = (ArrayType)values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        output.setTypeAtLeast(ArrayType.elementType(values));
         attributeChanged(values);
     }
 
@@ -238,9 +236,11 @@ _currentValue;
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         SequentialClock newObject = (SequentialClock)super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 
