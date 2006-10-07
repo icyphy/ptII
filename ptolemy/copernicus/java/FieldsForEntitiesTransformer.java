@@ -345,8 +345,8 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
             System.out.println("replacing entity calls in " + theClass);
         }
 
-        NamedObj correspondingObject = ModelTransformer
-                .getObjectForClass(theClass);
+        //NamedObj correspondingObject = ModelTransformer
+        //       .getObjectForClass(theClass);
 
         // Replace calls to entity method with field references.
         for (Iterator methods = theClass.getMethods().iterator(); methods

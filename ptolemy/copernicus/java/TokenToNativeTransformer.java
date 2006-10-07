@@ -907,7 +907,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                     System.out.println("method = " + method);
                 }
 
-                Hierarchy hierarchy = Scene.v().getActiveHierarchy();
+                //Hierarchy hierarchy = Scene.v().getActiveHierarchy();
 
                 // First inline all the methods that execute on Tokens.
                 for (Iterator units = body.getUnits().snapshotIterator(); units

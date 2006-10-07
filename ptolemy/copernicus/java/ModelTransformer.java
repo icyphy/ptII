@@ -393,7 +393,7 @@ public class ModelTransformer extends SceneTransformer implements
     public static void createPorts(JimpleBody body, Local contextLocal,
             Entity context, Local entityLocal, Entity entity,
             EntitySootClass theClass, HashMap objectNameToCreatorName) {
-        Entity classObject = (Entity) _findDeferredInstance(entity);
+        //Entity classObject = (Entity) _findDeferredInstance(entity);
 
         // This local is used to store the return from the getPort
         // method, before it is stored in a type-specific local variable.
@@ -622,10 +622,10 @@ public class ModelTransformer extends SceneTransformer implements
                     PtolemyUtilities.settableType);
             body.getLocals().add(settableLocal);
 
-            String className = attribute.getClass().getName();
-            Type attributeType = RefType.v(className);
+            //String className = attribute.getClass().getName();
+            //Type attributeType = RefType.v(className);
             String attributeName = attribute.getName(context);
-            String fieldName = getFieldNameForAttribute(attribute, context);
+            //String fieldName = getFieldNameForAttribute(attribute, context);
 
             Local local = attributeLocal;
             body.getUnits().insertBefore(
@@ -780,10 +780,10 @@ public class ModelTransformer extends SceneTransformer implements
                 continue;
             }
 
-            String className = attribute.getClass().getName();
-            Type attributeType = RefType.v(className);
+            //String className = attribute.getClass().getName();
+            //Type attributeType = RefType.v(className);
             String attributeName = attribute.getName(context);
-            String fieldName = getFieldNameForAttribute(attribute, context);
+            //String fieldName = getFieldNameForAttribute(attribute, context);
 
             Local local = attributeLocal;
             body.getUnits().insertBefore(
@@ -1400,7 +1400,7 @@ public class ModelTransformer extends SceneTransformer implements
 
         // Some indexes, to make it easier to resolve an actor object,
         // given the objects class, and vice versa.
-        _entityToFieldMap = new HashMap();
+        //_entityToFieldMap = new HashMap();
         _fieldToEntityMap = new HashMap();
 
         _classToObjectMap = new HashMap();
@@ -1423,7 +1423,7 @@ public class ModelTransformer extends SceneTransformer implements
             CompositeActor container, Local thisLocal,
             CompositeActor composite, EntitySootClass modelClass,
             HashMap objectNameToCreatorName, Map options) {
-        CompositeActor classObject = (CompositeActor) _findDeferredInstance(composite);
+        //CompositeActor classObject = (CompositeActor) _findDeferredInstance(composite);
 
         // A local that we will use to get existing entities
         Local entityLocal = Jimple.v().newLocal("entity",
@@ -1479,7 +1479,7 @@ public class ModelTransformer extends SceneTransformer implements
                 local = PtolemyUtilities.createNamedObjAndLocal(body,
                         className, thisLocal, entity.getName());
 
-                Entity classEntity = (Entity) _findDeferredInstance(entity);
+                //Entity classEntity = (Entity) _findDeferredInstance(entity);
 
                 // This class assumes that any entity that is created creates
                 // all stuff inside it.
@@ -1507,7 +1507,7 @@ public class ModelTransformer extends SceneTransformer implements
             Entity context, Local entityLocal, Entity entity,
             EntitySootClass modelClass, HashMap objectNameToCreatorName,
             boolean createFieldsInClass) {
-        Entity classObject = (Entity) _findDeferredInstance(entity);
+        //Entity classObject = (Entity) _findDeferredInstance(entity);
 
         // This local is used to store the return from the getPort
         // method, before it is stored in a type-specific local variable.
@@ -2285,7 +2285,7 @@ public class ModelTransformer extends SceneTransformer implements
     ////                         private variables                 ////
     private static CompositeActor _model;
 
-    private static Map _entityToFieldMap = new HashMap();
+    //private static Map _entityToFieldMap = new HashMap();
 
     private static Map _fieldToEntityMap = new HashMap();
 

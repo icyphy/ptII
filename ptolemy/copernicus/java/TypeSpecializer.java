@@ -121,7 +121,7 @@ public class TypeSpecializer extends SceneTransformer implements
         Scene.v().setActiveHierarchy(new Hierarchy());
         Scene.v().setFastHierarchy(new FastHierarchy());
 
-        Hierarchy h = Scene.v().getActiveHierarchy();
+        //Hierarchy h = Scene.v().getActiveHierarchy();
 
         for (Iterator entities = _model.deepEntityList().iterator(); entities
                 .hasNext();) {

@@ -630,7 +630,7 @@ public class GiottoPortInliner implements PortInliner {
             clinitBody.getUnits().add(Jimple.v().newReturnVoidStmt());
         }
 
-        Chain clinitUnits = clinitBody.getUnits();
+        //Chain clinitUnits = clinitBody.getUnits();
 
         // Loop over all the relations, creating buffers for each channel.
         for (Iterator relations = _model.relationList().iterator(); relations

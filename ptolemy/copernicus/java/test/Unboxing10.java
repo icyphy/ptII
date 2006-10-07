@@ -23,7 +23,7 @@ public class Unboxing10 {
         inttokens[0] = new IntToken(0);
         ((Unboxing10) this).arraytoken = new ArrayToken(inttokens);
 
-        ArrayType arraytype = new ArrayType(BaseType.INT);
+        //ArrayType arraytype = new ArrayType(BaseType.INT);
         ptolemy.data.Token[] tokens = ((Unboxing10) this).arraytoken
                 .arrayValue();
         IntToken[] inttokens_0_ = new IntToken[tokens.length];
