@@ -199,18 +199,8 @@ public class SemanticHighlightings {
          *  classes that define the special methods; values are the special
          *  methods defined as {@link PtolemyMethod} objects.
          */
-        protected static final Hashtable _METHODS = new Hashtable();
-
-        // Initialize the array of special methods.
-        static {
-            PtolemyMethod[] executableMethods = new PtolemyMethod[] {
-                    new PtolemyMethod(Modifier.PUBLIC, "void", "fire", null),
-                    new PtolemyMethod(Modifier.PUBLIC, "boolean", "postfire",
-                            null),
-                    new PtolemyMethod(Modifier.PUBLIC, "boolean", "prefire",
-                            null) };
-            _METHODS.put("ptolemy.actor.Executable", executableMethods);
-        }
+        protected static final Hashtable<String, PtolemyMethod[]> _METHODS =
+        	new Hashtable<String, PtolemyMethod[]>();
 
         //////////////////////////////////////////////////////////////////////////
         //// PtolemyMethod
@@ -225,27 +215,6 @@ public class SemanticHighlightings {
         */
         protected static class PtolemyMethod {
             
-            /** Construct a Ptolemy special method description.
-             * 
-             *  @param modifier Modifier of the method (a constant defined in
-             *   <tt>org.eclipse.jdt.core.dom.Modifier</tt>).
-             *  @param returnType Name of the method's return type.
-             *  @param name The method name.
-             *  @param argumentTypes Names of the method's argument types.
-             */
-            PtolemyMethod(int modifier, String returnType, String name,
-                    String[] argumentTypes) {
-                _modifier = modifier;
-                _returnType = returnType;
-                _name = name;
-
-                if (argumentTypes == null) {
-                    _argumentTypes = new String[0];
-                } else {
-                    _argumentTypes = argumentTypes;
-                }
-            }
-
             /** Get the names of the method's argument types.
              * 
              *  @return The names of the method's argument types.
@@ -308,6 +277,27 @@ public class SemanticHighlightings {
                 return false;
             }
 
+            /** Construct a Ptolemy special method description.
+             * 
+             *  @param modifier Modifier of the method (a constant defined in
+             *   <tt>org.eclipse.jdt.core.dom.Modifier</tt>).
+             *  @param returnType Name of the method's return type.
+             *  @param name The method name.
+             *  @param argumentTypes Names of the method's argument types.
+             */
+            PtolemyMethod(int modifier, String returnType, String name,
+                    String[] argumentTypes) {
+                _modifier = modifier;
+                _returnType = returnType;
+                _name = name;
+
+                if (argumentTypes == null) {
+                    _argumentTypes = new String[0];
+                } else {
+                    _argumentTypes = argumentTypes;
+                }
+            }
+
             /** The names of the method's argument types.
              */
             private String[] _argumentTypes;
@@ -323,6 +313,17 @@ public class SemanticHighlightings {
             /** The name of the method's return type.
              */
             private String _returnType;
+        }
+
+        // Initialize the array of special methods.
+        static {
+            PtolemyMethod[] executableMethods = new PtolemyMethod[] {
+                    new PtolemyMethod(Modifier.PUBLIC, "void", "fire", null),
+                    new PtolemyMethod(Modifier.PUBLIC, "boolean", "postfire",
+                            null),
+                    new PtolemyMethod(Modifier.PUBLIC, "boolean", "prefire",
+                            null) };
+            _METHODS.put("ptolemy.actor.Executable", executableMethods);
         }
         
         /** Test whether the method binding matches any of the pre-defined
@@ -342,12 +343,12 @@ public class SemanticHighlightings {
 
                 ITypeBinding type = binding.getDeclaringClass();
                 boolean classFound = false;
-                List workList = new LinkedList();
-                Set handledSet = new HashSet();
+                List<ITypeBinding> workList = new LinkedList<ITypeBinding>();
+                Set<ITypeBinding> handledSet = new HashSet<ITypeBinding>();
                 workList.add(type);
 
                 while (workList.size() > 0) {
-                    type = (ITypeBinding) workList.remove(0);
+                    type = workList.remove(0);
 
                     if (type.getQualifiedName().equals(typeName)) {
                         classFound = true;

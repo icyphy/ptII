@@ -353,7 +353,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
         
 		CompilerOptions options =
 			new CompilerOptions(unit.getJavaProject().getOptions(true));
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
+		ASTParser parser = ASTParser.newParser(AST.JLS2); // FIXME
 		parser.setCompilerOptions(options.getMap());
 		parser.setSource(unit.getBuffer().getCharacters());
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);

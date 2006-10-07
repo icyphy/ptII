@@ -27,8 +27,6 @@
  */
 package ptolemy.backtrack.eclipse.plugin.preferences;
 
-import java.util.LinkedList;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -107,7 +105,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         store.setDefault(PreferenceConstants.BACKTRACK_OVERWRITE, false);
 
         IBundleGroupProvider[] providers = Platform.getBundleGroupProviders();
-        LinkedList groups = new LinkedList();
         boolean enableHighlighting = true;
 
         if (providers != null) {

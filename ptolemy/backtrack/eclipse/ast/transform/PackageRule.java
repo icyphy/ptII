@@ -230,6 +230,15 @@ public class PackageRule extends TransformRule {
     //////////////////////////////////////////////////////////////////////////
     //// Renamer
 
+    /** The prefix to be added to the package name, not including the "."
+     *  between it and the package name. If it is <tt>null</tt> or "", no
+     *  prefix is added.
+     */
+    private String _prefix;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
+
     /**
      The AST visitor that looks for occurance of old package names and
      modifies them by adding the given prefix to them. This visitor also
@@ -243,21 +252,12 @@ public class PackageRule extends TransformRule {
      @Pt.AcceptedRating Red (tfeng)
      */
     private class Renamer extends ASTVisitor {
-        /** Construct a renamer.
+        /** End the visit of a qualified name AST node.
          *
-         *  @param state The current state of the type analyzer.
+         *  @param node The AST node of the qualified name.
          */
-        Renamer(TypeAnalyzerState state) {
-            _state = state;
-            _crossAnalysisTypes = state.getCrossAnalyzedTypes();
-            _crossAnalysisNames = new HashSet();
-
-            Iterator crossAnalysisIter = _crossAnalysisTypes.iterator();
-
-            while (crossAnalysisIter.hasNext()) {
-                String className = (String) crossAnalysisIter.next();
-                _crossAnalysisNames.add(className.replace('$', '.'));
-            }
+        public void endVisit(QualifiedName node) {
+            _handleName(node);
         }
 
         /** End the visit of a simple name AST node.
@@ -268,12 +268,18 @@ public class PackageRule extends TransformRule {
             _handleName(node);
         }
 
-        /** End the visit of a qualified name AST node.
+        /** Construct a renamer.
          *
-         *  @param node The AST node of the qualified name.
+         *  @param state The current state of the type analyzer.
          */
-        public void endVisit(QualifiedName node) {
-            _handleName(node);
+        Renamer(TypeAnalyzerState state) {
+            _state = state;
+            _crossAnalysisTypes = state.getCrossAnalyzedTypes();
+            _crossAnalysisNames = new HashSet<String>();
+
+            for (String className : _crossAnalysisTypes) {
+                _crossAnalysisNames.add(className.replace('$', '.'));
+            }
         }
 
         /** Handle a name (either simple or qualified). If the name corresponds
@@ -284,10 +290,6 @@ public class PackageRule extends TransformRule {
         private void _handleName(Name node) {
             if (node.getParent() != null) {
                 String id = node.toString();
-
-                if (id.equals("ptolemy.backtrack.util.java.util.Random")) {
-                    int i = 10;
-                }
 
                 Type type = Type.getType(node);
                 Type owner = Type.getOwner(node);
@@ -326,10 +328,9 @@ public class PackageRule extends TransformRule {
 
                     if (ConstructorTransformer.SPECIAL_TYPE_MAPPING
                             .containsKey(fullName)) {
-                        newName = AbstractTransformer
-                                .createName(
-                                        node.getAST(),
-                                        (String) ConstructorTransformer.SPECIAL_TYPE_MAPPING
+                        newName = AbstractTransformer.createName(
+                        		node.getAST(),
+                        		ConstructorTransformer.SPECIAL_TYPE_MAPPING
                                                 .get(fullName));
                     } else {
                         newName = _addPrefix(node, _prefix);
@@ -346,10 +347,8 @@ public class PackageRule extends TransformRule {
                 }
 
                 if (!convert && !(node.getParent() instanceof Name)) {
-                    Iterator specialTypesIter = _specialTypes.iterator();
-
-                    while (specialTypesIter.hasNext()) {
-                        String specialType = (String) specialTypesIter.next();
+                	
+                	for (String specialType : _specialTypes) {
                         String simpleType = specialType.substring(specialType
                                 .lastIndexOf(".") + 1);
                         String newId = null;
@@ -364,41 +363,32 @@ public class PackageRule extends TransformRule {
 
                         if (newId != null) {
                             AbstractTransformer.replaceNode(node,
-                                    AbstractTransformer.createName(node
-                                            .getAST(), newId));
+                                    AbstractTransformer.createName(
+                                    		node.getAST(), newId));
                         }
                     }
                 }
             }
         }
 
-        /** The set of cross-analyzed types.
-         */
-        private Set _crossAnalysisTypes;
-
         /** The set of {@link String} names of cross-analyzed types.
          */
-        private Set _crossAnalysisNames;
+        private Set<String> _crossAnalysisNames;
+
+        /** The set of cross-analyzed types.
+         */
+        private Set<String> _crossAnalysisTypes;
 
         /** The name of the old package.
          */
         private String _oldPackageName;
 
+        /** The list of names of renamed classes.
+         */
+        private List<String> _specialTypes = new LinkedList<String>();
+
         /** The current state of the type analyzer.
          */
         private TypeAnalyzerState _state;
-
-        /** The list of names of renamed classes.
-         */
-        private List _specialTypes = new LinkedList();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       private fields                      ////
-
-    /** The prefix to be added to the package name, not including the "."
-     *  between it and the package name. If it is <tt>null</tt> or "", no
-     *  prefix is added.
-     */
-    private String _prefix;
 }

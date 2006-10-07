@@ -27,6 +27,14 @@
  */
 package ptolemy.backtrack.eclipse.ast.transform;
 
+import java.lang.reflect.Field;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
+
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
@@ -74,14 +82,6 @@ import ptolemy.backtrack.eclipse.ast.TypeAnalyzer;
 import ptolemy.backtrack.eclipse.ast.TypeAnalyzerState;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
-
-import java.lang.reflect.Field;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
 
 //////////////////////////////////////////////////////////////////////////
 //// AssignmentTransformer
@@ -353,47 +353,47 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         while (crossAnalysisIter.hasNext()) {
             String nextClassName = (String) crossAnalysisIter.next();
-            List list;
+            
+            List<Block> blockList = _fixSetCheckpoint.get(nextClassName);
 
-            list = (List) _fixSetCheckpoint.get(nextClassName);
-
-            if (list != null) {
-                Iterator nodesIter = list.iterator();
+            if (blockList != null) {
+                Iterator nodesIter = blockList.iterator();
 
                 while (nodesIter.hasNext()) {
                     Block body = (Block) nodesIter.next();
                     AST ast = body.getAST();
                     Statement invocation = _createSetCheckpointInvocation(ast);
-                    List statements = body.statements();
+                    List<Statement> statements = body.statements();
                     statements.add(statements.size() - 2, invocation);
                     nodesIter.remove();
                 }
             }
 
-            list = (List) _rehandleDeclaration.get(nextClassName);
+            List<RehandleDeclarationRecord> recordList =
+            	_rehandleDeclaration.get(nextClassName);
 
-            if (list != null) {
-                Iterator recordsIter = list.iterator();
+            if (recordList != null) {
+                Iterator<RehandleDeclarationRecord> recordsIter =
+                	recordList.iterator();
 
                 while (recordsIter.hasNext()) {
-                    RehandleDeclarationRecord record = (RehandleDeclarationRecord) recordsIter
-                            .next();
-                    Iterator extendedIter = record._getExtendedDeclarations()
-                            .iterator();
+                    RehandleDeclarationRecord record = recordsIter.next();
+                    Iterator<ASTNode> extendedIter =
+                    	record._getExtendedDeclarations().iterator();
 
                     while (extendedIter.hasNext()) {
-                        ASTNode declaration = (ASTNode) extendedIter.next();
+                        ASTNode declaration = extendedIter.next();
 
                         if (declaration != null) {
                             removeNode(declaration);
                         }
                     }
 
-                    Iterator fixedIter = record._getFixedDeclarations()
-                            .iterator();
+                    Iterator<ASTNode> fixedIter =
+                    	record._getFixedDeclarations().iterator();
 
                     while (fixedIter.hasNext()) {
-                        ASTNode declaration = (ASTNode) fixedIter.next();
+                        ASTNode declaration = fixedIter.next();
 
                         if (declaration != null) {
                             record._getBodyDeclarations().add(declaration);
@@ -404,19 +404,19 @@ public class AssignmentTransformer extends AbstractTransformer implements
                 }
             }
 
-            list = (List) _nodeSubstitution.get(nextClassName);
+            List<NodeReplace> list = _nodeSubstitution.get(nextClassName);
 
             if (list != null) {
-                Iterator replaceIter = list.iterator();
+                Iterator<NodeReplace> replaceIter = list.iterator();
 
                 while (replaceIter.hasNext()) {
-                    NodeReplace nodeReplace = (NodeReplace) replaceIter.next();
+                    NodeReplace nodeReplace = replaceIter.next();
 
                     if (nodeReplace._getToNode() == null) {
                         removeNode(nodeReplace._getFromNode());
                     } else {
-                        replaceNode(nodeReplace._getFromNode(), nodeReplace
-                                ._getToNode());
+                        replaceNode(nodeReplace._getFromNode(),
+                        		nodeReplace._getToNode());
                     }
 
                     replaceIter.remove();
@@ -535,8 +535,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
         String typeName = getClassName(fieldTypeName, state, root);
 
         if (special && _assignOperators.containsKey(fieldTypeName)) {
-            PrimitiveType.Code code = (PrimitiveType.Code) _rightHandTypes
-                    .get(fieldTypeName);
+            PrimitiveType.Code code = _rightHandTypes.get(fieldTypeName);
             type = ast.newPrimitiveType(code);
         } else {
             type = createType(ast, typeName);
@@ -723,8 +722,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         // Return the result of the assignment.
         if (special && _assignOperators.containsKey(fieldType.getName())) {
-            String[] operators = (String[]) _assignOperators.get(fieldType
-                    .getName());
+            String[] operators = _assignOperators.get(fieldType.getName());
 
             SwitchStatement switchStatement = ast.newSwitchStatement();
             switchStatement.setExpression(ast.newSimpleName("operator"));
@@ -2214,8 +2212,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         if (isSpecial && _assignOperators.containsKey(type.getName())) {
             int i = 0;
-            String[] operators = (String[]) _assignOperators
-                    .get(type.getName());
+            String[] operators = _assignOperators.get(type.getName());
 
             String operator;
 
@@ -2656,19 +2653,20 @@ public class AssignmentTransformer extends AbstractTransformer implements
      *  @param fieldName The field name.
      *  @param indices The number of indices.
      */
-    private void _recordField(Hashtable table, String className,
-            String fieldName, int indices) {
-        Hashtable classTable = (Hashtable) table.get(className);
+    private void _recordField(
+    		Hashtable<String, Hashtable<String, List<Integer>>> table,
+    		String className, String fieldName, int indices) {
+    	Hashtable<String, List<Integer>> classTable = table.get(className);
 
         if (classTable == null) {
-            classTable = new Hashtable();
+            classTable = new Hashtable<String, List<Integer>>();
             table.put(className, classTable);
         }
 
-        List indicesList = (List) classTable.get(fieldName);
+        List<Integer> indicesList = classTable.get(fieldName);
 
         if (indicesList == null) {
-            indicesList = new LinkedList();
+            indicesList = new LinkedList<Integer>();
             classTable.put(fieldName, indicesList);
         }
 
@@ -2686,49 +2684,60 @@ public class AssignmentTransformer extends AbstractTransformer implements
      *  valus are hash tables. In each table, keys are field names, values
      *  are lists of indices.
      */
-    private Hashtable _accessedFields = new Hashtable();
+    private Hashtable<String, Hashtable<String, List<Integer>>>
+    		_accessedFields =
+    			new Hashtable<String, Hashtable<String, List<Integer>>>();
 
     /** The table of backup of fields and their indices. Keys are class names;
      *  values are hash tables. In each table, keys are field names, values
      *  are lists of indices.
      */
-    private Hashtable _backupFields = new Hashtable();
+    private Hashtable<String, Hashtable<String, List<Integer>>> _backupFields =
+    	new Hashtable<String, Hashtable<String, List<Integer>>>();
 
     /** The table of fields accessed with special assign operators and their
      *  indices. Keys are class names; valus are hash tables. In each value,
      *  keys are field names, values are lists of indices.
      */
-    private Hashtable _specialAccessedFields = new Hashtable();
+    private Hashtable<String, Hashtable<String, List<Integer>>>
+    		_specialAccessedFields =
+    			new Hashtable<String, Hashtable<String, List<Integer>>>();
 
     /** Keys are names of classes; values are {@link Block} nodes of assign
      *  method bodies. If the classes are cross-analyzed, calls to set
      *  checkpoints need to be added to those blocks.
      */
-    private Hashtable _fixSetCheckpoint = new Hashtable();
+    private Hashtable<String, List<Block>> _fixSetCheckpoint =
+    	new Hashtable<String, List<Block>>();
 
     /** The Java operators that modify special types of values.
      */
-    private static Hashtable _assignOperators = new Hashtable();
+    private static Hashtable<String, String[]> _assignOperators =
+    	new Hashtable<String, String[]>();
 
     /** The types of values on the right-hand side of the special operators.
      */
-    private static Hashtable _rightHandTypes = new Hashtable();
+    private static Hashtable<String, PrimitiveType.Code> _rightHandTypes =
+    	new Hashtable<String, PrimitiveType.Code>();
 
     /** Whether the analyzer is currently analyzing a static method or a static
      *  field.
      */
-    private Stack _isInStatic = new Stack();
+    private Stack<Boolean> _isInStatic = new Stack<Boolean>();
 
     /** Keys are names of classes; values are lists of {@link
      *  RehandleDeclarationRecord} objects. If the classes are cross-analyzed,
      *  declarations of anonymous classes recorded in this table must be fixed.
      */
-    private Hashtable _rehandleDeclaration = new Hashtable();
+    private Hashtable<String, List<RehandleDeclarationRecord>>
+    		_rehandleDeclaration =
+    			new Hashtable<String, List<RehandleDeclarationRecord>>();
 
-    private Hashtable _nodeSubstitution = new Hashtable();
+    private Hashtable<String, List<NodeReplace>> _nodeSubstitution =
+    	new Hashtable<String, List<NodeReplace>>();
 
     private class RehandleDeclarationRecord {
-        RehandleDeclarationRecord(List bodyDeclarations) {
+        RehandleDeclarationRecord(List<ASTNode> bodyDeclarations) {
             _bodyDeclarations = bodyDeclarations;
         }
 
@@ -2736,7 +2745,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
             _extendedDeclarations.add(node);
         }
 
-        void _addExtendedDeclarations(List nodes) {
+        void _addExtendedDeclarations(List<ASTNode> nodes) {
             _extendedDeclarations.addAll(nodes);
         }
 
@@ -2744,27 +2753,27 @@ public class AssignmentTransformer extends AbstractTransformer implements
             _fixedDeclarations.add(node);
         }
 
-        void _addFixedDeclarations(List nodes) {
+        void _addFixedDeclarations(List<ASTNode> nodes) {
             _fixedDeclarations.addAll(nodes);
         }
 
-        List _getBodyDeclarations() {
+        List<ASTNode> _getBodyDeclarations() {
             return _bodyDeclarations;
         }
 
-        List _getExtendedDeclarations() {
+        List<ASTNode> _getExtendedDeclarations() {
             return _extendedDeclarations;
         }
 
-        List _getFixedDeclarations() {
+        List<ASTNode> _getFixedDeclarations() {
             return _fixedDeclarations;
         }
 
-        private List _bodyDeclarations;
+        private List<ASTNode> _bodyDeclarations;
 
-        private List _extendedDeclarations = new LinkedList();
+        private List<ASTNode> _extendedDeclarations = new LinkedList<ASTNode>();
 
-        private List _fixedDeclarations = new LinkedList();
+        private List<ASTNode> _fixedDeclarations = new LinkedList<ASTNode>();
     }
 
     private class NodeReplace {

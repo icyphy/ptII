@@ -87,7 +87,7 @@ public class TypeAnalyzerState {
      *  @param c The class entered.
      *  @see #leaveClass()
      */
-    public void enterClass(Class c) {
+    public void enterClass(Class<?> c) {
     	if (_currentClass == null) {
     		_previousClasses.push(null);
     	} else {
@@ -127,9 +127,9 @@ public class TypeAnalyzerState {
      *
      *  @return The current class. It may be <tt>null</tt> when there
      *   is no current class.
-     *  @see #setCurrentClass(Class)
+     *  @see #setCurrentClass(Class<?>)
      */
-    public Class getCurrentClass() {
+    public Class<?> getCurrentClass() {
         return _currentClass;
     }
 
@@ -248,7 +248,7 @@ public class TypeAnalyzerState {
      *  last current class (the class on the top of the previous class
      *  stack).
      *
-     *  @see #enterClass(Class)
+     *  @see #enterClass(Class<?>)
      */
     public void leaveClass() {
         int i = _previousClasses.size() - 1;
@@ -271,7 +271,7 @@ public class TypeAnalyzerState {
      *  @return The count.
      */
     public int nextAnonymousCount() {
-        int lastCount = ((Integer) _anonymousCounts.pop()).intValue();
+        int lastCount = _anonymousCounts.pop().intValue();
         _anonymousCounts.push(new Integer(++lastCount));
         return lastCount;
     }
@@ -308,7 +308,7 @@ public class TypeAnalyzerState {
      *   is no current class.
      *  @see #getCurrentClass()
      */
-    public void setCurrentClass(Class currentClass) {
+    public void setCurrentClass(Class<?> currentClass) {
         _currentClass = currentClass;
     }
 
@@ -389,11 +389,11 @@ public class TypeAnalyzerState {
 
     /** The stack of individual anonymous class counts.
      */
-    private Stack _anonymousCounts = new Stack();
+    private Stack<Integer> _anonymousCounts = new Stack<Integer>();
 
     /** The set of scopes that correspond to class declarations.
      */
-    private Set _classScopes = new HashSet();
+    private Set<Integer> _classScopes = new HashSet<Integer>();
 
     /** The set of names of types to be cross-analyzed.
      */
@@ -404,7 +404,7 @@ public class TypeAnalyzerState {
      *  the part of source code before any class definition ("package"
      *  and "import").
      */
-    private Class _currentClass;
+    private Class<?> _currentClass;
 
     /** The class loader used to load classes.
      */

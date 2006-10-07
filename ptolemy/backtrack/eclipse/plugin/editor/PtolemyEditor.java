@@ -28,17 +28,14 @@
 package ptolemy.backtrack.eclipse.plugin.editor;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.eclipse.jdt.internal.ui.text.java.IJavaReconcilingListener;
 import org.eclipse.jdt.ui.text.IColorManager;
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.util.ListenerList;
 import org.eclipse.swt.widgets.Composite;
-
-import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyEditor

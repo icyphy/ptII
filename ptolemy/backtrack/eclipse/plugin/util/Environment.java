@@ -70,7 +70,8 @@ public class Environment {
      *  @param container The container representing the folder to be created.
      *  @exception CoreException If the folder creation fails.
      */
-    public static void createFolders(IContainer container) throws CoreException {
+    public static void createFolders(IContainer container)
+    throws CoreException {
         if (!container.exists()) {
             if (container instanceof IFolder) {
                 createFolders(container.getParent());

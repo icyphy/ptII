@@ -168,11 +168,11 @@ public class EditorPreferencePage extends SectionPreferencePage implements
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
 
-    /** Whether semantic highlighting is enabled.
-     */
-    private BooleanFieldEditor _highlightingEnabled;
-
     /** The group of color selectors.
      */
     private Group _colorGroup;
+
+    /** Whether semantic highlighting is enabled.
+     */
+    private BooleanFieldEditor _highlightingEnabled;
 }

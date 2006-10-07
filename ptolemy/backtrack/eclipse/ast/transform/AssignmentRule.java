@@ -68,11 +68,13 @@ public class AssignmentRule extends TransformRule {
      *  @param root The root of the AST.
      */
     public void beforeTraverse(TypeAnalyzer analyzer, CompilationUnit root) {
-        AssignmentTransformer assignmentTransformer = new AssignmentTransformer();
-        ConstructorTransformer constructorTransformer = new ConstructorTransformer();
+        AssignmentTransformer assignmentTransformer =
+        	new AssignmentTransformer();
+        ConstructorTransformer constructorTransformer =
+        	new ConstructorTransformer();
 
-        _handlers.add(assignmentTransformer);
-        _handlers.add(constructorTransformer);
+        _transformers.add(assignmentTransformer);
+        _transformers.add(constructorTransformer);
 
         analyzer.getHandlers().addAliasHandler(assignmentTransformer);
         analyzer.getHandlers().addAssignmentHandler(assignmentTransformer);
@@ -95,5 +97,6 @@ public class AssignmentRule extends TransformRule {
 
     /** The list of handlers used.
      */
-    private List _handlers = new LinkedList();
+    private List<AbstractTransformer> _transformers =
+    	new LinkedList<AbstractTransformer>();
 }

@@ -94,8 +94,8 @@ public class ConstructorTransformer extends AbstractTransformer implements
      *  @param state The current state of the type analyzer.
      */
     public void enter(FieldDeclaration node, TypeAnalyzerState state) {
-        _isStaticField
-                .push(new Boolean(Modifier.isStatic(node.getModifiers())));
+        _isStaticField.push(
+        		new Boolean(Modifier.isStatic(node.getModifiers())));
     }
 
     /** Enter a method declaration.
@@ -163,7 +163,7 @@ public class ConstructorTransformer extends AbstractTransformer implements
     public void handle(ClassInstanceCreation node, TypeAnalyzerState state) {
         if (_currentMethods.peek() == null) {
             // Do not refactor static fields.
-            if (((Boolean) _isStaticField.peek()).booleanValue()) {
+            if (_isStaticField.peek().booleanValue()) {
                 return;
             }
 
@@ -221,13 +221,13 @@ public class ConstructorTransformer extends AbstractTransformer implements
 
         while (crossAnalysisIter.hasNext()) {
             String typeName = (String) crossAnalysisIter.next();
-            List list = (List) _unhandledNodes.get(typeName);
+            List<ASTNode> list = _unhandledNodes.get(typeName);
 
             if (list != null) {
-                Iterator nodesIter = list.iterator();
+                Iterator<ASTNode> nodesIter = list.iterator();
 
                 while (nodesIter.hasNext()) {
-                    ASTNode node = (ASTNode) nodesIter.next();
+                    ASTNode node = nodesIter.next();
 
                     if (node instanceof ClassInstanceCreation) {
                         _refactor((ClassInstanceCreation) node, state);
@@ -255,7 +255,8 @@ public class ConstructorTransformer extends AbstractTransformer implements
      *  the corresponding backtracking-enabled type (such as
      *  <tt>ptolemy.backtrack.util.java.util.Random</tt>).
      */
-    public static final Hashtable SPECIAL_TYPE_MAPPING = new Hashtable();
+    public static final Hashtable<String, String> SPECIAL_TYPE_MAPPING =
+    	new Hashtable<String, String>();
 
     static {
         SPECIAL_TYPE_MAPPING.put("java.util.Random",
@@ -306,21 +307,23 @@ public class ConstructorTransformer extends AbstractTransformer implements
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
 
+    /** The stack of currently entered method declarations. A <tt>null</tt>
+     *  object is added to this stack when a type declaration or an anonymous
+     *  class declaration is entered.
+     */
+    private Stack<MethodDeclaration> _currentMethods =
+    	new Stack<MethodDeclaration>();
+
+    /** The stack of {@link Boolean}s on whether the methods entered are
+     *  static.
+     */
+    private Stack<Boolean> _isStaticField = new Stack<Boolean>();
+
     /** The class instance creation nodes that have not been refactored. Keys
      *  are the types that they depend on; values are those nodes. When the
      *  type that a node depends on is added to the cross-analyzed set, the
      *  node must be refactored in {@link #handle(TypeAnalyzerState)}.
      */
-    private Hashtable _unhandledNodes = new Hashtable();
-
-    /** The stack of currently entered method declarations. A <tt>null</tt>
-     *  object is added to this stack when a type declaration or an anonymous
-     *  class declaration is entered.
-     */
-    private Stack _currentMethods = new Stack();
-
-    /** The stack of {@link Boolean}s on whether the methods entered are
-     *  static.
-     */
-    private Stack _isStaticField = new Stack();
+    private Hashtable<String, List<ASTNode>> _unhandledNodes =
+    	new Hashtable<String, List<ASTNode>>();
 }

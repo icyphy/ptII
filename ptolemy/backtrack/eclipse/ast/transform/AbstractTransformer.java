@@ -78,11 +78,12 @@ public abstract class AbstractTransformer {
      *  @param key The key.
      *  @param value The value to be added.
      */
-    public static void addToLists(Hashtable lists, Object key, Object value) {
-        List list = (List) lists.get(key);
+    public static <K, V> void addToLists(Hashtable<K, List<V>> lists, K key,
+    		V value) {
+        List<V> list = lists.get(key);
 
         if (list == null) {
-            list = new LinkedList();
+            list = new LinkedList<V>();
             lists.put(key, list);
         }
 
@@ -135,7 +136,8 @@ public abstract class AbstractTransformer {
      *  @param type The type.
      *  @return The AST type node.
      */
-    public static org.eclipse.jdt.core.dom.Type createType(AST ast, String type) {
+    public static org.eclipse.jdt.core.dom.Type createType(AST ast,
+    		String type) {
         String elementName = Type.getElementType(type);
 
         org.eclipse.jdt.core.dom.Type elementType;
@@ -168,7 +170,7 @@ public abstract class AbstractTransformer {
      *   it.
      *  @return The shortest possible class name.
      */
-    public static String getClassName(Class c, TypeAnalyzerState state,
+    public static String getClassName(Class<?> c, TypeAnalyzerState state,
             CompilationUnit root) {
         return getClassName(c.getName(), state, root);
     }
@@ -215,8 +217,8 @@ public abstract class AbstractTransformer {
      *  @param parameters The types of parameters for the method.
      *  @return <tt>true</tt> if the method is already in the class.
      */
-    public static boolean hasMethod(Class c, String methodName,
-            Class[] parameters) {
+    public static boolean hasMethod(Class<?> c, String methodName,
+            Class<?>[] parameters) {
         return hasMethod(c, methodName, parameters, false);
     }
 
@@ -229,8 +231,8 @@ public abstract class AbstractTransformer {
      *  @param parameters The types of parameters for the method.
      *  @return <tt>true</tt> if the method is already in the class.
      */
-    public static boolean hasMethod(Class c, String methodName,
-            Class[] parameters, boolean thisClassOnly) {
+    public static boolean hasMethod(Class<?> c, String methodName,
+            Class<?>[] parameters, boolean thisClassOnly) {
         try {
             if (thisClassOnly) {
                 c.getMethod(methodName, parameters);
@@ -272,7 +274,7 @@ public abstract class AbstractTransformer {
      *  @param fieldName The field name.
      *  @return <tt>true</tt> if the field is already in the class.
      */
-    public static boolean isFieldDuplicated(Class c, String fieldName) {
+    public static boolean isFieldDuplicated(Class<?> c, String fieldName) {
         // Does NOT check fields inherited from interfaces.
         try {
             c.getDeclaredField(fieldName);
@@ -314,7 +316,8 @@ public abstract class AbstractTransformer {
         if (location.isChildProperty()) {
             parent.setStructuralProperty(location, null);
         } else {
-            List properties = (List) parent.getStructuralProperty(location);
+            List<ASTNode> properties =
+            	(List<ASTNode>) parent.getStructuralProperty(location);
             int position = properties.indexOf(node);
             properties.remove(position);
         }
@@ -333,7 +336,8 @@ public abstract class AbstractTransformer {
         if (location.isChildProperty()) {
             parent.setStructuralProperty(location, newNode);
         } else {
-            List properties = (List) parent.getStructuralProperty(location);
+        	List<ASTNode> properties =
+        		(List<ASTNode>) parent.getStructuralProperty(location);
             int position = properties.indexOf(node);
             properties.set(position, newNode);
         }

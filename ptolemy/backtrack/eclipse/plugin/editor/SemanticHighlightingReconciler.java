@@ -97,7 +97,6 @@ public class SemanticHighlightingReconciler implements
      *  method.
      */
     public void aboutToBeReconciled() {
-        // Do nothing
     }
 
     /** Prepare for the change of the input document. This method is invoked
@@ -386,7 +385,8 @@ public class SemanticHighlightingReconciler implements
          *  @param textAttribute The text attribute.
          *  @param isEnabled Whether this style is enabled.
          */
-        public HighlightingStyle(TextAttribute textAttribute, boolean isEnabled) {
+        public HighlightingStyle(TextAttribute textAttribute,
+        		boolean isEnabled) {
             setTextAttribute(textAttribute);
             setEnabled(isEnabled);
         }
@@ -488,8 +488,8 @@ public class SemanticHighlightingReconciler implements
             }
 
             TextAttribute oldAttr = highlighting.getTextAttribute();
-            highlighting.setTextAttribute(new TextAttribute(color, oldAttr
-                    .getBackground(), oldAttr.getStyle()));
+            highlighting.setTextAttribute(new TextAttribute(color,
+            		oldAttr.getBackground(), oldAttr.getStyle()));
         }
     }
 
@@ -510,7 +510,8 @@ public class SemanticHighlightingReconciler implements
         }
 
         TextAttribute oldAttr = highlighting.getTextAttribute();
-        boolean activeValue = (oldAttr.getStyle() & styleAttribute) == styleAttribute;
+        boolean activeValue = (oldAttr.getStyle() & styleAttribute) ==
+        	styleAttribute;
 
         if (activeValue != eventValue) {
             highlighting.setTextAttribute(new TextAttribute(oldAttr
@@ -531,7 +532,8 @@ public class SemanticHighlightingReconciler implements
             RGB rgb = PreferenceConverter.getColor(_preferenceStore, colorKey);
 
             if (_colorManager instanceof IColorManagerExtension) {
-                IColorManagerExtension ext = (IColorManagerExtension) _colorManager;
+                IColorManagerExtension ext =
+                	(IColorManagerExtension) _colorManager;
                 ext.unbindColor(colorKey);
                 ext.bindColor(colorKey, rgb);
             }
@@ -695,11 +697,12 @@ public class SemanticHighlightingReconciler implements
             subtrees[i].accept(_collector);
         }
 
-        List oldPositions = _removedPositions;
-        List newPositions = new ArrayList(_removedPositionsNumber);
+        List<HighlightedPosition> oldPositions = _removedPositions;
+        List<HighlightedPosition> newPositions =
+        	new ArrayList<HighlightedPosition>(_removedPositionsNumber);
 
         for (int i = 0, n = oldPositions.size(); i < n; i++) {
-            Object current = oldPositions.get(i);
+        	HighlightedPosition current = oldPositions.get(i);
 
             if (current != null) {
                 newPositions.add(current);
@@ -744,8 +747,9 @@ public class SemanticHighlightingReconciler implements
                         _job = this;
                     }
 
-                    CompilationUnit ast = JavaPlugin.getDefault()
-                            .getASTProvider().getAST(element, true, monitor);
+                    CompilationUnit ast =
+                    	JavaPlugin.getDefault().getASTProvider().getAST(element,
+                    			true, monitor);
                     reconciled(ast, false, monitor);
 
                     synchronized (_jobLock) {
@@ -790,7 +794,8 @@ public class SemanticHighlightingReconciler implements
      *  @see SemanticHighlightingPresenter
      */
     private void _updatePresentation(TextPresentation textPresentation,
-            List addedPositions, List removedPositions) {
+            List<HighlightedPosition> addedPositions,
+            List<HighlightedPosition> removedPositions) {
         Runnable runnable = _presenter.createUpdateRunnable(textPresentation,
                 addedPositions, removedPositions);
 
@@ -915,8 +920,9 @@ public class SemanticHighlightingReconciler implements
             }
 
             if (!isExisting) {
-                Position position = _jobPresenter.createHighlightedPosition(
-                        offset, length, highlighting);
+            	HighlightedPosition position =
+            		_jobPresenter.createHighlightedPosition(offset, length,
+            				highlighting);
                 _addedPositions.add(position);
             }
         }
@@ -932,7 +938,7 @@ public class SemanticHighlightingReconciler implements
                 HighlightedPosition position =
                     (HighlightedPosition) _removedPositions.get(i);
 
-                if ((position != null) && position.isContained(offset, length)) {
+                if (position != null && position.isContained(offset, length)) {
                     _removedPositions.set(i, null);
                     _removedPositionsNumber--;
                 }
@@ -949,7 +955,8 @@ public class SemanticHighlightingReconciler implements
 
     /** The highlighted positions added by the background job.
      */
-    private List _addedPositions = new ArrayList();
+    private List<HighlightedPosition> _addedPositions =
+    	new ArrayList<HighlightedPosition>();
 
     /** Whether the background job is canceled.
      */
@@ -1010,7 +1017,8 @@ public class SemanticHighlightingReconciler implements
 
     /** The highlighted positions removed by the background job.
      */
-    private List _removedPositions = new ArrayList();
+    private List<HighlightedPosition> _removedPositions =
+    	new ArrayList<HighlightedPosition>();
 
     /** Number of the removed positions.
      */
