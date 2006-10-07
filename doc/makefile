@@ -726,7 +726,7 @@ codeDocHyVisual/doc/codeDoc/allNamedObjs.txt: \
 		codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Build the index of actors 
-codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/codeDoc/allNamedObjs.txt "../ptolemy/configs/hyvisual/hyvisualModels.txt"
+codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/hyvisual/hyvisualModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
