@@ -160,7 +160,7 @@ public class JVMTableau extends Tableau {
                 Method allThreads = printThreadsClass.getMethod("allThreads",
                         new Class[] { boolean.class });
                 propertyBuffer.append("\nThreads:\n" 
-                        + (String) allThreads.invoke(null, new Object[] {true}));
+                        + (String) allThreads.invoke(null, new Object[] {Boolean.TRUE}));
             } catch (Throwable throwable) {
                 // Ignore.
             }
