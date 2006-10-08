@@ -52,7 +52,7 @@ OTHER_FILES_TO_BE_JARED = \
 	buttons.htm \
 	development.htm \
 	installation.htm \
-	installViptosUnderCygwin.htm
+	installViptosUnderCygwin.htm \
 	index.htm \
 	main.htm \
 	toc.htm
