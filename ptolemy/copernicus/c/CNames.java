@@ -368,8 +368,8 @@ public class CNames {
         } else if (type instanceof VoidType) {
             name = "void";
         } else {
-            throw new RuntimeException("Unsupported Soot type '"
-                    + type.getClass().getName() + "'");
+            System.out.println("Ignoring unsupported Soot type'"
+                    + type.getClass().getName() + "': "+ type);
         }
 
         return name;
