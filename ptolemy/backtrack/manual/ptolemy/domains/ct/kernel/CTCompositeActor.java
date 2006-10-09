@@ -142,7 +142,7 @@ public class CTCompositeActor extends TypedCompositeActor implements
      *  @throws IllegalActionException Not thowned.
      */
     public void goToMarkedState() throws IllegalActionException {
-        Set checkpoints = new HashSet();
+        Set<Checkpoint> checkpoints = new HashSet<Checkpoint>();
         Iterator objectsIter = containedObjectsIterator();
 
         while (objectsIter.hasNext()) {
@@ -167,7 +167,7 @@ public class CTCompositeActor extends TypedCompositeActor implements
     /** Record the current state of all the actors in this composite actor.
      */
     public void markState() {
-        Set checkpoints = new HashSet();
+        Set<Checkpoint> checkpoints = new HashSet<Checkpoint>();
         Iterator objectsIter = containedObjectsIterator();
 
         while (objectsIter.hasNext()) {

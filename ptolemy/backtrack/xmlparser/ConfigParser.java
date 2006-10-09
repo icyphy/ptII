@@ -92,7 +92,7 @@ public class ConfigParser {
      *   be excluded.
      *  @see ConfigXmlHandler#addExcludedFiles(Collection)
      */
-    public void addExcludedFiles(Collection canonicalPaths) {
+    public void addExcludedFiles(Collection<String> canonicalPaths) {
         _excludedFiles.addAll(canonicalPaths);
     }
 
@@ -125,7 +125,7 @@ public class ConfigParser {
      */
     public static void main(String[] args) throws Exception {
         String[] classes = new String[] { "ptolemy.actor.lib.Sequence" };
-        Set classSet = new HashSet();
+        Set<String> classSet = new HashSet<String>();
         classSet.addAll(Arrays.asList(classes));
 
         ConfigParser parser = new ConfigParser();
@@ -150,7 +150,7 @@ public class ConfigParser {
      *  @exception Exception If error occurs.
      *  @see #parseConfigFile(String, Set, boolean)
      */
-    public void parseConfigFile(String fileName, Set includedClasses)
+    public void parseConfigFile(String fileName, Set<String> includedClasses)
             throws Exception {
         parseConfigFile(fileName, includedClasses, true);
     }
@@ -166,7 +166,7 @@ public class ConfigParser {
      *   constructed XML tree to be the "backtrack" node.
      *  @exception Exception If error occurs.
      */
-    public void parseConfigFile(String fileName, Set includedClasses, 
+    public void parseConfigFile(String fileName, Set<String> includedClasses, 
             boolean backtrackingElement) throws Exception {
         XmlParser parser = new XmlParser();
         BufferedReader br = new BufferedReader(new FileReader(fileName));
@@ -222,11 +222,11 @@ public class ConfigParser {
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
 
+    /** The set of excluded files.
+     */
+    private Set<String> _excludedFiles = new HashSet<String>();
+
     /** The XML tree.
      */
     private ConfigXmlTree _xmlTree;
-
-    /** The set of excluded files.
-     */
-    private Set _excludedFiles = new HashSet();
 }

@@ -80,10 +80,8 @@ public class Checkpoint {
      *  @param timestamp The timestamp.
      */
     public synchronized void commit(long timestamp) {
-        Iterator objectsIter = _state.getMonitoredObjects().iterator();
-
-        while (objectsIter.hasNext()) {
-            ((Rollbackable) objectsIter.next()).$COMMIT(timestamp);
+        for (Rollbackable rollbackable : _state.getMonitoredObjects()) {
+            rollbackable.$COMMIT(timestamp);
         }
     }
 
@@ -117,7 +115,8 @@ public class Checkpoint {
      *  @param object The object to be removed.
      */
     public void removeObject(Rollbackable object) {
-        Iterator objectsIter = _state.getMonitoredObjects().iterator();
+        Iterator<Rollbackable> objectsIter =
+            _state.getMonitoredObjects().iterator();
 
         while (objectsIter.hasNext()) {
             if (objectsIter.next() == object) {
@@ -145,11 +144,11 @@ public class Checkpoint {
      *  @param trim Whether to delete the records used for the rollback.
      */
     public synchronized void rollback(long timestamp, boolean trim) {
-        List objects = _state.getMonitoredObjects();
+        List<Rollbackable> objects = _state.getMonitoredObjects();
         int size = objects.size();
 
         for (int i = 0; i < objects.size();) {
-            Rollbackable object = (Rollbackable) objects.get(i);
+            Rollbackable object = objects.get(i);
             object.$RESTORE(timestamp, trim);
 
             int newSize = objects.size();
@@ -170,10 +169,10 @@ public class Checkpoint {
      *   one.
      */
     public void setCheckpoint(Checkpoint checkpoint) {
-        List objects = _state.getMonitoredObjects();
+        List<Rollbackable> objects = _state.getMonitoredObjects();
 
         while (objects.size() > 0) {
-            Rollbackable object = (Rollbackable) objects.remove(0);
+            Rollbackable object = objects.remove(0);
             object.$SET$CHECKPOINT(checkpoint);
         }
     }

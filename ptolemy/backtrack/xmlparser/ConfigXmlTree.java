@@ -73,7 +73,7 @@ public class ConfigXmlTree {
      */
     public Object clone() {
         ConfigXmlTree newTree = new ConfigXmlTree(getElementName());
-        newTree._attributes = (Hashtable) _attributes.clone();
+        newTree._attributes = new Hashtable<String, String>(_attributes);
         startTraverseChildren();
 
         while (hasMoreChildren()) {
@@ -99,14 +99,14 @@ public class ConfigXmlTree {
      *  @see #setAttribute(String, String)
      */
     public String getAttribute(String name) {
-        return (String) _attributes.get(name);
+        return _attributes.get(name);
     }
 
     /** Get the names of all the attributes of this XML element.
      * 
      *  @return The enumeration of attribute names. 
      */
-    public Enumeration getAttributeNames() {
+    public Enumeration<String> getAttributeNames() {
         return _attributes.keys();
     }
 
@@ -161,7 +161,7 @@ public class ConfigXmlTree {
      *  @see #startTraverseChildren()
      */
     public ConfigXmlTree nextChild() {
-        return (ConfigXmlTree) _iterator.next();
+        return _iterator.next();
     }
 
     /** Set the value of the attribute with the given name. Create the attribute
@@ -200,10 +200,10 @@ public class ConfigXmlTree {
     protected void _dump(int indent, PrintStream stream) {
         _dumpString(indent, getElementName(), stream);
 
-        Enumeration attrenu = getAttributeNames();
+        Enumeration<String> attrenu = getAttributeNames();
 
         while (attrenu.hasMoreElements()) {
-            String attr = (String) attrenu.nextElement();
+            String attr = attrenu.nextElement();
             _dumpString(indent + 2, "+A " + attr + " = " + getAttribute(attr), 
                     stream);
         }
@@ -261,11 +261,12 @@ public class ConfigXmlTree {
 
     /** The hash table of attributes from their names to their values.
      */
-    private Hashtable _attributes = new Hashtable();
+    private Hashtable<String, String> _attributes =
+        new Hashtable<String, String>();
 
     /** The list of children.
      */
-    private Vector _children = new Vector();
+    private Vector<ConfigXmlTree> _children = new Vector<ConfigXmlTree>();
 
     /** The name of this XML element.
      */
@@ -273,7 +274,7 @@ public class ConfigXmlTree {
 
     /** The iterator used to iterate the children of this node.
      */
-    private Iterator _iterator;
+    private Iterator<ConfigXmlTree> _iterator;
 
     /** The parent of this node. null if this node is the root node of the XML
      *  document.

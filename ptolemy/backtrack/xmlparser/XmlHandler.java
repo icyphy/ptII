@@ -28,7 +28,6 @@
 package ptolemy.backtrack.xmlparser;
 
 import java.io.StringReader;
-import java.util.Enumeration;
 import java.util.Hashtable;
 
 import ptolemy.moml.MoMLParser;
@@ -178,7 +177,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
      */
     public Object resolveEntity(String publicId, String systemId)
             throws Exception {
-        if ((publicId != null) && publicId.equals(MoML_PUBLIC_ID_1)) {
+        if (publicId != null && publicId.equals(MoML_PUBLIC_ID_1)) {
             return new StringReader(MoML_DTD_1);
         } else {
             return null;
@@ -202,11 +201,9 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
         newtree._setParent(_currentTree);
         _currentTree = newtree;
 
-        Enumeration attrenu = _currentAttributes.keys();
-
-        while (attrenu.hasMoreElements()) {
-            String attr = (String) attrenu.nextElement();
-            _currentTree.setAttribute(attr, (String) _currentAttributes.get(attr));
+        for (String attribute : _currentAttributes.keySet()) {
+            _currentTree.setAttribute(attribute,
+                    _currentAttributes.get(attribute));
         }
 
         _currentAttributes.clear();
@@ -241,7 +238,8 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
 
     /** The attributes of the current XML node.
      */
-    private Hashtable _currentAttributes = new Hashtable();
+    private Hashtable<String, String> _currentAttributes =
+        new Hashtable<String, String>();
 
     /** XML tree starting from the current node.
      */

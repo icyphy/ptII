@@ -59,7 +59,8 @@ public class ConfigXmlHandler extends XmlHandler {
      *  @param includedClasses The classes in the original XML document that
      *   should be transformed in the new XML document.
      */
-    ConfigXmlHandler(ConfigXmlTree tree, String systemId, Set includedClasses) {
+    ConfigXmlHandler(ConfigXmlTree tree, String systemId,
+            Set<String> includedClasses) {
         super(tree, systemId);
 
         this._includedClasses = includedClasses;
@@ -82,7 +83,7 @@ public class ConfigXmlHandler extends XmlHandler {
      *  @param canonicalPaths The canonical paths of the XML documents to be
      *   excluded.
      */
-    public void addExcludedFiles(Collection canonicalPaths) {
+    public void addExcludedFiles(Collection<String> canonicalPaths) {
         _excludedFiles.addAll(canonicalPaths);
     }
 
@@ -190,12 +191,12 @@ public class ConfigXmlHandler extends XmlHandler {
     /** The canonical paths of the XML documents that should be excluded from
      *  the parsing.
      */
-    private Set _excludedFiles = new HashSet();
+    private Set<String> _excludedFiles = new HashSet<String>();
 
     /** The names of the classes that should be kept in the transformed XML
      *  document. If it is null, all classes will be kept.
      */
-    private Set _includedClasses;
+    private Set<String> _includedClasses;
 
     /** The class in the original XML document that should be removed when it
      *  is transformed to the library description of backtracking actors.
@@ -208,7 +209,7 @@ public class ConfigXmlHandler extends XmlHandler {
     /** The class in the original XML document that should be removed when it
      *  is transformed to the library description of backtracking actors.
      */
-    private static Set _REMOVED_CLASS_SET = new HashSet();
+    private static Set<String> _REMOVED_CLASS_SET = new HashSet<String>();
 
     /** The elements in the original XML document that should be removed when it
      *  is transformed to the library description of backtracking actors.
@@ -220,7 +221,7 @@ public class ConfigXmlHandler extends XmlHandler {
     /** The elements in the original XML document that should be removed when it
      *  is transformed to the library description of backtracking actors.
      */
-    private static Set _REMOVED_ELEMENT_SET = new HashSet();
+    private static Set<String> _REMOVED_ELEMENT_SET = new HashSet<String>();
 
     ///////////////////////////////////////////////////////////////////
     ////                  static class initializer                 ////

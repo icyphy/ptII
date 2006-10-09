@@ -64,7 +64,7 @@ public class CheckpointState {
      *
      *  @return The list of all the monitored objects.
      */
-    public List getMonitoredObjects() {
+    public List<Rollbackable> getMonitoredObjects() {
         return _monitoredObjects;
     }
 
@@ -87,5 +87,6 @@ public class CheckpointState {
 
     /** The list of objects monitored by the checkpoint object.
      */
-    private List _monitoredObjects = new LinkedList();
+    private List<Rollbackable> _monitoredObjects =
+        new LinkedList<Rollbackable>();
 }

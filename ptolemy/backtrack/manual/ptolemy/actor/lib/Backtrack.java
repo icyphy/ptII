@@ -125,7 +125,7 @@ public class Backtrack extends TypedAtomicActor {
         this._rollbackHandle = rollbackHandle.longValue();
         
         if (checkpointTrigger.booleanValue()) {
-            HashMap handles = new HashMap();
+            HashMap<Checkpoint, Long> handles = new HashMap<Checkpoint, Long>();
             _checkpoint(handles, (CompositeActor)getContainer());
             _currentHandle++;
             _handleMap.put(new Long(_currentHandle), handles);
@@ -145,14 +145,11 @@ public class Backtrack extends TypedAtomicActor {
         boolean result = super.postfire();
         
         if (_rollbackHandle > 0) {
-            HashMap handles =
-                (HashMap)_handleMap.get(new Long(_rollbackHandle));
+            HashMap<Checkpoint, Long> handles =
+                _handleMap.get(new Long(_rollbackHandle));
             
             if (handles != null) {
-                Iterator checkpoints = handles.keySet().iterator();
-                while (checkpoints.hasNext()) {
-                    Checkpoint checkpointObject =
-                        (Checkpoint)checkpoints.next();
+                for (Checkpoint checkpointObject : handles.keySet()) {
                     long handle =
                         ((Long)handles.get(checkpointObject)).longValue();
                     checkpointObject.rollback(handle);
@@ -189,11 +186,12 @@ public class Backtrack extends TypedAtomicActor {
      *  checkpoint handles for them.
      *  @param container The composite actor to be checkpointed.
      */
-    private void _checkpoint(HashMap handles, CompositeActor container) {
+    private void _checkpoint(HashMap<Checkpoint, Long> handles,
+            CompositeActor container) {
         Iterator entities =
             container.entityList(Rollbackable.class).iterator();
         while (entities.hasNext()) {
-            Rollbackable entity = (Rollbackable)entities.next();
+            Rollbackable entity = (Rollbackable) entities.next();
             Checkpoint checkpointObject = entity.$GET$CHECKPOINT();
             if (!handles.containsKey(checkpointObject)) {
                 long handle = checkpointObject.createCheckpoint();
@@ -236,7 +234,8 @@ public class Backtrack extends TypedAtomicActor {
      *  managing the actors in the model; the values in the map are the
      *  checkpoint handles returned by those checkpoint objects.
      */
-    private HashMap _handleMap = new HashMap();
+    private HashMap<Long, HashMap<Checkpoint, Long>> _handleMap =
+        new HashMap<Long, HashMap<Checkpoint, Long>>();
     
     /** The input port that receives long tokens as the checkpoint handles to
      *  roll back (if greater than 0).
