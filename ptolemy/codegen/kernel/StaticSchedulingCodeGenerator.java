@@ -115,26 +115,33 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
             throw new IllegalActionException(this, "The director of the model "
                     + model.getName() + " is not a StaticSchedulingDirector.");
         }
-        Attribute iterations = director.getAttribute("iterations");
+        
+        // If the container is in the top level, we are generating code 
+        // for the whole model.
+        if (isTopLevel()) {
+        
+            Attribute iterations = director.getAttribute("iterations");
 
-        if (iterations == null) {
-            throw new IllegalActionException(director,
-                    "The Director does not have an attribute name: "
-                            + "\"iterations\"");
-        } else {
-            int iterationCount = ((IntToken) ((Variable) iterations).getToken())
-                    .intValue();
-
-            if (iterationCount <= 0) {
-                code.append(_INDENT1 + "while (true) {\n");
+            if (iterations == null) {
+                throw new IllegalActionException(director,
+                        "The Director does not have an attribute name: "
+                                + "\"iterations\"");
             } else {
-                // Declare iteration outside of the loop to avoid
-                // mode" with gcc-3.3.3
-                code.append(_INDENT1 + "for (iteration = 0; iteration < "
-                        + iterationCount + "; iteration ++) {\n");
+                      
+                int iterationCount = ((IntToken) ((Variable) iterations).getToken())
+                        .intValue();
+ 
+                if (iterationCount <= 0) {
+                    code.append(_INDENT1 + "while (true) {\n");
+                } else {
+                    // Declare iteration outside of the loop to avoid
+                    // mode" with gcc-3.3.3
+                    code.append(_INDENT1 + "for (iteration = 0; iteration < "
+                            + iterationCount + "; iteration ++) {\n");
+                }
             }
         }
-
+        
         boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
 
         if (inline) {
@@ -148,8 +155,12 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         // after one global iteration, e.g., in HDF model.
         modelHelper.generateModeTransitionCode(code);
 
-        code.append(_INDENT1 + "}\n");
-
+        // If the container is in the top level, we are generating code 
+        // for the whole model.
+        if (isTopLevel()) {
+            code.append(_INDENT1 + "}\n");
+        }    
+        
         return code.toString();
     }
 
@@ -161,32 +172,42 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      *  is running.
      */
     public int generateCode(StringBuffer code) throws KernelException {
-        // If necessary, create a manager.
-        Actor container = ((Actor) getContainer());
-        Manager manager = container.getManager();
-
-        if (manager == null) {
-            CompositeActor toplevel = (CompositeActor) ((NamedObj) container)
-                    .toplevel();
-            manager = new Manager(toplevel.workspace(), "Manager");
-            toplevel.setManager(manager);
-        }
-
+        
         int returnValue = -1;
-        try {
-            manager.preinitializeAndResolveTypes();
-            returnValue = super.generateCode(code);
-        } finally {
-            // We call wrapup here so that the state gets set to idle.
-            // This makes it difficult to test the Exit actor.
+        // If the container is in the top level, we are generating code 
+        // for the whole model.
+        if (isTopLevel()) {
+        
+            // If necessary, create a manager.
+            Actor container = ((Actor) getContainer());
+            Manager manager = container.getManager();
+
+            if (manager == null) {
+                CompositeActor toplevel = (CompositeActor) ((NamedObj) container)
+                        .toplevel();
+                manager = new Manager(toplevel.workspace(), "Manager");
+                toplevel.setManager(manager);
+            }
+
             try {
-                manager.wrapup();
-            } catch (RuntimeException ex) {
-                // The Exit actor causes Manager.wrapup() to throw this.
-                if (!manager.isExitingAfterWrapup()) {
-                    throw ex;
+                manager.preinitializeAndResolveTypes();
+                returnValue = super.generateCode(code);
+            } finally {
+                // We call wrapup here so that the state gets set to idle.
+                // This makes it difficult to test the Exit actor.
+                try {
+                    manager.wrapup();
+                } catch (RuntimeException ex) {
+                    // The Exit actor causes Manager.wrapup() to throw this.
+                    if (!manager.isExitingAfterWrapup()) {
+                        throw ex;
+                    }
                 }
             }
+        // If the container is not in the top level, we are generating code 
+        // for the Java and C co-simulation.   
+        } else {
+            returnValue = super.generateCode(code);
         }
         return returnValue;
     }
@@ -207,26 +228,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         code.append(modelHelper.generateFireCode());
         return code.toString();
     }
-
-    /** Generate the main entry point.
-     *  @return In this base class, return a comment.  Subclasses
-     *  should return the definition of the main entry point for a program.
-     *  In C, this would be defining main().
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public String generateMainEntryCode() throws IllegalActionException {
-        return comment("main entry code");
-    }
-
-    /** Generate the main entry point.
-     *  @return In this base class, return a comment.  Subclasses
-     *  should return the a string that closes optionally calls exit
-     *  and closes the main() method 
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public String generateMainExitCode() throws IllegalActionException {
-        return comment("main exit code");
-    }
+    
 
     /** Generate mode transition code. 
      *  <p> In this base class, do nothing.

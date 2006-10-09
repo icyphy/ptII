@@ -76,14 +76,14 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  In C, this would be defining main().
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateMainEntryCode() throws IllegalActionException;
+    // public String generateMainEntryCode() throws IllegalActionException;
 
     /** Generate the main entry point.
      *  @return Return the a string that closes optionally calls exit
      *  and closes the main() method 
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateMainExitCode() throws IllegalActionException;
+    // public String generateMainExitCode() throws IllegalActionException;
 
     /** Generate mode transition code. It delegates to the director helper 
      *  of the local director. The mode transition code generated in this 

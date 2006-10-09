@@ -33,6 +33,8 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedCompositeActorWithCoSimulation;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.StaticSchedulingDirector;
@@ -43,6 +45,8 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -184,8 +188,8 @@ public class SDFDirector extends Director {
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
 
-        ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
-                .getContainer();
+        ptolemy.actor.CompositeActor container 
+                = (ptolemy.actor.CompositeActor) getComponent().getContainer();
         CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
 
         // Generate code for creating external initial production.
@@ -255,32 +259,82 @@ public class SDFDirector extends Director {
         code.append(_codeGenerator.comment(2, "SDFDirector: "
                 + "Transfer tokens to the inside."));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
+     
+        CompositeActor container 
+                = (CompositeActor) getComponent().getContainer();
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
-        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(getComponent()
-                .getContainer());
-
-        for (int i = 0; i < inputPort.getWidth(); i++) {
-            if (i < inputPort.getWidthInside()) {
-                String name = inputPort.getName();
-
-                if (inputPort.isMultiport()) {
-                    name = name + '#' + i;
+        if (container instanceof TypedCompositeActorWithCoSimulation) {
+            
+            Type type = ((TypedIOPort) inputPort).getType();
+            String portName = inputPort.getName();
+            
+            for (int i = 0; i < inputPort.getWidth(); i++) {
+                if (i < inputPort.getWidthInside()) {
+                    
+                    code.append(_INDENT2);
+                    code.append("jobject tokens = (*env)->GetObjectArrayElement(env, " 
+                            + portName + ", " + i +");\n");
+                   
+                    code.append(_INDENT2);
+                    if (type == BaseType.INT) {
+                        code.append("jint * p = (*env)->GetIntArrayElements(env, "
+                                + "tokens, null);\n");
+                        
+                    } else if (type == BaseType.DOUBLE) {
+                        code.append("jdouble * p = (*env)->GetDoubleArrayElements(env, "
+                                + "tokens, null);\n");
+                    } else {
+                        // FIXME: need to deal with other types
+                    }
+                    String portNameWithChannelNumber = portName;
+                    if (inputPort.isMultiport()) {
+                        portNameWithChannelNumber = portName + '#' + i;
+                    }
+                    for (int k = 0; k < rate; k++) {
+                        code.append(_INDENT2);
+                        code.append(compositeActorHelper.getReference("@" 
+                                + portNameWithChannelNumber + "," + k));
+                        code.append(" = p[" + k + "];\n");
+                    }
+                    
+                    if (type == BaseType.INT) {
+                        code.append("(*env)->ReleaseIntArrayElements(env, "
+                                + "tokens, p, 0);\n");
+                        
+                    } else if (type == BaseType.DOUBLE) {
+                        code.append("(*env)->ReleaseDoubleArrayElements(env, "
+                                + "tokens, p, 0);\n");
+                    } else {
+                        // FIXME: need to deal with other types
+                    }
                 }
+            }
+           
+        } else {
+            for (int i = 0; i < inputPort.getWidth(); i++) {
+                if (i < inputPort.getWidthInside()) {
+                    String name = inputPort.getName();
 
-                for (int k = 0; k < rate; k++) {
-                    code.append(_INDENT2
-                            + compositeActorHelper.getReference("@" + name
-                                    + "," + k));
-                    code.append(" =\n");
-                    code
-                            .append(_INDENT4
-                                    + compositeActorHelper.getReference(name
-                                            + "," + k));
-                    code.append(";\n");
+                    if (inputPort.isMultiport()) {
+                        name = name + '#' + i;
+                    }
+
+                    for (int k = 0; k < rate; k++) {
+                        code.append(_INDENT2
+                                + compositeActorHelper.getReference("@" + name
+                                        + "," + k));
+                        code.append(" =\n");
+                        code
+                                .append(_INDENT4
+                                        + compositeActorHelper.getReference(name
+                                                + "," + k));
+                        code.append(";\n");
+                    }
                 }
             }
         }
-
         // The offset of the input port itself is updated by outside director.
         _updateConnectedPortsOffset(inputPort, code, rate);
     }
@@ -298,31 +352,109 @@ public class SDFDirector extends Director {
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
 
-        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(getComponent()
-                .getContainer());
+        CompositeActor container 
+                = (CompositeActor) getComponent().getContainer();
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
-        for (int i = 0; i < outputPort.getWidthInside(); i++) {
-            if (i < outputPort.getWidth()) {
-                String name = outputPort.getName();
+        if (container instanceof TypedCompositeActorWithCoSimulation) {
+    
+            if (_portNumber == 0) {
+                int numberOfOutputPorts = container.outputPortList().size();
+                
+                code.append(_INDENT2 + "jobjectArray tokensToAllOutputPorts;\n");
+                code.append(_INDENT2 + "jclass objClass = (*env)->FindClass(env, "
+                        + "\"Ljava/lang/Object;\");\n");
+                code.append(_INDENT2 + "tokensToAllOutputPorts = (*env)->NewObjectArray(env, " 
+                        + numberOfOutputPorts + ", objClass, NULL);\n");
+            }
+            
+            int numberOfChannels = outputPort.getWidth() < outputPort.getWidthInside() ?
+                    outputPort.getWidth() : outputPort.getWidthInside();
+            code.append(_INDENT2 + "jobjectArray tokensToOnePort;\n");
+            code.append(_INDENT2 + "tokensToOnePort = (*env)->NewObjectArray(env, " 
+                    + numberOfChannels + ", objClass, NULL);\n");
+            
+            Type type = ((TypedIOPort) outputPort).getType();
+            String portName = outputPort.getName();
+    
+            for (int i = 0; i < outputPort.getWidthInside(); i++) {
+                if (i < outputPort.getWidth()) {
 
-                if (outputPort.isMultiport()) {
-                    name = name + '#' + i;
+                    if (type == BaseType.INT) {
+                        code.append(_INDENT2 + "jint t[" + rate + "];\n");
+                
+                    } else if (type == BaseType.DOUBLE) {
+                        code.append(_INDENT2 + "jdouble t[" + rate + "];\n");
+                        
+                    } else {
+                        // FIXME: need to deal with other types
+                    }
+                    
+                    String portNameWithChannelNumber = portName;
+                    if (outputPort.isMultiport()) {
+                        portNameWithChannelNumber = portName + '#' + i;
+                    }
+
+                    for (int k = 0; k < rate; k++) {
+                        code.append(_INDENT2 + "t[k] = " + compositeActorHelper
+                                .getReference("@" + portNameWithChannelNumber 
+                                + "," + k) + ";\n");
+                    }
+                    
+                    if (type == BaseType.INT) { 
+                        code.append(_INDENT2 + "jintArray iarr = "
+                                +  "(*env)->NewIntArray(env, " + rate + ");\n");
+                        code.append(_INDENT2 + "(*env)->SetIntArrayRegion"
+                                +  "(env, iarr, 0, " + rate + ", t);\n");
+                        
+                        
+                    } else if (type == BaseType.DOUBLE) {
+                        code.append(_INDENT2 + "jdoubleArray iarr = "
+                                +  "(*env)->NewDoubleArray(env, " + rate + ");\n");
+                        code.append(_INDENT2 + "(*env)->SetDoubleArrayRegion"
+                                +  "(env, iarr, 0, " + rate + ", t);\n");
+                        
+                        
+                    } else {
+                        // FIXME: need to deal with other types
+                    }
+                    
+                    code.append(_INDENT2 + "(*env)->SetObjectArrayElement"
+                            +  "(env, tokensToOnePort, " + i + ", iarr);\n");
+                    code.append(_INDENT2 + "(*env)->DeleteLocalRef(env, iarr);\n");                    
                 }
+            }
+            
+            code.append(_INDENT2 + "(*env)->SetObjectArrayElement"
+                    +  "(env, tokensToAllOutputPorts, " + _portNumber + ", tokensToOnePort);\n");
+            code.append(_INDENT2 + "(*env)->DeleteLocalRef(env, tokensToOnePort);\n"); 
+            _portNumber++;
+    
+        } else {
+            for (int i = 0; i < outputPort.getWidthInside(); i++) {
+                if (i < outputPort.getWidth()) {
+                    String name = outputPort.getName();
 
-                for (int k = 0; k < rate; k++) {
-                    code
-                            .append(_INDENT2
-                                    + compositeActorHelper.getReference(name
-                                            + "," + k));
-                    code.append(" =\n");
-                    code.append(_INDENT4
-                            + compositeActorHelper.getReference("@" + name
-                                    + "," + k));
-                    code.append(";\n");
+                    if (outputPort.isMultiport()) {
+                        name = name + '#' + i;
+                    }
+
+                    for (int k = 0; k < rate; k++) {
+                        code
+                                .append(_INDENT2
+                                        + compositeActorHelper.getReference(name
+                                                + "," + k));
+                        code.append(" =\n");
+                        code.append(_INDENT4
+                                + compositeActorHelper.getReference("@" + name
+                                        + "," + k));
+                        code.append(";\n");
+                    }
                 }
             }
         }
-
+        
         // The offset of the ports connected to the output port is 
         // updated by outside director.
         _updatePortOffset(outputPort, code, rate);
@@ -426,8 +558,8 @@ public class SDFDirector extends Director {
                             .iterator();
                     label1: while (sourcePorts.hasNext()) {
                         IOPort sourcePort = (IOPort) sourcePorts.next();
-                        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
-                                .getContainer());
+                        CodeGeneratorHelper helper = (CodeGeneratorHelper) 
+                                _getHelper(sourcePort.getContainer());
                         int width;
                         if (sourcePort.isInput()) {
                             width = sourcePort.getWidthInside();
@@ -491,8 +623,8 @@ public class SDFDirector extends Director {
                                 .iterator();
                         label2: while (sourcePorts.hasNext()) {
                             IOPort sourcePort = (IOPort) sourcePorts.next();
-                            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
-                                    .getContainer());
+                            CodeGeneratorHelper helper = (CodeGeneratorHelper)
+                                    _getHelper(sourcePort.getContainer());
                             int width;
                             if (sourcePort.isInput()) {
                                 width = sourcePort.getWidthInside();
@@ -611,14 +743,17 @@ public class SDFDirector extends Director {
      */
     protected void _updatePortBufferSize() throws IllegalActionException {
 
-        ptolemy.domains.sdf.kernel.SDFDirector director = (ptolemy.domains.sdf.kernel.SDFDirector) getComponent();
+        ptolemy.domains.sdf.kernel.SDFDirector director 
+                = (ptolemy.domains.sdf.kernel.SDFDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
         Iterator actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper 
+                    = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
@@ -644,4 +779,6 @@ public class SDFDirector extends Director {
             }
         }
     }
+    
+    private int _portNumber = 0;
 }

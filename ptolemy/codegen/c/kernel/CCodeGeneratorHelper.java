@@ -72,26 +72,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate the main entry point.
-     *  @return In this base class, return a comment.  Subclasses
-     *  should return the definition of the main entry point for a program.
-     *  In C, this would be defining main().
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public String generateMainEntryCode() throws IllegalActionException {
-        // FIXME: should this be moved to class called CCodeGenerator?
-        return "\n\nmain(int argc, char *argv[]) {\n";
-    }
-
-    /** Generate the main entry point.
-     *  @return Return a string that declares the start of the main() function.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public String generateMainExitCode() throws IllegalActionException {
-        // FIXME: should this be moved to class called CCodeGenerator?
-        return _INDENT1 + "exit(0);\n}\n";
-    }
-
     /** Return a new parse tree code generator to use with expressions.
      *  @return the parse tree code generator to use with expressions.
      */

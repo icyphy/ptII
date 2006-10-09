@@ -280,9 +280,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  In C, this would be defining main().
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateMainEntryCode() throws IllegalActionException {
-        return _codeGenerator.comment("main entry code");
-    }
+    
+    //public String generateMainEntryCode() throws IllegalActionException {
+    //    return _codeGenerator.comment("main entry code");
+    //}
 
     /** Generate the main entry point.
      *  @return In this base class, return a comment.  Subclasses
@@ -290,9 +291,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  and closes the main() method 
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateMainExitCode() throws IllegalActionException {
-        return _codeGenerator.comment("main exit code");
-    }
+    //public String generateMainExitCode() throws IllegalActionException {
+    //    return _codeGenerator.comment("main exit code");
+    //}
 
     /** Generate mode transition code. The mode transition code
      *  generated in this method is executed after each global
@@ -1651,6 +1652,198 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
 
+    /** This class implements a scope, which is used to generate the
+     *  parsed expressions in target language.
+     */
+    protected class HelperScope extends ModelScope {
+        /** Construct a scope consisting of the variables of the containing
+         *  actor and its containers and their scope-extending attributes.
+         */
+        public HelperScope() {
+            _variable = null;
+        }
+    
+        /** Construct a scope consisting of the variables of the container
+         *  of the given instance of Variable and its containers and their
+         *  scope-extending attributes.
+         *  @param variable The variable whose expression is under code 
+         *   generation using this scope.
+         */
+        public HelperScope(Variable variable) {
+            _variable = variable;
+        }
+    
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+    
+        /** Look up and return the macro or expression in the target language
+         *  corresponding to the specified name in the scope.
+         *  @param name The given name string.
+         *  @return The macro or expression with the specified name in the scope.
+         *  @exception IllegalActionException If thrown while getting buffer 
+         *   sizes or creating ObjectToken.
+         */
+        public Token get(String name) throws IllegalActionException {
+            Iterator inputPorts = ((Actor) _component).inputPortList()
+                    .iterator();
+    
+            // try input port
+            while (inputPorts.hasNext()) {
+                IOPort inputPort = (IOPort) inputPorts.next();
+    
+                StringBuffer code = new StringBuffer();
+                boolean found = false;
+                int channelNumber = 0;
+                // try input port name only
+                if (name.equals(inputPort.getName())) {
+                    found = true;
+                    code.append(generateName(inputPort));
+                    if (inputPort.isMultiport()) {
+                        code.append("[0]");
+                    }
+                } else {
+                    for (int i = 0; i < inputPort.getWidth(); i++) {
+                        // try the format: inputPortName_channelNumber 
+                        if (name.equals(inputPort.getName() + "_" + i)) {
+                            found = true;
+                            channelNumber = i;
+                            code.append(generateName(inputPort));
+                            code.append("[" + i + "]");
+                            break;
+                        }
+                    }
+                }
+                if (found) {
+                    int bufferSize = getBufferSize(inputPort);
+                    if (bufferSize > 1) {
+                        int bufferSizeOfChannel = getBufferSize(inputPort,
+                                channelNumber);
+                        String writeOffset = (String) getWriteOffset(inputPort,
+                                channelNumber);
+                        // Note here inputPortNameArray in the original expression 
+                        // is converted to 
+                        // inputPortVariable[(writeoffset - 1 
+                        // + bufferSizeOfChannel)&(bufferSizeOfChannel-1)] 
+                        // in the generated C code.
+                        code.append("[(" + writeOffset + " + "
+                                + (bufferSizeOfChannel - 1) + ")&"
+                                + (bufferSizeOfChannel - 1) + "]");
+                    }
+                    return new ObjectToken(code.toString());
+                }
+    
+                // try the format: inputPortNameArray
+                found = false;
+                channelNumber = 0;
+                if (name.equals(inputPort.getName() + "Array")) {
+                    found = true;
+                    code.append(generateName(inputPort));
+                    if (inputPort.isMultiport()) {
+                        code.append("[0]");
+                    }
+                } else {
+                    for (int i = 0; i < inputPort.getWidth(); i++) {
+                        // try the format: inputPortName_channelNumberArray
+                        if (name
+                                .equals(inputPort.getName() + "_" + i + "Array")) {
+                            found = true;
+                            channelNumber = i;
+                            code.append(generateName(inputPort));
+                            code.append("[" + i + "]");
+                            break;
+                        }
+                    }
+                }
+                if (found) {
+                    int bufferSize = getBufferSize(inputPort);
+                    if (bufferSize > 1) {
+                        int bufferSizeOfChannel = getBufferSize(inputPort,
+                                channelNumber);
+                        String writeOffset = (String) getWriteOffset(inputPort,
+                                channelNumber);
+                        // '@' represents the array index in the parsed expression.
+                        // It will be replaced by actual array index in 
+                        // the method visitFunctionApplicationNode() in
+                        // ParseTreeCodeGenerator.
+                        // Note here inputPortNameArray(i) in the original expression 
+                        // is converted to 
+                        // inputPortVariable[(writeoffset - i - 1 
+                        // + bufferSizeOfChannel)&(bufferSizeOfChannel-1)] 
+                        // in the generated C code.
+                        code.append("[(" + writeOffset + " - (@)" + " + "
+                                + (bufferSizeOfChannel - 1) + ")&"
+                                + (bufferSizeOfChannel - 1) + "]");
+                    }
+                    return new ObjectToken(code.toString());
+                }
+    
+            }
+    
+            // try variable
+            NamedObj container = _component;
+            if (_variable != null) {
+                container = _variable.getContainer();
+            }
+    
+            Variable result = getScopedVariable(_variable, container, name);
+    
+            if (result != null) {
+                // If the variable found is a modified variable, which means
+                // its vaule can be directly changed during execution 
+                // (e.g., in commit action of a modal controller), then this
+                // variable is declared in the target language and should be
+                // referenced by the name anywhere it is used.
+                if (_codeGenerator._modifiedVariables.contains(result)) {
+                    return new ObjectToken(generateVariableName(result));
+                } else {
+                    // This will lead to recursive call until a variable found 
+                    // is either directly specified by a constant or it is a  
+                    // modified variable.  
+                    return new ObjectToken("("
+                            + getParameterValue(name, result.getContainer())
+                            + ")");
+                }
+            } else {
+                return null;
+            }
+        }
+    
+        /** This method should not be called.
+         *  @exception IllegalActionException If it is called.
+         */
+        public ptolemy.data.type.Type getType(String name)
+                throws IllegalActionException {
+            throw new IllegalActionException(
+                    "This method should not be called.");
+        }
+    
+        /** This method should not be called.
+         *  @exception IllegalActionException If it is called.
+         */
+        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            throw new IllegalActionException(
+                    "This method should not be called.");
+        }
+    
+        /** This method should not be called.
+         *  @throws IllegalActionException If it is called.
+         */
+        public Set identifierSet() throws IllegalActionException {
+            throw new IllegalActionException(
+                    "This method should not be called.");
+        }
+    
+        ///////////////////////////////////////////////////////////////////
+        ////                         private variables                 ////
+    
+        /** If _variable is not null, then the helper scope created is
+         *  for parsing the expression specified for this variable and
+         *  generating the corresponding code in target language.
+         */
+        private Variable _variable = null;
+    }
+
     /** Create the buffer size and offset maps for each input port, which is
      *  associated with this helper object. A key of the map is an IOPort
      *  of the actor. The corresponding value is an array of channel objects.
@@ -1738,6 +1931,36 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /**
+     * Generate expression that evaluates to a result of equivalent
+     * value with the cast type.
+     * @param ref The given variable expression.
+     * @param castType The given cast type.
+     * @param refType The given type of the variable.
+     * @return The variable expression that evaluates to a result of
+     *  equivalent value with the cast type.
+     * @throws IllegalActionException 
+     */
+    protected String _generateTypeConvertMethod(String ref, String castType,
+            String refType) throws IllegalActionException {
+    
+        if (castType == null || refType == null || castType.equals(refType)) {
+            return ref;
+        }
+    
+        if (isPrimitive(castType)) {
+            ref = refType + "to" + castType + "(" + ref + ")";
+        } else if (isPrimitive(refType)) {
+            ref = "$new(" + refType + "(" + ref + "))";
+        }
+    
+        if (!castType.equals("Token") && !isPrimitive(castType)) {
+            ref = "$typeFunc(TYPE_" + castType + "::convert(" + ref + "))";
+        }
+    
+        return processCode(ref);
+    }
+
+    /**
      * Generate the type conversion statements for the two given channels.
      * @param source The given source channel.
      * @param sink The given sink channel.
@@ -1759,36 +1982,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             statements += _generateTypeConvertStatement(source, sink, offset);
         }
         return processCode(statements);
-    }
-
-    /**
-     * Generate expression that evaluates to a result of equivalent
-     * value with the cast type.
-     * @param ref The given variable expression.
-     * @param castType The given cast type.
-     * @param refType The given type of the variable.
-     * @return The variable expression that evaluates to a result of
-     *  equivalent value with the cast type.
-     * @throws IllegalActionException 
-     */
-    private String _generateTypeConvertMethod(String ref, String castType,
-            String refType) throws IllegalActionException {
-
-        if (castType == null || refType == null || castType.equals(refType)) {
-            return ref;
-        }
-
-        if (isPrimitive(castType)) {
-            ref = refType + "to" + castType + "(" + ref + ")";
-        } else if (isPrimitive(refType)) {
-            ref = "$new(" + refType + "(" + ref + "))";
-        }
-
-        if (!castType.equals("Token") && !isPrimitive(castType)) {
-            ref = "$typeFunc(TYPE_" + castType + "::convert(" + ref + "))";
-        }
-
-        return processCode(ref);
     }
 
     /**
@@ -1910,6 +2103,41 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** A hashmap that keeps track of the bufferSizes of each channel
+     *  of the actor.
+     */
+    protected HashMap _bufferSizes = new HashMap();
+
+    /** The code generator that contains this helper class.
+     */
+    protected CodeGenerator _codeGenerator;
+
+    /**
+     * The code stream associated with this helper.
+     */
+    protected CodeStream _codeStream = new CodeStream(this);
+
+    /** The parse tree to use with expressions. */
+    protected ParseTreeCodeGenerator _parseTreeCodeGenerator;
+
+    /** A HashMap that contains mapping for ports and their conversion method.
+     *  Ports that does not need to be converted do NOT have record in this
+     *  map. The codegen kernel record this mapping during the first pass over
+     *  the model. This map is used later in the code generation phase.
+     */
+    protected Hashtable _portConversions = new Hashtable();
+
+    /** A hashmap that keeps track of the read offsets of each input channel of
+     *  the actor.
+     */
+    protected HashMap _readOffsets = new HashMap();
+
+    /** A hashmap that keeps track of the write offsets of each input channel of
+     *  the actor.
+     */
+    protected HashMap _writeOffsets = new HashMap();
+
+
     /** Indent string for indent level 1.
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */
@@ -1919,201 +2147,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */
     protected static String _INDENT2 = StringUtilities.getIndentPrefix(2);
-
-    /** This class implements a scope, which is used to generate the
-     *  parsed expressions in target language.
-     */
-    protected class HelperScope extends ModelScope {
-        /** Construct a scope consisting of the variables of the containing
-         *  actor and its containers and their scope-extending attributes.
-         */
-        public HelperScope() {
-            _variable = null;
-        }
-
-        /** Construct a scope consisting of the variables of the container
-         *  of the given instance of Variable and its containers and their
-         *  scope-extending attributes.
-         *  @param variable The variable whose expression is under code 
-         *   generation using this scope.
-         */
-        public HelperScope(Variable variable) {
-            _variable = variable;
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
-
-        /** Look up and return the macro or expression in the target language
-         *  corresponding to the specified name in the scope.
-         *  @param name The given name string.
-         *  @return The macro or expression with the specified name in the scope.
-         *  @exception IllegalActionException If thrown while getting buffer 
-         *   sizes or creating ObjectToken.
-         */
-        public Token get(String name) throws IllegalActionException {
-            Iterator inputPorts = ((Actor) _component).inputPortList()
-                    .iterator();
-
-            // try input port
-            while (inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort) inputPorts.next();
-
-                StringBuffer code = new StringBuffer();
-                boolean found = false;
-                int channelNumber = 0;
-                // try input port name only
-                if (name.equals(inputPort.getName())) {
-                    found = true;
-                    code.append(generateName(inputPort));
-                    if (inputPort.isMultiport()) {
-                        code.append("[0]");
-                    }
-                } else {
-                    for (int i = 0; i < inputPort.getWidth(); i++) {
-                        // try the format: inputPortName_channelNumber 
-                        if (name.equals(inputPort.getName() + "_" + i)) {
-                            found = true;
-                            channelNumber = i;
-                            code.append(generateName(inputPort));
-                            code.append("[" + i + "]");
-                            break;
-                        }
-                    }
-                }
-                if (found) {
-                    int bufferSize = getBufferSize(inputPort);
-                    if (bufferSize > 1) {
-                        int bufferSizeOfChannel = getBufferSize(inputPort,
-                                channelNumber);
-                        String writeOffset = (String) getWriteOffset(inputPort,
-                                channelNumber);
-                        // Note here inputPortNameArray in the original expression 
-                        // is converted to 
-                        // inputPortVariable[(writeoffset - 1 
-                        // + bufferSizeOfChannel)&(bufferSizeOfChannel-1)] 
-                        // in the generated C code.
-                        code.append("[(" + writeOffset + " + "
-                                + (bufferSizeOfChannel - 1) + ")&"
-                                + (bufferSizeOfChannel - 1) + "]");
-                    }
-                    return new ObjectToken(code.toString());
-                }
-
-                // try the format: inputPortNameArray
-                found = false;
-                channelNumber = 0;
-                if (name.equals(inputPort.getName() + "Array")) {
-                    found = true;
-                    code.append(generateName(inputPort));
-                    if (inputPort.isMultiport()) {
-                        code.append("[0]");
-                    }
-                } else {
-                    for (int i = 0; i < inputPort.getWidth(); i++) {
-                        // try the format: inputPortName_channelNumberArray
-                        if (name
-                                .equals(inputPort.getName() + "_" + i + "Array")) {
-                            found = true;
-                            channelNumber = i;
-                            code.append(generateName(inputPort));
-                            code.append("[" + i + "]");
-                            break;
-                        }
-                    }
-                }
-                if (found) {
-                    int bufferSize = getBufferSize(inputPort);
-                    if (bufferSize > 1) {
-                        int bufferSizeOfChannel = getBufferSize(inputPort,
-                                channelNumber);
-                        String writeOffset = (String) getWriteOffset(inputPort,
-                                channelNumber);
-                        // '@' represents the array index in the parsed expression.
-                        // It will be replaced by actual array index in 
-                        // the method visitFunctionApplicationNode() in
-                        // ParseTreeCodeGenerator.
-                        // Note here inputPortNameArray(i) in the original expression 
-                        // is converted to 
-                        // inputPortVariable[(writeoffset - i - 1 
-                        // + bufferSizeOfChannel)&(bufferSizeOfChannel-1)] 
-                        // in the generated C code.
-                        code.append("[(" + writeOffset + " - (@)" + " + "
-                                + (bufferSizeOfChannel - 1) + ")&"
-                                + (bufferSizeOfChannel - 1) + "]");
-                    }
-                    return new ObjectToken(code.toString());
-                }
-
-            }
-
-            // try variable
-            NamedObj container = _component;
-            if (_variable != null) {
-                container = _variable.getContainer();
-            }
-
-            Variable result = getScopedVariable(_variable, container, name);
-
-            if (result != null) {
-                // If the variable found is a modified variable, which means
-                // its vaule can be directly changed during execution 
-                // (e.g., in commit action of a modal controller), then this
-                // variable is declared in the target language and should be
-                // referenced by the name anywhere it is used.
-                if (_codeGenerator._modifiedVariables.contains(result)) {
-                    return new ObjectToken(generateVariableName(result));
-                } else {
-                    // This will lead to recursive call until a variable found 
-                    // is either directly specified by a constant or it is a  
-                    // modified variable.  
-                    return new ObjectToken("("
-                            + getParameterValue(name, result.getContainer())
-                            + ")");
-                }
-            } else {
-                return null;
-            }
-        }
-
-        /** This method should not be called.
-         *  @exception IllegalActionException If it is called.
-         */
-        public ptolemy.data.type.Type getType(String name)
-                throws IllegalActionException {
-            throw new IllegalActionException(
-                    "This method should not be called.");
-        }
-
-        /** This method should not be called.
-         *  @exception IllegalActionException If it is called.
-         */
-        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
-            throw new IllegalActionException(
-                    "This method should not be called.");
-        }
-
-        /** This method should not be called.
-         *  @throws IllegalActionException If it is called.
-         */
-        public Set identifierSet() throws IllegalActionException {
-            throw new IllegalActionException(
-                    "This method should not be called.");
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         private variables                 ////
-
-        /** If _variable is not null, then the helper scope created is
-         *  for parsing the expression specified for this variable and
-         *  generating the corresponding code in target language.
-         */
-        private Variable _variable = null;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     /** Find the paired close parenthesis given a string and an index
      *  which is the position of an open parenthesis. Return -1 if no
@@ -2283,43 +2316,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
         sinks.add(sink);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** A hashmap that keeps track of the bufferSizes of each channel
-     *  of the actor.
-     */
-    protected HashMap _bufferSizes = new HashMap();
-
-    /** The code generator that contains this helper class.
-     */
-    protected CodeGenerator _codeGenerator;
-
-    /**
-     * The code stream associated with this helper.
-     */
-    protected CodeStream _codeStream = new CodeStream(this);
-
-    /** The parse tree to use with expressions. */
-    protected ParseTreeCodeGenerator _parseTreeCodeGenerator;
-
-    /** A HashMap that contains mapping for ports and their conversion method.
-     *  Ports that does not need to be converted do NOT have record in this
-     *  map. The codegen kernel record this mapping during the first pass over
-     *  the model. This map is used later in the code generation phase.
-     */
-    protected Hashtable _portConversions = new Hashtable();
-
-    /** A hashmap that keeps track of the read offsets of each input channel of
-     *  the actor.
-     */
-    protected HashMap _readOffsets = new HashMap();
-
-    /** A hashmap that keeps track of the write offsets of each input channel of
-     *  the actor.
-     */
-    protected HashMap _writeOffsets = new HashMap();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

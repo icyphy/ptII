@@ -43,7 +43,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
@@ -129,7 +131,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 + "Double click to\ngenerate code.</text></svg>");
 
         _model = (CompositeEntity) getContainer();
-        _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
 
         // FIXME: We may not want this GUI dependency here...
         // This attribute could be put in the MoML in the library instead
@@ -271,6 +272,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // 		actor._analyzeActor();
 
         _codeFileName = null;
+        _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
         boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
 
         // We separate the generation and the appending into 2 phases.
@@ -288,9 +290,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
         CodeStream.setIndentLevel(0);
-        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
-        String mainEntryCode = compositeActorHelper.generateMainEntryCode();
-        String mainExitCode = compositeActorHelper.generateMainExitCode();
+        String mainEntryCode = generateMainEntryCode();
+        String mainExitCode = generateMainExitCode();
+        String initializeEntryCode = generateInitializeEntryCode();
+        String initializeExitCode = generateInitializeExitCode();
+        String initializeProcedureName = generateInitializeProcedureName();
+        String wrapupEntryCode = generateWrapupEntryCode();
+        String wrapupExitCode = generateWrapupExitCode();
+        String wrapupProcedureName = generateWrapupProcedureName();
+        
         String fireFunctionCode = null;
         if (!inline) {
             fireFunctionCode = generateFireFunctionCode();
@@ -311,16 +319,38 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(sharedCode);
         code.append(variableDeclareCode);
         code.append(preinitializeCode);
+        
         if (!inline) {
             code.append(fireFunctionCode);
         }
-        code.append(mainEntryCode);
+        
+        code.append(initializeEntryCode);
         code.append(variableInitCode);
         code.append(initializeCode);
-        code.append(bodyCode);
+        code.append(initializeExitCode);
+        
+        code.append(wrapupEntryCode);
         code.append(wrapupCode);
-        code.append(mainExitCode);
-
+        code.append(wrapupExitCode);
+        
+        code.append(mainEntryCode);
+        
+        // If the container is in the top level, we are generating code 
+        // for the whole model.
+        if (isTopLevel()) {
+            code.append(initializeProcedureName);
+        }    
+        
+        code.append(bodyCode);
+        
+        // If the container is in the top level, we are generating code 
+        // for the whole model.
+        if (isTopLevel()) {
+            code.append(wrapupProcedureName);
+        }
+        
+        code.append(mainExitCode);        
+        
         if (_executeCommands == null) {
             _executeCommands = new StreamExec();
         }
@@ -428,6 +458,33 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return code.toString();
     }
 
+    public Object generateFunctionTable(Object[] types, Object[] functions) {
+        StringBuffer code = new StringBuffer();
+    
+        if (functions.length > 0 && types.length > 0) {
+            // FIXME: This is C specific and should be moved elsewhere
+            code.append("#define NUM_TYPE " + types.length + "\n");
+            code.append("#define NUM_FUNC " + functions.length + "\n");
+            code.append("Token (*functionTable[NUM_TYPE][NUM_FUNC])"
+                    + "(Token, ...)= {\n");
+    
+            for (int i = 0; i < types.length; i++) {
+                code.append("\t");
+                for (int j = 0; j < functions.length; j++) {
+                    code.append(types[i] + "_" + functions[j]);
+                    if ((i != (types.length - 1))
+                            || (j != (functions.length - 1))) {
+                        code.append(", ");
+                    }
+                }
+                code.append("\n");
+            }
+            // FIXME: This is C specific and should be moved elsewhere
+            code.append("};\n");
+        }
+        return code.toString();
+    }
+
     /** Generate include files.
      *  @return The include files.
      *  @throws IllegalActionException If the helper class for some actor 
@@ -439,6 +496,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         Set includingFiles = compositeActorHelper.getHeaderFiles();
 
+        if (!isTopLevel()) {
+            includingFiles.add("\"Jni" + _sanitizedModelName + ".h");
+            // FIXME: This is temporary. Only works on my machine.
+            _includes.add("-I\"C:/Program Files/Java/jdk1.5.0_06/include\"");
+            _includes.add("-I\"C:/Program Files/Java/jdk1.5.0_06/include/win32\"");
+        }
+        
         includingFiles.add("<stdarg.h>");
         includingFiles.add("<stdio.h>");
         includingFiles.add("<string.h>");
@@ -465,11 +529,98 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(comment("Initialize " + getContainer().getFullName()));
-
+    
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateInitializeCode());
         return code.toString();
     }
+
+    /** Generate the initialization procedure entry point.
+     *  @return a string for the initialization procedure entry point.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateInitializeEntryCode() throws IllegalActionException {
+        // FIXME: should this be moved to class called CCodeGenerator?
+        
+        // If the container is in the top level, we are generating code 
+        // for the whole model.
+        if (isTopLevel()) {
+            return "\n\ninitialize() {\n";
+            
+        // If the container is not in the top level, we are generating code 
+        // for the Java and C co-simulation.
+        } else {
+            return "JNIEXPORT void JNICALL\n"
+            + "Java_Jni" + _sanitizedModelName + "_initialize("
+            + "JNIEnv *env, jobject obj) {\n";
+        }
+    }
+
+    /** Generate the initialization procedure exit point.
+     *  @return a string for the initialization procedure exit point.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateInitializeExitCode() throws IllegalActionException {
+        // FIXME: should this be moved to class called CCodeGenerator?
+        return "}\n";
+    }
+    
+    /** Generate the initialization procedure name.
+     *  @return a string for the initialization procedure name.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateInitializeProcedureName() throws IllegalActionException {
+        // FIXME: should this be moved to class called CCodeGenerator?
+        return _INDENT1 + "initialize();\n";
+    }
+    
+    
+    /** Generate the main entry point.
+     *  @return Return the definition of the main entry point for a program.
+     *   In C, this would be defining main().
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateMainEntryCode() throws IllegalActionException {
+        // FIXME: should this be moved to class called CCodeGenerator?
+        
+        StringBuffer mainEntryCode = new StringBuffer();
+        
+        // If the container is in the top level, we are generating code 
+        // for the whole model.
+        if (isTopLevel()) {
+            mainEntryCode.append("\n\nmain(int argc, char *argv[]) {\n");
+        
+        // If the container is not in the top level, we are generating code 
+        // for the Java and C co-simulation.
+        } else {
+            mainEntryCode.append("JNIEXPORT jobjectArray JNICALL\n"
+                    + "Java_Jni" + _sanitizedModelName + "_fire (\n"
+                    + "JNIEnv *env, jobject obj");
+            
+            Iterator inputPorts = ((Actor) getContainer()).inputPortList().iterator();
+            while(inputPorts.hasNext()) {
+                TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+                mainEntryCode.append(", jobjectArray " + inputPort.getName());
+            }
+            
+            mainEntryCode.append("){\n");                               
+        }
+        return mainEntryCode.toString();
+    }
+
+    /** Generate the main exit point.
+     *  @return Return a string that declares the end of the main() function.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateMainExitCode() throws IllegalActionException {
+        // FIXME: should this be moved to class called CCodeGenerator?
+        if (isTopLevel()) {
+            return _INDENT1 + "exit(0);\n}\n";
+        } else {
+            return _INDENT1 + "return tokensToAllPorts;\n}\n";
+        }
+    }
+
 
     /** Generate preinitialize code (if there is any).
      *  This method calls the generatePreinitializeCode() method
@@ -668,7 +819,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(sharedStream.toString());
 
         // Generate function type and token table.
-        code.append(_generateFunctionTable(typesArray, functionsArray));
+        code.append(generateFunctionTable(typesArray, functionsArray));
 
         for (int i = 0; i < typesArray.length; i++) {
             typeStreams[i].clear();
@@ -695,33 +846,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 }
             }
             code.append(typeStreams[i].toString());
-        }
-        return code.toString();
-    }
-
-    private Object _generateFunctionTable(Object[] types, Object[] functions) {
-        StringBuffer code = new StringBuffer();
-
-        if (functions.length > 0 && types.length > 0) {
-            // FIXME: This is C specific and should be moved elsewhere
-            code.append("#define NUM_TYPE " + types.length + "\n");
-            code.append("#define NUM_FUNC " + functions.length + "\n");
-            code.append("Token (*functionTable[NUM_TYPE][NUM_FUNC])"
-                    + "(Token, ...)= {\n");
-
-            for (int i = 0; i < types.length; i++) {
-                code.append("\t");
-                for (int j = 0; j < functions.length; j++) {
-                    code.append(types[i] + "_" + functions[j]);
-                    if ((i != (types.length - 1))
-                            || (j != (functions.length - 1))) {
-                        code.append(", ");
-                    }
-                }
-                code.append("\n");
-            }
-            // FIXME: This is C specific and should be moved elsewhere
-            code.append("};\n");
         }
         return code.toString();
     }
@@ -809,6 +933,45 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return code.toString();
     }
 
+    /** Generate the wrapup procedure entry point.
+     *  @return a string for the wrapup procedure entry point.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateWrapupEntryCode() throws IllegalActionException {
+        // FIXME: should this be moved to class called CCodeGenerator?
+        
+        // If the container is in the top level, we are generating code 
+        // for the whole model.
+        if (isTopLevel()) {
+            return "\n\nwrapup() {\n";
+            
+        // If the container is not in the top level, we are generating code 
+        // for the Java and C co-simulation.
+        } else {
+            return "JNIEXPORT void JNICALL\n"
+            + "Java_Jni" + _sanitizedModelName + "_wrapup("
+            + "JNIEnv *env, jobject obj) {\n";
+        }
+    }
+
+    /** Generate the wrapup procedure exit point.
+     *  @return a string for the wrapup procedure exit point.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateWrapupExitCode() throws IllegalActionException {
+        // FIXME: should this be moved to class called CCodeGenerator?
+        return "}\n";
+    }
+    
+    /** Generate the wrapup procedure name.
+     *  @return a string for the wrapup procedure name.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateWrapupProcedureName() throws IllegalActionException {
+        // FIXME: should this be moved to class called CCodeGenerator?
+        return _INDENT1 + "wrapup();\n";
+    }
+    
     /** Return the associated component, which is always the container.
      *  @return The helper to generate code.
      */
@@ -834,6 +997,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String getCodeFileName() {
         return _codeFileName;
     }
+    
+    /** Test if the containing actor is in the top level.
+     *
+     *  @return true if the containing actor is in the top level.
+     */
+    public boolean isTopLevel() {
+        return getContainer().getContainer() == null;
+    }
+    
 
     /** Generate code for a model.
      *  <p>For example:
@@ -1032,15 +1204,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (((BooleanToken) compile.getToken()).booleanValue()) {
             commands.add("make -f " + _sanitizedModelName + ".mk");
         }
+       
+        if (isTopLevel()) {
+            if (((BooleanToken) compile.getToken()).booleanValue()) {
+                String command = codeDirectory.stringValue()
+                        + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
+                                .stringValue().endsWith("\\")) ? "/" : "")
+                        + _sanitizedModelName;
 
-        if (((BooleanToken) compile.getToken()).booleanValue()) {
-            String command = codeDirectory.stringValue()
-                    + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
-                            .stringValue().endsWith("\\")) ? "/" : "")
-                    + _sanitizedModelName;
-
-            commands.add("\"" + command.replace('\\', '/') + "\"");
-        }
+                commands.add("\"" + command.replace('\\', '/') + "\"");
+            }
+        }    
 
         if (commands.size() == 0) {
             return -1;
@@ -1221,7 +1395,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         String makefileTemplateName = generatorPackage.stringValue().replace(
                 '.', '/')
-                + "/makefile.in";
+                + (isTopLevel()?"/makefile.in":"/jnimakefile.in");
 
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()
@@ -1285,9 +1459,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     private ExecuteCommands _executeCommands;
 
     /** The model we for which we are generating code. */
-    CompositeEntity _model;
+    private CompositeEntity _model;
 
     /** The sanitized model name. */
-    String _sanitizedModelName;
+    private String _sanitizedModelName;
 
 }
