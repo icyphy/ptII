@@ -541,7 +541,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
             type = createType(ast, typeName);
         }
 
-        method.setReturnType(createType(ast, typeName));
+        method.setReturnType2(createType(ast, typeName));
 
         // If the field is static, add a checkpoint object argument.
         if (isStatic) {
@@ -582,13 +582,15 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         // If the field is static, the method is also static; the method
         // is also private.
-        int modifiers = Modifier.PRIVATE | Modifier.FINAL;
-
+        List modifiers = method.modifiers();
+        modifiers.add(
+                ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
+        modifiers.add(
+                ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
         if (isStatic) {
-            modifiers |= Modifier.STATIC;
+            modifiers.add(
+                    ast.newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
         }
-
-        method.setModifiers(modifiers);
 
         // Create the method body.
         Block body = _createAssignmentBlock(ast, state, fieldName, fieldType,
@@ -841,7 +843,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         MethodDeclaration method = ast.newMethodDeclaration();
         method.setName(ast.newSimpleName(methodName));
-        method.setReturnType(createType(ast, getClassName(fieldTypeName, state,
+        method.setReturnType2(createType(ast, getClassName(fieldTypeName, state,
                 root)));
 
         // If the field is static, add a checkpoint object argument.
@@ -924,13 +926,15 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         // If the field is static, the method is also static; the method
         // is also private.
-        int modifiers = Modifier.PRIVATE | Modifier.FINAL;
-
+        List modifiers = method.modifiers();
+        modifiers.add(
+                ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
+        modifiers.add(
+                ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
         if (isStatic) {
-            modifiers |= Modifier.STATIC;
+            modifiers.add(
+                    ast.newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
         }
-
-        method.setModifiers(modifiers);
 
         return method;
     }
@@ -960,14 +964,15 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         ClassInstanceCreation checkpoint = ast.newClassInstanceCreation();
         String typeName = getClassName(Checkpoint.class, state, root);
-        checkpoint.setName(createName(ast, typeName));
+        checkpoint.setType(ast.newSimpleType(createName(ast, typeName)));
         checkpoint.arguments().add(ast.newThisExpression());
         fragment.setInitializer(checkpoint);
 
         FieldDeclaration checkpointField = ast.newFieldDeclaration(fragment);
         checkpointField.setType(createType(ast, typeName));
 
-        checkpointField.setModifiers(Modifier.PROTECTED);
+        checkpointField.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.PROTECTED_KEYWORD));
 
         if (parent != null) {
             addToLists(_nodeSubstitution, parent.getName(), new NodeReplace(
@@ -990,9 +995,9 @@ public class AssignmentTransformer extends AbstractTransformer implements
         Class currentClass = state.getCurrentClass();
         Class parent = currentClass.getSuperclass();
 
-        if ((parent != null)
-                && (state.getCrossAnalyzedTypes().contains(parent.getName()) || isFieldDuplicated(
-                        parent, CHECKPOINT_RECORD_NAME))) {
+        if ((parent != null
+                && state.getCrossAnalyzedTypes().contains(parent.getName())
+                || isFieldDuplicated(parent, CHECKPOINT_RECORD_NAME))) {
             return null;
         }
 
@@ -1002,12 +1007,13 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         ClassInstanceCreation creation = ast.newClassInstanceCreation();
         String typeName = getClassName(CheckpointRecord.class, state, root);
-        creation.setName(createName(ast, typeName));
+        creation.setType(ast.newSimpleType(createName(ast, typeName)));
         fragment.setInitializer(creation);
 
         FieldDeclaration record = ast.newFieldDeclaration(fragment);
         record.setType(createType(ast, typeName));
-        record.setModifiers(Modifier.PROTECTED);
+        record.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.PROTECTED_KEYWORD));
 
         if (parent != null) {
             addToLists(_nodeSubstitution, parent.getName(), new NodeReplace(
@@ -1107,8 +1113,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
             }
         }
 
-        method.setModifiers(Modifier.PUBLIC);
-
+        method.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
         return method;
     }
 
@@ -1147,7 +1153,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
         // Create the initializer, and use the number of dimensions as its
         // argument.
         ClassInstanceCreation initializer = ast.newClassInstanceCreation();
-        initializer.setName(createName(ast, typeName));
+        initializer.setType(ast.newSimpleType(createName(ast, typeName)));
         initializer.arguments().add(
                 ast.newNumberLiteral(Integer.toString(dimensions)));
         fragment.setInitializer(initializer);
@@ -1158,13 +1164,13 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         // If the field is static, the record field is also static; the record
         // field is also private.
-        int modifiers = Modifier.PRIVATE;
-
+        List modifiers = field.modifiers();
+        modifiers.add(
+                ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
         if (isStatic) {
-            modifiers |= Modifier.STATIC;
+            modifiers.add(
+                    ast.newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
         }
-
-        field.setModifiers(modifiers);
 
         return field;
     }
@@ -1204,7 +1210,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
         method.setName(ast.newSimpleName(methodName));
 
         String typeName = getClassName(Checkpoint.class, state, root);
-        method.setReturnType(createType(ast, typeName));
+        method.setReturnType2(createType(ast, typeName));
 
         if (!isInterface) {
             // The body, just to return the checkpoint object.
@@ -1216,8 +1222,13 @@ public class AssignmentTransformer extends AbstractTransformer implements
             body.statements().add(returnStatement);
         }
 
-        method.setModifiers(isInterface ? Modifier.PUBLIC
-                : (Modifier.PUBLIC | Modifier.FINAL));
+        
+        method.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
+        if (!isInterface) {
+            method.modifiers().add(
+                    ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
+        }
 
         if (!isAnonymous && (parent != null)) {
             addToLists(_nodeSubstitution, parent.getName(), new NodeReplace(
@@ -1242,7 +1253,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
         classDeclaration.setName(ast.newSimpleName(_getProxyName()));
 
         String rollbackType = getClassName(Rollbackable.class, state, root);
-        classDeclaration.superInterfaces().add(createName(ast, rollbackType));
+        classDeclaration.superInterfaceTypes().add(
+                ast.newSimpleType(createName(ast, rollbackType)));
 
         // Add a commit method.
         MethodDeclaration commit = ast.newMethodDeclaration();
@@ -1264,7 +1276,10 @@ public class AssignmentTransformer extends AbstractTransformer implements
         body.statements().add(ast.newExpressionStatement(invocation));
         commit.setBody(body);
 
-        commit.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
+        commit.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
+        commit.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
         classDeclaration.bodyDeclarations().add(commit);
 
         // Add a restore method.
@@ -1292,7 +1307,10 @@ public class AssignmentTransformer extends AbstractTransformer implements
         body.statements().add(ast.newExpressionStatement(invocation));
         restore.setBody(body);
 
-        restore.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
+        restore.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
+        restore.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
         classDeclaration.bodyDeclarations().add(restore);
 
         // Add a get checkpoint method.
@@ -1300,7 +1318,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
         String checkpointType = getClassName(Checkpoint.class, state, root);
         getCheckpoint.setName(ast
                 .newSimpleName(_getGetCheckpointMethodName(false)));
-        getCheckpoint.setReturnType(createType(ast, checkpointType));
+        getCheckpoint.setReturnType2(createType(ast, checkpointType));
         invocation = ast.newMethodInvocation();
         invocation
                 .setName(ast.newSimpleName(_getGetCheckpointMethodName(true)));
@@ -1311,14 +1329,17 @@ public class AssignmentTransformer extends AbstractTransformer implements
         body.statements().add(returnStatement);
         getCheckpoint.setBody(body);
 
-        getCheckpoint.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
+        getCheckpoint.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
+        getCheckpoint.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
         classDeclaration.bodyDeclarations().add(getCheckpoint);
 
         // Add a set checkpoint method.
         MethodDeclaration setCheckpoint = ast.newMethodDeclaration();
         setCheckpoint.setName(ast
                 .newSimpleName(_getSetCheckpointMethodName(false)));
-        setCheckpoint.setReturnType(createType(ast, getClassName(Object.class,
+        setCheckpoint.setReturnType2(createType(ast, getClassName(Object.class,
                 state, root)));
 
         // Add a single checkpoint parameter.
@@ -1344,10 +1365,14 @@ public class AssignmentTransformer extends AbstractTransformer implements
         body.statements().add(returnStatement);
         setCheckpoint.setBody(body);
 
-        setCheckpoint.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
+        setCheckpoint.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
+        setCheckpoint.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
         classDeclaration.bodyDeclarations().add(setCheckpoint);
 
-        classDeclaration.setModifiers(Modifier.FINAL);
+        classDeclaration.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
         return classDeclaration;
     }
 
@@ -1377,7 +1402,6 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         while (fields.hasNext()) {
             String fieldName = (String) fields.next();
-            Class currentClass = state.getCurrentClass();
 
             String recordName = _getRecordName(fieldName);
             expressions.add(ast.newSimpleName(recordName));
@@ -1388,7 +1412,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
         FieldDeclaration array = ast.newFieldDeclaration(fragment);
         array.setType(ast.newArrayType(createType(ast, typeName)));
 
-        array.setModifiers(Modifier.PRIVATE);
+        array.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
         return array;
     }
 
@@ -1591,8 +1616,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
             }
         }
 
-        method.setModifiers(Modifier.PUBLIC);
-
+        method.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
         return method;
     }
 
@@ -1616,7 +1641,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
     private Expression _createRollbackableObject(AST ast, boolean isAnonymous) {
         if (isAnonymous) {
             ClassInstanceCreation proxy = ast.newClassInstanceCreation();
-            proxy.setName(ast.newSimpleName(_getProxyName()));
+            proxy.setType(
+                    ast.newSimpleType(ast.newSimpleName(_getProxyName())));
             return proxy;
         } else {
             return ast.newThisExpression();
@@ -1696,8 +1722,9 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         if (!isAnonymous
                 && (parent != null)
-                && (state.getCrossAnalyzedTypes().contains(parent.getName()) || hasMethod(
-                        parent, methodName, new Class[] { Checkpoint.class }))) {
+                && (state.getCrossAnalyzedTypes().contains(parent.getName())
+                        || hasMethod(parent, methodName,
+                                new Class[] { Checkpoint.class }))) {
             return null;
         }
 
@@ -1715,8 +1742,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
         method.parameters().add(checkpoint);
 
         // Return type is Object.
-        method.setReturnType(createType(ast, getClassName(Object.class, state,
-                root)));
+        method.setReturnType2(createType(ast, getClassName(Object.class,
+                state, root)));
 
         if (!isInterface) {
             // The test.
@@ -1785,8 +1812,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
             assignment.setLeftHandSide(ast.newSimpleName(CHECKPOINT_NAME));
             assignment.setRightHandSide(ast.newSimpleName("checkpoint"));
 
-            ExpressionStatement statement = ast
-                    .newExpressionStatement(assignment);
+            ExpressionStatement statement =
+                ast.newExpressionStatement(assignment);
             thenBranch.statements().add(statement);
 
             // Propagate the change to other objects monitored by the same old
@@ -1812,8 +1839,12 @@ public class AssignmentTransformer extends AbstractTransformer implements
             body.statements().add(returnStatement);
         }
 
-        method.setModifiers(isInterface ? Modifier.PUBLIC
-                : (Modifier.PUBLIC | Modifier.FINAL));
+        method.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
+        if (!isInterface) {
+            method.modifiers().add(
+                    ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
+        }
 
         if (!isAnonymous && (parent != null)) {
             addToLists(_nodeSubstitution, parent.getName(), new NodeReplace(
@@ -2519,8 +2550,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
                 if (node instanceof TypeDeclaration) {
                     String rollbackType = getClassName(Rollbackable.class,
                             state, root);
-                    ((TypeDeclaration) node).superInterfaces().add(
-                            createName(ast, rollbackType));
+                    ((TypeDeclaration) node).superInterfaceTypes().add(
+                            ast.newSimpleType(createName(ast, rollbackType)));
                 }
 
                 if (!isInterface) {
@@ -2565,7 +2596,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
             addInvocation.setName(ast.newSimpleName("addObject"));
 
             ClassInstanceCreation proxy = ast.newClassInstanceCreation();
-            proxy.setName(ast.newSimpleName(_getProxyName()));
+            proxy.setType(
+                    ast.newSimpleType(ast.newSimpleName(_getProxyName())));
             addInvocation.arguments().add(proxy);
             body.statements().add(ast.newExpressionStatement(addInvocation));
             bodyDeclarations.add(initializer);

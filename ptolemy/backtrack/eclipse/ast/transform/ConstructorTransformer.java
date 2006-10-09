@@ -37,6 +37,7 @@ import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.SuperConstructorInvocation;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
@@ -284,10 +285,10 @@ public class ConstructorTransformer extends AbstractTransformer implements
                 .copySubtree(ast, node);
 
         if (SPECIAL_TYPE_MAPPING.containsKey(type.getName())) {
-            type = Type.createType((String) SPECIAL_TYPE_MAPPING.get(type
-                    .getName()));
-            newNode.setName(createName(ast, getClassName(type.getName(), state,
-                    root)));
+            type = Type.createType(SPECIAL_TYPE_MAPPING.get(type.getName()));
+            Name newName =
+                createName(ast, getClassName(type.getName(), state, root));
+            newNode.setType(ast.newSimpleType(newName));
             Type.setType(node, type);
         }
 

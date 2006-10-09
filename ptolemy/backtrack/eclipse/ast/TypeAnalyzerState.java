@@ -77,7 +77,7 @@ public class TypeAnalyzerState {
      *  @see #leaveBlock()
      */
     public void enterBlock() {
-        _previousClasses.push(new Hashtable<String, Class<?>>());
+        _previousClasses.push(new Hashtable<String, Class>());
     }
     
     /** Enter the scope of a class. The current class is set to the class
@@ -87,7 +87,7 @@ public class TypeAnalyzerState {
      *  @param c The class entered.
      *  @see #leaveClass()
      */
-    public void enterClass(Class<?> c) {
+    public void enterClass(Class c) {
     	if (_currentClass == null) {
     		_previousClasses.push(null);
     	} else {
@@ -127,9 +127,9 @@ public class TypeAnalyzerState {
      *
      *  @return The current class. It may be <tt>null</tt> when there
      *   is no current class.
-     *  @see #setCurrentClass(Class<?>)
+     *  @see #setCurrentClass(Class)
      */
-    public Class<?> getCurrentClass() {
+    public Class getCurrentClass() {
         return _currentClass;
     }
 
@@ -147,7 +147,7 @@ public class TypeAnalyzerState {
      *  @return The previous class stack.
      *  @see #setPreviousClasses(Stack)
      */
-    public Stack<Hashtable<String, Class<?>>> getPreviousClasses() {
+    public Stack<Hashtable<String, Class>> getPreviousClasses() {
         return _previousClasses;
     }
 
@@ -248,7 +248,7 @@ public class TypeAnalyzerState {
      *  last current class (the class on the top of the previous class
      *  stack).
      *
-     *  @see #enterClass(Class<?>)
+     *  @see #enterClass(Class)
      */
     public void leaveClass() {
         int i = _previousClasses.size() - 1;
@@ -308,7 +308,7 @@ public class TypeAnalyzerState {
      *   is no current class.
      *  @see #getCurrentClass()
      */
-    public void setCurrentClass(Class<?> currentClass) {
+    public void setCurrentClass(Class currentClass) {
         _currentClass = currentClass;
     }
 
@@ -321,7 +321,7 @@ public class TypeAnalyzerState {
      *  @see #getPreviousClasses()
      */
     public void setPreviousClasses(
-    		Stack<Hashtable<String, Class<?>>> previousClasses) {
+    		Stack<Hashtable<String, Class>> previousClasses) {
         _previousClasses = previousClasses;
     }
 
@@ -356,14 +356,14 @@ public class TypeAnalyzerState {
      *  @author tfeng
      */
     public static class CurrentClassElement
-    extends Hashtable<String, Class<?>> {
+    extends Hashtable<String, Class> {
     	
     	/** Construct a table with a single element (the current class object)
     	 *  in it.
     	 * 
     	 *  @param currentClass The current class.
     	 */
-    	public CurrentClassElement(Class<?> currentClass) {
+    	public CurrentClassElement(Class currentClass) {
     		super.put(_EMPTY_NAME, currentClass);
     	}
     	
@@ -371,7 +371,7 @@ public class TypeAnalyzerState {
     	 * 
     	 *  @return
     	 */
-    	public Class<?> getCurrentClassElement() {
+    	public Class getCurrentClassElement() {
     		return get(_EMPTY_NAME);
     	}
     	
@@ -404,7 +404,7 @@ public class TypeAnalyzerState {
      *  the part of source code before any class definition ("package"
      *  and "import").
      */
-    private Class<?> _currentClass;
+    private Class _currentClass;
 
     /** The class loader used to load classes.
      */
@@ -413,8 +413,8 @@ public class TypeAnalyzerState {
     /** The stack of previously opened class, which has not been closed
      *  yet.
      */
-    private Stack<Hashtable<String, Class<?>>> _previousClasses =
-    	new Stack<Hashtable<String, Class<?>>>();
+    private Stack<Hashtable<String, Class>> _previousClasses =
+    	new Stack<Hashtable<String, Class>>();
 
     /** The counter for anonymous classes.
      */

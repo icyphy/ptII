@@ -99,7 +99,6 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
             return;
         }
 
-        PrintStream oldSystemErr = System.err;
         OutputConsole console = EclipsePlugin.getDefault().getConsole();
         IDocument document = console.getDocument();
 

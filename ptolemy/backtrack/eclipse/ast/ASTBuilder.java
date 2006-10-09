@@ -63,7 +63,7 @@ public class ASTBuilder {
      *  @see AST#JLS3
      */
     public static int getLanguageSpecification() {
-        return _languageSpecification;
+        return DEFAULT_LANGUAGE_SPECIFICATION;
     }
 
     /** Parse the Java source code given in the source buffer, and
@@ -77,7 +77,7 @@ public class ASTBuilder {
      */
     public static CompilationUnit parse(char[] source)
             throws ASTMalformedException {
-        ASTParser parser = ASTParser.newParser(_languageSpecification);
+        ASTParser parser = ASTParser.newParser(DEFAULT_LANGUAGE_SPECIFICATION);
         parser.setSource(source);
 
         CompilationUnit ast = (CompilationUnit) parser.createAST(null);
@@ -128,7 +128,7 @@ public class ASTBuilder {
      *  @see AST#JLS3
      */
     public static void setLanguageSpecification(int level) {
-        _languageSpecification = level;
+        DEFAULT_LANGUAGE_SPECIFICATION = level;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -139,5 +139,5 @@ public class ASTBuilder {
      *  @see #getLanguageSpecification()
      *  @see #setLanguageSpecification(int)
      */
-    private static int _languageSpecification = AST.JLS2;
+    public static int DEFAULT_LANGUAGE_SPECIFICATION = AST.JLS3;
 }

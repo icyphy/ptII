@@ -82,11 +82,9 @@ public class CheckpointRecord {
      *   changes of checkpoint objects are committed.
      */
     public void commit(long timestamp) {
-        Iterator recordsIter = _records.iterator();
-
+        Iterator<Record> recordsIter = _records.iterator();
         while (recordsIter.hasNext()) {
-            Record record = (Record) recordsIter.next();
-
+            Record record = recordsIter.next();
             if (record.getTimestamp() < timestamp) {
                 recordsIter.remove();
             }
@@ -108,7 +106,7 @@ public class CheckpointRecord {
         if (_records.isEmpty()) {
             return -1;
         } else {
-            return ((Record) _records.peek()).getTimestamp();
+            return _records.peek().getTimestamp();
         }
     }
 
@@ -131,7 +129,7 @@ public class CheckpointRecord {
         if (_records.isEmpty()) {
             return checkpoint;
         } else {
-            Record topRecord = (Record) _records.peek();
+            Record topRecord = _records.peek();
             long topTimestamp = topRecord.getTimestamp();
 
             if (timestamp <= topTimestamp) {
@@ -158,6 +156,7 @@ public class CheckpointRecord {
 
     ///////////////////////////////////////////////////////////////////
     ////                        nested class                       ////
+    
     //////////////////////////////////////////////////////////////////////////
     //// Record
 
@@ -213,5 +212,5 @@ public class CheckpointRecord {
 
     /** The stack of records. Each record is an instance of {@link Record}.
      */
-    private Stack _records = new Stack();
+    private Stack<Record> _records = new Stack<Record>();
 }

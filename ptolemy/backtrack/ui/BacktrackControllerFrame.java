@@ -386,8 +386,7 @@ public class BacktrackControllerFrame extends TableauFrame {
          *  @return The value of the given cell.
          */
         public Object getValueAt(int rowIndex, int columnIndex) {
-            HandleTableElement element = 
-                (HandleTableElement) _data.get(rowIndex);
+            HandleTableElement element = _data.get(rowIndex);
             switch (columnIndex) {
             case 0:
                 return new Long(element.getHandle());
@@ -427,6 +426,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         
         /** The list of elements.
          */
-        private List _data = new LinkedList();
+        private List<HandleTableElement> _data =
+            new LinkedList<HandleTableElement>();
     }
 }

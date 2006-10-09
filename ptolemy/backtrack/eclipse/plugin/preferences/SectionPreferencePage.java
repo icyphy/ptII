@@ -239,7 +239,8 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
      *  sections. The keys are field editor objects; the values are their
      *  parents.
      */
-    private Hashtable _composites = new Hashtable();
+    private Hashtable<FieldEditor, Composite> _composites =
+        new Hashtable<FieldEditor, Composite>();
 
     /** The main form.
      */

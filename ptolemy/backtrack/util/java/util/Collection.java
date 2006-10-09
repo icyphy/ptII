@@ -1,48 +1,47 @@
 /* Collection.java -- Interface that represents a collection of objects
- Copyright (C) 1998, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001, 2005  Free Software Foundation, Inc.
 
- This file is part of GNU Classpath.
+This file is part of GNU Classpath.
 
- GNU Classpath is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2, or (at your option)
- any later version.
+GNU Classpath is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
 
- GNU Classpath is distributed in the hope that it will be useful, but
- WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- General Public License for more details.
+GNU Classpath is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with GNU Classpath; see the file COPYING.  If not, write to the
- Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- 02111-1307 USA.
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+02110-1301 USA.
 
- Linking this library statically or dynamically with other modules is
- making a combined work based on this library.  Thus, the terms and
- conditions of the GNU General Public License cover the whole
- combination.
+Linking this library statically or dynamically with other modules is
+making a combined work based on this library.  Thus, the terms and
+conditions of the GNU General Public License cover the whole
+combination.
 
- As a special exception, the copyright holders of this library give you
- permission to link this library with independent modules to produce an
- executable, regardless of the license terms of these independent
- modules, and to copy and distribute the resulting executable under
- terms of your choice, provided that you also meet, for each linked
- independent module, the terms and conditions of the license of that
- module.  An independent module is a module which is not derived from
- or based on this library.  If you modify this library, you may extend
- this exception to your version of the library, but you are not
- obligated to do so.  If you do not wish to do so, delete this
- exception statement from your version. */
+As a special exception, the copyright holders of this library give you
+permission to link this library with independent modules to produce an
+executable, regardless of the license terms of these independent
+modules, and to copy and distribute the resulting executable under
+terms of your choice, provided that you also meet, for each linked
+independent module, the terms and conditions of the license of that
+module.  An independent module is a module which is not derived from
+or based on this library.  If you modify this library, you may extend
+this exception to your version of the library, but you are not
+obligated to do so.  If you do not wish to do so, delete this
+exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
-
-import ptolemy.backtrack.Checkpoint;
-import ptolemy.backtrack.Rollbackable;
 
 import java.lang.Object;
 import java.util.Iterator;
+import ptolemy.backtrack.Checkpoint;
+import ptolemy.backtrack.Rollbackable;
 
-/**
+/** 
  * Interface that represents a collection of objects. This interface is the
  * root of the collection hierarchy, and does not provide any guarantees about
  * the order of its elements or whether or not duplicate elements are
@@ -69,7 +68,7 @@ import java.util.Iterator;
  * and returns a collection containing the same elements (that is, creates a
  * copy of the argument using its own implementation).
  * @author Original author unknown
- * @author Eric Blake <ebb9@email.byu.edu>
+ * @author Eric Blake (ebb9@email.byu.edu)
  * @see List
  * @see Set
  * @see Map
@@ -87,7 +86,8 @@ import java.util.Iterator;
  * @status updated to 1.4
  */
 public interface Collection extends Rollbackable {
-    /**
+
+    /**     
      * Add an element to this collection.
      * @param o the object to add.
      * @return true if the collection was modified as a result of this action.
@@ -95,12 +95,14 @@ public interface Collection extends Rollbackable {
      * support the add operation.
      * @throws ClassCastException if o cannot be added to this collection due
      * to its type.
+     * @throws NullPointerException if o is null and this collection doesn't
+     * support the addition of null values.
      * @throws IllegalArgumentException if o cannot be added to this
      * collection for some other reason.
      */
     boolean add(Object o);
 
-    /**
+    /**     
      * Add the contents of a given collection to this collection.
      * @param c the collection to add.
      * @return true if the collection was modified as a result of this action.
@@ -108,12 +110,15 @@ public interface Collection extends Rollbackable {
      * support the addAll operation.
      * @throws ClassCastException if some element of c cannot be added to this
      * collection due to its type.
+     * @throws NullPointerException if some element of c is null and this
+     * collection does not support the addition of null values.
+     * @throws NullPointerException if c itself is null.
      * @throws IllegalArgumentException if some element of c cannot be added
      * to this collection for some other reason.
      */
     boolean addAll(Collection c);
 
-    /**
+    /**     
      * Clear the collection, such that a subsequent call to isEmpty() would
      * return true.
      * @throws UnsupportedOperationException if this collection does not
@@ -121,23 +126,32 @@ public interface Collection extends Rollbackable {
      */
     void clear();
 
-    /**
+    /**     
      * Test whether this collection contains a given object as one of its
      * elements.
      * @param o the element to look for.
      * @return true if this collection contains at least one element e such that
      * <code>o == null ? e == null : o.equals(e)</code>.
+     * @throws ClassCastException if the type of o is not a valid type for this
+     * collection.
+     * @throws NullPointerException if o is null and this collection doesn't
+     * support null values.
      */
     boolean contains(Object o);
 
-    /**
+    /**     
      * Test whether this collection contains every element in a given collection.
      * @param c the collection to test for.
      * @return true if for every element o in c, contains(o) would return true.
+     * @throws ClassCastException if the type of any element in c is not a valid
+     * type for this collection.
+     * @throws NullPointerException if some element of c is null and this
+     * collection does not support null values.
+     * @throws NullPointerException if c itself is null.
      */
     boolean containsAll(Collection c);
 
-    /**
+    /**     
      * Test whether this collection is equal to some object. The Collection
      * interface does not explicitly require any behaviour from this method, and
      * it may be left to the default implementation provided by Object. The Set
@@ -154,7 +168,7 @@ public interface Collection extends Rollbackable {
      */
     boolean equals(Object o);
 
-    /**
+    /**     
      * Obtain a hash code for this collection. The Collection interface does not
      * explicitly require any behaviour from this method, and it may be left to
      * the default implementation provided by Object. The Set and List interfaces
@@ -169,19 +183,19 @@ public interface Collection extends Rollbackable {
      */
     int hashCode();
 
-    /**
+    /**     
      * Test whether this collection is empty, that is, if size() == 0.
      * @return true if this collection contains no elements.
      */
     boolean isEmpty();
 
-    /**
+    /**     
      * Obtain an Iterator over this collection.
      * @return an Iterator over the elements of this collection, in any order.
      */
     Iterator iterator();
 
-    /**
+    /**     
      * Remove a single occurrence of an object from this collection. That is,
      * remove an element e, if one exists, such that <code>o == null ? e == null
      * : o.equals(e)</code>.
@@ -190,34 +204,50 @@ public interface Collection extends Rollbackable {
      * if the collection contained at least one occurrence of o.
      * @throws UnsupportedOperationException if this collection does not
      * support the remove operation.
+     * @throws ClassCastException if the type of o is not a valid type
+     * for this collection.
+     * @throws NullPointerException if o is null and the collection doesn't
+     * support null values.
      */
     boolean remove(Object o);
 
-    /**
+    /**     
      * Remove all elements of a given collection from this collection. That is,
      * remove every element e such that c.contains(e).
+     * @param c The collection of objects to be removed.
      * @return true if this collection was modified as a result of this call.
      * @throws UnsupportedOperationException if this collection does not
      * support the removeAll operation.
+     * @throws ClassCastException if the type of any element in c is not a valid
+     * type for this collection.
+     * @throws NullPointerException if some element of c is null and this
+     * collection does not support removing null values.
+     * @throws NullPointerException if c itself is null.
      */
     boolean removeAll(Collection c);
 
-    /**
+    /**     
      * Remove all elements of this collection that are not contained in a given
      * collection. That is, remove every element e such that !c.contains(e).
+     * @param c The collection of objects to be retained.
      * @return true if this collection was modified as a result of this call.
      * @throws UnsupportedOperationException if this collection does not
      * support the retainAll operation.
+     * @throws ClassCastException if the type of any element in c is not a valid
+     * type for this collection.
+     * @throws NullPointerException if some element of c is null and this
+     * collection does not support retaining null values.
+     * @throws NullPointerException if c itself is null.
      */
     boolean retainAll(Collection c);
 
-    /**
+    /**     
      * Get the number of elements in this collection.
      * @return the number of elements in the collection.
      */
     int size();
 
-    /**
+    /**     
      * Copy the current contents of this collection into an array.
      * @return an array of type Object[] and length equal to the size of this
      * collection, containing the elements currently in this collection, in
@@ -225,7 +255,7 @@ public interface Collection extends Rollbackable {
      */
     Object[] toArray();
 
-    /**
+    /**     
      * Copy the current contents of this collection into an array. If the array
      * passed as an argument has length less than the size of this collection, an
      * array of the same run-time type as a, and length equal to the size of this
@@ -250,4 +280,6 @@ public interface Collection extends Rollbackable {
     public Checkpoint $GET$CHECKPOINT();
 
     public Object $SET$CHECKPOINT(Checkpoint checkpoint);
+
 }
+

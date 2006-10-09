@@ -606,30 +606,20 @@ public class ASTFormatter extends ASTVisitor {
 
         _output("new ");
 
-        if (node.getAST().apiLevel() == AST.JLS2) {
-            node.getName().accept(this);
-        }
+        if (!node.typeArguments().isEmpty()) {
+            _output("<");
 
-        if (node.getAST().apiLevel() >= AST.JLS3) {
-            if (!node.typeArguments().isEmpty()) {
-                _output("<");
-
-                Iterator it;
-
-                for (it = node.typeArguments().iterator(); it.hasNext();) {
-                    Type t = (Type) it.next();
-                    t.accept(this);
-
-                    if (it.hasNext()) {
-                        _output(", ");
-                    }
+            Iterator it;
+            for (it = node.typeArguments().iterator(); it.hasNext();) {
+                Type t = (Type) it.next();
+                t.accept(this);
+                if (it.hasNext()) {
+                    _output(", ");
                 }
-
-                _output(">");
             }
-
-            node.getType().accept(this);
+            _output(">");
         }
+        node.getType().accept(this);
 
         _output("(");
 
@@ -993,13 +983,7 @@ public class ASTFormatter extends ASTVisitor {
 
         _output(_indent);
 
-        if (node.getAST().apiLevel() == AST.JLS2) {
-            _outputModifiers(node.getModifiers());
-        }
-
-        if (node.getAST().apiLevel() >= AST.JLS3) {
-            _outputModifiers(node.modifiers());
-        }
+        _outputModifiers(node.modifiers());
 
         node.getType().accept(this);
         _output(" ");
@@ -1189,13 +1173,7 @@ public class ASTFormatter extends ASTVisitor {
             node.getJavadoc().accept(this);
         }
 
-        if (node.getAST().apiLevel() == AST.JLS2) {
-            _outputModifiers(node.getModifiers());
-        }
-
-        if (node.getAST().apiLevel() >= AST.JLS3) {
-            _outputModifiers(node.modifiers());
-        }
+        _outputModifiers(node.modifiers());
 
         _output(_indent);
         node.getBody().accept(this);
@@ -1318,41 +1296,28 @@ public class ASTFormatter extends ASTVisitor {
 
         _output(_indent);
 
-        if (node.getAST().apiLevel() == AST.JLS2) {
-            _outputModifiers(node.getModifiers());
-        }
+        _outputModifiers(node.modifiers());
+        if (!node.typeParameters().isEmpty()) {
+            _output("<");
 
-        if (node.getAST().apiLevel() >= AST.JLS3) {
-            _outputModifiers(node.modifiers());
-
-            if (!node.typeParameters().isEmpty()) {
-                _output("<");
-
-                Iterator it;
-
-                for (it = node.typeParameters().iterator(); it.hasNext();) {
-                    TypeParameter t = (TypeParameter) it.next();
-                    t.accept(this);
-
-                    if (it.hasNext()) {
-                        _output(", ");
-                    }
+            Iterator it;
+            for (it = node.typeParameters().iterator(); it.hasNext();) {
+                TypeParameter t = (TypeParameter) it.next();
+                t.accept(this);
+                if (it.hasNext()) {
+                    _output(", ");
                 }
-
-                _output(">");
             }
+            
+            _output(">");
         }
 
         if (!node.isConstructor()) {
-            if (node.getAST().apiLevel() == AST.JLS2) {
-                node.getReturnType().accept(this);
+            if (node.getReturnType2() != null) {
+                node.getReturnType2().accept(this);
             } else {
-                if (node.getReturnType2() != null) {
-                    node.getReturnType2().accept(this);
-                } else {
-                    // methods really ought to have a return type
-                    _output("void");
-                }
+                // methods really ought to have a return type
+                _output("void");
             }
 
             _output(" ");
@@ -1741,20 +1706,12 @@ public class ASTFormatter extends ASTVisitor {
      *  @return Whether its children should be further visited.
      */
     public boolean visit(SingleVariableDeclaration node) {
-        if (node.getAST().apiLevel() == AST.JLS2) {
-            _outputModifiers(node.getModifiers());
-        }
-
-        if (node.getAST().apiLevel() >= AST.JLS3) {
-            _outputModifiers(node.modifiers());
-        }
+        _outputModifiers(node.modifiers());
 
         node.getType().accept(this);
 
-        if (node.getAST().apiLevel() >= AST.JLS3) {
-            if (node.isVarargs()) {
-                _output("...");
-            }
+        if (node.isVarargs()) {
+            _output("...");
         }
 
         _output(" ");
@@ -2107,13 +2064,7 @@ public class ASTFormatter extends ASTVisitor {
 
         _output(_indent);
 
-        if (node.getAST().apiLevel() == AST.JLS2) {
-            _outputModifiers(node.getModifiers());
-        }
-
-        if (node.getAST().apiLevel() >= AST.JLS3) {
-            _outputModifiers(node.modifiers());
-        }
+        _outputModifiers(node.modifiers());
 
         _output(node.isInterface() ? "interface " : "class ");
 
@@ -2141,56 +2092,24 @@ public class ASTFormatter extends ASTVisitor {
 
         _output(" ");
 
-        if (node.getAST().apiLevel() == AST.JLS2) {
-            if (node.getSuperclass() != null) {
-                _output("extends ");
-                node.getSuperclass().accept(this);
-                _output(" ");
-            }
-
-            if (!node.superInterfaces().isEmpty()) {
-                _output(node.isInterface() ? "extends " : "implements ");
-
-                //$NON-NLS-2$
-                Iterator it;
-
-                for (it = node.superInterfaces().iterator(); it.hasNext();) {
-                    Name n = (Name) it.next();
-                    n.accept(this);
-
-                    if (it.hasNext()) {
-                        _output(", ");
-                    }
-                }
-
-                _output(" ");
-            }
+        if (node.getSuperclassType() != null) {
+            _output("extends ");
+            node.getSuperclassType().accept(this);
+            _output(" ");
         }
-
-        if (node.getAST().apiLevel() >= AST.JLS3) {
-            if (node.getSuperclassType() != null) {
-                _output("extends ");
-                node.getSuperclassType().accept(this);
-                _output(" ");
-            }
-
-            if (!node.superInterfaceTypes().isEmpty()) {
-                _output(node.isInterface() ? "extends " : "implements ");
-
-                //$NON-NLS-2$
-                Iterator it;
-
-                for (it = node.superInterfaceTypes().iterator(); it.hasNext();) {
-                    Type t = (Type) it.next();
-                    t.accept(this);
-
-                    if (it.hasNext()) {
-                        _output(", ");
-                    }
+        
+        if (!node.superInterfaceTypes().isEmpty()) {
+            _output(node.isInterface() ? "extends " : "implements ");
+            //$NON-NLS-2$
+            Iterator it;
+            for (it = node.superInterfaceTypes().iterator(); it.hasNext();) {
+                Type t = (Type) it.next();
+                t.accept(this);
+                if (it.hasNext()) {
+                    _output(", ");
                 }
-
-                _output(" ");
             }
+            _output(" ");
         }
 
         _openBrace();
@@ -2230,13 +2149,7 @@ public class ASTFormatter extends ASTVisitor {
      *  @return Whether its children should be further visited.
      */
     public boolean visit(TypeDeclarationStatement node) {
-        if (node.getAST().apiLevel() == AST.JLS2) {
-            node.getTypeDeclaration().accept(this);
-        }
-
-        if (node.getAST().apiLevel() >= AST.JLS3) {
-            node.getDeclaration().accept(this);
-        }
+        node.getDeclaration().accept(this);
 
         return false;
     }
@@ -2285,13 +2198,7 @@ public class ASTFormatter extends ASTVisitor {
      *  @return Whether its children should be further visited.
      */
     public boolean visit(VariableDeclarationExpression node) {
-        if (node.getAST().apiLevel() == AST.JLS2) {
-            _outputModifiers(node.getModifiers());
-        }
-
-        if (node.getAST().apiLevel() >= AST.JLS3) {
-            _outputModifiers(node.modifiers());
-        }
+        _outputModifiers(node.modifiers());
 
         node.getType().accept(this);
         _output(" ");
@@ -2339,13 +2246,7 @@ public class ASTFormatter extends ASTVisitor {
     public boolean visit(VariableDeclarationStatement node) {
         _output(_indent);
 
-        if (node.getAST().apiLevel() == AST.JLS2) {
-            _outputModifiers(node.getModifiers());
-        }
-
-        if (node.getAST().apiLevel() >= AST.JLS3) {
-            _outputModifiers(node.modifiers());
-        }
+        _outputModifiers(node.modifiers());
 
         node.getType().accept(this);
         _output(" ");
@@ -2600,59 +2501,6 @@ public class ASTFormatter extends ASTVisitor {
             } catch (IOException e) {
                 throw new ASTIORuntimeException(e);
             }
-        }
-    }
-
-    /**
-     * Appends the text representation of the given modifier flags,
-     * followed by a single space.
-     * Used for JLS2 modifiers.
-     *
-     * @param modifiers the modifier flags
-     */
-    private void _outputModifiers(int modifiers) {
-        if (Modifier.isPublic(modifiers)) {
-            _output("public ");
-        }
-
-        if (Modifier.isProtected(modifiers)) {
-            _output("protected ");
-        }
-
-        if (Modifier.isPrivate(modifiers)) {
-            _output("private ");
-        }
-
-        if (Modifier.isStatic(modifiers)) {
-            _output("static ");
-        }
-
-        if (Modifier.isAbstract(modifiers)) {
-            _output("abstract ");
-        }
-
-        if (Modifier.isFinal(modifiers)) {
-            _output("final ");
-        }
-
-        if (Modifier.isSynchronized(modifiers)) {
-            _output("synchronized ");
-        }
-
-        if (Modifier.isVolatile(modifiers)) {
-            _output("volatile ");
-        }
-
-        if (Modifier.isNative(modifiers)) {
-            _output("native ");
-        }
-
-        if (Modifier.isStrictfp(modifiers)) {
-            _output("strictfp ");
-        }
-
-        if (Modifier.isTransient(modifiers)) {
-            _output("transient ");
         }
     }
 

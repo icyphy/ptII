@@ -125,7 +125,4 @@ public class OutputConsole extends MessageConsole implements IConsoleListener {
 
         private Color _color;
     }
-
-    private IConsoleManager _consoleManager = ConsolePlugin.getDefault()
-            .getConsoleManager();
 }

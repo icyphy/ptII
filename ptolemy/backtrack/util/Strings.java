@@ -27,8 +27,6 @@
  */
 package ptolemy.backtrack.util;
 
-import ptolemy.backtrack.eclipse.ast.UnknownASTException;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -82,13 +80,13 @@ public class Strings {
     public static String[] decodeFileNames(String encode) {
         StringTokenizer tokenizer = new StringTokenizer(encode,
                 File.pathSeparator + "\n\r");
-        ArrayList list = new ArrayList();
+        ArrayList<String> list = new ArrayList<String>();
 
         while (tokenizer.hasMoreElements()) {
-            list.add(tokenizer.nextElement());
+            list.add((String) tokenizer.nextElement());
         }
 
-        return (String[]) list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 
     /** Encode file names (or directory names) in to a string. Each file name

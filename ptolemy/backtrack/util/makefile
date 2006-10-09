@@ -81,8 +81,8 @@ GCC_CLASSES = $(GCC_FILES:%.java=%.class)
 #    $(wildcard *.java)
 JSRCS = \
 	$(GCC_FILES) \
-    CheckpointRecord.java \
-    ClassFileLoader.java \
+	CheckpointRecord.java \
+	ClassFileLoader.java \
 	FieldRecord.java \
 	FieldRecordState.java \
 	PathFinder.java \
@@ -111,56 +111,51 @@ include $(ROOT)/mk/ptcommon.mk
 
 gcc: gcc-source transform gcc-compile
 
-GCC_DIR = gcc/libjava
+GCJ_DIR = branches/gcc-4_1-branch/libjava/classpath/
 
 GCC_REPOSITORY = \
-	:ext:anoncvs@savannah.gnu.org:/cvsroot/gcc
+	svn://gcc.gnu.org/svn/gcc/
 	
 SOURCE_DATE = 20040418
 
 gcc-source:
 	@echo Checking out GCC source files...
 	@rm -rf gcc
-	@for javafile in $(GCC_FILES); do \
-	  files="$$files $(GCC_DIR)/$$javafile"; \
-	done && \
-	cvs \
-	  -d $(GCC_REPOSITORY) \
-	  -z3 \
-	  checkout \
-	  -P \
-	  -D $(SOURCE_DATE) \
-	  $$files
+	@mkdir -p gcc/java/util/; \
+	cd gcc/java/util/; \
+	for javafile in $(GCC_FILES); do \
+	  svn export "$(GCC_REPOSITORY)$(GCJ_DIR)$$javafile"; \
+	done
 	@patch -p0 < gcc-patch
 	@echo Compiling GCC source files...
 	@for javafile in $(GCC_FILES); do \
-	  files="$$files $(GCC_DIR)/$$javafile"; \
+	  files="$$files gcc/$$javafile"; \
 	done && \
 	"$(JAVAC)" \
-	  -classpath gcc/libjava \
+	  -classpath gcc \
 	  $$files
 
 transform: gcc-source
 	@echo Transform GCC source files.
 	@rm -rf java
 	@for javafile in $(GCC_FILES); do \
-	  files="$$files $(GCC_DIR)/$$javafile"; \
+	  files="$$files gcc/$$javafile"; \
 	done && \
 	"$(JAVA)" \
-	  -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)gcc/libjava" \
-	  -Xbootclasspath/p:gcc/libjava \
-	  ptolemy.backtrack.ast.Transformer \
+	  -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_ECLIPSE_JARS)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)gcc" \
+	  -Xbootclasspath/p:gcc \
+	  ptolemy.backtrack.eclipse.ast.Transformer \
 	  -prefix ptolemy.backtrack.util \
 	  -output "$(ROOT)" \
-	  -classpath gcc/libjava \
+	  -classpath gcc \
 	  $$files
-	@ echo Add GCC license header to each source file.
-	@for javafile in $(GCC_FILES); do \
-	  mv $$javafile $$javafile.bak; \
-	  cat gcc-header > $$javafile; \
-	  cat $$javafile.bak >> $$javafile; \
-	  rm $$javafile.bak; \
-	done
+	# @ echo Add GCC license header to each source file.
+	# @for javafile in $(GCC_FILES); do \
+	#   mv $$javafile $$javafile.bak; \
+	#   cat gcc-header > $$javafile; \
+	#   cat $$javafile.bak >> $$javafile; \
+	#   rm $$javafile.bak; \
+	# done
 
 gcc-compile: $(GCC_CLASSES)
 

@@ -171,17 +171,10 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    /** Override the title image so that the Ptolemy icon is always used as the
-     *  editor's title image.
-     *  
-     *  @param titleImage The new title image to be set, which is always
-     *   ignored.
-     */
-    protected void setTitleImage(Image titleImage) {
-    	ImageDescriptor descriptor = EclipsePlugin.getImageDescriptor(
-    			"ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif");
-		super.setTitleImage(descriptor.createImage());
-	}
+    public void test() {
+    	//_preview.setInput(new FileEditorInput(previewFile));
+        _preview.getViewer().setEditable(false);
+    }
 
 	/** Update the "Preview" tab if the source code is changed in the "Raw" tab.
      */
@@ -210,7 +203,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
             boolean overwrite = store
                     .getBoolean(PreferenceConstants.BACKTRACK_OVERWRITE);
 
-            if (!overwrite && previewFile.exists() && previewFile.isLocal(0)) {
+            if (!overwrite && previewFile.exists()) {
                 OutputConsole.outputError("Preview file \""
                         + previewFile.getLocation().toOSString()
                         + "\" already exists.\nTo overwrite it, please "
@@ -267,10 +260,17 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
         }
     }
     
-    public void test() {
-    	//_preview.setInput(new FileEditorInput(previewFile));
-        _preview.getViewer().setEditable(false);
-    }
+    /** Override the title image so that the Ptolemy icon is always used as the
+     *  editor's title image.
+     *  
+     *  @param titleImage The new title image to be set, which is always
+     *   ignored.
+     */
+    protected void setTitleImage(Image titleImage) {
+    	ImageDescriptor descriptor = EclipsePlugin.getImageDescriptor(
+    			"ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif");
+		super.setTitleImage(descriptor.createImage());
+	}
 
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
@@ -353,7 +353,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
         
 		CompilerOptions options =
 			new CompilerOptions(unit.getJavaProject().getOptions(true));
-		ASTParser parser = ASTParser.newParser(AST.JLS2); // FIXME
+		ASTParser parser = ASTParser.newParser(AST.JLS3); // FIXME
 		parser.setCompilerOptions(options.getMap());
 		parser.setSource(unit.getBuffer().getCharacters());
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
@@ -410,6 +410,26 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     ///////////////////////////////////////////////////////////////////
     ////                    private inner classes                  ////
 
+    /** The container of the two tabs in the editor.
+     */
+    private CTabFolder _container;
+
+    /** The editor.
+     */
+    private CompilationUnitEditor _editor;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
+
+    /** Whether the Java source in the "Raw" tab needs to be refactored to
+     *  update the "Preview" tab.
+     */
+    private boolean _needRefactoring = true;
+
+    /** The "Preview" tab.
+     */
+    private PtolemyEditor _preview;
+
     //////////////////////////////////////////////////////////////////////////
     //// RefactoringOutputThread
     /**
@@ -424,16 +444,6 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     */
     private class RefactoringOutputThread extends Thread {
         
-        /** Construct a thread to output the refactoring result.
-         * 
-         *  @param file The file object containing the "Preview" tab's content.
-         *  @param inputStream The input stream to read refactoring result from.
-         */
-        RefactoringOutputThread(IFile file, PipedInputStream inputStream) {
-            _file = file;
-            _inputStream = inputStream;
-        }
-
         /** Read the refactoring result from the input stream to the "Preview"
          *  tab.
          */
@@ -453,6 +463,16 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
                     OutputConsole.outputError(e.getMessage());
                 }
             }
+        }
+
+        /** Construct a thread to output the refactoring result.
+         * 
+         *  @param file The file object containing the "Preview" tab's content.
+         *  @param inputStream The input stream to read refactoring result from.
+         */
+        RefactoringOutputThread(IFile file, PipedInputStream inputStream) {
+            _file = file;
+            _inputStream = inputStream;
         }
 
         /** The file object containing the "Preview" tab's content.
@@ -477,6 +497,17 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     */
     private class TransformerRunnable implements Runnable {
         
+        /** Execute the transformation.
+         */
+        public void run() {
+            try {
+                Transformer.transform(_fileName, _compilationUnit, _writer,
+                        _classPaths, _crossAnalyzedTypes);
+            } catch (Exception e) {
+                OutputConsole.outputError(e.getMessage());
+            }
+        }
+
         /** Construct a runnable object that executes the transformation.
          * 
          *  @param fileName The name of the file to be refactored.
@@ -494,17 +525,6 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
             _crossAnalyzedTypes = crossAnalyzedTypes;
             _fileName = fileName;
             _writer = writer;
-        }
-
-        /** Execute the transformation.
-         */
-        public void run() {
-            try {
-                Transformer.transform(_fileName, _compilationUnit, _writer,
-                        _classPaths, _crossAnalyzedTypes);
-            } catch (Exception e) {
-                OutputConsole.outputError(e.getMessage());
-            }
         }
 
         /** Extra class paths.
@@ -527,24 +547,4 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
          */
         private Writer _writer;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       private fields                      ////
-
-    /** The container of the two tabs in the editor.
-     */
-    private CTabFolder _container;
-
-    /** The editor.
-     */
-    private CompilationUnitEditor _editor;
-
-    /** Whether the Java source in the "Raw" tab needs to be refactored to
-     *  update the "Preview" tab.
-     */
-    private boolean _needRefactoring = true;
-
-    /** The "Preview" tab.
-     */
-    private PtolemyEditor _preview;
 }

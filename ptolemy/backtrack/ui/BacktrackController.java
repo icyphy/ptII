@@ -66,19 +66,15 @@ public class BacktrackController {
      *  @param handle The handle of the checkpoint to be committed.
      */
     public void commit(long handle) {
-        Iterator handles = _checkpoints.keySet().iterator();
+        Iterator<Long> handles = _checkpoints.keySet().iterator();
         while (handles.hasNext()) {
-            Long handleKey = (Long)handles.next();
+            Long handleKey = handles.next();
             if (handleKey.longValue() <= handle) {
-                HashMap checkpointsAndHandles = 
-                    (HashMap)_checkpoints.get(handleKey);
-                Iterator checkpoints = 
-                    checkpointsAndHandles.keySet().iterator();
-                while (checkpoints.hasNext()) {
-                    Checkpoint checkpoint = (Checkpoint)checkpoints.next();
-                    long timestamp = 
-                        ((Long)checkpointsAndHandles.get(checkpoint)).
-                                longValue();
+                HashMap<Checkpoint, Long> checkpointsAndHandles =
+                    _checkpoints.get(handleKey);
+                for (Checkpoint checkpoint : checkpointsAndHandles.keySet()) {
+                    long timestamp =
+                        checkpointsAndHandles.get(checkpoint).longValue();
                     checkpoint.commit(timestamp);
                 }
             }
@@ -103,17 +99,19 @@ public class BacktrackController {
      *  @return The checkpoint handle.
      */
     public synchronized long createCheckpoint(CompositeActor container) {
-        HashMap checkpointsAndHandles = new HashMap();
+        HashMap<Checkpoint, Long> checkpointsAndHandles =
+            new HashMap<Checkpoint, Long>();
+        Set<Checkpoint> checkpoints = new HashSet<Checkpoint>();
         Iterator objectsIterator = container.containedObjectsIterator();
-        Set checkpoints = new HashSet();
         while (objectsIterator.hasNext()) {
             Object object = objectsIterator.next();
             if (object instanceof Rollbackable) {
-                Rollbackable rollbackObject = (Rollbackable)object;
+                Rollbackable rollbackObject = (Rollbackable) object;
                 Checkpoint checkpoint = rollbackObject.$GET$CHECKPOINT();
                 if (!checkpoints.contains(checkpoint)) {
                     long timestamp = checkpoint.createCheckpoint();
                     checkpointsAndHandles.put(checkpoint, new Long(timestamp));
+                    checkpoints.add(checkpoint);
                 }
             }
         }
@@ -137,14 +135,12 @@ public class BacktrackController {
      *  @return Whether the given handle is valid.
      */
     public boolean rollback(long handle, boolean trim) {
-        HashMap checkpointsAndHandles = 
-            (HashMap)_checkpoints.get(new Long(handle));
+        HashMap<Checkpoint, Long> checkpointsAndHandles =
+            _checkpoints.get(new Long(handle));
         if (checkpointsAndHandles == null) {
             return false;
         } else {
-            Iterator checkpoints = checkpointsAndHandles.keySet().iterator();
-            while (checkpoints.hasNext()) {
-                Checkpoint checkpoint = (Checkpoint)checkpoints.next();
+            for (Checkpoint checkpoint : checkpointsAndHandles.keySet()) {
                 long timestamp = 
                     ((Long)checkpointsAndHandles.get(checkpoint)).longValue();
                 checkpoint.rollback(timestamp, trim);
@@ -162,7 +158,8 @@ public class BacktrackController {
      *  keys are checkpoint objects, and the values are the checkpoint handles
      *  returned by those checkpoint objects.
      */
-    private HashMap _checkpoints = new HashMap();
+    private HashMap<Long, HashMap<Checkpoint, Long>> _checkpoints =
+        new HashMap<Long, HashMap<Checkpoint, Long>>();
     
     /** The current checkpoint handle.
      */

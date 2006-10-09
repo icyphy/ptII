@@ -219,17 +219,17 @@ public class Type {
                 formalType = formalType.removeOneDimension();
             }
 
-            Class<?> class1 = selfType.toClass(loader);
-            Class<?> class2 = formalType.toClass(loader);
+            Class class1 = selfType.toClass(loader);
+            Class class2 = formalType.toClass(loader);
             int i = 0;
 
             while (class1 != null) {
-                List<Class<?>> workList = new LinkedList<Class<?>>();
-                Set<Class<?>> handledSet = new HashSet<Class<?>>();
+                List<Class> workList = new LinkedList<Class>();
+                Set<Class> handledSet = new HashSet<Class>();
                 workList.add(class1);
 
                 while (!workList.isEmpty()) {
-                    Class<?> c = workList.remove(0);
+                    Class c = workList.remove(0);
 
                     if (c.getName().equals(class2.getName())) {
                         return i;
@@ -237,7 +237,7 @@ public class Type {
 
                     handledSet.add(c);
 
-                    Class<?>[] interfaces = c.getInterfaces();
+                    Class[] interfaces = c.getInterfaces();
 
                     for (int k = 0; k < interfaces.length; k++) {
                         if (!handledSet.contains(interfaces[k])) {
@@ -472,7 +472,13 @@ public class Type {
      *  @see #setType(ASTNode, Type)
      */
     public static Type getType(ASTNode node) {
+        try {
         return (Type) node.getProperty("type");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /** Test if this type is an array type.
@@ -655,7 +661,7 @@ public class Type {
      *   the same name as this type cannot be loaded with the given
      *   class loader.
      */
-    public Class<?> toClass(ClassLoader loader) throws ClassNotFoundException {
+    public Class toClass(ClassLoader loader) throws ClassNotFoundException {
         if (isPrimitive()) {
             if (equals(NULL)) {
                 // Impossible to load "null" type, though primitive.
@@ -809,7 +815,7 @@ public class Type {
 
     /** The {@link Class} object corresponding to this type.
      */
-    private Class<?> _classObject;
+    private Class _classObject;
 
     /** The table of created {@link Type} objects, indexed by
      *  their full name. When a user creates a type object
@@ -828,8 +834,8 @@ public class Type {
     /** Table of primitive {@link Class} objects. Each primitive
      *  type has a {@link Class} object to represent it.
      */
-    private static final Hashtable<String, Class<?>> PRIMITIVE_CLASSES =
-    	new Hashtable<String, Class<?>>();
+    private static final Hashtable<String, Class> PRIMITIVE_CLASSES =
+    	new Hashtable<String, Class>();
 
     /** Array nicknames for primitive element types. Keys are
      *  names of primitive types; keys are compact run-time

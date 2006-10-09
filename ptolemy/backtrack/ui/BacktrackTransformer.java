@@ -79,9 +79,9 @@ public class BacktrackTransformer {
 
             MoMLParser parser = new MoMLParser();
             RenameClassMoMLFilter filter = new RenameClassMoMLFilter();
-            parser.addMoMLFilter(filter);
+            MoMLParser.addMoMLFilter(filter);
             NamedObj topLevel = parser.parse(null, moml.toString());
-            parser.getMoMLFilters().remove(filter);
+            MoMLParser.getMoMLFilters().remove(filter);
             
             Iterator entitiesToRename = filter.entitiesChanged();
             while (entitiesToRename.hasNext()) {
@@ -224,7 +224,7 @@ public class BacktrackTransformer {
          * 
          *  @return The entities that are changed.
          */
-        public Iterator entitiesChanged() {
+        public Iterator<NamedObj> entitiesChanged() {
             return _entitiesChanged.iterator();
         }
 
@@ -322,11 +322,11 @@ public class BacktrackTransformer {
 
         /** The stack of the name of the classes that have been changed.
          */
-        private Stack _classStack = new Stack();
+        private Stack<String> _classStack = new Stack<String>();
         
         /** The list of entities changed during the parsing.
          */
-        private List _entitiesChanged = new LinkedList();
+        private List<NamedObj> _entitiesChanged = new LinkedList<NamedObj>();
 
         /** The parser to parse extra content (e.g., icon MoML).
          */

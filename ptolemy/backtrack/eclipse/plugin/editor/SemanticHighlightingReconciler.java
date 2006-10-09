@@ -27,17 +27,20 @@
  */
 package ptolemy.backtrack.eclipse.plugin.editor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.internal.corext.dom.GenericVisitor;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
+import org.eclipse.jdt.internal.ui.javaeditor.ASTProvider;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaEditor;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaSourceViewer;
 import org.eclipse.jdt.internal.ui.text.JavaPresentationReconciler;
@@ -45,7 +48,6 @@ import org.eclipse.jdt.internal.ui.text.java.IJavaReconcilingListener;
 import org.eclipse.jdt.ui.text.IColorManager;
 import org.eclipse.jdt.ui.text.IColorManagerExtension;
 import org.eclipse.jdt.ui.text.JavaSourceViewerConfiguration;
-
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.resource.StringConverter;
@@ -56,20 +58,15 @@ import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.TextPresentation;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
 import org.eclipse.ui.IWorkbenchPartSite;
 
 import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
-
-import java.util.ArrayList;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// SemanticHighlightingReconciler
@@ -358,13 +355,13 @@ public class SemanticHighlightingReconciler implements
             }
         }
 
-        /** Highlighting of the position.
-         */
-        private HighlightingStyle _style;
-
         /** Lock object.
          */
         private Object _lock;
+
+        /** Highlighting of the position.
+         */
+        private HighlightingStyle _style;
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -425,13 +422,13 @@ public class SemanticHighlightingReconciler implements
             _textAttribute = textAttribute;
         }
 
-        /** Text attribute.
-         */
-        private TextAttribute _textAttribute;
-
         /** Enabled state.
          */
         private boolean _enabled;
+
+        /** Text attribute.
+         */
+        private TextAttribute _textAttribute;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -481,7 +478,8 @@ public class SemanticHighlightingReconciler implements
 
             if (((color == null) || !rgb.equals(color.getRGB()))
                     && _colorManager instanceof IColorManagerExtension) {
-                IColorManagerExtension ext = (IColorManagerExtension) _colorManager;
+                IColorManagerExtension ext =
+                    (IColorManagerExtension) _colorManager;
                 ext.unbindColor(property);
                 ext.bindColor(property, rgb);
                 color = _colorManager.getColor(property);
@@ -559,6 +557,8 @@ public class SemanticHighlightingReconciler implements
         if (_semanticHighlightings != null) {
             _disposeHighlightings();
         }
+        
+        _enabled = false;
     }
 
     /** Dispose the resources used by the semantic highlightings.
@@ -571,27 +571,40 @@ public class SemanticHighlightingReconciler implements
         _semanticHighlightings = null;
         _highlightings = null;
     }
-
+    
     /** Enable the semantic highlightings.
-     *  
+     * 
+     *  @return true if the highlightings are enabled successfully; false,
+     *   otherwise. 
      *  @see #_disable()
      */
-    private void _enable() {
-        _initializeHighlightings();
+    private boolean _enable() {
+        if (_enabled) {
+            return true;
+        }
+        
+        JavaSourceViewer viewer = (JavaSourceViewer) _editor.getViewer();
+        if (viewer != null) {
+            _initializeHighlightings();
 
-        final String JAVA_PARTITIONING = "___java_partitioning";
-        _configuration = new JavaSourceViewerConfiguration(_colorManager,
-                _preferenceStore, _editor, JAVA_PARTITIONING);
-        _presentationReconciler = (JavaPresentationReconciler) _configuration
-                .getPresentationReconciler(_editor.getViewer());
-
-        _presenter = new SemanticHighlightingPresenter();
-        _presenter.install((JavaSourceViewer) _editor.getViewer(),
-                _presentationReconciler);
-
-        _jobSemanticHighlightings = _semanticHighlightings;
-
-        _editor.addJavaReconcileListener(this);
+            final String JAVA_PARTITIONING = "___java_partitioning";
+            _configuration = new JavaSourceViewerConfiguration(_colorManager,
+                    _preferenceStore, _editor, JAVA_PARTITIONING);
+            _presentationReconciler = (JavaPresentationReconciler)
+                    _configuration.getPresentationReconciler(viewer);
+    
+            _presenter = new SemanticHighlightingPresenter();
+            _presenter.install(viewer, _presentationReconciler);
+    
+            _jobSemanticHighlightings = _semanticHighlightings;
+    
+            _editor.addJavaReconcileListener(this);
+            
+            _enabled = true;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /** Handle a property change evant.
@@ -608,19 +621,23 @@ public class SemanticHighlightingReconciler implements
 
         if (SemanticHighlightings.affectsEnablement(_preferenceStore, event)) {
             if (isEnabled()) {
-                _enable();
-                _scheduleJob();
+                if (_enable()) {
+                    _scheduleJob();
+                } else {
+                    return;
+                }
             } else {
                 _disable();
             }
         }
 
-        if (!isEnabled()) {
+        if (!isEnabled() || _semanticHighlightings == null) {
             return;
         }
 
         for (int i = 0, n = _semanticHighlightings.length; i < n; i++) {
-            SemanticHighlighting semanticHighlighting = _semanticHighlightings[i];
+            SemanticHighlighting semanticHighlighting =
+                _semanticHighlightings[i];
 
             String colorKey = semanticHighlighting.getColorPreferenceKey();
 
@@ -664,7 +681,8 @@ public class SemanticHighlightingReconciler implements
         _highlightings = new HighlightingStyle[_semanticHighlightings.length];
 
         for (int i = 0, n = _semanticHighlightings.length; i < n; i++) {
-            SemanticHighlighting semanticHighlighting = _semanticHighlightings[i];
+            SemanticHighlighting semanticHighlighting =
+                _semanticHighlightings[i];
             String colorKey = semanticHighlighting.getColorPreferenceKey();
             _addColor(colorKey);
 
@@ -749,7 +767,7 @@ public class SemanticHighlightingReconciler implements
 
                     CompilationUnit ast =
                     	JavaPlugin.getDefault().getASTProvider().getAST(element,
-                    			true, monitor);
+                    			ASTProvider.WAIT_YES, monitor);
                     reconciled(ast, false, monitor);
 
                     synchronized (_jobLock) {
@@ -830,8 +848,90 @@ public class SemanticHighlightingReconciler implements
         display.asyncExec(runnable);
     }
 
+    /** The highlighted positions added by the background job.
+     */
+    private List<HighlightedPosition> _addedPositions =
+    	new ArrayList<HighlightedPosition>();
+
     ///////////////////////////////////////////////////////////////////
     ////                    private inner classes                  ////
+
+    /** Whether the background job is canceled.
+     */
+    private boolean _cancelJobs;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
+
+    /** The position collector.
+     */
+    private PositionCollector _collector = new PositionCollector();
+
+    /** The color manager.
+     */
+    private IColorManager _colorManager;
+
+    /** The Java source viewer configuration.
+     */
+    private JavaSourceViewerConfiguration _configuration;
+
+    /** The editor whose content to be reconciled.
+     */
+    private PtolemyEditor _editor;
+
+    /** Whether the semantic highlightings are enabled.
+     */
+    private boolean _enabled = false;
+
+    /** The highlighting styles.
+     */
+    private HighlightingStyle[] _highlightings;
+
+    /** The background job to reconcile highlightings.
+     */
+    private Job _job;
+
+    /** The highlighting styles that the background job is working on, or null.
+     */
+    private HighlightingStyle[] _jobHighlightings;
+
+    /** The lock for the background job.
+     */
+    private Object _jobLock = new Object();
+
+    /** The highlighting presenter that the background job is using.
+     */
+    private SemanticHighlightingPresenter _jobPresenter;
+
+    /** The semantic highlightings that the background job is working on, or
+     *  null.
+     */
+    private SemanticHighlighting[] _jobSemanticHighlightings;
+
+    /** The preference store.
+     */
+    private IPreferenceStore _preferenceStore;
+
+    /** The Java presentation reconciler.
+     */
+    private JavaPresentationReconciler _presentationReconciler;
+
+    /** The highlighting presenter.
+     */
+    private SemanticHighlightingPresenter _presenter;
+
+    /** The highlighted positions removed by the background job.
+     */
+    private List<HighlightedPosition> _removedPositions =
+    	new ArrayList<HighlightedPosition>();
+
+    /** Number of the removed positions.
+     */
+    private int _removedPositionsNumber;
+
+    /** The semantic highlightings.
+     */
+    private SemanticHighlighting[] _semanticHighlightings;
 
     //////////////////////////////////////////////////////////////////////////
     //// PositionCollector
@@ -949,82 +1049,4 @@ public class SemanticHighlightingReconciler implements
          */
         private SemanticToken _token = new SemanticToken();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       private fields                      ////
-
-    /** The highlighted positions added by the background job.
-     */
-    private List<HighlightedPosition> _addedPositions =
-    	new ArrayList<HighlightedPosition>();
-
-    /** Whether the background job is canceled.
-     */
-    private boolean _cancelJobs;
-
-    /** The position collector.
-     */
-    private PositionCollector _collector = new PositionCollector();
-
-    /** The color manager.
-     */
-    private IColorManager _colorManager;
-
-    /** The Java source viewer configuration.
-     */
-    private JavaSourceViewerConfiguration _configuration;
-
-    /** The editor whose content to be reconciled.
-     */
-    private PtolemyEditor _editor;
-
-    /** The highlighting styles.
-     */
-    private HighlightingStyle[] _highlightings;
-
-    /** The background job to reconcile highlightings.
-     */
-    private Job _job;
-
-    /** The highlighting styles that the background job is working on, or null.
-     */
-    private HighlightingStyle[] _jobHighlightings;
-
-    /** The lock for the background job.
-     */
-    private Object _jobLock = new Object();
-
-    /** The highlighting presenter that the background job is using.
-     */
-    private SemanticHighlightingPresenter _jobPresenter;
-
-    /** The semantic highlightings that the background job is working on, or
-     *  null.
-     */
-    private SemanticHighlighting[] _jobSemanticHighlightings;
-
-    /** The preference store.
-     */
-    private IPreferenceStore _preferenceStore;
-
-    /** The Java presentation reconciler.
-     */
-    private JavaPresentationReconciler _presentationReconciler;
-
-    /** The highlighting presenter.
-     */
-    private SemanticHighlightingPresenter _presenter;
-
-    /** The highlighted positions removed by the background job.
-     */
-    private List<HighlightedPosition> _removedPositions =
-    	new ArrayList<HighlightedPosition>();
-
-    /** Number of the removed positions.
-     */
-    private int _removedPositionsNumber;
-
-    /** The semantic highlightings.
-     */
-    private SemanticHighlighting[] _semanticHighlightings;
 }

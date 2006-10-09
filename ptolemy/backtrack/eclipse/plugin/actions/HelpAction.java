@@ -29,10 +29,8 @@ package ptolemy.backtrack.eclipse.plugin.actions;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.help.WorkbenchHelp;
 
 //////////////////////////////////////////////////////////////////////////
 //// HelpAction
@@ -68,7 +66,8 @@ public class HelpAction implements IWorkbenchWindowActionDelegate {
      *  @param action The action proxy (not used in this method).
      */
     public void run(IAction action) {
-        WorkbenchHelp.displayHelpResource(HELP_RESOURCE);
+        _window.getWorkbench().getHelpSystem().displayHelpResource(
+                HELP_RESOURCE);
     }
 
     /** Handle the change of selection.

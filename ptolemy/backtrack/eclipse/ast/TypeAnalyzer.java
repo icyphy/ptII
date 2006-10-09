@@ -311,7 +311,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param node The node to be visited.
      */
     public void endVisit(ClassInstanceCreation node) {
-        Type.propagateType(node, node.getName());
+        Type.propagateType(node, node.getType());
 
         Expression expression = node.getExpression();
 
@@ -525,7 +525,10 @@ public class TypeAnalyzer extends ASTVisitor {
         }
 
         _closeScope();
-        Type.propagateType(node, node.getReturnType());
+        org.eclipse.jdt.core.dom.Type returnType = node.getReturnType2();
+        if (returnType != null) {
+            Type.propagateType(node, returnType);
+        }
     }
 
     /** Visit a method invocation node and resolve the invoked method. The
@@ -535,7 +538,7 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void endVisit(MethodInvocation node) {
         Expression expression = node.getExpression();
-        Class<?> owner = null;
+        Class owner = null;
 
         if (expression != null) {
             Type ownerType = null;
@@ -737,7 +740,7 @@ public class TypeAnalyzer extends ASTVisitor {
             }
         }
     }
-
+    
     /** Visit a simple name, and resolve it if possible. Some simple names
      *  are not resolved, such as the name of a class to be declared, and the
      *  name of a local variable in its definition.
@@ -756,8 +759,7 @@ public class TypeAnalyzer extends ASTVisitor {
             } else if (parent instanceof TypeDeclaration) {
                 TypeDeclaration type = (TypeDeclaration) parent;
 
-                if ((type.getSuperclass() != node)
-                        && !type.superInterfaces().contains(node)) {
+                if (type.getName() == node) {
                     handle = false;
                 }
             } else if (parent instanceof BodyDeclaration) {
@@ -765,11 +767,14 @@ public class TypeAnalyzer extends ASTVisitor {
             } else if (parent instanceof BreakStatement
                     && (((BreakStatement) parent).getLabel() == node)) {
                 handle = false;
-            } else if (parent instanceof ClassInstanceCreation
-                    && (((ClassInstanceCreation) parent).getExpression() != null)
-                    && (((ClassInstanceCreation) parent).getName() == node)) {
-                owner = Type.getType(((ClassInstanceCreation) parent)
-                        .getExpression());
+            } else if (parent instanceof SimpleType
+                    && parent.getParent() instanceof ClassInstanceCreation) {
+            	Expression expression =
+            	    ((ClassInstanceCreation) parent.getParent()).getExpression();
+            	
+                if (expression != null) {
+                    owner = Type.getType(expression);
+                }
             } else if (parent instanceof FieldAccess
                     && (((FieldAccess) parent).getName() == node)) {
                 handle = false;
@@ -795,8 +800,8 @@ public class TypeAnalyzer extends ASTVisitor {
                 TypeAndOwner typeAndOwner = _resolveName(name, owner);
 
                 if (typeAndOwner == null) {
-                    String currentClassName = _state.getCurrentClass()
-                            .getName();
+                    String currentClassName =
+                    	_state.getCurrentClass().getName();
                     throw new ASTResolutionException(currentClassName, name);
                 }
 
@@ -804,6 +809,19 @@ public class TypeAnalyzer extends ASTVisitor {
                 Type.setType(node, typeAndOwner._getType());
             }
         }
+    }
+
+    /** Visit a simple type node, and propergate the type of its name to it if
+     *  it is in a {@link ClassInstanceCreation}.
+     *  
+     *  @param node The node to be visited.
+     */
+    public void endVisit(SimpleType node) {
+        if (node.getParent() instanceof ClassInstanceCreation) {
+            Type.propagateType(node, node.getName());
+        }
+        
+        super.endVisit(node);
     }
 
     /** Visit a single variable declaration and set its type to be the
@@ -854,7 +872,7 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void endVisit(SuperFieldAccess node) {
         Name qualifier = node.getQualifier();
-        Class<?> owner = null;
+        Class owner = null;
 
         if (qualifier != null) {
             Type ownerType = null;
@@ -899,7 +917,7 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void endVisit(SuperMethodInvocation node) {
         Name qualifier = node.getQualifier();
-        Class<?> owner = null;
+        Class owner = null;
 
         if (qualifier != null) {
             Type ownerType = null;
@@ -959,7 +977,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param node The node to be visited.
      */
     public void endVisit(TypeDeclaration node) {
-        Class<?> currentClass = _state.getCurrentClass();
+        Class currentClass = _state.getCurrentClass();
 
         if (_handlers.hasClassHandler()) {
         	for (ClassHandler handler : _handlers.getClassHandlers()) {
@@ -974,7 +992,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
         if (node.getParent() instanceof TypeDeclarationStatement) {
             String typeName = node.getName().getIdentifier();
-            Hashtable<String, Class<?>> classTable =
+            Hashtable<String, Class> classTable =
             	_state.getPreviousClasses().peek();
             classTable.put(typeName, currentClass);
         }
@@ -1093,7 +1111,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @return The return value of the overriden function.
      */
     public boolean visit(AnonymousClassDeclaration node) {
-        Class<?> currentClass = _state.getCurrentClass();
+        Class currentClass = _state.getCurrentClass();
 
         // First, try to simply append the anonymous count to the end.
         if (!_eclipse_anonymous_scheme) {
@@ -1249,9 +1267,13 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @return The return value of the overriden function.
      */
     public boolean visit(SimpleType node) {
-        Class<?> c = _lookupClass(node.getName().toString());
-        Type type = Type.createType(c.getName());
-        Type.setType(node, type);
+        if (!(node.getParent() instanceof ClassInstanceCreation)) {
+            Class c = _lookupClass(node.getName().toString());
+            if (c != null) {
+                Type type = Type.createType(c.getName());
+                Type.setType(node, type);
+            }
+        }
 
         return super.visit(node);
     }
@@ -1266,7 +1288,7 @@ public class TypeAnalyzer extends ASTVisitor {
     public boolean visit(TypeDeclaration node) {
         // Enter the class.
         String typeName = node.getName().getIdentifier();
-        Class<?> currentClass = _state.getCurrentClass();
+        Class currentClass = _state.getCurrentClass();
 
         if (currentClass == null) {
             try {
@@ -1337,9 +1359,9 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param c The class from which the field name is resolved.
      *  @param name The name of the field.
      *  @return The type of the field if found; otherwise, <tt>null</tt>.
-     *  @see #_getMethodType(Class<?>, String, Type[])
+     *  @see #_getMethodType(Class, String, Type[])
      */
-    protected TypeAndOwner _getFieldTypeAndOwner(Class<?> c, String name) {
+    protected TypeAndOwner _getFieldTypeAndOwner(Class c, String name) {
         // Try to resolve special field "length" of arrays.
         if (c.isArray() && name.equals("length")) {
             return new TypeAndOwner(Type.INT, Type.createType(c.getName()));
@@ -1347,12 +1369,12 @@ public class TypeAnalyzer extends ASTVisitor {
 
         // Find the field with reflection.
         Field field;
-        List<Class<?>> workList = new LinkedList<Class<?>>();
-        Set<Class<?>> handledSet = new HashSet<Class<?>>();
+        List<Class> workList = new LinkedList<Class>();
+        Set<Class> handledSet = new HashSet<Class>();
         workList.add(c);
 
         while (!workList.isEmpty()) {
-            Class<?> topClass = workList.remove(0);
+            Class topClass = workList.remove(0);
 
             try {
                 field = topClass.getDeclaredField(name);
@@ -1363,7 +1385,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
             handledSet.add(topClass);
 
-            Class<?> superClass = topClass.getSuperclass();
+            Class superClass = topClass.getSuperclass();
 
             if ((superClass == null)
                     && !topClass.getName().equals("java.lang.Object")) {
@@ -1374,7 +1396,7 @@ public class TypeAnalyzer extends ASTVisitor {
                 workList.add(superClass);
             }
 
-            Class<?>[] interfaces = topClass.getInterfaces();
+            Class[] interfaces = topClass.getInterfaces();
 
             for (int i = 0; i < interfaces.length; i++) {
                 if (!handledSet.contains(interfaces[i])) {
@@ -1403,19 +1425,19 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param args The types of actural arguments for a call.
      *  @return The return type of the method if found; otherwise,
      *   <tt>null</tt>.
-     *  @see #_getFieldTypeAndOwner(Class<?>, String)
+     *  @see #_getFieldTypeAndOwner(Class, String)
      *  @see Type#compatibility(Type, ClassLoader)
      */
-    protected Type _getMethodType(Class<?> c, String name, Type[] args) {
+    protected Type _getMethodType(Class c, String name, Type[] args) {
         Method[] methods = null;
         int best_compatibility = -1;
         Method best_method = null;
-        List<Class<?>> workList = new LinkedList<Class<?>>();
-        Set<Class<?>> handledSet = new HashSet<Class<?>>();
+        List<Class> workList = new LinkedList<Class>();
+        Set<Class> handledSet = new HashSet<Class>();
         workList.add(c);
 
         while (!workList.isEmpty()) {
-            Class<?> topClass = workList.remove(0);
+            Class topClass = workList.remove(0);
             methods = topClass.getDeclaredMethods();
 
             for (int i = 0; i < methods.length; i++) {
@@ -1427,7 +1449,7 @@ public class TypeAnalyzer extends ASTVisitor {
                 }
 
                 if (method.getName().equals(name)) {
-                    Class<?>[] formalParams = method.getParameterTypes();
+                    Class[] formalParams = method.getParameterTypes();
 
                     if (formalParams.length == args.length) {
                         int compatibility = 0;
@@ -1473,7 +1495,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
             handledSet.add(topClass);
 
-            Class<?> superClass = topClass.getSuperclass();
+            Class superClass = topClass.getSuperclass();
 
             if ((superClass == null)
                     && !topClass.getName().equals("java.lang.Object")) {
@@ -1484,7 +1506,7 @@ public class TypeAnalyzer extends ASTVisitor {
                 workList.add(superClass);
             }
 
-            Class<?>[] interfaces = topClass.getInterfaces();
+            Class[] interfaces = topClass.getInterfaces();
 
             for (int i = 0; i < interfaces.length; i++) {
                 if (!handledSet.contains(interfaces[i])) {
@@ -1595,7 +1617,7 @@ public class TypeAnalyzer extends ASTVisitor {
         if (table.containsKey(name)) {
             Type type = table.get(name);
             Integer hashCode = new Integer(i);
-            Class<?> ownerClass = _classScopeRelation.get(hashCode);
+            Class ownerClass = _classScopeRelation.get(hashCode);
             Type owner = (ownerClass == null) ? null :
             	Type.createType(ownerClass.getName());
             return new TypeAndOwner(type, owner);
@@ -1611,7 +1633,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param c The class object.
      *  @return The simple name of the class object.
      */
-    private String _getSimpleClassName(Class<?> c) {
+    private String _getSimpleClassName(Class c) {
         String name = c.getName();
         int lastSeparator1 = name.lastIndexOf('.');
         int lastSeparator2 = name.lastIndexOf('$');
@@ -1665,7 +1687,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @return The class; <tt>null</tt> is returned if the
      *   class cannot be found.
      */
-    private Class<?> _lookupClass(String partialSimpleName) {
+    private Class _lookupClass(String partialSimpleName) {
         int dotPos = partialSimpleName.indexOf('.');
         String simpleName;
 
@@ -1675,20 +1697,20 @@ public class TypeAnalyzer extends ASTVisitor {
             simpleName = partialSimpleName.substring(0, dotPos);
         }
 
-        Class<?> result = null;
+        Class result = null;
 
         if (result == null) {
-            Stack<Hashtable<String, Class<?>>> previousClasses =
+            Stack<Hashtable<String, Class>> previousClasses =
             	_state.getPreviousClasses();
             int previousNumber = previousClasses.size();
 
             for (int i = previousNumber; i >= 0; i--) {
-                Class<?> workingClass = null;
+                Class workingClass = null;
 
                 if (i == previousNumber) {
                     workingClass = _state.getCurrentClass();
                 } else {
-                	Hashtable<String, Class<?>> previousTable =
+                	Hashtable<String, Class> previousTable =
                 		previousClasses.get(i);
 
                 	if (previousTable != null) {
@@ -1710,7 +1732,7 @@ public class TypeAnalyzer extends ASTVisitor {
                         break;
                     }
 
-                    Class<?>[] declaredClasses =
+                    Class[] declaredClasses =
                     	workingClass.getDeclaredClasses();
 
                     for (int j = 0; j < declaredClasses.length; j++) {
@@ -1767,7 +1789,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @see #_unrecordFields()
      */
     private void _recordFields() {
-        Class<?> c = _state.getCurrentClass();
+        Class c = _state.getCurrentClass();
         Hashtable<String, Type> table = _state.getVariableStack().peek();
         Integer hashCode = new Integer(_state.getVariableStack().size() - 1);
         _classScopeRelation.put(hashCode, c);
@@ -1786,12 +1808,12 @@ public class TypeAnalyzer extends ASTVisitor {
                 String fieldName = field.getName();
 
                 if (!table.containsKey(fieldName)) {
-                    Class<?> fieldType = field.getType();
+                    Class fieldType = field.getType();
                     table.put(fieldName, Type.createType(fieldType.getName()));
                 }
             }
 
-            Class<?>[] interfaces = c.getInterfaces();
+            Class[] interfaces = c.getInterfaces();
 
             for (int i = 0; i < interfaces.length; i++) {
                 fields = interfaces[i].getDeclaredFields();
@@ -1800,14 +1822,14 @@ public class TypeAnalyzer extends ASTVisitor {
                     String fieldName = fields[j].getName();
 
                     if (!table.containsKey(fieldName)) {
-                        Class<?> fieldType = fields[j].getType();
+                        Class fieldType = fields[j].getType();
                         table.put(fieldName,
                         		Type.createType(fieldType.getName()));
                     }
                 }
             }
 
-            Class<?> superclass = c.getSuperclass();
+            Class superclass = c.getSuperclass();
 
             if ((superclass == null) && !c.getName().equals("java.lang.Object")) {
                 superclass = Object.class;
@@ -1826,15 +1848,15 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param arguments The array of arguments.
      *  @return The return type and the owner of the method, or <tt>null</tt>
      *   if the method cannot be found.
-     *  @see #_getMethodType(Class<?>, String, Type[])
+     *  @see #_getMethodType(Class, String, Type[])
      */
-    private TypeAndOwner _resolveMethod(Class<?> owner, String methodName,
+    private TypeAndOwner _resolveMethod(Class owner, String methodName,
             Type[] arguments) {
-        Set<Class<?>> handledSet = new HashSet<Class<?>>();
-        Stack<Hashtable<String, Class<?>>> previousClasses =
+        Set<Class> handledSet = new HashSet<Class>();
+        Stack<Hashtable<String, Class>> previousClasses =
         	_state.getPreviousClasses();
         int previousNum = previousClasses.size();
-        Class<?> oldOwner = owner;
+        Class oldOwner = owner;
 
         if (owner == null) {
             owner = _state.getCurrentClass();
@@ -1854,7 +1876,7 @@ public class TypeAnalyzer extends ASTVisitor {
                 while ((owner == null) && (previousNum > 0)) {
                     previousNum--;
 
-                    Hashtable<String, Class<?>> previousTable =
+                    Hashtable<String, Class> previousTable =
                     	previousClasses.get(previousNum);
 
                     if (previousTable != null
@@ -1898,7 +1920,7 @@ public class TypeAnalyzer extends ASTVisitor {
                 return varTypeAndOwner;
             }
 
-            Class<?> c = _lookupClass(name);
+            Class c = _lookupClass(name);
 
             if (c != null) {
                 return new TypeAndOwner(Type.createType(c.getName()), null);
@@ -1919,17 +1941,17 @@ public class TypeAnalyzer extends ASTVisitor {
         }
 
         if ((typeAndOwner == null) && (lastType == null)) {
-            Stack<Hashtable<String, Class<?>>> previousClasses =
+            Stack<Hashtable<String, Class>> previousClasses =
             	_state.getPreviousClasses();
             int previousNumber = previousClasses.size() - 1;
 
             while ((typeAndOwner == null) && (previousNumber >= 0)) {
-            	Hashtable<String, Class<?>> previousTable =
+            	Hashtable<String, Class> previousTable =
             		previousClasses.get(previousNumber--);
 
                 if (previousTable != null
                 		&& previousTable instanceof CurrentClassElement) {
-                    Class<?> previousClass =
+                    Class previousClass =
                     	((CurrentClassElement) previousTable)
                     	.getCurrentClassElement();
 
@@ -1955,7 +1977,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *   <tt>null</tt> if not found. For nested classes, the owner is always
      *   <tt>null</tt>.
      */
-    private TypeAndOwner _resolveNameFromClass(Class<?> owner, String name) {
+    private TypeAndOwner _resolveNameFromClass(Class owner, String name) {
         // Try to get the field.
         TypeAndOwner typeAndOwner = _getFieldTypeAndOwner(owner, name);
 
@@ -1965,7 +1987,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
         // Try class name resolution.
         try {
-            Class<?> c = _state.getClassLoader().searchForClass(
+            Class c = _state.getClassLoader().searchForClass(
                     new StringBuffer(name), owner);
             return new TypeAndOwner(Type.createType(c.getName()), null);
         } catch (ClassNotFoundException e) {
@@ -1992,8 +2014,8 @@ public class TypeAnalyzer extends ASTVisitor {
                     return 0;
                 }
 
-                Class<?>[] classes =
-                	new Class<?>[] {
+                Class[] classes =
+                	new Class[] {
                 		FieldDeclaration.class,
                         TypeDeclaration.class,
                         MethodDeclaration.class,
@@ -2034,8 +2056,8 @@ public class TypeAnalyzer extends ASTVisitor {
      *  Integer} objects of the hash code of scopes ({@link Hashtable});
      *  values are {@link Class} objects.
      */
-    private Hashtable<Integer, Class<?>> _classScopeRelation =
-    	new Hashtable<Integer, Class<?>>();
+    private Hashtable<Integer, Class> _classScopeRelation =
+    	new Hashtable<Integer, Class>();
 
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
@@ -2052,8 +2074,8 @@ public class TypeAnalyzer extends ASTVisitor {
      *  package importations). Keys are class names; values are {@link
      *  Class} objects.
      */
-    private Hashtable<String, Class<?>> _importedClasses =
-    	new Hashtable<String, Class<?>>();
+    private Hashtable<String, Class> _importedClasses =
+    	new Hashtable<String, Class>();
 
     /** The current state of the analyzer.
      */
