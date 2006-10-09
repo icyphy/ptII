@@ -96,273 +96,279 @@ public class SortMembersUtility {
 		}
 	}
 
-	protected static class PtolemySortMembersOperation
+	public static class PtolemySortMembersOperation
 	extends SortMembersOperation {
 		public PtolemySortMembersOperation(
 				ICompilationUnit compilationUnit, int[] positions,
 				boolean doNotSortFields) {
 			super(compilationUnit, positions, doNotSortFields);
-			
-			_compilationUnit = compilationUnit;
-			_positions = positions;
-			_doNotSortFields = doNotSortFields;
+
+            _compilationUnit = compilationUnit;
+            _positions = positions;
+            _comparator = new JavaElementComparator(doNotSortFields);
 		}
 		
 		public void run(IProgressMonitor monitor) throws CoreException {
 			CompilationUnitSorter.sort(AST.JLS3, _compilationUnit, _positions,
-					new JavaElementComparator(), 0, monitor);
+                    _comparator, 0, monitor);
 		}
-		
-		protected class JavaElementComparator
-        implements Comparator<BodyDeclaration> {
-            
-			/** Compare two body declarations and return a number reflecting
-             *  the order between them.
-             *  
-             *  @param bodyDeclaration1 The first body declaration.
-             *  @param bodyDeclaration2 The second body declaration.
-             *  @return -1 if the first body declaration should be sorted before
-             *   the second; 1 if the second body declaration should be sorted
-             *   before the first; 0 if the order does not matter.
-			 */
-			public int compare(BodyDeclaration bodyDeclaration1,
-                    BodyDeclaration bodyDeclaration2) {
-                int type1 = bodyDeclaration1.getNodeType();
-                int type2 = bodyDeclaration2.getNodeType();
-                
-                // Initializers are a special case.
-                if (type1 == ASTNode.INITIALIZER
-                        && type2 != ASTNode.INITIALIZER) {
-                    return 1;
-                } else if (type1 != ASTNode.INITIALIZER
-                        && type2 == ASTNode.INITIALIZER) {
-                    return -1;
-                }
-				
-				boolean fieldType1 =
-					(type1 == ASTNode.FIELD_DECLARATION
-							|| type1 == ASTNode.ENUM_CONSTANT_DECLARATION);
-				boolean fieldType2 =
-					(type2 == ASTNode.FIELD_DECLARATION
-							|| type2 == ASTNode.ENUM_CONSTANT_DECLARATION);
-				if (_doNotSortFields && fieldType1 && fieldType2) {
-					return preserveRelativeOrder(bodyDeclaration1,
-							bodyDeclaration2);
-				} else {
-					return compareVisibility(bodyDeclaration1,
-							bodyDeclaration2);
-				}
-			}
-			
-			protected int compareVisibility(BodyDeclaration bodyDeclaration1,
-					BodyDeclaration bodyDeclaration2) {
-				int visibilityCode1 = getVisibilityCode(bodyDeclaration1);
-				int visibilityCode2 = getVisibilityCode(bodyDeclaration2);
-				if (visibilityCode1 == visibilityCode2) {
-					return compareNodeType(bodyDeclaration1, bodyDeclaration2);
-				} else {
-					return visibilityCode1 - visibilityCode2;
-				}
-			}
-			
-			private String buildSignature(Type type) {
-				return ASTNodes.asString(type);
-			}
-			
-			private int compareNames(BodyDeclaration bodyDeclaration1,
-					BodyDeclaration bodyDeclaration2, String name1,
-					String name2) {
-				int nameResult = _collator.compare(name1, name2);
-				if (nameResult != 0) {
-					return nameResult;
-				}
-				return preserveRelativeOrder(bodyDeclaration1,
-						bodyDeclaration2);
-			}
-			
-			private int compareNodeType(BodyDeclaration bodyDeclaration1,
-					BodyDeclaration bodyDeclaration2) {
-				int typeCode1 = getNodeTypeCode(bodyDeclaration1);
-				int typeCode2 = getNodeTypeCode(bodyDeclaration2);
-				if (typeCode1 != typeCode2) {
-					return typeCode1 - typeCode2;
-				} else {
-					switch (bodyDeclaration1.getNodeType()) {
-					case ASTNode.METHOD_DECLARATION:
-						MethodDeclaration method1 =
-							(MethodDeclaration) bodyDeclaration1;
-						MethodDeclaration method2 =
-							(MethodDeclaration) bodyDeclaration2;
-						
-						if (method1.isConstructor()
-								&& !method2.isConstructor()) {
-							return -1;
-						} else if (!method1.isConstructor()
-								&& method2.isConstructor()) {
-							return 1;
-						}
-						
-						String methodName1 = method1.getName().getIdentifier();
-						String methodName2 = method2.getName().getIdentifier();
-
-						// method declarations (constructors) are sorted by name
-						int nameResult =
-							_collator.compare(methodName1, methodName2);
-						if (nameResult != 0) {
-							return nameResult;
-						}
-
-						// if names equal, sort by parameter types
-						List parameters1 = method1.parameters();
-						List parameters2 = method2.parameters();
-						int length1= parameters1.size();
-						int length2= parameters2.size();
-						int minLength = Math.min(length1, length2);
-						for (int i= 0; i < minLength; i++) {
-							SingleVariableDeclaration param1i =
-								(SingleVariableDeclaration) parameters1.get(i);
-							SingleVariableDeclaration param2i =
-								(SingleVariableDeclaration) parameters2.get(i);
-							int paramResult =
-								_collator.compare(
-										buildSignature(param1i.getType()),
-										buildSignature(param2i.getType()));
-							if (paramResult != 0) {
-								return paramResult;
-							}
-						}
-						if (length1 != length2) {
-							return length1 - length2;
-						}
-						return preserveRelativeOrder(bodyDeclaration1,
-								bodyDeclaration2);
-						
-					case ASTNode.FIELD_DECLARATION:
-						FieldDeclaration field1 =
-							(FieldDeclaration) bodyDeclaration1;
-						FieldDeclaration field2 =
-							(FieldDeclaration) bodyDeclaration2;
-
-						String fieldName1 =
-							((VariableDeclarationFragment)
-									field1.fragments().get(0)).getName()
-									.getIdentifier();
-						String fieldName2 =
-							((VariableDeclarationFragment)
-									field2.fragments().get(0)).getName()
-									.getIdentifier();
-
-						return compareNames(bodyDeclaration1, bodyDeclaration2,
-								fieldName1, fieldName2);
-						
-					case ASTNode.INITIALIZER:
-						return preserveRelativeOrder(bodyDeclaration1, bodyDeclaration2);
-						
-					case ASTNode.TYPE_DECLARATION :
-					case ASTNode.ENUM_DECLARATION :
-					case ASTNode.ANNOTATION_TYPE_DECLARATION :
-						AbstractTypeDeclaration type1 =
-							(AbstractTypeDeclaration) bodyDeclaration1;
-						AbstractTypeDeclaration type2=
-							(AbstractTypeDeclaration) bodyDeclaration2;
-
-						String typeName1 = type1.getName().getIdentifier();
-						String typeName2 = type2.getName().getIdentifier();
-
-						return compareNames(bodyDeclaration1, bodyDeclaration2,
-								typeName1, typeName2);
-						
-					case ASTNode.ENUM_CONSTANT_DECLARATION:
-						EnumConstantDeclaration enum1 =
-							(EnumConstantDeclaration) bodyDeclaration1;
-						EnumConstantDeclaration enum2 =
-							(EnumConstantDeclaration) bodyDeclaration2;
-							
-						String enumName1= enum1.getName().getIdentifier();
-						String enumName2= enum2.getName().getIdentifier();
-							
-						return compareNames(bodyDeclaration1, bodyDeclaration2,
-								enumName1, enumName2);
-						
-					case ASTNode.ANNOTATION_TYPE_MEMBER_DECLARATION:
-						AnnotationTypeMemberDeclaration annotation1 =
-							(AnnotationTypeMemberDeclaration) bodyDeclaration1;
-						AnnotationTypeMemberDeclaration annotation2 =
-							(AnnotationTypeMemberDeclaration) bodyDeclaration2;
-						
-						String annotationName1 =
-							annotation1.getName().getIdentifier();
-						String annotationName2 =
-							annotation2.getName().getIdentifier();
-						
-						return compareNames(bodyDeclaration1, bodyDeclaration2,
-								annotationName1, annotationName2);
-						
-					default:
-						return preserveRelativeOrder(bodyDeclaration1,
-								bodyDeclaration2);
-					}
-				}
-			}
-			
-			private int getNodeTypeCode(BodyDeclaration bodyDeclaration) {
-				switch (bodyDeclaration.getNodeType()) {
-				case ASTNode.METHOD_DECLARATION:
-					return 0;
-				case ASTNode.FIELD_DECLARATION:
-					return 1;
-				case ASTNode.INITIALIZER:
-					return 2;
-				case ASTNode.TYPE_DECLARATION:
-					return 3;
-				case ASTNode.ENUM_DECLARATION:
-					return 4;
-				case ASTNode.ANNOTATION_TYPE_DECLARATION:
-					return 5;
-				case ASTNode.ENUM_CONSTANT_DECLARATION:
-					return 6;
-				case ASTNode.ANNOTATION_TYPE_MEMBER_DECLARATION:
-					return 7;
-				default:
-					return -1;
-				}
-			}
-			
-			private int getVisibilityCode(BodyDeclaration bodyDeclaration) {
-				switch (JdtFlags.getVisibilityCode(bodyDeclaration)) {
-				case Modifier.PUBLIC:
-					return 0;
-				case Modifier.PROTECTED:
-					return 1;
-				case Modifier.NONE:
-					return 2;
-				case Modifier.PRIVATE:
-					return 3;
-				default:
-					return -1;
-				}
-			}
-			
-			private int preserveRelativeOrder(BodyDeclaration bodyDeclaration1,
-					BodyDeclaration bodyDeclaration2) {
-				int order1 =
-					((Integer) bodyDeclaration1.getProperty(
-							CompilationUnitSorter.RELATIVE_ORDER)).intValue();
-				int order2 =
-					((Integer) bodyDeclaration2.getProperty(
-							CompilationUnitSorter.RELATIVE_ORDER)).intValue();
-				return order1 - order2;
-			}
-		}
-		
-		private Collator _collator = Collator.getInstance();
-		
-		private ICompilationUnit _compilationUnit;
-		
-		private boolean _doNotSortFields;
-		
-		private int[] _positions;
+        
+        private JavaElementComparator _comparator;
+        
+        private ICompilationUnit _compilationUnit;
+        
+        private int[] _positions;
 	}
+    
+    public static class JavaElementComparator
+    implements Comparator<BodyDeclaration> {
+        
+        public JavaElementComparator(boolean doNotSortFields) {
+            _doNotSortFields = doNotSortFields;
+        }
+        
+        /** Compare two body declarations and return a number reflecting
+         *  the order between them.
+         *  
+         *  @param bodyDeclaration1 The first body declaration.
+         *  @param bodyDeclaration2 The second body declaration.
+         *  @return -1 if the first body declaration should be sorted before
+         *   the second; 1 if the second body declaration should be sorted
+         *   before the first; 0 if the order does not matter.
+         */
+        public int compare(BodyDeclaration bodyDeclaration1,
+                BodyDeclaration bodyDeclaration2) {
+            int type1 = bodyDeclaration1.getNodeType();
+            int type2 = bodyDeclaration2.getNodeType();
+            
+            // Initializers are a special case.
+            if (type1 == ASTNode.INITIALIZER
+                    && type2 != ASTNode.INITIALIZER) {
+                return 1;
+            } else if (type1 != ASTNode.INITIALIZER
+                    && type2 == ASTNode.INITIALIZER) {
+                return -1;
+            }
+            
+            boolean fieldType1 =
+                (type1 == ASTNode.FIELD_DECLARATION
+                        || type1 == ASTNode.ENUM_CONSTANT_DECLARATION);
+            boolean fieldType2 =
+                (type2 == ASTNode.FIELD_DECLARATION
+                        || type2 == ASTNode.ENUM_CONSTANT_DECLARATION);
+            if (_doNotSortFields && fieldType1 && fieldType2) {
+                return preserveRelativeOrder(bodyDeclaration1,
+                        bodyDeclaration2);
+            } else {
+                return compareVisibility(bodyDeclaration1,
+                        bodyDeclaration2);
+            }
+        }
+        
+        protected int compareVisibility(BodyDeclaration bodyDeclaration1,
+                BodyDeclaration bodyDeclaration2) {
+            int visibilityCode1 = getVisibilityCode(bodyDeclaration1);
+            int visibilityCode2 = getVisibilityCode(bodyDeclaration2);
+            if (visibilityCode1 == visibilityCode2) {
+                return compareNodeType(bodyDeclaration1, bodyDeclaration2);
+            } else {
+                return visibilityCode1 - visibilityCode2;
+            }
+        }
+        
+        private String buildSignature(Type type) {
+            return ASTNodes.asString(type);
+        }
+        
+        private int compareNames(BodyDeclaration bodyDeclaration1,
+                BodyDeclaration bodyDeclaration2, String name1,
+                String name2) {
+            int nameResult = _collator.compare(name1, name2);
+            if (nameResult != 0) {
+                return nameResult;
+            }
+            return preserveRelativeOrder(bodyDeclaration1,
+                    bodyDeclaration2);
+        }
+        
+        private int compareNodeType(BodyDeclaration bodyDeclaration1,
+                BodyDeclaration bodyDeclaration2) {
+            int typeCode1 = getNodeTypeCode(bodyDeclaration1);
+            int typeCode2 = getNodeTypeCode(bodyDeclaration2);
+            if (typeCode1 != typeCode2) {
+                return typeCode1 - typeCode2;
+            } else {
+                switch (bodyDeclaration1.getNodeType()) {
+                case ASTNode.METHOD_DECLARATION:
+                    MethodDeclaration method1 =
+                        (MethodDeclaration) bodyDeclaration1;
+                    MethodDeclaration method2 =
+                        (MethodDeclaration) bodyDeclaration2;
+                    
+                    if (method1.isConstructor()
+                            && !method2.isConstructor()) {
+                        return -1;
+                    } else if (!method1.isConstructor()
+                            && method2.isConstructor()) {
+                        return 1;
+                    }
+                    
+                    String methodName1 = method1.getName().getIdentifier();
+                    String methodName2 = method2.getName().getIdentifier();
+
+                    // method declarations (constructors) are sorted by name
+                    int nameResult =
+                        _collator.compare(methodName1, methodName2);
+                    if (nameResult != 0) {
+                        return nameResult;
+                    }
+
+                    // if names equal, sort by parameter types
+                    List parameters1 = method1.parameters();
+                    List parameters2 = method2.parameters();
+                    int length1= parameters1.size();
+                    int length2= parameters2.size();
+                    int minLength = Math.min(length1, length2);
+                    for (int i= 0; i < minLength; i++) {
+                        SingleVariableDeclaration param1i =
+                            (SingleVariableDeclaration) parameters1.get(i);
+                        SingleVariableDeclaration param2i =
+                            (SingleVariableDeclaration) parameters2.get(i);
+                        int paramResult =
+                            _collator.compare(
+                                    buildSignature(param1i.getType()),
+                                    buildSignature(param2i.getType()));
+                        if (paramResult != 0) {
+                            return paramResult;
+                        }
+                    }
+                    if (length1 != length2) {
+                        return length1 - length2;
+                    }
+                    return preserveRelativeOrder(bodyDeclaration1,
+                            bodyDeclaration2);
+                    
+                case ASTNode.FIELD_DECLARATION:
+                    FieldDeclaration field1 =
+                        (FieldDeclaration) bodyDeclaration1;
+                    FieldDeclaration field2 =
+                        (FieldDeclaration) bodyDeclaration2;
+
+                    String fieldName1 =
+                        ((VariableDeclarationFragment)
+                                field1.fragments().get(0)).getName()
+                                .getIdentifier();
+                    String fieldName2 =
+                        ((VariableDeclarationFragment)
+                                field2.fragments().get(0)).getName()
+                                .getIdentifier();
+
+                    return compareNames(bodyDeclaration1, bodyDeclaration2,
+                            fieldName1, fieldName2);
+                    
+                case ASTNode.INITIALIZER:
+                    return preserveRelativeOrder(bodyDeclaration1, bodyDeclaration2);
+                    
+                case ASTNode.TYPE_DECLARATION :
+                case ASTNode.ENUM_DECLARATION :
+                case ASTNode.ANNOTATION_TYPE_DECLARATION :
+                    AbstractTypeDeclaration type1 =
+                        (AbstractTypeDeclaration) bodyDeclaration1;
+                    AbstractTypeDeclaration type2=
+                        (AbstractTypeDeclaration) bodyDeclaration2;
+
+                    String typeName1 = type1.getName().getIdentifier();
+                    String typeName2 = type2.getName().getIdentifier();
+
+                    return compareNames(bodyDeclaration1, bodyDeclaration2,
+                            typeName1, typeName2);
+                    
+                case ASTNode.ENUM_CONSTANT_DECLARATION:
+                    EnumConstantDeclaration enum1 =
+                        (EnumConstantDeclaration) bodyDeclaration1;
+                    EnumConstantDeclaration enum2 =
+                        (EnumConstantDeclaration) bodyDeclaration2;
+                        
+                    String enumName1= enum1.getName().getIdentifier();
+                    String enumName2= enum2.getName().getIdentifier();
+                        
+                    return compareNames(bodyDeclaration1, bodyDeclaration2,
+                            enumName1, enumName2);
+                    
+                case ASTNode.ANNOTATION_TYPE_MEMBER_DECLARATION:
+                    AnnotationTypeMemberDeclaration annotation1 =
+                        (AnnotationTypeMemberDeclaration) bodyDeclaration1;
+                    AnnotationTypeMemberDeclaration annotation2 =
+                        (AnnotationTypeMemberDeclaration) bodyDeclaration2;
+                    
+                    String annotationName1 =
+                        annotation1.getName().getIdentifier();
+                    String annotationName2 =
+                        annotation2.getName().getIdentifier();
+                    
+                    return compareNames(bodyDeclaration1, bodyDeclaration2,
+                            annotationName1, annotationName2);
+                    
+                default:
+                    return preserveRelativeOrder(bodyDeclaration1,
+                            bodyDeclaration2);
+                }
+            }
+        }
+        
+        private int getNodeTypeCode(BodyDeclaration bodyDeclaration) {
+            switch (bodyDeclaration.getNodeType()) {
+            case ASTNode.METHOD_DECLARATION:
+                return 0;
+            case ASTNode.FIELD_DECLARATION:
+                return 1;
+            case ASTNode.INITIALIZER:
+                return 2;
+            case ASTNode.TYPE_DECLARATION:
+                return 3;
+            case ASTNode.ENUM_DECLARATION:
+                return 4;
+            case ASTNode.ANNOTATION_TYPE_DECLARATION:
+                return 5;
+            case ASTNode.ENUM_CONSTANT_DECLARATION:
+                return 6;
+            case ASTNode.ANNOTATION_TYPE_MEMBER_DECLARATION:
+                return 7;
+            default:
+                return -1;
+            }
+        }
+        
+        private int getVisibilityCode(BodyDeclaration bodyDeclaration) {
+            switch (JdtFlags.getVisibilityCode(bodyDeclaration)) {
+            case Modifier.PUBLIC:
+                return 0;
+            case Modifier.PROTECTED:
+                return 1;
+            case Modifier.NONE:
+                return 2;
+            case Modifier.PRIVATE:
+                return 3;
+            default:
+                return -1;
+            }
+        }
+        
+        private int preserveRelativeOrder(BodyDeclaration bodyDeclaration1,
+                BodyDeclaration bodyDeclaration2) {
+            int order1 =
+                ((Integer) bodyDeclaration1.getProperty(
+                        CompilationUnitSorter.RELATIVE_ORDER)).intValue();
+            int order2 =
+                ((Integer) bodyDeclaration2.getProperty(
+                        CompilationUnitSorter.RELATIVE_ORDER)).intValue();
+            return order1 - order2;
+        }
+        
+        private Collator _collator = Collator.getInstance();
+        
+        private boolean _doNotSortFields;
+    }
 	
 	private static boolean containsRelevantMarkers(IEditorPart editor) {
 		IEditorInput input = editor.getEditorInput();
