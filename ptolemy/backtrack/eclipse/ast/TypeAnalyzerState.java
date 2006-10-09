@@ -369,7 +369,7 @@ public class TypeAnalyzerState {
     	
     	/** Get the current class element recorded in this table.
     	 * 
-    	 *  @return
+    	 *  @return The current class element.
     	 */
     	public Class getCurrentClassElement() {
     		return get(_EMPTY_NAME);
