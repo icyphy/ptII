@@ -1,0 +1,14 @@
+# Template makefile from $PTII/ptolemy/codegen/c/makefile.in
+# $Id$
+# The CodeGenerator class subsitutes strings like "@modelName@" with
+# the value of parameters and writes the results in the directory
+# where the source code is created.
+# To compile, run make -f @modelName@.mk
+
+PTCGLIBRARIES = @PTCGLibraries@
+PTCGINCLUDES = @PTCGIncludes@
+
+# We need -lm so we can get floor() for ftoi() 
+@modelName@.dll: @modelName@.c
+	gcc -mno-cygwin $(PTCGINCLUDES) -Wl,--add-stdcall-alias -shared -o @modelName@.dll @modelName@.c -lm $(PTCGLIBRARIES)
+	
