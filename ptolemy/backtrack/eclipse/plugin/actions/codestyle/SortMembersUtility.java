@@ -113,16 +113,35 @@ public class SortMembersUtility {
 					new JavaElementComparator(), 0, monitor);
 		}
 		
-		protected class JavaElementComparator implements Comparator {
-			public int compare(Object element1, Object element2) {
-				BodyDeclaration bodyDeclaration1 = (BodyDeclaration) element1;
-				BodyDeclaration bodyDeclaration2 = (BodyDeclaration) element2;
+		protected class JavaElementComparator
+        implements Comparator<BodyDeclaration> {
+            
+			/** Compare two body declarations and return a number reflecting
+             *  the order between them.
+             *  
+             *  @param bodyDeclaration1 The first body declaration.
+             *  @param bodyDeclaration2 The second body declaration.
+             *  @return -1 if the first body declaration should be sorted before
+             *   the second; 1 if the second body declaration should be sorted
+             *   before the first; 0 if the order does not matter.
+			 */
+			public int compare(BodyDeclaration bodyDeclaration1,
+                    BodyDeclaration bodyDeclaration2) {
+                int type1 = bodyDeclaration1.getNodeType();
+                int type2 = bodyDeclaration2.getNodeType();
+                
+                // Initializers are a special case.
+                if (type1 == ASTNode.INITIALIZER
+                        && type2 != ASTNode.INITIALIZER) {
+                    return 1;
+                } else if (type1 != ASTNode.INITIALIZER
+                        && type2 == ASTNode.INITIALIZER) {
+                    return -1;
+                }
 				
-				int type1 = bodyDeclaration1.getNodeType();
 				boolean fieldType1 =
 					(type1 == ASTNode.FIELD_DECLARATION
 							|| type1 == ASTNode.ENUM_CONSTANT_DECLARATION);
-				int type2 = bodyDeclaration1.getNodeType();
 				boolean fieldType2 =
 					(type2 == ASTNode.FIELD_DECLARATION
 							|| type2 == ASTNode.ENUM_CONSTANT_DECLARATION);

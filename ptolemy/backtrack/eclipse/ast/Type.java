@@ -72,6 +72,7 @@ import java.util.Set;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class Type {
+    
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -472,13 +473,8 @@ public class Type {
      *  @see #setType(ASTNode, Type)
      */
     public static Type getType(ASTNode node) {
-        try {
-        return (Type) node.getProperty("type");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        Type type = (Type) node.getProperty("type");
+        return type;
     }
 
     /** Test if this type is an array type.
@@ -532,6 +528,17 @@ public class Type {
      */
     public static void propagateType(ASTNode nTo, ASTNode nFrom) {
         setType(nTo, getType(nFrom));
+    }
+
+    /** Remove all the types created in the last transformation. This method
+     *  should be called after a transformation if the next transformation is to
+     *  be performed at a later time, and the classes resolved in the last
+     *  transformation may be changed (i.e., fields or methods may be added or
+     *  deleted). All the cached types are removed, and the types will be
+     *  resolved again in the next transformation.
+     */
+    public static void removeAllTypes() {
+        _typeObjects.clear();
     }
 
     /** Remove one dimension from this type object. The resulting type
@@ -663,7 +670,7 @@ public class Type {
      */
     public Class toClass(ClassLoader loader) throws ClassNotFoundException {
         if (isPrimitive()) {
-            if (equals(NULL)) {
+            if (equals(NULL_TYPE)) {
                 // Impossible to load "null" type, though primitive.
                 throw new ClassNotFoundException("null");
             } else {
@@ -690,83 +697,78 @@ public class Type {
 
     ///////////////////////////////////////////////////////////////////
     ////                      public fields                        ////
-    ///////////////////////////////////////////////////////////////////
-    ////              identifiers of primitive types               ////
-
-    /** The integer identifier of <tt>null</tt> type.
-     */
-    public static final int NULL_NUM = 0;
 
     /** The integer identifier of <tt>boolean</tt> type.
      */
     public static final int BOOLEAN_NUM = 1;
 
+    /** The type object of <tt>boolean</tt> type.
+     */
+    public static final Type BOOLEAN_TYPE = new Type(BOOLEAN_NUM, "boolean");
+
     /** The integer identifier of <tt>byte</tt> type.
      */
     public static final int BYTE_NUM = 2;
+
+    /** The type object of <tt>byte</tt> type.
+     */
+    public static final Type BYTE_TYPE = new Type(BYTE_NUM, "byte");
 
     /** The integer identifier of <tt>char</tt> type.
      */
     public static final int CHAR_NUM = 3;
 
+    /** The type object of <tt>char</tt> type.
+     */
+    public static final Type CHAR_TYPE = new Type(CHAR_NUM, "char");
+
     /** The integer identifier of <tt>double</tt> type.
      */
     public static final int DOUBLE_NUM = 4;
+
+    /** The type object of <tt>double</tt> type.
+     */
+    public static final Type DOUBLE_TYPE = new Type(DOUBLE_NUM, "double");
 
     /** The integer identifier of <tt>float</tt> type.
      */
     public static final int FLOAT_NUM = 5;
 
+    /** The type object of <tt>float</tt> type.
+     */
+    public static final Type FLOAT_TYPE = new Type(FLOAT_NUM, "float");
+
     /** The integer identifier of <tt>int</tt> type.
      */
     public static final int INT_NUM = 6;
+
+    /** The type object of <tt>int</tt> type.
+     */
+    public static final Type INT_TYPE = new Type(INT_NUM, "int");
 
     /** The integer identifier of <tt>long</tt> type.
      */
     public static final int LONG_NUM = 7;
 
+    /** The type object of <tt>long</tt> type.
+     */
+    public static final Type LONG_TYPE = new Type(LONG_NUM, "long");
+
+    /** The integer identifier of <tt>null</tt> type.
+     */
+    public static final int NULL_NUM = 0;
+
+    /** The type object of <tt>null</tt> type.
+     */
+    public static final Type NULL_TYPE = new Type(NULL_NUM, "null");
+
     /** The integer identifier of <tt>short</tt> type.
      */
     public static final int SHORT_NUM = 8;
 
-    ///////////////////////////////////////////////////////////////////
-    ////             type objects of primitive types               ////
-
-    /** The type object of <tt>null</tt> type.
-     */
-    public static final Type NULL = new Type(NULL_NUM, "null");
-
-    /** The type object of <tt>boolean</tt> type.
-     */
-    public static final Type BOOLEAN = new Type(BOOLEAN_NUM, "boolean");
-
-    /** The type object of <tt>byte</tt> type.
-     */
-    public static final Type BYTE = new Type(BYTE_NUM, "byte");
-
-    /** The type object of <tt>char</tt> type.
-     */
-    public static final Type CHAR = new Type(CHAR_NUM, "char");
-
-    /** The type object of <tt>double</tt> type.
-     */
-    public static final Type DOUBLE = new Type(DOUBLE_NUM, "double");
-
-    /** The type object of <tt>float</tt> type.
-     */
-    public static final Type FLOAT = new Type(FLOAT_NUM, "float");
-
-    /** The type object of <tt>int</tt> type.
-     */
-    public static final Type INT = new Type(INT_NUM, "int");
-
-    /** The type object of <tt>long</tt> type.
-     */
-    public static final Type LONG = new Type(LONG_NUM, "long");
-
     /** The type object of <tt>short</tt> type.
      */
-    public static final Type SHORT = new Type(SHORT_NUM, "short");
+    public static final Type SHORT_TYPE = new Type(SHORT_NUM, "short");
 
     ///////////////////////////////////////////////////////////////////
     ////                       constructors                        ////
@@ -804,18 +806,18 @@ public class Type {
     ///////////////////////////////////////////////////////////////////
     ////                      private fields                       ////
 
-    /** The integer identifier of primitive type. -1 if this type object
-     *  does not represent a primitive type.
+    /** The {@link Class} object corresponding to this type.
      */
-    private int _primitiveNum;
+    private Class _classObject;
 
     /** The full name of this type, using run-time representation.
      */
     private String _fullName;
-
-    /** The {@link Class} object corresponding to this type.
+    
+    /** The integer identifier of primitive type. -1 if this type object
+     *  does not represent a primitive type.
      */
-    private Class _classObject;
+    private int _primitiveNum;
 
     /** The table of created {@link Type} objects, indexed by
      *  their full name. When a user creates a type object
@@ -825,18 +827,6 @@ public class Type {
     private static Hashtable<String, Type> _typeObjects =
     	new Hashtable<String, Type>();
 
-    /** Table of primitive types. Keys are names of primitive
-     *  types; values are primitive {@link Type} objects.
-     */
-    private static final Hashtable<String, Type> PRIMITIVE_TYPES =
-    	new Hashtable<String, Type>();
-
-    /** Table of primitive {@link Class} objects. Each primitive
-     *  type has a {@link Class} object to represent it.
-     */
-    private static final Hashtable<String, Class> PRIMITIVE_CLASSES =
-    	new Hashtable<String, Class>();
-
     /** Array nicknames for primitive element types. Keys are
      *  names of primitive types; keys are compact run-time
      *  representations.
@@ -844,18 +834,30 @@ public class Type {
     private static final Hashtable<String, String> PRIMITIVE_ARRAY_TYPES =
     	new Hashtable<String, String>();
 
+    /** Table of primitive {@link Class} objects. Each primitive
+     *  type has a {@link Class} object to represent it.
+     */
+    private static final Hashtable<String, Class> PRIMITIVE_CLASSES =
+    	new Hashtable<String, Class>();
+
+    /** Table of primitive types. Keys are names of primitive
+     *  types; values are primitive {@link Type} objects.
+     */
+    private static final Hashtable<String, Type> PRIMITIVE_TYPES =
+    	new Hashtable<String, Type>();
+
     // Initialize the constant tables.
     static {
-        PRIMITIVE_TYPES.put("void", NULL);
-        PRIMITIVE_TYPES.put("null", NULL);
-        PRIMITIVE_TYPES.put("boolean", BOOLEAN);
-        PRIMITIVE_TYPES.put("byte", BYTE);
-        PRIMITIVE_TYPES.put("char", CHAR);
-        PRIMITIVE_TYPES.put("double", DOUBLE);
-        PRIMITIVE_TYPES.put("float", FLOAT);
-        PRIMITIVE_TYPES.put("int", INT);
-        PRIMITIVE_TYPES.put("long", LONG);
-        PRIMITIVE_TYPES.put("short", SHORT);
+        PRIMITIVE_TYPES.put("void", NULL_TYPE);
+        PRIMITIVE_TYPES.put("null", NULL_TYPE);
+        PRIMITIVE_TYPES.put("boolean", BOOLEAN_TYPE);
+        PRIMITIVE_TYPES.put("byte", BYTE_TYPE);
+        PRIMITIVE_TYPES.put("char", CHAR_TYPE);
+        PRIMITIVE_TYPES.put("double", DOUBLE_TYPE);
+        PRIMITIVE_TYPES.put("float", FLOAT_TYPE);
+        PRIMITIVE_TYPES.put("int", INT_TYPE);
+        PRIMITIVE_TYPES.put("long", LONG_TYPE);
+        PRIMITIVE_TYPES.put("short", SHORT_TYPE);
 
         PRIMITIVE_CLASSES.put("boolean", boolean.class);
         PRIMITIVE_CLASSES.put("byte", byte.class);

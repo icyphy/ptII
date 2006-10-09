@@ -130,6 +130,7 @@ public class BacktrackTransformer {
     
     //////////////////////////////////////////////////////////////////////////
     //// RenameClassMoMLFilter
+    
     /**
        The MoML filter that renames the actor classes in the model, if there are
        backtracking versions for them. No change is done on the actor classes
@@ -142,6 +143,14 @@ public class BacktrackTransformer {
        @Pt.AcceptedRating Red (tfeng)
     */
     private static class RenameClassMoMLFilter implements MoMLFilter {
+
+        /** Return the entities that are changed during the last XML parsing.
+         * 
+         *  @return The entities that are changed.
+         */
+        public Iterator<NamedObj> entitiesChanged() {
+            return _entitiesChanged.iterator();
+        }
 
         /** Filter the value of the attribute. If the attribute corresponds to
          *  a Ptolemy actor with a backtracking version, its class name is
@@ -191,7 +200,7 @@ public class BacktrackTransformer {
                 return attributeValue;
             }
         }
-
+        
         /** Further process the XML element when it is closed with an end tag.
          *  If the element corresponds to a Ptolemy actor that has been changed
          *  to its backtracking version, the MoML description of the original
@@ -219,14 +228,6 @@ public class BacktrackTransformer {
                 _classStack.pop();
             }
         }
-        
-        /** Return the entities that are changed during the last XML parsing.
-         * 
-         *  @return The entities that are changed.
-         */
-        public Iterator<NamedObj> entitiesChanged() {
-            return _entitiesChanged.iterator();
-        }
 
         /** The prefix to the automatically generated backtracking version of
          *  actors.
@@ -250,6 +251,31 @@ public class BacktrackTransformer {
                 return true;
             } catch (ClassNotFoundException e) {
                 return false;
+            }
+        }
+        
+        /** Copy the icon of the last modified class (of a Ptolemy actor) to the
+         *  MoML within the container's context.
+         *  
+         *  @param container The container.
+         *  @exception IllegalActionException If the parsing is not successful.
+         */
+        private void _copyIcon(NamedObj container)
+                throws IllegalActionException {
+            String iconFileName = 
+                ((String)_classStack.peek()).replace('.', '/') + "Icon.xml";
+
+            URL iconFile = getClass().getClassLoader()
+                    .getResource(iconFileName);
+            if (iconFile != null) {
+                try {
+                    Reader reader = 
+                        new InputStreamReader(iconFile.openStream());
+                    _parse(reader, container);
+                    reader.close();
+                } catch (Exception e) {
+                    throw new IllegalActionException(e.toString());
+                }
             }
         }
         
@@ -293,31 +319,6 @@ public class BacktrackTransformer {
             NamedObj result = _parser.parse(null, reader);
             MoMLParser.setModified(true);
             return result;
-        }
-        
-        /** Copy the icon of the last modified class (of a Ptolemy actor) to the
-         *  MoML within the container's context.
-         *  
-         *  @param container The container.
-         *  @exception IllegalActionException If the parsing is not successful.
-         */
-        private void _copyIcon(NamedObj container)
-                throws IllegalActionException {
-            String iconFileName = 
-                ((String)_classStack.peek()).replace('.', '/') + "Icon.xml";
-
-            URL iconFile = getClass().getClassLoader()
-                    .getResource(iconFileName);
-            if (iconFile != null) {
-                try {
-                    Reader reader = 
-                        new InputStreamReader(iconFile.openStream());
-                    _parse(reader, container);
-                    reader.close();
-                } catch (Exception e) {
-                    throw new IllegalActionException(e.toString());
-                }
-            }
         }
 
         /** The stack of the name of the classes that have been changed.

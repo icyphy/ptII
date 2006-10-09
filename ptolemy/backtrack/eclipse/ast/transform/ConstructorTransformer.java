@@ -77,6 +77,7 @@ import java.util.Stack;
 public class ConstructorTransformer extends AbstractTransformer implements
         ConstructorHandler, ClassHandler, CrossAnalysisHandler,
         MethodDeclarationHandler {
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -259,13 +260,6 @@ public class ConstructorTransformer extends AbstractTransformer implements
     public static final Hashtable<String, String> SPECIAL_TYPE_MAPPING =
     	new Hashtable<String, String>();
 
-    static {
-        SPECIAL_TYPE_MAPPING.put("java.util.Random",
-                "ptolemy.backtrack.util.java.util.Random");
-        SPECIAL_TYPE_MAPPING.put("java.util.TreeMap",
-                "ptolemy.backtrack.util.java.util.TreeMap");
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
 
@@ -327,4 +321,11 @@ public class ConstructorTransformer extends AbstractTransformer implements
      */
     private Hashtable<String, List<ASTNode>> _unhandledNodes =
     	new Hashtable<String, List<ASTNode>>();
+
+    static {
+        SPECIAL_TYPE_MAPPING.put("java.util.Random",
+                "ptolemy.backtrack.util.java.util.Random");
+        SPECIAL_TYPE_MAPPING.put("java.util.TreeMap",
+                "ptolemy.backtrack.util.java.util.TreeMap");
+    }
 }

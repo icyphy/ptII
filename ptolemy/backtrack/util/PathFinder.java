@@ -47,6 +47,7 @@ import java.io.FileFilter;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class PathFinder {
+    
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -183,8 +184,32 @@ public class PathFinder {
 
     ///////////////////////////////////////////////////////////////////
     ////                       nested classes                      ////
+    
     //////////////////////////////////////////////////////////////////////////
-    //// JarFileFilter
+    //// DirectoryFilter
+
+    /**
+     *  Filter out all the files in a directory, except for sub-directories.
+     *  
+     *  @author Thomas Feng
+     *  @version $Id$
+     *  @since Ptolemy II 5.1
+     *  @Pt.ProposedRating Red (tfeng)
+     *  @Pt.AcceptedRating Red (tfeng)
+     */
+    public static class DirectoryFilter implements FileFilter {
+        /** Accept only directories.
+         *
+         *  @param file The file to be inspected.
+         *  @return <tt>true</tt> if the file corresponds to a directory.
+         */
+        public boolean accept(File file) {
+            return file.isDirectory();
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    //// PostfixFilter
 
     /**
      *  Filter out all the files in a directory, except for those ending with
@@ -196,14 +221,6 @@ public class PathFinder {
      *  @Pt.ProposedRating Red (tfeng)
      */
     public static class PostfixFilter implements FileFilter {
-        /** Construct a filter with a postfix.
-         *
-         *  @param postfix The postfix.
-         */
-        PostfixFilter(String postfix) {
-            _postfix = postfix;
-        }
-
         /** Accept only files with names ending with the given postfix.
          *
          *  @param file The file to be inspected.
@@ -213,32 +230,17 @@ public class PathFinder {
             return file.getName().endsWith(_postfix);
         }
 
+        /** Construct a filter with a postfix.
+         *
+         *  @param postfix The postfix.
+         */
+        PostfixFilter(String postfix) {
+            _postfix = postfix;
+        }
+
         /** The postfix.
          */
         private String _postfix;
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-    //// DirectoryFilter
-
-    /**
-     Filter out all the files in a directory, except for sub-directories.
-
-     @author Thomas Feng
-     @version $Id$
-     @since Ptolemy II 5.1
-     @Pt.ProposedRating Red (tfeng)
-     @Pt.AcceptedRating Red (tfeng)
-     */
-    public static class DirectoryFilter implements FileFilter {
-        /** Accept only directories.
-         *
-         *  @param file The file to be inspected.
-         *  @return <tt>true</tt> if the file corresponds to a directory.
-         */
-        public boolean accept(File file) {
-            return file.isDirectory();
-        }
     }
 
     ///////////////////////////////////////////////////////////////////

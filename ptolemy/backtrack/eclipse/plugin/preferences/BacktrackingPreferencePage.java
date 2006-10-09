@@ -178,6 +178,28 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
                 return Strings.encodeFileNames(items);
             }
 
+            protected void doStore() {
+                if (_sourcesModified) {
+                    List list = getListControl(_getParent(this));
+                    String[] items = list.getItems();
+                    String fileName = _sourceList.getStringValue();
+
+                    try {
+                        PrintWriter writer = new PrintWriter(
+                                new FileOutputStream(fileName));
+
+                        for (int i = 0; i < items.length; i++) {
+                            writer.write(items[i] + "\n");
+                        }
+
+                        writer.close();
+                    } catch (Exception e) {
+                        MessageDialog.openError(getShell(),
+                                "Error writing file", e.getMessage());
+                    }
+                }
+            }
+
             protected String getNewInputObject() {
                 String sourceList = _sourceList.getStringValue();
                 String sourceListPath = new File(sourceList).getParent();
@@ -202,28 +224,6 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
 
             protected String[] parseString(String stringList) {
                 return Strings.decodeFileNames(stringList);
-            }
-
-            protected void doStore() {
-                if (_sourcesModified) {
-                    List list = getListControl(_getParent(this));
-                    String[] items = list.getItems();
-                    String fileName = _sourceList.getStringValue();
-
-                    try {
-                        PrintWriter writer = new PrintWriter(
-                                new FileOutputStream(fileName));
-
-                        for (int i = 0; i < items.length; i++) {
-                            writer.write(items[i] + "\n");
-                        }
-
-                        writer.close();
-                    } catch (Exception e) {
-                        MessageDialog.openError(getShell(),
-                                "Error writing file", e.getMessage());
-                    }
-                }
             }
         };
         gridData = new GridData();
@@ -396,10 +396,6 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
 
-    /** Height of the source list.
-     */
-    private static final int _LIST_HEIGHT = 100;
-
     /** Editor for the configuration file to be generated.
      */
     private FileFieldEditor _configuration;
@@ -411,6 +407,10 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
     /** Check box for whether to generate a configuration.
      */
     private BooleanFieldEditor _generateConfiguration;
+
+    /** Height of the source list.
+     */
+    private static final int _LIST_HEIGHT = 100;
 
     /** Check box for whether to overwrite existing files.
      */

@@ -45,16 +45,6 @@ import ptolemy.moml.MoMLParser;
 */
 public class XmlHandler implements com.microstar.xml.XmlHandler {
     
-    /** Construct an XML handler with the given XML tree as the current tree.
-     * 
-     *  @param tree The initial XML tree.
-     *  @param systemId The system ID of the document type.
-     */
-    XmlHandler(ConfigXmlTree tree, String systemId) {
-        _currentTree = tree;
-        this._systemId = systemId;
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -73,7 +63,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
             _currentAttributes.put(name, value);
         }
     }
-
+    
     /** Handle a chunk of char data.
      * 
      *  @param ch The character data.
@@ -137,7 +127,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     public ConfigXmlTree getCurrentTree() {
         return _currentTree;
     }
-    
+
     /** Return the system ID of the XML document.
      * 
      *  @return The system ID.
@@ -145,7 +135,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     public String getSystemId() {
         return _systemId;
     }
-
+    
     /** Handle consecutive ignorable white spaces.
      * 
      *  @param ch The literal whitespace characters.
@@ -232,6 +222,19 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     /** The public ID for version 1 MoML.
      */
     public static String MoML_PUBLIC_ID_1 = MoMLParser.MoML_PUBLIC_ID_1;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
+
+    /** Construct an XML handler with the given XML tree as the current tree.
+     * 
+     *  @param tree The initial XML tree.
+     *  @param systemId The system ID of the document type.
+     */
+    XmlHandler(ConfigXmlTree tree, String systemId) {
+        _currentTree = tree;
+        this._systemId = systemId;
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////

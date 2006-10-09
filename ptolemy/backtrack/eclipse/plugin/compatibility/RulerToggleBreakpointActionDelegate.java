@@ -39,7 +39,7 @@ import java.lang.reflect.Method;
 //// RulerToggleBreakpointActionDelegate
 
 /**
-
+ Compatability tool for Eclipse 3.1.
 
  @author Thomas Feng
  @version $Id$
@@ -49,6 +49,7 @@ import java.lang.reflect.Method;
  */
 public class RulerToggleBreakpointActionDelegate implements
         IEditorActionDelegate {
+    
     public RulerToggleBreakpointActionDelegate() {
         for (int i = 0; i < DELEGATE_CLASSES.length; i++) {
             try {
@@ -75,14 +76,6 @@ public class RulerToggleBreakpointActionDelegate implements
         }
     }
 
-    public void setActiveEditor(IAction action, IEditorPart targetEditor) {
-        try {
-            _setActiveEditorMethod.invoke(_realDelegate, new Object[] { action,
-                    targetEditor });
-        } catch (Exception e) {
-        }
-    }
-
     public void run(IAction action) {
         try {
             _runMethod.invoke(_realDelegate, new Object[] { action });
@@ -98,15 +91,13 @@ public class RulerToggleBreakpointActionDelegate implements
         }
     }
 
-    private Object _realDelegate;
-
-    private Class _delegateClass;
-
-    private Method _setActiveEditorMethod;
-
-    private Method _runMethod;
-
-    private Method _selectionChangedMethod;
+    public void setActiveEditor(IAction action, IEditorPart targetEditor) {
+        try {
+            _setActiveEditorMethod.invoke(_realDelegate, new Object[] { action,
+                    targetEditor });
+        } catch (Exception e) {
+        }
+    }
 
     public static final String[] DELEGATE_CLASSES = new String[] {
 
@@ -115,4 +106,14 @@ public class RulerToggleBreakpointActionDelegate implements
 
     /* Eclipse 3.0 */
     "org.eclipse.jdt.internal.debug.ui.actions.ManageBreakpointRulerActionDelegate" };
+
+    private Class _delegateClass;
+
+    private Object _realDelegate;
+
+    private Method _runMethod;
+
+    private Method _selectionChangedMethod;
+
+    private Method _setActiveEditorMethod;
 }

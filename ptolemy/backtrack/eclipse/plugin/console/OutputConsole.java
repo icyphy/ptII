@@ -41,7 +41,7 @@ import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 //// OutputConsole
 
 /**
-
+ Ptolemy output console.
 
  @author Thomas Feng
  @version $Id$
@@ -56,6 +56,25 @@ public class OutputConsole extends MessageConsole implements IConsoleListener {
                 EclipsePlugin.getImageDescriptor(
                 		"ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"));
         register();
+    }
+
+    public void consolesAdded(IConsole[] consoles) {
+    }
+
+    public void consolesRemoved(IConsole[] consoles) {
+    }
+
+    public static void outputError(String message) {
+        outputMessage(message, new Color(null, 255, 0, 0));
+    }
+
+    public static void outputMessage(String message) {
+        outputMessage(message, new Color(null, 0, 0, 255));
+    }
+
+    public static void outputMessage(String message, Color color) {
+        EclipsePlugin.getStandardDisplay().syncExec(
+                new OutputMessageThread(message, color));
     }
 
     public void register() {
@@ -76,43 +95,19 @@ public class OutputConsole extends MessageConsole implements IConsoleListener {
         }
     }
 
-    public void unregister() {
-        IConsoleManager manager = ConsolePlugin.getDefault()
-                .getConsoleManager();
-        manager.removeConsoles(new IConsole[] { this });
-    }
-
-    public void consolesAdded(IConsole[] consoles) {
-    }
-
-    public void consolesRemoved(IConsole[] consoles) {
-    }
-
     public void show() {
         IConsoleManager manager = ConsolePlugin.getDefault()
                 .getConsoleManager();
         manager.showConsoleView(this);
     }
 
-    public static void outputError(String message) {
-        outputMessage(message, new Color(null, 255, 0, 0));
-    }
-
-    public static void outputMessage(String message) {
-        outputMessage(message, new Color(null, 0, 0, 255));
-    }
-
-    public static void outputMessage(String message, Color color) {
-        EclipsePlugin.getStandardDisplay().syncExec(
-                new OutputMessageThread(message, color));
+    public void unregister() {
+        IConsoleManager manager = ConsolePlugin.getDefault()
+                .getConsoleManager();
+        manager.removeConsoles(new IConsole[] { this });
     }
 
     private static class OutputMessageThread implements Runnable {
-        OutputMessageThread(String message, Color color) {
-            _message = message;
-            _color = color;
-        }
-
         public void run() {
             OutputConsole console = EclipsePlugin.getDefault().getConsole();
             MessageConsoleStream outputStream = console.newMessageStream();
@@ -121,8 +116,13 @@ public class OutputConsole extends MessageConsole implements IConsoleListener {
             outputStream.print(_message + "\n");
         }
 
-        private String _message;
+        OutputMessageThread(String message, Color color) {
+            _message = message;
+            _color = color;
+        }
 
         private Color _color;
+
+        private String _message;
     }
 }

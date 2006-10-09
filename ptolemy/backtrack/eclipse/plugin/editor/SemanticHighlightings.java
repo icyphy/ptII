@@ -315,17 +315,6 @@ public class SemanticHighlightings {
             private String _returnType;
         }
 
-        // Initialize the array of special methods.
-        static {
-            PtolemyMethod[] executableMethods = new PtolemyMethod[] {
-                    new PtolemyMethod(Modifier.PUBLIC, "void", "fire", null),
-                    new PtolemyMethod(Modifier.PUBLIC, "boolean", "postfire",
-                            null),
-                    new PtolemyMethod(Modifier.PUBLIC, "boolean", "prefire",
-                            null) };
-            _METHODS.put("ptolemy.actor.Executable", executableMethods);
-        }
-        
         /** Test whether the method binding matches any of the pre-defined
          *  special methods.
          *  
@@ -384,6 +373,17 @@ public class SemanticHighlightings {
             }
 
             return false;
+        }
+        
+        // Initialize the array of special methods.
+        static {
+            PtolemyMethod[] executableMethods = new PtolemyMethod[] {
+                    new PtolemyMethod(Modifier.PUBLIC, "void", "fire", null),
+                    new PtolemyMethod(Modifier.PUBLIC, "boolean", "postfire",
+                            null),
+                    new PtolemyMethod(Modifier.PUBLIC, "boolean", "prefire",
+                            null) };
+            _METHODS.put("ptolemy.actor.Executable", executableMethods);
         }
     }
 

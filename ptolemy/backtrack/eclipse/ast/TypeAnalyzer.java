@@ -61,6 +61,7 @@ import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.NullLiteral;
 import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
+import org.eclipse.jdt.core.dom.ParameterizedType;
 import org.eclipse.jdt.core.dom.ParenthesizedExpression;
 import org.eclipse.jdt.core.dom.PostfixExpression;
 import org.eclipse.jdt.core.dom.PrefixExpression;
@@ -285,7 +286,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param node The node to be visited.
      */
     public void endVisit(BooleanLiteral node) {
-        Type.setType(node, Type.BOOLEAN);
+        Type.setType(node, Type.BOOLEAN_TYPE);
     }
 
     /** Propagate the type of the cast class to this node.
@@ -303,7 +304,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param node The node to be visited.
      */
     public void endVisit(CharacterLiteral node) {
-        Type.setType(node, Type.CHAR);
+        Type.setType(node, Type.CHAR_TYPE);
     }
 
     /** Propagate the type of the instantiated class to this node.
@@ -482,7 +483,7 @@ public class TypeAnalyzer extends ASTVisitor {
                 || operator.equals(InfixExpression.Operator.CONDITIONAL_OR)
                 || operator.equals(InfixExpression.Operator.EQUALS)
                 || operator.equals(InfixExpression.Operator.NOT_EQUALS)) {
-            type = Type.BOOLEAN;
+            type = Type.BOOLEAN_TYPE;
         } else {
             throw new UnknownASTException();
         }
@@ -500,7 +501,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param node The node to be visited.
      */
     public void endVisit(InstanceofExpression node) {
-        Type.setType(node, Type.BOOLEAN);
+        Type.setType(node, Type.BOOLEAN_TYPE);
     }
 
     /** End the visit of a method declaration and close the scope
@@ -579,7 +580,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param node The node to be visited.
      */
     public void endVisit(NullLiteral node) {
-        Type.setType(node, Type.NULL);
+        Type.setType(node, Type.NULL_TYPE);
     }
 
     /** Visit a literal node and set its type to be the same type as the
@@ -595,16 +596,16 @@ public class TypeAnalyzer extends ASTVisitor {
                         .endsWith("f"))) { // double/float
 
             if (token.endsWith("f")) {
-                Type.setType(node, Type.FLOAT);
+                Type.setType(node, Type.FLOAT_TYPE);
             } else {
-                Type.setType(node, Type.DOUBLE);
+                Type.setType(node, Type.DOUBLE_TYPE);
             }
         } else { // int/long/short
 
             if (token.endsWith("l")) {
-                Type.setType(node, Type.LONG);
+                Type.setType(node, Type.LONG_TYPE);
             } else {
-                Type.setType(node, Type.INT);
+                Type.setType(node, Type.INT_TYPE);
             }
         }
     }
@@ -616,6 +617,14 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void endVisit(PackageDeclaration node) {
         _state.getClassLoader().setCurrentPackage(node.getName().toString());
+    }
+
+    /** Visit a parameterized type and set its type to be the base type.
+     *
+     *  @param node The node to be visited.
+     */
+    public void endVisit(ParameterizedType node) {
+        Type.propagateType(node, node.getType());
     }
 
     /** Propagate the type of the expression between the parentheses
@@ -726,7 +735,7 @@ public class TypeAnalyzer extends ASTVisitor {
             }
         }
     }
-
+    
     /** Visit a return statement.
      *
      *  @param node The node to be visited.
@@ -740,7 +749,7 @@ public class TypeAnalyzer extends ASTVisitor {
             }
         }
     }
-    
+
     /** Visit a simple name, and resolve it if possible. Some simple names
      *  are not resolved, such as the name of a class to be declared, and the
      *  name of a local variable in its definition.
@@ -1009,7 +1018,7 @@ public class TypeAnalyzer extends ASTVisitor {
     public void endVisit(TypeLiteral node) {
         Type.setType(node, Type.createType("java.lang.Class"));
     }
-
+    
     /** Visit a variable declaration expression and set its type to be
      *  the declared type.
      *
@@ -1364,7 +1373,7 @@ public class TypeAnalyzer extends ASTVisitor {
     protected TypeAndOwner _getFieldTypeAndOwner(Class c, String name) {
         // Try to resolve special field "length" of arrays.
         if (c.isArray() && name.equals("length")) {
-            return new TypeAndOwner(Type.INT, Type.createType(c.getName()));
+            return new TypeAndOwner(Type.INT_TYPE, Type.createType(c.getName()));
         }
 
         // Find the field with reflection.

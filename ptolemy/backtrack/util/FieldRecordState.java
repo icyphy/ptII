@@ -49,6 +49,7 @@ import ptolemy.backtrack.util.FieldRecord.RecordList;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class FieldRecordState {
+    
     ///////////////////////////////////////////////////////////////////
     ////                       constructor                         ////
 
@@ -133,6 +134,10 @@ public class FieldRecordState {
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
 
+    /** An increasing identifier for each record.
+     */
+    private int _identifier = 0;
+
     /** The record lists for all the dimensions.
      */
     private RecordList[] _records;
@@ -141,8 +146,4 @@ public class FieldRecordState {
      *  explicitly managed when records are added or removed.
      */
     private int _totalNum = 0;
-
-    /** An increasing identifier for each record.
-     */
-    private int _identifier = 0;
 }

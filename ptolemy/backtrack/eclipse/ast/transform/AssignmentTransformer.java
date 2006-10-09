@@ -113,6 +113,7 @@ import ptolemy.backtrack.util.FieldRecord;
 public class AssignmentTransformer extends AbstractTransformer implements
         AliasHandler, AssignmentHandler, ClassHandler, CrossAnalysisHandler,
         FieldDeclarationHandler, MethodDeclarationHandler {
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -481,125 +482,6 @@ public class AssignmentTransformer extends AbstractTransformer implements
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
 
-    /** Create assignment methods for each accessed field that has been
-     *  recorded. If a field is a multi-dimensional array, access with
-     *  different numbers of indices is recorded with multiple entries.
-     *  For each of those entries, an extra method is created for each
-     *  different number of indices.
-     *
-     *  @param ast The {@link AST} object.
-     *  @param root The root of the AST.
-     *  @param state The current state of the type analyzer.
-     *  @param fieldName The name of the field to be handled.
-     *  @param fieldType The type of the field to be handled.
-     *  @param indices The number of indices.
-     *  @param special Whether to handle special assign operators.
-     *  @param isStatic Whether the field is static.
-     *  @return The declaration of the method that handles assignment to
-     *   the field.
-     */
-    private MethodDeclaration _createAssignMethod(AST ast,
-            CompilationUnit root, TypeAnalyzerState state, String fieldName,
-            Type fieldType, int indices, boolean special, boolean isStatic) {
-        Class currentClass = state.getCurrentClass();
-        ClassLoader loader = state.getClassLoader();
-        String methodName = _getAssignMethodName(fieldName, special);
-
-        // Check if the method is duplicated (possibly because the source
-        // program is refactored twice).
-        if (_isMethodDuplicated(currentClass, methodName, fieldType, indices,
-                isStatic, loader, true)) {
-            throw new ASTDuplicatedMethodException(currentClass.getName(),
-                    methodName);
-        }
-
-        MethodDeclaration method = ast.newMethodDeclaration();
-
-        // Get the type of the new value. The return value has the same
-        // type.
-        for (int i = 0; i < indices; i++) {
-            try {
-                fieldType = fieldType.removeOneDimension();
-            } catch (ClassNotFoundException e) {
-                throw new ASTClassNotFoundException(fieldType);
-            }
-        }
-
-        String fieldTypeName = fieldType.getName();
-
-        // Set the name and return type.
-        SimpleName name = ast.newSimpleName(methodName);
-        org.eclipse.jdt.core.dom.Type type;
-        method.setName(name);
-
-        String typeName = getClassName(fieldTypeName, state, root);
-
-        if (special && _assignOperators.containsKey(fieldTypeName)) {
-            PrimitiveType.Code code = _rightHandTypes.get(fieldTypeName);
-            type = ast.newPrimitiveType(code);
-        } else {
-            type = createType(ast, typeName);
-        }
-
-        method.setReturnType2(createType(ast, typeName));
-
-        // If the field is static, add a checkpoint object argument.
-        if (isStatic) {
-            // Add a "$CHECKPOINT" argument.
-            SingleVariableDeclaration checkpoint = ast
-                    .newSingleVariableDeclaration();
-            String checkpointType = getClassName(Checkpoint.class, state, root);
-            checkpoint.setType(ast
-                    .newSimpleType(createName(ast, checkpointType)));
-            checkpoint.setName(ast.newSimpleName(CHECKPOINT_NAME));
-            method.parameters().add(checkpoint);
-        }
-
-        if (special && _assignOperators.containsKey(fieldTypeName)) {
-            // Add an operator parameter.
-            SingleVariableDeclaration operator = ast
-                    .newSingleVariableDeclaration();
-            operator.setType(ast.newPrimitiveType(PrimitiveType.INT));
-            operator.setName(ast.newSimpleName("operator"));
-            method.parameters().add(operator);
-        }
-
-        // Add all the indices.
-        for (int i = 0; i < indices; i++) {
-            SingleVariableDeclaration index = ast
-                    .newSingleVariableDeclaration();
-            index.setType(ast.newPrimitiveType(PrimitiveType.INT));
-            index.setName(ast.newSimpleName("index" + i));
-            method.parameters().add(index);
-        }
-
-        // Add a new value argument with name "newValue".
-        SingleVariableDeclaration argument = ast.newSingleVariableDeclaration();
-        argument.setType((org.eclipse.jdt.core.dom.Type) ASTNode.copySubtree(
-                ast, type));
-        argument.setName(ast.newSimpleName("newValue"));
-        method.parameters().add(argument);
-
-        // If the field is static, the method is also static; the method
-        // is also private.
-        List modifiers = method.modifiers();
-        modifiers.add(
-                ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
-        modifiers.add(
-                ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
-        if (isStatic) {
-            modifiers.add(
-                    ast.newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
-        }
-
-        // Create the method body.
-        Block body = _createAssignmentBlock(ast, state, fieldName, fieldType,
-                indices, special);
-        method.setBody(body);
-
-        return method;
-    }
-
     /** Create the body of an assignment method, which backs up the field
      *  before a new value is assigned to it.
      *
@@ -800,6 +682,125 @@ public class AssignmentTransformer extends AbstractTransformer implements
         }
 
         return block;
+    }
+
+    /** Create assignment methods for each accessed field that has been
+     *  recorded. If a field is a multi-dimensional array, access with
+     *  different numbers of indices is recorded with multiple entries.
+     *  For each of those entries, an extra method is created for each
+     *  different number of indices.
+     *
+     *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
+     *  @param state The current state of the type analyzer.
+     *  @param fieldName The name of the field to be handled.
+     *  @param fieldType The type of the field to be handled.
+     *  @param indices The number of indices.
+     *  @param special Whether to handle special assign operators.
+     *  @param isStatic Whether the field is static.
+     *  @return The declaration of the method that handles assignment to
+     *   the field.
+     */
+    private MethodDeclaration _createAssignMethod(AST ast,
+            CompilationUnit root, TypeAnalyzerState state, String fieldName,
+            Type fieldType, int indices, boolean special, boolean isStatic) {
+        Class currentClass = state.getCurrentClass();
+        ClassLoader loader = state.getClassLoader();
+        String methodName = _getAssignMethodName(fieldName, special);
+
+        // Check if the method is duplicated (possibly because the source
+        // program is refactored twice).
+        if (_isMethodDuplicated(currentClass, methodName, fieldType, indices,
+                isStatic, loader, true)) {
+            throw new ASTDuplicatedMethodException(currentClass.getName(),
+                    methodName);
+        }
+
+        MethodDeclaration method = ast.newMethodDeclaration();
+
+        // Get the type of the new value. The return value has the same
+        // type.
+        for (int i = 0; i < indices; i++) {
+            try {
+                fieldType = fieldType.removeOneDimension();
+            } catch (ClassNotFoundException e) {
+                throw new ASTClassNotFoundException(fieldType);
+            }
+        }
+
+        String fieldTypeName = fieldType.getName();
+
+        // Set the name and return type.
+        SimpleName name = ast.newSimpleName(methodName);
+        org.eclipse.jdt.core.dom.Type type;
+        method.setName(name);
+
+        String typeName = getClassName(fieldTypeName, state, root);
+
+        if (special && _assignOperators.containsKey(fieldTypeName)) {
+            PrimitiveType.Code code = _rightHandTypes.get(fieldTypeName);
+            type = ast.newPrimitiveType(code);
+        } else {
+            type = createType(ast, typeName);
+        }
+
+        method.setReturnType2(createType(ast, typeName));
+
+        // If the field is static, add a checkpoint object argument.
+        if (isStatic) {
+            // Add a "$CHECKPOINT" argument.
+            SingleVariableDeclaration checkpoint = ast
+                    .newSingleVariableDeclaration();
+            String checkpointType = getClassName(Checkpoint.class, state, root);
+            checkpoint.setType(ast
+                    .newSimpleType(createName(ast, checkpointType)));
+            checkpoint.setName(ast.newSimpleName(CHECKPOINT_NAME));
+            method.parameters().add(checkpoint);
+        }
+
+        if (special && _assignOperators.containsKey(fieldTypeName)) {
+            // Add an operator parameter.
+            SingleVariableDeclaration operator = ast
+                    .newSingleVariableDeclaration();
+            operator.setType(ast.newPrimitiveType(PrimitiveType.INT));
+            operator.setName(ast.newSimpleName("operator"));
+            method.parameters().add(operator);
+        }
+
+        // Add all the indices.
+        for (int i = 0; i < indices; i++) {
+            SingleVariableDeclaration index = ast
+                    .newSingleVariableDeclaration();
+            index.setType(ast.newPrimitiveType(PrimitiveType.INT));
+            index.setName(ast.newSimpleName("index" + i));
+            method.parameters().add(index);
+        }
+
+        // Add a new value argument with name "newValue".
+        SingleVariableDeclaration argument = ast.newSingleVariableDeclaration();
+        argument.setType((org.eclipse.jdt.core.dom.Type) ASTNode.copySubtree(
+                ast, type));
+        argument.setName(ast.newSimpleName("newValue"));
+        method.parameters().add(argument);
+
+        // If the field is static, the method is also static; the method
+        // is also private.
+        List modifiers = method.modifiers();
+        modifiers.add(
+                ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
+        modifiers.add(
+                ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
+        if (isStatic) {
+            modifiers.add(
+                    ast.newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
+        }
+
+        // Create the method body.
+        Block body = _createAssignmentBlock(ast, state, fieldName, fieldType,
+                indices, special);
+        method.setBody(body);
+
+        return method;
     }
 
     /** Create a backup method that backs up an array (possibly with some given
@@ -1860,21 +1861,6 @@ public class AssignmentTransformer extends AbstractTransformer implements
      *  array, the returned list is the list of numbers of indices that have
      *  ever been used.
      *
-     *  @param className The full name of the current class.
-     *  @param fieldName The field name.
-     *  @return The list of indices, or <tt>null</tt> if the field is not found
-     *   or has never been used.
-     */
-    private List _getAccessedField(String className, String fieldName) {
-        return _getAccessedField(_accessedFields, className, fieldName);
-    }
-
-    /** Get the list of indices of an accessed field. If the field is not of an
-     *  array type but it is accessed at least once, the returned list contains
-     *  only integer 0, which means no index is ever used. If the field is an
-     *  array, the returned list is the list of numbers of indices that have
-     *  ever been used.
-     *
      *  @param table The hash table to be used.
      *  @param className The full name of the current class.
      *  @param fieldName The field name.
@@ -1891,6 +1877,21 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         List indicesList = (List) classTable.get(fieldName);
         return indicesList;
+    }
+
+    /** Get the list of indices of an accessed field. If the field is not of an
+     *  array type but it is accessed at least once, the returned list contains
+     *  only integer 0, which means no index is ever used. If the field is an
+     *  array, the returned list is the list of numbers of indices that have
+     *  ever been used.
+     *
+     *  @param className The full name of the current class.
+     *  @param fieldName The field name.
+     *  @return The list of indices, or <tt>null</tt> if the field is not found
+     *   or has never been used.
+     */
+    private List _getAccessedField(String className, String fieldName) {
+        return _getAccessedField(_accessedFields, className, fieldName);
     }
 
     /** Get the name of the commit method.
@@ -2720,20 +2721,17 @@ public class AssignmentTransformer extends AbstractTransformer implements
     		_accessedFields =
     			new Hashtable<String, Hashtable<String, List<Integer>>>();
 
+    /** The Java operators that modify special types of values.
+     */
+    private static Hashtable<String, String[]> _assignOperators =
+    	new Hashtable<String, String[]>();
+
     /** The table of backup of fields and their indices. Keys are class names;
      *  values are hash tables. In each table, keys are field names, values
      *  are lists of indices.
      */
     private Hashtable<String, Hashtable<String, List<Integer>>> _backupFields =
     	new Hashtable<String, Hashtable<String, List<Integer>>>();
-
-    /** The table of fields accessed with special assign operators and their
-     *  indices. Keys are class names; valus are hash tables. In each value,
-     *  keys are field names, values are lists of indices.
-     */
-    private Hashtable<String, Hashtable<String, List<Integer>>>
-    		_specialAccessedFields =
-    			new Hashtable<String, Hashtable<String, List<Integer>>>();
 
     /** Keys are names of classes; values are {@link Block} nodes of assign
      *  method bodies. If the classes are cross-analyzed, calls to set
@@ -2742,20 +2740,13 @@ public class AssignmentTransformer extends AbstractTransformer implements
     private Hashtable<String, List<Block>> _fixSetCheckpoint =
     	new Hashtable<String, List<Block>>();
 
-    /** The Java operators that modify special types of values.
-     */
-    private static Hashtable<String, String[]> _assignOperators =
-    	new Hashtable<String, String[]>();
-
-    /** The types of values on the right-hand side of the special operators.
-     */
-    private static Hashtable<String, PrimitiveType.Code> _rightHandTypes =
-    	new Hashtable<String, PrimitiveType.Code>();
-
     /** Whether the analyzer is currently analyzing a static method or a static
      *  field.
      */
     private Stack<Boolean> _isInStatic = new Stack<Boolean>();
+
+    private Hashtable<String, List<NodeReplace>> _nodeSubstitution =
+    	new Hashtable<String, List<NodeReplace>>();
 
     /** Keys are names of classes; values are lists of {@link
      *  RehandleDeclarationRecord} objects. If the classes are cross-analyzed,
@@ -2765,8 +2756,37 @@ public class AssignmentTransformer extends AbstractTransformer implements
     		_rehandleDeclaration =
     			new Hashtable<String, List<RehandleDeclarationRecord>>();
 
-    private Hashtable<String, List<NodeReplace>> _nodeSubstitution =
-    	new Hashtable<String, List<NodeReplace>>();
+    /** The types of values on the right-hand side of the special operators.
+     */
+    private static Hashtable<String, PrimitiveType.Code> _rightHandTypes =
+    	new Hashtable<String, PrimitiveType.Code>();
+
+    /** The table of fields accessed with special assign operators and their
+     *  indices. Keys are class names; valus are hash tables. In each value,
+     *  keys are field names, values are lists of indices.
+     */
+    private Hashtable<String, Hashtable<String, List<Integer>>>
+    		_specialAccessedFields =
+    			new Hashtable<String, Hashtable<String, List<Integer>>>();
+
+    private class NodeReplace {
+        NodeReplace(ASTNode fromNode, ASTNode toNode) {
+            _fromNode = fromNode;
+            _toNode = toNode;
+        }
+
+        ASTNode _getFromNode() {
+            return _fromNode;
+        }
+
+        ASTNode _getToNode() {
+            return _toNode;
+        }
+
+        private ASTNode _fromNode;
+
+        private ASTNode _toNode;
+    }
 
     private class RehandleDeclarationRecord {
         RehandleDeclarationRecord(List<ASTNode> bodyDeclarations) {
@@ -2806,25 +2826,6 @@ public class AssignmentTransformer extends AbstractTransformer implements
         private List<ASTNode> _extendedDeclarations = new LinkedList<ASTNode>();
 
         private List<ASTNode> _fixedDeclarations = new LinkedList<ASTNode>();
-    }
-
-    private class NodeReplace {
-        NodeReplace(ASTNode fromNode, ASTNode toNode) {
-            _fromNode = fromNode;
-            _toNode = toNode;
-        }
-
-        ASTNode _getFromNode() {
-            return _fromNode;
-        }
-
-        ASTNode _getToNode() {
-            return _toNode;
-        }
-
-        private ASTNode _fromNode;
-
-        private ASTNode _toNode;
     }
 
     static {

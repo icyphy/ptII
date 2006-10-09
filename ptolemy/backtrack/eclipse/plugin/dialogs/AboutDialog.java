@@ -48,7 +48,7 @@ import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 //// AboutDialog
 
 /**
-
+ Ptolemy About dialog.
 
  @author Thomas Feng
  @version $Id$
@@ -57,14 +57,12 @@ import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class AboutDialog extends Dialog {
-    Object result;
+    public AboutDialog(Shell parent) {
+        this(parent, 0);
+    }
 
     public AboutDialog(Shell parent, int style) {
         super(parent, style);
-    }
-
-    public AboutDialog(Shell parent) {
-        this(parent, 0); // your default style bits go here (not the Shell's style bits)
     }
 
     public Object open() {
@@ -123,6 +121,8 @@ public class AboutDialog extends Dialog {
 
         return result;
     }
+
+    Object result;
 
     private Shell _shell;
 }

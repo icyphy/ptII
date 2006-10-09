@@ -51,21 +51,6 @@ import java.util.Set;
 */
 public class ConfigXmlHandler extends XmlHandler {
 
-    /** Construct an XML handler.
-     * 
-     *  @param tree The XML tree to be scanned.
-     *  @param systemId The system ID representing the location of the original
-     *   XML document.
-     *  @param includedClasses The classes in the original XML document that
-     *   should be transformed in the new XML document.
-     */
-    ConfigXmlHandler(ConfigXmlTree tree, String systemId,
-            Set<String> includedClasses) {
-        super(tree, systemId);
-
-        this._includedClasses = includedClasses;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -186,6 +171,24 @@ public class ConfigXmlHandler extends XmlHandler {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
+
+    /** Construct an XML handler.
+     * 
+     *  @param tree The XML tree to be scanned.
+     *  @param systemId The system ID representing the location of the original
+     *   XML document.
+     *  @param includedClasses The classes in the original XML document that
+     *   should be transformed in the new XML document.
+     */
+    ConfigXmlHandler(ConfigXmlTree tree, String systemId,
+            Set<String> includedClasses) {
+        super(tree, systemId);
+
+        this._includedClasses = includedClasses;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
 
     /** The canonical paths of the XML documents that should be excluded from
@@ -201,15 +204,20 @@ public class ConfigXmlHandler extends XmlHandler {
     /** The class in the original XML document that should be removed when it
      *  is transformed to the library description of backtracking actors.
      */
+    private static Set<String> _REMOVED_CLASS_SET = new HashSet<String>();
+
+    /** The class in the original XML document that should be removed when it
+     *  is transformed to the library description of backtracking actors.
+     */
     private static final String[] _REMOVED_CLASSES = new String[] {
         "ptolemy.kernel.CompositeEntity", 
         "ptolemy.actor.gui.Configuration"
     };
 
-    /** The class in the original XML document that should be removed when it
+    /** The elements in the original XML document that should be removed when it
      *  is transformed to the library description of backtracking actors.
      */
-    private static Set<String> _REMOVED_CLASS_SET = new HashSet<String>();
+    private static Set<String> _REMOVED_ELEMENT_SET = new HashSet<String>();
 
     /** The elements in the original XML document that should be removed when it
      *  is transformed to the library description of backtracking actors.
@@ -217,11 +225,6 @@ public class ConfigXmlHandler extends XmlHandler {
     private static final String[] _REMOVED_ELEMENTS = new String[] {
         "configure", "input"
     };
-
-    /** The elements in the original XML document that should be removed when it
-     *  is transformed to the library description of backtracking actors.
-     */
-    private static Set<String> _REMOVED_ELEMENT_SET = new HashSet<String>();
 
     ///////////////////////////////////////////////////////////////////
     ////                  static class initializer                 ////

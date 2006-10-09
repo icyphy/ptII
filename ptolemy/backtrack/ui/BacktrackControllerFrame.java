@@ -66,10 +66,6 @@ import ptolemy.util.MessageHandler;
 */
 public class BacktrackControllerFrame extends TableauFrame {
     
-    /** The title of this tableau.
-     */
-    public static final String NAME = "Backtrack Controller";
-    
     /** Construct a backtrack controller frame with a model selector, a list
      *  of checkpoint handles and three buttons: "checkpoint", "rollback"
      *  and "commit".
@@ -220,6 +216,10 @@ public class BacktrackControllerFrame extends TableauFrame {
         }
     }
     
+    /** The title of this tableau.
+     */
+    public static final String NAME = "Backtrack Controller";
+    
     /** The "checkpoint" button.
      */
     private JButton _checkpointButton;
@@ -254,52 +254,8 @@ public class BacktrackControllerFrame extends TableauFrame {
     private JButton _rollbackButton;
     
     //////////////////////////////////////////////////////////////////////////
-    //// ModelSelectorElement
-    /**
-       Elements of the model selector. It is a wrapper around PtolemyFrame.
-       In the model selector (a JTable), the item names are retrieved with
-       toString(), so this class returns the PtolemyFrame's title in
-       toString().
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
-    private class ModelSelectorElement {
-        
-        /** Construct a model selector element.
-         * 
-         *  @param frame The frame of the Ptolemy model.
-         */
-        ModelSelectorElement(PtolemyFrame frame) {
-            _frame = frame;
-        }
-        
-        /** Get the frame of the Ptolemy model.
-         * 
-         *  @return The frame of the Ptolemy model.
-         */
-        public PtolemyFrame getFrame() {
-            return _frame;
-        }
-        
-        /** Return the title of the Ptolemy frame.
-         * 
-         *  @return The title of the Ptolemy frame.
-         */
-        public String toString() {
-            return _frame.getTitle();
-        }
-        
-        /** The frame.
-         */
-        private PtolemyFrame _frame;
-    }
-    
-    //////////////////////////////////////////////////////////////////////////
     //// HandleTableElement
+    
     /**
        Element of the checkpoint handle table.
     
@@ -310,16 +266,6 @@ public class BacktrackControllerFrame extends TableauFrame {
        @Pt.AcceptedRating Red (tfeng)
     */
     private class HandleTableElement {
-        
-        /** Construct an element in the checkpoint handle list.
-         *  
-         *  @param handle The checkpoint handle.
-         *  @param time The time at which the checkpoint was created.
-         */
-        HandleTableElement(long handle, Date time) {
-            _handle = handle;
-            _time = time;
-        }
         
         /** Return the checkpoint handle.
          * 
@@ -337,6 +283,16 @@ public class BacktrackControllerFrame extends TableauFrame {
             return _time;
         }
         
+        /** Construct an element in the checkpoint handle list.
+         *  
+         *  @param handle The checkpoint handle.
+         *  @param time The time at which the checkpoint was created.
+         */
+        HandleTableElement(long handle, Date time) {
+            _handle = handle;
+            _time = time;
+        }
+        
         private long _handle;
         
         private Date _time;
@@ -344,6 +300,7 @@ public class BacktrackControllerFrame extends TableauFrame {
     
     //////////////////////////////////////////////////////////////////////////
     //// HandleTableModel
+    
     /**
        The data store for the list of checkpoint handles.
     
@@ -428,5 +385,51 @@ public class BacktrackControllerFrame extends TableauFrame {
          */
         private List<HandleTableElement> _data =
             new LinkedList<HandleTableElement>();
+    }
+    
+    //////////////////////////////////////////////////////////////////////////
+    //// ModelSelectorElement
+    
+    /**
+       Elements of the model selector. It is a wrapper around PtolemyFrame.
+       In the model selector (a JTable), the item names are retrieved with
+       toString(), so this class returns the PtolemyFrame's title in
+       toString().
+    
+       @author Thomas Feng
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (tfeng)
+       @Pt.AcceptedRating Red (tfeng)
+    */
+    private class ModelSelectorElement {
+        
+        /** Get the frame of the Ptolemy model.
+         * 
+         *  @return The frame of the Ptolemy model.
+         */
+        public PtolemyFrame getFrame() {
+            return _frame;
+        }
+        
+        /** Return the title of the Ptolemy frame.
+         * 
+         *  @return The title of the Ptolemy frame.
+         */
+        public String toString() {
+            return _frame.getTitle();
+        }
+        
+        /** Construct a model selector element.
+         * 
+         *  @param frame The frame of the Ptolemy model.
+         */
+        ModelSelectorElement(PtolemyFrame frame) {
+            _frame = frame;
+        }
+        
+        /** The frame.
+         */
+        private PtolemyFrame _frame;
     }
 }

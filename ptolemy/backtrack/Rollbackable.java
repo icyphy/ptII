@@ -40,11 +40,28 @@ package ptolemy.backtrack;
  @Pt.AcceptedRating Red (tfeng)
  */
 public interface Rollbackable {
+    /** Commit changes up to the given timestamp, but not including changes
+     *  made at timestamp and afterward.
+     *
+     *  @param timestamp The timestamp.
+     */
+    public void $COMMIT(long timestamp);
+
     /** Get the checkpoint object that monitors this rollbackable object.
      *
      *  @return The checkpoint object.
      */
     public Checkpoint $GET$CHECKPOINT();
+
+    /** Restore a previous state to all the private fields of this rollbackable
+     *  object.
+     *
+     *  @param timestamp The timestamp taken at the time when the previous
+     *   state was recorded.
+     *  @param trim Whether to delete the records used for the rollback.
+     *  @see Checkpoint#rollback(long, boolean)
+     */
+    public void $RESTORE(long timestamp, boolean trim);
 
     /** Set the checkpoint object of this rollbackable object. A merge
      *  operation is performed on the current checkpoint object and the new
@@ -56,21 +73,4 @@ public interface Rollbackable {
      *  @see Checkpoint#setCheckpoint(Checkpoint)
      */
     public Object $SET$CHECKPOINT(Checkpoint checkpoint);
-
-    /** Commit changes up to the given timestamp, but not including changes
-     *  made at timestamp and afterward.
-     *
-     *  @param timestamp The timestamp.
-     */
-    public void $COMMIT(long timestamp);
-
-    /** Restore a previous state to all the private fields of this rollbackable
-     *  object.
-     *
-     *  @param timestamp The timestamp taken at the time when the previous
-     *   state was recorded.
-     *  @param trim Whether to delete the records used for the rollback.
-     *  @see Checkpoint#rollback(long, boolean)
-     */
-    public void $RESTORE(long timestamp, boolean trim);
 }

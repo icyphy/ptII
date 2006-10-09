@@ -68,6 +68,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.part.FileEditorInput;
 
 import ptolemy.backtrack.eclipse.ast.Transformer;
+import ptolemy.backtrack.eclipse.ast.Type;
 import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 import ptolemy.backtrack.eclipse.plugin.console.OutputConsole;
 import ptolemy.backtrack.eclipse.plugin.preferences.PreferenceConstants;
@@ -236,8 +237,8 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
 
             if (!Environment.setupTransformerArguments(_container.getShell(),
                     false, true)) {
-                OutputConsole
-                        .outputError("Cannot setup Transformer environment.");
+                OutputConsole.outputError(
+                        "Cannot setup Transformer environment.");
                 return;
             }
 
@@ -503,6 +504,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
             try {
                 Transformer.transform(_fileName, _compilationUnit, _writer,
                         _classPaths, _crossAnalyzedTypes);
+                Type.removeAllTypes();
             } catch (Exception e) {
                 OutputConsole.outputError(e.getMessage());
             }

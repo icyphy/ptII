@@ -55,6 +55,7 @@ import java.util.Stack;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class CheckpointRecord {
+    
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -155,6 +156,13 @@ public class CheckpointRecord {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
+
+    /** The stack of records. Each record is an instance of {@link Record}.
+     */
+    private Stack<Record> _records = new Stack<Record>();
+
+    ///////////////////////////////////////////////////////////////////
     ////                        nested class                       ////
     
     //////////////////////////////////////////////////////////////////////////
@@ -206,11 +214,4 @@ public class CheckpointRecord {
          */
         private long _timestamp;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       private fields                      ////
-
-    /** The stack of records. Each record is an instance of {@link Record}.
-     */
-    private Stack<Record> _records = new Stack<Record>();
 }
