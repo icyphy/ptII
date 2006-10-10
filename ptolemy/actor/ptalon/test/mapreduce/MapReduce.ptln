@@ -1,0 +1,55 @@
+/*
+ * A discrete-event Map Reduce model.
+ *
+ * @author Adam Cataldo
+ */
+
+danglingPortsOkay;
+
+NonlinearStateSpace is {
+	actor reader = ptolemy.actor.lib.io.LineReader;
+	actor writer = ptolemy.actor.lib.io.LineWriter;
+	actor queue = ptolemy.domains.de.lib.Queue;
+	actor filter = ptolemy.domains.de.lib.EventFilter;
+	actor expression = ptolemy.actor.lib.Expression;
+	actor distributor = ptolemy.actor.lib.Distributor;
+	
+	input trigger;
+	output done;
+	
+	parameter mapExpression;
+	parameter reduceExpression;
+	parameter numberOfMachines;
+	parameter maxMapTokens;
+	parameter maxReduceTokens;
+	parameter inputFileName;
+	
+	relation sequenceIn;	
+	reader(trigger := trigger, output := sequenceIn, endOfFile := done, 
+			fileOrURL := [[inputFileName]]);
+
+	relation distributorIn
+	sequenceIn(input := sequenceIn, output := 
+	
+	transparent relation split;
+	
+	distributor(input := distributorIn, output := split);
+	
+	/*
+	 * Create map components.
+	 */
+	for a initially [[0]] [[a < numberOfMachines * (maxReduceTokens) / 
+			(maxReduceTokens + maxMapTokens)]] {
+		
+	} next [[a + 1]]
+
+	/*
+	 * Create reduce components.
+	 */
+	for a initially [[0]] [[a < numberOfMachines - numberOfMachines * 
+			(maxReduceTokens) / (maxReduceTokens + maxMapTokens)]] {
+		
+	} next [[a + 1]]
+
+
+}

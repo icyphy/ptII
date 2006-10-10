@@ -1,0 +1,48 @@
+/*
+ * A rendezvous domain map worker for the map reduce example.
+ *
+ * @author Adam Cataldo
+ */
+
+danglingPortsOkay;
+
+MapWorker is {
+	actor buffer = ptolemy.domains.rendezvous.lib.Buffer;
+	actor expression = ptolemy.actor.lib.Expression;
+	
+	inport key;
+	inport value;
+	outport output;
+	
+	parameter mapExpression;
+	parameter maxMapTokens;
+	
+	relation sequenceIn;	
+	reader(trigger := trigger, output := sequenceIn, endOfFile := done, 
+			fileOrURL := [[inputFileName]]);
+
+	relation distributorIn
+	sequenceIn(input := sequenceIn, output := 
+	
+	transparent relation split;
+	
+	distributor(input := distributorIn, output := split);
+	
+	/*
+	 * Create map components.
+	 */
+	for a initially [[0]] [[a < numberOfMachines * (maxReduceTokens) / 
+			(maxReduceTokens + maxMapTokens)]] {
+		
+	} next [[a + 1]]
+
+	/*
+	 * Create reduce components.
+	 */
+	for a initially [[0]] [[a < numberOfMachines - numberOfMachines * 
+			(maxReduceTokens) / (maxReduceTokens + maxMapTokens)]] {
+		
+	} next [[a + 1]]
+
+
+}
