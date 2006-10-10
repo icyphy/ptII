@@ -126,7 +126,10 @@
             icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
             id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"
             name="Ptolemy II Multi-page Editor"
-            symbolicFontName="org.eclipse.jdt.ui.editors.textfont"/>
+            symbolicFontName="org.eclipse.jdt.ui.editors.textfont">
+         <contentTypeBinding
+               contentTypeId="org.eclipse.jdt.core.javaSource"/>
+      </editor>
    </extension>
    
    <extension
