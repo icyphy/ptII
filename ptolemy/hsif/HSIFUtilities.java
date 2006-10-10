@@ -77,6 +77,8 @@ public class HSIFUtilities {
         transforms.add("ptolemy/hsif/xsl/HSIF.xsl");
         transforms.add("ptolemy/hsif/xsl/SlimPreprocessorForLinks.xsl");
 
+        // Export MoML DTD
+        XSLTUtilities.setExportDTD(true);
         XSLTUtilities.transform(input, fileWriter, transforms);
 
         // Let the caller close the fileWriter.

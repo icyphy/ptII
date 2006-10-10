@@ -28,7 +28,6 @@
 package ptolemy.util;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -90,6 +89,7 @@ public class XSLTUtilities {
      *  java -classpath $PTII ptolemy.util.XSLTUtilities
      *       $PTII/ptolemy/hsif/demo/SwimmingPool/SwimmingPool.xml \
      *       $PTII/ptolemy/hsif/xsl/GlobalVariablePreprocessor.xsl \
+     *       exportMoMLDTD \
      *       /tmp/SwimmingPool_1.xml
      * </pre>
 
@@ -101,30 +101,43 @@ public class XSLTUtilities {
      * @exception Exception If there are problems with the transform.
      */
     public static void main(String[] args) throws Exception {
-        if (args.length < 3) {
+        
+        String lastArg = args[args.length - 1];
+        String outputFileName = lastArg;
+        int numberOfTransformers = args.length -2;
+        if (lastArg.compareTo("exportMoMLDTD") == 0) {
+            _exportDTD = true;
+            outputFileName = args[args.length - 2];
+            numberOfTransformers = args.length - 3;
+        } else {
+            _exportDTD = false;
+        }
+
+        if ((_exportDTD && args.length < 4) ||
+                (!_exportDTD && args.length < 3)) {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.util.XSLTUtilities inputFile "
-                    + "xslFile1 [xslFile2 . . .] outputFile");
+                    + "xslFile1 [xslFile2 . . .] outputFile " 
+                    + "[-exportMoMLDTD]");
             System.exit(2);
-        }
+        } 
 
         // Make sure we can write the output first
         FileWriter fileWriter = null;
 
         try {
-            fileWriter = new FileWriter(args[args.length - 1]);
+            fileWriter = new FileWriter(outputFileName);
 
             Document inputDocument = parse(args[0]);
 
             List transforms = new LinkedList();
 
-            for (int i = 1; i < (args.length - 1); i++) {
+            for (int i = 1; i < numberOfTransformers; i++) {
                 transforms.add(args[i]);
             }
 
-            Document outputDocument = XSLTUtilities.transform(inputDocument,
-                    transforms);
-            fileWriter.write(XSLTUtilities.toString(outputDocument));
+            Document outputDocument = XSLTUtilities.transform(inputDocument, transforms);
+            _writeOutput(XSLTUtilities.toString(outputDocument), fileWriter);
         } finally {
             if (fileWriter != null) {
                 fileWriter.close();
@@ -161,6 +174,15 @@ public class XSLTUtilities {
             exception.initCause(ex);
             throw exception;
         }
+    }
+    
+    /** Set the flag indicating whether to export DTD specification when
+     *  transforming XML files. By default, the transformer does not export 
+     *  DTD.
+     *  @param exportDTD True for export DTD, false for not.
+     */
+    public static void setExportDTD (boolean exportDTD) {
+        _exportDTD = exportDTD;
     }
 
     /** Given a Document, generate a String.
@@ -293,43 +315,6 @@ public class XSLTUtilities {
         return inputDocument;
     }
 
-    /** Transform a document.
-     *  @param xsltFileName The name of the xsl file to be used.
-     *  @param sourceFileName The name of the file to be read in and
-     *  transformed.
-     *  @param resultFileName The name of the file to be generated.
-     *  @exception IOException If the resultFileName file
-     *  cannot be found or if flushing the output stream throws it.
-     *  @exception TransformerException If there is a problem with the
-     *  transform.
-     */
-    public static void transform(String xsltFileName, String sourceFileName,
-            String resultFileName) throws IOException, TransformerException {
-        OutputStream resultStream = null;
-
-        try {
-            resultStream = new FileOutputStream(resultFileName);
-
-            StreamSource source = new StreamSource(sourceFileName);
-            StreamResult result = new StreamResult(resultStream);
-            TransformerFactory transformerFactory = TransformerFactory
-                    .newInstance();
-            Transformer transformer = transformerFactory
-                    .newTransformer(new StreamSource(xsltFileName));
-            transformer.setOutputProperty("indent", "yes");
-            transformer.transform(source, result);
-        } finally {
-            if (resultStream != null) {
-                try {
-                    resultStream.close();
-                } catch (Throwable throwable) {
-                    throw new RuntimeException("Failed to close stream on "
-                            + resultFileName, throwable);
-                }
-            }
-        }
-    }
-
     /** Transform a file by applying a list of XSL transforms.
      *  @param input The XML to be transformed
      *  @param fileWriter A FileWriter that will write to the MoML
@@ -378,9 +363,37 @@ public class XSLTUtilities {
         Document outputDocument = XSLTUtilities.transform(inputDocument,
                 xslFileNames);
 
-        fileWriter.write(XSLTUtilities.toString(outputDocument));
+        _writeOutput(XSLTUtilities.toString(outputDocument), fileWriter);
 
         // Let the caller close the fileWriter.
         //fileWriter.close();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private static void _writeOutput(String outputString, 
+            FileWriter fileWriter) throws IOException {
+        if (_exportDTD) {
+            // XSLT discards the DTD decalration.
+            // The following code inserts the specified DTD decalrations.
+            // Write the following into the filewriter first:
+            // <?xml version="1.0" encoding="UTF-8"?>,
+            // which appears just before the comment, <!--
+            int positionToInsertDTD = outputString.indexOf("<!--");
+            fileWriter.write(outputString, 0, positionToInsertDTD);
+            // FIXME: So far, only MoML DTD can be exported. If the support
+            // of more DTDs is necessray, modify the main() method and 
+            // setExportDTD() method to allow configuration of DTD. 
+            fileWriter.write("\r\n<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" " +
+                            "\r\n\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">");
+            fileWriter.write(outputString.substring(positionToInsertDTD));
+        } else {
+            fileWriter.write(outputString);
+        }
+    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private static boolean _exportDTD = false;
 }

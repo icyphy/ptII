@@ -113,50 +113,50 @@ install: all jars
 
 # Dealing with redundant links
 Thermostat_moml.xml: data/Thermostat_mid.xml xsl/SlimPreprocessorForLinks.xsl
-	$(XSL_TRANSFORM) $^ $@
+	$(XSL_TRANSFORM) $^ $@ expotMoMLDTD
 
 SwimmingPool_moml.xml: data/SwimmingPool_mid.xml xsl/SlimPreprocessorForLinks.xsl
-	$(XSL_TRANSFORM) $^ $@
+	$(XSL_TRANSFORM) $^ $@ expotMoMLDTD
 
 
 # Generating MoML files
 data/Thermostat_mid.xml: data/Thermostat_mid_sl.xml xsl/HSIF.xsl
-	$(XSL_TRANSFORM) $^ $@
+	$(XSL_TRANSFORM) $^ $@ expotMoMLDTD
 
 data/SwimmingPool_mid.xml: data/SwimmingPool_mid_sl.xml xsl/HSIF.xsl
-	$(XSL_TRANSFORM) $^ $@
+	$(XSL_TRANSFORM) $^ $@ expotMoMLDTD
 
 
 # Dealing with the redundant nodes after l_pre_shif
 data/Thermostat_mid_sl.xml: data/Thermostat_mid_l.xml xsl/SlimPreprocessor.xsl
-	$(XSL_TRANSFORM) $^ $@
+	$(XSL_TRANSFORM) $^ $@ expotMoMLDTD
 
 data/SwimmingPool_mid_sl.xml: data/SwimmingPool_mid_l.xml xsl/SlimPreprocessor.xsl
-	$(XSL_TRANSFORM) $^ $@
+	$(XSL_TRANSFORM) $^ $@ expotMoMLDTD
 
 
 # Dealing with Local Variables
 data/Thermostat_mid_l.xml: data/Thermostat_mid_sg.xml xsl/LocalVariablePreprocessor.xsl
-	$(XSL_TRANSFORM) $^ $@
+	$(XSL_TRANSFORM) $^ $@ expotMoMLDTD
 
 data/SwimmingPool_mid_l.xml: data/SwimmingPool_mid_sg.xml xsl/LocalVariablePreprocessor.xsl
-	$(XSL_TRANSFORM) $^ $@
+	$(XSL_TRANSFORM) $^ $@ expotMoMLDTD
 
 
 # Dealing with the redundant nodes after g_pre_shif
 data/Thermostat_mid_sg.xml: data/Thermostat_mid_g.xml xsl/SlimPreprocessor.xsl
-	$(XSL_TRANSFORM) $^ $@
+	$(XSL_TRANSFORM) $^ $@ expotMoMLDTD
 
 data/SwimmingPool_mid_sg.xml: data/SwimmingPool_mid_g.xml xsl/SlimPreprocessor.xsl
-	$(XSL_TRANSFORM) $^ $@
+	$(XSL_TRANSFORM) $^ $@ expotMoMLDTD
 
 
 # Dealing with Global Variables
 data/Thermostat_mid_g.xml: demo/Thermostat/Thermostat.xml xsl/GlobalVariablePreprocessor.xsl
-	$(XSL_TRANSFORM) $^ $@
+	$(XSL_TRANSFORM) $^ $@ expotMoMLDTD
 
 data/SwimmingPool_mid_g.xml: demo/SwimmingPool/SwimmingPool.xml xsl/GlobalVariablePreprocessor.xsl
-	$(XSL_TRANSFORM) $^ $@
+	$(XSL_TRANSFORM) $^ $@ expotMoMLDTD
 
 
 # Get the rest of the rules
