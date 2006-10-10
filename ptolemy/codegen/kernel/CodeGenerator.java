@@ -497,7 +497,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         Set includingFiles = compositeActorHelper.getHeaderFiles();
 
         if (!isTopLevel()) {
-            includingFiles.add("\"Jni" + _sanitizedModelName + ".h");
+            includingFiles.add("\"Jni" + _sanitizedModelName + ".h\"");
             // FIXME: This is temporary. Only works on my machine.
             _includes.add("-I\"C:/Program Files/Java/jdk1.5.0_06/include\"");
             _includes.add("-I\"C:/Program Files/Java/jdk1.5.0_06/include/win32\"");
@@ -550,7 +550,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // If the container is not in the top level, we are generating code 
         // for the Java and C co-simulation.
         } else {
-            return "JNIEXPORT void JNICALL\n"
+            return "\n\nJNIEXPORT void JNICALL\n"
             + "Java_Jni" + _sanitizedModelName + "_initialize("
             + "JNIEnv *env, jobject obj) {\n";
         }
@@ -593,7 +593,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // If the container is not in the top level, we are generating code 
         // for the Java and C co-simulation.
         } else {
-            mainEntryCode.append("JNIEXPORT jobjectArray JNICALL\n"
+            mainEntryCode.append("\n\nJNIEXPORT jobjectArray JNICALL\n"
                     + "Java_Jni" + _sanitizedModelName + "_fire (\n"
                     + "JNIEnv *env, jobject obj");
             
@@ -617,7 +617,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (isTopLevel()) {
             return _INDENT1 + "exit(0);\n}\n";
         } else {
-            return _INDENT1 + "return tokensToAllPorts;\n}\n";
+            return _INDENT1 + "return tokensToAllOutputPorts;\n}\n";
         }
     }
 
@@ -948,7 +948,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // If the container is not in the top level, we are generating code 
         // for the Java and C co-simulation.
         } else {
-            return "JNIEXPORT void JNICALL\n"
+            return "\n\nJNIEXPORT void JNICALL\n"
             + "Java_Jni" + _sanitizedModelName + "_wrapup("
             + "JNIEnv *env, jobject obj) {\n";
         }

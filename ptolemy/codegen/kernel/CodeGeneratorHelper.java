@@ -315,6 +315,102 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /**
+     * Generate the expression that represents the offsite in the generated
+     * code.
+     * @param offsetString The specified offset from the user.
+     * @param port The referenced port.
+     * @param channel The referenced port channel.
+     * @param isWrite Whether to generate the write or read offset.
+     * @return The expression that represents the offset in the generated code.
+     * @throws IllegalActionException If there is problems getting the port
+     *  buffer size or the offset in the channel and offset map.
+     */
+    public String generateOffset(String offsetString, IOPort port, int channel,
+            boolean isWrite) throws IllegalActionException {
+    
+        // if the max buffer size of the port is not larger than 1,
+        // offset is not needed.
+        if (!(getBufferSize(port) > 1)) {
+            return "";
+        }
+    
+        String result = "";
+        Object offsetObject;
+        String temp;
+    
+        // Get the offset index.
+        if (isWrite) {
+            offsetObject = getWriteOffset(port, channel);
+        } else {
+            offsetObject = getReadOffset(port, channel);
+        }
+    
+        if (!offsetString.equals("")) {
+            // Specified offset.
+    
+            if (offsetObject instanceof Integer && _isInteger(offsetString)) {
+    
+                int offset = ((Integer) offsetObject).intValue()
+                        + (new Integer(offsetString)).intValue();
+    
+                offset %= getBufferSize(port, channel);
+                temp = new Integer(offset).toString();
+                /*
+                 int divisor = getBufferSize(sinkPort,
+                 sinkChannelNumber);
+                 temp = "("
+                 + getWriteOffset(sinkPort,
+                 sinkChannelNumber) + " + "
+                 + channelAndOffset[1] + ")%" + divisor;
+                 */
+    
+            } else {
+                // Note: This assumes the director helper will increase
+                // the buffer size of the channel to the power of two.
+                // Otherwise, use "%" instead.
+                // FIXME: We haven't check if modulo is 0. But this
+                // should never happen. For offsets that need to be
+                // represented by string expression,
+                // getBufferSize(port, channelNumber) will always
+                // return a value at least 2.
+    
+                /*
+                 * FIXME: The following pointer math does not give the correct
+                 * result. Maybe the original author wanted to optimize by
+                 * avoiding the "%" operator.   
+                 int modulo = getBufferSize(port, channel) - 1;
+                 temp = "(" + offsetObject.toString() + " + " + 
+                 offsetString + ")&" + modulo;
+                 */
+                int modulo = getBufferSize(port, channel);
+                temp = "(" + offsetObject.toString() + " + " + offsetString
+                        + ")%" + modulo;
+            }
+    
+            result += "[" + temp + "]";
+    
+        } else {
+            // Did not specify offset, so the receiver buffer
+            // size is 1. This is multiple firing.
+    
+            if (offsetObject instanceof Integer) {
+                int offset = ((Integer) offsetObject).intValue();
+    
+                offset %= getBufferSize(port, channel);
+    
+                temp = new Integer(offset).toString();
+            } else {
+    
+                int modulo = getBufferSize(port, channel) - 1;
+    
+                temp = (String) offsetObject + "&" + modulo;
+            }
+            result += "[" + temp + "]";
+        }
+        return result;
+    }
+
+    /**
      * Generate the preinitialize code. In this base class, return an empty
      * string. This method generally does not generate any execution code
      * and returns an empty string. Subclasses may generate code for variable
@@ -404,54 +500,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
 
         // Generate variable declarations for input ports.
-        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-
-            if (inputPort.getWidth() == 0) {
-                continue;
-            }
-
-            code.append("static " + cType(inputPort.getType()) + " "
-                    + generateName(inputPort));
-
-            if (inputPort.isMultiport()) {
-                code.append("[" + inputPort.getWidth() + "]");
-            }
-
-            int bufferSize = getBufferSize(inputPort);
-
-            if (bufferSize > 1) {
-                code.append("[" + bufferSize + "]");
-            }
-            code.append(";\n");
-        }
+        code.append(_generateInputVariableDeclaration());
 
         // Generate variable declarations for output ports.
-        Iterator outputPorts = ((Actor) _component).outputPortList().iterator();
-
-        while (outputPorts.hasNext()) {
-            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
-
-            // If either the output port is a dangling port or
-            // the output port has inside receivers.
-            if (outputPort.getWidth() == 0 || outputPort.getWidthInside() != 0) {
-                code.append("static " + cType(outputPort.getType()) + " "
-                        + generateName(outputPort));
-
-                if (outputPort.isMultiport()) {
-                    code.append("[" + outputPort.getWidthInside() + "]");
-                }
-
-                int bufferSize = getBufferSize(outputPort);
-
-                if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
-                }
-                code.append(";\n");
-            }
-        }
+        code.append(_generateOutputVariableDeclaration());
 
         code.append(_codeGenerator.comment(0,
                 "Type convert variable declarations."));
@@ -604,6 +656,67 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public static String[] getDefaultBlocks() {
         return _defaultBlocks;
+    }
+
+    /** Return the translated token instance function invocation string.
+     *  @param functionString The string within the $tokenFunc() macro.
+     *  @param isStatic True if the method is static.   
+     *  @return The translated type function invocation string.
+     *  @exception IllegalActionException The given function string is
+     *   not well-formed.
+     */
+    public String getFunctionInvocation(String functionString, boolean isStatic)
+            throws IllegalActionException {
+        functionString = processCode(functionString);
+    
+        // i.e. "$tokenFunc(token::add(arg1, arg2, ...))"
+        // this transforms to ==> 
+        // "functionTable[token.type][FUNC_add] (token, arg1, arg2, ...)"
+        // FIXME: we need to do some more smart parsing to find the following
+        // indexes.
+        int commaIndex = functionString.indexOf("::");
+        int openFuncParenIndex = functionString.indexOf('(', commaIndex);
+        int closeFuncParenIndex = functionString.lastIndexOf(')');
+    
+        // Syntax checking.
+        if ((commaIndex == -1) || (openFuncParenIndex == -1)
+                || (closeFuncParenIndex != (functionString.length() - 1))) {
+            throw new IllegalActionException(
+                    "Bad Syntax with the $tokenFunc / $typeFunc macro. "
+                            + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))]");
+        }
+    
+        String typeOrToken = functionString.substring(0, commaIndex).trim();
+        String functionName = functionString.substring(commaIndex + 2,
+                openFuncParenIndex).trim();
+    
+        String argumentList = functionString.substring(openFuncParenIndex + 1)
+                .trim();
+    
+        if (isStatic) {
+            // Record the referenced type function in the infoTable.
+            _codeGenerator._typeFuncUsed.add(functionName);
+    
+            if (argumentList.length() == 0) {
+                throw new IllegalActionException(
+                        "Static type function requires at least one argument(s).");
+            }
+    
+            return "functionTable[" + typeOrToken + "][FUNC_" + functionName
+                    + "](" + argumentList;
+    
+        } else {
+            // Record the referenced type function in the infoTable.
+            _codeGenerator._tokenFuncUsed.add(functionName);
+    
+            // if it is more than just a closing paren
+            if (argumentList.length() > 1) {
+                argumentList = ", " + argumentList;
+            }
+    
+            return "functionTable[" + typeOrToken + ".type][FUNC_"
+                    + functionName + "](" + typeOrToken + argumentList;
+        }
     }
 
     /** Get the files needed by the code generated from this helper class.
@@ -1068,102 +1181,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /**
-     * Generate the expression that represents the offsite in the generated
-     * code.
-     * @param offsetString The specified offset from the user.
-     * @param port The referenced port.
-     * @param channel The referenced port channel.
-     * @param isWrite Whether to generate the write or read offset.
-     * @return The expression that represents the offset in the generated code.
-     * @throws IllegalActionException If there is problems getting the port
-     *  buffer size or the offset in the channel and offset map.
-     */
-    public String generateOffset(String offsetString, IOPort port, int channel,
-            boolean isWrite) throws IllegalActionException {
-
-        // if the max buffer size of the port is not larger than 1,
-        // offset is not needed.
-        if (!(getBufferSize(port) > 1)) {
-            return "";
-        }
-
-        String result = "";
-        Object offsetObject;
-        String temp;
-
-        // Get the offset index.
-        if (isWrite) {
-            offsetObject = getWriteOffset(port, channel);
-        } else {
-            offsetObject = getReadOffset(port, channel);
-        }
-
-        if (!offsetString.equals("")) {
-            // Specified offset.
-
-            if (offsetObject instanceof Integer && _isInteger(offsetString)) {
-
-                int offset = ((Integer) offsetObject).intValue()
-                        + (new Integer(offsetString)).intValue();
-
-                offset %= getBufferSize(port, channel);
-                temp = new Integer(offset).toString();
-                /*
-                 int divisor = getBufferSize(sinkPort,
-                 sinkChannelNumber);
-                 temp = "("
-                 + getWriteOffset(sinkPort,
-                 sinkChannelNumber) + " + "
-                 + channelAndOffset[1] + ")%" + divisor;
-                 */
-
-            } else {
-                // Note: This assumes the director helper will increase
-                // the buffer size of the channel to the power of two.
-                // Otherwise, use "%" instead.
-                // FIXME: We haven't check if modulo is 0. But this
-                // should never happen. For offsets that need to be
-                // represented by string expression,
-                // getBufferSize(port, channelNumber) will always
-                // return a value at least 2.
-
-                /*
-                 * FIXME: The following pointer math does not give the correct
-                 * result. Maybe the original author wanted to optimize by
-                 * avoiding the "%" operator.   
-                 int modulo = getBufferSize(port, channel) - 1;
-                 temp = "(" + offsetObject.toString() + " + " + 
-                 offsetString + ")&" + modulo;
-                 */
-                int modulo = getBufferSize(port, channel);
-                temp = "(" + offsetObject.toString() + " + " + offsetString
-                        + ")%" + modulo;
-            }
-
-            result += "[" + temp + "]";
-
-        } else {
-            // Did not specify offset, so the receiver buffer
-            // size is 1. This is multiple firing.
-
-            if (offsetObject instanceof Integer) {
-                int offset = ((Integer) offsetObject).intValue();
-
-                offset %= getBufferSize(port, channel);
-
-                temp = new Integer(offset).toString();
-            } else {
-
-                int modulo = getBufferSize(port, channel) - 1;
-
-                temp = (String) offsetObject + "&" + modulo;
-            }
-            result += "[" + temp + "]";
-        }
-        return result;
-    }
-
-    /**
      * Get the port that has the given name.
      * @param refName The given name.
      * @return The port that has the given name.
@@ -1295,67 +1312,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         throw new IllegalActionException(_component, "Attribute not found: "
                 + name);
-    }
-
-    /** Return the translated token instance function invocation string.
-     *  @param functionString The string within the $tokenFunc() macro.
-     *  @param isStatic True if the method is static.   
-     *  @return The translated type function invocation string.
-     *  @exception IllegalActionException The given function string is
-     *   not well-formed.
-     */
-    public String getFunctionInvocation(String functionString, boolean isStatic)
-            throws IllegalActionException {
-        functionString = processCode(functionString);
-
-        // i.e. "$tokenFunc(token::add(arg1, arg2, ...))"
-        // this transforms to ==> 
-        // "functionTable[token.type][FUNC_add] (token, arg1, arg2, ...)"
-        // FIXME: we need to do some more smart parsing to find the following
-        // indexes.
-        int commaIndex = functionString.indexOf("::");
-        int openFuncParenIndex = functionString.indexOf('(', commaIndex);
-        int closeFuncParenIndex = functionString.lastIndexOf(')');
-
-        // Syntax checking.
-        if ((commaIndex == -1) || (openFuncParenIndex == -1)
-                || (closeFuncParenIndex != (functionString.length() - 1))) {
-            throw new IllegalActionException(
-                    "Bad Syntax with the $tokenFunc / $typeFunc macro. "
-                            + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))]");
-        }
-
-        String typeOrToken = functionString.substring(0, commaIndex).trim();
-        String functionName = functionString.substring(commaIndex + 2,
-                openFuncParenIndex).trim();
-
-        String argumentList = functionString.substring(openFuncParenIndex + 1)
-                .trim();
-
-        if (isStatic) {
-            // Record the referenced type function in the infoTable.
-            _codeGenerator._typeFuncUsed.add(functionName);
-
-            if (argumentList.length() == 0) {
-                throw new IllegalActionException(
-                        "Static type function requires at least one argument(s).");
-            }
-
-            return "functionTable[" + typeOrToken + "][FUNC_" + functionName
-                    + "](" + argumentList;
-
-        } else {
-            // Record the referenced type function in the infoTable.
-            _codeGenerator._tokenFuncUsed.add(functionName);
-
-            // if it is more than just a closing paren
-            if (argumentList.length() > 1) {
-                argumentList = ", " + argumentList;
-            }
-
-            return "functionTable[" + typeOrToken + ".type][FUNC_"
-                    + functionName + "](" + typeOrToken + argumentList;
-        }
     }
 
     /** Get the write offset in the buffer of a given channel to which a token
@@ -1859,6 +1815,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     protected void _createBufferSizeAndOffsetMap()
             throws IllegalActionException {
+        
+        _createInputBufferSizeAndOffsetMap();
+                
+    }
+    
+    protected void _createInputBufferSizeAndOffsetMap()
+            throws IllegalActionException {
+        
         //We only care about input ports where data are actually stored
         //except when an output port is not connected to any input port.
         //In that case the variable corresponding to the unconnected output
@@ -1929,7 +1893,69 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         _codeStream.appendCodeBlock(blockName, args);
         return processCode(_codeStream.toString());
     }
+    
+    protected String _generateInputVariableDeclaration() 
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        
+        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
 
+        while (inputPorts.hasNext()) {
+            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+
+            if (inputPort.getWidth() == 0) {
+                continue;
+            }
+
+            code.append("static " + cType(inputPort.getType()) + " "
+                    + generateName(inputPort));
+
+            if (inputPort.isMultiport()) {
+                code.append("[" + inputPort.getWidth() + "]");
+            }
+
+            int bufferSize = getBufferSize(inputPort);
+
+            if (bufferSize > 1) {
+                code.append("[" + bufferSize + "]");
+            }
+            code.append(";\n");
+        }
+        
+        return code.toString();
+    }
+
+    protected String _generateOutputVariableDeclaration() 
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        
+        Iterator outputPorts = ((Actor) _component).outputPortList().iterator();
+
+        while (outputPorts.hasNext()) {
+            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
+
+            // If either the output port is a dangling port or
+            // the output port has inside receivers.
+            if (outputPort.getWidth() == 0 || outputPort.getWidthInside() != 0) {
+                code.append("static " + cType(outputPort.getType()) + " "
+                        + generateName(outputPort));
+
+                if (outputPort.isMultiport()) {
+                    code.append("[" + outputPort.getWidthInside() + "]");
+                }
+
+                int bufferSize = getBufferSize(outputPort);
+
+                if (bufferSize > 1) {
+                    code.append("[" + bufferSize + "]");
+                }
+                code.append(";\n");
+            }
+        }
+        
+        return code.toString();
+    }
+    
     /**
      * Generate expression that evaluates to a result of equivalent
      * value with the cast type.
