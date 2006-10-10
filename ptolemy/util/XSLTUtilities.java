@@ -132,7 +132,7 @@ public class XSLTUtilities {
 
             List transforms = new LinkedList();
 
-            for (int i = 1; i < numberOfTransformers; i++) {
+            for (int i = 1; i < numberOfTransformers + 1; i++) {
                 transforms.add(args[i]);
             }
 
