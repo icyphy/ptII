@@ -118,7 +118,7 @@ public class XSLTUtilities {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.util.XSLTUtilities inputFile "
                     + "xslFile1 [xslFile2 . . .] outputFile " 
-                    + "[-exportMoMLDTD]");
+                    + "[exportMoMLDTD]");
             System.exit(2);
         } 
 
