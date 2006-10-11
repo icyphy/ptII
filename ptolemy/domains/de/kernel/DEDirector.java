@@ -1009,14 +1009,18 @@ public class DEDirector extends Director implements TimedDirector {
             }
         }
 
-        // Reset the hashtables for actor and port depths.
-        // These two variables have to be reset here because the initialize
-        // method constructs them.
-        _actorToDepth = null;
-        _portToDepth = null;
-
         // Call the preinitialize method of the super class.
         super.preinitialize();
+        
+        // Do this here because it updates the workspace version.
+        if (_sortValid != workspace().getVersion()) {
+            // Reset the hashtables for actor and port depths.
+            // These two variables have to be reset here because the initialize
+            // method constructs them.
+            _actorToDepth = null;
+            _portToDepth = null;
+            _computeActorDepth();
+        }
     }
 
     /** Unregister a debug listener.  If the specified listener has not
