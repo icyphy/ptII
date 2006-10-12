@@ -369,11 +369,11 @@ The Ptiny pack is required.
         <pack name="Sources" required="no">
             <description>The Ptolemy II sources.</description>
             <file src="ptII6.0.alpha.src.jar" targetdir="$INSTALL_PATH"/>
-            <file src="ExtractJarFile.class" targetdir="$INSTALL_PATH"/>
+            <!-- file src="ExtractJarFile.class" targetdir="$INSTALL_PATH"/ -->
         </pack>
     </packs>
 
     <!-- Include ExtractJarFile.class for the Process Panel -->
-    <jar src="ExtractJarFile.jar" stage="install"/>
+    <!-- jar src="ExtractJarFile.jar" stage="install"/-->
     
 </installation>
