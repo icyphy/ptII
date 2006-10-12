@@ -3,8 +3,8 @@ int $actorSymbol(parityMatrix)[$val(uncodedRate)][$val(codedRate)-$val(uncodedRa
 int $actorSymbol(syndrome)[$val(codedRate)-$val(uncodedRate)];
 int $actorSymbol(order) = $val(codedRate)-$val(uncodedRate);
 int $actorSymbol(result)[$val(codedRate)];
-int $actorSymbol(flag) = 0;
-int $actorSymbol(pos) = 0;
+int $actorSymbol(flag);
+int $actorSymbol(pos);
 int $actorSymbol(eValue);
 int $actorSymbol(eIndex);
 int $actorSymbol(index)[$val(codedRate) + 1];
@@ -14,6 +14,8 @@ int $actorSymbol(j);
 
 /***initBlock***/
 // Generate the parity matrix and look-up table.
+$actorSymbol(flag) = 0;
+$actorSymbol(pos) = 0;
 $actorSymbol(index)[0] = $val(codedRate);
 for ($actorSymbol(i) = 1; $actorSymbol(i) <= $val(codedRate); $actorSymbol(i)++) {
     if ($actorSymbol(i) == (1 << $actorSymbol(flag))) {

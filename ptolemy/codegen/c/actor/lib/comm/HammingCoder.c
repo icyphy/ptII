@@ -3,13 +3,15 @@ int $actorSymbol(parityMatrix)[$val(uncodedRate)][$val(codedRate)-$val(uncodedRa
 int $actorSymbol(parity)[$val(codedRate)-$val(uncodedRate)];
 int $actorSymbol(order) = $val(codedRate)-$val(uncodedRate);
 int $actorSymbol(result)[$val(codedRate)];
-int $actorSymbol(flag) = 0;
-int $actorSymbol(index) = 0;
+int $actorSymbol(flag);
+int $actorSymbol(index);
 int $actorSymbol(i);
 int $actorSymbol(j);
 /**/
 
 /***initBlock***/
+$actorSymbol(flag) = 0;
+$actorSymbol(index) = 0;
 
 for ($actorSymbol(i) = 1; $actorSymbol(i) <= $val(codedRate); $actorSymbol(i)++) {
     if ($actorSymbol(i) == (1 << $actorSymbol(flag))) {
