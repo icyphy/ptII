@@ -2344,12 +2344,34 @@ softwalls.tar.gz: softwalls
 
 
 
-IZPACKDIR=c:/Program Files/IzPack
+# IzPack is the installer we use
+# Download from http://www.izforge.com/izpack/downloads
+
+#IZPACKDIR=c:/Program Files/IzPack
+IZPACKDIR=$(PTII)/vendors/izpack
+IZPACK_COMPILE=$(IZPACKDIR)/_dist/bin/compile
+IZPACK_TAR=IzPack.src.3.9.0.tar.gz
+
+make_izpack: $(IZPACK_COMPILE)
+$(IZPACK_COMPILE): $(PTII)/vendors/izpack
+	 cd $(PTII)/vendors/izpack/src; ant dist
+
+# Download IzPack
+$(PTII)/vendors/izpack:
+	mkdir $(PTII)/vendors/izpack
+	cd $(PTII)/vendors/izpack; \
+		wget http://download.berlios.de/izpack/$(IZPACK_VERSION); \
+		$(TAR) -zxf $(IZPACK_VERSION)
+
+
+
+
 
 PTSETUP=ptII$(WINDOWS_VERSION)_setup
 # IzPack installer
-$(PTSETUP).jar: $(PTSETUP).xml ExtractJarFile.jar
-	"${IZPACKDIR}/bin/compile" $<
+setup_jar: $(PTSETUP).jar
+$(PTSETUP).jar: $(PTSETUP).xml #ExtractJarFile.jar
+	sh "$(IZPACK_COMPILE)" $<
 
 #	c:/cxh/src/izpack/izpack3.9.0/bin/compile $<
 
@@ -2380,7 +2402,7 @@ L4J_DIR=c:/Program Files/Launch4j
 L4JC=$(L4J_DIR)/launch4jc.exe
 
 # Launch4J
-$(PTSETUP).exe: $(PTSETUP)_l4j.xml $(PTSETUP).jar ExtractJarFile.class
+$(PTSETUP).exe: $(PTSETUP)_l4j.xml $(PTSETUP).jar #ExtractJarFile.class
 		"$(L4JC)" `cygpath --windows $$PWD/$<`
 
 
