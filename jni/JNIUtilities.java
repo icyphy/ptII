@@ -171,17 +171,14 @@ import ptolemy.util.StringUtilities;
 
  <pre>
  typedef long jint;
- typedef __int64 jlong;
  </pre>
  with:
  <pre>
- typedef long jint;
  #ifdef __GNUC__
  typedef long long jlong;
  #else
  typedef __int64 jlong;
  #endif
- typedef signed char jbyte;
  </pre>
  </blockquote>
 
