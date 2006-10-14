@@ -345,10 +345,12 @@ assignment throws PtalonRuntimeException
 :
 	#(ASSIGN (ID | #(DYNAMIC_NAME left:ID leftExp:EXPRESSION
 	{
-		String value = info.evaluateString(leftExp.getText());
-		if (value != null) {
-			name = left.getText() + value;
-			addAssignment = true;
+		if (info.isReady()) {
+			String value = info.evaluateString(leftExp.getText());
+			if (value != null) {
+				name = left.getText() + value;
+				addAssignment = true;
+			}
 		}
 	}
 	)) (b:ID

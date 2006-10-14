@@ -1,5 +1,12 @@
 /*
- * A rendezvous domain map worker for the map reduce example.
+ * A DE domain "map worker" that maps an input key/value
+ * to zero or more output key/value pairs.  It has parameter
+ * keyExpression, which is the qualified name of a user-defined
+ * static method that maps 
+ * the output key given the input key and value, named inkey and outkey
+ * respectively.  It must be an expression in the expression language.
+ * Similarly, 
+ * 
  *
  * @author Adam Cataldo
  */
@@ -10,9 +17,10 @@ MapWorker is {
 	actor buffer = ptolemy.domains.rendezvous.lib.Buffer;
 	actor expression = ptolemy.actor.lib.Expression;
 	
-	inport key;
-	inport value;
-	outport output;
+	inport inkey;
+	inport invalue;
+	outport outkey;
+	outport outvalue;
 	
 	parameter mapExpression;
 	parameter maxMapTokens;

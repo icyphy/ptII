@@ -199,8 +199,14 @@ conditional_statement throws PtalonScopeException
 	}
 	EXPRESSION 
 		#(TRUEBRANCH 
+		{
+			info.setCurrentBranch(true);
+		}
 			(atomic_statement | conditional_statement | iterative_statement)*)
 		#(FALSEBRANCH 
+		{
+			info.setCurrentBranch(false);
+		}
 			(atomic_statement | conditional_statement | iterative_statement)*))
 	{
 		#conditional_statement.setText(info.popIfStatement());

@@ -41,6 +41,7 @@ import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.ptalon.CodeManager.IfTree;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -111,7 +112,24 @@ public class NestedActorManager extends CodeManager {
             String symbol = _currentActorTree.getSymbol();
             if (symbol.equals("this")) {
                 _currentActorTree.created = true;
-                _currentActorTree.createdIteration = _currentIfTree.entered;
+                if (_inNewWhileIteration()) {
+                    if (_currentIfTree.isForStatement) {
+                        _currentActorTree.createdIteration = _currentIfTree.entered;
+                    } else {
+                        IfTree tree = _currentIfTree;
+                        while (!tree.isForStatement) {
+                            tree = tree.getParent();
+                            if (tree == null) {
+                                throw new PtalonRuntimeException(
+                                        "In a new for iteration, "
+                                                + "but there is no containing for block.");
+                            }
+                        }
+                        _currentActorTree.createdIteration = tree.entered;
+                    }
+                } else {
+                    _currentActorTree.createdIteration = _currentIfTree.entered;
+                }
                 _currentActorTree.assignPtalonParameters(_actor);
                 _currentActorTree.makeThisConnections();
                 _currentActorTree.removeDynamicLeftHandSides();
@@ -185,7 +203,24 @@ public class NestedActorManager extends CodeManager {
                     _currentActorTree.removeDynamicLeftHandSides();
                 }
                 _currentActorTree.created = true;
-                _currentActorTree.createdIteration = _currentIfTree.entered;
+                if (_inNewWhileIteration()) {
+                    if (_currentIfTree.isForStatement) {
+                        _currentActorTree.createdIteration = _currentIfTree.entered;
+                    } else {
+                        IfTree tree = _currentIfTree;
+                        while (!tree.isForStatement) {
+                            tree = tree.getParent();
+                            if (tree == null) {
+                                throw new PtalonRuntimeException(
+                                        "In a new for iteration, "
+                                                + "but there is no containing for block.");
+                            }
+                        }
+                        _currentActorTree.createdIteration = tree.entered;
+                    }
+                } else {
+                    _currentActorTree.createdIteration = _currentIfTree.entered;
+                }
             } else { // type of name not "import" or "parameter".
                 throw new PtalonRuntimeException("Invalid type for " + name);
             }
@@ -401,12 +436,32 @@ public class NestedActorManager extends CodeManager {
         }
         if ((_currentActorTree.created)) {
             if (_inNewWhileIteration()) {
-                int iteration = _currentActorTree.createdIteration;
-                if ((iteration == 0) || (iteration == _currentIfTree.entered)) {
-                    //Just go to the the next thing after the out if in this 
-                    //case.
+                if (_currentIfTree.isForStatement) {
+                    int iteration = _currentActorTree.createdIteration;
+                    if ((iteration == 0)
+                            || (iteration == _currentIfTree.entered)) {
+                        //Just go to the the next thing after the out if in this 
+                        //case.
+                    } else {
+                        return false;
+                    }
                 } else {
-                    return false;
+                    IfTree tree = _currentIfTree;
+                    while (!tree.isForStatement) {
+                        tree = tree.getParent();
+                        if (tree == null) {
+                            throw new PtalonRuntimeException(
+                                    "In a new for iteration, "
+                                            + "but there is no containing for block.");
+                        }
+                    }
+                    int iteration = _currentActorTree.createdIteration;
+                    if ((iteration == 0) || (iteration == tree.entered)) {
+                        //Just go to the the next thing after the out if in this 
+                        //case.
+                    } else {
+                        return false;
+                    }
                 }
             } else {
                 return false;
@@ -834,6 +889,31 @@ public class NestedActorManager extends CodeManager {
                 throw new PtalonScopeException(
                         "This is not a top-level actor declaration.");
             }
+            if (_getType(_symbol).equals("this")) {
+                String portType = "";
+                boolean transparent = false;
+                try {
+                    portType = _getType(portName);
+                    transparent = true;
+                } catch (PtalonScopeException e) {
+
+                }
+                if (transparent && portType.equals("transparent")) {
+                    if (_getType(connectPoint).equals("relation")) {
+                        _relations.put(portName, connectPoint);
+                    } else if (_getType(connectPoint).equals("transparent")) {
+                        _transparencies.put(portName, connectPoint);
+                    } else if (_getType(connectPoint).endsWith("port")) {
+                        addPortAssign(connectPoint, portName);
+                        return;
+                    } else {
+                        throw new PtalonScopeException(connectPoint
+                                + " is not a port or relation.");
+                    }
+                    _transparentLeftHandSides.put(portName, connectPoint);
+                    return;
+                }
+            }
             if (_getType(connectPoint).equals("relation")) {
                 _relations.put(portName, connectPoint);
             } else if (_getType(connectPoint).equals("transparent")) {
@@ -952,9 +1032,9 @@ public class NestedActorManager extends CodeManager {
                             String uniqueName = actor.uniqueName(boolParam);
                             parameter = new Parameter(actor, uniqueName);
                         }
-                        try { 
-                            Token result = _parseTreeEvaluator.evaluateParseTree(
-                                parseTree, _scope);
+                        try {
+                            Token result = _parseTreeEvaluator
+                                    .evaluateParseTree(parseTree, _scope);
                             parameter.setToken(result);
                         } catch (IllegalActionException e) {
                             ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
@@ -1144,12 +1224,49 @@ public class NestedActorManager extends CodeManager {
          */
         public boolean isReady() throws PtalonRuntimeException {
             for (String portName : _unknownLeftSides.keySet()) {
-                if (evaluateString(_unknownLeftSides.get(portName)) == null) {
+                String evaluation = evaluateString(_unknownLeftSides
+                        .get(portName));
+                if (evaluation == null) {
                     return false;
+                }
+                try {
+                    if (_getType(_symbol).equals("this")) {
+                        String portType = "";
+                        try {
+                            portType = _getType(evaluation);
+                        } catch (PtalonScopeException e) {
+                            continue;
+                        }
+                        if (portType.equals("transparent")) {
+                            if (!_transparentRelations.containsKey(evaluation)) {
+                                return false;
+                            }
+                        }
+                    }
+                } catch (PtalonScopeException e) {
+                    throw new PtalonRuntimeException("scope exception", e);
                 }
             }
             for (String portName : _unknownExpressions.keySet()) {
                 if (evaluateString(_unknownExpressions.get(portName)) == null) {
+                    return false;
+                }
+            }
+            for (String transparency : _transparentLeftHandSides.keySet()) {
+                if (!_transparentRelations.containsKey(transparency)) {
+                    return false;
+                }
+                String connectType = "";
+                try {
+                    connectType = _getType(_transparentLeftHandSides
+                            .get(transparency));
+                } catch (PtalonScopeException e) {
+                    continue;
+                }
+                if (connectType.equals("transparent")
+                        && !_transparentRelations
+                                .containsKey(_transparentLeftHandSides
+                                        .get(transparency))) {
                     return false;
                 }
             }
@@ -1163,20 +1280,6 @@ public class NestedActorManager extends CodeManager {
                         _symbol).equals("this"))) {
                     throw new PtalonRuntimeException("Bad type for symbol "
                             + _symbol);
-                }
-                for (String bool : _boolParams) {
-                    PtalonBoolParameter param = (PtalonBoolParameter) _actor
-                            .getAttribute(getMappedName(bool));
-                    if (!param.hasValue()) {
-                        return false;
-                    }
-                }
-                for (String integer : _intParams) {
-                    PtalonIntParameter param = (PtalonIntParameter) _actor
-                            .getAttribute(getMappedName(integer));
-                    if (!param.hasValue()) {
-                        return false;
-                    }
                 }
                 for (ActorTree child : _children) {
                     if (!child.isReady()) {
@@ -1494,8 +1597,12 @@ public class NestedActorManager extends CodeManager {
                             .getRelation(relationName);
                     TypedIOPort port = (TypedIOPort) _actor.getPort(portName);
                     if (port == null) {
-                        throw new PtalonRuntimeException("No port named "
-                                + portName);
+                        if (_transparentRelations.containsKey(portName)) {
+                            port = _transparentRelations.get(portName);
+                        } else {
+                            throw new PtalonRuntimeException("No port named "
+                                    + portName);
+                        }
                     }
                     port.link(relation);
                 }
@@ -1509,8 +1616,12 @@ public class NestedActorManager extends CodeManager {
                         TypedIORelation rel = new TypedIORelation(_actor,
                                 relationName);
                         if (port == null) {
-                            throw new PtalonRuntimeException("No port named "
-                                    + portName);
+                            if (_transparentRelations.containsKey(portName)) {
+                                port = _transparentRelations.get(portName);
+                            } else {
+                                throw new PtalonRuntimeException(
+                                        "No port named " + portName);
+                            }
                         }
                         port.link(rel);
                         connectionPoint.link(rel);
@@ -1569,8 +1680,12 @@ public class NestedActorManager extends CodeManager {
                         TypedIOPort port = (TypedIOPort) _actor
                                 .getPort(portName);
                         if (port == null) {
-                            throw new PtalonRuntimeException("No port named "
-                                    + portName);
+                            if (_transparentRelations.containsKey(portName)) {
+                                port = _transparentRelations.get(portName);
+                            } else {
+                                throw new PtalonRuntimeException(
+                                        "No port named " + portName);
+                            }
                         }
                         port.link(relation);
                     } else if (_getType(name).equals("transparent")) {
@@ -1583,8 +1698,12 @@ public class NestedActorManager extends CodeManager {
                             TypedIORelation rel = new TypedIORelation(_actor,
                                     relationName);
                             if (port == null) {
-                                throw new PtalonRuntimeException(
-                                        "No port named " + portName);
+                                if (_transparentRelations.containsKey(portName)) {
+                                    port = _transparentRelations.get(portName);
+                                } else {
+                                    throw new PtalonRuntimeException(
+                                            "No port named " + portName);
+                                }
                             }
                             port.link(rel);
                             connectionPoint.link(rel);
@@ -1613,7 +1732,7 @@ public class NestedActorManager extends CodeManager {
             for (String prefix : _unknownLeftSides.keySet()) {
                 String suffix = evaluateString(_unknownLeftSides.get(prefix));
                 if (suffix == null) {
-                    break;
+                    continue;
                 }
                 String name = prefix + suffix;
                 if (_parameters.containsKey(name)) {
@@ -1632,7 +1751,7 @@ public class NestedActorManager extends CodeManager {
                     _unknownExpressions.remove(name);
                 }
                 if (_unknownPrefixes.containsKey(name)) {
-                    _unknownExpressions.remove(name);
+                    _unknownPrefixes.remove(name);
                 }
             }
         }
@@ -1754,7 +1873,7 @@ public class NestedActorManager extends CodeManager {
         /**
          * This is the symbol stored with the CodeManager
          * that this actor declaration refers 
-         * to.  It's either a "actorparameter" or "import" symbol.
+         * to.  It's either a "actorparameter", "import", or "this" symbol.
          */
         private String _symbol;
 
@@ -1763,6 +1882,13 @@ public class NestedActorManager extends CodeManager {
          * is a transparent relation in its container to be connected to at runtime.
          */
         private Map<String, String> _transparencies = new Hashtable<String, String>();
+
+        /**
+         * Each member of this set is a transparent relation assigned
+         * a value in a this statement, like
+         * this(transparentRelation := someOtherRelation);
+         */
+        private Map<String, String> _transparentLeftHandSides = new Hashtable<String, String>();
 
         /**
          * The _unknownPrefixes maps port names in this actor

@@ -345,7 +345,7 @@ conditional_statement!
 	}
 	| i2:iterative_statement
 	{
-		trueTree.addChild(#i2);
+		falseTree.addChild(#i2);
 	}
 	)* RCURLY!
 	{

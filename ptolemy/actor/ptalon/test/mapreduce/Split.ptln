@@ -46,7 +46,7 @@ Split is {
 	transparent relation readerOutput;
 	relation readerEndOfFile;
 	reader(input := clockOut, output := readerOutput, endOfFile :=
-			readerEndOfFile, blockSize := [[blockSize]], fileOrURL := 
+			readerEndOfFile, blockSize := [[blockSize * 2]], fileOrURL := 
 			[[file]], numberOfOutputs := [[numberOfOutputs]]);
 	
 	relation delayOutput;

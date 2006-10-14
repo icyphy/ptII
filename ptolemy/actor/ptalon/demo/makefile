@@ -46,6 +46,7 @@ include $(CONFIG)
 
 # Keep this list alphabetized.
 JSRCS = \
+	Complex.java \
 	SplitReader.java \
 	StringToKeyValue.java
 	

@@ -46,10 +46,8 @@ import ptolemy.kernel.util.Workspace;
 //// AnythingToDouble
 
 /**
- This actor converts an string token whose string represents a length-two
- array to the key and value tokens in the array.  The key token is the first
- element of the array and the value token is the second token in the array.
- 
+ This actor converts each pair of input string tokens to a key and
+ value string token.
  <p>
  @author Adam Cataldo
  */
@@ -70,19 +68,13 @@ public class StringToKeyValue extends TypedAtomicActor {
         input.setInput(true);
         input.setTypeEquals(BaseType.STRING);
 
-        keyType = new Parameter(this, "keyType");
-        keyType.setToken("\"String Type\"");
-
         key = new TypedIOPort(this, "key");
         key.setOutput(true);
-        key.setTypeAtLeast(keyType);
-
-        valueType = new Parameter(this, "valueType");
-        valueType.setToken("1");
+        key.setTypeEquals(BaseType.STRING);
 
         value = new TypedIOPort(this, "value");
         value.setOutput(true);
-        value.setTypeAtLeast(valueType);
+        value.setTypeEquals(BaseType.STRING);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,20 +90,10 @@ public class StringToKeyValue extends TypedAtomicActor {
      */
     public TypedIOPort key;
 
-    /** A parameter whose type gives the type of the key port.
-     * 
-     */
-    public Parameter keyType;
-
     /** The value output port.
      * 
      */
     public TypedIOPort value;
-
-    /** A parameter whose type gives the type of the key port.
-     * 
-     */
-    public Parameter valueType;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -132,23 +114,17 @@ public class StringToKeyValue extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        String inString = ((StringToken) input.get(0)).stringValue();
-        StringTokenizer tokenizer = new StringTokenizer(inString, "{,}");
+        String keyString = ((StringToken) input.get(0)).stringValue();
+        String valueString = ((StringToken) input.get(0)).stringValue();
 
-        try {
-            if (inString.equals("EOF")) {
-                return;
-            }
-            Token keyToken = (new ArrayToken("{" + tokenizer.nextToken() + "}"))
-                    .getElement(0);
-            Token valueToken = (new ArrayToken("{" + tokenizer.nextToken()
-                    + "}")).getElement(0);
-
-            key.send(0, keyToken);
-            value.send(0, valueToken);
-        } catch (NoSuchElementException e) {
-            throw new IllegalActionException("Bad expression passed as input");
+        if (keyString.equals("EOF") && valueString.equals("EOF")) {
+            return;
         }
+        StringToken keyToken = new StringToken(keyString);
+        StringToken valueToken = new StringToken(valueString);
+
+        key.send(0, keyToken);
+        value.send(0, valueToken);
     }
 
     /** Return false if the input port has no token, otherwise return
@@ -156,7 +132,7 @@ public class StringToKeyValue extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        if (!input.hasToken(0)) {
+        if (!input.hasToken(0, 2)) {
             return false;
         }
         return super.prefire();

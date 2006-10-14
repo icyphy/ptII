@@ -95,7 +95,26 @@ public class CodeManager {
         try {
             PtalonParameter parameter = new PtalonParameter(_actor, uniqueName);
             _currentIfTree.setStatus(name, true);
-            _currentIfTree.setEnteredIteration(name, _currentIfTree.entered);
+            if (_inNewWhileIteration()) {
+                if (_currentIfTree.isForStatement) {
+                    _currentIfTree.setEnteredIteration(name,
+                            _currentIfTree.entered);
+                } else {
+                    IfTree tree = _currentIfTree;
+                    while (!tree.isForStatement) {
+                        tree = tree.getParent();
+                        if (tree == null) {
+                            throw new PtalonRuntimeException(
+                                    "In a new for iteration, "
+                                            + "but there is no containing for block.");
+                        }
+                    }
+                    _currentIfTree.setEnteredIteration(name, tree.entered);
+                }
+            } else {
+                _currentIfTree
+                        .setEnteredIteration(name, _currentIfTree.entered);
+            }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
@@ -120,7 +139,26 @@ public class CodeManager {
             PtalonParameter parameter = new PtalonParameter(_actor, uniqueName);
             parameter.setVisibility(Settable.NONE);
             _currentIfTree.setStatus(name, true);
-            _currentIfTree.setEnteredIteration(name, _currentIfTree.entered);
+            if (_inNewWhileIteration()) {
+                if (_currentIfTree.isForStatement) {
+                    _currentIfTree.setEnteredIteration(name,
+                            _currentIfTree.entered);
+                } else {
+                    IfTree tree = _currentIfTree;
+                    while (!tree.isForStatement) {
+                        tree = tree.getParent();
+                        if (tree == null) {
+                            throw new PtalonRuntimeException(
+                                    "In a new for iteration, "
+                                            + "but there is no containing for block.");
+                        }
+                    }
+                    _currentIfTree.setEnteredIteration(name, tree.entered);
+                }
+            } else {
+                _currentIfTree
+                        .setEnteredIteration(name, _currentIfTree.entered);
+            }
             _currentIfTree.mapName(name, uniqueName);
             _unassignedParameters.add(parameter);
             _unassignedParameterValues.add(expression);
@@ -149,7 +187,26 @@ public class CodeManager {
                 port.setMultiport(true);
             }
             _currentIfTree.setStatus(name, true);
-            _currentIfTree.setEnteredIteration(name, _currentIfTree.entered);
+            if (_inNewWhileIteration()) {
+                if (_currentIfTree.isForStatement) {
+                    _currentIfTree.setEnteredIteration(name,
+                            _currentIfTree.entered);
+                } else {
+                    IfTree tree = _currentIfTree;
+                    while (!tree.isForStatement) {
+                        tree = tree.getParent();
+                        if (tree == null) {
+                            throw new PtalonRuntimeException(
+                                    "In a new for iteration, "
+                                            + "but there is no containing for block.");
+                        }
+                    }
+                    _currentIfTree.setEnteredIteration(name, tree.entered);
+                }
+            } else {
+                _currentIfTree
+                        .setEnteredIteration(name, _currentIfTree.entered);
+            }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
@@ -178,7 +235,26 @@ public class CodeManager {
                 port.setMultiport(true);
             }
             _currentIfTree.setStatus(name, true);
-            _currentIfTree.setEnteredIteration(name, _currentIfTree.entered);
+            if (_inNewWhileIteration()) {
+                if (_currentIfTree.isForStatement) {
+                    _currentIfTree.setEnteredIteration(name,
+                            _currentIfTree.entered);
+                } else {
+                    IfTree tree = _currentIfTree;
+                    while (!tree.isForStatement) {
+                        tree = tree.getParent();
+                        if (tree == null) {
+                            throw new PtalonRuntimeException(
+                                    "In a new for iteration, "
+                                            + "but there is no containing for block.");
+                        }
+                    }
+                    _currentIfTree.setEnteredIteration(name, tree.entered);
+                }
+            } else {
+                _currentIfTree
+                        .setEnteredIteration(name, _currentIfTree.entered);
+            }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
@@ -203,7 +279,27 @@ public class CodeManager {
             PtalonExpressionParameter parameter = new PtalonExpressionParameter(
                     _actor, uniqueName);
             _currentIfTree.setStatus(name, true);
-            _currentIfTree.setEnteredIteration(name, _currentIfTree.entered);
+            if (_inNewWhileIteration()) {
+                if (_currentIfTree.isForStatement) {
+                    _currentIfTree.setEnteredIteration(name,
+                            _currentIfTree.entered);
+                } else {
+                    IfTree tree = _currentIfTree;
+                    while (!tree.isForStatement) {
+                        tree = tree.getParent();
+                        if (tree == null) {
+                            throw new PtalonRuntimeException(
+                                    "In a new for iteration, "
+                                            + "but there is no containing for block.");
+                        }
+                    }
+                    _currentIfTree.setEnteredIteration(name, tree.entered);
+                }
+            } else {
+                _currentIfTree
+                        .setEnteredIteration(name, _currentIfTree.entered);
+            }
+
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
@@ -228,7 +324,26 @@ public class CodeManager {
                     _actor, uniqueName);
             parameter.setVisibility(Settable.NONE);
             _currentIfTree.setStatus(name, true);
-            _currentIfTree.setEnteredIteration(name, _currentIfTree.entered);
+            if (_inNewWhileIteration()) {
+                if (_currentIfTree.isForStatement) {
+                    _currentIfTree.setEnteredIteration(name,
+                            _currentIfTree.entered);
+                } else {
+                    IfTree tree = _currentIfTree;
+                    while (!tree.isForStatement) {
+                        tree = tree.getParent();
+                        if (tree == null) {
+                            throw new PtalonRuntimeException(
+                                    "In a new for iteration, "
+                                            + "but there is no containing for block.");
+                        }
+                    }
+                    _currentIfTree.setEnteredIteration(name, tree.entered);
+                }
+            } else {
+                _currentIfTree
+                        .setEnteredIteration(name, _currentIfTree.entered);
+            }
             _currentIfTree.mapName(name, uniqueName);
             _unassignedParameters.add(parameter);
             _unassignedParameterValues.add(expression);
@@ -257,7 +372,26 @@ public class CodeManager {
                 port.setMultiport(true);
             }
             _currentIfTree.setStatus(name, true);
-            _currentIfTree.setEnteredIteration(name, _currentIfTree.entered);
+            if (_inNewWhileIteration()) {
+                if (_currentIfTree.isForStatement) {
+                    _currentIfTree.setEnteredIteration(name,
+                            _currentIfTree.entered);
+                } else {
+                    IfTree tree = _currentIfTree;
+                    while (!tree.isForStatement) {
+                        tree = tree.getParent();
+                        if (tree == null) {
+                            throw new PtalonRuntimeException(
+                                    "In a new for iteration, "
+                                            + "but there is no containing for block.");
+                        }
+                    }
+                    _currentIfTree.setEnteredIteration(name, tree.entered);
+                }
+            } else {
+                _currentIfTree
+                        .setEnteredIteration(name, _currentIfTree.entered);
+            }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
@@ -281,7 +415,26 @@ public class CodeManager {
         try {
             TypedIORelation relation = new TypedIORelation(_actor, uniqueName);
             _currentIfTree.setStatus(name, true);
-            _currentIfTree.setEnteredIteration(name, _currentIfTree.entered);
+            if (_inNewWhileIteration()) {
+                if (_currentIfTree.isForStatement) {
+                    _currentIfTree.setEnteredIteration(name,
+                            _currentIfTree.entered);
+                } else {
+                    IfTree tree = _currentIfTree;
+                    while (!tree.isForStatement) {
+                        tree = tree.getParent();
+                        if (tree == null) {
+                            throw new PtalonRuntimeException(
+                                    "In a new for iteration, "
+                                            + "but there is no containing for block.");
+                        }
+                    }
+                    _currentIfTree.setEnteredIteration(name, tree.entered);
+                }
+            } else {
+                _currentIfTree
+                        .setEnteredIteration(name, _currentIfTree.entered);
+            }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException e) {
             throw new PtalonRuntimeException("NameDuplicationException", e);
@@ -321,9 +474,29 @@ public class CodeManager {
      * 
      * @param name The name of the relation.
      */
-    public void addTransparentRelation(String name) {
+    public void addTransparentRelation(String name)
+            throws PtalonRuntimeException {
         _currentIfTree.setStatus(name, true);
-        _currentIfTree.setEnteredIteration(name, _currentIfTree.entered);
+        if (_inNewWhileIteration()) {
+            if (_currentIfTree.isForStatement) {
+                _currentIfTree.setEnteredIteration(name,
+                        _currentIfTree.entered);
+            } else {
+                IfTree tree = _currentIfTree;
+                while (!tree.isForStatement) {
+                    tree = tree.getParent();
+                    if (tree == null) {
+                        throw new PtalonRuntimeException(
+                                "In a new for iteration, "
+                                        + "but there is no containing for block.");
+                    }
+                }
+                _currentIfTree.setEnteredIteration(name, tree.entered);
+            }
+        } else {
+            _currentIfTree
+                    .setEnteredIteration(name, _currentIfTree.entered);
+        }
     }
 
     /**
@@ -587,14 +760,34 @@ public class CodeManager {
      */
     public boolean isCreated(String symbol) throws PtalonRuntimeException {
         if (_inNewWhileIteration()) {
-            int iteration = _currentIfTree.getEnteredIteration(symbol);
-            if (iteration == 0) {
-                return false;
+            if (_currentIfTree.isForStatement) {
+                int iteration = _currentIfTree.getEnteredIteration(symbol);
+                if (iteration == 0) {
+                    return false;
+                }
+                if (iteration == _currentIfTree.entered) {
+                    return false;
+                }
+                return true;
+            } else {
+                IfTree tree = _currentIfTree;
+                while (!tree.isForStatement) {
+                    tree = tree.getParent();
+                    if (tree == null) {
+                        throw new PtalonRuntimeException(
+                                "In a new for iteration, "
+                                        + "but there is no containing for block.");
+                    }
+                }
+                int iteration = tree.getEnteredIteration(symbol);
+                if (iteration == 0) {
+                    return false;
+                }
+                if (iteration == tree.entered) {
+                    return false;
+                }
+                return true;
             }
-            if (iteration == _currentIfTree.entered) {
-                return false;
-            }
-            return true;
         }
         List<IfTree> ancestors = _currentIfTree.getAncestors();
         for (IfTree parent : ancestors) {
@@ -945,9 +1138,12 @@ public class CodeManager {
          */
         public IfTree(IfTree parent, String name) {
             super(parent, name);
-            _nameMappings = new Hashtable<String, String>();
-            _setStatus = new Hashtable<String, Boolean>();
-            _symbols = new Hashtable<String, String>();
+            _trueNameMappings = new Hashtable<String, String>();
+            _trueSetStatus = new Hashtable<String, Boolean>();
+            _trueSymbols = new Hashtable<String, String>();
+            _falseNameMappings = new Hashtable<String, String>();
+            _falseSetStatus = new Hashtable<String, Boolean>();
+            _falseSymbols = new Hashtable<String, String>();
         }
 
         /**
@@ -970,9 +1166,15 @@ public class CodeManager {
          * @param type Its corresponding type.
          */
         public void addSymbol(String symbol, String type) {
-            _symbols.put(symbol, type);
-            _nameMappings.put(symbol, symbol);
-            _setStatus.put(symbol, false);
+            if (_currentBranch || isForStatement) {
+                _trueSymbols.put(symbol, type);
+                _trueNameMappings.put(symbol, symbol);
+                _trueSetStatus.put(symbol, false);
+            } else {
+                _falseSymbols.put(symbol, type);
+                _falseNameMappings.put(symbol, symbol);
+                _falseSetStatus.put(symbol, false);
+            }
         }
 
         /**
@@ -984,9 +1186,15 @@ public class CodeManager {
          */
         public void addSymbol(String symbol, String type, boolean status,
                 String uniqueName) {
-            _symbols.put(symbol, type);
-            _nameMappings.put(symbol, uniqueName);
-            _setStatus.put(symbol, status);
+            if (_currentBranch || isForStatement) {
+                _trueSymbols.put(symbol, type);
+                _trueNameMappings.put(symbol, uniqueName);
+                _trueSetStatus.put(symbol, status);
+            } else {
+                _falseSymbols.put(symbol, type);
+                _falseNameMappings.put(symbol, uniqueName);
+                _falseSetStatus.put(symbol, status);
+            }
         }
 
         /**
@@ -1090,7 +1298,7 @@ public class CodeManager {
             String message = symbol.concat(" not found.");
             throw new PtalonScopeException(message);
         }
-        
+
         public int getEnteredIteration(String symbol) {
             Integer entered = _createdIteration.get(symbol);
             if (entered == null) {
@@ -1107,7 +1315,12 @@ public class CodeManager {
          */
         public String getMappedName(String symbol)
                 throws PtalonRuntimeException {
-            String output = _nameMappings.get(symbol);
+            String output;
+            if (_currentBranch || isForStatement) {
+                output = _trueNameMappings.get(symbol);
+            } else {
+                output = _falseNameMappings.get(symbol);
+            }
             if (output == null) {
                 throw new PtalonRuntimeException("Symbol " + symbol
                         + " not found.");
@@ -1124,7 +1337,12 @@ public class CodeManager {
          * scope.
          */
         public boolean isCreated(String symbol) throws PtalonRuntimeException {
-            Boolean status = _setStatus.get(symbol);
+            Boolean status;
+            if (_currentBranch || isForStatement) {
+                status = _trueSetStatus.get(symbol);
+            } else {
+                status = _falseSetStatus.get(symbol);
+            }
             if (status == null) {
                 return false;
             }
@@ -1138,7 +1356,11 @@ public class CodeManager {
          * @return true if symbol is in the right scope.
          */
         public boolean inDeepScope(String symbol) {
-            if (_symbols.containsKey(symbol)) {
+            if ((_currentBranch || isForStatement)
+                    && _trueSymbols.containsKey(symbol)) {
+                return true;
+            } else if (!(_currentBranch || isForStatement)
+                    && _falseSymbols.containsKey(symbol)) {
                 return true;
             }
             for (IfTree child : _children) {
@@ -1155,7 +1377,11 @@ public class CodeManager {
          * @return All symbols in the scope of the if-block.
          */
         public Set<String> getSymbols() {
-            return _symbols.keySet();
+            if (_currentBranch || isForStatement) {
+                return _trueSymbols.keySet();
+            } else {
+                return _falseSymbols.keySet();
+            }
         }
 
         /**
@@ -1166,7 +1392,12 @@ public class CodeManager {
          * of the if statement associated with this IfTree.
          */
         public String getType(String symbol) throws PtalonScopeException {
-            String value = _symbols.get(symbol);
+            String value;
+            if (_currentBranch || isForStatement) {
+                value = _trueSymbols.get(symbol);
+            } else {
+                value = _falseSymbols.get(symbol);
+            }
             if (value == null) {
                 String message = symbol.concat(" not found.");
                 throw new PtalonScopeException(message);
@@ -1188,24 +1419,46 @@ public class CodeManager {
          * a parameter.
          */
         public boolean isFullyAssigned() throws PtalonRuntimeException {
-            for (String symbol : _setStatus.keySet()) {
-                if (!_setStatus.get(symbol)) {
-                    return false;
-                }
-                if (_symbols.get(symbol).endsWith("parameter")) {
-                    try {
-                        PtalonParameter param = (PtalonParameter) _actor
-                                .getAttribute(_nameMappings.get(symbol));
-                        if (!param.hasValue()) {
-                            return false;
+            if (_currentBranch || isForStatement) {
+                for (String symbol : _trueSetStatus.keySet()) {
+                    if (!_trueSetStatus.get(symbol)) {
+                        return false;
+                    }
+                    if (_trueSymbols.get(symbol).endsWith("parameter")) {
+                        try {
+                            PtalonParameter param = (PtalonParameter) _actor
+                                    .getAttribute(_trueNameMappings.get(symbol));
+                            if (!param.hasValue()) {
+                                return false;
+                            }
+                        } catch (Exception e) {
+                            throw new PtalonRuntimeException(
+                                    "Could not access parameter " + symbol, e);
                         }
-                    } catch (Exception e) {
-                        throw new PtalonRuntimeException(
-                                "Could not access parameter " + symbol, e);
                     }
                 }
+                return true;
+            } else {
+                for (String symbol : _falseSetStatus.keySet()) {
+                    if (!_falseSetStatus.get(symbol)) {
+                        return false;
+                    }
+                    if (_falseSymbols.get(symbol).endsWith("parameter")) {
+                        try {
+                            PtalonParameter param = (PtalonParameter) _actor
+                                    .getAttribute(_falseNameMappings
+                                            .get(symbol));
+                            if (!param.hasValue()) {
+                                return false;
+                            }
+                        } catch (Exception e) {
+                            throw new PtalonRuntimeException(
+                                    "Could not access parameter " + symbol, e);
+                        }
+                    }
+                }
+                return true;
             }
-            return true;
         }
 
         public boolean inNewWhileIteration() {
@@ -1227,12 +1480,22 @@ public class CodeManager {
          */
         public void mapName(String symbol, String uniqueName)
                 throws PtalonRuntimeException {
-            String value = _symbols.get(symbol);
-            if (value == null) {
-                String message = symbol.concat(" not found.");
-                throw new PtalonRuntimeException(message);
+            String value;
+            if (_currentBranch || isForStatement) {
+                value = _trueSymbols.get(symbol);
+                if (value == null) {
+                    String message = symbol.concat(" not found.");
+                    throw new PtalonRuntimeException(message);
+                }
+                _trueNameMappings.put(symbol, uniqueName);
+            } else {
+                value = _falseSymbols.get(symbol);
+                if (value == null) {
+                    String message = symbol.concat(" not found.");
+                    throw new PtalonRuntimeException(message);
+                }
+                _falseNameMappings.put(symbol, uniqueName);
             }
-            _nameMappings.put(symbol, uniqueName);
         }
 
         /**
@@ -1250,7 +1513,7 @@ public class CodeManager {
         public void setCurrentBranch(boolean branch) {
             _currentBranch = branch;
         }
-        
+
         /**
          * Set the iteration (number of times this if/for block has been
          * entered) in which this symbol is created.
@@ -1268,7 +1531,11 @@ public class CodeManager {
          * @param status The status.
          */
         public void setStatus(String symbol, boolean status) {
-            _setStatus.put(symbol, status);
+            if (_currentBranch || isForStatement) {
+                _trueSetStatus.put(symbol, status);
+            } else {
+                _falseSetStatus.put(symbol, status);
+            }
         }
 
         /**
@@ -1288,34 +1555,6 @@ public class CodeManager {
                 output += child.toString();
             }
             return output;
-        }
-
-        /**
-         * Write an xml version of this if tree to the given output.
-         * @param output The writer to send the output to.
-         * @param depth The depth of indents to start with.
-         * @exception IOException If there is a problem writing to the output.
-         */
-        public void xmlSerialize(Writer output, int depth) throws IOException {
-            String activeBranch;
-            if (_activeBranch == null) {
-                activeBranch = "unknown";
-            } else {
-                activeBranch = _activeBranch.toString();
-            }
-            output.write(_getIndentPrefix(depth) + "<if name=\"" + _name
-                    + "\" activeBranch=\"" + activeBranch + "\">\n");
-            for (String symbol : _symbols.keySet()) {
-                output.write(_getIndentPrefix(depth + 1) + "<symbol name =\""
-                        + symbol + "\" type=\"" + _symbols.get(symbol)
-                        + "\" status=\"" + _setStatus.get(symbol)
-                        + "\" uniqueName=\"" + _nameMappings.get(symbol)
-                        + "\"/>\n");
-            }
-            for (IfTree child : _children) {
-                child.xmlSerialize(output, depth + 1);
-            }
-            output.write(_getIndentPrefix(depth) + "</if>\n");
         }
 
         /**
@@ -1380,26 +1619,51 @@ public class CodeManager {
         private Hashtable<String, Integer> _createdIteration = new Hashtable<String, Integer>();
 
         /**
+         * Each symbol gets mapped to its unique name in the
+         * Ptalon Actor.  This is for the false branch of this
+         * if tree.
+         */
+        private Hashtable<String, String> _falseNameMappings;
+
+        /**
+         * A symbol maps to false if it has been set to some
+         * value or false otherwise.  This is for the false branch of this
+         * if tree.
+         */
+        private Hashtable<String, Boolean> _falseSetStatus;
+
+        /**
+         * The symbol table for this level of the if hierarchy.
+         * This is for the false branch of this
+         * if tree.
+         */
+        private Hashtable<String, String> _falseSymbols;
+
+        /**
          * This is true if in a new iteration of a while block.
          */
         private boolean _inNewWhileIteration = false;
 
         /**
          * Each symbol gets mapped to its unique name in the
-         * Ptalon Actor.
+         * Ptalon Actor.  This is for the true branch of this
+         * if tree.
          */
-        private Hashtable<String, String> _nameMappings;
+        private Hashtable<String, String> _trueNameMappings;
 
         /**
          * A symbol maps to true if it has been set to some
-         * value or false otherwise.
+         * value or false otherwise.  This is for the true branch of this
+         * if tree.
          */
-        private Hashtable<String, Boolean> _setStatus;
+        private Hashtable<String, Boolean> _trueSetStatus;
 
         /**
          * The symbol table for this level of the if hierarchy.
+         * This is for the true branch of this
+         * if tree.
          */
-        private Hashtable<String, String> _symbols;
+        private Hashtable<String, String> _trueSymbols;
 
     }
 
