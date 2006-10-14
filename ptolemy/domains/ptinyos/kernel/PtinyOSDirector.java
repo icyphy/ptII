@@ -1050,7 +1050,9 @@ public class PtinyOSDirector extends Director {
 
         if (exitValue != 0) {
             throw new IllegalActionException("Running \"" + commandString
-                    + "\" returned a nonzero value.\n" + "Output:\n"
+                    + "\" returned '" + exitValue
+                    + "', which is a nonzero value, which indicates an error.\n"
+                    + "Output:\n"
                     + outputWriter + "Error:\n" + errorWriter);
         }
     }
