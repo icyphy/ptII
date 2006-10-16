@@ -21,13 +21,6 @@ and install them.
 
 <li> Under Windows, you will need to edit you jni_md.h file
 
- Then see
- <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt" target="_top"><code>http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt</code></a>
- <br>You might need to edit jni_md.h, the above URL says
- <blockquote>
- GCC doesn't have a __int64 built-in, and this patch basically uses
- "long long" instead.
-
  <ol>
  <li> Edit the file <code><i>jdk_root</i>>/include/win32/jni_md.h</code>,
  Where <code><i>jdk_root</i></code> is the installation root (eg.,
@@ -46,7 +39,6 @@ and install them.
  typedef __int64 jlong;
  #endif
  </pre>
- </blockquote>
 
 <li> Make sure that <code>/usr/local/bin</code>
               is in your path before <code>/usr/bin</code>. 
