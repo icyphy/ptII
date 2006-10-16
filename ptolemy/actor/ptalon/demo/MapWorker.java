@@ -270,19 +270,6 @@ public class MapWorker extends TypedAtomicActor {
         }
     }
 
-    /**
-     * Test if the given map method has the correct type signature and
-     * access modifiers.
-     * @param map The map method to test.
-     * @throws IllegalActionException If the method has incorrect signature
-     * or modifiers.
-     */
-    private void _testMapMethod(Method map) throws IllegalActionException {
-        if (map == null) {
-            throw new IllegalActionException("The map method has not been set.");
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                        private members                    ////
 
