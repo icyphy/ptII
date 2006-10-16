@@ -1,29 +1,29 @@
 /* An aggregation of typed actors, specified by a Ptalon model.
 
-@Copyright (c) 1998-2006 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1998-2006 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
 
@@ -175,6 +175,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    throw new IllegalActionException(this, e, e.getMessage());
+
                 }
             }
         }
@@ -212,7 +214,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 _removeEntity(null);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            throw e;
         }
     }
 
@@ -226,7 +229,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      * @return The created actor.
      * @exception PtalonRuntimeException If there is any trouble creating this actor.
      */
-    public ComponentEntity createNestedActor(PtalonActor container, String uniqueName) throws PtalonRuntimeException {
+    public ComponentEntity createNestedActor(PtalonActor container,
+            String uniqueName) throws PtalonRuntimeException {
         return _codeManager.createNestedActor(container, uniqueName);
     }
 
@@ -239,7 +243,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     public String getConfigureSource() {
         return _configureSource;
     }
-    
+
     public NestedActorManager getActorManager() {
         return _codeManager;
     }
@@ -255,14 +259,15 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     public String getConfigureText() {
         return null;
     }
-    
+
     /**
      * Get the unique name for the symbol in the PtalonActor. 
      * @param ptalonName The symbol to test.
      * @return The unique name.
      * @exception PtalonRuntimeException If no such symbol exists.
      */
-    public String getMappedName(String ptalonName) throws PtalonRuntimeException {
+    public String getMappedName(String ptalonName)
+            throws PtalonRuntimeException {
         return _codeManager.getMappedName(ptalonName);
     }
 
@@ -280,7 +285,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     public int getNestedDepth() {
         return _nestedDepth;
     }
-    
+
     /**
      * Get the PtalonParameter with the name specified in
      * the Ptalon code.
@@ -300,7 +305,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     + name, e);
         }
     }
-    
+
     /**
      * Set the depth of this actor declaration
      * with respect to its creator.  If this is 
@@ -315,7 +320,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     public void setNestedDepth(int depth) {
         _nestedDepth = depth;
     }
-    
+
     /** Return a name that is guaranteed to not be the name of
      *  any contained attribute, port, class, entity, or relation.
      *  In this implementation, the argument
@@ -430,7 +435,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 if (filename.startsWith("/")) {
                     filename = filename.substring(1);
                 }
-                String ptiiDir = StringUtilities.getProperty("ptolemy.ptII.dir");
+                String ptiiDir = StringUtilities
+                        .getProperty("ptolemy.ptII.dir");
                 File ptiiDirFile = new File(ptiiDir);
                 String prefix = ptiiDirFile.toURI().toString();
                 if (prefix.startsWith("file:/")) {
@@ -440,22 +446,28 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     prefix = prefix.substring(1);
                 }
                 String ptiiFilename = filename.substring(prefix.length());
-                String unPtlnName = ptiiFilename.substring(0, ptiiFilename.length() - 5);
+                String unPtlnName = ptiiFilename.substring(0, ptiiFilename
+                        .length() - 5);
                 String displayName = unPtlnName.replace('/', '.');
                 output.write(_getIndentPrefix(depth) + "<configure>\n");
-                output.write(_getIndentPrefix(depth + 1) + "<ptalon file=\"" + 
-                        displayName + "\">\n");
+                output.write(_getIndentPrefix(depth + 1) + "<ptalon file=\""
+                        + displayName + "\">\n");
                 for (PtalonParameter param : _assignedPtalonParameters) {
                     if (!_unsettablePtalonParameters.contains(param)) {
                         if (param instanceof PtalonExpressionParameter) {
                             String expression = param.getExpression();
-                            expression = expression.replaceAll("\"", "\\&quot\\;");
-                            output.write(_getIndentPrefix(depth + 2) + "<ptalonExpressionParameter name=\"" + 
-                                    param.getName() + "\" value=\"" + expression + "\"/>\n");                            
-                        } else if (param instanceof PtalonParameter) { 
-                            output.write(_getIndentPrefix(depth + 2) + "<ptalonParameter name=\"" + 
-                                param.getName() + "\" value=\"" + param.getExpression() + "\"/>\n");
-                        } 
+                            expression = expression.replaceAll("\"",
+                                    "\\&quot\\;");
+                            output.write(_getIndentPrefix(depth + 2)
+                                    + "<ptalonExpressionParameter name=\""
+                                    + param.getName() + "\" value=\""
+                                    + expression + "\"/>\n");
+                        } else if (param instanceof PtalonParameter) {
+                            output.write(_getIndentPrefix(depth + 2)
+                                    + "<ptalonParameter name=\""
+                                    + param.getName() + "\" value=\""
+                                    + param.getExpression() + "\"/>\n");
+                        }
                     }
                 }
                 output.write(_getIndentPrefix(depth + 1) + "</ptalon>\n");
@@ -463,11 +475,11 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             throw e;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
@@ -499,8 +511,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             _ast = (PtalonAST) checker.getAST();
             _codeManager = checker.getCodeManager();
             PtalonPopulator populator = new PtalonPopulator();
-            populator
-                    .setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
+            populator.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
             populator.actor_definition(_ast, _codeManager);
             _ast = (PtalonAST) populator.getAST();
             astCreated = true;
@@ -538,12 +549,12 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      * actor declarations.
      */
     private int _nestedDepth = 0;
-    
+
     /**
      * A list of all ptalon parameters for this actor.
      */
     private List<PtalonParameter> _ptalonParameters = new LinkedList<PtalonParameter>();
-    
+
     /**
      * A list of all ptalon paramters who are not settable by the user.
      */

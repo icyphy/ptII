@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ptalonexample" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={192, 110, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={197, 104, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -13,68 +13,32 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{216.42578125, 165.8828125}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -15.0]">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 15.0]">
         </property>
     </property>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={347, 265, 330, 237}, maximized=false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 55.0]">
-        </property>
-    </entity>
-    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={347, 265, 330, 237}, maximized=false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 215.0]">
-        </property>
-    </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={538, 415, 330, 237}, maximized=false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 160.0]">
-        </property>
-    </entity>
-    <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={463, 365, 330, 237}, maximized=false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 315.0]">
-        </property>
-    </entity>
-    <entity name="Split" class="ptolemy.actor.ptalon.PtalonActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 195}">
+    <entity name="MapReduce" class="ptolemy.actor.ptalon.PtalonActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 75.0]">
         </property>
         <configure>
-            <ptalon file="ptolemy.actor.ptalon.test.mapreduce.Split">
-                <ptalonExpressionParameter name="file" value="&quot;C:/Repositories/ptII/ptolemy/actor/ptalon/demo/ReadTest.data&quot;"/>
-                <ptalonExpressionParameter name="blockSize" value="4"/>
-                <ptalonExpressionParameter name="numberOfOutputs" value="2"/>
-                <ptalonExpressionParameter name="keyTemplate" value="&quot;foo&quot;"/>
-                <ptalonExpressionParameter name="valueTemplate" value="1.0"/>
+            <ptalon file="ptolemy.actor.ptalon.test.mapreduce.MapReduce">
+                <ptalonExpressionParameter name="className" value="&quot;ptolemy.actor.ptalon.demo.WordCount&quot;"/>
+                <ptalonExpressionParameter name="numberOfMachines" value="5"/>
+                <ptalonExpressionParameter name="fileNamePrefix" value="&quot;C:/Repositories/ptII/ptolemy/actor/ptalon/demo/ReadTest&quot;"/>
             </ptalon>
         </configure>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 304, 330, 237}, maximized=false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 75.0]">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
+    <link port="MapReduce.status" relation="relation"/>
     <link port="Display.input" relation="relation"/>
-    <link port="Display3.input" relation="relation3"/>
-    <link port="Display2.input" relation="relation2"/>
-    <link port="Display4.input" relation="relation4"/>
-    <link port="Split.keys" relation="relation"/>
-    <link port="Split.keys" relation="relation3"/>
-    <link port="Split.values" relation="relation2"/>
-    <link port="Split.values" relation="relation4"/>
 </entity>

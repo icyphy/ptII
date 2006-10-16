@@ -1,0 +1,58 @@
+/*
+ * A DE domain "stop" actor that stops 0.5 seconds after
+ * its last input becomes true.  The numberOfInputs
+ * must be set to tell it how many inputs to listen for.
+ * It outputs the status "processing" if it is processing
+ * data, and it outputs the status "finished" when it has
+ * finished processing.
+ * @author Adam Cataldo
+ */
+
+danglingPortsOkay;
+
+WaitingStop is {
+	actor stop = ptolemy.actor.lib.Stop;
+	actor delay = ptolemy.domains.de.lib.TimedDelay;
+	actor sampler = ptolemy.domains.de.lib.Sampler;
+	actor merge = ptolemy.domains.de.lib.Merge;
+	actor filter = ptolemy.domains.de.lib.EventFilter;
+	actor and = ptolemy.actor.lib.logic.LogicFunction;
+	actor expression = ptolemy.actor.lib.Expression;
+	
+	inport[] input;
+	outport status;
+		
+	parameter numberOfInputs;
+	
+	transparent relation mergeIn;
+	relation mergeOut;
+	merge(input := mergeIn, output := mergeOut);
+	
+	transparent relation samplerIn;
+	transparent relation samplerOut;
+	sampler(input := samplerIn, output := samplerOut, trigger := mergeOut,
+			initialValue := [[true]]);
+			
+	transparent relation andIn;
+	relation andOut;
+	and(input := andIn, output := andOut, function := [[and]]);
+	
+	for a initially [[0]] [[a < numberOfInputs]] {
+		relation input[[a]];
+		this(input := input[[a]]);
+		this(samplerIn := input[[a]]);
+		this(mergeIn := input[[a]]);
+		this(andIn := samplerOut);
+	} next [[a + 1]]
+	
+	expression(input := andOut, output := status,
+			expression := [[input ? "finished" : "processing"]]);
+	
+	relation filterOut;
+	filter(input := andOut, output := filterOut);
+	
+	relation delayOut;
+	delay(input := filterOut, output := delayOut, delay := [[0.5]]);
+	
+	stop(input := delayOut);
+}

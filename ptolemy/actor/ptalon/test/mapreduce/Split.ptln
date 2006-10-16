@@ -1,23 +1,13 @@
 /*
  * A DE domain "split" actor which breaks a file containing
  * key-value data into tokens.  At each 1.0 seconds in DE,
- * this actor produces up to b tokens on each channel of the
- * keys output and the same number of tokens on each channel
- * of the values output, where b is the blockSize parameter
- * set by the user of this actor.  The number of outputs is set
- * by the user with the numberOfOutputs parameter.  The
- * file is specified with the file parameter. The timing in 
- * DE is irrelvant, but it serves as an ordering on time.  Either 
- * 0.5 or 1.5 seconds after this actor has produced its last token, 
- * it stops the execution.  It will be 1.5 seconds in the case
- * when the number of key-value pairs is divisible by 
- * (numberOfOutputs * blockSize), but this should be irrelevant as
- * long as downstream actors don't schedule anything 0.5 seconds or
- * more after the last token is sent.  The keyTemplate, and
- * valueTemplate are tokens whose value will be used as templates
- * for the types of the keys and values.  For example, if
- * keyTemplate = 1.0, then the keys will have type double.
- *
+ * this actor produces a token on each channel of the
+ * keys output and each channel of the values output.  The number 
+ * of outputs is set by the user with the numberOfOutputs parameter.  
+ * The file is specified with the file parameter. The timing in 
+ * DE is irrelvant, but it serves as an ordering on time.
+ * The actor emits a true value on the done port when the file is
+ * done being read.
  * @author Adam Cataldo
  */
 
@@ -26,41 +16,31 @@ danglingPortsOkay;
 Split is {
 	actor clock = ptolemy.actor.lib.Clock;
 	actor reader = ptolemy.actor.ptalon.demo.SplitReader;
-	actor delay = ptolemy.domains.de.lib.TimedDelay;
-	actor stop = ptolemy.actor.lib.Stop;
-	actor convertor = ptolemy.actor.ptalon.demo.StringToKeyValue;
+	actor converter = ptolemy.actor.ptalon.demo.StringToKeyValue;
 	
 	outport[] keys;
 	outport[] values;
+	outport doneReading;
 	
-	parameter blockSize;
 	parameter file;
 	parameter numberOfOutputs;
-	parameter keyTemplate;
-	parameter valueTemplate;
 	
 	relation clockOut;
 	clock(output := clockOut, period := [[1.0]], offsets := [[ {0.0} ]],
 			values := [[ {true} ]]);
 	
 	transparent relation readerOutput;
-	relation readerEndOfFile;
 	reader(input := clockOut, output := readerOutput, endOfFile :=
-			readerEndOfFile, blockSize := [[blockSize * 2]], fileOrURL := 
+			doneReading, blockSize := [[2]], fileOrURL := 
 			[[file]], numberOfOutputs := [[numberOfOutputs]]);
 	
-	relation delayOutput;
-	delay(input := readerEndOfFile, output := delayOutput, delay :=
-			[[1.5]]);
-	
-	stop(input := delayOutput);
-	
+
 	transparent relation keyRelation;
 	transparent relation valueRelation;
 	this(keys := keyRelation, values := valueRelation);
 	
 	for a initially [[ 0 ]] [[ a < numberOfOutputs ]] {
-		convertor(input := readerOutput, key := keyRelation,
+		converter(input := readerOutput, key := keyRelation,
 				value := valueRelation, keyType := [[keyTemplate]],
 				valueType := [[valueTemplate]]);
 	} next [[ a + 1 ]]

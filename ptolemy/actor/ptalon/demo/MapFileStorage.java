@@ -32,6 +32,7 @@ import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -65,10 +66,6 @@ public class MapFileStorage extends DEActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        blockSize = new Parameter(this, "blockSize");
-        blockSize.setExpression("1");
-        blockSize.setTypeEquals(BaseType.INT);
-
         numberOfOutputs = new Parameter(this, "numberOfOutputs");
         numberOfOutputs.setExpression("1");
         numberOfOutputs.setTypeEquals(BaseType.INT);
@@ -87,23 +84,32 @@ public class MapFileStorage extends DEActor {
         outputValue.setTypeEquals(BaseType.STRING);
         outputValue.setMultiport(true);
 
-        trigger = new TypedIOPort(this, "trigger", true, false);
-        trigger.setTypeEquals(BaseType.STRING);
-        trigger.setMultiport(true);
+        doneReceiving = new TypedIOPort(this, "doneReceiving", true, false);
+        doneReceiving.setTypeEquals(BaseType.BOOLEAN);
+
+        doneEmitting = new TypedIOPort(this, "doneEmitting", false, true);
+        doneEmitting.setTypeEquals(BaseType.BOOLEAN);
 
         _keyBuffers = new LinkedList<LinkedList<String>>();
         _valueBuffers = new LinkedList<LinkedList<String>>();
-        
+
         _readMode = false;
+
+        _doneReceiving = false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** This number of lines to output to a channel when a request
-     *  is made on this channel for an output.
+    /** The inputTrigger port.  The type of this port is undeclared, meaning
+     *  that it will resolve to any data type.
      */
-    public Parameter blockSize;
+    public TypedIOPort doneReceiving;
+
+    /** The inputTrigger port.  The type of this port is undeclared, meaning
+     *  that it will resolve to any data type.
+     */
+    public TypedIOPort doneEmitting;
 
     /** The inputTrigger port.  The type of this port is undeclared, meaning
      *  that it will resolve to any data type.
@@ -131,11 +137,6 @@ public class MapFileStorage extends DEActor {
      */
     public TypedIOPort outputValue;
 
-    /** The output port.  The type of this port is unspecified.
-     *  Derived classes may set it.
-     */
-    public TypedIOPort trigger;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -153,18 +154,7 @@ public class MapFileStorage extends DEActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == blockSize) {
-            if (!(_keyBuffers.isEmpty() && _valueBuffers.isEmpty())) {
-                throw new IllegalActionException(this,
-                        "Cannot change blockSize dynamically.");
-            }
-            int size = ((IntToken) blockSize.getToken()).intValue();
-
-            if (size < 1) {
-                throw new IllegalActionException(this, "The bock size "
-                        + "must be greater than zero.");
-            }
-        } else if (attribute == numberOfOutputs) {
+        if (attribute == numberOfOutputs) {
             if (!(_keyBuffers.isEmpty() && _valueBuffers.isEmpty())) {
                 throw new IllegalActionException(this,
                         "Cannot change numberOfOutputs dynamically.");
@@ -186,39 +176,53 @@ public class MapFileStorage extends DEActor {
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int outputs = ((IntToken) numberOfOutputs.getToken()).intValue();
-        int size = ((IntToken) blockSize.getToken()).intValue();
-
-        //Clear triggers.
-        for (int i = 0; i < trigger.getWidth(); i++) {
-            while (trigger.hasToken(i)) {
-                trigger.get(i);
-            }
-        }
 
         if (_readMode) {
             //Read inputs.
             while (inputKey.hasToken(0) && inputValue.hasToken(0)) {
                 String key = ((StringToken) inputKey.get(0)).stringValue();
                 String value = ((StringToken) inputValue.get(0)).stringValue();
-                int position = key.hashCode() % size;
+                int hashCode = key.hashCode();
+                int position = (hashCode >= 0) ? (hashCode % outputs)
+                        : ((-hashCode) % outputs);
                 _keyBuffers.get(position).add(key);
                 _valueBuffers.get(position).add(value);
             }
-        } else {
-            //Write outputs.
-            for (int i = 0; i < outputs; i++) {
-                int j = 0;
-                while (j < size && !_keyBuffers.get(i).isEmpty()
-                        && !_valueBuffers.get(i).isEmpty()) {
-                    StringToken key = new StringToken(_keyBuffers.get(i).remove());
-                    StringToken value = new StringToken(_valueBuffers.get(i).remove());
-                    outputKey.send(i, key);
-                    outputValue.send(i, value);
-                    j++;
+        }
+        //Write outputs.
+        for (int i = 0; i < outputs; i++) {
+            while (!_keyBuffers.get(i).isEmpty()
+                    && !_valueBuffers.get(i).isEmpty()) {
+                StringToken key = new StringToken(_keyBuffers.get(i).remove());
+                StringToken value = new StringToken(_valueBuffers.get(i)
+                        .remove());
+                outputKey.send(i, key);
+                outputValue.send(i, value);
+            }
+        }
+        if (doneReceiving.hasToken(0)) {
+            if (((BooleanToken) doneReceiving.get(0)).booleanValue()) {
+                _doneReceiving = true;
+            }
+        }
+        if (_doneReceiving) {
+            boolean emptyBuffers = true;
+            for (int i = 0; i < _keyBuffers.size(); i++) {
+                if (!_keyBuffers.get(i).isEmpty()
+                        || !_valueBuffers.get(i).isEmpty()) {
+                    emptyBuffers = false;
+                    break;
                 }
             }
-            super.fire();
+            if (emptyBuffers) {
+                doneEmitting.send(0, new BooleanToken(true));
+            } else {
+                doneEmitting.send(0, new BooleanToken(false));
+            }
+        } else {
+            doneEmitting.send(0, new BooleanToken(false));
         }
     }
 
@@ -240,6 +244,7 @@ public class MapFileStorage extends DEActor {
             _valueBuffers.add(new LinkedList<String>());
         }
         _readMode = false;
+        _doneReceiving = false;
     }
 
     /** Return false if there is no more data available in the file.
@@ -254,7 +259,7 @@ public class MapFileStorage extends DEActor {
         }
         return super.prefire();
     }
-    
+
     /** Return true, unless stop() has been called, in which case,
      *  return false.  Derived classes override this method to define
      *  operations to be performed at the end of every iteration of
@@ -283,6 +288,7 @@ public class MapFileStorage extends DEActor {
         _keyBuffers = new LinkedList<LinkedList<String>>();
         _valueBuffers = new LinkedList<LinkedList<String>>();
         _readMode = false;
+        _doneReceiving = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -290,6 +296,8 @@ public class MapFileStorage extends DEActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+
+    private boolean _doneReceiving;
 
     private List<LinkedList<String>> _keyBuffers;
 

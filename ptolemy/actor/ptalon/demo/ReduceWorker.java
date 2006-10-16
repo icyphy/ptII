@@ -103,10 +103,12 @@ public class ReduceWorker extends TypedAtomicActor {
         inputKey = new TypedIOPort(this, "inputKey");
         inputKey.setInput(true);
         inputKey.setTypeEquals(BaseType.STRING);
+        inputKey.setMultiport(true);
 
         inputValue = new TypedIOPort(this, "inputValue");
         inputValue.setInput(true);
         inputValue.setTypeEquals(BaseType.STRING);
+        inputValue.setMultiport(true);
 
         outputKey = new TypedIOPort(this, "outputKey");
         outputKey.setOutput(true);
@@ -193,54 +195,60 @@ public class ReduceWorker extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         if (_readMode) {
-            while (inputKey.hasToken(0) && inputValue.hasToken(0)) {
-                String key = ((StringToken) inputKey.get(0)).stringValue();
-                String value = ((StringToken) inputValue.get(0)).stringValue();
-                if (_runningAlgorithms.containsKey(key)) {
-                    MapReduceAlgorithm algorithm = _runningAlgorithms.get(key);
-                    try {
-                        algorithm.reduceValues.put(value);
-                    } catch (InterruptedException e) {
-                        throw new IllegalActionException(
-                                "Interrupted while trying to put value for key "
-                                        + key);
+            int numberInputs = inputKey.getWidth();
+            for (int i = 0; i < numberInputs; i++) {
+                while (inputKey.hasToken(i) && inputValue.hasToken(i)) {
+                    String key = ((StringToken) inputKey.get(i)).stringValue();
+                    String value = ((StringToken) inputValue.get(i))
+                            .stringValue();
+                    if (_runningAlgorithms.containsKey(key)) {
+                        MapReduceAlgorithm algorithm = _runningAlgorithms
+                                .get(key);
+                        try {
+                            algorithm.reduceValues.put(value);
+                        } catch (InterruptedException e) {
+                            throw new IllegalActionException(
+                                    "Interrupted while trying to put value for key "
+                                            + key);
+                        }
+                    } else {
+                        MapReduceAlgorithm newAlgorithm = null;
+                        try {
+                            newAlgorithm = (MapReduceAlgorithm) _reduceClass
+                                    .newInstance();
+                        } catch (IllegalAccessException e) {
+                            throw new IllegalActionException(
+                                    classNameForReduce.stringValue()
+                                            + " does not have a no argument constructor");
+                        } catch (InstantiationException e) {
+                            throw new IllegalActionException(classNameForReduce
+                                    .stringValue()
+                                    + " is abstract.");
+                        } catch (ClassCastException e) {
+                            throw new IllegalActionException(
+                                    "Unable to cast instance of "
+                                            + classNameForReduce.stringValue()
+                                            + " to ptolemy.actor.ptalon.demo.MapReduceAlgorithm.");
+                        }
+                        newAlgorithm.reduceKey = key;
+                        newAlgorithm.reduceValues = new LinkedBlockingQueue<String>();
+                        try {
+                            newAlgorithm.reduceValues.put(value);
+                        } catch (InterruptedException e) {
+                            throw new IllegalActionException(
+                                    "Interrupted while trying to put value for key "
+                                            + key);
+                        }
+                        newAlgorithm.start();
+                        _runningAlgorithms.put(key, newAlgorithm);
                     }
-                } else {
-                    MapReduceAlgorithm newAlgorithm = null;
-                    try {
-                        newAlgorithm = (MapReduceAlgorithm) _reduceClass
-                                .newInstance();
-                    } catch (IllegalAccessException e) {
-                        throw new IllegalActionException(classNameForReduce
-                                .stringValue()
-                                + " does not have a no argument constructor");
-                    } catch (InstantiationException e) {
-                        throw new IllegalActionException(classNameForReduce
-                                .stringValue()
-                                + " is abstract.");
-                    } catch (ClassCastException e) {
-                        throw new IllegalActionException(
-                                "Unable to cast instance of "
-                                        + classNameForReduce.stringValue()
-                                        + " to ptolemy.actor.ptalon.demo.MapReduceAlgorithm.");
-                    }
-                    newAlgorithm.reduceKey = key;
-                    newAlgorithm.reduceValues = new LinkedBlockingQueue<String>();
-                    try {
-                        newAlgorithm.reduceValues.put(value);
-                    } catch (InterruptedException e) {
-                        throw new IllegalActionException(
-                                "Interrupted while trying to put value for key "
-                                        + key);
-                    }
-                    newAlgorithm.start();
-                    _runningAlgorithms.put(key, newAlgorithm);
                 }
             }
         }
         if (doneReading.hasToken(0)) {
             boolean done = ((BooleanToken) doneReading.get(0)).booleanValue();
-            if (done) {
+            if (done && !_doneReading) {
+                _doneReading = true;
                 for (String key : _runningAlgorithms.keySet()) {
                     MapReduceAlgorithm algorithm = _runningAlgorithms.get(key);
                     algorithm.setNoMoreInputs();
@@ -297,6 +305,8 @@ public class ReduceWorker extends TypedAtomicActor {
      */
     public void wrapup() throws IllegalActionException {
         _runningAlgorithms = new Hashtable<String, MapReduceAlgorithm>();
+        _readMode = false;
+        _doneReading = false;
         super.wrapup();
     }
 
@@ -310,6 +320,7 @@ public class ReduceWorker extends TypedAtomicActor {
         _setReduceMethod();
         _runningAlgorithms = new Hashtable<String, MapReduceAlgorithm>();
         _readMode = false;
+        _doneReading = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -367,6 +378,8 @@ public class ReduceWorker extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                        private members                    ////
 
+    private boolean _doneReading = false;
+    
     private boolean _readMode = false;
 
     private Class<?> _reduceClass;
