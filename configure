@@ -4608,14 +4608,32 @@ echo "$as_me: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&2;}
 	done
 
         if test ! -z "$eclipsejarpath"; then
-	    echo "$as_me:$LINENO: result: ok" >&5
+            echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
-	    # Set to eclipse and used in
-	    # $PTII/ptolemy/backtrack/makefile if Eclipse jar files were found
-	    PTBACKTRACK_ECLIPSE_DIR=eclipse
-   	    # PTBACKTRACK_ECLIPSE_PACKAGES is used in ptII/doc/makefile
-	    PTBACKTRACK_ECLIPSE_PACKAGES="ptolemy.backtrack.eclipse.ast ptolemy.backtrack.eclipse.ast.transform ptolemy.backtrack.eclipse.plugin ptolemy.backtrack.eclipse.plugin.actions ptolemy.backtrack.eclipse.plugin.editor ptolemy.backtrack.eclipse.plugin.preferences ptolemy.backtrack.eclipse.plugin.util"
-	    PTBACKTRACK_ECLIPSE_JARS=$eclipsejarpath
+
+	    startdir=`pwd`
+	    cd "$srcdir/config"
+	    echo "$as_me:$LINENO: checking for ITreeSelection from Eclipse" >&5
+echo $ECHO_N "checking for ITreeSelection from Eclipse... $ECHO_C" >&6
+	    if "$JAVAC" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java ; then
+                echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+		# Set to eclipse and used in
+		# $PTII/ptolemy/backtrack/makefile if Eclipse jar files were found
+		PTBACKTRACK_ECLIPSE_DIR=eclipse
+		# PTBACKTRACK_ECLIPSE_PACKAGES is used in ptII/doc/makefile
+		PTBACKTRACK_ECLIPSE_PACKAGES="ptolemy.backtrack.eclipse.ast ptolemy.backtrack.eclipse.ast.transform ptolemy.backtrack.eclipse.plugin ptolemy.backtrack.eclipse.plugin.actions ptolemy.backtrack.eclipse.plugin.editor ptolemy.backtrack.eclipse.plugin.preferences ptolemy.backtrack.eclipse.plugin.util"
+		PTBACKTRACK_ECLIPSE_JARS=$eclipsejarpath
+            else
+ 	        { echo "$as_me:$LINENO: WARNING: Failed to compile config/EclipseITreeSelection.java with
+    (cd $PTII/config; \"$JAVAC\" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java)
+    maybe you should install Eclipse 3.2?" >&5
+echo "$as_me: WARNING: Failed to compile config/EclipseITreeSelection.java with
+    (cd $PTII/config; \"$JAVAC\" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java)
+    maybe you should install Eclipse 3.2?" >&2;}
+                eclipsejarpath=
+            fi
+	    cd $startdir
         fi
     fi
     if test "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
