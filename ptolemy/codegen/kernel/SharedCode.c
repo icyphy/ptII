@@ -38,7 +38,7 @@ char* InttoString (int i) {
     return string;       
 }
 
-char* LongtoString (long l) {
+char* LongtoString (long long l) {
     char* string = (char*) malloc(sizeof(char) * 22);
     sprintf(string, "%d", l);
     return string;       
@@ -49,9 +49,10 @@ char* DoubletoString (double d) {
     char* string = (char*) malloc(sizeof(char) * 20);
     sprintf(string, "%.14g", d);
 
+	// Make sure that there is a decimal point.
     if (strrchr(string, '.') == NULL) {
         index = strlen(string);
-        if (index > 10) {
+        if (index == 20) {
             string = (char*) realloc(string, sizeof(char) * 22);
         }
         string[index] = '.';
