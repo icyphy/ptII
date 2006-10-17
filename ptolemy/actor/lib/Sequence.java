@@ -109,7 +109,9 @@ public class Sequence extends TypedAtomicActor {
     public TypedIOPort output;
 
     /** The flag that indicates whether the sequence needs to be
-     *  repeated. This is a boolean, and defaults to false.
+     *  repeated. If this is false, then the last value of the
+     *  sequence is repeatedly produced after the entire sequence
+     *  has been produced. This is a boolean, and defaults to false.
      */
     public Parameter repeat;
 
