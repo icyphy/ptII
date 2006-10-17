@@ -49,6 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
+	Starver.java
 
 OTHER_FILES_TO_BE_JARED = \
 	pnentities.xml
