@@ -1133,7 +1133,7 @@ public class CodeManager {
         /**
          * Create a new if tree.
          * @param name The name to give this if tree.
-         * @parem parent The paretn to this tree, which may be null
+         * @param parent The paretn to this tree, which may be null
          * if this is the root of a tree.
          */
         public IfTree(IfTree parent, String name) {
@@ -1226,7 +1226,7 @@ public class CodeManager {
         /**
          * Return the active branch, which may be null if it has not
          * yet been set.
-         * @return
+         * @return the active branch
          */
         public Boolean getActiveBranch() {
             return _activeBranch;

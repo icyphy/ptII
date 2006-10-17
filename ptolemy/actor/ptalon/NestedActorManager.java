@@ -312,7 +312,6 @@ public class NestedActorManager extends CodeManager {
      * port is okay, but not
      * Bar(a := Foo(port := containing))
      * 
-     * @param unknownMarker The marker corresponding to this assignment.
      * @param portName The name of the port in this 
      * @param connectPointPrefix The prefix of the name of the container's port or relation.
      * @param connectPointExpression The variable suffix of the name of the container's port or relation.
