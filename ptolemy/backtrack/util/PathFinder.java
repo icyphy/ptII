@@ -120,7 +120,11 @@ public class PathFinder {
         for (int i = 0; i < subdirs.length; i++) {
             files[i] = new File(PTII + subdirs[i]).listFiles(new PostfixFilter(
                     ".jar"));
-            totalNumber += files[i].length;
+            if (files != null) { 
+                totalNumber += files[i].length;
+            } else {
+                System.out.println("Warning: no jar files in \"" + PTII + subdirs[i] + "\"?");
+            }
         }
 
         String[] classPaths = new String[totalNumber + 1];
