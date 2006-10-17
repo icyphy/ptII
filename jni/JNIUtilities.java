@@ -155,13 +155,7 @@ import ptolemy.util.StringUtilities;
  <pre>
  /cygdrive/c/Program Files/j2sdk1.4.1_01/include/win32/jni_md.h:16: syntax error before `;'
  </pre>
- Then see
- <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt" target="_top"><code>http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt</code></a>
- <br>You might need to edit jni_md.h, the above URL says
- <blockquote>
- GCC doesn't have a __int64 built-in, and this patch basically uses
- "long long" instead.
-
+Then follow these steps:
  <ol>
  <li> Edit the file <code><i>jdk_root</i>>/include/win32/jni_md.h</code>,
  Where <code><i>jdk_root</i></code> is the installation root (eg.,
@@ -170,7 +164,7 @@ import ptolemy.util.StringUtilities;
  </ol>
 
  <pre>
- typedef long jint;
+ typedef __int64 jlong;
  </pre>
  with:
  <pre>
@@ -180,8 +174,6 @@ import ptolemy.util.StringUtilities;
  typedef __int64 jlong;
  #endif
  </pre>
- </blockquote>
-
 
 
 
