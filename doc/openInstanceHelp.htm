@@ -1,0 +1,32 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II Help Page</title>
+<link href="default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Open Instance</h1>
+The Open Instance command displays an instance of an actor,
+in contrast to the Open Actor command which displays its class
+definition. If the instance is a composite, then the composite
+is displayed in a vergil window. If the instance is atomic, then
+a table showing the current parameter values is displayed.
+<p>
+For atomic actors,
+the rows of this table are white if the parameter is fully
+visible to users of the actor, pink if the parameter is an
+"expert" parameter (visible only if expert mode is set
+on the actor), and grey if the parameter is not visible
+to the user. Here "visible" means that it shows up in
+the Configure dialog.
+The sizes of the columns can be changed by dragging
+the boundary between columns in the header.
+<p>
+The expression shown is the value set in the Configure
+dialog. The value is the result of evaluating this expression.
+The syntax for expressions is documented in the
+<a href="expressions.htm">expressions documentation</a>.
+<p></p>
+</body>
+</html>
