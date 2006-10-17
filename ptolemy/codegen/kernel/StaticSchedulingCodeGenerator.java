@@ -34,6 +34,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.codegen.c.kernel.CCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
@@ -62,7 +63,7 @@ import ptolemy.util.StringUtilities;
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Red (cxh) Needs class documentation
  */
-public class StaticSchedulingCodeGenerator extends CodeGenerator implements
+public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
         ActorCodeGenerator {
     /** Create a new instance of the code generator.
      *  @param container The container.

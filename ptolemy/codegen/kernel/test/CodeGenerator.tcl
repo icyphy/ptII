@@ -86,3 +86,20 @@ test CodeGenerator-5.1 {getCodeFileName} {
     # Trivial test to increase code coverage.
     $codeGenerator getCodeFileName
 } {}
+
+#####
+test CodeGenerator-6.1 {generateMainEntryCode, generateMainExitCode} {
+    list [$codeGenerator generateMainEntryCode] \
+	[$codeGenerator generateMainExitCode] 
+} {{    /* main entry code */
+} {    /* main exit code */
+}}
+
+#####
+test CodeGenerator-7.1 {generateInitializeEntryCode, generateInitializeExitCode} {
+    list [$codeGenerator generateInitializeEntryCode] \
+	[$codeGenerator generateInitializeExitCode] 
+} {{    /* initialization entry code */
+} {    /* initialization exit code */
+}}
+

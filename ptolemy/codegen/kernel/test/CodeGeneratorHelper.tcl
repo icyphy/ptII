@@ -73,17 +73,4 @@ test CodeGeneratorHelper-3.1 {parseTreeCodeGenerator coverage } {
     [$cgHelper getParseTreeCodeGenerator] escapeForTargetLanguage "foobar"
 } {foobar}
 
-#####
-test CodeGeneratorHelper-4.1 {generateMainEntryCode, generateMainExitCode} {
-    set model [sdfModel]
-    set codeGenerator \
-	    [java::new ptolemy.codegen.kernel.CodeGenerator \
-	    $model "myCodeGenerator"]
-    set cgHelper [java::new ptolemy.codegen.kernel.CodeGeneratorHelper \
-		      $model]
-    $cgHelper setCodeGenerator $codeGenerator
-    list [$cgHelper generateMainEntryCode] \
-	[$cgHelper generateMainExitCode] 
-} {{    /* main entry code */
-} {    /* main exit code */
-}}
+
