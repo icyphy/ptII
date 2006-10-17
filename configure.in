@@ -1161,13 +1161,26 @@ changequote([, ])dnl
 	done	
 
         if test ! -z "$eclipsejarpath"; then 
-	    AC_MSG_RESULT([ok])
-	    # Set to eclipse and used in
-	    # $PTII/ptolemy/backtrack/makefile if Eclipse jar files were found
-	    PTBACKTRACK_ECLIPSE_DIR=eclipse
-   	    # PTBACKTRACK_ECLIPSE_PACKAGES is used in ptII/doc/makefile
-	    PTBACKTRACK_ECLIPSE_PACKAGES="ptolemy.backtrack.eclipse.ast ptolemy.backtrack.eclipse.ast.transform ptolemy.backtrack.eclipse.plugin ptolemy.backtrack.eclipse.plugin.actions ptolemy.backtrack.eclipse.plugin.editor ptolemy.backtrack.eclipse.plugin.preferences ptolemy.backtrack.eclipse.plugin.util"
-	    PTBACKTRACK_ECLIPSE_JARS=$eclipsejarpath
+            AC_MSG_RESULT([ok])
+
+	    startdir=`pwd`
+	    cd "$srcdir/config"
+	    AC_MSG_CHECKING([for ITreeSelection from Eclipse])
+	    if "$JAVAC" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java ; then
+                AC_MSG_RESULT([ok])
+		# Set to eclipse and used in
+		# $PTII/ptolemy/backtrack/makefile if Eclipse jar files were found
+		PTBACKTRACK_ECLIPSE_DIR=eclipse
+		# PTBACKTRACK_ECLIPSE_PACKAGES is used in ptII/doc/makefile
+		PTBACKTRACK_ECLIPSE_PACKAGES="ptolemy.backtrack.eclipse.ast ptolemy.backtrack.eclipse.ast.transform ptolemy.backtrack.eclipse.plugin ptolemy.backtrack.eclipse.plugin.actions ptolemy.backtrack.eclipse.plugin.editor ptolemy.backtrack.eclipse.plugin.preferences ptolemy.backtrack.eclipse.plugin.util"
+		PTBACKTRACK_ECLIPSE_JARS=$eclipsejarpath
+            else
+ 	        AC_MSG_WARN([Failed to compile config/EclipseITreeSelection.java with
+    (cd $PTII/config; "$JAVAC" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java)
+    maybe you should install Eclipse 3.2?])
+                eclipsejarpath=
+            fi
+	    cd $startdir
         fi
     fi	
     if test "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
