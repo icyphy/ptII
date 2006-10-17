@@ -35,6 +35,7 @@ import ptolemy.data.unit.UnitUtilities;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
+import ptolemy.math.FixPoint;
 
 //////////////////////////////////////////////////////////////////////////
 //// IntToken
@@ -180,6 +181,14 @@ public class IntToken extends ScalarToken {
         return false;
     }
 
+    /** Return the value in the token as a fixpoint.
+     *  @return The value contained in this token as a fixpoint.
+     */
+    public FixPoint fixValue() {
+        return new FixPoint(_value);
+    }
+    
+    
     /** Return the type of this token.
      *  @return BaseType.INT
      */
