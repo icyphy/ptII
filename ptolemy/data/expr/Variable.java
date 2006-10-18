@@ -977,6 +977,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     }
                 }
                 super.setName(name);
+                // With the new name, we may now shadow variables that
+                // were not previously shadowed. Invalidate those.
+                _invalidateShadowedSettables(getContainer());
                 validate();
             } catch (IllegalActionException ex) {
                 // Reverse the changes above.
@@ -1953,6 +1956,13 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    /** Invalidate any variables contained by the specified object
+     *  or by instances of ScopeExtendingAttribute that it contains
+     *  whose name matches that of this variable.  Then do the same
+     *  for the container of the specified object.
+     *  @param object The containers in which to invalidate variables.
+     */
     private void _invalidateShadowedSettables(NamedObj object)
             throws IllegalActionException {
         if (object == null) {
