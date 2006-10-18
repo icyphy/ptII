@@ -25,6 +25,8 @@
 
 package ptolemy.vergil.actor;
 
+import java.util.ArrayList;
+
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
@@ -99,22 +101,38 @@ public class LinkManhattanConnector extends ManhattanConnector {
      *  @return The connection site.
      */
     public Site getHeadSite() {
-        if ((_headPort == null) || !_headPort.isMultiport()) {
-            return super.getHeadSite();
-        }
-
         Site result = super.getHeadSite();
-
+        if ((_headPort == null) || !_headPort.isMultiport()) {
+            return result;
+        }
         if (result instanceof PortConnectSite) {
             PortTerminal terminal = ((PortConnectSite) result).getTerminal();
             int orderIndex = terminal.getOrderIndex(this);
 
             if (orderIndex >= 0) {
-                return new PortConnectSite(result.getFigure(), terminal,
-                        orderIndex + 1, result.getNormal());
+                // This should not create a new site if it has already
+                // created one!  Record the ones created and return them.
+                if (_headSites == null) {
+                    _headSites = new ArrayList();
+                }
+                if (_headSites.size() > orderIndex) {
+                    if (_headSites.get(orderIndex) == null) {
+                        result = new PortConnectSite(result.getFigure(), terminal,
+                                orderIndex + 1, result.getNormal());
+                    } else {
+                        result = (Site)_headSites.get(orderIndex);                        
+                    }
+                    _headSites.set(orderIndex, result);
+                } else {
+                    result = new PortConnectSite(result.getFigure(), terminal,
+                            orderIndex + 1, result.getNormal());
+                    while (_headSites.size() < orderIndex) {
+                        _headSites.add(null);
+                    }
+                    _headSites.add(result);
+                }
             }
         }
-
         return result;
     }
 
@@ -130,22 +148,38 @@ public class LinkManhattanConnector extends ManhattanConnector {
      *  @return The connection site.
      */
     public Site getTailSite() {
-        if ((_tailPort == null) || !_tailPort.isMultiport()) {
-            return super.getTailSite();
-        }
-
         Site result = super.getTailSite();
-
+        if ((_tailPort == null) || !_tailPort.isMultiport()) {
+            return result;
+        }
         if (result instanceof PortConnectSite) {
             PortTerminal terminal = ((PortConnectSite) result).getTerminal();
             int orderIndex = terminal.getOrderIndex(this);
 
             if (orderIndex >= 0) {
-                return new PortConnectSite(result.getFigure(), terminal,
-                        orderIndex + 1, result.getNormal());
+                // This should not create a new site if it has already
+                // created one!  Record the ones created and return them.
+                if (_tailSites == null) {
+                    _tailSites = new ArrayList();
+                }
+                if (_tailSites.size() > orderIndex) {
+                    if (_tailSites.get(orderIndex) == null) {
+                        result = new PortConnectSite(result.getFigure(), terminal,
+                                orderIndex + 1, result.getNormal());
+                    } else {
+                        result = (Site)_tailSites.get(orderIndex);                        
+                    }
+                    _tailSites.set(orderIndex, result);
+                } else {
+                    result = new PortConnectSite(result.getFigure(), terminal,
+                            orderIndex + 1, result.getNormal());
+                    while (_tailSites.size() < orderIndex) {
+                        _tailSites.add(null);
+                    }
+                    _tailSites.add(result);
+                }
             }
         }
-
         return result;
     }
 
@@ -154,6 +188,9 @@ public class LinkManhattanConnector extends ManhattanConnector {
 
     /** The port at the head, if there is one and it's an IOPort. */
     private IOPort _headPort = null;
+    
+    /** Head sites, in case this is a multiport. */
+    private ArrayList _headSites = null;
 
     /** The link. */
     private Link _link;
@@ -163,4 +200,7 @@ public class LinkManhattanConnector extends ManhattanConnector {
 
     /** The port at the tail, if there is one and it's an IOPort. */
     private IOPort _tailPort = null;
+    
+    /** Tail sites, in case this is a multiport. */
+    private ArrayList _tailSites = null;
 }
