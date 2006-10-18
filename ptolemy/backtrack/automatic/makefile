@@ -75,20 +75,32 @@ all: transform build
 install: all jars $(PTPACKAGE).jar
 
 transform:
-	@echo Transform the source files in "source.lst".
-	@rm -rf ptolemy
-	"$(JAVA)" \
-	  -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)$(AUXCLASSPATH)" \
-	  ptolemy.backtrack.eclipse.ast.Transformer \
-	  -classpath "$(AUXCLASSPATH)" \
-	  -prefix ptolemy.backtrack.automatic \
-	  -output "$(ROOT)" \
-	  -config ptolemy/configs/output.xml \
-	  @source.lst
+	if [ "$(PTBACKTRACK_ECLIPSE_DIR)" = "eclipse" ]; then \
+		echo "Transform the source files in source.lst."; \
+		rm -rf ptolemy; \
+		"$(JAVA)" \
+			-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)$(AUXCLASSPATH)" \
+			ptolemy.backtrack.eclipse.ast.Transformer \
+			-classpath "$(AUXCLASSPATH)" \
+			-prefix ptolemy.backtrack.automatic \
+			-output "$(ROOT)" \
+			-config ptolemy/configs/output.xml \
+			@source.lst; \
+	else \
+		echo "Eclipse not found by configure, not transforming files list in source.lst."; \
+		if [ ! -d ptolemy ]; then \
+			mkdir ptolemy; \
+		fi; \
+	fi
 
 # Don't use $(MAKE) -C here, -C is a gnu make extension
 build: ptolemy_makefile
-	(cd ptolemy; $(MAKE))
+	@if [ "$(PTBACKTRACK_ECLIPSE_DIR)" = "eclipse" ]; then \
+		echo "Running $(MAKE) in ptolemy/"; \
+		(cd ptolemy; $(MAKE)); \
+	else \
+		echo "Eclipse not found by configure, not building in ptolemy/"; \
+	fi
 
 ptolemy_makefile: 
 	@echo "Generating ptolemy/makefile..."
