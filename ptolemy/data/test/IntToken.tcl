@@ -472,11 +472,10 @@ test IntToken-14.0 {call byteValue and get coverage in the parent class} {
 ######################################################################
 ####
 # 
-test IntToken-15.0 {call fixValue and get coverage in the parent class} {
+test IntToken-15.0 {call fixValue} {
     set p [java::new {ptolemy.data.IntToken int} 5]
-    catch {$p fixValue} errMsg
-    list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.IntToken '5' to the type fixedpoint.}}
+    list [[$p fixValue] toString]
+} {5}
 
 
 ######################################################################
