@@ -45,6 +45,10 @@ import ptolemy.kernel.util.NamedObj;
  A attribute that extends its container's scope. Any
  parameter contained by such an attribute has the same
  visibility as parameters of the container of the attribute.
+ They are shadowed, however, by parameters of the container.
+ That is, if the container has a parameter with the same name
+ as one in the parameter set, the one in the container provides
+ the value to any observer.
 
  @author Xiaojun Liu
  @version $Id$

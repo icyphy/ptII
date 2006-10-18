@@ -63,6 +63,10 @@ import ptolemy.util.FileUtilities;
 
  <p>The attributes that are created will have the same
  visibility as parameters of the container of the attribute.
+ They are shadowed, however, by parameters of the container.
+ That is, if the container has a parameter with the same name
+ as one in the parameter set, the one in the container provides
+ the value to any observer.
 
  <p>Note that the order the parameters are created is arbitrary,
  this is because we read the file in using java.util.Properties.load(),
