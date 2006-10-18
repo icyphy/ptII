@@ -842,7 +842,9 @@ $(ROOT)/ptolemy/configs/visualsense/visualsenseModels.txt: \
 # Doccheck is a doclet that checks for bugs
 # Location of the doccheck jar file, available from
 # http://java.sun.com/developer/earlyAccess/doccheck/
-DOCCHECKJAR =	../vendors/sun/doccheck1.2b2/doccheck.jar
+# Note that this is relative to $(ROOT) because we cd
+# up one level
+DOCCHECKJAR =	vendors/sun/doccheck1.2b2/doccheck.jar
 JDOCCHECKDOCLET = -doclet com.sun.tools.doclets.doccheck.DocCheck  \
 	-docletpath $(DOCCHECKJAR)
 
