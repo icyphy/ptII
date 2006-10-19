@@ -133,6 +133,9 @@ public class TypedCompositeActorWithCoSimulation
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** True if in coSimulation mode.  The initial default is
+     *  a BooleanToken with value false.
+     */   
     public Parameter coSimulation;
     
     ///////////////////////////////////////////////////////////////////
