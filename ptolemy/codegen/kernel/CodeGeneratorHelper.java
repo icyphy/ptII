@@ -1783,6 +1783,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
     
         /** This method should not be called.
+         *  @return Never returns.
          *  @throws IllegalActionException If it is called.
          */
         public Set identifierSet() throws IllegalActionException {
