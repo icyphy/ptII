@@ -221,6 +221,7 @@ public class Expression extends CCodeGeneratorHelper {
 
         /** Look up and return the attribute with the specified name.
          *  Return null if such an attribute does not exist.
+         *  @param name The name to look up.
          *  @return The attribute with the specified name in the scope.
          */
         public Token get(String name) {
@@ -268,6 +269,9 @@ public class Expression extends CCodeGeneratorHelper {
         /** Look up and return the type of the attribute with the
          *  specified name in the scope. Return null if such an
          *  attribute does not exist.
+         *  @param name The type to look up.  Note that if name
+         *  is "time", then the type is BaseType.DOUBLE and if the
+         *  name is "iterations", then the type is BaseType.INT.
          *  @return The attribute with the specified name in the scope.
          */
         public Type getType(String name) throws IllegalActionException {
@@ -296,6 +300,7 @@ public class Expression extends CCodeGeneratorHelper {
         /** Look up and return the type term for the specified name
          *  in the scope. Return null if the name is not defined in this
          *  scope, or is a constant type.
+         *  @param name The name to look up.   
          *  @return The InequalityTerm associated with the given name in
          *  the scope.
          *  @exception IllegalActionException If a value in the scope

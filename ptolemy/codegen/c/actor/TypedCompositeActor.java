@@ -497,6 +497,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
     }
     
+    /** Create the output buffer and offset map.
+     */
     protected void _createOutputBufferSizeAndOffsetMap()
             throws IllegalActionException {
 

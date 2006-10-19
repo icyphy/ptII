@@ -47,6 +47,12 @@ public class CCodeGenerator extends CodeGenerator {
         super(container, name);
     }
 
+    /** Generate the function table.  In this base class return
+     *  the empty string.
+     *  @param types An array of types.
+     *  @param functions An array of functions.
+     *  @return The code that declares functions.
+     */   
     public Object generateFunctionTable(Object[] types, Object[] functions) {
         StringBuffer code = new StringBuffer();
     

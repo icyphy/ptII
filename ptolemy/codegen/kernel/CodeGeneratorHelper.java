@@ -1820,6 +1820,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 
     }
     
+    /** Create the input buffer and offset map.
+     */   
     protected void _createInputBufferSizeAndOffsetMap()
             throws IllegalActionException {
         
@@ -1894,6 +1896,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return processCode(_codeStream.toString());
     }
     
+    /** Generate input variable declarations.
+     *  @return a String that declares input variables.
+     */
     protected String _generateInputVariableDeclaration() 
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -1925,6 +1930,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return code.toString();
     }
 
+    /** Generate output variable declarations.
+     *  @return a String that declares output variables.
+     */
     protected String _generateOutputVariableDeclaration() 
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
