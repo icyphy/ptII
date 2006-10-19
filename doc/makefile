@@ -430,10 +430,14 @@ ALL1_4PACKAGES = \
 	ptolemy.vergil.tree \
 	util.testsuite
 
+# This variable can be used by the user to add custom packages.
+USER_PACKAGES =
+
 # All the packages
 ALLPACKAGES = \
 	$(ALL1_4PACKAGES) \
 	$(PTPTALON_PACKAGES) \
+	$(USER_PACKAGES) \
 	ptolemy.caltrop \
 	ptolemy.caltrop.actors \
 	ptolemy.caltrop.ddi \
