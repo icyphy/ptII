@@ -49,10 +49,11 @@ test SDFDirector-1.1 {Call generateCode(StringBuffer)} {
 	    $model "myCodeGenerator"]
 
     set results [java::new StringBuffer]
-    $codeGenerator generateCode $results
+    set processExitCode [$codeGenerator generateCode $results]
     set fd [open foo.c w]
     set filename [$codeGenerator getCodeFileName]
     
-    list [string range $filename [expr {[string length $filename] - 5}] [string length $filename]] \
+    list $processExitCode \
+	[string range $filename [expr {[string length $filename] - 5}] [string length $filename]] \
 	[expr {[string length [$results toString]] > 0}]
-} {top.c 1}
+} {0 top.c 1}
