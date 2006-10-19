@@ -252,7 +252,7 @@ rpm --ignoreos --nodeps -ivh *.rpm
                 Note: make is installed in the next step.
             </ul>
 
-          <li> If you are running Linux (tested on Fedora Core 2),
+          <li> If you are running a Red Hat-based Linux (tested on Fedora Core 2),
           download the following rpms:
             <ul>
               <li><a href="http://www.tinyos.net/dist-2.0.0/tools/linux/avarice-2.3.20041206cvs-1.i386.rpm">http://www.tinyos.net/dist-2.0.0/tools/linux/avarice-2.3.20041206cvs-1.i386.rpm</a>
@@ -270,9 +270,67 @@ rpm -ivh *.rpm
 
             in the directory where you saved the files.
 
+            <li>If you are running a Debian-based Linux (partially tested on Ubuntu 6.06 LTS - Dapper Drake), you can use the following instructions to install the required packages:
+
+<pre>
+sudo apt-get install cvs autoconf automake java-package fakeroot gcc-3.4
+sudo apt-get install gperf swig p7zip gcc-avr avr-libc binutils-avr uisp
+</pre>
+
+These instructions are borrowed from <a href="http://www.chadmetcalf.com/tinyos-1x-on-ubuntu">http://www.chadmetcalf.com/tinyos-1x-on-ubuntu</a>.  Some of the above packages may not be needed, depending on your configuration.
+
+I actually used the graphical interface provided by the Synaptic Package Manager from the System | Administration menu instead.
 
           <li>You may also try compiling from source:
             <br><a href="http://www.tinyos.net/dist-2.0.0/tools/source">http://www.tinyos.net/dist-2.0.0/tools/source</a>
+
+<p>Note: These installation instructions have not been tested.  For your convenience, the recommended installation order and flags are noted in the instructions below.  The flags are from the .conf files located at <a href="http://www.tinyos.net/dist-1.1.0/tools/source">http://www.tinyos.net/dist-1.1.0/tools/source</a>.
+
+<p>
+Download the following files:
+<ul>
+<li><a href="http://www.tinyos.net/dist-2.0.0/tools/source/avr-binutils-2.15tinyos.tgz">avr-binutils-2.15tinyos.tgz</a>
+<li><a href="http://www.tinyos.net/dist-2.0.0/tools/source/avr-gcc-3.4.3.tgz">avr-gcc-3.4.3.tgz</a>
+<li><a href="http://www.tinyos.net/dist-2.0.0/tools/source/avr-libc-1.2.3.tar.gz">avr-libc-1.2.3.tar.gz</a>
+<li><a href="http://www.tinyos.net/dist-2.0.0/tools/source/avarice-2.4.tar.bz2">avarice-2.4.tar.bz2</a>
+<li><a href="http://www.tinyos.net/dist-2.0.0/tools/source/avr-insight-6.3.tar.gz">avr-insight-6.3.tar.gz</a>
+</ul>
+
+<p>
+Install them with the following commands:
+<pre>
+tar xzvf avr-binutils-2.15tinyos.tgz
+cd avr-binutils-2.15tinyos
+./configure --target=avr
+make
+sudo make install
+
+tar xzvf avr-gcc-3.4.3.tgz
+cd avr-gcc-3.4.3
+./configure --target=avr --disable-nls --enable-languages=c
+make
+sudo make install
+cd ..
+
+tar xzvf avr-libc-1.2.3.tar.gz
+cd avr-libc-1.2.3
+./doconf
+./domake
+sudo ./domake install
+cd ..
+
+tar --bzip2 -xvf avarice-2.4.tar.bz2
+cd avarice-2.4
+./configure
+make
+sudo install
+
+tar xzvf avr-insight-6.3.tar.gz
+cd avr-insight-6.3
+./configure --target=avr --with-gnu-ld --with-gnu-as
+make
+sudo install
+</pre>
 
         </ul>
 
