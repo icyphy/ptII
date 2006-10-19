@@ -273,6 +273,8 @@ public class Expression extends CCodeGeneratorHelper {
          *  is "time", then the type is BaseType.DOUBLE and if the
          *  name is "iterations", then the type is BaseType.INT.
          *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If thrown whil getting
+         *  the port or scoped value.  
          */
         public Type getType(String name) throws IllegalActionException {
             if (name.equals("time")) {

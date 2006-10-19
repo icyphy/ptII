@@ -1821,6 +1821,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
     
     /** Create the input buffer and offset map.
+     *  @exception IllegalActionException If thrown while
+     *  getting port information.  
      */   
     protected void _createInputBufferSizeAndOffsetMap()
             throws IllegalActionException {
@@ -1898,6 +1900,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     
     /** Generate input variable declarations.
      *  @return a String that declares input variables.
+     *  @exception IllegalActionException If thrown while
+     *  getting port information.  
      */
     protected String _generateInputVariableDeclaration() 
             throws IllegalActionException {
@@ -1932,6 +1936,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     /** Generate output variable declarations.
      *  @return a String that declares output variables.
+     *  @exception IllegalActionException If thrown while
+     *  getting port information.  
      */
     protected String _generateOutputVariableDeclaration() 
             throws IllegalActionException {

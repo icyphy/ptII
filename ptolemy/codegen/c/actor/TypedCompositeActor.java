@@ -498,9 +498,12 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     }
     
     /** Create the output buffer and offset map.
+     *  @exception IllegalActionException If thrown while getting the
+     *  director helper or while getting the buffer size or read offset
+     *  or write offset.   
      */
-    protected void _createOutputBufferSizeAndOffsetMap()
-            throws IllegalActionException {
+    protected void _createOutputBufferSizeAndOffsetMap() {
+
 
         Iterator outputPorts = ((Actor) getComponent()).outputPortList()
                 .iterator();
