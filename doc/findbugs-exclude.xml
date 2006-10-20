@@ -2,11 +2,9 @@
     <Match classregex="ptolemy.data..*Parser.*"/>
     <Match classregex="ptolemy.data.unit.UParser"/>
     <Match classregex="ptolemy.data.unit.UParserTokenManager"/>
-
-    <Match classregex="com.izforge.*"/>
-    <Match classregex="com.centralnexus.input"/>
-    <Match classregex"com.coi.tools.os.win"/>
-
+    <Match classregex="com.izforge."/>
+    <Match classregex="com.centralnexus.input.*"/>
+    <Match classregex="com.coi.tools.os.win.*"/>
     <Match classregex=".*" >
        <!-- Exclude Serializable warnings -->
        <BugCode name="Se" />
