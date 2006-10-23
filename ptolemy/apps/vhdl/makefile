@@ -34,7 +34,7 @@ ME =            ptolemy/apps/vhdl
 DIRS =		test
 
 # Root of the Java directory
-ROOT =          ../../../..
+ROOT =          ../../..
 
 CLASSPATH =     $(ROOT)
 
