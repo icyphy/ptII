@@ -45,7 +45,7 @@ if {[info procs sdfModel] == "" } then {
 test SDFDirector-1.1 {Call generateCode(StringBuffer)} {
     set model [sdfModel]
     set codeGenerator \
-	    [java::new ptolemy.codegen.kernel.CodeGenerator \
+	    [java::new ptolemy.codegen.c.kernel.CCodeGenerator \
 	    $model "myCodeGenerator"]
 
     set results [java::new StringBuffer]
