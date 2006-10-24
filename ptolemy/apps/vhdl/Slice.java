@@ -35,7 +35,6 @@ import java.util.Arrays;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.FixToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;

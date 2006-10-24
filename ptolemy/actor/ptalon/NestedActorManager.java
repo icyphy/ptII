@@ -41,7 +41,6 @@ import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
-import ptolemy.actor.ptalon.CodeManager.IfTree;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;

@@ -27,9 +27,7 @@
  */
 package ptolemy.codegen.vhdl.kernel;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 

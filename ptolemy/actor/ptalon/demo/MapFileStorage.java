@@ -31,7 +31,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;

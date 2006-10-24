@@ -27,8 +27,6 @@
  */
 package ptolemy.actor.ptalon.demo;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.List;
 
 import ptolemy.actor.TypedAtomicActor;

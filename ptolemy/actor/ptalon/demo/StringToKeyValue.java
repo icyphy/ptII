@@ -27,15 +27,9 @@
  */
 package ptolemy.actor.ptalon.demo;
 
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
