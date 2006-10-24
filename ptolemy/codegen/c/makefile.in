@@ -8,6 +8,14 @@
 PTCGLIBRARIES = @PTCGLibraries@
 PTCGINCLUDES = @PTCGIncludes@
 
+# Under Windows, to create a binary that does not pop up a console window,
+# compile with: make -f @modelName@.mk CC_FLAGS=-mwindows
+CC_FLAGS=
+
+# If the user would like to add compile time options, run with
+# make -f @modelName@.mk USER_CC_FLAGS=xxx
+USER_CC_FLAGS =
+
 # We need -lm so we can get floor() for ftoi() 
 @modelName@: @modelName@.c
-	gcc -g @modelName@.c $(PTCGINCLUDES) -o @modelName@ -lm $(PTCGLIBRARIES)
+	gcc $(CC_FLAGS) $(USER_CC_FLAGS) -g @modelName@.c $(PTCGINCLUDES) -o @modelName@ -lm $(PTCGLIBRARIES)
