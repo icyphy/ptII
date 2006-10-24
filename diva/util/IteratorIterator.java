@@ -57,11 +57,11 @@ public abstract class IteratorIterator extends IteratorAdapter {
      * the top-level iterator has no more elements.
      */
     public boolean hasNext() {
-        if (!_subiterator.hasNext()) {
+        //if (!_subiterator.hasNext()) {
             while (!_subiterator.hasNext()) {
                 _subiterator = iterator(_iterator.next());
             }
-        }
+        //}
 
         return (_subiterator != null);
     }
