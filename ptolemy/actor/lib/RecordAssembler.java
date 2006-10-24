@@ -136,7 +136,7 @@ public class RecordAssembler extends TypedAtomicActor {
 
         return true;
     }
-    
+
     /** Override the base class to compute the type constraints.
      *  It is an optimization to force this to happen before scheduling
      *  because this has the side effect of incrementing the workspace
@@ -195,10 +195,10 @@ public class RecordAssembler extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Cached list of type constraints. */
     private List _typeConstraintList;
-    
+
     /** Version number when the cache was last updated. */
     private long _typeConstraintListVersion = -1;
 }

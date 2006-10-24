@@ -231,7 +231,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateBodyCode() throws IllegalActionException {
-        
+
         return "";
     }
 
@@ -294,7 +294,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String wrapupEntryCode = generateWrapupEntryCode();
         String wrapupExitCode = generateWrapupExitCode();
         String wrapupProcedureName = generateWrapupProcedureName();
-        
+
         String fireFunctionCode = null;
         if (!inline) {
             fireFunctionCode = generateFireFunctionCode();
@@ -315,38 +315,38 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(sharedCode);
         code.append(variableDeclareCode);
         code.append(preinitializeCode);
-        
+
         if (!inline) {
             code.append(fireFunctionCode);
         }
-        
+
         code.append(initializeEntryCode);
         code.append(variableInitCode);
         code.append(initializeCode);
         code.append(initializeExitCode);
-        
+
         code.append(wrapupEntryCode);
         code.append(wrapupCode);
         code.append(wrapupExitCode);
-        
+
         code.append(mainEntryCode);
-        
+
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
             code.append(initializeProcedureName);
-        }    
-        
+        }
+
         code.append(bodyCode);
-        
+
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
             code.append(wrapupProcedureName);
         }
-        
-        code.append(mainExitCode);        
-        
+
+        code.append(mainExitCode);
+
         if (_executeCommands == null) {
             _executeCommands = new StreamExec();
         }
@@ -459,9 +459,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @param types An array of types.
      *  @param functions An array of functions.
      *  @return The code that declares functions.
-     */   
+     */
     public Object generateFunctionTable(Object[] types, Object[] functions) {
-        
+
         return "";
     }
 
@@ -471,7 +471,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *   cannot be found.
      */
     public String generateIncludeFiles() throws IllegalActionException {
-        
+
         return "";
     }
 
@@ -487,7 +487,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(comment("Initialize " + getContainer().getFullName()));
-    
+
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateInitializeCode());
         return code.toString();
@@ -498,7 +498,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeEntryCode() throws IllegalActionException {
-        
+
         return comment("initialization entry code");
     }
 
@@ -507,25 +507,26 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeExitCode() throws IllegalActionException {
-    
+
         return comment("initialization exit code");
     }
-    
+
     /** Generate the initialization procedure name.
      *  @return a string for the initialization procedure name.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateInitializeProcedureName() throws IllegalActionException {
-        
+    public String generateInitializeProcedureName()
+            throws IllegalActionException {
+
         return "";
     }
-    
+
     /** Generate the main entry point.
      *  @return Return the definition of the main entry point for a program.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateMainEntryCode() throws IllegalActionException {
-        
+
         return comment("main entry code");
     }
 
@@ -534,10 +535,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateMainExitCode() throws IllegalActionException {
-        
+
         return comment("main exit code");
     }
-
 
     /** Generate preinitialize code (if there is any).
      *  This method calls the generatePreinitializeCode() method
@@ -549,7 +549,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
 
         _modifiedVariables = compositeActorHelper.getModifiedVariables();
@@ -664,7 +664,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupEntryCode() throws IllegalActionException {
-        
+
         return comment("wrapup entry code");
     }
 
@@ -673,19 +673,19 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupExitCode() throws IllegalActionException {
-        
+
         return comment("wrapup exit code");
     }
-    
+
     /** Generate the wrapup procedure name.
      *  @return a string for the wrapup procedure name.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupProcedureName() throws IllegalActionException {
-    
+
         return "";
     }
-    
+
     /** Return the associated component, which is always the container.
      *  @return The helper to generate code.
      */
@@ -711,7 +711,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String getCodeFileName() {
         return _codeFileName;
     }
-    
+
     /** Test if the containing actor is in the top level.
      *
      *  @return true if the containing actor is in the top level.
@@ -719,7 +719,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public boolean isTopLevel() {
         return getContainer().getContainer() == null;
     }
-    
 
     /** Generate code for a model.
      *  <p>For example:
@@ -848,16 +847,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */
     protected static String _INDENT1 = StringUtilities.getIndentPrefix(1);
-    
+
     /** Set of include command line arguments where each element is 
      *  a string, for example "-I/usr/local/include".
      */
     protected Set _includes = new HashSet();
-    
+
     /** The model we for which we are generating code. */
     protected CompositeEntity _model;
 
-    
     /** A set that contains all variables in the model whose values can be 
      *  changed during execution.
      */
@@ -882,7 +880,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected static final List _primitiveTypes = Arrays.asList(new String[] {
             "Int", "Double", "String", "Long", "Boolean" });
-    
+
     /** The sanitized model name. */
     protected String _sanitizedModelName;
 
@@ -930,7 +928,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (((BooleanToken) compile.getToken()).booleanValue()) {
             commands.add("make -f " + _sanitizedModelName + ".mk");
         }
-       
+
         if (isTopLevel()) {
             if (((BooleanToken) compile.getToken()).booleanValue()) {
                 String command = codeDirectory.stringValue()
@@ -940,7 +938,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
                 commands.add("\"" + command.replace('\\', '/') + "\"");
             }
-        }    
+        }
 
         if (commands.size() == 0) {
             return -1;
@@ -1121,7 +1119,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         String makefileTemplateName = generatorPackage.stringValue().replace(
                 '.', '/')
-                + (isTopLevel()?"/makefile.in":"/jnimakefile.in");
+                + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in");
 
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()

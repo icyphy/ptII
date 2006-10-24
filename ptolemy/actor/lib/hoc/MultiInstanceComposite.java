@@ -224,7 +224,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                                     "Can be linked to one relation only");
                         }
 
-                        TypedIORelation relation = (TypedIORelation) relations.get(0);
+                        TypedIORelation relation = (TypedIORelation) relations
+                                .get(0);
                         TypedIORelation oldRelation = relation;
 
                         // Iterate through other ports that are connected to this port.
@@ -344,8 +345,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
         int i = 1;
         while (true) {
             // FIXME: Using a naming convention here is fragile!
-            MultiInstanceComposite clone = (MultiInstanceComposite) container.getEntity(getName()
-                    + "_" + ++i);
+            MultiInstanceComposite clone = (MultiInstanceComposite) container
+                    .getEntity(getName() + "_" + ++i);
             if (clone == null) {
                 break;
             }
@@ -354,7 +355,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                 TypedIOPort port = (TypedIOPort) ports.next();
                 Iterator relations = port.linkedRelationList().iterator();
                 while (relations.hasNext()) {
-                    TypedIORelation relation = (TypedIORelation) relations.next();
+                    TypedIORelation relation = (TypedIORelation) relations
+                            .next();
 
                     // Use a different criterion to delete relation
                     // since the old one wouldn't work any more.

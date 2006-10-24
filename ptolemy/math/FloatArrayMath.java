@@ -284,8 +284,7 @@ public class FloatArrayMath {
         float[] returnValue = new float[array.length];
 
         for (int i = 0; i < array.length; i++) {
-            if ((array[i] > top)
-                    || (array[i] == Float.POSITIVE_INFINITY)) {
+            if ((array[i] > top) || (array[i] == Float.POSITIVE_INFINITY)) {
                 returnValue[i] = top;
             } else if ((array[i] < bottom)
                     || (array[i] == Float.NEGATIVE_INFINITY)) {

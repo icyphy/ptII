@@ -79,7 +79,7 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
-        
+
         // check the latency of the actor and register the output.
         _codeStream.append("??? Latency code ???");
         return processCode(_codeStream.toString());

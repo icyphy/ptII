@@ -15,7 +15,7 @@ public class PtalonRuntimeException extends Exception {
     public PtalonRuntimeException(String message) {
         super(message);
     }
-    
+
     /**
      * Create a PtalonRuntimeException
      * @param message An explanation of the offense.
@@ -24,5 +24,5 @@ public class PtalonRuntimeException extends Exception {
     public PtalonRuntimeException(String message, Throwable cause) {
         super(message, cause);
     }
-    
+
 }

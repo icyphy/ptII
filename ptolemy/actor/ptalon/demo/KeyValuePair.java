@@ -4,10 +4,10 @@ package ptolemy.actor.ptalon.demo;
 ////KeyValuePair
 
 /**
-A pair of Strings, one a key, and one a value.
+ A pair of Strings, one a key, and one a value.
 
-@author Adam Cataldo
-*/
+ @author Adam Cataldo
+ */
 
 public class KeyValuePair {
     /**
@@ -20,7 +20,7 @@ public class KeyValuePair {
         _key = key;
         _value = value;
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -30,14 +30,14 @@ public class KeyValuePair {
     public String getKey() {
         return _key;
     }
-    
+
     /**
      * @return The value of this KeyValuePair.
      */
     public String getValue() {
         return _value;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        private members                    ////
 
@@ -45,7 +45,7 @@ public class KeyValuePair {
      * The key.
      */
     private String _key;
-    
+
     /**
      * The value.
      */

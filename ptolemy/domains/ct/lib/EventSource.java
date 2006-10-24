@@ -187,9 +187,10 @@ public class EventSource extends TypedAtomicActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         EventSource newObject = (EventSource) super.clone(workspace);
-        
+
         try {
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.values));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

@@ -637,10 +637,10 @@ public class Manager extends NamedObj implements Runnable {
                     // NOTE: To see why this is no longer needed, see the comment
                     // above for the commented out call to validateSettables().
                     /*
-                    if (actor instanceof NamedObj) {
-                        ((NamedObj) actor).validateSettables();
-                    }
-                    */
+                     if (actor instanceof NamedObj) {
+                     ((NamedObj) actor).validateSettables();
+                     }
+                     */
                 }
             }
 

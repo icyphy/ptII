@@ -244,9 +244,9 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                 replaceTokenFields(entityClass, depth, unsafeLocalSet, debug);
             }
 
-//                         if(depth == 1) {
-//                             break;
-//                         }
+            //                         if(depth == 1) {
+            //                             break;
+            //                         }
 
             for (Iterator classes = classList.iterator(); classes.hasNext();) {
                 SootClass entityClass = (SootClass) classes.next();
@@ -358,7 +358,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                         _phaseName + ".cie", Collections.EMPTY_SET, debug);
             }
         }
-        
+
         System.out.println("Performing TypeSpecializerAnalysis");
         TypeSpecializerAnalysis typeAnalysis = new TypeSpecializerAnalysis(
                 classList, unsafeLocalSet);
@@ -955,7 +955,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                 boolean isInlineableTypeMethod = SootUtilities.derivesFrom(type
                         .getSootClass(), PtolemyUtilities.typeClass)
-                    && (r.getMethod().getName().equals("convert")
+                        && (r.getMethod().getName().equals("convert")
                                 || r.getMethod().getName().equals("equals")
                                 || r.getMethod().getName().equals(
                                         "getTokenClass") || r.getMethod()
@@ -967,21 +967,20 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                 }
 
                 if (isInlineableTypeMethod) {
-                    ptolemy.data.type.Type baseTokenType =
-                        typeAnalysis.getSpecializedType((Local)r.getBase());
+                    ptolemy.data.type.Type baseTokenType = typeAnalysis
+                            .getSpecializedType((Local) r.getBase());
                     SootClass typeClass = Scene.v().loadClassAndSupport(
                             baseTokenType.getClass().getName());
-                    
+
                     // Only instantiable types can be inlined..
-                    if(!baseTokenType.isInstantiable()) {
+                    if (!baseTokenType.isInstantiable()) {
                         return doneSomething;
                     }
 
                     // Then determine the method that was
                     // actually invoked.
                     List methodList = hierarchy.resolveAbstractDispatch(
-                            typeClass,
-                            r.getMethod());
+                            typeClass, r.getMethod());
 
                     // If there was only one possible method...
                     if (methodList.size() == 1) {

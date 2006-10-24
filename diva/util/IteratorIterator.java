@@ -58,9 +58,9 @@ public abstract class IteratorIterator extends IteratorAdapter {
      */
     public boolean hasNext() {
         //if (!_subiterator.hasNext()) {
-            while (!_subiterator.hasNext()) {
-                _subiterator = iterator(_iterator.next());
-            }
+        while (!_subiterator.hasNext()) {
+            _subiterator = iterator(_iterator.next());
+        }
         //}
 
         return (_subiterator != null);

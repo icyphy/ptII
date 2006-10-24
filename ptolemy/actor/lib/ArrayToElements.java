@@ -99,7 +99,8 @@ public class ArrayToElements extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayToElements newObject = (ArrayToElements) (super.clone(workspace));
         try {
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.input));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.input));
         } catch (IllegalActionException e) {
             // Should have been caught before.
             throw new InternalErrorException(e);

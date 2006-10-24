@@ -150,17 +150,17 @@ public class JVMTableau extends Tableau {
                         + "System.getProperties():\n" + accessControl);
             }
 
-            
-            
             try {
                 // Use reflection to get the thread info so that we
                 // don't have to inciude non-UCB code in this package.
-                Class printThreadsClass = Class.forName("util.testsuite.PrintThreads");
+                Class printThreadsClass = Class
+                        .forName("util.testsuite.PrintThreads");
 
                 Method allThreads = printThreadsClass.getMethod("allThreads",
                         new Class[] { boolean.class });
-                propertyBuffer.append("\nThreads:\n" 
-                        + (String) allThreads.invoke(null, new Object[] {Boolean.TRUE}));
+                propertyBuffer.append("\nThreads:\n"
+                        + (String) allThreads.invoke(null,
+                                new Object[] { Boolean.TRUE }));
             } catch (Throwable throwable) {
                 // Ignore.
             }

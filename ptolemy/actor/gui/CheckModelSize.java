@@ -139,9 +139,8 @@ public class CheckModelSize {
                                             .getElement(1)).doubleValue();
 
                                     // Avoid comparing floats.
-                                    if (Math.abs(x - (width / 2.0)) > 0.1 
-                                            || Math.abs(y  - (height / 2.0))
-                                            > 0.1 ) {
+                                    if (Math.abs(x - (width / 2.0)) > 0.1
+                                            || Math.abs(y - (height / 2.0)) > 0.1) {
                                         analysis
                                                 .append(" Center(["
                                                         + x

@@ -361,7 +361,8 @@ public class ConversionUtilities {
             // there are only two useful values of this type.  Use the
             // Boolean.valueOf() method to create Boolean objects
             // instead."
-            returnValue = Boolean.valueOf(((BooleanToken) token).booleanValue());
+            returnValue = Boolean
+                    .valueOf(((BooleanToken) token).booleanValue());
         } else if (token instanceof ComplexToken) {
             returnValue = ((ComplexToken) token).complexValue();
         } else if (token instanceof FixToken) {

@@ -393,8 +393,8 @@ public class Schedule extends ScheduleElement {
 
         while (schedules.hasNext()) {
             ScheduleElement schedule = (ScheduleElement) schedules.next();
-            result.append(delimiter + schedule.toParenthesisString(nameMap,
-                    delimiter));
+            result.append(delimiter
+                    + schedule.toParenthesisString(nameMap, delimiter));
         }
 
         result.append(")");

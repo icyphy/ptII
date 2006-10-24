@@ -369,7 +369,7 @@ public class CNames {
             name = "void";
         } else {
             System.out.println("Ignoring unsupported Soot type'"
-                    + type.getClass().getName() + "': "+ type);
+                    + type.getClass().getName() + "': " + type);
         }
 
         return name;

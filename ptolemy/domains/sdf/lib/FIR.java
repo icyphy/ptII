@@ -436,7 +436,7 @@ public class FIR extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** This class implements a monotonic function of the input port
      *  type.  The result type of this actor is generally the input type,
      *  unless the input type is a FixType, in which case the output
@@ -479,7 +479,8 @@ public class FIR extends SDFTransformer {
         public InequalityTerm[] getVariables() {
             try {
                 InequalityTerm elementTerm = ArrayType.elementType(taps);
-                if (input.getTypeTerm().isSettable() && elementTerm.isSettable()) {
+                if (input.getTypeTerm().isSettable()
+                        && elementTerm.isSettable()) {
                     InequalityTerm[] variable = new InequalityTerm[2];
                     variable[0] = input.getTypeTerm();
                     variable[1] = elementTerm;

@@ -811,7 +811,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0L;
-    
+
     /** Cache of the most recent value of vectorizationFactor. */
     private int _vectorizationFactor = 1;
 }

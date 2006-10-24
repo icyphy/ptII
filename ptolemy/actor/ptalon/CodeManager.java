@@ -477,8 +477,8 @@ public class CodeManager {
         _currentIfTree.setStatus(name, true);
         if (_inNewWhileIteration()) {
             if (_currentIfTree.isForStatement) {
-                _currentIfTree.setEnteredIteration(name,
-                        _currentIfTree.entered);
+                _currentIfTree
+                        .setEnteredIteration(name, _currentIfTree.entered);
             } else {
                 IfTree tree = _currentIfTree;
                 while (!tree.isForStatement) {
@@ -492,8 +492,7 @@ public class CodeManager {
                 _currentIfTree.setEnteredIteration(name, tree.entered);
             }
         } else {
-            _currentIfTree
-                    .setEnteredIteration(name, _currentIfTree.entered);
+            _currentIfTree.setEnteredIteration(name, _currentIfTree.entered);
         }
     }
 

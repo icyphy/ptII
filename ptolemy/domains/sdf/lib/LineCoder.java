@@ -134,7 +134,8 @@ public class LineCoder extends SDFTransformer {
 
         // set the type constraints
         try {
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.table));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.table));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

@@ -78,8 +78,7 @@ public class AnythingToDouble extends Converter {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AnythingToDouble newObject = (AnythingToDouble) super
-                .clone(workspace);
+        AnythingToDouble newObject = (AnythingToDouble) super.clone(workspace);
         return newObject;
     }
 

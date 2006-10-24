@@ -375,7 +375,7 @@ public class ReduceWorker extends TypedAtomicActor {
     ////                        private members                    ////
 
     private boolean _doneReading = false;
-    
+
     private boolean _readMode = false;
 
     private Class<?> _reduceClass;

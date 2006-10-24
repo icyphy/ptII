@@ -3436,7 +3436,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // or defined in scope. Search for a class definition that
                 // matches in the current context.
                 reference = _searchForClassInContext(className, /* source*/
-                        null);
+                null);
             }
 
             if (reference == null) {

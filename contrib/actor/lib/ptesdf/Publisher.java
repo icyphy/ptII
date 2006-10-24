@@ -312,7 +312,7 @@ public class Publisher extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
-    
+
     /** Workspace version where links were last updated. */
     private long _linksUpdatedVersion = -1;
 }

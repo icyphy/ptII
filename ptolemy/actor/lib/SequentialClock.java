@@ -218,7 +218,8 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SequentialClock newObject = (SequentialClock) super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.values));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

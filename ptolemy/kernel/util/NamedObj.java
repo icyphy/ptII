@@ -2069,7 +2069,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             while (_override.size() <= depth) {
                 _override.add(new Integer(0));
             }
-            int breadth = ((Integer)_override.get(depth)).intValue();
+            int breadth = ((Integer) _override.get(depth)).intValue();
             _override.set(depth, new Integer(breadth + 1));
         }
         Iterator objects = containedObjectsIterator();
@@ -2929,7 +2929,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                         // will be determined by the depth of propagation from
                         // this candidate.
                         result.addAll(candidate._getDerivedList(visited,
-                                propagate, force, candidate, 0, newOverride, null));
+                                propagate, force, candidate, 0, newOverride,
+                                null));
 
                         // Note that the above recursive call will
                         // add the candidate to the HashSet, so we

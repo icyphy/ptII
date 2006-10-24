@@ -121,16 +121,15 @@ public class FileUtilities {
      *  @exception IOException If the jar file cannot be opened, or
      *  if there are problems extracting the contents of the jar file   
      */
-    public static void extractJarFile(String jarFileName,
-            String directoryName) throws IOException {
+    public static void extractJarFile(String jarFileName, String directoryName)
+            throws IOException {
         JarFile jarFile = new JarFile(jarFileName);
         Enumeration entries = jarFile.entries();
         while (entries.hasMoreElements()) {
             JarEntry jarEntry = (JarEntry) entries.nextElement();
             File destinationFile = new File(directoryName, jarEntry.getName());
             if (jarEntry.isDirectory()) {
-                if (!destinationFile.isDirectory()
-                        && !destinationFile.mkdirs()) {
+                if (!destinationFile.isDirectory() && !destinationFile.mkdirs()) {
                     throw new IOException("Warning, failed to create "
                             + "directory for \"" + destinationFile + "\".");
                 }
@@ -148,7 +147,7 @@ public class FileUtilities {
      *  which to extract the files from the jar file.  The second
      *  argument is optional.
      */
-    public static void main(String [] args) {
+    public static void main(String[] args) {
         if (args.length < 1 || args.length > 2) {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.util.FileUtilities jarFile [directory]\n"
@@ -159,7 +158,7 @@ public class FileUtilities {
         }
         String jarFileName = args[0];
         String directoryName = null;
-        if ( args.length >=2) {
+        if (args.length >= 2) {
             directoryName = args[1];
         }
         try {
@@ -544,7 +543,7 @@ public class FileUtilities {
 
         try {
             input = new BufferedInputStream(inputStream);
-            
+
             BufferedOutputStream output = null;
 
             try {
@@ -583,7 +582,7 @@ public class FileUtilities {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 

@@ -762,15 +762,16 @@ public class IterateOverArray extends TypedCompositeActor implements
                     }
 
                     // Require the source port to be an array.
-                    Inequality arrayInequality = new Inequality(
-                            sourcePort.getTypeTerm(), ArrayType.ARRAY_BOTTOM);
+                    Inequality arrayInequality = new Inequality(sourcePort
+                            .getTypeTerm(), ArrayType.ARRAY_BOTTOM);
                     result.add(arrayInequality);
 
                     // Next require that the element type of the source port array
                     // be compatible with the destination port.
                     try {
-                        Inequality ineq = new Inequality(
-                                ArrayType.elementType(sourcePort), destinationPort.getTypeTerm());
+                        Inequality ineq = new Inequality(ArrayType
+                                .elementType(sourcePort), destinationPort
+                                .getTypeTerm());
                         result.add(ineq);
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
@@ -779,8 +780,9 @@ public class IterateOverArray extends TypedCompositeActor implements
                     // Require that the destination port type be an array
                     // with elements compatible with the source port.
                     try {
-                        Inequality ineq = new Inequality(
-                                ArrayType.arrayOf(sourcePort), destinationPort.getTypeTerm());
+                        Inequality ineq = new Inequality(ArrayType
+                                .arrayOf(sourcePort), destinationPort
+                                .getTypeTerm());
                         result.add(ineq);
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);

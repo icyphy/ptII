@@ -1,30 +1,30 @@
 /* Determine whether an array contains an element.
 
-Copyright (c) 1998-2004 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2004 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.actor.lib;
 
@@ -45,15 +45,15 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayContains
 /**
-   Determine whether an element is contained in an array.
-   This actor reads an array from the <i>array</i>
-   input port and an element from the <i>element</i>
-   port parameter and outputs true if the element is contained by
-   the array.
-   
-   @author Efrat Jaeger and Edward A. Lee
-   @version $Id$
-*/
+ Determine whether an element is contained in an array.
+ This actor reads an array from the <i>array</i>
+ input port and an element from the <i>element</i>
+ port parameter and outputs true if the element is contained by
+ the array.
+ 
+ @author Efrat Jaeger and Edward A. Lee
+ @version $Id$
+ */
 
 public class ArrayContains extends TypedAtomicActor {
 
@@ -66,9 +66,9 @@ public class ArrayContains extends TypedAtomicActor {
      *   actor with this name.
      */
     public ArrayContains(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         array = new TypedIOPort(this, "array", true, false);
         new Parameter(array, "_showName", BooleanToken.TRUE);
         output = new TypedIOPort(this, "output", false, true);
@@ -78,7 +78,7 @@ public class ArrayContains extends TypedAtomicActor {
         new Parameter(element.getPort(), "_showName", BooleanToken.TRUE);
 
         // set type constraints.
-        array.setTypeAtLeast(ArrayType.arrayOf(element));       
+        array.setTypeAtLeast(ArrayType.arrayOf(element));
         output.setTypeEquals(BaseType.BOOLEAN);
     }
 
@@ -89,14 +89,14 @@ public class ArrayContains extends TypedAtomicActor {
      *  of the type of the <i>element</i> port.
      */
     public TypedIOPort array;
-    
+
     /** Boolean output specifying whether the element is contained in 
      * 	the array.
      */
     public TypedIOPort output;
-    
+
     /** The element to test for presence in the array.     
-	 */
+     */
     public PortParameter element;
 
     ///////////////////////////////////////////////////////////////////
@@ -112,13 +112,14 @@ public class ArrayContains extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayContains newObject = (ArrayContains) super.clone(workspace);
         try {
-			newObject.array.setTypeAtLeast(ArrayType.arrayOf(newObject.element));
-		} catch (IllegalActionException e) {
-			throw new CloneNotSupportedException("Clone failed: " + e);
-		}               
+            newObject.array
+                    .setTypeAtLeast(ArrayType.arrayOf(newObject.element));
+        } catch (IllegalActionException e) {
+            throw new CloneNotSupportedException("Clone failed: " + e);
+        }
         return newObject;
     }
-    
+
     /** If there is an array input, then check to see whether it
      *  contains the element given by the <i>element</i> port-parameter,
      *  and output true or false accordingly.
@@ -130,14 +131,14 @@ public class ArrayContains extends TypedAtomicActor {
         element.update();
         Token elementToken = element.getToken();
         if (array.hasToken(0)) {
-            ArrayToken token = (ArrayToken)array.get(0);
+            ArrayToken token = (ArrayToken) array.get(0);
             boolean contained = false;
-            for (int i=0; i<token.length(); i++) {
-            	BooleanToken bt = elementToken.isEqualTo(token.getElement(i)); 
-				if (bt.booleanValue()) {
-            		contained = true;
-            		break;
-            	}
+            for (int i = 0; i < token.length(); i++) {
+                BooleanToken bt = elementToken.isEqualTo(token.getElement(i));
+                if (bt.booleanValue()) {
+                    contained = true;
+                    break;
+                }
             }
             output.broadcast(new BooleanToken(contained));
         }

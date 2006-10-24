@@ -123,7 +123,8 @@ public class ActorIndex {
                 namedObjClassesSeen.reset(modelName);
                 //URL modelURL = new File(modelName).toURL();
                 try {
-                    URL modelURL = FileUtilities.nameToURL(modelName, null, null);
+                    URL modelURL = FileUtilities.nameToURL(modelName, null,
+                            null);
                     System.out.println("Parsing: " + modelURL);
                     parser.reset();
                     parser.parse(null, modelURL);

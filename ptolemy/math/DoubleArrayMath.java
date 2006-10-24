@@ -299,8 +299,7 @@ public class DoubleArrayMath {
         double[] returnValue = new double[array.length];
 
         for (int i = 0; i < array.length; i++) {
-            if ((array[i] > top)
-                    || (array[i] == Double.POSITIVE_INFINITY)) {
+            if ((array[i] > top) || (array[i] == Double.POSITIVE_INFINITY)) {
                 returnValue[i] = top;
             } else if ((array[i] < bottom)
                     || (array[i] == Double.NEGATIVE_INFINITY)) {

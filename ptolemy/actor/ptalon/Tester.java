@@ -11,7 +11,7 @@ public class Tester {
             System.out.println(out[i]);
         }
     }
-    
+
     public static String[] _parseActorExpression(String expression) {
         expression = expression.replaceAll("\\)(\\p{Blank})*\\(", ",");
         String[] actorSeperated = expression.split("\\(", 2);
@@ -37,13 +37,14 @@ public class Tester {
             index++;
             lastMarker = thisMarker;
         }
-        assignments[index] = remains.substring(lastMarker + 1, remains.length());
+        assignments[index] = remains
+                .substring(lastMarker + 1, remains.length());
         String[] output = new String[2 * assignments.length + 1];
         output[0] = actor;
         for (int i = 0; i < assignments.length; i++) {
             String[] equation = assignments[i].split(":=", 2);
-            output[2*i + 1] = equation[0].trim();
-            output[2*i + 2] = equation[1].trim();
+            output[2 * i + 1] = equation[0].trim();
+            output[2 * i + 2] = equation[1].trim();
         }
         return output;
     }

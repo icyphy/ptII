@@ -93,7 +93,7 @@ public class Starver extends Transformer {
         if (input.hasToken(0)) {
             token = input.get(0);
         }
-        int limitValue = ((IntToken)limit.getToken()).intValue();
+        int limitValue = ((IntToken) limit.getToken()).intValue();
         if (token != null && (limitValue < 0 || _count < limitValue)) {
             output.send(0, token);
             _count++;

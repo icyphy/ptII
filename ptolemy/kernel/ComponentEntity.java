@@ -807,12 +807,12 @@ public class ComponentEntity extends Entity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Define the icon. */
     private void _addIcon() {
         _attachText("_iconDescription", _defaultIcon);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

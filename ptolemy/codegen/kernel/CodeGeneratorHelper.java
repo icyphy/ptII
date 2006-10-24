@@ -280,11 +280,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  In C, this would be defining main().
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    
+
     //public String generateMainEntryCode() throws IllegalActionException {
     //    return _codeGenerator.comment("main entry code");
     //}
-
     /** Generate the main entry point.
      *  @return In this base class, return a comment.  Subclasses
      *  should return the a string that closes optionally calls exit
@@ -294,7 +293,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     //public String generateMainExitCode() throws IllegalActionException {
     //    return _codeGenerator.comment("main exit code");
     //}
-
     /** Generate mode transition code. The mode transition code
      *  generated in this method is executed after each global
      *  iteration, e.g., in HDF model.  Do nothing in this base class.
@@ -327,32 +325,32 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateOffset(String offsetString, IOPort port, int channel,
             boolean isWrite) throws IllegalActionException {
-    
+
         // if the max buffer size of the port is not larger than 1,
         // offset is not needed.
         if (!(getBufferSize(port) > 1)) {
             return "";
         }
-    
+
         String result = "";
         Object offsetObject;
         String temp;
-    
+
         // Get the offset index.
         if (isWrite) {
             offsetObject = getWriteOffset(port, channel);
         } else {
             offsetObject = getReadOffset(port, channel);
         }
-    
+
         if (!offsetString.equals("")) {
             // Specified offset.
-    
+
             if (offsetObject instanceof Integer && _isInteger(offsetString)) {
-    
+
                 int offset = ((Integer) offsetObject).intValue()
                         + (new Integer(offsetString)).intValue();
-    
+
                 offset %= getBufferSize(port, channel);
                 temp = new Integer(offset).toString();
                 /*
@@ -363,7 +361,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                  sinkChannelNumber) + " + "
                  + channelAndOffset[1] + ")%" + divisor;
                  */
-    
+
             } else {
                 // Note: This assumes the director helper will increase
                 // the buffer size of the channel to the power of two.
@@ -373,7 +371,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 // represented by string expression,
                 // getBufferSize(port, channelNumber) will always
                 // return a value at least 2.
-    
+
                 /*
                  * FIXME: The following pointer math does not give the correct
                  * result. Maybe the original author wanted to optimize by
@@ -386,23 +384,23 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 temp = "(" + offsetObject.toString() + " + " + offsetString
                         + ")%" + modulo;
             }
-    
+
             result += "[" + temp + "]";
-    
+
         } else {
             // Did not specify offset, so the receiver buffer
             // size is 1. This is multiple firing.
-    
+
             if (offsetObject instanceof Integer) {
                 int offset = ((Integer) offsetObject).intValue();
-    
+
                 offset %= getBufferSize(port, channel);
-    
+
                 temp = new Integer(offset).toString();
             } else {
-    
+
                 int modulo = getBufferSize(port, channel) - 1;
-    
+
                 temp = (String) offsetObject + "&" + modulo;
             }
             result += "[" + temp + "]";
@@ -668,7 +666,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public String getFunctionInvocation(String functionString, boolean isStatic)
             throws IllegalActionException {
         functionString = processCode(functionString);
-    
+
         // i.e. "$tokenFunc(token::add(arg1, arg2, ...))"
         // this transforms to ==> 
         // "functionTable[token.type][FUNC_add] (token, arg1, arg2, ...)"
@@ -677,7 +675,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         int commaIndex = functionString.indexOf("::");
         int openFuncParenIndex = functionString.indexOf('(', commaIndex);
         int closeFuncParenIndex = functionString.lastIndexOf(')');
-    
+
         // Syntax checking.
         if ((commaIndex == -1) || (openFuncParenIndex == -1)
                 || (closeFuncParenIndex != (functionString.length() - 1))) {
@@ -685,35 +683,35 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     "Bad Syntax with the $tokenFunc / $typeFunc macro. "
                             + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))]");
         }
-    
+
         String typeOrToken = functionString.substring(0, commaIndex).trim();
         String functionName = functionString.substring(commaIndex + 2,
                 openFuncParenIndex).trim();
-    
+
         String argumentList = functionString.substring(openFuncParenIndex + 1)
                 .trim();
-    
+
         if (isStatic) {
             // Record the referenced type function in the infoTable.
             _codeGenerator._typeFuncUsed.add(functionName);
-    
+
             if (argumentList.length() == 0) {
                 throw new IllegalActionException(
                         "Static type function requires at least one argument(s).");
             }
-    
+
             return "functionTable[" + typeOrToken + "][FUNC_" + functionName
                     + "](" + argumentList;
-    
+
         } else {
             // Record the referenced type function in the infoTable.
             _codeGenerator._tokenFuncUsed.add(functionName);
-    
+
             // if it is more than just a closing paren
             if (argumentList.length() > 1) {
                 argumentList = ", " + argumentList;
             }
-    
+
             return "functionTable[" + typeOrToken + ".type][FUNC_"
                     + functionName + "](" + typeOrToken + argumentList;
         }
@@ -1618,7 +1616,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         public HelperScope() {
             _variable = null;
         }
-    
+
         /** Construct a scope consisting of the variables of the container
          *  of the given instance of Variable and its containers and their
          *  scope-extending attributes.
@@ -1628,10 +1626,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         public HelperScope(Variable variable) {
             _variable = variable;
         }
-    
+
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
-    
+
         /** Look up and return the macro or expression in the target language
          *  corresponding to the specified name in the scope.
          *  @param name The given name string.
@@ -1642,11 +1640,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         public Token get(String name) throws IllegalActionException {
             Iterator inputPorts = ((Actor) _component).inputPortList()
                     .iterator();
-    
+
             // try input port
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
-    
+
                 StringBuffer code = new StringBuffer();
                 boolean found = false;
                 int channelNumber = 0;
@@ -1687,7 +1685,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     }
                     return new ObjectToken(code.toString());
                 }
-    
+
                 // try the format: inputPortNameArray
                 found = false;
                 channelNumber = 0;
@@ -1732,17 +1730,17 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     }
                     return new ObjectToken(code.toString());
                 }
-    
+
             }
-    
+
             // try variable
             NamedObj container = _component;
             if (_variable != null) {
                 container = _variable.getContainer();
             }
-    
+
             Variable result = getScopedVariable(_variable, container, name);
-    
+
             if (result != null) {
                 // If the variable found is a modified variable, which means
                 // its vaule can be directly changed during execution 
@@ -1763,7 +1761,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 return null;
             }
         }
-    
+
         /** This method should not be called.
          *  @exception IllegalActionException If it is called.
          */
@@ -1772,7 +1770,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             throw new IllegalActionException(
                     "This method should not be called.");
         }
-    
+
         /** This method should not be called.
          *  @exception IllegalActionException If it is called.
          */
@@ -1781,7 +1779,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             throw new IllegalActionException(
                     "This method should not be called.");
         }
-    
+
         /** This method should not be called.
          *  @return Never returns.
          *  @throws IllegalActionException If it is called.
@@ -1790,10 +1788,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             throw new IllegalActionException(
                     "This method should not be called.");
         }
-    
+
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 ////
-    
+
         /** If _variable is not null, then the helper scope created is
          *  for parsing the expression specified for this variable and
          *  generating the corresponding code in target language.
@@ -1816,18 +1814,18 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     protected void _createBufferSizeAndOffsetMap()
             throws IllegalActionException {
-        
+
         _createInputBufferSizeAndOffsetMap();
-                
+
     }
-    
+
     /** Create the input buffer and offset map.
      *  @exception IllegalActionException If thrown while
      *  getting port information.  
-     */   
+     */
     protected void _createInputBufferSizeAndOffsetMap()
             throws IllegalActionException {
-        
+
         //We only care about input ports where data are actually stored
         //except when an output port is not connected to any input port.
         //In that case the variable corresponding to the unconnected output
@@ -1898,16 +1896,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         _codeStream.appendCodeBlock(blockName, args);
         return processCode(_codeStream.toString());
     }
-    
+
     /** Generate input variable declarations.
      *  @return a String that declares input variables.
      *  @exception IllegalActionException If thrown while
      *  getting port information.  
      */
-    protected String _generateInputVariableDeclaration() 
+    protected String _generateInputVariableDeclaration()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
@@ -1931,7 +1929,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
             code.append(";\n");
         }
-        
+
         return code.toString();
     }
 
@@ -1940,10 +1938,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @exception IllegalActionException If thrown while
      *  getting port information.  
      */
-    protected String _generateOutputVariableDeclaration() 
+    protected String _generateOutputVariableDeclaration()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         Iterator outputPorts = ((Actor) _component).outputPortList().iterator();
 
         while (outputPorts.hasNext()) {
@@ -1967,10 +1965,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 code.append(";\n");
             }
         }
-        
+
         return code.toString();
     }
-    
+
     /**
      * Generate expression that evaluates to a result of equivalent
      * value with the cast type.
@@ -1983,21 +1981,21 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     protected String _generateTypeConvertMethod(String ref, String castType,
             String refType) throws IllegalActionException {
-    
+
         if (castType == null || refType == null || castType.equals(refType)) {
             return ref;
         }
-    
+
         if (isPrimitive(castType)) {
             ref = refType + "to" + castType + "(" + ref + ")";
         } else if (isPrimitive(refType)) {
             ref = "$new(" + refType + "(" + ref + "))";
         }
-    
+
         if (!castType.equals("Token") && !isPrimitive(castType)) {
             ref = "$typeFunc(TYPE_" + castType + "::convert(" + ref + "))";
         }
-    
+
         return processCode(ref);
     }
 
@@ -2177,7 +2175,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  the actor.
      */
     protected HashMap _writeOffsets = new HashMap();
-
 
     /** Indent string for indent level 1.
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)

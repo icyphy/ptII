@@ -213,39 +213,37 @@ public class PtinyOSIntegerParameter extends SharedParameter {
                     // The shared parameters are made non-persistent below.
                     setPersistent(true);
                     Iterator sharedParameters = sharedParameterSet().iterator();
-                    
+
                     while (sharedParameters.hasNext()) {
                         PtinyOSIntegerParameter sharedParameter = (PtinyOSIntegerParameter) sharedParameters
-                        .next();
-                        
+                                .next();
+
                         if (sharedParameter != this) {
                             try {
-                                sharedParameter
-                                .setSuppressingPropagation(true);
+                                sharedParameter.setSuppressingPropagation(true);
                                 if (((IntToken) sharedParameter.getToken())
                                         .intValue() != 0) {
                                     // Only auto increment value
                                     // if the current value is not
                                     // 0.
                                     value += _incrementValue;
-                                    
+
                                     String newExpression = String
-                                    .valueOf(value);
-                                    
+                                            .valueOf(value);
+
                                     if (!sharedParameter.getExpression()
                                             .equals(newExpression)) {
                                         sharedParameter
-                                        .setExpression(newExpression);
-                                        
+                                                .setExpression(newExpression);
+
                                         // Make sure the new value
                                         // is not persistent.
-                                        sharedParameter
-                                        .setPersistent(false);
+                                        sharedParameter.setPersistent(false);
                                     }
                                 }
                             } finally {
                                 sharedParameter
-                                .setSuppressingPropagation(previousSuppress);
+                                        .setSuppressingPropagation(previousSuppress);
                             }
                         }
                     }

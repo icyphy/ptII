@@ -1956,7 +1956,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Invalidate any variables contained by the specified object
      *  or by instances of ScopeExtendingAttribute that it contains
      *  whose name matches that of this variable.  Then do the same

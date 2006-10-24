@@ -1011,7 +1011,7 @@ public class DEDirector extends Director implements TimedDirector {
 
         // Call the preinitialize method of the super class.
         super.preinitialize();
-        
+
         // Do this here because it updates the workspace version.
         if (_sortValid != workspace().getVersion()) {
             // Reset the hashtables for actor and port depths.

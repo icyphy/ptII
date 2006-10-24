@@ -1,5 +1,5 @@
 /** An actor that outputs the fixpoint value of the concatenation of
-   the input bits.
+ the input bits.
 
  Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
@@ -76,7 +76,7 @@ public class Concat extends Transformer {
 
         binaryPoint = new Parameter(this, "outputBinaryPoint");
         binaryPoint.setExpression("0");
-        
+
         input.setTypeEquals(BaseType.FIX);
         input.setMultiport(true);
         output.setTypeEquals(BaseType.FIX);
@@ -89,7 +89,7 @@ public class Concat extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Output the fixpoint value of the concatenation of the input bits. 
      *  If there is no inputs, then produce no output.
      *  @exception IllegalActionException If there is no director.
@@ -98,7 +98,7 @@ public class Concat extends Transformer {
         super.fire();
         int binaryPointValue = ((IntToken) binaryPoint.getToken()).intValue();
         String bits = "";
-        
+
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 FixToken in = (FixToken) input.get(i);
@@ -108,11 +108,11 @@ public class Concat extends Transformer {
 
         //FIXME: what do we do if input is negative?
         //bits = bits.replace('-', '1');
-        
-        FixPoint result = new FixPoint(new BigDecimal(new BigInteger(bits, 2)), 
-                new FixPointQuantization(new Precision(0, bits.length(), 
+
+        FixPoint result = new FixPoint(new BigDecimal(new BigInteger(bits, 2)),
+                new FixPointQuantization(new Precision(0, bits.length(),
                         binaryPointValue), Overflow.GROW, Rounding.HALF_EVEN));
-        
+
         output.send(0, new FixToken(result));
     }
 }

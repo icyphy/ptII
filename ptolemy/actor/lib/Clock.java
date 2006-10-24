@@ -222,9 +222,10 @@ public class Clock extends TimedSource {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Clock newObject = (Clock) super.clone(workspace);
-        
+
         try {
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.values));
         } catch (IllegalActionException e) {
             // Should have been caught before.
             throw new InternalErrorException(e);

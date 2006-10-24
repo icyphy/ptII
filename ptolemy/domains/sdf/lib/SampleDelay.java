@@ -119,7 +119,8 @@ public class SampleDelay extends SDFTransformer {
 
         // set the type constraints
         try {
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.initialOutputs));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.initialOutputs));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

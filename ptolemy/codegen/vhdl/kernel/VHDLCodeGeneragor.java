@@ -33,7 +33,7 @@ public class VHDLCodeGeneragor extends StaticSchedulingCodeGenerator {
     public String generateMainExitCode() throws IllegalActionException {
         return "end architecture" + _sanitizedModelName;
     }
-    
+
     /** Generate library and package files.
      *  @return Return a string that contains the library and use statements.
      *  @throws IllegalActionException If the helper class for some actor 
@@ -41,7 +41,7 @@ public class VHDLCodeGeneragor extends StaticSchedulingCodeGenerator {
      */
     public String generateIncludeFiles() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         Set includingFiles = compositeActorHelper.getHeaderFiles();
 
@@ -49,12 +49,12 @@ public class VHDLCodeGeneragor extends StaticSchedulingCodeGenerator {
 
         HashSet librarySet = new HashSet();
         librarySet.add("STD");
-        
+
         while (files.hasNext()) {
-            String file = (String) files.next();        
+            String file = (String) files.next();
             StringTokenizer tokens = new StringTokenizer(file, ".");
             String libraryName = tokens.nextToken();
-            if (librarySet.add(libraryName)) {  // true if not already exists.
+            if (librarySet.add(libraryName)) { // true if not already exists.
                 code.append("library " + libraryName);
             }
         }
@@ -63,10 +63,10 @@ public class VHDLCodeGeneragor extends StaticSchedulingCodeGenerator {
         while (files.hasNext()) {
             code.append("use " + files.next() + ";\n");
         }
-        
+
         return code.toString();
-    }    
-    
+    }
+
     /** Generate ports declarations.
      *  Append the declarations to the given string buffer.
      *  @return code The generated code.
@@ -76,7 +76,7 @@ public class VHDLCodeGeneragor extends StaticSchedulingCodeGenerator {
     public String generateVariableDeclaration() throws IllegalActionException {
         return "";
     }
-    
+
     /** Generate preinitialize code.
      *  Declaration of signals.
      *  @return The preinitialize code of the containing composite actor.
@@ -86,7 +86,7 @@ public class VHDLCodeGeneragor extends StaticSchedulingCodeGenerator {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         return "";
-    }    
+    }
 
     /**
      * Connection of the signals to ports.
@@ -98,12 +98,12 @@ public class VHDLCodeGeneragor extends StaticSchedulingCodeGenerator {
     public String generateInitializeCode() throws IllegalActionException {
         return "";
     }
-    
+
     /** Generate the behavorial code.
      *  @return The empty string.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateBodyCode() throws IllegalActionException {        
+    public String generateBodyCode() throws IllegalActionException {
         return "";
     }
 

@@ -106,8 +106,8 @@ public class FileHandler {
                 try {
                     input.close();
                 } catch (Exception ex) {
-                    System.err.println("Failed to close \"" + fileName
-                            + "\": " + ex);
+                    System.err.println("Failed to close \"" + fileName + "\": "
+                            + ex);
                 }
             }
         }

@@ -115,7 +115,7 @@ public class TypeAttribute extends Parameter {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     /** Construct an attribute with the given name contained by the specified
      *  port. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -133,7 +133,7 @@ public class TypeAttribute extends Parameter {
      */
     public TypeAttribute(Attribute container, String name)
             throws IllegalActionException, NameDuplicationException {
-      super(container, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////

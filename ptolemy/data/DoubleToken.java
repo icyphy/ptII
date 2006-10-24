@@ -140,7 +140,10 @@ public class DoubleToken extends ScalarToken {
             IntToken intToken = IntToken.convert(token);
             DoubleToken result = new DoubleToken(intToken.doubleValue());
             if (intToken._unitCategoryExponents != null
-                && !UnitUtilities.isUnitless(intToken._unitCategoryExponents)) {                result._unitCategoryExponents = intToken._copyOfCategoryExponents();
+                    && !UnitUtilities
+                            .isUnitless(intToken._unitCategoryExponents)) {
+                result._unitCategoryExponents = intToken
+                        ._copyOfCategoryExponents();
             }
             return result;
         } else {

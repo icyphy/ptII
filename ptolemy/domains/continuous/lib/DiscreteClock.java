@@ -246,9 +246,10 @@ public class DiscreteClock extends TypedAtomicActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DiscreteClock newObject = (DiscreteClock) super.clone(workspace);
-        
+
         try {
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.values));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

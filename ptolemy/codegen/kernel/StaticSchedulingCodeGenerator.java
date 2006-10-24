@@ -116,11 +116,11 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
             throw new IllegalActionException(this, "The director of the model "
                     + model.getName() + " is not a StaticSchedulingDirector.");
         }
-        
+
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-        
+
             Attribute iterations = director.getAttribute("iterations");
 
             if (iterations == null) {
@@ -128,10 +128,10 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
                         "The Director does not have an attribute name: "
                                 + "\"iterations\"");
             } else {
-                      
-                int iterationCount = ((IntToken) ((Variable) iterations).getToken())
-                        .intValue();
- 
+
+                int iterationCount = ((IntToken) ((Variable) iterations)
+                        .getToken()).intValue();
+
                 if (iterationCount <= 0) {
                     code.append(_INDENT1 + "while (true) {\n");
                 } else {
@@ -142,7 +142,7 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
                 }
             }
         }
-        
+
         boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
 
         if (inline) {
@@ -160,8 +160,8 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
         // for the whole model.
         if (isTopLevel()) {
             code.append(_INDENT1 + "}\n");
-        }    
-        
+        }
+
         return code.toString();
     }
 
@@ -173,12 +173,12 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
      *  is running.
      */
     public int generateCode(StringBuffer code) throws KernelException {
-        
+
         int returnValue = -1;
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-        
+
             // If necessary, create a manager.
             Actor container = ((Actor) getContainer());
             Manager manager = container.getManager();
@@ -205,8 +205,8 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
                     }
                 }
             }
-        // If the container is not in the top level, we are generating code 
-        // for the Java and C co-simulation.   
+            // If the container is not in the top level, we are generating code 
+            // for the Java and C co-simulation.   
         } else {
             returnValue = super.generateCode(code);
         }
@@ -229,7 +229,6 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
         code.append(modelHelper.generateFireCode());
         return code.toString();
     }
-    
 
     /** Generate mode transition code. 
      *  <p> In this base class, do nothing.

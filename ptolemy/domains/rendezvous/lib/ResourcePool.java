@@ -177,7 +177,8 @@ public class ResourcePool extends TypedAtomicActor {
         ResourcePool newObject = (ResourcePool) super.clone(workspace);
         // set type constraints.
         try {
-            newObject.grant.setTypeAtLeast(ArrayType.elementType(newObject.initialPool));
+            newObject.grant.setTypeAtLeast(ArrayType
+                    .elementType(newObject.initialPool));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

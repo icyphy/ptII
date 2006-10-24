@@ -53,8 +53,8 @@ import ptolemy.kernel.util.NamedObj;
  from a sensing node and contains sensor data.  The beginning of the packet
  format is as follows:
 
-   bits  1-16: address field
-   bits 17-24: type field
+ bits  1-16: address field
+ bits 17-24: type field
 
  The address field is set to 0xFFFF if it is a broadcast message.  Otherwise,
  it contains the destination node id.
@@ -63,8 +63,8 @@ import ptolemy.kernel.util.NamedObj;
  TinyOS as MultiHopMsg).  Beacon messages are sent with address field set
  to 0xFFFF.  The type field is set to 0x11 if it is a Surge message.
 
-  FIXME: Surge doesn't correctly set the type field for Surge messages.
-  The value that we see is 0x00, so we filter for this instead.
+ FIXME: Surge doesn't correctly set the type field for Surge messages.
+ The value that we see is 0x00, so we filter for this instead.
 
  This actor extends LinkVisualizer and by inheritance, implements the 
  ChannelListener interface.  It inspects the token transmitted,
@@ -114,7 +114,7 @@ public class SurgeVisualizer extends LinkVisualizer {
             WirelessIOPort sender, WirelessIOPort destination) {
         String tokenString = (String) token.toString();
         String type = tokenString.substring(5, 7);
-        
+
         // The "00" corresponds to Messages of type SurgeMsg (Should be 0x11).
         if (type.equals("00")) {
             // Look for the PtinyOSDirector inside the destination TinyOS node.
@@ -123,35 +123,33 @@ public class SurgeVisualizer extends LinkVisualizer {
                 // Note: this relies on the fact that the MicaBoard
                 // always contains a MicaCompositeActor
                 ComponentEntity micaCompositeActor = ((CompositeEntity) wirelessNode)
-                    .getEntity("MicaCompositeActor");
+                        .getEntity("MicaCompositeActor");
                 if (micaCompositeActor instanceof MicaCompositeActor) {
                     // Get the director of the MicaCompositeActor.
                     Director director = ((MicaCompositeActor) micaCompositeActor)
-                    .getDirector();
+                            .getDirector();
                     if (director instanceof PtinyOSDirector) {
-                        Attribute nodeID = director
-                        .getAttribute("nodeID");
+                        Attribute nodeID = director.getAttribute("nodeID");
                         if (nodeID instanceof PtinyOSIntegerParameter) {
                             // Get the token that stores the node ID.
                             try {
                                 Token nodeIDToken = ((PtinyOSIntegerParameter) nodeID)
-                                    .getToken();
-                                
+                                        .getToken();
+
                                 if (nodeIDToken instanceof IntToken) {
                                     // Get the integer value of nodeID
                                     int nodeIDValue = ((IntToken) nodeIDToken)
-                                    .intValue();
-                                    String addr = tokenString.substring(1,
-                                            5);
-                                    int addrInt = Integer
-                                    .parseInt(addr, 16);
-                                    
+                                            .intValue();
+                                    String addr = tokenString.substring(1, 5);
+                                    int addrInt = Integer.parseInt(addr, 16);
+
                                     if (addrInt == nodeIDValue) {
                                         // Create a name for the line to be visualized.
-                                        String lineName = getContainer().uniqueName("_senderDestLine");
+                                        String lineName = getContainer()
+                                                .uniqueName("_senderDestLine");
                                         // Create a thread to visualize the line.
-                                        _LinkVisualizerThread linkVisualizerThread = 
-                                            new _LinkVisualizerThread(sender, destination, lineName);
+                                        _LinkVisualizerThread linkVisualizerThread = new _LinkVisualizerThread(
+                                                sender, destination, lineName);
                                         // Start the thread.
                                         linkVisualizerThread.start();
                                     }

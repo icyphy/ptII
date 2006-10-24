@@ -71,7 +71,7 @@ public class ArrayMaximum extends Transformer {
         // Create index port
         index = new TypedIOPort(this, "index", false, true);
         index.setTypeEquals(BaseType.INT);
-        
+
         // Type constraints.
         output.setTypeAtLeast(ArrayType.elementType(input));
     }
@@ -96,7 +96,8 @@ public class ArrayMaximum extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayMaximum newObject = (ArrayMaximum) super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.input));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.input));
         } catch (IllegalActionException e) {
             // Should have been caught before.
             throw new InternalErrorException(e);

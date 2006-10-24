@@ -134,9 +134,10 @@ public class IntToken extends ScalarToken {
                     .convert(token);
             IntToken result = new IntToken(unsignedByteToken.intValue());
             if (unsignedByteToken._unitCategoryExponents != null
-                && !UnitUtilities.isUnitless(unsignedByteToken._unitCategoryExponents)) {
+                    && !UnitUtilities
+                            .isUnitless(unsignedByteToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = unsignedByteToken
-                    ._copyOfCategoryExponents();
+                        ._copyOfCategoryExponents();
             }
             return result;
         }
@@ -187,8 +188,7 @@ public class IntToken extends ScalarToken {
     public FixPoint fixValue() {
         return new FixPoint(_value);
     }
-    
-    
+
     /** Return the type of this token.
      *  @return BaseType.INT
      */

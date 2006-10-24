@@ -250,7 +250,7 @@ public class LMSAdaptive extends FIR {
             return false;
         }
     }
-    
+
     /** Override the base class to initialize the taps to the initial values.
      *  @throws IllegalActionException If the superclass throws it.
      */

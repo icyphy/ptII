@@ -41,15 +41,14 @@ public class PtalonParameter extends Parameter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * @return True if this this parameter's value has been set.
      */
     public boolean hasValue() {
         return _hasValue;
     }
-    
-    
+
     /**
      * Set the expression and flag that the value has been set for this
      * parameter.
@@ -63,7 +62,7 @@ public class PtalonParameter extends Parameter {
         _hasValue = true;
         super.setExpression(expr);
     }
-    
+
     /**
      * Set the token and flag that the value has been set for this
      * parameter.
@@ -75,7 +74,7 @@ public class PtalonParameter extends Parameter {
         _hasValue = true;
         super.setToken(token);
     }
-    
+
     /**
      * Set the token and flag that the value has been set for this
      * parameter.
@@ -90,15 +89,13 @@ public class PtalonParameter extends Parameter {
         _hasValue = true;
         super.setToken(expression);
     }
-    
-    
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
-    
+
     /**
      * True if this parameter has a value.
      */
     private boolean _hasValue;
-        
+
 }

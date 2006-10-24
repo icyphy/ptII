@@ -132,8 +132,8 @@ public class ArrayType extends StructuredType {
                 return token;
             }
             // If it's not an ArrayToken, then something is wrong.
-            throw new IllegalActionException(
-                    "Cannot convert " + token + " to type {unknown}");
+            throw new IllegalActionException("Cannot convert " + token
+                    + " to type {unknown}");
         }
         if (!(token instanceof ArrayToken)) {
             // NOTE: Added 7/17/06 by EAL to support type -> {type} conversion.
@@ -203,7 +203,7 @@ public class ArrayType extends StructuredType {
 
         return _elementType.equals(((ArrayType) object).getElementType());
     }
-    
+
     /** Return a type constraint that can be used to contrain
      *  another typeable object to have a type related to the
      *  element type of the specified typeable.  As a side
@@ -324,7 +324,7 @@ public class ArrayType extends StructuredType {
         Type argElemType = ((ArrayType) type).getElementType();
         return _declaredElementType.isSubstitutionInstance(argElemType);
     }
-    
+
     /** Set the type to the specified type, which is required to be
      *  an array type.
      *  @param type The new type.
@@ -333,10 +333,11 @@ public class ArrayType extends StructuredType {
      */
     public void setType(Type type) throws IllegalActionException {
         if (!(type instanceof ArrayType)) {
-            throw new IllegalActionException("Cannot change an array type to a non-array type.");
+            throw new IllegalActionException(
+                    "Cannot change an array type to a non-array type.");
         }
         try {
-            Type clone = (Type)((ArrayType)type).getElementType().clone();
+            Type clone = (Type) ((ArrayType) type).getElementType().clone();
             _elementType = clone;
             _declaredElementType = clone;
         } catch (CloneNotSupportedException e) {
@@ -418,6 +419,7 @@ public class ArrayType extends StructuredType {
         public InequalityTerm getElementTypeTerm() {
             return _replacementElementTerm;
         }
+
         private InequalityTerm _replacementElementTerm = new ElementTypeTerm() {
             public boolean isValueAcceptable() {
                 return true;
@@ -508,7 +510,7 @@ public class ArrayType extends StructuredType {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** An InequalityTerm associated with an instance of ArrayType. */
     private class ElementTypeTerm implements InequalityTerm {
         ///////////////////////////////////////////////////////////////
@@ -639,7 +641,7 @@ public class ArrayType extends StructuredType {
      *  This term is not variable and cannot be set.
      */
     private static class TypeableArrayTypeTerm implements InequalityTerm {
-        
+
         /** Construct a term that will defer to the type of the
          *  specified typeable.
          *  @param typeable The object to defer requests to.
@@ -647,7 +649,7 @@ public class ArrayType extends StructuredType {
         public TypeableArrayTypeTerm(Typeable typeable) {
             _typeable = typeable;
         }
-        
+
         ///////////////////////////////////////////////////////////////
         ////                   public inner methods                ////
 
@@ -682,8 +684,8 @@ public class ArrayType extends StructuredType {
         public void initialize(Object e) throws IllegalActionException {
             throw new IllegalActionException(
                     "ArrayType$TypeableArrayTypeTerm.initialize: "
-                    + "This array type given with elements given by "
-                    + _typeable + " is not settable.");
+                            + "This array type given with elements given by "
+                            + _typeable + " is not settable.");
         }
 
         /** Return false.
@@ -709,9 +711,8 @@ public class ArrayType extends StructuredType {
         public void setValue(Object type) throws IllegalActionException {
             throw new IllegalActionException(
                     "ArrayType$TypeableArrayTypeTerm.setValue: "
-                    + "The array type with element type given by "
-                    + _typeable
-                    + " is not settable.");
+                            + "The array type with element type given by "
+                            + _typeable + " is not settable.");
         }
 
         /** Delegate to an array type with elements given by the
@@ -736,7 +737,7 @@ public class ArrayType extends StructuredType {
                 throw new InternalErrorException(e);
             }
         }
-        
+
         /** Get an array type with element type matching the type
          *  of the associated typeable.
          *  @return An array type for the associated typeable.
@@ -756,7 +757,7 @@ public class ArrayType extends StructuredType {
 
         /** The associated typeable. */
         private Typeable _typeable;
-        
+
         /** The array type with element types matching the typeable. */
         private ArrayType _arrayType;
     }
@@ -767,7 +768,7 @@ public class ArrayType extends StructuredType {
      *  the type of the typeable, since it may change dynamically.
      */
     private static class TypeableElementTypeTerm implements InequalityTerm {
-        
+
         /** Construct a term that will defer to the type of the
          *  specified typeable.
          *  @param typeable The object to defer requests to.
@@ -775,7 +776,7 @@ public class ArrayType extends StructuredType {
         public TypeableElementTypeTerm(Typeable typeable) {
             _typeable = typeable;
         }
-        
+
         ///////////////////////////////////////////////////////////////
         ////                   public inner methods                ////
 
@@ -865,7 +866,7 @@ public class ArrayType extends StructuredType {
                 throw new InternalErrorException(e);
             }
         }
-        
+
         ///////////////////////////////////////////////////////////////
         ////                   private members                     ////
 

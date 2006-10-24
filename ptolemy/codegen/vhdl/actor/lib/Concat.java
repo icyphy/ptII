@@ -51,7 +51,7 @@ public class Concat extends VHDLCodeGeneratorHelper {
     public Concat(ptolemy.apps.vhdl.Concat actor) {
         super(actor);
     }
-    
+
     /** Get the files needed by the code generated for the Concat actor.
      *  @return A set of strings that are names of the library and package.
      *  @exception IllegalActionException Not Thrown in this subclass.

@@ -77,10 +77,10 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating red (zgang)
  @Pt.AcceptedRating red (zgang)
  @see ptolemy.actor.TypedCompositeActor
-*/
+ */
 
-public class TypedCompositeActorWithCoSimulation 
-        extends ptolemy.actor.TypedCompositeActor {    
+public class TypedCompositeActorWithCoSimulation extends
+        ptolemy.actor.TypedCompositeActor {
     /** Construct a CodeGenerationCompositeActor in the default workspace 
      *  with no container and an empty string as its name. Add the actor to 
      *  the workspace directory.
@@ -124,20 +124,21 @@ public class TypedCompositeActorWithCoSimulation
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public TypedCompositeActorWithCoSimulation(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public TypedCompositeActorWithCoSimulation(CompositeEntity container,
+            String name) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
         _init();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** True if in coSimulation mode.  The initial default is
      *  a BooleanToken with value false.
-     */   
+     */
     public Parameter coSimulation;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
@@ -166,7 +167,7 @@ public class TypedCompositeActorWithCoSimulation
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** If this actor is opaque, transfer any data from the input ports
      *  of this composite to the ports connected on the inside, and then
      *  invoke the fire() method of its local director.
@@ -184,11 +185,11 @@ public class TypedCompositeActorWithCoSimulation
      *   opaque.
      */
     public void fire() throws IllegalActionException {
-        
-        boolean inCoSimulationMode
-                = ((BooleanToken) coSimulation.getToken()).booleanValue();
+
+        boolean inCoSimulationMode = ((BooleanToken) coSimulation.getToken())
+                .booleanValue();
         if (inCoSimulationMode) {
-            
+
             if (_debugging) {
                 _debug("Calling fire()");
             }
@@ -202,7 +203,7 @@ public class TypedCompositeActorWithCoSimulation
                 }
 
                 List tokensFromAllInputPorts = new LinkedList();
-                
+
                 for (Iterator inputPorts = inputPortList().iterator(); inputPorts
                         .hasNext()
                         && !_stopRequested;) {
@@ -216,17 +217,17 @@ public class TypedCompositeActorWithCoSimulation
                 if (_stopRequested) {
                     return;
                 }
-                
+
                 Object[] tokensToAllOutputPorts = null;
                 try {
                     // Invoke the native fire method
-                    tokensToAllOutputPorts = (Object[]) _jniFireMethod.invoke
-                            (_jniWrapper, tokensFromAllInputPorts.toArray());
+                    tokensToAllOutputPorts = (Object[]) _jniFireMethod.invoke(
+                            _jniWrapper, tokensFromAllInputPorts.toArray());
                 } catch (Exception e) {
-                    throw new IllegalActionException(this, e, 
+                    throw new IllegalActionException(this, e,
                             "Failed to invoke the fire method on the wrapper class.");
                 }
-                
+
                 if (_stopRequested) {
                     return;
                 }
@@ -236,9 +237,9 @@ public class TypedCompositeActorWithCoSimulation
                         .hasNext()
                         && !_stopRequested;) {
                     IOPort port = (IOPort) outputPorts.next();
-                    _transferOutputs(port, tokensToAllOutputPorts[portNumber++]);   
+                    _transferOutputs(port, tokensToAllOutputPorts[portNumber++]);
                 }
-                
+
             } finally {
                 _workspace.doneReading();
             }
@@ -250,7 +251,7 @@ public class TypedCompositeActorWithCoSimulation
             super.fire();
         }
     }
-    
+
     /** Initialize this actor. 
      *
      *  @exception IllegalActionException If there is no director, or
@@ -258,44 +259,43 @@ public class TypedCompositeActorWithCoSimulation
      *   actor is not opaque.
      */
     public void initialize() throws IllegalActionException {
-      
+
         super.initialize();
-        
-        boolean inCoSimulationMode
-                = ((BooleanToken) coSimulation.getToken()).booleanValue();
+
+        boolean inCoSimulationMode = ((BooleanToken) coSimulation.getToken())
+                .booleanValue();
         if (inCoSimulationMode) {
-            
+
             if (_generatedCodeVersion != _workspace.getVersion()) {
-            
+
                 _sanitizedActorName = StringUtilities.sanitizeName(getName());
                 _generateJavaCode();
-                _generateCCode();   
-        
+                _generateCCode();
+
                 String jniClassName = "Jni" + _sanitizedActorName;
                 Class jniClass = null;
                 try {
-                    URL url = codeDirectory.asFile().toURL();  
-                    URL[] urls = new URL[]{url};
-                
+                    URL url = codeDirectory.asFile().toURL();
+                    URL[] urls = new URL[] { url };
+
                     ClassLoader classLoader = new URLClassLoader(urls);
                     jniClass = classLoader.loadClass(jniClassName);
-                
+
                 } catch (MalformedURLException e) {
-                    throw new IllegalActionException(this,
-                            "The class URL for " 
+                    throw new IllegalActionException(this, "The class URL for "
                             + jniClassName + "is malformed");
                 } catch (ClassNotFoundException e) {
                     throw new IllegalActionException(this,
                             "Cannot load the class " + jniClassName);
-                } 
-        
+                }
+
                 try {
                     _jniWrapper = jniClass.newInstance();
                 } catch (Exception e) {
-                    throw new IllegalActionException(this , e,
+                    throw new IllegalActionException(this, e,
                             "Cannot instantiate the wrapper object.");
                 }
-        
+
                 Method[] methods = jniClass.getMethods();
                 for (int i = 0; i < methods.length; i++) {
                     String name = methods[i].getName();
@@ -308,32 +308,32 @@ public class TypedCompositeActorWithCoSimulation
                     }
                 }
                 if (_jniFireMethod == null) {
-                    throw new IllegalActionException(this, 
+                    throw new IllegalActionException(this,
                             "Cannot find fire method in the jni wrapper class.");
                 }
                 if (_jniInitializeMethod == null) {
-                    throw new IllegalActionException(this, 
+                    throw new IllegalActionException(this,
                             "Cannot find initialize method in the jni wrapper class.");
                 }
                 if (_jniWrapupMethod == null) {
-                    throw new IllegalActionException(this, 
+                    throw new IllegalActionException(this,
                             "Cannot find wrapup method in the jni wrapper class.");
                 }
-            
+
                 _generatedCodeVersion = _workspace.getVersion();
-            
+
             }
-            
+
             try {
                 _jniInitializeMethod.invoke(_jniWrapper);
             } catch (Exception e) {
-                throw new IllegalActionException(this, e, 
+                throw new IllegalActionException(this, e,
                         "Failed to invoke the initialize method on the wrapper class.");
             }
-            
-        } 
+
+        }
     }
-    
+
     /** If this actor is opaque, then invoke the wrapup() method of the local
      *  director. This method is read-synchronized on the workspace.
      *
@@ -343,13 +343,13 @@ public class TypedCompositeActorWithCoSimulation
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        boolean inCoSimulationMode 
-                = ((BooleanToken) coSimulation.getToken()).booleanValue();
+        boolean inCoSimulationMode = ((BooleanToken) coSimulation.getToken())
+                .booleanValue();
         if (inCoSimulationMode) {
             try {
                 _jniWrapupMethod.invoke(_jniWrapper);
             } catch (Exception e) {
-                throw new IllegalActionException(this, e, 
+                throw new IllegalActionException(this, e,
                         "Failed to invoke the wrapup method on the wrapper class.");
             }
         }
@@ -369,33 +369,29 @@ public class TypedCompositeActorWithCoSimulation
      */
     /*
      protected void _addAttribute(Attribute p) throws NameDuplicationException,
-            IllegalActionException {
-        
-        if (p instanceof Director && !(p instanceof SDFDirector)) {
-            throw new IllegalActionException(this, 
-                    "The CodeGenerationCompositeActor can only have " +
-                    "SDFDirector or HDFDirector as its director for code " +
-                    "generation purpose.");
-        }
-    }
-    */
-    
+     IllegalActionException {
+     
+     if (p instanceof Director && !(p instanceof SDFDirector)) {
+     throw new IllegalActionException(this, 
+     "The CodeGenerationCompositeActor can only have " +
+     "SDFDirector or HDFDirector as its director for code " +
+     "generation purpose.");
+     }
+     }
+     */
+
     // protected native void _fire();  
-    
     //protected native void _transferInputs(String portName, int channel, int[] intTokenValues);
-    
     //protected native void _transferInputs(String portName, int channel, double[] doubleTokenValues); 
-        
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
     private void _compileJavaCode() throws IllegalActionException {
         if (_executeCommands == null) {
             _executeCommands = new StreamExec();
         }
 
         List commands = new LinkedList();
-        
+
         String name = "Jni" + _sanitizedActorName;
 
         // Create the .class file.
@@ -408,7 +404,7 @@ public class TypedCompositeActorWithCoSimulation
         _executeCommands.setCommands(commands);
         _executeCommands.start();
     }
-    
+
     private void _generateCCode() throws IllegalActionException {
         // Get all instances of this class contained in this actor
         List codeGenerators = attributeList(CodeGenerator.class);
@@ -418,7 +414,7 @@ public class TypedCompositeActorWithCoSimulation
             if (codeGenerators.size() == 0) {
                 // Add a codeGenerator
                 codeGenerator = new StaticSchedulingCodeGenerator(this,
-                        "CodeGenerator_AutoAdded");            
+                        "CodeGenerator_AutoAdded");
             } else {
                 // Get the last CodeGenerator in the list, maybe
                 // it was added last?
@@ -426,58 +422,60 @@ public class TypedCompositeActorWithCoSimulation
                         .get(codeGenerators.size() - 1);
             }
 
-            codeGenerator.codeDirectory.setExpression(codeDirectory.getExpression());
+            codeGenerator.codeDirectory.setExpression(codeDirectory
+                    .getExpression());
 
             // FIXME: This should not be necessary, but if we don't
             // do it, then getBaseDirectory() thinks we are in the current dir.
-            codeGenerator.codeDirectory.setBaseDirectory
-                    (codeGenerator.codeDirectory.asFile().toURI());
+            codeGenerator.codeDirectory
+                    .setBaseDirectory(codeGenerator.codeDirectory.asFile()
+                            .toURI());
 
-            codeGenerator.generatorPackage.setExpression(generatorPackage.getExpression());
+            codeGenerator.generatorPackage.setExpression(generatorPackage
+                    .getExpression());
 
             codeGenerator.inline.setExpression(inline.getExpression());
-            
-            codeGenerator.overwriteFiles.setExpression(overwriteFiles.getExpression());
-                       
+
+            codeGenerator.overwriteFiles.setExpression(overwriteFiles
+                    .getExpression());
+
         } catch (NameDuplicationException e) {
             throw new IllegalActionException(this, e, "Name duplication.");
         }
-        
+
         try {
             codeGenerator.generateCode();
         } catch (KernelException e) {
-            throw new IllegalActionException(this, e, "Failed to generate code.");
+            throw new IllegalActionException(this, e,
+                    "Failed to generate code.");
         }
     }
-    
+
     private void _generateJavaCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         //FIXME: the name must be unique.
         //try {
-            code.append("public class Jni" + _sanitizedActorName + " {\n"
-                      + "\n"
-                      + "    public native Object[] fire(" + _getArguments() + ");\n"
-                      + "    public native void initialize();\n"
-                      + "    public native void wrapup();\n"
-                      + "    static {\n" 
-      
-                      + "        String library = \"" + _sanitizedActorName + "\";\n"
-                      + "        System.loadLibrary(library);\n"
-                      
-      //    + "        String library = \""
-      //    +                  codeDirectory.asFile().getCanonicalPath() 
-      //    +                  File.separator + _sanitizedActorName + ".dll\";\n"               
-      //   + "        String library = \"" + "C:/Documents and Settings/zgang/codegen/" 
-      //                           + _sanitizedActorName + ".dll\";\n"
-      //   + "        System.load(library);\n"
-         + "    }\n"
-         + "}\n");
+        code.append("public class Jni" + _sanitizedActorName + " {\n" + "\n"
+                + "    public native Object[] fire(" + _getArguments() + ");\n"
+                + "    public native void initialize();\n"
+                + "    public native void wrapup();\n" + "    static {\n"
 
-      //} catch (IOException e) {
-      //    throw new IllegalActionException(this, "Cannot generate library path.");
-      //}
-        
+                + "        String library = \"" + _sanitizedActorName + "\";\n"
+                + "        System.loadLibrary(library);\n"
+
+                //    + "        String library = \""
+                //    +                  codeDirectory.asFile().getCanonicalPath() 
+                //    +                  File.separator + _sanitizedActorName + ".dll\";\n"               
+                //   + "        String library = \"" + "C:/Documents and Settings/zgang/codegen/" 
+                //                           + _sanitizedActorName + ".dll\";\n"
+                //   + "        System.load(library);\n"
+                + "    }\n" + "}\n");
+
+        //} catch (IOException e) {
+        //    throw new IllegalActionException(this, "Cannot generate library path.");
+        //}
+
         String codeFileName = "Jni" + _sanitizedActorName + ".java";
 
         // Write the code to a file with the same name as the model into
@@ -522,42 +520,43 @@ public class TypedCompositeActorWithCoSimulation
             throw new IllegalActionException(this, ex, "Failed to write \""
                     + codeFileName + "\" in "
                     + codeDirectory.getBaseDirectory());
-        }    
-        
+        }
+
         _compileJavaCode();
     }
-    
+
     private String _getArguments() {
-        
+
         StringBuffer arguments = new StringBuffer();
         Iterator inputPorts = inputPortList().iterator();
         int i = 0;
-        while(inputPorts.hasNext()) {
+        while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
             if (!(inputPort instanceof ParameterPort)) {
-                
+
                 if (i != 0) {
                     arguments.append(", ");
                 }
                 i++;
                 //FIXME: need to consider carefully for structured data type
-                Type type = ((TypedIOPort) inputPort).getType();                   
-                arguments.append(type.toString() + "[][] " + inputPort.getName());
+                Type type = ((TypedIOPort) inputPort).getType();
+                arguments.append(type.toString() + "[][] "
+                        + inputPort.getName());
             }
         }
         return arguments.toString();
     }
-    
+
     private void _init() {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.codegen.c.actor.TypedCompositeActorWithCoSimulation");
-        
+
         try {
             coSimulation = new Parameter(this, "coSimulation");
             coSimulation.setTypeEquals(BaseType.BOOLEAN);
             coSimulation.setExpression("false");
-            
+
             codeDirectory = new FileParameter(this, "codeDirectory");
             codeDirectory.setExpression("$HOME/codegen/");
 
@@ -577,37 +576,36 @@ public class TypedCompositeActorWithCoSimulation
             overwriteFiles = new Parameter(this, "overwriteFiles");
             overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
             overwriteFiles.setExpression("true");
- 
+
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
                     "Problem setting up coSimulation parameter");
         }
     }
-    
-    private Object _transferInputs(IOPort port) 
-            throws IllegalActionException {
-        
-        int rate = DFUtilities.getTokenConsumptionRate(port); 
-        Type type = ((TypedIOPort) port).getType();    
+
+    private Object _transferInputs(IOPort port) throws IllegalActionException {
+
+        int rate = DFUtilities.getTokenConsumptionRate(port);
+        Type type = ((TypedIOPort) port).getType();
         Object tokenHolder = null;
-        
-        int numberOfChannels = port.getWidth() < port.getWidthInside() ?
-                port.getWidth() : port.getWidthInside();
-        
-        if (type == BaseType.INT) {    
+
+        int numberOfChannels = port.getWidth() < port.getWidthInside() ? port
+                .getWidth() : port.getWidthInside();
+
+        if (type == BaseType.INT) {
             tokenHolder = new int[numberOfChannels][];
-            
+
         } else if (type == BaseType.DOUBLE) {
             tokenHolder = new double[numberOfChannels][];
-            
+
         } else {
             // FIXME: need to deal with other types
         }
-        
+
         for (int i = 0; i < port.getWidth(); i++) {
             try {
-                if (i < port.getWidthInside()) {    
-                    
+                if (i < port.getWidthInside()) {
+
                     if (port.hasToken(i, rate)) {
                         Token[] tokens = port.get(i, rate);
 
@@ -616,34 +614,35 @@ public class TypedCompositeActorWithCoSimulation
                                     + port.getName());
                         }
 
-                        if (type == BaseType.INT) {          
-                                                       
+                        if (type == BaseType.INT) {
+
                             int[] intTokens = new int[rate];
                             for (int k = 0; k < rate; k++) {
-                                intTokens[k] = ((IntToken) tokens[k]).intValue();
-                            }                  
+                                intTokens[k] = ((IntToken) tokens[k])
+                                        .intValue();
+                            }
                             ((int[][]) tokenHolder)[i] = intTokens;
-                           
+
                         } else if (type == BaseType.DOUBLE) {
-                            
+
                             double[] doubleTokens = new double[rate];
                             for (int k = 0; k < rate; k++) {
-                                doubleTokens[k] = ((DoubleToken) tokens[k]).doubleValue();
+                                doubleTokens[k] = ((DoubleToken) tokens[k])
+                                        .doubleValue();
                             }
                             ((double[][]) tokenHolder)[i] = doubleTokens;
-                            
+
                         } else {
                             // FIXME: need to deal with other types
                         }
 
-                           
                     } else {
                         throw new IllegalActionException(this, port,
                                 "Port should consume " + rate
                                         + " tokens, but there were not "
                                         + " enough tokens available.");
                     }
-                    
+
                 } else {
                     // No inside connection to transfer tokens to.
                     // In this case, consume one input token if there is one.
@@ -660,53 +659,53 @@ public class TypedCompositeActorWithCoSimulation
                 // this shouldn't happen.
                 throw new InternalErrorException(this, ex, null);
             }
-            
+
         }
         return tokenHolder;
     }
-    
-    private void _transferOutputs(IOPort port, Object outputTokens) 
+
+    private void _transferOutputs(IOPort port, Object outputTokens)
             throws IllegalActionException {
-        
+
         int rate = DFUtilities.getTokenProductionRate(port);
-        
-        Type type = ((TypedIOPort) port).getType();    
-        if (type == BaseType.INT) {          
-            
+
+        Type type = ((TypedIOPort) port).getType();
+        if (type == BaseType.INT) {
+
             int[][] tokens = (int[][]) outputTokens;
             for (int i = 0; i < port.getWidthInside(); i++) {
                 for (int k = 0; k < rate; k++) {
-                    Token token = new IntToken(tokens[i][k]);   
+                    Token token = new IntToken(tokens[i][k]);
                     port.send(i, token);
                 }
             }
-                       
+
         } else if (type == BaseType.DOUBLE) {
-            
+
             double[][] tokens = (double[][]) outputTokens;
             for (int i = 0; i < port.getWidthInside(); i++) {
                 for (int k = 0; k < rate; k++) {
-                    Token token = new DoubleToken(tokens[i][k]);   
+                    Token token = new DoubleToken(tokens[i][k]);
                     port.send(i, token);
                 }
             }
-            
+
         } else {
             // FIXME: need to deal with other types
         }
     }
-    
+
     private ExecuteCommands _executeCommands;
-    
+
     private Object _jniWrapper;
-    
+
     private Method _jniFireMethod;
-    
+
     private Method _jniInitializeMethod;
-    
+
     private Method _jniWrapupMethod;
-    
+
     private String _sanitizedActorName;
-    
+
     private long _generatedCodeVersion = -1;
 }

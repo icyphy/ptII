@@ -35,15 +35,15 @@ public class PtalonAST extends CommonAST {
     /**
      * @return An XML String version of this AST.
      *
-    public String toString() {
-        StringWriter writer = new StringWriter();
-        try {
-            xmlSerialize(writer, 0);
-        } catch (IOException e) {
-            return "";
-        }
-        return writer.toString();
-    }*/
+     public String toString() {
+     StringWriter writer = new StringWriter();
+     try {
+     xmlSerialize(writer, 0);
+     } catch (IOException e) {
+     return "";
+     }
+     return writer.toString();
+     }*/
 
     /**
      * Generate the XML for this AST.

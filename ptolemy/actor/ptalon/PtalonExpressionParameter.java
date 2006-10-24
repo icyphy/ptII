@@ -34,6 +34,6 @@ public class PtalonExpressionParameter extends PtalonParameter {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setStringMode(false);
-    }        
-        
+    }
+
 }

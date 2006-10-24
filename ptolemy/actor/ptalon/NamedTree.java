@@ -3,7 +3,6 @@ package ptolemy.actor.ptalon;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * This class is used for generic trees, where each node
  * has a name. Subclasses will typically should set TreeType to 
@@ -14,8 +13,8 @@ import java.util.List;
  * @author acataldo
  *
  */
-public abstract class NamedTree <TreeType extends NamedTree> {
-    
+public abstract class NamedTree<TreeType extends NamedTree> {
+
     /**
      * Create a new tree with the specifed parent.  This
      * is null if the tree to create is a root.  
@@ -48,14 +47,14 @@ public abstract class NamedTree <TreeType extends NamedTree> {
         }
         return null;
     }
-    
+
     /**
      * @return The children of this tree.
      */
     public List<TreeType> getChildren() {
         return _children;
     }
-    
+
     /**
      * @return The name associated with this tree.
      */
@@ -69,7 +68,7 @@ public abstract class NamedTree <TreeType extends NamedTree> {
     public TreeType getParent() {
         return _parent;
     }
-    
+
     /**
      * @return The ancestors of this tree, not including
      * this tree.
@@ -83,12 +82,11 @@ public abstract class NamedTree <TreeType extends NamedTree> {
         }
         return list;
     }
-    
-        
+
     protected TreeType _parent;
-    
+
     protected List<TreeType> _children;
-    
+
     protected String _name;
-    
+
 }

@@ -149,7 +149,8 @@ public class DiscreteRandomSource extends RandomSource {
         DiscreteRandomSource newObject = (DiscreteRandomSource) super
                 .clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.values));
         } catch (IllegalActionException e) {
             // Should have been caught before.
             throw new InternalErrorException(e);

@@ -94,7 +94,7 @@ public abstract class ScalarToken extends Token implements
             return this;
         }
         ScalarToken result = _absolute();
-        
+
         if (_unitCategoryExponents != null && !_isUnitless()) {
             result._unitCategoryExponents = _copyOfCategoryExponents();
         }
@@ -1559,9 +1559,9 @@ public abstract class ScalarToken extends Token implements
         ScalarToken result = _divide(convertedArgument);
 
         // compute units
-        if ( (_unitCategoryExponents != null && !_isUnitless())
-                || (convertedArgument._unitCategoryExponents != null
-                        && !convertedArgument._isUnitless())) {
+        if ((_unitCategoryExponents != null && !_isUnitless())
+                || (convertedArgument._unitCategoryExponents != null && !convertedArgument
+                        ._isUnitless())) {
             result._unitCategoryExponents = _subtractCategoryExponents(convertedArgument);
         }
         return result;
@@ -1720,9 +1720,9 @@ public abstract class ScalarToken extends Token implements
         ScalarToken result = _multiply(convertedArgument);
 
         // compute units
-        if ( (_unitCategoryExponents != null && !_isUnitless())
-                || (convertedArgument._unitCategoryExponents != null
-                        && !convertedArgument._isUnitless())) {
+        if ((_unitCategoryExponents != null && !_isUnitless())
+                || (convertedArgument._unitCategoryExponents != null && !convertedArgument
+                        ._isUnitless())) {
             result._unitCategoryExponents = _addCategoryExponents(convertedArgument);
 
         }

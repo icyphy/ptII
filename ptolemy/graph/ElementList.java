@@ -300,9 +300,8 @@ public class ElementList extends LabeledList {
                 // This 'dump' of a null weight will also dump the graph.
                 // We use null as an argument instead of oldWeight to
                 // avoid FindBugs warnings.
-                throw new GraphWeightException(/*oldWeight*/ null,
-                        null, _graph,
-                        "Incorrect previous weight specified.");
+                throw new GraphWeightException(/*oldWeight*/null, null,
+                        _graph, "Incorrect previous weight specified.");
             }
 
             if (newWeight == null) {

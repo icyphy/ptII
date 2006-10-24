@@ -226,7 +226,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
         newActor._manager = null;
         newActor._model = null;
         newActor._throwable = null;
-        
+
         // Set type constraints.
         newActor.inputArray.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         newActor.outputArray.setTypeSameAs(newActor.inputArray);

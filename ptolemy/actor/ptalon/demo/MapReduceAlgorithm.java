@@ -7,13 +7,15 @@ import ptolemy.kernel.util.IllegalActionException;
 
 public abstract class MapReduceAlgorithm extends Thread {
 
-    public synchronized boolean isReduceFinished() throws IllegalActionException {
+    public synchronized boolean isReduceFinished()
+            throws IllegalActionException {
         if (_threadError) {
-            throw new IllegalActionException("Error writing to key " + reduceKey);
+            throw new IllegalActionException("Error writing to key "
+                    + reduceKey);
         }
         return _threadDone;
     }
-    
+
     /**
      * Subclasses should implement their map method here.
      * @param key The key passed to the map method.
@@ -57,7 +59,7 @@ public abstract class MapReduceAlgorithm extends Thread {
     public synchronized void setNoMoreInputs() {
         _noMoreInputs = true;
     }
-       
+
     /**
      * The key for the reduce algorithm, which should be set externally.
      */
@@ -80,7 +82,7 @@ public abstract class MapReduceAlgorithm extends Thread {
     protected synchronized boolean isQueueEmpty() {
         return reduceValues.size() == 0 && _noMoreInputs;
     }
-    
+
     /**
      * True when the run method is done being called.
      */
@@ -89,13 +91,12 @@ public abstract class MapReduceAlgorithm extends Thread {
     /**
      * True if an exception was thrown acessing the blocking queue.
      */
-    private boolean _threadError = false;    
-    
+    private boolean _threadError = false;
+
     /**
      * This is set externally to true when the reduceValues queue no longer
      * needs to accept values.
      */
     private boolean _noMoreInputs = false;
-
 
 }

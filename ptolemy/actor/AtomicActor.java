@@ -676,7 +676,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** The function dependency, if it is present. */
     private FunctionDependency _functionDependency;
-    
+
     /** Record of the workspace version the last time receivers were created. */
     private long _receiversVersion = -1;
 }

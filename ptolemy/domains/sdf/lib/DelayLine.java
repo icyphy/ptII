@@ -152,7 +152,7 @@ public class DelayLine extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The delay line. */
     private Token[] _delayLine = null;
 }

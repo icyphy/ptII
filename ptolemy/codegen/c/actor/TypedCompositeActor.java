@@ -489,28 +489,27 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     protected void _createBufferSizeAndOffsetMap()
             throws IllegalActionException {
-        
+
         _createInputBufferSizeAndOffsetMap();
-        
+
         // For the inside receivers of the output ports.
         _createOutputBufferSizeAndOffsetMap();
 
     }
-    
+
     /** Create the output buffer and offset map.
      *  @exception IllegalActionException If thrown while getting the
      *  director helper or while getting the buffer size or read offset
      *  or write offset.   
      */
-    protected void _createOutputBufferSizeAndOffsetMap() 
+    protected void _createOutputBufferSizeAndOffsetMap()
             throws IllegalActionException {
-
 
         Iterator outputPorts = ((Actor) getComponent()).outputPortList()
                 .iterator();
 
         while (outputPorts.hasNext()) {
-    
+
             IOPort port = (IOPort) outputPorts.next();
             int length = port.getWidthInside();
 
@@ -539,9 +538,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                 setReadOffset(port, i, new Integer(0));
                 setWriteOffset(port, i, new Integer(0));
             }
-        }    
+        }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

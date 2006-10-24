@@ -569,7 +569,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // the initialize method is called. So, reset must be
         // called here.
         reset();
-        
+
         // Update the receivers version here because there may
         // other actors (e.g. other instances of this actor) that
         // increment the workspace version during preinitialize().
@@ -1649,7 +1649,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     // True if the current state is a final state.
     private boolean _reachedFinalState;
-    
+
     // Indicator of when the receivers were last updated.
     private long _receiversVersion = -1;
 

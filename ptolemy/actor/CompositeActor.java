@@ -373,7 +373,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // has to be contained by an actor to be run.
             Nameable container = getContainer();
             if (container instanceof Actor) {
-                return ((Actor)container).getDirector();
+                return ((Actor) container).getDirector();
             }
             return null;
         } finally {
@@ -474,7 +474,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
         if (_debugging) {
             _debug("Called initialize()");
         }
-        
+
         // Update the version only after everything has been
         // preinitialized because there might have been additional
         // workspace version updates during preinitialize().
@@ -1339,7 +1339,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     private transient long _outputPortsVersion = -1;
 
     private transient List _cachedOutputPorts;
-    
+
     /** Record of the workspace version the last time receivers were created. */
     private long _receiversVersion = -1;
 }

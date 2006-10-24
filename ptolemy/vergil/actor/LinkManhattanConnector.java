@@ -117,10 +117,10 @@ public class LinkManhattanConnector extends ManhattanConnector {
                 }
                 if (_headSites.size() > orderIndex) {
                     if (_headSites.get(orderIndex) == null) {
-                        result = new PortConnectSite(result.getFigure(), terminal,
-                                orderIndex + 1, result.getNormal());
+                        result = new PortConnectSite(result.getFigure(),
+                                terminal, orderIndex + 1, result.getNormal());
                     } else {
-                        result = (Site)_headSites.get(orderIndex);                        
+                        result = (Site) _headSites.get(orderIndex);
                     }
                     _headSites.set(orderIndex, result);
                 } else {
@@ -164,10 +164,10 @@ public class LinkManhattanConnector extends ManhattanConnector {
                 }
                 if (_tailSites.size() > orderIndex) {
                     if (_tailSites.get(orderIndex) == null) {
-                        result = new PortConnectSite(result.getFigure(), terminal,
-                                orderIndex + 1, result.getNormal());
+                        result = new PortConnectSite(result.getFigure(),
+                                terminal, orderIndex + 1, result.getNormal());
                     } else {
-                        result = (Site)_tailSites.get(orderIndex);                        
+                        result = (Site) _tailSites.get(orderIndex);
                     }
                     _tailSites.set(orderIndex, result);
                 } else {
@@ -188,7 +188,7 @@ public class LinkManhattanConnector extends ManhattanConnector {
 
     /** The port at the head, if there is one and it's an IOPort. */
     private IOPort _headPort = null;
-    
+
     /** Head sites, in case this is a multiport. */
     private ArrayList _headSites = null;
 
@@ -200,7 +200,7 @@ public class LinkManhattanConnector extends ManhattanConnector {
 
     /** The port at the tail, if there is one and it's an IOPort. */
     private IOPort _tailPort = null;
-    
+
     /** Tail sites, in case this is a multiport. */
     private ArrayList _tailSites = null;
 }

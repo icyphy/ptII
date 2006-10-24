@@ -1,5 +1,5 @@
 /** An actor that slices the input bits and output a consecutive subset
-  of the input bits. 
+ of the input bits. 
 
  Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
@@ -88,7 +88,7 @@ public class Slice extends Transformer {
         lsb.setExpression("LSB");
         lsb.addChoice("LSB");
         lsb.addChoice("MSB");
-        
+
         input.setTypeEquals(BaseType.FIX);
         output.setTypeEquals(BaseType.FIX);
     }
@@ -97,9 +97,13 @@ public class Slice extends Transformer {
     ////                     ports and parameters                  ////
 
     public Parameter width;
+
     public Parameter start;
+
     public Parameter end;
+
     public Parameter lsb;
+
     public Parameter binaryPoint;
 
     ///////////////////////////////////////////////////////////////////
@@ -111,12 +115,11 @@ public class Slice extends Transformer {
      * @throws IllegalActionException 
      *  @exception IllegalActionException If the function is not recognized.
      */
-    public void attributeChanged (Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
     }
 
-    
     /** output a consecutive subset of the input bits. 
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
@@ -127,13 +130,13 @@ public class Slice extends Transformer {
         int startValue = ((IntToken) start.getToken()).intValue();
         int endValue = ((IntToken) end.getToken()).intValue() + 1;
         int binaryPointValue = ((IntToken) binaryPoint.getToken()).intValue();
-        boolean lsbValue = 
-            ((StringToken) lsb.getToken()).stringValue().equals("LSB");
-        
+        boolean lsbValue = ((StringToken) lsb.getToken()).stringValue().equals(
+                "LSB");
+
         int newStartValue = (lsbValue) ? widthValue - endValue : startValue;
         int newEndValue = (lsbValue) ? widthValue - startValue : endValue;
         int shiftBits = (lsbValue) ? startValue : widthValue - endValue;
-        
+
         char[] mask = new char[widthValue];
         Arrays.fill(mask, '0');
         Arrays.fill(mask, newStartValue, newEndValue, '1');
@@ -141,12 +144,13 @@ public class Slice extends Transformer {
         if (input.hasToken(0)) {
             FixToken in = (FixToken) input.get(0);
             BigDecimal value = new BigDecimal(in.fixValue().getUnscaledValue()
-                    .and(new BigInteger(new String(mask), 2))
-                    .shiftRight(shiftBits));
-            
+                    .and(new BigInteger(new String(mask), 2)).shiftRight(
+                            shiftBits));
+
             FixPoint result = new FixPoint(value, new FixPointQuantization(
-                    new Precision(0, newEndValue - newStartValue, 
-                    binaryPointValue), Overflow.GROW, Rounding.HALF_EVEN));
+                    new Precision(0, newEndValue - newStartValue,
+                            binaryPointValue), Overflow.GROW,
+                    Rounding.HALF_EVEN));
 
             output.send(0, new FixToken(result));
         }

@@ -70,7 +70,6 @@ public class ArrayLength extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets up the type constraints.
      *  @param workspace The workspace for the new object.

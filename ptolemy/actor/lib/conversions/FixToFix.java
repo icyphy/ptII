@@ -163,7 +163,6 @@ public class FixToFix extends Converter {
         }
     }
 
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the value public variable in the new
      *  object to equal the cloned parameter in that new object.
@@ -173,8 +172,7 @@ public class FixToFix extends Converter {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FixToFix newObject = (FixToFix) super
-                .clone(workspace);
+        FixToFix newObject = (FixToFix) super.clone(workspace);
 
         // Set the type constraint.
         newObject.input.setTypeAtMost(BaseType.UNSIZED_FIX);

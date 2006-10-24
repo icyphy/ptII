@@ -1,5 +1,5 @@
 /** An actor that outputs the fixpoint value of the concatenation of
-   the input bits.
+ the input bits.
 
  Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
@@ -76,13 +76,13 @@ public class Memory extends Transformer {
 
         binaryPoint = new Parameter(this, "outputBinaryPoint");
         binaryPoint.setExpression("0");
-        
+
         capacity = new Parameter(this, "capacity");
         capacity.setExpression("1");
 
         dataWidth = new Parameter(this, "dataWidth");
         dataWidth.setExpression("32");
-        
+
         writeEnable.setTypeEquals(BaseType.BOOLEAN);
         input.setTypeEquals(BaseType.FIX);
         output.setTypeEquals(BaseType.FIX);
@@ -102,7 +102,6 @@ public class Memory extends Transformer {
 
     public Parameter binaryPoint;
 
-    
     /** The control port for signaling write.
      */
     public TypedIOPort writeEnable;
@@ -111,7 +110,6 @@ public class Memory extends Transformer {
      */
     public TypedIOPort address;
 
-    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -121,20 +119,20 @@ public class Memory extends Transformer {
      * @throws IllegalActionException 
      *  @exception IllegalActionException If the function is not recognized.
      */
-    public void attributeChanged (Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
         if (attribute == capacity) {
             _capacity = ((ScalarToken) capacity.getToken()).intValue();
             _addressWidth = (int) Math.floor(Math.log(_capacity) / Math.log(2));
             _storage = new FixToken[_capacity];
-        } else if (attribute == dataWidth){
+        } else if (attribute == dataWidth) {
             _dataWidth = ((ScalarToken) dataWidth.getToken()).intValue();
         } else if (attribute == binaryPoint) {
             _binaryPoint = ((ScalarToken) binaryPoint.getToken()).intValue();
         }
     }
-    
+
     /** Output the fixpoint value of the concatenation of the input bits. 
      *  If there is no inputs, then produce no output.
      *  @exception IllegalActionException If there is no director.
@@ -143,55 +141,57 @@ public class Memory extends Transformer {
         super.fire();
 
         int addressValue;
-        
-        if (!address.hasToken(0) || !writeEnable.hasToken(0) || 
-                !input.hasToken(0)) {
+
+        if (!address.hasToken(0) || !writeEnable.hasToken(0)
+                || !input.hasToken(0)) {
             return;
         }
-        
-        
+
         // Consume tokens from all input ports.
         FixToken in = ((FixToken) input.get(0));
-        
-        FixPoint addressFixValue = 
-            ((FixToken) address.get(0)).fixValue();
-        
-        boolean writeEnableValue = 
-            ((BooleanToken) writeEnable.get(0)).booleanValue();
-        
-        if (Math.pow(2, addressFixValue.getPrecision()
-                .getNumberOfBits()) - 1 > _addressWidth) {
-            throw new IllegalActionException("Address width does not " +
-                    "match port width.");                    
+
+        FixPoint addressFixValue = ((FixToken) address.get(0)).fixValue();
+
+        boolean writeEnableValue = ((BooleanToken) writeEnable.get(0))
+                .booleanValue();
+
+        if (Math.pow(2, addressFixValue.getPrecision().getNumberOfBits()) - 1 > _addressWidth) {
+            throw new IllegalActionException("Address width does not "
+                    + "match port width.");
         }
-        
+
         addressValue = addressFixValue.getUnscaledValue().intValue();
-        
+
         if (addressValue >= _capacity) {
             throw new IllegalActionException("Address is out of range.");
         }
 
         if (in.fixValue().getPrecision().getNumberOfBits() != _dataWidth) {
-            throw new IllegalActionException("Data width does not match" +
-                    "the port width.");
+            throw new IllegalActionException("Data width does not match"
+                    + "the port width.");
         }
-        
-        if (writeEnableValue) {            // writing.
+
+        if (writeEnableValue) { // writing.
             _storage[addressValue] = in;
         }
-        
-        FixToken dataOut = _storage[_preAddress].quantize(
-                new FixPointQuantization(new Precision(0, _dataWidth,
+
+        FixToken dataOut = _storage[_preAddress]
+                .quantize(new FixPointQuantization(new Precision(0, _dataWidth,
                         _binaryPoint), Overflow.GROW, Rounding.HALF_EVEN));
-        
+
         output.send(0, dataOut);
     }
 
     private int _addressWidth;
+
     private int _binaryPoint;
+
     private int _capacity;
-    private int _dataWidth; 
+
+    private int _dataWidth;
+
     private int _preAddress;
+
     private FixToken[] _storage;
 
 }

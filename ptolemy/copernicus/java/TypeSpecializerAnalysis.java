@@ -1397,11 +1397,11 @@ public class TypeSpecializerAnalysis {
                 ptolemy.data.type.Type t2 = (ptolemy.data.type.Type) e2;
                 Class c1 = t1.getTokenClass();
                 Class c2 = t2.getTokenClass();
-                if(t1.equals(top()) || t2.equals(bottom())) {
+                if (t1.equals(top()) || t2.equals(bottom())) {
                     return HIGHER;
-                } else if(t2.equals(top()) || t1.equals(bottom())) {
+                } else if (t2.equals(top()) || t1.equals(bottom())) {
                     return LOWER;
-                } else if(c1.equals(c2)) {
+                } else if (c1.equals(c2)) {
                     return TypeLattice.lattice().compare(e1, e2);
                 } else {
                     return INCOMPARABLE;
@@ -1475,13 +1475,13 @@ public class TypeSpecializerAnalysis {
                 ptolemy.data.type.Type t2 = (ptolemy.data.type.Type) e2;
                 Class c1 = t1.getTokenClass();
                 Class c2 = t2.getTokenClass();
-                if(t1.equals(bottom()) || t2.equals(bottom())) {
+                if (t1.equals(bottom()) || t2.equals(bottom())) {
                     return bottom();
-                } else if(t1.equals(top())) {
+                } else if (t1.equals(top())) {
                     return t2;
-                } else if(t2.equals(top())) {
+                } else if (t2.equals(top())) {
                     return t1;
-                } else if(c1.equals(c2)) {
+                } else if (c1.equals(c2)) {
                     return TypeLattice.lattice().greatestLowerBound(e1, e2);
                 } else {
                     return bottom();
@@ -1570,13 +1570,13 @@ public class TypeSpecializerAnalysis {
                 ptolemy.data.type.Type t2 = (ptolemy.data.type.Type) e2;
                 Class c1 = t1.getTokenClass();
                 Class c2 = t2.getTokenClass();
-                if(t1.equals(top()) || t2.equals(top())) {
+                if (t1.equals(top()) || t2.equals(top())) {
                     return top();
-                } else if(t1.equals(bottom())) {
+                } else if (t1.equals(bottom())) {
                     return t2;
-                } else if(t2.equals(bottom())) {
+                } else if (t2.equals(bottom())) {
                     return t1;
-                } else if(c1.equals(c2)) {
+                } else if (c1.equals(c2)) {
                     retVal = TypeLattice.lattice().leastUpperBound(e1, e2);
                 } else {
                     retVal = top();

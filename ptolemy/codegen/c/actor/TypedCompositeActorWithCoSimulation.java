@@ -29,7 +29,6 @@ package ptolemy.codegen.c.actor;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActorWithCoSimulation
 
@@ -51,20 +50,19 @@ public class TypedCompositeActorWithCoSimulation extends TypedCompositeActor {
             ptolemy.actor.TypedCompositeActorWithCoSimulation component) {
         super(component);
     }
-    
+
     /** Do nothing. Since the outside domain is the simulation domain. 
      *  @exception IllegalActionException Not thrown here.
      */
     protected void _createInputBufferSizeAndOffsetMap()
             throws IllegalActionException {
     }
-    
+
     /** Return nothing. Since the outside domain is the simulation domain. 
      *  @exception IllegalActionException Not thrown here.
      */
-    protected String _generateInputVariableDeclaration() 
+    protected String _generateInputVariableDeclaration()
             throws IllegalActionException {
         return "";
     }
 }
-

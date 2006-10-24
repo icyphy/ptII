@@ -168,8 +168,10 @@ public class IIR extends Transformer {
         IIR newObject = (IIR) super.clone(workspace);
 
         try {
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.numerator));
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.denominator));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.numerator));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.denominator));
             newObject.input.setTypeAtLeast(newObject.output);
             newObject.output.setTypeAtLeast(newObject.input);
         } catch (IllegalActionException ex) {

@@ -254,8 +254,8 @@ public class SplitReader extends Source {
         if (_currentLines != null) {
             int outputs = ((IntToken) numberOfOutputs.getToken()).intValue();
             int size = ((IntToken) blockSize.getToken()).intValue();
-            for(int i = 0; i < outputs; i++) {
-                for(int j = 0; j < size; j++) {
+            for (int i = 0; i < outputs; i++) {
+                for (int j = 0; j < size; j++) {
                     output.send(i, new StringToken(_currentLines[i][j]));
                 }
             }

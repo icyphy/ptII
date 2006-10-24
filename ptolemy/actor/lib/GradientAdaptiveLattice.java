@@ -152,7 +152,7 @@ public class GradientAdaptiveLattice extends Lattice {
                 _reflectionCoefficientsCache[i] = 0.0;
             }
         }
-        
+
         // Reinitialize the reflection coefficients from the parameter value.
         ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
         for (int i = 0; i < _order; i++) {

@@ -77,14 +77,12 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     // public String generateMainEntryCode() throws IllegalActionException;
-
     /** Generate the main entry point.
      *  @return Return the a string that closes optionally calls exit
      *  and closes the main() method 
      *  @exception IllegalActionException Not thrown in this base class.
      */
     // public String generateMainExitCode() throws IllegalActionException;
-
     /** Generate mode transition code. It delegates to the director helper 
      *  of the local director. The mode transition code generated in this 
      *  method is executed after each global iteration, e.g., in HDF model. 

@@ -101,10 +101,10 @@ public class XSLTUtilities {
      * @exception Exception If there are problems with the transform.
      */
     public static void main(String[] args) throws Exception {
-        
+
         String lastArg = args[args.length - 1];
         String outputFileName = lastArg;
-        int numberOfTransformers = args.length -2;
+        int numberOfTransformers = args.length - 2;
         if (lastArg.compareTo("exportMoMLDTD") == 0) {
             _exportDTD = true;
             outputFileName = args[args.length - 2];
@@ -113,14 +113,13 @@ public class XSLTUtilities {
             _exportDTD = false;
         }
 
-        if ((_exportDTD && args.length < 4) ||
-                (!_exportDTD && args.length < 3)) {
+        if ((_exportDTD && args.length < 4) || (!_exportDTD && args.length < 3)) {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.util.XSLTUtilities inputFile "
-                    + "xslFile1 [xslFile2 . . .] outputFile " 
+                    + "xslFile1 [xslFile2 . . .] outputFile "
                     + "[exportMoMLDTD]");
             System.exit(2);
-        } 
+        }
 
         // Make sure we can write the output first
         FileWriter fileWriter = null;
@@ -136,7 +135,8 @@ public class XSLTUtilities {
                 transforms.add(args[i]);
             }
 
-            Document outputDocument = XSLTUtilities.transform(inputDocument, transforms);
+            Document outputDocument = XSLTUtilities.transform(inputDocument,
+                    transforms);
             _writeOutput(XSLTUtilities.toString(outputDocument), fileWriter);
         } finally {
             if (fileWriter != null) {
@@ -175,13 +175,13 @@ public class XSLTUtilities {
             throw exception;
         }
     }
-    
+
     /** Set the flag indicating whether to export DTD specification when
      *  transforming XML files. By default, the transformer does not export 
      *  DTD.
      *  @param exportDTD True for export DTD, false for not.
      */
-    public static void setExportDTD (boolean exportDTD) {
+    public static void setExportDTD(boolean exportDTD) {
         _exportDTD = exportDTD;
     }
 
@@ -372,8 +372,8 @@ public class XSLTUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private static void _writeOutput(String outputString, 
-            FileWriter fileWriter) throws IOException {
+    private static void _writeOutput(String outputString, FileWriter fileWriter)
+            throws IOException {
         if (_exportDTD) {
             // XSLT discards the DTD decalration.
             // The following code inserts the specified DTD decalrations.
@@ -385,13 +385,15 @@ public class XSLTUtilities {
             // FIXME: So far, only MoML DTD can be exported. If the support
             // of more DTDs is necessray, modify the main() method and 
             // setExportDTD() method to allow configuration of DTD. 
-            fileWriter.write("\r\n<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" " +
-                            "\r\n\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">");
+            fileWriter
+                    .write("\r\n<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" "
+                            + "\r\n\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">");
             fileWriter.write(outputString.substring(positionToInsertDTD));
         } else {
             fileWriter.write(outputString);
         }
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

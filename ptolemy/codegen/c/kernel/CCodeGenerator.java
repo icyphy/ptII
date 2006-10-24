@@ -24,16 +24,16 @@ import ptolemy.kernel.util.NamedObj;
 ////CodeGenerator
 
 /** Base class for C code generator.
-*  
-*  @author Gang Zhou
-*  @version $Id$
-*  @since Ptolemy II 6.0
-*  @Pt.ProposedRating red (zgang)
-*  @Pt.AcceptedRating red (zgang)
-*/
+ *  
+ *  @author Gang Zhou
+ *  @version $Id$
+ *  @since Ptolemy II 6.0
+ *  @Pt.ProposedRating red (zgang)
+ *  @Pt.AcceptedRating red (zgang)
+ */
 
 public class CCodeGenerator extends CodeGenerator {
-    
+
     /** Create a new instance of the C code generator.
      *  @param container The container.
      *  @param name The name of the C code generator.
@@ -52,17 +52,17 @@ public class CCodeGenerator extends CodeGenerator {
      *  @param types An array of types.
      *  @param functions An array of functions.
      *  @return The code that declares functions.
-     */   
+     */
     public Object generateFunctionTable(Object[] types, Object[] functions) {
         StringBuffer code = new StringBuffer();
-    
+
         if (functions.length > 0 && types.length > 0) {
-         
+
             code.append("#define NUM_TYPE " + types.length + "\n");
             code.append("#define NUM_FUNC " + functions.length + "\n");
             code.append("Token (*functionTable[NUM_TYPE][NUM_FUNC])"
                     + "(Token, ...)= {\n");
-    
+
             for (int i = 0; i < types.length; i++) {
                 code.append("\t");
                 for (int j = 0; j < functions.length; j++) {
@@ -74,12 +74,12 @@ public class CCodeGenerator extends CodeGenerator {
                 }
                 code.append("\n");
             }
-       
+
             code.append("};\n");
         }
         return code.toString();
     }
-    
+
     /** Generate include files.
      *  @return The include files.
      *  @throws IllegalActionException If the helper class for some actor 
@@ -95,9 +95,10 @@ public class CCodeGenerator extends CodeGenerator {
             includingFiles.add("\"Jni" + _sanitizedModelName + ".h\"");
             // FIXME: This is temporary. Only works on my machine.
             _includes.add("-I\"C:/Program Files/Java/jdk1.5.0_06/include\"");
-            _includes.add("-I\"C:/Program Files/Java/jdk1.5.0_06/include/win32\"");
+            _includes
+                    .add("-I\"C:/Program Files/Java/jdk1.5.0_06/include/win32\"");
         }
-        
+
         includingFiles.add("<stdarg.h>");
         includingFiles.add("<stdio.h>");
         includingFiles.add("<string.h>");
@@ -105,7 +106,7 @@ public class CCodeGenerator extends CodeGenerator {
 
         while (files.hasNext()) {
             String file = (String) files.next();
-        
+
             code.append("#include " + file + "\n");
         }
 
@@ -117,18 +118,18 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeEntryCode() throws IllegalActionException {
-     
+
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
             return "\n\ninitialize() {\n";
-            
-        // If the container is not in the top level, we are generating code 
-        // for the Java and C co-simulation.
+
+            // If the container is not in the top level, we are generating code 
+            // for the Java and C co-simulation.
         } else {
-            return "\n\nJNIEXPORT void JNICALL\n"
-            + "Java_Jni" + _sanitizedModelName + "_initialize("
-            + "JNIEnv *env, jobject obj) {\n";
+            return "\n\nJNIEXPORT void JNICALL\n" + "Java_Jni"
+                    + _sanitizedModelName + "_initialize("
+                    + "JNIEnv *env, jobject obj) {\n";
         }
     }
 
@@ -137,48 +138,49 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeExitCode() throws IllegalActionException {
-      
+
         return "}\n";
     }
-    
+
     /** Generate the initialization procedure name.
      *  @return a string for the initialization procedure name.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateInitializeProcedureName() throws IllegalActionException {
-      
+    public String generateInitializeProcedureName()
+            throws IllegalActionException {
+
         return _INDENT1 + "initialize();\n";
     }
-    
-    
+
     /** Generate the main entry point.
      *  @return Return the definition of the main entry point for a program.
      *   In C, this would be defining main().
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateMainEntryCode() throws IllegalActionException {
-        
+
         StringBuffer mainEntryCode = new StringBuffer();
-        
+
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
             mainEntryCode.append("\n\nmain(int argc, char *argv[]) {\n");
-        
-        // If the container is not in the top level, we are generating code 
-        // for the Java and C co-simulation.
+
+            // If the container is not in the top level, we are generating code 
+            // for the Java and C co-simulation.
         } else {
             mainEntryCode.append("\n\nJNIEXPORT jobjectArray JNICALL\n"
                     + "Java_Jni" + _sanitizedModelName + "_fire (\n"
                     + "JNIEnv *env, jobject obj");
-            
-            Iterator inputPorts = ((Actor) getContainer()).inputPortList().iterator();
-            while(inputPorts.hasNext()) {
+
+            Iterator inputPorts = ((Actor) getContainer()).inputPortList()
+                    .iterator();
+            while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
                 mainEntryCode.append(", jobjectArray " + inputPort.getName());
             }
-            
-            mainEntryCode.append("){\n");                               
+
+            mainEntryCode.append("){\n");
         }
         return mainEntryCode.toString();
     }
@@ -188,14 +190,14 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateMainExitCode() throws IllegalActionException {
-   
+
         if (isTopLevel()) {
             return _INDENT1 + "exit(0);\n}\n";
         } else {
             return _INDENT1 + "return tokensToAllOutputPorts;\n}\n";
         }
     }
-    
+
     /** Generate preinitialize code (if there is any).
      *  This method calls the generatePreinitializeCode() method
      *  of the code generator helper associated with the model director
@@ -207,7 +209,7 @@ public class CCodeGenerator extends CodeGenerator {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
-        
+
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
                 .getDirector();
 
@@ -215,7 +217,7 @@ public class CCodeGenerator extends CodeGenerator {
             throw new IllegalActionException(this, "The model "
                     + _model.getName() + " does not have a director.");
         }
-       
+
         Attribute iterations = director.getAttribute("iterations");
 
         if (iterations != null) {
@@ -230,7 +232,6 @@ public class CCodeGenerator extends CodeGenerator {
         return code.toString();
     }
 
-    
     /**
      * Generate type conversion code.
      * Determine the proper code put into the source to support dynamic type
@@ -248,7 +249,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  actor generates the type resolution code.
      */
     public String generateTypeConvertCode() throws IllegalActionException {
-     
+
         StringBuffer code = new StringBuffer();
 
         code.append(comment(0, "Generate type resolution code for "
@@ -302,10 +303,10 @@ public class CCodeGenerator extends CodeGenerator {
 
         // Generate function map.
         for (int i = 0; i < functionsArray.length; i++) {
-   
+
             code.append("#define FUNC_" + functionsArray[i] + " " + i + "\n");
         }
-      
+
         code.append("typedef struct token Token;");
 
         // Generate type and function definitions.
@@ -371,7 +372,7 @@ public class CCodeGenerator extends CodeGenerator {
                     // not found. We have to define the function label in the
                     // generated code because the function table makes
                     // reference to this label.
-             
+
                     typeStreams[i].append("#define " + typesArray[i] + "_"
                             + functionsArray[j] + " MISSING \n");
 
@@ -383,7 +384,7 @@ public class CCodeGenerator extends CodeGenerator {
         }
         return code.toString();
     }
-    
+
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
      *  @return code The generated code.
@@ -393,7 +394,7 @@ public class CCodeGenerator extends CodeGenerator {
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateVariableDeclaration());
-        
+
         // Generate variable declarations for modified variables.
         if (_modifiedVariables != null) {
             Iterator modifiedVariables = _modifiedVariables.iterator();
@@ -409,7 +410,7 @@ public class CCodeGenerator extends CodeGenerator {
 
         return code.toString();
     }
-    
+
     /** Generate variable initialization for the referenced parameters.
      *  @return code The generated code.
      *  @exception IllegalActionException If the helper class for the model
@@ -419,7 +420,7 @@ public class CCodeGenerator extends CodeGenerator {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateVariableInitialization());
-        
+
         // Generate variable initialization for modified variables.
         if (_modifiedVariables != null) {
             Iterator modifiedVariables = _modifiedVariables.iterator();
@@ -435,27 +436,27 @@ public class CCodeGenerator extends CodeGenerator {
                         + ";\n");
             }
         }
-        
+
         return code.toString();
     }
-    
+
     /** Generate the wrapup procedure entry point.
      *  @return a string for the wrapup procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupEntryCode() throws IllegalActionException {
-        
+
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
             return "\n\nwrapup() {\n";
-            
-        // If the container is not in the top level, we are generating code 
-        // for the Java and C co-simulation.
+
+            // If the container is not in the top level, we are generating code 
+            // for the Java and C co-simulation.
         } else {
-            return "\n\nJNIEXPORT void JNICALL\n"
-            + "Java_Jni" + _sanitizedModelName + "_wrapup("
-            + "JNIEnv *env, jobject obj) {\n";
+            return "\n\nJNIEXPORT void JNICALL\n" + "Java_Jni"
+                    + _sanitizedModelName + "_wrapup("
+                    + "JNIEnv *env, jobject obj) {\n";
         }
     }
 
@@ -464,17 +465,17 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupExitCode() throws IllegalActionException {
-       
+
         return "}\n";
     }
-    
+
     /** Generate the wrapup procedure name.
      *  @return a string for the wrapup procedure name.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupProcedureName() throws IllegalActionException {
-     
+
         return _INDENT1 + "wrapup();\n";
     }
-    
+
 }

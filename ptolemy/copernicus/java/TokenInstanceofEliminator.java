@@ -91,8 +91,8 @@ public class TokenInstanceofEliminator extends BodyTransformer implements
     protected void internalTransform(Body b, String phaseName, Map options) {
         JimpleBody body = (JimpleBody) b;
 
-//         System.out.println("TokenInstanceofEliminator.internalTransform(" +
-//                 body.getMethod() + ", " + phaseName + ")");
+        //         System.out.println("TokenInstanceofEliminator.internalTransform(" +
+        //                 body.getMethod() + ", " + phaseName + ")");
         boolean debug = PhaseOptions.getBoolean(options, "debug");
 
         eliminateCastsAndInstanceOf(body, phaseName, new HashSet(), debug);
@@ -100,8 +100,8 @@ public class TokenInstanceofEliminator extends BodyTransformer implements
 
     public static void eliminateCastsAndInstanceOf(Body body, String phaseName,
             Set unsafeLocalSet, boolean debug) {
-        System.out.println("eliminating token casts and instanceofs in " +
-                body.getMethod());
+        System.out.println("eliminating token casts and instanceofs in "
+                + body.getMethod());
         // Analyze the types of variables which refer to tokens.
         TokenTypeAnalysis tokenTypes = new TokenTypeAnalysis(body.getMethod(),
                 new CompleteUnitGraph(body));

@@ -37,25 +37,25 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////AddSubtract
 
 /**
-A complex number adder/subtractor.
-This adder has two input ports, both of which are multiports,
-and one output port, which is not.
-The types on the ports are complex.  Data that arrives on the
-input port named <i>plus</i> will be added, and data that arrives
-on the input port named <i>minus</i> will be subtracted.
-Any token type supporting addition and subtraction can be used.
-In most domains, either input port can be left unconnected.
-Thus, to get a simple adder (with no subtractor), just leave the
-<i>minus</i> input unconnected.
-<p>
-This actor does not require that each input
-channel have a token upon firing. It will add or subtract available
-tokens at the inputs and ignore the channels that do not have tokens.
-It consumes at most one input token from each port.
-If no input tokens are available at all, then no output is produced.
+ A complex number adder/subtractor.
+ This adder has two input ports, both of which are multiports,
+ and one output port, which is not.
+ The types on the ports are complex.  Data that arrives on the
+ input port named <i>plus</i> will be added, and data that arrives
+ on the input port named <i>minus</i> will be subtracted.
+ Any token type supporting addition and subtraction can be used.
+ In most domains, either input port can be left unconnected.
+ Thus, to get a simple adder (with no subtractor), just leave the
+ <i>minus</i> input unconnected.
+ <p>
+ This actor does not require that each input
+ channel have a token upon firing. It will add or subtract available
+ tokens at the inputs and ignore the channels that do not have tokens.
+ It consumes at most one input token from each port.
+ If no input tokens are available at all, then no output is produced.
 
-@author Adam Cataldo
-*/
+ @author Adam Cataldo
+ */
 
 public class ComplexAddSubtract extends AddSubtract {
     /** Construct an actor in the specified container with the specified

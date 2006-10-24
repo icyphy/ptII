@@ -25,5 +25,5 @@ public class PtalonScopeException extends Exception {
     public PtalonScopeException(String message, Throwable cause) {
         super(message, cause);
     }
-    
+
 }
