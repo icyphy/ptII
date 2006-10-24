@@ -405,7 +405,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/gr/demo/Demo1 \
 		ptolemy/domains/gr/lib/vr \
 		ptolemy/domains/hs \
-		ptolemy/distributed \
 		ptolemy/matlab/ptmatlab.exp \
 		ptolemy/matlab/ptmatlab.lib \
 		ptolemy/matlab/ptmatlab.obj \
