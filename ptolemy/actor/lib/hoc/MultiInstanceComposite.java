@@ -470,5 +470,5 @@ public class MultiInstanceComposite extends TypedCompositeActor {
     ////                         private variables                 ////
     private boolean _isMasterCopy = false;
 
-    private String _scopeExtendingAttributeName = "_micScopeExtender";
+    //private String _scopeExtendingAttributeName = "_micScopeExtender";
 }
