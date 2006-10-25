@@ -80,7 +80,7 @@ public class CheckModelSize {
             //                 System.out.println("CheckModelSize: skipping " + fileName);
             //                 continue;
             //             }
-            StringBuffer analysis = new StringBuffer();
+            StringBuffer analysis = new StringBuffer();                    
 
             MoMLParser parser = new MoMLParser();
             MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
@@ -201,6 +201,9 @@ public class CheckModelSize {
 
         return "<h1>Check Size</h1>\nBelow are the results from checking the "
                 + "sizes of and centering of models\n<table>\n"
+                + "<b>Note: after running review these results, be"
+                + " sure to exit, as the graphical elements of the "
+                + " models will have been removed</b>\n"
                 + results.toString() + "</table>\n";
     }
 
