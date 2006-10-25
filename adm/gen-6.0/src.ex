@@ -116,6 +116,7 @@ ptolemy/build.xml
 ptolemy/filter/*
 ptolemy/filter
 ptolemy/chic
+ptolemy/codegen/vhdl
 ptolemy/com
 ptolemy/configs/test/vergilConfigurationNoMatlab.xml
 ptolemy/configs/test/vergilConfigurationNoMatlabNoSerialNoApps.xml

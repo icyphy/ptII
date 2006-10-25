@@ -234,6 +234,7 @@ clean_shipping:
 		ptolemy/codegen/c/actor/lib/javasound/test/outfile.wav \
 		ptolemy/codegen/c/domains/sdf/kernel/test/foo.c \
 		ptolemy/codegen/kernel/test/substitute.out \
+		ptolemy/codegen/vhdl \
 		ptolemy/copernicus/*/test/codeGenerator.tmp \
 		ptolemy/copernicus/jhdl \
 		ptolemy/copernicus/kernel/fragment \
