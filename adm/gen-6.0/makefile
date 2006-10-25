@@ -400,6 +400,7 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/x10/X10Interface.class \
 		ptolemy/actor/lib/x10/demo/MotionDrivenDemos/shutdown.bat \
 		ptolemy/backtrack \
+		ptolemy/codegen/vhdl \
 		ptolemy/component \
 		ptolemy/domains/giotto/cgc \
 		ptolemy/domains/gr/demo/Demo1 \
