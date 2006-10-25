@@ -2,13 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TokenRing" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0.beta">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 630]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[794, 630]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[2, 12]">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
         <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
@@ -17,14 +19,10 @@
                 </property>
             </property>
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="8">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0">
         </property>
-        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
-        </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 11, 1019, 746}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 11, 1009, 748}, maximized=false}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -39,28 +37,12 @@
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 590.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{402.0, 315.0}">
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A cyclic token-ring system composed of three blocks.  This system arbitrates&#10;fairly among requests for exclusive access to a shared resource by marching&#10;a token around a ring.  At each &quot;tick&quot; of the clock, the arbiter grants access&#10;to the first requestor downstream of the block with the token.&#10;&#10;In this model, InstanceOfArbiter1 starts with the token (see the parameter&#10;of the instance).&#10;&#10;This example is from:&#10;    Stephen A. Edwards and Edward A. Lee&#10;    &quot;The Semantics and Execution of a Synchronous Block-Diagram Language&quot;&#10;    Technical Memorandum UCB/ERL M01/33, &#10;    University of California, Berkeley, CA 94720, &#10;    October 25, 2001.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 10.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Arbiter class definition">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 155.0}">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{397.0, 315.0}">
     </property>
     <class name="Arbiter" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 115.0]">
@@ -75,52 +57,10 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{402.0, 315.0}">
         </property>
-        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Request the token">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 125.0]">
-            </property>
-        </property>
-        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Pass in ownership of the token">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 320.0]">
-            </property>
-        </property>
-        <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Pass in permission&#10;to use the token">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 175.0]">
-            </property>
-        </property>
-        <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If this owns the token and a request is made, then grant access.&#10;If this owns the token and no request is made, then pass out permission&#10;to use the token.  If this does not own the token, but the permission&#10;to use the token is passed in, then if a request is made, grant access.&#10;Otherwise, pass the permission to use the token out.">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 360.0]">
-            </property>
-        </property>
-        <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Pass out ownership of the token">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 320.0]">
-            </property>
-        </property>
-        <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Pass out permission&#10;to use the token">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 200.0]">
-            </property>
-        </property>
-        <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Grant access">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 120.0]">
-            </property>
-        </property>
         <property name="initiallyOwnsToken" class="ptolemy.data.expr.Parameter" value="false">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_icon" class="ptolemy.kernel.util.Attribute">
                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                 </property>
             </property>
@@ -131,7 +71,7 @@
       </svg>
     </configure>
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 60.0]">
             </property>
@@ -199,10 +139,6 @@
                     </property>
                 </property>
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
-                </property>
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 110.0]">
             </property>
         </entity>
@@ -221,10 +157,6 @@
                     </property>
                     <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
                     </property>
-                </property>
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 180.0]">
@@ -247,10 +179,6 @@
                     </property>
                 </property>
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
-                </property>
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 180.0]">
             </property>
         </entity>
@@ -271,21 +199,11 @@
                     </property>
                 </property>
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
-                </property>
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 240.0]">
             </property>
         </entity>
         <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
             <property name="initialValue" class="ptolemy.data.expr.Parameter" value="initiallyOwnsToken">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialValue">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 300.0]">
             </property>
@@ -338,17 +256,11 @@
         <doc>Create a constant sequence</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 400.0]">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
     </entity>
     <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={704, 128, 292, 229}, maximized=false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 480.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 480.0]">
         </property>
     </entity>
     <entity name="Request2" class="ptolemy.actor.lib.Const">
@@ -357,24 +269,12 @@
         <doc>Create a constant sequence</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 400.0]">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
     </entity>
     <entity name="Request3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 400.0]">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
         </property>
     </entity>
     <entity name="BooleanToString" class="ptolemy.actor.lib.conversions.BooleanToAnything">
@@ -495,12 +395,6 @@
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Clock tick number &quot; + input">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 530.0]">
         </property>
