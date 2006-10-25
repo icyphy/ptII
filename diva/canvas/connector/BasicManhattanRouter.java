@@ -29,7 +29,6 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Site;

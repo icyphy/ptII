@@ -33,7 +33,6 @@ import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.color.ICC_ColorSpace;
 import java.awt.color.ICC_Profile;
-import java.awt.color.ICC_ProfileGray;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.Raster;

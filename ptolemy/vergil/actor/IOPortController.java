@@ -35,7 +35,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.DebugListenerTableau;

@@ -44,7 +44,6 @@ import soot.Value;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.InvokeStmt;
 import soot.jimple.StaticInvokeExpr;
-import soot.jimple.Stmt;
 import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.CallGraphBuilder;

@@ -43,7 +43,6 @@ import java.util.Vector;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
