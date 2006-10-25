@@ -52,6 +52,7 @@ JSRCS = \
 	Concat.java \
 	Slice.java \
 	Memory.java \
+	Multiplexor.java \
 
 OTHER_FILES_TO_BE_JARED = \
 	vhdl.xml
