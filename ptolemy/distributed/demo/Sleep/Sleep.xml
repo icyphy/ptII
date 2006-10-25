@@ -8,7 +8,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[606, 350]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{286.0361445783132, 139.8855421686747}">
     </property>
