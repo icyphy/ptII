@@ -1166,7 +1166,7 @@ changequote([, ])dnl
 	    startdir=`pwd`
 	    cd "$srcdir/config"
 	    AC_MSG_CHECKING([for ITreeSelection from Eclipse])
-	    if "$JAVAC" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java ; then
+	    if "$JAVAC" -classpath "$PTBACKTRACK_ECLIPSE_DOC_JARS" EclipseITreeSelection.java ; then
                 AC_MSG_RESULT([ok])
 		# Set to eclipse and used in
 		# $PTII/ptolemy/backtrack/makefile if Eclipse jar files were found
