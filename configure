@@ -310,7 +310,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH FIND JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTECLIPSE PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB PTMATLAB_CC CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR COLT_DIR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT ECLIPSE_DIR GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS IMAGEJ_JAR JAI_JARS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JAVAX_CRYPTO_JAR JDOCBREAKITERATOR JDOCSOURCEFLAGS JDOCTAGLET JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBACKTRACK_ECLIPSE_DIR PTBACKTRACK_ECLIPSE_DOC_JARS PTBACKTRACK_ECLIPSE_JARS PTBACKTRACK_ECLIPSE_PACKAGES PTBOOST_INCLUDE PTCALTROP_DIR PTCHIC_DIR PTCM_DIR PTCOLT_DIR PTCOLT_JARS PTCOLT_PACKAGES PTCOMM_DIR PTCOMM_PACKAGES PTCOPERNICUS_DIR PTDISTRIBUTED_DIR PTDISTRIBUTED_JARS PTDISTRIBUTED_PACKAGES PTDOCLETS_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTGRDOMAIN_JAR PTGR_PACKAGES PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAI_PACKAGES PTJAVA_DIR PTJAVA_DIR_NO_CYGDRIVE PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJMF_PACKAGES PTJNI_DIR PTJNI_ARCHITECTURE PTJNI_DL_LIBRARY PTJNI_LIB_ARCHITECTURE PTJNI_NO_CYGWIN PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJNI_LIBRARIES PTJOYSTICK_DIR PTJOYSTICK_PACKAGES PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMATLAB_LD_ARGS PTMESCAL_DIR PTPSDF_DIR PTSVG_DIR PTSVG_JAR PTPTALON_DIR PTPTALON_PACKAGES ANTLR_DIR PTQUICKTIME_DIR PTQUICKTIME_PACKAGES PTTINI_DIR PTTINYOS_DIR PTGIOTTO_DIR PTVR_DIR PTVR_JAR PTVR_PACKAGES PTWABA_DIR PTX10_DIR PTX10_PACKAGES PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR TOOLS_JAR TOSROOT_NO_CYGDRIVE TOSDIR_NO_CYGDRIVE GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH FIND JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTECLIPSE PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB PTMATLAB_CC CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR COLT_DIR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT ECLIPSE_DIR GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS IMAGEJ_JAR JAI_JARS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JAVAX_CRYPTO_JAR JDOCBREAKITERATOR JDOCSOURCEFLAGS JDOCTAGLET JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBACKTRACK_DIR PTBACKTRACK_ECLIPSE_DIR PTBACKTRACK_ECLIPSE_DOC_JARS PTBACKTRACK_ECLIPSE_JARS PTBACKTRACK_ECLIPSE_PACKAGES PTBOOST_INCLUDE PTCALTROP_DIR PTCHIC_DIR PTCM_DIR PTCOLT_DIR PTCOLT_JARS PTCOLT_PACKAGES PTCOMM_DIR PTCOMM_PACKAGES PTCOPERNICUS_DIR PTDISTRIBUTED_DIR PTDISTRIBUTED_JARS PTDISTRIBUTED_PACKAGES PTDOCLETS_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTGRDOMAIN_JAR PTGR_PACKAGES PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAI_PACKAGES PTJAVA_DIR PTJAVA_DIR_NO_CYGDRIVE PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJMF_PACKAGES PTJNI_DIR PTJNI_ARCHITECTURE PTJNI_DL_LIBRARY PTJNI_LIB_ARCHITECTURE PTJNI_NO_CYGWIN PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJNI_LIBRARIES PTJOYSTICK_DIR PTJOYSTICK_PACKAGES PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMATLAB_LD_ARGS PTMESCAL_DIR PTPSDF_DIR PTSVG_DIR PTSVG_JAR PTPTALON_DIR PTPTALON_PACKAGES ANTLR_DIR PTQUICKTIME_DIR PTQUICKTIME_PACKAGES PTTINI_DIR PTTINYOS_DIR PTGIOTTO_DIR PTVR_DIR PTVR_JAR PTVR_PACKAGES PTWABA_DIR PTX10_DIR PTX10_PACKAGES PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR TOOLS_JAR TOSROOT_NO_CYGDRIVE TOSDIR_NO_CYGDRIVE GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -2017,7 +2017,7 @@ echo $ECHO_N "checking the Java compiler with a simple compile... $ECHO_C" >&6
 JVERSION=unknown
 # We need to run javac in the config directory so that javac from jdk1.1.6
 # under NT and cygwin works properly
-startdir=`pwd`
+startdir="`pwd`"
 cd "$srcdir/config"
 if "$JAVAC" confTest.java ; then
     echo "$as_me:$LINENO: result: ok" >&5
@@ -2159,7 +2159,7 @@ fi
 # Under Cygwin, PTJAVA_DIR _will_ contain /cygdrive/c
 # We need to run javac in the config directory so that javac from
 # jdk1.1.6 under NT and cygwin works properly
-startdir=`pwd`
+startdir="`pwd`"
 cd "$srcdir/config"
 echo "$as_me:$LINENO: checking for java.home property by compiling a test program " >&5
 echo $ECHO_N "checking for java.home property by compiling a test program ... $ECHO_C" >&6
@@ -4464,6 +4464,10 @@ fi
 #       If not, look for for $PTII/vendors/eclipse
 #--------------------------------------------------------------------
 
+# PTBACKTRACK_DIR is set to backtrack and used in
+# $PTII/ptolemy/makefile if we can handle generics (Java 1.5)
+PTBACKTRACK_DIR=backtrack
+
 # PTBACKTRACK_ECLIPSE_DIR is set to eclipse and used in
 # $PTII/ptolemy/backtrack/makefile if Eclipse was found
 # and the jar files were found
@@ -4479,17 +4483,24 @@ if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
 echo "${ECHO_T}$PTII/ptolemy/backtrack/eclipse is not present,
     so we need not find Eclipse." >&6
 else
-    echo "$as_me:$LINENO: checking for Eclipse installation" >&5
-echo $ECHO_N "checking for Eclipse installation... $ECHO_C" >&6
-    # Use changequote to protect the square brackets in sed
-
-    # We cd to *clipse so that we get the case right in the jar files.
-    if test -d "c:/Program Files/Eclipse" -o -d "c:/Program Files/eclipse"; then
-    # Remove /cygdrive
-       TMP_ECLIPSE_DIR="`cd c:/Program\ Files/*clipse; pwd | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+    if test ! "$HAS_GENERICS" = "yes"; then
+        { echo "$as_me:$LINENO: WARNING: You are running Java $JVERSION, which does not
+    support generics.  Thus, ptolemy/backtrack/eclipse will not compile." >&5
+echo "$as_me: WARNING: You are running Java $JVERSION, which does not
+    support generics.  Thus, ptolemy/backtrack/eclipse will not compile." >&2;}
+	PTBACKTRACK_DIR=
     else
-       TMP_ECLIPSE_DIR="c:/Program\ Files/eclipse"
-    fi
+        echo "$as_me:$LINENO: checking for Eclipse installation" >&5
+echo $ECHO_N "checking for Eclipse installation... $ECHO_C" >&6
+        # Use changequote to protect the square brackets in sed
+
+        # We cd to *clipse so that we get the case right in the jar files.
+        if test -d "c:/Program Files/Eclipse" -o -d "c:/Program Files/eclipse"; then
+        # Remove /cygdrive
+           TMP_ECLIPSE_DIR="`cd c:/Program\ Files/*clipse; pwd | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+        else
+           TMP_ECLIPSE_DIR="c:/Program\ Files/eclipse"
+        fi
 
 # Check whether --with-eclipse or --without-eclipse was given.
 if test "${with_eclipse+set}" = set; then
@@ -4499,20 +4510,19 @@ else
   ECLIPSE_DIR=$TMP_ECLIPSE_DIR
 fi;
 
-
-    if test ! -d "$ECLIPSE_DIR"; then
-	{ echo "$as_me:$LINENO: WARNING: Failed to find Eclipse in $ECLIPSE_DIR" >&5
+        if test ! -d "$ECLIPSE_DIR"; then
+            { echo "$as_me:$LINENO: WARNING: Failed to find Eclipse in $ECLIPSE_DIR" >&5
 echo "$as_me: WARNING: Failed to find Eclipse in $ECLIPSE_DIR" >&2;}
-	echo "$as_me:$LINENO: checking for $PTII/vendors/eclipse" >&5
+            echo "$as_me:$LINENO: checking for $PTII/vendors/eclipse" >&5
 echo $ECHO_N "checking for $PTII/vendors/eclipse... $ECHO_C" >&6
-   	if test -d  "$PTII/vendors/eclipse"; then
-	    echo "$as_me:$LINENO: result: ok" >&5
+            if test -d  "$PTII/vendors/eclipse"; then
+	        echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
-	    ECLIPSE_DIR="$PTII/vendors/eclipse"
-        else
-	    { echo "$as_me:$LINENO: WARNING: Failed to find Eclipse in $PTII/vendors/eclipse" >&5
+	        ECLIPSE_DIR="$PTII/vendors/eclipse"
+            else
+	        { echo "$as_me:$LINENO: WARNING: Failed to find Eclipse in $PTII/vendors/eclipse" >&5
 echo "$as_me: WARNING: Failed to find Eclipse in $PTII/vendors/eclipse" >&2;}
-            # Extract the first word of "eclipse", so it can be a program name with args.
+                # Extract the first word of "eclipse", so it can be a program name with args.
 set dummy eclipse; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
@@ -4551,93 +4561,93 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
-            if test "${PTECLIPSE:-none}" != "none"; then
+                if test "${PTECLIPSE:-none}" != "none"; then
             # Remove /cygdrive
-	    ECLIPSE_DIR=`dirname $PTECLIPSE | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`
-	    fi
+	        ECLIPSE_DIR=`dirname $PTECLIPSE | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`
+	        fi
+            fi
         fi
-    fi
-    if test -d "$ECLIPSE_DIR"; then
-	echo "$as_me:$LINENO: checking for jars used by backtracking in $ECLIPSE_DIR" >&5
+        if test -d "$ECLIPSE_DIR"; then
+	    echo "$as_me:$LINENO: checking for jars used by backtracking in $ECLIPSE_DIR" >&5
 echo $ECHO_N "checking for jars used by backtracking in $ECLIPSE_DIR... $ECHO_C" >&6
-	# jars="jdt.core osgi resources runtime"
-	# jdt.core core.runtime_ are needed to build backtrack
-	# osgi_ and resources_ are needed to run the tests in backtrack
-	jars="jdt.core_ core.runtime_ osgi_ core.resources_ equinox.common equinox.preferences core.jobs core.contenttype"
-	eclipsejarpath=
-	for jar in $jars
-	do
-	    echo $ECHO_N "$jar "
-	    jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
-   	    if test -f "$jarpath"; then
-	        # Keep track of the jars so we can use them while building
-		# with make.
-  	        eclipsejarpath="$eclipsejarpath$CLASSPATHSEPARATOR$jarpath"
+	    # jars="jdt.core osgi resources runtime"
+	    # jdt.core core.runtime_ are needed to build backtrack
+	    # osgi_ and resources_ are needed to run the tests in backtrack
+	    jars="jdt.core_ core.runtime_ osgi_ core.resources_ equinox.common equinox.preferences core.jobs core.contenttype"
+	    eclipsejarpath=
+	    for jar in $jars
+	    do
+	        echo $ECHO_N "$jar "
+	        jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
+   	        if test -f "$jarpath"; then
+                    # Keep track of the jars so we can use them while building
+		    # with make.
+  	            eclipsejarpath="$eclipsejarpath$CLASSPATHSEPARATOR$jarpath"
 
-		# NOTE: Eclipse 3.0 has problems if we include these
-		# jars in the .classpath, instead, .classpath.in includes:
-		#  <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-		#ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-                #<classpathentry kind=\"lib\" path=\"$jarpath\"/>"
- 	    else
-		{ echo "$as_me:$LINENO: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&5
+		    # NOTE: Eclipse 3.0 has problems if we include these
+		    # jars in the .classpath, instead, .classpath.in includes:
+		    #  <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+		    #ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+                    #<classpathentry kind=\"lib\" path=\"$jarpath\"/>"
+ 	        else
+		    { echo "$as_me:$LINENO: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&5
 echo "$as_me: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&2;}
-	        eclipsejarpath=
-		break
-	    fi
-	done
+	            eclipsejarpath=
+		    break
+	        fi
+	    done
 
-	# Get the plugin jar files for use with javadoc in $PTII/doc
-	echo "$as_me:$LINENO: checking for jars used by eclipse plugin" >&5
+	    # Get the plugin jar files for use with javadoc in $PTII/doc
+	    echo "$as_me:$LINENO: checking for jars used by eclipse plugin" >&5
 echo $ECHO_N "checking for jars used by eclipse plugin... $ECHO_C" >&6
 	docjars="eclipse.core.commands_ eclipse.equinox.registry_ eclipse.jface_ eclipse.jface.text_ eclipse.swt.win32.win32.x86_ eclipse.ui.workbench_ eclipse.ui.workbench.texteditor_ eclipse.ui.console_ eclipse.ui.editors_ eclipse.text_ eclipse.ui.forms_ eclipse.ui.ide_ eclipse.jdt.ui_"
-	PTBACKTRACK_ECLIPSE_DOC_JARS=
-	for jar in $docjars
-	do
-	    echo $ECHO_N "$jar "
-	    jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
-   	    if test -f "$jarpath"; then
-	        # Keep track of the jars so we can use them while building
-		# with make.
-	        PTBACKTRACK_ECLIPSE_DOC_JARS="$PTBACKTRACK_ECLIPSE_DOC_JARS$CLASSPATHSEPARATOR$jarpath"
- 	    else
-		{ echo "$as_me:$LINENO: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&5
+	    PTBACKTRACK_ECLIPSE_DOC_JARS=
+	    for jar in $docjars
+	    do
+	        echo $ECHO_N "$jar "
+	        jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
+   	        if test -f "$jarpath"; then
+	            # Keep track of the jars so we can use them while building
+		    # with make.
+	            PTBACKTRACK_ECLIPSE_DOC_JARS="$PTBACKTRACK_ECLIPSE_DOC_JARS$CLASSPATHSEPARATOR$jarpath"
+ 	        else
+		    { echo "$as_me:$LINENO: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&5
 echo "$as_me: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&2;}
-		break
-	    fi
-	done
+		    break
+	        fi
+	    done
 
-        if test ! -z "$eclipsejarpath"; then
-            echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6
-
-	    startdir=`pwd`
-	    cd "$srcdir/config"
-	    echo "$as_me:$LINENO: checking for ITreeSelection from Eclipse" >&5
-echo $ECHO_N "checking for ITreeSelection from Eclipse... $ECHO_C" >&6
-	    if "$JAVAC" -classpath "$PTBACKTRACK_ECLIPSE_DOC_JARS" EclipseITreeSelection.java ; then
+            if test ! -z "$eclipsejarpath"; then
                 echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
-		# Set to eclipse and used in
-		# $PTII/ptolemy/backtrack/makefile if Eclipse jar files were found
-		PTBACKTRACK_ECLIPSE_DIR=eclipse
-		# PTBACKTRACK_ECLIPSE_PACKAGES is used in ptII/doc/makefile
-		PTBACKTRACK_ECLIPSE_PACKAGES="ptolemy.backtrack.eclipse.ast ptolemy.backtrack.eclipse.ast.transform ptolemy.backtrack.eclipse.plugin ptolemy.backtrack.eclipse.plugin.actions ptolemy.backtrack.eclipse.plugin.editor ptolemy.backtrack.eclipse.plugin.preferences ptolemy.backtrack.eclipse.plugin.util"
-		PTBACKTRACK_ECLIPSE_JARS=$eclipsejarpath
-            else
- 	        { echo "$as_me:$LINENO: WARNING: Failed to compile config/EclipseITreeSelection.java with
-    (cd $PTII/config; \"$JAVAC\" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java)
+
+	        startdir="`pwd`"
+	        cd "$srcdir/config"
+	        echo "$as_me:$LINENO: checking for ITreeSelection from Eclipse" >&5
+echo $ECHO_N "checking for ITreeSelection from Eclipse... $ECHO_C" >&6
+	        if "$JAVAC" -classpath "$PTBACKTRACK_ECLIPSE_DOC_JARS" EclipseITreeSelection.java ; then
+                    echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+		    # Set to eclipse and used in
+		    # $PTII/ptolemy/backtrack/makefile if Eclipse jar files were found
+		    PTBACKTRACK_ECLIPSE_DIR=eclipse
+		    # PTBACKTRACK_ECLIPSE_PACKAGES is used in ptII/doc/makefile
+		    PTBACKTRACK_ECLIPSE_PACKAGES="ptolemy.backtrack.eclipse.ast ptolemy.backtrack.eclipse.ast.transform ptolemy.backtrack.eclipse.plugin ptolemy.backtrack.eclipse.plugin.actions ptolemy.backtrack.eclipse.plugin.editor ptolemy.backtrack.eclipse.plugin.preferences ptolemy.backtrack.eclipse.plugin.util"
+		    PTBACKTRACK_ECLIPSE_JARS=$eclipsejarpath
+                else
+ 	            { echo "$as_me:$LINENO: WARNING: Failed to compile config/EclipseITreeSelection.java with
+    (cd \"$PTII/config\"; \"$JAVAC\" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java)
     maybe you should install Eclipse 3.2?" >&5
 echo "$as_me: WARNING: Failed to compile config/EclipseITreeSelection.java with
-    (cd $PTII/config; \"$JAVAC\" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java)
+    (cd \"$PTII/config\"; \"$JAVAC\" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java)
     maybe you should install Eclipse 3.2?" >&2;}
-                eclipsejarpath=
+                    eclipsejarpath=
+                fi
+	        cd "$startdir"
             fi
-	    cd $startdir
         fi
-    fi
-    if test "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
-        { echo "$as_me:$LINENO: WARNING: Failed to find Eclipse
+        if test "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
+            { echo "$as_me:$LINENO: WARNING: Failed to find Eclipse
     perhaps the Eclipse is not installed?
     You need not download Eclipse unless you
     plan on using the backtracking facility in ptolemy.backtrack
@@ -4649,7 +4659,8 @@ echo "$as_me: WARNING: Failed to find Eclipse
     plan on using the backtracking facility in ptolemy.backtrack
     Eclipse may be downloaded from
     http://www.eclipse.org/" >&2;}
-	PTBACKTRACK_ECLIPSE_JARS=
+	    PTBACKTRACK_ECLIPSE_JARS=
+        fi
     fi
 fi
 
@@ -5216,7 +5227,7 @@ echo "$as_me: WARNING: Failed to find gcc or cc, so we will
 	fi
 
 	PTGMP_OK=no
-	startdir=`pwd`
+	startdir="`pwd`"
 	# Make sure that we check for CXX before cding in to config
 	ac_ext=cc
 ac_cpp='$CXXCPP $CPPFLAGS'
@@ -5660,7 +5671,7 @@ else
 echo $ECHO_N "checking for Java Advanced Imaging (JAI) API... $ECHO_C" >&6
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
-    startdir=`pwd`
+    startdir="`pwd`"
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" JAITest.java ; then
@@ -5830,7 +5841,7 @@ else
 echo $ECHO_N "checking for Java Media Framework (JMF)... $ECHO_C" >&6
     # We need to run javac in the config directory so that javac
     # from jdk1.1.6 under NT and cygwin works properly
-    startdir=`pwd`
+    startdir="`pwd`"
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" JMFTest.java ; then
@@ -6451,7 +6462,7 @@ else
 echo $ECHO_N "checking for Java 3D... $ECHO_C" >&6
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
-    startdir=`pwd`
+    startdir="`pwd`"
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" java3dTest.java ; then
@@ -7064,7 +7075,7 @@ echo "$as_me: WARNING: Failed to find matlab executable in the path.
     If Matlab is not present, then the Ptolemy II/Matlab interface in
     \$PTII/ptolemy/matlab will not be usable." >&2;};
 	else
-	    startdir=`pwd`
+	    startdir="`pwd`"
 	    cd "$srcdir/config"
 	    if "$JAVAC" MatlabRootDirectory.java ; then
 		echo "$as_me:$LINENO: checking the value of the Matlab root directory " >&5
@@ -7116,11 +7127,11 @@ echo "${ECHO_T}$MAJOR_OS_NAME" >&6
 		    { echo "$as_me:$LINENO: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MajorOSName' failed.
     The Matlab interface will build fine, but not being able to determine
     the major operating system name could cause problems with running
-    (cd $PTII/ptolemy/matlab; make install)" >&5
+    (cd \"$PTII/ptolemy/matlab\"; make install)" >&5
 echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MajorOSName' failed.
     The Matlab interface will build fine, but not being able to determine
     the major operating system name could cause problems with running
-    (cd $PTII/ptolemy/matlab; make install)" >&2;};
+    (cd \"$PTII/ptolemy/matlab\"; make install)" >&2;};
 		fi
 	    fi
 	    cd "$startdir"
@@ -7508,7 +7519,7 @@ else
 echo $ECHO_N "checking for Quicktime for Java... $ECHO_C" >&6
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
-    startdir=`pwd`
+    startdir="`pwd`"
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     # Use -classpath here because that is what we use when we compile
@@ -7713,7 +7724,7 @@ else
   JAVA_SYSTEM_JAR='$(PTJAVA_HOME)/lib/rt.jar'
 fi;
 
-    startdir=`pwd`
+    startdir="`pwd`"
     cd "$srcdir/config"
     if "$JAVAC" SystemJar.java ; then
 	echo "$as_me:$LINENO: result: ok" >&5
@@ -7726,18 +7737,16 @@ echo $ECHO_N "checking the location or rt.jar... $ECHO_C" >&6
    	    echo "$as_me:$LINENO: result: '$JAVA_SYSTEM_JAR'" >&5
 echo "${ECHO_T}'$JAVA_SYSTEM_JAR'" >&6
 	else
-	    { { echo "$as_me:$LINENO: error: 'CLASSPATH=\"$PTII/config\" \"$JAVA\" SystemJar failed.
+	    { echo "$as_me:$LINENO: WARNING: 'CLASSPATH=\"$PTII/config\" \"$JAVA\" SystemJar failed.
     Classes that use Soot will compile, but will fail to run.'" >&5
-echo "$as_me: error: 'CLASSPATH=\"$PTII/config\" \"$JAVA\" SystemJar failed.
+echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" \"$JAVA\" SystemJar failed.
     Classes that use Soot will compile, but will fail to run.'" >&2;}
-   { (exit 1); exit 1; }; }
         fi
     else
-	{ { echo "$as_me:$LINENO: error: 'cd \"$srcdir/config\"; \"$JAVAC\" SystemJar.java failed.
+	{ echo "$as_me:$LINENO: WARNING: 'cd \"$srcdir/config\"; \"$JAVAC\" SystemJar.java failed.
     Classes that use Soot will compile, but will fail to run.'" >&5
-echo "$as_me: error: 'cd \"$srcdir/config\"; \"$JAVAC\" SystemJar.java failed.
+echo "$as_me: WARNING: 'cd \"$srcdir/config\"; \"$JAVAC\" SystemJar.java failed.
     Classes that use Soot will compile, but will fail to run.'" >&2;}
-   { (exit 1); exit 1; }; }
     fi
     cd "$startdir"
 fi
@@ -8443,7 +8452,10 @@ fi
 # in $PTII/bin/ptinvoke.in
 
 
-# Set to backtrack if Eclipse was found
+# Set to backtrack if Java 1.5 or later is present
+
+
+# Set to eclipse if Eclipse was found
 
 
 # Plugin Eclipse jar files, used by $PTII/doc
@@ -9472,6 +9484,7 @@ s,@MAJOR_OS_NAME@,$MAJOR_OS_NAME,;t t
 s,@MATLAB_DIR@,$MATLAB_DIR,;t t
 s,@MATLAB_LIBDIR@,$MATLAB_LIBDIR,;t t
 s,@PSDF_DIR@,$PSDF_DIR,;t t
+s,@PTBACKTRACK_DIR@,$PTBACKTRACK_DIR,;t t
 s,@PTBACKTRACK_ECLIPSE_DIR@,$PTBACKTRACK_ECLIPSE_DIR,;t t
 s,@PTBACKTRACK_ECLIPSE_DOC_JARS@,$PTBACKTRACK_ECLIPSE_DOC_JARS,;t t
 s,@PTBACKTRACK_ECLIPSE_JARS@,$PTBACKTRACK_ECLIPSE_JARS,;t t
