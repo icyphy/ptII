@@ -17,7 +17,7 @@ public class Unboxing6 {
         tokens = new Token[1];
         tokens[0] = intToken;
         token = tokens[0];
-        castToken = (IntToken) token;
+        castToken = token;
         System.out.println("token = " + castToken.toString());
     }
 }

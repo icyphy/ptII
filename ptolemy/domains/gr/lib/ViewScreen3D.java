@@ -38,6 +38,7 @@ import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
+import javax.media.j3d.Group;
 import javax.media.j3d.Node;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
@@ -289,7 +290,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         _userTransformation = new TransformGroup(_lastTransform);
         _userTransformation.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         _userTransformation.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
-        _userTransformation.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+        _userTransformation.setCapability(Group.ALLOW_CHILDREN_EXTEND);
         _branchRoot.addChild(_userTransformation);
 
         //To allow multiple shapes to be added

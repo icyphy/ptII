@@ -29,8 +29,10 @@
 package ptolemy.actor.lib.jai;
 
 import java.awt.Point;
+import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.color.ICC_ColorSpace;
+import java.awt.color.ICC_Profile;
 import java.awt.color.ICC_ProfileGray;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
@@ -268,9 +270,9 @@ public class DoubleMatrixToJAI extends Transformer {
 
         // Create a grayscale colormodel.
         ComponentColorModel colorModel = new ComponentColorModel(
-                new ICC_ColorSpace(ICC_ProfileGray
+                new ICC_ColorSpace(ICC_Profile
                         .getInstance(ColorSpace.CS_GRAY)), false, false,
-                ComponentColorModel.OPAQUE, DataBuffer.TYPE_DOUBLE);
+                Transparency.OPAQUE, DataBuffer.TYPE_DOUBLE);
         TiledImage tiledImage = new TiledImage(0, 0, width, height, 0, 0,
                 sampleModel, colorModel);
         tiledImage.setData(raster);

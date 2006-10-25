@@ -51,6 +51,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
@@ -118,9 +119,9 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             add(buttonBox);
             buttonBox.setBorder(spaceBelow);
-            _statusBar = new JLabel("Click Start to begin", JLabel.CENTER);
+            _statusBar = new JLabel("Click Start to begin", SwingConstants.CENTER);
         } else {
-            _statusBar = new JLabel("", JLabel.CENTER);
+            _statusBar = new JLabel("", SwingConstants.CENTER);
         }
 
         add(_progressBar);

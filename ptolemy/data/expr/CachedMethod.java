@@ -181,11 +181,11 @@ public class CachedMethod {
             throws IllegalActionException {
         // Note clones for safety...
         _methodName = methodName;
-        _argumentTypes = (Type[]) argumentTypes.clone();
+        _argumentTypes = argumentTypes.clone();
         _method = method;
 
         if (conversions != null) {
-            _conversions = (ArgumentConversion[]) conversions.clone();
+            _conversions = conversions.clone();
         } else {
             _conversions = null;
         }
@@ -959,7 +959,7 @@ public class CachedMethod {
                         // or the current match is preferable
                         // or equivalent to the previous match.
                         preferredMethod = method;
-                        preferredConversions = (ArgumentConversion[]) conversions
+                        preferredConversions = conversions
                                 .clone();
                     }
                 }
@@ -1284,7 +1284,7 @@ public class CachedMethod {
             }
 
             // Collect the not reducible args.
-            Object[] subArgs = (Object[]) argValues.clone();
+            Object[] subArgs = argValues.clone();
             ptolemy.data.Token[] tokenArray = new ptolemy.data.Token[dim];
 
             for (int j = 0; j < dim; j++) {
@@ -1390,7 +1390,7 @@ public class CachedMethod {
             }
 
             // Collect the not reducible args.
-            Object[] subArgs = (Object[]) argValues.clone();
+            Object[] subArgs = argValues.clone();
             ptolemy.data.Token[] tokenArray = new ptolemy.data.Token[xdim
                     * ydim];
 

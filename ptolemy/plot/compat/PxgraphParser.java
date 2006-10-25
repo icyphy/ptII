@@ -486,7 +486,7 @@ public class PxgraphParser {
                     // region is a different color from the surrounding region.
                     continue;
                 } else if (arg.equals("-bg")) {
-                    _plot.setBackground(Plot.getColorByName(args[i++]));
+                    _plot.setBackground(PlotBox.getColorByName(args[i++]));
                     continue;
                 } else if (arg.equals("-brw")) {
                     // -brw <width> BarWidth Bars:

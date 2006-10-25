@@ -99,10 +99,12 @@ public class SVGPaintedObject implements PaintedObject {
 
             public Dimension getPreferredSize() {
                 Dimension s = super.getPreferredSize();
-                if (s.width > screenSize.width)
+                if (s.width > screenSize.width) {
                     s.width = screenSize.width;
-                if (s.height > screenSize.height)
+                }
+                if (s.height > screenSize.height) {
                     s.height = screenSize.height;
+                }
                 return s;
             }
 
@@ -150,8 +152,9 @@ public class SVGPaintedObject implements PaintedObject {
         // svgBounds will be null until the gvtBuildCompleted() callback occurs,
         // after the SVG tree has been constructed and Batik knows the size of
         // the SVG root element
-        if (svgBounds == null)
+        if (svgBounds == null) {
             svgBounds = _DEFAULT_SVG_BOUNDS;
+        }
 
         return svgBounds;
     }
@@ -166,8 +169,9 @@ public class SVGPaintedObject implements PaintedObject {
     public void paint(Graphics2D g2d) {
 
         GraphicsNode gNode = svgComponent.getGraphicsNode();
-        if (gNode != null)
+        if (gNode != null) {
             gNode.paint(g2d);
+        }
     }
 
     /**
@@ -178,8 +182,9 @@ public class SVGPaintedObject implements PaintedObject {
      */
     public void addSVGRenderingListener(SVGRenderingListener listener) {
 
-        if (listener == null)
+        if (listener == null) {
             return;
+        }
 
         svgrListenerList.add(listener);
     }
@@ -191,8 +196,9 @@ public class SVGPaintedObject implements PaintedObject {
      */
     public void removeSVGRenderingListener(SVGRenderingListener listener) {
 
-        if (listener == null)
+        if (listener == null) {
             return;
+        }
 
         if (svgrListenerList.contains(listener)) {
             svgrListenerList.remove(listener);
@@ -224,8 +230,9 @@ public class SVGPaintedObject implements PaintedObject {
         Iterator it = svgrListenerList.iterator();
         while (it.hasNext()) {
             SVGRenderingListener l = (SVGRenderingListener) (it.next());
-            if (l != null)
+            if (l != null) {
                 l.svgRenderingComplete();
+            }
         }
     }
 

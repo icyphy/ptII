@@ -153,10 +153,11 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
             PrintWriter writerOut = new PrintWriter(new OutputStreamWriter(
                     streamOut));
 
-            if (cl.containsBafBody())
+            if (cl.containsBafBody()) {
                 new soot.baf.JasminClass(cl).print(writerOut);
-            else
+            } else {
                 new soot.jimple.JasminClass(cl).print(writerOut);
+            }
 
             writerOut.flush();
             streamOut.close();

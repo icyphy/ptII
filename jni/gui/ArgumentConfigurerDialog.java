@@ -77,12 +77,12 @@ public class ArgumentConfigurerDialog extends ComponentDialog implements
     public ArgumentConfigurerDialog(Frame owner, GenericJNIActor target,
             Configuration configuration) {
         super(owner, "Configure arguments for " + target.getName(),
-                new ArgumentConfigurer((GenericJNIActor) target), _moreButtons);
+                new ArgumentConfigurer(target), _moreButtons);
 
         // Once we get to here, the dialog has already been dismissed.
         _configuration = configuration;
         _owner = owner;
-        _target = (GenericJNIActor) target;
+        _target = target;
 
         if (buttonPressed().equals("Add")) {
             try {

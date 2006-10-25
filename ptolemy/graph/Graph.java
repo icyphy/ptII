@@ -1667,7 +1667,7 @@ public class Graph implements Cloneable {
         Graph graph = null;
 
         try {
-            graph = (Graph) (getClass().newInstance());
+            graph = (getClass().newInstance());
         } catch (Exception exception) {
             throw new GraphConstructionException("Could not create an "
                     + "empty graph from this one.\n" + exception + "\n"

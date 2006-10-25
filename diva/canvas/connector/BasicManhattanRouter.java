@@ -28,6 +28,7 @@ package diva.canvas.connector;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import diva.canvas.CanvasUtilities;
@@ -178,10 +179,10 @@ public class BasicManhattanRouter implements ManhattanRouter {
         }
 
         //System.out.println("headDir = " + headDir);
-        if (headDir == SwingUtilities.WEST) {
+        if (headDir == SwingConstants.WEST) {
             //System.out.println("head is east");
             if ((xDiff > 0) && ((yDiff * yDiff) < TOL)
-                    && (tailDir == SwingUtilities.EAST)) {
+                    && (tailDir == SwingConstants.EAST)) {
                 //System.out.println("completing straight");
                 point = tail;
                 dir = tailDir;
@@ -190,8 +191,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
                     //System.out.println("routing backwards");
                     point = new Point2D.Double(head.getX() - MINDIST, head
                             .getY());
-                } else if (((yDiff > 0) && (tailDir == SwingUtilities.SOUTH))
-                        || ((yDiff < 0) && (tailDir == SwingUtilities.NORTH))) {
+                } else if (((yDiff > 0) && (tailDir == SwingConstants.SOUTH))
+                        || ((yDiff < 0) && (tailDir == SwingConstants.NORTH))) {
                     //System.out.println("completing 90");
                     point = new Point2D.Double(tail.getX(), head.getY());
                 } else if (headDir == tailDir) {
@@ -203,15 +204,15 @@ public class BasicManhattanRouter implements ManhattanRouter {
                 }
 
                 if (yDiff > 0) {
-                    dir = SwingUtilities.NORTH;
+                    dir = SwingConstants.NORTH;
                 } else {
-                    dir = SwingUtilities.SOUTH;
+                    dir = SwingConstants.SOUTH;
                 }
             }
-        } else if (headDir == SwingUtilities.EAST) {
+        } else if (headDir == SwingConstants.EAST) {
             //System.out.println("head is west");
             if ((xDiff < 0) && ((yDiff * yDiff) < TOL)
-                    && (tailDir == SwingUtilities.WEST)) {
+                    && (tailDir == SwingConstants.WEST)) {
                 //System.out.println("completing");
                 point = tail;
                 dir = tailDir;
@@ -220,8 +221,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
                     //System.out.println("routing backwards");
                     point = new Point2D.Double(head.getX() + MINDIST, head
                             .getY());
-                } else if (((yDiff > 0) && (tailDir == SwingUtilities.SOUTH))
-                        || ((yDiff < 0) && (tailDir == SwingUtilities.NORTH))) {
+                } else if (((yDiff > 0) && (tailDir == SwingConstants.SOUTH))
+                        || ((yDiff < 0) && (tailDir == SwingConstants.NORTH))) {
                     //System.out.println("completing 90");
                     point = new Point2D.Double(tail.getX(), head.getY());
                 } else if (headDir == tailDir) {
@@ -233,15 +234,15 @@ public class BasicManhattanRouter implements ManhattanRouter {
                 }
 
                 if (yDiff > 0) {
-                    dir = SwingUtilities.NORTH;
+                    dir = SwingConstants.NORTH;
                 } else {
-                    dir = SwingUtilities.SOUTH;
+                    dir = SwingConstants.SOUTH;
                 }
             }
-        } else if (headDir == SwingUtilities.SOUTH) {
+        } else if (headDir == SwingConstants.SOUTH) {
             //System.out.println("head is north");
             if (((xDiff * xDiff) < TOL) && (yDiff < 0)
-                    && (tailDir == SwingUtilities.NORTH)) {
+                    && (tailDir == SwingConstants.NORTH)) {
                 //System.out.println("completing");
                 point = tail;
                 dir = tailDir;
@@ -250,8 +251,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
                     //System.out.println("routing backwards");
                     point = new Point2D.Double(head.getX(), head.getY()
                             + MINDIST);
-                } else if (((xDiff > 0) && (tailDir == SwingUtilities.EAST))
-                        || ((xDiff < 0) && (tailDir == SwingUtilities.WEST))) {
+                } else if (((xDiff > 0) && (tailDir == SwingConstants.EAST))
+                        || ((xDiff < 0) && (tailDir == SwingConstants.WEST))) {
                     //System.out.println("completing 90");
                     point = new Point2D.Double(head.getX(), tail.getY());
                 } else if (headDir == tailDir) {
@@ -263,15 +264,15 @@ public class BasicManhattanRouter implements ManhattanRouter {
                 }
 
                 if (xDiff > 0) {
-                    dir = SwingUtilities.WEST;
+                    dir = SwingConstants.WEST;
                 } else {
-                    dir = SwingUtilities.EAST;
+                    dir = SwingConstants.EAST;
                 }
             }
-        } else if (headDir == SwingUtilities.NORTH) {
+        } else if (headDir == SwingConstants.NORTH) {
             //System.out.println("head is south");
             if (((xDiff * xDiff) < TOL) && (yDiff > 0)
-                    && (tailDir == SwingUtilities.SOUTH)) {
+                    && (tailDir == SwingConstants.SOUTH)) {
                 //System.out.println("completing");
                 point = tail;
                 dir = tailDir;
@@ -280,8 +281,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
                     //System.out.println("routing backwards");
                     point = new Point2D.Double(head.getX(), head.getY()
                             - MINDIST);
-                } else if (((xDiff > 0) && (tailDir == SwingUtilities.EAST))
-                        || ((xDiff < 0) && (tailDir == SwingUtilities.WEST))) {
+                } else if (((xDiff > 0) && (tailDir == SwingConstants.EAST))
+                        || ((xDiff < 0) && (tailDir == SwingConstants.WEST))) {
                     //System.out.println("completing 90");
                     point = new Point2D.Double(head.getX(), tail.getY());
                 } else if (headDir == tailDir) {
@@ -293,9 +294,9 @@ public class BasicManhattanRouter implements ManhattanRouter {
                 }
 
                 if (xDiff > 0) {
-                    dir = SwingUtilities.WEST;
+                    dir = SwingConstants.WEST;
                 } else {
-                    dir = SwingUtilities.EAST;
+                    dir = SwingConstants.EAST;
                 }
             }
         } else {
@@ -323,27 +324,27 @@ public class BasicManhattanRouter implements ManhattanRouter {
 
         if ((xDiff > 0) && (yDiff > 0)) {
             if (xDiff > yDiff) {
-                dir = SwingUtilities.EAST;
+                dir = SwingConstants.EAST;
             } else {
-                dir = SwingUtilities.SOUTH;
+                dir = SwingConstants.SOUTH;
             }
         } else if ((xDiff < 0) && (yDiff < 0)) {
             if (xDiff > yDiff) {
-                dir = SwingUtilities.NORTH;
+                dir = SwingConstants.NORTH;
             } else {
-                dir = SwingUtilities.WEST;
+                dir = SwingConstants.WEST;
             }
         } else if (xDiff > 0) {
             if (xDiff > -yDiff) {
-                dir = SwingUtilities.EAST;
+                dir = SwingConstants.EAST;
             } else {
-                dir = SwingUtilities.NORTH;
+                dir = SwingConstants.NORTH;
             }
         } else {
             if (-xDiff > yDiff) {
-                dir = SwingUtilities.WEST;
+                dir = SwingConstants.WEST;
             } else {
-                dir = SwingUtilities.SOUTH;
+                dir = SwingConstants.SOUTH;
             }
         }
 

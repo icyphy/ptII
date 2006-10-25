@@ -114,7 +114,7 @@ public class InvocationBinder extends SceneTransformer {
                         continue;
                     }
 
-                    InvokeExpr ie = (InvokeExpr) s.getInvokeExpr();
+                    InvokeExpr ie = s.getInvokeExpr();
 
                     if (ie instanceof StaticInvokeExpr
                             || ie instanceof SpecialInvokeExpr) {

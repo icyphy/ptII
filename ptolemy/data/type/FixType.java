@@ -89,7 +89,7 @@ public class FixType extends StructuredType implements Serializable {
             FixType returnType = new FixType(newPrecision);
             return returnType;
         } else {
-            return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+            return TypeLattice.leastUpperBound(this, rightArgumentType);
         }
     }
 
@@ -140,11 +140,11 @@ public class FixType extends StructuredType implements Serializable {
                 FixType returnType = new FixType(newPrecision);
                 return returnType;
             } else {
-                return (Type) TypeLattice.leastUpperBound(this,
+                return TypeLattice.leastUpperBound(this,
                         rightArgumentType);
             }
         } else {
-            return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+            return TypeLattice.leastUpperBound(this, rightArgumentType);
         }
     }
 
@@ -244,7 +244,7 @@ public class FixType extends StructuredType implements Serializable {
      */
     public Type modulo(Type rightArgumentType) {
         // FIXME...  deal with precisions correctly.
-        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+        return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Return a new type which represents the type that results from
@@ -268,7 +268,7 @@ public class FixType extends StructuredType implements Serializable {
             FixType returnType = new FixType(newPrecision);
             return returnType;
         } else {
-            return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+            return TypeLattice.leastUpperBound(this, rightArgumentType);
         }
     }
 
@@ -297,7 +297,7 @@ public class FixType extends StructuredType implements Serializable {
             FixType returnType = new FixType(newPrecision);
             return returnType;
         } else {
-            return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+            return TypeLattice.leastUpperBound(this, rightArgumentType);
         }
     }
 

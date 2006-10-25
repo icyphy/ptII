@@ -889,7 +889,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
          */
         public Set identifierSet() {
             PSDFDirector director = (PSDFDirector) getContainer();
-            NamedObj reference = (CompositeActor) director.getContainer();
+            NamedObj reference = director.getContainer();
             return getAllScopedVariableNames(null, reference);
         }
     }

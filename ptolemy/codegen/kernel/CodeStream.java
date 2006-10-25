@@ -364,7 +364,7 @@ public class CodeStream {
             Signature signature = (Signature) keys.next();
             buffer.append(signature.functionName);
 
-            ArrayList parameters = (ArrayList) _declarations
+            ArrayList parameters = _declarations
                     .getParameters(signature);
 
             if ((parameters != null) && (parameters.size() > 0)) {
@@ -380,7 +380,7 @@ public class CodeStream {
             }
 
             buffer.append(":\n");
-            buffer.append((StringBuffer) _declarations.getCode(signature));
+            buffer.append(_declarations.getCode(signature));
             buffer.append("\n-------------------------------\n\n");
         }
 

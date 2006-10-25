@@ -2639,7 +2639,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 continue;
             }
             try {
-                Collection validated = ((Settable) attribute).validate();
+                Collection validated = (attribute).validate();
                 if (validated != null) {
                     attributesValidated.addAll(validated);
                 }

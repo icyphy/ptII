@@ -878,7 +878,7 @@ public class SootUtilities {
         }
 
         // Push the constructor code into the <clinit> method.
-        SootMethod constructorMethod = ((InvokeExpr) constructorStmt
+        SootMethod constructorMethod = (constructorStmt
                 .getInvokeExpr()).getMethod();
         SootMethod staticConstructorMethod = staticClass
                 .getMethod(constructorMethod.getSubSignature());
@@ -906,7 +906,7 @@ public class SootUtilities {
         // constructor.
         // Later we will come back and inline this after we make all the
         // method static.
-        InvokeExpr constructorExpr = (InvokeExpr) constructorStmt
+        InvokeExpr constructorExpr = constructorStmt
                 .getInvokeExpr();
         Stmt insertStmt = Jimple.v().newInvokeStmt(
                 Jimple.v().newStaticInvokeExpr(
@@ -1278,7 +1278,7 @@ public class SootUtilities {
                     }
                 }
                 if (stmt.containsInvokeExpr()) {
-                    InvokeExpr invoke = (InvokeExpr) stmt.getInvokeExpr();
+                    InvokeExpr invoke = stmt.getInvokeExpr();
                     SootMethodRef invokeMethodRef = invoke.getMethodRef();
                     SootMethod invokeMethod = invoke.getMethod();
 
@@ -1493,7 +1493,7 @@ public class SootUtilities {
         SootMethod inlinee = Scene
                 .v()
                 .getActiveHierarchy()
-                .resolveSpecialDispatch((SpecialInvokeExpr) expr, callingMethod);
+                .resolveSpecialDispatch(expr, callingMethod);
 
         // Make sure we can access the body of the method that is
         // being inlined.
@@ -1564,7 +1564,7 @@ public class SootUtilities {
                 Stmt stmt = (Stmt) j.next();
 
                 if (stmt.containsInvokeExpr()) {
-                    InvokeExpr invoke = (InvokeExpr) stmt.getInvokeExpr();
+                    InvokeExpr invoke = stmt.getInvokeExpr();
 
                     if (invoke.getMethod() == inlineMethod) {
                         //System.out.println("inlining " + invoke.getMethod());
@@ -1592,7 +1592,7 @@ public class SootUtilities {
             Stmt stmt = (Stmt) j.next();
 
             if (stmt.containsInvokeExpr()) {
-                InvokeExpr invoke = (InvokeExpr) stmt.getInvokeExpr();
+                InvokeExpr invoke = stmt.getInvokeExpr();
 
                 if (method instanceof StaticInvokeExpr) {
                     // simply inline static methods.

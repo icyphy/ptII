@@ -89,7 +89,7 @@ public class NamedObjAnalysis {
 
                 if (unit instanceof DefinitionStmt) {
                     DefinitionStmt stmt = (DefinitionStmt) unit;
-                    Value rightValue = (Value) stmt.getRightOp();
+                    Value rightValue = stmt.getRightOp();
 
                     if (stmt.getLeftOp() instanceof Local) {
                         Local local = (Local) stmt.getLeftOp();

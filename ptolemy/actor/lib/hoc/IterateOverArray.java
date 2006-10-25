@@ -37,6 +37,7 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.Executable;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
@@ -965,10 +966,10 @@ public class IterateOverArray extends TypedCompositeActor implements
                                     + "(perhaps it needs a director).");
                 }
 
-                int result = Actor.COMPLETED;
+                int result = Executable.COMPLETED;
                 int iterationCount = 0;
 
-                while (result != Actor.NOT_READY) {
+                while (result != Executable.NOT_READY) {
                     iterationCount++;
                     _iterationCount.setToken(new IntToken(iterationCount));
 
@@ -1010,7 +1011,7 @@ public class IterateOverArray extends TypedCompositeActor implements
                         break;
                     }
 
-                    if (result == Actor.STOP_ITERATING) {
+                    if (result == Executable.STOP_ITERATING) {
                         if (_debugging) {
                             _debug("Actor requests halt: "
                                     + ((Nameable) actor).getFullName());

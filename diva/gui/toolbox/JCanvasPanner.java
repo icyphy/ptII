@@ -32,6 +32,7 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -292,7 +293,7 @@ public class JCanvasPanner extends JPanel {
             MouseMotionListener {
         public void mousePressed(MouseEvent evt) {
             if ((_target != null)
-                    && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
+                    && ((evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0)) {
                 setPosition(evt.getX(), evt.getY());
             }
         }
@@ -302,7 +303,7 @@ public class JCanvasPanner extends JPanel {
 
         public void mouseDragged(MouseEvent evt) {
             if ((_target != null)
-                    && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
+                    && ((evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0)) {
                 setPosition(evt.getX(), evt.getY());
             }
         }

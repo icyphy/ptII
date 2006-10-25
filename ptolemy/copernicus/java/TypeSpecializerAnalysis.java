@@ -711,7 +711,7 @@ public class TypeSpecializerAnalysis {
                     _addInequality(debug, solver, baseTerm, newTerm);
                     _addInequality(debug, solver, newTerm, baseTerm);
 
-                    InequalityTerm elementTerm = (InequalityTerm) arrayType
+                    InequalityTerm elementTerm = arrayType
                             .getElementTypeTerm();
                     _addInequality(debug, solver, firstArgTerm, elementTerm);
                     _addInequality(debug, solver, elementTerm, firstArgTerm);
@@ -726,7 +726,7 @@ public class TypeSpecializerAnalysis {
                     _addInequality(debug, solver, baseTerm, newTerm);
                     _addInequality(debug, solver, newTerm, baseTerm);
 
-                    InequalityTerm elementTerm = (InequalityTerm) arrayType
+                    InequalityTerm elementTerm = arrayType
                             .getElementTypeTerm();
                     _addInequality(debug, solver, elementTypeTerm, elementTerm);
                     _addInequality(debug, solver, elementTerm, elementTypeTerm);
@@ -826,12 +826,12 @@ public class TypeSpecializerAnalysis {
                     _addInequality(debug, solver, baseTerm, new VariableTerm(
                             arrayType, r));
 
-                    InequalityTerm returnTypeTerm = (InequalityTerm) arrayType
+                    InequalityTerm returnTypeTerm = arrayType
                             .getElementTypeTerm();
                     return returnTypeTerm;
                 } else if (methodName.equals("getElementAsToken")) {
                     final InequalityTerm matrixTerm = baseTerm;
-                    InequalityTerm returnTypeTerm = (InequalityTerm) new MonotonicFunction() {
+                    InequalityTerm returnTypeTerm = new MonotonicFunction() {
                         public Object getValue() throws IllegalActionException {
                             if (matrixTerm.getValue() instanceof MatrixType) {
                                 MatrixType type = (MatrixType) matrixTerm
@@ -890,7 +890,7 @@ public class TypeSpecializerAnalysis {
             } else if (SootUtilities.derivesFrom(baseClass,
                     PtolemyUtilities.componentPortClass)) {
                 // If we are invoking a method on a port.
-                TypedIOPort port = (TypedIOPort) InlinePortTransformer
+                TypedIOPort port = InlinePortTransformer
                         .getPortValue(method, (Local) r.getBase(), unit,
                                 localDefs, localUses);
 
@@ -951,7 +951,7 @@ public class TypeSpecializerAnalysis {
             } else if (SootUtilities.derivesFrom(baseClass,
                     PtolemyUtilities.attributeClass)) {
                 // If we are invoking a method on a port.
-                Attribute attribute = (Attribute) InlineParameterTransformer
+                Attribute attribute = InlineParameterTransformer
                         .getAttributeValue(method, (Local) r.getBase(), unit,
                                 localDefs, localUses);
 
@@ -1094,7 +1094,7 @@ public class TypeSpecializerAnalysis {
                 _addInequality(debug, solver, baseTerm, variableTerm);
                 _addInequality(debug, solver, variableTerm, baseTerm);
 
-                InequalityTerm returnTypeTerm = (InequalityTerm) arrayType
+                InequalityTerm returnTypeTerm = arrayType
                         .getElementTypeTerm();
                 return returnTypeTerm;
             } else if (field.equals(PtolemyUtilities.unknownTypeField)) {

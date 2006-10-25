@@ -65,6 +65,7 @@ import javax.media.CaptureDeviceInfo;
 import javax.media.CaptureDeviceManager;
 import javax.media.Codec;
 import javax.media.ConfigureCompleteEvent;
+import javax.media.Controller;
 import javax.media.ControllerEvent;
 import javax.media.ControllerListener;
 import javax.media.EndOfMediaEvent;
@@ -315,7 +316,7 @@ public class VideoCamera extends Source implements ControllerListener {
         // such as format changes?
         _processor.prefetch();
 
-        if (!_waitForState(Processor.Prefetched)) {
+        if (!_waitForState(Controller.Prefetched)) {
             throw new IllegalActionException("Failed to realize the processor.");
         }
 

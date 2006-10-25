@@ -27,6 +27,7 @@
 package ptolemy.actor.parameters;
 
 import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.MatrixToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
@@ -110,7 +111,7 @@ public class LocationParameter extends Parameter implements Locatable {
         double[][] value = new double[1][2];
         value[0][0] = location[0];
         value[0][1] = location[1];
-        setToken(new DoubleMatrixToken(value, DoubleMatrixToken.DO_NOT_COPY));
+        setToken(new DoubleMatrixToken(value, MatrixToken.DO_NOT_COPY));
         propagateValue();
     }
 }

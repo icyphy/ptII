@@ -409,7 +409,7 @@ public class Manager extends NamedObj implements Runnable {
                             ExceptionHandler exceptionHandler = (ExceptionHandler) exceptionHandlers
                                     .next();
                             if (exceptionHandler.handleException(_container,
-                                    (Exception) initialThrowable)) {
+                                    initialThrowable)) {
                                 exceptionHandled = true;
                             }
                         }

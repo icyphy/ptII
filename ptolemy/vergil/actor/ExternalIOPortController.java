@@ -359,19 +359,19 @@ public class ExternalIOPortController extends AttributeController {
                 figure = new BasicFigure(polygon, fill, (float) 1.5);
 
                 if (!(port instanceof IOPort)) {
-                    direction = SwingUtilities.NORTH;
+                    direction = SwingConstants.NORTH;
                 } else {
                     IOPort ioport = (IOPort) port;
 
                     if (ioport.isInput() && ioport.isOutput()) {
-                        direction = SwingUtilities.NORTH;
+                        direction = SwingConstants.NORTH;
                     } else if (ioport.isInput()) {
-                        direction = SwingUtilities.EAST;
+                        direction = SwingConstants.EAST;
                     } else if (ioport.isOutput()) {
-                        direction = SwingUtilities.WEST;
+                        direction = SwingConstants.WEST;
                     } else {
                         // should never happen
-                        direction = SwingUtilities.NORTH;
+                        direction = SwingConstants.NORTH;
                     }
                 }
 
@@ -431,21 +431,21 @@ public class ExternalIOPortController extends AttributeController {
                             double height = bounds.getHeight();
                             int extent = numberOfLinks - 1;
 
-                            if (direction == SwingUtilities.EAST) {
+                            if (direction == SwingConstants.EAST) {
                                 startX = x + width;
                                 startY = y + (height / 2);
                                 endX = startX
                                         + (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
                                 endY = startY
                                         + (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
-                            } else if (direction == SwingUtilities.WEST) {
+                            } else if (direction == SwingConstants.WEST) {
                                 startX = x;
                                 startY = y + (height / 2);
                                 endX = startX
                                         - (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
                                 endY = startY
                                         - (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
-                            } else if (direction == SwingUtilities.NORTH) {
+                            } else if (direction == SwingConstants.NORTH) {
                                 startX = x + (width / 2);
                                 startY = y;
                                 endX = startX

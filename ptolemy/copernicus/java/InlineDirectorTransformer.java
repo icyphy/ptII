@@ -168,7 +168,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements
                         continue;
                     }
 
-                    ValueBox box = (ValueBox) unit.getInvokeExprBox();
+                    ValueBox box = unit.getInvokeExprBox();
                     InvokeExpr r = (InvokeExpr) box.getValue();
 
                     if (r.getMethod().getSubSignature().equals(

@@ -30,6 +30,7 @@ package ptolemy.domains.sdf.lib;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -136,7 +137,7 @@ public class DoubleToMatrix extends SDFConverter {
         }
 
         output.send(0, new DoubleMatrixToken(result,
-                DoubleMatrixToken.DO_NOT_COPY));
+                MatrixToken.DO_NOT_COPY));
     }
 
     ///////////////////////////////////////////////////////////////////

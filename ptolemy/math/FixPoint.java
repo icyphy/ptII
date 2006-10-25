@@ -821,9 +821,10 @@ public class FixPoint implements Cloneable, Serializable {
      *  Note that this is package scope
      */
     FixPoint(BigInteger unscaledIntegerValue, Precision precision) {
-        if (Overflow.isOutOfRange(unscaledIntegerValue, precision))
+        if (Overflow.isOutOfRange(unscaledIntegerValue, precision)) {
             throw new ArithmeticException("Precision " + precision
                     + " not sufficient to represent " + unscaledIntegerValue);
+        }
         _precision = precision;
         _value = unscaledIntegerValue;
     }
@@ -874,9 +875,10 @@ public class FixPoint implements Cloneable, Serializable {
 
         // Step 1: - Check to see if the number is negative and the
         //           precision is unsigned. If so, throw an exception.
-        if (!quant.getPrecision().isSigned() && bigDecimal.signum() < 0)
+        if (!quant.getPrecision().isSigned() && bigDecimal.signum() < 0) {
             throw new ArithmeticException("Attempting to create a unsigned"
                     + " FixPoint from a negative double:" + bigDecimal);
+        }
 
         // Step 2: - Handle the right side (lsb) of the BigDecimal value
         //           by shifting.
@@ -916,9 +918,10 @@ public class FixPoint implements Cloneable, Serializable {
 
         // Step 1: - Check to see if the number is negative and the
         //           precision is unsigned. If so, throw an exception.
-        if (!quant.getPrecision().isSigned() && bigInteger.signum() < 0)
+        if (!quant.getPrecision().isSigned() && bigInteger.signum() < 0) {
             throw new ArithmeticException("Attempting to create a unsigned"
                     + " FixPoint from a negative integer:" + bigInteger);
+        }
 
         // Step 2: Shift the BigInteger value to match the desired
         //         Precision. There are two cases. If the exponent
@@ -937,8 +940,9 @@ public class FixPoint implements Cloneable, Serializable {
             // BigDecimal code.
             _initFromBigDecimal(new BigDecimal(bigInteger), quant);
             return;
-        } else if (desiredExponent < 0)
+        } else if (desiredExponent < 0) {
             bigInteger = bigInteger.shiftLeft(-desiredExponent);
+        }
 
         // Step 3: Handle any overflow associated with this precision
         FixPoint newFix = quant.getOverflow().quantize(bigInteger,

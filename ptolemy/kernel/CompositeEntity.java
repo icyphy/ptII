@@ -220,7 +220,7 @@ public class CompositeEntity extends ComponentEntity {
                 while (entities.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) entities.next();
                     if (/*!entity.isClassDefinition()&& */!entity.isOpaque() /*entity instanceof CompositeEntity*/) {
-                        result.add((CompositeEntity) entity);
+                        result.add(entity);
                         result.addAll(((CompositeEntity) entity)
                                 .allCompositeEntityList());
 

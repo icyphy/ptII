@@ -411,8 +411,9 @@ public class ContinuousDirector extends FixedPointDirector implements
                     }
                 }
                 // If the step size is zero, then one iteration is sufficient.
-                if (_currentStepSize == 0.0)
+                if (_currentStepSize == 0.0) {
                     break;
+                }
 
                 // Advance the local view of time such that
                 // the derivatives of the integrators 
@@ -630,8 +631,9 @@ public class ContinuousDirector extends FixedPointDirector implements
         _debug("Check accuracy for output step size control actors:");
 
         // A zero step size is always accurate.
-        if (_currentStepSize == 0)
+        if (_currentStepSize == 0) {
             return true;
+        }
 
         boolean accurate = true;
 

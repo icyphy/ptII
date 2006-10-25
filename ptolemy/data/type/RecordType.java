@@ -198,8 +198,9 @@ public class RecordType extends StructuredType {
             if (fieldType instanceof StructuredType) {
                 depth[i] += ((StructuredType) fieldType).depth();
             }
-            if (depth[i] > maxDepth)
+            if (depth[i] > maxDepth) {
                 maxDepth = depth[i];
+            }
         }
         return maxDepth;
     }

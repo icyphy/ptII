@@ -139,9 +139,10 @@ public class ColtBinomialSelector extends ColtRandomSource {
         long sourceTotal = 0;
         for (int i = 0; i < sourceValues.length; i++) {
             sourceValues[i] = ((LongToken) populations.get(i)).longValue();
-            if (sourceValues[i] < 0)
+            if (sourceValues[i] < 0) {
                 throw new IllegalActionException(this, "sourceValue[" + i
                         + "] is negative.");
+            }
 
             sourceTotal += sourceValues[i];
         }

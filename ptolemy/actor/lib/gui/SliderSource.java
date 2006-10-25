@@ -34,6 +34,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -214,7 +215,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         }
 
         _container = container;
-        slider = new JSlider(JSlider.HORIZONTAL, min, max, (min + max) / 2);
+        slider = new JSlider(SwingConstants.HORIZONTAL, min, max, (min + max) / 2);
         slider.addChangeListener(this);
         _panel = new JPanel();
         _panel.add(slider);

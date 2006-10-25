@@ -175,7 +175,7 @@ public class MirrorTransformerStrategy extends CachedStrategy implements
         Graph mirrorGraph = null;
 
         try {
-            mirrorGraph = (Graph) (_graph.getClass().newInstance());
+            mirrorGraph = (_graph.getClass().newInstance());
         } catch (Exception exception) {
             throw new RuntimeException("Could not create an empty graph from "
                     + "this one.\n" + exception + "\n");

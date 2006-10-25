@@ -401,11 +401,11 @@ public abstract class ActorController extends AttributeController {
                 Port port = (Port) nodes.next();
                 int portRotation = IOPortController._getCardinality(port);
                 int direction = IOPortController._getDirection(portRotation);
-                if (direction == SwingUtilities.WEST) {
+                if (direction == SwingConstants.WEST) {
                     westPorts.add(port);
-                } else if (direction == SwingUtilities.NORTH) {
+                } else if (direction == SwingConstants.NORTH) {
                     northPorts.add(port);
-                } else if (direction == SwingUtilities.EAST) {
+                } else if (direction == SwingConstants.EAST) {
                     eastPorts.add(port);
                 } else {
                     southPorts.add(port);
@@ -796,7 +796,7 @@ public abstract class ActorController extends AttributeController {
                 // open the source code as a last resort.
                 Frame parent = getFrame();
                 DialogTableau dialogTableau = DialogTableau.createDialog(
-                        (Frame) parent, _configuration, ((TableauFrame) parent)
+                        parent, _configuration, ((TableauFrame) parent)
                                 .getEffigy(), OpenInstanceDialog.class,
                         (Entity) object);
 

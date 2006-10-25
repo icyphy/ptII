@@ -40,6 +40,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -94,7 +95,7 @@ public class PitchSlider extends JFrame {
         super(windowTitle);
 
         //Create the slider and its label
-        JLabel sliderLabel = new JLabel("Pitch Scale Factor", JLabel.CENTER);
+        JLabel sliderLabel = new JLabel("Pitch Scale Factor", SwingConstants.CENTER);
         sliderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         NumberFormat numberFormat = NumberFormat.getNumberInstance();

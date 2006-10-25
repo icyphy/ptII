@@ -112,7 +112,7 @@ public class SurgeVisualizer extends LinkVisualizer {
      */
     public void channelNotify(RecordToken properties, Token token,
             WirelessIOPort sender, WirelessIOPort destination) {
-        String tokenString = (String) token.toString();
+        String tokenString = token.toString();
         String type = tokenString.substring(5, 7);
 
         // The "00" corresponds to Messages of type SurgeMsg (Should be 0x11).

@@ -439,13 +439,15 @@ public class Precision implements Cloneable, Serializable {
     public static BigDecimal shiftBigDecimal(BigDecimal val, int shiftval) {
 
         // No shifting takes place. Return the BigDecimal value
-        if (shiftval == 0)
+        if (shiftval == 0) {
             return val;
+        }
 
         // Left shifting is going to occur. Multiply value by
         // 2^shiftval
-        if (shiftval > 0)
+        if (shiftval > 0) {
             return val.multiply(_getTwoRaisedTo(shiftval));
+        }
 
         // Right shifting is going to occur. Divide value by
         // 2^(-shiftval) since shiftval is negative.

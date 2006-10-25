@@ -454,7 +454,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
                                 + ((Documentation) tooltipAttribute)
                                         .getValueAsString());
             } else {
-                String tip = Documentation.consolidate((NamedObj) attribute);
+                String tip = Documentation.consolidate(attribute);
 
                 if (tip != null) {
                     results.append("\n Documentation: " + tip);

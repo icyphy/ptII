@@ -379,7 +379,7 @@ public class InlinePortTransformer extends SceneTransformer implements
                         // the ports.
                         if (port instanceof Typeable) {
                             PtolemyUtilities.inlineTypeableMethods(body, stmt,
-                                    box, r, (Typeable) port);
+                                    box, r, port);
                         }
 
                         // Inline namedObj methods on the attribute.
@@ -844,7 +844,7 @@ public class InlinePortTransformer extends SceneTransformer implements
 
         if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
-            Value value = (Value) stmt.getRightOp();
+            Value value = stmt.getRightOp();
 
             if (value instanceof Local) {
                 return getPortValue(method, (Local) value, stmt, localDefs,

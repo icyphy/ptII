@@ -37,6 +37,7 @@ import java.util.Iterator;
 
 import javax.media.Buffer;
 import javax.media.ConfigureCompleteEvent;
+import javax.media.Controller;
 import javax.media.ControllerEvent;
 import javax.media.ControllerListener;
 import javax.media.DataSink;
@@ -362,7 +363,7 @@ public class MovieWriter extends Sink implements ControllerListener,
 
             processor.realize();
 
-            if (!_waitForState(processor, Processor.Realized)) {
+            if (!_waitForState(processor, Controller.Realized)) {
                 throw new IllegalActionException("Failed to realize processor");
             }
 

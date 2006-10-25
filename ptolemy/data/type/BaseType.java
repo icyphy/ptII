@@ -75,7 +75,7 @@ public abstract class BaseType implements Type, Serializable {
      *  not make sense for the given types.
      */
     public Type add(Type rightArgumentType) {
-        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+        return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Return this, that is, return the reference to this object.
@@ -102,7 +102,7 @@ public abstract class BaseType implements Type, Serializable {
      *  not make sense for the given types.
      */
     public Type divide(Type rightArgumentType) {
-        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+        return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Determine if the argument represents the same BaseType as this
@@ -171,7 +171,7 @@ public abstract class BaseType implements Type, Serializable {
      *  not make sense for the given types.
      */
     public Type modulo(Type rightArgumentType) {
-        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+        return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Return a new type which represents the type that results from
@@ -182,7 +182,7 @@ public abstract class BaseType implements Type, Serializable {
      *  not make sense for the given types.
      */
     public Type multiply(Type rightArgumentType) {
-        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+        return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Test if the argument type is compatible with this type. The method
@@ -257,7 +257,7 @@ public abstract class BaseType implements Type, Serializable {
      *  not make sense for the given types.
      */
     public Type subtract(Type rightArgumentType) {
-        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+        return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Return the string representation of this type.
@@ -530,7 +530,7 @@ public abstract class BaseType implements Type, Serializable {
 
         public Token convert(Token t) throws IllegalActionException {
             if (t instanceof ScalarToken) {
-                return (ScalarToken) t;
+                return t;
             }
             throw new IllegalActionException(Token
                     .notSupportedIncomparableConversionMessage(t, "scalar"));

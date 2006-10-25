@@ -154,7 +154,7 @@ public class TestEngine {
         System.out.println("ta = " + ta.toString());
         eng.put(engineHandle, "ta", ta);
         eng.evalString(engineHandle, "tb = ta;");
-        ta = (ArrayToken) eng.get(engineHandle, "tb");
+        ta = eng.get(engineHandle, "tb");
         System.out.println("\nRead 1x3 cell array back into tb:");
         System.out.println("tb = " + ta.toString());
 

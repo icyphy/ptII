@@ -97,7 +97,7 @@ public class MatrixType extends StructuredType implements Serializable {
      */
     public Token convert(Token token) throws IllegalActionException {
         if (token instanceof MatrixToken) {
-            return (MatrixToken) token;
+            return token;
         }
         throw new IllegalActionException(Token
                 .notSupportedIncomparableConversionMessage(token, "matrix"));

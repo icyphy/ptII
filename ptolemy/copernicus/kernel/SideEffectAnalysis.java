@@ -144,7 +144,7 @@ public class SideEffectAnalysis {
      *  to, or null if the side effects are unknown.
      */
     public Set getSideEffects(SootMethod method) {
-        EffectFlow flow = (EffectFlow) _getEffectFlow(method);
+        EffectFlow flow = _getEffectFlow(method);
 
         if (flow == null) {
             if (_debug) {
@@ -166,8 +166,8 @@ public class SideEffectAnalysis {
      *  i.e. it assigns to any fields or arrays.
      */
     public boolean hasSideEffects(SootMethod method) {
-        EffectFlow flow = (EffectFlow) _getEffectFlow(method);
-        EffectFlow flow2 = (EffectFlow) _getEffectFlow(method);
+        EffectFlow flow = _getEffectFlow(method);
+        EffectFlow flow2 = _getEffectFlow(method);
 
         if (flow == null) {
             if (_debug) {
@@ -185,7 +185,7 @@ public class SideEffectAnalysis {
      *  on the given field.  i.e. it assigns to the given field.
      */
     public boolean hasSideEffects(SootMethod method, SootField field) {
-        EffectFlow flow = (EffectFlow) _getEffectFlow(method);
+        EffectFlow flow = _getEffectFlow(method);
 
         if (flow == null) {
             if (_debug) {

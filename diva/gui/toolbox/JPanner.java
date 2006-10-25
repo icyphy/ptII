@@ -33,6 +33,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -249,7 +250,7 @@ public class JPanner extends JPanel {
             MouseMotionListener {
         public void mousePressed(MouseEvent evt) {
             if ((_target != null)
-                    && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
+                    && ((evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0)) {
                 setPosition(evt.getX(), evt.getY());
             }
         }
@@ -259,7 +260,7 @@ public class JPanner extends JPanel {
 
         public void mouseDragged(MouseEvent evt) {
             if ((_target != null)
-                    && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
+                    && ((evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0)) {
                 setPosition(evt.getX(), evt.getY());
             }
         }
@@ -309,7 +310,7 @@ public class JPanner extends JPanel {
 
         public void mousePressed(MouseEvent evt) {
             if ((_target != null)
-                    && ((evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)) {
+                    && ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0)) {
                 setPosition(evt.getX(), evt.getY());
                 origin = evt.getPoint();
 
@@ -353,7 +354,7 @@ public class JPanner extends JPanel {
 
         public void mouseDragged(MouseEvent evt) {
             if ((_target != null)
-                    && ((evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)) {
+                    && ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0)) {
                 setScale(evt.getX(), evt.getY());
             }
         }

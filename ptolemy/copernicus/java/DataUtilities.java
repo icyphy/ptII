@@ -255,7 +255,7 @@ public class DataUtilities {
                                     containerLocal,
                                     PtolemyUtilities.getContainerMethod
                                             .makeRef())), _insertPoint);
-                    container = (NamedObj) container.getContainer();
+                    container = container.getContainer();
                     containerLocal = containerLocal2;
                 }
 

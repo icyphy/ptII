@@ -205,8 +205,9 @@ public abstract class Overflow implements Cloneable, Serializable {
      */
     public static boolean isOutOfRange(BigInteger bigInt, Precision precision) {
         if (bigInt.compareTo(precision.getMaximumUnscaledValue()) > 0
-                || bigInt.compareTo(precision.getMinimumUnscaledValue()) < 0)
+                || bigInt.compareTo(precision.getMinimumUnscaledValue()) < 0) {
             return true;
+        }
         return false;
     }
 
@@ -223,8 +224,9 @@ public abstract class Overflow implements Cloneable, Serializable {
      * it is not an "overflow".
      */
     public static boolean isOverflow(BigInteger value, Precision precision) {
-        if (value.compareTo(precision.getMaximumUnscaledValue()) > 0)
+        if (value.compareTo(precision.getMaximumUnscaledValue()) > 0) {
             return true;
+        }
         return false;
     }
 
@@ -241,8 +243,9 @@ public abstract class Overflow implements Cloneable, Serializable {
      * it is not an "underflow".
      */
     public static boolean isUnderflow(BigInteger bigInt, Precision precision) {
-        if (bigInt.compareTo(precision.getMinimumUnscaledValue()) < 0)
+        if (bigInt.compareTo(precision.getMinimumUnscaledValue()) < 0) {
             return true;
+        }
         return false;
     }
 
@@ -298,8 +301,9 @@ public abstract class Overflow implements Cloneable, Serializable {
      */
     public static FixPoint quantizeGrow(BigInteger integerValue,
             Precision precision) {
-        if (isOutOfRange(integerValue, precision))
+        if (isOutOfRange(integerValue, precision)) {
             return quantizeMinimum(integerValue, precision);
+        }
         return new FixPoint(integerValue, precision);
     }
 
@@ -316,8 +320,9 @@ public abstract class Overflow implements Cloneable, Serializable {
     public static FixPoint quantizeMinimum(BigInteger bigInt, Precision p) {
         int sign = (p.isSigned() ? 1 : 0);
         int int_bits = bigInt.bitLength();
-        if (int_bits == 0)
+        if (int_bits == 0) {
             int_bits++;
+        }
         int new_bits = int_bits + sign;
 
         Precision newPrecision = new Precision(sign, new_bits, p.getExponent());
@@ -339,8 +344,9 @@ public abstract class Overflow implements Cloneable, Serializable {
      */
     public static FixPoint quantizeModulo(BigInteger integerValue,
             Precision precision) {
-        if (!isOutOfRange(integerValue, precision))
+        if (!isOutOfRange(integerValue, precision)) {
             return new FixPoint(integerValue, precision);
+        }
 
         BigInteger moduloInteger = null;
 
@@ -384,10 +390,12 @@ public abstract class Overflow implements Cloneable, Serializable {
      */
     public static FixPoint quantizeSaturate(BigInteger integerValue,
             Precision precision) {
-        if (isUnderflow(integerValue, precision))
+        if (isUnderflow(integerValue, precision)) {
             return new FixPoint(precision.getMinimumUnscaledValue(), precision);
-        if (isOverflow(integerValue, precision))
+        }
+        if (isOverflow(integerValue, precision)) {
             return new FixPoint(precision.getMaximumUnscaledValue(), precision);
+        }
         return new FixPoint(integerValue, precision);
     }
 
@@ -404,8 +412,9 @@ public abstract class Overflow implements Cloneable, Serializable {
      */
     public static FixPoint quantizeToZero(BigInteger integerValue,
             Precision precision) {
-        if (isOutOfRange(integerValue, precision))
+        if (isOutOfRange(integerValue, precision)) {
             return new FixPoint(BigInteger.ZERO, precision);
+        }
         return new FixPoint(integerValue, precision);
     }
 

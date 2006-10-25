@@ -115,7 +115,7 @@ public class CSP extends AbstractDDI implements DDI {
         // Don't call super.fire(); here, super.fire() is abstract.
         // assume repeat expressions are statically computable,
         // and no multiport support (always assume channel 0) FIXME
-        Action[] actions = (Action[]) _actions.clone();
+        Action[] actions = _actions.clone();
         Map inputProfile;
         Map dataSoFar = new HashMap();
 

@@ -386,7 +386,7 @@ public class FSMCreator implements AtomicActorCreator {
                                 RefType.v(PtolemyUtilities.entityClass));
                         body.getLocals().add(entityLocal);
 
-                        NamedObj containerModel = (NamedObj) entity
+                        NamedObj containerModel = entity
                                 .getContainer();
                         String deepName = ((NamedObj) refinement)
                                 .getName(containerModel);
@@ -627,7 +627,7 @@ public class FSMCreator implements AtomicActorCreator {
                             .getToken();
 
                     if (resetToken.booleanValue()) {
-                        refinements = ((State) transition.destinationState())
+                        refinements = (transition.destinationState())
                                 .getRefinement();
                     }
                 } catch (Exception ex) {
@@ -646,7 +646,7 @@ public class FSMCreator implements AtomicActorCreator {
                                 RefType.v(PtolemyUtilities.entityClass));
                         body.getLocals().add(entityLocal);
 
-                        NamedObj containerModel = (NamedObj) entity
+                        NamedObj containerModel = entity
                                 .getContainer();
                         String deepName = ((NamedObj) refinement)
                                 .getName(containerModel);
@@ -785,8 +785,8 @@ public class FSMCreator implements AtomicActorCreator {
                     // Get a ref to the parameter through the container,
                     // since the parameter we are assigning to may be
                     // above us in the hierarchy.
-                    NamedObj containerModel = (NamedObj) entity.getContainer();
-                    String deepName = ((NamedObj) destination)
+                    NamedObj containerModel = entity.getContainer();
+                    String deepName = (destination)
                             .getName(containerModel);
 
                     body.getUnits().add(

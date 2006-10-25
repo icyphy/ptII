@@ -296,8 +296,9 @@ public abstract class Rounding implements Cloneable, Serializable {
      * @return Rounded BigDecimal value
      * **/
     public static BigDecimal roundHalfCeiling(BigDecimal decimal) {
-        if (decimal.signum() == -1)
+        if (decimal.signum() == -1) {
             return roundHalfDown(decimal);
+        }
         return roundHalfUp(decimal);
     }
 
@@ -349,8 +350,9 @@ public abstract class Rounding implements Cloneable, Serializable {
      * @return Rounded BigDecimal value
      * **/
     public static BigDecimal roundHalfFloor(BigDecimal decimal) {
-        if (decimal.signum() == -1)
+        if (decimal.signum() == -1) {
             return roundHalfUp(decimal);
+        }
         return roundHalfDown(decimal);
     }
 

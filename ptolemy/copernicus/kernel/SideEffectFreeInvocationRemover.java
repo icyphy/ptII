@@ -208,7 +208,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
                 // then they cannot be removed.
                 boolean removable = true;
 
-                for (Iterator i = new Targets(callGraph.edgesOutOf((Stmt) unit)); i
+                for (Iterator i = new Targets(callGraph.edgesOutOf(unit)); i
                         .hasNext()
                         && removable;) {
                     SootMethod targetMethod = (SootMethod) i.next();
@@ -242,7 +242,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
             SootMethod method = (SootMethod) methods.next();
 
             try {
-                SootMethod classMethod = theClass.getMethod((String) method
+                SootMethod classMethod = theClass.getMethod(method
                         .getSubSignature());
                 forcedReachableMethodSet.add(classMethod);
             } catch (Exception ex) {

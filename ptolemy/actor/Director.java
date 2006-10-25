@@ -262,7 +262,7 @@ public class Director extends Attribute implements Executable {
                             FiringEvent.BEFORE_ITERATE, iterationCount));
                 }
 
-                if (actor.iterate(1) == Actor.STOP_ITERATING) {
+                if (actor.iterate(1) == Executable.STOP_ITERATING) {
                     if (_debugging) {
                         _debug("Actor requests halt: "
                                 + ((Nameable) actor).getFullName());

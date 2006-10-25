@@ -80,7 +80,7 @@ public class PortDialogAction extends FigureAction {
             // First, identify the top parent frame.
             Frame parent = getFrame();
             DialogTableau dialogTableau = DialogTableau.createDialog(
-                    (Frame) parent, _configuration, ((TableauFrame) parent)
+                    parent, _configuration, ((TableauFrame) parent)
                             .getEffigy(), PortConfigurerDialog.class,
                     (Entity) target);
 

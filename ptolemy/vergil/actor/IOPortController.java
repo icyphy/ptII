@@ -34,6 +34,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.IOPort;
@@ -258,13 +259,13 @@ public class IOPortController extends AttributeController {
     protected static int _getDirection(int portRotation) {
         int direction;
         if (portRotation == 90 || portRotation == -270) {
-            direction = SwingUtilities.NORTH;
+            direction = SwingConstants.NORTH;
         } else if (portRotation == 180 || portRotation == -180) {
-            direction = SwingUtilities.EAST;
+            direction = SwingConstants.EAST;
         } else if (portRotation == 270 || portRotation == -90) {
-            direction = SwingUtilities.SOUTH;
+            direction = SwingConstants.SOUTH;
         } else {
-            direction = SwingUtilities.WEST;
+            direction = SwingConstants.WEST;
         }
         return direction;
     }
@@ -471,21 +472,21 @@ public class IOPortController extends AttributeController {
                         double height = bounds.getHeight();
                         int extent = numberOfLinks - 1;
 
-                        if (direction == SwingUtilities.EAST) {
+                        if (direction == SwingConstants.EAST) {
                             startX = x + width;
                             startY = y + (height / 2);
                             endX = startX
                                     + (extent * MULTIPORT_CONNECTION_SPACING);
                             endY = startY
                                     + (extent * MULTIPORT_CONNECTION_SPACING);
-                        } else if (direction == SwingUtilities.WEST) {
+                        } else if (direction == SwingConstants.WEST) {
                             startX = x;
                             startY = y + (height / 2);
                             endX = startX
                                     - (extent * MULTIPORT_CONNECTION_SPACING);
                             endY = startY
                                     - (extent * MULTIPORT_CONNECTION_SPACING);
-                        } else if (direction == SwingUtilities.NORTH) {
+                        } else if (direction == SwingConstants.NORTH) {
                             startX = x + (width / 2);
                             startY = y;
                             endX = startX

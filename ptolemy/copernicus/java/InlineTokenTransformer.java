@@ -330,7 +330,7 @@ public class InlineTokenTransformer extends SceneTransformer implements
 
         if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
-            Value value = (Value) stmt.getRightOp();
+            Value value = stmt.getRightOp();
 
             if (value instanceof Local) {
                 return getTokenValue((Local) value, stmt, localDefs,

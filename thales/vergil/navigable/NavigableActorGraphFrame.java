@@ -35,6 +35,7 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
@@ -143,7 +144,7 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    protected JTabbedPane _tabbedPalette = new JTabbedPane(JTabbedPane.BOTTOM);
+    protected JTabbedPane _tabbedPalette = new JTabbedPane(SwingConstants.BOTTOM);
 
     protected UpAction _upAction = new UpAction();
 

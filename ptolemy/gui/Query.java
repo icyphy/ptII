@@ -74,6 +74,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
@@ -146,7 +147,7 @@ public class Query extends JPanel {
 
         _messageScrollPane = new JScrollPane(_messageArea);
         _messageScrollPane
-                .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         // Get rid of the border.
         _messageScrollPane.setBorder(BorderFactory.createEmptyBorder());

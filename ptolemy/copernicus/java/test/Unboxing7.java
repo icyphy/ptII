@@ -19,7 +19,7 @@ public class Unboxing7 {
         token = tokens[0];
 
         if (token instanceof IntToken) {
-            castToken = (IntToken) token;
+            castToken = token;
         } else {
             castToken = new IntToken(2);
         }

@@ -62,7 +62,7 @@ public abstract class StructuredType implements Type {
      *  not make sense for the given types.
      */
     public Type add(Type rightArgumentType) {
-        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+        return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Return a deep copy of this StructuredType.
@@ -79,7 +79,7 @@ public abstract class StructuredType implements Type {
      *  not make sense for the given types.
      */
     public Type divide(Type rightArgumentType) {
-        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+        return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Return the depth of a structured type. The depth of a 
@@ -122,7 +122,7 @@ public abstract class StructuredType implements Type {
      *  not make sense for the given types.
      */
     public Type modulo(Type rightArgumentType) {
-        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+        return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Return a new type which represents the type that results from
@@ -133,7 +133,7 @@ public abstract class StructuredType implements Type {
      *  not make sense for the given types.
      */
     public Type multiply(Type rightArgumentType) {
-        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+        return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Return the type of the multiplicative identity for elements of
@@ -153,7 +153,7 @@ public abstract class StructuredType implements Type {
      *  not make sense for the given types.
      */
     public Type subtract(Type rightArgumentType) {
-        return (Type) TypeLattice.leastUpperBound(this, rightArgumentType);
+        return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
     /** Update this StructuredType to the specified Structured Type.
@@ -167,7 +167,7 @@ public abstract class StructuredType implements Type {
      */
     public void updateType(StructuredType newType)
             throws IllegalActionException {
-        if (newType.depth() >= MAXDEPTHBOUND)
+        if (newType.depth() >= MAXDEPTHBOUND) {
             throw new IllegalActionException(
                     "Large type structure detected during type resolution."
                             + "  The structured type "
@@ -176,6 +176,7 @@ public abstract class StructuredType implements Type {
                             + MAXDEPTHBOUND
                             + ".  This may be an indicator of type constraints "
                             + "in a model with no finite solution.");
+        }
     }
 
     /** Return the type of the additive identity for elements of

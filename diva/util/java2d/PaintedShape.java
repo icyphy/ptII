@@ -169,7 +169,7 @@ public class PaintedShape extends AbstractPaintedGraphic {
         } else {
             if ((stroke == null)
                     || (lineWidth != ((BasicStroke) stroke).getLineWidth())) {
-                stroke = PaintedPath.getStroke(lineWidth);
+                stroke = AbstractPaintedGraphic.getStroke(lineWidth);
             }
         }
     }
