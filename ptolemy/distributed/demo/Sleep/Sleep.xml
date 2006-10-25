@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{286.0361445783132, 139.8855421686747}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{286.0361445783132, 139.8855421686747}">
     </property>
     <property name="Distributed SDF Director" class="ptolemy.distributed.domains.sdf.kernel.DistributedSDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
