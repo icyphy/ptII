@@ -325,7 +325,8 @@ public class TypedCompositeActorWithCoSimulation extends
             }
 
             try {
-                _jniInitializeMethod.invoke(_jniWrapper);
+		// Java 1.4, used by Kepler, requires the two arg invoke()
+                _jniInitializeMethod.invoke(_jniWrapper, null);
             } catch (Exception e) {
                 throw new IllegalActionException(this, e,
                         "Failed to invoke the initialize method on the wrapper class.");
@@ -347,7 +348,8 @@ public class TypedCompositeActorWithCoSimulation extends
                 .booleanValue();
         if (inCoSimulationMode) {
             try {
-                _jniWrapupMethod.invoke(_jniWrapper);
+		// Java 1.4, used by Kepler, requires the two arg invoke()
+                _jniWrapupMethod.invoke(_jniWrapper, null);
             } catch (Exception e) {
                 throw new IllegalActionException(this, e,
                         "Failed to invoke the wrapup method on the wrapper class.");
