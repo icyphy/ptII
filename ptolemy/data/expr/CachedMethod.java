@@ -961,7 +961,8 @@ public class CachedMethod {
                         // or the current match is preferable
                         // or equivalent to the previous match.
                         preferredMethod = method;
-                        preferredConversions = conversions
+                        // Kepler (jdk1.4?) requires this cast
+                        preferredConversions = (ArgumentConversion[]) conversions
                                 .clone();
                     }
                 }
