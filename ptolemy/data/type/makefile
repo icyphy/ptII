@@ -76,6 +76,9 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	'ArrayType$$1.class' \
+	'ArrayType$$2.class' \
+	'ArrayType$$TypeableArrayTypeTerm.class' \
+	'ArrayType$$TypeableElementTypeTerm.class' \
 	'ArrayType$$ElementTypeTerm.class' \
 	'BaseType$$NilType.class' \
 	'BaseType$$UnsizedFixType.class' \
