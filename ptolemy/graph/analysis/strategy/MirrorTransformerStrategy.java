@@ -175,7 +175,8 @@ public class MirrorTransformerStrategy extends CachedStrategy implements
         Graph mirrorGraph = null;
 
         try {
-            mirrorGraph = (_graph.getClass().newInstance());
+            // Kepler (jdk1.4?) requires this cast
+            mirrorGraph = (Graph) (_graph.getClass().newInstance());
         } catch (Exception exception) {
             throw new RuntimeException("Could not create an empty graph from "
                     + "this one.\n" + exception + "\n");
