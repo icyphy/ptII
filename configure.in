@@ -1066,6 +1066,10 @@ fi
 #       If not, look for for $PTII/vendors/eclipse
 #--------------------------------------------------------------------
 
+# PTBACKTRACK_DIR is set to backtrack and used in
+# $PTII/ptolemy/makefile if we can handle generics (Java 1.5)
+PTBACKTRACK_DIR=backtrack
+
 # PTBACKTRACK_ECLIPSE_DIR is set to eclipse and used in
 # $PTII/ptolemy/backtrack/makefile if Eclipse was found
 # and the jar files were found
@@ -1079,118 +1083,123 @@ if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
     AC_MSG_RESULT([$PTII/ptolemy/backtrack/eclipse is not present,
     so we need not find Eclipse.])
 else
-    AC_MSG_CHECKING([for Eclipse installation])
-    # Use changequote to protect the square brackets in sed
+    if test ! "$HAS_GENERICS" = "yes"; then 
+        AC_MSG_WARN([You are running Java $JVERSION, which does not
+    support generics.  Thus, ptolemy/backtrack/eclipse will not compile.])
+	PTBACKTRACK_DIR=    
+    else
+        AC_MSG_CHECKING([for Eclipse installation])
+        # Use changequote to protect the square brackets in sed
 
-    # We cd to *clipse so that we get the case right in the jar files.
-    if test -d "c:/Program Files/Eclipse" -o -d "c:/Program Files/eclipse"; then
-    # Remove /cygdrive	
+        # We cd to *clipse so that we get the case right in the jar files.
+        if test -d "c:/Program Files/Eclipse" -o -d "c:/Program Files/eclipse"; then
+        # Remove /cygdrive	
 changequote(<<, >>)dnl
-       TMP_ECLIPSE_DIR="`cd c:/Program\ Files/*clipse; pwd | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+           TMP_ECLIPSE_DIR="`cd c:/Program\ Files/*clipse; pwd | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 changequote([, ])dnl
-    else 
-       TMP_ECLIPSE_DIR="c:/Program\ Files/eclipse"
-    fi
-    AC_ARG_WITH(eclipse, [  --with-eclipse=ECLIPSE_DIR     use Eclipse from ECLIPSE_DIR,
+        else 
+           TMP_ECLIPSE_DIR="c:/Program\ Files/eclipse"
+        fi
+        AC_ARG_WITH(eclipse, [  --with-eclipse=ECLIPSE_DIR     use Eclipse from ECLIPSE_DIR,
                           defaults to c:/Program Files/Eclipse],
-	ECLIPSE_DIR=$withval,
-	ECLIPSE_DIR=$TMP_ECLIPSE_DIR)
+            ECLIPSE_DIR=$withval,
+            ECLIPSE_DIR=$TMP_ECLIPSE_DIR)
 
-
-    if test ! -d "$ECLIPSE_DIR"; then
-	AC_MSG_WARN([Failed to find Eclipse in $ECLIPSE_DIR])
-	AC_MSG_CHECKING([for $PTII/vendors/eclipse])
-   	if test -d  "$PTII/vendors/eclipse"; then
-	    AC_MSG_RESULT([ok])
-	    ECLIPSE_DIR="$PTII/vendors/eclipse"
-        else
-	    AC_MSG_WARN([Failed to find Eclipse in $PTII/vendors/eclipse])
-            AC_PATH_PROG(PTECLIPSE, eclipse)
-            if test "${PTECLIPSE:-none}" != "none"; then
+        if test ! -d "$ECLIPSE_DIR"; then
+            AC_MSG_WARN([Failed to find Eclipse in $ECLIPSE_DIR])
+            AC_MSG_CHECKING([for $PTII/vendors/eclipse])
+            if test -d  "$PTII/vendors/eclipse"; then
+	        AC_MSG_RESULT([ok])
+	        ECLIPSE_DIR="$PTII/vendors/eclipse"
+            else
+	        AC_MSG_WARN([Failed to find Eclipse in $PTII/vendors/eclipse])
+                AC_PATH_PROG(PTECLIPSE, eclipse)
+                if test "${PTECLIPSE:-none}" != "none"; then
             # Remove /cygdrive	
 changequote(<<, >>)dnl
-	    ECLIPSE_DIR=`dirname $PTECLIPSE | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`
+	        ECLIPSE_DIR=`dirname $PTECLIPSE | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`
 changequote([, ])dnl
-	    fi   
-        fi
-    fi 
-    if test -d "$ECLIPSE_DIR"; then
-	AC_MSG_CHECKING([for jars used by backtracking in $ECLIPSE_DIR])
-	# jars="jdt.core osgi resources runtime" 
-	# jdt.core core.runtime_ are needed to build backtrack
-	# osgi_ and resources_ are needed to run the tests in backtrack
-	jars="jdt.core_ core.runtime_ osgi_ core.resources_ equinox.common equinox.preferences core.jobs core.contenttype"
-	eclipsejarpath=
-	for jar in $jars
-	do
-	    echo $ECHO_N "$jar "
-	    jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
-   	    if test -f "$jarpath"; then
-	        # Keep track of the jars so we can use them while building
-		# with make.
-  	        eclipsejarpath="$eclipsejarpath$CLASSPATHSEPARATOR$jarpath"
+	        fi   
+            fi
+        fi 
+        if test -d "$ECLIPSE_DIR"; then
+	    AC_MSG_CHECKING([for jars used by backtracking in $ECLIPSE_DIR])
+	    # jars="jdt.core osgi resources runtime" 
+	    # jdt.core core.runtime_ are needed to build backtrack
+	    # osgi_ and resources_ are needed to run the tests in backtrack
+	    jars="jdt.core_ core.runtime_ osgi_ core.resources_ equinox.common equinox.preferences core.jobs core.contenttype"
+	    eclipsejarpath=
+	    for jar in $jars
+	    do
+	        echo $ECHO_N "$jar "
+	        jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
+   	        if test -f "$jarpath"; then
+                    # Keep track of the jars so we can use them while building
+		    # with make.
+  	            eclipsejarpath="$eclipsejarpath$CLASSPATHSEPARATOR$jarpath"
 
-		# NOTE: Eclipse 3.0 has problems if we include these
-		# jars in the .classpath, instead, .classpath.in includes:
-		#  <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-		#ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-                #<classpathentry kind=\"lib\" path=\"$jarpath\"/>"
- 	    else   
-		AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
-	        eclipsejarpath=
-		break
-	    fi
-	done	
+		    # NOTE: Eclipse 3.0 has problems if we include these
+		    # jars in the .classpath, instead, .classpath.in includes:
+		    #  <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+		    #ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+                    #<classpathentry kind=\"lib\" path=\"$jarpath\"/>"
+ 	        else   
+		    AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
+	            eclipsejarpath=
+		    break
+	        fi
+	    done	
 
-	# Get the plugin jar files for use with javadoc in $PTII/doc
-	AC_MSG_CHECKING([for jars used by eclipse plugin])
+	    # Get the plugin jar files for use with javadoc in $PTII/doc
+	    AC_MSG_CHECKING([for jars used by eclipse plugin])
 	docjars="eclipse.core.commands_ eclipse.equinox.registry_ eclipse.jface_ eclipse.jface.text_ eclipse.swt.win32.win32.x86_ eclipse.ui.workbench_ eclipse.ui.workbench.texteditor_ eclipse.ui.console_ eclipse.ui.editors_ eclipse.text_ eclipse.ui.forms_ eclipse.ui.ide_ eclipse.jdt.ui_"
-	PTBACKTRACK_ECLIPSE_DOC_JARS=
-	for jar in $docjars
-	do
-	    echo $ECHO_N "$jar "
-	    jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
-   	    if test -f "$jarpath"; then
-	        # Keep track of the jars so we can use them while building
-		# with make.
-	        PTBACKTRACK_ECLIPSE_DOC_JARS="$PTBACKTRACK_ECLIPSE_DOC_JARS$CLASSPATHSEPARATOR$jarpath"
- 	    else   
-		AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
-		break
-	    fi
-	done	
+	    PTBACKTRACK_ECLIPSE_DOC_JARS=
+	    for jar in $docjars
+	    do
+	        echo $ECHO_N "$jar "
+	        jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
+   	        if test -f "$jarpath"; then
+	            # Keep track of the jars so we can use them while building
+		    # with make.
+	            PTBACKTRACK_ECLIPSE_DOC_JARS="$PTBACKTRACK_ECLIPSE_DOC_JARS$CLASSPATHSEPARATOR$jarpath"
+ 	        else   
+		    AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
+		    break
+	        fi
+	    done	
 
-        if test ! -z "$eclipsejarpath"; then 
-            AC_MSG_RESULT([ok])
-
-	    startdir="`pwd`"
-	    cd "$srcdir/config"
-	    AC_MSG_CHECKING([for ITreeSelection from Eclipse])
-	    if "$JAVAC" -classpath "$PTBACKTRACK_ECLIPSE_DOC_JARS" EclipseITreeSelection.java ; then
+            if test ! -z "$eclipsejarpath"; then 
                 AC_MSG_RESULT([ok])
-		# Set to eclipse and used in
-		# $PTII/ptolemy/backtrack/makefile if Eclipse jar files were found
-		PTBACKTRACK_ECLIPSE_DIR=eclipse
-		# PTBACKTRACK_ECLIPSE_PACKAGES is used in ptII/doc/makefile
-		PTBACKTRACK_ECLIPSE_PACKAGES="ptolemy.backtrack.eclipse.ast ptolemy.backtrack.eclipse.ast.transform ptolemy.backtrack.eclipse.plugin ptolemy.backtrack.eclipse.plugin.actions ptolemy.backtrack.eclipse.plugin.editor ptolemy.backtrack.eclipse.plugin.preferences ptolemy.backtrack.eclipse.plugin.util"
-		PTBACKTRACK_ECLIPSE_JARS=$eclipsejarpath
-            else
- 	        AC_MSG_WARN([Failed to compile config/EclipseITreeSelection.java with
+
+	        startdir="`pwd`"
+	        cd "$srcdir/config"
+	        AC_MSG_CHECKING([for ITreeSelection from Eclipse])
+	        if "$JAVAC" -classpath "$PTBACKTRACK_ECLIPSE_DOC_JARS" EclipseITreeSelection.java ; then
+                    AC_MSG_RESULT([ok])
+		    # Set to eclipse and used in
+		    # $PTII/ptolemy/backtrack/makefile if Eclipse jar files were found
+		    PTBACKTRACK_ECLIPSE_DIR=eclipse
+		    # PTBACKTRACK_ECLIPSE_PACKAGES is used in ptII/doc/makefile
+		    PTBACKTRACK_ECLIPSE_PACKAGES="ptolemy.backtrack.eclipse.ast ptolemy.backtrack.eclipse.ast.transform ptolemy.backtrack.eclipse.plugin ptolemy.backtrack.eclipse.plugin.actions ptolemy.backtrack.eclipse.plugin.editor ptolemy.backtrack.eclipse.plugin.preferences ptolemy.backtrack.eclipse.plugin.util"
+		    PTBACKTRACK_ECLIPSE_JARS=$eclipsejarpath
+                else
+ 	            AC_MSG_WARN([Failed to compile config/EclipseITreeSelection.java with
     (cd "$PTII/config"; "$JAVAC" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java)
     maybe you should install Eclipse 3.2?])
-                eclipsejarpath=
+                    eclipsejarpath=
+                fi
+	        cd "$startdir"
             fi
-	    cd "$startdir"
-        fi
-    fi	
-    if test "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
-        AC_MSG_WARN([Failed to find Eclipse
+        fi	
+        if test "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
+            AC_MSG_WARN([Failed to find Eclipse
     perhaps the Eclipse is not installed?
     You need not download Eclipse unless you
     plan on using the backtracking facility in ptolemy.backtrack
     Eclipse may be downloaded from
     http://www.eclipse.org/])
-	PTBACKTRACK_ECLIPSE_JARS=
+	    PTBACKTRACK_ECLIPSE_JARS=
+        fi
     fi
 fi
 
@@ -3393,7 +3402,10 @@ AC_SUBST(MATLAB_LIBDIR)
 # in $PTII/bin/ptinvoke.in
 AC_SUBST(PSDF_DIR)
 
-# Set to backtrack if Eclipse was found
+# Set to backtrack if Java 1.5 or later is present
+AC_SUBST(PTBACKTRACK_DIR)
+
+# Set to eclipse if Eclipse was found
 AC_SUBST(PTBACKTRACK_ECLIPSE_DIR)
 
 # Plugin Eclipse jar files, used by $PTII/doc
