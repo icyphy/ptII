@@ -256,6 +256,7 @@ clean_shipping:
 		ptolemy/hsif/Thermostat_moml.xml \
 		ptolemy/hsif/SwimmingPool_moml.xml \
 		ptolemy/matlab/libptmatlab.so \
+		ptolemy/matlab/matlabLinux.jar \
 		ptolemy/matlab/ptmatlab.dll \
 		ptolemy/matlab/ptmatlab.exp \
 		ptolemy/matlab/ptmatlab.h \
