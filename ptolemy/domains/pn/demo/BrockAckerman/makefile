@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Process Networks OrderedMerge Demo
+# Makefile for Ptolemy II Process Networks BrockAckerman Demo
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/pn/demo/OrderedMerge
+ME =		ptolemy/domains/pn/demo/BrockAckerman
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,19 +41,18 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	OrderedMerge
+PTPACKAGE = 	BrockAckerman
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	OrderedMerge.xml
+	BrockAckerman.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	OrderedMerge.htm \
-	OrderedMergeVergil.htm
+	BrockAckerman.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -74,13 +73,13 @@ install: all
 
 demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer OrderedMerge.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer BrockAckerman.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" OrderedMerge.xml
+	"$(PTII)/bin/ptolemy" BrockAckerman.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" OrderedMerge.xml
+	"$(PTII)/bin/vergil" BrockAckerman.xml
 
 docs: javadocs
 
