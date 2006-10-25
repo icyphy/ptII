@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{286.0361445783132, 139.8855421686747}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{303.0, 175.0}">
     </property>
     <property name="Distributed SDF Director" class="ptolemy.distributed.domains.sdf.kernel.DistributedSDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
@@ -19,13 +19,13 @@
         </property>
         <property name="parallelExecution" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[98.25, 45.0]">
         </property>
     </property>
     <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/distributed/demo/Sleep/Sleep.htm">
     </property>
     <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[398.25, 260.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -33,7 +33,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[33.25, 315.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -43,17 +43,17 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="View the documentation before running this demo!">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[23.25, 250.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[93.25, 155.0]">
         </property>
     </entity>
     <entity name="LineWriter" class="ptolemy.distributed.actor.lib.DistributedLineWriter">
         <doc>Outputs a line with the incoming token in the standard output.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[413.25, 165.0]">
         </property>
     </entity>
     <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
@@ -65,7 +65,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[223.25, 110.0]">
         </property>
     </entity>
     <entity name="Sleep2" class="ptolemy.actor.lib.Sleep">
@@ -77,15 +77,15 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[223.25, 205.0]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[323.25, 165.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[120.0, 115.0]">
+        <vertex name="vertex1" value="[158.25, 155.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
