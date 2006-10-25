@@ -1667,7 +1667,8 @@ public class Graph implements Cloneable {
         Graph graph = null;
 
         try {
-            graph = (getClass().newInstance());
+            // Kepler (jdk1.4?) requires this cast
+            graph = (Graph) (getClass().newInstance());
         } catch (Exception exception) {
             throw new GraphConstructionException("Could not create an "
                     + "empty graph from this one.\n" + exception + "\n"

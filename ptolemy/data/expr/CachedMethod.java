@@ -181,7 +181,8 @@ public class CachedMethod {
             throws IllegalActionException {
         // Note clones for safety...
         _methodName = methodName;
-        _argumentTypes = argumentTypes.clone();
+        // Kepler (jdk1.4?) requires this cast
+        _argumentTypes = (Type []) argumentTypes.clone();
         _method = method;
 
         if (conversions != null) {
