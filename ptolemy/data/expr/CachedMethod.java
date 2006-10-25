@@ -186,7 +186,8 @@ public class CachedMethod {
         _method = method;
 
         if (conversions != null) {
-            _conversions = conversions.clone();
+            // Kepler (jdk1.4?) requires this cast
+            _conversions = (ArgumentConversion[]) conversions.clone();
         } else {
             _conversions = null;
         }
@@ -1285,7 +1286,8 @@ public class CachedMethod {
             }
 
             // Collect the not reducible args.
-            Object[] subArgs = argValues.clone();
+            // Kepler (jdk1.4?) requires this cast
+            Object[] subArgs = (Object[]) argValues.clone();
             ptolemy.data.Token[] tokenArray = new ptolemy.data.Token[dim];
 
             for (int j = 0; j < dim; j++) {
@@ -1391,7 +1393,8 @@ public class CachedMethod {
             }
 
             // Collect the not reducible args.
-            Object[] subArgs = argValues.clone();
+            // Kepler (jdk1.4?) requires this cast
+            Object[] subArgs = (Object[]) argValues.clone();
             ptolemy.data.Token[] tokenArray = new ptolemy.data.Token[xdim
                     * ydim];
 
