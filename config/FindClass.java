@@ -114,7 +114,7 @@ public class FindClass {
                     + "Thus, it is not necessary to add the jar file "
                     + "to the eclipse classpath");
             } else {
-                System.out.println(jarFileURLFileName);
+                System.out.print(jarFileURLFileName);
             }
         } else if (entryURL.getProtocol().equals("file")) {
             // Test this with
@@ -122,9 +122,9 @@ public class FindClass {
             // You should get something like:
             // C:/cxh/ptII/ptolemy/kernel/util/NamedObj.class
             File classFile = new File(entryURL.getFile());
-            System.out.println(classFile.getCanonicalPath().replace('\\', '/'));
+            System.out.print(classFile.getCanonicalPath().replace('\\', '/'));
         } else {
-            System.out.println(entryURL);
+            System.out.print(entryURL);
         }
     }
 }
