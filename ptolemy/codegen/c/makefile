@@ -59,7 +59,9 @@ PTCLASSALLJARS = \
 # Keep this list alphabetized.
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = makefile.in
+OTHER_FILES_TO_BE_JARED = \
+	makefile.in \
+	jnimakefile.in
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
