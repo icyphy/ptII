@@ -47,6 +47,7 @@ PTPACKAGE = 	kernel
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	CCodeGenerator.java \
 	CCodeGeneratorHelper.java \
 	CParseTreeCodeGenerator.java
 
