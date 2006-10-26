@@ -143,7 +143,7 @@ c:\cxh\ptII\adm\gen-6.0\ptII6_0-devel_setup.xml \
 -b c:\cxh\ptII\adm\gen-6.0 \
 -o c:\cxh\ptII\adm\gen-6.0\ptII6_0-devel_setup.jar \
 -h c:\cxh\src\izpack\trunk
-</pre>
+<pre>
 Where
 <dl>
 <dt> <code>c:\cxh\ptII\adm\gen-6.0\ptII6_0-devel_setup.xml</code>
@@ -221,6 +221,60 @@ to the installed application will not do it.
 
 </ol>
 
+<h3>Setting up IzPack to unjar source files</h3>
+We want to IzPack to unjar the source file because it is faster to create
+an installer that has one jar file in it than it is to create an installer
+that has multiple (many thousand) files.
+<p>The solution is to use the ProcessPanel and define our own class
+that does the extraction.
+<h4>Problems</h4
+<dl>
+<dt><code>Cannot find Resource ProcessPanel.Spec.xml for language eng</code>
+<dd>
+<pre>
+com.izforge.izpack.installer.ResourceNotFoundException: Can not find Resource ProcessPanel.Spec.xml for language eng
+	at com.izforge.izpack.installer.ResourceManager.getLanguageResourceString(ResourceManager.java:137)
+	at com.izforge.izpack.installer.ResourceManager.getInputStream(ResourceManager.java:154)
+	at com.izforge.izpack.installer.ProcessPanelWorker.readSpec(ProcessPanelWorker.java:109)
+	at com.izforge.izpack.installer.ProcessPanelWorker.run(ProcessPanelWorker.java:233)
+	at java.lang.Thread.run(Unknown Source)
+Error parsing XML specification for processing.
+</pre>
+Solution:
+<br>Add the following to the configuration file
+<pre>
+        &lt;res src="ProcessPanel.Spec.xml" id="ProcessPanel.Spec.xml"/&gt;
+</pre>
+
+<dt>"Cannot find processing class"
+<dd>The class needs to be present in the jar file that is created
+by IzPack.  We use the <code>-u</code> command:
+<pre>
+jar -fu c:/Program\ Files/IzPack/lib/installer.jar ExtractJarFile.class 
+</pre>
+</dl>
+
+We also have to update the <code>standalone-compiler.jar</code> file
+with the new <code>installer.jar</code> file.  My solution was to rebuild
+izPack and run
+<pre>
+cd izpack/trunk/src
+rm ../lib/installer.jar
+ant build.installer
+jar -uf ../lib/installer.jar ExtractJarFile.class
+ant build.standalone-compiler
+cp ../lib/standalone-compiler.jar ../../izpack3.9.0/lib/standalone-compiler.jar
+</pre>
+However, a better solution is to use 
+<code>&ltjar src="ExtractJarFile.jar"&gt;</code> in the
+<code>install.xml</code> file
+
+<dt><code>Error accessing processing class</code>
+<dd>I modified <code>src/lib/com/izforge/izpack/installer/ProcessPanelWorker.java</code> so that it printed the exception, which was
+<code>Class com.izforge.izpack.installer.ProcessPanelWorker$ExecutableClass
+can not access a member of class ExtractJarFile with modifiers "private".</code>
+<br> The fix was to change ExtractJarFile so it no longer had a private
+constructor.
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
