@@ -17,8 +17,8 @@
     -->
     <info>
         <appname>Ptolemy II</appname>
-        <appversion>6.0.alpha</appversion>
-	<appsubpath>Ptolemy/ptII6.0.alpha</appsubpath>
+        <appversion>6.0.beta</appversion>
+	<appsubpath>Ptolemy/ptII6.0.beta</appsubpath>
         <url>http://ptolemy.eecs.berkeley.edu/ptolemyII</url>
 	<javaversion>1.4</javaversion>
     </info>
@@ -368,7 +368,7 @@ The Ptiny pack is required.
         </pack>
         <pack name="Sources" required="no">
             <description>The Ptolemy II sources.</description>
-            <file src="ptII6.0.alpha.src.jar" targetdir="$INSTALL_PATH"/>
+            <file src="ptII6.0.beta.src.jar" targetdir="$INSTALL_PATH"/>
             <!-- file src="ExtractJarFile.class" targetdir="$INSTALL_PATH"/ -->
         </pack>
     </packs>
