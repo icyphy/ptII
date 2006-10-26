@@ -57,6 +57,7 @@ test CheckModelSize-1.0 {checkModelSize} {
 } {{<h1>Check Size</h1>
 Below are the results from checking the sizes of and centering of models
 <table>
+<b>Note: after running review these results, be sure to exit, as the graphical elements of the  models will have been removed</b>
 <tr>
   <td><a href="ptolemy/actor/gui/test/../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml">ptolemy/actor/gui/test/../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml</a></td>
   <td> seems to be OK.</td>
@@ -76,6 +77,7 @@ test CheckModelSize-1.1 {checkModelSize: no _vergilSize} {
 } {{<h1>Check Size</h1>
 Below are the results from checking the sizes of and centering of models
 <table>
+<b>Note: after running review these results, be sure to exit, as the graphical elements of the  models will have been removed</b>
 <tr>
   <td><a href="ptolemy/actor/gui/test/test.xml">ptolemy/actor/gui/test/test.xml</a></td>
   <td> has no _vergilSize.</td>
@@ -94,10 +96,9 @@ test CheckModelSize-1.2 {checkModelSize: bad moml} {
 } {{<h1>Check Size</h1>
 Below are the results from checking the sizes of and centering of models
 <table>
+<b>Note: after running review these results, be sure to exit, as the graphical elements of the  models will have been removed</b>
 <tr>
-  <td><a href="ptolemy/actor/gui/test/badMoML.moml">ptolemy/actor/gui/test/badMoML.moml</a></td>
-  <td> can't be parsed because java.lang.Exception: Failed to parse "badMoML.moml"
-	at p}}
+  <td><a href="ptolemy/actor/gui/test/badMoML.moml">pto}}
 
 ######################################################################
 ####
@@ -114,6 +115,7 @@ test CheckModelSize-2.0 {main} {
 } {{<h1>Check Size</h1>
 Below are the results from checking the sizes of and centering of models
 <table>
+<b>Note: after running review these results, be sure to exit, as the graphical elements of the  models will have been removed</b>
 <tr>
   <td><a href="ptolemy/actor/gui/test/testCheckModelSize.xml">ptolemy/actor/gui/test/testCheckModelSize.xml</a></td>
   <td> width(9999) > 800 height(8888) > 768 Center([7777.0, 6666.0]) is not centered, should be [4999.5, 4444.0] Zoom(2.0) != 1.0</td>
@@ -135,9 +137,11 @@ test CheckModelSize-2.1 {main: bad moml} {
 } {{<h1>Check Size</h1>
 Below are the results from checking the sizes of and centering of models
 <table>
+<b>Note: after running review these results, be sure to exit, as the graphical elements of the  models will have been removed</b>
 </table>
 
 }}
+
 ######################################################################
 ####
 #
