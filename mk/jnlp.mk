@@ -459,21 +459,22 @@ $(SIGNED_DIR):
 	fi
 
 $(KEYSTORE): 
-	"$(KEYTOOL)" -genkey \
+	if [ ! -f $(KEYSTORE) ]; then \
+	   "$(KEYTOOL)" -genkey \
 		-dname $(KEYDNAME) \
 		-keystore $(KEYSTORE) \
 		-alias $(KEYALIAS) \
 		$(STOREPASSWORD) \
-		$(KEYPASSWORD)
-	"$(KEYTOOL)" -selfcert \
+		$(KEYPASSWORD); \
+	   "$(KEYTOOL)" -selfcert \
 		-keystore $(KEYSTORE) \
 		-alias $(KEYALIAS) \
 		$(STOREPASSWORD) \
-		$(KEYPASSWORD)
-	"$(KEYTOOL)" -list \
+		$(KEYPASSWORD); \
+	   "$(KEYTOOL)" -list \
 		-keystore $(KEYSTORE) \
-		$(STOREPASSWORD)
-
+		$(STOREPASSWORD); \
+	fi
 
 # Web Start: DSP version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
@@ -661,6 +662,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergil.jnlp.in > $@
+	ls -l $@
 	if [ ! -f $(SIGNED_DIR)/$(FULL_MAIN_JAR) ]; then \
 		echo "$(SIGNED_DIR)$(FULL_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
@@ -670,11 +672,13 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	fi
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
+	ls -l $@
 	"$(MKJNLP)" $@ \
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(SIGNED_DIR) \
 		$(FULL_MAIN_JAR) \
 		$(FULL_JNLP_JARS)
+	ls -l $@
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
@@ -684,11 +688,13 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(FULL_MAIN_JAR)`; \
 	cp -p $(FULL_MAIN_JAR) `dirname $(SIGNED_DIR)/$(FULL_MAIN_JAR)`; \
+	ls -l $@
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
 		$(SIGNED_DIR)/$(FULL_MAIN_JAR) $(KEYALIAS)
+	ls -l $@
 
 
 # We first copy the jars, then sign them so as to avoid
@@ -724,7 +730,7 @@ sign_jar:
 
 JAR_DIST_DIR = jar_dist
 
-$(JAR_DIST_DIR):
+$(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)
 	if [ ! -d $(JAR_DIST_DIR) ]; then \
 		mkdir -p $(JAR_DIST_DIR); \
 	fi
@@ -818,11 +824,12 @@ jnlp_verify:
 	done;
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII4.0/jnlp-4.0-beta
-DIST_DIR = /vol/ptolemy/pt0/ptweb/$(DIST_BASE)
+DIST_BASE = ptolemyII/ptII6.0/jnlp-6.0.alpha
+DIST_DIR = /export/home/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
-	ptolemy/configs/hyvisual/hyvisualPlanet.gif
+	ptolemy/configs/hyvisual/hyvisualPlanet.gif \
+
 KEYSTORE2=/users/ptII/adm/certs/ptkeystore
 KEYALIAS2=ptolemy
 # make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
@@ -838,8 +845,23 @@ jnlp_dist_1:
 jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
-		ssh bennett "cd $(DIST_DIR); tar -xpf -"
+		ssh bennett "cd $(DIST_DIR); gtar -xvpf -"
 	scp doc/webStartHelp.htm bennett:$(DIST_DIR)
+
+# Used to update gr and codeDoc.jar
+DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII6.0/ptII6.0.alpha
+update_gr_codeDoc:
+	scp ptolemy/domains/gr/gr.jar bennett:$(DIST_JAR)/ptolemy/domains/gr
+	ssh bennett "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-6.0.alpha/signed/doc/codeDoc.jar"
+
+APPLET_FILES_TO_BE_UPDATED = \
+	$(CODEGEN_DOMAIN_JARS) \
+	ptolemy/vergil/vergilApplet.jar \
+	ptolemy/gui/demo/*.class
+
+update_applet_files:
+	tar -cf - $(APPLET_FILES_TO_BE_UPDATED) | ssh bennett "cd $(DIST_JAR); gtar -xvf -"
+	ssh bennett "cd $(DIST_JAR)/doc; jar -xf codeDoc.jar; mv doc/codeDoc .; rmdir doc"
 
 #make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
 
