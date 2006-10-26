@@ -255,12 +255,20 @@ Then check out the release branch  with
 <pre>
 cd ~/src
 cvs co -r rel-6-0-alpha ptII
-mv ptII ptII6-0-alpha
+mv ptII ptII6.0.alpha
+
 </pre>
 <I>Note that you should avoid dots in the tag name</I>
 <li> Update the version numbers, see
 <code>$PTII/makefile</code> and <code>$PTII/ptolemy/plot/makefile</code>.
 
+<li> Remove files that are not to be shipped from the release:
+<pre>
+cd ptII6.0.alpha
+export PTII `pwd`
+./configure
+make cvs_delete_clean_shipping
+</pre>
 <li> The nightly build uses a makefile in ~ptII/adm (not shipped)
 to build the release.  Copy the most recent makefile and
 set up a new tree for the release tree.
@@ -269,24 +277,26 @@ set up a new tree for the release tree.
 <li> We build a separate src.tar.gz file under Unix so that the line
 endings are correct. 
 <pre>
-cvs co -r rel-6-0-alpha ptII
-mv ptII ptII6.0-alpha
-cd ptII5.1-alpha
+cvs -D :ext:source:/home/cvs co -r rel-6-0-alpha ptII
+mv ptII ptII6.0.alpha
+cd ptII6.0.alpha
 setenv PTII `pwd`
 cvs update -P -d
+./configure
+cd bin; make
 cd $PTII/adm/gen-6.0
-make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar clean all src.jar fortytwo_test
+make USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.alpha PTIIADM=/tmp/cxh/ptII6.0.alpha/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar clean all src.jar fortytwo_test
 
 </pre>
 The resulting file with the .class files gets copied to the website
 and untar'd.  Note that this does not require Java 3D on the build machine.
 Java 3D is needed for the applets, we copy the jars over later.
 <pre>
-make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar update_ftp
+make USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.alpha PTIIADM=/tmp/cxh/ptII6.0.alpha/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar update_ftp
 </pre>
 or
 <pre>
-make USER=cxh PTIIHOME=/tmp/ptII5.1-alpha PTIIADM=/tmp/ptII6.0-alpha/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar update_ftp
+make USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.alpha PTIIADM=/tmp/ptII6.0.alpha/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar update_ftp
 </pre>
 <ol>
 <li> Fix the links to ptplot downloads:
@@ -306,17 +316,17 @@ ln -s ../../../../../../java/ptplot5.6-alpha/ptolemy/plot/doc/download .
 
 <li> We build the webstart jar files under Windows
 <pre>
-cvs co -r rel-6-0-alpha ptII
+cvs -d :ext:source:/home/cvs co -r rel-6-0-alpha ptII
 cvs update -P -d
-mv ptII ptII6.0-alpha
-cd ptII6.0-alpha
-export PTII=c:/src/ptII6.0-alpha
+mv ptII ptII6.0.alpha
+cd ptII6.0.alpha
+export PTII=c:/tmp/cxh/ptII6.0.alpha
 
 <I>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime</I>
 <I>Use an older javac so that the .class files are compatible.  For
 example,  use java 1.4.x so that java 1.4.x and 1.5.x can use the
 .class files.</i> 
-
+<pre>
 export PATH=/cygdrive/c/j2sdk1.4.2_12/bin:${PATH}
 java -version
 ./configure
@@ -324,9 +334,17 @@ make clean fast install &gt;&amp; make.out
 
 <I>Copy <CODE>~ptII/adm/certs/ptkeystore</CODE> to $PTII.  Note you will
 need access to the ptII account on bennett </I>
+
 make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
 </pre>
 <I>xxx</I> is the ptkeystore password.
+
+<li>Create the webstart and installer files.
+<pre>
+cd $PTII
+make jar_dist
+</pre>
+Look for missing jar files in the output.
 
 <li> Create the src.jar file: 
 <pre>
