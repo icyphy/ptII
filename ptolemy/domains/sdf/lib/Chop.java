@@ -1,6 +1,6 @@
 /* Chop an input sequence and construct from it a new output sequence.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -309,7 +309,7 @@ public class Chop extends SDFTransformer {
 
     /** Override the base class to ensure that the past buffer
      *  gets initialized.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
