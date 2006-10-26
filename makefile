@@ -216,8 +216,8 @@ cleanDerivedJavaFiles:
 	rm -rf vendors apps
 	rm -rf ptolemy/domains/ct/demo/Corba/util/*.java
 
-clean_shipping:
-	rm -rf com/microstar/xml/SAXDriver.* \
+CLEAN_SHIPPING_FILES = \
+		com/microstar/xml/SAXDriver.* \
 		diva/build.xml \
 		diva/canvas/tutorial/doc-files \
 		doc/img/PtolemyIICD.ec3 \
@@ -266,6 +266,17 @@ clean_shipping:
 		ptolemy/moml/filter/test/testNamedObjs.txt \
 		ptolemy/ptalon \
 		ptolemy/ptp
+
+clean_shipping:
+	rm -rf $(CLEAN_SHIPPING_FILES)
+
+cvs_delete_clean_shipping:
+	for files in $(CLEAN_SHIPPING_FILES); do \
+		if [ -e $$files ]; then \
+			cvs delete -f $$files; \
+	        fi \
+	done 
+
 
 # Include rules to build Web Start JNLP files
 include $(ROOT)/mk/jnlp.mk
