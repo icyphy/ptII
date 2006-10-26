@@ -58,8 +58,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.Documentation;
+import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.StreamErrorHandler;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -671,17 +673,27 @@ public class MoMLApplication implements ExecutionListener {
                                 // in the old configuration being removed, which exits the app.
                                 configuration = _configuration;
                             } else {
-                                configuration = readConfiguration(specificationURL);
-                            }
+				ErrorHandler errorHandler = MoMLParser.getErrorHandler();
 
-                            if ((configuration != null)
-                                    && (configuration.getAttribute("_doc") != null)
-                                    && configuration.getAttribute("_doc") instanceof Documentation) {
-                                Documentation doc = (Documentation) configuration
-                                        .getAttribute("_doc");
-                                result.append("\t\t" + doc.getValueAsString()
-                                        + "\n");
-                                printDefaultConfigurationMessage = false;
+				// Read the configuration. If there is an
+				// error, ignore the error, but don't print
+				// usage for that configuration
+				try {
+				    MoMLParser.setErrorHandler(new IgnoreErrorHandler());
+				    configuration = readConfiguration(specificationURL);
+				} finally {
+				    MoMLParser.setErrorHandler(errorHandler);
+				}
+
+				if ((configuration != null)
+				    && (configuration.getAttribute("_doc") != null)
+				    && configuration.getAttribute("_doc") instanceof Documentation) {
+				    Documentation doc = (Documentation) configuration
+					.getAttribute("_doc");
+				    result.append("\t\t" + doc.getValueAsString()
+						  + "\n");
+				    printDefaultConfigurationMessage = false;
+				}
                             }
                         }
                     } catch (Exception ex) {
@@ -1152,6 +1164,32 @@ public class MoMLApplication implements ExecutionListener {
 
             return false;
         }
+    }
+
+    /**
+       Error Handler that ignore errors.
+
+    */
+    public class IgnoreErrorHandler implements ErrorHandler {
+	///////////////////////////////////////////////////////////////////
+	////                         public methods                    ////
+
+	/** Enable or disable skipping of errors.  This method does nothing.
+	 *  @param enable True to enable skipping, false to disable.
+	 */
+	public void enableErrorSkipping(boolean enable) {
+	}
+
+	/** Ignore the error.
+	 *  @param element The XML element that triggered the error.
+	 *  @param context The container object for the element.
+	 *  @param exception The exception that was thrown.
+	 *  @return CONTINUE to request skipping this element.
+	 */
+	public int handleError(String element, NamedObj context, Throwable exception) {
+        return CONTINUE;
+	}
+
     }
 
     ///////////////////////////////////////////////////////////////////
