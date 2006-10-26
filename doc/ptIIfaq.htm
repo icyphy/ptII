@@ -69,16 +69,18 @@ This FAQ can be found at:
 <li> <a href="#ptolemy II faq: extending"><b>5. Extending Ptolemy II</b></a>
 	<menu>
 	<li> <a href="#Adding actors"><b>5.1 How do I add an actor?</b></a>
-	<li> <a href="#AddAType"><b>5.2 How do I add a type?</b></a>
-	<li> <a href="#PolymorphicActors"><b>5.3 What makes an actor domain polymorphic?</b></a>
+	<li> <a href="#AddingAConfiguration"><b>5.2 How do I add a configuration?</b></a>
 
-	<li> <a href="#Interfacing to C/C++"><b>5.4 How do I interface to C/C++</b></a>
+	<li> <a href="#AddAType"><b>5.3 How do I add a type?</b></a>
+	<li> <a href="#PolymorphicActors"><b>5.4 What makes an actor domain polymorphic?</b></a>
 
-	<li> <a href="#Customizing the GUI"><b>5.5 How do I customize the GUI?</b></a>
-	<li> <a href="#MoML"><b>5.6 What file format are the models stored in?</b></a>
-	<li> <a href="#Scripting"><b>5.7 Is there a scripting interface to Ptolemy II?</b></a>
-	<li> <a href="#CodeGen"><b>5.8 What about Code Generation?</b></a>
-	<li> <a href="#Contributions"><b>5.9 Does the Ptolemy project take software contributions?</b></a>
+	<li> <a href="#Interfacing to C/C++"><b>5.5 How do I interface to C/C++</b></a>
+
+	<li> <a href="#Customizing the GUI"><b>5.6 How do I customize the GUI?</b></a>
+	<li> <a href="#MoML"><b>5.7 What file format are the models stored in?</b></a>
+	<li> <a href="#Scripting"><b>5.8 Is there a scripting interface to Ptolemy II?</b></a>
+	<li> <a href="#CodeGen"><b>5.9 What about Code Generation?</b></a>
+	<li> <a href="#Contributions"><b>5.10 Does the Ptolemy project take software contributions?</b></a>
 	</menu>
 
 </menu>
@@ -256,7 +258,7 @@ and for hierarchical Giotto models.
 </menu>
  <p>For more information about the current status of code generation in
 Ptolemy II, see
-<a href="#CodeGen"><b>5.8 What about Code Generation?</b></a>
+<a href="#CodeGen"><b>5.9 What about Code Generation?</b></a>
  </p>
 
 <p>Various people have made efforts to use a different front end with
@@ -617,6 +619,7 @@ java -classpath ".;./ptolemy/ptsupport.jar;\
  ptolemy.vergil.VergilApplication
 </pre>
 
+See also <a href="#AddingAConfiguration"><b>5.2 How do I add a configuration?</b></a>
 
 <dt>
 <a name="stacktrace"><b>4.2 Ptolemy II is hanging, how do I get a stack trace?</b></a>
@@ -772,8 +775,45 @@ property("ptolemy.ptII.dir") + "/ptolemy/actor/lib/test/auto/FileWriter1Output.t
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/index.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/</code></a>
 
 
+<dt> <a name="AddingAConfiguration"><b>5.2 How do I add a configuration?</b></a>
+<dd> When the <CODE>$PTII/bin/vergil</CODE> command is invoked, it reads
+the Ptolemy II onfiguration from
+<CODE>$PTII/ptolemy/configs/full/configuration.xml</CODE>.  Other configurations
+may be read by passing command line options to <CODE>vergil</CODE>. For example,
+<CODE>$PTII/bin/vergil -ptiny</CODE> invokes the "Ptiny" version of Ptolemy II,
+which is a subset of the full set of actors and directors.  To see a complete
+set of configurations, run <CODE>$PTII/bin/vergil -help</CODE>.
+ <p>To add a configuration, start with a configuration that is close 
+to what you want, copy the files from that configuration and modify them.
+ <p>For example, we create "mypt" from the full configuration:
+<ol>
+<li> Copy the full configuration
+<pre>
+cd $PTII/ptolemy/configs
+cp -r full mypt
+</pre>
 
-<dt> <a name="AddAType"><b>5.2 How do I add a type?</b></a>
+<li> Edit the <CODE>doc</CODE> attribute in
+<CODE>mypt/configuration.xml</CODE>
+and <CODE>mypt/intro.htm</CODE> and <CODE>mypt/welcomeWindow.htm</CODE>
+to describe the configuration
+
+<li> Update the <CODE>mypt/makefile</CODE>
+
+
+<li> Run your configuration with
+<CODE>vergil -mypt</CODE>
+
+
+<li> <CODE>full/configuration.xml</CODE> and <CODE>mypt/configuration.xml</CODE>
+merely read in <CODE>$PTII/ptolemy/configs/defaultConfiguration.xml</CODE>
+See the other configurations for ways to build smaller configurations.
+</ol>
+
+ <p>See also <a href="#invoking Ptolemy II?"><b>4.1 How do I invoke Ptolemy II?</b>
+
+
+<dt> <a name="AddAType"><b>5.3 How do I add a type?</b></a>
 <dd> The Ptolemy Type system is covered in a chapter in "Volume 2:
 Ptolemy II Software Architecture," which can be found via
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm</CODE></a>
@@ -790,7 +830,7 @@ system will check types for you.  For examples, see
 <CODE>$PTII/ptolemy/actor/lib/Security/KeyToken.java</CODE>.
 
 	
-<dt> <a name="PolymorphicActors"><b>5.3 What makes an actor domain polymorphic?</b></a>
+<dt> <a name="PolymorphicActors"><b>5.4 What makes an actor domain polymorphic?</b></a>
 <dd>
 As for making actors domain polymorphic, the general rule we follow is:
 
@@ -818,7 +858,7 @@ select configure).
 in postfire(). This rule only matters in CT because CT may 
 have to backtrack time
 
-<dt> <a name="Interfacing to C/C++"><b>5.4 How do I interface to C/C++</b></a>
+<dt> <a name="Interfacing to C/C++"><b>5.5 How do I interface to C/C++</b></a>
 <dd>
 Ptolemy II is written in Java, and Java has the Java Native Interface
 (JNI), see
@@ -841,7 +881,7 @@ that JNI in truly platform independent manner so that the same
 code will work on multiple platforms.
 
 
-<dt> <a name="Customizing the GUI"><b>5.5 How do I customize the GUI?</b></a>
+<dt> <a name="Customizing the GUI"><b>5.6 How do I customize the GUI?</b></a>
 <dd> 
 Ptolemy II uses Diva to display block diagram editors.
  <br>Information about Diva can be found at
@@ -864,14 +904,14 @@ adds this feature with this line:
 </pre>
 
 
-<dt> <a name="MoML"><b>5.6 What file format are the models stored in?</b></a>
+<dt> <a name="MoML"><b>5.7 What file format are the models stored in?</b></a>
 <dd> Ptolemy II stores models in an XML format called MoML.
 The design doc covers MoML in detail.
  <p>The beauty of using a human readable (though verbose) file
 format is that we can use standard tools like XSLT and sed to 
 transform models.
 	
-<dt> <a name="Scripting"><b>5.7 Is there a scripting interface to Ptolemy II ?</b></a>
+<dt> <a name="Scripting"><b>5.8 Is there a scripting interface to Ptolemy II ?</b></a>
 
 <dd> The PythonScript actor includes and interface to
 <a href="http://www.jython.org/#in_browser" target="_top">Jython</a>,
@@ -895,7 +935,7 @@ and avoiding the usual edit/compile/run loop.
 
 
 
-<dt> <a name="CodeGen"><b>5.8 What about Code Generation?</b></a>
+<dt> <a name="CodeGen"><b>5.9 What about Code Generation?</b></a>
 
 <dd>Ptolemy II include a code generator developed by Stephen Neuendorffer
 that reads non-hierarchical SDF models and generates Java .class files.
@@ -974,7 +1014,7 @@ Ptolemy II 5.0, but is available via
     We do not know what (if any) plans they have for releasing
     this capability.
 
-<dt> <a name="Contributions"><b>5.9 Does the Ptolemy project take software contributions?</b></a>
+<dt> <a name="Contributions"><b>5.10 Does the Ptolemy project take software contributions?</b></a>
 <dd> Yes, the Ptolemy project has a long history of folding in software
 contributions from off site developers.
 
