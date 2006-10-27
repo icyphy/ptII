@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/codegen/kernel/typ
+ME =		ptolemy/codegen/kernel/type
 
 DIRS =
 
