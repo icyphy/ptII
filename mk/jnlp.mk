@@ -902,7 +902,7 @@ L4JC=$(L4J_DIR)/launch4jc.exe
 # .exe files to be created by Launch4J
 L4J_DOC_EXES = 		designdocv1.exe designdocv2.exe designdocv3.exe \
 				hyvisualdoc.exe visualsensedoc.exe
-L4J_PTOLEMY_EXES = 	hyvisual.exe ptiny.exe vergil.exe viptos.exe \
+L4J_PTOLEMY_EXES = 	hyvisual.exe ptiny.exe vergil.exe \
 				visualsense.exe
 L4J_PTPLOT_EXES = 	histogram.exe ptplot.exe
 
