@@ -42,6 +42,8 @@ else
        classPath="$classPath <cp>$1</cp>"
        shift
    done
+   # Add the root to the classpath so we find ptIIdesign1-intro.pdf
+   classPath="$classPath <cp>$ROOT</cp>"
 fi
 cat <<EOF
 <launch4jConfig>
