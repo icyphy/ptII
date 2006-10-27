@@ -11,7 +11,8 @@
 	     paths that start with ptolemy/ so that we can find these
 	     files if they are in a jar file besides the jar file that
 	     contains this file. -->
-            <input source="ptolemy/domains/continuous/lib/continuousentities.xml"/>
+	    <!-- Do not ship continuous domain in 6.0 -->
+            <!--input source="ptolemy/domains/continuous/lib/continuousentities.xml"/-->
             <input source="ptolemy/domains/ct/lib/ctentities.xml"/>
             <input source="ptolemy/domains/de/lib/deentities.xml"/>
             <input source="ptolemy/domains/pn/lib/pnentities.xml"/>
