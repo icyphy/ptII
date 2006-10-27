@@ -26,6 +26,7 @@ adm
 alljsimpletests.tcl
 alljtests.tcl
 ant
+bin/ptcg.bat
 bin/copernicus.bat
 bin/copernicusjhdl.bat
 bin/decompile.bat
@@ -113,10 +114,12 @@ lib/kepler-configs.jar
 lib/kepler-icons.jar
 lib/ptolemy.jar
 lib/ptolemy-doc.jar
+lib/ptII.properties
 lib/ptvr.jar
 mail
 make.out
 mems
+mk/ptII.mk
 nsmail
 ptjar_tmpdir
 ptolemy/PtolemyII.ptml

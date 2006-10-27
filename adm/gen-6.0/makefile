@@ -341,6 +341,7 @@ $(PTII_SRC): $(PTII_FULL)
 # Files to be removed from all source distributions
 PTII_SRC_TO_BE_REMOVED = \
 		META-INF \
+		bin/ptcg.bat \
 		bin/comm.policy \
 		bin/copernicus.bat \
 		bin/copernicusjhdl.bat \
