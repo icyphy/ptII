@@ -316,14 +316,15 @@ VISUALSENSE_DOCS = \
 
 
 # PTBACKTRACK_ECLPISE_PACKAGES is set by configure
-PTBACKTRACK_PACKAGES = \
-	ptolemy.backtrack \
-	ptolemy.backtrack.manual.ptolemy.domains.ct.kernel \
-	ptolemy.backtrack.manual.ptolemy.actor.lib \
-	ptolemy.backtrack.ui \
-	ptolemy.backtrack.util \
-	ptolemy.backtrack.xmlparser \
-	$(PTBACKTRACK_ECLIPSE_PACKAGES) 
+PTBACKTRACK_PACKAGES =
+#	ptolemy.backtrack \
+#	ptolemy.backtrack.manual.ptolemy.domains.ct.kernel \
+#	ptolemy.backtrack.manual.ptolemy.actor.lib \
+#	ptolemy.backtrack.ui \
+#	ptolemy.backtrack.util \
+#	ptolemy.backtrack.xmlparser \
+#	$(PTBACKTRACK_ECLIPSE_PACKAGES) 
+
 
 # Exclude ptolemy.backtrack.automatic.*, to fix these we would need
 # to modify the Eclipse transformer so that we can get comments from
