@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Classic style Codegen demos
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2006 The Regents of the University of California
+# @Copyright (c) 2006 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen
+ME =		ptolemy/codegen/demo
 
-DIRS =		kernel c gui test demo
+DIRS =		Butterfly Ramp
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	codegen
+PTPACKAGE = 	demo
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
@@ -53,17 +53,13 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	c/c.jar \
-	demo/demo.jar \
-	gui/gui.jar \
-	kernel/kernel.jar
+	Butterfly/Butterfly.jar \
+	Ramp/Ramp.jar
 
 # Keep this list alphabetized.
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	README.html \
-	codegen.xml
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
