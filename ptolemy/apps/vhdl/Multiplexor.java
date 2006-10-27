@@ -28,9 +28,8 @@
  */
 package ptolemy.apps.vhdl;
 
-import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.IntToken;
+import ptolemy.data.FixToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -55,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class Multiplexor extends Transformer {
+public class Multiplexor extends SynchronousFixPointTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,13 +67,10 @@ public class Multiplexor extends Transformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
-        input.setTypeEquals(BaseType.FIX);
-        input.setMultiport(true);
-        
-        output.setTypeEquals(BaseType.FIX);
+        input.setMultiport(true);        
         
         select = new TypedIOPort(this,"select",true,false);
-        select.setTypeEquals(BaseType.INT);
+        select.setTypeEquals(BaseType.FIX);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -104,7 +100,7 @@ public class Multiplexor extends Transformer {
     public void fire() throws IllegalActionException {
         super.fire();
         if (select.hasToken(0)) {
-            _channel = ((IntToken) select.get(0)).intValue();
+            _channel = ((FixToken) select.get(0)).fixValue().getUnscaledValue().intValue();
         }
 
         boolean inRange = false;

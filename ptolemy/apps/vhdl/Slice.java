@@ -32,13 +32,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import ptolemy.actor.lib.Transformer;
 import ptolemy.data.FixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -66,7 +64,7 @@ import ptolemy.math.Rounding;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class Slice extends Transformer {
+public class Slice extends SynchronousFixPointTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -82,15 +80,10 @@ public class Slice extends Transformer {
         width = new Parameter(this, "width");
         start = new Parameter(this, "start");
         end = new Parameter(this, "end");
-        binaryPoint = new Parameter(this, "outputBinaryPoint");
-        binaryPoint.setExpression("0");
         lsb = new StringParameter(this, "lsb");
         lsb.setExpression("LSB");
         lsb.addChoice("LSB");
         lsb.addChoice("MSB");
-
-        input.setTypeEquals(BaseType.FIX);
-        output.setTypeEquals(BaseType.FIX);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -103,8 +96,6 @@ public class Slice extends Transformer {
     public Parameter end;
 
     public Parameter lsb;
-
-    public Parameter binaryPoint;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

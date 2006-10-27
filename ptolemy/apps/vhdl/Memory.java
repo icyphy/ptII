@@ -29,7 +29,6 @@
 package ptolemy.apps.vhdl;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Transformer;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.FixToken;
 import ptolemy.data.ScalarToken;
@@ -46,7 +45,7 @@ import ptolemy.math.Precision;
 import ptolemy.math.Rounding;
 
 //////////////////////////////////////////////////////////////////////////
-//// Concat
+//// Memory
 
 /**
  Produce an output token on each firing with a FixPoint value that is
@@ -61,7 +60,7 @@ import ptolemy.math.Rounding;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class Memory extends Transformer {
+public class Memory extends FixPointTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -74,18 +73,16 @@ public class Memory extends Transformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        binaryPoint = new Parameter(this, "outputBinaryPoint");
-        binaryPoint.setExpression("0");
-
         capacity = new Parameter(this, "capacity");
         capacity.setExpression("1");
 
         dataWidth = new Parameter(this, "dataWidth");
         dataWidth.setExpression("32");
 
+        writeEnable = new TypedIOPort(this, "writeEnable", true, false);
         writeEnable.setTypeEquals(BaseType.BOOLEAN);
-        input.setTypeEquals(BaseType.FIX);
-        output.setTypeEquals(BaseType.FIX);
+
+        address = new TypedIOPort(this, "address", true, false);
         address.setTypeEquals(BaseType.FIX);
     }
 
@@ -99,8 +96,6 @@ public class Memory extends Transformer {
     /** The bit width of the input and output ports.
      */
     public Parameter dataWidth;
-
-    public Parameter binaryPoint;
 
     /** The control port for signaling write.
      */

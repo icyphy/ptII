@@ -5,19 +5,12 @@
   <configure>
     <?moml
       <group>
-  <doc>Arithmetic and mathematical functions</doc>
+		  <doc>VHDL fixpoint hardwares</doc>
   
-  <entity name="Concat" class="ptolemy.apps.vhdl.Concat">
-  </entity>  
-  
-  <entity name="Memory" class="ptolemy.apps.vhdl.Memory">
-  </entity>
-  
-  <entity name="Multiplexor" class="ptolemy.apps.vhdl.Multiplexor">
-  </entity>
-  
-  <entity name="Slice" class="ptolemy.apps.vhdl.Slice">
-  </entity>
+		  <entity name="Concat" class="ptolemy.apps.vhdl.Concat"></entity>    
+		  <entity name="Memory" class="ptolemy.apps.vhdl.Memory"></entity>
+		  <entity name="Multiplexor" class="ptolemy.apps.vhdl.Multiplexor"></entity>
+		  <entity name="Slice" class="ptolemy.apps.vhdl.Slice"></entity>
 
       </group>
     ?>

@@ -31,7 +31,6 @@ package ptolemy.apps.vhdl;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import ptolemy.actor.lib.Transformer;
 import ptolemy.data.FixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -61,7 +60,7 @@ import ptolemy.math.Rounding;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class Concat extends Transformer {
+public class Concat extends SynchronousFixPointTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -74,18 +73,8 @@ public class Concat extends Transformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        binaryPoint = new Parameter(this, "outputBinaryPoint");
-        binaryPoint.setExpression("0");
-
-        input.setTypeEquals(BaseType.FIX);
         input.setMultiport(true);
-        output.setTypeEquals(BaseType.FIX);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    public Parameter binaryPoint;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
