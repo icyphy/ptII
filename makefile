@@ -274,6 +274,7 @@ cvs_delete_clean_shipping:
 	for files in $(CLEAN_SHIPPING_FILES); do \
 		if [ -e $$files ]; then \
 			cvs delete -f $$files; \
+			cvs commit -m "Removed from $(PTVERSION)" $$file; \
 	        fi \
 	done 
 

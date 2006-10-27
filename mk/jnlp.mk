@@ -700,7 +700,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 # We first copy the jars, then sign them so as to avoid
 # problems with cvs and applets.
 jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
-jnlp_sign1: $(SIGNED_DIR)
+jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS)
 	set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
 		if [ ! -f $$x ]; then \
@@ -824,7 +824,7 @@ jnlp_verify:
 	done;
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII6.0/jnlp-6.0.alpha
+DIST_BASE = ptolemyII/ptII6.0/jnlp-$(PTVERSION)
 DIST_DIR = /export/home/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
@@ -849,10 +849,10 @@ jnlp_dist_update:
 	scp doc/webStartHelp.htm bennett:$(DIST_DIR)
 
 # Used to update gr and codeDoc.jar
-DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII6.0/ptII6.0.alpha
+DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII6.0/$(PTVERSION)
 update_gr_codeDoc:
 	scp ptolemy/domains/gr/gr.jar bennett:$(DIST_JAR)/ptolemy/domains/gr
-	ssh bennett "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-6.0.alpha/signed/doc/codeDoc.jar"
+	ssh bennett "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-$(PTVERSION)/signed/doc/codeDoc.jar"
 
 APPLET_FILES_TO_BE_UPDATED = \
 	$(CODEGEN_DOMAIN_JARS) \

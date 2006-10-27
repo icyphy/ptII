@@ -1,3 +1,0 @@
-ptolemy.actor.lib.Sinewave
-ptolemy.actor.lib.MultiplyDivide
-ptolemy.actor.lib.gui.SequencePlotter
