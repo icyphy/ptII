@@ -1,7 +1,0 @@
-IterativeParallel is {
-	actor repeater;
-	parameter n;
-	for i initially [[ 1 ]] [[ i <= n ]] {
-		repeater();
-	} next [[ i + 1 ]]
-}

@@ -1,8 +1,0 @@
-NamingTest is {
-	parameter foo;
-	actor k = ptolemy.actor.lib.Scale;
-	inport a[[1]];
-	relation r[[2]];
-	parameter j[[foo]];
-	k( input := a[[1]] );
-}

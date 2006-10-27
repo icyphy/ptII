@@ -1,6 +1,0 @@
-Combine is {
-	actor a;
-	actor b;
-	a();
-	b();
-}

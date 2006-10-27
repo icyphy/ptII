@@ -1,9 +1,0 @@
-Link is {
-	actor a;
-	actor b;
-	inport input;
-	outport output;
-	relation r;
-	a(input := input, output := r);
-	b(input := r, output := output);
-}
