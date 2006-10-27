@@ -99,7 +99,6 @@ public class InterfaceAutomatonTransition extends Transition {
         preemptive.setVisibility(Settable.NONE);
         reset.setVisibility(Settable.NONE);
         guardExpression.setVisibility(Settable.NONE);
-        triggerExpression.setVisibility(Settable.NONE);
     }
 
     ///////////////////////////////////////////////////////////////////
