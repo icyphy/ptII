@@ -106,6 +106,7 @@ doc/img/*.psd
 java.hprof.txt
 jsdatabase
 jni/launcher/launcher.exe
+jni/launcher/launcher
 jni/test/jni
 junk
 lib/cachedir
