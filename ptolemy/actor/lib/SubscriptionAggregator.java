@@ -196,6 +196,7 @@ public class SubscriptionAggregator extends Subscriber {
             director.invalidateSchedule();
             director.invalidateResolvedTypes();
         }
+        _updatedLinks = true;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -188,6 +188,12 @@ public class Subscriber extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+        // If this was created by instantiating a container class,
+        // then the links would not have been updated when setContainer()
+        // was called, so we must do it now.
+        if (!_updatedLinks) {
+            _updateLinks();
+        }
         int width = input.getWidth();
         if (width == 0) {
             throw new IllegalActionException(this,
@@ -212,6 +218,9 @@ public class Subscriber extends TypedAtomicActor {
             // not create any links.  The links should only exist
             // within instances. Otherwise, we could end up creating
             // a link between a class definition and an instance.
+            // Note that if we are within an instantiate of a
+            // containing class, then we will not update links
+            // because this is (temporarily) within a class definition.
             if (!isWithinClassDefinition()) {
                 _updateLinks();
             }
@@ -248,6 +257,7 @@ public class Subscriber extends TypedAtomicActor {
             director.invalidateSchedule();
             director.invalidateResolvedTypes();
         }
+        _updatedLinks = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -255,6 +265,9 @@ public class Subscriber extends TypedAtomicActor {
 
     /** Cached channel name. */
     protected String _channel;
+    
+    /** An indicator that _updateLinks has been called at least once. */
+    protected boolean _updatedLinks = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
