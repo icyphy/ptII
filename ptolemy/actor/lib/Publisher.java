@@ -195,6 +195,21 @@ public class Publisher extends TypedAtomicActor {
         }
     }
 
+    /** Override the base class to ensure that links to subscribers
+     *  have been updated.
+     *  @exception IllegalActionException If there is already a publisher
+     *   publishing on the same channel.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        // If this was created by instantiating a container class,
+        // then the links would not have been updated when setContainer()
+        // was called, so we must do it now.
+        if (!_updatedLinks) {
+            _updateLinks();
+        }
+    }
+
     /** Override the base class to create an associated relation,
      *  and to remove any previous relation.
      *  @param container The proposed container.
@@ -208,10 +223,14 @@ public class Publisher extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         if (container != getContainer()) {
             super.setContainer(container);
+            // Update the links.
             // If we are within a class definition, then we should
             // not create any links.  The links should only exist
             // within instances. Otherwise, we could end up creating
             // a link between a class definition and an instance.
+            // Note that if we are within an instantiate of a
+            // containing class, then we will not update links
+            // because this is (temporarily) within a class definition.
             if (!isWithinClassDefinition()) {
                 _updateLinks();
             }
@@ -355,6 +374,7 @@ public class Publisher extends TypedAtomicActor {
             director.invalidateSchedule();
             director.invalidateResolvedTypes();
         }
+        _updatedLinks = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -362,4 +382,7 @@ public class Publisher extends TypedAtomicActor {
 
     /** An indicator that connectionsChanged() has been called. */
     private boolean _inConnectionsChanged = false;
+    
+    /** An indicator that _updateLinks has been called at least once. */
+    private boolean _updatedLinks = false;
 }
