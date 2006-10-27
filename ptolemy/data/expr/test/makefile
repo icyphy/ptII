@@ -61,7 +61,8 @@ JSIMPLE_TESTS = \
 	ScopeExtendingAttribute.tcl \
 	UtilityFunctions.tcl \
 	FixFunctions.tcl \
-	Variable.tcl
+	Variable.tcl \
+	XMLParser.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
