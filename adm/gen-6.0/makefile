@@ -288,7 +288,7 @@ $(PTII_SRC): $(PTII_FULL)
 		find doc -name "*.jar" -ls -exec rm {} \; ;\
 		rm -rf doc/codeDoc*; \
 		rm -rf `cat $(GENDIR)/src.ex`; \
-		echo "About to remove unneeded sources"; \
+		echo "About to remove unneeded sources from `pwd`"; \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
 		ls $(PTII_SRC_TO_BE_REMOVED); \
 		$(FINDCLEAN); \
@@ -536,6 +536,7 @@ src_jar: #$(PTII_SRC)
 	rm -f src_jar/ptII$(VERSION)/doc/design/visualsense.pdf
 	(cd src_jar/ptII$(VERSION); $(FINDCLEAN))
 	(cd src_jar/ptII$(VERSION); rm -rf `cat ../../src.ex`)
+	echo "About to remove unneeded sources from `pwd`"; \
 	(cd src_jar/ptII$(VERSION); rm -rf $(PTII_SRC_TO_BE_REMOVED))
 
 ############################################
@@ -570,6 +571,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		$(JAR) -xf ../../ptII$(VERSION).src.jar)
 
 	(cd src_jar/hyvisual$(VERSION); \
+		echo "About to remove unneeded sources from `pwd`"; \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
 		rm -rf $(HYVISUAL_SRC_TO_BE_REMOVED) thales; \
 	   touch configure; \
@@ -664,6 +666,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 	(cd src_jar/viptos$(VIPTOS_VERSION); \
 		$(JAR) -xf ../../ptII$(VERSION).src.jar)
 	(cd src_jar/viptos$(VIPTOS_VERSION); \
+		echo "About to remove unneeded sources from `pwd`"; \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
 		rm -rf $(VIPTOS_SRC_TO_BE_REMOVED) thales; \
 	   touch configure; \
