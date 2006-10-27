@@ -255,7 +255,7 @@ Then check out the release branch  with
 <pre>
 cd ~/src
 cvs co -r rel-6-0-alpha ptII
-mv ptII ptII6.0.alpha
+mv ptII ptII6.0.beta
 
 </pre>
 <I>Note that you should avoid dots in the tag name</I>
@@ -264,7 +264,7 @@ mv ptII ptII6.0.alpha
 
 <li> Remove files that are not to be shipped from the release:
 <pre>
-cd ptII6.0.alpha
+cd ptII6.0.beta
 export PTII `pwd`
 ./configure
 make cvs_delete_clean_shipping
@@ -278,21 +278,21 @@ set up a new tree for the release tree.
 endings are correct. 
 <pre>
 cvs -D :ext:source:/home/cvs co -r rel-6-0-alpha ptII
-mv ptII ptII6.0.alpha
-cd ptII6.0.alpha
+mv ptII ptII6.0.beta
+cd ptII6.0.beta
 setenv PTII `pwd`
 cvs update -P -d
 ./configure
 cd bin; make
 cd $PTII/adm/gen-6.0
-make USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.alpha PTIIADM=/tmp/cxh/ptII6.0.alpha/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar clean all src.jar fortytwo_test
+make USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.beta PTIIADM=/tmp/cxh/ptII6.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar clean all src.jar fortytwo_test
 
 </pre>
 The resulting file with the .class files gets copied to the website
 and untar'd.  Note that this does not require Java 3D on the build machine.
 Java 3D is needed for the applets, we copy the jars over later.
 <pre>
-make USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.alpha PTIIADM=/tmp/cxh/ptII6.0.alpha/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar update_ftp
+make USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.beta PTIIADM=/tmp/cxh/ptII6.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar update_ftp
 </pre>
 or
 <pre>
@@ -301,7 +301,7 @@ make USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.alpha PTIIADM=/tmp/ptII6.0.alpha/adm TAR
 <ol>
 <li> Fix the links to ptplot downloads:
 <pre>
-cd /export/home/pt0/ptweb/ptolemyII/ptII6.0/ptII6.0-alpha/ptolemy/plot
+cd /export/home/pt0/ptweb/ptolemyII/ptII6.0/ptII6.0.alpha/ptolemy/plot
 ln -s ../../../../../java/ptplot5.6/ptolemy/plot/ptplot5.6* .
 cd doc
 rm -rf download
