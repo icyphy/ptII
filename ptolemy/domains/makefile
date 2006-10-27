@@ -45,7 +45,7 @@ EXPERIMENTAL_DOMAINS = \
 # PTTINYOS_DIR is set by configure in $PTII/mk/ptII.mk to ptinyos if
 #   TinyOS is found. 
 # PTCONTINUOUS_DIR is set to continuous if we want to compile that domain.
-PTCONTINUOUS_DIR = continuous
+PTCONTINUOUS_DIR =
 DOMAINS =	ci $(PTCONTINUOUS_DIR) csp ct dde ddf de fsm pn sdf dt \
 	    giotto petrinet rendezvous \
 		$(PTPSDF_DIR) $(PTTINYOS_DIR) \
