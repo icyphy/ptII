@@ -13,7 +13,17 @@ code generator where actors have template files consisting
 of code blocks.  The code blocks are stitched together to create
 the resulting file.
 
-<h2>Simple Demo</h2>
+<ul>
+<li><a href="#Simple Demo">Simple Demo</a>
+<li><a href="#How it works">How it works</a>
+<li><a href="#Invoking the code generator by hand">Invoking the code generator by hand</a>
+<li><a href="#Macro description">Macro description</a>
+<li><a href="#Helper writer style guide">Helper writer style guide</a>
+<li><a href="#Limitations">Limitations</a>
+<li><a href="#FAQ">FAQ</a>
+<ul>
+
+<h2><a name="Simple Demo">Simple Demo</a></h2>
 <ol>
 <li>
 Open <a href="demo/Ramp/Ramp.xml"><code>$PTII/ptolemy/codegen/Demo/Ramp/Ramp.xml</code></a>
@@ -24,7 +34,7 @@ Open <a href="demo/Ramp/Ramp.xml"><code>$PTII/ptolemy/codegen/Demo/Ramp/Ramp.xml
 
 <a href="../configs/codegen/demos.htm">Other Codegen Demonstrations</a>
 
-<h2>How it works</h2>
+<h2><a name="How it works">How it works</a></h2>
 This code generator uses reflection to find helper classes that in
 turn refer to code blocks.  
 <p>For example, if a model contains <code>ptolemy.actor.lib.Ramp</code>,
@@ -105,7 +115,7 @@ the size of an array state is the length of the array.
 Returns a unique variable for the actor.
 <p>
 
-<h2>Invoking the code generator by hand</h2>
+<h2><a name="Invoking the code generator by hand">Invoking the code generator by hand</a></h2>
 Use the command below to invoke the code generator by hand:
 <pre>
 $PTII/bin/ptinvoke ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
@@ -116,10 +126,10 @@ class for you:
 $PTII/bin/ptcg $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
 </pre>
 
-<h2>Macro description</h2>
+<h2><a name="Macro description">Macro description</a></h2>
 <i>FIXME</i>
 
-<h2>Helper writer style guide</h2>
+<h2><a name="Helper writer style guide">Helper writer style guide</a></h2>
 <i>FIXME: Include details about running template generator</i>
 
 <menu>
@@ -157,7 +167,7 @@ iterates through the actors.
 </menu>
 
 
-<h2>Limitations</h2>
+<h2><a name="Limitations">Limitations</a></h2>
 This is a highly preliminary code generator facility, with many 
 limitations.  It is best viewed as a concept demonstration.
 
@@ -174,7 +184,7 @@ $PTII/bin/vergil -codegen
 
 </ul>
 
-<h2>FAQ</h2>
+<h2><a name="FAQ">FAQ</a>
 <dl>
 <dt> When in Windows, clicking on a .exe produced by the 
 code generator fails to start up.  The message is:
@@ -190,6 +200,17 @@ and adding <CODE>C:\cygwin\bin</CODE> to the path.
 <pre>
 make -f <I>Model</I>.mk CC_FLAGS=-mwindows
 </pre>
+
+<dt> Generating code results in <code>IOException: java.io.IOException: CreateProcess: make -f <i>Model</i>.mk error=2</code>
+<dl> This will happen if <code>make</code> is not in your path.
+Under Windows, you may need to install Cygwin, see the
+<a
+href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm">Ptolemy
+II Cygwin installer</a>.  Under Windows, if Cygwin is installed, then
+be sure that <code>C:\cygwin\bin</code> is in your Windows path.
+To edit your path, do <CODE>Start Menu </CODE> -&gt; <CODE>Settings</CODE> -&gt;
+<CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt;
+<CODE>Advanced</CODE> -&gt; <CODE>Environment Variables</CODE>.
 
 </dl>
 
