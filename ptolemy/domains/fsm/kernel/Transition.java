@@ -244,10 +244,6 @@ public class Transition extends ComponentRelation {
      */
     public CommitActionsAttribute setActions;
 
-    /** Attribute specifying the trigger expression.
-     */
-    public StringAttribute triggerExpression = null;
-
     /** Attribute specifying one or more names of refinements. The
      *  refinements must be instances of TypedActor and have the same
      *  container as the FSMActor containing this state, otherwise
@@ -292,14 +288,6 @@ public class Transition extends ComponentRelation {
             // _guard is the variable that does the evaluation.
             _guardParseTree = null;
             _parseTreeEvaluatorVersion = -1;
-        } else if (attribute == triggerExpression) {
-            // The guard and trigger expressions can only be evaluated at run
-            // time, because the input variables they can reference are created
-            // at run time. guardExpression and triggerExpression are string
-            // attributes used to convey expressions without being evaluated.
-            // _guard and _trigger are the variables that do the evaluation.
-            _triggerParseTree = null;
-            _parseTreeEvaluatorVersion = -1;
         } else if (attribute == refinementName) {
             _refinementVersion = -1;
         } else if ((attribute == outputActions) || (attribute == setActions)) {
@@ -339,12 +327,9 @@ public class Transition extends ComponentRelation {
         newObject.guardExpression = (StringAttribute) newObject
                 .getAttribute("guardExpression");
         newObject.preemptive = (Parameter) newObject.getAttribute("preemptive");
-        newObject.triggerExpression = (StringAttribute) newObject
-                .getAttribute("triggerExpression");
         newObject.refinementName = (StringAttribute) newObject
                 .getAttribute("refinementName");
         newObject._guardParseTree = null;
-        newObject._triggerParseTree = null;
         newObject._actionListsVersion = -1;
         newObject._choiceActionList = new LinkedList();
         newObject._commitActionList = new LinkedList();
@@ -525,15 +510,6 @@ public class Transition extends ComponentRelation {
         }
     }
 
-    /** Return the trigger expression. The trigger expression should evaluate
-     *  to a boolean value.
-     *  @return The trigger expression.
-     *  @see #setTriggerExpression
-     */
-    public String getTriggerExpression() {
-        return triggerExpression.getExpression();
-    }
-
     /** Return true if this transition is a default transition. Return false
      *  otherwise.
      *  @return True if this transition is a default transition.
@@ -590,45 +566,6 @@ public class Transition extends ComponentRelation {
         }
     }
 
-    /** Return true if the transition is triggered.
-     *  @return True if the transition is triggered.
-     *  @exception IllegalActionException If thrown when evaluating the
-     *   trigger, or the trigger is true but the guard is false.
-     */
-    public boolean isTriggered() throws IllegalActionException {
-        ParseTreeEvaluator parseTreeEvaluator = getParseTreeEvaluator();
-        FSMActor fsmActor = (FSMActor) getContainer();
-        if (_triggerParseTree == null) {
-            String expr = triggerExpression.getExpression();
-            // Parse the trigger expression.
-            PtParser parser = new PtParser();
-            _triggerParseTree = parser.generateParseTree(expr);
-        }
-        Token triggerToken = parseTreeEvaluator.evaluateParseTree(
-                _triggerParseTree, fsmActor.getPortScope());
-        boolean triggerValue = ((BooleanToken) triggerToken).booleanValue();
-
-        if (_guardParseTree == null) {
-            String expr = guardExpression.getExpression();
-
-            // Parse the guard expression.
-            PtParser parser = new PtParser();
-            _guardParseTree = parser.generateParseTree(expr);
-        }
-
-        Token guardToken = parseTreeEvaluator.evaluateParseTree(
-                _guardParseTree, fsmActor.getPortScope());
-        boolean guardValue = ((BooleanToken) guardToken).booleanValue();
-
-        if ((triggerValue == true) && (guardValue == false)) {
-            throw new IllegalActionException(this, "The trigger: "
-                    + getTriggerExpression() + " is true but the guard: "
-                    + getGuardExpression() + " is false.");
-        }
-
-        return triggerValue;
-    }
-
     /** Override the base class to ensure that the proposed container
      *  is an instance of FSMActor or null; if it is null, then
      *  remove it from the container, and also remove any refinement(s)
@@ -668,21 +605,6 @@ public class Transition extends ComponentRelation {
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Error in setting the "
                     + "guard expression of a transition.");
-        }
-    }
-
-    /** Set the trigger expression. The trigger expression should evaluate
-     *  to a boolean value.
-     *  @param expression The trigger expression.
-     *  @see #getTriggerExpression
-     */
-    public void setTriggerExpression(String expression) {
-        try {
-            triggerExpression.setExpression(expression);
-            triggerExpression.validate();
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException("Error in setting the "
-                    + "trigger expression of a transition.");
         }
     }
 
@@ -818,8 +740,6 @@ public class Transition extends ComponentRelation {
         preemptive = new Parameter(this, "preemptive");
         preemptive.setTypeEquals(BaseType.BOOLEAN);
         preemptive.setToken(BooleanToken.FALSE);
-        triggerExpression = new StringAttribute(this, "triggerExpression");
-        triggerExpression.setVisibility(Settable.NONE);
 
         // default attributes.
         defaultTransition = new Parameter(this, "defaultTransition");
@@ -889,9 +809,6 @@ public class Transition extends ComponentRelation {
 
     // Version of cached source/destination state.
     private long _stateVersion = -1;
-
-    // The parse tree for the trigger expression.
-    private ASTPtRootNode _triggerParseTree;
 
     // Cached reference to the refinement of this state.
     private TypedActor[] _refinement = null;
