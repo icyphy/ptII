@@ -226,6 +226,7 @@ ptolemy/kernel/util/UserSettable.java
 ptolemy/lib/cachedir
 ptolemy/lib/chic.jar
 ptolemy/math/filter
+ptolemy/matlab/matlabLinux.jar
 ptolemy/matlab/ptmatlab.h
 ptolemy/media/AudioQueue.java
 ptolemy/media/ByteArrayAudioQueue.java
