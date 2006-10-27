@@ -322,8 +322,17 @@ mv ptII ptII6.0.beta
 cd ptII6.0.beta
 export PTII=c:/tmp/cxh/ptII6.0.beta
 
-<I>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime</I>
-<I>Use an older javac so that the .class files are compatible.  For
+<li>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime
+<li>For alpha and beta releases, copy the user guide pdfs
+<pre>
+cp ../ptII6.0.alpha/doc/design/ptIIdesign*.pdf doc/design
+</pre>
+
+<li> Clean up the tree:
+<pre>
+make cvs_delete_clean_shipping
+</pre>
+<I>Build: Use an older javac so that the .class files are compatible.  For
 example,  use java 1.4.x so that java 1.4.x and 1.5.x can use the
 .class files.</i> 
 <pre>
@@ -358,6 +367,7 @@ make USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII6.0.beta COMPRESS=gzip TAR=tar cl
 cd $PTII
 make exes
 cd $PTII/adm/gen-<i>x.y</i>
+make TAR=tar make_izpack
 make setup
 </pre>
 
