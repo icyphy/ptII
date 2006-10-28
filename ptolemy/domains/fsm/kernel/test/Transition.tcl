@@ -49,11 +49,10 @@ test Transition-1.1 {test creating a transition} {
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
     set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
     set v0 [java::field $t0 guardExpression]
-    set v1 [java::field $t0 triggerExpression]
     set v2 [java::field $t0 preemptive]
-    list [$t0 getFullName] [$v0 getFullName] [$v1 getFullName] \
+    list [$t0 getFullName] [$v0 getFullName] \
             [$v2 getFullName]
-} {.e0.fsm.t0 .e0.fsm.t0.guardExpression .e0.fsm.t0.triggerExpression .e0.fsm.t0.preemptive}
+} {.e0.fsm.t0 .e0.fsm.t0.guardExpression .e0.fsm.t0.preemptive}
 
 test Transition-1.2 {container of a transition must be an FSMActor or null} {
     $t0 setContainer [java::null]
@@ -145,9 +144,8 @@ test Transition-3.1 {test scope of guard and trigger expressions} {
 
 test Transition-3.2 {test setting guard and trigger expression} {
     $t0 setGuardExpression "p0 > 0"
-    $t0 setTriggerExpression "p0 > 5"
-    list [$t0 getGuardExpression] [$t0 getTriggerExpression]
-} {{p0 > 0} {p0 > 5}}
+    list [$t0 getGuardExpression]
+} {{p0 > 0}}
 
 ######################################################################
 ####
