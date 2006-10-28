@@ -41,13 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 OTHER_FILES_TO_BE_JARED = \
+	applets.htm \
 	debugging.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	addinganactor.htm \
 	ant.htm \
-	applets.htm \
 	body.htm \
 	buttons.htm \
 	debugging.htm \
