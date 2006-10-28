@@ -182,7 +182,8 @@ HYBRID_SYSTEMS_ONLY0_JNLP_JARS = \
 
 HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	$(HYBRID_SYSTEMS_ONLY0_JNLP_JARS) \
-	lib/saxon8.jar
+	lib/saxon8.jar \
+	lib/saxon8-dom.jar
 
 HYBRID_SYSTEMS_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/HyVisualApplication.jar
