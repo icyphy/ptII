@@ -344,7 +344,7 @@ public class Argument extends AbstractSettableAttribute {
     /** Get the visibility of this Settable.
      *  @return Always return Settable.NONE, indicating that the user
      *  interface should not make an instance visible.   
-     *  @see #setVisibility(Visibility)
+     *  @see #setVisibility(ptolemy.kernel.util.Settable.Visibility)
      */
     public Visibility getVisibility() {
         return Settable.NONE;
