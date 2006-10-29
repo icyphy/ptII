@@ -209,6 +209,7 @@ $(PTIIDIST):
 	cp $(PTIIHOME)/.glimpse_exclude $(PTIIDIST)
 	touch $(PTIIDIST)/configure
 	# Copy the vergil script for use in the full tar file
+	(cd $(PTIIHOME)/bin; make)
 	cp $(PTIIHOME)/bin/vergil $(PTIIDIST)/bin
 	# Bump up the mod time of $PTII/mk/ptII.mk.in so that if
 	# the user runs make, then configure will run 
@@ -2403,7 +2404,16 @@ izpack:
 	"$(L4JC)" `cygpath --windows $$PWD/test_l4j.xml`
 
 # Location of Launch4J, see http://launch4j.sourceforge.net/
-L4J_DIR=c:/Program Files/Launch4j
+#L4J_DIR=c:/Program Files/Launch4j
+
+L4J_DIR=$(PTII)/vendors/launch4j
+
+L4J_TAR=launch4j-3.0.0-pre1-solaris-sparc.tgz
+$(PTII)/vendors/launch4j:
+	cd $(PTII)/vendors; \
+		wget http://easynews.dl.sourceforge.net/sourceforge/launch4j/$(L4J_TAR); \
+		$(TAR) -zxf $(L4J_TAR)
+
 
 # Launch4J console application that reads in .xml files and creates .exe files.
 L4JC=$(L4J_DIR)/launch4jc.exe
