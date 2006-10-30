@@ -34,20 +34,29 @@ office:version="1.0">
     <style:font-face style:name="Arial" svg:font-family="Arial"
     style:font-family-generic="swiss" style:font-pitch="variable"/>
     <style:font-face style:name="Verdana"
-svg:font-family="Verdana" style:font-family-generic="swiss"
-style:font-pitch="variable"/><style:font-face style:name="DejaVu Sans"
-svg:font-family="&apos;DejaVu Sans&apos;"
-style:font-family-generic="system"
-style:font-pitch="variable"/><style:font-face style:name="Lucidasans"
-svg:font-family="Lucidasans" style:font-family-generic="system"
-style:font-pitch="variable"/><style:font-face style:name="Mincho"
-svg:font-family="Mincho" style:font-family-generic="system"
-style:font-pitch="variable"/></office:font-face-decls><office:automatic-styles><style:style
-style:name="P1" style:family="paragraph"
-style:parent-style-name="FRONT"
-style:master-page-name="RESAULA_5f_15_5f_10"><style:text-properties
-fo:font-weight="bold" style:font-weight-asian="bold"
-style:font-weight-complex="bold"/></style:style><style:style
+    svg:font-family="Verdana" style:font-family-generic="swiss"
+    style:font-pitch="variable"/>
+    <style:font-face style:name="DejaVu Sans"
+    svg:font-family="&apos;DejaVu Sans&apos;"
+    style:font-family-generic="system"
+    style:font-pitch="variable"/>
+    <style:font-face style:name="Lucidasans"
+    svg:font-family="Lucidasans"
+    style:font-family-generic="system"
+    style:font-pitch="variable"/>
+    <style:font-face style:name="Mincho"
+    svg:font-family="Mincho" style:font-family-generic="system"
+    style:font-pitch="variable"/>
+  </office:font-face-decls>
+<office:automatic-styles>
+  <style:style
+    style:name="P1" style:family="paragraph"
+    style:parent-style-name="FRONT"
+    style:master-page-name="RESAULA_5f_15_5f_10">
+  <style:text-properties
+  fo:font-weight="bold" style:font-weight-asian="bold"
+  style:font-weight-complex="bold"/>
+  </style:style><style:style
 style:name="T1" style:family="text"><style:text-properties
 fo:color="#000000" fo:font-size="9.5pt" fo:language="it"
 fo:country="IT" fo:font-weight="bold" style:font-name-asian="Times New
@@ -69,6 +78,7 @@ style:name="T3" style:family="text"><style:text-properties
 fo:font-weight="bold" style:font-weight-asian="bold"
 style:font-weight-complex="bold"/></style:style>
 </office:automatic-styles>
+
 <office:body>
   <office:text>
     <office:forms form:automatic-focus="false"
