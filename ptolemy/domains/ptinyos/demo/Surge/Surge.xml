@@ -1,20 +1,20 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Surge" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-alpha">
+<entity name="Surge-WithLimitedRangeChannel" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0.beta">
     </property>
     <property name="Wireless Director" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -5.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 25, 729, 718}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 733, 718}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[507, 608]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 608]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9125925925926">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{271.2800324675324, 271.5549918831168}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{273.4715909090906, 271.5549918831168}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains 5 nodes.  Each node is running a version of Surge,&#10;with a unique nodeID which corresponds to the number in their given name.  &#10;Surge is an example application developed for TinyOS that uses MultiHop &#10;ad-hoc routing.  Each Surge node takes light readings and forwards them to &#10;a base station.  The routing protocol uses a windowed average success rate &#10;to perform link estimation, and uses it to choose its parent, to whom the node &#10;forwards all packets. The base station (the node labeled MicaBoard0) &#10;periodically sends out a beacon message so that nodes can update their &#10;position in the network if necessary.">
@@ -25,17 +25,28 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Heather Taylor">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Heather Taylor and Elaine Cheong">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 580.0]">
         </property>
     </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+    <property name="range" class="ptolemy.data.expr.Parameter" value="100.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Prior to execution MicaBoard0 &#10;must have its nodeID set to 0 &#10;within its PtinyOSDirector.">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 40.0]">
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 60.0]">
         </property>
     </property>
     <entity name="MicaBoard1" class="ptolemy.domains.wireless.kernel.WirelessComposite">
@@ -45,9 +56,9 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 180.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={580, 0, 820, 508}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={202, 25, 822, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -56,8 +67,22 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="range*2">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="range*2">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6, 0.6, 0.6, 0.4}">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 0.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
                 </property>
                 <property name="width" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
@@ -110,7 +135,7 @@
                 <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={229, 256, 822, 509}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={202, 233, 822, 510}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -118,25 +143,79 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
+            <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="nodeID">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[19.0, 20.0]">
+                </property>
+            </property>
+        </property>
+        <property name="range" class="ptolemy.data.expr.Parameter" value="range">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 275}">
+            </property>
+        </property>
+        <property name="nodeID" class="ptolemy.data.expr.Parameter" value="MicaCompositeActor::PtinyOSDirector::nodeID">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 250.0}">
+            </property>
         </property>
         <port name="packetOutPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="AtomicWirelessChannel">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 115.0}">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="packetInPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="AtomicWirelessChannel">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 110.0]">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <entity name="MicaLeds" class="ptolemy.domains.ptinyos.lib.MicaLeds">
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_ledRed" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 0.0}">
+                    </property>
+                </property>
+                <property name="_ledGreen" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
                 </property>
                 <property name="_ledYellow" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -345,13 +424,13 @@
             <link port="Bcast.StdControl" relation="relation1"/>
         </entity>
         <entity name="packetOutDisplay" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 603, 451, 201}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={571, 210, 453, 203}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 50.0}">
             </property>
         </entity>
         <entity name="packetInDisplay" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 802, 451, 201}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={571, 147, 453, 203}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 85.0]">
             </property>
@@ -390,10 +469,6 @@
         <link port="MicaCompositeActor.ledYellow" relation="relation3"/>
         <link port="packetOutDisplay.input" relation="relation4"/>
         <link port="packetInDisplay.input" relation="relation5"/>
-    </entity>
-    <entity name="AtomicWirelessChannel" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, -5.0]">
-        </property>
     </entity>
     <entity name="MicaBoard2" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
@@ -402,9 +477,9 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 385.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={580, 0, 820, 508}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={202, 25, 822, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -413,6 +488,20 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[2.0, 1.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="range*2">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="range*2">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6, 0.6, 0.6, 0.4}">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 0.0">
                 </property>
@@ -467,7 +556,7 @@
                 <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={229, 256, 822, 509}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={202, 233, 822, 510}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -475,25 +564,79 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
+            <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="nodeID">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[22.0, 17.0]">
+                </property>
+            </property>
+        </property>
+        <property name="range" class="ptolemy.data.expr.Parameter" value="range">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 295.0}">
+            </property>
+        </property>
+        <property name="nodeID" class="ptolemy.data.expr.Parameter" value="MicaCompositeActor::PtinyOSDirector::nodeID">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 260.0}">
+            </property>
         </property>
         <port name="packetOutPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="AtomicWirelessChannel">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 115.0}">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="packetInPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="AtomicWirelessChannel">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 110.0]">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <entity name="MicaLeds" class="ptolemy.domains.ptinyos.lib.MicaLeds">
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_ledRed" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 0.0}">
+                    </property>
+                </property>
+                <property name="_ledGreen" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
                 </property>
                 <property name="_ledYellow" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -702,13 +845,13 @@
             <link port="Bcast.StdControl" relation="relation1"/>
         </entity>
         <entity name="packetOutDisplay" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={498, 601, 451, 201}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={571, 336, 453, 203}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 50.0}">
             </property>
         </entity>
         <entity name="packetInDisplay" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={498, 802, 451, 201}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={571, 273, 453, 203}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 85.0]">
             </property>
@@ -748,6 +891,84 @@
         <link port="packetOutDisplay.input" relation="relation4"/>
         <link port="packetInDisplay.input" relation="relation5"/>
     </entity>
+    <entity name="SurgeVisualizer" class="ptolemy.domains.ptinyos.lib.SurgeVisualizer">
+        <property name="channelName" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
+        </property>
+        <property name="SurgeVisualizerIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-19.0, -3.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="20.0">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-22.0, 2.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-20.0">
+                </property>
+            </property>
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-18.0, -2.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="15">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="15">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{8.0, 14.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="15">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="15">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="ellipse3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{8.0, -16.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="15">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="15">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={101, 128, 822, 510}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, -5.0]">
+        </property>
+    </entity>
+    <entity name="LimitedRangeChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
+        <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range = range}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, -10.0]">
+        </property>
+    </entity>
     <entity name="MicaBoard3" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
         </property>
@@ -755,9 +976,9 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 200.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={580, 0, 820, 508}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={202, 25, 822, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -766,6 +987,20 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="range*2">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="range*2">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6, 0.6, 0.6, 0.4}">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 0.0">
                 </property>
@@ -820,7 +1055,7 @@
                 <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={229, 256, 822, 509}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={175, 233, 822, 510}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -828,25 +1063,79 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
+            <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="nodeID">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[24.0, 16.0]">
+                </property>
+            </property>
+        </property>
+        <property name="range" class="ptolemy.data.expr.Parameter" value="range">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 295.0}">
+            </property>
+        </property>
+        <property name="nodeID" class="ptolemy.data.expr.Parameter" value="MicaCompositeActor::PtinyOSDirector::nodeID">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 260.0}">
+            </property>
         </property>
         <port name="packetOutPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="AtomicWirelessChannel">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 115.0}">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="packetInPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="AtomicWirelessChannel">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 110.0]">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <entity name="MicaLeds" class="ptolemy.domains.ptinyos.lib.MicaLeds">
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_ledRed" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 0.0}">
+                    </property>
+                </property>
+                <property name="_ledGreen" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
                 </property>
                 <property name="_ledYellow" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -1055,13 +1344,13 @@
             <link port="Bcast.StdControl" relation="relation1"/>
         </entity>
         <entity name="packetOutDisplay" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={949, 601, 451, 201}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={571, 457, 453, 203}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 50.0}">
             </property>
         </entity>
         <entity name="packetInDisplay" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={949, 802, 451, 201}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={571, 396, 453, 203}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 85.0]">
             </property>
@@ -1108,9 +1397,9 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 230.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={580, 0, 820, 508}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={202, 25, 822, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -1119,6 +1408,20 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -1.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="range*2">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="range*2">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6, 0.6, 0.6, 0.4}">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 0.0">
                 </property>
@@ -1173,7 +1476,7 @@
                 <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={229, 256, 822, 509}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={202, 233, 822, 510}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -1181,25 +1484,79 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
+            <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="nodeID">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[22.0, 18.0]">
+                </property>
+            </property>
+        </property>
+        <property name="range" class="ptolemy.data.expr.Parameter" value="range">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 295.0}">
+            </property>
+        </property>
+        <property name="nodeID" class="ptolemy.data.expr.Parameter" value="MicaCompositeActor::PtinyOSDirector::nodeID">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 260.0}">
+            </property>
         </property>
         <port name="packetOutPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="AtomicWirelessChannel">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 115.0}">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="packetInPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="AtomicWirelessChannel">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 110.0]">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <entity name="MicaLeds" class="ptolemy.domains.ptinyos.lib.MicaLeds">
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_ledRed" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 0.0}">
+                    </property>
+                </property>
+                <property name="_ledGreen" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
                 </property>
                 <property name="_ledYellow" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -1408,13 +1765,13 @@
             <link port="Bcast.StdControl" relation="relation1"/>
         </entity>
         <entity name="packetOutDisplay" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 603, 451, 201}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 540, 453, 203}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 50.0}">
             </property>
         </entity>
         <entity name="packetInDisplay" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 802, 451, 201}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 476, 453, 203}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 85.0]">
             </property>
@@ -1461,9 +1818,9 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 200.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={580, 0, 820, 508}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 233, 822, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -1472,6 +1829,20 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[1.0, -1.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="range*2">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="range*2">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6, 0.6, 0.6, 0.4}">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 0.0">
                 </property>
@@ -1526,7 +1897,7 @@
                 <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={229, 256, 822, 509}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 143, 822, 510}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -1534,25 +1905,79 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
+            <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="nodeID">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[24.0, 19.0]">
+                </property>
+            </property>
+        </property>
+        <property name="range" class="ptolemy.data.expr.Parameter" value="range">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 285.0}">
+            </property>
+        </property>
+        <property name="nodeID" class="ptolemy.data.expr.Parameter" value="MicaCompositeActor::PtinyOSDirector::nodeID">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 240}">
+            </property>
         </property>
         <port name="packetOutPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="AtomicWirelessChannel">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 115.0}">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="packetInPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="AtomicWirelessChannel">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 110.0]">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <entity name="MicaLeds" class="ptolemy.domains.ptinyos.lib.MicaLeds">
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_ledRed" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 0.0}">
+                    </property>
+                </property>
+                <property name="_ledGreen" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
                 </property>
                 <property name="_ledYellow" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -1571,6 +1996,8 @@
                 </property>
                 <property name="pflags" class="ptolemy.data.expr.StringParameter" value="-I%T/lib/Route -I%T/lib/Queue -I%T/lib/Broadcast -I%T/../apps/Surge/">
                 </property>
+                <property name="isBaseStation" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="commandPort" class="ptolemy.domains.ptinyos.kernel.PtinyOSIntegerParameter" value="10584">
                 </property>
                 <property name="nodeID" class="ptolemy.domains.ptinyos.kernel.PtinyOSIntegerParameter" value="0">
@@ -1586,7 +2013,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 510.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={527, 0, 873, 682}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={149, 25, 875, 684}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[653, 574]">
             </property>
@@ -1765,13 +2192,13 @@
             <link port="Bcast.StdControl" relation="relation1"/>
         </entity>
         <entity name="packetOutDisplay" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 603, 451, 201}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={571, 87, 453, 203}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 50.0}">
             </property>
         </entity>
         <entity name="packetInDisplay" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 802, 451, 201}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={571, 25, 453, 203}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 85.0]">
             </property>
@@ -1810,9 +2237,5 @@
         <link port="MicaCompositeActor.ledYellow" relation="relation3"/>
         <link port="packetOutDisplay.input" relation="relation4"/>
         <link port="packetInDisplay.input" relation="relation5"/>
-    </entity>
-    <entity name="SurgeVisualizer" class="ptolemy.domains.ptinyos.lib.SurgeVisualizer">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, -5.0]">
-        </property>
     </entity>
 </entity>
