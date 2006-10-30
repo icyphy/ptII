@@ -97,7 +97,6 @@ JSRCS = \
 	TypedActor.java \
 	TypedAtomicActor.java \
 	TypedCompositeActor.java \
-	TypedCompositeActorWithCoSimulation.java \
 	TypedIOPort.java \
 	TypedIORelation.java \
 	TypeEvent.java \
