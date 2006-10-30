@@ -191,7 +191,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
                     super._execute();
                     LineAttribute line = (LineAttribute) getContainer()
                             .getAttribute(lineName);
-                    line.moveToFirst();
+                    line.moveToLast();
                     line.setPersistent(false);
                 } catch (Exception e) {
                     // Do nothing.
