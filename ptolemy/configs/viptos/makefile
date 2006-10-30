@@ -68,7 +68,8 @@ OTHER_FILES_TO_BE_JARED = \
 	makefile \
 	viptos.gif \
 	viptosModels.txt \
-	welcomeWindow.xml
+	welcomeWindow.xml \
+	whatsNew.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
