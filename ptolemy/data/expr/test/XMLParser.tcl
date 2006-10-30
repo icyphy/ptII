@@ -50,11 +50,16 @@ test XMLParser-1.0 {Read file that has UTF-8 chars, test from Francesco Liuzzi} 
     set inputStream [$inputURL openStream]
     set inputReader [java::new java.io.BufferedReader [java::new java.io.InputStreamReader $inputStream]]
     set inputStringBuffer [java::new StringBuffer]
-    while [java::isnull [set inputLine [$inputReader -noconvert readLine]]] {
-        inputStringBuffer append $inputLine
+    set inputLine [$inputReader -noconvert readLine]
+    while {$inputLine != [java::null]} {
+        #puts "Line: [$inputLine toString]"
+        $inputStringBuffer append "[$inputLine toString]\n"
+        set inputLine [$inputReader -noconvert readLine]
     }
-
+    $inputReader close
     set xmlParser [java::new ptolemy.data.expr.XMLParser]
+    #puts "File is\n:[$inputStringBuffer toString]"
     set parse [$xmlParser parser [$inputStringBuffer toString]]
-    list [$parse toString]
-} {}
+    set nodes [$parse getChildNodes]
+    list [$parse getXmlEncoding] [$parse getXmlStandalone] [$parse getXmlVersion] [$parse getNodeName] [$nodes getLength]
+} {UTF-8 0 1.0 #document 1}
