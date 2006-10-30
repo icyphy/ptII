@@ -82,7 +82,7 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar clean all src.jar fortytwo_test
-#make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.beta PTIIADM=/tmp/cxh/ptII6.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar clean all src.jar viptos.tar
 
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
 
@@ -636,7 +636,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 
 ###############
 # Viptos
-VIPTOS_VERSION=1.0-beta
+VIPTOS_VERSION=1.0.beta
 VIPTOS_SRC_JAR = viptos$(VIPTOS_VERSION).src.jar
 
 # The Jar file that we create.
@@ -653,8 +653,8 @@ $(VIPTOS_SRC_TAR): src_jar/viptos$(VIPTOS_VERSION)
 		$(TAR) -cvzf ../viptos$(VIPTOS_VERSION).src.tar.gz \
 		viptos$(VIPTOS_VERSION) \
 	)
-		#cp $(PTIIHOME)/doc/design/viptos.pdf \
-		#	viptos$(VIPTOS_VERSION)/doc/design/viptos.pdf; \
+	#cp $(PTIIHOME)/doc/design/viptos.pdf \
+	#	viptos$(VIPTOS_VERSION)/doc/design/viptos.pdf; \
 
 
 # The directory we jar up.
@@ -688,7 +688,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 		>> src_jar/viptos$(VIPTOS_VERSION)/README_VIPTOS.txt
 	echo "   as per ptolemy/domains/ptinyos/doc/installation.htm." \
 		>> src_jar/viptos$(VIPTOS_VERSION)/README_VIPTOS.txt
-	echo "2. Set \$PTII to this directory.  See doc/install.htm for details." \
+	echo "2. Set \$$PTII to this directory.  See doc/install.htm for details." \
 		>> src_jar/viptos$(VIPTOS_VERSION)/README_VIPTOS.txt
 	echo "3. Run     ./configure" \
 		>> src_jar/viptos$(VIPTOS_VERSION)/README_VIPTOS.txt
