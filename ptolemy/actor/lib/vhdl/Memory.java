@@ -26,7 +26,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.apps.vhdl;
+package ptolemy.actor.lib.vhdl;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;

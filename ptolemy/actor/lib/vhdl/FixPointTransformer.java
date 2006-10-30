@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.apps.vhdl;
+package ptolemy.actor.lib.vhdl;
 
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.expr.Parameter;

@@ -7,10 +7,10 @@
       <group>
 		  <doc>VHDL fixpoint hardwares</doc>
   
-		  <entity name="Concat" class="ptolemy.apps.vhdl.Concat"></entity>    
-		  <entity name="Memory" class="ptolemy.apps.vhdl.Memory"></entity>
-		  <entity name="Multiplexor" class="ptolemy.apps.vhdl.Multiplexor"></entity>
-		  <entity name="Slice" class="ptolemy.apps.vhdl.Slice"></entity>
+		  <entity name="Concat" class="ptolemy.actor.lib.vhdl.Concat"></entity>    
+		  <entity name="Memory" class="ptolemy.actor.lib.vhdl.Memory"></entity>
+		  <entity name="Multiplexor" class="ptolemy.actor.lib.vhdl.Multiplexor"></entity>
+		  <entity name="Slice" class="ptolemy.actor.lib.vhdl.Slice"></entity>
 
       </group>
     ?>
