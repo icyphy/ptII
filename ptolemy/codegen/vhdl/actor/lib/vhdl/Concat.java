@@ -26,7 +26,7 @@
 
 
  */
-package ptolemy.codegen.vhdl.actor.lib;
+package ptolemy.codegen.vhdl.actor.lib.vhdl;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -48,7 +48,7 @@ public class Concat extends VHDLCodeGeneratorHelper {
      * Construct a Concat helper.
      * @param actor the associated actor
      */
-    public Concat(ptolemy.apps.vhdl.Concat actor) {
+    public Concat(ptolemy.actor.lib.vhdl.Concat actor) {
         super(actor);
     }
 

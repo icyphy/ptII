@@ -43,8 +43,7 @@
       <configure>
         <?moml
           <group>
-            <input source="ptolemy/vhdl/vhdl.xml"/>
-            <input source="ptolemy/vhdl/test.xml"/>
+            <input source="ptolemy/codegen/vhdl/vhdl.xml"/>
           </group>
         ?>
       </configure>
