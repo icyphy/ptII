@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen
 
-DIRS =		kernel c gui test demo
+DIRS =		kernel c gui vhdl test demo
 
 # Root of the Java directory
 ROOT =		../..
@@ -56,7 +56,8 @@ PTCLASSALLJARS = \
 	c/c.jar \
 	demo/demo.jar \
 	gui/gui.jar \
-	kernel/kernel.jar
+	kernel/kernel.jar \
+	vhdl/vhdl.jar
 
 # Keep this list alphabetized.
 JSRCS =
@@ -70,7 +71,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = kernel c gui test
+MISC_FILES = kernel c gui vhdl test
 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
