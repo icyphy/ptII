@@ -687,9 +687,9 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 		>> src_jar/viptos$(VIPTOS_VERSION)/README_VIPTOS.txt
 	echo "1. Install the AVR tools, TinyOS, Nesc" \
 		>> src_jar/viptos$(VIPTOS_VERSION)/README_VIPTOS.txt
-	echo "   as per ptolemy/domains/util/nc2moml/index.htm." \
+	echo "   as per ptolemy/domains/ptinyos/doc/installation.htm." \
 		>> src_jar/viptos$(VIPTOS_VERSION)/README_VIPTOS.txt
-	echo "2. Set $$PTII to this directory.  See doc/install.htm for details." \
+	echo "2. Set \$PTII to this directory.  See doc/install.htm for details." \
 		>> src_jar/viptos$(VIPTOS_VERSION)/README_VIPTOS.txt
 	echo "3. Run     ./configure" \
 		>> src_jar/viptos$(VIPTOS_VERSION)/README_VIPTOS.txt
