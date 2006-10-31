@@ -34,7 +34,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -61,7 +60,7 @@ import ptolemy.kernel.util.Workspace;
  The range of the output is specified by two parameters, <i>minimum</i> and
  <i>maximum</i>. The type of these parameters and the output is integer.
 
- @author Xiaojun Liu
+ @author Xiaojun Liu, Gang Zhou
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (liuxj)
@@ -87,6 +86,10 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         minimum.setTypeEquals(BaseType.INT);
         maximum = new Parameter(this, "maximum", new IntToken(10));
         maximum.setTypeEquals(BaseType.INT);
+        majorTickSpacing = new Parameter(this, "majorTickSpacing", new IntToken(10));
+        majorTickSpacing.setTypeEquals(BaseType.INT);
+        minorTickSpacing = new Parameter(this, "minorTickSpacing", new IntToken(1));
+        minorTickSpacing.setTypeEquals(BaseType.INT);
 
         title = new StringAttribute(this, "title");
         title.setExpression("");
@@ -94,6 +97,9 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
 
     ///////////////////////////////////////////////////////////////////
     ////        public variables and parameters                    ////
+    
+    /** The slider that controls the output of this actor. */
+    public JSlider slider;
 
     /** The minimum value of the slider. The value must be an integer.
      *  The default value is -10.
@@ -104,10 +110,16 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      *  The default value is 10.
      */
     public Parameter maximum;
-
-    /** The slider that controls the output of this actor.
+    
+    /** The major tick spacing of the slider. The value must be an integer.
+     *  The default value is 10.
      */
-    public JSlider slider;
+    public Parameter majorTickSpacing;
+    
+    /** The minor tick spacing of the slider. The value must be an integer.
+     *  The default value is 1.
+     */
+    public Parameter minorTickSpacing;
 
     /** The title to put on top. */
     public StringAttribute title;
@@ -123,11 +135,15 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == minimum) || (attribute == maximum)) {
+        if (attribute == minimum || attribute == maximum
+                || attribute == majorTickSpacing 
+                || attribute == minorTickSpacing) {
             int min = ((IntToken) minimum.getToken()).intValue();
             int max = ((IntToken) maximum.getToken()).intValue();
+            int major = ((IntToken) majorTickSpacing.getToken()).intValue();
+            int minor = ((IntToken) minorTickSpacing.getToken()).intValue();
 
-            if ((min > max) && (slider != null)) {
+            if ((min > max)) {
                 throw new IllegalActionException(this, "The minimum value "
                         + "of the slider cannot be larger than the maximum "
                         + "value.");
@@ -136,6 +152,8 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
             if (slider != null) {
                 slider.setMaximum(max);
                 slider.setMinimum(min);
+                slider.setMajorTickSpacing(major);
+                slider.setMinorTickSpacing(minor);
             }
         } else {
             super.attributeChanged(attribute);
@@ -180,7 +198,19 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         super.initialize();
 
         if (slider == null) {
-            place(_container);
+            int min = ((IntToken) minimum.getToken()).intValue();
+            int max = ((IntToken) maximum.getToken()).intValue();
+            int major = ((IntToken) majorTickSpacing.getToken()).intValue();
+            int minor = ((IntToken) minorTickSpacing.getToken()).intValue();
+            String titleSpec = title.getExpression();  
+            
+            // place the slider in its own frame.
+            // FIXME: This probably needs to be a PtolemyFrame, when one
+            // exists, so that the close button is dealt with, etc.
+            _frame = new SliderFrame(min, max, major, minor, titleSpec);
+            _panel = (JPanel)_frame.getContentPane().getComponent(0);
+            slider = (JSlider) _panel.getComponent(0);
+            slider.addChangeListener(this);
         }
 
         if (_frame != null) {
@@ -188,8 +218,9 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
             // FIXME: So does setVisible()... But with neither one used,
             // then if the user dismisses the window, it does not reappear
             // on re-running!
-            // _frame.setVisible(true);
-            _frame.toFront();
+            _frame.pack();
+            _frame.setVisible(true);
+            // _frame.toFront();
         }
     }
 
@@ -204,53 +235,49 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      *  @param container The container into which to place the slider.
      */
     public void place(Container container) {
+        
+        _container = container;
+         
+        if (_container == null) {
+            if (_frame != null) {
+                _frame.dispose();
+            }
+
+            _frame = null;
+            _panel = null;
+            slider = null;
+            return;          
+        } 
+        
         int min = -10;
         int max = 10;
-
+        int major = 10;
+        int minor = 1;
+        String titleSpec = title.getExpression();
+        
         try {
             min = ((IntToken) minimum.getToken()).intValue();
             max = ((IntToken) maximum.getToken()).intValue();
+            major = ((IntToken) majorTickSpacing.getToken()).intValue();
+            minor = ((IntToken) minorTickSpacing.getToken()).intValue();
+            
         } catch (IllegalActionException ex) {
             // ignore
         }
-
-        _container = container;
-        slider = new JSlider(SwingConstants.HORIZONTAL, min, max, (min + max) / 2);
-        slider.addChangeListener(this);
-        _panel = new JPanel();
-        _panel.add(slider);
-
-        if (_container == null) {
-            // place the slider in its own frame.
-            // FIXME: This probably needs to be a PtolemyFrame, when one
-            // exists, so that the close button is dealt with, etc.
-            _frame = new JFrame(getFullName());
-            _frame.getContentPane().add(_panel);
-        } else {
-            _container.add(_panel);
-
-            // java.awt.Component.setBackground(color) says that
-            // if the color "parameter is null then this component
-            // will inherit the  background color of its parent."
-            //plot.setBackground(_container.getBackground());
-            // _scrollPane.setBackground(_container.getBackground());
-            _panel.setBackground(null);
-            _panel.setBorder(new EmptyBorder(10, 10, 10, 10));
-            _panel.setBorder(new LineBorder(Color.black));
-        }
-
-        String titleSpec = title.getExpression();
-
-        if (!titleSpec.trim().equals("")) {
-            _panel.setBorder(BorderFactory.createTitledBorder(titleSpec));
-        }
-
-        // try some slider configuration
-        slider.setBackground(null);
-        slider.setMajorTickSpacing(10);
-        slider.setMinorTickSpacing(1);
-        slider.setPaintTicks(true);
-        slider.setPaintLabels(true);
+        
+        _panel = SliderFrame.createSliderPanel(min, max, major, minor, titleSpec);
+        _container.add(_panel);
+            
+        // java.awt.Component.setBackground(color) says that
+        // if the color "parameter is null then this component
+        // will inherit the  background color of its parent."
+        // plot.setBackground(_container.getBackground());
+        // _scrollPane.setBackground(_container.getBackground());
+        _panel.setBackground(null);
+        _panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        _panel.setBorder(new LineBorder(Color.black));  
+        slider = (JSlider) _panel.getComponent(0);
+        slider.addChangeListener(this);        
     }
 
     /** Record the current value of the slider. This value is output in the
@@ -289,12 +316,47 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         // FIXME: Why is _val never read?
         _val = slider.getValue();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected members                   ////
-
-    /** The JPanel that contains the slider. */
-    protected JPanel _panel;
+    
+    public static class SliderFrame extends JFrame {
+        
+        public SliderFrame(int minimum, int maximum, 
+                int majorTickSpacing, int minorTickSpacing, String title) {
+            
+            JPanel panel = createSliderPanel(minimum, maximum, 
+                    majorTickSpacing, minorTickSpacing, title);
+            _slider = (JSlider) panel.getComponent(0);
+            getContentPane().add(panel);
+            pack();
+            setVisible(true);
+        }
+        
+        public static JPanel createSliderPanel(int minimum, int maximum, 
+                int majorTickSpacing, int minorTickSpacing, String title) {
+            
+            JSlider slider = new JSlider(JSlider.HORIZONTAL, 
+                    minimum, maximum, (maximum + minimum) / 2);
+            slider.setBackground(null);
+            slider.setMajorTickSpacing(majorTickSpacing);
+            slider.setMinorTickSpacing(minorTickSpacing);
+            slider.setPaintTicks(true);
+            slider.setPaintLabels(true);
+            
+            //slider.addChangeListener(this);
+            JPanel panel = new JPanel();
+            panel.add(slider);
+            if (!title.trim().equals("")) {
+                panel.setBorder(BorderFactory.createTitledBorder(title));
+            }
+          
+            return panel; 
+        }
+        
+        public int getValue() {
+            return _slider.getValue();
+        }
+        
+        private JSlider _slider;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -319,6 +381,10 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+    
+    /** The JPanel that contains the slider. */
+    private JPanel _panel;
+
     private Container _container;
 
     private int _val;
