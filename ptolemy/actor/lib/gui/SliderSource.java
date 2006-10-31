@@ -100,7 +100,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
     
     /** The slider that controls the output of this actor. */
     public JSlider slider;
-
+    
     /** The minimum value of the slider. The value must be an integer.
      *  The default value is -10.
      */
