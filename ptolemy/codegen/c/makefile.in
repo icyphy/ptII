@@ -17,5 +17,6 @@ CC_FLAGS=
 USER_CC_FLAGS =
 
 # We need -lm so we can get floor() for ftoi() 
+# We need -D__int64="long long" when invoking jni interface under cygwin
 @modelName@: @modelName@.c
-	gcc $(CC_FLAGS) $(USER_CC_FLAGS) -g @modelName@.c $(PTCGINCLUDES) -o @modelName@ -lm $(PTCGLIBRARIES)
+	gcc -D__int64="long long" $(CC_FLAGS) $(USER_CC_FLAGS) -g @modelName@.c $(PTCGINCLUDES) -o @modelName@ -lm $(PTCGLIBRARIES)
