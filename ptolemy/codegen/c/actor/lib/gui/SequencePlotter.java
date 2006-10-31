@@ -28,10 +28,14 @@
 
 package ptolemy.codegen.c.actor.lib.gui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
@@ -58,59 +62,76 @@ public class SequencePlotter extends CCodeGeneratorHelper {
     }
 
     /** Generate fire code.
-     *  The method reads in <code>writeFile</code> from SequencePlotter.c,
-     *  replaces macros with their values and appends to the given code buffer.
      *  @return The generated code.
-     *  @exception IllegalActionException If the code stream encounters an
-     *   error in processing the specified code block(s).
+     *  @exception IllegalActionException If the code stream encounters 
+     *   errors in processing the specified code blocks.
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
-        ptolemy.actor.lib.gui.SequencePlotter actor = (ptolemy.actor.lib.gui.SequencePlotter) getComponent();
+        ptolemy.actor.lib.gui.SequencePlotter actor 
+                = (ptolemy.actor.lib.gui.SequencePlotter) getComponent();       
         int width = actor.input.getWidth();
-        for (int i = 0; i < width; i++) {
-            ArrayList args = new ArrayList();
-            args.add(_annotation[i]);
-            code.append(_generateBlockCode("annotateBlock", args));
-
+        ArrayList args = new ArrayList();
+        for (int i = width - 1; i >= 0; i--) {
             args.clear();
             args.add(new Integer(i));
-            code.append(_generateBlockCode("writeFile", args));
+            code.append(_generateBlockCode("plotBlock", args));          
         }
-        code.append(_generateBlockCode("countIncrease"));
+        code.append(_generateBlockCode("updateBlock"));
 
         return code.toString();
     }
-
+    
     /** Generate initialize code.
-     *  This method reads the <code>initBlock</code> from SequencePlotter.c,
-     *  replaces macros with their values and returns the processed code string.
-     *  @return The processed code block.
-     *  @exception IllegalActionException If the code stream encounters an
-     *   error in processing the specified code block(s).
-     *  
+     *  @return The generated code.
+     *  @exception IllegalActionException If the code stream encounters 
+     *   errors in processing the specified code blocks.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        ptolemy.actor.lib.gui.SequencePlotter actor = (ptolemy.actor.lib.gui.SequencePlotter) getComponent();
-
-        // retrieve the legends.
-        String value = actor.legend.getExpression();
-        StringTokenizer tokenizer = null;
-        if ((value != null) && !value.trim().equals("")) {
-            tokenizer = new StringTokenizer(value, ",");
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateInitializeCode());
+        ptolemy.actor.lib.gui.SequencePlotter actor 
+                = (ptolemy.actor.lib.gui.SequencePlotter) getComponent();       
+        
+        // If the plot has not been created, we need to creat the plot
+        // to get the configuration.
+        if (actor.plot == null) {
+            actor.initialize();
         }
-        int width = actor.input.getWidth();
-        _annotation = new String[width];
-        for (int i = 0; i < width; i++) {
-            if (tokenizer != null && tokenizer.hasMoreTokens()) {
-                _annotation[i] = "DataSet: " + tokenizer.nextToken().trim();
-            } else {
-                _annotation[i] = "DataSet: channel " + i;
+        
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        String header = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"
+            + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
+        printWriter.write(header);
+        printWriter.write("\n<plot>\n");
+        actor.plot.writeFormat(printWriter);
+        printWriter.write("</plot>\n");
+        
+        BufferedReader reader = new BufferedReader
+                (new StringReader(stringWriter.toString()));
+        String line = null;
+        StringBuffer result = new StringBuffer();
+        try {
+            while((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line != "") {
+                    line = line.replace("\"", "\\\\\"");
+                    result.append("\"" + line + "\\\\n\"" + "\n");
+                }
             }
+        } catch (IOException ex) {
+            
         }
-        return super.generateInitializeCode();
+        
+        ArrayList args = new ArrayList();
+        args.add(result.toString());
+        code.append(_generateBlockCode("configureBlock", args));
+        
+        return code.toString();
     }
+    
 
     /** Get the header files needed by the code generated for the
      *  SequencePlotter actor.
@@ -119,12 +140,16 @@ public class SequencePlotter extends CCodeGeneratorHelper {
      *  @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
+        // FIXME: This is temporary. Only works on my machine.
+        getCodeGenerator().addInclude
+                ("-I\"C:/Program Files/Java/jdk1.5.0_06/include\"");
+        getCodeGenerator().addInclude
+                ("-I\"C:/Program Files/Java/jdk1.5.0_06/include/win32\"");
+        getCodeGenerator().addLibrary("-LC:/ptII/ptolemy/codegen/c");
+        getCodeGenerator().addLibrary("-ljvm");
+        
         Set files = new HashSet();
-        files.add("\"stdio.h\"");
+        files.add("<jni.h>");
         return files;
     }
-
-    /** The annotation to hold legends.
-     */
-    protected String[] _annotation;
 }

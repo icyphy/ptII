@@ -14,6 +14,10 @@
     jmethodID $actorSymbol(plotConstructor);
     jmethodID $actorSymbol(plotAddPoint);
     
+    //jmethodID $actorSymbol(plotSetXRange);
+    //jmethodID $actorSymbol(plotSetWrap);
+    jmethodID $actorSymbol(plotSetPointsPersistence);
+    
     jclass $actorSymbol(plotMLApplicationClass);
     jobject $actorSymbol(plotMLApplicationObject);
     jmethodID $actorSymbol(plotMLApplicationConstructor);   
@@ -43,7 +47,22 @@
             (env, $actorSymbol(plotClass), $actorSymbol(plotConstructor));
     $actorSymbol(plotAddPoint) = (*env)->GetMethodID
             (env, $actorSymbol(plotClass), "addPoint", "(IDDZ)V");
-
+            
+    //$actorSymbol(plotSetXRange) = (*env)->GetMethodID
+    //        (env, $actorSymbol(plotClass), "setXRange", "(DD)V");
+    //$actorSymbol(plotSetWrap) = (*env)->GetMethodID
+    //        (env, $actorSymbol(plotClass), "setWrap", "(Z)V");
+    $actorSymbol(plotSetPointsPersistence) = (*env)->GetMethodID
+            (env, $actorSymbol(plotClass), "setPointsPersistence", "(I)V");
+    //(*env)->CallVoidMethod(env, $actorSymbol(plotObject), 
+    //        $actorSymbol(plotSetXRange), 
+    //        $val(xInit), $val(xUnit) * $val(width) + $val(xInit));
+    //(*env)->CallVoidMethod(env, $actorSymbol(plotObject), 
+    //        $actorSymbol(plotSetWrap), JNI_TRUE);
+    (*env)->CallVoidMethod(env, $actorSymbol(plotObject), 
+            $actorSymbol(plotSetPointsPersistence), $val(persistence));  
+            
+    
     $actorSymbol(plotMLApplicationClass) = (*env)->FindClass
             (env, "ptolemy/plot/plotml/PlotMLApplication");
     $actorSymbol(plotMLApplicationConstructor) = (*env)->GetMethodID
