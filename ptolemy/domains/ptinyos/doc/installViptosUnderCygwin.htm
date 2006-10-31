@@ -22,7 +22,7 @@ and install them.
 <li> Under Windows, you will need to edit you jni_md.h file
 
  <ol>
- <li> Edit the file <code><i>jdk_root</i>>/include/win32/jni_md.h</code>,
+ <li> Edit the file <code><i>&lt;jdk_root</i>&gt;/include/win32/jni_md.h</code>,
  Where <code><i>jdk_root</i></code> is the installation root (eg.,
  <code>c:/Program Files/Java/jdk1.5.0_01</code>
  <li> Replace the segment:
@@ -57,6 +57,7 @@ PATH=/usr/local/bin:${PATH}
 	     <p>If you set your path using the System control panel, then
 	add <CODE>c:\cygwin\usr\local\bin;</CODE> to your PATH.
 	Note that you need to use backslashes here.
+
 <p>
 <li> Download the WinAVR tools:
    <ol> 
@@ -67,6 +68,25 @@ PATH=/usr/local/bin:${PATH}
                 </ol>
         
 <p>
+<li>Set the <code>PTII</code> environment variable
+        to be the location of your Viptos download.
+	Under Windows, use forward slashes.  For example
+	<code>c:/viptos</code>.  This file should be found at
+	<code>$PTII/ptolemy/domains/ptinyos/doc/installViptosUnderCygwin.htm</code>
+	<p> Under Cygwin bash, either do
+	<pre>
+	export PTII=<i>where Viptos is located</i>
+	</pre>
+	for example:
+	<pre>
+	export PTII=c:/viptos
+	</pre>
+	or use the System control panel (For details,
+	    see <a
+              href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm#settingptII">Set the value of the PTII environment variable</a>)/.
+
+<p>
+<li>To get the new environment variables start a new Cygwin shell
 <li>Make a directory into which to store the source code for
       TinyOS 1.x and nesC:
         <pre>
@@ -147,9 +167,17 @@ cvs -d:pserver:anonymous@tinyos.cvs.sourceforge.net:/cvsroot/tinyos login
 <i>Hit Enter when prompted for a password</i>
 cvs -z3 -d:pserver:anonymous@tinyos.cvs.sourceforge.net:/cvsroot/tinyos co -P tinyos-1.x
       </pre>
+     <b>OR</b>
+     <i>We've made a zipped version of the tinyos-1.x cvs repository available
+     for archival purposes.</i>
+     <ol> 
+     <li> Download 
+	  <a href="http://ptolemy.berkeley.edu/viptos/viptos1.0/tinyos-1.x-10-30-2006.zip"><code>tinyos-1.x-10-30-2006.zip</code></a>
+     <li> Unzip it in <code>$PTII/vendors/ptinyos</code>
+     </ol>
 
-        This will create a directory <code>tinyos-1.x</code>.  For more
-        information, see <a
+      Either method will create a directory <code>tinyos-1.x</code>.  For more
+        information about cvs and tinyos-1.x, see <a
         href="http://sourceforge.net/cvs/?group_id=28656#in_browser"><code>http://sourceforge.net/cvs/?group_id=28656</code></a>.
     </li>
 
@@ -182,6 +210,9 @@ cvs -z3 -d:pserver:anonymous@tinyos.cvs.sourceforge.net:/cvsroot/tinyos co -P ti
 
       </ul>
     </li>
+    <li> If you set the environment variables via the System control
+    panel, start up a new Cygwin bash shell so that you see the new
+    variables.
 
     <li> <a name="reconfigureViptos">Reconfigure Viptos</a> (or Ptolemy II) to recognize the new paths:
         <pre>
@@ -190,7 +221,11 @@ cd $PTII
         </pre>
       </li>
 
-      <p> Configure and install the TinyOS 1.x nesC tools.
+    <li> Compile:
+<pre>
+make
+</pre>
+    <li> Configure and install the TinyOS 1.x nesC tools.
       
       <pre>
 cd $TOSROOT/tools/src/ncc
