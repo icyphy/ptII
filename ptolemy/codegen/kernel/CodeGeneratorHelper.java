@@ -636,6 +636,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             return actorHelper.getBufferSize(port, channelNumber);
         }
     }
+    
+    /** Get the code generator associated with this helper class.
+     *  @return The code generator associated with this helper class.
+     */
+    public CodeGenerator getCodeGenerator() {
+        return _codeGenerator;
+    }
 
     /** Get the component associated with this helper.
      *  @return The associated component.
@@ -843,8 +850,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 attributeName);
 
         if (attribute == null) {
-            throw new IllegalActionException(container, "No attribute named: "
-                    + name);
+            attribute = container.getAttribute(attributeName);
+            if (attribute == null) {
+                throw new IllegalActionException(container, 
+                        "No attribute named: " + name);
+            }    
         }
 
         if (offset == null) {
@@ -1392,6 +1402,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             if ((currentPos > 0) && (code.charAt(currentPos - 1) == '\\')) {
                 // found "\$", do not make replacement.
+                // FIXME: This is wrong. subcode may contain other macros
+                // to be processed. 
+                // Should be result.append(processCode(subcode.substring(1)));
                 result.append(subcode);
                 currentPos = nextPos;
                 continue;
@@ -1401,7 +1414,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             macro = macro.trim();
 
             if (!CodeGenerator._macros.contains(macro)) {
-                result.append(subcode);
+                result.append(subcode.substring(0, 1));
+                result.append(processCode(subcode.substring(1)));
             } else {
                 String name = code.substring(openParenIndex + 1,
                         closeParenIndex);
