@@ -132,6 +132,22 @@ public class SequencePlotter extends CCodeGeneratorHelper {
         return code.toString();
     }
     
+    /** Generate the wrapup code. 
+     *  @return The generated wrapup code.
+     *  @exception IllegalActionException 
+     */
+    public String generateWrapupCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateWrapupCode());
+        // FIXME: this is a dumb way to leave the plot window open 
+        // when the program runs to the end. I need to figure out a
+        // better way. Or is there any?
+        code.append("char $actorSymbol(temp)[80];\n");
+        code.append("printf(\"close plot window to exit...\");\n");
+        code.append("scanf(\"%s\",$actorSymbol(temp));\n");
+        return processCode(code.toString());
+    }
+    
 
     /** Get the header files needed by the code generated for the
      *  SequencePlotter actor.
