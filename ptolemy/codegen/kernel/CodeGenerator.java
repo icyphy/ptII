@@ -930,7 +930,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
 
         if (isTopLevel()) {
-            if (((BooleanToken) compile.getToken()).booleanValue()) {
+            if (((BooleanToken) run.getToken()).booleanValue()) {
                 String command = codeDirectory.stringValue()
                         + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
                                 .stringValue().endsWith("\\")) ? "/" : "")
