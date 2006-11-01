@@ -28,13 +28,6 @@
 
 package ptolemy.codegen.c.actor.lib.gui;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.StringTokenizer;
-
-import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// SequenceScope
@@ -45,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (zgang) 
+ @Pt.ProposedRating Yellow (zgang) 
  @Pt.AcceptedRating Red (zgang)
  */
 public class SequenceScope extends SequencePlotter {

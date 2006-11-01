@@ -50,8 +50,8 @@ import ptolemy.util.StringUtilities;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.2
- @Pt.ProposedRating Red (mankit) Need to handle plot configuration info
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Yellow (zgang) 
+ @Pt.AcceptedRating Red (zgang)
  */
 public class SequencePlotter extends CCodeGeneratorHelper {
 
