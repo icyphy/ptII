@@ -1,7 +1,7 @@
-# Makefile for helper classes that match ptolemy.actor.lib classes
+# Makefile for helper classes that match ptolemy.actor.lib VHDL classes
 #
 # @Version: $Id$
-# @Author: Christopher Brooks
+# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2006 The Regents of the University of California
 # All rights reserved.
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/vhdl/actor/lib
+ME =		ptolemy/codegen/vhdl/actor/lib/vhdl
 
 DIRS =		test
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
+PTPACKAGE = 	vhdl
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 #PTCLASSALLJAR = $(PTPACKAGE).jar

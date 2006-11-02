@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/vhdl/actor/lib
 
-DIRS =		test
+DIRS =		test vhdl
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -46,19 +46,18 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	lib
-PTCLASSJAR =	$(PTPACKAGE).jar
 
-#PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
-##Include the .class files from these jars in PTCLASSALLJAR
-#PTCLASSALLJARS =
+#Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	vhdl/vhdl.jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	Concat.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	Concat.vhdl
+
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
