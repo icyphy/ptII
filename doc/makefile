@@ -388,7 +388,7 @@ ALL1_4PACKAGES = \
 	ptolemy.codegen.c.kernel \
 	ptolemy.codegen.gui \
 	ptolemy.codegen.kernel \
-	ptolemy.codegen.vhdl.actor.lib \
+	ptolemy.codegen.vhdl.actor.lib.vhdl \
 	ptolemy.codegen.vhdl.kernel \
 	ptolemy.domains.ci.kernel \
 	ptolemy.domains.ci.lib \
@@ -627,7 +627,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/codegen/c/kernel/*.java \
 			../ptolemy/codegen/gui/*.java \
 			../ptolemy/codegen/kernel/*.java \
-			../ptolemy/codegen/vhdl/actor/lib/*.java \
+			../ptolemy/codegen/vhdl/actor/lib/vhdl/*.java \
 			../ptolemy/codegen/vhdl/kernel/*.java \
 			../ptolemy/domains/ci/kernel/*.java \
 			../ptolemy/domains/ci/lib/*.java \
