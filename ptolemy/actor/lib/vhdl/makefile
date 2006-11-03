@@ -1,10 +1,10 @@
-# Makefile for Ptolemy string actors
+# Makefile for Ptolemy vhdlg actors
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2003-2005 The Regents of the University of California.
+# @Copyright (c) 2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 #                                               PT_COPYRIGHT_VERSION_2
 #                                               COPYRIGHTENDKEY
 
-ME =            ptolemy/apps/vhdl
+ME =            ptolemy/actor/lib/vhdl
 
 DIRS =		test
 
 # Root of the Java directory
-ROOT =          ../../..
+ROOT =          ../../../..
 
 CLASSPATH =     $(ROOT)
 
@@ -44,17 +44,17 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE =     vhdl
-PTDIST =        $(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	FixPointTransformer \
-	SynchronousFixPointTransformer \
 	Concat.java \
-	Slice.java \
+	FixPointTransformer.java \
 	Memory.java \
 	Multiplexor.java \
+	Slice.java \
+	SynchronousFixPointTransformer.java
+
 
 OTHER_FILES_TO_BE_JARED = \
 	vhdl.xml
