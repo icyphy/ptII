@@ -1165,6 +1165,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/python \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/security \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/string \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/vhdl \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/xslt \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/util \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/xmlparser \

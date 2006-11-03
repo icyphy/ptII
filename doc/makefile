@@ -240,6 +240,7 @@ HYVISUALPACKAGES = \
 	ptolemy.actor.lib.python \
 	ptolemy.actor.lib.security \
 	ptolemy.actor.lib.string \
+	ptolemy.actor.lib.vhdl \
 	ptolemy.actor.lib.xslt \
 	ptolemy.actor.parameters \
 	ptolemy.domains.continuous.kernel \
@@ -605,6 +606,8 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/lib/python/*.java \
 			../ptolemy/actor/lib/security/*.java \
 			../ptolemy/actor/lib/string/*.java \
+			../ptolemy/actor/lib/vhdl/*.java \
+			../ptolemy/actor/lib/xslt/*.java \
 			../ptolemy/actor/parameters/*.java \
 			../ptolemy/actor/process/*.java \
 			../ptolemy/actor/sched/*.java \
