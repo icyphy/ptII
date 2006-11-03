@@ -7,6 +7,7 @@
       <group>
 		  <doc>VHDL fixpoint hardwares</doc>
   
+		  <entity name="FixConst" class="ptolemy.actor.lib.vhdl.FixConst"></entity>    
 		  <entity name="Concat" class="ptolemy.actor.lib.vhdl.Concat"></entity>    
 		  <entity name="Memory" class="ptolemy.actor.lib.vhdl.Memory"></entity>
 		  <entity name="Multiplexor" class="ptolemy.actor.lib.vhdl.Multiplexor"></entity>

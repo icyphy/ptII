@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class Multiplexor extends SynchronousFixPointTransformer {
+public class Multiplexor extends SynchronousFixTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.

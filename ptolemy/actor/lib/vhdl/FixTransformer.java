@@ -38,17 +38,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// FixPointTransformer
 
 /**
- This is an abstract base class for actors that transform
- an input stream into an output stream.  It provides an input
- and an output port, and manages the cloning of these ports.
+ This is an abstract base class for actors that transform an input
+ stream into output stream.  It provides an fix point input and an
+ fix point output port, and manages the cloning of these ports.
 
- @author Edward A. Lee
+ @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 0.3
- @Pt.ProposedRating Green (eal)
- @Pt.AcceptedRating Green (bilung)
+ @since Ptolemy II 6.0
+ @Pt.ProposedRating Red (mankit)
+ @Pt.AcceptedRating Red (mankit)
  */
-public class FixPointTransformer extends Transformer {
+public class FixTransformer extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -57,7 +57,7 @@ public class FixPointTransformer extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public FixPointTransformer(CompositeEntity container, String name)
+    public FixTransformer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 

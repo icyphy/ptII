@@ -1,6 +1,6 @@
-# Makefile for Ptolemy vhdlg actors
+# Makefile for Ptolemy vhdl actors
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Man-Kit Leung, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
@@ -48,12 +48,13 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	FixTransformer \
+	SynchronousFixTransformer \
+	FixConst.java \
 	Concat.java \
-	FixPointTransformer.java \
 	Memory.java \
 	Multiplexor.java \
 	Slice.java \
-	SynchronousFixPointTransformer.java
 
 
 OTHER_FILES_TO_BE_JARED = \

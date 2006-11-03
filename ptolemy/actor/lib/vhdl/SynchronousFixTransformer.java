@@ -27,28 +27,29 @@
  */
 package ptolemy.actor.lib.vhdl;
 
-import ptolemy.actor.TypedIOPort;
+import ptolemy.data.FixToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// FixPointTransformer
+//// SynchronousFixPointTransformer
 
 /**
  This is an abstract base class for actors that transform
- an input stream into an output stream.  It provides an input
- and an output port, and manages the cloning of these ports.
-
- @author Edward A. Lee
+ an input stream into an output stream with a specified latency
+ parameter. The default latency is initially set to 0.
+ 
+ @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 0.3
- @Pt.ProposedRating Green (eal)
- @Pt.AcceptedRating Green (bilung)
+ @since Ptolemy II 6.0
+ @Pt.ProposedRating Red (mankit)
+ @Pt.AcceptedRating Red (mankit)
  */
-public class SynchronousFixPointTransformer extends FixPointTransformer {
+public class SynchronousFixTransformer extends FixTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -57,15 +58,29 @@ public class SynchronousFixPointTransformer extends FixPointTransformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public SynchronousFixPointTransformer(CompositeEntity container, String name)
+    public SynchronousFixTransformer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
-        binaryPoint = new Parameter(this, "latency");
-        binaryPoint.setTypeEquals(BaseType.INT);
-        binaryPoint.setExpression("0");
+        
+        latency = new Parameter(this, "latency");
+        latency.setExpression("0");
     }
 
+    public void attributeChanged(Attribute attribute) 
+            throws IllegalActionException {
+        if (attribute == latency) {
+            int latencyValue = ((ScalarToken) latency.getToken()).intValue();
+            for (int i = 0; i < output.getWidth(); i++) {
+                // clear all output channels.
+                while (output.get(i) != null) ;
+                
+                // sending dummy tokens to create latency.
+                for (int j = 0; j < latencyValue; j++) {
+                    output.send(i, FixToken.NIL);
+                }
+            }
+        }
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
