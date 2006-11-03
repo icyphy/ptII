@@ -55,7 +55,7 @@ ME =		ptolemy/actor/lib
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTX10_DIR is empty.
 
 DIRS = 		conversions gui logic hoc image javasound net io xslt \
-		test comm security string $(PTCOLT_DIR) $(PTJAI_DIR) \
+		test comm security string vhdl $(PTCOLT_DIR) $(PTJAI_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
 		$(PTJYTHON_DIR) $(PTJXTA_DIR) $(PTX10_DIR)
 
