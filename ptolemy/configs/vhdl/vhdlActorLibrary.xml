@@ -3,4 +3,5 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <group>
   <input source="ptolemy/actor/lib/vhdl/vhdl.xml"/>
+	<entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
 </group>

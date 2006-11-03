@@ -44,6 +44,7 @@
         <?moml
           <group>
             <input source="ptolemy/codegen/vhdl/vhdl.xml"/>
+            <input source="ptolemy/codegen/vhdl/actor/lib/test.xml"/>
           </group>
         ?>
       </configure>
