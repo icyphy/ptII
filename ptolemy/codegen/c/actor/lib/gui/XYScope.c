@@ -6,13 +6,13 @@
     JavaVMInitArgs args;
     JavaVMOption options[1];
 #endif
-   
-    jdouble $actorSymbol(xValue);
-    
+
     jclass $actorSymbol(plotClass);
     jobject $actorSymbol(plotObject);
     jmethodID $actorSymbol(plotConstructor);
     jmethodID $actorSymbol(plotAddPoint);
+
+    jmethodID $actorSymbol(plotSetPointsPersistence);
     
     jclass $actorSymbol(plotMLApplicationClass);
     jobject $actorSymbol(plotMLApplicationObject);
@@ -37,7 +37,7 @@
 #endif
 /**/
 
-/***initBlock***/           
+/***initBlock***/     
     $actorSymbol(plotClass) = (*env)->FindClass(env, "ptolemy/plot/Plot");
     $actorSymbol(plotConstructor) = (*env)->GetMethodID
             (env, $actorSymbol(plotClass), "<init>", "()V");
@@ -45,7 +45,12 @@
             (env, $actorSymbol(plotClass), $actorSymbol(plotConstructor));
     $actorSymbol(plotAddPoint) = (*env)->GetMethodID
             (env, $actorSymbol(plotClass), "addPoint", "(IDDZ)V");
-
+            
+    $actorSymbol(plotSetPointsPersistence) = (*env)->GetMethodID
+            (env, $actorSymbol(plotClass), "setPointsPersistence", "(I)V");
+    (*env)->CallVoidMethod(env, $actorSymbol(plotObject), 
+            $actorSymbol(plotSetPointsPersistence), $val(persistence));  
+            
     $actorSymbol(plotMLApplicationClass) = (*env)->FindClass
             (env, "ptolemy/plot/plotml/PlotMLApplication");
     $actorSymbol(plotMLApplicationConstructor) = (*env)->GetMethodID
@@ -61,7 +66,6 @@
             */ 
             (*env)->NewObjectArray(env, 1, (*env)->FindClass(env, "java/lang/String"), 
             (*env)->NewStringUTF(env, "")));
-    $actorSymbol(xValue) = $val(xInit);  
 /**/
 
 /***configureBlock($text)***/
@@ -82,11 +86,8 @@
 
 /***plotBlock($channel)***/
     (*env)->CallVoidMethod(env, $actorSymbol(plotObject), $actorSymbol(plotAddPoint), 
-            $channel + $val(startingDataset), $actorSymbol(xValue), 
-            $ref(input#$channel), JNI_TRUE);           
+            $channel + $val(startingDataset), $ref(inputX#$channel), 
+            $ref(inputY#$channel), JNI_TRUE);           
 /**/
 
-/***updateBlock***/   
-    $actorSymbol(xValue) += $val(xUnit);         
-/**/
 

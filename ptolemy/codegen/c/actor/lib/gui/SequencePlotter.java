@@ -91,6 +91,12 @@ public class SequencePlotter extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        
+        String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
+        ArrayList args = new ArrayList();
+        args.add(ptIIDir);
+        code.append(_generateBlockCode("createJVMBlock", args));
+        
         code.append(super.generateInitializeCode());
         ptolemy.actor.lib.gui.SequencePlotter actor 
                 = (ptolemy.actor.lib.gui.SequencePlotter) getComponent();       
@@ -126,7 +132,7 @@ public class SequencePlotter extends CCodeGeneratorHelper {
             
         }
         
-        ArrayList args = new ArrayList();
+        args.clear();
         args.add(result.toString());
         code.append(_generateBlockCode("configureBlock", args));
         

@@ -28,6 +28,11 @@
 
 package ptolemy.codegen.c.actor.lib.gui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -57,6 +62,25 @@ public class SliderSource extends CCodeGeneratorHelper {
     public SliderSource(ptolemy.actor.lib.gui.SliderSource actor) {
         super(actor);
     }
+    
+    /** Generate initialize code.
+     *  @return The generated code.
+     *  @exception IllegalActionException If the code stream encounters 
+     *   errors in processing the specified code blocks.
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        
+        String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
+        ArrayList args = new ArrayList();
+        args.add(ptIIDir);
+        code.append(_generateBlockCode("createJVMBlock", args));
+        
+        code.append(super.generateInitializeCode());
+     
+        return code.toString();
+    }
+    
     
     /** Get the header files needed by the code generated for the
      *  SliderSource actor.

@@ -1,26 +1,85 @@
 /***preinitBlock***/
-FILE* $actorSymbol(filePtr);
+#ifndef _JAVA_INVOCATION_INTERFACE_PREINIT
+#define _JAVA_INVOCATION_INTERFACE_PREINIT
+    JavaVM* jvm;
+    JNIEnv* env;
+    JavaVMInitArgs args;
+    JavaVMOption options[1];
+#endif
+
+    jclass $actorSymbol(plotClass);
+    jobject $actorSymbol(plotObject);
+    jmethodID $actorSymbol(plotConstructor);
+    jmethodID $actorSymbol(plotAddPoint);
+    
+    jclass $actorSymbol(plotMLApplicationClass);
+    jobject $actorSymbol(plotMLApplicationObject);
+    jmethodID $actorSymbol(plotMLApplicationConstructor);   
+    
+    jclass $actorSymbol(plotMLParserClass);
+    jobject $actorSymbol(plotMLParserObject);
+    jmethodID $actorSymbol(plotMLParserConstructor);
+    jmethodID $actorSymbol(plotMLParserParse);
 /**/
 
-/***initBlock***/
-if(!($actorSymbol(filePtr) = fopen("$actorSymbol(output)","w"))) {
-    fprintf(stderr,"ERROR: cannot open output file for Plotter actor.\n");
-    exit(1);
-}
+/***createJVMBlock($path)***/
+#ifndef _JAVA_INVOCATION_INTERFACE_INIT
+#define _JAVA_INVOCATION_INTERFACE_INIT
+    args.version = JNI_VERSION_1_4;
+    args.nOptions = 1;
+	options[0].optionString = "-Djava.class.path=$path";
+	args.options = options;
+	args.ignoreUnrecognized = JNI_FALSE;
+
+    JNI_CreateJavaVM(&jvm, (void **)&env, &args);   
+#endif
 /**/
 
-/***fireBlock***/
-fprintf($actorSymbol(filePtr),"%g %g\n",$ref(inputX#0),$ref(inputY#0));
+/***initBlock***/           
+    $actorSymbol(plotClass) = (*env)->FindClass(env, "ptolemy/plot/Plot");
+    $actorSymbol(plotConstructor) = (*env)->GetMethodID
+            (env, $actorSymbol(plotClass), "<init>", "()V");
+    $actorSymbol(plotObject) = (*env)->NewObject
+            (env, $actorSymbol(plotClass), $actorSymbol(plotConstructor));
+    $actorSymbol(plotAddPoint) = (*env)->GetMethodID
+            (env, $actorSymbol(plotClass), "addPoint", "(IDDZ)V");
+
+    $actorSymbol(plotMLApplicationClass) = (*env)->FindClass
+            (env, "ptolemy/plot/plotml/PlotMLApplication");
+    $actorSymbol(plotMLApplicationConstructor) = (*env)->GetMethodID
+            (env, $actorSymbol(plotMLApplicationClass), "<init>", 
+            "(Lptolemy/plot/PlotBox;[Ljava/lang/String;)V");
+    $actorSymbol(plotMLApplicationObject) = (*env)->NewObject
+            (env, $actorSymbol(plotMLApplicationClass), 
+            $actorSymbol(plotMLApplicationConstructor), 
+            $actorSymbol(plotObject),
+            /* The following is a String array containing one empty String.
+               If we use a NULL instead here, then a sample plot will be drawn.
+               We don't want that. 
+            */ 
+            (*env)->NewObjectArray(env, 1, (*env)->FindClass(env, "java/lang/String"), 
+            (*env)->NewStringUTF(env, "")));
 /**/
 
-/***closeFile***/
-fclose($actorSymbol(filePtr));
+/***configureBlock($text)***/
+    $actorSymbol(plotMLParserClass) = (*env)->FindClass
+            (env, "ptolemy/plot/plotml/PlotMLParser");
+    $actorSymbol(plotMLParserConstructor) = (*env)->GetMethodID
+            (env, $actorSymbol(plotMLParserClass), "<init>", "(Lptolemy/plot/Plot;)V");
+    $actorSymbol(plotMLParserObject) = (*env)->NewObject
+            (env, $actorSymbol(plotMLParserClass), 
+            $actorSymbol(plotMLParserConstructor), $actorSymbol(plotObject));
+    $actorSymbol(plotMLParserParse) = (*env)->GetMethodID
+            (env, $actorSymbol(plotMLParserClass), "parse", 
+            "(Ljava/net/URL;Ljava/lang/String;)V");
+    (*env)->CallVoidMethod(env, $actorSymbol(plotMLParserObject),         
+            $actorSymbol(plotMLParserParse), NULL, 
+            (*env)->NewStringUTF(env, $text));
 /**/
 
-/***graphPlot***/
-// You might need to specify c:/.../ptII/bin/pxgraph below
-// in the final version for Ptolemy II, we use ptplot, not pxgraph
-//system("( pxgraph -t 'Butterfly' -bb -tk =600x600+0+0 -0 xy $actorSymbol(filename); /bin/rm -f $actorSymbol(filename)) &");
-system(" ptplot $actorSymbol(output) &"); // /bin/rm -f $actorSymbol(filename) &");
+/***plotBlock($channel)***/
+    (*env)->CallVoidMethod(env, $actorSymbol(plotObject), $actorSymbol(plotAddPoint), 
+            $channel + $val(startingDataset), $ref(inputX#$channel), 
+            $ref(inputY#$channel), JNI_TRUE);           
 /**/
 

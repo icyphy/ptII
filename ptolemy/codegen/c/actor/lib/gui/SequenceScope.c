@@ -14,8 +14,6 @@
     jmethodID $actorSymbol(plotConstructor);
     jmethodID $actorSymbol(plotAddPoint);
     
-    //jmethodID $actorSymbol(plotSetXRange);
-    //jmethodID $actorSymbol(plotSetWrap);
     jmethodID $actorSymbol(plotSetPointsPersistence);
     
     jclass $actorSymbol(plotMLApplicationClass);
@@ -28,18 +26,20 @@
     jmethodID $actorSymbol(plotMLParserParse);
 /**/
 
-/***initBlock***/
+/***createJVMBlock($path)***/
 #ifndef _JAVA_INVOCATION_INTERFACE_INIT
 #define _JAVA_INVOCATION_INTERFACE_INIT
     args.version = JNI_VERSION_1_4;
     args.nOptions = 1;
-	options[0].optionString = "-Djava.class.path=c:/ptII";
+	options[0].optionString = "-Djava.class.path=$path";
 	args.options = options;
 	args.ignoreUnrecognized = JNI_FALSE;
 
     JNI_CreateJavaVM(&jvm, (void **)&env, &args);   
 #endif
-           
+/**/
+
+/***initBlock***/     
     $actorSymbol(plotClass) = (*env)->FindClass(env, "ptolemy/plot/Plot");
     $actorSymbol(plotConstructor) = (*env)->GetMethodID
             (env, $actorSymbol(plotClass), "<init>", "()V");
@@ -48,21 +48,11 @@
     $actorSymbol(plotAddPoint) = (*env)->GetMethodID
             (env, $actorSymbol(plotClass), "addPoint", "(IDDZ)V");
             
-    //$actorSymbol(plotSetXRange) = (*env)->GetMethodID
-    //        (env, $actorSymbol(plotClass), "setXRange", "(DD)V");
-    //$actorSymbol(plotSetWrap) = (*env)->GetMethodID
-    //        (env, $actorSymbol(plotClass), "setWrap", "(Z)V");
     $actorSymbol(plotSetPointsPersistence) = (*env)->GetMethodID
             (env, $actorSymbol(plotClass), "setPointsPersistence", "(I)V");
-    //(*env)->CallVoidMethod(env, $actorSymbol(plotObject), 
-    //        $actorSymbol(plotSetXRange), 
-    //        $val(xInit), $val(xUnit) * $val(width) + $val(xInit));
-    //(*env)->CallVoidMethod(env, $actorSymbol(plotObject), 
-    //        $actorSymbol(plotSetWrap), JNI_TRUE);
     (*env)->CallVoidMethod(env, $actorSymbol(plotObject), 
             $actorSymbol(plotSetPointsPersistence), $val(persistence));  
             
-    
     $actorSymbol(plotMLApplicationClass) = (*env)->FindClass
             (env, "ptolemy/plot/plotml/PlotMLApplication");
     $actorSymbol(plotMLApplicationConstructor) = (*env)->GetMethodID
