@@ -1130,7 +1130,7 @@ public class CodeManager {
         /**
          * Create a new if tree.
          * @param name The name to give this if tree.
-         * @param parent The paretn to this tree, which may be null
+         * @param parent The parent to this tree, which may be null
          * if this is the root of a tree.
          */
         public IfTree(IfTree parent, String name) {
