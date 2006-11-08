@@ -230,8 +230,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public String generateFireCode() throws IllegalActionException {
         _codeStream.clear();
 
-        String composite = (getComponent() instanceof CompositeActor) ? "Composite Actor "
-                : "";
+        String composite = (getComponent() instanceof CompositeActor) ? 
+                "Composite Actor " : "";
 
         _codeStream.append(_codeGenerator.comment(2, "fire " + composite
                 + getComponent().getName()));
