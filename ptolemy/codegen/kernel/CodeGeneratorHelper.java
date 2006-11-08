@@ -2076,8 +2076,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         // For composite actor, generate a variable corresponding to 
         // the inside receiver of an output port.
+        // FIXME: I think checking sink.port.isOutput() is enough here.
         if (sink.port.getContainer() instanceof CompositeActor
-                && sink.port.isInput()) {
+                && sink.port.isOutput()) {
             sinkPortChannel = "@" + sinkPortChannel;
         }
         String sinkRef = ((CodeGeneratorHelper) _getHelper(sink.port
