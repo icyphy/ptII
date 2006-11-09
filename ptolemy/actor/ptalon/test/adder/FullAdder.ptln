@@ -1,0 +1,44 @@
+danglingPortsOkay;
+
+FullAdder is {
+	inport inA;
+	inport inB;
+	inport carryIn;
+	outport sum;
+	outport carryOut;
+	
+	actor gate = ptolemy.actor.lib.logic.LogicFunction;
+	
+	relation A;
+	relation B;
+	relation carry;
+	this(inA := A, inB := B, carryIn := carry);
+	
+	relation xorOut1;
+	transparent relation xorIn1;
+	gate(input := xorIn1, output := xorOut1, function := [[xor]]);
+	this(xorIn1 := A);
+	this(xorIn1 := B);
+	
+	relation andOut1;
+	transparent relation andIn1;
+	gate(input := andIn1, output := andOut1, function := [[and]]);
+	this(andIn1 := A);
+	this(andIn1 := B);
+	
+	transparent relation xorIn2;
+	gate(input := xorIn2, output := sum, function := [[xor]]);
+	this(xorIn2 := xorOut1);
+	this(xorIn2 := carry);
+
+	relation andOut2;
+	transparent relation andIn2;
+	gate(input := andIn2, output := andOut2, function := [[and]]);
+	this(andIn2 := xorOut1);
+	this(andIn2 := carry);
+
+	transparent relation orIn;
+	gate(input := orIn, output := carryOut, function := [[or]]);
+	this(orIn := andOut2);
+	this(orIn := andOut1);
+}

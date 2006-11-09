@@ -7,29 +7,27 @@ import java.util.concurrent.BlockingQueue;
 
 import ptolemy.actor.ptalon.demo.MapReduceAlgorithm;
 
-public class WordCount extends MapReduceAlgorithm {
+public class ReverseLink extends MapReduceAlgorithm {
 
     public List<KeyValuePair> map(String key, String value) {
         StringTokenizer tokenizer = new StringTokenizer(value);
         LinkedList<KeyValuePair> output = new LinkedList<KeyValuePair>();
         while (tokenizer.hasMoreTokens()) {
-            output.add(new KeyValuePair(tokenizer.nextToken(), "1"));
+            output.add(new KeyValuePair(tokenizer.nextToken(), key));
         }
         return output;
     }
 
     public List<String> reduce(String key, BlockingQueue<String> values)
             throws InterruptedException {
-        int result = 0;
+        List<String> output = new LinkedList<String>();
         while (!isQueueEmpty()) {
             String value = values.take();
             if (isQueueEmpty()) {
                 break;
             }
-            result += Integer.parseInt(value);
+            output.add(value);
         }
-        List<String> output = new LinkedList<String>();
-        output.add((new Integer(result)).toString());
         return output;
     }
 

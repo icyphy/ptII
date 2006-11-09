@@ -79,7 +79,7 @@ FFT is {
 			} next [[n + 1]]			
 		}
 	} else {
-		/* Do nothing if N is not a power of 2. */	
+		/* Do nothing if N is not a power of 2. */
 	}
 }
 
