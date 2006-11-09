@@ -60,7 +60,7 @@ import ptolemy.math.Rounding;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class Memory extends SynchronousFixTransformer {
+public class Memory extends FixTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -84,6 +84,12 @@ public class Memory extends SynchronousFixTransformer {
 
         address = new TypedIOPort(this, "address", true, false);
         address.setTypeEquals(BaseType.FIX);
+        
+        dataIn = new TypedIOPort(this, "dataIn", true, false);
+        dataIn.setTypeEquals(BaseType.FIX);
+ 
+        dataOut = new TypedIOPort(this, "dataOut", false, true);
+        dataOut.setTypeEquals(BaseType.FIX);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -97,6 +103,14 @@ public class Memory extends SynchronousFixTransformer {
      */
     public Parameter dataWidth;
 
+    /** The input port for writing data .
+     */
+    public TypedIOPort dataIn;
+
+    /** The output port for retreiving data .
+     */
+    public TypedIOPort dataOut;
+    
     /** The control port for signaling write.
      */
     public TypedIOPort writeEnable;
@@ -138,12 +152,12 @@ public class Memory extends SynchronousFixTransformer {
         int addressValue;
 
         if (!address.hasToken(0) || !writeEnable.hasToken(0)
-                || !input.hasToken(0)) {
+                || !dataIn.hasToken(0)) {
             return;
         }
 
         // Consume tokens from all input ports.
-        FixToken in = ((FixToken) input.get(0));
+        FixToken in = ((FixToken) dataIn.get(0));
 
         FixPoint addressFixValue = ((FixToken) address.get(0)).fixValue();
 
@@ -170,11 +184,11 @@ public class Memory extends SynchronousFixTransformer {
             _storage[addressValue] = in;
         }
 
-        FixToken dataOut = _storage[_preAddress]
+        FixToken result = _storage[_preAddress]
                 .quantize(new FixPointQuantization(new Precision(0, _dataWidth,
                         _binaryPoint), Overflow.GROW, Rounding.HALF_EVEN));
 
-        output.send(0, dataOut);
+        dataOut.send(0, result);
     }
 
     private int _addressWidth;

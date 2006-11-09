@@ -32,11 +32,13 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.FixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -76,7 +78,13 @@ public class Slice extends FixTransformer {
     public Slice(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
+        
+        input = new TypedIOPort(this,"input",true,false);
+        input.setMultiport(true);  
+        input.setTypeEquals(BaseType.FIX);
+        output = new TypedIOPort(this,"output",false,true);
+        output.setTypeEquals(BaseType.FIX); 
+        
         width = new Parameter(this, "width");
         start = new Parameter(this, "start");
         end = new Parameter(this, "end");
@@ -89,6 +97,10 @@ public class Slice extends FixTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    public TypedIOPort input;
+    
+    public TypedIOPort output;
+    
     public Parameter width;
 
     public Parameter start;

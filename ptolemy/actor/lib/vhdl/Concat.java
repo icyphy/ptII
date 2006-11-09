@@ -31,8 +31,10 @@ package ptolemy.actor.lib.vhdl;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.FixToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -71,9 +73,22 @@ public class Concat extends FixTransformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        input.setMultiport(true);
+        input = new TypedIOPort(this,"input",true,false);
+        input.setMultiport(true);  
+        input.setTypeEquals(BaseType.FIX);
+        
+        output = new TypedIOPort(this,"output",false,true);
+        output.setTypeEquals(BaseType.FIX); 
     }
-
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    
+    public TypedIOPort input;
+    
+    public TypedIOPort output;
+    
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

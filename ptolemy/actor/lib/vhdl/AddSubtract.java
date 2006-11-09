@@ -1,5 +1,5 @@
-/** An actor that slices the input bits and output a consecutive subset
-  of the input bits. 
+/** An actor that outputs the fixpoint value of the concatenation of
+ the input bits.
 
  Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
@@ -29,23 +29,20 @@
 package ptolemy.actor.lib.vhdl;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.FixToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
-//// Multiplexor
+//// AddSubtract
 
 /**
  Produce an output token on each firing with a FixPoint value that is
- equal to the slicing of the bits of the input token value. The bit width of
- the output token value is determined by taking the difference of parameters
- start and end. The width parameter specifies the bit width of the input 
- value. The output FixPoint value is unsigned, and all its bits are integer
- bits. The input can have any scalar type. 
+ equal to the sum of all the inputs at the plus port minus the inputs at the
+ minus port. 
 
  @author Man-Kit Leung
  @version $Id$
@@ -53,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class Multiplexor extends SynchronousFixTransformer {
+public class AddSubtract extends SynchronousFixTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -62,37 +59,43 @@ public class Multiplexor extends SynchronousFixTransformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Multiplexor(CompositeEntity container, String name)
+    public AddSubtract(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
+        plus = new TypedIOPort(this, "plus", true, false);
+        plus.setMultiport(true);
+        plus.setTypeEquals(BaseType.FIX);
         
-        input = new TypedIOPort(this,"input",true,false);
-        input.setMultiport(true);  
-        input.setTypeEquals(BaseType.FIX);
+        minus = new TypedIOPort(this, "minus", true, false);
+        minus.setMultiport(true);
+        minus.setTypeEquals(BaseType.FIX);
         
-        output = new QueuedTypedIOPort(this,"output",false,true);
-        output.setTypeEquals(BaseType.FIX);  
-        
-        select = new TypedIOPort(this,"select",true,false);
-        select.setTypeEquals(BaseType.INT);
+        output = new QueuedTypedIOPort(this, "output", false, true);
+        output.setTypeEquals(BaseType.FIX);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+    /** Input for tokens to be added.  This is a multiport of fix point
+     *  type
+     */
+    public TypedIOPort plus;
     
-    /** Input for different data tokens.  This is a multiport of fix 
+    /** Input for tokens to be subtracted.  This is a multiport of fix
      *  point type.
      */
-    public TypedIOPort input;
+    public TypedIOPort minus;
 
-    /** Queued ouput to simulate mux.  The output is fix point type.
+    /** Queued ouput to simulate pipelined add.  The output is fix 
+     *  point type.
      */
     public QueuedTypedIOPort output;
- 
-    /** Input for select one of the inputs.  This port has int type.
-     */
-    public TypedIOPort select;
 
+
+
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -101,45 +104,38 @@ public class Multiplexor extends SynchronousFixTransformer {
         output.setSize(latency);
     }
     
-    /** output a consecutive subset of the input bits. 
-     *  If there is no input, then produce no output.
+    /** Output the fixpoint value of the sum of the input bits. 
+     *  If there is no inputs, then produce null.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (select.hasToken(0)) {
-            _channel = ((FixToken) select.get(0)).fixValue().getUnscaledValue().intValue();
-        }
+        Token sum = null;
 
-        boolean inRange = false;
-
-        for (int i = 0; i < input.getWidth(); i++) {
-            inRange = inRange || (i == _channel);
-
-            if (input.hasToken(i)) {
-                Token token = input.get(i);
-
-                if (i == _channel) {
-                    output.send(0, token);
+        for (int i = 0; i < plus.getWidth(); i++) {
+            if (plus.hasToken(i)) {
+                if (sum == null) {
+                    sum = plus.get(i);
+                } else {
+                    sum = sum.add(plus.get(i));
                 }
             }
         }
 
-        if (!inRange) {
-            throw new IllegalActionException(this,
-                    "Select input is out of range: " + _channel + ".");
+        for (int i = 0; i < minus.getWidth(); i++) {
+            if (minus.hasToken(i)) {
+                Token in = minus.get(i);
+
+                if (sum == null) {
+                    sum = in.zero();
+                }
+
+                sum = sum.subtract(in);
+            }
+        }
+
+        if (sum != null) {
+            output.send(0, sum);
         }
     }
-    
-    /** Initialize to the default, which is to use channel zero. */
-    public void initialize() {
-        _channel = 0;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The most recently read select input. */
-    private int _channel = 0;
-    
 }

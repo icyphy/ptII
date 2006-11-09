@@ -48,12 +48,14 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+    AddSubtract.java \
 	FixTransformer.java \
 	SynchronousFixTransformer.java \
 	FixConst.java \
 	Concat.java \
 	Memory.java \
 	Multiplexor.java \
+	QueuedTypedIOPort.java \
 	Slice.java \
 
 

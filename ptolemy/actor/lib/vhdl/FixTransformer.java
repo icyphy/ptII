@@ -27,9 +27,8 @@
  */
 package ptolemy.actor.lib.vhdl;
 
-import ptolemy.actor.lib.Transformer;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -48,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class FixTransformer extends Transformer {
+public class FixTransformer extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -60,9 +59,6 @@ public class FixTransformer extends Transformer {
     public FixTransformer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
-        input.setTypeEquals(BaseType.FIX);
-        output.setTypeEquals(BaseType.FIX);
 
         binaryPoint = new Parameter(this, "outputBinaryPoint");
         binaryPoint.setExpression("0");

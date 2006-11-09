@@ -27,11 +27,9 @@
  */
 package ptolemy.actor.lib.vhdl;
 
-import ptolemy.data.FixToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -49,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class SynchronousFixTransformer extends FixTransformer {
+public abstract class SynchronousFixTransformer extends FixTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,21 +64,13 @@ public class SynchronousFixTransformer extends FixTransformer {
         latency.setExpression("0");
     }
 
-    public void attributeChanged(Attribute attribute) 
-            throws IllegalActionException {
-        if (attribute == latency) {
-            int latencyValue = ((ScalarToken) latency.getToken()).intValue();
-            for (int i = 0; i < output.getWidth(); i++) {
-                // clear all output channels.
-                while (output.get(i) != null) ;
-                
-                // sending dummy tokens to create latency.
-                for (int j = 0; j < latencyValue; j++) {
-                    output.send(i, FixToken.NIL);
-                }
-            }
-        }
+    public void initialize() throws IllegalActionException {
+       int latencyValue = ((ScalarToken) latency.getToken()).intValue();
+       setLatency(latencyValue);
     }
+    
+    public abstract void setLatency(int latency);
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
