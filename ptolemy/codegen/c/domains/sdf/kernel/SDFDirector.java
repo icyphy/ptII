@@ -35,12 +35,9 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActorWithCoSimulation;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.sched.Firing;
-import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.codegen.c.actor.sched.StaticSchedulingDirector;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.Director;
 import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -57,15 +54,14 @@ import ptolemy.kernel.util.NamedObj;
 /**
  Code generator helper associated with the SDFDirector class. This class
  is also associated with a code generator.
- FIXME: Should associated with a static scheduling code generator.
 
  @author Ye Zhou, Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Yellow (zgang)  FIXME: Should associated with a static scheduling code generator. Cleanup, then review.
+ @Pt.ProposedRating Yellow (zgang)  
  @Pt.AcceptedRating Red (eal)
  */
-public class SDFDirector extends Director {
+public class SDFDirector extends StaticSchedulingDirector {
 
     /** Construct the code generator helper associated with the given
      *  SDFDirector.
@@ -92,93 +88,6 @@ public class SDFDirector extends Director {
         return code.toString();
     }
 
-    /** Generate the code for the firing of actors according to the SDF
-     *  schedule.
-     *  @return The generated fire code.
-     *  @exception IllegalActionException If the SDF director does not have an
-     *   attribute called "iterations" or a valid schedule, or the actor to be
-     *   fired cannot find its associated helper.
-     */
-    public String generateFireCode() throws IllegalActionException {
-
-        StringBuffer code = new StringBuffer();
-        boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-                .booleanValue();
-
-        // Generate code for one iteration.
-        Schedule schedule = ((StaticSchedulingDirector) getComponent())
-                .getScheduler().getSchedule();
-
-        boolean isIDefined = false;
-        Iterator actorsToFire = schedule.firingIterator();
-        while (actorsToFire.hasNext()) {
-            Firing firing = (Firing) actorsToFire.next();
-            Actor actor = firing.getActor();
-
-            // FIXME: Before looking for a helper class, we should check to
-            // see whether the actor contains a code generator attribute.
-            // If it does, we should use that as the helper.
-            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-
-            if (inline) {
-                for (int i = 0; i < firing.getIterationCount(); i++) {
-
-                    // generate fire code for the actor
-                    code.append(helper.generateFireCode());
-                    code.append(helper.generateTypeConvertFireCode());
-
-                    // update buffer offset after firing each actor once
-                    Iterator inputPorts = actor.inputPortList().iterator();
-                    while (inputPorts.hasNext()) {
-                        IOPort port = (IOPort) inputPorts.next();
-                        int rate = DFUtilities.getRate(port);
-                        _updatePortOffset(port, code, rate);
-                    }
-
-                    Iterator outputPorts = actor.outputPortList().iterator();
-                    while (outputPorts.hasNext()) {
-                        IOPort port = (IOPort) outputPorts.next();
-                        int rate = DFUtilities.getRate(port);
-                        _updateConnectedPortsOffset(port, code, rate);
-                    }
-                }
-            } else {
-
-                int count = firing.getIterationCount();
-                if (count > 1) {
-                    if (!isIDefined) {
-                        code.append("int i;\n");
-                        isIDefined = true;
-                    }
-                    code.append("for (i = 0; i < " + count + " ; i++) {\n");
-                }
-
-                code.append(CodeGeneratorHelper.generateName((NamedObj) actor)
-                        + "();\n");
-
-                // update buffer offset after firing each actor once
-                Iterator inputPorts = actor.inputPortList().iterator();
-                while (inputPorts.hasNext()) {
-                    IOPort port = (IOPort) inputPorts.next();
-                    int rate = DFUtilities.getRate(port);
-                    _updatePortOffset(port, code, rate);
-                }
-
-                Iterator outputPorts = actor.outputPortList().iterator();
-                while (outputPorts.hasNext()) {
-                    IOPort port = (IOPort) outputPorts.next();
-                    int rate = DFUtilities.getRate(port);
-                    _updateConnectedPortsOffset(port, code, rate);
-                }
-
-                if (count > 1) {
-                    code.append("}\n");
-                }
-            }
-        }
-        return code.toString();
-    }
-
     /** Generate the initialize code for the associated SDF director.
      *  @return The generated initialize code.
      *  @exception IllegalActionException If the helper associated with
@@ -188,9 +97,10 @@ public class SDFDirector extends Director {
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
 
-        ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
-                .getContainer();
-        CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
+        ptolemy.actor.CompositeActor container 
+                = (ptolemy.actor.CompositeActor) getComponent().getContainer();
+        CodeGeneratorHelper containerHelper 
+                = (CodeGeneratorHelper) _getHelper(container);
 
         // Generate code for creating external initial production.
         Iterator outputPorts = container.outputPortList().iterator();
@@ -238,10 +148,6 @@ public class SDFDirector extends Director {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        ptolemy.domains.sdf.kernel.SDFDirector director = (ptolemy.domains.sdf.kernel.SDFDirector) getComponent();
-        director.invalidateSchedule();
-        director.getScheduler().getSchedule();
-
         _updatePortBufferSize();
         _portNumber = 0;
         _intFlag = false;
@@ -264,7 +170,9 @@ public class SDFDirector extends Director {
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor)
+                _getHelper(container);
 
         if (container instanceof TypedCompositeActorWithCoSimulation) {
 
@@ -367,7 +275,9 @@ public class SDFDirector extends Director {
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) 
+                _getHelper(container);
 
         if (container instanceof TypedCompositeActorWithCoSimulation) {
 
@@ -612,8 +522,8 @@ public class SDFDirector extends Director {
                             .iterator();
                     label1: while (sourcePorts.hasNext()) {
                         IOPort sourcePort = (IOPort) sourcePorts.next();
-                        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
-                                .getContainer());
+                        CodeGeneratorHelper helper = (CodeGeneratorHelper) 
+                                _getHelper(sourcePort.getContainer());
                         int width;
                         if (sourcePort.isInput()) {
                             width = sourcePort.getWidthInside();
@@ -677,8 +587,8 @@ public class SDFDirector extends Director {
                                 .iterator();
                         label2: while (sourcePorts.hasNext()) {
                             IOPort sourcePort = (IOPort) sourcePorts.next();
-                            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
-                                    .getContainer());
+                            CodeGeneratorHelper helper = (CodeGeneratorHelper) 
+                                    _getHelper(sourcePort.getContainer());
                             int width;
                             if (sourcePort.isInput()) {
                                 width = sourcePort.getWidthInside();
@@ -797,14 +707,18 @@ public class SDFDirector extends Director {
      */
     protected void _updatePortBufferSize() throws IllegalActionException {
 
-        ptolemy.domains.sdf.kernel.SDFDirector director = (ptolemy.domains.sdf.kernel.SDFDirector) getComponent();
+        ptolemy.domains.sdf.kernel.SDFDirector director 
+                = (ptolemy.domains.sdf.kernel.SDFDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) 
+                _getHelper(container);
 
         Iterator actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper 
+                    = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
