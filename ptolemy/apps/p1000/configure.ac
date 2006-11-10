@@ -8,5 +8,5 @@ AC_PROG_LEX
 AC_PROG_RANLIB
 
 AC_CONFIG_HEADERS(config.h)
-AC_CONFIG_FILES(Makefile c/Makefile c/demo/Makefile c/transformer/Makefile c/transformer/test/Makefile cpp/Makefile)
+AC_CONFIG_FILES(Makefile c/Makefile c/common/Makefile c/demo/Makefile c/demo/get_time/Makefile c/transformer/Makefile c/transformer/test/Makefile cpp/Makefile)
 AC_OUTPUT
