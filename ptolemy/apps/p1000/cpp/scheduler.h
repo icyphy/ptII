@@ -22,6 +22,4 @@ private:
     std::vector <Actor*> _actors;
 };
 
-
-
 #endif 

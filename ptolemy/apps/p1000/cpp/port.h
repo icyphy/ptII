@@ -2,7 +2,7 @@
 #define PORT_H
 #include <vector>
 //#include "eventqueue.h"
-#include "Time.h"
+#include "hwTime.h"
 //#include "time.h"
 #include "dependencylink.h"
 class Actor;
