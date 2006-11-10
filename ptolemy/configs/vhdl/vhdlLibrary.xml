@@ -44,7 +44,9 @@
         <?moml
           <group>
             <input source="ptolemy/codegen/vhdl/vhdl.xml"/>
-            <input source="ptolemy/codegen/vhdl/actor/lib/test.xml"/>
+	    <!-- Commented out test.xml because it is not checked in,
+	    which ends up causing tests to fail -cxh -->
+              <!-- input source="ptolemy/codegen/vhdl/actor/lib/test.xml"/-->
           </group>
         ?>
       </configure>
