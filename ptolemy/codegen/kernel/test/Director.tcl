@@ -67,13 +67,13 @@ test Director-1.1 {Instantiate a Director, call a few methods} {
 test Director-2.1 {generateFireCode(StringBuffer)} {
     set results [$cgDirector generateFireCode]
     list $results
-} {{    /* The firing of the director. */
+} {{/* The firing of the director. */
 }}
 
 #####
 test Director-3.1 {generateInitializeCode(StringBuffer)} {
     list [$cgDirector generateInitializeCode]
-} {{    /* The initialization of the director. */
+} {{/* The initialization of the director. */
 }}
 
 #####
@@ -86,7 +86,7 @@ test Director-4.1 {generatePreinitializeCode(StringBuffer)} {
 test Director-5.1 {generateWrapupCode(StringBuffer)} {
     set results [java::new StringBuffer]
     list [$cgDirector generateWrapupCode]
-} {{    /* The wrapup of the director. */
+} {{/* The wrapup of the director. */
 }}
 
 #####
@@ -105,6 +105,6 @@ test Director-7.1 {getComponent()} {
 test Director-2.1 {generateMainEntryCode, generateMainExitCode} {
     list [$cgDirector generateMainEntryCode] \
 	[$cgDirector generateMainExitCode] 
-} {{    /* main entry code */
-} {    /* main exit code */
+} {{/* main entry code */
+} {/* main exit code */
 }}

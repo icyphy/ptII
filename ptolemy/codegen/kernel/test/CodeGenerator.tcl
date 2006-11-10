@@ -56,7 +56,7 @@ test CodeGenerator-1.1 {Instantiate a CodeGenerator, call a few methods} {
     list \
 	[$codeGenerator toString] \
 	[$codeGenerator comment {This is a comment}] \
-} {{ptolemy.codegen.kernel.CodeGenerator {.top.myCodeGenerator}} {    /* This is a comment */
+} {{ptolemy.codegen.kernel.CodeGenerator {.top.myCodeGenerator}} {/* This is a comment */
 }}
 
 # generateCode(StringBuffer) is tested in
@@ -91,15 +91,15 @@ test CodeGenerator-5.1 {getCodeFileName} {
 test CodeGenerator-6.1 {generateMainEntryCode, generateMainExitCode} {
     list [$codeGenerator generateMainEntryCode] \
 	[$codeGenerator generateMainExitCode] 
-} {{    /* main entry code */
-} {    /* main exit code */
+} {{/* main entry code */
+} {/* main exit code */
 }}
 
 #####
 test CodeGenerator-7.1 {generateInitializeEntryCode, generateInitializeExitCode} {
     list [$codeGenerator generateInitializeEntryCode] \
 	[$codeGenerator generateInitializeExitCode] 
-} {{    /* initialization entry code */
-} {    /* initialization exit code */
+} {{/* initialization entry code */
+} {/* initialization exit code */
 }}
 
