@@ -10,78 +10,19 @@
   <td><img vspace="6" align="left" src="viptos.gif" alt="Viptos"></td>
   <td>
    <ul>
-    <li><a href="docs.htm" target="_blank">Documentation</a></li>
+    <li><a href="overview.htm" target="_blank">Overview</a></li>
     <li><a href="authors.htm" target="_blank">Authors</a></li>
+    <li><a href="whatsNew.htm" target="_blank">What's new</a></li>
+    <li><a href="demos.htm" target="_blank">Demonstrations</a></li>
+    <li><a href="docs.htm" target="_blank">Documentation</a></li>
+
     <li><a href="about:copyright" target="_blank">Copyright</a></li>
    </ul>
   </td>
  </tr>
 </table>
 
-<i>Visual editor, code generator, and simulator for TinyOS programs</i>.
-
-<p>
-<B>Viptos</B> is an interface between TinyOS and Ptolemy II that
-provides a graphical user interface for TinyOS developers.  
-
-<p>
-Viptos 1.0.beta is based on Ptolemy II 6.0.beta
-
-<p>
-<a href="http://www.tinyos.net#in_browser" target="_top">TinyOS</a> is an
-event-driven operating system designed for sensor network nodes
-that have very limited resources (e.g., 8K bytes of program
-memory, 512 bytes of RAM).  TinyOS, is used, for example, on the
-Berkeley MICA motes, which are small wireless sensor nodes.  
-<a href="http://nescc.sourceforge.net#in_browser" target="_top">nesC</a> is an
-extension to the C programming language designed to embody the
-structuring concepts and execution model of TinyOS.
-
-
-<p>
-<a href="../../../ptolemy/domains/ptinyos/util/nc2moml/index.htm"><CODE>$PTII/ptolemy/domains/ptinyos/util/nc2moml/nc2moml</CODE></a>
-is used to convert nesC files (.nc) into 
-<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/moml#in_browser">MoML</a>
-(.moml) files.  This will create the Ptolemy II libraries of
-<I>components</I> that are used to assemble models.  TinyOS provides a
-rich library of nesC components. If you install TinyOS 1.x in
-<code>$PTII/vendors/ptinyos/tinyos-1.x</code> , then the Ptolemy
-II configure script will find it and automatically make the TinyOS
-libraries available.
-
- <p><a href="../../../ptolemy/domains/ptinyos/util/ncapp2moml/index.htm"><CODE>$PTII/ptolemy/domains/ptinyos/util/ncapp2moml/ncapp2moml</CODE></a>
-    is used to convert nesC <I>application</I> files (.nc) into
-    <a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/moml#in_browser"target="_top">MoML</a> (.moml) files.  This will create Ptolemy II
-    models that you can run in Viptos.  You must setup the necessary
-    MoML library of nesC components with the 
-    <CODE>nc2moml</CODE></a>
-    tool before you can successfully
-    open files made with this <CODE>ncapp2moml</CODE> tool.
-
-<h3><a name="installation">How to install</a></h3>
-<a href="../../../ptolemy/domains/ptinyos/doc/installation.htm">Installation notes</a> for successfully running Viptos demos.
-
-<h3><a name="demos">Demonstrations</a></h3>
-<i>These demos require that the AVR tools, TinyOS and nesc be installed.</i>
-<br>For details, see the
-<a href="../../../ptolemy/domains/ptinyos/doc/installation.htm">installation notes</a>.
-
-
-<ul>
-<li> <a href="../../domains/ptinyos/demo/SenseToLeds/SenseToLeds-InWireless.xml">Sensor To LEDs</a>.  Single-node sensing demo with a model of the physical environment.
-
-<li> <a href="../../domains/ptinyos/demo/SendAndReceiveCnt/SendAndReceiveCnt-InWireless.xml">Send and Receive</a>.  Two-node radio communication demo with a sending node and a receiving node.
-
-<li> <a href="../../domains/ptinyos/demo/Surge/Surge.xml">Surge</a>.  Multihop routing demo with link visualization.
-
-<li> <a href="../../domains/ptinyos/demo/CntToLeds/CntToLeds.xml">
-Counter To LEDs</a>. <i>May take a moment to open</i>  This demo is useful for people
-who want to create applications and generate nesC code, but not simulate in Viptos.
-</ul>
-
-<h3><a name="whatsnew">What's new</a></h3>
-
-<a href="whatsNew.htm">What's new and change log</a> for Viptos.
+<i>Visual editor, code generator, and simulator for TinyOS programs and wireless sensor networks</i>.
 
 </body>
 </html>
