@@ -1201,6 +1201,9 @@ public class CodeManager {
          * any trouble evaluating this for block.
          */
         public void evaluateForScope() throws PtalonRuntimeException {
+            if (getParent().isForStatement) {
+                entered = 1;
+            }
             Token initialValue = evaluateExpression(initExpr);
             _scope.addVariable(variable, initialValue);
             _currentBranch = true;
