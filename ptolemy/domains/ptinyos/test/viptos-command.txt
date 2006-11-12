@@ -1,0 +1,64 @@
+# This file contains the command for running large model tests for Viptos.
+
+# You must increase the Java heap size with the command below.
+
+# You must also use the ulimit script before proceeding, to increase
+  the maximum number of files open allowed.
+
+export JAVAFLAGS=-Xmx512m 
+
+#################### Begin 1 nodes #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/demo/SenseToLeds/SenseToLeds-InWireless-timing-noenv-1.xml > /dev/null 2>> viptos-log-1.txt
+
+#################### Begin 10 nodes #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/demo/SenseToLeds/SenseToLeds-InWireless-timing-noenv-10.xml > /dev/null 2>> viptos-log-10.txt
+
+#################### Begin 25 nodes #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/demo/SenseToLeds/SenseToLeds-InWireless-timing-noenv-25.xml > /dev/null 2>> viptos-log-25.txt
+
+#################### Begin 50 nodes #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/demo/SenseToLeds/SenseToLeds-InWireless-timing-noenv-50.xml > /dev/null 2>> viptos-log-50.txt
+
+#################### Begin 100 nodes #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/demo/SenseToLeds/SenseToLeds-InWireless-timing-noenv-100.xml > /dev/null 2>> viptos-log-100.txt
+
+Size Statistics for .SenseToLeds-InWireless-timing-noenv-100
+AtomicEntities: 601
+CompositeEntities: 0
+Relations: 0
+Attributes: 4607
+
+#################### Begin 250 nodes #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/demo/SenseToLeds/SenseToLeds-InWireless-timing-noenv-250.xml > /dev/null 2>> viptos-log-250.txt
+
+Size Statistics for .SenseToLeds-InWireless-timing-noenv-250
+AtomicEntities: 1501
+CompositeEntities: 0
+Relations: 0
+Attributes: 11507
+
+#################### Begin 500 nodes #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/demo/SenseToLeds/SenseToLeds-InWireless-timing-noenv-500.xml > /dev/null 2>> viptos-log-500.txt
+
+Size Statistics for .SenseToLeds-InWireless-timing-noenv-500
+AtomicEntities: 3001
+CompositeEntities: 0
+Relations: 0
+Attributes: 23007
+
+#################### Begin 1000 nodes #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/demo/SenseToLeds/SenseToLeds-InWireless-timing-noenv-1000.xml > /dev/null 2>> viptos-log-1000.txt
+
+Size Statistics for .SenseToLeds-InWireless-timing-noenv-1000
+AtomicEntities: 6001
+CompositeEntities: 0
+Relations: 0
+Attributes: 46007

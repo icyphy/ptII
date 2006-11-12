@@ -41,6 +41,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.SocketException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.ByteBuffer;
@@ -52,6 +53,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -59,6 +61,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.Time;
@@ -383,7 +386,9 @@ public class PtinyOSDirector extends Director {
 
             try {
                 // Convert File to a URL
-                URL url = file.toURL(); // file:/c:/myclasses/
+                // file:/c:/myclasses/
+                URI uri = file.toURI();
+                URL url = uri.toURL();
                 URL[] urls = new URL[] { url };
 
                 // Create a new class loader with the directory
@@ -422,7 +427,11 @@ public class PtinyOSDirector extends Director {
                         _debug("Done with load(), about to call main("
                                 + argsToMain[0] + ", " + argsToMain[1] + ")");
                     }
-
+                    
+                    // Note: For statistical purposes.
+                    System.gc();
+                    _startTime = (new Date()).getTime();
+                    
                     if (_loader.main(argsToMain) < 0) {
                         throw new InternalErrorException(
                                 "Could not initialize TOSSIM.");
@@ -484,7 +493,9 @@ public class PtinyOSDirector extends Director {
                             + "instance of CompositeActor.");
         }
 
-        _version = workspace().getVersion();
+        // FIXME: old TOSSIM can't be used again.
+        //long newVersion = workspace().getVersion();
+        _version++;
 
         // Open directory, creating it if necessary.
         File directory = destinationDirectory.asFile();
@@ -663,6 +674,9 @@ public class PtinyOSDirector extends Director {
      *   one of the associated actors throws it.
      */
     public void wrapup() throws IllegalActionException {
+        // Note: For statistical purposes.
+        System.err.println(Manager.timeAndMemory(_startTime));
+        
         if (_debugging) {
             _debug("Called wrapup()");
         }
@@ -1896,7 +1910,9 @@ public class PtinyOSDirector extends Director {
     private static String _unnamed = "Unnamed";
 
     // Workspace version number at preinitialize.
-    private long _version;
+    private long _version = -1;
+    
+    private long _startTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
