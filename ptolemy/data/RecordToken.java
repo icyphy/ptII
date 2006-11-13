@@ -55,13 +55,14 @@ import ptolemy.kernel.util.InternalErrorException;
  (those with the same labels) will be added or subtracted,
  and the disjoint records will not appear in the result.
 
- @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee
+ @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee, contributor: J. S. Senecal
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Green (neuendor)
  @Pt.AcceptedRating Yellow (cxh)
  */
 public class RecordToken extends AbstractNotConvertibleToken {
+
     /** Construct a RecordToken with the specified labels and values.
      *  The labels and values arrays must have the same length, and have one
      *  to one correspondence with each other.  That is, the i'th entry in
@@ -106,6 +107,38 @@ public class RecordToken extends AbstractNotConvertibleToken {
             throw new IllegalActionException("A record token cannot be"
                     + " created from the expression '" + init + "'");
         }
+    }
+
+
+    /** Construct a RecordToken with the labels and values specified
+     *  by a given Map object. The object cannot contain any null keys
+     *  or values.
+     *  @param fields A Map that has keys of type String and 
+     *  values of type Token.   
+     *  @exception IllegalActionException If the map contains null
+     *  keys or values, or if it contains non-String keys or non-Token
+     *  values.
+     */
+    public RecordToken(Map fieldMap)
+    		throws IllegalActionException {
+    	Iterator fields = fieldMap.entrySet().iterator();
+    	while (fields.hasNext()) {
+    		Map.Entry entry = (Map.Entry)fields.next();
+    		if (entry.getKey() == null || entry.getValue() == null) {
+    			throw new IllegalActionException("RecordToken: given "
+                                + "map contains either null keys "
+                                + "or null values.");
+    		}
+    		if (!(entry.getKey() instanceof String)
+                        || !(entry.getValue() instanceof Token)) {
+    			throw new IllegalActionException("RecordToken: given "
+                                + "map contains either non-String keys "
+                                + "or non-Token values.");
+    		}
+
+
+    	}
+    	_fields.putAll(fieldMap);
     }
 
     ///////////////////////////////////////////////////////////////////
