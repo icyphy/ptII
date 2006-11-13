@@ -103,6 +103,50 @@ test RecordType-2.0 {Test convert} {
         [[[$r1 getType] convert $r1] toString]
 } {{{}} {{name = "foo", value = 1.0}} {{extra = 2.5, name = "foo", value = 1}}}
 
+#######################################################################
+####
+# 
+test RecordType-2.1 {Create a Record from a Map} {
+    set map [java::new java.util.HashMap]
+    set stringType [java::field ptolemy.data.type.BaseType STRING]
+    set doubleType [java::field ptolemy.data.type.BaseType DOUBLE]
+    $map put "name" $stringType
+    $map put "value" $doubleType
+    set r2 [java::new {ptolemy.data.type.RecordType java.util.Map} $map]
+    list [$r2 toString]
+} {{{name = string, value = double}}}
+
+
+#######################################################################
+####
+# 
+test RecordType-2.2 {Create a Record from a Map} {
+    # Uses $r from 1.3 above.	
+    set stringType [java::field ptolemy.data.type.BaseType STRING]
+    set doubleType [java::field ptolemy.data.type.BaseType DOUBLE]
+
+    set map1 [java::new java.util.HashMap]
+    $map1 put [java::null] $stringType
+    catch {java::new {ptolemy.data.type.RecordType java.util.Map} $map1} errMsg1
+
+    set map2 [java::new java.util.HashMap]
+    $map2 put "name" [java::null]
+    catch {java::new {ptolemy.data.type.RecordType java.util.Map} $map2} errMsg2
+
+    set map3 [java::new java.util.HashMap]
+    $map3 put 1 stringType
+    catch {java::new {ptolemy.data.type.RecordType java.util.Map} $map3} errMsg3
+
+    set map4 [java::new java.util.HashMap]
+    $map4 put name "myName"
+    catch {java::new {ptolemy.data.type.RecordType java.util.Map} $map4} errMsg4
+
+    list "$errMsg1\n$errMsg2\n$errMsg3\n$errMsg4"
+} {{ptolemy.kernel.util.IllegalActionException: RecordType: given map contains either null keys or null values.
+ptolemy.kernel.util.IllegalActionException: RecordType: given map contains either null keys or null values.
+ptolemy.kernel.util.IllegalActionException: RecordType: given map contains either non-String keys or non-Type values.
+ptolemy.kernel.util.IllegalActionException: RecordType: given map contains either non-String keys or non-Type values.}}
+
 ######################################################################
 ####
 # 
