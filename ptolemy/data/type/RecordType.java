@@ -68,7 +68,7 @@ import ptolemy.kernel.util.InternalErrorException;
  bottom of the type lattice, and hence satisfies this type
  constraint).
 
- @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer
+ @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer; contributor: J. S. Senecal
  @version $Id$
  @since Ptolemy II 3.0
  @Pt.ProposedRating Red (neuendor)
@@ -98,6 +98,33 @@ public class RecordType extends StructuredType {
             FieldType fieldType = new FieldType(types[i]);
             _fields.put(labels[i], fieldType);
         }
+    }
+
+    /** Construct a RecordType with the labels and values specified by
+     *  a given Map object. The object cannot contain any null keys or
+     *  values.
+     *  @param fields A Map that has keys of type String and 
+     *  values of type Token.   
+     *  @exception IllegalActionException If the map contains null
+     *  keys or values, or if it contains non-String keys or non-Type
+     *  values
+     */
+    public RecordType(Map fieldMap) throws IllegalActionException  {
+   	Iterator fields = fieldMap.entrySet().iterator();
+   	while (fields.hasNext()) {
+            Map.Entry entry = (Map.Entry)fields.next();
+            if (entry.getKey() == null || entry.getValue() == null) {
+                throw new IllegalActionException("RecordType: given map"
+                        + " contains either null keys or null values.");
+            }
+            if (!(entry.getKey() instanceof String) 
+                    || !(entry.getValue() instanceof Type)) {
+                throw new IllegalActionException("RecordType: given map"
+                        + " contains either non-String keys or"
+                        + " non-Type values.");
+            }
+            _fields.put(entry.getKey(), new FieldType((Type)entry.getValue()));
+   	}
     }
 
     ///////////////////////////////////////////////////////////////////
