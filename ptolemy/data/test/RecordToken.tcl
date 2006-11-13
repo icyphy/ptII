@@ -70,6 +70,37 @@ test RecordToken-1.1 {Create a non-empty instance} {
 
 ######################################################################
 ####
+# 
+test RecordToken-1.1.2 {Fail to create records} {
+    set l [java::new {String[]} {2} {{name} {value}}]
+    set nt [java::new {ptolemy.data.StringToken String} foo]
+    set vt [java::new {ptolemy.data.IntToken int} 5]
+    set v [java::new {ptolemy.data.Token[]} 2 [list $nt $vt]]
+
+    catch {java::new {ptolemy.data.RecordToken} [java::null] $v} errmsg1
+    catch {java::new {ptolemy.data.RecordToken} $l [java::null]} errmsg2
+
+    # Array of length 1, which is not the same length as the label array
+    set v3 [java::new {ptolemy.data.Token[]} 3 [list $nt $vt $nt]]
+    catch {java::new {ptolemy.data.RecordToken} $l $v3} errmsg3
+
+    # One of the labels is null
+    set lnull [java::new {String[]} {2} [list {name} [java::null]]]
+    catch {java::new {ptolemy.data.RecordToken} $lnull $v} errmsg4
+
+    # Duplicate labels
+    set ldup [java::new {String[]} {2} {{name} {name}}]
+    catch {java::new {ptolemy.data.RecordToken} $ldup $v} errmsg5
+
+    list "$errmsg1\n$errmsg2\n$errmsg3\n$errmsg4\n$errmsg5"
+} {{ptolemy.kernel.util.IllegalActionException: RecordToken: the labels or the values array do not have the same length, or is null.
+ptolemy.kernel.util.IllegalActionException: RecordToken: the labels or the values array do not have the same length, or is null.
+ptolemy.kernel.util.IllegalActionException: RecordToken: the labels or the values array do not have the same length, or is null.
+ptolemy.kernel.util.IllegalActionException: RecordToken: the 1'th element of the labels or values array is null
+ptolemy.kernel.util.IllegalActionException: RecordToken: The labels array contain duplicate element: name}}
+
+######################################################################
+####
 # This test has been commented out because "{}" could either be an
 # empty record or an empty array.
 # 
@@ -81,10 +112,32 @@ test RecordToken-1.1 {Create a non-empty instance} {
 #######################################################################
 ####
 # 
+test RecordToken-1.2 {Fail to create a RecordToken from a String} {
+    catch {java::new {ptolemy.data.RecordToken String} "1"} errMsg
+    list $errMsg 	
+} {{ptolemy.kernel.util.IllegalActionException: A record token cannot be created from the expression '1'}}
+
+#######################################################################
+####
+# 
 test RecordToken-1.3 {Create a non-empty instance from string} {
     set r [java::new {ptolemy.data.RecordToken String} "{name = \"bar\", value = 6}"]
     list [$r toString] [$r length]
 } {{{name = "bar", value = 6}} 2}
+
+
+#######################################################################
+####
+# 
+test RecordToken-2.1 {Create a Record from a Map} {
+    # Uses $r from 1.3 above.	
+    set map [java::new java.util.HashMap]
+    $map put "name" [java::new ptolemy.data.StringToken "bar"]
+    $map put "value" [java::new ptolemy.data.IntToken 6]
+    set r2 [java::new {ptolemy.data.RecordToken java.util.Map} $map]
+    list [$r2 toString] [$r2 length] [$r2 equals $r]
+} {{{name = "bar", value = 6}} 2 1}
+
 
 ######################################################################
 ####
@@ -168,8 +221,16 @@ test RecordToken-equals.0 {test equals} {
     set vb [java::new {ptolemy.data.Token[]} 2 [list $v1b $v2b]]
     set r3 [java::new {ptolemy.data.RecordToken} $lb $vb]
 
-    list [$r1 equals $r1] [$r1 equals $r2] [$r1 equals $r3]
-} {1 1 0}
+    # Differs from r1 only in the labels
+    set lb [java::new {String[]} {2} {{value1} {differentLabel2}}]
+    set v1b [java::new {ptolemy.data.IntToken int} 5]
+    set v2b [java::new {ptolemy.data.DoubleToken double} 9.5]
+    set vb [java::new {ptolemy.data.Token[]} 2 [list $v1b $v2b]]
+    set r4 [java::new {ptolemy.data.RecordToken} $lb $vb]
+
+    list [$r1 equals $r1] [$r1 equals $r2] [$r1 equals $r3] \
+	[$r1 equals [java::null]] [$r1 equals $r4]
+} {1 1 0 0 0}
 
 ######################################################################
 ####
@@ -380,6 +441,17 @@ test RecordToken-merge.4.2 {Test merge with two empty records} {
     [$r merge $r $r] toString
 } {{}}
 
+test RecordToken-merge.5 {Test mergeReturnType, increase coverage} {
+    set t1 [java::call ptolemy.data.RecordToken mergeReturnType \
+	[$r getType] [$r1 getType]]
+
+    set nat [java::field ptolemy.data.type.BaseType INT]
+    set arrayType [java::new ptolemy.data.type.ArrayType $nat]
+    set t2 [java::call ptolemy.data.RecordToken mergeReturnType \
+	[$r getType] $arrayType]
+
+    list [$t1 toString] [$t2 toString]
+} {{{extra1 = int, name = string, value = int}} unknown}
 
 ######################################################################
 ####
