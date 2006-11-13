@@ -675,7 +675,9 @@ public class PtinyOSDirector extends Director {
      */
     public void wrapup() throws IllegalActionException {
         // Note: For statistical purposes.
-        System.err.println(Manager.timeAndMemory(_startTime));
+        System.err.println(Manager.timeAndMemory(_startTime)
+                + " "
+                + _sanitizedFullName(this));
         
         if (_debugging) {
             _debug("Called wrapup()");

@@ -1,0 +1,113 @@
+# This file contains the command for running tests for radio overhead in Viptos.
+
+# You must increase the Java heap size with the command below.
+
+# You must also use the ulimit script before proceeding, to increase
+  the maximum number of files open allowed.
+
+export JAVAFLAGS=-Xmx512m 
+
+#################### Begin 0 sender 0 receiver #####################
+
+#viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-0sender-0receiver.xml > /dev/null 2>> viptos-log-0sender-0receiver.txt
+
+#################### Begin 1 sender 0 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-1sender-0receiver.xml > /dev/null 2>> viptos-log-1sender-0receiver.txt
+
+#################### Begin 5 sender 0 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-5sender-0receiver.xml > /dev/null 2>> viptos-log-5sender-0receiver.txt
+
+#################### Begin 10 sender 0 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-10sender-0receiver.xml > /dev/null 2>> viptos-log-10sender-0receiver.txt
+
+#################### Begin 25 sender 0 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-25sender-0receiver.xml > /dev/null 2>> viptos-log-25sender-0receiver.txt
+
+####################################################################
+#################### Begin 0 sender 1 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-0sender-1receiver.xml > /dev/null 2>> viptos-log-0sender-1receiver.txt
+
+#################### Begin 1 sender 1 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-1sender-1receiver.xml > /dev/null 2>> viptos-log-1sender-1receiver.txt
+
+#################### Begin 5 sender 1 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-5sender-1receiver.xml > /dev/null 2>> viptos-log-5sender-1receiver.txt
+
+#################### Begin 10 sender 1 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-10sender-1receiver.xml > /dev/null 2>> viptos-log-10sender-1receiver.txt
+
+#################### Begin 25 sender 1 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-25sender-1receiver.xml > /dev/null 2>> viptos-log-25sender-1receiver.txt
+
+####################################################################
+#################### Begin 0 sender 5 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-0sender-5receiver.xml > /dev/null 2>> viptos-log-0sender-5receiver.txt
+
+#################### Begin 1 sender 5 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-1sender-5receiver.xml > /dev/null 2>> viptos-log-1sender-5receiver.txt
+
+#################### Begin 5 sender 5 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-5sender-5receiver.xml > /dev/null 2>> viptos-log-5sender-5receiver.txt
+
+#################### Begin 10 sender 5 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-10sender-5receiver.xml > /dev/null 2>> viptos-log-10sender-5receiver.txt
+
+#################### Begin 25 sender 5 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-25sender-5receiver.xml > /dev/null 2>> viptos-log-25sender-5receiver.txt
+
+####################################################################
+#################### Begin 0 sender 10 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-0sender-10receiver.xml > /dev/null 2>> viptos-log-0sender-10receiver.txt
+
+#################### Begin 1 sender 10 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-1sender-10receiver.xml > /dev/null 2>> viptos-log-1sender-10receiver.txt
+
+#################### Begin 5 sender 10 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-5sender-10receiver.xml > /dev/null 2>> viptos-log-5sender-10receiver.txt
+
+#################### Begin 10 sender 10 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-10sender-10receiver.xml > /dev/null 2>> viptos-log-10sender-10receiver.txt
+
+#################### Begin 25 sender 10 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-25sender-10receiver.xml > /dev/null 2>> viptos-log-25sender-10receiver.txt
+
+####################################################################
+#################### Begin 0 sender 25 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-0sender-25receiver.xml > /dev/null 2>> viptos-log-0sender-25receiver.txt
+
+#################### Begin 1 sender 25 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-1sender-25receiver.xml > /dev/null 2>> viptos-log-1sender-25receiver.txt
+
+#################### Begin 5 sender 25 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-5sender-25receiver.xml > /dev/null 2>> viptos-log-5sender-25receiver.txt
+
+#################### Begin 10 sender 25 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-10sender-25receiver.xml > /dev/null 2>> viptos-log-10sender-25receiver.txt
+
+#################### Begin 25 sender 25 receiver #####################
+
+viptos $PTII/ptolemy/domains/ptinyos/test/SendAndReceiveCnt/SendAndReceiveCnt-InWireless-timing-25sender-25receiver.xml > /dev/null 2>> viptos-log-25sender-25receiver.txt
+
