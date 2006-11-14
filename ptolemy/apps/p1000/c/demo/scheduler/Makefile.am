@@ -1,12 +1,15 @@
 demodir = @bindir@/demo
-demo_PROGRAMS = get_time
+demo_PROGRAMS = scheduler
 
 common_srcdir = @top_srcdir@/c/common
 common_builddir = @top_builddir@/c/common
 AM_CFLAGS = -I$(common_srcdir)
 LDADD = $(common_builddir)/libp1000_utils.a
+AM_LDFLAGS = -lpthread
 
-get_time_SOURCES = \
-	$(common_srcdir)/ptpHwP1000LinuxDr.h \
-	$(common_srcdir)/p1000_utils.h \
-	get_time.c
+scheduler_SOURCES = \
+	scheduler.c \
+	scheduler.h \
+	type_defs.h \
+	type_impls.c \
+	type_uids.h

@@ -1,1 +1,1 @@
-SUBDIRS = get_time
+SUBDIRS = get_time scheduler

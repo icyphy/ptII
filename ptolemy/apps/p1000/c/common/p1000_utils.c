@@ -6,7 +6,8 @@ void encodeHwNsec( FPGA_TIME *hwTime,
         const unsigned int secs,
         const unsigned int nsec)
 {
-    static double nsecToHw = pow(2,30) / 1e9;
+    static double nsecToHw;
+    nsecToHw = pow(2,30) / 1e9;
 
     if (hwTime)
         {
@@ -21,7 +22,8 @@ void decodeHwNsec(
         unsigned int *secs,
         unsigned int *nsec)
 {
-    static double hwToNsec = 1e9 / pow(2,30);
+    static double hwToNsec;
+    hwToNsec = 1e9 / pow(2,30);
 
     if (hwTime)
         {
