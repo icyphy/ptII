@@ -55,7 +55,7 @@ import ptolemy.kernel.util.InternalErrorException;
  (those with the same labels) will be added or subtracted,
  and the disjoint records will not appear in the result.
 
- @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee, contributor: J. S. Senecal
+ @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee; contributor: J. S. Senecal
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Green (neuendor)
@@ -113,7 +113,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
     /** Construct a RecordToken with the labels and values specified
      *  by a given Map object. The object cannot contain any null keys
      *  or values.
-     *  @param fields A Map that has keys of type String and 
+     *  @param fieldMap A Map that has keys of type String and 
      *  values of type Token.   
      *  @exception IllegalActionException If the map contains null
      *  keys or values, or if it contains non-String keys or non-Token
