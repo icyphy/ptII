@@ -38,6 +38,7 @@ import java.util.LinkedList;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// InequalitySolver
@@ -305,8 +306,26 @@ public class InequalitySolver {
     private void _addToClist(InequalityTerm[] variables, Integer indexWrap) {
         for (int i = 0; i < variables.length; i++) {
             if (!variables[i].isSettable()) {
+                Object variableValue = null;
+                try {
+                    variableValue = variables[i].getValue();
+                } catch(IllegalActionException ex) {
+                    variableValue = ex.toString();
+                }
+                Object variableObject = null;
+                try {
+                    variableObject = variables[i].getAssociatedObject();
+                    if (variableObject instanceof NamedObj) {
+                        variableObject = ((NamedObj)variableObject).getFullName();
+                    }
+                } catch(Exception ex) {
+                    variableObject = ex.toString();
+                }
                 throw new InvalidStateException(
-                        "Variable in an InequalityTerm is not settable.");
+                        "Port \" "
+                        + variableObject + "\" of type \""
+                        + variableValue
+                        + "\" in an InequalityTerm is not settable.");
             }
 
             ArrayList entry = (ArrayList) (_Clist.get(variables[i]));
