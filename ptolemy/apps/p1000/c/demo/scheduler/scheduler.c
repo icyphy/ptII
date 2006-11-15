@@ -9,33 +9,56 @@
 #include "type_defs.h"
 #include "scheduler.h"
 
-void CLOCK_init(CLOCK* clock, void* actual_ref, SCHEDULER* scheduler)
+void CLOCK_init(CLOCK* clock, void* actual_ref, SCHEDULER* scheduler,
+	void* method_table)
 {
-	INIT_SUPER_TYPE(CLOCK, ACTOR, clock, actual_ref, scheduler);
+	INIT_SUPER_TYPE(CLOCK, ACTOR, clock, actual_ref, scheduler, method_table);
+	COPY_METHOD_TABLE(CLOCK, clock, clock->super_fire,
+		((ACTOR*) SUPER(clock))->fire);
 
-	TYPED_PORT_init(&(clock->fire_at), &(clock->fire_at), (ACTOR*) clock);
-	TYPED_PORT_init(&(clock->output), &(clock->output), (ACTOR*) clock);
-	clock->end_time = clock->time = (TIME) {
+	ACTOR* ACTOR_super = UPCAST(clock, ACTOR);
+	TYPED_PORT_init(&(clock->fire_at), &(clock->fire_at), ACTOR_super);
+	TYPED_PORT_init(&(clock->output), &(clock->output), ACTOR_super);
+	clock->time = clock->end_time = (TIME) {
 		0,	// ms
 		0,	// ns
 	};
+	
+	if (method_table == NULL)
+		clock->fire = CLOCK_fire;
+	else
+		COPY_METHOD_TABLE(CLOCK, clock, clock->fire, method_table);
+}
+
+void CLOCK_fire(CLOCK* clock)
+{
+	clock->super_fire((ACTOR*) SUPER(clock));
 }
 
 void TRIGGERED_CLOCK_init(TRIGGERED_CLOCK* triggered_clock,
-	void* actual_ref, SCHEDULER* scheduler)
+	void* actual_ref, SCHEDULER* scheduler, void* method_table)
 {
 	INIT_SUPER_TYPE(TRIGGERED_CLOCK, CLOCK, triggered_clock, actual_ref,
-		scheduler);
+		scheduler, method_table);
+	COPY_METHOD_TABLE(TRIGGERED_CLOCK, triggered_clock,
+		triggered_clock->super_fire, ((CLOCK*) SUPER(triggered_clock))->fire);
 	
+	ACTOR* ACTOR_super = UPCAST(triggered_clock, ACTOR);
 	TYPED_PORT_init(&(triggered_clock->trigger), &(triggered_clock->trigger),
-		UPCAST(triggered_clock, ACTOR));
+		ACTOR_super);
 	TYPED_PORT_init(&(triggered_clock->output), &(triggered_clock->output),
-		UPCAST(triggered_clock, ACTOR));
+		ACTOR_super);
 	triggered_clock->start_time = triggered_clock->phase
 			= triggered_clock->period = (TIME) {
 		0,	// ms
 		0	// ns
 	};
+	
+	if (method_table == NULL)
+		triggered_clock->fire = TRIGGERED_CLOCK_fire;
+	else
+		COPY_METHOD_TABLE(CLOCK, triggered_clock, triggered_clock->fire,
+			method_table);
 }
 
 void TRIGGERED_CLOCK_initialize(TRIGGERED_CLOCK* triggered_clock)
@@ -92,15 +115,34 @@ void TRIGGERED_CLOCK_initialize(TRIGGERED_CLOCK* triggered_clock)
 	TYPED_PORT_send(&(triggered_clock->output), &e);
 }
 
-void TRIGGER_OUT_init(TRIGGER_OUT* trigger_out, void* actual_ref,
-	SCHEDULER* scheduler)
+void TRIGGERED_CLOCK_fire(TRIGGERED_CLOCK* triggered_clock)
 {
-	INIT_SUPER_TYPE(TRIGGER_OUT, ACTOR, trigger_out, actual_ref, scheduler);
+	triggered_clock->super_fire((CLOCK*) SUPER(triggered_clock));
+}
+
+void TRIGGER_OUT_init(TRIGGER_OUT* trigger_out, void* actual_ref,
+	SCHEDULER* scheduler, void* method_table)
+{
+	INIT_SUPER_TYPE(TRIGGER_OUT, ACTOR, trigger_out, actual_ref, scheduler,
+		method_table);
+	COPY_METHOD_TABLE(TRIGGER_OUT, trigger_out, trigger_out->super_fire,
+		((CLOCK*) SUPER(trigger_out))->fire);
 	
-	TYPED_PORT_init(&(trigger_out->input), &(trigger_out->input),
-		UPCAST(trigger_out, ACTOR));
+	ACTOR* ACTOR_super = UPCAST(trigger_out, ACTOR);
+	TYPED_PORT_init(&(trigger_out->input), &(trigger_out->input), ACTOR_super);
 	TYPED_PORT_init(&(trigger_out->output), &(trigger_out->output),
-		UPCAST(trigger_out, ACTOR));
+		ACTOR_super);
+	
+	if (method_table == NULL)
+		trigger_out->fire = TRIGGER_OUT_fire;
+	else
+		COPY_METHOD_TABLE(TRIGGER_OUT, trigger_out, trigger_out->fire,
+			method_table);
+}
+
+void TRIGGER_OUT_fire(TRIGGER_OUT* trigger_out)
+{
+	trigger_out->super_fire((CLOCK*) SUPER(trigger_out));
 }
 
 int fd;
@@ -177,9 +219,9 @@ int main() {
 	SCHEDULER_init(&scheduler, &scheduler);
 	
 	TRIGGERED_CLOCK t_clock;
-	TRIGGERED_CLOCK_init(&t_clock, &t_clock, &scheduler);
+	TRIGGERED_CLOCK_init(&t_clock, &t_clock, &scheduler, NULL);
 	TRIGGER_OUT t_out;
-	TRIGGER_OUT_init(&t_out, &t_out, &scheduler);
+	TRIGGER_OUT_init(&t_out, &t_out, &scheduler, NULL);
 	
 	PORT_connect(UPCAST(&(t_clock.output), PORT), UPCAST(&(t_out.input), PORT));
 	PORT_connect(UPCAST(&(t_out.output), PORT),
@@ -192,4 +234,5 @@ int main() {
 	TRIGGER_OUT_initialize(&t_out);
 	
 	printf("Start execution:");
+	SCHEDULER_execute(&scheduler);
 }

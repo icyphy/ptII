@@ -51,11 +51,23 @@ GENERAL_TYPE* _upcast(GENERAL_TYPE* object_ref, TYPE_UID_TYPE type_uid);
 	void* actual_ref; \
 	SUPER_TYPE super;
 
+#define DECLARE_OVERRIDEN_METHOD(return_type, method_name, ...) \
+	return_type (*super_ ## method_name)(__VA_ARGS__);
+	
+#define IMPLEMENT_OVERRIDEN_METHOD(object_ref, SUPER_TYPE, method_name) \
+	object_ref->super_ ## method_name = \
+		((SUPER_TYPE*) SUPER(object_ref))->method_name;
+
 #define INIT_SUPER_TYPE(TYPE, SUPER_TYPE, ref, _actual_ref, ...) do { \
 		ref->type_uid = TYPE ## _UID; \
 		ref->actual_ref = _actual_ref; \
 		SUPER_TYPE ## _init(&(ref->super), _actual_ref , ## __VA_ARGS__); \
 	} while (0)
+
+#define COPY_METHOD_TABLE(DES_TYPE, des_object_ref, des_method_table, \
+	src_method_table) \
+	(memcpy(des_method_table, src_method_table, \
+		sizeof(DES_TYPE) + ((void*)des_object_ref) - ((void*)des_method_table)))
 
 /* Dependency link */
 
@@ -113,12 +125,15 @@ typedef struct SCHEDULER {
 	DECLARE_SUPER_TYPE(GENERAL_TYPE)
 	
 	int fd;
+	struct ACTOR* first_actor;
 	struct ACTOR* last_actor;
+	struct PORT* first_port;
 	struct PORT* last_port;
 } SCHEDULER;
 
 void SCHEDULER_init(SCHEDULER* scheduler, void* actual_ref);
 void SCHEDULER_register_port(SCHEDULER* scheduler, struct PORT* port);
+void SCHEDULER_execute(SCHEDULER* scheduler);
 
 /* Port */
 
@@ -158,8 +173,14 @@ typedef struct ACTOR {
 	SCHEDULER* scheduler;
 	struct ACTOR* prev;
 	struct ACTOR* next;
+	
+	/* Method table */
+	// Method from ACTOR
+	void (*fire)(struct ACTOR* actor);
 } ACTOR;
 
-void ACTOR_init(ACTOR* actor, void* actual_ref, SCHEDULER* scheduler);
+void ACTOR_init(ACTOR* actor, void* actual_ref, SCHEDULER* scheduler,
+	const void *method_table);
+void ACTOR_fire(ACTOR* actor);
 
 #endif /*TYPE_DEFS_H_*/
