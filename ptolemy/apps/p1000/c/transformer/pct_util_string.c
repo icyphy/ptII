@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdlib.h>
 #include "pct_util.h"
 #include "pct_c_parser.h"
 

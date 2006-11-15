@@ -1,7 +1,7 @@
 SUBDIRS = . test
 
 AM_YFLAGS = -d
-AM_CFLAGS = -Werror
+AM_CFLAGS = -Werror -O2
 
 lib_LIBRARIES = libpct.a
 libpct_a_SOURCES = \

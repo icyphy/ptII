@@ -3,7 +3,9 @@ demo_PROGRAMS = get_time
 
 common_srcdir = @top_srcdir@/c/common
 common_builddir = @top_builddir@/c/common
-AM_CFLAGS = -I$(common_srcdir)
+
+AM_CFLAGS = -I$(common_srcdir) -Wall -Werror -std=c99 -O2
+
 LDADD = $(common_builddir)/libp1000_utils.a
 
 get_time_SOURCES = \
