@@ -100,8 +100,6 @@ GENERAL_TYPE* _upcast(GENERAL_TYPE* object_ref, TYPE_UID_TYPE type_uid);
 	(((TYPE ## _METHOD_TABLE*)((TYPE*)object_ref)->method_table)->method_name( \
 		(TYPE*)((TYPE*)object_ref)->actual_ref , ## __VA_ARGS__ ))
 
-/* Dependency link */
-
 /* Time */
 
 typedef struct TIME {
