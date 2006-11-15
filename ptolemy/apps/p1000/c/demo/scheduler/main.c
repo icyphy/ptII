@@ -63,6 +63,9 @@ void TRIGGERED_CLOCK_initialize(TRIGGERED_CLOCK* triggered_clock)
     int rtn;
     unsigned int secs;
     unsigned int nsecs;
+	INT_TOKEN token;
+	CLOCK* triggered_clock_CLOCK;
+	EVENT e;
 	
 	scheduler = UPCAST(triggered_clock, ACTOR)->scheduler;
 	SCHEDULER_register_port(scheduler,
@@ -89,16 +92,15 @@ void TRIGGERED_CLOCK_initialize(TRIGGERED_CLOCK* triggered_clock)
 	UPCAST(triggered_clock, CLOCK)->end_time.ms +=
 			triggered_clock->start_time.ms;
 
-	INT_TOKEN token;
 	INT_TOKEN_init(&token, &token);
 	token.value = 1;
 	
-	CLOCK* triggered_clock_CLOCK = UPCAST(triggered_clock, CLOCK);
+	triggered_clock_CLOCK = UPCAST(triggered_clock, CLOCK);
 	triggered_clock_CLOCK->time = (TIME) {
 		triggered_clock->start_time.ms + triggered_clock->phase.ms,
 		triggered_clock->start_time.ns + triggered_clock->phase.ns
 	};
-	EVENT e = (EVENT) {
+	e = (EVENT) {
 		UPCAST(&token, TOKEN),			// token
 		triggered_clock_CLOCK->time,	// time
 		0,								// is_timer_event
@@ -110,9 +112,35 @@ void TRIGGERED_CLOCK_initialize(TRIGGERED_CLOCK* triggered_clock)
 
 void TRIGGERED_CLOCK_fire(TRIGGERED_CLOCK* triggered_clock)
 {
+	CLOCK* triggered_clock_CLOCK;
+	INT_TOKEN token;
+	EVENT e;
+	
 	CLOCK_fire((CLOCK*) SUPER(triggered_clock));
 	
-	printf("kk\n");
+	if (triggered_clock->trigger.first_event != NULL) {
+		REMOVE_FIRST(triggered_clock->trigger.first_event,
+			triggered_clock->trigger.last_event);
+		
+		triggered_clock_CLOCK = UPCAST(triggered_clock, CLOCK);
+		triggered_clock_CLOCK->time.ms += triggered_clock->period.ms;
+		triggered_clock_CLOCK->time.ns += triggered_clock->period.ns; 
+		if (triggered_clock_CLOCK->time.ms
+				< triggered_clock_CLOCK->end_time.ms) {
+			//FIXME: should check whether the currentTime is larger than _time.
+			INT_TOKEN_init(&token, &token);
+			token.value = 1;
+			
+			e = (EVENT) {
+				UPCAST(&token, TOKEN),			// token
+				triggered_clock_CLOCK->time,	// time
+				0,								// is_timer_event
+				NULL,							// prev
+				NULL							// next
+			};
+			TYPED_PORT_send(&(triggered_clock->output), &e);
+		}
+	}
 }
 
 TRIGGER_OUT_METHOD_TABLE TRIGGER_OUT_method_table = {
@@ -202,10 +230,52 @@ void TRIGGER_OUT_initialize(TRIGGER_OUT* trigger_out)
 
 void TRIGGER_OUT_fire(TRIGGER_OUT* trigger_out)
 {
+	unsigned int secs;
+	unsigned int nsecs;
+    FPGA_GET_TIME fpgaGetTime;
+    int rtn;
+	FPGA_SET_TIMETRIGGER fpgaSetTimetrigger;
+
 	CLOCK_fire((CLOCK*) SUPER(trigger_out));
+	
+	fd = UPCAST(trigger_out, ACTOR)->scheduler->fd;
+	if (trigger_out->input.first_event != NULL) {
+		rtn = ioctl(fd, FPGA_IOC_GET_TIME, &fpgaGetTime);
+		if (rtn) {
+			fprintf(stderr, "ioctl to get time failed: %d, %d\n", rtn, errno);
+			perror("error from ioctl");
+			//exit(1);
+		}
+
+		// Scale from HW to TAI nsec
+		decodeHwNsec(&fpgaGetTime.timeVal, &secs, &nsecs);
+		printf("\n set TO: %.9d.%9.9d\n", secs, nsecs);
+
+		EVENT *e = trigger_out->input.first_event;
+		REMOVE_FIRST(trigger_out->input.first_event,
+			trigger_out->input.last_event);
+		TIME t = e->time;
+
+		//FIXME: set hardware trigger time.
+		secs = t.ms;
+		nsecs = t.ns;
+		printf("     TO: %.9d.%9.9d\n", secs, nsecs);
+
+		fpgaSetTimetrigger.num = 0;   // Only single timetrigger supported, numbered '0'
+		fpgaSetTimetrigger.force = 0; // Don't force
+		encodeHwNsec(&fpgaSetTimetrigger.timeVal, secs, nsecs);
+
+		rtn = ioctl(fd,  FPGA_IOC_SET_TIMETRIGGER, &fpgaSetTimetrigger);
+		if (rtn) {
+			fprintf(stderr, "ioctl to set timetrigger failed: %d, %d\n", rtn, errno);
+			perror("error from ioctl");
+			// exit(1);
+		}
+	}
 }
 
-int main() {
+int main()
+{
 	SCHEDULER scheduler;
 	SCHEDULER_init(&scheduler, &scheduler);
 	
