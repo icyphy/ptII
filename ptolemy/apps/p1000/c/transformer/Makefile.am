@@ -1,6 +1,8 @@
 SUBDIRS = . test
 
 AM_YFLAGS = -d
+AM_CFLAGS = -Werror
+
 lib_LIBRARIES = libpct.a
 libpct_a_SOURCES = \
 	pct_c_parser.y \

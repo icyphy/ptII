@@ -3,11 +3,13 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <unistd.h>
 #include <pthread.h>
 
 #include "main.h"
 #include "int_token.h"
 #include "ptpHwP1000LinuxDr.h"
+#include "p1000_utils.h"
 
 CLOCK_METHOD_TABLE CLOCK_method_table = {
 	CLOCK_fire	// fire
@@ -167,7 +169,6 @@ void* read_loop(void* data)
 	unsigned int nsecs;
 	int rtn;
 	TIME t;
-	char* data1 = "X";
 	
 	unsigned int status;
 	int num;
@@ -218,7 +219,6 @@ void TRIGGER_OUT_initialize(TRIGGER_OUT* trigger_out)
 	int        thr_id;
 	pthread_t  p_thread;
 	SCHEDULER* scheduler;
-	char *hostName = "X";
 	
 	scheduler = UPCAST(trigger_out, ACTOR)->scheduler;
 	SCHEDULER_register_port(scheduler, UPCAST(&(trigger_out->input), PORT));

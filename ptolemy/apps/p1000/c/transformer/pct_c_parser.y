@@ -1,10 +1,13 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "pct_util.h"
 
 void check_type_name_declaration(struct AST_NODE* declaration);
 int c_error(char* const error);
+
+extern int c_lex();
 %}
 
 %token IDENTIFIER CONSTANT STRING_LITERAL SIZEOF

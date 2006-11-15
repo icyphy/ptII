@@ -4,7 +4,7 @@ demo_PROGRAMS = scheduler
 common_srcdir = @top_srcdir@/c/common
 common_builddir = @top_builddir@/c/common
 
-AM_CFLAGS = -I$(common_srcdir)
+AM_CFLAGS = -I$(common_srcdir) -Werror -Wall -std=c99
 LDADD = $(common_builddir)/libp1000_utils.a
 AM_LDFLAGS = -lpthread
 

@@ -16,6 +16,8 @@ AST_NODE* create_lexical_token(int token);
 void ignore_attribute();
 void line_comment();
 
+extern int c_error(char* const error);
+
 #define RETURN_LEXICAL_TOKEN(token) { \
 	c_lval = create_lexical_token(token); \
 	return token; \
@@ -275,7 +277,7 @@ void change_source_file()
 				if (file_name_started) {
 					append_text(&text, c, &current_length, &max_size);
 				} else if (c == ' ' || c == '\t'
-						|| c >= '0' && c <='9' && text != NULL) {
+						|| (c >= '0' && c <='9' && text != NULL)) {
 					// Numbers after the source file name.
 				} else {
 					break;
@@ -283,7 +285,7 @@ void change_source_file()
 			}
 		}
 	}
-	if (c != 0 && c != '\n' || line_num < 0 || text == NULL
+	if ((c != 0 && c != '\n') || line_num < 0 || text == NULL
 			|| file_name_started) {
 		while (c != 0 && c != '\n') {
 			c = input();

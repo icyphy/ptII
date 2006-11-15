@@ -336,14 +336,17 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "pct_c_parser.y"
+#line 1 "../../../c/transformer/pct_c_parser.y"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "pct_util.h"
 
 void check_type_name_declaration(struct AST_NODE* declaration);
 int c_error(char* const error);
+
+extern int c_lex();
 
 
 /* Enabling traces.  */
@@ -377,7 +380,7 @@ typedef int YYSTYPE;
 
 
 /* Line 216 of yacc.c.  */
-#line 381 "pct_c_parser.c"
+#line 384 "../../../c/transformer/pct_c_parser.c"
 
 #ifdef short
 # undef short
@@ -774,31 +777,31 @@ static const yytype_int16 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    52,    52,    53,    66,    67,    68,    69,    79,    80,
-      88,    98,   108,   116,   122,   130,   138,   150,   167,   173,
-     184,   185,   191,   197,   205,   211,   224,   225,   226,   227,
-     228,   229,   233,   234,   245,   246,   254,   262,   273,   274,
-     282,   293,   294,   302,   313,   314,   322,   330,   338,   349,
-     350,   358,   369,   370,   381,   382,   393,   394,   405,   406,
-     417,   418,   429,   430,   443,   444,   455,   456,   457,   458,
-     459,   460,   461,   462,   463,   464,   465,   469,   470,   479,
-     483,   489,   499,   505,   509,   515,   519,   525,   529,   535,
-     542,   546,   555,   559,   568,   576,   584,   592,   600,   611,
-     619,   627,   635,   643,   651,   659,   667,   675,   683,   691,
-     699,   707,   708,   709,   720,   734,   746,   756,   769,   770,
-     774,   780,   789,   795,   804,   810,   816,   822,   831,   837,
-     848,   852,   858,   867,   877,   889,   901,   915,   925,   938,
-     942,   951,   957,   968,   974,   980,   989,  1000,  1004,  1015,
-    1023,  1030,  1040,  1050,  1060,  1073,  1086,  1098,  1110,  1120,
-    1129,  1138,  1150,  1156,  1162,  1168,  1177,  1181,  1188,  1189,
-    1196,  1200,  1208,  1214,  1220,  1229,  1235,  1246,  1250,  1257,
-    1261,  1265,  1272,  1279,  1288,  1297,  1306,  1315,  1326,  1337,
-    1346,  1355,  1364,  1376,  1377,  1384,  1396,  1400,  1404,  1410,
-    1419,  1427,  1431,  1438,  1446,  1455,  1456,  1457,  1458,  1459,
-    1460,  1464,  1473,  1483,  1496,  1504,  1515,  1519,  1526,  1527,
-    1531,  1537,  1546,  1556,  1568,  1581,  1591,  1605,  1615,  1626,
-    1636,  1649,  1659,  1669,  1679,  1687,  1698,  1703,  1711,  1712,
-    1716,  1722,  1728,  1734,  1743,  1747
+       0,    55,    55,    56,    69,    70,    71,    72,    82,    83,
+      91,   101,   111,   119,   125,   133,   141,   153,   170,   176,
+     187,   188,   194,   200,   208,   214,   227,   228,   229,   230,
+     231,   232,   236,   237,   248,   249,   257,   265,   276,   277,
+     285,   296,   297,   305,   316,   317,   325,   333,   341,   352,
+     353,   361,   372,   373,   384,   385,   396,   397,   408,   409,
+     420,   421,   432,   433,   446,   447,   458,   459,   460,   461,
+     462,   463,   464,   465,   466,   467,   468,   472,   473,   482,
+     486,   492,   502,   508,   512,   518,   522,   528,   532,   538,
+     545,   549,   558,   562,   571,   579,   587,   595,   603,   614,
+     622,   630,   638,   646,   654,   662,   670,   678,   686,   694,
+     702,   710,   711,   712,   723,   737,   749,   759,   772,   773,
+     777,   783,   792,   798,   807,   813,   819,   825,   834,   840,
+     851,   855,   861,   870,   880,   892,   904,   918,   928,   941,
+     945,   954,   960,   971,   977,   983,   992,  1003,  1007,  1018,
+    1026,  1033,  1043,  1053,  1063,  1076,  1089,  1101,  1113,  1123,
+    1132,  1141,  1153,  1159,  1165,  1171,  1180,  1184,  1191,  1192,
+    1199,  1203,  1211,  1217,  1223,  1232,  1238,  1249,  1253,  1260,
+    1264,  1268,  1275,  1282,  1291,  1300,  1309,  1318,  1329,  1340,
+    1349,  1358,  1367,  1379,  1380,  1387,  1399,  1403,  1407,  1413,
+    1422,  1430,  1434,  1441,  1449,  1458,  1459,  1460,  1461,  1462,
+    1463,  1467,  1476,  1486,  1499,  1507,  1518,  1522,  1529,  1530,
+    1534,  1540,  1549,  1559,  1571,  1584,  1594,  1608,  1618,  1629,
+    1639,  1652,  1662,  1672,  1682,  1690,  1701,  1706,  1714,  1715,
+    1719,  1725,  1731,  1737,  1746,  1750
 };
 #endif
 
@@ -2279,12 +2282,12 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 52 "pct_c_parser.y"
+#line 55 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 3:
-#line 53 "pct_c_parser.y"
+#line 56 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = (yyvsp[(1) - (2)]);
 		(yyval)->string_literal.text = (char*) realloc((yyval)->string_literal.text,
@@ -2299,22 +2302,22 @@ yyreduce:
     break;
 
   case 4:
-#line 66 "pct_c_parser.y"
+#line 69 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 5:
-#line 67 "pct_c_parser.y"
+#line 70 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 6:
-#line 68 "pct_c_parser.y"
+#line 71 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 7:
-#line 69 "pct_c_parser.y"
+#line 72 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = (yyvsp[(2) - (3)]);
 		move_and_prepend_comments((yyval), (yyvsp[(1) - (3)]));
@@ -2325,12 +2328,12 @@ yyreduce:
     break;
 
   case 8:
-#line 79 "pct_c_parser.y"
+#line 82 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 9:
-#line 80 "pct_c_parser.y"
+#line 83 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_ACCESS, (yyvsp[(1) - (4)]));
 		(yyval)->array_access = (ARRAY_ACCESS_STRUCT) { (yyvsp[(1) - (4)]), (yyvsp[(3) - (4)]) };
@@ -2342,7 +2345,7 @@ yyreduce:
     break;
 
   case 10:
-#line 88 "pct_c_parser.y"
+#line 91 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PARAMETERIZED_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->parameterized_expression = (PARAMETERIZED_EXPRESSION_STRUCT) {
@@ -2356,7 +2359,7 @@ yyreduce:
     break;
 
   case 11:
-#line 98 "pct_c_parser.y"
+#line 101 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PARAMETERIZED_EXPRESSION, (yyvsp[(1) - (4)]));
 		(yyval)->parameterized_expression = (PARAMETERIZED_EXPRESSION_STRUCT) {
@@ -2370,7 +2373,7 @@ yyreduce:
     break;
 
   case 12:
-#line 108 "pct_c_parser.y"
+#line 111 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(FIELD_ACCESS, (yyvsp[(1) - (3)]));
 		(yyval)->field_access = (FIELD_ACCESS_STRUCT) { 0, (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])->identifier.id };
@@ -2382,7 +2385,7 @@ yyreduce:
     break;
 
   case 13:
-#line 116 "pct_c_parser.y"
+#line 119 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(FIELD_ACCESS, (yyvsp[(1) - (3)]));
 		(yyval)->field_access = (FIELD_ACCESS_STRUCT) { 1, (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])->identifier.id };
@@ -2392,7 +2395,7 @@ yyreduce:
     break;
 
   case 14:
-#line 122 "pct_c_parser.y"
+#line 125 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(INC_DEC_EXPRESSION, (yyvsp[(1) - (2)]));
 		(yyval)->inc_dec_expression = (INC_DEC_EXPRESSION_STRUCT) {
@@ -2404,7 +2407,7 @@ yyreduce:
     break;
 
   case 15:
-#line 130 "pct_c_parser.y"
+#line 133 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(INC_DEC_EXPRESSION, (yyvsp[(1) - (2)]));
 		(yyval)->inc_dec_expression = (INC_DEC_EXPRESSION_STRUCT) {
@@ -2416,7 +2419,7 @@ yyreduce:
     break;
 
   case 16:
-#line 138 "pct_c_parser.y"
+#line 141 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STRUCT_CONSTANT, (yyvsp[(1) - (6)]));
 		(yyval)->struct_constant = (STRUCT_CONSTANT_STRUCT) { (yyvsp[(2) - (6)]), (yyvsp[(5) - (6)]) };
@@ -2432,7 +2435,7 @@ yyreduce:
     break;
 
   case 17:
-#line 150 "pct_c_parser.y"
+#line 153 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STRUCT_CONSTANT, (yyvsp[(1) - (7)]));
 		(yyval)->struct_constant = (STRUCT_CONSTANT_STRUCT) { (yyvsp[(2) - (7)]), (yyvsp[(5) - (7)]) };
@@ -2450,7 +2453,7 @@ yyreduce:
     break;
 
   case 18:
-#line 167 "pct_c_parser.y"
+#line 170 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARGUMENT_EXPRESSION_LIST, (yyvsp[(1) - (1)]));
 		(yyval)->argument_expression_list = (ARGUMENT_EXPRESSION_LIST_STRUCT) {
@@ -2460,7 +2463,7 @@ yyreduce:
     break;
 
   case 19:
-#line 173 "pct_c_parser.y"
+#line 176 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARGUMENT_EXPRESSION_LIST, (yyvsp[(1) - (3)]));
 		(yyval)->argument_expression_list = (ARGUMENT_EXPRESSION_LIST_STRUCT) {
@@ -2472,12 +2475,12 @@ yyreduce:
     break;
 
   case 20:
-#line 184 "pct_c_parser.y"
+#line 187 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 21:
-#line 185 "pct_c_parser.y"
+#line 188 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(INC_DEC_EXPRESSION, (yyvsp[(1) - (2)]));
 		(yyval)->inc_dec_expression = (INC_DEC_EXPRESSION_STRUCT) { PREFIX_INC, (yyvsp[(2) - (2)]) };
@@ -2487,7 +2490,7 @@ yyreduce:
     break;
 
   case 22:
-#line 191 "pct_c_parser.y"
+#line 194 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(INC_DEC_EXPRESSION, (yyvsp[(1) - (2)]));
 		(yyval)->inc_dec_expression = (INC_DEC_EXPRESSION_STRUCT) { PREFIX_DEC, (yyvsp[(2) - (2)]) };
@@ -2497,7 +2500,7 @@ yyreduce:
     break;
 
   case 23:
-#line 197 "pct_c_parser.y"
+#line 200 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(UNARY_EXPRESSION, (yyvsp[(1) - (2)]));
 		(yyval)->unary_expression = (UNARY_EXPRESSION_STRUCT) {
@@ -2509,7 +2512,7 @@ yyreduce:
     break;
 
   case 24:
-#line 205 "pct_c_parser.y"
+#line 208 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(SIZEOF_EXPRESSION, (yyvsp[(1) - (2)]));
 		(yyval)->sizeof_expression = (SIZEOF_EXPRESSION_STRUCT) { 0, (yyvsp[(2) - (2)]) };
@@ -2519,7 +2522,7 @@ yyreduce:
     break;
 
   case 25:
-#line 211 "pct_c_parser.y"
+#line 214 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(SIZEOF_EXPRESSION, (yyvsp[(1) - (4)]));
 		(yyval)->sizeof_expression = (SIZEOF_EXPRESSION_STRUCT) { 1, (yyvsp[(3) - (4)]) };
@@ -2533,42 +2536,42 @@ yyreduce:
     break;
 
   case 26:
-#line 224 "pct_c_parser.y"
+#line 227 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 27:
-#line 225 "pct_c_parser.y"
+#line 228 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 28:
-#line 226 "pct_c_parser.y"
+#line 229 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 29:
-#line 227 "pct_c_parser.y"
+#line 230 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 30:
-#line 228 "pct_c_parser.y"
+#line 231 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 31:
-#line 229 "pct_c_parser.y"
+#line 232 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 32:
-#line 233 "pct_c_parser.y"
+#line 236 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 33:
-#line 234 "pct_c_parser.y"
+#line 237 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(CAST_EXPRESSION, (yyvsp[(1) - (4)]));
 		(yyval)->cast_expression = (CAST_EXPRESSION_STRUCT) { (yyvsp[(2) - (4)]), (yyvsp[(4) - (4)]) };
@@ -2580,12 +2583,12 @@ yyreduce:
     break;
 
   case 34:
-#line 245 "pct_c_parser.y"
+#line 248 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 35:
-#line 246 "pct_c_parser.y"
+#line 249 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2597,7 +2600,7 @@ yyreduce:
     break;
 
   case 36:
-#line 254 "pct_c_parser.y"
+#line 257 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2609,7 +2612,7 @@ yyreduce:
     break;
 
   case 37:
-#line 262 "pct_c_parser.y"
+#line 265 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2621,12 +2624,12 @@ yyreduce:
     break;
 
   case 38:
-#line 273 "pct_c_parser.y"
+#line 276 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 39:
-#line 274 "pct_c_parser.y"
+#line 277 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2638,7 +2641,7 @@ yyreduce:
     break;
 
   case 40:
-#line 282 "pct_c_parser.y"
+#line 285 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2650,12 +2653,12 @@ yyreduce:
     break;
 
   case 41:
-#line 293 "pct_c_parser.y"
+#line 296 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 42:
-#line 294 "pct_c_parser.y"
+#line 297 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2667,7 +2670,7 @@ yyreduce:
     break;
 
   case 43:
-#line 302 "pct_c_parser.y"
+#line 305 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2679,12 +2682,12 @@ yyreduce:
     break;
 
   case 44:
-#line 313 "pct_c_parser.y"
+#line 316 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 45:
-#line 314 "pct_c_parser.y"
+#line 317 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2696,7 +2699,7 @@ yyreduce:
     break;
 
   case 46:
-#line 322 "pct_c_parser.y"
+#line 325 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2708,7 +2711,7 @@ yyreduce:
     break;
 
   case 47:
-#line 330 "pct_c_parser.y"
+#line 333 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2720,7 +2723,7 @@ yyreduce:
     break;
 
   case 48:
-#line 338 "pct_c_parser.y"
+#line 341 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2732,12 +2735,12 @@ yyreduce:
     break;
 
   case 49:
-#line 349 "pct_c_parser.y"
+#line 352 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 50:
-#line 350 "pct_c_parser.y"
+#line 353 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2749,7 +2752,7 @@ yyreduce:
     break;
 
   case 51:
-#line 358 "pct_c_parser.y"
+#line 361 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2761,12 +2764,12 @@ yyreduce:
     break;
 
   case 52:
-#line 369 "pct_c_parser.y"
+#line 372 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 53:
-#line 370 "pct_c_parser.y"
+#line 373 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2778,12 +2781,12 @@ yyreduce:
     break;
 
   case 54:
-#line 381 "pct_c_parser.y"
+#line 384 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 55:
-#line 382 "pct_c_parser.y"
+#line 385 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2795,12 +2798,12 @@ yyreduce:
     break;
 
   case 56:
-#line 393 "pct_c_parser.y"
+#line 396 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 57:
-#line 394 "pct_c_parser.y"
+#line 397 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2812,12 +2815,12 @@ yyreduce:
     break;
 
   case 58:
-#line 405 "pct_c_parser.y"
+#line 408 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 59:
-#line 406 "pct_c_parser.y"
+#line 409 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2829,12 +2832,12 @@ yyreduce:
     break;
 
   case 60:
-#line 417 "pct_c_parser.y"
+#line 420 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 61:
-#line 418 "pct_c_parser.y"
+#line 421 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2846,12 +2849,12 @@ yyreduce:
     break;
 
   case 62:
-#line 429 "pct_c_parser.y"
+#line 432 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 63:
-#line 430 "pct_c_parser.y"
+#line 433 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(CONDITIONAL_EXPRESSION, (yyvsp[(1) - (5)]));
 		(yyval)->conditional_expression = (CONDITIONAL_EXPRESSION_STRUCT) {
@@ -2865,12 +2868,12 @@ yyreduce:
     break;
 
   case 64:
-#line 443 "pct_c_parser.y"
+#line 446 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 65:
-#line 444 "pct_c_parser.y"
+#line 447 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BINARY_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->binary_expression = (BINARY_EXPRESSION_STRUCT) {
@@ -2882,67 +2885,67 @@ yyreduce:
     break;
 
   case 66:
-#line 455 "pct_c_parser.y"
+#line 458 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 67:
-#line 456 "pct_c_parser.y"
+#line 459 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 68:
-#line 457 "pct_c_parser.y"
+#line 460 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 69:
-#line 458 "pct_c_parser.y"
+#line 461 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 70:
-#line 459 "pct_c_parser.y"
+#line 462 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 71:
-#line 460 "pct_c_parser.y"
+#line 463 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 72:
-#line 461 "pct_c_parser.y"
+#line 464 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 73:
-#line 462 "pct_c_parser.y"
+#line 465 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 74:
-#line 463 "pct_c_parser.y"
+#line 466 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 75:
-#line 464 "pct_c_parser.y"
+#line 467 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 76:
-#line 465 "pct_c_parser.y"
+#line 468 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 77:
-#line 469 "pct_c_parser.y"
+#line 472 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 78:
-#line 470 "pct_c_parser.y"
+#line 473 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(COMMA_EXPRESSION, (yyvsp[(1) - (3)]));
 		(yyval)->comma_expression = (COMMA_EXPRESSION_STRUCT) { (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]) };
@@ -2952,12 +2955,12 @@ yyreduce:
     break;
 
   case 79:
-#line 479 "pct_c_parser.y"
+#line 482 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 80:
-#line 483 "pct_c_parser.y"
+#line 486 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DECLARATION, (yyvsp[(1) - (2)]));
 		(yyval)->declaration = (DECLARATION_STRUCT) { (yyvsp[(1) - (2)]), NULL };
@@ -2967,7 +2970,7 @@ yyreduce:
     break;
 
   case 81:
-#line 489 "pct_c_parser.y"
+#line 492 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DECLARATION, (yyvsp[(1) - (3)]));
 		(yyval)->declaration = (DECLARATION_STRUCT) { (yyvsp[(1) - (3)]), (yyvsp[(2) - (3)]) };
@@ -2978,7 +2981,7 @@ yyreduce:
     break;
 
   case 82:
-#line 499 "pct_c_parser.y"
+#line 502 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DECLARATION_SPECIFIERS, (yyvsp[(1) - (1)]));
 		(yyval)->declaration_specifiers = (DECLARATION_SPECIFIERS_STRUCT) {
@@ -2988,7 +2991,7 @@ yyreduce:
     break;
 
   case 83:
-#line 505 "pct_c_parser.y"
+#line 508 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DECLARATION_SPECIFIERS, (yyvsp[(1) - (2)]));
 		(yyval)->declaration_specifiers = (DECLARATION_SPECIFIERS_STRUCT) { (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]) };
@@ -2996,7 +2999,7 @@ yyreduce:
     break;
 
   case 84:
-#line 509 "pct_c_parser.y"
+#line 512 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DECLARATION_SPECIFIERS, (yyvsp[(1) - (1)]));
 		(yyval)->declaration_specifiers = (DECLARATION_SPECIFIERS_STRUCT) {
@@ -3006,7 +3009,7 @@ yyreduce:
     break;
 
   case 85:
-#line 515 "pct_c_parser.y"
+#line 518 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DECLARATION_SPECIFIERS, (yyvsp[(1) - (2)]));
 		(yyval)->declaration_specifiers = (DECLARATION_SPECIFIERS_STRUCT) { (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]) };
@@ -3014,7 +3017,7 @@ yyreduce:
     break;
 
   case 86:
-#line 519 "pct_c_parser.y"
+#line 522 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DECLARATION_SPECIFIERS, (yyvsp[(1) - (1)]));
 		(yyval)->declaration_specifiers = (DECLARATION_SPECIFIERS_STRUCT) {
@@ -3024,7 +3027,7 @@ yyreduce:
     break;
 
   case 87:
-#line 525 "pct_c_parser.y"
+#line 528 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DECLARATION_SPECIFIERS, (yyvsp[(1) - (2)]));
 		(yyval)->declaration_specifiers = (DECLARATION_SPECIFIERS_STRUCT) { (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]) };
@@ -3032,7 +3035,7 @@ yyreduce:
     break;
 
   case 88:
-#line 529 "pct_c_parser.y"
+#line 532 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DECLARATION_SPECIFIERS, (yyvsp[(1) - (1)]));
 		(yyval)->declaration_specifiers = (DECLARATION_SPECIFIERS_STRUCT) {
@@ -3042,7 +3045,7 @@ yyreduce:
     break;
 
   case 89:
-#line 535 "pct_c_parser.y"
+#line 538 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DECLARATION_SPECIFIERS, (yyvsp[(1) - (2)]));
 		(yyval)->declaration_specifiers = (DECLARATION_SPECIFIERS_STRUCT) { (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]) };
@@ -3050,7 +3053,7 @@ yyreduce:
     break;
 
   case 90:
-#line 542 "pct_c_parser.y"
+#line 545 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(INIT_DECLARATOR_LIST, (yyvsp[(1) - (1)]));
 		(yyval)->init_declarator_list = (INIT_DECLARATOR_LIST_STRUCT) { NULL, (yyvsp[(1) - (1)]) };
@@ -3058,7 +3061,7 @@ yyreduce:
     break;
 
   case 91:
-#line 546 "pct_c_parser.y"
+#line 549 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(INIT_DECLARATOR_LIST, (yyvsp[(1) - (3)]));
 		(yyval)->init_declarator_list = (INIT_DECLARATOR_LIST_STRUCT) { (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]) };
@@ -3068,7 +3071,7 @@ yyreduce:
     break;
 
   case 92:
-#line 555 "pct_c_parser.y"
+#line 558 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(INIT_DECLARATOR, (yyvsp[(1) - (1)]));
 		(yyval)->init_declarator = (INIT_DECLARATOR_STRUCT) { (yyvsp[(1) - (1)]), NULL };
@@ -3076,7 +3079,7 @@ yyreduce:
     break;
 
   case 93:
-#line 559 "pct_c_parser.y"
+#line 562 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(INIT_DECLARATOR, (yyvsp[(1) - (3)]));
 		(yyval)->init_declarator = (INIT_DECLARATOR_STRUCT) { (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]) };
@@ -3086,7 +3089,7 @@ yyreduce:
     break;
 
   case 94:
-#line 568 "pct_c_parser.y"
+#line 571 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STORAGE_CLASS_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->storage_class_specifier = (STORAGE_CLASS_SPECIFIER_STRUCT) {
@@ -3098,7 +3101,7 @@ yyreduce:
     break;
 
   case 95:
-#line 576 "pct_c_parser.y"
+#line 579 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STORAGE_CLASS_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->storage_class_specifier = (STORAGE_CLASS_SPECIFIER_STRUCT) {
@@ -3110,7 +3113,7 @@ yyreduce:
     break;
 
   case 96:
-#line 584 "pct_c_parser.y"
+#line 587 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STORAGE_CLASS_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->storage_class_specifier = (STORAGE_CLASS_SPECIFIER_STRUCT) {
@@ -3122,7 +3125,7 @@ yyreduce:
     break;
 
   case 97:
-#line 592 "pct_c_parser.y"
+#line 595 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STORAGE_CLASS_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->storage_class_specifier = (STORAGE_CLASS_SPECIFIER_STRUCT) {
@@ -3134,7 +3137,7 @@ yyreduce:
     break;
 
   case 98:
-#line 600 "pct_c_parser.y"
+#line 603 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STORAGE_CLASS_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->storage_class_specifier = (STORAGE_CLASS_SPECIFIER_STRUCT) {
@@ -3146,7 +3149,7 @@ yyreduce:
     break;
 
   case 99:
-#line 611 "pct_c_parser.y"
+#line 614 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PRIMITIVE_TYPE_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->primitive_type_specifier = (PRIMITIVE_TYPE_SPECIFIER_STRUCT) {
@@ -3158,7 +3161,7 @@ yyreduce:
     break;
 
   case 100:
-#line 619 "pct_c_parser.y"
+#line 622 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PRIMITIVE_TYPE_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->primitive_type_specifier = (PRIMITIVE_TYPE_SPECIFIER_STRUCT) {
@@ -3170,7 +3173,7 @@ yyreduce:
     break;
 
   case 101:
-#line 627 "pct_c_parser.y"
+#line 630 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PRIMITIVE_TYPE_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->primitive_type_specifier = (PRIMITIVE_TYPE_SPECIFIER_STRUCT) {
@@ -3182,7 +3185,7 @@ yyreduce:
     break;
 
   case 102:
-#line 635 "pct_c_parser.y"
+#line 638 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PRIMITIVE_TYPE_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->primitive_type_specifier = (PRIMITIVE_TYPE_SPECIFIER_STRUCT) {
@@ -3194,7 +3197,7 @@ yyreduce:
     break;
 
   case 103:
-#line 643 "pct_c_parser.y"
+#line 646 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PRIMITIVE_TYPE_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->primitive_type_specifier = (PRIMITIVE_TYPE_SPECIFIER_STRUCT) {
@@ -3206,7 +3209,7 @@ yyreduce:
     break;
 
   case 104:
-#line 651 "pct_c_parser.y"
+#line 654 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PRIMITIVE_TYPE_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->primitive_type_specifier = (PRIMITIVE_TYPE_SPECIFIER_STRUCT) {
@@ -3218,7 +3221,7 @@ yyreduce:
     break;
 
   case 105:
-#line 659 "pct_c_parser.y"
+#line 662 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PRIMITIVE_TYPE_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->primitive_type_specifier = (PRIMITIVE_TYPE_SPECIFIER_STRUCT) {
@@ -3230,7 +3233,7 @@ yyreduce:
     break;
 
   case 106:
-#line 667 "pct_c_parser.y"
+#line 670 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PRIMITIVE_TYPE_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->primitive_type_specifier = (PRIMITIVE_TYPE_SPECIFIER_STRUCT) {
@@ -3242,7 +3245,7 @@ yyreduce:
     break;
 
   case 107:
-#line 675 "pct_c_parser.y"
+#line 678 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PRIMITIVE_TYPE_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->primitive_type_specifier = (PRIMITIVE_TYPE_SPECIFIER_STRUCT) {
@@ -3254,7 +3257,7 @@ yyreduce:
     break;
 
   case 108:
-#line 683 "pct_c_parser.y"
+#line 686 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PRIMITIVE_TYPE_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->primitive_type_specifier = (PRIMITIVE_TYPE_SPECIFIER_STRUCT) {
@@ -3266,7 +3269,7 @@ yyreduce:
     break;
 
   case 109:
-#line 691 "pct_c_parser.y"
+#line 694 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PRIMITIVE_TYPE_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->primitive_type_specifier = (PRIMITIVE_TYPE_SPECIFIER_STRUCT) {
@@ -3278,7 +3281,7 @@ yyreduce:
     break;
 
   case 110:
-#line 699 "pct_c_parser.y"
+#line 702 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PRIMITIVE_TYPE_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->primitive_type_specifier = (PRIMITIVE_TYPE_SPECIFIER_STRUCT) {
@@ -3290,17 +3293,17 @@ yyreduce:
     break;
 
   case 111:
-#line 707 "pct_c_parser.y"
+#line 710 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 112:
-#line 708 "pct_c_parser.y"
+#line 711 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 113:
-#line 709 "pct_c_parser.y"
+#line 712 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(NAMED_TYPE_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->named_type_specifier = (NAMED_TYPE_SPECIFIER_STRUCT) {
@@ -3312,7 +3315,7 @@ yyreduce:
     break;
 
   case 114:
-#line 720 "pct_c_parser.y"
+#line 723 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STRUCT_OR_UNION, (yyvsp[(1) - (5)]));
 		(yyval)->struct_or_union = (STRUCT_OR_UNION_STRUCT) {
@@ -3330,7 +3333,7 @@ yyreduce:
     break;
 
   case 115:
-#line 734 "pct_c_parser.y"
+#line 737 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STRUCT_OR_UNION, (yyvsp[(1) - (4)]));
 		(yyval)->struct_or_union = (STRUCT_OR_UNION_STRUCT) {
@@ -3346,7 +3349,7 @@ yyreduce:
     break;
 
   case 116:
-#line 746 "pct_c_parser.y"
+#line 749 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STRUCT_OR_UNION, (yyvsp[(1) - (2)]));
 		(yyval)->struct_or_union = (STRUCT_OR_UNION_STRUCT) {
@@ -3360,7 +3363,7 @@ yyreduce:
     break;
 
   case 117:
-#line 756 "pct_c_parser.y"
+#line 759 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STRUCT_OR_UNION, (yyvsp[(1) - (2)]));
 		(yyval)->struct_or_union = (STRUCT_OR_UNION_STRUCT) {
@@ -3374,17 +3377,17 @@ yyreduce:
     break;
 
   case 118:
-#line 769 "pct_c_parser.y"
+#line 772 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 119:
-#line 770 "pct_c_parser.y"
+#line 773 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 120:
-#line 774 "pct_c_parser.y"
+#line 777 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STRUCT_DECLARATION_LIST, (yyvsp[(1) - (1)]));
 		(yyval)->struct_declaration_list = (STRUCT_DECLARATION_LIST_STRUCT) {
@@ -3394,7 +3397,7 @@ yyreduce:
     break;
 
   case 121:
-#line 780 "pct_c_parser.y"
+#line 783 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STRUCT_DECLARATION_LIST, (yyvsp[(1) - (2)]));
 		(yyval)->struct_declaration_list = (STRUCT_DECLARATION_LIST_STRUCT) {
@@ -3404,7 +3407,7 @@ yyreduce:
     break;
 
   case 122:
-#line 789 "pct_c_parser.y"
+#line 792 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STRUCT_DECLARATION, (yyvsp[(1) - (3)]));
 		(yyval)->struct_declaration = (STRUCT_DECLARATION_STRUCT) { (yyvsp[(1) - (3)]), (yyvsp[(2) - (3)]) };
@@ -3414,7 +3417,7 @@ yyreduce:
     break;
 
   case 123:
-#line 795 "pct_c_parser.y"
+#line 798 "../../../c/transformer/pct_c_parser.y"
     {	/* GCC extension */
 		(yyval) = create_node(STRUCT_DECLARATION, (yyvsp[(1) - (2)]));
 		(yyval)->struct_declaration = (STRUCT_DECLARATION_STRUCT) { (yyvsp[(1) - (2)]), NULL };
@@ -3424,7 +3427,7 @@ yyreduce:
     break;
 
   case 124:
-#line 804 "pct_c_parser.y"
+#line 807 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(SPECIFIER_QUALIFIER_LIST, (yyvsp[(1) - (2)]));
 		(yyval)->specifier_qualifier_list = (SPECIFIER_QUALIFIER_LIST_STRUCT) {
@@ -3434,7 +3437,7 @@ yyreduce:
     break;
 
   case 125:
-#line 810 "pct_c_parser.y"
+#line 813 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(SPECIFIER_QUALIFIER_LIST, (yyvsp[(1) - (1)]));
 		(yyval)->specifier_qualifier_list = (SPECIFIER_QUALIFIER_LIST_STRUCT) {
@@ -3444,7 +3447,7 @@ yyreduce:
     break;
 
   case 126:
-#line 816 "pct_c_parser.y"
+#line 819 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(SPECIFIER_QUALIFIER_LIST, (yyvsp[(1) - (2)]));
 		(yyval)->specifier_qualifier_list = (SPECIFIER_QUALIFIER_LIST_STRUCT) {
@@ -3454,7 +3457,7 @@ yyreduce:
     break;
 
   case 127:
-#line 822 "pct_c_parser.y"
+#line 825 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(SPECIFIER_QUALIFIER_LIST, (yyvsp[(1) - (1)]));
 		(yyval)->specifier_qualifier_list = (SPECIFIER_QUALIFIER_LIST_STRUCT) {
@@ -3464,7 +3467,7 @@ yyreduce:
     break;
 
   case 128:
-#line 831 "pct_c_parser.y"
+#line 834 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STRUCT_DECLARATOR_LIST, (yyvsp[(1) - (1)]));
 		(yyval)->struct_declarator_list = (STRUCT_DECLARATOR_LIST_STRUCT) {
@@ -3474,7 +3477,7 @@ yyreduce:
     break;
 
   case 129:
-#line 837 "pct_c_parser.y"
+#line 840 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STRUCT_DECLARATOR_LIST, (yyvsp[(1) - (3)]));
 		(yyval)->struct_declarator_list = (STRUCT_DECLARATOR_LIST_STRUCT) {
@@ -3486,7 +3489,7 @@ yyreduce:
     break;
 
   case 130:
-#line 848 "pct_c_parser.y"
+#line 851 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STRUCT_DECLARATOR, (yyvsp[(1) - (1)]));
 		(yyval)->struct_declarator = (STRUCT_DECLARATOR_STRUCT) { (yyvsp[(1) - (1)]), NULL };
@@ -3494,7 +3497,7 @@ yyreduce:
     break;
 
   case 131:
-#line 852 "pct_c_parser.y"
+#line 855 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STRUCT_DECLARATOR, (yyvsp[(1) - (2)]));
 		(yyval)->struct_declarator = (STRUCT_DECLARATOR_STRUCT) { NULL, (yyvsp[(2) - (2)]) };
@@ -3504,7 +3507,7 @@ yyreduce:
     break;
 
   case 132:
-#line 858 "pct_c_parser.y"
+#line 861 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(STRUCT_DECLARATOR, (yyvsp[(1) - (3)]));
 		(yyval)->struct_declarator = (STRUCT_DECLARATOR_STRUCT) { (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]) };
@@ -3514,7 +3517,7 @@ yyreduce:
     break;
 
   case 133:
-#line 867 "pct_c_parser.y"
+#line 870 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ENUM_SPECIFIER, (yyvsp[(1) - (4)]));
 		(yyval)->enum_specifier = (ENUM_SPECIFIER_STRUCT) { NULL, (yyvsp[(3) - (4)]) };
@@ -3528,7 +3531,7 @@ yyreduce:
     break;
 
   case 134:
-#line 877 "pct_c_parser.y"
+#line 880 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ENUM_SPECIFIER, (yyvsp[(1) - (5)]));
 		(yyval)->enum_specifier = (ENUM_SPECIFIER_STRUCT) { (yyvsp[(2) - (5)])->identifier.id, (yyvsp[(4) - (5)]) };
@@ -3544,7 +3547,7 @@ yyreduce:
     break;
 
   case 135:
-#line 889 "pct_c_parser.y"
+#line 892 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ENUM_SPECIFIER, (yyvsp[(1) - (5)]));
 		(yyval)->enum_specifier = (ENUM_SPECIFIER_STRUCT) { NULL, (yyvsp[(3) - (5)]) };
@@ -3560,7 +3563,7 @@ yyreduce:
     break;
 
   case 136:
-#line 901 "pct_c_parser.y"
+#line 904 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ENUM_SPECIFIER, (yyvsp[(1) - (6)]));
 		(yyval)->enum_specifier = (ENUM_SPECIFIER_STRUCT) { (yyvsp[(2) - (6)])->identifier.id, (yyvsp[(4) - (6)]) };
@@ -3578,7 +3581,7 @@ yyreduce:
     break;
 
   case 137:
-#line 915 "pct_c_parser.y"
+#line 918 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ENUM_SPECIFIER, (yyvsp[(1) - (2)]));
 		(yyval)->enum_specifier = (ENUM_SPECIFIER_STRUCT) {
@@ -3592,7 +3595,7 @@ yyreduce:
     break;
 
   case 138:
-#line 925 "pct_c_parser.y"
+#line 928 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ENUM_SPECIFIER, (yyvsp[(1) - (2)]));
 		(yyval)->enum_specifier = (ENUM_SPECIFIER_STRUCT) {
@@ -3606,7 +3609,7 @@ yyreduce:
     break;
 
   case 139:
-#line 938 "pct_c_parser.y"
+#line 941 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ENUMERATOR_LIST, (yyvsp[(1) - (1)]));
 		(yyval)->enumerator_list = (ENUMERATOR_LIST_STRUCT) { NULL, (yyvsp[(1) - (1)]) };
@@ -3614,7 +3617,7 @@ yyreduce:
     break;
 
   case 140:
-#line 942 "pct_c_parser.y"
+#line 945 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ENUMERATOR_LIST, (yyvsp[(1) - (3)]));
 		(yyval)->enumerator_list = (ENUMERATOR_LIST_STRUCT) { (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]) };
@@ -3624,7 +3627,7 @@ yyreduce:
     break;
 
   case 141:
-#line 951 "pct_c_parser.y"
+#line 954 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ENUMERATOR, (yyvsp[(1) - (1)]));
 		(yyval)->enumerator = (ENUMERATOR_STRUCT) { (yyvsp[(1) - (1)])->identifier.id, NULL };
@@ -3634,7 +3637,7 @@ yyreduce:
     break;
 
   case 142:
-#line 957 "pct_c_parser.y"
+#line 960 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ENUMERATOR, (yyvsp[(1) - (3)]));
 		(yyval)->enumerator = (ENUMERATOR_STRUCT) { (yyvsp[(1) - (3)])->identifier.id, (yyvsp[(3) - (3)]) };
@@ -3646,7 +3649,7 @@ yyreduce:
     break;
 
   case 143:
-#line 968 "pct_c_parser.y"
+#line 971 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(TYPE_QUALIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->type_qualifier = (TYPE_QUALIFIER_STRUCT) { (yyvsp[(1) - (1)])->lexical_token };
@@ -3656,7 +3659,7 @@ yyreduce:
     break;
 
   case 144:
-#line 974 "pct_c_parser.y"
+#line 977 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(TYPE_QUALIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->type_qualifier = (TYPE_QUALIFIER_STRUCT) { (yyvsp[(1) - (1)])->lexical_token };
@@ -3666,7 +3669,7 @@ yyreduce:
     break;
 
   case 145:
-#line 980 "pct_c_parser.y"
+#line 983 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(TYPE_QUALIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->type_qualifier = (TYPE_QUALIFIER_STRUCT) { (yyvsp[(1) - (1)])->lexical_token };
@@ -3676,7 +3679,7 @@ yyreduce:
     break;
 
   case 146:
-#line 989 "pct_c_parser.y"
+#line 992 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(FUNCTION_SPECIFIER, (yyvsp[(1) - (1)]));
 		(yyval)->function_specifier = (FUNCTION_SPECIFIER_STRUCT) {
@@ -3688,7 +3691,7 @@ yyreduce:
     break;
 
   case 147:
-#line 1000 "pct_c_parser.y"
+#line 1003 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DECLARATOR, (yyvsp[(1) - (2)]));
 		(yyval)->declarator = (DECLARATOR_STRUCT) { (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]) };
@@ -3696,7 +3699,7 @@ yyreduce:
     break;
 
   case 148:
-#line 1004 "pct_c_parser.y"
+#line 1007 "../../../c/transformer/pct_c_parser.y"
     {
 		if ((yyvsp[(1) - (1)])->type == DECLARATOR)
 			(yyval) = (yyvsp[(1) - (1)]);
@@ -3708,7 +3711,7 @@ yyreduce:
     break;
 
   case 149:
-#line 1015 "pct_c_parser.y"
+#line 1018 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(NAMED_DIRECT_DECLARATOR, (yyvsp[(1) - (1)]));
 		(yyval)->named_direct_declarator = (NAMED_DIRECT_DECLARATOR_STRUCT) {
@@ -3720,7 +3723,7 @@ yyreduce:
     break;
 
   case 150:
-#line 1023 "pct_c_parser.y"
+#line 1026 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = (yyvsp[(2) - (3)]);
 		move_and_prepend_comments((yyval), (yyvsp[(1) - (3)]));
@@ -3731,7 +3734,7 @@ yyreduce:
     break;
 
   case 151:
-#line 1030 "pct_c_parser.y"
+#line 1033 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DIRECT_DECLARATOR, (yyvsp[(1) - (5)]));
 		(yyval)->array_direct_declarator = (ARRAY_DIRECT_DECLARATOR_STRUCT) {
@@ -3745,7 +3748,7 @@ yyreduce:
     break;
 
   case 152:
-#line 1040 "pct_c_parser.y"
+#line 1043 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DIRECT_DECLARATOR, (yyvsp[(1) - (4)]));
 		(yyval)->array_direct_declarator = (ARRAY_DIRECT_DECLARATOR_STRUCT) {
@@ -3759,7 +3762,7 @@ yyreduce:
     break;
 
   case 153:
-#line 1050 "pct_c_parser.y"
+#line 1053 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DIRECT_DECLARATOR, (yyvsp[(1) - (4)]));
 		(yyval)->array_direct_declarator = (ARRAY_DIRECT_DECLARATOR_STRUCT) {
@@ -3773,7 +3776,7 @@ yyreduce:
     break;
 
   case 154:
-#line 1061 "pct_c_parser.y"
+#line 1064 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DIRECT_DECLARATOR, (yyvsp[(1) - (6)]));
 		(yyval)->array_direct_declarator = (ARRAY_DIRECT_DECLARATOR_STRUCT) {
@@ -3789,7 +3792,7 @@ yyreduce:
     break;
 
   case 155:
-#line 1074 "pct_c_parser.y"
+#line 1077 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DIRECT_DECLARATOR, (yyvsp[(1) - (6)]));
 		(yyval)->array_direct_declarator = (ARRAY_DIRECT_DECLARATOR_STRUCT) {
@@ -3805,7 +3808,7 @@ yyreduce:
     break;
 
   case 156:
-#line 1086 "pct_c_parser.y"
+#line 1089 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DIRECT_DECLARATOR, (yyvsp[(1) - (5)]));
 		(yyval)->array_direct_declarator = (ARRAY_DIRECT_DECLARATOR_STRUCT) {
@@ -3821,7 +3824,7 @@ yyreduce:
     break;
 
   case 157:
-#line 1098 "pct_c_parser.y"
+#line 1101 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DIRECT_DECLARATOR, (yyvsp[(1) - (4)]));
 		(yyval)->array_direct_declarator = (ARRAY_DIRECT_DECLARATOR_STRUCT) {
@@ -3837,7 +3840,7 @@ yyreduce:
     break;
 
   case 158:
-#line 1110 "pct_c_parser.y"
+#line 1113 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DIRECT_DECLARATOR, (yyvsp[(1) - (3)]));
 		(yyval)->array_direct_declarator = (ARRAY_DIRECT_DECLARATOR_STRUCT) {
@@ -3851,7 +3854,7 @@ yyreduce:
     break;
 
   case 159:
-#line 1120 "pct_c_parser.y"
+#line 1123 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PARAMETERIZED_DIRECT_DECLARATOR, (yyvsp[(1) - (4)]));
 		(yyval)->parameterized_direct_declarator =
@@ -3864,7 +3867,7 @@ yyreduce:
     break;
 
   case 160:
-#line 1129 "pct_c_parser.y"
+#line 1132 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PARAMETERIZED_DIRECT_DECLARATOR, (yyvsp[(1) - (4)]));
 		(yyval)->parameterized_direct_declarator =
@@ -3877,7 +3880,7 @@ yyreduce:
     break;
 
   case 161:
-#line 1138 "pct_c_parser.y"
+#line 1141 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PARAMETERIZED_DIRECT_DECLARATOR, (yyvsp[(1) - (3)]));
 		(yyval)->parameterized_direct_declarator =
@@ -3890,7 +3893,7 @@ yyreduce:
     break;
 
   case 162:
-#line 1150 "pct_c_parser.y"
+#line 1153 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(POINTER, (yyvsp[(1) - (1)]));
 		(yyval)->pointer = (POINTER_STRUCT) { NULL, NULL };
@@ -3900,7 +3903,7 @@ yyreduce:
     break;
 
   case 163:
-#line 1156 "pct_c_parser.y"
+#line 1159 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(POINTER, (yyvsp[(1) - (2)]));
 		(yyval)->pointer = (POINTER_STRUCT) { (yyvsp[(2) - (2)]), NULL };
@@ -3910,7 +3913,7 @@ yyreduce:
     break;
 
   case 164:
-#line 1162 "pct_c_parser.y"
+#line 1165 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(POINTER, (yyvsp[(1) - (2)]));
 		(yyval)->pointer = (POINTER_STRUCT) { NULL, (yyvsp[(2) - (2)]) };
@@ -3920,7 +3923,7 @@ yyreduce:
     break;
 
   case 165:
-#line 1168 "pct_c_parser.y"
+#line 1171 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(POINTER, (yyvsp[(1) - (3)]));
 		(yyval)->pointer = (POINTER_STRUCT) { (yyvsp[(2) - (3)]), (yyvsp[(3) - (3)]) };
@@ -3930,7 +3933,7 @@ yyreduce:
     break;
 
   case 166:
-#line 1177 "pct_c_parser.y"
+#line 1180 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(TYPE_QUALIFIER_LIST, (yyvsp[(1) - (1)]));
 		(yyval)->type_qualifier_list = (TYPE_QUALIFIER_LIST_STRUCT) { NULL, (yyvsp[(1) - (1)]) };
@@ -3938,7 +3941,7 @@ yyreduce:
     break;
 
   case 167:
-#line 1181 "pct_c_parser.y"
+#line 1184 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(TYPE_QUALIFIER_LIST, (yyvsp[(1) - (2)]));
 		(yyval)->type_qualifier_list = (TYPE_QUALIFIER_LIST_STRUCT) { (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]) };
@@ -3946,12 +3949,12 @@ yyreduce:
     break;
 
   case 168:
-#line 1188 "pct_c_parser.y"
+#line 1191 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 169:
-#line 1189 "pct_c_parser.y"
+#line 1192 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = (yyvsp[(1) - (3)]);
 		(yyval)->parameter_list.has_ellipsis = 1;
@@ -3959,7 +3962,7 @@ yyreduce:
     break;
 
   case 170:
-#line 1196 "pct_c_parser.y"
+#line 1199 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PARAMETER_LIST, (yyvsp[(1) - (1)]));
 		(yyval)->parameter_list = (PARAMETER_LIST_STRUCT) { NULL, (yyvsp[(1) - (1)]), 0 };
@@ -3967,7 +3970,7 @@ yyreduce:
     break;
 
   case 171:
-#line 1200 "pct_c_parser.y"
+#line 1203 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PARAMETER_LIST, (yyvsp[(1) - (3)]));
 		(yyval)->parameter_list = (PARAMETER_LIST_STRUCT) { (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]), 0 };
@@ -3976,7 +3979,7 @@ yyreduce:
     break;
 
   case 172:
-#line 1208 "pct_c_parser.y"
+#line 1211 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PARAMETER_DECLARATION, (yyvsp[(1) - (2)]));
 		(yyval)->parameter_declaration = (PARAMETER_DECLARATION_STRUCT) {
@@ -3986,7 +3989,7 @@ yyreduce:
     break;
 
   case 173:
-#line 1214 "pct_c_parser.y"
+#line 1217 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PARAMETER_DECLARATION, (yyvsp[(1) - (2)]));
 		(yyval)->parameter_declaration = (PARAMETER_DECLARATION_STRUCT) {
@@ -3996,7 +3999,7 @@ yyreduce:
     break;
 
   case 174:
-#line 1220 "pct_c_parser.y"
+#line 1223 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PARAMETER_DECLARATION, (yyvsp[(1) - (1)]));
 		(yyval)->parameter_declaration = (PARAMETER_DECLARATION_STRUCT) {
@@ -4006,7 +4009,7 @@ yyreduce:
     break;
 
   case 175:
-#line 1229 "pct_c_parser.y"
+#line 1232 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(IDENTIFIER_LIST, (yyvsp[(1) - (1)]));
 		(yyval)->identifier_list = (IDENTIFIER_LIST_STRUCT) {
@@ -4016,7 +4019,7 @@ yyreduce:
     break;
 
   case 176:
-#line 1235 "pct_c_parser.y"
+#line 1238 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(IDENTIFIER_LIST, (yyvsp[(1) - (3)]));
 		(yyval)->identifier_list = (IDENTIFIER_LIST_STRUCT) {
@@ -4028,7 +4031,7 @@ yyreduce:
     break;
 
   case 177:
-#line 1246 "pct_c_parser.y"
+#line 1249 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(TYPE_NAME, (yyvsp[(1) - (1)]));
 		(yyval)->type_name = (TYPE_NAME_STRUCT) { (yyvsp[(1) - (1)]), NULL };
@@ -4036,7 +4039,7 @@ yyreduce:
     break;
 
   case 178:
-#line 1250 "pct_c_parser.y"
+#line 1253 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(TYPE_NAME, (yyvsp[(1) - (2)]));
 		(yyval)->type_name = (TYPE_NAME_STRUCT) { (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]) };
@@ -4044,7 +4047,7 @@ yyreduce:
     break;
 
   case 179:
-#line 1257 "pct_c_parser.y"
+#line 1260 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ABSTRACT_DECLARATOR, (yyvsp[(1) - (1)]));
 		(yyval)->abstract_declarator = (ABSTRACT_DECLARATOR_STRUCT) { (yyvsp[(1) - (1)]), NULL };
@@ -4052,7 +4055,7 @@ yyreduce:
     break;
 
   case 180:
-#line 1261 "pct_c_parser.y"
+#line 1264 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ABSTRACT_DECLARATOR, (yyvsp[(1) - (1)]));
 		(yyval)->abstract_declarator = (ABSTRACT_DECLARATOR_STRUCT) { NULL, (yyvsp[(1) - (1)]) };
@@ -4060,7 +4063,7 @@ yyreduce:
     break;
 
   case 181:
-#line 1265 "pct_c_parser.y"
+#line 1268 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ABSTRACT_DECLARATOR, (yyvsp[(1) - (2)]));
 		(yyval)->abstract_declarator = (ABSTRACT_DECLARATOR_STRUCT) { (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]) };
@@ -4068,7 +4071,7 @@ yyreduce:
     break;
 
   case 182:
-#line 1272 "pct_c_parser.y"
+#line 1275 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = (yyvsp[(2) - (3)]);
 		move_and_prepend_comments((yyval), (yyvsp[(1) - (3)]));
@@ -4079,7 +4082,7 @@ yyreduce:
     break;
 
   case 183:
-#line 1279 "pct_c_parser.y"
+#line 1282 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DIRECT_ABSTRACT_DECLARATOR, (yyvsp[(1) - (2)]));
 		(yyval)->array_direct_abstract_declarator =
@@ -4092,7 +4095,7 @@ yyreduce:
     break;
 
   case 184:
-#line 1288 "pct_c_parser.y"
+#line 1291 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DIRECT_ABSTRACT_DECLARATOR, (yyvsp[(1) - (3)]));
 		(yyval)->array_direct_abstract_declarator =
@@ -4105,7 +4108,7 @@ yyreduce:
     break;
 
   case 185:
-#line 1297 "pct_c_parser.y"
+#line 1300 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DIRECT_ABSTRACT_DECLARATOR, (yyvsp[(1) - (3)]));
 		(yyval)->array_direct_abstract_declarator =
@@ -4118,7 +4121,7 @@ yyreduce:
     break;
 
   case 186:
-#line 1306 "pct_c_parser.y"
+#line 1309 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DIRECT_ABSTRACT_DECLARATOR, (yyvsp[(1) - (4)]));
 		(yyval)->array_direct_abstract_declarator =
@@ -4131,7 +4134,7 @@ yyreduce:
     break;
 
   case 187:
-#line 1315 "pct_c_parser.y"
+#line 1318 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DIRECT_ABSTRACT_DECLARATOR, (yyvsp[(1) - (3)]));
 		(yyval)->array_direct_abstract_declarator =
@@ -4146,7 +4149,7 @@ yyreduce:
     break;
 
   case 188:
-#line 1326 "pct_c_parser.y"
+#line 1329 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DIRECT_ABSTRACT_DECLARATOR, (yyvsp[(1) - (4)]));
 		(yyval)->array_direct_abstract_declarator =
@@ -4161,7 +4164,7 @@ yyreduce:
     break;
 
   case 189:
-#line 1337 "pct_c_parser.y"
+#line 1340 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PARAMETERIZED_DIRECT_ABSTRACT_DECLARATOR, (yyvsp[(1) - (2)]));
 		(yyval)->parameterized_direct_abstract_declarator =
@@ -4174,7 +4177,7 @@ yyreduce:
     break;
 
   case 190:
-#line 1346 "pct_c_parser.y"
+#line 1349 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PARAMETERIZED_DIRECT_ABSTRACT_DECLARATOR, (yyvsp[(1) - (3)]));
 		(yyval)->parameterized_direct_abstract_declarator =
@@ -4187,7 +4190,7 @@ yyreduce:
     break;
 
   case 191:
-#line 1355 "pct_c_parser.y"
+#line 1358 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PARAMETERIZED_DIRECT_ABSTRACT_DECLARATOR, (yyvsp[(1) - (3)]));
 		(yyval)->parameterized_direct_abstract_declarator =
@@ -4200,7 +4203,7 @@ yyreduce:
     break;
 
   case 192:
-#line 1364 "pct_c_parser.y"
+#line 1367 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(PARAMETERIZED_DIRECT_ABSTRACT_DECLARATOR, (yyvsp[(1) - (4)]));
 		(yyval)->parameterized_direct_abstract_declarator =
@@ -4213,12 +4216,12 @@ yyreduce:
     break;
 
   case 193:
-#line 1376 "pct_c_parser.y"
+#line 1379 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 194:
-#line 1377 "pct_c_parser.y"
+#line 1380 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = (yyvsp[(2) - (3)]);
 		move_and_prepend_comments((yyval), (yyvsp[(1) - (3)]));
@@ -4229,7 +4232,7 @@ yyreduce:
     break;
 
   case 195:
-#line 1384 "pct_c_parser.y"
+#line 1387 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = (yyvsp[(2) - (4)]);
 		move_and_prepend_comments((yyval), (yyvsp[(1) - (4)]));
@@ -4242,7 +4245,7 @@ yyreduce:
     break;
 
   case 196:
-#line 1396 "pct_c_parser.y"
+#line 1399 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(INITIALIZER_LIST, (yyvsp[(1) - (1)]));
 		(yyval)->initializer_list = (INITIALIZER_LIST_STRUCT) { NULL, NULL, (yyvsp[(1) - (1)]) };
@@ -4250,7 +4253,7 @@ yyreduce:
     break;
 
   case 197:
-#line 1400 "pct_c_parser.y"
+#line 1403 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(INITIALIZER_LIST, (yyvsp[(1) - (2)]));
 		(yyval)->initializer_list = (INITIALIZER_LIST_STRUCT) { NULL, (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]) };
@@ -4258,7 +4261,7 @@ yyreduce:
     break;
 
   case 198:
-#line 1404 "pct_c_parser.y"
+#line 1407 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(INITIALIZER_LIST, (yyvsp[(1) - (3)]));
 		(yyval)->initializer_list = (INITIALIZER_LIST_STRUCT) { (yyvsp[(1) - (3)]), NULL, (yyvsp[(3) - (3)]) };
@@ -4268,7 +4271,7 @@ yyreduce:
     break;
 
   case 199:
-#line 1410 "pct_c_parser.y"
+#line 1413 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(INITIALIZER_LIST, (yyvsp[(1) - (4)]));
 		(yyval)->initializer_list = (INITIALIZER_LIST_STRUCT) { (yyvsp[(1) - (4)]), (yyvsp[(3) - (4)]), (yyvsp[(4) - (4)]) };
@@ -4278,7 +4281,7 @@ yyreduce:
     break;
 
   case 200:
-#line 1419 "pct_c_parser.y"
+#line 1422 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = (yyvsp[(1) - (2)]);
 		move_and_append_comments((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]));
@@ -4287,7 +4290,7 @@ yyreduce:
     break;
 
   case 201:
-#line 1427 "pct_c_parser.y"
+#line 1430 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DESIGNATOR_LIST, (yyvsp[(1) - (1)]));
 		(yyval)->designator_list = (DESIGNATOR_LIST_STRUCT) { NULL, (yyvsp[(1) - (1)]) };
@@ -4295,7 +4298,7 @@ yyreduce:
     break;
 
   case 202:
-#line 1431 "pct_c_parser.y"
+#line 1434 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DESIGNATOR_LIST, (yyvsp[(1) - (2)]));
 		(yyval)->designator_list = (DESIGNATOR_LIST_STRUCT) { (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]) };
@@ -4303,7 +4306,7 @@ yyreduce:
     break;
 
   case 203:
-#line 1438 "pct_c_parser.y"
+#line 1441 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(ARRAY_DESIGNATOR, (yyvsp[(1) - (3)]));
 		(yyval)->array_designator = (ARRAY_DESIGNATOR_STRUCT) { (yyvsp[(2) - (3)]) };
@@ -4315,7 +4318,7 @@ yyreduce:
     break;
 
   case 204:
-#line 1446 "pct_c_parser.y"
+#line 1449 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DOT_DESIGNATOR, (yyvsp[(1) - (2)]));
 		(yyval)->dot_designator = (DOT_DESIGNATOR_STRUCT) { (yyvsp[(2) - (2)])->identifier.id };
@@ -4325,37 +4328,37 @@ yyreduce:
     break;
 
   case 205:
-#line 1455 "pct_c_parser.y"
+#line 1458 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 206:
-#line 1456 "pct_c_parser.y"
+#line 1459 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 207:
-#line 1457 "pct_c_parser.y"
+#line 1460 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 208:
-#line 1458 "pct_c_parser.y"
+#line 1461 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 209:
-#line 1459 "pct_c_parser.y"
+#line 1462 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 210:
-#line 1460 "pct_c_parser.y"
+#line 1463 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 211:
-#line 1464 "pct_c_parser.y"
+#line 1467 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(IDENTIFIER_LABELED_STATEMENT, (yyvsp[(1) - (3)]));
 		(yyval)->identifier_labeled_statement =
@@ -4368,7 +4371,7 @@ yyreduce:
     break;
 
   case 212:
-#line 1473 "pct_c_parser.y"
+#line 1476 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(CASE_LABELED_STATEMENT, (yyvsp[(1) - (4)]));
 		(yyval)->case_labeled_statement = (CASE_LABELED_STATEMENT_STRUCT) {
@@ -4382,7 +4385,7 @@ yyreduce:
     break;
 
   case 213:
-#line 1483 "pct_c_parser.y"
+#line 1486 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(CASE_LABELED_STATEMENT, (yyvsp[(1) - (3)]));
 		(yyval)->case_labeled_statement = (CASE_LABELED_STATEMENT_STRUCT) {
@@ -4396,7 +4399,7 @@ yyreduce:
     break;
 
   case 214:
-#line 1496 "pct_c_parser.y"
+#line 1499 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(COMPOUND_STATEMENT, (yyvsp[(1) - (2)]));
 		(yyval)->compound_statement = (COMPOUND_STATEMENT_STRUCT) { NULL };
@@ -4408,7 +4411,7 @@ yyreduce:
     break;
 
   case 215:
-#line 1504 "pct_c_parser.y"
+#line 1507 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(COMPOUND_STATEMENT, (yyvsp[(1) - (3)]));
 		(yyval)->compound_statement = (COMPOUND_STATEMENT_STRUCT) { (yyvsp[(2) - (3)]) };
@@ -4420,7 +4423,7 @@ yyreduce:
     break;
 
   case 216:
-#line 1515 "pct_c_parser.y"
+#line 1518 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BLOCK_ITEM_LIST, (yyvsp[(1) - (1)]));
 		(yyval)->block_item_list = (BLOCK_ITEM_LIST_STRUCT) { NULL, (yyvsp[(1) - (1)]) };
@@ -4428,7 +4431,7 @@ yyreduce:
     break;
 
   case 217:
-#line 1519 "pct_c_parser.y"
+#line 1522 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(BLOCK_ITEM_LIST, (yyvsp[(1) - (2)]));
 		(yyval)->block_item_list = (BLOCK_ITEM_LIST_STRUCT) { (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]) };
@@ -4436,17 +4439,17 @@ yyreduce:
     break;
 
   case 218:
-#line 1526 "pct_c_parser.y"
+#line 1529 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 219:
-#line 1527 "pct_c_parser.y"
+#line 1530 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 220:
-#line 1531 "pct_c_parser.y"
+#line 1534 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(EXPRESSION_STATEMENT, (yyvsp[(1) - (1)]));
 		(yyval)->expression_statement = (EXPRESSION_STATEMENT_STRUCT) { NULL };
@@ -4456,7 +4459,7 @@ yyreduce:
     break;
 
   case 221:
-#line 1537 "pct_c_parser.y"
+#line 1540 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(EXPRESSION_STATEMENT, (yyvsp[(1) - (2)]));
 		(yyval)->expression_statement = (EXPRESSION_STATEMENT_STRUCT) { (yyvsp[(1) - (2)]) };
@@ -4466,7 +4469,7 @@ yyreduce:
     break;
 
   case 222:
-#line 1546 "pct_c_parser.y"
+#line 1549 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(IF_STATEMENT, (yyvsp[(1) - (5)]));
 		(yyval)->if_statement = (IF_STATEMENT_STRUCT) { (yyvsp[(3) - (5)]), (yyvsp[(5) - (5)]), NULL };
@@ -4480,7 +4483,7 @@ yyreduce:
     break;
 
   case 223:
-#line 1556 "pct_c_parser.y"
+#line 1559 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(IF_STATEMENT, (yyvsp[(1) - (7)]));
 		(yyval)->if_statement = (IF_STATEMENT_STRUCT) { (yyvsp[(3) - (7)]), (yyvsp[(5) - (7)]), (yyvsp[(7) - (7)]) };
@@ -4496,7 +4499,7 @@ yyreduce:
     break;
 
   case 224:
-#line 1568 "pct_c_parser.y"
+#line 1571 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(SWITCH_STATEMENT, (yyvsp[(1) - (5)]));
 		(yyval)->switch_statement = (SWITCH_STATEMENT_STRUCT) { (yyvsp[(3) - (5)]), (yyvsp[(5) - (5)]) };
@@ -4510,7 +4513,7 @@ yyreduce:
     break;
 
   case 225:
-#line 1581 "pct_c_parser.y"
+#line 1584 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(WHILE_STATEMENT, (yyvsp[(1) - (5)]));
 		(yyval)->while_statement = (WHILE_STATEMENT_STRUCT) { (yyvsp[(3) - (5)]), (yyvsp[(5) - (5)]) };
@@ -4524,7 +4527,7 @@ yyreduce:
     break;
 
   case 226:
-#line 1591 "pct_c_parser.y"
+#line 1594 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DO_WHILE_STATEMENT, (yyvsp[(1) - (7)]));
 		(yyval)->do_while_statement = (DO_WHILE_STATEMENT_STRUCT) { (yyvsp[(2) - (7)]), (yyvsp[(5) - (7)]) };
@@ -4542,7 +4545,7 @@ yyreduce:
     break;
 
   case 227:
-#line 1605 "pct_c_parser.y"
+#line 1608 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(FOR_STATEMENT, (yyvsp[(1) - (6)]));
 		(yyval)->for_statement = (FOR_STATEMENT_STRUCT) { (yyvsp[(3) - (6)]), (yyvsp[(4) - (6)]), NULL, (yyvsp[(6) - (6)]) };
@@ -4556,7 +4559,7 @@ yyreduce:
     break;
 
   case 228:
-#line 1616 "pct_c_parser.y"
+#line 1619 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(FOR_STATEMENT, (yyvsp[(1) - (7)]));
 		(yyval)->for_statement = (FOR_STATEMENT_STRUCT) { (yyvsp[(3) - (7)]), (yyvsp[(4) - (7)]), (yyvsp[(5) - (7)]), (yyvsp[(7) - (7)]) };
@@ -4570,7 +4573,7 @@ yyreduce:
     break;
 
   case 229:
-#line 1626 "pct_c_parser.y"
+#line 1629 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(FOR_STATEMENT, (yyvsp[(1) - (6)]));
 		(yyval)->for_statement = (FOR_STATEMENT_STRUCT) { (yyvsp[(3) - (6)]), (yyvsp[(4) - (6)]), NULL, (yyvsp[(6) - (6)]) };
@@ -4584,7 +4587,7 @@ yyreduce:
     break;
 
   case 230:
-#line 1636 "pct_c_parser.y"
+#line 1639 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(FOR_STATEMENT, (yyvsp[(1) - (7)]));
 		(yyval)->for_statement = (FOR_STATEMENT_STRUCT) { (yyvsp[(3) - (7)]), (yyvsp[(4) - (7)]), (yyvsp[(5) - (7)]), (yyvsp[(7) - (7)]) };
@@ -4598,7 +4601,7 @@ yyreduce:
     break;
 
   case 231:
-#line 1649 "pct_c_parser.y"
+#line 1652 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(GOTO_STATEMENT, (yyvsp[(1) - (3)]));
 		(yyval)->goto_statement = (GOTO_STATEMENT_STRUCT) { (yyvsp[(2) - (3)])->identifier.id };
@@ -4612,7 +4615,7 @@ yyreduce:
     break;
 
   case 232:
-#line 1659 "pct_c_parser.y"
+#line 1662 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(LOOP_JUMP_STATEMENT, (yyvsp[(1) - (2)]));
 		(yyval)->loop_jump_statement = (LOOP_JUMP_STATEMENT_STRUCT) {
@@ -4626,7 +4629,7 @@ yyreduce:
     break;
 
   case 233:
-#line 1669 "pct_c_parser.y"
+#line 1672 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(LOOP_JUMP_STATEMENT, (yyvsp[(1) - (2)]));
 		(yyval)->loop_jump_statement = (LOOP_JUMP_STATEMENT_STRUCT) {
@@ -4640,7 +4643,7 @@ yyreduce:
     break;
 
   case 234:
-#line 1679 "pct_c_parser.y"
+#line 1682 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(RETURN_STATEMENT, (yyvsp[(1) - (2)]));
 		(yyval)->return_statement = (RETURN_STATEMENT_STRUCT) { NULL };
@@ -4652,7 +4655,7 @@ yyreduce:
     break;
 
   case 235:
-#line 1687 "pct_c_parser.y"
+#line 1690 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(RETURN_STATEMENT, (yyvsp[(1) - (3)]));
 		(yyval)->return_statement = (RETURN_STATEMENT_STRUCT) { (yyvsp[(2) - (3)]) };
@@ -4664,7 +4667,7 @@ yyreduce:
     break;
 
   case 236:
-#line 1698 "pct_c_parser.y"
+#line 1701 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(TRANSLATION_UNIT, (yyvsp[(1) - (1)]));
 		(yyval)->translation_unit = (TRANSLATION_UNIT_STRUCT) { NULL, (yyvsp[(1) - (1)]), 0, NULL};
@@ -4673,7 +4676,7 @@ yyreduce:
     break;
 
   case 237:
-#line 1703 "pct_c_parser.y"
+#line 1706 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(TRANSLATION_UNIT, (yyvsp[(1) - (2)]));
 		(yyval)->translation_unit = (TRANSLATION_UNIT_STRUCT) { (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]), 0, NULL };
@@ -4682,17 +4685,17 @@ yyreduce:
     break;
 
   case 238:
-#line 1711 "pct_c_parser.y"
+#line 1714 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 239:
-#line 1712 "pct_c_parser.y"
+#line 1715 "../../../c/transformer/pct_c_parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 240:
-#line 1716 "pct_c_parser.y"
+#line 1719 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(FUNCTION_DEFINITION, (yyvsp[(1) - (3)]));
 		(yyval)->function_definition = (FUNCTION_DEFINITION_STRUCT) {
@@ -4702,7 +4705,7 @@ yyreduce:
     break;
 
   case 241:
-#line 1722 "pct_c_parser.y"
+#line 1725 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(FUNCTION_DEFINITION, (yyvsp[(1) - (2)]));
 		(yyval)->function_definition = (FUNCTION_DEFINITION_STRUCT) {
@@ -4712,7 +4715,7 @@ yyreduce:
     break;
 
   case 242:
-#line 1728 "pct_c_parser.y"
+#line 1731 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(FUNCTION_DEFINITION, (yyvsp[(1) - (4)]));
 		(yyval)->function_definition = (FUNCTION_DEFINITION_STRUCT) {
@@ -4722,7 +4725,7 @@ yyreduce:
     break;
 
   case 243:
-#line 1734 "pct_c_parser.y"
+#line 1737 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(FUNCTION_DEFINITION, (yyvsp[(1) - (3)]));
 		(yyval)->function_definition = (FUNCTION_DEFINITION_STRUCT) {
@@ -4732,7 +4735,7 @@ yyreduce:
     break;
 
   case 244:
-#line 1743 "pct_c_parser.y"
+#line 1746 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DECLARATION_LIST, (yyvsp[(1) - (1)]));
 		(yyval)->declaration_list = (DECLARATION_LIST_STRUCT) { NULL, (yyvsp[(1) - (1)]) };
@@ -4740,7 +4743,7 @@ yyreduce:
     break;
 
   case 245:
-#line 1747 "pct_c_parser.y"
+#line 1750 "../../../c/transformer/pct_c_parser.y"
     {
 		(yyval) = create_node(DECLARATION_LIST, (yyvsp[(1) - (2)]));
 		(yyval)->declaration_list = (DECLARATION_LIST_STRUCT) { (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]) };
@@ -4749,7 +4752,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 4753 "pct_c_parser.c"
+#line 4756 "../../../c/transformer/pct_c_parser.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -4963,7 +4966,7 @@ yyreturn:
 }
 
 
-#line 1753 "pct_c_parser.y"
+#line 1756 "../../../c/transformer/pct_c_parser.y"
 
 
 /* Check the following patterns:

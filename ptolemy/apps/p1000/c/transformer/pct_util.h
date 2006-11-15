@@ -450,8 +450,7 @@ typedef struct AST_NODE {
 	int file;
 	struct COMMENT_LIST_STRUCT* comment;
 	struct AST_NODE* parent;
-	union
-	{
+	union {
 		struct IDENTIFIER_STRUCT identifier;
 		struct CONSTANT_STRUCT constant;
 		struct STRING_LITERAL_STRUCT string_literal;
