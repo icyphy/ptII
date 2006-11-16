@@ -289,15 +289,22 @@ public class RecordUpdater extends TypedAtomicActor {
          *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-            List inputPorts = inputPortList();
-            Object[] portsObj = inputPorts.toArray();
-            InequalityTerm[] variables = new InequalityTerm[portsObj.length];
-
-            for (int i = 0; i < variables.length; i++) {
-                TypedIOPort port = (TypedIOPort) portsObj[i];
-                variables[i] = port.getTypeTerm();
+            Iterator inputPorts = inputPortList().iterator();
+            LinkedList result = new LinkedList();
+            while (inputPorts.hasNext()) {
+                TypedIOPort port = (TypedIOPort) inputPorts.next();
+                InequalityTerm term = port.getTypeTerm();
+                if (term.isSettable()) {
+                    result.add(term);
+                }
             }
-
+            InequalityTerm[] variables = new InequalityTerm[result.size()];
+            Iterator results = result.iterator();
+            int i = 0;
+            while (results.hasNext()) {
+                variables[i] = (InequalityTerm)results.next();
+                i++;
+            }
             return variables;
         }
     }
