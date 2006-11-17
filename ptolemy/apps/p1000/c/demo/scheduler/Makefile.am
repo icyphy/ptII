@@ -12,6 +12,7 @@ scheduler_SOURCES = \
 	$(common_srcdir)/p1000_utils.h \
 	$(common_srcdir)/ptpHwP1000LinuxDr.h \
 	actor.c \
+	event.c \
 	int_token.c \
 	main.c \
 	port.c \

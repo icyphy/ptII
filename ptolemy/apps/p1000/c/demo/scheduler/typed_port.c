@@ -1,4 +1,5 @@
 #include "typed_port.h"
+#include "event.h"
 
 void TYPED_PORT_init(TYPED_PORT* typed_port, void* actual_ref,
 	struct ACTOR* container)
@@ -10,14 +11,10 @@ void TYPED_PORT_init(TYPED_PORT* typed_port, void* actual_ref,
 
 void TYPED_PORT_send(TYPED_PORT* typed_port, const EVENT* event)
 {
-	EVENT* heap_event;
 	TYPED_PORT* connected_port;
 
-	heap_event = (EVENT*) malloc(sizeof(EVENT));
-	*heap_event = *event;
-	
 	connected_port = CAST(UPCAST(typed_port, PORT)->connected_port, TYPED_PORT);
 	if (connected_port != NULL)
 		PUSH_BACK(connected_port->first_event, connected_port->last_event,
-			heap_event);
+			EVENT_duplicate(event));
 }

@@ -12,4 +12,6 @@ typedef struct EVENT {
 	struct EVENT* next;
 } EVENT;
 
+EVENT* EVENT_duplicate(const EVENT* event);
+
 #endif /*EVENT_H_*/

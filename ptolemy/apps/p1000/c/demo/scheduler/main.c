@@ -41,10 +41,12 @@ TRIGGERED_CLOCK_METHOD_TABLE TRIGGERED_CLOCK_method_table = {
 void TRIGGERED_CLOCK_init(TRIGGERED_CLOCK* triggered_clock, void* actual_ref,
 	SCHEDULER* scheduler)
 {
+	ACTOR* ACTOR_super;
+	
 	INIT_SUPER_TYPE(TRIGGERED_CLOCK, CLOCK, triggered_clock, actual_ref,
 		&TRIGGERED_CLOCK_method_table, scheduler);
 	
-	ACTOR* ACTOR_super = UPCAST(triggered_clock, ACTOR);
+	ACTOR_super = UPCAST(triggered_clock, ACTOR);
 	TYPED_PORT_init(&(triggered_clock->trigger), &(triggered_clock->trigger),
 		ACTOR_super);
 	TYPED_PORT_init(&(triggered_clock->output), &(triggered_clock->output),
@@ -116,13 +118,15 @@ void TRIGGERED_CLOCK_fire(TRIGGERED_CLOCK* triggered_clock)
 {
 	CLOCK* triggered_clock_CLOCK;
 	INT_TOKEN token;
-	EVENT e;
+	EVENT out_e, *in_e;
 	
 	CLOCK_fire((CLOCK*) SUPER(triggered_clock));
 	
 	if (triggered_clock->trigger.first_event != NULL) {
+		in_e = triggered_clock->trigger.first_event;
 		REMOVE_FIRST(triggered_clock->trigger.first_event,
 			triggered_clock->trigger.last_event);
+		free(in_e);
 		
 		triggered_clock_CLOCK = UPCAST(triggered_clock, CLOCK);
 		triggered_clock_CLOCK->time.ms += triggered_clock->period.ms;
@@ -133,14 +137,14 @@ void TRIGGERED_CLOCK_fire(TRIGGERED_CLOCK* triggered_clock)
 			INT_TOKEN_init(&token, &token);
 			token.value = 1;
 			
-			e = (EVENT) {
+			out_e = (EVENT) {
 				UPCAST(&token, TOKEN),			// token
 				triggered_clock_CLOCK->time,	// time
 				0,								// is_timer_event
 				NULL,							// prev
 				NULL							// next
 			};
-			TYPED_PORT_send(&(triggered_clock->output), &e);
+			TYPED_PORT_send(&(triggered_clock->output), &out_e);
 		}
 	}
 }
@@ -152,10 +156,12 @@ TRIGGER_OUT_METHOD_TABLE TRIGGER_OUT_method_table = {
 void TRIGGER_OUT_init(TRIGGER_OUT* trigger_out, void* actual_ref,
 	SCHEDULER* scheduler)
 {
+	ACTOR* ACTOR_super;
+	
 	INIT_SUPER_TYPE(TRIGGER_OUT, ACTOR, trigger_out, actual_ref,
 		&TRIGGER_OUT_method_table, scheduler);
 	
-	ACTOR* ACTOR_super = UPCAST(trigger_out, ACTOR);
+	ACTOR_super = UPCAST(trigger_out, ACTOR);
 	TYPED_PORT_init(&(trigger_out->input), &(trigger_out->input), ACTOR_super);
 	TYPED_PORT_init(&(trigger_out->output), &(trigger_out->output),
 		ACTOR_super);
@@ -169,9 +175,10 @@ void* read_loop(void* data)
 	unsigned int nsecs;
 	int rtn;
 	TIME t;
-	
 	unsigned int status;
 	int num;
+	EVENT e;
+	INT_TOKEN token;
 
 	do {
 		// Block until the next interrupt
@@ -198,17 +205,16 @@ void* read_loop(void* data)
 		
 		t.ms = secs; 
 		t.ns = nsecs;
-		INT_TOKEN token;
 		INT_TOKEN_init(&token, &token);
 		token.value = 1;
-		EVENT e2 = (EVENT) {
+		e = (EVENT) {
 			UPCAST(&token, TOKEN),			// token
 			t,								// time
 			0,								// is_timer_event
 			NULL,							// prev
 			NULL							// next
 		};
-		TYPED_PORT_send((TYPED_PORT*) data, &e2);
+		TYPED_PORT_send((TYPED_PORT*) data, &e);
 	} while (1);
 
 	pthread_exit(NULL);
@@ -235,6 +241,8 @@ void TRIGGER_OUT_fire(TRIGGER_OUT* trigger_out)
     FPGA_GET_TIME fpgaGetTime;
     int rtn;
 	FPGA_SET_TIMETRIGGER fpgaSetTimetrigger;
+	EVENT* in_e;
+	TIME t;
 
 	CLOCK_fire((CLOCK*) SUPER(trigger_out));
 	
@@ -251,10 +259,11 @@ void TRIGGER_OUT_fire(TRIGGER_OUT* trigger_out)
 		decodeHwNsec(&fpgaGetTime.timeVal, &secs, &nsecs);
 		printf("\n set TO: %.9d.%9.9d\n", secs, nsecs);
 
-		EVENT *e = trigger_out->input.first_event;
+		in_e = trigger_out->input.first_event;
+		t = in_e->time;
 		REMOVE_FIRST(trigger_out->input.first_event,
 			trigger_out->input.last_event);
-		TIME t = e->time;
+		free(in_e);
 
 		//FIXME: set hardware trigger time.
 		secs = t.ms;
@@ -276,14 +285,14 @@ void TRIGGER_OUT_fire(TRIGGER_OUT* trigger_out)
 
 int main()
 {
-	SCHEDULER scheduler;
-	SCHEDULER_init(&scheduler, &scheduler);
-	
+	SCHEDULER scheduler;	
 	TRIGGERED_CLOCK t_clock;
-	TRIGGERED_CLOCK_init(&t_clock, &t_clock, &scheduler);
 	TRIGGER_OUT t_out;
+
+	SCHEDULER_init(&scheduler, &scheduler);
+	TRIGGERED_CLOCK_init(&t_clock, &t_clock, &scheduler);
 	TRIGGER_OUT_init(&t_out, &t_out, &scheduler);
-	
+
 	PORT_connect(UPCAST(&(t_clock.output), PORT), UPCAST(&(t_out.input), PORT));
 	PORT_connect(UPCAST(&(t_out.output), PORT),
 		UPCAST(&(t_clock.trigger), PORT));
