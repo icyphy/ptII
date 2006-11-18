@@ -31,6 +31,7 @@ package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -43,7 +44,7 @@ import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 
 //////////////////////////////////////////////////////////////////////////
-//// LEDArray
+//// LEDMatrix
 
 /** An actor that displays an array of LEDs.  The array display only
     one color, red.  This actor has two inputs, row and column which
@@ -56,7 +57,7 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  */
-public class LEDArray extends TypedAtomicActor {
+public class LEDMatrix extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -66,7 +67,7 @@ public class LEDArray extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public LEDArray(CompositeEntity container, String name)
+    public LEDMatrix(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
@@ -75,6 +76,9 @@ public class LEDArray extends TypedAtomicActor {
         column.setTypeEquals(BaseType.INT);
         row = new TypedIOPort(this, "row", true, false);
         row.setTypeEquals(BaseType.INT);
+
+        control = new TypedIOPort(this, "control", true, false);
+        control.setTypeEquals(BaseType.BOOLEAN);
 
         // The number of columns
         columns = new Parameter(this, "columns");
@@ -95,6 +99,10 @@ public class LEDArray extends TypedAtomicActor {
      *  The token type is integer.
      */
     public TypedIOPort column;
+
+    /** True if the LED is to be illuminated. The token type is Boolean.
+     */
+    public TypedIOPort control;
 
     /** The row of the LED to be illuminated.  The columns are 0-based,
      *  to address the first row, the value of this port should be 0.
@@ -122,6 +130,7 @@ public class LEDArray extends TypedAtomicActor {
      *  @exception IllegalActionException If the offsets array is not
      *   nondecreasing and nonnegative.
      */
+    // FIXME: get attribute changed working by moving init() to initialize()?
 //     public void attributeChanged(Attribute attribute)
 //             throws IllegalActionException {
 //         if (attribute == rows || attribute == columns) {
@@ -142,14 +151,14 @@ public class LEDArray extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (row.hasToken(0)) {
-            if (column.hasToken(0)) {
-                System.out.println("LEDArray: " + _previousRowValue
-                        + " " + _previousColumnValue);
-                _leds[_previousRowValue] [_previousColumnValue].fillColor.setToken("{0.0, 0.0, 0.0, 1.0}");
-                _previousRowValue = ((IntToken)row.get(0)).intValue();
-                _previousColumnValue = ((IntToken)column.get(0)).intValue();
-                _leds[_previousRowValue][_previousColumnValue].fillColor.setToken("{1.0, 0.0, 0.0, 1.0}");  
+        if (row.hasToken(0) && column.hasToken(0) && control.hasToken(0)) {
+            int rowValue = ((IntToken)row.get(0)).intValue();
+            int columnValue = ((IntToken)row.get(0)).intValue();
+            boolean controlValue = ((BooleanToken) control.get(0)).booleanValue();
+            if (controlValue) {
+                _leds[rowValue][columnValue].fillColor.setToken("{1.0, 0.0, 0.0, 1.0}");  
+            } else {
+                _leds[rowValue] [columnValue].fillColor.setToken("{0.0, 0.0, 0.0, 1.0}");
             } 
         }
     }
@@ -188,10 +197,4 @@ public class LEDArray extends TypedAtomicActor {
 
     /** The icon. */
     EditorIcon _ledArray_icon;
-
-    /** The column of the LED to disable the next time fire() is called. */
-    private int _previousColumnValue;
-
-    /** The row of the LED to disable the next time fire() is called. */
-    private int _previousRowValue;
 }

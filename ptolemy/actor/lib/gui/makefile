@@ -58,7 +58,7 @@ JSRCS = \
 	Display.java \
 	HistogramPlotter.java \
 	InteractiveShell.java \
-	LEDArray.java \
+	LEDMatrix.java \
 	MatrixViewer.java \
 	Plotter.java \
 	PlotterBase.java \
