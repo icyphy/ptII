@@ -407,7 +407,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         /**  Create a new action to introduce a level of hierarchy.
          */
         public CreateHierarchyAction() {
-            super("CreateHierarchy");
+            super("Create Hierarchy");
             putValue("tooltip",
                     "Create a TypedCompositeActor that contains the"
                             + " selected actors.");
