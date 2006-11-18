@@ -89,8 +89,8 @@ import ptolemy.kernel.util.Workspace;
  each firing.  Actors that do not follow this convention should set
  the appropriate parameters on input and output ports to declare the number
  of tokens they produce or consume.  See the
- @link ptolemy.domains.sdf.kernel.SDFScheduler for more information.
- The @link ptolemy.domains.sdf.lib.SampleDelay actor is usually used
+ {@link ptolemy.domains.sdf.kernel.SDFScheduler} for more information.
+ The {@link ptolemy.domains.sdf.lib.SampleDelay} actor is usually used
  in a model to specify the delay across a relation.
  <p>
  The <i>allowDisconnectedGraphs</i> parameter of this director determines
