@@ -114,6 +114,7 @@ import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.MoveAction;
 import ptolemy.vergil.tree.EntityTreeModel;
@@ -809,6 +810,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // System.out.println(moml.toString());
 
             MoMLChangeRequest request = null;
+            System.out.println("BasicGraphFrame moml: " + moml.toString());
             request = new MoMLChangeRequest(this, container, moml.toString());
             request.setUndoable(true);
 
@@ -1803,10 +1805,27 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
 
-        for (int i = 0; i < selection.length; i++) {
+
+        // First, delete all the non-attributes.
+        // This helps avoid deleting properties such as top level parameters
+        // upon which the entities depend.
+        // FIXME: what if we have a parameter that is used by both the selection
+        // and the other parts of the model?
+        for (int i = 0; i < selection.length ; i++) {
             Object userObject = userObjects[i];
 
-            if (graphModel.isNode(userObject)) {
+            NamedObjNodeModel namedObjNodeModel = (NamedObjNodeModel) graphModel.getNodeModel(userObject);
+            if (graphModel.isNode(userObject) && ! (namedObjNodeModel instanceof AttributeNodeModel)) {
+                moml.append(graphModel.getDeleteNodeMoML(userObject));
+            }
+        }
+
+        // Now delete attributes.
+        for (int i = 0; i < selection.length ; i++) {
+            Object userObject = userObjects[i];
+
+            NamedObjNodeModel namedObjNodeModel = (NamedObjNodeModel) graphModel.getNodeModel(userObject);
+            if (graphModel.isNode(userObject) && namedObjNodeModel instanceof AttributeNodeModel) {
                 moml.append(graphModel.getDeleteNodeMoML(userObject));
             }
         }
