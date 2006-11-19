@@ -55,6 +55,7 @@ JSRCS = \
 	FIR.java \
 	Repeat.java \
 	SampleDelay.java \
+	SequenceToArray.java \
 	VariableRecursiveLattice.java
 
 OTHER_FILES_TO_BE_JARED = \
@@ -62,6 +63,7 @@ OTHER_FILES_TO_BE_JARED = \
 	DotProduct.c \
 	FIR.c \
 	SampleDelay.c \
+	SequenceToArray.c \
 	VariableRecursiveLattice.c \
 	sdfentities.xml
 
