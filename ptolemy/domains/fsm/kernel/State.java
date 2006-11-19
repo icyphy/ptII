@@ -33,7 +33,10 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -41,6 +44,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -102,6 +106,16 @@ public class State extends ComponentEntity {
         SingletonParameter center = new SingletonParameter(this, "_centerName");
         center.setExpression("true");
         center.setVisibility(Settable.EXPERT);
+        
+        isInitialState = new Parameter(this, "isInitialState");
+        isInitialState.setTypeEquals(BaseType.BOOLEAN);
+        // If this is the only state in the container, then make
+        // it the initial state.
+        if (container.entityList(State.class).size() == 1) {
+            isInitialState.setExpression("true");
+        } else {
+            isInitialState.setExpression("false");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -110,6 +124,16 @@ public class State extends ComponentEntity {
     /** The port linking incoming transitions.
      */
     public ComponentPort incomingPort = null;
+    
+    /** An indicator of whether this state is the initial state.
+     *  This is a boolean that defaults to false, unless this state
+     *  is the only one in the container, in which case it defaults
+     *  to true. Setting it to true
+     *  will cause this parameter to become false for whatever
+     *  other state is currently the initial state in the same
+     *  container.
+     */
+    public Parameter isInitialState;
 
     /** The port linking outgoing transitions.
      */
@@ -145,6 +169,21 @@ public class State extends ComponentEntity {
 
         if (attribute == refinementName) {
             _refinementVersion = -1;
+        } else if (attribute == isInitialState) {
+            NamedObj container = getContainer();
+            // Container might not be an FSMActor if, for example,
+            // the state is in a library.
+            if (container instanceof FSMActor) {
+                if (((BooleanToken)isInitialState.getToken()).booleanValue()) {
+                    // If there is a previous initial state, unset its
+                    // isInitialState parameter.
+                    if (((FSMActor)container)._initialState != null
+                            && ((FSMActor)container)._initialState != this) {
+                        ((FSMActor)container)._initialState.isInitialState.setToken("false");
+                    }
+                    ((FSMActor)container)._initialState = this;
+                }
+            }
         }
     }
 

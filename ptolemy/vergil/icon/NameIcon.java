@@ -29,12 +29,17 @@ package ptolemy.vergil.icon;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingConstants;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -43,6 +48,7 @@ import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
+import diva.canvas.toolbox.RoundedRectangle;
 
 //////////////////////////////////////////////////////////////////////////
 //// NameIcon
@@ -84,18 +90,55 @@ public class NameIcon extends EditorIcon {
         // in Vergil, and giving a reasonable rendition.
         TextIcon icon = new TextIcon(this, "_icon");
         icon.setIconText("-N-");
-        icon
-                .setText("NameIcon attribute: This sets the icon to be a box with the name.");
+        icon.setText("NameIcon attribute: This sets the icon to be a box with the name.");
         icon.setPersistent(false);
 
         // Hide the name.
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
+        
+        rounding = new Parameter(this, "rounding");
+        rounding.setTypeEquals(BaseType.DOUBLE);
+        rounding.setExpression("0.0");
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The amount of rounding of the corners.
+     *  This is a double that defaults to 0.0, which indicates no rounding.
+     */
+    public Parameter rounding;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a changes in the attributes by changing
+     *  the icon.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (should not be thrown).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == rounding) {
+            // Make sure that the new rounding value is valid.
+            double roundingValue = ((DoubleToken) rounding.getToken())
+                    .doubleValue();
+
+            if (roundingValue < 0.0) {
+                throw new IllegalActionException(this,
+                        "Invalid rounding value. Required to be non-negative.");
+            }
+
+            if (roundingValue != _roundingValue) {
+                _roundingValue = roundingValue;
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Create a new background figure.  This overrides the base class
      *  to draw a box around the value display, where the width of the
@@ -123,7 +166,12 @@ public class NameIcon extends EditorIcon {
         width = Math.floor(stringBounds.getWidth()) + 20;
         height = Math.floor(stringBounds.getHeight()) + 10;
 
-        return new BasicRectangle(0, 0, width, height, Color.white, 1);
+        if (_roundingValue == 0.0) {
+            return new BasicRectangle(0, 0, width, height, _getFill(), _getLineWidth());
+        } else {
+            return new RoundedRectangle(0, 0, width, height, _getFill(), _getLineWidth(),
+                    _roundingValue, _roundingValue);            
+        }
     }
 
     /** Create a new Diva figure that visually represents this icon.
@@ -177,8 +225,30 @@ public class NameIcon extends EditorIcon {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
+    /** Return the paint to use to fill the icon.
+     *  This base class returns Color.white.
+     *  @return The paint to use to fill the icon.
+     */
+    protected Paint _getFill() {
+        return Color.white;
+    }
+
+    /** Return the line width to use in rendering the box.
+     *  This base class returns 1.0f.
+     *  @return The line width to use in rendering the box.
+     */
+    protected float _getLineWidth() {
+        return 1.0f;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
     /** The font used. */
     protected static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
+
+    /** Most recent value of the rounding parameter. */
+    protected double _roundingValue = 0.0;
 }

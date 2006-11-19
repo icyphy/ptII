@@ -77,7 +77,8 @@ JSRCS = \
 	Transition.java
 
 OTHER_FILES_TO_BE_JARED = \
-	fsmentities.xml
+	fsmentities.xml \
+	StateIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

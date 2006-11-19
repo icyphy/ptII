@@ -68,6 +68,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -93,11 +94,11 @@ import ptolemy.kernel.util.Workspace;
  transition.
 
  <p> An FSMActor enters its initial state during initialization. The
- name of the initial state is specified by the <i>initialStateName</i>
- string attribute.  When the actor reaches a final state, then the
+ initial state is the unique state whose <i>isInitialState</i> parameter
+ is true. A comma-separated list of final state names can be given by
+ the <i>finalStateNames</i> parameter. When the actor reaches a final state, then the
  postfire method will return false, indicating that the actor does not
- wish to be fired again.  The <i>finalStateNames</i> string attribute
- is a comma-separated list of the names of final states.
+ wish to be fired again.
 
  <p> The guards and actions of FSM transitions are specified using
  expressions.  These expressions are evaluated in the scope returned by
@@ -195,26 +196,23 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     public StringAttribute finalStateNames = null;
 
     /** Attribute specifying the name of the initial state of this
-     *  actor.
+     *  actor. This attribute is kept for backward compatibility only,
+     *  and is set to expert visibility. To set the initial state,
+     *  set the <i>isInitialState</i> parameter of a State.
      */
     public StringAttribute initialStateName = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change in an attribute. If the changed attribute is
-     *  the <i>initialStateName</i> attribute, record the change but do
-     *  not check whether this actor contains a state with the specified
-     *  name.
+    /** React to a change in an attribute.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If thrown by the superclass
      *   attributeChanged() method.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == initialStateName) {
-            _initialStateVersion = -1;
-        } else if (attribute == finalStateNames) {
+        if (attribute == finalStateNames) {
             _parseFinalStates(finalStateNames.getExpression());
         } else {
             super.attributeChanged(attribute);
@@ -309,7 +307,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._outputPortsVersion = -1;
         newObject._connectionMapsVersion = -1;
         newObject._connectionMaps = null;
-        newObject._initialStateVersion = -1;
         newObject._inputTokenMap = new HashMap();
         newObject._identifierToPort = new HashMap();
         return newObject;
@@ -404,43 +401,39 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         return getDirector();
     }
 
-    /** Return the initial state of this actor. The name of the initial
-     *  state is specified by the <i>initialStateName</i> attribute. An
-     *  exception is thrown if this actor does not contain a state with
-     *  the specified name.
+    /** Return the initial state of this actor. The initial state is
+     *  the unique state with its <i>isInitialState</i> parameter set
+     *  to true. An exception is thrown if this actor does not contain
+     *  an initial state.
      *  This method is read-synchronized on the workspace.
      *  @return The initial state of this actor.
      *  @exception IllegalActionException If this actor does not contain
      *   a state with the specified name.
      */
     public State getInitialState() throws IllegalActionException {
-        if (_initialStateVersion == workspace().getVersion()) {
-            return _initialState;
+        // For backward compatibility, if no initial state has been
+        // specified, then read the initialStateName parameter and
+        // set the initial state.
+        if (_initialState == null) {
+            try {
+                workspace().getReadAccess();
+                String name = initialStateName.getExpression();
+                if ((name == null) || name.trim().equals("")) {
+                    throw new IllegalActionException(this,
+                            "No initial state has been specified.");
+                }
+                State state = (State) getEntity(name);
+                if (state == null) {
+                    throw new IllegalActionException(this, "Cannot find "
+                            + "initial state with name \"" + name + "\".");
+                }
+                state.isInitialState.setToken("true");
+                return _initialState;
+            } finally {
+                workspace().doneReading();
+            }            
         }
-
-        try {
-            workspace().getReadAccess();
-
-            String name = initialStateName.getExpression();
-
-            if ((name == null) || name.trim().equals("")) {
-                throw new IllegalActionException(this,
-                        "No initial state has been specified.");
-            }
-
-            State st = (State) getEntity(name);
-
-            if (st == null) {
-                throw new IllegalActionException(this, "Cannot find "
-                        + "initial state with name \"" + name + "\".");
-            }
-
-            _initialState = st;
-            _initialStateVersion = workspace().getVersion();
-            return _initialState;
-        } finally {
-            workspace().doneReading();
-        }
+        return _initialState;
     }
 
     /** Return an instance of DirectedGraph, where the nodes are IOPorts,
@@ -560,14 +553,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         return new PortScope();
     }
 
-    /** Initialize this actor.  Goto initial state.
+    /** Initialize this actor by setting the current state to the
+     *  initial state.
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
-        // Question: why reset happens here, but not in the preinitialize method?
-        // Answer: If a reset transition is taken, only
-        // the initialize method is called. So, reset must be
-        // called here.
+        // Even though reset() is called in preinitialize(),
+        // we have to call it again because if a reset transition is
+        // taken, preinitialize() is not called.
         reset();
 
         // Update the receivers version here because there may
@@ -578,9 +571,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // call to preinitialize().
         _receiversVersion = workspace().getVersion();
 
-        // reset the visited status of all states to not visited.
+        // Reset the visited status of all states to not visited.
         Iterator states = deepEntityList().iterator();
-
         while (states.hasNext()) {
             State state = (State) states.next();
             state.setVisited(false);
@@ -797,11 +789,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Create receivers and input variables for the input ports of
      *  this actor, and validate attributes of this actor, and
      *  attributes of the ports of this actor. Set current state to
-     *  the initial state. Throw an exception if this actor does not
-     *  contain a state with name specified by the
-     *  <i>initialStateName</i> attribute.
-     *  @exception IllegalActionException If this actor does not contain a
-     *   state with name specified by the <i>initialStateName</i> attribute.
+     *  the initial state.
+     *  @exception IllegalActionException If this actor does not contain an
+     *   initial state.
      */
     public void preinitialize() throws IllegalActionException {
         _stopRequested = false;
@@ -814,7 +804,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
         _newIteration = true;
         _tokenListArrays = new Hashtable();
-        _initialStateVersion = -1;
 
         // Populate a map from identifier to the input port represented.
         _identifierToPort.clear();
@@ -837,10 +826,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         _inputTokenMap.clear();
 
-        // Note: reset() (gotoInitialState()) is called from
-        // initialize() now (zk 2002/09/11)`
-        // why this is necessary?
-        // I moved reset() here because the FunctionDependency analysis
+        // Have to reset to the initial state here rather than in
+        // initialize() because the FunctionDependency analysis
         // needs to know the currentState.
         // In DE/ModalModel, reset() happening in the initialize method
         // is too late. hyzheng 1/7/2004
@@ -884,19 +871,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
-    /** Reset current state to the initial state. The name of the initial
-     *  state is specified by the <i>initialStateName</i> attribute.
-     *  @exception IllegalActionException If this actor does not
-     *  contain a state with name specified by the
-     *  <i>initialStateName</i> attribute.
+    /** Reset current state to the initial state.
      */
     public void reset() throws IllegalActionException {
         _currentState = getInitialState();
-
         if (_debugging) {
             _debug(new StateEvent(this, _currentState));
         }
-
         _setCurrentConnectionMap();
     }
 
@@ -1396,8 +1377,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
-    // Check that the comma-separated list of state names is valid.
-    private void _parseFinalStates(String names) throws IllegalActionException {
+    /** Parse the final state names. This method does not check that the
+     *  names are valid.
+     */
+    private void _parseFinalStates(String names) {
         HashSet stateNames = new HashSet();
         StringTokenizer nameTokens = new StringTokenizer(names, ",");
 
@@ -1446,6 +1429,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         try {
             initialStateName = new StringAttribute(this, "initialStateName");
             initialStateName.setExpression("");
+            initialStateName.setVisibility(Settable.EXPERT);
+            // FIXME: final states should be specified the way initial state is now specified.
             finalStateNames = new StringAttribute(this, "finalStateNames");
             finalStateNames.setExpression("");
         } catch (KernelException ex) {
@@ -1602,7 +1587,16 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                package friendly variables                 ////
+
+    /** The initial state. This is package friendly so that State can
+     *  access it.
+     */
+    State _initialState = null;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
 
@@ -1624,12 +1618,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // channel is connected to an output port of the refinement of the
     // current state.
     private Map _currentConnectionMap = null;
-
-    // Cached reference to the initial state.
-    private State _initialState = null;
-
-    // Version of the reference to the initial state.
-    private long _initialStateVersion = -1;
 
     // A map that associates each identifier with the unique port that
     // that identifier describes.  This map is used to detect port
