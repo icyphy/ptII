@@ -139,7 +139,8 @@ public class Expression extends CCodeGeneratorHelper {
                     new VariableScope(actor));
         } catch (IllegalActionException ex) {
             // Chain exceptions to get the actor that threw the exception.
-            throw new IllegalActionException(actor, ex, "Expression invalid.");
+            throw new IllegalActionException(actor, ex, "Expression \""
+                    + actor.expression.getExpression() + "\" invalid.");
         }
 
         if (result == null) {
