@@ -35,8 +35,8 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Green (mankit) 
- @Pt.AcceptedRating Green (cxh)
+ @Pt.ProposedRating Red (cxh) 
+ @Pt.AcceptedRating Red (cxh)
  */
 public class SequenceToArray extends CCodeGeneratorHelper {
     /**
