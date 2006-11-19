@@ -60,6 +60,7 @@ JSRCS = \
 	LabelWrapper.java \
 	PaintedFigure.java \
 	PathFigure.java \
+	RoundedRectangle.java \
 	SVGParser.java \
 	SVGUtilities.java \
 	SwingWrapper.java \
