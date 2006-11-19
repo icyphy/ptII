@@ -50,6 +50,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	ArrayToSequence.java \
 	CountTrues.java \
 	DotProduct.java \
 	FIR.java \
@@ -59,6 +60,7 @@ JSRCS = \
 	VariableRecursiveLattice.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ArrayToSequence.c \
 	CountTrues.c \
 	DotProduct.c \
 	FIR.c \
