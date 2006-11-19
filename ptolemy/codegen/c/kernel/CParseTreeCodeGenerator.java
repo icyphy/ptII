@@ -515,8 +515,11 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 // the value cannot be indexed or applied
                 // throw exception
                 throw new IllegalActionException(
-                        "Cannot index or apply arguments to "
-                                + value.toString());
+                        "Cannot index or apply arguments to token of type \""
+                                + value.getType() + "\" with value \""
+                                + value.toString() + "\". Index or apply "
+                                + "arguments only works with ArrayTokens, "
+                                + "MatrixTokens and FunctionTokens.");
             }
 
             _evaluatedChildToken = (result);
