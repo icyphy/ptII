@@ -544,12 +544,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
 
-        _modifiedVariables = compositeActorHelper.getModifiedVariables();
+        try {
+            _modifiedVariables = compositeActorHelper.getModifiedVariables();
 
-        code.append(compositeActorHelper.generatePreinitializeCode());
+            code.append(compositeActorHelper.generatePreinitializeCode());
 
-        code.append(compositeActorHelper.createOffsetVariablesIfNeeded());
-
+            code.append(compositeActorHelper.createOffsetVariablesIfNeeded());
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(compositeActorHelper.getComponent(),
+                    throwable, "Failed to generate preinitialize code");
+        }
         return code.toString();
     }
 
