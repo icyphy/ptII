@@ -542,15 +542,20 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             while (parameters.hasNext()) {
                 Parameter parameter = (Parameter) parameters.next();
-
-                // avoid duplication.
-                if (!_codeGenerator._modifiedVariables.contains(parameter)) {
-                    code
+                try {
+                    // avoid duplication.
+                    if (!_codeGenerator._modifiedVariables.contains(parameter)) {
+                        code
                             .append(_getIndentPrefix(1)
                                     + generateVariableName(parameter)
                                     + " = "
                                     + getParameterValue(parameter.getName(),
                                             _component) + ";\n");
+                    }
+                } catch (Throwable throwable) {
+                    throw new IllegalActionException(_component, throwable,
+                            "Failed to generate variable initialization for \""
+                            + parameter + "\"");
                 }
             }
         }
