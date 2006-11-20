@@ -635,6 +635,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         // evaluate the first sub-expression
         _evaluateChild(node, 0);
 
+/*
         ptolemy.data.Token test = _evaluatedChildToken;
 
         if (!(test instanceof BooleanToken)) {
@@ -653,31 +654,32 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             _typeInference = new ParseTreeTypeInference();
         }
 
-        ASTPtRootNode tokenChild;
-        ASTPtRootNode typeChild;
 
         if (value) {
-            tokenChild = (ASTPtRootNode) node.jjtGetChild(1);
-            typeChild = (ASTPtRootNode) node.jjtGetChild(2);
-        } else {
-            tokenChild = (ASTPtRootNode) node.jjtGetChild(2);
-            typeChild = (ASTPtRootNode) node.jjtGetChild(1);
-        }
+*/
+        _fireCode.append(" ? ");
 
-        tokenChild.visit(this);
+        ASTPtRootNode tokenChild1 = (ASTPtRootNode) node.jjtGetChild(1);
+        ASTPtRootNode tokenChild2 = (ASTPtRootNode) node.jjtGetChild(2);
 
-        ptolemy.data.Token token = _evaluatedChildToken;
-        Type type = _typeInference.inferTypes(typeChild, _scope);
+        tokenChild1.visit(this);
+        _fireCode.append(" : ");
+
+        tokenChild2.visit(this);
+
+        ptolemy.data.Token token1 = _evaluatedChildToken;
+        ptolemy.data.Token token2 = _evaluatedChildToken;
+
 
         Type conversionType = (Type) TypeLattice.lattice().leastUpperBound(
-                type, token.getType());
+                token1.getType(), token2.getType());
 
-        token = conversionType.convert(token);
-        _evaluatedChildToken = (token);
+        _evaluatedChildToken = conversionType.convert(token1);
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
+
     }
 
     /** Evaluate a numeric constant or an identifier. In the case of an
