@@ -130,7 +130,7 @@ test FSMActor-4.1 {test setting initial state} {
     set re1 [expr {[$fsm getInitialState] == $s1}]
     $p setExpression s2
     catch {$fsm getInitialState} msg
-    list $re0 $re1 $msg
+    list $re0 $re1 $msg9
 } {1 1 {ptolemy.kernel.util.IllegalActionException: Cannot find initial state with name "s2".
   in .<Unnamed Object>.fsm}}
 
@@ -422,8 +422,12 @@ test FSMActor-9.1 {test working with MoML} {
     <link port="rec.input" relation="r1"/>
 </entity>}
 
-    set par [java::new ptolemy.moml.MoMLParser]
-    set top [java::cast ptolemy.actor.TypedCompositeActor [$par parse $model]]
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+    set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
+    $parser addMoMLFilter $filter
+    set top [java::cast ptolemy.actor.TypedCompositeActor [$parser parse $model]]
     set mag [java::new ptolemy.actor.Manager [$top workspace] mag]
     $top setManager $mag
     $mag execute
