@@ -57,9 +57,11 @@ public class MouseFilter {
     private int _buttonMask = InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK
             | InputEvent.BUTTON3_MASK;
 
-    /** The modifier mask.
+    /** The modifier mask.  The Macintosh requires META_MASK for selecting
+     *  relations and right clicking.
      */
-    private int _modifierMask = InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK;
+    private int _modifierMask = InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK
+          | InputEvent.META_MASK;
 
     // Do not or these masks in, they will conflict with right mousing
     // on transitions in modal models
