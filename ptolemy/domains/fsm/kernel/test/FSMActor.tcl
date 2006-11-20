@@ -130,7 +130,7 @@ test FSMActor-4.1 {test setting initial state} {
     set re1 [expr {[$fsm getInitialState] == $s1}]
     $p setExpression s2
     catch {$fsm getInitialState} msg
-    list $re0 $re1 $msg9
+    list $re0 $re1 $msg
 } {1 1 {ptolemy.kernel.util.IllegalActionException: Cannot find initial state with name "s2".
   in .<Unnamed Object>.fsm}}
 
