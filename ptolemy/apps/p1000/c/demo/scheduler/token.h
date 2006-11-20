@@ -6,7 +6,6 @@
 typedef struct TOKEN {
 	DECLARE_SUPER_TYPE(GENERAL_TYPE)
 	
-	int size;
 	struct PORT* prev;
 	struct PORT* next;
 } TOKEN;

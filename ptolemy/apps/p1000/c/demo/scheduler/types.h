@@ -53,9 +53,11 @@ typedef long TYPE_UID_TYPE;
 /* The general type that serves as the root of all hierarchical types. */
 
 typedef struct GENERAL_TYPE {
-	TYPE_UID_TYPE type_uid;
-	void* actual_ref;
-	void* method_table;
+	TYPE_UID_TYPE _type_uid;
+	void* _actual_ref;
+	void* _method_table;
+
+	size_t size;
 } GENERAL_TYPE;
 
 void GENERAL_TYPE_init(GENERAL_TYPE* general, void* actual_ref);
@@ -63,11 +65,11 @@ void GENERAL_TYPE_init(GENERAL_TYPE* general, void* actual_ref);
 /* Find the reference to the super-type of the given object reference. */
 
 #define SUPER(object_ref) \
-	(object_ref->type_uid == GENERAL_TYPE_UID ? NULL : \
+	(object_ref->_type_uid == GENERAL_TYPE_UID ? NULL : \
 			(GENERAL_TYPE*) ((void*) object_ref \
-			+ sizeof(object_ref->type_uid) \
-			+ sizeof(object_ref->actual_ref) \
-			+ sizeof(object_ref->method_table)))
+			+ sizeof(object_ref->_type_uid) \
+			+ sizeof(object_ref->_actual_ref) \
+			+ sizeof(object_ref->_method_table)))
 
 /* Test whether an object is a descendant of the given type (identified by its
  * type uid). */
@@ -78,27 +80,28 @@ GENERAL_TYPE* _upcast(GENERAL_TYPE* object_ref, TYPE_UID_TYPE type_uid);
 	((TYPE*) _upcast((GENERAL_TYPE*) object_ref, TYPE ## _UID))
 
 #define CAST(object_ref, TYPE) \
-	((TYPE*) _upcast((GENERAL_TYPE*) ((GENERAL_TYPE*) object_ref)->actual_ref, \
-		TYPE ## _UID))
+	UPCAST(((GENERAL_TYPE*) object_ref)->_actual_ref, TYPE)
 	
 #define DECLARE_SUPER_TYPE(SUPER_TYPE) \
-	TYPE_UID_TYPE type_uid; \
-	void* actual_ref; \
-	void* method_table; \
+	TYPE_UID_TYPE _type_uid; \
+	void* _actual_ref; \
+	void* _method_table; \
 	SUPER_TYPE super;
 
-#define INIT_SUPER_TYPE(TYPE, SUPER_TYPE, ref, _actual_ref, _method_table, \
+#define INIT_SUPER_TYPE(TYPE, SUPER_TYPE, ref, actual_ref, method_table, \
 	...) do { \
-		ref->type_uid = TYPE ## _UID; \
-		ref->actual_ref = _actual_ref; \
-		ref->method_table = ref == _actual_ref ? \
-				_method_table : ((GENERAL_TYPE*) _actual_ref)->method_table; \
-		SUPER_TYPE ## _init(&(ref->super), _actual_ref , ## __VA_ARGS__); \
+		ref->_type_uid = TYPE ## _UID; \
+		ref->_actual_ref = actual_ref; \
+		ref->_method_table = ref == actual_ref ? \
+				method_table : ((GENERAL_TYPE*) actual_ref)->_method_table; \
+		SUPER_TYPE ## _init(&(ref->super), actual_ref , ## __VA_ARGS__); \
+		if (ref == actual_ref) \
+			UPCAST(ref, GENERAL_TYPE)->size = sizeof(TYPE); \
 	} while (0)
 
 #define INVOKE_VIRTUAL_METHOD(TYPE, method_name, object_ref, ...) \
-	(((TYPE ## _METHOD_TABLE*)((TYPE*)object_ref)->method_table)->method_name( \
-		(TYPE*)((TYPE*)object_ref)->actual_ref , ## __VA_ARGS__ ))
+	(((TYPE ## _METHOD_TABLE*)((TYPE*)object_ref)->_method_table)->method_name \
+		((TYPE*)((TYPE*)object_ref)->_actual_ref , ## __VA_ARGS__ ))
 
 /* Time */
 
