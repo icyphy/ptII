@@ -1427,8 +1427,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      *  @param node The node that caused this method to be called.
      *  @param value The token that is being indexed into, which must
      *   be an ArrayToken.
-     *  @param index The index, which must be an integer token.
-     *  @return The element of the given token at the given index.
+     *  @param type The element type.
      *  @exception IllegalActionException If an parse error occurs.
      */
     protected void _evaluateArrayIndex(ASTPtRootNode node, 
