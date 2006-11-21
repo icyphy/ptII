@@ -411,17 +411,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   a state with the specified name.
      */
     public State getInitialState() throws IllegalActionException {
-        // For backward compatibility, if no initial state has been
-        // specified, then read the initialStateName parameter and
-        // set the initial state.
-        if (_initialState == null) {
+        // For backward compatibility, if the initialStateName
+        // parameter and has been given, then use it to determine
+        // the initial state.
+        String name = initialStateName.getExpression();
+        if (!name.equals("")) {
             try {
                 workspace().getReadAccess();
-                String name = initialStateName.getExpression();
-                if ((name == null) || name.trim().equals("")) {
-                    throw new IllegalActionException(this,
-                            "No initial state has been specified.");
-                }
                 State state = (State) getEntity(name);
                 if (state == null) {
                     throw new IllegalActionException(this, "Cannot find "
@@ -432,6 +428,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             } finally {
                 workspace().doneReading();
             }            
+        }
+        if (_initialState == null) {
+            throw new IllegalActionException(this,
+                    "No initial state has been specified.");
         }
         return _initialState;
     }
