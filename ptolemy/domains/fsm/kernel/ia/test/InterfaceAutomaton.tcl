@@ -201,6 +201,8 @@ test InterfaceAutomaton-8.1 {test generating moml} {
         </property>
         <property name="_centerName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
+        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
@@ -210,6 +212,8 @@ test InterfaceAutomaton-8.1 {test generating moml} {
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_centerName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
