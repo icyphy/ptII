@@ -40,6 +40,7 @@ import javax.swing.KeyStroke;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
+import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
@@ -251,6 +252,15 @@ public abstract class RunnableGraphController extends WithIconGraphController
             super.actionPerformed(e);
 
             try {
+                // Formerly, if the user opens up a composite actor and then
+                // runs the top level and there is an error, then the composite
+                // actor window pops up with the error message.  Instead
+                // the current window (the top level) should stay up.
+                // The problem is that when the composite actor is opened,
+                // Top calls GraphicalMessageHandler.setContext().
+                // Instead, if the user runs the model, we should set the
+                // context to that window.
+                GraphicalMessageHandler.setContext(getFrame());
                 _getManager().startRun();
             } catch (IllegalActionException ex) {
                 // Model may be already running. Attempt to resume.
