@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>  /* Get malloc() declaration under Solaris. */
 #include <string.h>
 #include "pct_util.h"
 #include "pct_c_parser.h"
