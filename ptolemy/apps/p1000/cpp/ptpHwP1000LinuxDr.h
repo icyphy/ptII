@@ -54,7 +54,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <linux/types.h>
 #endif
 
-#ifdef sun
+#ifdef __sun__
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/ioccom.h>
