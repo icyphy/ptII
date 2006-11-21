@@ -1,3 +1,33 @@
+/* Main program of the scheduler demo with some actor definitions.
+
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ @author Thomas Huining Feng, Yang Zhao
+
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
@@ -11,12 +41,21 @@
 #include "ptpHwP1000LinuxDr.h"
 #include "p1000_utils.h"
 
+/**
+ * Constant for CLOCK type's method table.
+ */
 CLOCK_METHOD_TABLE CLOCK_method_table = {
 	CLOCK_fire	// fire
 };
 
-void CLOCK_init(CLOCK* clock, void* actual_ref, SCHEDULER* scheduler)
-{
+/**
+ * Initiate an object of the CLOCK type, and assign a scheduler to it.
+ * 
+ * @param clock Reference to the CLOCK object to be initiated.
+ * @param actual_ref The actual reference to the object.
+ * @param scheduler Reference to the scheduler.
+ */
+void CLOCK_init(CLOCK* clock, void* actual_ref, SCHEDULER* scheduler) {
 	INIT_SUPER_TYPE(CLOCK, ACTOR, clock, actual_ref, &CLOCK_method_table,
 		scheduler);
 
@@ -29,18 +68,32 @@ void CLOCK_init(CLOCK* clock, void* actual_ref, SCHEDULER* scheduler)
 	};
 }
 
-void CLOCK_fire(CLOCK* clock)
-{
+/**
+ * Fire the CLOCK.
+ * 
+ * @param actor Reference to the CLOCK object.
+ */
+void CLOCK_fire(CLOCK* clock) {
 	ACTOR_fire((ACTOR*) SUPER(clock));
 }
 
+/**
+ * Constant for TRIGGERED_CLOCK's method table.
+ */
 TRIGGERED_CLOCK_METHOD_TABLE TRIGGERED_CLOCK_method_table = {
 	TRIGGERED_CLOCK_fire	// fire
 };
 
+/**
+ * Initiate an object of the TRIGGERED_CLOCK type, and assign a scheduler to it.
+ * 
+ * @param triggered_clock Reference to the TRIGGERED_CLOCK object to be
+ *  initiated.
+ * @param actual_ref The actual reference to the object.
+ * @param scheduler Reference to the scheduler.
+ */
 void TRIGGERED_CLOCK_init(TRIGGERED_CLOCK* triggered_clock, void* actual_ref,
-	SCHEDULER* scheduler)
-{
+	SCHEDULER* scheduler) {
 	ACTOR* ACTOR_super;
 	
 	INIT_SUPER_TYPE(TRIGGERED_CLOCK, CLOCK, triggered_clock, actual_ref,
@@ -58,8 +111,13 @@ void TRIGGERED_CLOCK_init(TRIGGERED_CLOCK* triggered_clock, void* actual_ref,
 	};
 }
 
-void TRIGGERED_CLOCK_initialize(TRIGGERED_CLOCK* triggered_clock)
-{
+/**
+ * Initialize the TRIGGERED_CLOCK object. This method is called before the
+ * execution starts.
+ * 
+ * @param triggered_clock Reference to the TRIGGERED_CLOCK object.
+ */
+void TRIGGERED_CLOCK_initialize(TRIGGERED_CLOCK* triggered_clock) {
 	int fd;
 	char *devFile = "/dev/ptpHwP1000LinuxDr";
 	SCHEDULER* scheduler;
@@ -114,8 +172,12 @@ void TRIGGERED_CLOCK_initialize(TRIGGERED_CLOCK* triggered_clock)
 	TYPED_PORT_send(&(triggered_clock->output), &e);
 }
 
-void TRIGGERED_CLOCK_fire(TRIGGERED_CLOCK* triggered_clock)
-{
+/**
+ * Fire the TRIGGERED_CLOCK.
+ * 
+ * @param triggered_clock Reference to the TRIGGERED_CLOCK object.
+ */
+void TRIGGERED_CLOCK_fire(TRIGGERED_CLOCK* triggered_clock) {
 	CLOCK* triggered_clock_CLOCK;
 	INT_TOKEN token;
 	EVENT out_e, *in_e;
@@ -149,13 +211,22 @@ void TRIGGERED_CLOCK_fire(TRIGGERED_CLOCK* triggered_clock)
 	}
 }
 
+/**
+ * Constant for TRIGGER_OUT's method table.
+ */
 TRIGGER_OUT_METHOD_TABLE TRIGGER_OUT_method_table = {
 	TRIGGER_OUT_fire	// fire
 };
 
+/**
+ * Initiate an object of the TRIGGER_OUT type, and assign a scheduler to it.
+ * 
+ * @param trigger_out Reference to the TRIGGER_OUT object to be initiated.
+ * @param actual_ref The actual reference to the object.
+ * @param scheduler Reference to the scheduler.
+ */
 void TRIGGER_OUT_init(TRIGGER_OUT* trigger_out, void* actual_ref,
-	SCHEDULER* scheduler)
-{
+	SCHEDULER* scheduler) {
 	ACTOR* ACTOR_super;
 	
 	INIT_SUPER_TYPE(TRIGGER_OUT, ACTOR, trigger_out, actual_ref,
@@ -167,10 +238,22 @@ void TRIGGER_OUT_init(TRIGGER_OUT* trigger_out, void* actual_ref,
 		ACTOR_super);
 }
 
+/* FIXME: File descriptor used in read_loop. */
 int fd;
 
-void* read_loop(void* data)
-{
+/**
+ * Loop infinitely in a separate thread to pull data from the P1000 device. When
+ * a trigger signal is received from the device, the current time is immediately
+ * retrieved and sent to the port, specified by the data parameter. This data,
+ * as a token encapsulated in an event, is passed in the heap to the responding
+ * actor.
+ * 
+ * @param data Reference to the port where the timed hardware signal should be
+ *  sent. Though data is declared to be voi*, its actual type must be
+ *  TYPED_PORT.
+ * @return NULL.
+ */
+void* read_loop(void* data) {
 	unsigned int secs;
 	unsigned int nsecs;
 	int rtn;
@@ -218,10 +301,17 @@ void* read_loop(void* data)
 	} while (1);
 
 	pthread_exit(NULL);
+	
+	return NULL;
 }
 
-void TRIGGER_OUT_initialize(TRIGGER_OUT* trigger_out)
-{
+/**
+ * Initialize the TRIGGER_OUT object. This method is called before the execution
+ * starts.
+ * 
+ * @param trigger_out Reference to the TRIGGER_OUT object.
+ */
+void TRIGGER_OUT_initialize(TRIGGER_OUT* trigger_out) {
 	int        thr_id;
 	pthread_t  p_thread;
 	SCHEDULER* scheduler;
@@ -234,8 +324,12 @@ void TRIGGER_OUT_initialize(TRIGGER_OUT* trigger_out)
 		UPCAST(&(trigger_out->output), PORT));
 }
 
-void TRIGGER_OUT_fire(TRIGGER_OUT* trigger_out)
-{
+/**
+ * Fire the TRIGGER_OUT.
+ * 
+ * @param trigger_out Reference to the TRIGGER_OUT object.
+ */
+void TRIGGER_OUT_fire(TRIGGER_OUT* trigger_out) {
 	unsigned int secs;
 	unsigned int nsecs;
     FPGA_GET_TIME fpgaGetTime;
@@ -270,21 +364,28 @@ void TRIGGER_OUT_fire(TRIGGER_OUT* trigger_out)
 		nsecs = t.ns;
 		printf("     TO: %.9d.%9.9d\n", secs, nsecs);
 
-		fpgaSetTimetrigger.num = 0;   // Only single timetrigger supported, numbered '0'
-		fpgaSetTimetrigger.force = 0; // Don't force
+		// Only single timetrigger supported, numbered '0'.
+		fpgaSetTimetrigger.num = 0;
+		// Don't force;
+		fpgaSetTimetrigger.force = 0;
 		encodeHwNsec(&fpgaSetTimetrigger.timeVal, secs, nsecs);
 
 		rtn = ioctl(fd,  FPGA_IOC_SET_TIMETRIGGER, &fpgaSetTimetrigger);
 		if (rtn) {
-			fprintf(stderr, "ioctl to set timetrigger failed: %d, %d\n", rtn, errno);
+			fprintf(stderr, "ioctl to set timetrigger failed: %d, %d\n", rtn,
+				errno);
 			perror("error from ioctl");
 			// exit(1);
 		}
 	}
 }
 
-int main()
-{
+/**
+ * The main function of the scheduler demo. It creates a TRIGGERED_CLOCK actor
+ * and a TRIGGER_OUT actor in a feedback loop, and execute the system with a
+ * discrete event scheduler..
+ */
+int main() {
 	SCHEDULER scheduler;	
 	TRIGGERED_CLOCK t_clock;
 	TRIGGER_OUT t_out;

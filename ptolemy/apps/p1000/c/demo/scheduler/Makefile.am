@@ -28,5 +28,5 @@ scheduler_SOURCES = \
 	scheduler.h \
 	token.h \
 	typed_port.h \
-	types.h \
-	type_uids.h
+	type_uids.h \
+	types.h
