@@ -110,11 +110,29 @@ public class State extends ComponentEntity {
         isInitialState = new Parameter(this, "isInitialState");
         isInitialState.setTypeEquals(BaseType.BOOLEAN);
         // If this is the only state in the container, then make
-        // it the initial state.
-        if (container.entityList(State.class).size() == 1) {
-            isInitialState.setExpression("true");
+        // it the initial state.  For backward compatibility,
+        // we do not do this if the container has a non-empty
+        // value for initialStateName. In that case, we 
+        // make this the initial state if its name matches that
+        // name.
+        String initialStateName = "";
+        if (container instanceof FSMActor) {
+            initialStateName = ((FSMActor)container).initialStateName.getExpression().trim();
+        }
+        if (initialStateName.equals("")) {
+            if (container.entityList(State.class).size() == 1) {
+                isInitialState.setExpression("true");
+            } else {
+                isInitialState.setExpression("false");
+            }
         } else {
-            isInitialState.setExpression("false");
+            // Backward compatibility scenario. The initial state
+            // was given by a name in the container.
+            if (initialStateName.equals(name)) {
+                isInitialState.setExpression("true");
+            } else {
+                isInitialState.setExpression("false");                
+            }
         }
     }
 
