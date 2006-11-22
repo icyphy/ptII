@@ -129,5 +129,5 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     set template "11.000000 4.000000 9.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 "
     string first $template $output
     
-} {0}
+} {0} {Fails under gcc4.3}
 
