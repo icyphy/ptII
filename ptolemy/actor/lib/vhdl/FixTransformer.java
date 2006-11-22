@@ -28,7 +28,10 @@
 package ptolemy.actor.lib.vhdl;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -59,15 +62,55 @@ public class FixTransformer extends TypedAtomicActor {
     public FixTransformer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
-        binaryPoint = new Parameter(this, "outputBinaryPoint");
-        binaryPoint.setExpression("0");
+    
+        output = newFixOutputPort("output");
     }
 
+    /** Create a new fix point type output port with given the name.
+     *  The container of the created port is this actor. This also
+     *  create a new precision parameter associated with this port.   
+     * @param name The given name of the port.
+     * @return The new output port.
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
+    public QueuedTypedIOPort newFixOutputPort(String name) throws
+            IllegalActionException, NameDuplicationException {
+        
+        // For each output port, we want to have an assoicated
+        // precision parameter.
+        Parameter precision = 
+            new StringParameter(this, name + "Precision");            
+        precision.setExpression("31:0");  
+
+        Parameter overflow = new StringParameter(this, name + "Overflow");
+        overflow.setExpression("GROW");
+        overflow.addChoice("GROW");
+        overflow.addChoice("ROUND");
+        overflow.addChoice("WRAP");        
+        overflow.addChoice("CLIP");        
+
+        Parameter rounding = new StringParameter(this, name + "Rounding");
+        rounding.setExpression("HALF_EVEN");
+        rounding.addChoice("HALF_EVEN");
+        rounding.addChoice("ROUND");
+        rounding.addChoice("WRAP");        
+        
+        QueuedTypedIOPort port =
+            new QueuedTypedIOPort(this, name, false, true);
+        
+        port.setTypeEquals(BaseType.FIX);
+
+        return port;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The index of binary point on the output fixpoint data. 
+    
+    /** Queued ouput to simulate pipelined add.  The output is fix 
+     *  point type.
      */
-    public Parameter binaryPoint;
+    public QueuedTypedIOPort output;
+
 }

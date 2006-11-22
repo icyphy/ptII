@@ -27,12 +27,9 @@
  */
 package ptolemy.actor.lib.vhdl;
 
-import java.math.BigDecimal;
-
-import ptolemy.actor.lib.Source;
 import ptolemy.data.FixToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -60,7 +57,7 @@ import ptolemy.math.Rounding;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class FixConst extends Source {
+public class FixConst extends FixTransformer {
     /** Construct a constant source with the given container and name.
      *  Create the <i>value</i> parameter, initialize its value to
      *  the default value of an IntToken with value 1.
@@ -75,13 +72,9 @@ public class FixConst extends Source {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         value = new Parameter(this, "value");
-        value.setExpression("0");
-
-        precision = new StringParameter(this, "precision");
-        precision.setExpression("1e0");
+        value.setExpression("0.0");
 
         // Set the type constraint.
-        output.setTypeEquals(BaseType.FIX);
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
                 + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
                 + "</svg>\n");
@@ -89,10 +82,6 @@ public class FixConst extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** The precision of the output fixpoint value.
-     */
-    public Parameter precision;
     
     /** The value produced by this constant source.
      *  By default, it contains an IntToken with value 1.  If the
@@ -124,10 +113,19 @@ public class FixConst extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        
+        Precision precision = new Precision(((Parameter) 
+                getAttribute("outputPrecision")).getExpression());
+        
+        Overflow overflow = Overflow.getName(((Parameter) getAttribute(
+        "outputOverflow")).getExpression().toLowerCase());
 
-        FixPoint result = new FixPoint(new BigDecimal(value.getExpression()), 
-                new FixPointQuantization(new Precision(precision.
-                getExpression()), Overflow.GROW, Rounding.HALF_EVEN));
+        Rounding rounding = Rounding.getName(((Parameter) getAttribute(
+            "outputRounding")).getExpression().toLowerCase());
+
+        FixPoint result = new FixPoint(((ScalarToken)
+                value.getToken()).doubleValue(), 
+                new FixPointQuantization(precision, overflow, rounding));
 
         output.send(0, new FixToken(result));
     }

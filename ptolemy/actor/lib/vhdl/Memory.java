@@ -137,8 +137,6 @@ public class Memory extends FixTransformer {
             _storage = new FixToken[_capacity];
         } else if (attribute == dataWidth) {
             _dataWidth = ((ScalarToken) dataWidth.getToken()).intValue();
-        } else if (attribute == binaryPoint) {
-            _binaryPoint = ((ScalarToken) binaryPoint.getToken()).intValue();
         }
     }
 
@@ -184,16 +182,15 @@ public class Memory extends FixTransformer {
             _storage[addressValue] = in;
         }
 
-        FixToken result = _storage[_preAddress]
-                .quantize(new FixPointQuantization(new Precision(0, _dataWidth,
-                        _binaryPoint), Overflow.GROW, Rounding.HALF_EVEN));
+        FixToken result = _storage[_preAddress].quantize(
+                new FixPointQuantization(new Precision(
+                        ((Parameter) getAttribute("outputPrecision"))
+                        .getExpression()), Overflow.GROW, Rounding.HALF_EVEN));
 
         dataOut.send(0, result);
     }
 
     private int _addressWidth;
-
-    private int _binaryPoint;
 
     private int _capacity;
 

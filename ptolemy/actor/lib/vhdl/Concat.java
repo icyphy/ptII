@@ -33,7 +33,7 @@ import java.math.BigInteger;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.FixToken;
-import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -77,8 +77,6 @@ public class Concat extends FixTransformer {
         input.setMultiport(true);  
         input.setTypeEquals(BaseType.FIX);
         
-        output = new TypedIOPort(this,"output",false,true);
-        output.setTypeEquals(BaseType.FIX); 
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -98,9 +96,19 @@ public class Concat extends FixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        int binaryPointValue = ((IntToken) binaryPoint.getToken()).intValue();
+
+        Precision precision = new Precision(((Parameter) getAttribute(
+                "outputPrecision")).getExpression());
+        
+        Overflow overflow = Overflow.getName(((Parameter) getAttribute(
+                "outputOverflow")).getExpression().toLowerCase());
+        
+        Rounding rounding = Rounding.getName(((Parameter) getAttribute(
+                "outputRounding")).getExpression().toLowerCase());
+        
         String bits = "";
 
+        // Concat bits from each input port.
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 FixToken in = (FixToken) input.get(i);
@@ -112,8 +120,7 @@ public class Concat extends FixTransformer {
         //bits = bits.replace('-', '1');
 
         FixPoint result = new FixPoint(new BigDecimal(new BigInteger(bits, 2)),
-                new FixPointQuantization(new Precision(0, bits.length(),
-                        binaryPointValue), Overflow.GROW, Rounding.HALF_EVEN));
+                new FixPointQuantization(precision, overflow, rounding));
 
         output.send(0, new FixToken(result));
     }

@@ -56,9 +56,12 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	Concat.java
+	FixConst.java
+	AddSubtract.java
 
 OTHER_FILES_TO_BE_JARED = \
 	Concat.vhdl
+	FixConst.vhdl
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

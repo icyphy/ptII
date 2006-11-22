@@ -1,4 +1,4 @@
-/* A helper class for actor.lib.Concat
+/* A helper class for actor.lib..vhdl.Multiplexor
 
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
@@ -28,14 +28,11 @@
  */
 package ptolemy.codegen.vhdl.actor.lib.vhdl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
-import ptolemy.data.ScalarToken;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.math.FixPoint;
 
 /**
  * A helper class for ptolemy.actor.lib.Uniform.
@@ -46,38 +43,13 @@ import ptolemy.math.FixPoint;
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)
  */
-public class Concat extends VHDLCodeGeneratorHelper {
+public class Multiplexor extends VHDLCodeGeneratorHelper {
     /**
      * Construct a Concat helper.
      * @param actor the associated actor
      */
-    public Concat(ptolemy.actor.lib.vhdl.Concat actor) {
+    public Multiplexor(ptolemy.actor.lib.vhdl.Multiplexor actor) {
         super(actor);
-    }
-    
-    /**
-     * Generate fire code.
-     * The method reads in the <code>fireBlock</code> from FixConst.c,
-     * replaces macros with their values and returns the processed code
-     * block.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters
-     *  an error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
-
-        ArrayList args = new ArrayList();
-        ptolemy.actor.lib.vhdl.Concat actor = 
-            (ptolemy.actor.lib.vhdl.Concat) getComponent();
-
-        args.add("");
-
-        args.add("");
-
-        _codeStream.appendCodeBlock("fireBlock", args);
-
-        return processCode(_codeStream.toString());
     }
     
     /** Get the files needed by the code generated for the Concat actor.

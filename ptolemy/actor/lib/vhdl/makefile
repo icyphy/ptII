@@ -57,6 +57,7 @@ JSRCS = \
 	Multiplexor.java \
 	QueuedTypedIOPort.java \
 	Slice.java \
+	Register.java \
 
 
 OTHER_FILES_TO_BE_JARED = \

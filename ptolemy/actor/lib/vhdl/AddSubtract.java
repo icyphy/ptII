@@ -29,11 +29,19 @@
 package ptolemy.actor.lib.vhdl;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.FixToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.math.FixPointQuantization;
+import ptolemy.math.Overflow;
+import ptolemy.math.Precision;
+import ptolemy.math.Quantization;
+import ptolemy.math.Rounding;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -63,16 +71,19 @@ public class AddSubtract extends SynchronousFixTransformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        plus = new TypedIOPort(this, "plus", true, false);
-        plus.setMultiport(true);
-        plus.setTypeEquals(BaseType.FIX);
+        A = new TypedIOPort(this, "A", true, false);
+        A.setTypeEquals(BaseType.FIX);
         
-        minus = new TypedIOPort(this, "minus", true, false);
-        minus.setMultiport(true);
-        minus.setTypeEquals(BaseType.FIX);
+        B = new TypedIOPort(this, "B", true, false);
+        B.setTypeEquals(BaseType.FIX);
+                
+        operation = new StringParameter(this, "operation");
+        operation.setExpression("UNSIGNED_ADD");
+        operation.addChoice("UNSIGNED_ADD");
+        operation.addChoice("SIGNED_ADD");        
+        operation.addChoice("UNSIGNED_SUBTRACT");        
+        operation.addChoice("SIGNED_SUBTRACT");        
         
-        output = new QueuedTypedIOPort(this, "output", false, true);
-        output.setTypeEquals(BaseType.FIX);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,21 +92,17 @@ public class AddSubtract extends SynchronousFixTransformer {
     /** Input for tokens to be added.  This is a multiport of fix point
      *  type
      */
-    public TypedIOPort plus;
+    public TypedIOPort A;
     
     /** Input for tokens to be subtracted.  This is a multiport of fix
      *  point type.
      */
-    public TypedIOPort minus;
+    public TypedIOPort B;
 
-    /** Queued ouput to simulate pipelined add.  The output is fix 
-     *  point type.
+    /** Indicate whether addition or subtraction needs to be performed.
      */
-    public QueuedTypedIOPort output;
-
-
-
-    
+    public Parameter operation; 
+        
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -110,32 +117,37 @@ public class AddSubtract extends SynchronousFixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        Token sum = null;
+        Token result = null;
+        
+        if (A.hasToken(0) && B.hasToken(0)) {
+            if (operation.getExpression().endsWith("ADD")) {
+                result = A.get(0).add(B.get(0));
+            } else {
+                result = A.get(0).subtract(B.get(0));
+            }     
 
-        for (int i = 0; i < plus.getWidth(); i++) {
-            if (plus.hasToken(i)) {
-                if (sum == null) {
-                    sum = plus.get(i);
-                } else {
-                    sum = sum.add(plus.get(i));
-                }
+            Precision precision = new Precision(((Parameter) 
+                    getAttribute("outputPrecision")).getExpression());
+
+            Overflow overflow = Overflow.getName(((Parameter) getAttribute(
+                "outputOverflow")).getExpression().toLowerCase());
+
+            Rounding rounding = Rounding.getName(((Parameter) getAttribute(
+                "outputRounding")).getExpression().toLowerCase());
+            
+            Quantization quantization = 
+                new FixPointQuantization(precision, overflow, rounding);
+            
+            result = ((FixToken) result).quantize(quantization);
+            if (!((FixToken) result).fixValue().getPrecision().equals(
+                    new Precision(((Parameter) getAttribute("outputPrecision"))
+                            .getExpression()))) {
+                System.out.println("not Equal precision");
+//                throw new IllegalActionException("output token do not" +
+//                        "match the specified precision.");
             }
         }
 
-        for (int i = 0; i < minus.getWidth(); i++) {
-            if (minus.hasToken(i)) {
-                Token in = minus.get(i);
-
-                if (sum == null) {
-                    sum = in.zero();
-                }
-
-                sum = sum.subtract(in);
-            }
-        }
-
-        if (sum != null) {
-            output.send(0, sum);
-        }
+        output.send(0, result);
     }
 }

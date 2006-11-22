@@ -33,11 +33,11 @@ import java.math.BigInteger;
 import java.util.Arrays;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.data.FixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -66,7 +66,7 @@ import ptolemy.math.Rounding;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class Slice extends FixTransformer {
+public class FixToString extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -75,51 +75,15 @@ public class Slice extends FixTransformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Slice(CompositeEntity container, String name)
+    public FixToString(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
-        super(container, name);
-        
-        input = new TypedIOPort(this,"input",true,false);
-        input.setMultiport(true);  
+        super(container, name);        
         input.setTypeEquals(BaseType.FIX);
-        
-        width = new Parameter(this, "width");
-        start = new Parameter(this, "start");
-        end = new Parameter(this, "end");
-        lsb = new StringParameter(this, "lsb");
-        lsb.setExpression("LSB");
-        lsb.addChoice("LSB");
-        lsb.addChoice("MSB");
+        output.setTypeEquals(BaseType.STRING);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    public TypedIOPort input;
-    
-    public TypedIOPort output;
-    
-    public Parameter width;
-
-    public Parameter start;
-
-    public Parameter end;
-
-    public Parameter lsb;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Override the base class to determine which function is being
-     *  specified.
-     *  @param attribute The attribute that changed.
-     * @throws IllegalActionException 
-     *  @exception IllegalActionException If the function is not recognized.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        super.attributeChanged(attribute);
-    }
 
     /** output a consecutive subset of the input bits. 
      *  If there is no input, then produce no output.
@@ -127,33 +91,13 @@ public class Slice extends FixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        int widthValue = ((IntToken) width.getToken()).intValue();
-        int startValue = ((IntToken) start.getToken()).intValue();
-        int endValue = ((IntToken) end.getToken()).intValue() + 1;
-        int binaryPointValue = ((IntToken) binaryPoint.getToken()).intValue();
-        boolean lsbValue = ((StringToken) lsb.getToken()).stringValue().equals(
-                "LSB");
-
-        int newStartValue = (lsbValue) ? widthValue - endValue : startValue;
-        int newEndValue = (lsbValue) ? widthValue - startValue : endValue;
-        int shiftBits = (lsbValue) ? startValue : widthValue - endValue;
-
-        char[] mask = new char[widthValue];
-        Arrays.fill(mask, '0');
-        Arrays.fill(mask, newStartValue, newEndValue, '1');
 
         if (input.hasToken(0)) {
-            FixToken in = (FixToken) input.get(0);
-            BigDecimal value = new BigDecimal(in.fixValue().getUnscaledValue()
-                    .and(new BigInteger(new String(mask), 2)).shiftRight(
-                            shiftBits));
+            FixPoint value = ((FixToken) input.get(0)).fixValue();
+            String string = value.bigDecimalValue().toString() + " " +
+            value.getPrecision().toString(Precision.VHDL); 
 
-            FixPoint result = new FixPoint(value, new FixPointQuantization(
-                    new Precision(0, newEndValue - newStartValue,
-                            binaryPointValue), Overflow.GROW,
-                    Rounding.HALF_EVEN));
-
-            output.send(0, new FixToken(result));
+            output.send(0, new StringToken(string));
         }
     }
 }

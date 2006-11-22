@@ -1,4 +1,4 @@
-/* A helper class for actor.lib.Concat
+/* A helper class for actor.lib.FixConst
 
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
@@ -34,8 +34,13 @@ import java.util.Set;
 
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
 import ptolemy.data.ScalarToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.FixPoint;
+import ptolemy.math.FixPointQuantization;
+import ptolemy.math.Overflow;
+import ptolemy.math.Precision;
+import ptolemy.math.Rounding;
 
 /**
  * A helper class for ptolemy.actor.lib.Uniform.
@@ -46,15 +51,15 @@ import ptolemy.math.FixPoint;
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)
  */
-public class Concat extends VHDLCodeGeneratorHelper {
+public class FixConst extends VHDLCodeGeneratorHelper {
     /**
-     * Construct a Concat helper.
+     * Construct a FixConst helper.
      * @param actor the associated actor
      */
-    public Concat(ptolemy.actor.lib.vhdl.Concat actor) {
+    public FixConst(ptolemy.actor.lib.vhdl.FixConst actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in the <code>fireBlock</code> from FixConst.c,
@@ -68,25 +73,48 @@ public class Concat extends VHDLCodeGeneratorHelper {
         super.generateFireCode();
 
         ArrayList args = new ArrayList();
-        ptolemy.actor.lib.vhdl.Concat actor = 
-            (ptolemy.actor.lib.vhdl.Concat) getComponent();
+        ptolemy.actor.lib.vhdl.FixConst actor = 
+            (ptolemy.actor.lib.vhdl.FixConst) getComponent();
 
-        args.add("");
+        Precision precision = new Precision(((Parameter) 
+                actor.getAttribute("outputPrecision")).getExpression());
 
-        args.add("");
+        Overflow overflow = Overflow.getName(((Parameter) actor.getAttribute(
+            "outputOverflow")).getExpression().toLowerCase());
+
+        Rounding rounding = Rounding.getName(((Parameter) actor.getAttribute(
+            "outputRounding")).getExpression().toLowerCase());
+
+        FixPoint fixValue = new FixPoint(((ScalarToken)
+                actor.value.getToken()).doubleValue(), 
+                new FixPointQuantization(
+                        precision, overflow, rounding));
+
+        int high = fixValue.getPrecision().getIntegerBitLength() - 1;
+        int low = -fixValue.getPrecision().getFractionBitLength();
+        
+        String realValue = fixValue.bigDecimalValue().toString();
+
+        args.add("" + high);
+        args.add("" + low);
+        args.add(realValue);
 
         _codeStream.appendCodeBlock("fireBlock", args);
 
         return processCode(_codeStream.toString());
     }
-    
-    /** Get the files needed by the code generated for the Concat actor.
+
+    /** Get the files needed by the code generated for the FixConst actor.
      *  @return A set of strings that are names of the library and package.
      *  @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
-        files.add("IEEE.std_logic_1164.all");
+        
+        files.add("ieee.std_logic_1164.all");
+        files.add("ieee.numeric_std.all");
+        files.add("ieee_proposed.math_utility_pkg.all");
+        files.add("ieee_proposed.fixed_pkg.all");
         return files;
     }
 }

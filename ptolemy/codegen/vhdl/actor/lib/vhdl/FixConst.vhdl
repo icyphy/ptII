@@ -14,8 +14,15 @@ component pt_ufixed_const is
 end component pt_ufixed_const;
 /**/
 
-/*** fireBlock ($genericMap, $portMap) ***/
+/*** fireBlock ($high, $low, $fixValue) ***/
+
 $actorSymbol(instance): pt_ufixed_const
-	GENERIC MAP ( $genericMap )
-	PORT MAP ( $portMap );
+	GENERIC MAP ( 
+		CONST_HIGH => $high, 
+		CONST_LOW => $low,
+		CONST_VALUE => $fixValue
+	)
+	PORT MAP ( 
+		output => $ref(output)
+	);
 /**/

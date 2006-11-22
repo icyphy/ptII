@@ -70,9 +70,6 @@ public class Multiplexor extends SynchronousFixTransformer {
         input.setMultiport(true);  
         input.setTypeEquals(BaseType.FIX);
         
-        output = new QueuedTypedIOPort(this,"output",false,true);
-        output.setTypeEquals(BaseType.FIX);  
-        
         select = new TypedIOPort(this,"select",true,false);
         select.setTypeEquals(BaseType.INT);
     }
