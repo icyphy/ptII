@@ -61,8 +61,10 @@ JSRCS = \
 	Multiplexor.java
 
 OTHER_FILES_TO_BE_JARED = \
-	Concat.vhdl
-	FixConst.vhdl
+	AddSubtract.vhdl \
+	Concat.vhdl \
+	FixConst.vhdl \
+	Multiplexor.vhdl
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
