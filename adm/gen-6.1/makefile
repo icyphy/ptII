@@ -265,6 +265,12 @@ $(PTII_FULL_ZIP): $(PTIIDIST)
 	chgrp ptolemy $@
 	ls -l $@
 
+VERSION_FILES = \
+	src/ptII$(VERSION)/ptolemy/configs/*/* \
+	src/ptII$(VERSION)/ptolemy/kernel/attributes/VersionAttribute.java
+
+updateversions_test:
+	./updateversions $(VERSION) $(VERSION)_`date +"%Y%m%d"` $(VERSION_FILES) 
 
 ptii_src: $(PTII_SRC) $(PTII_SRC_JAR)
 $(PTII_SRC): $(PTII_FULL)
@@ -324,6 +330,8 @@ $(PTII_SRC): $(PTII_FULL)
 		> src/ptII$(VERSION)/ptolemy/domains/tm/makefile.tmp
 	mv src/ptII$(VERSION)/ptolemy/domains/tm/makefile.tmp \
 		src/ptII$(VERSION)/ptolemy/domains/tm/makefile
+	# Update the versions
+	./updateversions $(VERSION) $(VERSION)_`date +"%Y%m%d"` $(VERSION_FILES) 
 	(cd src; \
 		echo "#  Starting tar of $@"; \
 		$(TAR) -c -v --no-anchored -X $(GENDIR)/src.ex --exclude bin/vergil -f $(PTII_SRC) ptII$(VERSION); \
