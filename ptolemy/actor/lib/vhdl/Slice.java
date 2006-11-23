@@ -99,6 +99,8 @@ public class Slice extends FixTransformer {
     
     public TypedIOPort output;
     
+    public Parameter binaryPoint;
+
     public Parameter width;
 
     public Parameter start;
