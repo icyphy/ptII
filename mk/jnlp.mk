@@ -182,7 +182,8 @@ HYBRID_SYSTEMS_ONLY0_JNLP_JARS = \
 
 HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	$(HYBRID_SYSTEMS_ONLY0_JNLP_JARS) \
-	lib/saxon8.jar
+	lib/saxon8.jar \
+	lib/saxon8-dom.jar
 
 HYBRID_SYSTEMS_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/HyVisualApplication.jar
@@ -197,6 +198,7 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	ptolemy/domains/fsm/doc/doc.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
+	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
 	$(MATLAB_JARS) 
 
 
@@ -398,6 +400,8 @@ VISUAL_SENSE_JNLP_JARS =	\
 
 # All the JNLP Jar files except the application jars,
 # hopefully without duplicates so that  we don't sign jars twice.
+# We include plotapplication.jar so that the ptplot and histogram
+# commands will work.
 ALL_NON_APPLICATION_JNLP_JARS = \
 	$(NATIVE_SIGNED_LIB_JARS) \
 	$(CORE_JNLP_JARS) \
@@ -407,8 +411,8 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 	$(VIPTOS_ONLY_JNLP_JARS) \
 	$(VISUAL_SENSE_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
-	$(DSP_ONLY_JNLP_JARS)
-
+	$(DSP_ONLY_JNLP_JARS) \
+	ptolemy/plot/plotapplication.jar 
 
 # All the jar files, include the application jars
 ALL_JNLP_JARS = \
@@ -908,7 +912,7 @@ L4JC=$(L4J_DIR)/launch4j
 # .exe files to be created by Launch4J
 L4J_DOC_EXES = 		designdocv1.exe designdocv2.exe designdocv3.exe \
 				hyvisualdoc.exe visualsensedoc.exe
-L4J_PTOLEMY_EXES = 	hyvisual.exe ptiny.exe vergil.exe viptos.exe \
+L4J_PTOLEMY_EXES = 	hyvisual.exe ptiny.exe vergil.exe \
 				visualsense.exe
 L4J_PTPLOT_EXES = 	histogram.exe ptplot.exe
 
@@ -954,7 +958,8 @@ designdocv3.exe: designdocv3_l4j.xml
 
 histogram_l4j.xml:
 	$(MKL4J) histogram ptolemy.plot.plotml.HistogramMLApplication \
-		doc/img/histogram.ico > $@
+		doc/img/histogram.ico \
+		"" ptolemy/plot/plotapplication.jar > $@
 histogram.exe: histogram_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) $$PWD/$^`
 
@@ -982,7 +987,8 @@ ptiny.exe: ptiny_l4j.xml
 
 ptplot_l4j.xml:
 	$(MKL4J) ptplot ptolemy.plot.plotml.EditablePlotMLApplication \
-		doc/img/ptplot.ico > $@
+		doc/img/ptplot.ico \
+		"" ptolemy/plot/plotapplication.jar > $@
 ptplot.exe: ptplot_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) $$PWD/$^`
 
