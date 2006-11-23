@@ -83,8 +83,8 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
-
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
+#gmake USER=bldmastr PTIIHOME=/export/home1/bldmastr/ptII PTIIADM=/export/home1/bldmastr/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar
 
 USER =		ptII
 PTIIHOME =	/users/ptII
@@ -2364,6 +2364,7 @@ IZPACKDIR=$(PTII)/vendors/izpack
 IZPACK_COMPILE=$(IZPACKDIR)/_dist/bin/compile
 IZPACK_TAR=IzPack.src.3.9.0.tar.gz
 
+# Under Solaris: gmake make_izpack TAR=gtar
 make_izpack: $(IZPACK_COMPILE)
 $(IZPACK_COMPILE): $(PTII)/vendors/izpack
 	 cd $(PTII)/vendors/izpack/src; ant dist
@@ -2372,12 +2373,8 @@ $(IZPACK_COMPILE): $(PTII)/vendors/izpack
 $(PTII)/vendors/izpack:
 	mkdir $(PTII)/vendors/izpack
 	cd $(PTII)/vendors/izpack; \
-		wget http://download.berlios.de/izpack/$(IZPACK_VERSION); \
-		$(TAR) -zxf $(IZPACK_VERSION)
-
-
-
-
+		wget http://download.berlios.de/izpack/$(IZPACK_TAR); \
+		$(TAR) -zxf $(IZPACK_TAR)
 
 PTSETUP=ptII$(WINDOWS_VERSION)_setup
 # IzPack installer
@@ -2398,14 +2395,15 @@ Echo.class: Echo.java
 	javac -classpath "$(IZPACK_CLASSDIR)" $^
 
 ExtractJarFile.jar: ExtractJarFile.class Echo.class
-	jar -cf $@ $^
+	jar -cf $@ CYGPATH^
 
-
+#PTCYGPATH=cygpath --windows
+PTCYGPATH=echo
 # Recompile izpack
 izpack:	
 	cd ~/src/izpack/trunk/src/; ant build.standalone-compiler; cp C:/cxh/src/izpack/trunk/lib/standalone-compiler.jar c:/cxh/src/izpack/izpack3.9.0/lib/standalone-compiler.jar 
 	c:/cxh/src/izpack/izpack3.9.0/bin/compile test.xml
-	"$(L4JC)" `cygpath --windows $$PWD/test_l4j.xml`
+	"$(L4JC)" `$(PTCYGPATH) $$PWD/test_l4j.xml`
 
 # Location of Launch4J, see http://launch4j.sourceforge.net/
 #L4J_DIR=c:/Program Files/Launch4j
@@ -2423,10 +2421,33 @@ $(PTII)/vendors/launch4j:
 L4JC=$(L4J_DIR)/launch4jc.exe
 
 # Launch4J
-$(PTSETUP).exe: $(PTSETUP)_l4j.xml $(PTSETUP).jar #ExtractJarFile.class
-		"$(L4JC)" `cygpath --windows $$PWD/$<`
+$(PTSETUP).exe: ../../ptiny.exe ../../jar_dist \
+		../../ptolemy/matlab/ptmatlab.dll \
+		jre \
+		../../lib/matlabWindows.jar $(PTSETUP)_l4j.xml \
+		$(PTSETUP).jar #ExtractJarFile.class
+		"$(L4JC)" `$(PTCYGPATH) $$PWD/$<`
+
+../../ptiny.exe:  ../../ptiny_l4j.xml
+
+../../ptiny_l4j.xml:
+	(cd ../..; $(MAKE) exes)
+
+../../jar_dist:
+	if [ ! -d "$@" ] ; then \
+	    echo "Running $(MAKE) jar_dist in $(PTII)"; \
+	    (cd ../..; $(MAKE) jar_dist); \
+	fi
+
+../../ptolemy/matlab/ptmatlab.dll: ../../lib/matlabWindows.jar
+	(cd ../../ptolemy/matlab; jar -xf ../../lib/matlabWindows.jar)
 
 
+jre:
+	if [ ! -d jre ] ; then \
+		mkdir jre; \
+		echo "JRE Directory" > jre/README.txt; \
+	fi
 setup: $(PTSETUP).exe
 
 clean_setup: 
