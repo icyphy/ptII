@@ -61,7 +61,6 @@ import ptolemy.moml.Documentation;
 import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
-import ptolemy.moml.StreamErrorHandler;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;

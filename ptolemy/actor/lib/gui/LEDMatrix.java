@@ -36,7 +36,6 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -47,9 +46,9 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 //// LEDMatrix
 
 /** An actor that displays an array of LEDs.  The array display only
-    one color, red.  This actor has two inputs, row and column which
-    are integers that identify the row and column of the LED to be
-    illuminated.
+ one color, red.  This actor has two inputs, row and column which
+ are integers that identify the row and column of the LED to be
+ illuminated.
 
  @author Christopher Brooks, Based on MicaLeds byElaine Cheong
  @version $Id$
@@ -115,7 +114,6 @@ public class LEDMatrix extends TypedAtomicActor {
      */
     public Parameter columns;
 
-
     /** The number of rows.  The number must be a positive integer,
      *  the initial default value is 10.   
      */
@@ -131,19 +129,18 @@ public class LEDMatrix extends TypedAtomicActor {
      *   nondecreasing and nonnegative.
      */
     // FIXME: get attribute changed working by moving init() to initialize()?
-//     public void attributeChanged(Attribute attribute)
-//             throws IllegalActionException {
-//         if (attribute == rows || attribute == columns) {
-//             try {
-//                 _init();
-//             } catch (NameDuplicationException ex) {
-//                 throw new IllegalActionException(this, ex, "Failed to initialize.");
-//             }
-//         } else {
-//             super.attributeChanged(attribute);
-//         }
-//     }
-
+    //     public void attributeChanged(Attribute attribute)
+    //             throws IllegalActionException {
+    //         if (attribute == rows || attribute == columns) {
+    //             try {
+    //                 _init();
+    //             } catch (NameDuplicationException ex) {
+    //                 throw new IllegalActionException(this, ex, "Failed to initialize.");
+    //             }
+    //         } else {
+    //             super.attributeChanged(attribute);
+    //         }
+    //     }
     /** Read a token from the row and column ports and illuminate that
      *  led until the next fire.   
      *  @exception IllegalActionException If the row or column ports
@@ -152,14 +149,17 @@ public class LEDMatrix extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         if (row.hasToken(0) && column.hasToken(0) && control.hasToken(0)) {
-            int rowValue = ((IntToken)row.get(0)).intValue();
-            int columnValue = ((IntToken)row.get(0)).intValue();
-            boolean controlValue = ((BooleanToken) control.get(0)).booleanValue();
+            int rowValue = ((IntToken) row.get(0)).intValue();
+            int columnValue = ((IntToken) row.get(0)).intValue();
+            boolean controlValue = ((BooleanToken) control.get(0))
+                    .booleanValue();
             if (controlValue) {
-                _leds[rowValue][columnValue].fillColor.setToken("{1.0, 0.0, 0.0, 1.0}");  
+                _leds[rowValue][columnValue].fillColor
+                        .setToken("{1.0, 0.0, 0.0, 1.0}");
             } else {
-                _leds[rowValue] [columnValue].fillColor.setToken("{0.0, 0.0, 0.0, 1.0}");
-            } 
+                _leds[rowValue][columnValue].fillColor
+                        .setToken("{0.0, 0.0, 0.0, 1.0}");
+            }
         }
     }
 
@@ -167,17 +167,18 @@ public class LEDMatrix extends TypedAtomicActor {
     ////                         private methods                   ////
 
     /** Create the LED Array. */
-    private void _init() throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
 
         int columnsValue = ((IntToken) columns.getToken()).intValue();
         int rowsValue = ((IntToken) rows.getToken()).intValue();
         _leds = new RectangleAttribute[rowsValue][columnsValue];
         for (int x = 0; x < rowsValue; x++) {
             for (int y = 0; y < columnsValue; y++) {
-                RectangleAttribute rectangle = new RectangleAttribute(_ledArray_icon, "_led_" + x + "_" + y);
-                Location location = new Location(rectangle,
-                        "_location");
-                double [] ledLocationValue = {x*20, y*20};
+                RectangleAttribute rectangle = new RectangleAttribute(
+                        _ledArray_icon, "_led_" + x + "_" + y);
+                Location location = new Location(rectangle, "_location");
+                double[] ledLocationValue = { x * 20, y * 20 };
                 location.setLocation(ledLocationValue);
                 rectangle.width.setToken("20.0");
                 rectangle.height.setToken("39.0");
@@ -188,12 +189,11 @@ public class LEDMatrix extends TypedAtomicActor {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Graphical icons for LED Array; */
-    private RectangleAttribute [][] _leds;
+    private RectangleAttribute[][] _leds;
 
     /** The icon. */
     EditorIcon _ledArray_icon;
