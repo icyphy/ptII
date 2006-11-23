@@ -2458,7 +2458,7 @@ clean_setup:
 test_setup: setup
 	rm -rf test/installerTest
 	java -jar $(PTSETUP).jar installerTest.xml
-	(cd test/installerTest; chmod a+x ./configure; PTII=`pwd`; ./configure; make -k fast install test > make.out 2>&1) 
+	(cd test/installerTest; chmod a+x ./configure; PTII=`pwd`; ./configure; make -k fast install test)
 
 # Echo the jars needed for the full package in izpack
 full_jars:
