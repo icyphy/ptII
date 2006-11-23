@@ -1164,6 +1164,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/python \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/security \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/string \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/vhdl \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/xslt \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/util \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/xmlparser \
@@ -1189,6 +1190,9 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/hdf \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/actor/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/actor/lib/vhdl \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/ \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp \
@@ -2404,6 +2408,14 @@ izpack:
 
 # Location of Launch4J, see http://launch4j.sourceforge.net/
 L4J_DIR=c:/Program Files/Launch4j
+
+L4J_DIR=$(PTII)/vendors/launch4j
+
+L4J_TAR=launch4j-3.0.0-pre1-solaris-sparc.tgz
+$(PTII)/vendors/launch4j:
+	cd $(PTII)/vendors; \
+		wget http://easynews.dl.sourceforge.net/sourceforge/launch4j/$(L4J_TAR); \
+		$(TAR) -zxf $(L4J_TAR)
 
 # Launch4J console application that reads in .xml files and creates .exe files.
 L4JC=$(L4J_DIR)/launch4jc.exe
