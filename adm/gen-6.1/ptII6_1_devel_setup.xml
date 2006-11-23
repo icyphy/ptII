@@ -71,13 +71,11 @@
         <panel classname="HTMLInfoPanel"/>
         <panel classname="HTMLLicencePanel"/>
         <panel classname="TargetPanel"/> 
-        <panel classname="JDKPathPanel"/>
         <panel classname="PacksPanel"/>
         <panel classname="SummaryPanel"/>
         <panel classname="InstallPanel"/>
-        <panel classname="ProcessPanel"/>
         <panel classname="ShortcutPanel"/>
-        <panel classname="SimpleFinishPanel"/>
+        <panel classname="FinishPanel"/>
     </panels>
     
     <!-- 
@@ -190,6 +188,9 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/moml/demo"/>
             <file src="../../jar_dist/ptolemy/vergil/kernel/attributes/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/kernel/attributes/demo"/>
+            <file src="../../jar_dist/ptolemy/plot/plotapplication.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/plot"/>
+
             <!-- file src="script.bat" targetdir="$INSTALL_PATH"/ -->
             <!-- parsable targetfile="$INSTALL_PATH/script.bat"/ --> <!-- The file will be parsed -->
 
@@ -368,7 +369,36 @@ The Ptiny pack is required.
         </pack>
         <pack name="Sources" required="no">
             <description>The Ptolemy II sources.</description>
-            <file src="ptII6.1.devel.src.jar" targetdir="$INSTALL_PATH"/>
+	    <!-- Can't just copy the directory, need to spec files -->
+	    <file src="src/ptII6.1.devel/README.txt" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/bin" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/build.xml" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/com" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/config" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/configure" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/configure.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/copyright.txt" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/diva" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/doc" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/jni" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/lib" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/makefile" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/mk" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/ptolemy" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/thales" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/util" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/vergil.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/vergilDSP.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/vergilHyVisual.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/vergilPtiny.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/vergilPtinySandbox.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/vergilVisualSense.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/.classpath.default" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/.classpath.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/.cshrc" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/.eclipse.epf" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/.glimpse_exclude" targetdir="$INSTALL_PATH"/>
+            <!-- file src="ptII6.1.devel.src.jar" targetdir="$INSTALL_PATH"/ -->
             <!-- file src="ExtractJarFile.class" targetdir="$INSTALL_PATH"/ -->
         </pack>
     </packs>
