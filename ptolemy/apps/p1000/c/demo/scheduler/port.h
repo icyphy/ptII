@@ -83,6 +83,13 @@ typedef struct Port_TypeData {
 
 extern Port_TypeData Port_typeData;
 
+/*
+ * Initiate Port_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void Port_TypeData_init(Port_TypeData* type_data);
+
 /**
  * Initiate a port, and assign a container actor to it.
  * 

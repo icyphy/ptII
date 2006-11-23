@@ -1,4 +1,4 @@
-/* Token, the common super-type of all the token types.
+/* Function to initiate all the type data.
 
  Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
@@ -28,43 +28,12 @@
  
  */
 
-#ifndef TOKEN_H_
-#define TOKEN_H_
-
-#include "types.h"
+#ifndef TYPES_INIT_H_
+#define TYPES_INIT_H_
 
 /**
- * Token, the common super-type of all the token types.
+ * Initiate all the type data defined in the system.
  */
-typedef struct Token {
-	/* Token is directly inherited from GeneralType. */
-	GeneralType super;
-} Token;
+void init_type_data();
 
-/*
- * Token's static type data.
- */
-typedef struct Token_TypeData {
-	TypeData inheritedTypeData;
-} Token_TypeData;
-
-extern Token_TypeData Token_typeData;
-
-/*
- * Initiate Token_TypeData.
- * 
- * @param type_data The type data to be initiated.
- */
-void Token_TypeData_init(Token_TypeData* type_data);
-
-/**
- * Initiate a token.
- * 
- * @param token The token to be initiated.
- * @param actual_type_data The type data of the token's actual type, or NULL.
- *  When NULL is given (which is usually the case when called by the user),
- *  Token_typeData is used.
- */
-void Token_init(Token* token, Token_TypeData* actual_type_data);
-
-#endif /*TOKEN_H_*/
+#endif /*TYPES_INIT_H_*/

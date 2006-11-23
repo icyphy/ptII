@@ -30,14 +30,26 @@
 
 #include "token.h"
 
-Token_TypeData Token_typeData = {
-	/* GeneralType fields. */
-	&GeneralType_typeData,		// superType
-	"Token",					// typeName
-	sizeof(Token),				// size
+Token_TypeData Token_typeData;
+
+/*
+ * Initiate Token_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void Token_TypeData_init(Token_TypeData* type_data) {
+	// Call the initiate method of the super-type.
+	TypeData_init((TypeData*) type_data);
 	
-	/* Token fields. */
-};
+	// Override super-type.
+	*((TypeData*) type_data) = (TypeData) {
+		&GeneralType_typeData,		// superType
+		"Token",					// typeName
+		sizeof(Token),				// size
+	};
+	
+	// Initiate data for the current type.
+}
 
 /**
  * Initiate a token.

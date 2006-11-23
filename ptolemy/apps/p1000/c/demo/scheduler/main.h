@@ -62,6 +62,13 @@ typedef struct Clock_TypeData {
 
 extern Clock_TypeData Clock_typeData;
 
+/*
+ * Initiate Clock_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void Clock_TypeData_init(Clock_TypeData* type_data);
+
 /**
  * Initiate a clock, and assign a scheduler to it.
  * 
@@ -80,6 +87,14 @@ void Clock_init(Clock* clock, Clock_TypeData* actual_type_data,
  * @param clock The clock to be fired.
  */
 void Clock_fire(Actor* actor);
+
+/**
+ * Initialize the clock actor. This method should be called before the execution
+ * starts.
+ * 
+ * @param actor The clock actor to be initialized.
+ */
+void Clock_initialize(Actor* actor);
 
 /**
  * TriggeredClock actor.
@@ -109,6 +124,13 @@ typedef struct TriggeredClock_TypeData {
 
 extern TriggeredClock_TypeData TriggeredClock_typeData;
 
+/*
+ * Initiate TriggeredClock_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void TriggeredClock_TypeData_init(TriggeredClock_TypeData* type_data);
+
 /**
  * Initiate a triggered clock, and assign a scheduler to it.
  * 
@@ -122,19 +144,19 @@ void TriggeredClock_init(TriggeredClock* triggered_clock,
 	TriggeredClock_TypeData* actual_type_data, Scheduler* scheduler);
 
 /**
- * Initialize the triggered clock. This method should be called before the
- * execution starts.
- * 
- * @param triggered_clock The triggered clock.
- */
-void TriggeredClock_initialize(TriggeredClock* triggered_clock);
-
-/**
  * Fire the triggered clock.
  * 
  * @param triggered_clock The triggered clock to be fired.
  */
 void TriggeredClock_fire(Actor* actor);
+
+/**
+ * Initialize the triggered clock actor. This method should be called before the
+ * execution starts.
+ * 
+ * @param actor The triggered clock actor to be initialized.
+ */
+void TriggeredClock_initialize(Actor* actor);
 
 /**
  * TriggerOut actor.
@@ -158,6 +180,13 @@ typedef struct TriggerOut_TypeData {
 
 extern TriggerOut_TypeData TriggerOut_typeData;
 
+/*
+ * Initiate TriggerOut_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void TriggerOut_TypeData_init(TriggerOut_TypeData* type_data);
+
 /**
  * Initiate a trigger out actor, and assign a scheduler to it.
  * 
@@ -171,18 +200,18 @@ void TriggerOut_init(TriggerOut* trigger_out,
 	TriggerOut_TypeData* actual_type_data, Scheduler* scheduler);
 
 /**
- * Initialize the trigger out actor. This method should be called before the
- * execution starts.
- * 
- * @param trigger_out The trigger out actor.
- */
-void TriggerOut_initialize(TriggerOut* trigger_out);
-
-/**
  * Fire the trigger out actor.
  * 
  * @param trigger_out The trigger out actor to be fired.
  */
 void TriggerOut_fire(Actor* actor);
+
+/**
+ * Initialize the trigger out actor. This method should be called before the
+ * execution starts.
+ * 
+ * @param actor The trigger out actor to be initialized.
+ */
+void TriggerOut_initialize(Actor* actor);
 
 #endif /*MAIN_H_*/

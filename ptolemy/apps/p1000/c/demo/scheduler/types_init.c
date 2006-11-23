@@ -1,4 +1,4 @@
-/* Token, the common super-type of all the token types.
+/* Function to initiate all the type data.
 
  Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
@@ -28,43 +28,30 @@
  
  */
 
-#ifndef TOKEN_H_
-#define TOKEN_H_
-
 #include "types.h"
+#include "types_init.h"
+
+#include "actor.h"
+#include "int_token.h"
+#include "main.h"
+#include "port.h"
+#include "scheduler.h"
+#include "token.h"
+#include "typed_port.h"
 
 /**
- * Token, the common super-type of all the token types.
+ * Initiate all the type data defined in the system.
  */
-typedef struct Token {
-	/* Token is directly inherited from GeneralType. */
-	GeneralType super;
-} Token;
-
-/*
- * Token's static type data.
- */
-typedef struct Token_TypeData {
-	TypeData inheritedTypeData;
-} Token_TypeData;
-
-extern Token_TypeData Token_typeData;
-
-/*
- * Initiate Token_TypeData.
- * 
- * @param type_data The type data to be initiated.
- */
-void Token_TypeData_init(Token_TypeData* type_data);
-
-/**
- * Initiate a token.
- * 
- * @param token The token to be initiated.
- * @param actual_type_data The type data of the token's actual type, or NULL.
- *  When NULL is given (which is usually the case when called by the user),
- *  Token_typeData is used.
- */
-void Token_init(Token* token, Token_TypeData* actual_type_data);
-
-#endif /*TOKEN_H_*/
+void init_type_data() {
+	TypeData_init(&GeneralType_typeData);
+	
+	Actor_TypeData_init(&Actor_typeData);
+	Clock_TypeData_init(&Clock_typeData);
+	IntToken_TypeData_init(&IntToken_typeData);
+	Port_TypeData_init(&Port_typeData);
+	Scheduler_TypeData_init(&Scheduler_typeData);
+	Token_TypeData_init(&Token_typeData);
+	TriggeredClock_TypeData_init(&TriggeredClock_typeData);
+	TriggerOut_TypeData_init(&TriggerOut_typeData);
+	TypedPort_TypeData_init(&TypedPort_typeData);
+}

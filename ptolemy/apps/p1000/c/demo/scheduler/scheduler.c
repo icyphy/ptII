@@ -32,15 +32,27 @@
 #include "int_token.h"
 #include "typed_port.h"
 
-Scheduler_TypeData Scheduler_typeData = {
-	/* GeneralType fields. */
-	&GeneralType_typeData,		// superType
-	"Scheduler",				// typeName
-	sizeof(Scheduler),			// size
+Scheduler_TypeData Scheduler_typeData;
+
+/*
+ * Initiate Scheduler_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void Scheduler_TypeData_init(Scheduler_TypeData* type_data) {
+	// Call the initiate method of the super-type.
+	TypeData_init((TypeData*) type_data);
 	
-	/* Scheduler fields. */
-	Scheduler_execute			// connect
-};
+	// Override super-type.
+	*((TypeData*) type_data) = (TypeData) {
+		&GeneralType_typeData,		// superType
+		"Scheduler",				// typeName
+		sizeof(Scheduler),			// size
+	};
+	
+	// Initiate data for the current type.
+	type_data->execute = Scheduler_execute;
+}
 
 /**
  * Initiate a scheduler.

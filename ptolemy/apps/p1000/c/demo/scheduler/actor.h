@@ -57,9 +57,17 @@ typedef struct Actor_TypeData {
 	
 	// fire method.
 	void (*fire)(Actor* actor);
+	void (*initialize)(Actor* actor);
 } Actor_TypeData;
 
 extern Actor_TypeData Actor_typeData;
+
+/*
+ * Initiate Actor_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void Actor_TypeData_init(Actor_TypeData* type_data);
 
 /**
  * Initiate an actor, and assign a scheduler to it.
@@ -79,5 +87,13 @@ void Actor_init(Actor* actor, Actor_TypeData* actual_type_data,
  * @param actor The actor to be fired.
  */
 void Actor_fire(Actor* actor);
+
+/**
+ * Initialize the actor. This method should be called before the execution
+ * starts.
+ * 
+ * @param actor The actor to be initialized.
+ */
+void Actor_initialize(Actor* actor);
 
 #endif /*ACTOR_H_*/

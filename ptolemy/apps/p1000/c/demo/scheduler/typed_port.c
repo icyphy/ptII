@@ -31,18 +31,27 @@
 #include "typed_port.h"
 #include "actor.h"
 
-TypedPort_TypeData TypedPort_typeData = {
-	/* GeneralType fields. */
-	&Port_typeData,				// superType
-	"TypedPort",				// typeName
-	sizeof(TypedPort),			// size
+TypedPort_TypeData TypedPort_typeData;
+
+/*
+ * Initiate TypedPort_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void TypedPort_TypeData_init(TypedPort_TypeData* type_data) {
+	// Call the initiate method of the super-type.
+	Port_TypeData_init((Port_TypeData*) type_data);
 	
-	/* Port fields. */
-	Port_connect,				// connect
+	// Override super-type.
+	*((TypeData*) type_data) = (TypeData) {
+		&Port_typeData,			// superType
+		"TypedPort",			// typeName
+		sizeof(TypedPort),		// size
+	};
 	
-	/* TypedPort fields. */
-	TypedPort_send				// send
-};
+	// Initiate data for the current type.
+	type_data->send = TypedPort_send;
+}
 
 /**
  * Initiate a typed port, and assign a container actor to it.

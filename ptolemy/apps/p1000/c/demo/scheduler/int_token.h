@@ -56,6 +56,13 @@ typedef struct IntToken_TypeData {
 
 extern IntToken_TypeData IntToken_typeData;
 
+/*
+ * Initiate IntToken_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void IntToken_TypeData_init(IntToken_TypeData* type_data);
+
 /**
  * Initiate an int token.
  * 

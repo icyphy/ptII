@@ -38,20 +38,37 @@
 
 #include "main.h"
 #include "int_token.h"
+#include "types_init.h"
+
 #include "ptpHwP1000LinuxDr.h"
 #include "p1000_utils.h"
 
-Clock_TypeData Clock_typeData = {
-	/* GeneralType fields. */
-	&Actor_typeData,			// superType
-	"Clock",					// typeName
-	sizeof(Clock),				// size
+/*------------------------------*
+ *            Clock             *
+ *------------------------------*/
+
+Clock_TypeData Clock_typeData;
+
+/*
+ * Initiate Clock_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void Clock_TypeData_init(Clock_TypeData* type_data) {
+	// Call the initiate method of the super-type.
+	Actor_TypeData_init((Actor_TypeData*) type_data);
 	
-	/* Actor fields. */
-	Clock_fire					// fire
+	// Override super-type.
+	*((TypeData*) type_data) = (TypeData) {
+		&Actor_typeData,		// superType
+		"Clock",				// typeName
+		sizeof(Clock),			// size
+	};
+	((Actor_TypeData*) type_data)->fire = Clock_fire;
+	((Actor_TypeData*) type_data)->initialize = Clock_initialize;
 	
-	/* Clock fields. */
-};
+	// Initiate data for the current type.
+}
 
 /**
  * Initiate a clock, and assign a scheduler to it.
@@ -85,19 +102,42 @@ void Clock_fire(Actor* actor) {
 	Actor_fire(actor);
 }
 
-TriggeredClock_TypeData TriggeredClock_typeData = {
-	/* GeneralType fields. */
-	&Clock_typeData,			// superType
-	"TriggeredClock",			// typeName
-	sizeof(TriggeredClock),		// size
+/**
+ * Initialize the clock actor. This method should be called before the execution
+ * starts.
+ * 
+ * @param actor The clock actor to be initialized.
+ */
+void Clock_initialize(Actor* actor) {
+	Actor_initialize(actor);
+}
+
+/*------------------------------*
+ *       TriggeredClock         *
+ *------------------------------*/
+
+TriggeredClock_TypeData TriggeredClock_typeData;
+
+/*
+ * Initiate TriggeredClock_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void TriggeredClock_TypeData_init(TriggeredClock_TypeData* type_data) {
+	// Call the initiate method of the super-type.
+	Clock_TypeData_init((Clock_TypeData*) type_data);
 	
-	/* Actor fields. */
-	TriggeredClock_fire			// fire
+	// Override super-type.
+	*((TypeData*) type_data) = (TypeData) {
+		&Clock_typeData,			// superType
+		"TriggeredClock",			// typeName
+		sizeof(TriggeredClock),		// size
+	};
+	((Actor_TypeData*) type_data)->fire = TriggeredClock_fire;
+	((Actor_TypeData*) type_data)->initialize = TriggeredClock_initialize;
 	
-	/* Clock fields. */
-	
-	/* TriggeredClock fields. */
-};
+	// Initiate data for the current type.
+}
 
 /**
  * Initiate a triggered clock, and assign a scheduler to it.
@@ -125,12 +165,45 @@ void TriggeredClock_init(TriggeredClock* triggered_clock,
 }
 
 /**
- * Initialize the triggered clock. This method should be called before the
+ * Fire the triggered clock.
+ * 
+ * @param triggered_clock The triggered clock to be fired.
+ */
+void TriggeredClock_fire(Actor* actor) {
+	TriggeredClock* triggered_clock = (TriggeredClock*) actor;
+	Clock* clock = (Clock*) triggered_clock;
+	IntToken token;
+	Event out_e, *in_e;
+	
+	Clock_fire(actor);
+	
+	in_e = BidirList_removeFirst(&(triggered_clock->trigger.eventQueue));
+	if (in_e != NULL) {
+		clock->time.ms += triggered_clock->period.ms;
+		clock->time.ns += triggered_clock->period.ns; 
+		if (clock->time.ms < clock->endTime.ms) {
+			//FIXME: should check whether the currentTime is larger than _time.
+			IntToken_init(&token, NULL);
+			token.value = 1;
+			
+			out_e = (Event) {
+				(Token*) &token,		// token
+				clock->time,			// time
+				0,						// isTimerEvent
+			};
+			INVOKE_VIRTUAL_METHOD(TypedPort, send, &(triggered_clock->output),
+				&out_e);
+		}
+	}
+}
+
+/**
+ * Initialize the triggered clock actor. This method should be called before the
  * execution starts.
  * 
- * @param triggered_clock The triggered clock.
+ * @param actor The triggered clock actor to be initialized.
  */
-void TriggeredClock_initialize(TriggeredClock* triggered_clock) {
+void TriggeredClock_initialize(Actor* actor) {
 	int fd;
 	char *devFile = "/dev/ptpHwP1000LinuxDr";
 	Scheduler* scheduler;
@@ -140,6 +213,9 @@ void TriggeredClock_initialize(TriggeredClock* triggered_clock) {
     unsigned int nsecs;
 	IntToken token;
 	Event e;
+	TriggeredClock* triggered_clock = (TriggeredClock*) actor;
+	
+	Clock_initialize(actor);
 	
 	scheduler = ((Actor*)triggered_clock)->scheduler;
 	Scheduler_registerPort(scheduler, (Port*) &(triggered_clock->trigger));
@@ -176,54 +252,35 @@ void TriggeredClock_initialize(TriggeredClock* triggered_clock) {
 		((Clock*) triggered_clock)->time,	// time
 		0									// isTimerEvent
 	};
-	TypedPort_send(&(triggered_clock->output), &e);
+	INVOKE_VIRTUAL_METHOD(TypedPort, send, &(triggered_clock->output), &e);
 }
 
-/**
- * Fire the triggered clock.
+/*------------------------------*
+ *         TriggerOut           *
+ *------------------------------*/
+
+TriggerOut_TypeData TriggerOut_typeData;
+
+/*
+ * Initiate TriggerOut_TypeData.
  * 
- * @param triggered_clock The triggered clock to be fired.
+ * @param type_data The type data to be initiated.
  */
-void TriggeredClock_fire(Actor* actor) {
-	TriggeredClock* triggered_clock = (TriggeredClock*) actor;
-	Clock* clock = (Clock*) triggered_clock;
-	IntToken token;
-	Event out_e, *in_e;
+void TriggerOut_TypeData_init(TriggerOut_TypeData* type_data) {
+	// Call the initiate method of the super-type.
+	Clock_TypeData_init((Clock_TypeData*) type_data);
 	
-	Clock_fire(actor);
+	// Override super-type.
+	*((TypeData*) type_data) = (TypeData) {
+		&Clock_typeData,			// superType
+		"TriggerOut",				// typeName
+		sizeof(TriggerOut),			// size
+	};
+	((Actor_TypeData*) type_data)->fire = TriggerOut_fire;
+	((Actor_TypeData*) type_data)->initialize = TriggerOut_initialize;
 	
-	in_e = BidirList_removeFirst(&(triggered_clock->trigger.eventQueue));
-	if (in_e != NULL) {
-		clock->time.ms += triggered_clock->period.ms;
-		clock->time.ns += triggered_clock->period.ns; 
-		if (clock->time.ms < clock->endTime.ms) {
-			//FIXME: should check whether the currentTime is larger than _time.
-			IntToken_init(&token, NULL);
-			token.value = 1;
-			
-			out_e = (Event) {
-				(Token*) &token,		// token
-				clock->time,			// time
-				0,						// isTimerEvent
-			};
-			TypedPort_send(&(triggered_clock->output), &out_e);
-		}
-	}
+	// Initiate data for the current type.
 }
-
-TriggerOut_TypeData TriggerOut_typeData = {
-	/* GeneralType fields. */
-	&Clock_typeData,			// superType
-	"TriggerOut",				// typeName
-	sizeof(TriggerOut),			// size
-	
-	/* Actor fields. */
-	TriggerOut_fire				// fire
-	
-	/* Clock fields. */
-	
-	/* TriggerOut fields. */
-};
 
 /**
  * Initiate a trigger out actor, and assign a scheduler to it.
@@ -311,24 +368,6 @@ void* read_loop(void* data) {
 }
 
 /**
- * Initialize the trigger out actor. This method should be called before the
- * execution starts.
- * 
- * @param trigger_out The trigger out actor.
- */
-void TriggerOut_initialize(TriggerOut* trigger_out) {
-	int        thr_id;
-	pthread_t  p_thread;
-	Scheduler* scheduler;
-	
-	scheduler = ((Actor*) trigger_out)->scheduler;
-	Scheduler_registerPort(scheduler, (Port*) &(trigger_out->input));
-	
-	//FIXME: create thread here...
-	thr_id = pthread_create(&p_thread, NULL, read_loop, &(trigger_out->output));
-}
-
-/**
  * Fire the trigger out actor.
  * 
  * @param trigger_out The trigger out actor to be fired.
@@ -382,6 +421,27 @@ void TriggerOut_fire(Actor* actor) {
 }
 
 /**
+ * Initialize the trigger out actor. This method should be called before the
+ * execution starts.
+ * 
+ * @param actor The trigger out actor to be initialized.
+ */
+void TriggerOut_initialize(Actor* actor) {
+	int        thr_id;
+	pthread_t  p_thread;
+	Scheduler* scheduler;
+	TriggerOut* trigger_out = (TriggerOut*) actor;
+	
+	Clock_initialize(actor);
+	
+	scheduler = ((Actor*) trigger_out)->scheduler;
+	Scheduler_registerPort(scheduler, (Port*) &(trigger_out->input));
+	
+	//FIXME: create thread here...
+	thr_id = pthread_create(&p_thread, NULL, read_loop, &(trigger_out->output));
+}
+
+/**
  * The main function of the scheduler demo. It creates a TRIGGERED_CLOCK actor
  * and a TRIGGER_OUT actor in a feedback loop, and execute the system with a
  * discrete event scheduler..
@@ -390,20 +450,27 @@ int main() {
 	Scheduler scheduler;	
 	TriggeredClock t_clock;
 	TriggerOut t_out;
+	
+	// Initiate type data. Must be called at the beginning of the main method.
+	init_type_data();
 
 	Scheduler_init(&scheduler, NULL);
 	TriggeredClock_init(&t_clock, NULL, &scheduler);
 	TriggerOut_init(&t_out, NULL, &scheduler);
 
-	Port_connect((Port*) &(t_clock.output), (Port*) &(t_out.input));
-	Port_connect((Port*) &(t_out.output), (Port*) &(t_clock.trigger));
+	INVOKE_VIRTUAL_METHOD(Port, connect, (Port*) &(t_clock.output),
+		(Port*) &(t_out.input));
+	INVOKE_VIRTUAL_METHOD(Port, connect, (Port*) &(t_out.output),
+		(Port*) &(t_clock.trigger));
 	
 	((Clock*) &t_clock)->endTime = (Time) {50, 0};
 	t_clock.period = (Time) {5, 0};
 	t_clock.phase = (Time) {1, 0};
-	TriggeredClock_initialize(&t_clock);
-	TriggerOut_initialize(&t_out);
 	
 	printf("Start execution:\n");
-	Scheduler_execute(&scheduler);
+	
+	INVOKE_VIRTUAL_METHOD(Actor, initialize, (Actor*) &t_clock);
+	INVOKE_VIRTUAL_METHOD(Actor, initialize, (Actor*) &t_out);	
+	
+	INVOKE_VIRTUAL_METHOD(Scheduler, execute, &scheduler);
 }

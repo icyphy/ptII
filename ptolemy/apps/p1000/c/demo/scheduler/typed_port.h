@@ -61,6 +61,13 @@ typedef struct TypedPort_TypeData {
 
 extern TypedPort_TypeData TypedPort_typeData;
 
+/*
+ * Initiate TypedPort_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void TypedPort_TypeData_init(TypedPort_TypeData* type_data);
+
 /* Actor is defined in actor.h. */
 struct Actor;
 

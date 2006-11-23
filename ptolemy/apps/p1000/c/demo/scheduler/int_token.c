@@ -30,16 +30,26 @@
 
 #include "int_token.h"
 
-IntToken_TypeData IntToken_typeData = {
-	/* GeneralType fields. */
-	&Token_typeData,			// superType
-	"IntToken",					// typeName
-	sizeof(IntToken),			// size
+IntToken_TypeData IntToken_typeData;
+
+/*
+ * Initiate IntToken_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void IntToken_TypeData_init(IntToken_TypeData* type_data) {
+	// Call the initiate method of the super-type.
+	Token_TypeData_init((Token_TypeData*) type_data);
 	
-	/* Token fields. */
+	// Override super-type.
+	*((TypeData*) type_data) = (TypeData) {
+		&Token_typeData,			// superType
+		"IntToken",					// typeName
+		sizeof(IntToken),			// size
+	};
 	
-	/* IntToken fields. */
-};
+	// Initiate data for the current type.
+}
 
 /**
  * Initiate an int token.

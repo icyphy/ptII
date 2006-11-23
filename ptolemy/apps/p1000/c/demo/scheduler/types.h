@@ -68,6 +68,13 @@ typedef struct GeneralType {
 
 extern TypeData GeneralType_typeData;
 
+/*
+ * Initiate GeneralType's TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void TypeData_init(TypeData* type_data);
+
 /**
  * Initiate a general type object.
  * 

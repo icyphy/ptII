@@ -30,12 +30,20 @@
 
 #include "types.h"
 
-TypeData GeneralType_typeData = {
-	/* GeneralType fields. */
-	NULL,					// superType
-	"GeneralType",			// typeName
-	sizeof(GeneralType)		// size
-};
+TypeData GeneralType_typeData;
+
+/*
+ * Initiate GeneralType's TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void TypeData_init(TypeData* type_data) {
+	*type_data = (TypeData) {
+		NULL,					// superType
+		"GeneralType",			// typeName
+		sizeof(GeneralType),	// size
+	};
+}
 
 /**
  * Initiate a general type object.

@@ -873,10 +873,10 @@ AST_HANDLER_RESULT ast_print_source_pre_handler(struct AST_NODE* ast_node,
 			SUB_VISIT(ast_node->expression_statement.expression);
 			OUTPUT(";");
 			if (ast_node->parent->type != FOR_STATEMENT
-					|| ast_node != ast_node->parent->for_statement
+					|| (ast_node != ast_node->parent->for_statement
 					.declaration_or_expression_statement
 					&& ast_node != ast_node->parent->for_statement
-					.expression_statement) {
+					.expression_statement)) {
 				OUTPUT("\n");
 				source_printer_data->is_on_new_line = 1;
 			}

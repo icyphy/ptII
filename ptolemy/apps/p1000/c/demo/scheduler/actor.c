@@ -31,15 +31,28 @@
 #include "actor.h"
 #include "scheduler.h"
 
-Actor_TypeData Actor_typeData = {
-	/* GeneralType fields. */
-	&GeneralType_typeData,		// superType
-	"Actor",					// typeName
-	sizeof(Actor),				// size
+Actor_TypeData Actor_typeData;
+
+/*
+ * Initiate Actor_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void Actor_TypeData_init(Actor_TypeData* type_data) {
+	// Call the initiate method of the super-type.
+	TypeData_init((TypeData*) type_data);
 	
-	/* Actor fields. */
-	Actor_fire					// fire
-};
+	// Override super-type.
+	*((TypeData*) type_data) = (TypeData) {
+		&GeneralType_typeData,		// superType
+		"Actor",					// typeName
+		sizeof(Actor),				// size
+	};
+	
+	// Initiate data for the current type.
+	type_data->fire = Actor_fire;
+	type_data->initialize = Actor_initialize;
+}
 
 /**
  * Initiate an actor, and assign a scheduler to it.
@@ -66,5 +79,15 @@ void Actor_init(Actor* actor, Actor_TypeData* actual_type_data,
  * @param actor The actor to be fired.
  */
 void Actor_fire(Actor* actor) {
-	// Nothing to be done.
+	// Do nothing.
+}
+
+/**
+ * Initialize the actor. This method should be called before the execution
+ * starts.
+ * 
+ * @param actor The actor to be initialized.
+ */
+void Actor_initialize(Actor* actor) {
+	// Do nothing.
 }

@@ -4,7 +4,7 @@ demo_PROGRAMS = scheduler
 common_srcdir = @top_srcdir@/c/common
 common_builddir = @top_builddir@/c/common
 
-AM_CFLAGS = -I$(common_srcdir) -Werror -Wall -Wno-missing-braces -std=c99 -O2
+AM_CFLAGS = -I$(common_srcdir) -Werror -Wall -std=c99 -O2
 LDADD = $(common_builddir)/libp1000_utils.a
 AM_LDFLAGS = -lpthread
 
@@ -21,6 +21,7 @@ scheduler_SOURCES = \
 	token.c \
 	typed_port.c \
 	types.c \
+	types_init.c \
 	actor.h \
 	bidir_list.h \
 	event.h \
@@ -30,4 +31,5 @@ scheduler_SOURCES = \
 	scheduler.h \
 	token.h \
 	typed_port.h \
-	types.h
+	types.h \
+	types_init.h

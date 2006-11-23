@@ -63,6 +63,13 @@ typedef struct Scheduler_TypeData {
 
 extern Scheduler_TypeData Scheduler_typeData;
 
+/*
+ * Initiate Scheduler_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void Scheduler_TypeData_init(Scheduler_TypeData* type_data);
+
 /**
  * Initiate a scheduler.
  * 

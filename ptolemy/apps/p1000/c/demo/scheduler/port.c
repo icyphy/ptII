@@ -45,15 +45,27 @@ void DependencyLink_init(DependencyLink* link, Port* port, double dependency) {
 	};
 }
 
-Port_TypeData Port_typeData = {
-	/* GeneralType fields. */
-	&GeneralType_typeData,		// superType
-	"Port",						// typeName
-	sizeof(Port),				// size
+Port_TypeData Port_typeData;
+
+/*
+ * Initiate Port_TypeData.
+ * 
+ * @param type_data The type data to be initiated.
+ */
+void Port_TypeData_init(Port_TypeData* type_data) {
+	// Call the initiate method of the super-type.
+	TypeData_init((TypeData*) type_data);
 	
-	/* Port fields. */
-	Port_connect				// connect
-};
+	// Override super-type.
+	*((TypeData*) type_data) = (TypeData) {
+		&GeneralType_typeData,		// superType
+		"Port",						// typeName
+		sizeof(Port),				// size
+	};
+	
+	// Initiate data for the current type.
+	type_data->connect = Port_connect;
+}
 
 /**
  * Initiate a port, and assign a container actor to it.
