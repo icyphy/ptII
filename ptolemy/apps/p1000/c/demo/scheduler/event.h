@@ -1,6 +1,6 @@
-/* EVENT type.
+/* Event that can be sent and received via connections between ports.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -35,31 +35,27 @@
 #include "token.h"
 
 /**
- * EVENT type for events in the discrete event domain.
+ * Event that can be sent and received via connections between ports.
  */
-typedef struct EVENT {
+typedef struct Event {
 	/* The token in the event. */
-	TOKEN* token;
+	Token* token;
 	/* The time. */
-	TIME time;
+	Time time;
 	/* Whether the event is a timer event. */
-	int is_timer_event : 1;
-	/* The previous event in a list. */
-	struct EVENT* prev;
-	/* The next event in a list. */
-	struct EVENT* next;
-} EVENT;
+	int isTimerEvent : 1;
+} Event;
 
 /**
  * Duplicate an event in the heap, and return the duplicated event. If the given
  * event contains a token, memory will be allocated from the heap to store a
  * copy of that token. The user need not explicitly free the token, though
- * he/she do need to free the event, because the event and the token are
- * allocated in a continuous trunk of memory.
+ * he/she do need to free the event, because the event and the token are stored
+ * in a continuous trunk of memory.
  * 
  * @param event Reference to the event to be duplicated.
  * @return Reference to the duplicated event in the heap.
  */
-EVENT* EVENT_duplicate(const EVENT* event);
+Event* Event_duplicate(const Event* event);
 
 #endif /*EVENT_H_*/

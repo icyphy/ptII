@@ -1,6 +1,6 @@
-/* TYPED_PORT, a sub-type of PORT.
+/* TypedPort, a port that has a type associated with it.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -34,45 +34,57 @@
 #include "types.h"
 #include "port.h"
 #include "event.h"
+#include "bidir_list.h"
 
 /**
- * TYPED_PORT is a kind of ports that are typed (specifying the tokens that they
+ * TypedPort is a kind of ports that are typed (specifying the tokens that they
  * are allowed to receive or send). Each typed port also has an event queue for
  * the discrete event execution.
  */
-typedef struct TYPED_PORT {
-	/* TYPED_PORT type is directly inherited from PORT. */
-	DECLARE_SUPER_TYPE(PORT)
+typedef struct TypedPort {
+	/* TypedPort is directly inherited from Port. */
+	Port super;
 	
-	/* The first event in the event queue. */
-	EVENT* first_event;
-	/* The last event in the event queue. */
-	EVENT* last_event;
-} TYPED_PORT;
+	/* The event queue. */
+	BidirList eventQueue;
+} TypedPort;
 
-/* ACTOR is defined in actor.h. */
-struct ACTOR;
+/*
+ * TypedPort's static type data.
+ */
+typedef struct TypedPort_TypeData {
+	Port_TypeData inheritedTypeData;
+	
+	// send method.
+	void (*send)(TypedPort* typed_port, const Event* event);
+} TypedPort_TypeData;
+
+extern TypedPort_TypeData TypedPort_typeData;
+
+/* Actor is defined in actor.h. */
+struct Actor;
 
 /**
- * Initiate an object of the TYPED_PORT type, and assign a container actor to
- * it.
+ * Initiate a typed port, and assign a container actor to it.
  * 
- * @param typed_port Reference to the TYPED_PORT object to be initiated.
- * @param actual_ref The actual reference to the object.
- * @param container Reference to the actor that contains the typed port.
+ * @param typed_port The typed port to be initiated.
+ * @param actual_type_data The type data of the typed port's actual type, or
+ *  NULL. When NULL is given (which is usually the case when called by the
+ *  user), TypedPort_typeData is used.
+ * @param container The actor that contains the typed port.
  */
-void TYPED_PORT_init(TYPED_PORT* typed_port, void* actual_ref,
-	struct ACTOR* container);
+void TypedPort_init(TypedPort* typed_port,
+	TypedPort_TypeData* actual_type_data, struct Actor* container);
 
 /**
  * Send an event via the typed port. The event will be duplicated in the heap
  * before it is sent. The given typed port must be an output port. If it is
- * connected to input port(s), then the input ports will laster receive the
+ * connected to input port(s), then the input ports will later receive the
  * event.
  * 
  * @param typed_port The output typed port where the event will be sent.
  * @param event The event that will be duplicated in the heap and be sent.
  */
-void TYPED_PORT_send(TYPED_PORT* typed_port, const EVENT* event);
+void TypedPort_send(TypedPort* typed_port, const Event* event);
 
 #endif /*TYPED_PORT_H_*/

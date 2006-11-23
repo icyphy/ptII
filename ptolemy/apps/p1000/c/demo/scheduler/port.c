@@ -1,6 +1,6 @@
-/* PORT type, the general super-type of all the port types.
+/* Port type, the common super-type of all kinds of ports.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,51 +29,61 @@
  */
 
 #include "port.h"
+#include "actor.h"
 
 /**
- * Initiate an object of the DEPENDENCY_LINK type, and assign a dependency
- * number.
+ * Initiate a dependency link, and assign a dependency number.
  * 
- * @param link Reference to the DEPENDENCY_LINK object to be initiated.
+ * @param link The dependency link to be initiated.
  * @param port The port for the dependency link.
  * @param dependency The dependency number.
  */
-void DEPENDENCY_LINK_init(DEPENDENCY_LINK* link, struct PORT* port,
-	double dependency) {
-	*link = (DEPENDENCY_LINK) {
-		port,		// port
-		dependency,	// dependency
-		NULL,		// prev
-		NULL		// next
+void DependencyLink_init(DependencyLink* link, Port* port, double dependency) {
+	*link = (DependencyLink) {
+		port,			// port
+		dependency,		// dependency
 	};
 }
 
-/**
- * Initiate an object of the PORT type, and assign a container actor to it.
- * 
- * @param port Reference to the PORT object to be initiated.
- * @param actual_ref The actual reference to the object.
- * @param container Reference to the actor that contains the port.
- */
-void PORT_init(PORT* port, void* actual_ref, struct ACTOR* container) {
-	INIT_SUPER_TYPE(PORT, GENERAL_TYPE, port, actual_ref, NULL);
+Port_TypeData Port_typeData = {
+	/* GeneralType fields. */
+	&GeneralType_typeData,		// superType
+	"Port",						// typeName
+	sizeof(Port),				// size
 	
-	port->connected_port = NULL;
+	/* Port fields. */
+	Port_connect				// connect
+};
+
+/**
+ * Initiate a port, and assign a container actor to it.
+ * 
+ * @param port The port to be initiated.
+ * @param actual_type_data The type data of the port's actual type, or NULL.
+ *  When NULL is given (which is usually the case when called by the user),
+ *  Port_typeData is used.
+ * @param container The actor that contains the port.
+ */
+void Port_init(Port* port, Port_TypeData* actual_type_data, Actor* container) {
+
+	GeneralType_init((GeneralType*)port, (TypeData*)(actual_type_data == NULL ?
+			&Port_typeData : actual_type_data));
+	
+	port->connectedPort = NULL;
 	port->container = container;
-	port->is_realtime = 0;
-	port->first_link = port->last_link = NULL;
-	port->prev = port->next = NULL;
+	port->isRealtime = 0;
+	BidirList_init(&(port->dependencyLinks));
 }
 
 /**
- * Connect a port with another port. The port argument specifies an output port,
+ * Connect a port to another port. The port argument specifies an output port,
  * and the to_port argument specifies an input port to receive the output events
- * from the output port. The connected_port field of the output port is set with
- * the input port, but the input port's connected_port field is not set.
+ * from the output port. The connectedPort field of the output port is set with
+ * the input port, but the input port's connectedPort field is not set.
  * 
  * @param port The output port.
  * @param to_port The input port.
  */
-void PORT_connect(PORT* port, PORT* to_port) {
-	port->connected_port = to_port;
+void Port_connect(Port* port, Port* to_port) {
+	port->connectedPort = to_port;
 }

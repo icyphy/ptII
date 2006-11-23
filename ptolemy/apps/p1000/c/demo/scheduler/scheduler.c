@@ -32,56 +32,72 @@
 #include "int_token.h"
 #include "typed_port.h"
 
+Scheduler_TypeData Scheduler_typeData = {
+	/* GeneralType fields. */
+	&GeneralType_typeData,		// superType
+	"Scheduler",				// typeName
+	sizeof(Scheduler),			// size
+	
+	/* Scheduler fields. */
+	Scheduler_execute			// connect
+};
+
 /**
- * Initiate an object of the SCHEDULER type.
+ * Initiate a scheduler.
  * 
- * @param scheduler Reference to the SCHEDULER object to be initiated.
- * @param actual_ref The actual reference to the object.
+ * @param scheduler The scheduler to be initiated.
+ * @param actual_type_data The type data of the scheduler's actual type, or
+ *  NULL. When NULL is given (which is usually the case when called by the
+ *  user), Scheduler_typeData is used.
  */
-void SCHEDULER_init(SCHEDULER* scheduler, void* actual_ref) {
-	INIT_SUPER_TYPE(SCHEDULER, GENERAL_TYPE, scheduler, actual_ref, NULL);
+void Scheduler_init(Scheduler* scheduler,
+	Scheduler_TypeData* actual_type_data) {
+	
+	GeneralType_init((GeneralType*) scheduler,
+		(TypeData*) (actual_type_data == NULL ?
+				&Scheduler_typeData : actual_type_data));
 	
 	scheduler->fd = 0;
-	scheduler->first_actor = scheduler->last_actor = NULL;
-	scheduler->first_port = scheduler->last_port = NULL;
+	BidirList_init(&(scheduler->actorList));
+	BidirList_init(&(scheduler->portList));
 }
 
 /**
  * Register a port with the scheduler by adding the port into its port list.
  * 
- * @param scheduler Reference to the scheduler.
- * @param port Reference to the port to be registered.
+ * @param scheduler The scheduler.
+ * @param port The port to be registered.
  */
-void SCHEDULER_register_port(SCHEDULER* scheduler, PORT* port) {
-	PUSH_BACK(scheduler->first_port, scheduler->last_port, port);
+void Scheduler_registerPort(Scheduler* scheduler, Port* port) {
+	BidirList_pushBack(&(scheduler->portList), port);
 }
 
 /**
  * Execute the system with the given scheduler.
  * 
- * @param scheduler Reference to the scheduler to be used in the execution.
+ * @param scheduler The scheduler to be used in the execution.
  */
-void SCHEDULER_execute(SCHEDULER* scheduler) {
-	PORT* port;
-	TYPED_PORT* typed_port;
-	ACTOR* actor;
+void Scheduler_execute(Scheduler* scheduler) {
+	Port* port;
+	TypedPort* typed_port;
+	Actor* actor;
+	BidirListElement* current_element;
 	
 	while(1) {
-		port = scheduler->first_port;
-		while (port != NULL) {
-			typed_port = CAST(port, TYPED_PORT);
-			if (typed_port->first_event != NULL) {
-				PUSH_BACK(scheduler->first_actor, scheduler->last_actor,
-					port->container);
+		current_element = scheduler->portList.first;
+		while (current_element != NULL) {
+			port = (Port*) current_element->payload;
+			typed_port = (TypedPort*) port;
+			if (typed_port->eventQueue.first != NULL) {
+				BidirList_pushBack(&(scheduler->actorList), port->container);
 			}
-			port = port->next;
+			current_element = current_element->next;
 		}
 		
-		actor = scheduler->first_actor;
+		actor = (Actor*) BidirList_removeFirst(&(scheduler->actorList));
 		while (actor != NULL) {
-			INVOKE_VIRTUAL_METHOD(ACTOR, fire, actor);
-			REMOVE_FIRST(scheduler->first_actor, scheduler->last_actor);
-			actor = scheduler->first_actor;
+			INVOKE_VIRTUAL_METHOD(Actor, fire, actor);
+			actor = (Actor*) BidirList_removeFirst(&(scheduler->actorList));
 		}
 	}
 }

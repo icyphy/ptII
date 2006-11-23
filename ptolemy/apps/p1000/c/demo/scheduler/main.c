@@ -1,6 +1,6 @@
 /* Main program of the scheduler demo with some actor definitions.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,97 +41,108 @@
 #include "ptpHwP1000LinuxDr.h"
 #include "p1000_utils.h"
 
-/**
- * Constant for CLOCK type's method table.
- */
-CLOCK_METHOD_TABLE CLOCK_method_table = {
-	CLOCK_fire	// fire
+Clock_TypeData Clock_typeData = {
+	/* GeneralType fields. */
+	&Actor_typeData,			// superType
+	"Clock",					// typeName
+	sizeof(Clock),				// size
+	
+	/* Actor fields. */
+	Clock_fire					// fire
+	
+	/* Clock fields. */
 };
 
 /**
- * Initiate an object of the CLOCK type, and assign a scheduler to it.
+ * Initiate a clock, and assign a scheduler to it.
  * 
- * @param clock Reference to the CLOCK object to be initiated.
- * @param actual_ref The actual reference to the object.
- * @param scheduler Reference to the scheduler.
+ * @param clock The clock to be initiated.
+ * @param actual_type_data The type data of the int clock's actual type, or
+ *  NULL. When NULL is given (which is usually the case when called by the
+ *  user), Clock_typeData is used.
+ * @param scheduler The scheduler.
  */
-void CLOCK_init(CLOCK* clock, void* actual_ref, SCHEDULER* scheduler) {
-	INIT_SUPER_TYPE(CLOCK, ACTOR, clock, actual_ref, &CLOCK_method_table,
-		scheduler);
+void Clock_init(Clock* clock, Clock_TypeData* actual_type_data,
+	Scheduler* scheduler) {
+	
+	Actor_init((Actor*) clock, (Actor_TypeData*) (actual_type_data == NULL ?
+			&Clock_typeData : actual_type_data), scheduler);
 
-	ACTOR* ACTOR_super = UPCAST(clock, ACTOR);
-	TYPED_PORT_init(&(clock->fire_at), &(clock->fire_at), ACTOR_super);
-	TYPED_PORT_init(&(clock->output), &(clock->output), ACTOR_super);
-	clock->time = clock->end_time = (TIME) {
+	TypedPort_init(&(clock->fireAt), NULL, (Actor*) clock);
+	TypedPort_init(&(clock->output), NULL, (Actor*) clock);
+	clock->time = clock->endTime = (Time) {
 		0,	// ms
 		0,	// ns
 	};
 }
 
 /**
- * Fire the CLOCK.
+ * Fire the Clock.
  * 
- * @param actor Reference to the CLOCK object.
+ * @param clock The clock to be fired.
  */
-void CLOCK_fire(CLOCK* clock) {
-	ACTOR_fire((ACTOR*) SUPER(clock));
+void Clock_fire(Actor* actor) {
+	Actor_fire(actor);
 }
 
-/**
- * Constant for TRIGGERED_CLOCK's method table.
- */
-TRIGGERED_CLOCK_METHOD_TABLE TRIGGERED_CLOCK_method_table = {
-	TRIGGERED_CLOCK_fire	// fire
+TriggeredClock_TypeData TriggeredClock_typeData = {
+	/* GeneralType fields. */
+	&Clock_typeData,			// superType
+	"TriggeredClock",			// typeName
+	sizeof(TriggeredClock),		// size
+	
+	/* Actor fields. */
+	TriggeredClock_fire			// fire
+	
+	/* Clock fields. */
+	
+	/* TriggeredClock fields. */
 };
 
 /**
- * Initiate an object of the TRIGGERED_CLOCK type, and assign a scheduler to it.
+ * Initiate a triggered clock, and assign a scheduler to it.
  * 
- * @param triggered_clock Reference to the TRIGGERED_CLOCK object to be
- *  initiated.
- * @param actual_ref The actual reference to the object.
- * @param scheduler Reference to the scheduler.
+ * @param triggered_clock The triggered clock to be initiated.
+ * @param actual_type_data The type data of the int triggered clock's actual
+ *  type, or NULL. When NULL is given (which is usually the case when called by
+ *  the user), TriggeredClock_typeData is used.
+ * @param scheduler The scheduler.
  */
-void TRIGGERED_CLOCK_init(TRIGGERED_CLOCK* triggered_clock, void* actual_ref,
-	SCHEDULER* scheduler) {
-	ACTOR* ACTOR_super;
+void TriggeredClock_init(TriggeredClock* triggered_clock,
+	TriggeredClock_TypeData* actual_type_data, Scheduler* scheduler) {
 	
-	INIT_SUPER_TYPE(TRIGGERED_CLOCK, CLOCK, triggered_clock, actual_ref,
-		&TRIGGERED_CLOCK_method_table, scheduler);
+	Clock_init((Clock*) triggered_clock,
+		(Clock_TypeData*) (actual_type_data == NULL ?
+				&TriggeredClock_typeData : actual_type_data), scheduler);
 	
-	ACTOR_super = UPCAST(triggered_clock, ACTOR);
-	TYPED_PORT_init(&(triggered_clock->trigger), &(triggered_clock->trigger),
-		ACTOR_super);
-	TYPED_PORT_init(&(triggered_clock->output), &(triggered_clock->output),
-		ACTOR_super);
-	triggered_clock->start_time = triggered_clock->phase
-			= triggered_clock->period = (TIME) {
+	TypedPort_init(&(triggered_clock->trigger), NULL, (Actor*)triggered_clock);
+	TypedPort_init(&(triggered_clock->output), NULL, (Actor*)triggered_clock);
+	triggered_clock->startTime = triggered_clock->phase
+			= triggered_clock->period = (Time) {
 		0,	// ms
 		0	// ns
 	};
 }
 
 /**
- * Initialize the TRIGGERED_CLOCK object. This method is called before the
+ * Initialize the triggered clock. This method should be called before the
  * execution starts.
  * 
- * @param triggered_clock Reference to the TRIGGERED_CLOCK object.
+ * @param triggered_clock The triggered clock.
  */
-void TRIGGERED_CLOCK_initialize(TRIGGERED_CLOCK* triggered_clock) {
+void TriggeredClock_initialize(TriggeredClock* triggered_clock) {
 	int fd;
 	char *devFile = "/dev/ptpHwP1000LinuxDr";
-	SCHEDULER* scheduler;
+	Scheduler* scheduler;
     FPGA_GET_TIME fpgaGetTime;
     int rtn;
     unsigned int secs;
     unsigned int nsecs;
-	INT_TOKEN token;
-	CLOCK* triggered_clock_CLOCK;
-	EVENT e;
+	IntToken token;
+	Event e;
 	
-	scheduler = UPCAST(triggered_clock, ACTOR)->scheduler;
-	SCHEDULER_register_port(scheduler,
-		UPCAST(&(triggered_clock->trigger), PORT));
+	scheduler = ((Actor*)triggered_clock)->scheduler;
+	Scheduler_registerPort(scheduler, (Port*) &(triggered_clock->trigger));
 		
 	fd = open(devFile, O_RDWR);
 	if (fd < 0) {
@@ -150,92 +161,88 @@ void TRIGGERED_CLOCK_initialize(TRIGGERED_CLOCK* triggered_clock) {
     // Scale from HW to TAI nsec
     decodeHwNsec(&fpgaGetTime.timeVal, &secs, &nsecs);
 
-	triggered_clock->start_time = (TIME) { secs, nsecs };
-	UPCAST(triggered_clock, CLOCK)->end_time.ms +=
-			triggered_clock->start_time.ms;
+	triggered_clock->startTime = (Time) { secs, nsecs };
+	((Clock*)triggered_clock)->endTime.ms += triggered_clock->startTime.ms;
 
-	INT_TOKEN_init(&token, &token);
+	IntToken_init(&token, NULL);
 	token.value = 1;
 	
-	triggered_clock_CLOCK = UPCAST(triggered_clock, CLOCK);
-	triggered_clock_CLOCK->time = (TIME) {
-		triggered_clock->start_time.ms + triggered_clock->phase.ms,
-		triggered_clock->start_time.ns + triggered_clock->phase.ns
+	((Clock*)triggered_clock)->time = (Time) {
+		triggered_clock->startTime.ms + triggered_clock->phase.ms,
+		triggered_clock->startTime.ns + triggered_clock->phase.ns
 	};
-	e = (EVENT) {
-		UPCAST(&token, TOKEN),			// token
-		triggered_clock_CLOCK->time,	// time
-		0,								// is_timer_event
-		NULL,							// prev
-		NULL							// next
+	e = (Event) {
+		(Token*) &token,					// token
+		((Clock*) triggered_clock)->time,	// time
+		0									// isTimerEvent
 	};
-	TYPED_PORT_send(&(triggered_clock->output), &e);
+	TypedPort_send(&(triggered_clock->output), &e);
 }
 
 /**
- * Fire the TRIGGERED_CLOCK.
+ * Fire the triggered clock.
  * 
- * @param triggered_clock Reference to the TRIGGERED_CLOCK object.
+ * @param triggered_clock The triggered clock to be fired.
  */
-void TRIGGERED_CLOCK_fire(TRIGGERED_CLOCK* triggered_clock) {
-	CLOCK* triggered_clock_CLOCK;
-	INT_TOKEN token;
-	EVENT out_e, *in_e;
+void TriggeredClock_fire(Actor* actor) {
+	TriggeredClock* triggered_clock = (TriggeredClock*) actor;
+	Clock* clock = (Clock*) triggered_clock;
+	IntToken token;
+	Event out_e, *in_e;
 	
-	CLOCK_fire((CLOCK*) SUPER(triggered_clock));
+	Clock_fire(actor);
 	
-	if (triggered_clock->trigger.first_event != NULL) {
-		in_e = triggered_clock->trigger.first_event;
-		REMOVE_FIRST(triggered_clock->trigger.first_event,
-			triggered_clock->trigger.last_event);
-		free(in_e);
-		
-		triggered_clock_CLOCK = UPCAST(triggered_clock, CLOCK);
-		triggered_clock_CLOCK->time.ms += triggered_clock->period.ms;
-		triggered_clock_CLOCK->time.ns += triggered_clock->period.ns; 
-		if (triggered_clock_CLOCK->time.ms
-				< triggered_clock_CLOCK->end_time.ms) {
+	in_e = BidirList_removeFirst(&(triggered_clock->trigger.eventQueue));
+	if (in_e != NULL) {
+		clock->time.ms += triggered_clock->period.ms;
+		clock->time.ns += triggered_clock->period.ns; 
+		if (clock->time.ms < clock->endTime.ms) {
 			//FIXME: should check whether the currentTime is larger than _time.
-			INT_TOKEN_init(&token, &token);
+			IntToken_init(&token, NULL);
 			token.value = 1;
 			
-			out_e = (EVENT) {
-				UPCAST(&token, TOKEN),			// token
-				triggered_clock_CLOCK->time,	// time
-				0,								// is_timer_event
-				NULL,							// prev
-				NULL							// next
+			out_e = (Event) {
+				(Token*) &token,		// token
+				clock->time,			// time
+				0,						// isTimerEvent
 			};
-			TYPED_PORT_send(&(triggered_clock->output), &out_e);
+			TypedPort_send(&(triggered_clock->output), &out_e);
 		}
 	}
 }
 
-/**
- * Constant for TRIGGER_OUT's method table.
- */
-TRIGGER_OUT_METHOD_TABLE TRIGGER_OUT_method_table = {
-	TRIGGER_OUT_fire	// fire
+TriggerOut_TypeData TriggerOut_typeData = {
+	/* GeneralType fields. */
+	&Clock_typeData,			// superType
+	"TriggerOut",				// typeName
+	sizeof(TriggerOut),			// size
+	
+	/* Actor fields. */
+	TriggerOut_fire				// fire
+	
+	/* Clock fields. */
+	
+	/* TriggerOut fields. */
 };
 
 /**
- * Initiate an object of the TRIGGER_OUT type, and assign a scheduler to it.
+ * Initiate a trigger out actor, and assign a scheduler to it.
  * 
- * @param trigger_out Reference to the TRIGGER_OUT object to be initiated.
- * @param actual_ref The actual reference to the object.
- * @param scheduler Reference to the scheduler.
+ * @param trigger_out The trigger out actor to be initiated.
+ * @param actual_type_data The type data of the triggered out actor 's actual
+ *  type, or NULL. When NULL is given (which is usually the case when called by
+ *  the user), TriggerOut_typeData is used.
+ * @param scheduler The scheduler.
  */
-void TRIGGER_OUT_init(TRIGGER_OUT* trigger_out, void* actual_ref,
-	SCHEDULER* scheduler) {
-	ACTOR* ACTOR_super;
+void TriggerOut_init(TriggerOut* trigger_out,
+	TriggerOut_TypeData* actual_type_data, Scheduler* scheduler) {
 	
-	INIT_SUPER_TYPE(TRIGGER_OUT, ACTOR, trigger_out, actual_ref,
-		&TRIGGER_OUT_method_table, scheduler);
+	Clock_init((Clock*) trigger_out,
+		(Clock_TypeData*) (actual_type_data == NULL ?
+				&TriggerOut_typeData : actual_type_data), scheduler);
 	
-	ACTOR_super = UPCAST(trigger_out, ACTOR);
-	TYPED_PORT_init(&(trigger_out->input), &(trigger_out->input), ACTOR_super);
-	TYPED_PORT_init(&(trigger_out->output), &(trigger_out->output),
-		ACTOR_super);
+	TypedPort_init(&(trigger_out->input), NULL, (Actor*) trigger_out);
+	TypedPort_init(&(trigger_out->output), NULL, (Actor*) trigger_out);
 }
 
 /* FIXME: File descriptor used in read_loop. */
@@ -257,11 +264,11 @@ void* read_loop(void* data) {
 	unsigned int secs;
 	unsigned int nsecs;
 	int rtn;
-	TIME t;
+	Time t;
 	unsigned int status;
 	int num;
-	EVENT e;
-	INT_TOKEN token;
+	Event e;
+	IntToken token;
 
 	do {
 		// Block until the next interrupt
@@ -275,29 +282,27 @@ void* read_loop(void* data) {
 		//} while ((status & TIMESTAMP_0_RCV) == 0); // Got it!
 
 		FPGA_GET_TIME fpgaGetTime;
-		rtn = ioctl(fd,  FPGA_IOC_GET_TIME, &fpgaGetTime);
+		rtn = ioctl(fd, FPGA_IOC_GET_TIME, &fpgaGetTime);
 		if (rtn) {
 			fprintf(stderr, "ioctl to get time failed: %d, %d\n", rtn, errno);
 			exit(1);
 		}
 
 		// Scale from HW to TAI nsec
-		decodeHwNsec( &fpgaGetTime.timeVal, &secs, &nsecs);
+		decodeHwNsec(&fpgaGetTime.timeVal, &secs, &nsecs);
 		printf("  sw TO: %.9d.%9.9d\n", secs, nsecs);
 		//printf("\n%s>\n", (char *)data1);
 		
 		t.ms = secs; 
 		t.ns = nsecs;
-		INT_TOKEN_init(&token, &token);
+		IntToken_init(&token, NULL);
 		token.value = 1;
-		e = (EVENT) {
-			UPCAST(&token, TOKEN),			// token
+		e = (Event) {
+			(Token*) &token,				// token
 			t,								// time
 			0,								// is_timer_event
-			NULL,							// prev
-			NULL							// next
 		};
-		TYPED_PORT_send((TYPED_PORT*) data, &e);
+		TypedPort_send((TypedPort*) data, &e);
 	} while (1);
 
 	pthread_exit(NULL);
@@ -306,42 +311,43 @@ void* read_loop(void* data) {
 }
 
 /**
- * Initialize the TRIGGER_OUT object. This method is called before the execution
- * starts.
+ * Initialize the trigger out actor. This method should be called before the
+ * execution starts.
  * 
- * @param trigger_out Reference to the TRIGGER_OUT object.
+ * @param trigger_out The trigger out actor.
  */
-void TRIGGER_OUT_initialize(TRIGGER_OUT* trigger_out) {
+void TriggerOut_initialize(TriggerOut* trigger_out) {
 	int        thr_id;
 	pthread_t  p_thread;
-	SCHEDULER* scheduler;
+	Scheduler* scheduler;
 	
-	scheduler = UPCAST(trigger_out, ACTOR)->scheduler;
-	SCHEDULER_register_port(scheduler, UPCAST(&(trigger_out->input), PORT));
+	scheduler = ((Actor*) trigger_out)->scheduler;
+	Scheduler_registerPort(scheduler, (Port*) &(trigger_out->input));
 	
 	//FIXME: create thread here...
-	thr_id = pthread_create(&p_thread, NULL, read_loop,
-		UPCAST(&(trigger_out->output), PORT));
+	thr_id = pthread_create(&p_thread, NULL, read_loop, &(trigger_out->output));
 }
 
 /**
- * Fire the TRIGGER_OUT.
+ * Fire the trigger out actor.
  * 
- * @param trigger_out Reference to the TRIGGER_OUT object.
+ * @param trigger_out The trigger out actor to be fired.
  */
-void TRIGGER_OUT_fire(TRIGGER_OUT* trigger_out) {
+void TriggerOut_fire(Actor* actor) {
+	TriggerOut* trigger_out = (TriggerOut*) actor;
 	unsigned int secs;
 	unsigned int nsecs;
     FPGA_GET_TIME fpgaGetTime;
     int rtn;
 	FPGA_SET_TIMETRIGGER fpgaSetTimetrigger;
-	EVENT* in_e;
-	TIME t;
+	Event* in_e;
+	Time t;
 
-	CLOCK_fire((CLOCK*) SUPER(trigger_out));
+	Clock_fire(actor);
 	
-	fd = UPCAST(trigger_out, ACTOR)->scheduler->fd;
-	if (trigger_out->input.first_event != NULL) {
+	fd = ((Actor*) trigger_out)->scheduler->fd;
+	in_e = BidirList_removeFirst(&(trigger_out->input.eventQueue));
+	if (in_e != NULL) {
 		rtn = ioctl(fd, FPGA_IOC_GET_TIME, &fpgaGetTime);
 		if (rtn) {
 			fprintf(stderr, "ioctl to get time failed: %d, %d\n", rtn, errno);
@@ -353,13 +359,8 @@ void TRIGGER_OUT_fire(TRIGGER_OUT* trigger_out) {
 		decodeHwNsec(&fpgaGetTime.timeVal, &secs, &nsecs);
 		printf("\n set TO: %.9d.%9.9d\n", secs, nsecs);
 
-		in_e = trigger_out->input.first_event;
-		t = in_e->time;
-		REMOVE_FIRST(trigger_out->input.first_event,
-			trigger_out->input.last_event);
-		free(in_e);
-
 		//FIXME: set hardware trigger time.
+		t = in_e->time;
 		secs = t.ms;
 		nsecs = t.ns;
 		printf("     TO: %.9d.%9.9d\n", secs, nsecs);
@@ -370,7 +371,7 @@ void TRIGGER_OUT_fire(TRIGGER_OUT* trigger_out) {
 		fpgaSetTimetrigger.force = 0;
 		encodeHwNsec(&fpgaSetTimetrigger.timeVal, secs, nsecs);
 
-		rtn = ioctl(fd,  FPGA_IOC_SET_TIMETRIGGER, &fpgaSetTimetrigger);
+		rtn = ioctl(fd, FPGA_IOC_SET_TIMETRIGGER, &fpgaSetTimetrigger);
 		if (rtn) {
 			fprintf(stderr, "ioctl to set timetrigger failed: %d, %d\n", rtn,
 				errno);
@@ -386,24 +387,23 @@ void TRIGGER_OUT_fire(TRIGGER_OUT* trigger_out) {
  * discrete event scheduler..
  */
 int main() {
-	SCHEDULER scheduler;	
-	TRIGGERED_CLOCK t_clock;
-	TRIGGER_OUT t_out;
+	Scheduler scheduler;	
+	TriggeredClock t_clock;
+	TriggerOut t_out;
 
-	SCHEDULER_init(&scheduler, &scheduler);
-	TRIGGERED_CLOCK_init(&t_clock, &t_clock, &scheduler);
-	TRIGGER_OUT_init(&t_out, &t_out, &scheduler);
+	Scheduler_init(&scheduler, NULL);
+	TriggeredClock_init(&t_clock, NULL, &scheduler);
+	TriggerOut_init(&t_out, NULL, &scheduler);
 
-	PORT_connect(UPCAST(&(t_clock.output), PORT), UPCAST(&(t_out.input), PORT));
-	PORT_connect(UPCAST(&(t_out.output), PORT),
-		UPCAST(&(t_clock.trigger), PORT));
+	Port_connect((Port*) &(t_clock.output), (Port*) &(t_out.input));
+	Port_connect((Port*) &(t_out.output), (Port*) &(t_clock.trigger));
 	
-	UPCAST(&t_clock, CLOCK)->end_time = (TIME) {50, 0};
-	t_clock.period = (TIME) {5, 0};
-	t_clock.phase = (TIME) {1, 0};
-	TRIGGERED_CLOCK_initialize(&t_clock);
-	TRIGGER_OUT_initialize(&t_out);
+	((Clock*) &t_clock)->endTime = (Time) {50, 0};
+	t_clock.period = (Time) {5, 0};
+	t_clock.phase = (Time) {1, 0};
+	TriggeredClock_initialize(&t_clock);
+	TriggerOut_initialize(&t_out);
 	
 	printf("Start execution:\n");
-	SCHEDULER_execute(&scheduler);
+	Scheduler_execute(&scheduler);
 }

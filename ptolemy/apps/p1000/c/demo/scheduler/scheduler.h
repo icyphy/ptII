@@ -34,47 +34,58 @@
 #include "types.h"
 #include "actor.h"
 #include "port.h"
+#include "bidir_list.h"
 
 /**
- * SCHEDULER type for the discrete event scheduler.
+ * Scheduler for the discrete event scheduler.
  */
-typedef struct SCHEDULER {
-	/* SCHEDULER type is directly inherited from GENERAL_TYPE. */
-	DECLARE_SUPER_TYPE(GENERAL_TYPE)
+typedef struct Scheduler {
+	/* Scheduler is directly inherited from GeneralType. */
+	GeneralType super;
 	
 	/* Device file descriptor. */
 	int fd;
-	/* The first actor in the actor list. */
-	struct ACTOR* first_actor;
-	/* The last actor in the actor list. */
-	struct ACTOR* last_actor;
-	/* The first port in the port list. */
-	struct PORT* first_port;
-	/* The last port in the port list. */
-	struct PORT* last_port;
-} SCHEDULER;
+	/* The list of actors. */
+	BidirList actorList;
+	/* The list of ports. */
+	BidirList portList;
+} Scheduler;
 
 /**
- * Initiate an object of the SCHEDULER type.
- * 
- * @param scheduler Reference to the SCHEDULER object to be initiated.
- * @param actual_ref The actual reference to the object.
+ * Scheduler's static type data.
  */
-void SCHEDULER_init(SCHEDULER* scheduler, void* actual_ref);
+typedef struct Scheduler_TypeData {
+	TypeData inheritedTypeData;
+	
+	// execute method.
+	void (*execute)(Scheduler* scheduler);
+} Scheduler_TypeData;
+
+extern Scheduler_TypeData Scheduler_typeData;
+
+/**
+ * Initiate a scheduler.
+ * 
+ * @param scheduler The scheduler to be initiated.
+ * @param actual_type_data The type data of the scheduler's actual type, or
+ *  NULL. When NULL is given (which is usually the case when called by the
+ *  user), Scheduler_typeData is used.
+ */
+void Scheduler_init(Scheduler* scheduler, Scheduler_TypeData* actual_type_data);
 
 /**
  * Register a port with the scheduler by adding the port into its port list.
  * 
- * @param scheduler Reference to the scheduler.
- * @param port Reference to the port to be registered.
+ * @param scheduler The scheduler.
+ * @param port The port to be registered.
  */
-void SCHEDULER_register_port(SCHEDULER* scheduler, struct PORT* port);
+void Scheduler_registerPort(Scheduler* scheduler, struct Port* port);
 
 /**
  * Execute the system with the given scheduler.
  * 
- * @param scheduler Reference to the scheduler to be used in the execution.
+ * @param scheduler The scheduler to be used in the execution.
  */
-void SCHEDULER_execute(SCHEDULER* scheduler);
+void Scheduler_execute(Scheduler* scheduler);
 
 #endif /*SCHEDULER_H_*/

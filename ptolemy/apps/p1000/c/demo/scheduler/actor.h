@@ -1,6 +1,6 @@
-/* ACTOR type, the general super-type of all the actor types.
+/* Actor type, the common super-type of all the actors.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -34,53 +34,50 @@
 #include "types.h"
 
 /**
- * SCHEDULER type, defined in scheduler.h.
+ * Scheduler type, defined in scheduler.h.
  */
-struct SCHEDULER;
+struct Scheduler;
 
 /**
- * ACTOR type, which is the super-type of all actors.
+ * Actor type, the common super-type of all the actors.
  */
-typedef struct ACTOR {
-	DECLARE_SUPER_TYPE(GENERAL_TYPE)
+typedef struct Actor {
+	/* Actor is directly inherited from GeneralType. */
+	GeneralType super;
 	
 	/* The scheduler. */
-	struct SCHEDULER* scheduler;
-	/* The previous actor in a list. */
-	struct ACTOR* prev;
-	/* The next actor in a list. */
-	struct ACTOR* next;
-} ACTOR;
+	struct Scheduler* scheduler;
+} Actor;
 
 /**
- * ACTOR type's method table, which defines all the virtual methods belonging to
- * an actor. Sub-classes may override these methods by redefining them in their
- * method tables, or may add new virtual methods to their method tables.
+ * Actor's static type data.
  */
-typedef struct ACTOR_METHOD_TABLE {
-	/* Fire method of the actor. */
-	void (*fire)(struct ACTOR* actor);
-} ACTOR_METHOD_TABLE;
+typedef struct Actor_TypeData {
+	TypeData inheritedTypeData;
+	
+	// fire method.
+	void (*fire)(Actor* actor);
+} Actor_TypeData;
+
+extern Actor_TypeData Actor_typeData;
 
 /**
- * Constant for ACTOR type's method table, defined in actor.c.
- */
-extern ACTOR_METHOD_TABLE ACTOR_method_table;
-
-/**
- * Initiate an object of the ACTOR type, and assign a scheduler to it.
+ * Initiate an actor, and assign a scheduler to it.
  * 
- * @param actor Reference to the ACTOR object to be initiated.
- * @param actual_ref The actual reference to the object.
- * @param scheduler Reference to the scheduler.
+ * @param actor The actor to be initiated.
+ * @param actual_type_data The type data of the actor's actual type, or NULL.
+ *  When NULL is given (which is usually the case when called by the user),
+ *  Actor_typeData is used.
+ * @param scheduler The scheduler.
  */
-void ACTOR_init(ACTOR* actor, void* actual_ref, struct SCHEDULER* scheduler);
+void Actor_init(Actor* actor, Actor_TypeData* actual_type_data,
+	struct Scheduler* scheduler);
 
 /**
- * Fire the ACTOR.
+ * Fire the actor.
  * 
- * @param actor Reference to the ACTOR object.
+ * @param actor The actor to be fired.
  */
-void ACTOR_fire(ACTOR* actor);
+void Actor_fire(Actor* actor);
 
 #endif /*ACTOR_H_*/

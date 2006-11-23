@@ -1,6 +1,6 @@
-/* TOKEN type, the general super-type of all the token types.
+/* Token, the common super-type of all the token types.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -30,14 +30,26 @@
 
 #include "token.h"
 
-/**
- * Initiate an object of the TOKEN type.
- * 
- * @param token Reference to the TOKEN object to be initiated.
- * @param actual_ref The actual reference to the object.
- */
-void TOKEN_init(TOKEN* token, void* actual_ref) {
-	INIT_SUPER_TYPE(TOKEN, GENERAL_TYPE, token, actual_ref, NULL);
+Token_TypeData Token_typeData = {
+	/* GeneralType fields. */
+	&GeneralType_typeData,		// superType
+	"Token",					// typeName
+	sizeof(Token),				// size
 	
-	token->prev = token->next = NULL;
+	/* Token fields. */
+};
+
+/**
+ * Initiate a token.
+ * 
+ * @param token The token to be initiated.
+ * @param actual_type_data The type data of the token's actual type, or NULL.
+ *  When NULL is given (which is usually the case when called by the user),
+ *  Token_typeData is used.
+ */
+void Token_init(Token* token, Token_TypeData* actual_type_data) {
+	
+	GeneralType_init((GeneralType*) token,
+		(TypeData*) (actual_type_data == NULL ?
+				&Token_typeData : actual_type_data));
 }

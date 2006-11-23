@@ -1,6 +1,6 @@
-/* PORT type, the general super-type of all the port types.
+/* Port type, the common super-type of all kinds of ports.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -32,73 +32,78 @@
 #define PORT_H_
 
 #include "types.h"
+#include "bidir_list.h"
 
 /**
  * Dependency link for the ports.
  */
-typedef struct DEPENDENCY_LINK {
+typedef struct DependencyLink {
 	/* The port. */
-	struct PORT* port;
+	struct Port* port;
 	/* The dependency. */
 	double dependency;
-	/* The previous dependency link in a list. */
-	struct DEPENDENCY_LINK* prev;
-	/* The next dependency link in a list. */
-	struct DEPENDENCY_LINK* next;
-} DEPENDENCY_LINK;
+} DependencyLink;
 
 /**
- * Initiate an object of the DEPENDENCY_LINK type, and assign a dependency
- * number.
+ * Initiate a dependency link, and assign a dependency number.
  * 
- * @param link Reference to the DEPENDENCY_LINK object to be initiated.
+ * @param link The dependency link to be initiated.
  * @param port The port for the dependency link.
  * @param dependency The dependency number.
  */
-void DEPENDENCY_LINK_init(DEPENDENCY_LINK* link, struct PORT* port,
+void DependencyLink_init(DependencyLink* link, struct Port* port,
 	double dependency);
 
 /**
- * PORT type, the general super-type of all the port types.
+ * Port type, the common super-type of all kinds of ports.
  */
-typedef struct PORT {
-	/* PORT type is directly inherited from GENERAL_TYPE. */
-	DECLARE_SUPER_TYPE(GENERAL_TYPE)
+typedef struct Port {
+	/* Port is directly inherited from GeneralType. */
+	GeneralType super;
 	
-	/* The port that this port is connected to (null if none). */
-	struct PORT* connected_port;
+	/* The port that this port is connected to (NULL if none). */
+	struct Port* connectedPort;
 	/* The actor that contains this port. */
-	struct ACTOR* container;
+	struct Actor* container;
 	/* Whether the port is a realtime port. */
-	int is_realtime : 1;
-	/* The first dependency link in the dependency link list. */
-	DEPENDENCY_LINK* first_link;
-	/* The last dependency link in the dependency link list. */
-	DEPENDENCY_LINK* last_link;
-	/* The previous port in a port list. */
-	struct PORT* prev;
-	/* The next port in a port list. */
-	struct PORT* next;
-} PORT;
+	int isRealtime : 1;
+	/* The list of dependency links. */
+	BidirList dependencyLinks;
+} Port;
 
-/**
- * Initiate an object of the PORT type, and assign a container actor to it.
- * 
- * @param port Reference to the PORT object to be initiated.
- * @param actual_ref The actual reference to the object.
- * @param container Reference to the actor that contains the port.
+/*
+ * Port's static type data.
  */
-void PORT_init(PORT* port, void* actual_ref, struct ACTOR* container);
+typedef struct Port_TypeData {
+	TypeData inheritedTypeData;
+	
+	// fire method.
+	void (*connect)(Port* port, Port* to_port);
+} Port_TypeData;
+
+extern Port_TypeData Port_typeData;
 
 /**
- * Connect a port with another port. The port argument specifies an output port,
+ * Initiate a port, and assign a container actor to it.
+ * 
+ * @param port The port to be initiated.
+ * @param actual_type_data The type data of the port's actual type, or NULL.
+ *  When NULL is given (which is usually the case when called by the user),
+ *  Port_typeData is used.
+ * @param container The actor that contains the port.
+ */
+void Port_init(Port* port, Port_TypeData* actual_type_data,
+	struct Actor* container);
+
+/**
+ * Connect a port to another port. The port argument specifies an output port,
  * and the to_port argument specifies an input port to receive the output events
- * from the output port. The connected_port field of the output port is set with
- * the input port, but the input port's connected_port field is not set.
+ * from the output port. The connectedPort field of the output port is set with
+ * the input port, but the input port's connectedPort field is not set.
  * 
  * @param port The output port.
  * @param to_port The input port.
  */
-void PORT_connect(PORT* port, PORT* to_port);
+void Port_connect(Port* port, Port* to_port);
 
 #endif /*PORT_H_*/

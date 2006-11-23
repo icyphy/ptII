@@ -1,6 +1,6 @@
-/* ACTOR type, the general super-type of all the actor types.
+/* IntToken, a token that contains an integer as its value.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -30,14 +30,28 @@
 
 #include "int_token.h"
 
+IntToken_TypeData IntToken_typeData = {
+	/* GeneralType fields. */
+	&Token_typeData,			// superType
+	"IntToken",					// typeName
+	sizeof(IntToken),			// size
+	
+	/* Token fields. */
+	
+	/* IntToken fields. */
+};
+
 /**
- * Initiate an object of the INT_TOKEN type.
+ * Initiate an int token.
  * 
- * @param int_token Reference to the INT_TOKEN object to be initiated.
- * @param actual_ref The actual reference to the object.
+ * @param int_token The int token to be initiated.
+ * @param actual_type_data The type data of the int token's actual type, or
+ *  NULL. When NULL is given (which is usually the case when called by the
+ *  user), IntToken_typeData is used.
  */
-void INT_TOKEN_init(INT_TOKEN* int_token, void* actual_ref) {
-	INIT_SUPER_TYPE(INT_TOKEN, TOKEN, int_token, actual_ref, NULL);
+void IntToken_init(IntToken* int_token, IntToken_TypeData* actual_type_data) {
+	Token_init((Token*) int_token, (Token_TypeData*) (actual_type_data == NULL ?
+				&IntToken_typeData : actual_type_data));
 	
 	int_token->value = 0;
 }

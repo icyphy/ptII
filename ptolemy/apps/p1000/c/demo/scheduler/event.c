@@ -1,6 +1,6 @@
-/* EVENT type.
+/* Event that can be sent and received via connections between ports.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -36,20 +36,20 @@
  * Duplicate an event in the heap, and return the duplicated event. If the given
  * event contains a token, memory will be allocated from the heap to store a
  * copy of that token. The user need not explicitly free the token, though
- * he/she do need to free the event, because the event and the token are
- * allocated in a continuous trunk of memory.
+ * he/she do need to free the event, because the event and the token are stored
+ * in a continuous trunk of memory.
  * 
  * @param event Reference to the event to be duplicated.
  * @return Reference to the duplicated event in the heap.
  */
-EVENT* EVENT_duplicate(const EVENT* event) {
-	EVENT* heap_event;
+Event* Event_duplicate(const Event* event) {
+	Event* heap_event;
 	void* heap_token;
 	size_t token_size;
 	
 	token_size = event->token == NULL ? 0
-			: UPCAST(event->token, GENERAL_TYPE)->size;
-	heap_event = (EVENT*) malloc(sizeof(EVENT) + token_size);
+			: ((GeneralType*) event->token)->typeData->size;
+	heap_event = (Event*) malloc(sizeof(Event) + token_size);
 
 	// Forward compatible with future event definitions, which may contain more
 	// fields.
@@ -58,9 +58,9 @@ EVENT* EVENT_duplicate(const EVENT* event) {
 	if (event->token != NULL) {
 		// Copy the token in to heap so that the original event's token can be
 		// freed immediately.
-		heap_token = ((void*) heap_event) + sizeof(EVENT);
-		memcpy(heap_token, event->token->_actual_ref, token_size);
-		heap_event->token = UPCAST(heap_token, TOKEN);
+		heap_token = ((void*) heap_event) + sizeof(Event);
+		memcpy(heap_token, event->token, token_size);
+		heap_event->token = (Token*) heap_token;
 	}
 	
 	return heap_event;

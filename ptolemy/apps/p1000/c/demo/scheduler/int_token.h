@@ -1,4 +1,4 @@
-/* INT_TOKEN, a token that contains an integer as its value.
+/* IntToken, a token that contains an integer as its value.
 
  Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.
@@ -35,24 +35,35 @@
 #include "token.h"
 
 /**
- * INT_TOKEN type.
+ * IntToken, a token that contains an integer as its value.
  * 
- * FIXME: C type's int has different meanings, depending on the target machine.
+ * FIXME: int in C has different meanings, depending on the target machine.
  */
-typedef struct INT_TOKEN {
-	/* INT_TOKEN type is directly inherited from TOKEN. */
-	DECLARE_SUPER_TYPE(TOKEN)
+typedef struct IntToken {
+	/* IntToken is directly inherited from Token. */
+	Token super;
 	
 	/* The value in the token. */
 	int value;
-} INT_TOKEN;
+} IntToken;
+
+/*
+ * IntToken's static type data.
+ */
+typedef struct IntToken_TypeData {
+	Token_TypeData inheritedTypeData;
+} IntToken_TypeData;
+
+extern IntToken_TypeData IntToken_typeData;
 
 /**
- * Initiate an object of the INT_TOKEN type.
+ * Initiate an int token.
  * 
- * @param int_token Reference to the INT_TOKEN object to be initiated.
- * @param actual_ref The actual reference to the object.
+ * @param int_token The int token to be initiated.
+ * @param actual_type_data The type data of the int token's actual type, or
+ *  NULL. When NULL is given (which is usually the case when called by the
+ *  user), IntToken_typeData is used.
  */
-void INT_TOKEN_init(INT_TOKEN* int_token, void* actual_ref);
+void IntToken_init(IntToken* int_token, IntToken_TypeData* actual_type_data);
 
 #endif /*INT_TOKEN_H_*/

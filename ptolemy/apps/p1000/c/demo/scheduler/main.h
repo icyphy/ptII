@@ -1,6 +1,6 @@
 /* Main program of the scheduler demo with some actor definitions.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,156 +39,150 @@
 /**
  * Clock actor, the super-class of triggered clock and trigger out actors.
  */
-typedef struct CLOCK {
-	/* CLOCK actor is directly inherited from ACTOR. */
-	DECLARE_SUPER_TYPE(ACTOR)
+typedef struct Clock {
+	/* Clock is directly inherited from Actor. */
+	Actor super;
 	
-	/* The fire_at port. */
-	TYPED_PORT fire_at;
+	/* The fireAt port. */
+	TypedPort fireAt;
 	/* The output port. */
-	TYPED_PORT output;
+	TypedPort output;
 	/* The time. */
-	TIME time;
-	/* The end_time */
-	TIME end_time;
-} CLOCK;
+	Time time;
+	/* The endTime */
+	Time endTime;
+} Clock;
 
-/**
- * CLOCK's method table.
+/*
+ * Clock's static type data.
  */
-typedef struct CLOCK_METHOD_TABLE {
-	/* Fire method. */
-	void (*fire)(struct CLOCK* clock);
-} CLOCK_METHOD_TABLE;
+typedef struct Clock_TypeData {
+	Actor_TypeData inheritedTypeData;
+} Clock_TypeData;
+
+extern Clock_TypeData Clock_typeData;
 
 /**
- * Constant of CLOCK's method table, defined in main.c.
- */
-extern CLOCK_METHOD_TABLE CLOCK_method_table;
-
-/**
- * Initiate an object of the CLOCK type, and assign a scheduler to it.
+ * Initiate a clock, and assign a scheduler to it.
  * 
- * @param clock Reference to the CLOCK object to be initiated.
- * @param actual_ref The actual reference to the object.
- * @param scheduler Reference to the scheduler.
+ * @param clock The clock to be initiated.
+ * @param actual_type_data The type data of the clock's actual type, or NULL.
+ *  When NULL is given (which is usually the case when called by the user),
+ *  Clock_typeData is used.
+ * @param scheduler The scheduler.
  */
-void CLOCK_init(CLOCK* clock, void* actual_ref, SCHEDULER* scheduler);
+void Clock_init(Clock* clock, Clock_TypeData* actual_type_data,
+	Scheduler* scheduler);
 
 /**
- * Fire the CLOCK.
+ * Fire the Clock.
  * 
- * @param clock Reference to the CLOCK object.
+ * @param clock The clock to be fired.
  */
-void CLOCK_fire(CLOCK* clock);
+void Clock_fire(Actor* actor);
 
 /**
- * TRIGGERED_CLOCK actor.
+ * TriggeredClock actor.
  */
-typedef struct TRIGGERED_CLOCK {
-	/* TRIGGERED_CLOCK actor is directly inherited from CLOCK. */
-	DECLARE_SUPER_TYPE(CLOCK)
+typedef struct TriggeredClock {
+	/* TriggeredClock is directly inherited from CLOCK. */
+	Clock super;
 	
 	/* The trigger port. */
-	TYPED_PORT trigger;
+	TypedPort trigger;
 	/* The output port. */
-	TYPED_PORT output;
+	TypedPort output;
 	/* The period. */
-	TIME period;
+	Time period;
 	/* The phase. */
-	TIME phase;
-	/* The start_time. */
-	TIME start_time;
-} TRIGGERED_CLOCK;
+	Time phase;
+	/* The startTime. */
+	Time startTime;
+} TriggeredClock;
 
-/**
- * TRIGGERED_CLOCK's method table.
+/*
+ * TriggeredClock's static type data.
  */
-typedef struct TRIGGERED_CLOCK_METHOD_TABLE {
-	/* Fire method. */
-	void (*fire)(struct TRIGGERED_CLOCK* clock);
-} TRIGGERED_CLOCK_METHOD_TABLE;
+typedef struct TriggeredClock_TypeData {
+	Clock_TypeData inheritedTypeData;
+} TriggeredClock_TypeData;
+
+extern TriggeredClock_TypeData TriggeredClock_typeData;
 
 /**
- * Constant for TRIGGERED_CLOCK's method table, defined in main.c.
- */
-extern TRIGGERED_CLOCK_METHOD_TABLE TRIGGERED_CLOCK_method_table;
-
-/**
- * Initiate an object of the TRIGGERED_CLOCK type, and assign a scheduler to it.
+ * Initiate a triggered clock, and assign a scheduler to it.
  * 
- * @param triggered_clock Reference to the TRIGGERED_CLOCK object to be
- *  initiated.
- * @param actual_ref The actual reference to the object.
- * @param scheduler Reference to the scheduler.
+ * @param triggered_clock The triggered clock to be initiated.
+ * @param actual_type_data The type data of the triggered clock's actual type,
+ *  or NULL. When NULL is given (which is usually the case when called by the
+ *  user), TriggeredClock_typeData is used.
+ * @param scheduler The scheduler.
  */
-void TRIGGERED_CLOCK_init(TRIGGERED_CLOCK* triggered_clock, void* actual_ref,
-	SCHEDULER* scheduler);
+void TriggeredClock_init(TriggeredClock* triggered_clock,
+	TriggeredClock_TypeData* actual_type_data, Scheduler* scheduler);
 
 /**
- * Initialize the TRIGGERED_CLOCK object. This method is called before the
+ * Initialize the triggered clock. This method should be called before the
  * execution starts.
  * 
- * @param triggered_clock Reference to the TRIGGERED_CLOCK object.
+ * @param triggered_clock The triggered clock.
  */
-void TRIGGERED_CLOCK_initialize(TRIGGERED_CLOCK* triggered_clock);
+void TriggeredClock_initialize(TriggeredClock* triggered_clock);
 
 /**
- * Fire the TRIGGERED_CLOCK.
+ * Fire the triggered clock.
  * 
- * @param triggered_clock Reference to the TRIGGERED_CLOCK object.
+ * @param triggered_clock The triggered clock to be fired.
  */
-void TRIGGERED_CLOCK_fire(TRIGGERED_CLOCK* triggered_clock);
+void TriggeredClock_fire(Actor* actor);
 
 /**
- * TRIGGER_OUT actor.
+ * TriggerOut actor.
  */
-typedef struct TRIGGER_OUT {
-	/* TRIGGER_OUT actor is directly inherited from CLOCK. */
-	DECLARE_SUPER_TYPE(ACTOR)
+typedef struct TriggerOut {
+	/* TriggerOut is directly inherited from Clock. */
+	Clock super;
 	
 	/* The input port. */
-	TYPED_PORT input;
+	TypedPort input;
 	/* The output port. */
-	TYPED_PORT output;
-} TRIGGER_OUT;
+	TypedPort output;
+} TriggerOut;
 
-/**
- * TRIGGER_OUT's method table.
+/*
+ * TriggerOut's static type data.
  */
-typedef struct TRIGGER_OUT_METHOD_TABLE {
-	/* Fire method. */
-	void (*fire)(struct TRIGGER_OUT* clock);
-} TRIGGER_OUT_METHOD_TABLE;
+typedef struct TriggerOut_TypeData {
+	Clock_TypeData inheritedTypeData;
+} TriggerOut_TypeData;
+
+extern TriggerOut_TypeData TriggerOut_typeData;
 
 /**
- * Constant for TRIGGER_OUT's method table, defined in main.c.
- */
-extern TRIGGER_OUT_METHOD_TABLE TRIGGER_OUT_method_table;
-
-/**
- * Initiate an object of the TRIGGER_OUT type, and assign a scheduler to it.
+ * Initiate a trigger out actor, and assign a scheduler to it.
  * 
- * @param trigger_out Reference to the TRIGGER_OUT object to be initiated.
- * @param actual_ref The actual reference to the object.
- * @param scheduler Reference to the scheduler.
+ * @param trigger_out The trigger out actor to be initiated.
+ * @param actual_type_data The type data of the triggered out actor 's actual
+ *  type, or NULL. When NULL is given (which is usually the case when called by
+ *  the user), TriggerOut_typeData is used.
+ * @param scheduler The scheduler.
  */
-void TRIGGER_OUT_init(TRIGGER_OUT* trigger_out, void* actual_ref,
-	SCHEDULER* scheduler);
+void TriggerOut_init(TriggerOut* trigger_out,
+	TriggerOut_TypeData* actual_type_data, Scheduler* scheduler);
 
 /**
- * Initialize the TRIGGER_OUT object. This method is called before the execution
- * starts.
+ * Initialize the trigger out actor. This method should be called before the
+ * execution starts.
  * 
- * @param trigger_out Reference to the TRIGGER_OUT object.
+ * @param trigger_out The trigger out actor.
  */
-void TRIGGER_OUT_initialize(TRIGGER_OUT* trigger_out);
+void TriggerOut_initialize(TriggerOut* trigger_out);
 
 /**
- * Fire the TRIGGER_OUT.
+ * Fire the trigger out actor.
  * 
- * @param trigger_out Reference to the TRIGGER_OUT object.
+ * @param trigger_out The trigger out actor to be fired.
  */
-void TRIGGER_OUT_fire(TRIGGER_OUT* trigger_out);
+void TriggerOut_fire(Actor* actor);
 
 #endif /*MAIN_H_*/
