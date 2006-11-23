@@ -2418,7 +2418,8 @@ $(PTII)/vendors/launch4j:
 
 
 # Launch4J console application that reads in .xml files and creates .exe files.
-L4JC=$(L4J_DIR)/launch4jc.exe
+#L4JC=$(L4J_DIR)/launch4jc.exe
+L4JC=$(L4J_DIR)/launch4j
 
 # Launch4J
 $(PTSETUP).exe: ../../ptiny.exe ../../jar_dist \
@@ -2426,7 +2427,7 @@ $(PTSETUP).exe: ../../ptiny.exe ../../jar_dist \
 		jre \
 		../../lib/matlabWindows.jar $(PTSETUP)_l4j.xml \
 		$(PTSETUP).jar #ExtractJarFile.class
-		"$(L4JC)" `$(PTCYGPATH) $$PWD/$<`
+		"$(L4JC)" `$(PTCYGPATH) $$PWD/$(PTSETUP)_l4j.xml`
 
 ../../ptiny.exe:  ../../ptiny_l4j.xml
 

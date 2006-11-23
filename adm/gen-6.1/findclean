@@ -1,0 +1,4 @@
+#! /bin/sh
+# $Id$
+# Remove cruft from the current directory
+find . \( -name "#*" -o -name alljtests.tcl -o -name alljsimpletests.tcl -o -name codeDoc -o -name CVS -o -name .cvsignore -o -name "*~" -o -name core -o -name "*.out" \)  -exec rm -rf {} \;
