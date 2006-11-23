@@ -1007,7 +1007,8 @@ bldmastrcoverage:
 		remote1doc \
 		remote1doccheck \
 		remote1findbugs \
-		remote1jnlp
+		remote1jnlp \
+		test_setup
 
 #		remote4
 #		remote5
@@ -2453,6 +2454,11 @@ setup: $(PTSETUP).exe
 
 clean_setup: 
 	rm -f $(PTSETUP).jar $(PTSETUP).exe
+
+test_setup: setup
+	rm -rf test/installerTest
+	java -jar $(PTSETUP).jar installerTest.xml
+	(cd test/installerTest; chmod a+x ./configure; PTII=`pwd`; ./configure; make -k fast install test > make.out 2>&1) 
 
 # Echo the jars needed for the full package in izpack
 full_jars:
