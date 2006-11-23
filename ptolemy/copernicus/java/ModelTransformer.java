@@ -1810,7 +1810,7 @@ public class ModelTransformer extends SceneTransformer implements
                 .hasNext();) {
             Relation relation = (Relation) relations.next();
             String className = relation.getClass().getName();
-            String fieldName = getFieldNameForRelation(relation, composite);
+            //String fieldName = getFieldNameForRelation(relation, composite);
 
             // Create a new local variable.
             Local local = PtolemyUtilities.createNamedObjAndLocal(body,

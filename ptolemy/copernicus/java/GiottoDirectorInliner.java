@@ -148,8 +148,8 @@ public class GiottoDirectorInliner implements DirectorInliner {
                     entity, options);
             SootClass entityClass = Scene.v().loadClassAndSupport(
                     entityClassName);
-            String fieldName = ModelTransformer.getFieldNameForEntity(entity,
-                    model);
+            //String fieldName = ModelTransformer.getFieldNameForEntity(entity,
+            //        model);
             //SootField field = modelClass.getFieldByName(fieldName);
 
             String taskClassName = entityClassName + "_Task";
