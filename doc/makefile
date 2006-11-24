@@ -240,7 +240,6 @@ HYVISUALPACKAGES = \
 	ptolemy.actor.lib.python \
 	ptolemy.actor.lib.security \
 	ptolemy.actor.lib.string \
-	ptolemy.actor.lib.vhdl \
 	ptolemy.actor.lib.xslt \
 	ptolemy.actor.parameters \
 	ptolemy.domains.continuous.kernel \
@@ -369,6 +368,7 @@ ALL1_4PACKAGES = \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.hoc \
 	ptolemy.actor.lib.net \
+	ptolemy.actor.lib.vhdl \
 	ptolemy.actor.sched \
 	ptolemy.actor.util \
 	ptolemy.codegen.c.actor \
