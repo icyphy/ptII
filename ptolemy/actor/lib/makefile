@@ -87,6 +87,7 @@ PTCLASSALLJARS = \
 	net/net.jar \
 	security/security.jar \
 	string/string.jar \
+	vhdl/vhdl.jar \
 	xslt/xslt.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
