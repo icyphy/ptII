@@ -175,7 +175,7 @@ public class Director implements ActorCodeGenerator {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_codeGenerator
-                .comment("The initialization of the director."));
+                .comment(1, "The initialization of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
@@ -501,7 +501,12 @@ public class Director implements ActorCodeGenerator {
             if (helper.getReadOffset(port, j) instanceof Integer) {
                 int offset = ((Integer) helper.getReadOffset(port, j))
                         .intValue();
-                offset = (offset + rate) % helper.getBufferSize(port, j);
+                if (helper.getBufferSize(port, j) == 0) {
+                    System.out.println("Buffer size for port \"" + port
+                            + " channel " + j + " is zero");
+                } else {
+                    offset = (offset + rate) % helper.getBufferSize(port, j);
+                }
                 helper.setReadOffset(port, j, new Integer(offset));
             } else { // If offset is a variable.
                 int modulo = helper.getBufferSize(port, j) - 1;
@@ -554,8 +559,11 @@ public class Director implements ActorCodeGenerator {
                         sinkChannelNumber);
                 if (offsetObject instanceof Integer) {
                     int offset = ((Integer) offsetObject).intValue();
-                    offset = (offset + rate)
-                            % helper.getBufferSize(sinkPort, sinkChannelNumber);
+                    int bufferSize = helper.getBufferSize(sinkPort, sinkChannelNumber);
+                    if (bufferSize != 0) {
+                        offset = (offset + rate)
+                            % bufferSize;
+                    }
                     helper.setWriteOffset(sinkPort, sinkChannelNumber,
                             new Integer(offset));
                 } else { // If offset is a variable. 
