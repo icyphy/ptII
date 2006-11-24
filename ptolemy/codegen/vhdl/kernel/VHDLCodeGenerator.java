@@ -61,7 +61,7 @@ public class VHDLCodeGenerator extends StaticSchedulingCodeGenerator {
 
         files = includingFiles.iterator();
         while (files.hasNext()) {
-            code.append("use " + files.next() + ";\n");
+            code.append("use " + files.next() + ";" + _eol);
         }
         
         return code.toString();

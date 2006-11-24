@@ -112,11 +112,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         run.setTypeEquals(BaseType.BOOLEAN);
         run.setExpression("true");
 
-        _attachText("_iconDescription", "<svg>\n"
+        _attachText("_iconDescription", "<svg>" + _eol
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-                + "Double click to\ngenerate code.</text></svg>");
+                + "Double click to" + _eol + "generate code.</text></svg>");
 
         _model = (CompositeEntity) getContainer();
 
@@ -200,7 +200,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return A formatted comment.
      */
     public String comment(String comment) {
-        return "/* " + comment + " */\n";
+        return "/* " + comment + " */" + _eol;
     }
 
     /** Return a formatted comment containing the
@@ -360,7 +360,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (args.length == 0) {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.codegen.kernel.CodeGenerator model.xml "
-                    + "[model.xml . . .]\n"
+                    + "[model.xml . . .]" + _eol
                     + "  The arguments name MoML files containing models");
             return -1;
         }
@@ -611,7 +611,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\n\n");
+        code.append(_eol + _eol);
         code.append(comment(0, "Variable Declarations "
                 + getContainer().getFullName()));
 
@@ -628,7 +628,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\n\n");
+        code.append(_eol + _eol);
         code.append(comment(1, "Variable initialization "
                 + getContainer().getFullName()));
 
@@ -648,7 +648,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment("Wrapup " + getContainer().getFullName()));
+        code.append(comment(1, "Wrapup " + getContainer().getFullName()));
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateWrapupCode());
@@ -924,6 +924,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
+     *  We use a end of line charactor so that the files we generate
+     *  have the proper end of line character for use by other native tools.
+     */
+    protected static String _eol;
+    static {
+        _eol = StringUtilities.getProperty("line.separator");
+    }
 
     /** Set of execute commands to run the generated code.
      */

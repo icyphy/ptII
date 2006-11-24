@@ -250,10 +250,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\nvoid " + generateName(getComponent()) + "() {\n");
+        code.append("void " + generateName(getComponent()) + "() {" + _eol);
         code.append(generateFireCode());
         code.append(generateTypeConvertFireCode());
-        code.append("}\n");
+        code.append("}" + _eol);
         return code.toString();
     }
 
@@ -478,7 +478,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\n"
+        code.append(_eol 
                 + _codeGenerator.comment(0, _component.getName()
                         + "'s variable declarations."));
 
@@ -492,7 +492,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 // avoid duplicate declaration.
                 if (!_codeGenerator._modifiedVariables.contains(parameter)) {
                     code.append("static " + cType(parameter.getType()) + " "
-                            + generateVariableName(parameter) + ";\n");
+                            + generateVariableName(parameter) + ";" + _eol);
                 }
             }
         }
@@ -519,7 +519,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             if (bufferSize > 1) {
                 code.append("[" + bufferSize + "]");
             }
-            code.append(";\n");
+            code.append(";" + _eol);
         }
         return processCode(code.toString());
     }
@@ -532,7 +532,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\n"
+        code.append(_eol
                 + _codeGenerator.comment(1, _component.getName()
                         + "'s variable initialization."));
 
@@ -550,7 +550,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                     + generateVariableName(parameter)
                                     + " = "
                                     + getParameterValue(parameter.getName(),
-                                            _component) + ";\n");
+                                            _component) + ";" + _eol);
                     }
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(_component, throwable,
@@ -581,7 +581,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateWrapupCode() throws IllegalActionException {
         _codeStream.clear();
-        _codeStream.append("\n/* wrapup " + getComponent().getName() + " */\n");
+        _codeStream.append(_eol
+                + _codeGenerator.comment(1, "wrapup "
+                + getComponent().getName()));
         _codeStream.appendCodeBlock(_defaultBlocks[3], true); // wrapupBlock
         return processCode(_codeStream.toString());
     }
@@ -1499,13 +1501,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 if (readOffset instanceof Integer) {
                     setReadOffset(port, i, new Integer(0));
                 } else {
-                    code.append(((String) readOffset) + " = 0;\n");
+                    code.append(((String) readOffset) + " = 0;n" + _eol);
                 }
                 Object writeOffset = getWriteOffset(port, i);
                 if (writeOffset instanceof Integer) {
                     setWriteOffset(port, i, new Integer(0));
                 } else {
-                    code.append(((String) writeOffset) + " = 0;\n");
+                    code.append(((String) writeOffset) + " = 0;" + _eol);
                 }
             }
         }
@@ -1946,7 +1948,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             if (bufferSize > 1) {
                 code.append("[" + bufferSize + "]");
             }
-            code.append(";\n");
+            code.append(";" + _eol);
         }
 
         return code.toString();
@@ -1981,7 +1983,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 if (bufferSize > 1) {
                     code.append("[" + bufferSize + "]");
                 }
-                code.append(";\n");
+                code.append(";" + _eol);
             }
         }
 
@@ -2137,7 +2139,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
             }
         }
-        return sinkRef + " = " + result + ";\n";
+        return sinkRef + " = " + result + ";" + _eol;
     }
 
     /** Get the code generator helper associated with the given component.
@@ -2175,6 +2177,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * The code stream associated with this helper.
      */
     protected CodeStream _codeStream = new CodeStream(this);
+
+    /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
+     *  We use a end of line charactor so that the files we generate
+     *  have the proper end of line character for use by other native tools.
+     */
+    protected static String _eol;
+    static {
+        _eol = StringUtilities.getProperty("line.separator");
+    }
 
     /** The parse tree to use with expressions. */
     protected ParseTreeCodeGenerator _parseTreeCodeGenerator;

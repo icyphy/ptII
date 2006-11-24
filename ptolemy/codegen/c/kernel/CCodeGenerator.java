@@ -73,10 +73,10 @@ public class CCodeGenerator extends CodeGenerator {
 
         if (functions.length > 0 && types.length > 0) {
 
-            code.append("#define NUM_TYPE " + types.length + "\n");
-            code.append("#define NUM_FUNC " + functions.length + "\n");
+            code.append("#define NUM_TYPE " + types.length + _eol);
+            code.append("#define NUM_FUNC " + functions.length + _eol);
             code.append("Token (*functionTable[NUM_TYPE][NUM_FUNC])"
-                    + "(Token, ...)= {\n");
+                    + "(Token, ...)= {" + _eol);
 
             for (int i = 0; i < types.length; i++) {
                 code.append("\t");
@@ -87,10 +87,10 @@ public class CCodeGenerator extends CodeGenerator {
                         code.append(", ");
                     }
                 }
-                code.append("\n");
+                code.append(_eol);
             }
 
-            code.append("};\n");
+            code.append("};" + _eol);
         }
         return code.toString();
     }
@@ -122,7 +122,7 @@ public class CCodeGenerator extends CodeGenerator {
         while (files.hasNext()) {
             String file = (String) files.next();
 
-            code.append("#include " + file + "\n");
+            code.append("#include " + file + _eol);
         }
 
         return code.toString();
@@ -137,14 +137,14 @@ public class CCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            return "\n\ninitialize() {\n";
+            return _eol + _eol + "initialize() {" + _eol;
 
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
         } else {
-            return "\n\nJNIEXPORT void JNICALL\n" + "Java_Jni"
+            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_Jni"
                     + _sanitizedModelName + "_initialize("
-                    + "JNIEnv *env, jobject obj) {\n";
+                    + "JNIEnv *env, jobject obj) {" + _eol;
         }
     }
 
@@ -154,7 +154,7 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generateInitializeExitCode() throws IllegalActionException {
 
-        return "}\n";
+        return "}" + _eol;
     }
 
     /** Generate the initialization procedure name.
@@ -164,7 +164,7 @@ public class CCodeGenerator extends CodeGenerator {
     public String generateInitializeProcedureName()
             throws IllegalActionException {
 
-        return _INDENT1 + "initialize();\n";
+        return _INDENT1 + "initialize();" + _eol;
     }
 
     /** Generate the main entry point.
@@ -179,13 +179,13 @@ public class CCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            mainEntryCode.append("\n\nmain(int argc, char *argv[]) {\n");
+            mainEntryCode.append(_eol + _eol + "main(int argc, char *argv[]) {" + _eol);
 
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
         } else {
-            mainEntryCode.append("\n\nJNIEXPORT jobjectArray JNICALL\n"
-                    + "Java_Jni" + _sanitizedModelName + "_fire (\n"
+            mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL" + _eol
+                    + "Java_Jni" + _sanitizedModelName + "_fire (" + _eol
                     + "JNIEnv *env, jobject obj");
 
             Iterator inputPorts = ((Actor) getContainer()).inputPortList()
@@ -195,7 +195,7 @@ public class CCodeGenerator extends CodeGenerator {
                 mainEntryCode.append(", jobjectArray " + inputPort.getName());
             }
 
-            mainEntryCode.append("){\n");
+            mainEntryCode.append("){" + _eol);
         }
         return mainEntryCode.toString();
     }
@@ -207,9 +207,10 @@ public class CCodeGenerator extends CodeGenerator {
     public String generateMainExitCode() throws IllegalActionException {
 
         if (isTopLevel()) {
-            return _INDENT1 + "exit(0);\n}\n";
+            return _INDENT1 + "exit(0);" + _eol + "}" + _eol;
         } else {
-            return _INDENT1 + "return tokensToAllOutputPorts;\n}\n";
+            return _INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
+                + _eol;
         }
     }
 
@@ -240,7 +241,7 @@ public class CCodeGenerator extends CodeGenerator {
                     .intValue();
 
             if (iterationCount > 0) {
-                code.append("static int iteration = 0;\n");
+                code.append("static int iteration = 0;" + _eol);
             }
         }
 
@@ -300,18 +301,18 @@ public class CCodeGenerator extends CodeGenerator {
 
         // Generate type map.
         String typeMembers = "";
-        code.append("#define TYPE_Token -1 \n");
+        code.append("#define TYPE_Token -1 " + _eol);
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .c file for each type.
             typeStreams[i] = new CodeStream(
                     "$CLASSPATH/ptolemy/codegen/kernel/type/" + typesArray[i]
                             + ".c");
 
-            code.append("#define TYPE_" + typesArray[i] + " " + i + "\n");
+            code.append("#define TYPE_" + typesArray[i] + " " + i + _eol);
 
             // Dynamically generate all the types within the union.
             typeMembers += "\t\t" + typesArray[i] + "Token " + typesArray[i]
-                    + ";\n";
+                    + ";" + _eol;
         }
 
         Object[] functionsArray = functions.toArray();
@@ -319,7 +320,7 @@ public class CCodeGenerator extends CodeGenerator {
         // Generate function map.
         for (int i = 0; i < functionsArray.length; i++) {
 
-            code.append("#define FUNC_" + functionsArray[i] + " " + i + "\n");
+            code.append("#define FUNC_" + functionsArray[i] + " " + i + _eol);
         }
 
         code.append("typedef struct token Token;");
@@ -389,7 +390,7 @@ public class CCodeGenerator extends CodeGenerator {
                     // reference to this label.
 
                     typeStreams[i].append("#define " + typesArray[i] + "_"
-                            + functionsArray[j] + " MISSING \n");
+                            + functionsArray[j] + " MISSING " + _eol);
 
                     // It is ok because this polymorphic function may not be
                     // supported by all types. 
@@ -419,7 +420,7 @@ public class CCodeGenerator extends CodeGenerator {
                 code.append("static "
                         + CodeGeneratorHelper.cType(parameter.getType()) + " "
                         + CodeGeneratorHelper.generateVariableName(parameter)
-                        + ";\n");
+                        + ";" + _eol);
             }
         }
 
@@ -448,7 +449,7 @@ public class CCodeGenerator extends CodeGenerator {
                         + " = "
                         + containerHelper.getParameterValue(
                                 parameter.getName(), parameter.getContainer())
-                        + ";\n");
+                        + ";" + _eol);
             }
         }
 
@@ -464,14 +465,14 @@ public class CCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            return "\n\nwrapup() {\n";
+            return _eol + _eol + "wrapup() {" + _eol;
 
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
         } else {
-            return "\n\nJNIEXPORT void JNICALL\n" + "Java_Jni"
+            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_Jni"
                     + _sanitizedModelName + "_wrapup("
-                    + "JNIEnv *env, jobject obj) {\n";
+                    + "JNIEnv *env, jobject obj) {" + _eol;
         }
     }
 
@@ -481,7 +482,7 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generateWrapupExitCode() throws IllegalActionException {
 
-        return "}\n";
+        return "}" + _eol;
     }
 
     /** Generate the wrapup procedure name.
@@ -490,7 +491,7 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generateWrapupProcedureName() throws IllegalActionException {
         
-        return _INDENT1 + "wrapup();\n";
+        return _INDENT1 + "wrapup();" + _eol;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -533,10 +534,10 @@ public class CCodeGenerator extends CodeGenerator {
             StringBuffer errorMessage = new StringBuffer();
             Iterator allCommands = commands.iterator();
             while (allCommands.hasNext()) {
-                errorMessage.append((String) allCommands.next() + "\n");
+                errorMessage.append((String) allCommands.next() + _eol);
             }
             throw new IllegalActionException("Problem executing the "
-                    + "commands:\n" + errorMessage);
+                    + "commands:" + _eol + errorMessage);
         }
         return _executeCommands.getLastSubprocessReturnCode();
     }
@@ -645,7 +646,8 @@ public class CCodeGenerator extends CodeGenerator {
             }
 
             _executeCommands.stdout("Reading \"" + makefileTemplateName
-                    + "\",\n    writing \"" + makefileOutputName + "\"");
+                    + "\"," + _eol + "    writing \"" + makefileOutputName
+                    + "\"");
             CodeGeneratorUtilities.substitute(makefileTemplateReader,
                     substituteMap, makefileOutputName);
         } catch (Exception ex) {

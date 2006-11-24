@@ -275,7 +275,7 @@ public class Director implements ActorCodeGenerator {
                         + _compositeActorHelper.getReference("@" + name));
                 code.append(" = ");
                 code.append(_compositeActorHelper.getReference(name));
-                code.append(";\n");
+                code.append(";" + _eol);
             }
         }
 
@@ -309,10 +309,10 @@ public class Director implements ActorCodeGenerator {
                 code
                         .append(_INDENT2
                                 + _compositeActorHelper.getReference(name));
-                code.append(" =\n");
+                code.append(" =" + _eol);
                 code.append(_INDENT3
                         + _compositeActorHelper.getReference("@" + name));
-                code.append(";\n");
+                code.append(";" + _eol);
             }
         }
 
@@ -509,7 +509,7 @@ public class Director implements ActorCodeGenerator {
                 int modulo = helper.getBufferSize(port, j) - 1;
                 String offsetVariable = (String) helper.getReadOffset(port, j);
                 code.append(offsetVariable + " = (" + offsetVariable + " + "
-                        + rate + ")&" + modulo + ";\n");
+                        + rate + ")&" + modulo + ";" + _eol);
             }
         }
     }
@@ -569,7 +569,7 @@ public class Director implements ActorCodeGenerator {
                     String offsetVariable = (String) helper.getWriteOffset(
                             sinkPort, sinkChannelNumber);
                     code.append(offsetVariable + " = (" + offsetVariable
-                            + " + " + rate + ")&" + modulo + ";\n");
+                            + " + " + rate + ")&" + modulo + ";" + _eol);
                 }
             }
         }
@@ -581,6 +581,15 @@ public class Director implements ActorCodeGenerator {
     /** The code generator containing this director helper.
      */
     protected CodeGenerator _codeGenerator;
+
+    /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
+     *  We use a end of line charactor so that the files we generate
+     *  have the proper end of line character for use by other native tools.
+     */
+    private static String _eol;
+    static {
+        _eol = StringUtilities.getProperty("line.separator");
+    }
 
     /** The associate director.
      */

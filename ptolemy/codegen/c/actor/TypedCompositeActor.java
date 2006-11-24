@@ -133,7 +133,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                 // FIXME: The = sign is language specific.
                 code.append(" = ");
                 code.append(getReference(inputPort.getName()));
-                code.append(";\n");
+                code.append(";" + _eol);
             }
         }
 
@@ -435,7 +435,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                     setReadOffset(port, i, new Integer(0));
                 } else {
                     // Read offset is a variable.
-                    code.append(((String) readOffset) + " = 0;\n");
+                    code.append(((String) readOffset) + " = 0;" + _eol);
                 }
                 Object writeOffset = getWriteOffset(port, i);
                 if (writeOffset instanceof Integer) {
@@ -443,7 +443,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                     setWriteOffset(port, i, new Integer(0));
                 } else {
                     // Write offset is a variable.
-                    code.append(((String) writeOffset) + " = 0;\n");
+                    code.append(((String) writeOffset) + " = 0;" + _eol);
                 }
             }
         }

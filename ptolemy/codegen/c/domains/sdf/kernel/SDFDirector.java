@@ -643,7 +643,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                 .getContainer());
 
         int bufferSize = helper.getBufferSize(port, channelNumber);
-        if (readTokens % bufferSize != 0 || writeTokens % bufferSize != 0) {
+        if (bufferSize != 0
+                && (readTokens % bufferSize != 0 || writeTokens % bufferSize != 0)) {
 
             // Increase the buffer size of that channel to the power of two.
             int newBufferSize = _ceilToPowerOfTwo(bufferSize);

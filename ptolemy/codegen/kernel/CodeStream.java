@@ -285,8 +285,8 @@ public class CodeStream {
             if (mayNotExist) {
                 return;
             } else {
-                throw new IllegalActionException("Cannot find code block: "
-                        + signature + ".\n");
+                throw new IllegalActionException("Cannot find code block \""
+                        + signature + "\".");
             }
         }
 
@@ -307,8 +307,8 @@ public class CodeStream {
         }
 
         if (indentLevel > 0) {
-            codeBlock = new StringBuffer(indent(indentLevel, codeBlock
-                    .toString()));
+            codeBlock = new StringBuffer(indent(indentLevel,
+                                  codeBlock.toString()));
         }
         _stream.append(codeBlock);
     }
@@ -379,9 +379,12 @@ public class CodeStream {
                 buffer.append(")");
             }
 
-            buffer.append(":\n");
+            buffer.append(":" + _eol);
             buffer.append(_declarations.getCode(signature));
-            buffer.append("\n-------------------------------\n\n");
+            buffer.append(_eol
+                    + "-------------------------------"
+                    + _eol
+                    + _eol);
         }
 
         return buffer.toString();
@@ -408,8 +411,8 @@ public class CodeStream {
         String indent = StringUtilities.getIndentPrefix(indentLevel);
         // For every line.separator, substitute line.separator + indent.
         String tmpString = StringUtilities.substitute(inputString,
-                _lineSeparator, _lineSeparator + indent);
-        if (tmpString.endsWith(_lineSeparator + indent)) {
+                _eol, _eol + indent);
+        if (tmpString.endsWith(_eol + indent)) {
             // Chop off the last indent
             tmpString = tmpString.substring(0, tmpString.length()
                     - indent.length());
@@ -432,9 +435,13 @@ public class CodeStream {
         try {
             CodeStream code = new CodeStream(args[0]);
 
-            System.out.println("\n----------Result-----------------------\n");
+            System.out.println(_eol +
+                    "----------Result-----------------------"
+                    + _eol);
             System.out.println(code.description());
-            System.out.println("\n----------Result-----------------------\n");
+            System.out.println(_eol +
+                    "----------Result-----------------------"
+                    + _eol);
 
             ArrayList codeBlockArgs = new ArrayList();
             codeBlockArgs.add(Integer.toString(3));
@@ -498,7 +505,7 @@ public class CodeStream {
             throws IllegalActionException {
         if (!name.startsWith("$")) {
             throw new IllegalActionException("Parameter \"" + name
-                    + "\" is not well-formed.\n"
+                    + "\" is not well-formed." + _eol
                     + "Parameter name for code block needs to starts with '$'");
         }
         //name.matches("[a-zA-Z_0-9]");
@@ -556,7 +563,7 @@ public class CodeStream {
             // create a string of all code in the file
             for (String line = reader.readLine(); line != null; line = reader
                     .readLine()) {
-                codeInFile.append(line + "\n");
+                codeInFile.append(line + _eol);
             }
 
             _declarations.addScope();
@@ -792,8 +799,8 @@ public class CodeStream {
                     return (String) ((Object[]) table.get(signature))[0];
                 }
             }
-            throw new IllegalActionException("Cannot find code block "
-                    + signature + ".\n");
+            throw new IllegalActionException("Cannot find code block \""
+                    + signature + "\".");
         }
 
         public StringBuffer getCode(Signature signature)
@@ -938,6 +945,15 @@ public class CodeStream {
      */
     private CodeBlockTable _declarations = null;
 
+    /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
+     *  We use a end of line charactor so that the files we generate
+     *  have the proper end of line character for use by other native tools.
+     */
+    private static String _eol;
+    static {
+        _eol = StringUtilities.getProperty("line.separator");
+    }
+
     /**
      * The path of the current .c file being parsed.
      */
@@ -958,10 +974,4 @@ public class CodeStream {
      * The content of this CodeStream.
      */
     private StringBuffer _stream = new StringBuffer();
-
-    /** The end of line character. */
-    private static String _lineSeparator;
-    static {
-        _lineSeparator = System.getProperty("line.separator");
-    }
 }

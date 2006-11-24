@@ -133,12 +133,12 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
                         .getToken()).intValue();
 
                 if (iterationCount <= 0) {
-                    code.append(_INDENT1 + "while (true) {\n");
+                    code.append(_INDENT1 + "while (true) {" + _eol);
                 } else {
                     // Declare iteration outside of the loop to avoid
                     // mode" with gcc-3.3.3
                     code.append(_INDENT1 + "for (iteration = 0; iteration < "
-                            + iterationCount + "; iteration ++) {\n");
+                            + iterationCount + "; iteration ++) {" + _eol);
                 }
             }
         }
@@ -149,7 +149,7 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
             code.append(generateFireCode());
         } else {
             code.append(StringUtilities.sanitizeName(model.getFullName())
-                    + "();\n");
+                    + "();" + _eol);
         }
 
         // The code generated in generateModeTransitionCode() is executed
@@ -159,7 +159,7 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            code.append(_INDENT1 + "}\n");
+            code.append(_INDENT1 + "}" + _eol);
         }
 
         return code.toString();
