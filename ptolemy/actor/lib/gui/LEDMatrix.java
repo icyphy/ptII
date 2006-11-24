@@ -150,7 +150,7 @@ public class LEDMatrix extends TypedAtomicActor {
         super.fire();
         if (row.hasToken(0) && column.hasToken(0) && control.hasToken(0)) {
             int rowValue = ((IntToken) row.get(0)).intValue();
-            int columnValue = ((IntToken) row.get(0)).intValue();
+            int columnValue = ((IntToken) column.get(0)).intValue();
             boolean controlValue = ((BooleanToken) control.get(0))
                     .booleanValue();
             if (controlValue) {
