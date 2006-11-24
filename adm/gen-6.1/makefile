@@ -166,6 +166,7 @@ clean:
 	rm -rf $(PTIIDIST) src installshield/*
 	rm -rf $(HYVISUAL_SRC_JAR)
 	rm -rf $(VIPTOS_SRC_JAR)
+	rm -rf $(PTSETUP).jar $(PTSETUP).exe
 
 FINDCLEAN = $(GENDIR)/findclean
 
