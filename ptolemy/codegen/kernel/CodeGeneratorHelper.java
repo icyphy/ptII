@@ -533,7 +533,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append("\n"
-                + _codeGenerator.comment(_component.getName()
+                + _codeGenerator.comment(1, _component.getName()
                         + "'s variable initialization."));
 
         //  Generate variable initialization for referenced parameters.    
