@@ -176,7 +176,7 @@ public class MultirateFSMDirector extends FSMDirector {
                 .getController();
         ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
         code.append(containerHelper.processCode("static int "
-                + "$actorSymbol(currentConfiguration);\n"));
+                + "$actorSymbol(currentConfiguration);" + _eol));
 
         int numberOfConfigurationsOfContainer = 0;
 
@@ -294,7 +294,7 @@ public class MultirateFSMDirector extends FSMDirector {
         code.append("switch ("
                 + containerHelper
                         .processCode("$actorSymbol(currentConfiguration)")
-                + ") {\n");
+                + ") {" + _eol);
 
         for (int configurationNumber = 0; configurationNumber < rates.length; configurationNumber++) {
 
@@ -327,7 +327,7 @@ public class MultirateFSMDirector extends FSMDirector {
                     .getName());
             IOPort[] sinkPorts = { controllerPort, refinementPort };
 
-            code.append("case " + configurationNumber + ":\n");
+            code.append("case " + configurationNumber + ":" + _eol);
 
             if (rates[configurationNumber] == null) {
                 continue;
@@ -386,7 +386,7 @@ public class MultirateFSMDirector extends FSMDirector {
                         }
                         code.append(containerHelper
                                 .getReference(name + "," + k));
-                        code.append(";\n");
+                        code.append(";" + _eol);
                     }
 
                     // Only update the port write offsets of the
@@ -411,15 +411,15 @@ public class MultirateFSMDirector extends FSMDirector {
                                     .getWriteOffset(sinkPort, i);
                             code.append(offsetVariable + " = ("
                                     + offsetVariable + " + " + rate + ")&"
-                                    + modulo + ";\n");
+                                    + modulo + ";" + _eol);
                         }
                     }
                 }
             }
 
-            code.append("break;\n");
+            code.append("break;" + _eol);
         }
-        code.append("}\n");
+        code.append("}" + _eol);
 
     }
 
@@ -457,10 +457,10 @@ public class MultirateFSMDirector extends FSMDirector {
         code.append("switch ("
                 + containerHelper
                         .processCode("$actorSymbol(currentConfiguration)")
-                + ") {\n");
+                + ") {" + _eol);
         for (int configurationNumber = 0; configurationNumber < rates.length; configurationNumber++) {
 
-            code.append("case " + configurationNumber + ":\n");
+            code.append("case " + configurationNumber + ":" + _eol);
 
             if (rates[configurationNumber] == null) {
                 continue;
@@ -491,7 +491,7 @@ public class MultirateFSMDirector extends FSMDirector {
                         code.append(" = ");
                         code.append(containerHelper.getReference("@" + name
                                 + "," + k));
-                        code.append(";\n");
+                        code.append(";" + _eol);
                     }
                 }
             }
@@ -500,9 +500,9 @@ public class MultirateFSMDirector extends FSMDirector {
             // downstream is updated by outside director.
             _updatePortOffset(outputPort, code, rate);
 
-            code.append("break;\n");
+            code.append("break;" + _eol);
         }
-        code.append("}\n");
+        code.append("}" + _eol);
     }
 
     /** Create read and write offset variables if needed for any output port
@@ -596,9 +596,9 @@ public class MultirateFSMDirector extends FSMDirector {
             String channelWriteOffsetVariable = channelWriteOffset.toString();
 
             code.append("static int " + channelReadOffsetVariable + " = "
-                    + actorHelper.getReadOffset(port, channel) + ";\n");
+                    + actorHelper.getReadOffset(port, channel) + ";" + _eol);
             code.append("static int " + channelWriteOffsetVariable + " = "
-                    + actorHelper.getWriteOffset(port, channel) + ";\n");
+                    + actorHelper.getWriteOffset(port, channel) + ";" + _eol);
 
             // Now replace these concrete offsets with the variables.
             actorHelper.setReadOffset(port, channel, channelReadOffsetVariable);
@@ -654,7 +654,7 @@ public class MultirateFSMDirector extends FSMDirector {
             parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
                     controllerHelper._scope);
             codeBuffer.append(parseTreeCodeGenerator.generateFireCode());
-            codeBuffer.append(") {\n");
+            codeBuffer.append(") {" + _eol);
 
             // generate code for commit action
             Iterator actions = transition.commitActionList().iterator();
@@ -686,7 +686,7 @@ public class MultirateFSMDirector extends FSMDirector {
                             controllerHelper._scope);
                     codeBuffer
                             .append(parseTreeCodeGenerator.generateFireCode());
-                    codeBuffer.append(";\n");
+                    codeBuffer.append(";" + _eol);
                 }
             }
 
@@ -756,7 +756,7 @@ public class MultirateFSMDirector extends FSMDirector {
                         codeBuffer.append(containerHelper
                                 .processCode("$actorSymbol("
                                         + "currentConfiguration) = ")
-                                + tempSum + ";\n");
+                                + tempSum + ";" + _eol);
                     } else {
                         codeBuffer.append(containerHelper
                                 .processCode("$actorSymbol("
@@ -764,7 +764,7 @@ public class MultirateFSMDirector extends FSMDirector {
                                 + refinementHelper.processCode("$actorSymbol("
                                         + "currentConfiguration)")
                                 + " + "
-                                + tempSum + ";\n");
+                                + tempSum + ";" + _eol);
                     }
                     break;
                 } else {

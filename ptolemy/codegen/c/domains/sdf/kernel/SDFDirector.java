@@ -123,7 +123,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                             code.append(" = ");
                             code.append(containerHelper.getReference("@" + name
                                     + "," + k));
-                            code.append(";\n");
+                            code.append(";" + _eol);
                         }
                     }
                 }
@@ -189,20 +189,20 @@ public class SDFDirector extends StaticSchedulingDirector {
                     code.append(_INDENT2);
                     code.append("jobject " + tokensFromOneChannel
                             + " = (*env)->GetObjectArrayElement(env, "
-                            + portName + ", " + i + ");\n");
+                            + portName + ", " + i + ");" + _eol);
 
                     code.append(_INDENT2);
                     if (type == BaseType.INT) {
                         code.append("jint * " + pointerToTokensFromOneChannel
                                 + " = (*env)->GetIntArrayElements" + "(env, "
-                                + tokensFromOneChannel + ", NULL);\n");
+                                + tokensFromOneChannel + ", NULL);" + _eol);
 
                     } else if (type == BaseType.DOUBLE) {
                         code.append("jdouble * "
                                 + pointerToTokensFromOneChannel
                                 + " = (*env)->GetDoubleArrayElements"
                                 + "(env, " + tokensFromOneChannel
-                                + ", NULL);\n");
+                                + ", NULL);" + _eol);
                     } else {
                         // FIXME: need to deal with other types
                     }
@@ -215,19 +215,19 @@ public class SDFDirector extends StaticSchedulingDirector {
                         code.append(compositeActorHelper.getReference("@"
                                 + portNameWithChannelNumber + "," + k));
                         code.append(" = " + pointerToTokensFromOneChannel + "["
-                                + k + "];\n");
+                                + k + "];" + _eol);
                     }
 
                     code.append(_INDENT2);
                     if (type == BaseType.INT) {
                         code.append("(*env)->ReleaseIntArrayElements(env, "
                                 + tokensFromOneChannel + ", "
-                                + pointerToTokensFromOneChannel + ", 0);\n");
+                                + pointerToTokensFromOneChannel + ", 0);" + _eol);
 
                     } else if (type == BaseType.DOUBLE) {
                         code.append("(*env)->ReleaseDoubleArrayElements(env, "
                                 + tokensFromOneChannel + ", "
-                                + pointerToTokensFromOneChannel + ", 0);\n");
+                                + pointerToTokensFromOneChannel + ", 0);" + _eol);
                     } else {
                         // FIXME: need to deal with other types
                     }
@@ -247,11 +247,11 @@ public class SDFDirector extends StaticSchedulingDirector {
                         code.append(_INDENT2
                                 + compositeActorHelper.getReference("@" + name
                                         + "," + k));
-                        code.append(" =\n");
+                        code.append(" =" + _eol);
                         code.append(_INDENT4
                                 + compositeActorHelper.getReference(name + ","
                                         + k));
-                        code.append(";\n");
+                        code.append(";" + _eol);
                     }
                 }
             }
@@ -286,13 +286,13 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 code
                         .append(_INDENT2
-                                + "jobjectArray tokensToAllOutputPorts;\n");
+                                + "jobjectArray tokensToAllOutputPorts;" + _eol);
                 code.append(_INDENT2
                         + "jclass objClass = (*env)->FindClass(env, "
-                        + "\"Ljava/lang/Object;\");\n");
+                        + "\"Ljava/lang/Object;\");" + _eol);
                 code.append(_INDENT2 + "tokensToAllOutputPorts = "
                         + "(*env)->NewObjectArray(env, " + numberOfOutputPorts
-                        + ", objClass, NULL);\n");
+                        + ", objClass, NULL);" + _eol);
             }
 
             String portName = outputPort.getName();
@@ -301,28 +301,28 @@ public class SDFDirector extends StaticSchedulingDirector {
             Type type = ((TypedIOPort) outputPort).getType();
 
             int numberOfChannels = outputPort.getWidthInside();
-            code.append(_INDENT2 + "jobjectArray " + tokensToThisPort + ";\n");
+            code.append(_INDENT2 + "jobjectArray " + tokensToThisPort + ";" + _eol);
 
             if (type == BaseType.INT) {
                 if (!_intFlag) {
                     code.append(_INDENT2
                             + "jclass objClassI = (*env)->FindClass(env, "
-                            + "\"[I\");\n");
+                            + "\"[I\");" + _eol);
                     _intFlag = true;
                 }
                 code.append(_INDENT2 + tokensToThisPort
                         + " = (*env)->NewObjectArray(env, " + numberOfChannels
-                        + ", objClassI, NULL);\n");
+                        + ", objClassI, NULL);" + _eol);
             } else if (type == BaseType.DOUBLE) {
                 if (!_doubleFlag) {
                     code.append(_INDENT2
                             + "jclass objClassD = (*env)->FindClass(env, "
-                            + "\"[D\");\n");
+                            + "\"[D\");" + _eol);
                     _doubleFlag = true;
                 }
                 code.append(_INDENT2 + tokensToThisPort
                         + " = (*env)->NewObjectArray(env, " + numberOfChannels
-                        + ", objClassD, NULL);\n");
+                        + ", objClassD, NULL);" + _eol);
             } else {
                 // FIXME: need to deal with other types
             }
@@ -333,11 +333,11 @@ public class SDFDirector extends StaticSchedulingDirector {
                 if (i == 0) {
                     if (type == BaseType.INT) {
                         code.append(_INDENT2 + "jint " + tokensToOneChannel
-                                + "[" + rate + "];\n");
+                                + "[" + rate + "];" + _eol);
 
                     } else if (type == BaseType.DOUBLE) {
                         code.append(_INDENT2 + "jdouble " + tokensToOneChannel
-                                + "[" + rate + "];\n");
+                                + "[" + rate + "];" + _eol);
 
                     } else {
                         // FIXME: need to deal with other types
@@ -357,25 +357,25 @@ public class SDFDirector extends StaticSchedulingDirector {
                             + "] = "
                             + compositeActorHelper.getReference("@"
                                     + portNameWithChannelNumber + "," + k)
-                            + ";\n");
+                            + ";" + _eol);
                 }
 
                 String tokensToOneChannelArray = "arr" + portName + i;
                 if (type == BaseType.INT) {
                     code.append(_INDENT2 + "jintArray "
                             + tokensToOneChannelArray + " = "
-                            + "(*env)->NewIntArray(env, " + rate + ");\n");
+                            + "(*env)->NewIntArray(env, " + rate + ");" + _eol);
                     code.append(_INDENT2 + "(*env)->SetIntArrayRegion"
                             + "(env, " + tokensToOneChannelArray + ", 0, "
-                            + rate + ", " + tokensToOneChannel + ");\n");
+                            + rate + ", " + tokensToOneChannel + ");" + _eol);
 
                 } else if (type == BaseType.DOUBLE) {
                     code.append(_INDENT2 + "jdoubleArray "
                             + tokensToOneChannelArray + " = "
-                            + "(*env)->NewDoubleArray(env, " + rate + ");\n");
+                            + "(*env)->NewDoubleArray(env, " + rate + ");" + _eol);
                     code.append(_INDENT2 + "(*env)->SetDoubleArrayRegion"
                             + "(env, " + tokensToOneChannelArray + ", 0, "
-                            + rate + ", " + tokensToOneChannel + ");\n");
+                            + rate + ", " + tokensToOneChannel + ");" + _eol);
 
                 } else {
                     // FIXME: need to deal with other types
@@ -383,17 +383,17 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 code.append(_INDENT2 + "(*env)->SetObjectArrayElement"
                         + "(env, " + tokensToThisPort + ", " + i + ", "
-                        + tokensToOneChannelArray + ");\n");
+                        + tokensToOneChannelArray + ");" + _eol);
                 code.append(_INDENT2 + "(*env)->DeleteLocalRef(env, "
-                        + tokensToOneChannelArray + ");\n");
+                        + tokensToOneChannelArray + ");" + _eol);
 
             }
 
             code.append(_INDENT2 + "(*env)->SetObjectArrayElement"
                     + "(env, tokensToAllOutputPorts, " + _portNumber + ", "
-                    + tokensToThisPort + ");\n");
+                    + tokensToThisPort + ");" + _eol);
             code.append(_INDENT2 + "(*env)->DeleteLocalRef(env, "
-                    + tokensToThisPort + ");\n");
+                    + tokensToThisPort + ");" + _eol);
             _portNumber++;
 
         } else {
@@ -409,11 +409,11 @@ public class SDFDirector extends StaticSchedulingDirector {
                         code.append(_INDENT2
                                 + compositeActorHelper.getReference(name + ","
                                         + k));
-                        code.append(" =\n");
+                        code.append(" =" + _eol);
                         code.append(_INDENT4
                                 + compositeActorHelper.getReference("@" + name
                                         + "," + k));
-                        code.append(";\n");
+                        code.append(";" + _eol);
                     }
                 }
             }
@@ -672,7 +672,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 channelReadOffset.append("_readoffset");
                 String channelReadOffsetVariable = channelReadOffset.toString();
                 code.append("static int " + channelReadOffsetVariable + " = "
-                        + helper.getReadOffset(port, channelNumber) + ";\n");
+                        + helper.getReadOffset(port, channelNumber) + ";" + _eol);
                 // Now replace the concrete offset with the variable.
                 helper.setReadOffset(port, channelNumber,
                         channelReadOffsetVariable);
@@ -691,7 +691,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 String channelWriteOffsetVariable = channelWriteOffset
                         .toString();
                 code.append("static int " + channelWriteOffsetVariable + " = "
-                        + helper.getWriteOffset(port, channelNumber) + ";\n");
+                        + helper.getWriteOffset(port, channelNumber) + ";" + _eol);
                 // Now replace the concrete offset with the variable.
                 helper.setWriteOffset(port, channelNumber,
                         channelWriteOffsetVariable);

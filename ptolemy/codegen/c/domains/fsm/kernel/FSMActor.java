@@ -130,8 +130,8 @@ public class FSMActor extends CCodeGeneratorHelper {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
-        code.append("static int $actorSymbol(currentState);\n");
-        code.append("static unsigned char $actorSymbol(transitionFlag);\n");
+        code.append("static int $actorSymbol(currentState);" + _eol);
+        code.append("static unsigned char $actorSymbol(transitionFlag);" + _eol);
         return processCode(code.toString());
     }
 
@@ -144,7 +144,8 @@ public class FSMActor extends CCodeGeneratorHelper {
     public Set getSharedCode() throws IllegalActionException {
         Set set = new HashSet();
         set.addAll(super.getSharedCode());
-        set.add("#define true 1\n#define false 0\n");
+        set.add("#define true 1" + _eol
+                + "#define false 0" + _eol);
         return set;
     }
 
@@ -171,11 +172,11 @@ public class FSMActor extends CCodeGeneratorHelper {
         // The default value 1 of transitionFlag means the transition
         // will be taken. If no transition is actually taken, it will be
         // set to value 0.
-        codeBuffer.append("$actorSymbol(transitionFlag) = 1;\n");
+        codeBuffer.append("$actorSymbol(transitionFlag) = 1;" + _eol);
         codeBuffer.append(_getIndentPrefix(depth));
         // States are numbered according to the order they are created,
         // i.e., the same order as in list returned by the method entityList().
-        codeBuffer.append("switch ($actorSymbol(currentState)) {\n");
+        codeBuffer.append("switch ($actorSymbol(currentState)) {" + _eol);
 
         Iterator states = fsmActor.entityList().iterator();
         int stateCount = 0;
@@ -184,7 +185,7 @@ public class FSMActor extends CCodeGeneratorHelper {
         while (states.hasNext()) {
             codeBuffer.append(_getIndentPrefix(depth));
             // For each state...
-            codeBuffer.append("case " + stateCount + ":\n");
+            codeBuffer.append("case " + stateCount + ":" + _eol);
             stateCount++;
 
             State state = (State) states.next();
@@ -236,7 +237,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                     codeBuffer
                             .append(parseTreeCodeGenerator.generateFireCode());
                 }
-                codeBuffer.append(") {\n");
+                codeBuffer.append(") {" + _eol);
 
                 depth++;
 
@@ -324,7 +325,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 _scope);
                         codeBuffer.append(parseTreeCodeGenerator
                                 .generateFireCode());
-                        codeBuffer.append(";\n");
+                        codeBuffer.append(";" + _eol);
                     }
                 }
 
@@ -345,7 +346,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                         } else {
                             codeBuffer
                                     .append(generateName((NamedObj) actors[i])
-                                            + "();\n");
+                                            + "();" + _eol);
                         }
                     }
                 }
@@ -406,7 +407,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 _scope);
                         codeBuffer.append(parseTreeCodeGenerator
                                 .generateFireCode());
-                        codeBuffer.append(";\n");
+                        codeBuffer.append(";" + _eol);
                     }
                 }
 
@@ -448,15 +449,15 @@ public class FSMActor extends CCodeGeneratorHelper {
             }
 
             if (transitionCount > 0) {
-                codeBuffer.append("else {\n");
+                codeBuffer.append("else {" + _eol);
             } else {
-                codeBuffer.append("\n");
+                codeBuffer.append(_eol);
             }
 
             depth++;
             codeBuffer.append(_getIndentPrefix(depth));
             // indicates no transition is taken.
-            codeBuffer.append("$actorSymbol(transitionFlag) = 0;\n");
+            codeBuffer.append("$actorSymbol(transitionFlag) = 0;" + _eol);
 
             // Generate code for updating configuration number of this
             // FSMActor's container.  Note we need this because the
@@ -475,17 +476,17 @@ public class FSMActor extends CCodeGeneratorHelper {
 
             if (transitionCount > 0) {
                 codeBuffer.append(_getIndentPrefix(depth));
-                codeBuffer.append("} \n"); // end of if statement
+                codeBuffer.append("} " + _eol); // end of if statement
             }
 
             codeBuffer.append(_getIndentPrefix(depth));
-            codeBuffer.append("break;\n"); // end of case statement
+            codeBuffer.append("break;" + _eol); // end of case statement
             depth--;
         }
 
         depth--;
         codeBuffer.append(_getIndentPrefix(depth));
-        codeBuffer.append("}\n"); // end of switch statement
+        codeBuffer.append("}" + _eol); // end of switch statement
         code.append(processCode(codeBuffer.toString()));
     }
 
@@ -527,7 +528,7 @@ public class FSMActor extends CCodeGeneratorHelper {
         while (states.hasNext()) {
             if (states.next() == state) {
                 codeBuffer.append("$actorSymbol(currentState) = "
-                        + stateCounter + ";\n");
+                        + stateCounter + ";" + _eol);
                 break;
             }
             stateCounter++;

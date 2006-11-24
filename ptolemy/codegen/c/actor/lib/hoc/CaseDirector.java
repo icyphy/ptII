@@ -79,7 +79,7 @@ public class CaseDirector extends Director {
 
         code.append("switch ("
                 + CodeGeneratorHelper.generateVariableName(container.control)
-                + ") {\n");
+                + ") {" + _eol);
 
         Iterator refinements = container.deepEntityList().iterator();
         while (refinements.hasNext()) {
@@ -88,7 +88,7 @@ public class CaseDirector extends Director {
             if (!refinementName.equals("default")) {
                 code.append("case ");
             }
-            code.append(refinementName + ":\n");
+            code.append(refinementName + ":" + _eol);
 
             CodeGeneratorHelper refinementHelper = (CodeGeneratorHelper) _getHelper(refinement);
 
@@ -98,10 +98,10 @@ public class CaseDirector extends Director {
                 code.append(refinementHelper.generateTypeConvertFireCode());
             } else {
                 code.append(CodeGeneratorHelper.generateName(refinement)
-                        + "();\n");
+                        + "();" + _eol);
             }
 
-            code.append("break;\n");
+            code.append("break;" + _eol);
         }
 
         code.append("}");

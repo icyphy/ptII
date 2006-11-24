@@ -84,7 +84,7 @@ public class FSMDirector extends Director {
         StringBuffer code = new StringBuffer();
 
         // generate code for preemptive transition
-        code.append("\n/* Preemptive Transition */\n\n");
+        code.append(_eol + "/* Preemptive Transition */" + _eol + _eol);
         controllerHelper.generateTransitionCode(code,
                 new TransitionRetriever() {
                     public Iterator retrieveTransitions(State state) {
@@ -92,18 +92,18 @@ public class FSMDirector extends Director {
                     }
                 });
 
-        code.append("\n");
+        code.append(_eol);
 
         // check to see if a preemptive transition is taken
         code.append("if ("
                 + controllerHelper.processCode("$actorSymbol(transitionFlag)")
-                + " == 0) {\n");
+                + " == 0) {" + _eol);
 
         // generate code for refinements
         _generateRefinementCode(code);
 
         // generate code for non-preemptive transition
-        code.append("\n/* Nonpreemptive Transition */\n\n");
+        code.append(_eol + "/* Nonpreemptive Transition */" + _eol + _eol);
         controllerHelper.generateTransitionCode(code,
                 new TransitionRetriever() {
                     public Iterator retrieveTransitions(State state) {
@@ -137,7 +137,7 @@ public class FSMDirector extends Director {
         code.append(_getIndentPrefix(depth));
         code.append("switch ("
                 + controllerHelper.processCode("$actorSymbol(currentState)")
-                + ") {\n");
+                + ") {" + _eol);
 
         Iterator states = controller.entityList().iterator();
         int stateCount = 0;
@@ -145,7 +145,7 @@ public class FSMDirector extends Director {
 
         while (states.hasNext()) {
             code.append(_getIndentPrefix(depth));
-            code.append("case " + stateCount + ":\n");
+            code.append("case " + stateCount + ":" + _eol);
             stateCount++;
 
             depth++;
@@ -164,7 +164,7 @@ public class FSMDirector extends Director {
                     } else {
                         code.append(CodeGeneratorHelper
                                 .generateName((NamedObj) actors[i])
-                                + "();\n");
+                                + "();" + _eol);
                     }
 
                     // update buffer offset after firing each actor once
@@ -177,9 +177,9 @@ public class FSMDirector extends Director {
                             code.append("switch ("
                                     + actorHelper.processCode("$actorSymbol("
                                             + "currentConfiguration)")
-                                    + ") {\n");
+                                    + ") {" + _eol);
                             for (int k = 0; k < rates.length; k++) {
-                                code.append("case " + k + ":\n");
+                                code.append("case " + k + ":" + _eol);
                                 if (rates[k] != null) {
                                     int rate = rates[k][portNumber];
                                     if (port.isInput()) {
@@ -188,10 +188,10 @@ public class FSMDirector extends Director {
                                         _updateConnectedPortsOffset(port, code,
                                                 rate);
                                     }
-                                    code.append("break;\n");
+                                    code.append("break;" + _eol);
                                 }
                             }
-                            code.append("}\n");
+                            code.append("}" + _eol);
                         } else {
                             int rate = DFUtilities.getRate(port);
                             if (port.isInput()) {
@@ -207,13 +207,13 @@ public class FSMDirector extends Director {
             }
 
             code.append(_getIndentPrefix(depth));
-            code.append("break;\n"); //end of case statement
+            code.append("break;" + _eol); //end of case statement
             depth--;
         }
 
         depth--;
         code.append(_getIndentPrefix(depth));
-        code.append("}\n"); //end of switch statement
+        code.append("}" + _eol); //end of switch statement
     }
 
     /** Generate The fire function code. This method is called when the firing

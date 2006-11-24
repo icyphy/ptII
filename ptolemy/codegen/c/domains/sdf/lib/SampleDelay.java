@@ -72,7 +72,7 @@ public class SampleDelay extends CCodeGeneratorHelper {
 
         for (int i = 0; i < length; i++) {
             _codeStream.append("$ref(output, " + i + ") = "
-                    + "$val(initialOutputs, " + i + ");\n");
+                    + "$val(initialOutputs, " + i + ");" + _eol);
         }
 
         return processCode(_codeStream.toString());

@@ -89,10 +89,10 @@ public class Expression extends CCodeGeneratorHelper {
         //        }
 
         //code.append(processCode("    $ref(output)." + portType + "Port = ("
-        //        + _cParseTreeCodeGenerator.generateFireCode()) + ");\n");
+        //        + _cParseTreeCodeGenerator.generateFireCode()) + ");" + _eol);
         code.append(processCode("    $ref(output) = "
                 + _cParseTreeCodeGenerator.generateFireCode())
-                + ";\n");
+                + ";" + _eol);
         return code.toString();
     }
 

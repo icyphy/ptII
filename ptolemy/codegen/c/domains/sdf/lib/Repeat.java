@@ -74,7 +74,7 @@ public class Repeat extends CCodeGeneratorHelper {
                 _codeStream.append("$ref(output," + ((j * blockSize) + i)
                         + ") = ");
             }
-            _codeStream.append("$ref(input," + i + ");\n");
+            _codeStream.append("$ref(input," + i + ");" + _eol);
         }
 
         return processCode(_codeStream.toString());

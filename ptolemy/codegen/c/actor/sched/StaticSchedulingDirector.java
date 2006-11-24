@@ -125,14 +125,14 @@ public class StaticSchedulingDirector extends Director {
                 int count = firing.getIterationCount();
                 if (count > 1) {
                     if (!isIDefined) {
-                        code.append("int i;\n");
+                        code.append("int i;" + _eol);
                         isIDefined = true;
                     }
-                    code.append("for (i = 0; i < " + count + " ; i++) {\n");
+                    code.append("for (i = 0; i < " + count + " ; i++) {" + _eol);
                 }
 
                 code.append(CodeGeneratorHelper.generateName((NamedObj) actor)
-                        + "();\n");
+                        + "();" + _eol);
 
                 // update buffer offset after firing each actor once
                 Iterator inputPorts = actor.inputPortList().iterator();
@@ -150,7 +150,7 @@ public class StaticSchedulingDirector extends Director {
                 }
 
                 if (count > 1) {
-                    code.append("}\n");
+                    code.append("}n" + _eol);
                 }
             }
         }

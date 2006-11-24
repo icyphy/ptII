@@ -108,12 +108,12 @@ public class XYPlotter extends CCodeGeneratorHelper {
         
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
-        String header = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"
+        String header = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"" + _eol
             + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
         printWriter.write(header);
-        printWriter.write("\n<plot>\n");
+        printWriter.write(_eol + "<plot>" + _eol);
         actor.plot.writeFormat(printWriter);
-        printWriter.write("</plot>\n");
+        printWriter.write("</plot>" + _eol);
         
         BufferedReader reader = new BufferedReader
                 (new StringReader(stringWriter.toString()));
@@ -148,9 +148,9 @@ public class XYPlotter extends CCodeGeneratorHelper {
         // FIXME: this is a dumb way to leave the plot window open 
         // when the program runs to the end. I need to figure out a
         // better way. Or is there any?
-        code.append("char $actorSymbol(temp)[80];\n");
-        code.append("printf(\"close plot window to exit...\");\n");
-        code.append("scanf(\"%s\",$actorSymbol(temp));\n");
+        code.append("char $actorSymbol(temp)[80];" + _eol);
+        code.append("printf(\"close plot window to exit...\");" + _eol);
+        code.append("scanf(\"%s\",$actorSymbol(temp));" + _eol);
         return processCode(code.toString());
     }
     

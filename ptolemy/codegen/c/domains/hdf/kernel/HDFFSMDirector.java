@@ -208,7 +208,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         // at this point. Instead a variable is set to record the firing of the
         // modal model. This variable is used when doing mode transition after
         // one global iteration.
-        code.append(containerHelper.processCode("$actorSymbol(fired) = 1;\n"));
+        code.append(containerHelper.processCode("$actorSymbol(fired) = 1;" + _eol));
 
         return code.toString();
     }
@@ -236,9 +236,9 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
         code
                 .append(containerHelper
-                        .processCode("if ($actorSymbol(fired)) {\n"));
+                        .processCode("if ($actorSymbol(fired)) {" + _eol));
         // generate code for non-preemptive transition
-        code.append("\n/* Nonpreemptive Transition */\n\n");
+        code.append(_eol + "/* Nonpreemptive Transition */" + _eol + _eol);
         controllerHelper.generateTransitionCode(code,
                 new TransitionRetriever() {
                     public Iterator retrieveTransitions(State state) {
@@ -246,8 +246,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                     }
                 });
         // reset the variable
-        code.append(containerHelper.processCode("$actorSymbol(fired) = 0;\n"));
-        code.append("}\n");
+        code.append(containerHelper.processCode("$actorSymbol(fired) = 0;" + _eol));
+        code.append("}" + _eol);
     }
 
     /** Generate the preinitialize code for this director. Declare a variable
@@ -267,7 +267,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
         code
                 .append(containerHelper
-                        .processCode("static unsigned char $actorSymbol(fired) = 0;\n"));
+                        .processCode("static unsigned char $actorSymbol(fired) = 0;" + _eol));
 
         return code.toString();
     }
