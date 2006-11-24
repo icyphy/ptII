@@ -629,7 +629,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append("\n\n");
-        code.append(comment("Variable initialization "
+        code.append(comment(1, "Variable initialization "
                 + getContainer().getFullName()));
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
