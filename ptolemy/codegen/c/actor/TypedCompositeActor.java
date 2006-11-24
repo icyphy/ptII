@@ -263,7 +263,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_codeGenerator.comment(0,
+        code.append(_codeGenerator.comment(1,
                 "Composite actor's variable declarations."));
         code.append(super.generateVariableDeclaration());
 
