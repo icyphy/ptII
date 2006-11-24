@@ -288,7 +288,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_codeGenerator
-                .comment(1. "Composite actor's variable initializations."));
+                .comment(1, "Composite actor's variable initializations."));
         code.append(super.generateVariableInitialization());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
