@@ -478,7 +478,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment("Initialize " + getContainer().getFullName()));
+        code.append(comment(1, "Initialize " + getContainer().getFullName()));
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateInitializeCode());
