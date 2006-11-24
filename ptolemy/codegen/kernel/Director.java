@@ -351,7 +351,7 @@ public class Director implements ActorCodeGenerator {
      */
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_codeGenerator.comment("The wrapup of the director."));
+        code.append(_codeGenerator.comment(1, "The wrapup of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
