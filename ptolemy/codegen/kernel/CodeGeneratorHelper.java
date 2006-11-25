@@ -250,7 +250,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("void " + generateName(getComponent()) + "() {" + _eol);
+        code.append(_eol + "void " + generateName(getComponent()) + "() {" + _eol);
         code.append(generateFireCode());
         code.append(generateTypeConvertFireCode());
         code.append("}" + _eol);
