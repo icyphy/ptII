@@ -78,6 +78,7 @@ public class StaticSchedulingDirector extends Director {
     public String generateFireCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
+        code.append(_codeGenerator.comment(1, "The firing of the StaticSchedulingDirector."));
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
 
@@ -102,8 +103,8 @@ public class StaticSchedulingDirector extends Director {
                 for (int i = 0; i < firing.getIterationCount(); i++) {
 
                     // generate fire code for the actor
-                    code.append(helper.generateFireCode());
-                    code.append(helper.generateTypeConvertFireCode());
+                    code.append(_INDENT1 + helper.generateFireCode());
+                    code.append(_INDENT1 + helper.generateTypeConvertFireCode());
 
                     // update buffer offset after firing each actor once
                     Iterator inputPorts = actor.inputPortList().iterator();
@@ -123,15 +124,17 @@ public class StaticSchedulingDirector extends Director {
             } else {
 
                 int count = firing.getIterationCount();
+                String indent = _INDENT1;
                 if (count > 1) {
                     if (!isIDefined) {
-                        code.append("int i;" + _eol);
+                        code.append(_INDENT1 + "int i;" + _eol);
                         isIDefined = true;
                     }
-                    code.append("for (i = 0; i < " + count + " ; i++) {" + _eol);
+                    code.append(_INDENT1 + "for (i = 0; i < " + count + " ; i++) {" + _eol);
+                    indent = _INDENT2;
                 }
 
-                code.append(CodeGeneratorHelper.generateName((NamedObj) actor)
+                code.append(indent + CodeGeneratorHelper.generateName((NamedObj) actor)
                         + "();" + _eol);
 
                 // update buffer offset after firing each actor once
@@ -150,7 +153,7 @@ public class StaticSchedulingDirector extends Director {
                 }
 
                 if (count > 1) {
-                    code.append("}" + _eol);
+                    code.append(_INDENT1 + "}" + _eol);
                 }
             }
         }
