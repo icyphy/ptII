@@ -130,7 +130,7 @@ public class Director implements ActorCodeGenerator {
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            code.append(actorHelper.generateFireFunctionCode());
+            code.append(_INDENT1 + actorHelper.generateFireFunctionCode());
         }
         return code.toString();
     }

@@ -664,9 +664,8 @@ public class SDFDirector extends StaticSchedulingDirector {
             if (readTokens % newBufferSize != 0) {
 
                 // Declare the read offset variable.
-                StringBuffer channelReadOffset = new StringBuffer();
-                channelReadOffset
-                        .append(CodeGeneratorHelper.generateName(port));
+                StringBuffer channelReadOffset = new StringBuffer(
+                        _INDENT1 + CodeGeneratorHelper.generateName(port));
                 if (width > 1) {
                     channelReadOffset.append("_" + channelNumber);
                 }
@@ -682,9 +681,8 @@ public class SDFDirector extends StaticSchedulingDirector {
             if (writeTokens % newBufferSize != 0) {
 
                 // Declare the write offset variable.
-                StringBuffer channelWriteOffset = new StringBuffer();
-                channelWriteOffset.append(CodeGeneratorHelper
-                        .generateName(port));
+                StringBuffer channelWriteOffset = new StringBuffer(
+                        _INDENT1 + CodeGeneratorHelper.generateName(port));
                 if (width > 1) {
                     channelWriteOffset.append("_" + channelNumber);
                 }

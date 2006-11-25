@@ -123,7 +123,8 @@ public class AddSubtract extends CCodeGeneratorHelper {
 
         Type type = actor.output.getType();
         args.add(cType(type));
-        _codeStream.appendCodeBlock("preinitBlock", args, false, 2);
+        // No need to indent the preinitialize code.
+        _codeStream.appendCodeBlock("preinitBlock", args);
 
         return processCode(_codeStream.toString());
     }
