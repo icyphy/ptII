@@ -64,6 +64,7 @@ OTHER_FILES_TO_BE_JARED = \
 	CountTrues.c \
 	DotProduct.c \
 	FIR.c \
+	Repeat.c \
 	SampleDelay.c \
 	SequenceToArray.c \
 	VariableRecursiveLattice.c \
