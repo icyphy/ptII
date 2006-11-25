@@ -75,32 +75,32 @@ public class AddSubtract extends CCodeGeneratorHelper {
         args.add(new Integer(0));
 
         if (type == BaseType.STRING) {
-            _codeStream.appendCodeBlock("StringPreFireBlock");
+            _codeStream.appendCodeBlock("StringPreFireBlock", false, 2);
             for (int i = 0; i < actor.plus.getWidth(); i++) {
                 args.set(0, new Integer(i));
-                _codeStream.appendCodeBlock("StringLengthBlock", args);
+                _codeStream.appendCodeBlock("StringLengthBlock", args, false, 2);
             }
-            _codeStream.appendCodeBlock("StringAllocBlock");
+            _codeStream.appendCodeBlock("StringAllocBlock", false, 2);
         } else {
             String blockType = isPrimitive(type) ? "" : "Token";
             String blockPort = (minusOnly) ? "Minus" : "";
 
-            _codeStream.appendCodeBlock(blockType + blockPort + "PreFireBlock");
+            _codeStream.appendCodeBlock(blockType + blockPort + "PreFireBlock", false, 2);
         }
 
         String blockType = isPrimitive(type) ? codeGenType(type) : "Token";
 
         for (int i = 1; i < actor.plus.getWidth(); i++) {
             args.set(0, new Integer(i));
-            _codeStream.appendCodeBlock(blockType + "AddBlock", args);
+            _codeStream.appendCodeBlock(blockType + "AddBlock", args, false, 2);
         }
 
         for (int i = minusOnly ? 1 : 0; i < actor.minus.getWidth(); i++) {
             args.set(0, new Integer(i));
-            _codeStream.appendCodeBlock(blockType + "MinusBlock", args);
+            _codeStream.appendCodeBlock(blockType + "MinusBlock", args, false, 2);
         }
 
-        _codeStream.appendCodeBlock("PostFireBlock");
+        _codeStream.appendCodeBlock("PostFireBlock", false, 2);
 
         return processCode(_codeStream.toString());
     }
@@ -123,7 +123,7 @@ public class AddSubtract extends CCodeGeneratorHelper {
 
         Type type = actor.output.getType();
         args.add(cType(type));
-        _codeStream.appendCodeBlock("preinitBlock", args);
+        _codeStream.appendCodeBlock("preinitBlock", args, false, 2);
 
         return processCode(_codeStream.toString());
     }

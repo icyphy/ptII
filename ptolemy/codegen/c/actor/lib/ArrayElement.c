@@ -1,7 +1,11 @@
 /*** TokenFireBlock ***/
-$ref(output) = Array_get($ref(input), $ref(index));
+$ref(output) =
+        Array_get($ref(input),
+                $ref(index));
 /**/
 
 /*** PrimitiveFireBlock ***/
-$ref(output) = Array_get($ref(input), $ref(index)).payload.$cgType(output);
+$ref(output) =
+        Array_get($ref(input),
+                $ref(index)).payload.$cgType(output);
 /**/

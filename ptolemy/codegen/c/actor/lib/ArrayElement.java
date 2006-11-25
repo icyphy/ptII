@@ -64,9 +64,11 @@ public class ArrayElement extends CCodeGeneratorHelper {
         ptolemy.actor.lib.ArrayElement actor = (ptolemy.actor.lib.ArrayElement) getComponent();
 
         if (isPrimitive(actor.output.getType())) {
-            _codeStream.appendCodeBlock("PrimitiveFireBlock");
+            // Indent to level 2
+            _codeStream.appendCodeBlock("PrimitiveFireBlock", false, 2);
         } else {
-            _codeStream.appendCodeBlock("TokenFireBlock");
+            // Indent to level 2
+            _codeStream.appendCodeBlock("TokenFireBlock", false, 2);
         }
 
         return processCode(_codeStream.toString());
