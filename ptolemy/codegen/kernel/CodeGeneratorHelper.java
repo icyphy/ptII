@@ -1501,7 +1501,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 if (readOffset instanceof Integer) {
                     setReadOffset(port, i, new Integer(0));
                 } else {
-                    code.append(((String) readOffset) + " = 0;n" + _eol);
+                    code.append(((String) readOffset) + " = 0;" + _eol);
                 }
                 Object writeOffset = getWriteOffset(port, i);
                 if (writeOffset instanceof Integer) {
