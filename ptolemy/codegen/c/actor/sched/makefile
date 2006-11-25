@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/c/actor
+ME =		ptolemy/codegen/c/actor/sched
 
-DIRS =		sched lib test
+DIRS =		#test
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,21 +45,12 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	actor
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	lib/lib.jar \
-	sched/sched.jar
+PTPACKAGE = 	sched
+PTCLASSJAR =    $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	TypedCompositeActor.java \
-	TypedCompositeActorWithCoSimulation.java
+	StaticSchedulingDirector.java
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -68,7 +59,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	sched test lib
+MISC_FILES =	#test lib
 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
