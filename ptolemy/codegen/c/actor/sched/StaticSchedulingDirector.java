@@ -150,7 +150,7 @@ public class StaticSchedulingDirector extends Director {
                 }
 
                 if (count > 1) {
-                    code.append("}n" + _eol);
+                    code.append("}" + _eol);
                 }
             }
         }
