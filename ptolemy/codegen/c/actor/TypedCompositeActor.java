@@ -114,7 +114,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_codeGenerator.comment(1,
+        code.append(_codeGenerator.comment(2,
                         "Fire Composite " 
                         + getComponent().getName()));
         code.append(super.generateFireCode());
@@ -125,7 +125,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         Iterator inputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .inputPortList().iterator();
 
-        code.append(_codeGenerator.comment(1,
+        code.append(_codeGenerator.comment(2,
                                       "Update port parameters "
                                       + getComponent().getName()));
         // Update port parameters.
