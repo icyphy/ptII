@@ -71,7 +71,8 @@ public class Repeat extends CCodeGeneratorHelper {
         // instead of this.
         for (int i = 0; i < blockSize; i++) {
             for (int j = 0; j < numberOfTimes; j++) {
-                _codeStream.append("$ref(output," + ((j * blockSize) + i)
+                _codeStream.append(_INDENT2
+                        + "$ref(output," + ((j * blockSize) + i)
                         + ") = ");
             }
             _codeStream.append("$ref(input," + i + ");" + _eol);
