@@ -114,6 +114,9 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        code.append(_codeGenerator.comment(1,
+                        "Fire Composite " 
+                        + getComponent().getName()));
         code.append(super.generateFireCode());
 
         Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
@@ -122,6 +125,9 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         Iterator inputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .inputPortList().iterator();
 
+        code.append(_codeGenerator.comment(1,
+                                      "Update port parameters "
+                                      + getComponent().getName()));
         // Update port parameters.
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
@@ -194,8 +200,12 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *   or while resetting read and write offset.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer initializeCode = new StringBuffer();
-        //initializeCode.append(super.generateInitializeCode());
+        StringBuffer code = new StringBuffer();
+        code.append(_codeGenerator.comment(1,
+                        "Initialize composite " 
+                        + getComponent().getName()));
+
+        //code.append(super.generateInitializeCode());
 
         // Reset the offset for all of the contained actors' input ports.
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
@@ -203,19 +213,19 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(actor);
-            initializeCode.append(actorHelper.resetInputPortsOffset());
+            code.append(actorHelper.resetInputPortsOffset());
         }
 
         // Reset the offset for all of the output ports.
-        initializeCode.append(resetOutputPortsOffset());
+        code.append(resetOutputPortsOffset());
 
         Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
 
         // Generate the initialize code by the director helper.
-        initializeCode.append(directorHelper.generateInitializeCode());
+        code.append(directorHelper.generateInitializeCode());
 
-        return initializeCode.toString();
+        return code.toString();
     }
 
     /** Generate mode transition code. It delegates to the director helper 
@@ -244,14 +254,14 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *   or while creating buffer size and offset map.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer result = new StringBuffer();
-        result.append(super.generatePreinitializeCode());
+        StringBuffer code = new StringBuffer();
+        code.append(super.generatePreinitializeCode());
 
         Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
-        result.append(directorHelper.generatePreinitializeCode());
+        code.append(directorHelper.generatePreinitializeCode());
 
-        return result.toString();
+        return code.toString();
     }
 
     /** Generate variable declarations for input ports, output ports and 
@@ -287,8 +297,10 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_codeGenerator
-                .comment(1, "Composite actor's variable initializations."));
+        code.append(_codeGenerator.comment(1, "Composite actor " 
+                        + getComponent().getName()
+                        + "'s variable initialization."));
+
         code.append(super.generateVariableInitialization());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
@@ -435,7 +447,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                     setReadOffset(port, i, new Integer(0));
                 } else {
                     // Read offset is a variable.
-                    code.append(((String) readOffset) + " = 0;" + _eol);
+                    code.append(_getIndentPrefix(1)
+                            + ((String) readOffset) + " = 0;" + _eol);
                 }
                 Object writeOffset = getWriteOffset(port, i);
                 if (writeOffset instanceof Integer) {
@@ -443,7 +456,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                     setWriteOffset(port, i, new Integer(0));
                 } else {
                     // Write offset is a variable.
-                    code.append(((String) writeOffset) + " = 0;" + _eol);
+                    code.append(_getIndentPrefix(1)
+                            + ((String) writeOffset) + " = 0;" + _eol);
                 }
             }
         }
