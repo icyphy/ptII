@@ -27,8 +27,12 @@
  */
 package ptolemy.codegen.c.domains.sdf.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -71,8 +75,17 @@ public class SampleDelay extends CCodeGeneratorHelper {
         int length = ((ArrayToken) actor.initialOutputs.getToken()).length();
 
         for (int i = 0; i < length; i++) {
-            _codeStream.append("$ref(output, " + i + ") = "
-                    + "$val(initialOutputs, " + i + ");" + _eol);
+            Token element = ((ArrayToken) actor.initialOutputs.getToken()).getElement(i);
+            if (element instanceof ArrayToken) {
+                ArrayList args = new ArrayList();
+                args.add(new Integer(i));
+                args.add(new Integer(((ArrayToken) element).length()));
+                // Indent one level
+                _codeStream.appendCodeBlock("allocNewArray", args, 1);  
+            } else {
+                _codeStream.append(_INDENT1 + "$ref(output, " + i + ") = "
+                        + "$val(initialOutputs, " + i + ");" + _eol);
+            }
         }
 
         return processCode(_codeStream.toString());
