@@ -381,6 +381,7 @@ ALL1_4PACKAGES = \
 	ptolemy.codegen.c.actor.lib.javasound \
 	ptolemy.codegen.c.actor.lib.logic \
 	ptolemy.codegen.c.actor.lib.string \
+	ptolemy.codegen.c.actor.sched \
 	ptolemy.codegen.c.domains.fsm.kernel \
 	ptolemy.codegen.c.domains.fsm.modal \
 	ptolemy.codegen.c.domains.hdf.kernel \
@@ -622,6 +623,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/codegen/c/actor/lib/javasound/*.java \
 			../ptolemy/codegen/c/actor/lib/logic/*.java \
 			../ptolemy/codegen/c/actor/lib/string/*.java \
+			../ptolemy/codegen/c/actor/sched/*.java \
 			../ptolemy/codegen/c/domains/fsm/kernel/*.java \
 			../ptolemy/codegen/c/domains/fsm/modal/*.java \
 			../ptolemy/codegen/c/domains/hdf/kernel/*.java \
