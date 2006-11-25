@@ -413,6 +413,8 @@ public class CCodeGenerator extends CodeGenerator {
 
         // Generate variable declarations for modified variables.
         if (_modifiedVariables != null) {
+            code.append(comment("Generate variable declarations for "
+                                + "modified parameters."));
             Iterator modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
                 Parameter parameter = (Parameter) modifiedVariables.next();
@@ -439,13 +441,16 @@ public class CCodeGenerator extends CodeGenerator {
 
         // Generate variable initialization for modified variables.
         if (_modifiedVariables != null) {
+            code.append(comment(1, "Generate variable initialization for "
+                                + "modified parameters."));
             Iterator modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
                 Parameter parameter = (Parameter) modifiedVariables.next();
 
                 NamedObj container = parameter.getContainer();
                 CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
-                code.append(CodeGeneratorHelper.generateVariableName(parameter)
+                code.append(_INDENT1
+                        + CodeGeneratorHelper.generateVariableName(parameter)
                         + " = "
                         + containerHelper.getParameterValue(
                                 parameter.getName(), parameter.getContainer())
