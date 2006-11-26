@@ -127,7 +127,11 @@ parameter_declaration!
 			}
 		}
 	}
-	| a:ACTOR d:ID (EQUALS q:qualified_identifier
+	| (a:ACTOR | ACTORPARAM
+	{
+		#a = #[ACTOR, "actor"];
+	}
+	) d:ID (EQUALS q:qualified_identifier
 	{
 		#parameter_declaration = #([ACTOR_EQUALS, "="], (a, d), q);
 		addChild = false;
@@ -436,6 +440,7 @@ tokens {
 	OUTPORT = "outport";
 	PARAMETER = "parameter";
 	ACTOR = "actor";
+	ACTORPARAM = "actorparameter";
 	RELATION = "relation";
 	TRUE = "true";
 	FALSE = "false";

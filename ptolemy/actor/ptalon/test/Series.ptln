@@ -1,5 +1,5 @@
 Series is {
-	actor transformer;
+	actorparameter transformer;
 	parameter n;
 	inport input;
 	outport output;

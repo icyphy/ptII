@@ -29,127 +29,67 @@
 package ptolemy.actor.ptalon;
 
 public interface PtalonTokenTypes {
-    int EOF = 1;
-
-    int NULL_TREE_LOOKAHEAD = 3;
-
-    int PORT = 4;
-
-    int LBRACKET = 5;
-
-    int RBRACKET = 6;
-
-    int INPORT = 7;
-
-    int OUTPORT = 8;
-
-    int ID = 9;
-
-    int PARAMETER = 10;
-
-    int EQUALS = 11;
-
-    int ACTOR = 12;
-
-    int RELATION = 13;
-
-    int TRANSPARENT = 14;
-
-    int COLON = 15;
-
-    int DOT = 16;
-
-    int IMPORT = 17;
-
-    int TRUE = 18;
-
-    int FALSE = 19;
-
-    int IF = 20;
-
-    int ELSE = 21;
-
-    int IS = 22;
-
-    int FOR = 23;
-
-    int INITIALLY = 24;
-
-    int NEXT = 25;
-
-    int DANGLING_PORTS_OKAY = 26;
-
-    int ASSIGN = 27;
-
-    int RPAREN = 28;
-
-    int COMMA = 29;
-
-    int EXPRESSION = 30;
-
-    int LPAREN = 31;
-
-    int SEMI = 32;
-
-    int COMMENT = 33;
-
-    int LCURLY = 34;
-
-    int RCURLY = 35;
-
-    int TRUEBRANCH = 36;
-
-    int FALSEBRANCH = 37;
-
-    int QUALID = 38;
-
-    int ATTRIBUTE = 39;
-
-    int ACTOR_DECLARATION = 40;
-
-    int ACTOR_DEFINITION = 41;
-
-    int NEGATIVE_SIGN = 42;
-
-    int POSITIVE_SIGN = 43;
-
-    int ARITHMETIC_FACTOR = 44;
-
-    int BOOLEAN_FACTOR = 45;
-
-    int LOGICAL_BUFFER = 46;
-
-    int ARITHMETIC_EXPRESSION = 47;
-
-    int BOOLEAN_EXPRESSION = 48;
-
-    int MULTIPORT = 49;
-
-    int MULTIINPORT = 50;
-
-    int MULTIOUTPORT = 51;
-
-    int PARAM_EQUALS = 52;
-
-    int ACTOR_EQUALS = 53;
-
-    int SATISFIES = 54;
-
-    int VARIABLE = 55;
-
-    int DYNAMIC_NAME = 56;
-
-    int ACTOR_LABEL = 57;
-
-    int QUALIFIED_PORT = 58;
-
-    int ESC = 59;
-
-    int NUMBER_LITERAL = 60;
-
-    int ATTRIBUTE_MARKER = 61;
-
-    int STRING_LITERAL = 62;
-
-    int WHITE_SPACE = 63;
+	int EOF = 1;
+	int NULL_TREE_LOOKAHEAD = 3;
+	int PORT = 4;
+	int LBRACKET = 5;
+	int RBRACKET = 6;
+	int INPORT = 7;
+	int OUTPORT = 8;
+	int ID = 9;
+	int PARAMETER = 10;
+	int EQUALS = 11;
+	int ACTOR = 12;
+	int ACTORPARAM = 13;
+	int RELATION = 14;
+	int TRANSPARENT = 15;
+	int COLON = 16;
+	int DOT = 17;
+	int IMPORT = 18;
+	int TRUE = 19;
+	int FALSE = 20;
+	int IF = 21;
+	int ELSE = 22;
+	int IS = 23;
+	int FOR = 24;
+	int INITIALLY = 25;
+	int NEXT = 26;
+	int DANGLING_PORTS_OKAY = 27;
+	int ASSIGN = 28;
+	int RPAREN = 29;
+	int COMMA = 30;
+	int EXPRESSION = 31;
+	int LPAREN = 32;
+	int SEMI = 33;
+	int COMMENT = 34;
+	int LCURLY = 35;
+	int RCURLY = 36;
+	int TRUEBRANCH = 37;
+	int FALSEBRANCH = 38;
+	int QUALID = 39;
+	int ATTRIBUTE = 40;
+	int ACTOR_DECLARATION = 41;
+	int ACTOR_DEFINITION = 42;
+	int NEGATIVE_SIGN = 43;
+	int POSITIVE_SIGN = 44;
+	int ARITHMETIC_FACTOR = 45;
+	int BOOLEAN_FACTOR = 46;
+	int LOGICAL_BUFFER = 47;
+	int ARITHMETIC_EXPRESSION = 48;
+	int BOOLEAN_EXPRESSION = 49;
+	int MULTIPORT = 50;
+	int MULTIINPORT = 51;
+	int MULTIOUTPORT = 52;
+	int PARAM_EQUALS = 53;
+	int ACTOR_EQUALS = 54;
+	int SATISFIES = 55;
+	int VARIABLE = 56;
+	int DYNAMIC_NAME = 57;
+	int ACTOR_LABEL = 58;
+	int QUALIFIED_PORT = 59;
+	int ESC = 60;
+	int NUMBER_LITERAL = 61;
+	int ATTRIBUTE_MARKER = 62;
+	int STRING_LITERAL = 63;
+	int WHITE_SPACE = 64;
 }
