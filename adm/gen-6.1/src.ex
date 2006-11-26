@@ -131,7 +131,6 @@ ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml
 ptolemy/actor/lib/javasound/test/pitchshift
 ptolemy/actor/lib/javasound/test/outfile.wav
 ptolemy/actor/lib/jspaces
-ptolemy/actor/lib/jxta
 ptolemy/actor/lib/net/test_auto
 ptolemy/actor/lib/python/demo/HelloWorld
 ptolemy/actor/lib/python/demo/NotifyFailedTest
