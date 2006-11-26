@@ -166,7 +166,7 @@ clean:
 	rm -rf $(PTIIDIST) src installshield/*
 	rm -rf $(HYVISUAL_SRC_JAR)
 	rm -rf $(VIPTOS_SRC_JAR)
-	rm -rf $(PTSETUP).jar $(PTSETUP).exe
+	rm -rf $(PTSETUP).jar $(PTSETUP).exe test/installerTest
 
 FINDCLEAN = $(GENDIR)/findclean
 
@@ -1005,6 +1005,7 @@ bldmastrcoverage:
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.jar \
 		clean \
 		all \
+		test_setup \
 		remote1distclean \
 		remote1configure \
 		remote1distjsall \
@@ -1015,8 +1016,7 @@ bldmastrcoverage:
 		remote1doc \
 		remote1doccheck \
 		remote1findbugs \
-		remote1jnlp \
-		test_setup
+		remote1jnlp
 
 #		remote4
 #		remote5
@@ -2407,12 +2407,12 @@ ExtractJarFile.jar: ExtractJarFile.class Echo.class
 	jar -cf $@ CYGPATH^
 
 #PTCYGPATH=cygpath --windows
-PTCYGPATH=echo
+PTCYGPATH=pwd/
 # Recompile izpack
 izpack:	
 	cd ~/src/izpack/trunk/src/; ant build.standalone-compiler; cp C:/cxh/src/izpack/trunk/lib/standalone-compiler.jar c:/cxh/src/izpack/izpack3.9.0/lib/standalone-compiler.jar 
 	c:/cxh/src/izpack/izpack3.9.0/bin/compile test.xml
-	"$(L4JC)" `$(PTCYGPATH) $$PWD/test_l4j.xml`
+	"$(L4JC)" `$(PTCYGPATH) test_l4j.xml`
 
 # Location of Launch4J, see http://launch4j.sourceforge.net/
 #L4J_DIR=c:/Program Files/Launch4j
@@ -2432,11 +2432,11 @@ L4JC=$(L4J_DIR)/launch4j
 
 # Launch4J
 $(PTSETUP).exe: ../../ptiny.exe ../../jar_dist \
-		../../ptolemy/matlab/ptmatlab.dll \
-		jre \
-		../../lib/matlabWindows.jar $(PTSETUP)_l4j.xml \
-		$(PTSETUP).jar #ExtractJarFile.class
-		"$(L4JC)" `$(PTCYGPATH) $$PWD/$(PTSETUP)_l4j.xml`
+			../../ptolemy/matlab/ptmatlab.dll \
+			jre \
+			../../lib/matlabWindows.jar $(PTSETUP)_l4j.xml \
+			$(PTSETUP).jar #ExtractJarFile.class
+		"$(L4JC)" `$(PTCYGPATH) $(PTSETUP)_l4j.xml`
 
 ../../ptiny.exe:  ../../ptiny_l4j.xml
 
@@ -2464,9 +2464,14 @@ clean_setup:
 	rm -f $(PTSETUP).jar $(PTSETUP).exe
 
 test_setup: setup
+	@echo "#"
+	@echo "# Now testing the setup file" 
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
 	rm -rf test/installerTest
 	java -jar $(PTSETUP).jar installerTest.xml
-	(cd test/installerTest; chmod a+x ./configure; PTII=`pwd`; ./configure; make -k fast install test)
+	(cd test/installerTest; chmod a+x ./configure; PTII=`pwd` ./configure; PTII=`pwd` make -k fast install test)
 
 # Echo the jars needed for the full package in izpack
 full_jars:
