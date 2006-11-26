@@ -78,8 +78,7 @@ test CodeStream-3.1 {appendCodeBlock} {
     $codeStream appendCodeBlock "foo" [java::new java.util.ArrayList] true 0
     catch {$codeStream appendCodeBlock "foo" [java::new java.util.ArrayList] false 0} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: foo().
-}}
+} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block "foo()".}}
 
 #####
 test CodeStream-3.2 {appendCodeBlock} {
@@ -118,8 +117,7 @@ test CodeStream-3.3 {appendCodeBlock: wrong number of args} {
     $args add [java::call Integer toString 4]
     catch {$codeStream3_3 appendCodeBlock "initBlock" $args false 0} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: initBlock($, $).
-}}
+} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block "initBlock($, $)".}}
 
 #####
 test CodeStream-3.4 {appendCodeBlock: arg name does not start with $} {
