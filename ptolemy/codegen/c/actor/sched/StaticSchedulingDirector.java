@@ -57,7 +57,7 @@ public class StaticSchedulingDirector extends Director {
 
     /** Construct the code generator helper associated with the given
      *  StaticSchedulingDirector.
-     *  @param StaticSchedulingDirector The associated
+     *  @param staticSchedulingDirector The associated
      *  ptolemy.actor.sched.StaticSchedulingDirector
      */
     public StaticSchedulingDirector(ptolemy.actor.sched.StaticSchedulingDirector 
