@@ -64,7 +64,7 @@ public class Scale extends CCodeGeneratorHelper {
 
         String type = isPrimitive(actor.input.getType()) ? "" : "Token";
 
-        _codeStream.appendCodeBlock(type + "FireBlock", false, 2);
+        _codeStream.appendCodeBlock(type + "FireBlock", false);
         return processCode(_codeStream.toString());
     }
 }

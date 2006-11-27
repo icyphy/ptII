@@ -274,8 +274,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String sharedCode = generateSharedCode();
         String includeFiles = generateIncludeFiles();
         String preinitializeCode = generatePreinitializeCode();
-        CodeStream.setIndentLevel(2);
+        CodeStream.setIndentLevel(1);
         String initializeCode = generateInitializeCode();
+        CodeStream.setIndentLevel(2);
         String bodyCode = generateBodyCode();
         CodeStream.setIndentLevel(0);
         String mainEntryCode = generateMainEntryCode();
@@ -289,9 +290,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         String fireFunctionCode = null;
         if (!inline) {
+            CodeStream.setIndentLevel(1);
             fireFunctionCode = generateFireFunctionCode();
+            CodeStream.setIndentLevel(0);
         }
+        CodeStream.setIndentLevel(1);
         String wrapupCode = generateWrapupCode();
+        CodeStream.setIndentLevel(0);
 
         // Generating variable declarations needs to happen after buffer
         // sizes are set(?).
@@ -478,7 +483,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment(1, "Initialize " + getContainer().getFullName()));
+        //code.append(comment(1, "Initialize " + getContainer().getFullName()));
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateInitializeCode());
@@ -569,26 +574,25 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateSharedCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-
-        code.append(comment(0, "Generate shared code for "
-                + getContainer().getFullName()));
-
+        
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
-
         Set sharedCodeBlocks = compositeActorHelper.getSharedCode();
-
         Iterator blocks = sharedCodeBlocks.iterator();
-
         while (blocks.hasNext()) {
             String block = (String) blocks.next();
             code.append(block);
         }
-
-        code.append(comment(0, "Finished generating shared code for "
-                + getContainer().getFullName()));
+        
+        if (code.length() > 0) {
+            code.insert(0, _eol + comment("Generate shared code for "
+                    + getContainer().getName()));
+            code.append(comment("Finished generating shared code for "
+                    + getContainer().getName()));
+        }
 
         return code.toString();
     }
+
 
     /** Generate type conversion code.
      * 
@@ -611,9 +615,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_eol + _eol);
-        code.append(comment(0, "Variable Declarations "
-                + getContainer().getFullName()));
+        //code.append(_eol + _eol);
+        //code.append(comment(0, "Variable Declarations "
+        //        + getContainer().getFullName()));
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateVariableDeclaration());
@@ -628,9 +632,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_eol + _eol);
-        code.append(comment(1, "Variable initialization "
-                + getContainer().getFullName()));
+        //code.append(_eol + _eol);
+        //code.append(comment(1, "Variable initialization "
+        //       + getContainer().getFullName()));
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
 
@@ -648,7 +652,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment(1, "Wrapup " + getContainer().getFullName()));
+        //code.append(comment(1, "Wrapup " + getContainer().getFullName()));
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateWrapupCode());

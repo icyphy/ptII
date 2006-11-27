@@ -12,6 +12,10 @@ for ($actorSymbol(j) = 0; $actorSymbol(j) < $length; $actorSymbol(j)++) {
 $ref(output, j) = $actorSymbol(valueArray);
 /**/
 
+/***initProductionBlock($offset)***/
+$ref(output, $offset) = $val(initialOutputs, $offset);
+/**/
+
 /***fireBlock***/
 $ref(output) = $ref(input);
 /**/

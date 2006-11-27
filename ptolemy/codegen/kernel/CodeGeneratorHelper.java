@@ -231,13 +231,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         _codeStream.clear();
 
         String composite = (getComponent() instanceof CompositeActor) ? 
-                "Composite Actor " : "";
+                "Composite Actor: " : "";
 
-        _codeStream.append(_codeGenerator.comment(2, "fire " + composite
-                + getComponent().getName()));
+        _codeStream.append(_eol + CodeStream.indent(_codeGenerator.comment("Fire " 
+                + composite + getComponent().getName())));
 
-        // Indent to level 2
-        _codeStream.appendCodeBlock(_defaultBlocks[2], true, 2); // fireBlock
+        _codeStream.appendCodeBlock(_defaultBlocks[2], true); // fireBlock
         return processCode(_codeStream.toString());
     }
 
@@ -250,7 +249,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_eol + "void " + generateName(getComponent()) + "() {" + _eol);
+        code.append(_eol + generateName(getComponent()) + "() {" + _eol);
         code.append(generateFireCode());
         code.append(generateTypeConvertFireCode());
         code.append("}" + _eol);
@@ -266,11 +265,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeCode() throws IllegalActionException {
+        
         _codeStream.clear();
-        _codeStream.append(_codeGenerator.comment(1, "initialize "
-                + getComponent().getName()));
-        // Indent to level 1
-        _codeStream.appendCodeBlock(_defaultBlocks[1], true, 1); // initBlock
+        _codeStream.appendCodeBlock(_defaultBlocks[1], true); // initBlock
+        // There is no need to generate comment for empty code block.
+        if (!_codeStream.isEmpty()) {
+            _codeStream.insert(0, _eol + CodeStream.indent(_codeGenerator
+                    .comment("initialize " + getComponent().getName())));
+        }
         return processCode(_codeStream.toString());
     }
 
@@ -418,14 +420,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         _createBufferSizeAndOffsetMap();
-
+        
         _codeStream.clear();
-        _codeStream.append(_codeGenerator.comment(0, "preinitialize "
-                + getComponent().getName()));
         _codeStream.appendCodeBlock(_defaultBlocks[0], true); // preinitBlock
+        // There is no need to generate comment for empty code block.
+        if (!_codeStream.isEmpty()) {
+            _codeStream.insert(0, _eol +_codeGenerator.comment
+                    ("preinitialize " + getComponent().getName()));
+        }
         return processCode(_codeStream.toString());
     }
-
     /**
      * Generate the type conversion fire code. This method is called by the 
      * Director to append necessary fire code to handle type conversion.
@@ -460,10 +464,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 while (sinkChannels.hasNext()) {
                     Channel sink = (Channel) sinkChannels.next();
-                    code
-                            .append(CodeStream
-                                    .indent(_generateTypeConvertStatements(
-                                            source, sink)));
+                    code.append(_generateTypeConvertStatements(
+                                            source, sink));
                 }
             }
         }
@@ -478,12 +480,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_eol 
-                + _codeGenerator.comment(0, _component.getName()
-                        + "'s variable declarations."));
-
+        
         //  Generate variable declarations for referenced parameters.    
-        if (_referencedParameters != null) {
+        if (!_referencedParameters.isEmpty()) {
+            code.append(_eol + _codeGenerator.comment(_component.getName()
+                    + "'s parameter declarations"));
             Iterator parameters = _referencedParameters.iterator();
 
             while (parameters.hasNext()) {
@@ -498,28 +499,27 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
 
         // Generate variable declarations for input ports.
-        code.append(_generateInputVariableDeclaration());
+        String inputVariables = _generateInputVariableDeclaration();
+        if (inputVariables.length() > 0) {
+            code.append(_eol + _codeGenerator.comment(_component.getName()
+                    + "'s input variables"));
+            code.append(inputVariables);
+        }
 
         // Generate variable declarations for output ports.
-        code.append(_generateOutputVariableDeclaration());
+        String outputVariables = _generateOutputVariableDeclaration();
+        if (!outputVariables.equals("")) {
+            code.append(_eol + _codeGenerator.comment(_component.getName()
+                    + "'s output variables"));
+            code.append(outputVariables);
+        }
 
-        code.append(_codeGenerator.comment(0,
-                "Type convert variable declarations."));
-        Iterator channels = _getTypeConvertChannels().iterator();
-        while (channels.hasNext()) {
-            Channel channel = (Channel) channels.next();
-            code.append("static ");
-            code.append(cType(((TypedIOPort) channel.port).getType()));
-            code.append(" " + _getTypeConvertReference(channel));
-
-            int bufferSize = Math.max(DFUtilities
-                    .getTokenProductionRate(channel.port), DFUtilities
-                    .getTokenConsumptionRate(channel.port));
-
-            if (bufferSize > 1) {
-                code.append("[" + bufferSize + "]");
-            }
-            code.append(";" + _eol);
+        // Generate type convert variable declarations.
+        String typeConvertVariables = _generateTypeConvertVariableDeclaration();
+        if (typeConvertVariables.length() > 0) {
+            code.append(_eol + _codeGenerator.comment(_component.getName()
+                    + "'s type convert variables"));
+            code.append(typeConvertVariables);
         }
         return processCode(code.toString());
     }
@@ -532,12 +532,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_eol
-                + _codeGenerator.comment(1, _component.getName()
-                        + "'s variable initialization."));
 
         //  Generate variable initialization for referenced parameters.    
-        if (_referencedParameters != null) {
+        if (!_referencedParameters.isEmpty()) {
+            code.append(_eol + _codeGenerator
+                    .comment(1, _component.getName()
+                    + "'s parameter initialization"));
+
             Iterator parameters = _referencedParameters.iterator();
 
             while (parameters.hasNext()) {
@@ -545,8 +546,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 try {
                     // avoid duplication.
                     if (!_codeGenerator._modifiedVariables.contains(parameter)) {
-                        code
-                            .append(_getIndentPrefix(1)
+                        code.append(_INDENT1 
                                     + generateVariableName(parameter)
                                     + " = "
                                     + getParameterValue(parameter.getName(),
@@ -581,10 +581,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateWrapupCode() throws IllegalActionException {
         _codeStream.clear();
-        _codeStream.append(_eol
-                + _codeGenerator.comment(1, "wrapup "
-                + getComponent().getName()));
         _codeStream.appendCodeBlock(_defaultBlocks[3], true); // wrapupBlock
+        // There is no need to generate comment for empty code block.
+        if (!_codeStream.isEmpty()) {
+            _codeStream.insert(0, _eol + CodeStream.indent(_codeGenerator
+                    .comment("wrapup " + getComponent().getName())));
+        }
         return processCode(_codeStream.toString());
     }
 
@@ -1097,34 +1099,37 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     IOPort sinkPort = channel.port;
                     int sinkChannelNumber = channel.channelNumber;
 
-                    if (typeConvertSinks.contains(channel)
-                            && hasTypeConvertReference) {
-                        // We already generated reference for this sink.
-                        continue;
-                    }
-
-                    if (i != 0) {
-                        result.append(" = ");
-                    }
-
                     // Type convert.
                     if (typeConvertSinks.contains(channel)) {
                         if (!hasTypeConvertReference) {
-                            result
-                                    .append(_getTypeConvertReference(sourceChannel));
+                            if (i != 0) {
+                                result.append(" = ");
+                            }
+                            result.append(_getTypeConvertReference(sourceChannel));
+                            int rate = Math.max(DFUtilities
+                                    .getTokenProductionRate(sourceChannel.port), 
+                                    DFUtilities
+                                    .getTokenConsumptionRate(sourceChannel.port));
+                            if (rate > 1) {
+                                result.append("[" + channelAndOffset[1] + "]");
+                            }
                             hasTypeConvertReference = true;
+                        } else {
+                            // We already generated reference for this sink.
+                            continue;
                         }
                     } else {
+                        if (i != 0) {
+                            result.append(" = ");
+                        }
                         result.append(generateName(sinkPort));
 
                         if (sinkPort.isMultiport()) {
                             result.append("[" + sinkChannelNumber + "]");
                         }
+                        result.append(generateOffset(channelAndOffset[1], sinkPort,
+                                sinkChannelNumber, true));  
                     }
-
-                    result.append(generateOffset(channelAndOffset[1], sinkPort,
-                            sinkChannelNumber, true));
-
                 }
 
                 return _generateTypeConvertMethod(result.toString(), castType,
@@ -1501,13 +1506,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 if (readOffset instanceof Integer) {
                     setReadOffset(port, i, new Integer(0));
                 } else {
-                    code.append(((String) readOffset) + " = 0;" + _eol);
+                    code.append(CodeStream.indent(((String) readOffset) 
+                            + " = 0;" + _eol));
                 }
                 Object writeOffset = getWriteOffset(port, i);
                 if (writeOffset instanceof Integer) {
                     setWriteOffset(port, i, new Integer(0));
                 } else {
-                    code.append(((String) writeOffset) + " = 0;" + _eol);
+                    code.append(CodeStream.indent(((String) writeOffset) 
+                            + " = 0;" + _eol));
                 }
             }
         }
@@ -2030,19 +2037,19 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * helpers for the ports or if the conversion cannot be handled.
      */
     protected String _generateTypeConvertStatements(Channel source, Channel sink)
-            throws IllegalActionException {
+    throws IllegalActionException {
 
-        String statements = "";
+        StringBuffer statements = new StringBuffer();
 
         int rate = Math.max(DFUtilities.getTokenProductionRate(source.port),
                 DFUtilities.getTokenConsumptionRate(source.port));
 
         for (int offset = 0; offset < rate || (offset == 0 && rate == 0); offset++) {
-
-            statements += _generateTypeConvertStatement(source, sink, offset);
+            statements.append(CodeStream
+                    .indent(_generateTypeConvertStatement(source, sink, offset)));
         }
-        return processCode(statements);
-    }
+    return processCode(statements.toString());
+}
 
     /**
      * Generate the type conversion statement for the particular offset of
@@ -2073,11 +2080,19 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         // The references are associated with their own helper, so we need
         // to find the associated helper.       
-        String sourcePortChannel = source.port.getName() + "#"
-                + source.channelNumber + ", " + offset;
-        String sourceRef = ((CodeGeneratorHelper) _getHelper(source.port
-                .getContainer())).getReference(sourcePortChannel);
-
+        //String sourcePortChannel = source.port.getName() + "#"
+        //        + source.channelNumber + ", " + offset;
+        //String sourceRef = ((CodeGeneratorHelper) _getHelper(source.port
+        //        .getContainer())).getReference(sourcePortChannel);
+        String sourceRef = _getTypeConvertReference(source);
+        int rate = Math.max(DFUtilities
+                .getTokenProductionRate(source.port), 
+                DFUtilities
+                .getTokenConsumptionRate(source.port));
+        if (rate > 1) {
+            sourceRef += "[" + offset + "]";
+        }
+        
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
                 + ", " + offset;
 
@@ -2142,6 +2157,33 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return sinkRef + " = " + result + ";" + _eol;
     }
 
+    /** Generate type convert variable declarations.
+     *  @return a String that declares type convert variables.
+     *  @exception IllegalActionException If thrown while
+     *  getting port information.  
+     */
+    protected String _generateTypeConvertVariableDeclaration() 
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        Iterator channels = _getTypeConvertChannels().iterator();
+        while (channels.hasNext()) {
+            Channel channel = (Channel) channels.next();
+            code.append("static ");
+            code.append(cType(((TypedIOPort) channel.port).getType()));
+            code.append(" " + _getTypeConvertReference(channel));
+
+            int rate = Math.max(DFUtilities
+                    .getTokenProductionRate(channel.port), DFUtilities
+                    .getTokenConsumptionRate(channel.port));
+
+            if (rate > 1) {
+                code.append("[" + rate + "]");
+            }
+            code.append(";\n");
+        }
+        return processCode(code.toString());        
+    }
+    
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.
      *  @return The code generator helper.

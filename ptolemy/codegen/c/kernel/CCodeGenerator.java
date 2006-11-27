@@ -215,39 +215,6 @@ public class CCodeGenerator extends CodeGenerator {
         }
     }
 
-    /** Generate preinitialize code (if there is any).
-     *  This method calls the generatePreinitializeCode() method
-     *  of the code generator helper associated with the model director
-     *  @return The preinitialize code of the containing composite actor.
-     *  @exception IllegalActionException If the helper class for the model
-     *   director cannot be found, or if an error occurs when the director
-     *   helper generates preinitialize code.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-
-        ptolemy.actor.Director director = ((CompositeActor) getContainer())
-                .getDirector();
-
-        if (director == null) {
-            throw new IllegalActionException(this, "The model "
-                    + _model.getName() + " does not have a director.");
-        }
-
-        Attribute iterations = director.getAttribute("iterations");
-
-        if (iterations != null) {
-            int iterationCount = ((IntToken) ((Variable) iterations).getToken())
-                    .intValue();
-
-            if (iterationCount > 0) {
-                code.append("static int iteration = 0;" + _eol);
-            }
-        }
-
-        return code.toString();
-    }
 
     /**
      * Generate type conversion code.
@@ -269,7 +236,7 @@ public class CCodeGenerator extends CodeGenerator {
 
         StringBuffer code = new StringBuffer();
 
-        code.append(comment(0, "Generate type resolution code for "
+        code.append(_eol + comment("Generate type resolution code for "
                 + getContainer().getFullName()));
 
         // Include the constantsBlock at the top so that sharedBlocks from
@@ -312,8 +279,13 @@ public class CCodeGenerator extends CodeGenerator {
             code.append("#define TYPE_" + typesArray[i] + " " + i + _eol);
 
             // Dynamically generate all the types within the union.
-            typeMembers += "\t\t" + typesArray[i] + "Token " + typesArray[i]
-                    + ";" + _eol;
+            if (i > 0) {
+                typeMembers += _INDENT2; 
+            }
+            typeMembers += typesArray[i] + "Token " + typesArray[i] + ";";
+            if (i < typesArray.length - 1) {
+                typeMembers += _eol; 
+            }
         }
 
         Object[] functionsArray = functions.toArray();
@@ -324,7 +296,7 @@ public class CCodeGenerator extends CodeGenerator {
             code.append("#define FUNC_" + functionsArray[i] + " " + i + _eol);
         }
 
-        code.append("typedef struct token Token;");
+        code.append("typedef struct token Token;" + _eol);
 
         // Generate type and function definitions.
         for (int i = 0; i < typesArray.length; i++) {
@@ -336,10 +308,9 @@ public class CCodeGenerator extends CodeGenerator {
         }
 
         ArrayList args = new ArrayList();
-        args.add("");
         // Token declareBlock.
         if (!typeMembers.equals("")) {
-            args.set(0, typeMembers);
+            args.add(typeMembers);
             sharedStream.clear();
             sharedStream.appendCodeBlock("tokenDeclareBlock", args);
         }
@@ -349,12 +320,13 @@ public class CCodeGenerator extends CodeGenerator {
             // The "funcDeclareBlock" contains all function declarations for
             // the type.
             for (int j = 0; j < functionsArray.length; j++) {
-                args.set(0, typesArray[i] + "_" + functionsArray[j]);
+                args.clear();
+                args.add(typesArray[i] + "_" + functionsArray[j]);
                 sharedStream.appendCodeBlock("funcHeaderBlock", args);
             }
         }
         code.append(sharedStream.toString());
-
+        
         // Append functions that are specified used by this type (without
         // going through the function table).
         for (int i = 0; i < typesArray.length; i++) {
@@ -413,9 +385,9 @@ public class CCodeGenerator extends CodeGenerator {
         code.append(super.generateVariableDeclaration());
 
         // Generate variable declarations for modified variables.
-        if (_modifiedVariables != null) {
+        if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
             code.append(comment("Generate variable declarations for "
-                                + "modified parameters."));
+                                + "modified parameters"));
             Iterator modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
                 Parameter parameter = (Parameter) modifiedVariables.next();
@@ -441,9 +413,10 @@ public class CCodeGenerator extends CodeGenerator {
         code.append(super.generateVariableInitialization());
 
         // Generate variable initialization for modified variables.
-        if (_modifiedVariables != null) {
-            code.append(comment(1, "Generate variable initialization for "
-                                + "modified parameters."));
+        if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
+            code.append(comment
+                    (1, "Generate variable initialization for "
+                    + "modified parameters"));
             Iterator modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
                 Parameter parameter = (Parameter) modifiedVariables.next();

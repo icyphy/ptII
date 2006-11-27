@@ -38,6 +38,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.c.actor.sched.StaticSchedulingDirector;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -118,9 +119,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                         }
 
                         for (int k = 0; k < rate; k++) {
-                            code.append(_INDENT1
-                                    + containerHelper.getReference(name + ","
-                                    + k));
+                            code.append(CodeStream.indent(
+                                    containerHelper.getReference(name + "," + k)));
                             code.append(" = ");
                             code.append(containerHelper.getReference("@" + name
                                     + "," + k));
@@ -165,8 +165,8 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(_codeGenerator.comment(2, "SDFDirector: "
-                + "Transfer tokens to the inside."));
+        code.append(CodeStream.indent(_codeGenerator.comment("SDFDirector: "
+                + "Transfer tokens to the inside.")));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
         CompositeActor container = (CompositeActor) getComponent()
@@ -245,13 +245,13 @@ public class SDFDirector extends StaticSchedulingDirector {
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(_INDENT2
-                                + compositeActorHelper.getReference("@" + name
-                                        + "," + k));
+                        code.append(CodeStream.indent(
+                                compositeActorHelper.getReference
+                                ("@" + name + "," + k)));
                         code.append(" =" + _eol);
-                        code.append(_INDENT4
-                                + compositeActorHelper.getReference(name + ","
-                                        + k));
+                        code.append(CodeStream.indent(_INDENT2
+                                + compositeActorHelper
+                                .getReference(name + "," + k)));
                         code.append(";" + _eol);
                     }
                 }
@@ -269,8 +269,8 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(_codeGenerator.comment(2, "SDFDirector: "
-                + "Transfer tokens to the outside."));
+        code.append(CodeStream.indent(_codeGenerator.comment("SDFDirector: "
+                + "Transfer tokens to the outside.")));
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
 
@@ -407,13 +407,13 @@ public class SDFDirector extends StaticSchedulingDirector {
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(_INDENT2
-                                + compositeActorHelper.getReference(name + ","
-                                        + k));
+                        code.append(CodeStream.indent(
+                                compositeActorHelper
+                                .getReference(name + "," + k)));
                         code.append(" =" + _eol);
-                        code.append(_INDENT4
-                                + compositeActorHelper.getReference("@" + name
-                                        + "," + k));
+                        code.append(CodeStream.indent(_INDENT2
+                                + compositeActorHelper
+                                .getReference("@" + name + "," + k)));
                         code.append(";" + _eol);
                     }
                 }
@@ -497,6 +497,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
 
+        StringBuffer tempCode = new StringBuffer();
         Iterator outputPorts = container.outputPortList().iterator();
         while (outputPorts.hasNext()) {
 
@@ -546,13 +547,19 @@ public class SDFDirector extends StaticSchedulingDirector {
                         }
                     }
                 }
-                code.append(_createOffsetVariablesIfNeeded(outputPort, i,
-                        readTokens, writeTokens));
+            tempCode.append(_createOffsetVariablesIfNeeded(outputPort, i,
+                    readTokens, writeTokens));
             }
+        }
+        if (tempCode.length() > 0) {
+            code.append("\n" + _codeGenerator.comment(container.getName() 
+                    + "'s offset variables"));
+            code.append(tempCode);
         }
 
         Iterator actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
+            StringBuffer tempCode2 = new StringBuffer();
             Actor actor = (Actor) actors.next();
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
@@ -611,9 +618,14 @@ public class SDFDirector extends StaticSchedulingDirector {
                             }
                         }
                     }
-                    code.append(_createOffsetVariablesIfNeeded(inputPort, i,
+                    tempCode2.append(_createOffsetVariablesIfNeeded(inputPort, i,
                             readTokens, writeTokens));
                 }
+            }
+            if (tempCode2.length() > 0) {
+                code.append("\n" + _codeGenerator.comment(actor.getName() 
+                        + "'s offset variables"));
+                code.append(tempCode2);
             }
         }
         return code.toString();
@@ -664,15 +676,17 @@ public class SDFDirector extends StaticSchedulingDirector {
             if (readTokens % newBufferSize != 0) {
 
                 // Declare the read offset variable.
-                StringBuffer channelReadOffset = new StringBuffer(
-                        _INDENT1 + CodeGeneratorHelper.generateName(port));
+                StringBuffer channelReadOffset = new StringBuffer();
+                channelReadOffset
+                        .append(CodeGeneratorHelper.generateName(port));
                 if (width > 1) {
                     channelReadOffset.append("_" + channelNumber);
                 }
                 channelReadOffset.append("_readoffset");
                 String channelReadOffsetVariable = channelReadOffset.toString();
-                code.append("static int " + channelReadOffsetVariable + " = "
-                        + helper.getReadOffset(port, channelNumber) + ";" + _eol);
+                //code.append("static int " + channelReadOffsetVariable + " = "
+                //        + helper.getReadOffset(port, channelNumber) + ";\n");
+                code.append("static int " + channelReadOffsetVariable + ";\n");
                 // Now replace the concrete offset with the variable.
                 helper.setReadOffset(port, channelNumber,
                         channelReadOffsetVariable);
@@ -681,16 +695,16 @@ public class SDFDirector extends StaticSchedulingDirector {
             if (writeTokens % newBufferSize != 0) {
 
                 // Declare the write offset variable.
-                StringBuffer channelWriteOffset = new StringBuffer(
-                        _INDENT1 + CodeGeneratorHelper.generateName(port));
+                StringBuffer channelWriteOffset = new StringBuffer();
+                channelWriteOffset.append(CodeGeneratorHelper
+                        .generateName(port));
                 if (width > 1) {
                     channelWriteOffset.append("_" + channelNumber);
                 }
                 channelWriteOffset.append("_writeoffset");
                 String channelWriteOffsetVariable = channelWriteOffset
                         .toString();
-                code.append("static int " + channelWriteOffsetVariable + " = "
-                        + helper.getWriteOffset(port, channelNumber) + ";" + _eol);
+                code.append("static int " + channelWriteOffsetVariable + ";\n");
                 // Now replace the concrete offset with the variable.
                 helper.setWriteOffset(port, channelNumber,
                         channelWriteOffsetVariable);

@@ -420,6 +420,24 @@ public class CodeStream {
         // Insert the initial indent.
         return indent + tmpString;
     }
+    
+    /**
+     * Insert the contents of the given String to this code stream
+     * at the given position.
+     * @param offset The given position.
+     * @param code The given string.
+     */
+    public void insert(int offset, String code) {
+        _stream.insert(offset, code);
+    }
+
+    /**
+     * return a boolean indicating if this stream is empty.
+     * @return true if this stream is empty.
+     */
+    public boolean isEmpty() {
+        return _stream.length() == 0;
+    }
 
     /**
      * Simple stand alone test method. Parse a helper .c file, and print
@@ -650,6 +668,25 @@ public class CodeStream {
 
         StringBuffer body = new StringBuffer(codeInFile.substring(_parseIndex,
                 endIndex));
+        
+        
+        // strip beginning new lines and white spaces
+        while (body.length() > 0 && 
+                (body.charAt(0) == '\n' || body.charAt(0) == '\r' 
+                || body.charAt(0) == ' ')) {
+            body.deleteCharAt(0);
+        }        
+        // strip ending new lines and white spaces
+        int endChar = body.length() - 1;
+        while (endChar >= 0 && 
+                (body.charAt(endChar) == '\n' || body.charAt(endChar) == '\r' 
+                || body.charAt(endChar) == ' ')) {
+            body.deleteCharAt(endChar);
+            endChar = body.length() - 1;
+        }
+        // add back one ending new line
+        body.append(_eol);
+        
 
         // Recursively parsing for nested code blocks
         //for (String subBlockKey = _parseCodeBlock(body); subBlockKey != null;) {

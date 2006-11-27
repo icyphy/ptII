@@ -98,7 +98,7 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
      */
     public String generateBodyCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment(1, "Static schedule:"));
+        //code.append(_eol + comment(1, "Static schedule:"));
         CompositeEntity model = (CompositeEntity) getContainer();
 
         ActorCodeGenerator modelHelper = _getHelper(model);
@@ -133,10 +133,11 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
                         .getToken()).intValue();
 
                 if (iterationCount <= 0) {
-                    code.append(_INDENT1 + "while (true) {" + _eol);
+                    code.append(_eol + _INDENT1 + "while (true) {" + _eol);
                 } else {
                     // Declare iteration outside of the loop to avoid
                     // mode" with gcc-3.3.3
+                    code.append(_eol + _INDENT1 + "int iteration;" + _eol);
                     code.append(_INDENT1 + "for (iteration = 0; iteration < "
                             + iterationCount + "; iteration ++) {" + _eol);
                 }

@@ -65,7 +65,8 @@ public class Display extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
 
-        ptolemy.actor.lib.gui.Display actor = (ptolemy.actor.lib.gui.Display) getComponent();
+        ptolemy.actor.lib.gui.Display actor 
+                = (ptolemy.actor.lib.gui.Display) getComponent();
 
         String type = codeGenType(actor.input.getType());
         if (!isPrimitive(type)) {
@@ -77,9 +78,8 @@ public class Display extends CCodeGeneratorHelper {
         args.add(new Integer(0));
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(1, Integer.toString(i));
-            _codeStream.appendCodeBlock(type + "PrintBlock", args, false, 2);
+            code.append(_generateBlockCode(type + "PrintBlock", args));
         }
-        code.append(processCode(_codeStream.toString()));
 
         return code.toString();
     }
