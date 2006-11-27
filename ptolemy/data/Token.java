@@ -549,7 +549,7 @@ public class Token implements Serializable {
      */
     public static final Token NIL = new Token() {
         /** Return the type of this token.                                  
-         *  @return BaseType.UNKNOWN.
+         *  @return BaseType.NIL.
          */
         public Type getType() {
             return BaseType.NIL;
