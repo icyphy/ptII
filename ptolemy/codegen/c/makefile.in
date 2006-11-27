@@ -20,3 +20,22 @@ USER_CC_FLAGS =
 # We need -D__int64="long long" when invoking jni interface under cygwin
 @modelName@: @modelName@.c
 	gcc -D__int64="long long" $(CC_FLAGS) $(USER_CC_FLAGS) -g @modelName@.c $(PTCGINCLUDES) -o @modelName@ -lm $(PTCGLIBRARIES)
+
+# Rule to compile with different optimizers
+O_FLAGS=-O0 -O -Os -O2 -O3
+optimize:
+	for O_FLAG in $(O_FLAGS); do \
+	    echo "Compiling with $$O_FLAG"; \
+	    time gcc $$O_FLAG -D__int64="long long" $(CC_FLAGS) $(USER_CC_FLAGS) -g @modelName@.c $(PTCGINCLUDES) -o @modelName@_$$O_FLAG -lm $(PTCGLIBRARIES); \
+	    cp @modelName@_$${O_FLAG}.exe @modelName@_$${O_FLAG}_stripped.exe; \
+	    strip @modelName@_$${O_FLAG}_stripped.exe; \
+	    ls -l @modelName@_$${O_FLAG}.exe @modelName@_$${O_FLAG}_stripped.exe; \
+	    echo "Running @modelName@_$${O_FLAG}.exe"; \
+	    time @modelName@_$${O_FLAG}.exe; \
+	    time @modelName@_$${O_FLAG}.exe; \
+	    time @modelName@_$${O_FLAG}.exe; \
+	    echo "Running @modelName@_$${O_FLAG}_stripped.exe"; \
+	    time @modelName@_$${O_FLAG}_stripped.exe; \
+	    time @modelName@_$${O_FLAG}_stripped.exe; \
+	    time @modelName@_$${O_FLAG}_stripped.exe; \
+	done	
