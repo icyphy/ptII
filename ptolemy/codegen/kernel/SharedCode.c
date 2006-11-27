@@ -11,7 +11,7 @@ Token $function (Token this, ...);
 /**/
 
 /***tokenDeclareBlock ($types)***/
-struct token {                  // Base type for tokens.
+struct token {         // Base type for tokens.
     char type;         // TYPE field has to be the first field.
     union typeMembers {
         // type member declarations [i.e. Type1Token Type1;]
@@ -22,10 +22,6 @@ struct token {                  // Base type for tokens.
 
 
 /***convertPrimitivesBlock***/
-//int atoi (char* s);             // standard c function.
-//double atof (char* s);          // standard c function.
-//long atol (char* s);            // standard c function.
-
 #define StringtoInt atoi
 #define StringtoDouble atof
 #define StringtoLong atol

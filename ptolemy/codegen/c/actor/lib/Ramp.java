@@ -68,6 +68,8 @@ public class Ramp extends CCodeGeneratorHelper {
         ArrayList args = new ArrayList();
         args.add(codeGenType(actor.output.getType()));
 
+        _codeStream.append("\n" + _codeGenerator.comment(1, "initialize " 
+                + getComponent().getName()));
         if (actor.output.getType() == BaseType.STRING) {
             _codeStream.appendCodeBlock("StringInitBlock");
         } else {
