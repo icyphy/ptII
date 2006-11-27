@@ -1338,7 +1338,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             
             // I don't understand the above statement. The only place where
             // SDFReceiver.clear() is called is during initialization, which 
-            // is too late for scheduling. so I'm calling it here:
+            // is too late for scheduling. so I'm initializing _waitingTokes
+            // to zero here:
             // --Gang Zhou           
             Iterator actorsIterator = actorList.iterator();
             while (actorsIterator.hasNext()) {
@@ -1350,7 +1351,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     if (receivers != null) {
                         for (int m = 0; m < receivers.length; m++) {
                             for (int n = 0; n < receivers[m].length; n++) {
-                                receivers[m][n].clear();
+                                ((SDFReceiver) receivers[m][n])._waitingTokens = 0;
                             }
                         }
                     }
@@ -1363,7 +1364,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 if (receivers != null) {
                     for (int m = 0; m < receivers.length; m++) {
                         for (int n = 0; n < receivers[m].length; n++) {
-                            receivers[m][n].clear();
+                            ((SDFReceiver) receivers[m][n])._waitingTokens = 0;
                         }
                     }
                 }
