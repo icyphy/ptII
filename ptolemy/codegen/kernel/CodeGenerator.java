@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -100,6 +101,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         generatorPackage = new StringParameter(this, "generatorPackage");
 
+        generateComment = new Parameter(this, "generateComment");
+        generateComment.setTypeEquals(BaseType.BOOLEAN);
+        generateComment.setExpression("true");
+        
         inline = new Parameter(this, "inline");
         inline.setTypeEquals(BaseType.BOOLEAN);
         inline.setExpression("true");
@@ -112,11 +117,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         run.setTypeEquals(BaseType.BOOLEAN);
         run.setExpression("true");
 
-        _attachText("_iconDescription", "<svg>" + _eol
+        _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-                + "Double click to" + _eol + "generate code.</text></svg>");
+                + "Double click to\ngenerate code.</text></svg>");
 
         _model = (CompositeEntity) getContainer();
 
@@ -139,6 +144,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  value is a parameter with the value true.
      */
     public Parameter compile;
+
+    /** If true, generate comments in the output code; otherwise,
+     *  no comments is generated. The default value is a parameter
+     *  with the value true.
+     */
+    public Parameter generateComment;
 
     /** The name of the package in which to look for helper class
      *  code generators. This is a string that defaults to
@@ -194,29 +205,41 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Return a formatted comment containing the
      *  specified string. In this base class, the
      *  comments is a C-style comment, which begins with
-     *  "\/*" and ends with "*\/". Subclasses may override this
-     *  produce comments that match the code generation language.
+     *  "\/*" and ends with "*\/". 
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
      */
     public String comment(String comment) {
         return "/* " + comment + " */" + _eol;
     }
-
+    
     /** Return a formatted comment containing the
      *  specified string with a specified indent level.
-     *  In this base class, the
-     *  comments is a C-style comment, which begins with
-     *  "\/*" and ends with "*\/". Subclasses may override this
-     *  produce comments that match the code generation language.
      *  @param comment The string to put in the comment.
      *  @param indentLevel The indentation level.
      *  @return A formatted comment.
      */
     public String comment(int indentLevel, String comment) {
-        return StringUtilities.getIndentPrefix(indentLevel) + comment(comment);
+        if (generateComment.getExpression().equals("true")) {
+            return StringUtilities.getIndentPrefix(indentLevel) 
+                    + formatComment(comment);
+        } else {
+            return "";
+        }
     }
 
+    /** Return a formatted comment containing the
+     *  specified string. In this base class, the
+     *  comments is a C-style comment, which begins with
+     *  "\/*" and ends with "*\/". Subclasses may override this
+     *  produce comments that match the code generation language.
+     *  @param comment The string to put in the comment.
+     *  @return A formatted comment.
+     */  
+    public String formatComment(String comment) {
+        return "/* " + comment + " */\n";
+    }
+        
     /** Generate the body code that lies between initialize and wrapup.
      *  In this base class, nothing is generated.
      *  @return The empty string.
@@ -483,7 +506,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        //code.append(comment(1, "Initialize " + getContainer().getFullName()));
+        //code.append(comment("Initialize " + getContainer().getFullName()));
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateInitializeCode());
@@ -592,7 +615,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         return code.toString();
     }
-
 
     /** Generate type conversion code.
      * 
@@ -711,9 +733,22 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String getCodeFileName() {
         return _codeFileName;
     }
-
+    
+    /** Return a list of macros this code generator supports. 
+     *  @return Returns the _macros.
+     */
+    public List getMacros() {
+        return _macros;
+    }
+    
+    /** Return the set of modified variables.
+     *  @return The set of modified variables.
+     */
+    public Set getModifiedVariables() {
+        return _modifiedVariables;
+    }
+    
     /** Test if the containing actor is in the top level.
-     *
      *  @return true if the containing actor is in the top level.
      */
     public boolean isTopLevel() {
@@ -980,9 +1015,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** 
      * A static list of all macros supported by the code generator. 
      */
-    protected static final List _macros = Arrays.asList(new String[] { "ref",
+    protected List _macros = new ArrayList(Arrays.asList(new String[] { "ref",
             "val", "size", "type", "targetType", "cgType", "tokenFunc",
-            "typeFunc", "actorSymbol", "actorClass", "new" });
+            "typeFunc", "actorSymbol", "actorClass", "new" }));
 
     /** 
      * A static list of all primitive types supported by the code generator. 
