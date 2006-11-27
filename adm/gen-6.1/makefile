@@ -413,7 +413,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/x10/X10Interface.class \
 		ptolemy/actor/lib/x10/demo/MotionDrivenDemos/shutdown.bat \
 		ptolemy/backtrack \
-		ptolemy/codegen/vhdl \
 		ptolemy/component \
 		ptolemy/domains/giotto/cgc \
 		ptolemy/domains/gr/demo/Demo1 \
@@ -1005,18 +1004,20 @@ bldmastrcoverage:
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.jar \
 		clean \
 		all \
-		test_setup \
-		remote1distclean \
-		remote1configure \
-		remote1distjsall \
-		remote1distjsrestore \
-		remote1build \
-		remote1distnonjsall \
-		remote1ChangeLog \
-		remote1doc \
-		remote1doccheck \
-		remote1findbugs \
-		remote1jnlp
+		test_setup
+
+# 		remote1distclean \
+# 		remote1configure \
+# 		remote1distjsall \
+# 		remote1distjsrestore \
+# 		remote1build \
+# 		remote1distnonjsall \
+# 		remote1ChangeLog \
+# 		remote1doc \
+# 		remote1doccheck \
+# 		remote1findbugs \
+# 		remote1jnlp
+
 
 #		remote4
 #		remote5
@@ -2407,7 +2408,8 @@ ExtractJarFile.jar: ExtractJarFile.class Echo.class
 	jar -cf $@ CYGPATH^
 
 #PTCYGPATH=cygpath --windows
-PTCYGPATH=pwd/
+PTCYGPATH=./ptcygpath
+
 # Recompile izpack
 izpack:	
 	cd ~/src/izpack/trunk/src/; ant build.standalone-compiler; cp C:/cxh/src/izpack/trunk/lib/standalone-compiler.jar c:/cxh/src/izpack/izpack3.9.0/lib/standalone-compiler.jar 
@@ -2471,7 +2473,7 @@ test_setup: setup
 	@echo "`uptime`"
 	rm -rf test/installerTest
 	java -jar $(PTSETUP).jar installerTest.xml
-	(cd test/installerTest; chmod a+x ./configure; PTII=`pwd` ./configure; PTII=`pwd` make -k fast install test)
+	(cd test/installerTest; chmod a+x ./configure; PTII=`pwd` ./configure; PTII=`pwd` make -k fast install tests)
 
 # Echo the jars needed for the full package in izpack
 full_jars:
