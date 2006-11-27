@@ -123,6 +123,10 @@ public class PtDoclet {
                                 + ",it starts up X11 and interferes with the "
                                 + "nightly build");
                     }
+                    if (className.equals("ptolemy.matlab.Engine")) {
+                        throw new Exception("Skipping " + className
+                                + ",it tends to hang javadoc.");
+                    }
                     theClass = Class.forName(className);
                 } catch (Throwable ex) {
                     // Might be an inner class.
