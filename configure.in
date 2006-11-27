@@ -2607,8 +2607,8 @@ else
         AC_MSG_WARN([Failed to find PTII/ptolemy/actor/ptalon/antlr/antlr.jar
     If it is not present, you will not be able to use the 
     Ptalon.])
-	# Note that we don't substitute in the ${PTII} here
-	PTPTALON_DIR='${PTII}/ptolemy/actor/ptalon/antlr'
+	PTPTALON_DIR=
+	PTPTALON_PACKAGES=
     fi
 
     if test ! "$HAS_GENERICS" = "yes"; then 
