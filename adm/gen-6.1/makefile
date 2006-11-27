@@ -1004,19 +1004,18 @@ bldmastrcoverage:
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.jar \
 		clean \
 		all \
-		test_setup
-
-# 		remote1distclean \
-# 		remote1configure \
-# 		remote1distjsall \
-# 		remote1distjsrestore \
-# 		remote1build \
-# 		remote1distnonjsall \
-# 		remote1ChangeLog \
-# 		remote1doc \
-# 		remote1doccheck \
-# 		remote1findbugs \
-# 		remote1jnlp
+		test_setup \
+		remote1distclean \
+		remote1configure \
+		remote1distjsall \
+		remote1distjsrestore \
+		remote1build \
+		remote1distnonjsall \
+		remote1ChangeLog \
+		remote1doc \
+		remote1doccheck \
+		remote1findbugs \
+		remote1jnlp
 
 
 #		remote4
@@ -2473,7 +2472,7 @@ test_setup: setup
 	@echo "`uptime`"
 	rm -rf test/installerTest
 	java -jar $(PTSETUP).jar installerTest.xml
-	(cd test/installerTest; chmod a+x ./configure; PTII=`pwd` ./configure; PTII=`pwd` make -k fast install tests)
+	(cd test/installerTest; chmod a+x ./configure; PTII=`pwd` ./configure; PTII=`pwd` make -k PTII=`pwd` fast install tests)
 
 # Echo the jars needed for the full package in izpack
 full_jars:
