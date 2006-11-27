@@ -99,11 +99,10 @@ public class CodeStream {
 
     /**
      * Construct a new code stream, given a specified file path of the
-     * helper .c file as a URL suitable for
+     * helper .[target] file as a URL suitable for
      * {@link ptolemy.util.FileUtilities#openForReading(String, URI, ClassLoader)},
      *  for example "file:./test/testCodeBlock.c".
      * @param path The given file path.
-     * .c file 
      */
     public CodeStream(String path) {
         _filePath = path;
@@ -285,8 +284,8 @@ public class CodeStream {
             if (mayNotExist) {
                 return;
             } else {
-                throw new IllegalActionException("Cannot find code block \""
-                        + signature + "\".");
+                throw new IllegalActionException(_helper, 
+                        "Cannot find code block: " + signature + ".\n");
             }
         }
 
@@ -349,8 +348,8 @@ public class CodeStream {
 
     /**
      * Return a StringBuffer that contains all the code block names and
-     * bodies from the associated helper .c file.
-     * @return The content from parsing the helper .c file.
+     * bodies from the associated helper .[target] file.
+     * @return The content from parsing the helper .[target] file.
      * @exception IllegalActionException If an error occurs during parsing.
      */
     public String description() throws IllegalActionException {
@@ -440,13 +439,13 @@ public class CodeStream {
     }
 
     /**
-     * Simple stand alone test method. Parse a helper .c file, and print
-     * all the code blocks.
+     * Simple stand alone test method. Parse a helper .[target] file,
+     * and print all the code blocks.
      * @param args Command-line arguments, the first of which names a 
-     * .c file as a URL , for example file:./test/testCodeBlock.c.
+     * .[target] file as a URL , for example file:./test/testCodeBlock.c.
      * @exception IOException If an error occurs when reading user inputs.
      * @exception IllegalActionException If an error occurs during parsing
-     *  the helper .c file.
+     *  the helper .[target] file.
      */
     public static void main(String[] args) throws IOException,
             IllegalActionException {
@@ -523,7 +522,7 @@ public class CodeStream {
             throws IllegalActionException {
         if (!name.startsWith("$")) {
             throw new IllegalActionException("Parameter \"" + name
-                    + "\" is not well-formed." + _eol
+                    + "\" is not well-formed.\n" + _eol
                     + "Parameter name for code block needs to starts with '$'");
         }
         //name.matches("[a-zA-Z_0-9]");
@@ -537,9 +536,9 @@ public class CodeStream {
      * Otherwise, it recursively searches code blocks from super classes'
      * helpers.
      * @param mayNotExist Indicate if the file is required to exist.
-     * @param filePath The given .c file to read from.
+     * @param filePath The given .[target] file to read from.
      * @exception IllegalActionException If an error occurs when parsing the
-     *  helper .c file.
+     *  helper .[target] file.
      */
     private void _constructCodeTable(boolean mayNotExist)
             throws IllegalActionException {
@@ -597,6 +596,8 @@ public class CodeStream {
         } catch (IOException ex) {
             if (reader == null) {
                 if (mayNotExist) {
+                    /* System.out.println("Warning: Helper .[target] file " +
+                            _filePath + " not found"); */
                 } else {
                     _declarations = null;
                     throw new IllegalActionException(null, ex,
@@ -620,13 +621,17 @@ public class CodeStream {
     }
 
     /**
-     * Get the file path for the helper .c file associated with the given
-     * helper class.
+     * Get the file path for the helper .[target] file associated with
+     * the given helper class.
      * @param helperClass The given helper class
-     * @return Path for the helper .c file.
+     * @return Path for the helper .[target] file.
      */
     private String _getPath(Class helperClass) {
-        return "$CLASSPATH/" + helperClass.getName().replace('.', '/') + ".c";
+        String extension = 
+            _helper._codeGenerator.generatorPackage.getExpression();
+        extension = extension.substring(extension.lastIndexOf(".") + 1);
+        return "$CLASSPATH/" + helperClass.getName().replace('.', '/')
+        + "." + extension;
     }
 
     /**
@@ -836,8 +841,8 @@ public class CodeStream {
                     return (String) ((Object[]) table.get(signature))[0];
                 }
             }
-            throw new IllegalActionException("Cannot find code block \""
-                    + signature + "\".");
+            throw new IllegalActionException(_helper, 
+                    "Cannot find code block: " + signature + ".\n");
         }
 
         public StringBuffer getCode(Signature signature)
