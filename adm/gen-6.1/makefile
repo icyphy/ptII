@@ -289,7 +289,7 @@ $(PTII_SRC): $(PTII_FULL)
 		PTII=`pwd` ./configure; make -k clean; \
 		touch mk/ptII.mk.in; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
-		cd ptolemy; find . -name ptinyos -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		cd ptolemy; find . \( -name ptinyos -o -name jini \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		cd ptolemy/domains/ptinyos; find . -name jdom.jar -prune -o -name nesc.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ../../..; \
@@ -412,7 +412,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/x10/Sender.class \
 		ptolemy/actor/lib/x10/X10Interface.class \
 		ptolemy/actor/lib/x10/demo/MotionDrivenDemos/shutdown.bat \
-		ptolemy/backtrack \
 		ptolemy/component \
 		ptolemy/domains/giotto/cgc \
 		ptolemy/domains/gr/demo/Demo1 \
