@@ -289,7 +289,7 @@ $(PTII_SRC): $(PTII_FULL)
 		PTII=`pwd` ./configure; make -k clean; \
 		touch mk/ptII.mk.in; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
-		cd ptolemy; find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		cd ptolemy; find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar -o -name antlr.jar \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		cd ptolemy/domains/ptinyos; find . -name jdom.jar -prune -o -name nesc.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ../../..; \
