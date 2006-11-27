@@ -94,8 +94,8 @@ public class CodeGeneratorUtilities {
         return substituteMap;
     }
 
-    /** Given a string that names a file or URL, try to
-     *  open as a file, and then as a URL.
+    /** Given a string that names a file, URL or resource, try to
+     *  open as a file, and then as a URL, then as a resource.
      *  @param inputFileName The name of the file or URL to open
      *  @return A BufferedReader that refers to the inputFileName
      *  @exception FileNotFoundException If the file cannot be found.
@@ -109,16 +109,22 @@ public class CodeGeneratorUtilities {
         try {
             inputFile = new BufferedReader(new FileReader(inputFileName));
         } catch (IOException ex) {
-            // Try it as a resource
-            URL inputFileURL = Thread.currentThread().getContextClassLoader()
+            try {
+                // Try it as a URL
+                inputFile = new BufferedReader(new InputStreamReader(new URL(inputFileName).openStream()));
+            } catch (Throwable throwable) {
+
+                // Try it as a resource
+                URL inputFileURL = Thread.currentThread().getContextClassLoader()
                     .getResource(inputFileName);
 
-            if (inputFileURL == null) {
-                throw ex;
-            }
+                if (inputFileURL == null) {
+                    throw ex;
+                }
 
-            inputFile = new BufferedReader(new InputStreamReader(inputFileURL
-                    .openStream()));
+                inputFile = new BufferedReader(new InputStreamReader(inputFileURL
+                      .openStream()));
+            }
         }
 
         return inputFile;
