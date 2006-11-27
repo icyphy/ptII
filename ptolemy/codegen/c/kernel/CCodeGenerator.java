@@ -23,6 +23,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -550,16 +551,32 @@ public class CCodeGenerator extends CodeGenerator {
     /** Read in a template makefile, substitute variables and write
      *  the resulting makefile.
      *
-     *  <p>The makefile template can be found by looking up a resource
-     *  name makefile.in in the package named by the 
-     *  <i>generatorPackage</i> parameter.  Thus, if the 
+     *  <p>If a <code>.mk.in</code> file with the name of the sanitized model
+     *  name, then that file is used as a template.  For example, if the
+     *  model name is <code>Foo</code> and the file <code>Foo.mk.in</code>
+     *  exists, then the file <code>Foo.mk.in</code> is used as a makefile
+     *  template.
+     *
+     *  <p>If no <code>.mk.in</code> file is found, then the makefile
+     *  template can be found by looking up a resource name
+     *  makefile.in in the package named by the
+     *  <i>generatorPackage</i> parameter.  Thus, if the
      *  <i>generatorPackage</i> has the value "ptolemy.codegen.c",
-     *  then we look for the resouce "ptolemy.codegen.c.makefile.in"
-     *  <p>
-     *  <p>The makefile is written to a directory named by the codeDirectory
-     *  parameter, with a file name that is a sanitized version of the
-     *  model name, and a ".mk" extension.  Thus, for a model named "Foo",
-     *  we might generate a makefile in "$HOME/codegen/Foo.mk".
+     *  then we look for the resouce "ptolemy.codegen.c.makefile.in", which
+     *  is usually found as <code>$PTII/ptolemy/codegen/c/makefile.in</code>.
+     *
+     *  <p>The makefile is written to a directory named by the
+     *  <i>codeDirectory</i> parameter, with a file name that is a
+     *  sanitized version of the model name, and a ".mk" extension.
+     *  Thus, for a model named "Foo", we might generate a makefile in
+     *  "$HOME/codegen/Foo.mk".
+
+     *  <p>Under Java under Windows, your <code>$HOME</code> variable
+     *  is set to the value of the <code>user.home</code>System property,
+     *  which is usually something like
+     *  <code>C:\Documents and Settings\<i>yourlogin</i></code>, thus
+     *  for user <code>mrptolemy</code> the makefile would be
+     *  <code>C:\Documents and Settings\mrptolemy\codegen\Foo.mk</code>.
      *
      *  <p>The following variables are substituted
      *  <dd>
@@ -631,9 +648,14 @@ public class CCodeGenerator extends CodeGenerator {
 
         BufferedReader makefileTemplateReader = null;
 
-        String makefileTemplateName = generatorPackage.stringValue().replace(
-                '.', '/')
-                + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in");
+        // Look for a .mk.in file with the same name as the model.
+        String makefileTemplateName;
+        URIAttribute uriAttribute = (URIAttribute)_model.getAttribute(
+                "_uri", URIAttribute.class);
+        String uriString = uriAttribute.getURI().toString();
+        makefileTemplateName = uriString.substring(0,
+                uriString.lastIndexOf("/") + 1)
+            + _sanitizedModelName + ".mk.in";
 
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()
@@ -646,8 +668,20 @@ public class CCodeGenerator extends CodeGenerator {
                 makefileTemplateReader = CodeGeneratorUtilities
                         .openAsFileOrURL(makefileTemplateName);
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "Failed to open \""
-                        + makefileTemplateName + "\" for reading.");
+                String makefileTemplateName2 = "<unknown>";
+                try {
+                    // Look for the generic C makefile.in
+                    makefileTemplateName2 = generatorPackage.stringValue().replace(
+                            '.', '/')
+                        + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in");
+                    makefileTemplateReader = CodeGeneratorUtilities
+                        .openAsFileOrURL(makefileTemplateName2);
+                } catch (IOException ex2) {
+                    throw new IllegalActionException(this, ex2, "Failed to open \""
+                            + makefileTemplateName + "\" and \""
+                            + makefileTemplateName2 + "\" for reading.");
+                }
+                makefileTemplateName = makefileTemplateName2;
             }
 
             _executeCommands.stdout("Reading \"" + makefileTemplateName
