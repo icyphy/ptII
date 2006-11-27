@@ -1331,9 +1331,45 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         unscheduledActorList.addAll(actorList);
 
         try {
+            
             // Initializing waitingTokens at all the input ports of actors and
             // output ports of the model to zero is not necessary because
             // SDFReceiver.clear() does it.
+            
+            // I don't understand the above statement. The only place where
+            // SDFReceiver.clear() is called is during initialization, which 
+            // is too late for scheduling. so I'm calling it here:
+            // --Gang Zhou           
+            Iterator actorsIterator = actorList.iterator();
+            while (actorsIterator.hasNext()) {
+                Actor actor = (Actor) actorsIterator.next();
+                Iterator inputPorts = actor.inputPortList().iterator();
+                while (inputPorts.hasNext()) {
+                    IOPort inputPort = (IOPort) inputPorts.next();
+                    Receiver[][] receivers = inputPort.getReceivers();
+                    if (receivers != null) {
+                        for (int m = 0; m < receivers.length; m++) {
+                            for (int n = 0; n < receivers[m].length; n++) {
+                                receivers[m][n].clear();
+                            }
+                        }
+                    }
+                }
+            }
+            Iterator externalOutputPorts = container.outputPortList().iterator();
+            while (externalOutputPorts.hasNext()) {
+                IOPort outputPort = (IOPort) externalOutputPorts.next();
+                Receiver[][] receivers = outputPort.getInsideReceivers();
+                if (receivers != null) {
+                    for (int m = 0; m < receivers.length; m++) {
+                        for (int n = 0; n < receivers[m].length; n++) {
+                            receivers[m][n].clear();
+                        }
+                    }
+                }
+            }
+            
+            
             // Simulate the creation of initialization tokens (delays).
             // Fill readyToScheduleActorList with all the actors that have
             // no unfulfilled input ports, and are thus ready to fire.
