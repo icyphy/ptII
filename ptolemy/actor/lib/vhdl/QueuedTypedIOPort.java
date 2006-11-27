@@ -101,7 +101,7 @@ public class QueuedTypedIOPort extends TypedIOPort {
     public void send(int channelIndex, Token token)
         throws IllegalActionException, NoRoomException {
         myQueue.add(token);
-        Token sendToken = myQueue.getFirst();
+        Token sendToken = myQueue.removeFirst();
         super.send(channelIndex, sendToken);
     }
 
