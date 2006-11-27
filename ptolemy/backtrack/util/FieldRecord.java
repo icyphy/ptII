@@ -35,7 +35,7 @@ import java.util.Stack;
 
 /**
  The records (or change history) of a field in a class. In a Java program
- refactored with {@link ptolemy.backtrack.eclipse.ast.Transformer} to support
+ refactored with ptolemy.backtrack.eclipse.ast.Transformer to support
  backtracking, every change on a field by means of assignment is recorded.
  The old value of the field is stored in a <tt>FieldRecord</tt>. Every
  entry in the record includes the information of the timestamp (see {@link
