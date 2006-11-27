@@ -61,6 +61,7 @@ import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
@@ -82,7 +83,9 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Yellow (eal)
  */
-public class CodeGeneratorHelper implements ActorCodeGenerator {
+public class CodeGeneratorHelper 
+        extends NamedObj implements ActorCodeGenerator {
+    
     /** Construct the code generator helper associated
      *  with the given component.
      *  @param component The associated component.
@@ -123,6 +126,23 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         + "not implemented in codegen.kernel.CodeGenerator */";
             }
         };
+    }
+    
+    /** Construct the code generator helper associated
+     *  with the given component.
+     *  @param component The associated component.
+     *  @param name
+     */
+    public CodeGeneratorHelper(NamedObj component, String name) {
+        this(component);        
+
+        try {
+            setName(name.replaceAll("\\.", "_") + " helper");
+        } catch (IllegalActionException ex) {
+            // This should not occur.
+        } catch (NameDuplicationException ex) {
+            // FIXME: May not be important to handle.
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -265,7 +285,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        
         _codeStream.clear();
         _codeStream.appendCodeBlock(_defaultBlocks[1], true); // initBlock
         // There is no need to generate comment for empty code block.
@@ -430,6 +449,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
         return processCode(_codeStream.toString());
     }
+
     /**
      * Generate the type conversion fire code. This method is called by the 
      * Director to append necessary fire code to handle type conversion.
@@ -479,49 +499,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *   director cannot be found.
      */
     public String generateVariableDeclaration() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        
-        //  Generate variable declarations for referenced parameters.    
-        if (!_referencedParameters.isEmpty()) {
-            code.append(_eol + _codeGenerator.comment(_component.getName()
-                    + "'s parameter declarations"));
-            Iterator parameters = _referencedParameters.iterator();
-
-            while (parameters.hasNext()) {
-                Parameter parameter = (Parameter) parameters.next();
-
-                // avoid duplicate declaration.
-                if (!_codeGenerator._modifiedVariables.contains(parameter)) {
-                    code.append("static " + cType(parameter.getType()) + " "
-                            + generateVariableName(parameter) + ";" + _eol);
-                }
-            }
-        }
-
-        // Generate variable declarations for input ports.
-        String inputVariables = _generateInputVariableDeclaration();
-        if (inputVariables.length() > 0) {
-            code.append(_eol + _codeGenerator.comment(_component.getName()
-                    + "'s input variables"));
-            code.append(inputVariables);
-        }
-
-        // Generate variable declarations for output ports.
-        String outputVariables = _generateOutputVariableDeclaration();
-        if (!outputVariables.equals("")) {
-            code.append(_eol + _codeGenerator.comment(_component.getName()
-                    + "'s output variables"));
-            code.append(outputVariables);
-        }
-
-        // Generate type convert variable declarations.
-        String typeConvertVariables = _generateTypeConvertVariableDeclaration();
-        if (typeConvertVariables.length() > 0) {
-            code.append(_eol + _codeGenerator.comment(_component.getName()
-                    + "'s type convert variables"));
-            code.append(typeConvertVariables);
-        }
-        return processCode(code.toString());
+        return "";
     }
 
     /** Generate variable initialization for the referenced parameters.
@@ -1334,6 +1312,26 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 + name);
     }
 
+    public Channel getSourceChannel(IOPort port, int channelNumber) 
+            throws IllegalActionException {
+        List sourceChannels = new LinkedList();
+        Receiver[][] receivers;
+
+        if (port.isInput()) {
+            receivers = port.getReceivers();
+        } else {
+            receivers = port.getRemoteReceivers();            
+        }
+        
+        TypedIOPort sourcePort = 
+            ((TypedIOPort) port.sourcePortList().get(0));
+            
+        Channel source = new Channel(sourcePort, 
+                sourcePort.getChannelForReceiver(receivers[0][0]));
+        
+        return source;        
+    }
+
     /** Get the write offset in the buffer of a given channel to which a token
      *  should be put. The channel is given by its containing port and
      *  the channel number in that port.
@@ -1425,7 +1423,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             String macro = code.substring(currentPos + 1, openParenIndex);
             macro = macro.trim();
 
-            if (!CodeGenerator._macros.contains(macro)) {
+            if (!_codeGenerator.getMacros().contains(macro)) {
                 result.append(subcode.substring(0, 1));
                 result.append(processCode(subcode.substring(1)));
             } else {
@@ -1433,51 +1431,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         closeParenIndex);
                 name = name.trim();
 
-                if (macro.equals("ref")) {
-                    result.append(getReference(name));
-                } else if (macro.equals("targetType")) {
-                    TypedIOPort port = getPort(name);
-                    if (port == null) {
-                        throw new IllegalActionException(
-                                name
-                                        + " is not a port. $type macro takes in a port.");
-                    }
-                    result.append(cType(port.getType()));
-
-                } else if (macro.equals("type") || macro.equals("cgType")) {
-
-                    TypedIOPort port = getPort(name);
-
-                    if (port == null) {
-                        throw new IllegalActionException(
-                                name
-                                        + " is not a port. $type macro takes in a port.");
-                    }
-                    if (macro.equals("type")) {
-                        result.append("TYPE_");
-                    }
-                    result.append(codeGenType(port.getType()));
-
-                } else if (macro.equals("val")) {
-                    result.append(getParameterValue(name, _component));
-                } else if (macro.equals("size")) {
-                    result.append(getSize(name));
-                } else if (macro.equals("actorSymbol")) {
-                    result.append(generateName(_component));
-                    result.append("_" + name);
-                } else if (macro.equals("actorClass")) {
-                    result.append(_component.getClassName().replace('.', '_'));
-                    result.append("_" + name);
-                } else if (macro.equals("new")) {
-                    result.append(getNewInvocation(name));
-                } else if (macro.equals("tokenFunc")) {
-                    result.append(getFunctionInvocation(name, false));
-                } else if (macro.equals("typeFunc")) {
-                    result.append(getFunctionInvocation(name, true));
-                } else {
-                    // This macro is not handled.
-                    throw new IllegalActionException("Macro is not handled.");
-                }
+                result.append(_replaceMacro(macro, name));
 
                 result.append(code.substring(closeParenIndex + 1, nextPos));
             }
@@ -1612,7 +1566,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     && port.equals(((Channel) object).port)
                     && channelNumber == ((Channel) object).channelNumber;
         }
-
+        
+        /**
+         * Return the string representation of this channel.
+         * @return The string representation of this channel.
+         */
+        public String toString() {
+            return port.getName() + "_" + channelNumber;
+        }
+        
         /**
          * Return the hash code for this channel. Implementing this method
          * is required for comparing the equality of channels.
@@ -1925,78 +1887,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return processCode(_codeStream.toString());
     }
 
-    /** Generate input variable declarations.
-     *  @return a String that declares input variables.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.  
-     */
-    protected String _generateInputVariableDeclaration()
-            throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-
-            if (inputPort.getWidth() == 0) {
-                continue;
-            }
-
-            code.append("static " + cType(inputPort.getType()) + " "
-                    + generateName(inputPort));
-
-            if (inputPort.isMultiport()) {
-                code.append("[" + inputPort.getWidth() + "]");
-            }
-
-            int bufferSize = getBufferSize(inputPort);
-
-            if (bufferSize > 1) {
-                code.append("[" + bufferSize + "]");
-            }
-            code.append(";" + _eol);
-        }
-
-        return code.toString();
-    }
-
-    /** Generate output variable declarations.
-     *  @return a String that declares output variables.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.  
-     */
-    protected String _generateOutputVariableDeclaration()
-            throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        Iterator outputPorts = ((Actor) _component).outputPortList().iterator();
-
-        while (outputPorts.hasNext()) {
-            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
-
-            // If either the output port is a dangling port or
-            // the output port has inside receivers.
-            if (outputPort.getWidth() == 0 || outputPort.getWidthInside() != 0) {
-                code.append("static " + cType(outputPort.getType()) + " "
-                        + generateName(outputPort));
-
-                if (outputPort.isMultiport()) {
-                    code.append("[" + outputPort.getWidthInside() + "]");
-                }
-
-                int bufferSize = getBufferSize(outputPort);
-
-                if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
-                }
-                code.append(";" + _eol);
-            }
-        }
-
-        return code.toString();
-    }
-
     /**
      * Generate expression that evaluates to a result of equivalent
      * value with the cast type.
@@ -2037,7 +1927,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * helpers for the ports or if the conversion cannot be handled.
      */
     protected String _generateTypeConvertStatements(Channel source, Channel sink)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         StringBuffer statements = new StringBuffer();
 
@@ -2048,8 +1938,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             statements.append(CodeStream
                     .indent(_generateTypeConvertStatement(source, sink, offset)));
         }
-    return processCode(statements.toString());
-}
+    	return processCode(statements.toString());
+    }
 
     /**
      * Generate the type conversion statement for the particular offset of
@@ -2157,33 +2047,45 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return sinkRef + " = " + result + ";" + _eol;
     }
 
-    /** Generate type convert variable declarations.
-     *  @return a String that declares type convert variables.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.  
+    /** Return the channel number and offset given in a string.
+     *  The result is an integer array of length 2. The first element
+     *  indicates the channel number, the second the offset. If either
+     *  element is -1, it means that channel/offset is not specified.
+     * @param name The given string.
+     * @return An integer array of length 2, indicating the channel
+     *  number and offset.
+     * @exception IllegalActionException If the channel number or offset
+     *  specified in the given string is illegal.
      */
-    protected String _generateTypeConvertVariableDeclaration() 
+    protected String[] _getChannelAndOffset(String name)
             throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        Iterator channels = _getTypeConvertChannels().iterator();
-        while (channels.hasNext()) {
-            Channel channel = (Channel) channels.next();
-            code.append("static ");
-            code.append(cType(((TypedIOPort) channel.port).getType()));
-            code.append(" " + _getTypeConvertReference(channel));
 
-            int rate = Math.max(DFUtilities
-                    .getTokenProductionRate(channel.port), DFUtilities
-                    .getTokenConsumptionRate(channel.port));
+        // FIXME: the comment says that this method return -1 for 
+        // unspecified channel or offset. However, result is initialized to
+        // empty strings.
+        String[] result = { "", "" };
 
-            if (rate > 1) {
-                code.append("[" + rate + "]");
+        StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
+        tokenizer.nextToken();
+
+        if (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken();
+
+            if (token.equals("#")) {
+                result[0] = tokenizer.nextToken().trim();
+
+                if (tokenizer.hasMoreTokens()) {
+                    if (tokenizer.nextToken().equals(",")) {
+                        result[1] = tokenizer.nextToken().trim();
+                    }
+                }
+            } else if (token.equals(",")) {
+                result[1] = tokenizer.nextToken().trim();
             }
-            code.append(";\n");
         }
-        return processCode(code.toString());        
+        return result;
     }
-    
+
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.
      *  @return The code generator helper.
@@ -2201,6 +2103,81 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     protected static String _getIndentPrefix(int level) {
         return StringUtilities.getIndentPrefix(level);
+    }
+
+    /**
+     * Get the set of channels that need to be type converted.
+     * @return Set of channels that need to be type converted.
+     */
+    protected Set _getTypeConvertChannels() {
+        return _portConversions.keySet();
+    }
+
+    /**
+     * Generate a variable reference for the given channel. This varaible
+     * reference is needed for type conversion. The source helper get this
+     * reference instead of using the sink reference directly.
+     * This method assumes the given channel is a source (output) channel.
+     * @param channel The given source channel.
+     * @return The variable reference for the given channel.
+     */
+    protected String _getTypeConvertReference(Channel channel) {
+        return generateName(channel.port) + "_" + channel.channelNumber;
+    }
+    
+    /** Return the replacement string of the given macro. Subclass
+     * of CodeGenerator may overriding this method to extend or support
+     * a different set of macros.
+     * @param macro The given macro.
+     * @param parameter The given parameter to the macro.
+     * @return The replacement string of the given macro.
+     * @throws IllegalActionException Thrown if the given macro or
+     *  parameter is not valid.
+     */
+    protected String _replaceMacro(String macro, String parameter) 
+            throws IllegalActionException {
+        if (macro.equals("ref")) {
+            return getReference(parameter);
+        } else if (macro.equals("targetType")) {
+            TypedIOPort port = getPort(parameter);
+            if (port == null) {
+                throw new IllegalActionException(parameter + 
+                        " is not a port. $type macro takes in a port.");
+            }
+            return cType(port.getType());
+
+        } else if (macro.equals("type") || macro.equals("cgType")) {
+
+            TypedIOPort port = getPort(parameter);
+
+            if (port == null) {
+                throw new IllegalActionException(parameter +
+                        " is not a port. $type macro takes in a port.");
+            }
+            if (macro.equals("type")) {
+                return "TYPE_";
+            }
+            return codeGenType(port.getType());
+
+        } else if (macro.equals("val")) {
+            return getParameterValue(parameter, _component);
+        } else if (macro.equals("size")) {
+            return "" + getSize(parameter);
+        } else if (macro.equals("actorSymbol")) {
+            return generateName(_component) + "_" + parameter;
+        } else if (macro.equals("actorClass")) {
+            return _component.getClassName().replace('.', '_')
+            + "_" + parameter;
+        } else if (macro.equals("new")) {
+            return getNewInvocation(parameter);
+        } else if (macro.equals("tokenFunc")) {
+            return getFunctionInvocation(parameter, false);
+        } else if (macro.equals("typeFunc")) {
+            return getFunctionInvocation(parameter, true);
+        } else {
+            // This macro is not handled.
+            throw new IllegalActionException("Macro is not handled.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2243,6 +2220,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  the actor.
      */
     protected HashMap _readOffsets = new HashMap();
+
+    /** A hashset that keeps track of parameters that are referenced for
+     *  the associated actor.
+     */
+    protected HashSet _referencedParameters = new HashSet();
 
     /** A hashmap that keeps track of the write offsets of each input channel of
      *  the actor.
@@ -2322,65 +2304,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return -1;
     }
 
-    /** Return the channel number and offset given in a string.
-     *  The result is an integer array of length 2. The first element
-     *  indicates the channel number, the second the offset. If either
-     *  element is -1, it means that channel/offset is not specified.
-     * @param name The given string.
-     * @return An integer array of length 2, indicating the channel
-     *  number and offset.
-     * @exception IllegalActionException If the channel number or offset
-     *  specified in the given string is illegal.
-     */
-    private String[] _getChannelAndOffset(String name)
-            throws IllegalActionException {
-
-        // FIXME: the comment says that this method return -1 for 
-        // unspecified channel or offset. However, result is initialized to
-        // empty strings.
-        String[] result = { "", "" };
-
-        StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
-        tokenizer.nextToken();
-
-        if (tokenizer.hasMoreTokens()) {
-            String token = tokenizer.nextToken();
-
-            if (token.equals("#")) {
-                result[0] = tokenizer.nextToken().trim();
-
-                if (tokenizer.hasMoreTokens()) {
-                    if (tokenizer.nextToken().equals(",")) {
-                        result[1] = tokenizer.nextToken().trim();
-                    }
-                }
-            } else if (token.equals(",")) {
-                result[1] = tokenizer.nextToken().trim();
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Get the set of channels that need to be type converted.
-     * @return Set of channels that need to be type converted.
-     */
-    private Set _getTypeConvertChannels() {
-        return _portConversions.keySet();
-    }
-
-    /**
-     * Generate a variable reference for the given channel. This varaible
-     * reference is needed for type conversion. The source helper get this
-     * reference instead of using the sink reference directly.
-     * This method assumes the given channel is a source (output) channel.
-     * @param channel The given source channel.
-     * @return The variable reference for the given channel.
-     */
-    private String _getTypeConvertReference(Channel channel) {
-        return generateName(channel.port) + "_" + channel.channelNumber;
-    }
-
     /**
      * Get the list of sink channels that the given source channel needs to
      * be type converted to.
@@ -2440,10 +2363,5 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     private static final String[] _defaultBlocks = { "preinitBlock",
             "initBlock", "fireBlock", "wrapupBlock" };
-
-    /** A hashset that keeps track of parameters that are referenced for
-     *  the associated actor.
-     */
-    private HashSet _referencedParameters = new HashSet();
 
 }
