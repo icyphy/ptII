@@ -108,7 +108,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 /***fireBlock***/
 #ifndef __AVR__
 /* Machines that don't have the hardware just print 0 and 1. */
-if ($ref(column) == 0) {
+if ($ref(row) == 0) {
     printf("\n");
 }
 if ($ref(row) == 0 && $ref(column) == 0) {
@@ -120,7 +120,7 @@ if ($ref(control)) {
     printf("0");
 }
 
-#else /* __AVR__ */ 
+#else /* !  __AVR__ */ 
 /* LED Tank Top Code from
  *   http://craftzine.com/01/led
  *   http://www.cs.colorado.edu/~buechley/diy/diy_tank.html
@@ -227,7 +227,7 @@ if ($ref(control)) {
 	col11_low;
 	col12_low;
 	col13_low;
-#endif /* __AVR__ */ 
-
 }
+#endif /* ! __AVR__ */ 
+
 /**/
