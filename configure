@@ -7475,8 +7475,8 @@ echo "${ECHO_T}$ANTLR_DIR" >&6
 echo "$as_me: WARNING: Failed to find PTII/ptolemy/actor/ptalon/antlr/antlr.jar
     If it is not present, you will not be able to use the
     Ptalon." >&2;}
-	# Note that we don't substitute in the ${PTII} here
-	PTPTALON_DIR='${PTII}/ptolemy/actor/ptalon/antlr'
+	PTPTALON_DIR=
+	PTPTALON_PACKAGES=
     fi
 
     if test ! "$HAS_GENERICS" = "yes"; then
@@ -8892,10 +8892,9 @@ for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
   # 1. Remove the extension, and $U if already installed.
   ac_i=`echo "$ac_i" |
 	 sed 's/\$U\././;s/\.o$//;s/\.obj$//'`
-  # 2. Prepend LIBOBJDIR.  When used with automake>=1.10 LIBOBJDIR
-  #    will be set to the directory where LIBOBJS objects are built.
-  ac_libobjs="$ac_libobjs \${LIBOBJDIR}$ac_i\$U.$ac_objext"
-  ac_ltlibobjs="$ac_ltlibobjs \${LIBOBJDIR}$ac_i"'$U.lo'
+  # 2. Add them.
+  ac_libobjs="$ac_libobjs $ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs $ac_i"'$U.lo'
 done
 LIBOBJS=$ac_libobjs
 
