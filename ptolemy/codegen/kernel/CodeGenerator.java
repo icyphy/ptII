@@ -743,8 +743,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     
     /** Return the set of modified variables.
      *  @return The set of modified variables.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public Set getModifiedVariables() {
+    public Set getModifiedVariables() throws IllegalActionException {
         return _modifiedVariables;
     }
     
