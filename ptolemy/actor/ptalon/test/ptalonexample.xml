@@ -12,33 +12,4 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{216.42578125, 165.8828125}">
     </property>
-    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 15.0]">
-        </property>
-    </property>
-    <entity name="MapReduce" class="ptolemy.actor.ptalon.PtalonActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 75.0]">
-        </property>
-        <configure>
-            <ptalon file="ptolemy.actor.ptalon.test.mapreduce.MapReduce">
-                <ptalonExpressionParameter name="className" value="&quot;ptolemy.actor.ptalon.demo.WordCount&quot;"/>
-                <ptalonExpressionParameter name="numberOfMachines" value="5"/>
-                <ptalonExpressionParameter name="fileNamePrefix" value="&quot;C:/Repositories/ptII/ptolemy/actor/ptalon/demo/ReadTest&quot;"/>
-            </ptalon>
-        </configure>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 304, 330, 237}, maximized=false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 75.0]">
-        </property>
-    </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <link port="MapReduce.status" relation="relation"/>
-    <link port="Display.input" relation="relation"/>
 </entity>
