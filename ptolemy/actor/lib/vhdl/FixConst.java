@@ -72,6 +72,7 @@ public class FixConst extends FixTransformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         value = new Parameter(this, "value");
+        value.setTypeEquals(BaseType.SCALAR);
         value.setExpression("0.0");
 
         // Set the type constraint.

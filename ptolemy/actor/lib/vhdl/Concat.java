@@ -122,6 +122,6 @@ public class Concat extends FixTransformer {
         FixPoint result = new FixPoint(new BigDecimal(new BigInteger(bits, 2)),
                 new FixPointQuantization(precision, overflow, rounding));
 
-        output.send(0, new FixToken(result));
+        sendOutput(output, 0, new FixToken(result));
     }
 }

@@ -27,13 +27,22 @@
  */
 package ptolemy.actor.lib.vhdl;
 
+import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.FixToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.math.FixPointQuantization;
+import ptolemy.math.Overflow;
+import ptolemy.math.Precision;
+import ptolemy.math.Quantization;
+import ptolemy.math.Rounding;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixPointTransformer
@@ -65,6 +74,35 @@ public class FixTransformer extends TypedAtomicActor {
         output = newFixOutputPort("output");
     }
 
+    /**
+     * 
+     * @param channel
+     * @param port
+     * @param token
+     * @throws NoRoomException
+     * @throws IllegalActionException
+     */
+    public void sendOutput(TypedIOPort port, int channel, Token token) 
+            throws NoRoomException, IllegalActionException {
+        if (port.getType() == BaseType.FIX && token instanceof FixToken) {
+            Precision precision = new Precision(((Parameter) 
+                getAttribute(port.getName() + "Precision")).getExpression());
+    
+            Overflow overflow = Overflow.getName(((Parameter) getAttribute(
+                port.getName() + "Overflow")).getExpression().toLowerCase());
+    
+            Rounding rounding = Rounding.getName(((Parameter) getAttribute(
+                port.getName() + "Rounding")).getExpression().toLowerCase());
+    
+            Quantization quantization = 
+                new FixPointQuantization(precision, overflow, rounding);
+            
+            token = ((FixToken) token).quantize(quantization); 
+        }
+
+        port.send(channel, token);
+    }
+    
     /** Create a new fix point type output port with given the name.
      *  The container of the created port is this actor. This also
      *  create a new precision parameter associated with this port.   

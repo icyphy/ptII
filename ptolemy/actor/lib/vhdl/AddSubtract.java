@@ -120,29 +120,8 @@ public class AddSubtract extends SynchronousFixTransformer {
             } else {
                 result = A.get(0).subtract(B.get(0));
             }     
-
-            Precision precision = new Precision(((Parameter) 
-                    getAttribute("outputPrecision")).getExpression());
-
-            Overflow overflow = Overflow.getName(((Parameter) getAttribute(
-                "outputOverflow")).getExpression().toLowerCase());
-
-            Rounding rounding = Rounding.getName(((Parameter) getAttribute(
-                "outputRounding")).getExpression().toLowerCase());
-            
-            Quantization quantization = 
-                new FixPointQuantization(precision, overflow, rounding);
-            
-            result = ((FixToken) result).quantize(quantization);
-            if (!((FixToken) result).fixValue().getPrecision().equals(
-                    new Precision(((Parameter) getAttribute("outputPrecision"))
-                            .getExpression()))) {
-                System.out.println("not Equal precision");
-//                throw new IllegalActionException("output token do not" +
-//                        "match the specified precision.");
-            }
         }
 
-        output.send(0, result);
+        sendOutput(output, 0, result);
     }
 }
