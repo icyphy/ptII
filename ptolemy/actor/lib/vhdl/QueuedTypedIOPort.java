@@ -91,7 +91,7 @@ public class QueuedTypedIOPort extends TypedIOPort {
         
         for(int i=0; i<latency; i++)
         {
-            myQueue.add(FixToken.NIL);
+            myQueue.add(new FixToken());
         }
     } 
     
