@@ -69,7 +69,10 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
        setLatency(latencyValue);
     }
     
-    public abstract void setLatency(int latency);
+    public void setLatency(int latency)
+    {
+        output.setSize(latency);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////

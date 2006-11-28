@@ -105,11 +105,6 @@ public class AddSubtract extends SynchronousFixTransformer {
         
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    public void setLatency(int latency)
-    {
-        output.setSize(latency);
-    }
     
     /** Output the fixpoint value of the sum of the input bits. 
      *  If there is no inputs, then produce null.
