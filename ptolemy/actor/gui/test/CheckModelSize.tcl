@@ -44,6 +44,8 @@ if {[info procs jdkCapture] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+set ptolemyPtIIDir [java::call ptolemy.util.StringUtilities getProperty ptolemy.ptII.dir]
+
 ######################################################################
 ####
 #
@@ -51,7 +53,7 @@ test CheckModelSize-1.0 {checkModelSize} {
     set args [java::new {String[]} {1} {../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml}]
     set results \
 	[java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args]
-    regsub -all {file:[^>]*/ptII/} $results {} results2
+    regsub -all "file:$ptolemyPtIIDir/" $results {} results2
     list $results2
 	
 } {{<h1>Check Size</h1>
@@ -64,6 +66,7 @@ Below are the results from checking the sizes of and centering of models
 </table>
 }}
 
+
 ######################################################################
 ####
 #
@@ -71,7 +74,7 @@ test CheckModelSize-1.1 {checkModelSize: no _vergilSize} {
     set args [java::new {String[]} {1} {test.xml}]
     set results \
 	[java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args]
-    regsub -all {file:[^>]*/ptII/} $results {} results2
+    regsub -all "file:$ptolemyPtIIDir/" $results {} results2
     list $results2
 	
 } {{<h1>Check Size</h1>
@@ -91,7 +94,7 @@ test CheckModelSize-1.2 {checkModelSize: bad moml} {
     set args [java::new {String[]} {1} {badMoML.moml}]
     set results \
 	[java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args]
-    regsub -all {file:[^>]*/ptII/} $results {} results2
+    regsub -all "file:$ptolemyPtIIDir/" $results {} results2
     list [string range $results2 0 290]
 } {{<h1>Check Size</h1>
 Below are the results from checking the sizes of and centering of models
@@ -110,7 +113,7 @@ test CheckModelSize-2.0 {main} {
     jdkCapture {
         java::call ptolemy.actor.gui.CheckModelSize main $args
     } results
-    regsub -all {file:[^>]*/ptII/} $results {} results2
+    regsub -all "file:$ptolemyPtIIDir/" $results {} results2
     list $results2
 } {{<h1>Check Size</h1>
 Below are the results from checking the sizes of and centering of models
