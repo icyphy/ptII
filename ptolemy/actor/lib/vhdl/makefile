@@ -53,9 +53,11 @@ JSRCS = \
 	SynchronousFixTransformer.java \
 	FixConst.java \
 	FixCounter.java \
+	FixSequence.java \
 	Concat.java \
 	Memory.java \
 	Multiplexor.java \
+	Multiplier.java \
 	QueuedTypedIOPort.java \
 	Slice.java \
 	Register.java \

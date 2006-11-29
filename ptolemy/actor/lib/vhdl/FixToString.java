@@ -28,26 +28,15 @@
  */
 package ptolemy.actor.lib.vhdl;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Arrays;
-
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.FixToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.FixPoint;
-import ptolemy.math.FixPointQuantization;
-import ptolemy.math.Overflow;
 import ptolemy.math.Precision;
-import ptolemy.math.Rounding;
 
 //////////////////////////////////////////////////////////////////////////
 //// Slice
