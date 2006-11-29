@@ -99,7 +99,8 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 
-test: $(EXTRA_SRCS) jclass test_java test_jgraphical
+test: $(EXTRA_SRCS) jclass test_java test_jsimple
+	@echo "To run the graphical tests, run \"make test_jgraphical\""
 
 # The nightly build runs make tests, which in this case will not
 # run the graphical tests
