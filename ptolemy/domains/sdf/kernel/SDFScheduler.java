@@ -1336,10 +1336,14 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             // output ports of the model to zero is not necessary because
             // SDFReceiver.clear() does it.
             
-            // I don't understand the above statement. The only place where
-            // SDFReceiver.clear() is called is during initialization, which 
-            // is too late for scheduling. so I'm initializing _waitingTokes
-            // to zero here:
+            // The above statement seems incorrect to me. The only place where
+            // SDFReceiver.clear() is called is during initialization. 
+            // For models that need to recompute the schedule during the 
+            // execution, _waitingTokens is not cleared to zero, because 
+            // initialize() is called only once at the beginning of the
+            // execution. Plus, in code generation, initialize() is never 
+            // called. so I'm adding code to clear the _waitingTokes to zero 
+            // here:
             // --Gang Zhou           
             Iterator actorsIterator = actorList.iterator();
             while (actorsIterator.hasNext()) {
