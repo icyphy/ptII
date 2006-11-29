@@ -45,7 +45,7 @@
             </property>
         </port>
     </entity>
-    <entity name="PTPTriggerOut" class="ptolemy.domains.dde.ptp.PTPTriggerOut">
+    <entity name="PTPTriggerOut" class="ptolemy.ptp.lib.PTPTriggerOut">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{355, 285}">
         </property>
     </entity>
