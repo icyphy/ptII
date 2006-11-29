@@ -114,8 +114,7 @@ Below are the results from checking the sizes of and centering of models
 #
 test CheckModelSize-2.0 {main} {
     set modelFile [java::new java.io.File testCheckModelSize.xml]
-    set modelURL [$modelFile toURL]
-    set args [java::new {String[]} {2} [list  Notafile [$modelURL toString]]]
+    set args [java::new {String[]} {2} [list  Notafile [$modelFile toString]]]
     jdkCapture {
         java::call ptolemy.actor.gui.CheckModelSize main $args
     } results
