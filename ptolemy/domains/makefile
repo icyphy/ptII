@@ -42,13 +42,11 @@ EXPERIMENTAL_DOMAINS = \
 #   $PTII/lib/mapss.jar was found
 # PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to gr if
 #   Java 3D was found
-# PTTINYOS_DIR is set by configure in $PTII/mk/ptII.mk to ptinyos if
-#   TinyOS is found. 
 # PTCONTINUOUS_DIR is set to continuous if we want to compile that domain.
 PTCONTINUOUS_DIR = continuous
 DOMAINS =	ci $(PTCONTINUOUS_DIR) csp ct dde ddf de fsm pn sdf dt \
 	    giotto petrinet rendezvous \
-		$(PTPSDF_DIR) $(PTTINYOS_DIR) \
+		$(PTPSDF_DIR) ptinyos \
 		sr tm $(PTJAVA3D_DIR) wireless
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
