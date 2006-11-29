@@ -107,6 +107,8 @@ public class CCodeGenerator extends CodeGenerator {
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         Set includingFiles = compositeActorHelper.getHeaderFiles();
 
+        includingFiles.add("<stdlib.h>");  // Sun requires stdlib.h for malloc
+
         if (!isTopLevel()) {
             includingFiles.add("\"Jni" + _sanitizedModelName + ".h\"");
             // FIXME: This is temporary. Only works on my machine.
