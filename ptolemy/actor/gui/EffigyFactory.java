@@ -155,14 +155,20 @@ public class EffigyFactory extends CompositeEntity {
      */
     public static String getExtension(URL url) {
         String filename = url.getFile();
-        int index = filename.lastIndexOf(".");
+        int dotIndex = filename.lastIndexOf(".");
 
-        if (index < 0) {
+        if (dotIndex < 0) {
             return "";
         }
 
         try {
-            return filename.substring(index + 1);
+            int slashIndex = filename.lastIndexOf("/");
+            if (slashIndex > 0 && slashIndex > dotIndex) {
+                // The last / is after the last .
+                // for example foo.bar/bif
+                return "";
+            }
+            return filename.substring(dotIndex + 1);
         } catch (IndexOutOfBoundsException ex) {
             return "";
         }
