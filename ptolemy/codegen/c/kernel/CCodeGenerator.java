@@ -627,11 +627,19 @@ public class CCodeGenerator extends CodeGenerator {
         String makefileTemplateName;
         URIAttribute uriAttribute = (URIAttribute)_model.getAttribute(
                 "_uri", URIAttribute.class);
-        String uriString = uriAttribute.getURI().toString();
-        makefileTemplateName = uriString.substring(0,
-                uriString.lastIndexOf("/") + 1)
-            + _sanitizedModelName + ".mk.in";
-
+        if (uriAttribute != null) {
+            String uriString = uriAttribute.getURI().toString();
+            makefileTemplateName = uriString.substring(0,
+                    uriString.lastIndexOf("/") + 1)
+                + _sanitizedModelName + ".mk.in";
+        } else {
+            // The model does not have a _uri attribute, so 
+            // Look for the generic C makefile.in
+            // Note this code is repeated in the catch below.
+            makefileTemplateName = generatorPackage.stringValue().replace(
+                    '.', '/')
+                + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in");
+        }
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()
                 + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
@@ -646,6 +654,7 @@ public class CCodeGenerator extends CodeGenerator {
                 String makefileTemplateName2 = "<unknown>";
                 try {
                     // Look for the generic C makefile.in
+                    // Note this line is a repeat from the _uri check above.
                     makefileTemplateName2 = generatorPackage.stringValue().replace(
                             '.', '/')
                         + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in");
