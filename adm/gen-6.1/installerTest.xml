@@ -16,7 +16,7 @@
     <com.izforge.izpack.panels.SummaryPanel/>
     <com.izforge.izpack.panels.InstallPanel/>
     <com.izforge.izpack.panels.ShortcutPanel>
-        <programGroup name="Ptolemy\ptII6.0.alpha"/>
+        <programGroup name="Ptolemy\ptII6.0.devel"/>
         <shortcut mimetype="" createForAll="false" encoding="" type="1"
 	 url="" group="true" usertype="0" terminalOptions="" commandLine=""
 	 workingDirectory="c:\Ptolemy\ptII6.1.devel"
