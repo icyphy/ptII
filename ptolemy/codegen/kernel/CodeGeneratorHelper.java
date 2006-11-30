@@ -2154,10 +2154,11 @@ public class CodeGeneratorHelper
                 throw new IllegalActionException(parameter +
                         " is not a port. $type macro takes in a port.");
             }
+            String type = "";
             if (macro.equals("type")) {
-                return "TYPE_";
+                type = "TYPE_";
             }
-            return codeGenType(port.getType());
+            return type + codeGenType(port.getType());
 
         } else if (macro.equals("val")) {
             return getParameterValue(parameter, _component);
