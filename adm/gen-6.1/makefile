@@ -155,7 +155,7 @@ all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 # Rebuild the distributions
 rebuild: clean all installshield_app build_unixPtII
 
-clean:
+clean:	full_clean_setup
 	@echo "#"
 	@echo "# Now cleaning old tar files"
 	@echo "#"
@@ -1003,7 +1003,6 @@ bldmastrcoverage:
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.jar \
 		clean \
 		all \
-		test_setup \
 		remote1distclean \
 		remote1configure \
 		remote1distjsall \
@@ -1014,7 +1013,9 @@ bldmastrcoverage:
 		remote1doc \
 		remote1doccheck \
 		remote1findbugs \
-		remote1jnlp
+		remote1jnlp \
+		test_setup
+
 
 
 #		remote4
@@ -2430,11 +2431,15 @@ $(PTII)/vendors/launch4j:
 #L4JC=$(L4J_DIR)/launch4jc.exe
 L4JC=$(L4J_DIR)/launch4j
 
+PTSETUP_DEPENDENCIES = \
+	../../ptiny.exe \
+	../../jar_dist \
+	../../ptolemy/matlab/ptmatlab.dll \
+	../../lib/matlabWindows.jar \
+	$(PTSETUP)_l4j.xml
+
 # Launch4J
-$(PTSETUP).exe: ../../ptiny.exe ../../jar_dist \
-			../../ptolemy/matlab/ptmatlab.dll \
-			jre \
-			../../lib/matlabWindows.jar $(PTSETUP)_l4j.xml \
+$(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) jre
 			$(PTSETUP).jar #ExtractJarFile.class
 		"$(L4JC)" `$(PTCYGPATH) $(PTSETUP)_l4j.xml`
 
@@ -2462,6 +2467,9 @@ setup: $(PTSETUP).exe
 
 clean_setup: 
 	rm -f $(PTSETUP).jar $(PTSETUP).exe
+
+full_clean_setup: clean_setup
+	rm -rf $(PTSETUP_DEPENDENCIES)
 
 test_setup: setup
 	@echo "#"
