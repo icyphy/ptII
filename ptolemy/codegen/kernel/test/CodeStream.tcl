@@ -78,7 +78,8 @@ test CodeStream-3.1 {appendCodeBlock} {
     $codeStream appendCodeBlock "foo" [java::new java.util.ArrayList] true 0
     catch {$codeStream appendCodeBlock "foo" [java::new java.util.ArrayList] false 0} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block "foo()".}}
+} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: "foo()".
+  in .<Unnamed Object>}}
 
 #####
 test CodeStream-3.2 {appendCodeBlock} {
@@ -91,15 +92,13 @@ test CodeStream-3.2 {appendCodeBlock} {
     $codeStream3_2 appendCodeBlock "initBlock" $args false 0
     list [$codeStream3_2 toString] \
 	[$codeStream3_2 description]
-} {{
-    if ($ref(input) != 3) {
-        $ref(output) = 3;
-    }
+} {{if ($ref(input) != 3) {
+    $ref(output) = 3;
+}
 } {initBlock($arg):
-
-    if ($ref(input) != $arg) {
-        $ref(output) = $arg;
-    }
+if ($ref(input) != $arg) {
+    $ref(output) = $arg;
+}
 
 -------------------------------
 
@@ -117,7 +116,7 @@ test CodeStream-3.3 {appendCodeBlock: wrong number of args} {
     $args add [java::call Integer toString 4]
     catch {$codeStream3_3 appendCodeBlock "initBlock" $args false 0} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block "initBlock($, $)".}}
+} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: "initBlock($, $)".}}
 
 #####
 test CodeStream-3.4 {appendCodeBlock: arg name does not start with $} {
@@ -154,19 +153,15 @@ test CodeStream-4.0 {appendCodeBlock(nameExpression)} {
     list [$codeStream4_0 toString] \
 	[$codeStream4_0 description]
 
-} {{
-    // myBlock
-
-    // myOtherBlock
+} {{// myBlock
+// myOtherBlock
 } {myBlock:
-
-    // myBlock
+// myBlock
 
 -------------------------------
 
 myOtherBlock:
-
-    // myOtherBlock
+// myOtherBlock
 
 -------------------------------
 
@@ -185,10 +180,9 @@ test CodeStream-10.0 {main} {
 ----------Result-----------------------
 
 initBlock($arg):
-
-    if ($ref(input) != $arg) {
-        $ref(output) = $arg;
-    }
+if ($ref(input) != $arg) {
+    $ref(output) = $arg;
+}
 
 -------------------------------
 
@@ -196,9 +190,8 @@ initBlock($arg):
 
 ----------Result-----------------------
 
-
-    if ($ref(input) != 3) {
-        $ref(output) = 3;
-    }
+if ($ref(input) != 3) {
+    $ref(output) = 3;
+}
 
 }}
