@@ -574,6 +574,10 @@ public class CodeStream {
             // Open the .c file for reading.
             reader = FileUtilities.openForReading(_filePath, null, null);
 
+            if (reader == null) {
+                return;
+            }
+
             StringBuffer codeInFile = new StringBuffer();
 
             // FIXME: is there a better way to read the entire file?
@@ -622,16 +626,21 @@ public class CodeStream {
 
     /**
      * Get the file path for the helper .[target] file associated with
-     * the given helper class.
+     * the given helper class.  If the helper has no code generator,
+     * then the empty string is returned.  
      * @param helperClass The given helper class
      * @return Path for the helper .[target] file.
      */
     private String _getPath(Class helperClass) {
+        CodeGenerator codeGenerator = _helper.getCodeGenerator();
+        if (codeGenerator == null) {
+            return "";
+        }
         String extension = 
             _helper._codeGenerator.generatorPackage.getExpression();
         extension = extension.substring(extension.lastIndexOf(".") + 1);
         return "$CLASSPATH/" + helperClass.getName().replace('.', '/')
-        + "." + extension;
+            + "." + extension;
     }
 
     /**
