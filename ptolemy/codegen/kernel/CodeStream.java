@@ -285,7 +285,7 @@ public class CodeStream {
                 return;
             } else {
                 throw new IllegalActionException(_helper, 
-                        "Cannot find code block: " + signature + ".\n");
+                        "Cannot find code block: \"" + signature + "\".");
             }
         }
 
@@ -522,7 +522,7 @@ public class CodeStream {
             throws IllegalActionException {
         if (!name.startsWith("$")) {
             throw new IllegalActionException("Parameter \"" + name
-                    + "\" is not well-formed.\n" + _eol
+                    + "\" is not well-formed." + _eol
                     + "Parameter name for code block needs to starts with '$'");
         }
         //name.matches("[a-zA-Z_0-9]");
@@ -851,7 +851,7 @@ public class CodeStream {
                 }
             }
             throw new IllegalActionException(_helper, 
-                    "Cannot find code block: " + signature + ".\n");
+                    "Cannot find code block: " + signature + ".");
         }
 
         public StringBuffer getCode(Signature signature)
