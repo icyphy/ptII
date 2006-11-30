@@ -1,6 +1,6 @@
 /* A source of a sequence of events.
 
- Copyright (c) 2004-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -58,15 +58,15 @@ import ptolemy.math.Rounding;
  * whether to produce an output. If the <i>enable</i> is present and
  * true, then the actor will produce the next output. Otherwise, it
  * produces no output.
- * <p>
- * Compared with the Pulse actor, this actor can be enabled or disabled
- * on each firing by providing a true or false input on the <i>enable</i>
- * port.
+
+ * <p> Compared with the {@link ptolemy.actor.lib.Pulse} actor, this
+ * actor can be enabled or disabled on each firing by providing a true
+ * or false input on the <i>enable</i> port.
  *
- * @author Edward A. Lee
+ * @author Terry Esther Filiba, based on Pulse by Edward A. Lee
  * @version $Id$
- @since Ptolemy II 4.1
- * @see Pulse
+ * @since Ptolemy II 4.1
+ * @see ptolemy.actor.lib.Pulse
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (cxh)
  */
