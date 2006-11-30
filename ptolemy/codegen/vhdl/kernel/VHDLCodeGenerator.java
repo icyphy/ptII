@@ -47,7 +47,6 @@ public class VHDLCodeGenerator extends CodeGenerator {
      *  and terminiated by end of line. VHDL does not support block 
      *  comments.
      *  @param comment The string to put in the comment.
-     *  @param indentLevel The indentation level.
      *  @return A formatted comment.
      */
     public String formatComment(String comment) {

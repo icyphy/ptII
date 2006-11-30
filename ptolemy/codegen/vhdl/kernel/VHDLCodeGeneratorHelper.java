@@ -100,9 +100,6 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
      *  is in the form "fullName_portName[channelNumber][offset]", if
      *  any channel number or offset is given.
      *  @param name The name of the parameter or port
-     *  @param isWrite Whether to generate the write or read offset.
-     *  @return The reference to that parameter or port (a variable name,
-     *   for example).
      *  @exception IllegalActionException If the parameter or port does not
      *   exist or does not have a value.
      */
