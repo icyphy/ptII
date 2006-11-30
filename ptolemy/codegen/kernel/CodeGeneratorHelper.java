@@ -871,7 +871,7 @@ public class CodeGeneratorHelper
                 ASTPtRootNode parseTree = parser.generateParseTree(variable
                         .getExpression());
                 parseTreeCodeGenerator.evaluateParseTree(parseTree,
-                        new HelperScope(variable));
+                        new VariableScope(variable));
 
                 return _generateTypeConvertMethod(
                         processCode(parseTreeCodeGenerator.generateFireCode()),
@@ -1599,11 +1599,11 @@ public class CodeGeneratorHelper
     /** This class implements a scope, which is used to generate the
      *  parsed expressions in target language.
      */
-    protected class HelperScope extends ModelScope {
+    protected class VariableScope extends ModelScope {
         /** Construct a scope consisting of the variables of the containing
          *  actor and its containers and their scope-extending attributes.
          */
-        public HelperScope() {
+        public VariableScope() {
             _variable = null;
         }
 
@@ -1613,7 +1613,7 @@ public class CodeGeneratorHelper
          *  @param variable The variable whose expression is under code 
          *   generation using this scope.
          */
-        public HelperScope(Variable variable) {
+        public VariableScope(Variable variable) {
             _variable = variable;
         }
 
@@ -1628,102 +1628,7 @@ public class CodeGeneratorHelper
          *   sizes or creating ObjectToken.
          */
         public Token get(String name) throws IllegalActionException {
-            Iterator inputPorts = ((Actor) _component).inputPortList()
-                    .iterator();
-
-            // try input port
-            while (inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort) inputPorts.next();
-
-                StringBuffer code = new StringBuffer();
-                boolean found = false;
-                int channelNumber = 0;
-                // try input port name only
-                if (name.equals(inputPort.getName())) {
-                    found = true;
-                    code.append(generateName(inputPort));
-                    if (inputPort.isMultiport()) {
-                        code.append("[0]");
-                    }
-                } else {
-                    for (int i = 0; i < inputPort.getWidth(); i++) {
-                        // try the format: inputPortName_channelNumber 
-                        if (name.equals(inputPort.getName() + "_" + i)) {
-                            found = true;
-                            channelNumber = i;
-                            code.append(generateName(inputPort));
-                            code.append("[" + i + "]");
-                            break;
-                        }
-                    }
-                }
-                if (found) {
-                    int bufferSize = getBufferSize(inputPort);
-                    if (bufferSize > 1) {
-                        int bufferSizeOfChannel = getBufferSize(inputPort,
-                                channelNumber);
-                        String writeOffset = (String) getWriteOffset(inputPort,
-                                channelNumber);
-                        // Note here inputPortNameArray in the original expression 
-                        // is converted to 
-                        // inputPortVariable[(writeoffset - 1 
-                        // + bufferSizeOfChannel)&(bufferSizeOfChannel-1)] 
-                        // in the generated C code.
-                        code.append("[(" + writeOffset + " + "
-                                + (bufferSizeOfChannel - 1) + ")&"
-                                + (bufferSizeOfChannel - 1) + "]");
-                    }
-                    return new ObjectToken(code.toString());
-                }
-
-                // try the format: inputPortNameArray
-                found = false;
-                channelNumber = 0;
-                if (name.equals(inputPort.getName() + "Array")) {
-                    found = true;
-                    code.append(generateName(inputPort));
-                    if (inputPort.isMultiport()) {
-                        code.append("[0]");
-                    }
-                } else {
-                    for (int i = 0; i < inputPort.getWidth(); i++) {
-                        // try the format: inputPortName_channelNumberArray
-                        if (name
-                                .equals(inputPort.getName() + "_" + i + "Array")) {
-                            found = true;
-                            channelNumber = i;
-                            code.append(generateName(inputPort));
-                            code.append("[" + i + "]");
-                            break;
-                        }
-                    }
-                }
-                if (found) {
-                    int bufferSize = getBufferSize(inputPort);
-                    if (bufferSize > 1) {
-                        int bufferSizeOfChannel = getBufferSize(inputPort,
-                                channelNumber);
-                        String writeOffset = (String) getWriteOffset(inputPort,
-                                channelNumber);
-                        // '@' represents the array index in the parsed expression.
-                        // It will be replaced by actual array index in 
-                        // the method visitFunctionApplicationNode() in
-                        // ParseTreeCodeGenerator.
-                        // Note here inputPortNameArray(i) in the original expression 
-                        // is converted to 
-                        // inputPortVariable[(writeoffset - i - 1 
-                        // + bufferSizeOfChannel)&(bufferSizeOfChannel-1)] 
-                        // in the generated C code.
-                        code.append("[(" + writeOffset + " - (@)" + " + "
-                                + (bufferSizeOfChannel - 1) + ")&"
-                                + (bufferSizeOfChannel - 1) + "]");
-                    }
-                    return new ObjectToken(code.toString());
-                }
-
-            }
-
-            // try variable
+           
             NamedObj container = _component;
             if (_variable != null) {
                 container = _variable.getContainer();
@@ -1752,31 +1657,45 @@ public class CodeGeneratorHelper
             }
         }
 
-        /** This method should not be called.
-         *  @exception IllegalActionException If it is called.
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
-            throw new IllegalActionException(
-                    "This method should not be called.");
+            if (_variable != null) {
+                return _variable.getParserScope().getType(name);
+            }
+            return null;
         }
 
-        /** This method should not be called.
-         *  @exception IllegalActionException If it is called.
+        /** Look up and return the type term for the specified name
+         *  in the scope. Return null if the name is not defined in this
+         *  scope, or is a constant type.
+         *  @return The InequalityTerm associated with the given name in
+         *  the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
-            throw new IllegalActionException(
-                    "This method should not be called.");
+            if (_variable != null) {
+                return _variable.getParserScope().getTypeTerm(name);
+            }
+            return null;
         }
 
-        /** This method should not be called.
-         *  @return Never returns.
-         *  @throws IllegalActionException If it is called.
+        /** Return the list of identifiers within the scope.
+         *  @return The list of variable names within the scope.
          */
         public Set identifierSet() throws IllegalActionException {
-            throw new IllegalActionException(
-                    "This method should not be called.");
+            if (_variable != null) {
+                return _variable.getParserScope().identifierSet();
+            }
+            return null;
         }
 
         ///////////////////////////////////////////////////////////////////

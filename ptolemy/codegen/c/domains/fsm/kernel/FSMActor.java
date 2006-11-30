@@ -41,7 +41,10 @@ import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
@@ -541,5 +544,166 @@ public class FSMActor extends CCodeGeneratorHelper {
     /** The scope to generate code for guard expression, choice action
      *  and commit action.
      */
-    protected HelperScope _scope = new HelperScope();
+    protected PortScope _scope = new PortScope();
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods.                    ////
+
+    /** This class implements a scope, which is used to generate the
+     *  parsed expressions in target language.
+     */
+    protected class PortScope extends VariableScope {
+        /** Construct a scope consisting of the variables of the containing
+         *  actor and its containers and their scope-extending attributes.
+         */
+        public PortScope() {
+            super();
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /** Look up and return the macro or expression in the target language
+         *  corresponding to the specified name in the scope.
+         *  @param name The given name string.
+         *  @return The macro or expression with the specified name in the scope.
+         *  @exception IllegalActionException If thrown while getting buffer 
+         *   sizes or creating ObjectToken.
+         */
+        public Token get(String name) throws IllegalActionException {
+            Iterator inputPorts = ((Actor) getComponent()).inputPortList()
+                    .iterator();
+
+            // try input port
+            while (inputPorts.hasNext()) {
+                IOPort inputPort = (IOPort) inputPorts.next();
+
+                StringBuffer code = new StringBuffer();
+                boolean found = false;
+                int channelNumber = 0;
+                // try input port name only
+                if (name.equals(inputPort.getName())) {
+                    found = true;
+                    code.append(generateName(inputPort));
+                    if (inputPort.isMultiport()) {
+                        code.append("[0]");
+                    }
+                } else {
+                    for (int i = 0; i < inputPort.getWidth(); i++) {
+                        // try the format: inputPortName_channelNumber 
+                        if (name.equals(inputPort.getName() + "_" + i)) {
+                            found = true;
+                            channelNumber = i;
+                            code.append(generateName(inputPort));
+                            code.append("[" + i + "]");
+                            break;
+                        }
+                    }
+                }
+                if (found) {
+                    int bufferSize = getBufferSize(inputPort);
+                    if (bufferSize > 1) {
+                        int bufferSizeOfChannel = getBufferSize(inputPort,
+                                channelNumber);
+                        String writeOffset = (String) getWriteOffset(inputPort,
+                                channelNumber);
+                        // Note here inputPortNameArray in the original expression 
+                        // is converted to 
+                        // inputPortVariable[(writeoffset - 1 
+                        // + bufferSizeOfChannel)&(bufferSizeOfChannel-1)] 
+                        // in the generated C code.
+                        code.append("[(" + writeOffset + " + "
+                                + (bufferSizeOfChannel - 1) + ")&"
+                                + (bufferSizeOfChannel - 1) + "]");
+                    }
+                    return new ObjectToken(code.toString());
+                }
+
+                // try the format: inputPortNameArray
+                found = false;
+                channelNumber = 0;
+                if (name.equals(inputPort.getName() + "Array")) {
+                    found = true;
+                    code.append(generateName(inputPort));
+                    if (inputPort.isMultiport()) {
+                        code.append("[0]");
+                    }
+                } else {
+                    for (int i = 0; i < inputPort.getWidth(); i++) {
+                        // try the format: inputPortName_channelNumberArray
+                        if (name
+                                .equals(inputPort.getName() + "_" + i + "Array")) {
+                            found = true;
+                            channelNumber = i;
+                            code.append(generateName(inputPort));
+                            code.append("[" + i + "]");
+                            break;
+                        }
+                    }
+                }
+                if (found) {
+                    int bufferSize = getBufferSize(inputPort);
+                    if (bufferSize > 1) {
+                        int bufferSizeOfChannel = getBufferSize(inputPort,
+                                channelNumber);
+                        String writeOffset = (String) getWriteOffset(inputPort,
+                                channelNumber);
+                        // '@' represents the array index in the parsed expression.
+                        // It will be replaced by actual array index in 
+                        // the method visitFunctionApplicationNode() in
+                        // ParseTreeCodeGenerator.
+                        // Note here inputPortNameArray(i) in the original expression 
+                        // is converted to 
+                        // inputPortVariable[(writeoffset - i - 1 
+                        // + bufferSizeOfChannel)&(bufferSizeOfChannel-1)] 
+                        // in the generated C code.
+                        code.append("[(" + writeOffset + " - (@)" + " + "
+                                + (bufferSizeOfChannel - 1) + ")&"
+                                + (bufferSizeOfChannel - 1) + "]");
+                    }
+                    return new ObjectToken(code.toString());
+                }
+
+            }
+
+            // try variable
+            return super.get(name);
+        }
+
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.type.Type getType(String name)
+                throws IllegalActionException {
+            return ((ptolemy.domains.fsm.kernel.FSMActor) getComponent())
+                    .getPortScope().getType(name);
+        }
+
+        /** Look up and return the type term for the specified name
+         *  in the scope. Return null if the name is not defined in this
+         *  scope, or is a constant type.
+         *  @return The InequalityTerm associated with the given name in
+         *  the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            return ((ptolemy.domains.fsm.kernel.FSMActor) getComponent())
+                    .getPortScope().getTypeTerm(name);
+        }
+
+        /** Return the list of identifiers within the scope.
+         *  @return The list of variable names within the scope.
+         */
+        public Set identifierSet() throws IllegalActionException {
+            return ((ptolemy.domains.fsm.kernel.FSMActor) getComponent())
+                    .getPortScope().identifierSet();
+        }
+    }
+
 }
