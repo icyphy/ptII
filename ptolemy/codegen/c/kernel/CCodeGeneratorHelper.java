@@ -98,53 +98,47 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\n"
-                + _codeGenerator.comment(0, getComponent().getName()
-                        + "'s variable declarations."));
 
-        //  Generate variable declarations for referenced parameters.    
-        if (_referencedParameters != null) {
-            Iterator parameters = _referencedParameters.iterator();
-
-            while (parameters.hasNext()) {
-                Parameter parameter = (Parameter) parameters.next();
-
-                // avoid duplicate declaration.
-                if (!_codeGenerator.getModifiedVariables().contains(parameter)) {
-                    code.append("static " + cType(parameter.getType()) + " "
-                            + generateVariableName(parameter) + ";\n");
-                }
-            }
+        // Generate variable declarations for referenced parameters.    
+        String referencedParameterDeclaration 
+                =  _generateReferencedParameterDeclaration();
+        if (referencedParameterDeclaration.length() > 1) {
+            code.append(_eol +
+                    _codeGenerator.comment(getComponent().getName()
+                    + "'s referenced parameter declarations."));
+            code.append(referencedParameterDeclaration);
         }
-
+        
         // Generate variable declarations for input ports.
-        code.append(_generateInputVariableDeclaration());
+        String inputVariableDeclaration =  _generateInputVariableDeclaration();
+        if (inputVariableDeclaration.length() > 1) {
+            code.append(_eol +
+                    _codeGenerator.comment(getComponent().getName()
+                    + "'s input variable declarations."));
+            code.append(inputVariableDeclaration);
+        }
 
         // Generate variable declarations for output ports.
-        code.append(_generateOutputVariableDeclaration());
-
-        code.append(_codeGenerator.comment(0,
-                "Type convert variable declarations."));
-        Iterator channels = _getTypeConvertChannels().iterator();
-        while (channels.hasNext()) {
-            Channel channel = (Channel) channels.next();
-            code.append("static ");
-            code.append(cType(((TypedIOPort) channel.port).getType()));
-            code.append(" " + _getTypeConvertReference(channel));
-
-            int bufferSize = Math.max(DFUtilities
-                    .getTokenProductionRate(channel.port), DFUtilities
-                    .getTokenConsumptionRate(channel.port));
-
-            if (bufferSize > 1) {
-                code.append("[" + bufferSize + "]");
-            }
-            code.append(";\n");
+        String outputVariableDeclaration =  _generateOutputVariableDeclaration();
+        if (outputVariableDeclaration.length() > 1) {
+            code.append(_eol +
+                    _codeGenerator.comment(getComponent().getName()
+                    + "'s output variable declarations."));
+            code.append(outputVariableDeclaration);
         }
+        
+        // Generate type convert variable declarations.
+        String typeConvertVariableDeclaration 
+                =  _generateTypeConvertVariableDeclaration();
+        if (typeConvertVariableDeclaration.length() > 1) {
+            code.append(_eol +
+                    _codeGenerator.comment(getComponent().getName()
+                    + "'s type convert variable declarations."));
+            code.append(typeConvertVariableDeclaration);
+        }
+        
         return processCode(code.toString());
     }
-    
-    
 
     /** Generate input variable declarations.
      *  @return a String that declares input variables.
@@ -176,7 +170,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             if (bufferSize > 1) {
                 code.append("[" + bufferSize + "]");
             }
-            code.append(";\n");
+            code.append(";" + _eol);
         }
 
         return code.toString();
@@ -211,11 +205,66 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
                 if (bufferSize > 1) {
                     code.append("[" + bufferSize + "]");
                 }
-                code.append(";\n");
+                code.append(";" + _eol);
             }
         }
 
         return code.toString();
     }
     
+    /** Generate referenced parameter declarations.
+     *  @return a String that declares referenced parameters.
+     *  @exception IllegalActionException If thrown while
+     *  getting modified variable information.  
+     */
+    protected String _generateReferencedParameterDeclaration()
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        
+        if (_referencedParameters != null) {
+            Iterator parameters = _referencedParameters.iterator();
+
+            
+            while (parameters.hasNext()) {
+                Parameter parameter = (Parameter) parameters.next();
+
+                // avoid duplicate declaration.
+                if (!_codeGenerator.getModifiedVariables().contains(parameter)) {
+                    code.append("static " + cType(parameter.getType()) + " "
+                            + generateVariableName(parameter) + ";" + _eol);
+                }
+            }
+        }
+        
+        return code.toString();
+    }
+    
+    /** Generate type convert variable declarations.
+     *  @return a String that declares type convert variables.
+     *  @exception IllegalActionException If thrown while
+     *  getting port information.  
+     */
+    protected String _generateTypeConvertVariableDeclaration()
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        
+        Iterator channels = _getTypeConvertChannels().iterator();
+        while (channels.hasNext()) {
+            Channel channel = (Channel) channels.next();
+            code.append("static ");
+            code.append(cType(((TypedIOPort) channel.port).getType()));
+            code.append(" " + _getTypeConvertReference(channel));
+
+            int bufferSize = Math.max(DFUtilities
+                    .getTokenProductionRate(channel.port), DFUtilities
+                    .getTokenConsumptionRate(channel.port));
+
+            if (bufferSize > 1) {
+                code.append("[" + bufferSize + "]");
+            }
+            code.append(";" + _eol);
+        }
+        
+        return code.toString();
+    }
 }
