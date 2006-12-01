@@ -102,6 +102,7 @@ public class Director implements ActorCodeGenerator {
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        code.append(_codeGenerator.comment("The firing of the director."));
         
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
@@ -174,6 +175,8 @@ public class Director implements ActorCodeGenerator {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        code.append(_codeGenerator
+                .comment(1, "The initialization of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
@@ -204,6 +207,9 @@ public class Director implements ActorCodeGenerator {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+
+        code.append(_codeGenerator.comment(0,
+                "The preinitialization of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
@@ -348,6 +354,8 @@ public class Director implements ActorCodeGenerator {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
  
+        code.append(_codeGenerator.comment(1, "The wrapup of the director."));
+
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
 
