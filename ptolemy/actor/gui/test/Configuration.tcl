@@ -64,6 +64,13 @@ test Configuration-1.0 {Read in the configuration} {
 ######################################################################
 ####
 #
+test UserActorLibrary-1.5 {check} {
+#    $configuration check
+} {}
+
+######################################################################
+####
+#
 test UserActorLibrary-2.0 {configurations} {
     set configurations [$configuration configurations]
     set firstConfiguration [java::cast ptolemy.actor.gui.Configuration \
@@ -77,6 +84,7 @@ test UserActorLibrary-2.0 {configurations} {
 test UserActorLibrary-3.0 {getDirectory} {
     list [[$configuration getDirectory] getFullName]
 } {.configuration.directory}
+
 
 ######################################################################
 ####
@@ -124,4 +132,5 @@ test UserActorLibrary-7.0 {_effigyIdentifier} {
     set namedObj [java::null]	
     list [$tableau getFullName] [$effigy1 getFullName] [$effigy2 getFullName]
 } {.configuration.directory.myNamedObj.simpleTableau .configuration.directory.test .configuration.directory.test}
+
 
