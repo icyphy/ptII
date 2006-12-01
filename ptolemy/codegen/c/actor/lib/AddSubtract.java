@@ -75,32 +75,32 @@ public class AddSubtract extends CCodeGeneratorHelper {
         args.add(new Integer(0));
 
         if (type == BaseType.STRING) {
-            _codeStream.appendCodeBlock("StringPreFireBlock", false, 2);
+            _codeStream.appendCodeBlock("StringPreFireBlock", false);
             for (int i = 0; i < actor.plus.getWidth(); i++) {
                 args.set(0, new Integer(i));
-                _codeStream.appendCodeBlock("StringLengthBlock", args, false, 2);
+                _codeStream.appendCodeBlock("StringLengthBlock", args, false);
             }
-            _codeStream.appendCodeBlock("StringAllocBlock", false, 2);
+            _codeStream.appendCodeBlock("StringAllocBlock", false);
         } else {
             String blockType = isPrimitive(type) ? "" : "Token";
             String blockPort = (minusOnly) ? "Minus" : "";
 
-            _codeStream.appendCodeBlock(blockType + blockPort + "PreFireBlock", false, 2);
+            _codeStream.appendCodeBlock(blockType + blockPort + "PreFireBlock", false);
         }
 
         String blockType = isPrimitive(type) ? codeGenType(type) : "Token";
 
         for (int i = 1; i < actor.plus.getWidth(); i++) {
             args.set(0, new Integer(i));
-            _codeStream.appendCodeBlock(blockType + "AddBlock", args, false, 2);
+            _codeStream.appendCodeBlock(blockType + "AddBlock", args, false);
         }
 
         for (int i = minusOnly ? 1 : 0; i < actor.minus.getWidth(); i++) {
             args.set(0, new Integer(i));
-            _codeStream.appendCodeBlock(blockType + "MinusBlock", args, false, 2);
+            _codeStream.appendCodeBlock(blockType + "MinusBlock", args, false);
         }
 
-        _codeStream.appendCodeBlock("PostFireBlock", false, 2);
+        _codeStream.appendCodeBlock("PostFireBlock", false);
 
         return processCode(_codeStream.toString());
     }
@@ -117,13 +117,19 @@ public class AddSubtract extends CCodeGeneratorHelper {
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
 
-        ptolemy.actor.lib.AddSubtract actor = (ptolemy.actor.lib.AddSubtract) getComponent();
+        ptolemy.actor.lib.AddSubtract actor 
+                = (ptolemy.actor.lib.AddSubtract) getComponent();
 
         ArrayList args = new ArrayList();
 
         Type type = actor.output.getType();
         args.add(cType(type));
-        // No need to indent the preinitialize code.
+        
+        if (_codeStream.isEmpty()) {
+            _codeStream.append(_eol +_codeGenerator.comment
+                    ("preinitialize " + getComponent().getName()));
+        }
+        
         _codeStream.appendCodeBlock("preinitBlock", args);
 
         return processCode(_codeStream.toString());
