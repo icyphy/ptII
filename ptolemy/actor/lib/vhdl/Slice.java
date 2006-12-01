@@ -97,8 +97,6 @@ public class Slice extends FixTransformer {
 
     public TypedIOPort input;
     
-    public TypedIOPort output;
-    
     public Parameter binaryPoint;
 
     public Parameter width;
@@ -111,17 +109,6 @@ public class Slice extends FixTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Override the base class to determine which function is being
-     *  specified.
-     *  @param attribute The attribute that changed.
-     * @throws IllegalActionException 
-     *  @exception IllegalActionException If the function is not recognized.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        super.attributeChanged(attribute);
-    }
 
     /** output a consecutive subset of the input bits. 
      *  If there is no input, then produce no output.

@@ -99,34 +99,13 @@ public class Multiplier extends SynchronousFixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        Token result = null;
         
         if (A.hasToken(0) && B.hasToken(0)) {
-
-            result = A.get(0).multiply(B.get(0));  
-
-            Precision precision = new Precision(((Parameter) 
-                    getAttribute("outputPrecision")).getExpression());
-
-            Overflow overflow = Overflow.getName(((Parameter) getAttribute(
-                "outputOverflow")).getExpression().toLowerCase());
-
-            Rounding rounding = Rounding.getName(((Parameter) getAttribute(
-                "outputRounding")).getExpression().toLowerCase());
             
-            Quantization quantization = 
-                new FixPointQuantization(precision, overflow, rounding);
-            
-            result = ((FixToken) result).quantize(quantization);
-            if (!((FixToken) result).fixValue().getPrecision().equals(
-                    new Precision(((Parameter) getAttribute("outputPrecision"))
-                            .getExpression()))) {
-                System.out.println("not Equal precision");
-//                throw new IllegalActionException("output token do not" +
-//                        "match the specified precision.");
-            }
+            Token result = A.get(0).multiply(B.get(0));              
+
+            sendOutput(output, 0, result);
+
         }
-
-        output.send(0, result);
     }
 }

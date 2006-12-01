@@ -97,8 +97,7 @@ public class Concat extends FixTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        Precision precision = new Precision(((Parameter) getAttribute(
-                "outputPrecision")).getExpression());
+        Precision precision = new Precision(getPortPrecision(output));
         
         Overflow overflow = Overflow.getName(((Parameter) getAttribute(
                 "outputOverflow")).getExpression().toLowerCase());

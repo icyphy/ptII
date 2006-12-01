@@ -29,9 +29,9 @@
 package ptolemy.actor.lib.vhdl;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.FixToken;
 import ptolemy.data.ScalarToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -39,10 +39,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.FixPoint;
-import ptolemy.math.FixPointQuantization;
-import ptolemy.math.Overflow;
 import ptolemy.math.Precision;
-import ptolemy.math.Rounding;
 
 //////////////////////////////////////////////////////////////////////////
 //// Memory
@@ -60,7 +57,7 @@ import ptolemy.math.Rounding;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class Memory extends FixTransformer {
+public class Memory extends SynchronousFixTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -76,11 +73,8 @@ public class Memory extends FixTransformer {
         capacity = new Parameter(this, "capacity");
         capacity.setExpression("1");
 
-        dataWidth = new Parameter(this, "dataWidth");
-        dataWidth.setExpression("32");
-
         writeEnable = new TypedIOPort(this, "writeEnable", true, false);
-        writeEnable.setTypeEquals(BaseType.BOOLEAN);
+        writeEnable.setTypeEquals(BaseType.FIX);
 
         address = new TypedIOPort(this, "address", true, false);
         address.setTypeEquals(BaseType.FIX);
@@ -88,8 +82,6 @@ public class Memory extends FixTransformer {
         dataIn = new TypedIOPort(this, "dataIn", true, false);
         dataIn.setTypeEquals(BaseType.FIX);
  
-        dataOut = new TypedIOPort(this, "dataOut", false, true);
-        dataOut.setTypeEquals(BaseType.FIX);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,18 +91,10 @@ public class Memory extends FixTransformer {
      */
     public Parameter capacity;
 
-    /** The bit width of the input and output ports.
-     */
-    public Parameter dataWidth;
-
     /** The input port for writing data .
      */
     public TypedIOPort dataIn;
 
-    /** The output port for retreiving data .
-     */
-    public TypedIOPort dataOut;
-    
     /** The control port for signaling write.
      */
     public TypedIOPort writeEnable;
@@ -131,12 +115,14 @@ public class Memory extends FixTransformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
+
         if (attribute == capacity) {
             _capacity = ((ScalarToken) capacity.getToken()).intValue();
+
             _addressWidth = (int) Math.floor(Math.log(_capacity) / Math.log(2));
-            _storage = new FixToken[_capacity];
-        } else if (attribute == dataWidth) {
-            _dataWidth = ((ScalarToken) dataWidth.getToken()).intValue();
+                        
+        } else if (attribute.getName().equals("outputPrecision")) {            
+            _dataWidth = new Precision(getPortPrecision(output)).getNumberOfBits();
         }
     }
 
@@ -159,44 +145,60 @@ public class Memory extends FixTransformer {
 
         FixPoint addressFixValue = ((FixToken) address.get(0)).fixValue();
 
-        boolean writeEnableValue = ((BooleanToken) writeEnable.get(0))
-                .booleanValue();
+        FixPoint writeEnableValue = ((FixToken) writeEnable.get(0))
+                .fixValue();
+        
+        if (writeEnableValue.getPrecision().getNumberOfBits() != 1) {
+            throw new IllegalActionException(this, 
+                    "Write enable signal (\"" + 
+                    writeEnableValue.getPrecision() +
+                    "\") is not a binary signal.");            
+        }
 
-        if (Math.pow(2, addressFixValue.getPrecision().getNumberOfBits()) - 1 > _addressWidth) {
-            throw new IllegalActionException("Address width does not "
-                    + "match port width.");
+        if (addressFixValue.getPrecision().getNumberOfBits() != _addressWidth) {
+            throw new IllegalActionException(this, 
+                    "Address width does not match port width.");
         }
 
         addressValue = addressFixValue.getUnscaledValue().intValue();
 
         if (addressValue >= _capacity) {
-            throw new IllegalActionException("Address is out of range.");
+            throw new IllegalActionException(this, 
+                    "Address is out of range.");
         }
 
         if (in.fixValue().getPrecision().getNumberOfBits() != _dataWidth) {
-            throw new IllegalActionException("Data width does not match"
-                    + "the port width.");
+            throw new IllegalActionException(this, 
+                    "Data width does not match the port width.");
         }
 
-        if (writeEnableValue) { // writing.
+        // Read data before over-writing.
+        Token result = _storage[addressValue];
+        if (result == null) {
+            result = FixToken.NIL;
+        }
+
+        if (writeEnableValue.toBitString().equals("1")) {
             _storage[addressValue] = in;
         }
 
-        FixToken result = _storage[_preAddress].quantize(
-                new FixPointQuantization(new Precision(
-                        ((Parameter) getAttribute("outputPrecision"))
-                        .getExpression()), Overflow.GROW, Rounding.HALF_EVEN));
-
-        dataOut.send(0, result);
+        sendOutput(output, 0, result);
     }
 
+
+    /**
+     * 
+     */
+    public void initialize() throws IllegalActionException {
+        _storage = new FixToken[_capacity];
+    }
+    
+    
     private int _addressWidth;
 
     private int _capacity;
 
     private int _dataWidth;
-
-    private int _preAddress;
 
     private FixToken[] _storage;
 

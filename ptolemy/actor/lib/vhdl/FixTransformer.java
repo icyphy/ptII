@@ -36,6 +36,8 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.FixPointQuantization;
@@ -74,6 +76,26 @@ public class FixTransformer extends TypedAtomicActor {
         output = newFixOutputPort("output");
     }
 
+    /**
+     * Return the precision string of the given port.
+     * @param The given port.
+     * @return The precision string.
+     * @throws IllegalActionException If there is no precision
+     *  parameter for the given port. 
+     */
+    public String getPortPrecision(Port port) 
+            throws IllegalActionException {
+        Parameter precision = (Parameter) ((Entity) port
+                .getContainer()).getAttribute(port.getName() + "Precision");  
+
+        if (precision == null) {
+            throw new IllegalActionException(this, port.getName()
+                    + " does not have an precision parameter.");
+        }
+        
+        return precision.getExpression();
+    }
+    
     /**
      * 
      * @param channel

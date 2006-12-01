@@ -30,8 +30,10 @@ package ptolemy.actor.lib.vhdl;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.math.Precision;
 
 //////////////////////////////////////////////////////////////////////////
 //// SynchronousFixPointTransformer
@@ -64,16 +66,23 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
         latency.setExpression("0");
     }
 
-    public void initialize() throws IllegalActionException {
-       int latencyValue = ((ScalarToken) latency.getToken()).intValue();
-       setLatency(latencyValue);
+    /** Override the base class to determine which function is being
+     *  specified.
+     *  @param attribute The attribute that changed.
+     * @throws IllegalActionException 
+     *  @exception IllegalActionException If the function is not recognized.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        super.attributeChanged(attribute);
+
+        if (attribute == latency) {
+            int latencyValue = 
+                ((ScalarToken) latency.getToken()).intValue();
+            output.setSize(latencyValue);
+        }
     }
     
-    public void setLatency(int latency)
-    {
-        output.setSize(latency);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 

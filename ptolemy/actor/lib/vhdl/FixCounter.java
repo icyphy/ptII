@@ -147,7 +147,7 @@ public class FixCounter extends SynchronousFixTransformer {
             System.out.println(result);
             Token outputToken = new FixToken(result);
             System.out.println(outputToken);
-            output.send(0, outputToken);
+            sendOutput(output, 0, outputToken);
         }
     }
 
