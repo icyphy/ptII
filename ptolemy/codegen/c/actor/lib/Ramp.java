@@ -104,6 +104,10 @@ public class Ramp extends CCodeGeneratorHelper {
         ArrayList args = new ArrayList();
         args.add(cType(actor.output.getType()));
 
+        if (_codeStream.isEmpty()) {
+            _codeStream.append(_eol +_codeGenerator.comment
+                    ("preinitialize " + getComponent().getName()));
+        }
         _codeStream.appendCodeBlock("preinitBlock", args);
         return processCode(_codeStream.toString());
     }
