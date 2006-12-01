@@ -2435,11 +2435,11 @@ PTSETUP_DEPENDENCIES = \
 	../../ptiny.exe \
 	../../jar_dist \
 	../../ptolemy/matlab/ptmatlab.dll \
-	../../lib/matlabWindows.jar \
 	$(PTSETUP)_l4j.xml
 
 # Launch4J
-$(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) jre
+$(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) jre ../../lib/matlabWindows.jar
+
 			$(PTSETUP).jar #ExtractJarFile.class
 		"$(L4JC)" `$(PTCYGPATH) $(PTSETUP)_l4j.xml`
 
