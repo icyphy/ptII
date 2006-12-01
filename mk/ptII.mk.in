@@ -201,7 +201,11 @@ JOPTIMIZE =	-O
 JFLAGS = 	$(JDEBUG) $(JOPTIMIZE)
 
 # The 'javadoc' program
-JAVADOC = 	$(PTJAVA_DIR)/bin/javadoc
+# We use $(PTJAVA_HOME)../bin/javadoc instead of $(PTJAVA_DIR)/bin/javadoc 
+# so that we can run make from within the doc builder gui.  The reason is that
+# the doc builder gui runs make within a cmd shell, not a bash shell, which
+# means that PTJAVA_HOME /cygdrive/c notation is not understood
+JAVADOC = 	$(PTJAVA_HOME)../bin/javadoc
 
 # -breakiterator is only present in jdk1.4 and later
 JDOCBREAKITERATOR = @JDOCBREAKITERATOR@
