@@ -12,7 +12,7 @@ To check out the repository read only, do:
 
 To check it out read/write, do
 
-   cvs -d :ext:source.eecs.berkeley.edu:/home/cvs ptIIdoc
+   cvs -d :ext:source.eecs.berkeley.edu:/home/cvs co ptIIdoc
 
 See http://chess.eecs.berkeley.edu/ptexternal for further information
 about accessing Ptolemy via cvs.
