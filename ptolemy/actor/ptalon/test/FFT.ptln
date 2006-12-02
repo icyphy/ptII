@@ -17,8 +17,6 @@
  *
  */
 
-danglingPortsOkay;
-
 FFT is {
 	parameter N;
 	actor gain = ptolemy.actor.lib.Scale;
@@ -31,8 +29,8 @@ FFT is {
 			relation x1;
 			this(x := x0);
 			this(x := x1);
-			transparent relation sum0;
-			transparent relation sum1;
+			port reference sum0;
+			port reference sum1;
 			adder(plus := sum0, output := X);
 			adder(plus := sum1, output := X);
 			this(sum0 := x0);
@@ -40,12 +38,12 @@ FFT is {
 			gain(input := x1, output := sum0, factor := [[ 1 ]]);
 			gain(input := x1, output := sum1, factor := [[ -1 ]]);
 		} else {
-			transparent relation xFromInput;
+			port reference xFromInput;
 			this(x := xFromInput);
-			transparent relation xEven;
-			transparent relation xOdd;
-			transparent relation G;
-			transparent relation H;
+			port reference xEven;
+			port reference xOdd;
+			port reference G;
+			port reference H;
 			FFT(x := xEven, X := G, N := [[N / 2]]);
 			FFT(x := xOdd, X := H, N := [[N / 2]]);
 			
@@ -64,7 +62,7 @@ FFT is {
 					this(xOdd := x[[n]]);
 				}
 
-				transparent relation sum[[n]];
+				port reference sum[[n]];
 				adder(plus := sum[[n]], output := X);
 				
 				if [[ n < N / 2]] {

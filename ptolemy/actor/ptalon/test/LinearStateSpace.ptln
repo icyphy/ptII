@@ -25,13 +25,6 @@
  * @author Adam Cataldo (borrowed example from Jie Liu)
  */
 
-/*
- * This line is used to prevent Ptalon from trying to bring
- * unconnected ports of actors to the outside of the Ptalon
- * actor.  It overrides the default behavior.
- */
-danglingPortsOkay;
-
 LinearStateSpace is {
 	/*
 	 * These lines create the ports for the actor, which are
@@ -102,12 +95,12 @@ LinearStateSpace is {
 			
 		/*
 		 * This creates a "transparent" relation.  This
-		 * transparent relation does not actually create
+		 * port reference does not actually create
 		 * a relation in Ptolemy.  Instead it creates a
 		 * hook for us to link multiple ports to the
 		 * plus multi-input port of the adder we create next.
 		 */
-		transparent relation stateAdderIn[[a]];
+		port reference stateAdderIn[[a]];
 		adder(plus := stateAdderIn[[a]], 
 			output := stateAdderOut[[a]] );
 		
@@ -149,7 +142,7 @@ LinearStateSpace is {
 	 * and scale actors on the output side of the system.
 	 */
 	for c initially [[ 0 ]] [[ c < C.getRowCount ]] {
-        transparent relation outputAdderIn[[c]];
+        port reference outputAdderIn[[c]];
         adder(plus := outputAdderIn[[c]], output := output);
 		for a initially [[ 0 ]] [[ a < A.getRowCount ]] {
 			scale(factor := [[ C(c, a) ]], input := state[[a]],

@@ -159,14 +159,24 @@ relation_declaration
 	)?
 ;
 
-transparent_relation_declaration
+transparent_relation_declaration!
+{
+	boolean created = false;
+}
 :
-	t:TRANSPARENT^ RELATION! i:ID (! e:expression
+	(t:TRANSPARENT RELATION | PORT r:REFERENCE
+	) i:ID (! e:expression
 	{
 		#transparent_relation_declaration = 
-			#(t, ([DYNAMIC_NAME, "dynamic"], i, e));
+			#([TRANSPARENT, "transparent"], ([DYNAMIC_NAME, "dynamic"], i, e));
+		created = true;
 	}
 	)?
+	{
+		if (!created) {
+			#transparent_relation_declaration = #([TRANSPARENT, "transparent"], i);
+		}
+	}
 ;
 
 /**
@@ -203,7 +213,8 @@ qualified_identifier!
 keyword_or_identifier:
 	ID | IMPORT | PORT | INPORT | OUTPORT | PARAMETER 
 	| ACTOR | RELATION | TRUE | FALSE | IF | ELSE | IS | FOR |
-	INITIALLY | NEXT | DANGLING_PORTS_OKAY | TRANSPARENT
+	INITIALLY | NEXT | DANGLING_PORTS_OKAY | ATTACH_DANGLING_PORTS |
+	TRANSPARENT | REFERENCE
 ;
 
 /**
@@ -387,6 +398,7 @@ iterative_statement!
 actor_definition!
 {
 	boolean danglingPortsOkay = false;
+	boolean attachDanglingPorts = false;
 }
 :
 	{
@@ -397,11 +409,20 @@ actor_definition!
 	{
 		danglingPortsOkay = true;
 	}
+	)? (at:attachDanglingPorts
+	{
+		attachDanglingPorts = true;
+	}
 	)?
 	a:ID
 	{
 		#actor_definition.setText(a.getText());
-		#actor_definition.addChild(#d);
+		if (danglingPortsOkay) {
+			#actor_definition.addChild(#d);
+		}
+		if (attachDanglingPorts) {
+			#actor_definition.addChild(#at);
+		}
 	}
 	IS! LCURLY! (b:atomic_statement 
 	{
@@ -421,6 +442,10 @@ actor_definition!
 
 danglingPortsOkay :
 	DANGLING_PORTS_OKAY SEMI!
+;
+
+attachDanglingPorts :
+	ATTACH_DANGLING_PORTS SEMI!
 ;
 
 ///////////////////////////////////////////////////////////////////
@@ -451,7 +476,9 @@ tokens {
 	INITIALLY = "initially";
 	NEXT = "next";
 	DANGLING_PORTS_OKAY = "danglingPortsOkay";
+	ATTACH_DANGLING_PORTS = "attachDanglingPorts";
 	TRANSPARENT = "transparent";
+	REFERENCE = "reference";
 	TRUEBRANCH;
 	FALSEBRANCH;
 	QUALID;

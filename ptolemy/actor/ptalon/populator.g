@@ -501,7 +501,7 @@ actor_definition[NestedActorManager info] throws PtalonRuntimeException
 	this.info.startAtTop();
 }
 :
-	#(a:ACTOR_DEFINITION (DANGLING_PORTS_OKAY)?
+	#(a:ACTOR_DEFINITION (DANGLING_PORTS_OKAY)? (ATTACH_DANGLING_PORTS)?
 	{
 		this.info.setActiveBranch(true);
 	}

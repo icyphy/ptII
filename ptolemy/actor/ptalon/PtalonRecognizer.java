@@ -591,7 +591,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
 				
 		}
 		{
-		_loop831:
+		_loop743:
 		do {
 			if ((LA(1)==DOT)) {
 				PtalonAST tmp11_AST = null;
@@ -606,7 +606,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
 				}
 			}
 			else {
-				break _loop831;
+				break _loop743;
 			}
 			
 		} while (true);
@@ -687,18 +687,45 @@ public PtalonRecognizer(ParserSharedInputState state) {
 		PtalonAST transparent_relation_declaration_AST = null;
 		Token  t = null;
 		PtalonAST t_AST = null;
+		Token  r = null;
+		PtalonAST r_AST = null;
 		Token  i = null;
 		PtalonAST i_AST = null;
 		PtalonAST e_AST = null;
 		
-		t = LT(1);
-		t_AST = (PtalonAST)astFactory.create(t);
-		astFactory.makeASTRoot(currentAST, t_AST);
-		match(TRANSPARENT);
-		match(RELATION);
+			boolean created = false;
+		
+		
+		{
+		switch ( LA(1)) {
+		case TRANSPARENT:
+		{
+			t = LT(1);
+			t_AST = (PtalonAST)astFactory.create(t);
+			match(TRANSPARENT);
+			PtalonAST tmp12_AST = null;
+			tmp12_AST = (PtalonAST)astFactory.create(LT(1));
+			match(RELATION);
+			break;
+		}
+		case PORT:
+		{
+			PtalonAST tmp13_AST = null;
+			tmp13_AST = (PtalonAST)astFactory.create(LT(1));
+			match(PORT);
+			r = LT(1);
+			r_AST = (PtalonAST)astFactory.create(r);
+			match(REFERENCE);
+			break;
+		}
+		default:
+		{
+			throw new NoViableAltException(LT(1), getFilename());
+		}
+		}
+		}
 		i = LT(1);
 		i_AST = (PtalonAST)astFactory.create(i);
-		astFactory.addASTChild(currentAST, i_AST);
 		match(ID);
 		{
 		switch ( LA(1)) {
@@ -710,7 +737,8 @@ public PtalonRecognizer(ParserSharedInputState state) {
 				transparent_relation_declaration_AST = (PtalonAST)currentAST.root;
 				
 						transparent_relation_declaration_AST = 
-							(PtalonAST)astFactory.make( (new ASTArray(2)).add(t_AST).add((PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(DYNAMIC_NAME,"dynamic")).add(i_AST).add(e_AST))));
+							(PtalonAST)astFactory.make( (new ASTArray(2)).add((PtalonAST)astFactory.create(TRANSPARENT,"transparent")).add((PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(DYNAMIC_NAME,"dynamic")).add(i_AST).add(e_AST))));
+						created = true;
 					
 				currentAST.root = transparent_relation_declaration_AST;
 				currentAST.child = transparent_relation_declaration_AST!=null &&transparent_relation_declaration_AST.getFirstChild()!=null ?
@@ -729,7 +757,18 @@ public PtalonRecognizer(ParserSharedInputState state) {
 		}
 		}
 		}
-		transparent_relation_declaration_AST = (PtalonAST)currentAST.root;
+		if ( inputState.guessing==0 ) {
+			transparent_relation_declaration_AST = (PtalonAST)currentAST.root;
+			
+					if (!created) {
+						transparent_relation_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(2)).add((PtalonAST)astFactory.create(TRANSPARENT,"transparent")).add(i_AST));
+					}
+				
+			currentAST.root = transparent_relation_declaration_AST;
+			currentAST.child = transparent_relation_declaration_AST!=null &&transparent_relation_declaration_AST.getFirstChild()!=null ?
+				transparent_relation_declaration_AST.getFirstChild() : transparent_relation_declaration_AST;
+			currentAST.advanceChildToEnd();
+		}
 		returnAST = transparent_relation_declaration_AST;
 	}
 	
@@ -742,163 +781,181 @@ public PtalonRecognizer(ParserSharedInputState state) {
 		switch ( LA(1)) {
 		case ID:
 		{
-			PtalonAST tmp13_AST = null;
-			tmp13_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp13_AST);
+			PtalonAST tmp14_AST = null;
+			tmp14_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp14_AST);
 			match(ID);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case IMPORT:
 		{
-			PtalonAST tmp14_AST = null;
-			tmp14_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp14_AST);
+			PtalonAST tmp15_AST = null;
+			tmp15_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp15_AST);
 			match(IMPORT);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case PORT:
 		{
-			PtalonAST tmp15_AST = null;
-			tmp15_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp15_AST);
+			PtalonAST tmp16_AST = null;
+			tmp16_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp16_AST);
 			match(PORT);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case INPORT:
 		{
-			PtalonAST tmp16_AST = null;
-			tmp16_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp16_AST);
+			PtalonAST tmp17_AST = null;
+			tmp17_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp17_AST);
 			match(INPORT);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case OUTPORT:
 		{
-			PtalonAST tmp17_AST = null;
-			tmp17_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp17_AST);
+			PtalonAST tmp18_AST = null;
+			tmp18_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp18_AST);
 			match(OUTPORT);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case PARAMETER:
 		{
-			PtalonAST tmp18_AST = null;
-			tmp18_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp18_AST);
+			PtalonAST tmp19_AST = null;
+			tmp19_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp19_AST);
 			match(PARAMETER);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case ACTOR:
 		{
-			PtalonAST tmp19_AST = null;
-			tmp19_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp19_AST);
+			PtalonAST tmp20_AST = null;
+			tmp20_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp20_AST);
 			match(ACTOR);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case RELATION:
 		{
-			PtalonAST tmp20_AST = null;
-			tmp20_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp20_AST);
+			PtalonAST tmp21_AST = null;
+			tmp21_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp21_AST);
 			match(RELATION);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case TRUE:
 		{
-			PtalonAST tmp21_AST = null;
-			tmp21_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp21_AST);
+			PtalonAST tmp22_AST = null;
+			tmp22_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp22_AST);
 			match(TRUE);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case FALSE:
 		{
-			PtalonAST tmp22_AST = null;
-			tmp22_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp22_AST);
+			PtalonAST tmp23_AST = null;
+			tmp23_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp23_AST);
 			match(FALSE);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case IF:
 		{
-			PtalonAST tmp23_AST = null;
-			tmp23_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp23_AST);
+			PtalonAST tmp24_AST = null;
+			tmp24_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp24_AST);
 			match(IF);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case ELSE:
 		{
-			PtalonAST tmp24_AST = null;
-			tmp24_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp24_AST);
+			PtalonAST tmp25_AST = null;
+			tmp25_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp25_AST);
 			match(ELSE);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case IS:
 		{
-			PtalonAST tmp25_AST = null;
-			tmp25_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp25_AST);
+			PtalonAST tmp26_AST = null;
+			tmp26_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp26_AST);
 			match(IS);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case FOR:
 		{
-			PtalonAST tmp26_AST = null;
-			tmp26_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp26_AST);
+			PtalonAST tmp27_AST = null;
+			tmp27_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp27_AST);
 			match(FOR);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case INITIALLY:
 		{
-			PtalonAST tmp27_AST = null;
-			tmp27_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp27_AST);
+			PtalonAST tmp28_AST = null;
+			tmp28_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp28_AST);
 			match(INITIALLY);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case NEXT:
 		{
-			PtalonAST tmp28_AST = null;
-			tmp28_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp28_AST);
+			PtalonAST tmp29_AST = null;
+			tmp29_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp29_AST);
 			match(NEXT);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case DANGLING_PORTS_OKAY:
 		{
-			PtalonAST tmp29_AST = null;
-			tmp29_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp29_AST);
+			PtalonAST tmp30_AST = null;
+			tmp30_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp30_AST);
 			match(DANGLING_PORTS_OKAY);
+			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
+			break;
+		}
+		case ATTACH_DANGLING_PORTS:
+		{
+			PtalonAST tmp31_AST = null;
+			tmp31_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp31_AST);
+			match(ATTACH_DANGLING_PORTS);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
 		case TRANSPARENT:
 		{
-			PtalonAST tmp30_AST = null;
-			tmp30_AST = (PtalonAST)astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp30_AST);
+			PtalonAST tmp32_AST = null;
+			tmp32_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp32_AST);
 			match(TRANSPARENT);
+			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
+			break;
+		}
+		case REFERENCE:
+		{
+			PtalonAST tmp33_AST = null;
+			tmp33_AST = (PtalonAST)astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp33_AST);
+			match(REFERENCE);
 			keyword_or_identifier_AST = (PtalonAST)currentAST.root;
 			break;
 		}
@@ -972,10 +1029,10 @@ public PtalonRecognizer(ParserSharedInputState state) {
 		a_AST = (PtalonAST)astFactory.create(a);
 		match(ASSIGN);
 		{
-		boolean synPredMatched839 = false;
+		boolean synPredMatched751 = false;
 		if (((LA(1)==ID) && ((LA(2) >= RPAREN && LA(2) <= EXPRESSION)))) {
-			int _m839 = mark();
-			synPredMatched839 = true;
+			int _m751 = mark();
+			synPredMatched751 = true;
 			inputState.guessing++;
 			try {
 				{
@@ -1019,12 +1076,12 @@ public PtalonRecognizer(ParserSharedInputState state) {
 				}
 			}
 			catch (RecognitionException pe) {
-				synPredMatched839 = false;
+				synPredMatched751 = false;
 			}
-			rewind(_m839);
+			rewind(_m751);
 inputState.guessing--;
 		}
-		if ( synPredMatched839 ) {
+		if ( synPredMatched751 ) {
 			r = LT(1);
 			r_AST = (PtalonAST)astFactory.create(r);
 			match(ID);
@@ -1144,8 +1201,8 @@ inputState.guessing--;
 		a = LT(1);
 		a_AST = (PtalonAST)astFactory.create(a);
 		match(ID);
-		PtalonAST tmp31_AST = null;
-		tmp31_AST = (PtalonAST)astFactory.create(LT(1));
+		PtalonAST tmp34_AST = null;
+		tmp34_AST = (PtalonAST)astFactory.create(LT(1));
 		match(LPAREN);
 		if ( inputState.guessing==0 ) {
 			actor_declaration_AST = (PtalonAST)currentAST.root;
@@ -1171,11 +1228,11 @@ inputState.guessing--;
 					
 			}
 			{
-			_loop846:
+			_loop758:
 			do {
 				if ((LA(1)==COMMA)) {
-					PtalonAST tmp32_AST = null;
-					tmp32_AST = (PtalonAST)astFactory.create(LT(1));
+					PtalonAST tmp35_AST = null;
+					tmp35_AST = (PtalonAST)astFactory.create(LT(1));
 					match(COMMA);
 					assignment();
 					c_AST = (PtalonAST)returnAST;
@@ -1187,7 +1244,7 @@ inputState.guessing--;
 					}
 				}
 				else {
-					break _loop846;
+					break _loop758;
 				}
 				
 			} while (true);
@@ -1204,8 +1261,8 @@ inputState.guessing--;
 		}
 		}
 		}
-		PtalonAST tmp33_AST = null;
-		tmp33_AST = (PtalonAST)astFactory.create(LT(1));
+		PtalonAST tmp36_AST = null;
+		tmp36_AST = (PtalonAST)astFactory.create(LT(1));
 		match(RPAREN);
 		returnAST = actor_declaration_AST;
 	}
@@ -1230,14 +1287,6 @@ inputState.guessing--;
 		{
 			{
 			switch ( LA(1)) {
-			case PORT:
-			case INPORT:
-			case OUTPORT:
-			{
-				port_declaration();
-				astFactory.addASTChild(currentAST, returnAST);
-				break;
-			}
 			case PARAMETER:
 			case ACTOR:
 			case ACTORPARAM:
@@ -1252,12 +1301,6 @@ inputState.guessing--;
 				astFactory.addASTChild(currentAST, returnAST);
 				break;
 			}
-			case TRANSPARENT:
-			{
-				transparent_relation_declaration();
-				astFactory.addASTChild(currentAST, returnAST);
-				break;
-			}
 			case ID:
 			{
 				actor_declaration();
@@ -1265,7 +1308,15 @@ inputState.guessing--;
 				break;
 			}
 			default:
-			{
+				if ((LA(1)==PORT||LA(1)==INPORT||LA(1)==OUTPORT) && (LA(2)==LBRACKET||LA(2)==ID)) {
+					port_declaration();
+					astFactory.addASTChild(currentAST, returnAST);
+				}
+				else if ((LA(1)==PORT||LA(1)==TRANSPARENT) && (LA(2)==RELATION||LA(2)==REFERENCE)) {
+					transparent_relation_declaration();
+					astFactory.addASTChild(currentAST, returnAST);
+				}
+			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
 			}
@@ -1326,7 +1377,7 @@ inputState.guessing--;
 		}
 		match(LCURLY);
 		{
-		_loop852:
+		_loop764:
 		do {
 			switch ( LA(1)) {
 			case PORT:
@@ -1373,7 +1424,7 @@ inputState.guessing--;
 			}
 			default:
 			{
-				break _loop852;
+				break _loop764;
 			}
 			}
 		} while (true);
@@ -1382,7 +1433,7 @@ inputState.guessing--;
 		match(ELSE);
 		match(LCURLY);
 		{
-		_loop854:
+		_loop766:
 		do {
 			switch ( LA(1)) {
 			case PORT:
@@ -1429,7 +1480,7 @@ inputState.guessing--;
 			}
 			default:
 			{
-				break _loop854;
+				break _loop766;
 			}
 			}
 		} while (true);
@@ -1478,8 +1529,8 @@ inputState.guessing--;
 		init_AST = (PtalonAST)returnAST;
 		expression();
 		sat_AST = (PtalonAST)returnAST;
-		PtalonAST tmp41_AST = null;
-		tmp41_AST = (PtalonAST)astFactory.create(LT(1));
+		PtalonAST tmp44_AST = null;
+		tmp44_AST = (PtalonAST)astFactory.create(LT(1));
 		match(LCURLY);
 		if ( inputState.guessing==0 ) {
 			iterative_statement_AST = (PtalonAST)currentAST.root;
@@ -1492,7 +1543,7 @@ inputState.guessing--;
 			currentAST.advanceChildToEnd();
 		}
 		{
-		_loop857:
+		_loop769:
 		do {
 			switch ( LA(1)) {
 			case FOR:
@@ -1542,13 +1593,13 @@ inputState.guessing--;
 			}
 			default:
 			{
-				break _loop857;
+				break _loop769;
 			}
 			}
 		} while (true);
 		}
-		PtalonAST tmp42_AST = null;
-		tmp42_AST = (PtalonAST)astFactory.create(LT(1));
+		PtalonAST tmp45_AST = null;
+		tmp45_AST = (PtalonAST)astFactory.create(LT(1));
 		match(RCURLY);
 		c = LT(1);
 		c_AST = (PtalonAST)astFactory.create(c);
@@ -1570,6 +1621,7 @@ inputState.guessing--;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST actor_definition_AST = null;
 		PtalonAST d_AST = null;
+		PtalonAST at_AST = null;
 		Token  a = null;
 		PtalonAST a_AST = null;
 		PtalonAST b_AST = null;
@@ -1577,6 +1629,7 @@ inputState.guessing--;
 		PtalonAST i_AST = null;
 		
 			boolean danglingPortsOkay = false;
+			boolean attachDanglingPorts = false;
 		
 		
 		if ( inputState.guessing==0 ) {
@@ -1590,15 +1643,15 @@ inputState.guessing--;
 			currentAST.advanceChildToEnd();
 		}
 		{
-		_loop860:
+		_loop772:
 		do {
 			if ((LA(1)==COMMENT)) {
-				PtalonAST tmp43_AST = null;
-				tmp43_AST = (PtalonAST)astFactory.create(LT(1));
+				PtalonAST tmp46_AST = null;
+				tmp46_AST = (PtalonAST)astFactory.create(LT(1));
 				match(COMMENT);
 			}
 			else {
-				break _loop860;
+				break _loop772;
 			}
 			
 		} while (true);
@@ -1612,6 +1665,30 @@ inputState.guessing--;
 			if ( inputState.guessing==0 ) {
 				
 						danglingPortsOkay = true;
+					
+			}
+			break;
+		}
+		case ID:
+		case ATTACH_DANGLING_PORTS:
+		{
+			break;
+		}
+		default:
+		{
+			throw new NoViableAltException(LT(1), getFilename());
+		}
+		}
+		}
+		{
+		switch ( LA(1)) {
+		case ATTACH_DANGLING_PORTS:
+		{
+			attachDanglingPorts();
+			at_AST = (PtalonAST)returnAST;
+			if ( inputState.guessing==0 ) {
+				
+						attachDanglingPorts = true;
 					
 			}
 			break;
@@ -1633,13 +1710,18 @@ inputState.guessing--;
 			actor_definition_AST = (PtalonAST)currentAST.root;
 			
 					actor_definition_AST.setText(a.getText());
-					actor_definition_AST.addChild(d_AST);
+					if (danglingPortsOkay) {
+						actor_definition_AST.addChild(d_AST);
+					}
+					if (attachDanglingPorts) {
+						actor_definition_AST.addChild(at_AST);
+					}
 				
 		}
 		match(IS);
 		match(LCURLY);
 		{
-		_loop863:
+		_loop776:
 		do {
 			switch ( LA(1)) {
 			case PORT:
@@ -1689,22 +1771,22 @@ inputState.guessing--;
 			}
 			default:
 			{
-				break _loop863;
+				break _loop776;
 			}
 			}
 		} while (true);
 		}
 		match(RCURLY);
 		{
-		_loop865:
+		_loop778:
 		do {
 			if ((LA(1)==COMMENT)) {
-				PtalonAST tmp47_AST = null;
-				tmp47_AST = (PtalonAST)astFactory.create(LT(1));
+				PtalonAST tmp50_AST = null;
+				tmp50_AST = (PtalonAST)astFactory.create(LT(1));
 				match(COMMENT);
 			}
 			else {
-				break _loop865;
+				break _loop778;
 			}
 			
 		} while (true);
@@ -1718,13 +1800,28 @@ inputState.guessing--;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST danglingPortsOkay_AST = null;
 		
-		PtalonAST tmp48_AST = null;
-		tmp48_AST = (PtalonAST)astFactory.create(LT(1));
-		astFactory.addASTChild(currentAST, tmp48_AST);
+		PtalonAST tmp51_AST = null;
+		tmp51_AST = (PtalonAST)astFactory.create(LT(1));
+		astFactory.addASTChild(currentAST, tmp51_AST);
 		match(DANGLING_PORTS_OKAY);
 		match(SEMI);
 		danglingPortsOkay_AST = (PtalonAST)currentAST.root;
 		returnAST = danglingPortsOkay_AST;
+	}
+	
+	public final void attachDanglingPorts() throws RecognitionException, TokenStreamException {
+		
+		returnAST = null;
+		ASTPair currentAST = new ASTPair();
+		PtalonAST attachDanglingPorts_AST = null;
+		
+		PtalonAST tmp53_AST = null;
+		tmp53_AST = (PtalonAST)astFactory.create(LT(1));
+		astFactory.addASTChild(currentAST, tmp53_AST);
+		match(ATTACH_DANGLING_PORTS);
+		match(SEMI);
+		attachDanglingPorts_AST = (PtalonAST)currentAST.root;
+		returnAST = attachDanglingPorts_AST;
 	}
 	
 	
@@ -1745,6 +1842,7 @@ inputState.guessing--;
 		"\"actorparameter\"",
 		"\"relation\"",
 		"\"transparent\"",
+		"\"reference\"",
 		"COLON",
 		"DOT",
 		"\"import\"",
@@ -1757,6 +1855,7 @@ inputState.guessing--;
 		"\"initially\"",
 		"\"next\"",
 		"\"danglingPortsOkay\"",
+		"\"attachDanglingPorts\"",
 		"ASSIGN",
 		"RPAREN",
 		"COMMA",
@@ -1801,7 +1900,7 @@ inputState.guessing--;
 	};
 	
 	private static final long[] mk_tokenSet_0() {
-		long[] data = { 268228496L, 0L};
+		long[] data = { 1073338256L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
