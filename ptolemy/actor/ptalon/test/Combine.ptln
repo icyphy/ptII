@@ -1,6 +1,7 @@
+attachDanglingPorts;
+
 Combine is {
-	actor a;
-	actor b;
-	a();
-	b();
+	actorparameter A;
+	A();
+	A();
 }

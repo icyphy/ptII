@@ -1,3 +1,5 @@
+attachDanglingPorts;
+
 IterativeParallel is {
 	actor repeater;
 	parameter n;

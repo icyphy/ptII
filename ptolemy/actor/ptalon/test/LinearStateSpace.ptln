@@ -94,11 +94,15 @@ LinearStateSpace is {
 			input := stateAdderOut[[a]], output := state[[a]] );
 			
 		/*
-		 * This creates a "transparent" relation.  This
-		 * port reference does not actually create
-		 * a relation in Ptolemy.  Instead it creates a
-		 * hook for us to link multiple ports to the
-		 * plus multi-input port of the adder we create next.
+		 * This creates a port reference.  The port
+		 * reference will refer to the plus input of
+		 * the adder.  Any other components that 
+		 * later link a port to this port reference
+		 * will connect to the plus input of the
+		 * adder.  The rule for port references is
+		 * that they refer to the first port that
+		 * is linked to them through an equation
+		 * port := reference
 		 */
 		port reference stateAdderIn[[a]];
 		adder(plus := stateAdderIn[[a]], 
