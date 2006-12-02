@@ -14,7 +14,7 @@ import ptolemy.moml.MoMLParser;
  */
 public class RunMultipleModels {
     public static void main(String[] args) throws Exception {
-        for(int i = 0; i < 25; i++) {
+        for(int i = 0; i < 100; i++) {
             Thread thread = new Thread(new Runnable() {
                 public void run() {
                     try {
@@ -24,8 +24,9 @@ public class RunMultipleModels {
                         Workspace workspace = new Workspace("Workspace"
                                 + threadName);
                         MoMLParser parser = new MoMLParser(workspace);
+                        parser.purgeModelRecord(url);
                         NamedObj model = parser.parse(null, url);
-                        
+
                         Manager manager = new Manager(workspace, "Manager"
                                 + threadName);
                         ((CompositeActor)model).setManager(manager);
