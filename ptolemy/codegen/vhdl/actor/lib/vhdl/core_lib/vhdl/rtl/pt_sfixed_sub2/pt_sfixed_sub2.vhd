@@ -13,7 +13,7 @@ use ieee.numeric_std.all;
 library ieee_proposed;
 use ieee_proposed.math_utility_pkg.all;
 use ieee_proposed.fixed_pkg.all;
-use work.pt_utility.all;
+--use work.pt_utility.all;
 
 entity pt_sfixed_sub2 is
 	generic
@@ -22,6 +22,8 @@ entity pt_sfixed_sub2 is
 		INPUTA_LOW			:	integer		:= 0;
 		INPUTB_HIGH			:	integer		:= 15;
 		INPUTB_LOW			:	integer		:= 0;
+		OUTPUT_HIGH			:	integer		:= 16;
+		OUTPUT_LOW			:	integer		:= 0;
 		LATENCY				: 	integer		:= 3
 	) ;
 	port
@@ -29,33 +31,35 @@ entity pt_sfixed_sub2 is
 		clk				: IN std_logic;
 		A				: IN std_logic_vector (INPUTA_HIGH-INPUTA_LOW DOWNTO 0) ;	
 		B				: IN std_logic_vector (INPUTB_HIGH-INPUTB_LOW DOWNTO 0) ;
-		DIFF			: OUT std_logic_vector (sfixed_add_to_slv_high(INPUTA_HIGH,INPUTA_LOW,INPUTB_HIGH,INPUTB_LOW) DOWNTO 0) 
+		DIFF			: OUT std_logic_vector (OUTPUT_HIGH-OUTPUT_LOW DOWNTO 0) 
 	) ;
 end pt_sfixed_sub2;
 
 
 ARCHITECTURE behave OF pt_sfixed_sub2 IS
 --Constants
-constant OUTPUT_HIGH 		: integer 	:= sfixed_add_to_sfixed_high(INPUTA_HIGH,INPUTB_HIGH);
-constant OUTPUT_LOW 		: integer 	:= sfixed_add_to_sfixed_low(INPUTA_LOW,INPUTB_LOW);
-constant OUTPUT_SLV_HIGH	: integer	:= sfixed_add_to_slv_high(INPUTA_HIGH,INPUTA_LOW,INPUTB_HIGH,INPUTB_LOW);
 --Type Declarations
 TYPE DELAYLINE is ARRAY (1 to LATENCY) of sfixed (OUTPUT_HIGH DOWNTO OUTPUT_LOW) ;
 
 --Signal Declarations
-SIGNAL delay : DELAYLINE;	 
+SIGNAL delay 	: 	DELAYLINE;	 
 --Input A
-signal As :	sfixed (INPUTA_HIGH DOWNTO INPUTA_LOW);
+signal As 		:	sfixed (INPUTA_HIGH DOWNTO INPUTA_LOW);
 --Input B
-signal Bs :	sfixed (INPUTB_HIGH DOWNTO INPUTB_LOW);
-
+signal Bs 		:	sfixed (INPUTB_HIGH DOWNTO INPUTB_LOW);
+SIGNAL DIFFs	 	:	sfixed (sfixed_high(INPUTA_HIGH,INPUTA_LOW,'-',INPUTB_HIGH,INPUTB_LOW) DOWNTO sfixed_low(INPUTA_HIGH,INPUTA_LOW,'-',INPUTB_HIGH,INPUTB_LOW));
 
 BEGIN
 As <= to_sfixed(A,As'high,As'low);
 Bs <= to_sfixed(B,Bs'high,Bs'low);
 
-DIFF <= 	to_slv(delay(LATENCY));
-		
+DIFF 	<= 	to_slv(DIFFs);
+DIFFs 	<=		resize(	arg				=>	delay(LATENCY),
+					left_index		=> 	OUTPUT_HIGH,
+					right_index		=>	OUTPUT_LOW,
+					round_style		=>	fixed_truncate,
+					overflow_style	=>	fixed_wrap);
+
 subtract : process(clk)
 begin
 	if clk'event and clk = '1' then

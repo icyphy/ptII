@@ -10,17 +10,15 @@
       <macro name='inputa_low' type='integer' initializer='0' />
       <macro name='inputb_high' type='integer' initializer='15' />
       <macro name='inputb_low' type='integer' initializer='0' />
+      <macro name='output_high' type='integer' initializer='16' />
+      <macro name='output_low' type='integer' initializer='0' />
 
     </macroList>
     <portList>
 
       <port name='a' direction='in' type='std_logic_vector (inputa_high - inputa_low downto 0)' />
       <port name='b' direction='in' type='std_logic_vector (inputb_high - inputb_low downto 0)' />
-      <port name='sum' direction='out' type='std_logic_vector
-
-  *********** 2b UNKNOWN VECTOR EXPRESSION ***********  
-
- downto 0)' />
+      <port name='sum' direction='out' type='std_logic_vector (output_high - output_low downto 0)' />
 
     </portList>
 </interfaceDefinition>

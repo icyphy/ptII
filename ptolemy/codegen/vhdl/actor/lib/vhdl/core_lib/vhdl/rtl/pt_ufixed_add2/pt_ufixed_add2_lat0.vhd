@@ -20,21 +20,20 @@ entity pt_ufixed_add2_lat0 is
 		INPUTA_HIGH			:	integer		:= 15;
 		INPUTA_LOW			:	integer		:= 0;
 		INPUTB_HIGH			:	integer		:= 15;
-		INPUTB_LOW			:	integer		:= 0
+		INPUTB_LOW			:	integer		:= 0;
+		OUTPUT_HIGH			:	integer		:=16;
+		OUTPUT_LOW			: 	integer		:=0
 	) ;
 	port
 	(
 		A				: IN std_logic_vector (INPUTA_HIGH-INPUTA_LOW DOWNTO 0) ;	
 		B				: IN std_logic_vector (INPUTB_HIGH-INPUTB_LOW DOWNTO 0) ;
-		SUM				: OUT std_logic_vector (ufixed_high(INPUTA_HIGH,INPUTA_LOW,'+',INPUTB_HIGH,INPUTB_LOW) DOWNTO 0) 
+		SUM				: OUT std_logic_vector (OUTPUT_HIGH-OUTPUT_LOW DOWNTO 0) 
 	) ;
 end pt_ufixed_add2_lat0;
 
 
 ARCHITECTURE behave OF pt_ufixed_add2_lat0 IS
-CONSTANT OUTPUT_HIGH : integer := ufixed_high(INPUTA_HIGH,INPUTA_LOW,'+',INPUTB_HIGH,INPUTB_LOW);
-CONSTANT OUTPUT_LOW : integer := ufixed_low(INPUTA_HIGH,INPUTA_LOW,'+',INPUTB_HIGH,INPUTB_LOW);
-
 
 --Signal Declarations
 
@@ -43,14 +42,18 @@ signal As :	ufixed (INPUTA_HIGH DOWNTO INPUTA_LOW);
 --Input B
 signal Bs :	ufixed (INPUTB_HIGH DOWNTO INPUTB_LOW);
 --Scaled Sum
-signal SUMs_c: ufixed(OUTPUT_HIGH DOWNTO OUTPUT_LOW);
+signal SUMs_c: ufixed(ufixed_high(INPUTA_HIGH,INPUTA_LOW,'+',INPUTB_HIGH,INPUTB_LOW) DOWNTO ufixed_low(INPUTA_HIGH,INPUTA_LOW,'+',INPUTB_HIGH,INPUTB_LOW)); 
 
 
 BEGIN
 As <= to_ufixed(A,As'high,As'low);
 Bs <= to_ufixed(B,Bs'high,Bs'low);
 
-SUMs_c <= As+Bs;
+SUMs_c <= resize (	arg				=>	As+Bs,
+					left_index		=>	OUTPUT_HIGH,
+					right_index		=>	OUTPUT_LOW,
+					round_style		=>	fixed_truncate,
+					overflow_style	=>	fixed_wrap);
 
 SUM <= to_slv(SUMs_c);
 END behave ;
