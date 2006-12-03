@@ -50,8 +50,8 @@ public class SRDirector extends Director {
      *  @param sdfDirector The associated
      *  ptolemy.domains.sdf.kernel.SDFDirector
      */
-    public SRDirector(ptolemy.domains.sdf.kernel.SDFDirector sdfDirector) {
-        super(sdfDirector);
+    public SRDirector(ptolemy.domains.sr.kernel.SRDirector srDirector) {
+        super(srDirector);
     }
 
     ////////////////////////////////////////////////////////////////////////
