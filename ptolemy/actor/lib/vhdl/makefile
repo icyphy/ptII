@@ -51,10 +51,12 @@ JSRCS = \
     AddSubtract.java \
 	FixTransformer.java \
 	SynchronousFixTransformer.java \
+	FixComparator.java \
 	FixConst.java \
 	FixCounter.java \
 	FixSequence.java \
 	Concat.java \
+	LogicFunction.java \
 	Memory.java \
 	Multiplexor.java \
 	Multiplier.java \

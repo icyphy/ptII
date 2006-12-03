@@ -8,11 +8,13 @@
 		  <doc>VHDL fixpoint hardwares</doc>
   
           <entity name="AddSubtract" class="ptolemy.actor.lib.vhdl.AddSubtract"></entity>
-		  <entity name="Concat" class="ptolemy.actor.lib.vhdl.Concat"></entity>   
+		  <entity name="Concat" class="ptolemy.actor.lib.vhdl.Concat"></entity>  
+		  <entity name="FixComparator" class="ptolemy.actor.lib.vhdl.FixComparator"></entity> 
 		  <entity name="FixConst" class="ptolemy.actor.lib.vhdl.FixConst"></entity>      
 		  <entity name="FixCounter" class="ptolemy.actor.lib.vhdl.FixCounter"></entity> 
 		  <entity name="FixSequence" class="ptolemy.actor.lib.vhdl.FixSequence"></entity>
-		  <entity name="FixToString" class="ptolemy.actor.lib.vhdl.FixToString"></entity>      
+		  <entity name="FixToString" class="ptolemy.actor.lib.vhdl.FixToString"></entity> 
+		  <entity name="LogicFunction" class="ptolemy.actor.lib.vhdl.LogicFunction"></entity>     
 		  <entity name="Memory" class="ptolemy.actor.lib.vhdl.Memory"></entity>
 		  <entity name="Multiplexor" class="ptolemy.actor.lib.vhdl.Multiplexor"></entity>
 		  <entity name="Multiplier" class="ptolemy.actor.lib.vhdl.Multiplier"></entity>
