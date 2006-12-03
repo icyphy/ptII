@@ -27,17 +27,19 @@
  */
 package ptolemy.codegen.vhdl.kernel;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.math.Precision;
 
 //////////////////////////////////////////////////////////////////////////
 //// VHDLCodeGeneratorHelper
@@ -189,6 +191,67 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
     
     
     
+    /**
+     * 
+     * @param port
+     * @return
+     */
+    protected String _generateVHDLType(TypedIOPort port) {
+        StringBuffer code = new StringBuffer();
+        if (port.getType() == BaseType.FIX) {
+            int bits = new Precision(
+                    _getPortPrecision(port)).getNumberOfBits() - 1;
+                        
+            code.append("std_logic_vector(" + bits + " DOWNTO 0)");
+            
+        } else {
+            code.append("UNKNOWN TYPE");            
+        }
+        return code.toString();
+    }
+
+    /**
+     * 
+     * @param port
+     * @return
+     */
+    protected String _getPortPrecision(Port port) {
+        Parameter precision = (Parameter) 
+        ((Entity) port.getContainer())
+        .getAttribute(port.getName() + "Precision");  
+        
+        return precision.getExpression();
+    }
+
+    /**
+     * 
+     * @return
+     */
+    protected String _getPortDeclarations() {
+        StringBuffer code = new StringBuffer();
+        Actor actor = (Actor) getComponent();
+        Iterator inputPorts = actor.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            TypedIOPort port = (TypedIOPort) inputPorts.next();
+            code.append(port.getName() + " : IN ");
+            code.append(_generateVHDLType(port));
+            if (inputPorts.hasNext()) {
+                code.append(";\n");
+            }
+        }
+        
+        Iterator outputPorts = actor.outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            code.append(";\n");
+            TypedIOPort port = (TypedIOPort) outputPorts.next();
+            code.append(port.getName() + " : OUT ");
+            code.append(_generateVHDLType(port));
+        }
+        // FIXME: we are not handling inout ports.
+        
+        return code.toString();
+    }
+
     /** 
      * @param macro The given macro.
      * @param parameter The given parameter to the macro.
@@ -216,12 +279,5 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
         }
     }
 
-    protected String _getPortPrecision(Port port) {
-        Parameter precision = (Parameter) 
-        ((TypedAtomicActor) port.getContainer())
-        .getAttribute(port.getName() + "Precision");
-        
-        return precision.getExpression();
-    }
 
 }
