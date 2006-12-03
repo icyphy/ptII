@@ -48,7 +48,7 @@ import ptolemy.math.Precision;
  */
 public class RegisterSR extends VHDLCodeGeneratorHelper {
     /**
-     * Construct a Concat helper.
+     * Construct a RegisterSR helper.
      * @param actor the associated actor
      */
     public RegisterSR(ptolemy.actor.lib.vhdl.RegisterSR actor) {
@@ -57,7 +57,7 @@ public class RegisterSR extends VHDLCodeGeneratorHelper {
     
     /**
      * Generate fire code.
-     * The method reads in the <code>fireBlock</code> from FixConst.c,
+     * The method reads in the <code>fireBlock</code> RegisterSR.vhdl,
      * replaces macros with their values and returns the processed code
      * block.
      * @return The generated code.
