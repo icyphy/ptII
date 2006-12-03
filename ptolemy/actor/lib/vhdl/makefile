@@ -49,20 +49,24 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
     AddSubtract.java \
-	FixTransformer.java \
-	SynchronousFixTransformer.java \
-	FixComparator.java \
-	FixConst.java \
+    Concat.java \
+    FixComparator.java \
+    FixConst.java \
 	FixCounter.java \
 	FixSequence.java \
-	Concat.java \
-	LogicFunction.java \
+	FixToString.java \
+	FixTransformer.java \
+	LogicalNot.java \
+    LogicFunction.java \
 	Memory.java \
 	Multiplexor.java \
 	Multiplier.java \
 	QueuedTypedIOPort.java \
-	Slice.java \
 	Register.java \
+	Slice.java \
+	SynchronousFixTransformer.java \
+
+
 
 
 OTHER_FILES_TO_BE_JARED = \

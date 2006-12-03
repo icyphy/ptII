@@ -14,6 +14,7 @@
 		  <entity name="FixCounter" class="ptolemy.actor.lib.vhdl.FixCounter"></entity> 
 		  <entity name="FixSequence" class="ptolemy.actor.lib.vhdl.FixSequence"></entity>
 		  <entity name="FixToString" class="ptolemy.actor.lib.vhdl.FixToString"></entity> 
+		  <entity name="LogicalNot" class="ptolemy.actor.lib.vhdl.LogicalNot"></entity>
 		  <entity name="LogicFunction" class="ptolemy.actor.lib.vhdl.LogicFunction"></entity>     
 		  <entity name="Memory" class="ptolemy.actor.lib.vhdl.Memory"></entity>
 		  <entity name="Multiplexor" class="ptolemy.actor.lib.vhdl.Multiplexor"></entity>
