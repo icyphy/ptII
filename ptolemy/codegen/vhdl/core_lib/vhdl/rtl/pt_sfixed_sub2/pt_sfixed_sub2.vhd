@@ -64,9 +64,11 @@ subtract : process(clk)
 begin
 	if clk'event and clk = '1' then
 		delay(1) <= As-Bs;
-		for i in 1 to LATENCY loop
-			delay(i+1)<=delay(i);
-		end loop;	
+		if LATENCY > 1 then
+			for i in 1 to LATENCY loop
+				delay(i+1)<=delay(i);
+			end loop;	
+		end if;	
 	end if;
 end process subtract ;
 END behave ;
