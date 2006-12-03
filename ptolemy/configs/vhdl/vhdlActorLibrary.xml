@@ -3,5 +3,8 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <group>
   <input source="ptolemy/actor/lib/vhdl/vhdl.xml"/>
+	<entity name="Test" class="ptolemy.actor.lib.Test"/>
 	<entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
+	<entity name="TypedCompositeActor" class="ptolemy.actor.TypedCompositeActor"/>
+	<entity name="FSMActor" class="ptolemy.domains.fsm.kernel.FSMActor"/>
 </group>
