@@ -133,8 +133,8 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
         result.append(super.generatePreinitializeCode());
 
         CompositeActor composite = 
-            (ptolemy.actor.CompositeActor) getComponent();
-
+            (ptolemy.actor.CompositeActor) getComponent();        
+        
         Iterator actors = composite.entityList().iterator();
             
         while (actors.hasNext()) {
@@ -144,17 +144,13 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
             
             while (outputPorts.hasNext()) {
                 TypedIOPort port = (TypedIOPort) outputPorts.next();
-                Precision precision = new Precision(_getPortPrecision(port));
-                int msb = precision.getMostSignificantBitPosition();
-                int lsb = precision.getLeastSignificantBitPosition();
                 signalCode.append("    signal ");
                 
                 signalCode.append(((CodeGeneratorHelper) _getHelper(
                         port.getContainer())).getReference(
-                                port.getName() + "#" + 0));
+                                port.getName() + "#" + 0) + " : ");
                 
-                signalCode.append(" : sfixed (" + msb + 
-                        " DOWNTO " + lsb + ");\n");
+                signalCode.append(_generateVHDLType(port) + ";\n");
             }
             
             CodeGeneratorHelper helper = 
@@ -177,7 +173,7 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
         
         _codeStream.clear();
         ArrayList args = new ArrayList();
-        args.add("");
+        args.add(_getPortDeclarations());
         args.add(signalCode);
         args.add(componentCode);
         args.add(instantiateCode);

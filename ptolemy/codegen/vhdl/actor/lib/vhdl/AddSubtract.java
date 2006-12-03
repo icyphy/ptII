@@ -166,8 +166,8 @@ public class AddSubtract extends VHDLCodeGeneratorHelper {
         args.add("" + highO);
         args.add("" + lowO);
         if (((IntToken) actor.latency.getToken()).intValue() > 0) {
-            args.add(", " + actor.latency.getExpression()); 
-            args.add(", clk => clk");
+            args.add(",\n LATENCY =>" + actor.latency.getExpression()); 
+            args.add(",\n clk => clk");
         } else {
             args.add("");
             args.add("");            

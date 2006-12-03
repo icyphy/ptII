@@ -86,7 +86,7 @@ public class Concat extends VHDLCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
-        files.add("IEEE.std_logic_1164.all");
+        files.add("ieee.std_logic_1164.all");
         return files;
     }
 }

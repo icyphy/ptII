@@ -1,9 +1,13 @@
 /*** preinitBlock($ports, $signals, $components, $instantiation) ***/
-entity $actorSymbol() is
+entity $actorSymbol(block) is
+	port
+	(
 $ports
-end entity
+		clk	: in std_logic
+	) ;
+end entity;
 
-architecture composite of $actorSymbol() is
+architecture composite of $actorSymbol(block) is
 
 $signals
 $components
@@ -12,14 +16,18 @@ begin
 
 $instantiation
 
-end architecture composite
+end architecture composite;
+/**/
+
+
+/*** shareBlock ***/
+	component $actorSymbol(block) is
+	end component;
 /**/
 
 
 
 /*** fireBlock ($genericMap, $portMap) ***/
-	component $actorSymbol() is
-	end component
 	
 	$actorSymbol(instance): $actorSymbol()
 		GENERIC MAP ( $genericMap )

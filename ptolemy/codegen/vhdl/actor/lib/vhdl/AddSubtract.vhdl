@@ -57,7 +57,6 @@ $actorSymbol(instance): $operationType
 	PORT MAP ( 
 		A => $ref(A),
 		B => $ref(B),
-		output => $ref(output)
-		$clk
+		output => $ref(output)$clk
 	);
 /**/
