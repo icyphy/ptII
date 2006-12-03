@@ -39,7 +39,7 @@ end pt_sfixed_sub2;
 ARCHITECTURE behave OF pt_sfixed_sub2 IS
 --Constants
 --Type Declarations
-TYPE DELAYLINE is ARRAY (1 to LATENCY) of sfixed (sfixed_high(INPUTA_HIGH,INPUTA_LOW,'-',INPUTB_HIGH,INPUTB_LOW) DOWNTO sfixed_low(INPUTA_HIGH,INPUTA_LOW,'-',INPUTB_HIGH,INPUTB_LOW) ;
+TYPE DELAYLINE is ARRAY (1 to LATENCY) of sfixed (sfixed_high(INPUTA_HIGH,INPUTA_LOW,'-',INPUTB_HIGH,INPUTB_LOW) DOWNTO sfixed_low(INPUTA_HIGH,INPUTA_LOW,'-',INPUTB_HIGH,INPUTB_LOW)) ;
 
 --Signal Declarations
 SIGNAL delay 	: 	DELAYLINE;	 
