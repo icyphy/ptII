@@ -20,6 +20,7 @@
 		  <entity name="Multiplexor" class="ptolemy.actor.lib.vhdl.Multiplexor"></entity>
 		  <entity name="Multiplier" class="ptolemy.actor.lib.vhdl.Multiplier"></entity>
 		  <entity name="Register" class="ptolemy.actor.lib.vhdl.Register"></entity>
+		  <entity name="RegisterSR" class="ptolemy.actor.lib.vhdl.RegisterSR"></entity>
 		  <entity name="Slice" class="ptolemy.actor.lib.vhdl.Slice"></entity>
 
       </group>
