@@ -31,7 +31,7 @@ entity pt_ufixed_add2 is
 		clk				: IN std_logic;
 		A				: IN std_logic_vector (INPUTA_HIGH-INPUTA_LOW DOWNTO 0) ;	
 		B				: IN std_logic_vector (INPUTB_HIGH-INPUTB_LOW DOWNTO 0) ;
-		SUM				: OUT std_logic_vector (OUTPUT_HIGH-OUTPUT_LOW DOWNTO 0) 
+		OUTPUT			: OUT std_logic_vector (OUTPUT_HIGH-OUTPUT_LOW DOWNTO 0) 
 	) ;
 end pt_ufixed_add2;
 
@@ -55,7 +55,7 @@ BEGIN
 As <= to_ufixed(A,As'high,As'low);
 Bs <= to_ufixed(B,Bs'high,Bs'low);
 
-SUM 	<= 	to_slv(SUMs);
+OUTPUT 	<= 	to_slv(SUMs);
 SUMs	<= 	resize (arg				=>	delay(LATENCY),
 					left_index		=>	OUTPUT_HIGH,
 					right_index		=>	OUTPUT_LOW,

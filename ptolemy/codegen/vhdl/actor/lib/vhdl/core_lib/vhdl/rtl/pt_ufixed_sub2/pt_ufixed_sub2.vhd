@@ -29,7 +29,7 @@ entity pt_ufixed_sub2 is
 		clk				: IN std_logic;
 		A				: IN std_logic_vector (INPUTA_HIGH-INPUTA_LOW DOWNTO 0) ;	
 		B				: IN std_logic_vector (INPUTB_HIGH-INPUTB_LOW DOWNTO 0) ;
-		DIFF			: OUT std_logic_vector (ufixed_high(INPUTA_HIGH,INPUTA_LOW,'-',INPUTB_HIGH,INPUTB_LOW)-ufixed_low(INPUTA_HIGH,INPUTA_LOW,'-',INPUTB_HIGH,INPUTB_LOW) DOWNTO 0) 
+		OUTPUT			: OUT std_logic_vector (ufixed_high(INPUTA_HIGH,INPUTA_LOW,'-',INPUTB_HIGH,INPUTB_LOW)-ufixed_low(INPUTA_HIGH,INPUTA_LOW,'-',INPUTB_HIGH,INPUTB_LOW) DOWNTO 0) 
 	) ;
 end pt_ufixed_sub2;
 
@@ -53,7 +53,7 @@ BEGIN
 As <= to_ufixed(A,As'high,As'low);
 Bs <= to_ufixed(B,Bs'high,Bs'low);
 
-DIFF <= 	to_slv(delay(LATENCY));
+OUTPUT <= 	to_slv(delay(LATENCY));
 		
 subtract : process(clk)
 begin

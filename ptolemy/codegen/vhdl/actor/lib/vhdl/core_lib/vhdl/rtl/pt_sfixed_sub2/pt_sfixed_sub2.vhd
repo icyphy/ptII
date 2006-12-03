@@ -31,7 +31,7 @@ entity pt_sfixed_sub2 is
 		clk				: IN std_logic;
 		A				: IN std_logic_vector (INPUTA_HIGH-INPUTA_LOW DOWNTO 0) ;	
 		B				: IN std_logic_vector (INPUTB_HIGH-INPUTB_LOW DOWNTO 0) ;
-		DIFF			: OUT std_logic_vector (OUTPUT_HIGH-OUTPUT_LOW DOWNTO 0) 
+		OUPUT			: OUT std_logic_vector (OUTPUT_HIGH-OUTPUT_LOW DOWNTO 0) 
 	) ;
 end pt_sfixed_sub2;
 
@@ -53,7 +53,7 @@ BEGIN
 As <= to_sfixed(A,As'high,As'low);
 Bs <= to_sfixed(B,Bs'high,Bs'low);
 
-DIFF 	<= 	to_slv(DIFFs);
+OUTPUT 	<= 	to_slv(DIFFs);
 DIFFs 	<=		resize(	arg				=>	delay(LATENCY),
 					left_index		=> 	OUTPUT_HIGH,
 					right_index		=>	OUTPUT_LOW,

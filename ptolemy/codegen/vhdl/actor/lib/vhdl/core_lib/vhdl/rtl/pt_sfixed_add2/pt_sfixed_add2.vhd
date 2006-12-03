@@ -32,7 +32,7 @@ entity pt_sfixed_add2 is
 		A				: IN std_logic_vector (INPUTA_HIGH-INPUTA_LOW DOWNTO 0) ;	
 		B				: IN std_logic_vector (INPUTB_HIGH-INPUTB_LOW DOWNTO 0) ;
 --		SUM				: OUT std_logic_vector (sfixed_add_to_slv_high(INPUTA_HIGH,INPUTA_LOW,INPUTB_HIGH,INPUTB_LOW) DOWNTO 0) 
-		SUM				: OUT std_logic_vector (OUTPUT_HIGH-OUTPUT_LOW DOWNTO 0) 
+		OUTPUT				: OUT std_logic_vector (OUTPUT_HIGH-OUTPUT_LOW DOWNTO 0) 
 	) ;
 end pt_sfixed_add2;
 
@@ -55,7 +55,7 @@ BEGIN
 As <= to_sfixed(A,As'high,As'low);
 Bs <= to_sfixed(B,Bs'high,Bs'low);
 
-SUM <= 	to_slv(SUMs);
+OUTPUT <= 	to_slv(SUMs);
 SUMs <= resize (	arg				=>	delay(LATENCY),
 					left_index		=>	OUTPUT_HIGH,
 					right_index		=>	OUTPUT_LOW,

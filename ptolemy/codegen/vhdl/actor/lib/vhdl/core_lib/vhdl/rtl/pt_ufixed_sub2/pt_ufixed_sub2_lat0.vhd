@@ -28,7 +28,7 @@ entity pt_ufixed_sub2_lat0 is
 	(
 		A				: IN std_logic_vector (INPUTA_HIGH-INPUTA_LOW DOWNTO 0) ;	
 		B				: IN std_logic_vector (INPUTB_HIGH-INPUTB_LOW DOWNTO 0) ;
-		DIFF				: OUT std_logic_vector (OUTPUT_HIGH-OUTPUT_LOW DOWNTO 0) 
+		OUTPUT			: OUT std_logic_vector (OUTPUT_HIGH-OUTPUT_LOW DOWNTO 0) 
 	) ;
 end pt_ufixed_sub2_lat0;
 
@@ -56,5 +56,5 @@ DIFFs_c <= resize	(	arg				=>	As-Bs,
 						round_style		=>	fixed_truncate,
 						overflow_style	=>	fixed_wrap);
 
-DIFF <= to_slv(DIFFs_c);
+OUTPUT <= to_slv(DIFFs_c);
 END behave ;
