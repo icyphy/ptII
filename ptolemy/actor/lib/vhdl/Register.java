@@ -27,7 +27,9 @@
  */
 package ptolemy.actor.lib.vhdl;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -79,7 +81,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (eal)
  @see ptolemy.domains.de.lib.Sampler
  */
-public class Register extends ptolemy.domains.de.lib.Register {
+public class Register extends SynchronousFixTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -91,7 +93,11 @@ public class Register extends ptolemy.domains.de.lib.Register {
     public Register(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        
+        input = new TypedIOPort(this, "input", true, false);
+        input.setTypeEquals(BaseType.FIX);        
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -104,61 +110,9 @@ public class Register extends ptolemy.domains.de.lib.Register {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        // Don't call "super.fire();", this actor extends another actor.
-        int inputWidth = input.getWidth();
-        int outputWidth = output.getWidth();
-        int commonWidth = Math.min(inputWidth, outputWidth);
-
-        // If the <i>initialValue</i> parameter was not set, or if the
-        // width of the input has changed.
-        if ((_lastInputs == null) || (_lastInputs.length != inputWidth)) {
-            _lastInputs = new Token[inputWidth];
+        if (input.hasToken(0)) {
+            sendOutput(output, 0, input.get(0));
         }
-
-        // If there is a token in the trigger port that indicates
-        // a read request, the register output the latest inputs.
-        if (trigger.hasToken(0)) {
-            // Consume the trigger token.
-            trigger.get(0);
-
-            for (int i = 0; i < commonWidth; i++) {
-                if (_lastInputs[i] != null) {
-                    output.send(i, _lastInputs[i]);
-                }
-            }
-        }
-
-        // If there is a token in the input port that indicates
-        // a write request, the register consumes and stores the
-        // inputs. Note that if multiple inputs are available,
-        // only the last inputs are stored.
-        // Consume the inputs we save.
-        for (int i = 0; i < commonWidth; i++) {
-            while (input.hasToken(i)) {
-                _lastInputs[i] = input.get(i);
-            }
-        }
-
-        // Consume the inputs we don't save.
-        for (int i = commonWidth; i < inputWidth; i++) {
-            while (input.hasToken(i)) {
-                input.get(i);
-            }
-        }
-    }
-
-    /** Return true if there is any token in the input or the trigger
-     *  port.
-     *  @exception IllegalActionException If the base class throws it.
-     */
-    public boolean prefire() throws IllegalActionException {
-        boolean writeRequest = false;
-
-        if (input.getWidth() > 0) {
-            writeRequest = input.hasToken(0);
-        }
-
-        return writeRequest || super.prefire();
     }
 
     /** Override the base class to declare that the <i>output</i>
@@ -168,4 +122,10 @@ public class Register extends ptolemy.domains.de.lib.Register {
         super.pruneDependencies();
         removeDependency(input, output);
     }
+
+    /** Input for tokens to be added.  This is a multiport of fix point
+     *  type
+     */
+    public TypedIOPort input;
+    
 }
