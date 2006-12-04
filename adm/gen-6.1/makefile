@@ -1171,6 +1171,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/logic \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/javasound \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/net \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/python \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/security \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/string \
