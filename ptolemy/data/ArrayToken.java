@@ -64,7 +64,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  the passed array may be reused.  Note that this method cannot
      *  be used to create an empty array token, since the array token
      *  must have a type.  Instead, use the constructor that takes a
-     *  type argument.
+     *  type argument or use the "emptyArray" function from the expression
+     *  language.
      *  @param value An (not empty) array of tokens.
      *  @exception IllegalActionException If the length of the given array is
      *   zero.
@@ -76,7 +77,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             throw new IllegalActionException("ArrayToken(Token[]) called with "
                     + "a an array of length less than 1.  To create an array "
                     + "of length 0, use the ArrayToken(Token) constructor "
-                    + "because elements in ArrayToken must have a type.");
+                    + "or the \"emptyArray(type)\" function in the expression."
+                    + "The reason is that elements in ArrayToken must have a type.");
         }
 
         _elementType = value[0].getType();
