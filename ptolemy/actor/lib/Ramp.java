@@ -193,7 +193,7 @@ public class Ramp extends SequenceSource {
                 _stateToken = _stateToken.add(step.getToken());
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
-                        "Should not be thrown because we have already"
+                        "Should not be thrown because we have already "
                                 + "verified that the tokens can be added");
             }
         }
