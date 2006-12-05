@@ -73,7 +73,33 @@ public class FixTransformer extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     
-        output = newFixOutputPort("output");
+        newFixOutputPort("output");
+        output = new TypedIOPort(this, "output", false, true);      
+        output.setTypeEquals(BaseType.FIX);
+    }
+
+    
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public FixTransformer(CompositeEntity container, String name, boolean isQueued)
+            throws NameDuplicationException, IllegalActionException {
+        super(container, name);
+    
+        newFixOutputPort("output");
+        if( isQueued ) {
+            output = new QueuedTypedIOPort(this, "output", false, true);
+        }
+        else {
+            output = new TypedIOPort(this, "output", false, true);  
+        }
+
+        output.setTypeEquals(BaseType.FIX);
     }
 
     /**
@@ -133,7 +159,7 @@ public class FixTransformer extends TypedAtomicActor {
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
-    public QueuedTypedIOPort newFixOutputPort(String name) throws
+    public void newFixOutputPort(String name) throws
             IllegalActionException, NameDuplicationException {
         
         // For each output port, we want to have an assoicated
@@ -154,14 +180,9 @@ public class FixTransformer extends TypedAtomicActor {
         rounding.addChoice("HALF_EVEN");
         rounding.addChoice("ROUND");
         rounding.addChoice("WRAP");        
-        
-        QueuedTypedIOPort port =
-            new QueuedTypedIOPort(this, name, false, true);
-        
-        port.setTypeEquals(BaseType.FIX);
-
-        return port;
     }
+    
+
     
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -170,6 +191,6 @@ public class FixTransformer extends TypedAtomicActor {
     /** Queued ouput to simulate pipelined add.  The output is fix 
      *  point type.
      */
-    public QueuedTypedIOPort output;
+    public TypedIOPort output;
 
 }

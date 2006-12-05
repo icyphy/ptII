@@ -37,11 +37,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.math.FixPointQuantization;
-import ptolemy.math.Overflow;
-import ptolemy.math.Precision;
-import ptolemy.math.Quantization;
-import ptolemy.math.Rounding;
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -102,6 +98,7 @@ public class AddSubtract extends SynchronousFixTransformer {
     /** Indicate whether addition or subtraction needs to be performed.
      */
     public Parameter operation; 
+
         
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -113,15 +110,48 @@ public class AddSubtract extends SynchronousFixTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         Token result = null;
-        
-        if (A.hasToken(0) && B.hasToken(0)) {
-            if (operation.getExpression().endsWith("ADD")) {
-                result = A.get(0).add(B.get(0));
-            } else {
-                result = A.get(0).subtract(B.get(0));
-            }     
-        }
 
-        sendOutput(output, 0, result);
+        if( A.isKnown() && B.isKnown() ) {
+            Token tokenA = new FixToken();
+            Token tokenB = new FixToken();
+            
+            if( A.hasToken(0) ) {
+                tokenA = A.get(0);
+            }           
+
+            if( B.hasToken(0) ) {
+                tokenB = B.get(0);
+            }           
+
+            if (operation.getExpression().endsWith("ADD")) {
+                result = tokenA.add(tokenB);
+            } else {
+                result = tokenA.subtract(tokenB);
+            }
+            System.out.println("added: "+ tokenA + " + " + tokenB + " = " + result);
+            sendOutput(output, 0, result);
+        }
+        else
+        {
+            ((QueuedTypedIOPort) output).resend(0);
+        }
+    }
+    
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     */
+    public void pruneDependencies() {
+        super.pruneDependencies();
+        removeDependency(A, output);
+        removeDependency(B, output);
+    }
+    
+    /** Return false. This actor can produce some output event the input 
+     *  receiver has status unknown.
+     *  
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
     }
 }

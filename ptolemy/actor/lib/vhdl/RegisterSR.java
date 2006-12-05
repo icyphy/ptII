@@ -27,21 +27,22 @@
  */
 package ptolemy.actor.lib.vhdl;
 
-import java.util.List;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.FixToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sr.lib.AbsentToken;
 import ptolemy.domains.sr.lib.Pre;
-import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.math.FixPoint;
+import ptolemy.math.FixPointQuantization;
+import ptolemy.math.Overflow;
 import ptolemy.math.Precision;
+import ptolemy.math.Rounding;
 
 //////////////////////////////////////////////////////////////////////////
 //// NonstrictDelay
@@ -80,6 +81,8 @@ public class RegisterSR extends FixTransformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         initialValue = new Parameter(this, "initialValue");
+        initialValue.setTypeEquals(BaseType.SCALAR);
+        initialValue.setExpression("0.0");
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.FIX);
     }
@@ -139,8 +142,20 @@ public class RegisterSR extends FixTransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
-        // Note that this will default to null if there is no initialValue set.
-        _previousToken = initialValue.getToken();
+        Precision precision = new Precision(((Parameter) 
+                getAttribute("outputPrecision")).getExpression());
+        
+        Overflow overflow = Overflow.getName(((Parameter) getAttribute(
+        "outputOverflow")).getExpression().toLowerCase());
+
+        Rounding rounding = Rounding.getName(((Parameter) getAttribute(
+            "outputRounding")).getExpression().toLowerCase());
+
+        FixPoint result = new FixPoint(((ScalarToken)
+                initialValue.getToken()).doubleValue(), 
+                new FixPointQuantization(precision, overflow, rounding));
+
+        _previousToken = new FixToken(result);
         _currentToken = null;
         super.initialize();
     }
@@ -172,30 +187,6 @@ public class RegisterSR extends FixTransformer {
         removeDependency(input, output);
     }
 
-    /** Override the method in the base class so that the type
-     *  constraint for the <i>initialValue</i> parameter will be set
-     *  if it contains a value.
-     *  @return a list of Inequality objects.
-     *  @see ptolemy.graph.Inequality
-     */
-    public List typeConstraintList() {
-        List typeConstraints = super.typeConstraintList();
-
-        try {
-            if (initialValue.getToken() != null) {
-                Inequality ineq = new Inequality(initialValue.getTypeTerm(),
-                        output.getTypeTerm());
-                typeConstraints.add(ineq);
-            }
-        } catch (IllegalActionException ex) {
-            // Errors in the initialValue parameter should already
-            // have been caught in getAttribute() method of the base
-            // class.
-            throw new InternalErrorException("Bad initialValue value!");
-        }
-
-        return typeConstraints;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

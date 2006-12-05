@@ -32,7 +32,6 @@ import java.util.LinkedList;
 
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.FixToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -76,6 +75,8 @@ public class QueuedTypedIOPort extends TypedIOPort {
         super(container, name, isInput, isOutput);
         
         myQueue = new LinkedList<Token>();
+        _oldToken = null;
+        latency = 0;
         
     }
 
@@ -85,13 +86,18 @@ public class QueuedTypedIOPort extends TypedIOPort {
     /** Set the size of the queue.  This operation will clear whatever
      *  is currently enqueued and create a queue of the new size.
      */
-    public void setSize(int latency)
+    public void setSize(int newlatency, Token initToken)
     {   
         myQueue.clear();
-        
-        for(int i=0; i<latency; i++)
+        latency = newlatency;
+        if( _oldToken == null )
         {
-            myQueue.add(new FixToken());
+            _oldToken = initToken;
+        }
+        
+        for(int i=1; i<latency; i++)
+        {
+            myQueue.add(initToken);
         }
     } 
     
@@ -100,9 +106,19 @@ public class QueuedTypedIOPort extends TypedIOPort {
      */
     public void send(int channelIndex, Token token)
         throws IllegalActionException, NoRoomException {
-        myQueue.add(token);
-        Token sendToken = myQueue.removeFirst();
-        super.send(channelIndex, sendToken);
+        if( latency == 0 ) {
+            super.send(channelIndex,token);
+        }
+        else {         
+            myQueue.add(token);
+            super.send(channelIndex, _oldToken);
+            _oldToken = myQueue.removeFirst();
+        }
+    }
+    
+    public void resend(int channelIndex)
+        throws IllegalActionException, NoRoomException { 
+        super.send(channelIndex, _oldToken);
     }
 
 
@@ -110,5 +126,7 @@ public class QueuedTypedIOPort extends TypedIOPort {
     ////                         private variables                 ////
 
     private LinkedList<Token> myQueue;
+    private Token _oldToken;
+    private int latency;
     
 }

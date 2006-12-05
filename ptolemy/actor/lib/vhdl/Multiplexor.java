@@ -93,10 +93,6 @@ public class Multiplexor extends SynchronousFixTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public void setLatency(int latency)
-    {
-        output.setSize(latency);
-    }
     
     /** output a consecutive subset of the input bits. 
      *  If there is no input, then produce no output.
