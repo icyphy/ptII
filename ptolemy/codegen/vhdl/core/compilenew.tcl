@@ -2,7 +2,7 @@
 #To be used with modelsim
 #Author: Vinayak Nagpal
 
-set CORE_LIB_PATH $PTII/ptolemy/codegen/vhdl/actor/lib/vhdl/core/
+set CORE_LIB_PATH $PTII/ptolemy/codegen/vhdl/core/
 set CORE_IFACE_XML_PATH $CORE_LIB_PATH/xml
 
 
