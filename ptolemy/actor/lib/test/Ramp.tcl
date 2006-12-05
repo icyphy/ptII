@@ -98,6 +98,16 @@ test Ramp-2.1.5 {test with NaN} {
     enumToTokenValues [$rec getRecord 0]
 } {NaN NaN NaN NaN NaN}
 
+test Ramp-2.1.7 {test with empty array} {
+    set init [getParameter $ramp init]
+    set step [getParameter $ramp step]
+    $init setToken [java::new ptolemy.data.ArrayToken "{}"]
+    $step setToken [java::new ptolemy.data.ArrayToken "{}"]
+    catch {[$e0 getManager] execute} errMsg
+    list [string range $errMsg 0 140]
+} {{ptolemy.kernel.util.InternalErrorException: Should not be thrown because we have already verified that the tokens can be added
+  in .top.ramp}}
+
 test Ramp-2.2 {test with record} {
     # first record is {name = "a", value = 1, extra1 = 2}
     # Old, very labor intensive way to do this.
