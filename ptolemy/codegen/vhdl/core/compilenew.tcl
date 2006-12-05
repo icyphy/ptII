@@ -45,11 +45,14 @@ array set entity1_class {
 	ptdelay ptdelay
 }
 
+array set entity_tb_class {
+	pttest	pttest
+}
 
 foreach {ent class} [array get entity_class] {
 	set VHD_PATH $CORE_LIB_PATH/vhdl/rtl/$class/$ent
 	append VHD_PATH ".vhd"
-	set XML_PATH $CORE_IFACE_XML_PATH/$class/$ent
+	set XML_PATH $CORE_IFACE_XML_PATH/rtl/$class/$ent
 	append XML_PATH ".xml"
 	vcom -2002 -work work $VHD_PATH
 	vcom -2002 -gen_xml $ent $XML_PATH $VHD_PATH 
@@ -57,10 +60,18 @@ foreach {ent class} [array get entity_class] {
 foreach {ent class} [array get entity1_class] {
 	set VHD_PATH $CORE_LIB_PATH/vhdl/rtl/$class/$ent
 	append VHD_PATH ".vhd"
-	set XML_PATH $CORE_IFACE_XML_PATH/$class/$ent
+	set XML_PATH $CORE_IFACE_XML_PATH/rtl/$class/$ent
 	append XML_PATH ".xml"
 	vcom -2002 -work work $VHD_PATH
 	vcom -2002 -gen_xml $ent $XML_PATH $VHD_PATH
 }
 
+foreach {ent class} [array get entity_tb_class] {
+	set VHD_PATH $CORE_LIB_PATH/vhdl/tb/$class/$ent
+	append VHD_PATH ".vhd"
+	set XML_PATH $CORE_IFACE_XML_PATH/tb/$class/$ent
+	append XML_PATH ".xml"
+	vcom -2002 -work work $VHD_PATH
+	vcom -2002 -gen_xml $ent $XML_PATH $VHD_PATH
+}
 
