@@ -77,8 +77,9 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             throw new IllegalActionException("ArrayToken(Token[]) called with "
                     + "a an array of length less than 1.  To create an array "
                     + "of length 0, use the ArrayToken(Token) constructor "
-                    + "or the \"emptyArray(type)\" function in the expression."
-                    + "The reason is that elements in ArrayToken must have a type.");
+                    + "or the \"emptyArray(type)\" function in the expression "
+                    + "language. The reason is that elements in ArrayToken "
+                    + "must have a type.");
         }
 
         _elementType = value[0].getType();
