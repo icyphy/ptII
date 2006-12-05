@@ -95,7 +95,7 @@ test ArrayToken-1.2 {ArrayTokens of length 0 are supported.  Use the constructor
     set intToken [java::new {ptolemy.data.IntToken} 0]
     set valToken [java::new {ptolemy.data.ArrayToken ptolemy.data.type.Type} [$intToken getType]]
     list $errMsg [$valToken toString] [$valToken isNil]
-} {{ptolemy.kernel.util.IllegalActionException: ArrayToken(Token[]) called with a an array of length less than 1.  To create an array of length 0, use the ArrayToken(Token) constructor because elements in ArrayToken must have a type.} {{}} 0}
+} {{ptolemy.kernel.util.IllegalActionException: ArrayToken(Token[]) called with a an array of length less than 1.  To create an array of length 0, use the ArrayToken(Token) constructor or the "emptyArray(type)" function in the expression language. The reason is that elements in ArrayToken must have a type.} {{}} 0}
 
 ######################################################################
 ####
