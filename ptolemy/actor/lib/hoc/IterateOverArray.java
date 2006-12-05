@@ -1151,6 +1151,9 @@ public class IterateOverArray extends TypedCompositeActor implements
                         }
 
                         port.send(i, new ArrayToken(elementType, tokens));
+                     } else {
+                         // Send an empty list
+                         port.send(i, new ArrayToken(elementType));
                     }
 
                     result = true;
