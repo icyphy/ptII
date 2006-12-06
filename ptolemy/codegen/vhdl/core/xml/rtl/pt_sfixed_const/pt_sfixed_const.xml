@@ -13,7 +13,7 @@
     </macroList>
     <portList>
 
-      <port name='const_out' direction='out' type='std_logic_vector (const_high - const_low downto 0)' />
+      <port name='output' direction='out' type='std_logic_vector (const_high - const_low downto 0)' />
 
     </portList>
 </interfaceDefinition>

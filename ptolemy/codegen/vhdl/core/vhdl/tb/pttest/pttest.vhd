@@ -6,9 +6,11 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
+use std.textio.all;
 library ieee_proposed;
 use ieee_proposed.math_utility_pkg.all;
 use ieee_proposed.fixed_pkg.all;
+use ieee_proposed.standard_textio_additions.all;
 use work.pt_utility.all;
 
 --type CORRECTVALS is array (integer range <>) of real;
@@ -17,14 +19,15 @@ use work.pt_utility.all;
 entity pttest is
 GENERIC(
 	LENGTH		:	integer := 3;
-	LIST		:	CORRECTVALS(1 to LENGTH) := {0.23,0.345,-1.0};
 	INPUT_HIGH	:	integer	:= 0;
 	INPUT_LOW	:	integer := -15;
-	FIXED_SIGN	:	FIXED_TYPE_SIGN := SIGNED;	
+	LIST		:	CORRECTVALS;
+	FIXED_SIGN	:	FIXED_TYPE_SIGN := SIGNED	
 );
 PORT (
 	clk			:	in 	std_logic ;
 	data_in		:	in	std_logic_vector (INPUT_HIGH-INPUT_LOW DOWNTO 0)
+--	list		:	in  CORRECTVALS(1 to LENGTH) := (0.23,0.345,-1.0)
 );
 end pttest;
 
@@ -36,26 +39,28 @@ SIGNAL count		:	integer :=0;
 
 BEGIN
 
-In_signed 	<= to_sfixed(data_in,INPUTA_HIGH,INPUTA_LOW);
-In_unsigned <= to_ufixed(data_in,INPUTA_HIGH,INPUTA_LOW);
+In_signed 	<= to_sfixed(data_in,INPUT_HIGH,INPUT_LOW);
+In_unsigned <= to_ufixed(data_in,INPUT_HIGH,INPUT_LOW);
 
 compare : process(clk)
-	variable In_real	: real := 0.0;
+	variable In_real		: real := 0.0;
+	variable expected_real	: real := -1.0;
 begin
 		if clk'event and clk = '1' then
 			if count = LENGTH then
 				count <= count;
 			else
 				count <= count + 1;
+				expected_real:=LIST(count);
 				if FIXED_SIGN = SIGNED then
 					In_real := to_real(In_signed); 
-					assert CORRECTVALS(count)=In_real
-					report to_string(CORRECTVALS(count)) & "/=" & to_string(In_real)
+					assert expected_real=In_real
+					report real'image(expected_real) & "/=" & real'image(In_real)
 					severity error;
-				else if FIXED_SIGN = UNSIGNED then
+				elsif FIXED_SIGN = UNSIGNED then
 					In_real := to_real(In_unsigned); 
-					assert CORRECTVALS(count)=In_real
-					report to_string(CORRECTVALS(count)) & "/=" & to_string(In_real)
+					assert expected_real=In_real
+					report real'image(expected_real) & "/=" & real'image(In_real)
 					severity error;
 				end if;	
 			end if;

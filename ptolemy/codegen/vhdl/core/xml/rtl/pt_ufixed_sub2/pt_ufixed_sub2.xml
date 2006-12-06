@@ -18,7 +18,7 @@
       <port name='clk' direction='in' type='std_logic' />
       <port name='a' direction='in' type='std_logic_vector (inputa_high - inputa_low downto 0)' />
       <port name='b' direction='in' type='std_logic_vector (inputb_high - inputb_low downto 0)' />
-      <port name='diff' direction='out' type='std_logic_vector
+      <port name='output' direction='out' type='std_logic_vector
 
   *********** 2b UNKNOWN VECTOR EXPRESSION ***********  
 
