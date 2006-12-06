@@ -77,12 +77,13 @@ public class QueuedTypedIOPort extends TypedIOPort {
         myQueue = new LinkedList<Token>();
         _oldToken = null;
         latency = 0;
-        
+        initialToken = null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    
     /** Set the size of the queue.  This operation will clear whatever
      *  is currently enqueued and create a queue of the new size.
      */
@@ -90,14 +91,26 @@ public class QueuedTypedIOPort extends TypedIOPort {
     {   
         myQueue.clear();
         latency = newlatency;
-        if( _oldToken == null )
-        {
-            _oldToken = initToken;
-        }
+        initialToken = initToken;
+        _oldToken = initialToken;
         
         for(int i=1; i<latency; i++)
         {
-            myQueue.add(initToken);
+            myQueue.add(initialToken);
+        }
+    } 
+    
+    /** Set the size of the queue.  This operation will clear whatever
+     *  is currently enqueued and create a queue of the new size.
+     */
+    public void resize(int newlatency)
+    {   
+        myQueue.clear();
+        latency = newlatency; 
+        _oldToken = initialToken;
+        for(int i=1; i<latency; i++)
+        {
+            myQueue.add(initialToken);
         }
     } 
     
@@ -118,7 +131,9 @@ public class QueuedTypedIOPort extends TypedIOPort {
     
     public void resend(int channelIndex)
         throws IllegalActionException, NoRoomException { 
-        super.send(channelIndex, _oldToken);
+        if( latency != 0 ) {
+            super.send(channelIndex, _oldToken);
+        }
     }
 
 
@@ -128,5 +143,6 @@ public class QueuedTypedIOPort extends TypedIOPort {
     private LinkedList<Token> myQueue;
     private Token _oldToken;
     private int latency;
+    private Token initialToken;
     
 }

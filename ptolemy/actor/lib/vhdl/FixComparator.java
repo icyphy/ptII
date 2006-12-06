@@ -28,7 +28,6 @@
  */
 package ptolemy.actor.lib.vhdl;
 
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.FixToken;
 import ptolemy.data.expr.Parameter;
@@ -54,7 +53,7 @@ import ptolemy.math.Precision;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class FixComparator extends TypedAtomicActor {
+public class FixComparator extends SynchronousFixTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -82,10 +81,6 @@ public class FixComparator extends TypedAtomicActor {
         operation.addChoice("<=");        
         operation.addChoice(">");    
         operation.addChoice(">=");
-        
-        output = new QueuedTypedIOPort(this, "output", false, true);
-        output.setTypeEquals(BaseType.FIX);
-        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,9 +100,6 @@ public class FixComparator extends TypedAtomicActor {
      */
     public Parameter operation; 
     
-
-    public QueuedTypedIOPort output;
-    
         
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -121,10 +113,19 @@ public class FixComparator extends TypedAtomicActor {
         FixToken result = null;
         Precision precision = new Precision(0,1,0);
         
-        if (A.hasToken(0) && B.hasToken(0)) {
+        if ( A.isKnown() && B.isKnown() ) {
             result = new FixToken(0,precision);
-            FixToken inputA = (FixToken) A.get(0);
-            FixToken inputB = (FixToken) B.get(0);
+            FixToken inputA = new FixToken();
+            FixToken inputB = new FixToken();
+            
+            if( A.hasToken(0) ) {
+                inputA = (FixToken) A.get(0);
+            }           
+
+            if( B.hasToken(0) ) {
+                inputB = (FixToken) B.get(0);
+            }
+            
             if (operation.getExpression().equals("=")) {
                 if( inputA.equals(inputB) )
                 {
@@ -155,12 +156,24 @@ public class FixComparator extends TypedAtomicActor {
                 {
                     result = new FixToken(1,precision);
                 }
-            }      
+            }  
+            
+            sendOutput(output,0, result);
         }
-
-        if(result != null )
+        
+        else
         {
-            output.send(0, result);
+            ((QueuedTypedIOPort) output).resend(0);
         }
     }
+    
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     */
+    public void pruneDependencies() {
+        super.pruneDependencies();
+        removeDependency(A, output);
+        removeDependency(B, output);
+    }
+
 }

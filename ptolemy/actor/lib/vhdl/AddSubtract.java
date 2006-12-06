@@ -128,7 +128,6 @@ public class AddSubtract extends SynchronousFixTransformer {
             } else {
                 result = tokenA.subtract(tokenB);
             }
-            System.out.println("added: "+ tokenA + " + " + tokenB + " = " + result);
             sendOutput(output, 0, result);
         }
         else
@@ -145,13 +144,5 @@ public class AddSubtract extends SynchronousFixTransformer {
         removeDependency(A, output);
         removeDependency(B, output);
     }
-    
-    /** Return false. This actor can produce some output event the input 
-     *  receiver has status unknown.
-     *  
-     *  @return False.
-     */
-    public boolean isStrict() {
-        return false;
-    }
+
 }

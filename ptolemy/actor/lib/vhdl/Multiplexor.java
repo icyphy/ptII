@@ -71,7 +71,7 @@ public class Multiplexor extends SynchronousFixTransformer {
         input.setTypeEquals(BaseType.FIX);
         
         select = new TypedIOPort(this,"select",true,false);
-        select.setTypeEquals(BaseType.INT);
+        select.setTypeEquals(BaseType.FIX);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,10 +81,6 @@ public class Multiplexor extends SynchronousFixTransformer {
      *  point type.
      */
     public TypedIOPort input;
-
-    /** Queued ouput to simulate mux.  The output is fix point type.
-     */
-    public QueuedTypedIOPort output;
  
     /** Input for select one of the inputs.  This port has int type.
      */
@@ -100,33 +96,48 @@ public class Multiplexor extends SynchronousFixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (select.hasToken(0)) {
-            _channel = ((FixToken) select.get(0)).fixValue().getUnscaledValue().intValue();
-        }
-
-        boolean inRange = false;
-
-        for (int i = 0; i < input.getWidth(); i++) {
-            inRange = inRange || (i == _channel);
-
-            if (input.hasToken(i)) {
-                Token token = input.get(i);
-
-                if (i == _channel) {
-                    output.send(0, token);
+        if( select.isKnown() && input.isKnown() ) {
+            if (select.hasToken(0)) {
+                _channel = ((FixToken) select.get(0)).fixValue().getUnscaledValue().intValue();
+            }
+    
+            boolean inRange = false;
+    
+            for (int i = 0; i < input.getWidth(); i++) {
+                inRange = inRange || (i == _channel);
+    
+                if (input.hasToken(i)) {
+                    Token token = input.get(i);
+    
+                    if (i == _channel) {
+                        output.send(0, token);
+                    }
                 }
             }
+    
+            if (!inRange) {
+                throw new IllegalActionException(this,
+                        "Select input is out of range: " + _channel + ".");
+            }
         }
-
-        if (!inRange) {
-            throw new IllegalActionException(this,
-                    "Select input is out of range: " + _channel + ".");
+        else {
+            ((QueuedTypedIOPort) output).resend(0);
         }
     }
     
     /** Initialize to the default, which is to use channel zero. */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _channel = 0;
+    }
+    
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     */
+    public void pruneDependencies() {
+        super.pruneDependencies();
+        removeDependency(input, output);
+        removeDependency(select, output);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -32,6 +32,7 @@ import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.FixPoint;
@@ -91,6 +92,32 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
                 new FixPointQuantization(precision, overflow, rounding));
         int latencyValue = ((ScalarToken) latency.getToken()).intValue();
         ((QueuedTypedIOPort) output).setSize(latencyValue, new FixToken(result));
+    }
+    
+    /** Override the base class to determine which function is being
+     *  specified.
+     *  @param attribute The attribute that changed.
+     * @throws IllegalActionException 
+     *  @exception IllegalActionException If the function is not recognized.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        super.attributeChanged(attribute);
+
+        if( attribute == latency ) {
+            int latencyValue = 
+                ((ScalarToken) latency.getToken()).intValue();
+            ((QueuedTypedIOPort) output).resize(latencyValue);
+        }
+    }
+
+    /** Return false. This actor can produce some output event the input 
+     *  receiver has status unknown.
+     *  
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
     }
     
     ///////////////////////////////////////////////////////////////////

@@ -193,6 +193,16 @@ public class Memory extends SynchronousFixTransformer {
         _storage = new FixToken[_capacity];
     }
     
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     */
+    public void pruneDependencies() {
+        super.pruneDependencies();
+        removeDependency(address, output);
+        removeDependency(dataIn, output);
+        removeDependency(writeEnable, output);
+    }
+    
     
     private int _addressWidth;
 

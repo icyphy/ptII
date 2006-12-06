@@ -113,37 +113,52 @@ public class LogicFunction extends SynchronousFixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        BigInteger intResult = null;
-        int bitsInResult = 0;
         
-        if (A.hasToken(0) && B.hasToken(0)) {
-            FixPoint valueA = ((FixToken) A.get(0)).fixValue();
-            FixPoint valueB = ((FixToken) B.get(0)).fixValue();
-            int bitsInA = valueA.getPrecision().getNumberOfBits();
-            int bitsInB = valueB.getPrecision().getNumberOfBits();
-            bitsInResult = bitsInA < bitsInB ? bitsInA : bitsInB ;
-            BigInteger bigIntA = valueA.getUnscaledValue();
-            BigInteger bigIntB = valueB.getUnscaledValue();
-            if (operation.getExpression().equals("AND")) {
-                intResult = bigIntA.and(bigIntB);
-            } else if (operation.getExpression().equals("OR")) {
-                intResult = bigIntA.or(bigIntB);
-            } else if (operation.getExpression().equals("NAND")) {
-                intResult = bigIntA.and(bigIntB).not();
-            } else if (operation.getExpression().equals("NOR")) {
-                intResult = bigIntA.or(bigIntB).not();
-            } else if (operation.getExpression().equals("XOR")) {
-                intResult = bigIntA.xor(bigIntB);
-            } else if (operation.getExpression().equals("XNOR")) {
-                intResult = bigIntA.xor(bigIntB).not();
-            }      
+        if( A.isKnown() && B.isKnown() ) {
+            BigInteger intResult = null;
+            int bitsInResult = 0;
+            
+            if (A.hasToken(0) && B.hasToken(0)) {
+                FixPoint valueA = ((FixToken) A.get(0)).fixValue();
+                FixPoint valueB = ((FixToken) B.get(0)).fixValue();
+                int bitsInA = valueA.getPrecision().getNumberOfBits();
+                int bitsInB = valueB.getPrecision().getNumberOfBits();
+                bitsInResult = bitsInA < bitsInB ? bitsInA : bitsInB ;
+                BigInteger bigIntA = valueA.getUnscaledValue();
+                BigInteger bigIntB = valueB.getUnscaledValue();
+                if (operation.getExpression().equals("AND")) {
+                    intResult = bigIntA.and(bigIntB);
+                } else if (operation.getExpression().equals("OR")) {
+                    intResult = bigIntA.or(bigIntB);
+                } else if (operation.getExpression().equals("NAND")) {
+                    intResult = bigIntA.and(bigIntB).not();
+                } else if (operation.getExpression().equals("NOR")) {
+                    intResult = bigIntA.or(bigIntB).not();
+                } else if (operation.getExpression().equals("XOR")) {
+                    intResult = bigIntA.xor(bigIntB);
+                } else if (operation.getExpression().equals("XNOR")) {
+                    intResult = bigIntA.xor(bigIntB).not();
+                }      
+            }
+    
+            if(intResult != null )
+            {
+                Precision precision = new Precision(1, bitsInResult, 0);
+                FixToken result = new FixToken(intResult.doubleValue(), precision);
+                output.send(0, result);
+            }
         }
-
-        if(intResult != null )
-        {
-            Precision precision = new Precision(1, bitsInResult, 0);
-            FixToken result = new FixToken(intResult.doubleValue(), precision);
-            output.send(0, result);
+        else {
+            ((QueuedTypedIOPort) output).resend(0);
         }
+    }
+    
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     */
+    public void pruneDependencies() {
+        super.pruneDependencies();
+        removeDependency(A, output);
+        removeDependency(B, output);
     }
 }

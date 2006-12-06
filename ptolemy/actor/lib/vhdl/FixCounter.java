@@ -30,16 +30,11 @@ package ptolemy.actor.lib.vhdl;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.FixToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.FixPoint;
-import ptolemy.math.FixPointQuantization;
-import ptolemy.math.Overflow;
-import ptolemy.math.Precision;
-import ptolemy.math.Rounding;
 
 //////////////////////////////////////////////////////////////////////////
 //// Counter
@@ -66,9 +61,9 @@ public class FixCounter extends SynchronousFixTransformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         increment = new TypedIOPort(this, "increment", true, false);
-        increment.setTypeEquals(BaseType.GENERAL);
+        increment.setTypeEquals(BaseType.FIX);
         decrement = new TypedIOPort(this, "decrement", true, false);
-        decrement.setTypeEquals(BaseType.GENERAL);
+        decrement.setTypeEquals(BaseType.FIX);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -109,47 +104,40 @@ public class FixCounter extends SynchronousFixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        _latestCount = _count;
-        _consumed = false;
-
-        // Check the increment port.
-        for (int i = 0; i < increment.getWidth(); i++) {
-            if (increment.hasToken(i)) {
-                increment.get(i);
-                _latestCount=_latestCount+1;
-                _consumed = true;
+        if( increment.isKnown() && decrement.isKnown() ) {      
+            _latestCount = _count;
+            _consumed = false;
+    
+            // Check the increment port.
+            for (int i = 0; i < increment.getWidth(); i++) {
+                if (increment.hasToken(i)) {
+                    increment.get(i);
+                    _latestCount=_latestCount+1;
+                    _consumed = true;
+                }
+            }
+    
+            // Check the decrement port.
+            for (int i = 0; i < decrement.getWidth(); i++) {
+                if (decrement.hasToken(i)) {
+                    decrement.get(i);
+                    _latestCount--;
+                    _consumed = true;
+                }
+            }
+    
+            // Produce an output if we consumed an input.
+            if (_consumed) {
+                FixPoint result = new FixPoint(_latestCount);
+                Token outputToken = new FixToken(result);
+                sendOutput(output, 0, outputToken);
             }
         }
-
-        // Check the decrement port.
-        for (int i = 0; i < decrement.getWidth(); i++) {
-            if (decrement.hasToken(i)) {
-                decrement.get(i);
-                _latestCount--;
-                _consumed = true;
-            }
-        }
-
-        // Produce an output if we consumed an input.
-        if (_consumed) {
-            Precision precision = new Precision(((Parameter) 
-                    getAttribute("outputPrecision")).getExpression());
-            
-            Overflow overflow = Overflow.getName(((Parameter) getAttribute(
-            "outputOverflow")).getExpression().toLowerCase());
-
-            Rounding rounding = Rounding.getName(((Parameter) getAttribute(
-                "outputRounding")).getExpression().toLowerCase());
-
-            FixPoint result = new FixPoint(_latestCount, 
-                    new FixPointQuantization(precision, overflow, rounding));
-            System.out.println(_latestCount);
-            System.out.println(result);
-            Token outputToken = new FixToken(result);
-            System.out.println(outputToken);
-            sendOutput(output, 0, outputToken);
+        else {
+            ((QueuedTypedIOPort) output).resend(0);
         }
     }
+    
 
     /** Reset the count of inputs to zero.
      *  @exception IllegalActionException If the parent class throws it.
@@ -166,12 +154,21 @@ public class FixCounter extends SynchronousFixTransformer {
         _count = _latestCount;
         return super.postfire();
     }
+    
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     */
+    public void pruneDependencies() {
+        super.pruneDependencies();
+        removeDependency(increment, output);
+        removeDependency(decrement, output);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    private double _count = 0;
+    private int _count = 0;
 
-    private double _latestCount = 0;
+    private int _latestCount = 0;
 
     private boolean _consumed;
 }

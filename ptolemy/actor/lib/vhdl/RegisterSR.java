@@ -28,21 +28,14 @@
 package ptolemy.actor.lib.vhdl;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.FixToken;
-import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sr.lib.AbsentToken;
 import ptolemy.domains.sr.lib.Pre;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.math.FixPoint;
-import ptolemy.math.FixPointQuantization;
-import ptolemy.math.Overflow;
-import ptolemy.math.Precision;
-import ptolemy.math.Rounding;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// NonstrictDelay
@@ -67,7 +60,7 @@ import ptolemy.math.Rounding;
  @Pt.ProposedRating Yellow (celaine)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class RegisterSR extends FixTransformer {
+public class RegisterSR extends SynchronousFixTransformer {
 	/** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -80,20 +73,9 @@ public class RegisterSR extends FixTransformer {
     public RegisterSR(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        initialValue = new Parameter(this, "initialValue");
-        initialValue.setTypeEquals(BaseType.SCALAR);
-        initialValue.setExpression("0.0");
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.FIX);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** Initial token value.  Can be of any type.
-     *  @see #typeConstraintList()
-     */
-    public Parameter initialValue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -109,74 +91,20 @@ public class RegisterSR extends FixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (input.isKnown(0)) {
+        if (input.isKnown(0)) 
+        {
+            Token result;
             if (input.hasToken(0)) {
-                _currentToken = input.get(0);
+                result = input.get(0);
             } else {
-                _currentToken = AbsentToken.ABSENT;
+                result = AbsentToken.ABSENT;
             }
+            sendOutput(output, 0, result);
         }
-
-        if (_previousToken != null) {
-            if (_previousToken == AbsentToken.ABSENT) {
-                output.sendClear(0);
-            } else {
-            	if(_previousToken instanceof FixToken) {
-            		int inputBitWidth = ((FixToken) 
-            				_previousToken).fixValue().getPrecision().getNumberOfBits();
-            		int outputBitWidth = new Precision(
-            				getPortPrecision(output)).getNumberOfBits();
-            		if (!(inputBitWidth == outputBitWidth)) {
-            			throw new IllegalActionException(this,
-            					"Mismatched bit width.");
-            		}
-            	}
-                output.send(0, _previousToken);
-            }
-        } else {
-            output.sendClear(0);
-        }
-    }
-
-    /** Initialize the state of the actor.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public void initialize() throws IllegalActionException {
-        Precision precision = new Precision(((Parameter) 
-                getAttribute("outputPrecision")).getExpression());
-        
-        Overflow overflow = Overflow.getName(((Parameter) getAttribute(
-        "outputOverflow")).getExpression().toLowerCase());
-
-        Rounding rounding = Rounding.getName(((Parameter) getAttribute(
-            "outputRounding")).getExpression().toLowerCase());
-
-        FixPoint result = new FixPoint(((ScalarToken)
-                initialValue.getToken()).doubleValue(), 
-                new FixPointQuantization(precision, overflow, rounding));
-
-        _previousToken = new FixToken(result);
-        _currentToken = null;
-        super.initialize();
-    }
-
-    /** Return false. This actor can produce some output event the input 
-     *  receiver has status unknown.
-     *  
-     *  @return False.
-     */
-    public boolean isStrict() {
-        return false;
-    }
-
-    /** Update the state of the actor.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean postfire() throws IllegalActionException {
-        _previousToken = _currentToken;
-        _currentToken = null;
-
-        return super.postfire();
+        else
+        {
+            ((QueuedTypedIOPort) output).resend(0);
+        } 
     }
 
     /** Override the base class to declare that the <i>output</i>
@@ -192,14 +120,4 @@ public class RegisterSR extends FixTransformer {
     ////                         protected variables               ////
 
     TypedIOPort input;
-    
-    /** The token received on the previous iteration to be output on the
-     *  current iteration.
-     */
-    protected Token _previousToken;
-
-    /** The most recent token received on the current iteration to be
-     * output on the next iteration.
-     */
-    protected Token _currentToken;
 }

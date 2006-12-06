@@ -92,18 +92,38 @@ public class LogicalNot extends SynchronousFixTransformer {
         BigInteger intResult = null;
         int bitsInResult = 0;
         
-        if (A.hasToken(0)) {
+        if (A.isKnown() && A.hasToken(0)) {
             FixPoint valueA = ((FixToken) A.get(0)).fixValue();
             bitsInResult = valueA.getPrecision().getNumberOfBits();
             BigInteger bigIntA = valueA.getUnscaledValue();
             intResult = bigIntA.not();     
-        }
-
-        if(intResult != null )
-        {
             Precision precision = new Precision(1, bitsInResult, 0);
             FixToken result = new FixToken(intResult.doubleValue(), precision);
             output.send(0, result);
         }
+        else
+        {
+            ((QueuedTypedIOPort) output).resend(0);
+        } 
+    }
+    
+
+    /** Return false. This actor can produce some output event the input 
+     *  receiver has status unknown.
+     *  
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
+    }
+
+
+
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     */
+    public void pruneDependencies() {
+        super.pruneDependencies();
+        removeDependency(A, output);
     }
 }

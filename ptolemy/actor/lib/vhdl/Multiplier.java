@@ -29,18 +29,11 @@
 package ptolemy.actor.lib.vhdl;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.FixToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.math.FixPointQuantization;
-import ptolemy.math.Overflow;
-import ptolemy.math.Precision;
-import ptolemy.math.Quantization;
-import ptolemy.math.Rounding;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -100,12 +93,25 @@ public class Multiplier extends SynchronousFixTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         
-        if (A.hasToken(0) && B.hasToken(0)) {
-            
-            Token result = A.get(0).multiply(B.get(0));              
-
-            sendOutput(output, 0, result);
-
+        if( A.isKnown() && B.isKnown() ) {
+            if (A.hasToken(0) && B.hasToken(0)) {
+                
+                Token result = A.get(0).multiply(B.get(0));              
+    
+                sendOutput(output, 0, result);
+            }
         }
+        else {
+            ((QueuedTypedIOPort) output).resend(0);
+        }
+    }
+    
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     */
+    public void pruneDependencies() {
+        super.pruneDependencies();
+        removeDependency(A, output);
+        removeDependency(B, output);
     }
 }
