@@ -59,14 +59,6 @@ public interface PtinyOSLoader {
      */
     public void enqueueEvent(String newTime) throws IllegalActionException;
 
-    /** Get a Boolean value from PortParameter named parameter.
-     *  @param parameter The parameter
-     *  @return The Boolean value of the parameter, or 0 if there is an error.
-     *  @exception IllegalActionException If there is an error.
-     */
-    public boolean getBooleanParameterValue(String parameter)
-            throws IllegalActionException;
-
     /** Get a char value from PortParameter named parameter.
      *  @param parameter The parameter
      *  @return The char value of the parameter, or 0 if there is an error.
@@ -78,7 +70,7 @@ public interface PtinyOSLoader {
     /** Load the JNI shared object associated with the toplevel
      *  PtinyOSDirector.
      *  @param path The directory that contains the JNI shared object.
-     *  @param director The directory (FIXME: currently ignored?)
+     *  @param director The director that loads this PtinyOSLoader.
      */
     public void load(String path, PtinyOSDirector director);
 
@@ -114,9 +106,9 @@ public interface PtinyOSLoader {
      *  message.
      *  @param debugMode A long long in C (currently unused)
      *  @param message A char * in C
-     *  @param nodeNumber is a short in C
+     *  @param nodeID A short in C
      */
-    public void tosDebug(String debugMode, String message, String nodeNumber);
+    public void tosDebug(String debugMode, String message, String nodeID);
 
     /** Invoke the wrapup() method of the toplevel Director.
      */
