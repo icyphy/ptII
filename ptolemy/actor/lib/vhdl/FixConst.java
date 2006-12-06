@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.lib.vhdl;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.FixToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
@@ -75,6 +76,9 @@ public class FixConst extends FixTransformer {
         value.setTypeEquals(BaseType.SCALAR);
         value.setExpression("0.0");
 
+        trigger = new TypedIOPort(this, "trigger", true, false);
+        trigger.setMultiport(true);
+        
         // Set the type constraint.
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
                 + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
@@ -90,6 +94,11 @@ public class FixConst extends FixTransformer {
      *  then the director will be asked to redo type resolution.
      */
     public Parameter value;
+    
+    /** The trigger port.  The type of this port is undeclared, meaning
+     *  that it will resolve to any data type.
+     */
+    public TypedIOPort trigger = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -115,6 +124,17 @@ public class FixConst extends FixTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         
+        // NOTE: It might seem that using trigger.numberOfSources() is
+        // correct here, but it is not. It is possible for channels
+        // to be connected, for example, to other output ports or
+        // even back to this same trigger port, in which case higher
+        // numbered channels will not have their inputs read.
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.hasToken(i)) {
+                trigger.get(i);
+            }
+        }
+        
         Precision precision = new Precision(((Parameter) 
                 getAttribute("outputPrecision")).getExpression());
         
@@ -129,5 +149,31 @@ public class FixConst extends FixTransformer {
                 new FixPointQuantization(precision, overflow, rounding));
 
         output.send(0, new FixToken(result));
+    }
+    
+    /** If the trigger input is connected and it has no input or an unknown
+     *  state, then return false. Otherwise, return true.
+     *  @return True, unless the trigger input is connected
+     *   and has no input.
+     *  @exception IllegalActionException If checking the trigger for
+     *   a token throws it or if the super class throws it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (trigger.numberOfSources() > 0) {
+            for (int i = 0; i < trigger.getWidth(); i++) {
+                if (trigger.isKnown(i) && trigger.hasToken(i)) {
+                    return super.prefire();
+                }
+            }
+
+            if (_debugging) {
+                _debug("Called prefire(), which returns false because"
+                        + " the trigger port is connected and has no input.");
+            }
+
+            return false;
+        }
+
+        return super.prefire();
     }
 }

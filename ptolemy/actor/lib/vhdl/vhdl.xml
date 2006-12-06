@@ -22,6 +22,8 @@
 		  <entity name="Register" class="ptolemy.actor.lib.vhdl.Register"></entity>
 		  <entity name="RegisterSR" class="ptolemy.actor.lib.vhdl.RegisterSR"></entity>
 		  <entity name="Slice" class="ptolemy.actor.lib.vhdl.Slice"></entity>
+		  
+		  <entity name="Clock" class="ptolemy.actor.lib.Clock"></entity>
 
       </group>
     ?>

@@ -91,6 +91,9 @@ public class FixSequence extends FixTransformer {
 
         enable = new TypedIOPort(this, "enable", true, false);
         enable.setTypeEquals(BaseType.BOOLEAN);
+        
+        trigger = new TypedIOPort(this, "trigger", true, false);
+        trigger.setMultiport(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,6 +116,11 @@ public class FixSequence extends FixTransformer {
      *  This parameter is an array, with default value {1}.
      */
     public Parameter values;
+    
+    /** The trigger port.  The type of this port is undeclared, meaning
+     *  that it will resolve to any data type.
+     */
+    public TypedIOPort trigger = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -138,6 +146,18 @@ public class FixSequence extends FixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        
+        // NOTE: It might seem that using trigger.numberOfSources() is
+        // correct here, but it is not. It is possible for channels
+        // to be connected, for example, to other output ports or
+        // even back to this same trigger port, in which case higher
+        // numbered channels will not have their inputs read.
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.hasToken(i)) {
+                trigger.get(i);
+            }
+        }
+        
         if ((enable.getWidth() == 0)
                 || (enable.hasToken(0) && ((BooleanToken) enable.get(0))
                         .booleanValue())) {
@@ -172,6 +192,32 @@ public class FixSequence extends FixTransformer {
         super.initialize();
     }
 
+    /** If the trigger input is connected and it has no input or an unknown
+     *  state, then return false. Otherwise, return true.
+     *  @return True, unless the trigger input is connected
+     *   and has no input.
+     *  @exception IllegalActionException If checking the trigger for
+     *   a token throws it or if the super class throws it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (trigger.numberOfSources() > 0) {
+            for (int i = 0; i < trigger.getWidth(); i++) {
+                if (trigger.isKnown(i) && trigger.hasToken(i)) {
+                    return super.prefire();
+                }
+            }
+
+            if (_debugging) {
+                _debug("Called prefire(), which returns false because"
+                        + " the trigger port is connected and has no input.");
+            }
+
+            return false;
+        }
+
+        return super.prefire();
+    }    
+    
     /** Update the state of the actor by moving to the next value
      *  in the <i>values</i> array.
      *  @exception IllegalActionException If there is no director.
