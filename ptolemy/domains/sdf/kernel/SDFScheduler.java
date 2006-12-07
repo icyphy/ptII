@@ -44,6 +44,7 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.actor.util.DFUtilities;
@@ -184,6 +185,23 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Clone the scheduler into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new scheduler with no container, and no valid schedule.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *   cannot be cloned.
+     *  @return The new Scheduler.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SDFScheduler newObject = (SDFScheduler) super.clone(workspace);
+        newObject._firingVector = new HashMap();
+        newObject._externalRates = new HashMap();
+        newObject._rateVariables = new LinkedList();
+        return newObject;
+    }    
 
     /** Declare the rate dependency on any external ports of the model.
      *  SDF directors should invoke this method once during preinitialize.
