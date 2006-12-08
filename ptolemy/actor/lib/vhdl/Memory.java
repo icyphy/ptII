@@ -172,14 +172,13 @@ public class Memory extends SynchronousFixTransformer {
                     "Data width does not match the port width.");
         }
 
-        // Read data before over-writing.
+        if (writeEnableValue.toBitString().equals("1")) {
+            _storage[addressValue] = in;
+        }
+
         Token result = _storage[addressValue];
         if (result == null) {
             result = FixToken.NIL;
-        }
-
-        if (writeEnableValue.toBitString().equals("1")) {
-            _storage[addressValue] = in;
         }
 
         sendOutput(output, 0, result);

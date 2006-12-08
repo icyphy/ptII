@@ -27,19 +27,20 @@
  */
 package ptolemy.actor.lib.vhdl;
 
-import ptolemy.data.FixToken;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import ptolemy.actor.IOPort;
+import ptolemy.actor.NoRoomException;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ScalarToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.math.FixPoint;
-import ptolemy.math.FixPointQuantization;
-import ptolemy.math.Overflow;
-import ptolemy.math.Precision;
-import ptolemy.math.Rounding;
 
 //////////////////////////////////////////////////////////////////////////
 //// SynchronousFixPointTransformer
@@ -66,34 +67,16 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
      */
     public SynchronousFixTransformer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
-        super(container, name, true);
+        super(container, name);
         
         latency = new Parameter(this, "latency");
         latency.setExpression("0");
-        
+
         initialValue = new Parameter(this, "initialValue");
         initialValue.setTypeEquals(BaseType.SCALAR);
         initialValue.setExpression("0.0");
     }
 
-    
-    public void initialize() throws IllegalActionException {
-        Precision precision = new Precision(((Parameter) 
-                getAttribute("outputPrecision")).getExpression());
-        
-        Overflow overflow = Overflow.getName(((Parameter) getAttribute(
-        "outputOverflow")).getExpression().toLowerCase());
-    
-        Rounding rounding = Rounding.getName(((Parameter) getAttribute(
-            "outputRounding")).getExpression().toLowerCase());
-    
-        FixPoint result = new FixPoint(((ScalarToken)
-                initialValue.getToken()).doubleValue(), 
-                new FixPointQuantization(precision, overflow, rounding));
-        int latencyValue = ((ScalarToken) latency.getToken()).intValue();
-        ((QueuedTypedIOPort) output).setSize(latencyValue, new FixToken(result));
-    }
-    
     /** Override the base class to determine which function is being
      *  specified.
      *  @param attribute The attribute that changed.
@@ -104,10 +87,45 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
             throws IllegalActionException {
         super.attributeChanged(attribute);
 
-        if( attribute == latency ) {
+        if (attribute == latency) {
             int latencyValue = 
                 ((ScalarToken) latency.getToken()).intValue();
-            ((QueuedTypedIOPort) output).resize(latencyValue);
+            //output.setSize(latencyValue);            
+            
+            try {
+                if (latencyValue == 0) {
+                    initialValue.setContainer(null);
+                } else {
+                    initialValue.setContainer(this);
+                }
+            } catch (NameDuplicationException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Fail to set the initialValue parameter.");
+            }
+        }
+    }
+    
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     */
+    public void pruneDependencies() {
+        super.pruneDependencies();
+        
+        try {
+            int latencyValue = 
+                ((ScalarToken) latency.getToken()).intValue();
+        
+            if (latencyValue > 0) {
+                super.pruneDependencies();
+                
+                Iterator inputPorts = inputPortList().iterator();
+                while (inputPorts.hasNext()) {
+                    IOPort input = (IOPort) inputPorts.next(); 
+                    removeDependency(input, output);
+                }
+            }
+        } catch (IllegalActionException ex) {
+            
         }
     }
 
@@ -117,18 +135,29 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
      *  @return False.
      */
     public boolean isStrict() {
-        return false;
-    }
+        try {
+            int latencyValue = 
+                ((ScalarToken) latency.getToken()).intValue();
+        
+            if (latencyValue > 0) {
+                return false;
+            }
+        } catch (IllegalActionException ex) {
+            
+        }
+        return true;
+    }  
     
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    //private ArrayList<Token> _previousOutput;
+    
     /** The number cycle delay of the output data. 
      */
     public Parameter latency;
-    
-    /** Initial token value.  Can be of any type.
-     *  @see #typeConstraintList()
+
+    /** The number cycle delay of the output data. 
      */
     public Parameter initialValue;
 }
