@@ -74,33 +74,10 @@ public class FixTransformer extends TypedAtomicActor {
         super(container, name);
     
         newFixOutputPort("output");
-        output = new TypedIOPort(this, "output", false, true);      
+        output = new QueuedTypedIOPort(this, "output", false, true);      
         output.setTypeEquals(BaseType.FIX);
     }
 
-    
-    /** Construct an actor with the given container and name.
-     *  @param container The container.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
-     */
-    public FixTransformer(CompositeEntity container, String name, boolean isQueued)
-            throws NameDuplicationException, IllegalActionException {
-        super(container, name);
-    
-        newFixOutputPort("output");
-        if( isQueued ) {
-            output = new QueuedTypedIOPort(this, "output", false, true);
-        }
-        else {
-            output = new TypedIOPort(this, "output", false, true);  
-        }
-
-        output.setTypeEquals(BaseType.FIX);
-    }
 
     /**
      * Return the precision string of the given port.
@@ -191,6 +168,6 @@ public class FixTransformer extends TypedAtomicActor {
     /** Queued ouput to simulate pipelined add.  The output is fix 
      *  point type.
      */
-    public TypedIOPort output;
+    public QueuedTypedIOPort output;
 
 }
