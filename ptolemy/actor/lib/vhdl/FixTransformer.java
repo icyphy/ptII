@@ -31,9 +31,9 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.FixToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -73,11 +73,8 @@ public class FixTransformer extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     
-        newFixOutputPort("output");
-        output = new QueuedTypedIOPort(this, "output", false, true);      
-        output.setTypeEquals(BaseType.FIX);
+        output = newFixOutputPort("output");
     }
-
 
     /**
      * Return the precision string of the given port.
@@ -136,7 +133,7 @@ public class FixTransformer extends TypedAtomicActor {
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
-    public void newFixOutputPort(String name) throws
+    public TypedIOPort newFixOutputPort(String name) throws
             IllegalActionException, NameDuplicationException {
         
         // For each output port, we want to have an assoicated
@@ -157,10 +154,35 @@ public class FixTransformer extends TypedAtomicActor {
         rounding.addChoice("HALF_EVEN");
         rounding.addChoice("ROUND");
         rounding.addChoice("WRAP");        
+        
+        TypedIOPort port =
+            new QueuedTypedIOPort(this, name, false, true);
+        
+        port.setTypeEquals(BaseType.FIX);
+
+        return port;
     }
     
-
     
+    protected void _checkFixTokenWidth(FixToken token, int width) 
+            throws IllegalActionException {
+        if (token.fixValue().getPrecision().getNumberOfBits() != width) {
+            throw new IllegalActionException(this, 
+                    "Bit width violation: " + token
+                    + " is not equal to " + width);
+        }
+    }
+    
+    protected void _checkFixMaxValue(FixToken token, int max)
+            throws IllegalActionException {
+        if (token.fixValue().getPrecision().getNumberOfBits() 
+                > Integer.toBinaryString(max).length()) {
+            throw new IllegalActionException(this, 
+                    "Bit width violation: " + token
+                    + " is not equal to log(" + max + ")");            
+        }
+    }
+        
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -168,6 +190,6 @@ public class FixTransformer extends TypedAtomicActor {
     /** Queued ouput to simulate pipelined add.  The output is fix 
      *  point type.
      */
-    public QueuedTypedIOPort output;
+    public TypedIOPort output;
 
 }
