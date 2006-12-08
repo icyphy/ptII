@@ -27,20 +27,22 @@
  */
 package ptolemy.actor.lib.vhdl;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import ptolemy.actor.IOPort;
-import ptolemy.actor.NoRoomException;
-import ptolemy.actor.TypedIOPort;
+import ptolemy.data.FixToken;
 import ptolemy.data.ScalarToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.math.FixPoint;
+import ptolemy.math.FixPointQuantization;
+import ptolemy.math.Overflow;
+import ptolemy.math.Precision;
+import ptolemy.math.Rounding;
 
 //////////////////////////////////////////////////////////////////////////
 //// SynchronousFixPointTransformer
@@ -105,6 +107,47 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
         }
     }
     
+
+
+    /** Initialize the state of the actor.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public void initialize() throws IllegalActionException {
+        Precision precision = new Precision(((Parameter) 
+                getAttribute("outputPrecision")).getExpression());
+        
+        Overflow overflow = Overflow.getName(((Parameter) getAttribute(
+        "outputOverflow")).getExpression().toLowerCase());
+    
+        Rounding rounding = Rounding.getName(((Parameter) getAttribute(
+            "outputRounding")).getExpression().toLowerCase());
+    
+        FixPoint result = new FixPoint(((ScalarToken)
+                initialValue.getToken()).doubleValue(), 
+                new FixPointQuantization(precision, overflow, rounding));
+        int latencyValue = ((ScalarToken) latency.getToken()).intValue();
+        ((QueuedTypedIOPort) output).setSize(latencyValue, new FixToken(result));
+    }
+    
+    /** Return false. This actor can produce some output event the input 
+     *  receiver has status unknown.
+     *  
+     *  @return False.
+     */
+    public boolean isStrict() {
+        try {
+            int latencyValue = 
+                ((ScalarToken) latency.getToken()).intValue();
+        
+            if (latencyValue > 0) {
+                return false;
+            }
+        } catch (IllegalActionException ex) {
+            
+        }
+        return true;
+    }  
+    
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
      */
@@ -128,25 +171,6 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
             
         }
     }
-
-    /** Return false. This actor can produce some output event the input 
-     *  receiver has status unknown.
-     *  
-     *  @return False.
-     */
-    public boolean isStrict() {
-        try {
-            int latencyValue = 
-                ((ScalarToken) latency.getToken()).intValue();
-        
-            if (latencyValue > 0) {
-                return false;
-            }
-        } catch (IllegalActionException ex) {
-            
-        }
-        return true;
-    }  
     
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
