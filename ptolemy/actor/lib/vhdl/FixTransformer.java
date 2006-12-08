@@ -133,7 +133,7 @@ public class FixTransformer extends TypedAtomicActor {
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
-    public TypedIOPort newFixOutputPort(String name) throws
+    public QueuedTypedIOPort newFixOutputPort(String name) throws
             IllegalActionException, NameDuplicationException {
         
         // For each output port, we want to have an assoicated
@@ -155,7 +155,7 @@ public class FixTransformer extends TypedAtomicActor {
         rounding.addChoice("ROUND");
         rounding.addChoice("WRAP");        
         
-        TypedIOPort port =
+        QueuedTypedIOPort port =
             new QueuedTypedIOPort(this, name, false, true);
         
         port.setTypeEquals(BaseType.FIX);
