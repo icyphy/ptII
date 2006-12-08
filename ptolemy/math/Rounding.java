@@ -31,6 +31,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
@@ -226,6 +227,14 @@ public abstract class Rounding implements Cloneable, Serializable {
     /** Return a hash code value for this object.    */
     public int hashCode() {
         return _name.hashCode();
+    }
+
+    /**
+     * Return an iterator for the names of all overflow types.
+     * @return An iterator for the names of all overflow types.
+     */
+    public static Iterator nameIterator() {
+        return _nameToRounding.keySet().iterator();        
     }
 
     /**

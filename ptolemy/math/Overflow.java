@@ -30,6 +30,7 @@ package ptolemy.math;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
@@ -247,6 +248,14 @@ public abstract class Overflow implements Cloneable, Serializable {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Return an iterator for the names of all overflow types.
+     * @return An iterator for the names of all overflow types.
+     */
+    public static Iterator nameIterator() {
+        return _nameToOverflow.keySet().iterator();        
     }
 
     /** Return the value of minus infinity, or null if unrepresentable.
@@ -606,5 +615,5 @@ public abstract class Overflow implements Cloneable, Serializable {
     // A map from overflow type name to the overflow type for all
     //  overflow types.
     private static Map _nameToOverflow;
-
+    
 }
