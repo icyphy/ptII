@@ -87,28 +87,21 @@ public class QueuedTypedIOPort extends TypedIOPort {
     /** Set the size of the queue.  This operation will clear whatever
      *  is currently enqueued and create a queue of the new size.
      */
-    public void setSize(int newlatency, Token initToken)
+    public void setSize(int size, Token initialValue)
     {   
-        myQueue.clear();
-        latency = newlatency;
-        initialToken = initToken;
-        _oldToken = initialToken;
-        
-        for(int i=1; i<latency; i++)
-        {
-            myQueue.add(initialToken);
-        }
+        initialToken = initialValue;
+        resize(size);        
     } 
     
     /** Set the size of the queue.  This operation will clear whatever
      *  is currently enqueued and create a queue of the new size.
      */
-    public void resize(int newlatency)
+    public void resize(int size)
     {   
         myQueue.clear();
-        latency = newlatency; 
+        latency = size; 
         _oldToken = initialToken;
-        for(int i=1; i<latency; i++)
+        for(int i = 1; i < size; i++)
         {
             myQueue.add(initialToken);
         }
