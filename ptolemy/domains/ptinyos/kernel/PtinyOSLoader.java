@@ -90,7 +90,7 @@ public interface PtinyOSLoader {
     /** Send an expression to a port.
      *  @param portName The name of the port
      *  @param expression The expression
-     *  @return true if the expression was successfully sent, 0 if the
+     *  @return true if the expression was successfully sent, false if the
      *  port is not connected or not found.
      */
     public boolean sendToPort(String portName, String expression);
