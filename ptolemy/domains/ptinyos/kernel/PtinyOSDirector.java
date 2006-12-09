@@ -330,9 +330,8 @@ public class PtinyOSDirector extends Director {
      *
      *  @param newTime The time of the next event, a long long in C (a
      *  64-bit integer on most systems).
-     *  @exception IllegalActionException If Director.fireAt() throws it.
      */
-    public void enqueueEvent(String newTime) throws IllegalActionException {
+    public void enqueueEvent(String newTime) {
         // Assumes that we already checked in preinitialize() that the
         // container is a CompositeActor.
         CompositeActor container = (CompositeActor) getContainer();
@@ -346,7 +345,11 @@ public class PtinyOSDirector extends Director {
 
         //System.out.println("PtinyOSDirector.enqueueEvent : " + newtime);
         Time t = new Time(director, Long.parseLong(newTime));
-        director.fireAt(container, t);
+        try {
+            director.fireAt(container, t);
+        } catch (IllegalActionException e) {
+            MessageHandler.error(e.toString(), e);
+        }
     }
 
     /** Process one event in the TOSSIM event queue and run tasks in
@@ -379,7 +382,11 @@ public class PtinyOSDirector extends Director {
             }
 
             //System.out.println("PtinyOSDirector.fire: " + currentTimeValue);
-            _loader.processEvent(currentTimeValue);
+            try {
+                _loader.processEvent(currentTimeValue);
+            } catch (Throwable e) {
+                MessageHandler.error("JNI error in fire(): ", e);
+            }
         }
     }
 
@@ -391,50 +398,40 @@ public class PtinyOSDirector extends Director {
      *  through the Java loader.
      *
      *  @param parameter The parameter.
-     *  @return 0 if there is an error.
-     *  @exception IllegalActionException If there is a problem getting
-     *  a token from the input parameter port.
+     *  @return The parameter value, or 0 if the port is not connected
+     *  or not found.
      */
-    public char getCharParameterValue(String parameter)
-            throws IllegalActionException {
+    public char getCharParameterValue(String parameter) {
         if (_debugging) {
             _debug("Called getCharParameterValue with " + parameter
                     + " as argument.");
         }
 
-        // FIXME Delete later
         CompositeActor model = (CompositeActor) getContainer();
-        Iterator inPorts;
-
-        inPorts = model.inputPortList().iterator();
-
-        while (inPorts.hasNext()) {
-            IOPort p = (IOPort) inPorts.next();
-
-            if (p.getName().equals(parameter) && (p instanceof ParameterPort)) {
-                Token t = ((ParameterPort) p).getParameter().getToken();
-
-                if (t != null) {
-                    //System.out.println(p.getName() + " " + t);
-                    try {
+        IOPort port = (IOPort) model.getPort(parameter);
+        if (port != null) {
+            if (port instanceof ParameterPort) {
+                try {
+                    Token t = ((ParameterPort) port).getParameter().getToken();
+                    if (t != null) {
+                        //System.out.println(port.getName() + " " + t);
                         DoubleToken dt = DoubleToken.convert(t);
                         return (char) dt.doubleValue();
-                    } catch (IllegalActionException e) {
-                        System.out.println("Couldn't convert to DoubleToken.");
-
-                        // FIXME
+                    } else {
+                        Exception e = new InternalErrorException(
+                                "Could not get token from ParameterPort \""
+                                + parameter
+                                + "\".");
+                        MessageHandler.error(e.toString(), e);
                         return 0;
                     }
-                } else {
-                    // FIXME
-                    System.out.println("Couldn't get token from ParameterPort "
-                            + p.getName());
-                }
+                } catch (IllegalActionException e) {
+                    MessageHandler.error(e.toString(), e);
+                }   
             }
         }
 
-        // FIXME
-        System.out.println("Couldn't find PortParameter " + parameter);
+        // Port could not be found.
         return 0;
     }
 
@@ -537,8 +534,13 @@ public class PtinyOSDirector extends Director {
                     // Note: For statistical purposes.
                     System.gc();
                     _startTime = (new Date()).getTime();
-                    
-                    if (_loader.main(argsToMain) < 0) {
+                    int result = 0;
+                    try {
+                        result = _loader.main(argsToMain);
+                    } catch (Throwable e) {
+                        MessageHandler.error("JNI error in main(): ", e);
+                    }
+                    if (result < 0) {
                         throw new InternalErrorException(
                                 "Could not initialize TOSSIM.");
                     }
@@ -631,8 +633,6 @@ public class PtinyOSDirector extends Director {
         String code = _generateCode(container);
 
         // Create file name relative to the toplevel NCCompositeActor.
-        // FIXME working here
-        //   if (_isTopLevelNC()) {
         NamedObj toplevel = _toplevelNC(); //container.toplevel();
 
         String filename = _sanitizedFullName(toplevel);
@@ -716,7 +716,11 @@ public class PtinyOSDirector extends Director {
                 currentTimeValue = currentTime.getLongValue();
             }
 
-            _loader.receivePacket(currentTimeValue, packet);
+            try {
+                _loader.receivePacket(currentTimeValue, packet);
+            } catch (Throwable e) {
+                MessageHandler.error("JNI error in receivePacket(): ", e);
+            }
         }
     }
 
@@ -743,34 +747,44 @@ public class PtinyOSDirector extends Director {
      *
      *  @param portName The name of the port
      *  @param expression The expression
-     *  @return 1 if the expression was successfully sent, 0 if the
-     *  port is not connected or not found and -1 if the port is
-     *  of any type other than Boolean or String.
-     *  @exception IllegalActionException If throw while sending to the port.
+     *  @return true if the expression was successfully sent, 0 if the
+     *  port is not connected or not found.
      */
-    public int sendToPort(String portName, String expression)
-            throws IllegalActionException {
+    public boolean sendToPort(String portName, String expression) {
         CompositeActor model = (CompositeActor) getContainer();
         TypedIOPort port = (TypedIOPort) model.getPort(portName);
-        if (port.getWidth() > 0) {
-            // FIXME always boolean?
-            if (port.getType() == BaseType.BOOLEAN) {
-                port.send(0, new BooleanToken(expression));
-                return 1;
-            } else if (port.getType() == BaseType.STRING) {
-                port.send(0, new StringToken(expression));
-                return 1;
+        if (port != null) {
+            if (port.getWidth() > 0) {
+                if (port.getType() == BaseType.BOOLEAN) {
+                    try {
+                        port.send(0, new BooleanToken(expression));
+                    } catch (IllegalActionException e) {
+                        MessageHandler.error(e.toString(), e);
+                    }
+                    return true;
+                } else if (port.getType() == BaseType.STRING) {
+                    try {
+                        port.send(0, new StringToken(expression));
+                    } catch (IllegalActionException e) {
+                        MessageHandler.error(e.toString(), e);
+                    }
+                    return true;
+                } else {
+                    Exception e = new InternalErrorException(
+                            "Handler for port \""
+                            + portName
+                            + "\" with type \""
+                            + port.getType()
+                            + "\" not implemented.");
+                    MessageHandler.error(e.toString(), e);
+                }
             } else {
-                // Port does not have correct type.
-                // FIXME
-                System.out.println("error: could not find matching "
-                        + "type for sendToPort()");
-                return -1;
+                // Port not connected to anything.
+                return false;
             }
-        } else {
-            // Port not connected to anything.
-            return 0;
         }
+        // Port could not be found.
+        return false;
     }
 
     /** A callback method (from C code) for the application to print a
@@ -840,7 +854,11 @@ public class PtinyOSDirector extends Director {
 
         if (((BooleanToken) simulate.getToken()).booleanValue()) {
             if (_loader != null) {
-                _loader.wrapup(); // SIGSTOP: man 7 signal
+                try {
+                    _loader.wrapup(); // SIGSTOP: man 7 signal
+                } catch (Throwable e) {
+                    MessageHandler.error("JNI error in wrapup(): ", e);
+                }
             }
         }
     }
@@ -1277,8 +1295,6 @@ public class PtinyOSDirector extends Director {
         return true;
     }
 
-    // FIXME comment
-
     /** Generate NC code for the given model. This does not descend
      *  hierarchically into contained composites. It simply generates
      *  code for the top level of the specified model.
@@ -1320,7 +1336,8 @@ import java.nio.channels.SelectableChannel;
 import java.nio.channels.SocketChannel;
 import ptolemy.domains.ptinyos.kernel.PtinyOSLoader;
 import ptolemy.domains.ptinyos.kernel.PtinyOSDirector;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.util.MessageHandler;        
 public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 implements PtinyOSLoader {
     public void load(String path, PtinyOSDirector director) {
         String fileSeparator = System.getProperty("file.separator");
@@ -1330,16 +1347,20 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
         System.load(toBeLoaded);
         this.director = director;
     }
-    public int main(String argsToMain[]) {
+    public int main(String argsToMain[]) throws InternalErrorException {
         return main_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0(argsToMain);
     }
     public void startThreads() {
-        this.eventAcceptThread = new EventAcceptThread();
-        this.eventAcceptThread.start();
-        this.commandReadThread = new CommandReadThread();
-        this.commandReadThread.start();
+        try {
+            this.eventAcceptThread = new EventAcceptThread();
+            this.eventAcceptThread.start();
+            this.commandReadThread = new CommandReadThread();
+            this.commandReadThread.start();
+        } catch (Exception e) {
+            MessageHandler.error("Could not join thread.", e);
+        }
     }
-    public int joinThreads() {
+    public boolean joinThreads() {
         try {
             if (this.commandReadThread != null) {
                 this.commandReadThread.join();
@@ -1347,11 +1368,11 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
             if (this.eventAcceptThread != null) {
                 this.eventAcceptThread.join();
             }
+            return true;
         } catch (Exception e) {
-            System.err.println("Could not join thread: " + e);
-            return -1;
+            MessageHandler.error("Could not join thread.", e);
         }
-        return 0;
+        return false;
     }
     public void wrapup() {
         wrapup_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0();
@@ -1362,15 +1383,13 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
     public void receivePacket(long currentTime, String packet) {
         receivePacket_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0(currentTime, packet);
     }
-    public void enqueueEvent(String newTime) throws IllegalActionException {
+    public void enqueueEvent(String newTime) {
         this.director.enqueueEvent(newTime);
     }
-    public char getCharParameterValue(String param)
-            throws IllegalActionException {
+    public char getCharParameterValue(String param) {
         return this.director.getCharParameterValue(param);
     }
-    public int sendToPort(String portName, String expression)
-            throws IllegalActionException {
+    public boolean sendToPort(String portName, String expression) {
         return this.director.sendToPort(portName, expression);
     }
     public void tosDebug(String debugMode, String message, String nodeID) {
@@ -1407,7 +1426,7 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
         return this.director.socketChannelRead(socketChannel, readBuffer);
     }
     private PtinyOSDirector director;
-    private native int main_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0(String argsToMain[]);
+    private native int main_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0(String argsToMain[]) throws InternalErrorException ;
     private native void commandReadThread_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0();
     private native void eventAcceptThread_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0();
     private native void wrapup_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0();
@@ -1434,7 +1453,6 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
         NamedObj toplevel = _toplevelNC();
         String toplevelName = _sanitizedFullName(toplevel);
 
-        // FIXME: why not just use a StringBuffer?
         _CodeString text = new _CodeString();
 
         text.addLine("import java.net.ServerSocket;");
@@ -1444,7 +1462,8 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
 
         text.addLine("import ptolemy.domains.ptinyos.kernel.PtinyOSLoader;");
         text.addLine("import ptolemy.domains.ptinyos.kernel.PtinyOSDirector;");
-        text.addLine("import ptolemy.kernel.util.IllegalActionException;");
+        text.addLine("import ptolemy.kernel.util.InternalErrorException;");
+        text.addLine("import ptolemy.util.MessageHandler;");
 
         text.addLine("public class Loader" + toplevelName
                 + " implements PtinyOSLoader {");
@@ -1465,20 +1484,24 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
         text.addLine("        this.director = director;");
         text.addLine("    }");
 
-        text.addLine("    public int main(String argsToMain[]) {");
+        text.addLine("    public int main(String argsToMain[]) throws InternalErrorException {");
         text.addLine("        return main" + toplevelName + "(argsToMain);");
         text.addLine("    }");
 
         text.addLine("    public void startThreads() {");
+        text.addLine("        try {");
         text
                 .addLine("        this.eventAcceptThread = new EventAcceptThread();");
         text.addLine("        this.eventAcceptThread.start();");
         text
                 .addLine("        this.commandReadThread = new CommandReadThread();");
         text.addLine("        this.commandReadThread.start();");
+        text.addLine("        } catch (Exception e) {");
+        text.addLine("            MessageHandler.error(\"Could not join thread.\", e);");
+        text.addLine("        }");
         text.addLine("    }");
 
-        text.addLine("    public int joinThreads() {");
+        text.addLine("    public boolean joinThreads() {");
         text.addLine("        try {");
         text.addLine("            if (this.commandReadThread != null) {");
         text.addLine("                this.commandReadThread.join();");
@@ -1486,12 +1509,11 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
         text.addLine("            if (this.eventAcceptThread != null) {");
         text.addLine("                this.eventAcceptThread.join();");
         text.addLine("            }");
+        text.addLine("            return true;");
         text.addLine("        } catch (Exception e) {");
-        text
-                .addLine("            System.err.println(\"Could not join thread: \" + e);");
-        text.addLine("            return -1;");
+        text.addLine("            MessageHandler.error(\"Could not join thread.\", e);");
         text.addLine("        }");
-        text.addLine("        return 0;");
+        text.addLine("        return false;");
         text.addLine("    }");
 
         text.addLine("    public void wrapup() {");
@@ -1509,19 +1531,17 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
         text.addLine("    }");
 
         text
-                .addLine("    public void enqueueEvent(String newTime) throws IllegalActionException {");
+                .addLine("    public void enqueueEvent(String newTime) {");
         text.addLine("        this.director.enqueueEvent(newTime);");
         text.addLine("    }");
 
-        text.addLine("    public char getCharParameterValue(String param)");
-        text.addLine("            throws IllegalActionException {");
+        text.addLine("    public char getCharParameterValue(String param) {");
         text
                 .addLine("        return this.director.getCharParameterValue(param);");
         text.addLine("    }");
 
         text
-                .addLine("    public int sendToPort(String portName, String expression)");
-        text.addLine("            throws IllegalActionException {");
+                .addLine("    public boolean sendToPort(String portName, String expression) {");
         text
                 .addLine("        return this.director.sendToPort(portName, expression);");
         text.addLine("    }");
@@ -1593,7 +1613,7 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
         text.addLine("    private PtinyOSDirector director;");
 
         text.addLine("    private native int main" + toplevelName
-                + "(String argsToMain[]);");
+                + "(String argsToMain[]) throws InternalErrorException;");
         text.addLine("    private native void commandReadThread" + toplevelName
                 + "();");
         text.addLine("    private native void eventAcceptThread" + toplevelName
@@ -1638,20 +1658,19 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
     }
 
     /** Generate makefile.
-     // FIXME example
-     
-     TOSROOT=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x
-     TOSDIR=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos
-     TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make
-     COMPONENT=_SenseToLedsInWireless_MicaBoard_MicaActor3071
-     PFLAGS += -I%T/lib/Counters
-     PFLAGS += -DCOMMAND_PORT=10584 -DEVENT_PORT=10585
-     PFLAGS += -D_PTII_NODEID=0
-     MY_PTCC_FLAGS += -D_PTII_NODE_NAME=_1SenseToLedsInWireless_1MicaBoard_1MicaActor3071
-     PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
-     include /home/celaine/ptII/mk/ptII.mk
-     include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
-
+===== Begin example makefile (from Dec 9, 20060) =====        
+TOSROOT=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x
+TOSDIR=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos
+TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make
+COMPONENT=_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor1
+PFLAGS += -I%T/lib/Counters
+PFLAGS += -DCOMMAND_PORT=10584 -DEVENT_PORT=10585
+PFLAGS +=-D_PTII_NODEID=1
+MY_PTCC_FLAGS += -D_PTII_NODE_NAME=_1SenseToLeds_1InWireless_1MicaBoard_1MicaCompositeActor1
+PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
+include /home/celaine/ptII/mk/ptII.mk
+include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
+===== End example makefile (from Dec 9, 20060) =====        
      * @exception CancelException If the directory named by the
      * ptolemy.ptII.tosroot property does not exist.
      */

@@ -131,13 +131,6 @@ $TOSROOT/contrib/ptII/ptinyos/tos/types/dbg.h
           <TR><TH>Java (PtinyOSDirector)
               <TH>Java (PtinyOSLoader)
               <TH>C (TOSSIM)
-<TR>
-<TD> PtinyOSDirector.prefire()
-    <ul>
-        <li>Always returns true.
-    </ul> 
-<TD> - 
-<TD> -
 
 <TR>
 <TD> PtinyOSDirector.fire()
@@ -157,14 +150,6 @@ $TOSROOT/contrib/ptII/ptinyos/tos/types/dbg.h
 <TD> - 
 <TD> - 
 <TD> JNI processEvent_<i>unique_name</i>() calls TOSSIM ptII_fire(), which invokes a single iteration of the TOSSIM scheduler.  The TOSSIM scheduler processes a single TOSSIM event and runs tasks in the task queue.  Note that processing a TOSSIM event may cause events with the same time stamp to be created, and for additional TinyOS tasks to be created.  All events created in TOSSIM use the same event call sequence described above for the bootup event (see <i>ptII_queue_insert_event()</i>).
-
-<TR>
-<TD> PtinyOSDirector.postfire()
-    <ul>
-        <li>Returns true if PtinyOSDirector is in simulation mode.
-    </ul> 
-<TD> - 
-<TD> - 
 </TABLE>
 
 <p>

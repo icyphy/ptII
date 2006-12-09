@@ -28,7 +28,7 @@
  */
 package ptolemy.domains.ptinyos.kernel;
 
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtinyOSLoader
@@ -54,18 +54,14 @@ public interface PtinyOSLoader {
     /** A callback method (from C code) for the application to enqueue the
      *  next event.
      *  @param newTime The next event, which should be a long long in C.
-     *  @exception IllegalActionException If there is a problem calling
-     *  fireAt().
      */
-    public void enqueueEvent(String newTime) throws IllegalActionException;
+    public void enqueueEvent(String newTime);
 
     /** Get a char value from PortParameter named parameter.
      *  @param parameter The parameter
      *  @return The char value of the parameter, or 0 if there is an error.
-     *  @exception IllegalActionException If there is an error.
      */
-    public char getCharParameterValue(String parameter)
-            throws IllegalActionException;
+    public char getCharParameterValue(String parameter);
 
     /** Load the JNI shared object associated with the toplevel
      *  PtinyOSDirector.
@@ -78,7 +74,7 @@ public interface PtinyOSLoader {
      *  @param argsToMain Arguments to pass.
      *  @return non-zero if there are problems.
      */
-    public int main(String[] argsToMain);
+    public int main(String[] argsToMain) throws InternalErrorException;
 
     /** Process an event.
      *  @param currentTime The current time.
@@ -94,13 +90,10 @@ public interface PtinyOSLoader {
     /** Send an expression to a port.
      *  @param portName The name of the port
      *  @param expression The expression
-     *  @return 1 if the expression was successfully sent, 0 if the
-     *  port is not connected or not found and -1 if the port is
-     *  of any type other than Boolean or String.
-     *  @exception IllegalActionException If thrown by the director.
+     *  @return true if the expression was successfully sent, 0 if the
+     *  port is not connected or not found.
      */
-    public int sendToPort(String portName, String expression)
-            throws IllegalActionException;
+    public boolean sendToPort(String portName, String expression);
 
     /** A callback method (from C code) for the application to print a debug
      *  message.
@@ -118,8 +111,7 @@ public interface PtinyOSLoader {
     public void startThreads();
 
     /** Join the event accept and command read threads.
-     *  @return -1 if there is a problem joining the threads,
-     *  0 if successful.
+     *  @return true if successful, otherwise false.
      */
-    public int joinThreads();
+    public boolean joinThreads();
 }
