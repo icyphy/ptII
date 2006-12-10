@@ -280,7 +280,13 @@ public class ActorRecursion extends TypedCompositeActor {
                 throw new IllegalActionException(this, "The matching ports: "
                         + port.getFullName() + " and "
                         + matchingPort.getFullName()
-                        + " must have the same width.");
+                        + " must have the same width. Port \""
+                        + port.getFullName() + "\"'s width "
+                        + port.getWidth() + " is not equal to \""
+                        + matchingPort.getFullName()
+                        + "\"'s width "
+                        + matchingPort.getWidth()
+                        + ".");
             }
 
             if ((port.isInput() && !matchingPort.isInput())
