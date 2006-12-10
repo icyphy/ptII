@@ -74,6 +74,9 @@ public class FixTransformer extends TypedAtomicActor {
         super(container, name);
     
         output = newFixOutputPort("output");
+        Parameter synthesizable = new Parameter(this, "synthesizable");            
+        synthesizable.setExpression("true");
+        synthesizable.setTypeEquals(BaseType.BOOLEAN);
     }
 
     /**
@@ -176,7 +179,7 @@ public class FixTransformer extends TypedAtomicActor {
     protected void _checkFixMaxValue(FixToken token, int max)
             throws IllegalActionException {
         if (token.fixValue().getPrecision().getNumberOfBits() 
-                > Integer.toBinaryString(max).length()) {
+                != Integer.toBinaryString(max).length()) {
             throw new IllegalActionException(this, 
                     "Bit width violation: " + token
                     + " is not equal to log(" + max + ")");            

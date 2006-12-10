@@ -98,13 +98,12 @@ public class Multiplexor extends SynchronousFixTransformer {
         super.fire();
         if( select.isKnown() && input.isKnown() ) {
             if (select.hasToken(0)) {
-                _channel = ((FixToken) select.get(0)).fixValue().getUnscaledValue().intValue();
+                FixToken channel = (FixToken) select.get(0);
+                _checkFixMaxValue(channel,input.getWidth()-1);
+                _channel = channel.fixValue().getUnscaledValue().intValue();            
             }
     
-            boolean inRange = false;
-    
             for (int i = 0; i < input.getWidth(); i++) {
-                inRange = inRange || (i == _channel);
     
                 if (input.hasToken(i)) {
                     Token token = input.get(i);
@@ -115,13 +114,9 @@ public class Multiplexor extends SynchronousFixTransformer {
                 }
             }
     
-            if (!inRange) {
-                throw new IllegalActionException(this,
-                        "Select input is out of range: " + _channel + ".");
-            }
         }
         else {
-            ((QueuedTypedIOPort) output).resend(0);
+            output.resend(0);
         }
     }
     

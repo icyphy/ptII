@@ -103,7 +103,7 @@ public class LogicalNot extends SynchronousFixTransformer {
         }
         else
         {
-            ((QueuedTypedIOPort) output).resend(0);
+            output.resend(0);
         } 
     }
     
