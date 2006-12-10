@@ -532,7 +532,13 @@ public class Transition extends ComponentRelation {
             String expr = getGuardExpression();
             // Parse the guard expression.
             PtParser parser = new PtParser();
-            _guardParseTree = parser.generateParseTree(expr);
+            try {
+                _guardParseTree = parser.generateParseTree(expr);
+            } catch (IllegalActionException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to parse guard expression \""
+                        + expr + "\"");
+            }
         }
         Token token = parseTreeEvaluator.evaluateParseTree(_guardParseTree,
                 fsmActor.getPortScope());
