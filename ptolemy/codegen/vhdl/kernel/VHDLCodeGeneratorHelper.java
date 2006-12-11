@@ -213,8 +213,12 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
         if (port.getType() == BaseType.FIX) {
             int bits = new Precision(
                     _getPortPrecision(port)).getNumberOfBits() - 1;
-                        
-            code.append("std_logic_vector (" + bits + " DOWNTO 0)");
+            
+            if (bits == 0) {
+                code.append("std_logic");                
+            } else {
+                code.append("std_logic_vector (" + bits + " DOWNTO 0)");
+            }
             
         } else if (port.getType() == BaseType.BOOLEAN) {
             
