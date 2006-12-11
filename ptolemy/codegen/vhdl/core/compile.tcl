@@ -52,6 +52,7 @@ array set entity1_class {
 
 array set entity_tb_class {
 	pttest	pttest
+	ptdisplay ptdisplay
 }
 
 foreach {ent class} [array get entity_class] {

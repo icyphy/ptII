@@ -38,28 +38,30 @@ SIGNAL In_signed	:	sfixed(INPUT_HIGH DOWNTO INPUT_LOW);
 SIGNAL In_unsigned	:	ufixed(INPUT_HIGH DOWNTO INPUT_LOW);	 
 SIGNAL count		:	integer :=0;	 
 SIGNAL In_real		:	real := 0.0;
+SIGNAL expected_real:	real := 0.0;
 
 BEGIN
 
 In_signed 	<= to_sfixed(data_in,INPUT_HIGH,INPUT_LOW);
 In_unsigned <= to_ufixed(data_in,INPUT_HIGH,INPUT_LOW);
 
-In_real <= to_real(In_signed) when FIXED_SIGN=SIGNED_TYPE else to_real(In_unsigned);
-
 compare : process(clk)
-	variable In_real		: real := 0.0;
-	variable expected_real	: real := -1.0;
 begin
 		if clk'event and clk = '1' then
 			if reset = RESET_ACTIVE_VALUE then
-				expected_real:=-0.00;
+				expected_real<=0.0;
 				count <= 0;
 			else
 				if count = LENGTH then
 					count <= count;
 				else
 					count <= count + 1;
-					expected_real:=LIST(integer'low+count);
+					if FIXED_SIGN=SIGNED_TYPE then
+						In_real <= to_real(In_signed);
+					else
+						In_real <= to_real(In_unsigned);
+					end if;	
+					expected_real<=LIST(integer'low+count);
 					assert expected_real=In_real
 					report real'image(expected_real) & "/=" & real'image(In_real)
 					severity error;

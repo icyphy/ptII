@@ -44,13 +44,13 @@ if clk'event and clk = '1' then
 	if FIXED_SIGN = SIGNED_TYPE then
 		In_real := to_real(In_signed); 
 		assert false
-		report "DISPLAY VALUE = " real'image(In_real)
-		severity report;
+		report ACTORNAME & "VALUE = " & real'image(In_real)
+		severity note;
 	elsif FIXED_SIGN = SIGNED_TYPE then
 		In_real := to_real(In_unsigned); 
 		assert false
-		report "DISPLAY VALUE = " real'image(In_real)
-		severity report;
+		report ACTORNAME & "VALUE = " & real'image(In_real)
+		severity note;
 	end if;
 end if;
 end process compare ;
