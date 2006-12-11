@@ -64,6 +64,7 @@ import ptolemy.math.Rounding;
  @Pt.AcceptedRating Red (mankit)
  */
 public class FixTransformer extends TypedAtomicActor {
+    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -84,7 +85,7 @@ public class FixTransformer extends TypedAtomicActor {
 
     /**
      * Return the precision string of the given port.
-     * @param The given port.
+     * @param port The given port.
      * @return The precision string.
      * @throws IllegalActionException If there is no precision
      *  parameter for the given port. 
@@ -103,12 +104,14 @@ public class FixTransformer extends TypedAtomicActor {
     }
     
     /**
-     * 
-     * @param channel
-     * @param port
-     * @param token
-     * @throws NoRoomException
-     * @throws IllegalActionException
+     * Send the quantized output token according the output precision,
+     * overflow and rounding parameters of the output port.
+     * @param channel The given channel to send the output token.
+     * @param port The given output port.
+     * @param token The given output token.
+     * @exception IllegalActionException If the token to be sent cannot
+     *  be converted to the type of this port, or if the token is null.
+     * @exception NoRoomException If there is no room in the receiver.
      */
     public void sendOutput(TypedIOPort port, int channel, Token token) 
             throws NoRoomException, IllegalActionException {
@@ -136,14 +139,15 @@ public class FixTransformer extends TypedAtomicActor {
      *  create a new precision parameter associated with this port.   
      * @param name The given name of the port.
      * @return The new output port.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException If parameters cannot be created.
+     * @exception NameDuplicationException If a parameter with the
+     *  same name already exists.
      */
     public QueuedTypedIOPort newFixOutputPort(String name) throws
             IllegalActionException, NameDuplicationException {
         
         // For each output port, we want to have an assoicated
-        // precision parameter.
+        // precision, overflow and rounding parameters.
         Parameter precision = 
             new StringParameter(this, name + "Precision");            
         precision.setExpression("31:0");  
@@ -173,7 +177,14 @@ public class FixTransformer extends TypedAtomicActor {
         return port;
     }
     
-    
+    /**
+     * Verify that the bit width of the given FixToken is equal to
+     * the given width. If not, an IllegalActionException is thrown.  
+     * @param token The given fix-point token.
+     * @param width The given width.
+     * @throws IllegalActionException Thrown If the bit width of the
+     *  given fix token is not equal to given width. 
+     */
     protected void _checkFixTokenWidth(FixToken token, int width) 
             throws IllegalActionException {
         if (token.fixValue().getPrecision().getNumberOfBits() != width) {
@@ -183,19 +194,34 @@ public class FixTransformer extends TypedAtomicActor {
         }
     }
     
+    /**
+     * Verify that the bit width of the given fix-point token is equal
+     * to the minimum bit width that is required to represent the given
+     * value.
+     * @param token The given token.
+     * @param max The given value.
+     * @throws IllegalActionException Thrown if 
+     *  _checkFixToken(FixToken, in) throws it.
+     */
     protected void _checkFixMaxValue(FixToken token, int max)
             throws IllegalActionException {
-        if (token.fixValue().getPrecision().getNumberOfBits() 
-                != Integer.toBinaryString(max).length()) {
-            throw new IllegalActionException(this, 
-                    "Bit width violation: " + token
-                    + " is not equal to log(" + max + ")");            
-        }
+        
+        _checkFixTokenWidth(token, 
+                Integer.toBinaryString(max).length());
     }
     
+    /**
+     * Set quantization parameters of the output port with the given
+     * parameter expression strings. Hide the parameters in the configure
+     * dialog. 
+     * @param precisionString The given expression for the precision parameter.
+     * @param overflowString The given expression for the overflow parameter.
+     * @param roundingString The given expression for the rounding parameter.
+     */
     protected void _setAndHideQuantizationParameters(
-            String precisionString, String overflowString, String roundingString) 
-            throws IllegalActionException {
+            String precisionString, String overflowString, 
+            String roundingString) {
+        
         Parameter precision = (Parameter) getAttribute("outputPrecision");
         Parameter overflow = (Parameter) getAttribute("outputOverflow");
         Parameter rounding = (Parameter) getAttribute("outputRounding");
