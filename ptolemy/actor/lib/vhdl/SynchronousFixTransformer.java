@@ -92,7 +92,7 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
         if (attribute == latency) {
             int latencyValue = 
                 ((ScalarToken) latency.getToken()).intValue();
-            //output.setSize(latencyValue);            
+            output.resize(latencyValue);            
             
             try {
                 if (latencyValue == 0) {
@@ -104,6 +104,34 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
                 throw new IllegalActionException(this, ex,
                         "Fail to set the initialValue parameter.");
             }
+            Precision precision = new Precision(((Parameter) 
+                    getAttribute("outputPrecision")).getExpression());
+            
+            Overflow overflow = Overflow.getName(((Parameter) getAttribute(
+            "outputOverflow")).getExpression().toLowerCase());
+        
+            Rounding rounding = Rounding.getName(((Parameter) getAttribute(
+                "outputRounding")).getExpression().toLowerCase());
+        
+            FixPoint result = new FixPoint(((ScalarToken)
+                    initialValue.getToken()).doubleValue(), 
+                    new FixPointQuantization(precision, overflow, rounding));
+            output.setInitToken(new FixToken(result));
+        }
+        if (attribute == initialValue) {
+            Precision precision = new Precision(((Parameter) 
+                    getAttribute("outputPrecision")).getExpression());
+            
+            Overflow overflow = Overflow.getName(((Parameter) getAttribute(
+            "outputOverflow")).getExpression().toLowerCase());
+        
+            Rounding rounding = Rounding.getName(((Parameter) getAttribute(
+                "outputRounding")).getExpression().toLowerCase());
+        
+            FixPoint result = new FixPoint(((ScalarToken)
+                    initialValue.getToken()).doubleValue(), 
+                    new FixPointQuantization(precision, overflow, rounding));
+            output.setInitToken(new FixToken(result));
         }
     }
     
@@ -126,7 +154,7 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
                 initialValue.getToken()).doubleValue(), 
                 new FixPointQuantization(precision, overflow, rounding));
         int latencyValue = ((ScalarToken) latency.getToken()).intValue();
-        ((QueuedTypedIOPort) output).setSize(latencyValue, new FixToken(result));
+        output.setSize(latencyValue, new FixToken(result));
     }
     
     /** Return false. This actor can produce some output event the input 

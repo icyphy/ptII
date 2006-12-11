@@ -133,55 +133,51 @@ public class Memory extends SynchronousFixTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        int addressValue;
-
-        if (!address.hasToken(0) || !writeEnable.hasToken(0)
-                || !dataIn.hasToken(0)) {
-            return;
+        if ( address.isKnown(0) && writeEnable.isKnown(0)
+                && dataIn.isKnown(0) ) 
+        {
+            int addressValue;
+    
+            if (!address.hasToken(0) || !writeEnable.hasToken(0)
+                    || !dataIn.hasToken(0)) {
+                return;
+            }
+    
+            // Consume tokens from all input ports.
+            FixToken in = ((FixToken) dataIn.get(0));
+            
+            FixToken addressToken = (FixToken) address.get(0);
+            FixPoint addressFixValue = addressToken.fixValue();
+    
+            FixToken writeEnableToken = (FixToken) writeEnable.get(0);
+            FixPoint writeEnableValue = writeEnableToken.fixValue();
+            
+            _checkFixTokenWidth(writeEnableToken, 1);
+            _checkFixTokenWidth(addressToken, _addressWidth);
+            _checkFixTokenWidth(in,_dataWidth);
+    
+            addressValue = addressFixValue.getUnscaledValue().intValue();
+            
+            if (addressValue >= _capacity) {
+                throw new IllegalActionException(this, 
+                        "Address is out of range.");
+            }     
+    
+            if (writeEnableValue.toBitString().equals("1")) {
+                _storage[addressValue] = in;
+            }
+    
+            Token result = _storage[addressValue];
+            if (result == null) {
+                result = FixToken.NIL;
+            }
+    
+            sendOutput(output, 0, result);
         }
-
-        // Consume tokens from all input ports.
-        FixToken in = ((FixToken) dataIn.get(0));
-
-        FixPoint addressFixValue = ((FixToken) address.get(0)).fixValue();
-
-        FixPoint writeEnableValue = ((FixToken) writeEnable.get(0))
-                .fixValue();
-        
-        if (writeEnableValue.getPrecision().getNumberOfBits() != 1) {
-            throw new IllegalActionException(this, 
-                    "Write enable signal (\"" + 
-                    writeEnableValue.getPrecision() +
-                    "\") is not a binary signal.");            
+        else
+        {
+            output.resend(0);
         }
-
-        if (addressFixValue.getPrecision().getNumberOfBits() != _addressWidth) {
-            throw new IllegalActionException(this, 
-                    "Address width does not match port width.");
-        }
-
-        addressValue = addressFixValue.getUnscaledValue().intValue();
-
-        if (addressValue >= _capacity) {
-            throw new IllegalActionException(this, 
-                    "Address is out of range.");
-        }
-
-        if (in.fixValue().getPrecision().getNumberOfBits() != _dataWidth) {
-            throw new IllegalActionException(this, 
-                    "Data width does not match the port width.");
-        }
-
-        if (writeEnableValue.toBitString().equals("1")) {
-            _storage[addressValue] = in;
-        }
-
-        Token result = _storage[addressValue];
-        if (result == null) {
-            result = FixToken.NIL;
-        }
-
-        sendOutput(output, 0, result);
     }
 
 

@@ -89,8 +89,9 @@ public class QueuedTypedIOPort extends TypedIOPort {
      */
     public void setSize(int size, Token initialValue)
     {   
+        latency = size;
         initialToken = initialValue;
-        resize(size);        
+        _createQueue();       
     } 
     
     /** Set the size of the queue.  This operation will clear whatever
@@ -98,14 +99,26 @@ public class QueuedTypedIOPort extends TypedIOPort {
      */
     public void resize(int size)
     {   
-        myQueue.clear();
         latency = size; 
+        _createQueue();
+
+    } 
+    
+    public void setInitToken(Token initialValue)
+    {
+        initialToken = initialValue;
+        _createQueue();
+    }
+    
+    private void _createQueue()
+    {
+        myQueue.clear();
         _oldToken = initialToken;
-        for(int i = 1; i < size; i++)
+        for(int i = 1; i < latency; i++)
         {
             myQueue.add(initialToken);
-        }
-    } 
+        }       
+    }
     
     /** Enqueue the token that is being sent and send to the parent whatever
      *  is at the end of the queue
