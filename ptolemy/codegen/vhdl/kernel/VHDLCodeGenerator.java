@@ -2,19 +2,20 @@ package ptolemy.codegen.vhdl.kernel;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import ptolemy.actor.Actor;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGenerator;
+import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
 public class VHDLCodeGenerator extends CodeGenerator {
@@ -32,10 +33,10 @@ public class VHDLCodeGenerator extends CodeGenerator {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         generatorPackage.setExpression("ptolemy.codegen.vhdl");
-        //inline.setExpression("false");
+        
         generateComment.setExpression("false");
 
-        _macros.add("refList");
+        inline.setContainer(null);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -53,39 +54,53 @@ public class VHDLCodeGenerator extends CodeGenerator {
         return "-- " + comment + "\n";            
     }
 
-    /** Generate into the specified code buffer the code associated
-     *  with the execution of the container composite actor. This method
-     *  calls the generateFireCode() method of the code generator helper
-     *  associated with the director of the container.
-     *  @return The generated code.
-     *  @exception IllegalActionException If a static scheduling director is
-     *   missing or the generateFireCode(StringBuffer) method of the
-     *   director helper throws the exception.
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        CompositeEntity model = (CompositeEntity) getContainer();
-        ActorCodeGenerator modelHelper = _getHelper(model);
-        code.append(modelHelper.generateFireCode());
-        return code.toString();
-    }
+    /** Generate code and append it to the given string buffer.
+     *  Write the code to the directory specified by the codeDirectory
+     *  parameter.  The file name is a sanitized version of the model
+     *  name with a suffix that is based on last package name of the
+     *  <i>generatorPackage</i> parameter.  Thus if the
+     *  <i>codeDirectory</i> is <code>$HOME</code>, the name of the
+     *  model is <code>Foo</code> and the <i>generatorPackage</i>
+     *  is <code>ptolemy.codegen.c</code>, then the file that is
+     *  written will be <code>$HOME/Foo.c</code>
+     *  This method is the main entry point.
+     *  @param code The given string buffer.
+     *  @return The return value of the last subprocess that was executed.
+     *  or -1 if no commands were executed.
+     *  @exception KernelException If the target file cannot be overwritten
+     *   or write-to-file throw any exception.
+     */    
+    public int generateCode(StringBuffer code) throws KernelException {
+        _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
+        boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
 
-    /** Generate the main entry point.
-     *  @return Return the definition of the main entry point for a VHDL file.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public String generateMainEntryCode() throws IllegalActionException {
-        return "";
-    }
+        String includeFiles = generateIncludeFiles();
+        String preinitializeCode = generatePreinitializeCode();
+        CodeStream.setIndentLevel(1);
+        CodeStream.setIndentLevel(2);
 
-    /** Generate the main exit point.
-     *  @return Return a string that declares the end of the main() function.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public String generateMainExitCode() throws IllegalActionException {
-        return "";
+        String fireFunctionCode = null;
+        if (!inline) {
+            CodeStream.setIndentLevel(1);
+            fireFunctionCode = generateFireFunctionCode();
+            CodeStream.setIndentLevel(0);
+        }
+        CodeStream.setIndentLevel(0);
+
+        // The appending phase.
+        code.append(includeFiles);
+        code.append(preinitializeCode);
+
+        if (!inline) {
+            code.append(fireFunctionCode);
+        }
+
+        _codeFileName = _writeCode(code);
+        _writeMakefile();
+        //return _executeCommands();
+        return 0;
     }
-    
+        
     /** Generate library and package files.
      *  @return Return a string that contains the library and use statements.
      *  @throws IllegalActionException If the helper class for some actor 
@@ -107,7 +122,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
             StringTokenizer tokens = new StringTokenizer(file, ".");
             String libraryName = tokens.nextToken();
             if (librarySet.add(libraryName)) {  // true if not already exists.
-                code.append("library " + libraryName + "\n");
+                code.append("library " + libraryName + ";\n");
             }
         }
 
@@ -118,5 +133,111 @@ public class VHDLCodeGenerator extends CodeGenerator {
         code.append("use work.pt_utility.all;\n");
         
         return code.toString();
-    }    
+    }        
+    
+    /** Generate preinitialize code (if there is any).
+     *  This method calls the generatePreinitializeCode() method
+     *  of the code generator helper associated with the model director
+     *  @return The preinitialize code of the containing composite actor.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found, or if an error occurs when the director
+     *   helper generates preinitialize code.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+
+        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
+
+        return compositeActorHelper.generatePreinitializeCode();        
+    }
+    
+    
+    /** Generate variable name for the given attribute. The reason to append 
+     *  underscore is to avoid conflict with the names of other objects. For
+     *  example, the paired PortParameter and ParameterPort have the same name. 
+     *  @param attribute The attribute to generate variable name for.
+     *  @return The generated variable name.
+     */
+    public String generateVariableName(NamedObj namedObj) {
+        String name = 
+            StringUtilities.sanitizeName(namedObj.getFullName());
+        while (name.startsWith("_")) {
+            name = name.substring(1);
+        }
+        while (name.endsWith("_")) {
+            name = name.substring(0, name.length() - 1);
+        }
+        return name;
+    }
+    
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
+    /** Execute the compile and run commands in the
+     *  <i>codeDirectory</i> directory. In this base class, 0 is
+     *  returned by default.
+     *  @return The result of the execution.
+     */
+    protected int _executeCommands() throws IllegalActionException {
+        List commands = new LinkedList();
+        
+        // Run compile script.
+        if (((BooleanToken) compile.getToken()).booleanValue()) {
+            commands.add("vsim -s compile.tcl " + _sanitizedModelName + ".vhdl");
+        }
+
+        // Run simulation script.
+        if (isTopLevel()) {
+            if (((BooleanToken) compile.getToken()).booleanValue()) {
+                String command = codeDirectory.stringValue()
+                        + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
+                                .stringValue().endsWith("\\")) ? "/" : "")
+                        + _sanitizedModelName;
+
+                commands.add("\"" + command.replace('\\', '/') + "\"");
+            }
+        }
+
+        if (commands.size() == 0) {
+            return -1;
+        }
+
+        _executeCommands.setCommands(commands);
+        _executeCommands.setWorkingDirectory(codeDirectory.asFile());
+
+        try {
+            // FIXME: need to put this output in to the UI, if any. 
+            _executeCommands.start();
+        } catch (Exception ex) {
+            StringBuffer errorMessage = new StringBuffer();
+            Iterator allCommands = commands.iterator();
+            while (allCommands.hasNext()) {
+                errorMessage.append((String) allCommands.next() + _eol);
+            }
+            throw new IllegalActionException("Problem executing the "
+                    + "commands:" + _eol + errorMessage);
+        }
+        return _executeCommands.getLastSubprocessReturnCode();
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /**
+     * The index of the list of code files to generate code for.
+     */
+    protected int generateFile;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /**
+     * The index for the synthesizeable vhdl code file.  
+     */
+    private final static int SYNTHEZIEABLE = 0; 
+
+    /**
+     * The index for the testbench (non-synthesizeable) code file.  
+     */
+    private final static int TESTBENCH = 1; 
 }
