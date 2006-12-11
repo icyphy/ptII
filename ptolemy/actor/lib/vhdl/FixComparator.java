@@ -72,7 +72,6 @@ public class FixComparator extends SynchronousFixTransformer {
         B = new TypedIOPort(this, "B", true, false);
         B.setTypeEquals(BaseType.FIX);
         
-                
         operation = new StringParameter(this, "operation");
         operation.setExpression("=");
         operation.addChoice("=");
@@ -81,6 +80,9 @@ public class FixComparator extends SynchronousFixTransformer {
         operation.addChoice("<=");        
         operation.addChoice(">");    
         operation.addChoice(">=");
+        
+        _setAndHideQuantizationParameters("U1.0","CLIP","HALF_EVEN");
+        
     }
 
     ///////////////////////////////////////////////////////////////////

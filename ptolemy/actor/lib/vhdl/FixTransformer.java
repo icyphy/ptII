@@ -42,6 +42,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.math.FixPointQuantization;
 import ptolemy.math.Overflow;
 import ptolemy.math.Precision;
@@ -190,6 +191,22 @@ public class FixTransformer extends TypedAtomicActor {
                     "Bit width violation: " + token
                     + " is not equal to log(" + max + ")");            
         }
+    }
+    
+    protected void _setAndHideQuantizationParameters(
+            String precisionString, String overflowString, String roundingString) 
+            throws IllegalActionException {
+        Parameter precision = (Parameter) getAttribute("outputPrecision");
+        Parameter overflow = (Parameter) getAttribute("outputOverflow");
+        Parameter rounding = (Parameter) getAttribute("outputRounding");
+
+        precision.setVisibility(Settable.NONE);
+        overflow.setVisibility(Settable.NONE);
+        rounding.setVisibility(Settable.NONE);
+   
+        precision.setExpression(precisionString);
+        overflow.setExpression(overflowString);
+        rounding.setExpression(roundingString);
     }
         
     ///////////////////////////////////////////////////////////////////
