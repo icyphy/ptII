@@ -74,12 +74,8 @@ public class AddSubtract extends SynchronousFixTransformer {
         B.setTypeEquals(BaseType.FIX);
                 
         operation = new StringParameter(this, "operation");
-        operation.setExpression("UNSIGNED_ADD");
-        operation.addChoice("UNSIGNED_ADD");
-        operation.addChoice("SIGNED_ADD");        
-        operation.addChoice("UNSIGNED_SUBTRACT");        
-        operation.addChoice("SIGNED_SUBTRACT");        
-        
+        operation.setExpression("ADD");
+        operation.addChoice("SUBTRACT");        
     }
 
     ///////////////////////////////////////////////////////////////////

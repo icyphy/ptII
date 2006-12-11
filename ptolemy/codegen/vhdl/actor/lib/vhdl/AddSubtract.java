@@ -32,8 +32,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.vhdl.FixTransformer;
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -65,28 +67,31 @@ public class AddSubtract extends VHDLCodeGeneratorHelper {
         ptolemy.actor.lib.vhdl.AddSubtract actor = 
             (ptolemy.actor.lib.vhdl.AddSubtract) getComponent();
         
-        boolean isAdd = 
-            actor.operation.getExpression().endsWith("ADD");
-
-        boolean signed = 
-            actor.operation.getExpression().startsWith("SIGNED");
-            
-        ArrayList args = new ArrayList();
-        if (isAdd && signed) {
-            args.add("pt_sfixed_add2");
-        
-        } else if (isAdd && !signed) {
-            args.add("pt_ufixed_add2");
-        
-        } else if (!isAdd && signed) {
-            args.add("pt_sfixed_sub2");
-            
-        } else {
-            args.add("pt_ufixed_sub2");
-        }
-       
         int latencyValue = ((IntToken) actor.latency.getToken()).intValue();
 
+        boolean isAdd = 
+            actor.operation.getExpression().equals("ADD");
+
+        Precision precisionA = _getSourcePortPrecision(actor.A);
+        Precision precisionB = _getSourcePortPrecision(actor.B);
+        
+        if (precisionA.isSigned() != precisionB.isSigned()) {
+            throw new IllegalActionException(this,
+                    "VHDL Adder does not support " +
+                    "operation of different sign.");
+        }        
+        
+        boolean signed = precisionA.isSigned();
+            
+        ArrayList args = new ArrayList();
+        String operation = "pt_";
+        
+        operation += (signed) ? "sfixed_" : "ufixed_";
+        operation += (isAdd) ? "add2" : "sub2";
+        operation += (latencyValue == 0) ? "_lat0" : "";
+        
+        args.add(operation);
+       
         if (latencyValue == 0) {
             _codeStream.appendCodeBlock("sharedBlock_lat0", args);
         } else {
@@ -95,7 +100,11 @@ public class AddSubtract extends VHDLCodeGeneratorHelper {
         
         sharedCode.add(processCode(_codeStream.toString()));
         return sharedCode;
-    }    
+    }
+
+
+
+
     /**
      * Generate fire code.
      * The method reads in the <code>fireBlock</code> from FixConst.c,
@@ -111,50 +120,39 @@ public class AddSubtract extends VHDLCodeGeneratorHelper {
         ptolemy.actor.lib.vhdl.AddSubtract actor = 
             (ptolemy.actor.lib.vhdl.AddSubtract) getComponent();
 
-        boolean isAdd = 
-            actor.operation.getExpression().endsWith("ADD");
+        int latencyValue = ((IntToken) actor.latency.getToken()).intValue();
 
-        boolean signed = 
-            actor.operation.getExpression().startsWith("SIGNED");
+        boolean isAdd = 
+            actor.operation.getExpression().equals("ADD");
+
+        Precision precisionA = _getSourcePortPrecision(actor.A);
+        Precision precisionB = _getSourcePortPrecision(actor.B);
+
+        boolean signed = precisionA.isSigned();
             
         ArrayList args = new ArrayList();
-        if (isAdd && signed) {
-            args.add("pt_sfixed_add2");
+        String operation = "pt_";
         
-        } else if (isAdd && !signed) {
-            args.add("pt_ufixed_add2");
+        operation += (signed) ? "sfixed_" : "ufixed_";
+        operation += (isAdd) ? "add2" : "sub2";
+        operation += (latencyValue == 0) ? "_lat0" : "";
         
-        } else if (!isAdd && signed) {
-            args.add("pt_sfixed_sub2");
-            
-        } else {
-            args.add("pt_ufixed_sub2");
-        }
-
+        args.add(operation);
 
         TypedIOPort source1 = (TypedIOPort) actor.A.sourcePortList().get(0);
         TypedAtomicActor sourceActor1 = (TypedAtomicActor) source1.getContainer();
         
         TypedIOPort source2 = (TypedIOPort) actor.B.sourcePortList().get(0);
         TypedAtomicActor sourceActor2 = (TypedAtomicActor) source2.getContainer();
-                 
-        Precision precision1 = 
-            new Precision(((Parameter) sourceActor1.getAttribute(
-                        source1.getName() + "Precision")).getExpression());
+                         
+        int highA = precisionA.getIntegerBitLength() - 1;
+        int lowA = -precisionA.getFractionBitLength();
         
-        Precision precision2 = 
-            new Precision(((Parameter) sourceActor2.getAttribute(
-                        source2.getName() + "Precision")).getExpression());
-        
-        int highA = precision1.getIntegerBitLength() - 1;
-        int lowA = -precision1.getFractionBitLength();
-        
-        int highB = precision2.getIntegerBitLength() - 1;
-        int lowB = -precision2.getFractionBitLength();
+        int highB = precisionB.getIntegerBitLength() - 1;
+        int lowB = -precisionB.getFractionBitLength();
 
         Precision outputPrecision = 
-            new Precision(((Parameter) actor.getAttribute("outputPrecision"))
-                    .getExpression());
+            new Precision(_getPortPrecision(actor.output));
         
         int highO = outputPrecision.getIntegerBitLength() - 1;
         int lowO = -outputPrecision.getFractionBitLength();
@@ -166,8 +164,9 @@ public class AddSubtract extends VHDLCodeGeneratorHelper {
         args.add("" + highO);
         args.add("" + lowO);
         if (((IntToken) actor.latency.getToken()).intValue() > 0) {
-            args.add(",\n LATENCY =>" + actor.latency.getExpression()); 
-            args.add(",\n clk => clk");
+            args.add("," + _eol + "LATENCY =>"
+                    + actor.latency.getExpression()); 
+            args.add("," + _eol +  "clk => clk");
         } else {
             args.add("");
             args.add("");            

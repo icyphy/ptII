@@ -28,11 +28,16 @@
 package ptolemy.codegen.vhdl.kernel;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.vhdl.FixTransformer;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.Entity;
@@ -160,7 +165,7 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
             if ((port.isOutput() && !forComposite)
                     || (port.isInput() && forComposite)) {
 
-                result.append(generateName(port));
+                result.append(generateVariableName(port));
                 result.append("_" + channelNumber);
                 return result.toString();
             }
@@ -176,7 +181,7 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
 
                 Channel sourceChannel = getSourceChannel(port, channelNumber);
 
-                result.append(generateName(sourceChannel.port));
+                result.append(generateVariableName(sourceChannel.port));
                 result.append("_" + sourceChannel.channelNumber);
                 return result.toString();                
             }
@@ -186,10 +191,17 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
                 "Reference not found: " + name);
     }    
 
+    /**
+     * 
+     * @return
+     * @throws IllegalActionException 
+     */
+    public boolean isSynthesizeable() throws IllegalActionException {
+        return isSynthesizeable;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
-    
-    
     
     /**
      * 
@@ -202,10 +214,16 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
             int bits = new Precision(
                     _getPortPrecision(port)).getNumberOfBits() - 1;
                         
-            code.append("std_logic_vector(" + bits + " DOWNTO 0)");
+            code.append("std_logic_vector (" + bits + " DOWNTO 0)");
+            
+        } else if (port.getType() == BaseType.BOOLEAN) {
+            
+            code.append("std_logic");
             
         } else {
-            code.append("UNKNOWN TYPE");            
+            
+            code.append("UNKNOWN TYPE");
+            
         }
         return code.toString();
     }
@@ -252,32 +270,31 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
         return code.toString();
     }
 
-    /** 
-     * @param macro The given macro.
-     * @param parameter The given parameter to the macro.
-     * @return The replacement string of the given macro.
-     * @exception IllegalActionException If illegal macro names are found.
+    /**
+     * @param port
+     * @return
+     * @throws IllegalActionException
      */
-    protected String _replaceMacro(String macro, String parameter) 
-            throws IllegalActionException {
-        if (macro.equals("refList")) {
-            String result = "";
-            
-            int width = getPort(parameter).getWidth();
-            
-            if (width > 0) {
-                result = getReference(parameter + "#" + 0);
-            }
-            
-            for (int i = 1; i < width; i++) {
-                result += ", " + getReference(parameter + "#" + i);
-            }
-            return result;
-            
-        } else {
-            return super._replaceMacro(macro, parameter);
-        }
-    }
+    protected Precision _getSourcePortPrecision(IOPort port) throws IllegalActionException {
+        IOPort sourcePortA = getSourceChannel(port, 0).port;
 
+        FixTransformer sourceHelper = 
+        ((FixTransformer) sourcePortA.getContainer());
+        
+        Precision precision = 
+            new Precision(sourceHelper.getPortPrecision(sourcePortA));
 
+        return precision;
+    }        
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /**
+     * Indicate whether this actor can be synthesized to hardware.
+     * If false, its VHDL code goes into the testbench file (tb.vhdl).
+     * Otherwise, it goes to the synthesizeable code file (model.vhdl).
+     * The default value is true.
+     */
+    protected boolean isSynthesizeable = true;
 }
