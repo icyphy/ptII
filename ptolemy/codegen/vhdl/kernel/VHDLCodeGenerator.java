@@ -7,11 +7,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeStream;
+import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -54,6 +59,19 @@ public class VHDLCodeGenerator extends CodeGenerator {
         return "-- " + comment + "\n";            
     }
 
+    /**
+     * Generate the body code that sits between the main entry and
+     * exit code.
+     */
+    public String generateBodyCode() throws IllegalActionException {
+
+        VHDLCodeGeneratorHelper compositeActorHelper = 
+            (VHDLCodeGeneratorHelper) _getHelper(getContainer());
+
+        return compositeActorHelper.generateFireCode();   
+    }
+    
+    
     /** Generate code and append it to the given string buffer.
      *  Write the code to the directory specified by the codeDirectory
      *  parameter.  The file name is a sanitized version of the model
@@ -72,38 +90,56 @@ public class VHDLCodeGenerator extends CodeGenerator {
      */    
     public int generateCode(StringBuffer code) throws KernelException {
         _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
-        boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
 
-        String includeFiles = generateIncludeFiles();
-        String preinitializeCode = generatePreinitializeCode();
-        CodeStream.setIndentLevel(1);
-        CodeStream.setIndentLevel(2);
-
-        String fireFunctionCode = null;
-        if (!inline) {
+        for (_generateFile = 0; _generateFile < 2; _generateFile++) {
+            _signals.clear();
+            code = new StringBuffer();
+            
+            String includeFiles = generateIncludeFiles();
+            
+            String preinitializeCode = generatePreinitializeCode();
+    
+            String mainEntryCode = generateMainEntryCode();
+            
             CodeStream.setIndentLevel(1);
-            fireFunctionCode = generateFireFunctionCode();
+            String sharedCode = generateSharedCode();
+            String signalDeclarationCode = generateVariableDeclaration();
+            String bodyCode = generateBodyCode();
+            
             CodeStream.setIndentLevel(0);
+            String mainExitCode = generateMainExitCode();
+    
+            // The appending phase.
+            code.append(includeFiles);
+            
+            code.append(preinitializeCode);
+            
+            code.append(mainEntryCode);
+            
+            code.append(sharedCode);
+            code.append(signalDeclarationCode);
+            
+            code.append(_eol + "begin" + _eol);
+            
+            code.append(bodyCode);
+            
+            code.append(mainExitCode);
+                
+            if (_generateFile == SYNTHESIZABLE) {
+                _codeFileName = _writeCode(code);
+            } else {
+                _writeCode(code);
+            }
+            
+            _writeMakefile();
         }
-        CodeStream.setIndentLevel(0);
-
-        // The appending phase.
-        code.append(includeFiles);
-        code.append(preinitializeCode);
-
-        if (!inline) {
-            code.append(fireFunctionCode);
-        }
-
-        _codeFileName = _writeCode(code);
-        _writeMakefile();
         //return _executeCommands();
         return 0;
     }
         
-    /** Generate library and package files.
+    /** Generate library and use statements.
      *  @return Return a string that contains the library and use statements.
-     *  @throws IllegalActionException If the helper class for some actor 
+     *  @exception IllegalActionException If the helper class for some actor 
      *   cannot be found.
      */
     public String generateIncludeFiles() throws IllegalActionException {
@@ -135,6 +171,28 @@ public class VHDLCodeGenerator extends CodeGenerator {
         return code.toString();
     }        
     
+
+    /** Generate the main entry point.
+     *  @return Return a string that declares the start of the
+     *   archecture block.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateMainEntryCode() throws IllegalActionException {
+
+        return "architecture composite of " + _sanitizedModelName + " is"
+        + _eol + _eol;
+    }
+
+    /** Generate the main exit point.
+     *  @return Return a string that declares the end of the
+     *   architecture block.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateMainExitCode() throws IllegalActionException {
+
+        return _eol + "end architecture composite;" + _eol;
+    }
+
     /** Generate preinitialize code (if there is any).
      *  This method calls the generatePreinitializeCode() method
      *  of the code generator helper associated with the model director
@@ -145,11 +203,91 @@ public class VHDLCodeGenerator extends CodeGenerator {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
 
-        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
+        StringBuffer result = new StringBuffer();
 
-        return compositeActorHelper.generatePreinitializeCode();        
+        result.append(_eol + "entity " + _sanitizedModelName + " is" + _eol);
+        result.append("    port (" + _eol);
+
+        result.append("        clk : IN std_logic ;" + _eol);
+        result.append("        reset : IN std_logic ");
+                
+        CompositeActor composite = 
+            (ptolemy.actor.CompositeActor) getContainer();        
+
+        Iterator actors = composite.deepEntityList().iterator();
+            
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+
+            VHDLCodeGeneratorHelper helper = _getHelper((NamedObj) actor);
+
+            Iterator outputPorts = actor.outputPortList().iterator();
+            
+            while (outputPorts.hasNext()) {
+                
+                TypedIOPort port = (TypedIOPort) outputPorts.next();
+                
+                Iterator sinks = helper.getSinkChannels(port, 0).iterator();
+                
+                while (sinks.hasNext()) {
+                    Port sink = ((Channel) sinks.next()).port;
+                    
+                    VHDLCodeGeneratorHelper sinkHelper = 
+                        _getHelper(sink.getContainer());
+                    
+                    // Gateway exists.
+                    if (sinkHelper.isSynthesizable() != helper.isSynthesizable()) {
+
+                        boolean isInput = helper.doGenerate();
+                            
+                        result.append(";" + _eol + "        " + helper.getReference(
+                            port.getName() + "#" + 0) + " : ");
+
+                        result.append((isInput) ? "IN " : "OUT ");
+                        
+                        result.append(helper._generateVHDLType(port));                            
+
+                    } else {
+                        if (helper.doGenerate()) {
+                            
+                            _signals.add(port);
+                        }
+                    }
+                }                
+            }
+        }            
+        
+        result.append(_eol + "    ) ;" + _eol);
+        result.append("end entity" + _eol + _eol);
+
+        return result.toString();
     }
     
+    /** Generate variable declarations for inputs and outputs and parameters.
+     *  Append the declarations to the given string buffer.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found.
+     */
+    public String generateVariableDeclaration() throws IllegalActionException {
+        StringBuffer result = new StringBuffer();
+        
+        Iterator ports = _signals.iterator();
+        
+        while (ports.hasNext()) {
+            TypedIOPort port = (TypedIOPort) ports.next();
+            VHDLCodeGeneratorHelper helper = _getHelper(port.getContainer());
+            
+            result.append("    SIGNAL ");
+
+            result.append(helper.getReference(
+                    port.getName() + "#" + 0) + " : ");
+
+            result.append(helper._generateVHDLType(port) + ";\n");                            
+        }
+            
+        return result.toString();
+    }
     
     /** Generate variable name for the given attribute. The reason to append 
      *  underscore is to avoid conflict with the names of other objects. For
@@ -169,13 +307,18 @@ public class VHDLCodeGenerator extends CodeGenerator {
         return name;
     }
     
+    /**
+     * Return the current index of the generate file.
+     * @return The current index of the generate file.
+     */
+    public int getGenerateFile() {
+        return _generateFile;
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
-    /** Execute the compile and run commands in the
-     *  <i>codeDirectory</i> directory. In this base class, 0 is
-     *  returned by default.
+    /** Execute the compile and run commands.
      *  @return The result of the execution.
      */
     protected int _executeCommands() throws IllegalActionException {
@@ -220,24 +363,59 @@ public class VHDLCodeGenerator extends CodeGenerator {
         return _executeCommands.getLastSubprocessReturnCode();
     }
     
+    /** Get the vhdl code generator helper associated with the
+     *  given component.
+     *  @param component The given component.
+     *  @return The vhdl code generator helper.
+     *  @exception IllegalActionException If the helper class
+     *   cannot be found.
+     */
+    protected VHDLCodeGeneratorHelper _getHelper(NamedObj component)
+            throws IllegalActionException {
+        return (VHDLCodeGeneratorHelper) super._getHelper(component);
+    }
+    
+    /** Write the code with the sanitized model name postfixed with "_tb"
+     *  if the current generate file is the testbench module; Otherwise,
+     *  write code with the sanitized model name (as usual). 
+     *  @param code The StringBuffer containing the code.
+     *  @return The name of the file that was written.
+     *  @exception IllegalActionException  If the super class throws it.
+     */
+    protected String _writeCode(StringBuffer code) throws IllegalActionException {
+
+        if (_generateFile == TESTBENCH) {
+            _sanitizedModelName += "_tb";
+        }
+        return super._writeCode(code);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /**
-     * The index of the list of code files to generate code for.
+     * The index of the list of code files to generate code for. 0 refers
+     * to the synthesizeable vhdl code file, and 1 refers to the testbench
+     * code file.
      */
-    protected int generateFile;
+    protected int _generateFile;
 
+    /**
+     * The Set of (non-gateway) signals that needs to be declared.
+     */
+    protected Set<Port> _signals = new HashSet();
+        
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /**
      * The index for the synthesizeable vhdl code file.  
      */
-    private final static int SYNTHEZIEABLE = 0; 
+    public final static int SYNTHESIZABLE = 0; 
 
     /**
      * The index for the testbench (non-synthesizeable) code file.  
      */
-    private final static int TESTBENCH = 1; 
+    public final static int TESTBENCH = 1;
+
 }
