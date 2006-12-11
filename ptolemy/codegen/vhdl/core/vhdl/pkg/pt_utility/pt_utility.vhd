@@ -10,7 +10,9 @@ package pt_utility is
 --Type to read correctvalues from ptolemy test actor.
 type CORRECTVALS is array (integer range <>) of real;
 --Type to represent interpretation of fixed point number
-type FIXED_TYPE_SIGN is (SIGNED, UNSIGNED);
+type FIXED_TYPE_SIGN is (SIGNED_TYPE, UNSIGNED_TYPE);
+--Type to represent comparator operation
+type COMPARETYPE is (GEQ,LEQ,EQ,G,L,NEQ);
 
 end package pt_utility;
 

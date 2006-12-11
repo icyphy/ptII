@@ -15,7 +15,7 @@
 
 ' />
       <macro name='list' type='correctvals' />
-      <macro name='fixed_sign' type='fixed_type_sign' initializer='signed' />
+      <macro name='fixed_sign' type='fixed_type_sign' initializer='signed_type' />
 
     </macroList>
     <portList>

@@ -22,8 +22,8 @@ GENERIC(
 	INPUT_HIGH	:	integer	:= 0;
 	INPUT_LOW	:	integer := -15;
 	LIST		:	CORRECTVALS;
-	FIXED_SIGN	:	FIXED_TYPE_SIGN := SIGNED	
-);
+	FIXED_SIGN	:	FIXED_TYPE_SIGN := SIGNED_TYPE
+	);
 PORT (
 	clk			:	in 	std_logic ;
 	data_in		:	in	std_logic_vector (INPUT_HIGH-INPUT_LOW DOWNTO 0)
@@ -52,12 +52,12 @@ begin
 			else
 				count <= count + 1;
 				expected_real:=LIST(count);
-				if FIXED_SIGN = SIGNED then
+				if FIXED_SIGN = SIGNED_TYPE then
 					In_real := to_real(In_signed); 
 					assert expected_real=In_real
 					report real'image(expected_real) & "/=" & real'image(In_real)
 					severity error;
-				elsif FIXED_SIGN = UNSIGNED then
+				elsif FIXED_SIGN = UNSIGNED_TYPE then
 					In_real := to_real(In_unsigned); 
 					assert expected_real=In_real
 					report real'image(expected_real) & "/=" & real'image(In_real)
