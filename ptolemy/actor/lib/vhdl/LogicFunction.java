@@ -145,11 +145,11 @@ public class LogicFunction extends SynchronousFixTransformer {
             {
                 Precision precision = new Precision(1, bitsInResult, 0);
                 FixToken result = new FixToken(intResult.doubleValue(), precision);
-                output.send(0, result);
+                sendOutput(output, 0, result);
             }
         }
         else {
-            ((QueuedTypedIOPort) output).resend(0);
+            output.resend(0);
         }
     }
     

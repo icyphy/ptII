@@ -40,7 +40,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.FixPoint;
@@ -142,7 +141,7 @@ public class Slice extends FixTransformer {
                             binaryPointValue), Overflow.GROW,
                     Rounding.HALF_EVEN));
 
-            output.send(0, new FixToken(result));
+            sendOutput(output, 0, new FixToken(result));
         }
     }
 }

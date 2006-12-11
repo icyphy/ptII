@@ -148,7 +148,7 @@ public class FixConst extends FixTransformer {
                 value.getToken()).doubleValue(), 
                 new FixPointQuantization(precision, overflow, rounding));
 
-        output.send(0, new FixToken(result));
+        sendOutput(output, 0, new FixToken(result));
     }
     
     /** If the trigger input is connected and it has no input or an unknown

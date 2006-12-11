@@ -84,8 +84,6 @@ public class Concat extends FixTransformer {
     
     public TypedIOPort input;
     
-    public TypedIOPort output;
-    
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -75,6 +75,7 @@ public class AddSubtract extends SynchronousFixTransformer {
                 
         operation = new StringParameter(this, "operation");
         operation.setExpression("ADD");
+        operation.addChoice("ADD");
         operation.addChoice("SUBTRACT");        
     }
 

@@ -99,7 +99,7 @@ public class LogicalNot extends SynchronousFixTransformer {
             intResult = bigIntA.not();     
             Precision precision = new Precision(1, bitsInResult, 0);
             FixToken result = new FixToken(intResult.doubleValue(), precision);
-            output.send(0, result);
+            sendOutput(output, 0, result);
         }
         else
         {

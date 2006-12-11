@@ -109,7 +109,7 @@ public class Multiplexor extends SynchronousFixTransformer {
                     Token token = input.get(i);
     
                     if (i == _channel) {
-                        output.send(0, token);
+                        sendOutput(output,0, token);
                     }
                 }
             }
