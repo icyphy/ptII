@@ -63,6 +63,8 @@ JSRCS = \
 	Multiplier.java \
 	QueuedTypedIOPort.java \
 	Register.java \
+	RegisterSR.java \
+	ROM.java \
 	Slice.java \
 	SynchronousFixTransformer.java \
 
