@@ -7,11 +7,13 @@ component $operationType is
 		INPUTB_HIGH			:	integer		:= 15;
 		INPUTB_LOW			:	integer		:= 0;
 		COMPAREOP			:	COMPARETYPE	:= EQ;
+		RESET_ACTIVE_VALUE	:   std_logic	:= '0';
 		LATENCY				: 	integer		:= 3
 	) ;
 	port
 	(
 		clk				: IN std_logic;
+		reset			: IN std_logic;
 		A				: IN std_logic_vector (INPUTA_HIGH-INPUTA_LOW DOWNTO 0) ;	
 		B				: IN std_logic_vector (INPUTB_HIGH-INPUTB_LOW DOWNTO 0) ;
 		OUTPUT			: OUT std_logic 

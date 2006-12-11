@@ -165,8 +165,8 @@ public class AddSubtract extends VHDLCodeGeneratorHelper {
         args.add("" + lowO);
         if (((IntToken) actor.latency.getToken()).intValue() > 0) {
             args.add("," + _eol + "LATENCY =>"
-                    + actor.latency.getExpression()); 
-            args.add("," + _eol +  "clk => clk");
+                    + actor.latency.getExpression() + ","+ _eol + "RESET_ACTIVE_VALUE => '0'");
+            args.add("," + _eol +  "clk => clk," + _eol + "reset => reset");
         } else {
             args.add("");
             args.add("");            
@@ -188,6 +188,7 @@ public class AddSubtract extends VHDLCodeGeneratorHelper {
         files.add("ieee.numeric_std.all");
         files.add("ieee_proposed.math_utility_pkg.all");
         files.add("ieee_proposed.fixed_pkg.all");
+        files.add("work.pt_utility.all");
         return files;
     }
 }

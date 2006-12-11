@@ -2,17 +2,19 @@
 component $operationType is
 	generic
 	(
-		INPUTA_HIGH    :    integer    := 15;
-		INPUTA_LOW     :    integer    := 0;
-		INPUTB_HIGH    :    integer    := 15;
-		INPUTB_LOW     :	integer    := 0;
-		OUTPUT_HIGH    :    integer    := 15;
-		OUTPUT_LOW     :    integer    := 0;		
-		LATENCY        :    integer    := 3
+		INPUTA_HIGH    		:    integer    := 15;
+		INPUTA_LOW     		:    integer    := 0;
+		INPUTB_HIGH    		:    integer    := 15;
+		INPUTB_LOW     		:	 integer    := 0;
+		OUTPUT_HIGH    		:    integer    := 15;
+		OUTPUT_LOW     		:    integer    := 0;	
+		RESET_ACTIVE_VALUE	:	 std_logic	:= '0';
+		LATENCY        		:    integer    := 3
 	) ;
 	port
 	(
 		clk       : IN std_logic;
+		reset	  : IN std_logic;
 		A         : IN std_logic_vector (INPUTA_HIGH-INPUTA_LOW DOWNTO 0) ;	
 		B         : IN std_logic_vector (INPUTB_HIGH-INPUTB_LOW DOWNTO 0) ;
 		output    : OUT std_logic_vector (OUTPUT_HIGH - OUTPUT_LOW DOWNTO 0) 

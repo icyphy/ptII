@@ -169,8 +169,9 @@ public class FixComparator extends VHDLCodeGeneratorHelper {
         
         if (((IntToken) actor.latency.getToken()).intValue() > 0) {
             args.add("," + _eol + "LATENCY =>"
-                    + actor.latency.getExpression()); 
-            args.add("," + _eol +  "clk => clk");
+                    + actor.latency.getExpression() 
+                    + "," + _eol + "RESET_ACTIVE_VALUE => '0'");
+            args.add("," + _eol +  "clk => clk," + _eol + "reset => reset");
         } else {
             args.add("");
             args.add("");            
