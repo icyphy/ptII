@@ -6,7 +6,7 @@ component pttest is
 		INPUT_HIGH	:	integer	:= 0;
 		INPUT_LOW	:	integer := -15;
 		LIST		:	CORRECTVALS;
-		RESET_ACTIVE_VALUE : st_logic := '0';
+		RESET_ACTIVE_VALUE : std_logic := '0';
 		FIXED_SIGN	:	FIXED_TYPE_SIGN := SIGNED_TYPE	
 	) ;
 	port
