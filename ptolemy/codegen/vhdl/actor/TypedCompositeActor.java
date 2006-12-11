@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.vhdl.actor;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -37,6 +36,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -53,7 +53,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (zgang)
  */
 public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
-    /** Construct the code generator helper associated
+
+    /** Construct the VHDL code generator helper associated
      *  with the given TypedCompositeActor.
      *  @param component The associated component.
      */
@@ -78,99 +79,21 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
      *  for transferring data.
      */
     public String generateFireCode() throws IllegalActionException {
-        _codeStream.clear();
-        _codeStream.append(super.generateFireCode());
-        ArrayList args = new ArrayList();
-        args.add("");
-        args.add("");
-        _codeStream.appendCodeBlock("fireBlock", args);
-        return processCode(_codeStream.toString());
-    }
-
-    /** Generate the preinitialize code of the associated composite actor.
-     *  It first creates buffer size and offset map for its input ports and 
-     *  output ports. It then gets the result of generatePreinitializeCode() 
-     *  method of the local director helper.
-     *
-     *  @return The preinitialize code of the associated composite actor.
-     *  @exception IllegalActionException If the helper associated with
-     *   an actor throws it while generating preinitialize code for the actor
-     *   or while creating buffer size and offset map.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer result = new StringBuffer();
-        StringBuffer signalCode = new StringBuffer();
-        StringBuffer componentCode = new StringBuffer();
-        StringBuffer instantiateCode = new StringBuffer();
-        HashSet componentSet = new HashSet();
-        
-        result.append(super.generatePreinitializeCode());
 
-        CompositeActor composite = 
-            (ptolemy.actor.CompositeActor) getComponent();        
-        
-        Iterator actors = composite.entityList().iterator();
-            
+        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+        .deepEntityList().iterator();
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-
-            Iterator outputPorts = actor.outputPortList().iterator();
             
-            while (outputPorts.hasNext()) {
-                TypedIOPort port = (TypedIOPort) outputPorts.next();
-                signalCode.append("    signal ");
-                
-                signalCode.append(((CodeGeneratorHelper) _getHelper(
-                        port.getContainer())).getReference(
-                                port.getName() + "#" + 0) + " : ");
-                
-                signalCode.append(_generateVHDLType(port) + ";\n");
+            VHDLCodeGeneratorHelper helper = _getHelper((NamedObj) actor);
+            
+            if (helper.doGenerate()) {
+                result.append(helper.generateFireCode());
             }
-            
-            CodeGeneratorHelper helper = 
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-
-            instantiateCode.append(helper.generateFireCode());
-
-            componentSet.addAll(helper.getSharedCode());
-            
-            if (actor instanceof CompositeActor) {
-                result.append(helper.generatePreinitializeCode());
-            }
-        }    
-        
-        Iterator iterator = componentSet.iterator();
-        
-        while(iterator.hasNext()) {
-            componentCode.append(iterator.next().toString());
-        }
-        
-        _codeStream.clear();
-        ArrayList args = new ArrayList();
-        args.add(_getPortDeclarations());
-        args.add(signalCode);
-        args.add(componentCode);
-        args.add(instantiateCode);
-        _codeStream.appendCodeBlock("preinitBlock", args);
-        result.append(_codeStream.toString());
-        
+        }                
         return processCode(result.toString());
-    }
-
-    /** Generate variable declarations for inputs and outputs and parameters.
-     *  Append the declarations to the given string buffer.
-     *  @return code The generated code.
-     *  @exception IllegalActionException If the helper class for the model
-     *   director cannot be found.
-     */
-    public String generateVariableDeclaration() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        // Generate variable declarations for input ports.
-        
-        // Generate variable declarations for output ports.
-        
-        return processCode(code.toString());
     }
 
     /** Get the header files needed by the code generated from this helper 
@@ -189,36 +112,25 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
                 .deepEntityList().iterator();
 
         while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            files.addAll(helperObject.getHeaderFiles());
+            
+            VHDLCodeGeneratorHelper helper= 
+                _getHelper((NamedObj) actors.next());
+                                    
+            if (helper.doGenerate()) {
+                files.addAll(helper.getHeaderFiles());
+            }
         }
         return files;
     }
     
     /**
-     * @throws IllegalActionException 
-     * 
+     * Throw an exception.
+     * @throws IllegalActionException Thrown if a composite is asked
+     *  if it is synthesizable. 
      */
-    public boolean isSynthesizeable() 
-            throws IllegalActionException {
-
-        // if this is the top level.
-        if (getComponent().getContainer() == null) {
-            return false;
-        } else {
-            Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
-            .entityList().iterator();
-
-            while (actors.hasNext()) {
-                Actor actor = (Actor) actors.next();
-                if (((VHDLCodeGeneratorHelper) _getHelper((NamedObj) actor))
-                .isSynthesizeable()) {
-                    return false;
-                }
-            }            
-        }
-
-        return true;
+    public boolean isSynthesizable() throws IllegalActionException {
+        throw new IllegalActionException(this, 
+                "TypedCompositeActor should not be " +
+                "asked if it is synthesizeable.");
     }        
 }

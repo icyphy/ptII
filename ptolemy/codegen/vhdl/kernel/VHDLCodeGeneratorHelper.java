@@ -28,8 +28,6 @@
 package ptolemy.codegen.vhdl.kernel;
 
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
@@ -75,7 +73,7 @@ import ptolemy.math.Precision;
  */
 public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
     /**
-     * Create a new instance of the C code generator helper.
+     * Create a new instance of the VHDL code generator helper.
      * @param component The actor object for this helper.
      */
     public VHDLCodeGeneratorHelper(NamedObj component) {
@@ -87,28 +85,36 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
     ////                         public methods                    ////
 
     /**
-     * Generate the fire code. In this base class, add the name of the
-     * associated component in the comment. Subclasses may extend this
-     * method to generate the fire code of the associated component.
-     * @return The generated code.
-     * @exception IllegalActionException Not thrown in this base class.
+     * Indicate whether this helper should generate code in the 
+     * current generate file. 
+     * @return True if this helper is synthesizable and the current
+     *  generate file is the synthesizable code file or if this helper
+     *  is non-synthesizable and the current generate file is the 
+     *  testbench file; Otherwise, return false. 
+     * @throws IllegalActionException
      */
-    public String generateFireCode() throws IllegalActionException {
-        String code = super.generateFireCode();
-
-        // check the latency of the actor and register the output.
-        //_codeStream.append("??? Latency code ???\n");
-        return processCode(code);
+    public boolean doGenerate() throws IllegalActionException {
+        if (isSynthesizable()) {
+            return getCodeGenerator().getGenerateFile() == 
+                VHDLCodeGenerator.SYNTHESIZABLE;
+        } else {
+            return getCodeGenerator().getGenerateFile() == 
+                VHDLCodeGenerator.TESTBENCH;            
+        }
     }
 
-    /** Return the reference to the specified parameter or port of the
-     *  associated actor. For a parameter, the returned string is in
-     *  the form "fullName_parameterName". For a port, the returned string
-     *  is in the form "fullName_portName[channelNumber][offset]", if
-     *  any channel number or offset is given.
-     *  @param name The name of the parameter or port
-     *  @exception IllegalActionException If the parameter or port does not
-     *   exist or does not have a value.
+    /** Get the VHDL code generator associated with this helper class.
+     *  @return The VHDL code generator associated with this helper class.
+     */
+    public VHDLCodeGenerator getCodeGenerator() {
+        return (VHDLCodeGenerator) _codeGenerator;
+    }
+    
+    /** Return the reference to the specified port of the container
+     *  actor. The returned string is in the form 
+     *  "fullName_portName[channelNumber]", if a channel number is given.
+     *  @param name The name of the given port.
+     *  @exception IllegalActionException If the port does not exist.
      */
     public String getReference(String name) throws IllegalActionException {
         name = processCode(name);
@@ -196,17 +202,28 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
      * @return
      * @throws IllegalActionException 
      */
-    public boolean isSynthesizeable() throws IllegalActionException {
-        return isSynthesizeable;
+    public boolean isSynthesizable() throws IllegalActionException {
+        Actor actor = (Actor) getComponent();
+        if (actor instanceof FixTransformer) {
+            Parameter parameter = (Parameter)
+                ((FixTransformer) actor).getAttribute("synthesizable");
+            
+            return ((BooleanToken) parameter.getToken()).booleanValue();
+        }
+        
+        return false;
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
     
     /**
-     * 
-     * @param port
-     * @return
+     * Generate a string that represents the VHDL type for the given port. 
+     * For a fix type port, this generates a "std_logic_vector" type in
+     * VHDL. If the port is boolean type or fix type with a width of 1,
+     * the VHDL type "std_logic" is returned.  
+     * @param port The given port.
+     * @return a string that represents the VHDL type.
      */
     protected String _generateVHDLType(TypedIOPort port) {
         StringBuffer code = new StringBuffer();
@@ -225,17 +242,29 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
             code.append("std_logic");
             
         } else {
-            
+            // FIXME: we are only dealing with fix point type and boolean type.
             code.append("UNKNOWN TYPE");
             
         }
         return code.toString();
     }
 
+    /** Get the code generator helper associated with the given component.
+     *  @param component The given component.
+     *  @return The code generator helper.
+     *  @exception IllegalActionException If the helper class cannot be found.
+     */
+    protected VHDLCodeGeneratorHelper _getHelper(NamedObj component)
+            throws IllegalActionException {
+        return (VHDLCodeGeneratorHelper) super._getHelper(component);        
+    }
+    
     /**
-     * 
-     * @param port
-     * @return
+     * Return the precision expression string associated with the given
+     * port. This assumes that there is a precision parameter named 
+     * "portNamePrecision" in the associated actor. 
+     * @param port The given port.
+     * @return The precision expression string.
      */
     protected String _getPortPrecision(Port port) {
         Parameter precision = (Parameter) 
@@ -246,59 +275,37 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
     }
 
     /**
-     * 
-     * @return
+     * Return the actor that contains the source port connected to the
+     * given port. 
+     * @param port The given port.
+     * @return The actor that contains the source port connected to the
+     * given port.
+     * @exception IllegalActionException If getSourceChannel(IOPort, int)
+     *  throws it.
      */
-    protected String _getPortDeclarations() {
-        StringBuffer code = new StringBuffer();
-        Actor actor = (Actor) getComponent();
-        Iterator inputPorts = actor.inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            TypedIOPort port = (TypedIOPort) inputPorts.next();
-            code.append(port.getName() + " : IN ");
-            code.append(_generateVHDLType(port));
-            if (inputPorts.hasNext()) {
-                code.append(";\n");
-            }
-        }
-        
-        Iterator outputPorts = actor.outputPortList().iterator();
-        while (outputPorts.hasNext()) {
-            code.append(";\n");
-            TypedIOPort port = (TypedIOPort) outputPorts.next();
-            code.append(port.getName() + " : OUT ");
-            code.append(_generateVHDLType(port));
-        }
-        // FIXME: we are not handling inout ports.
-        
-        return code.toString();
-    }
+    protected Actor _getSourcePortActor(IOPort port) 
+            throws IllegalActionException {
+        IOPort sourcePort = getSourceChannel(port, 0).port;
 
+        return (Actor) sourcePort.getContainer();    
+    }
+    
     /**
-     * @param port
-     * @return
-     * @throws IllegalActionException
+     * Return the precision of the source port that is connected to the
+     * given port.
+     * @param port The given port.
+     * @return The precision of the source port that is connected to the
+     * given port.
+     * @throws IllegalActionException If getSourceChannel(IOPort, int) or
+     *  getPrecision(IOPort) throw it.
      */
     protected Precision _getSourcePortPrecision(IOPort port) throws IllegalActionException {
-        IOPort sourcePortA = getSourceChannel(port, 0).port;
+        IOPort sourcePort = getSourceChannel(port, 0).port;
 
-        FixTransformer sourceHelper = 
-        ((FixTransformer) sourcePortA.getContainer());
+        FixTransformer sourceActor = 
+        ((FixTransformer) _getSourcePortActor(port));
         
-        Precision precision = 
-            new Precision(sourceHelper.getPortPrecision(sourcePortA));
-
-        return precision;
+        return new Precision(sourceActor.getPortPrecision(sourcePort));
     }        
     
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /**
-     * Indicate whether this actor can be synthesized to hardware.
-     * If false, its VHDL code goes into the testbench file (tb.vhdl).
-     * Otherwise, it goes to the synthesizeable code file (model.vhdl).
-     * The default value is true.
-     */
-    protected boolean isSynthesizeable = true;
 }
