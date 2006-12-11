@@ -15,12 +15,14 @@
 
 ' />
       <macro name='list' type='correctvals' />
+      <macro name='reset_active_value' type='std_logic' initializer='&apos;0&apos;' />
       <macro name='fixed_sign' type='fixed_type_sign' initializer='signed_type' />
 
     </macroList>
     <portList>
 
       <port name='clk' direction='in' type='std_logic' />
+      <port name='reset' direction='in' type='std_logic' />
       <port name='data_in' direction='in' type='std_logic_vector (input_high - input_low downto 0)' />
 
     </portList>
