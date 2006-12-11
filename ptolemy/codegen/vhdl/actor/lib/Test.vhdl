@@ -17,14 +17,14 @@ end component pttest;
 /**/
 
 
-/*** fireBlock ($high, $low, $values) ***/
+/*** fireBlock ($high, $low, $values, $signed) ***/
 $actorSymbol(instance): pttest
 	GENERIC MAP ( 
 		LENGTH		=> $size(correctValues),
 		INPUT_HIGH	=> $high,
 		INPUT_LOW	=> $low,
 		LIST		=> ($values),
-		FIXED_SIGN	=> UNSIGNED_TYPE
+		FIXED_SIGN	=> $signed
 	)
 	PORT MAP ( 
 		clk	=> clk,

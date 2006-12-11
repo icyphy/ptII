@@ -85,9 +85,7 @@ public class Test extends VHDLCodeGeneratorHelper {
         TypedIOPort source = (TypedIOPort) actor.input.sourcePortList().get(0);
         TypedAtomicActor sourceActor = (TypedAtomicActor) source.getContainer();
         
-        Precision precision = 
-            new Precision(((Parameter) sourceActor.getAttribute(
-                        source.getName() + "Precision")).getExpression());
+        Precision precision = _getSourcePortPrecision(actor.input);
         
         int high = precision.getIntegerBitLength() - 1;
         int low = -precision.getFractionBitLength();
@@ -106,6 +104,11 @@ public class Test extends VHDLCodeGeneratorHelper {
         values += ((FixToken) valueArray.getElement(i)).convertToDouble();
 
         args.add(values);
+
+        String signed = 
+            (precision.isSigned()) ? "SIGNED_TYPE" : "UNSIGNED_TYPE";
+        
+        args.add(signed);
         
         _codeStream.appendCodeBlock("fireBlock", args);
 
