@@ -18,16 +18,17 @@ use work.pt_utility.all;
 
 entity pttest is
 GENERIC(
-	LENGTH		:	integer := 3;
-	INPUT_HIGH	:	integer	:= 0;
-	INPUT_LOW	:	integer := -15;
-	LIST		:	CORRECTVALS;
+	LENGTH				:	integer := 3;
+	INPUT_HIGH			:	integer	:= 0;
+	INPUT_LOW			:	integer := -15;
+	LIST				:	CORRECTVALS;
+	RESET_ACTIVE_VALUE	:	std_logic := '0';
 	FIXED_SIGN	:	FIXED_TYPE_SIGN := SIGNED_TYPE
 	);
 PORT (
 	clk			:	in 	std_logic ;
+	reset		:	in  std_logic ;
 	data_in		:	in	std_logic_vector (INPUT_HIGH-INPUT_LOW DOWNTO 0)
---	list		:	in  CORRECTVALS(1 to LENGTH) := (0.23,0.345,-1.0)
 );
 end pttest;
 
@@ -36,35 +37,35 @@ ARCHITECTURE behave OF pttest IS
 SIGNAL In_signed	:	sfixed(INPUT_HIGH DOWNTO INPUT_LOW);	 
 SIGNAL In_unsigned	:	ufixed(INPUT_HIGH DOWNTO INPUT_LOW);	 
 SIGNAL count		:	integer :=0;	 
+SIGNAL In_real		:	real := 0.0;
 
 BEGIN
 
 In_signed 	<= to_sfixed(data_in,INPUT_HIGH,INPUT_LOW);
 In_unsigned <= to_ufixed(data_in,INPUT_HIGH,INPUT_LOW);
 
+In_real <= to_real(In_signed) when FIXED_SIGN=SIGNED_TYPE else to_real(In_unsigned);
+
 compare : process(clk)
 	variable In_real		: real := 0.0;
 	variable expected_real	: real := -1.0;
 begin
 		if clk'event and clk = '1' then
-			if count = LENGTH then
-				count <= count;
+			if reset = RESET_ACTIVE_VALUE then
+				expected_real:=-0.00;
+				count <= 0;
 			else
-				count <= count + 1;
-				expected_real:=LIST(count);
-				if FIXED_SIGN = SIGNED_TYPE then
-					In_real := to_real(In_signed); 
+				if count = LENGTH then
+					count <= count;
+				else
+					count <= count + 1;
+					expected_real:=LIST(integer'low+count);
 					assert expected_real=In_real
 					report real'image(expected_real) & "/=" & real'image(In_real)
 					severity error;
-				elsif FIXED_SIGN = UNSIGNED_TYPE then
-					In_real := to_real(In_unsigned); 
-					assert expected_real=In_real
-					report real'image(expected_real) & "/=" & real'image(In_real)
-					severity error;
-				end if;	
+				end if;
 			end if;
-		end if;
+		end if;	
 end process compare ;
 END behave ;
 

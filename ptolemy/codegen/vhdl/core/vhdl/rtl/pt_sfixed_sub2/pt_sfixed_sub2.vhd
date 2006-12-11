@@ -24,11 +24,13 @@ entity pt_sfixed_sub2 is
 		INPUTB_LOW			:	integer		:= 0;
 		OUTPUT_HIGH			:	integer		:= 16;
 		OUTPUT_LOW			:	integer		:= 0;
+		RESET_ACTIVE_VALUE	:	std_logic	:= '0';
 		LATENCY				: 	integer		:= 3
 	) ;
 	port
 	(
 		clk				: IN std_logic;
+		reset			: IN std_logic;
 		A				: IN std_logic_vector (INPUTA_HIGH-INPUTA_LOW DOWNTO 0) ;	
 		B				: IN std_logic_vector (INPUTB_HIGH-INPUTB_LOW DOWNTO 0) ;
 		OUTPUT			: OUT std_logic_vector (OUTPUT_HIGH-OUTPUT_LOW DOWNTO 0) 
@@ -63,11 +65,15 @@ DIFFs 	<=		resize(	arg				=>	delay(LATENCY),
 subtract : process(clk)
 begin
 	if clk'event and clk = '1' then
-		delay(1) <= As-Bs;
-		if LATENCY > 1 then
-			for i in 1 to LATENCY loop
-				delay(i+1)<=delay(i);
-			end loop;	
+		if reset=RESET_ACTIVE_VALUE then
+			delay <= (others => (others => '0'));
+		else
+			delay(1) <= As-Bs;
+			if LATENCY > 1 then
+				for i in 1 to LATENCY-1 loop
+					delay(i+1)<=delay(i);
+				end loop;	
+			end if;	
 		end if;	
 	end if;
 end process subtract ;
