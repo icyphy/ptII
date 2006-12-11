@@ -210,7 +210,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return A formatted comment.
      */
     public String comment(String comment) {
-        return "/* " + comment + " */" + _eol;
+        return formatComment(comment) + _eol;
     }
     
     /** Return a formatted comment containing the
@@ -664,6 +664,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return code.toString();
     }
 
+    /** Generate variable name for the given attribute. The reason to append 
+     *  underscore is to avoid conflict with the names of other objects. For
+     *  example, the paired PortParameter and ParameterPort have the same name. 
+     *  @param attribute The attribute to generate variable name for.
+     *  @return The generated variable name.
+     */
+    public String generateVariableName(NamedObj namedObj) {
+        return CodeGeneratorHelper.generateName(namedObj) + "_";
+    }
+
     /** Generate into the specified code stream the code associated with
      *  wrapping up the container composite actor. This method calls the
      *  generateWrapupCode() method of the code generator helper associated
@@ -959,11 +969,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Create a make file to compile the generated code file(s).
      * In this base class, it does nothing.
      */
-    protected void _writeMakefile() throws IllegalActionException {
-    }
+    protected void _writeMakefile() throws IllegalActionException {}
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** The name of the file that was written.
+     *  If no file was written, then the value is null.
+     */
+    protected String _codeFileName = null;
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line charactor so that the files we generate
@@ -1043,11 +1057,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The name of the file that was written.
-     *  If no file was written, then the value is null.
-     */
-    private String _codeFileName = null;
 
     /** A hash map that stores the code generator helpers associated
      *  with the actors.

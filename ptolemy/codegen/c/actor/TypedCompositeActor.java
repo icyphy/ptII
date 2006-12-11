@@ -38,6 +38,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.Director;
@@ -138,7 +139,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                 PortParameter portParameter = ((ParameterPort) inputPort)
                         .getParameter();
                 tempCode.append(CodeStream.indent
-                        (generateVariableName(portParameter)));
+                        (_codeGenerator.generateVariableName(portParameter)));
                 // FIXME: The = sign is language specific.
                 tempCode.append(" = ");
                 tempCode.append(getReference(inputPort.getName()));

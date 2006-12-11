@@ -525,7 +525,7 @@ public class CodeGeneratorHelper
                     // avoid duplication.
                     if (!_codeGenerator._modifiedVariables.contains(parameter)) {
                         code.append(_INDENT1 
-                                    + generateVariableName(parameter)
+                                    + _codeGenerator.generateVariableName(parameter)
                                     + " = "
                                     + getParameterValue(parameter.getName(),
                                             _component) + ";" + _eol);
@@ -538,16 +538,6 @@ public class CodeGeneratorHelper
             }
         }
         return code.toString();
-    }
-
-    /** Generate variable name for the given attribute. The reason to append 
-     *  underscore is to avoid conflict with the names of other objects. For
-     *  example, the paired PortParameter and ParameterPort have the same name. 
-     *  @param attribute The attribute to generate variable name for.
-     *  @return The generated variable name.
-     */
-    public static String generateVariableName(Attribute attribute) {
-        return generateName(attribute) + "_";
     }
 
     /**
@@ -1150,7 +1140,7 @@ public class CodeGeneratorHelper
                 refType = codeGenType(((Parameter) attribute).getType());
             }
 
-            result.append(generateVariableName(attribute));
+            result.append(_codeGenerator.generateVariableName(attribute));
 
             if (!channelAndOffset[0].equals("")) {
                 throw new IllegalActionException(_component,
@@ -1643,7 +1633,7 @@ public class CodeGeneratorHelper
                 // variable is declared in the target language and should be
                 // referenced by the name anywhere it is used.
                 if (_codeGenerator._modifiedVariables.contains(result)) {
-                    return new ObjectToken(generateVariableName(result));
+                    return new ObjectToken(_codeGenerator.generateVariableName(result));
                 } else {
                     // This will lead to recursive call until a variable found 
                     // is either directly specified by a constant or it is a  
@@ -2084,7 +2074,11 @@ public class CodeGeneratorHelper
         } else if (macro.equals("size")) {
             return "" + getSize(parameter);
         } else if (macro.equals("actorSymbol")) {
-            return generateName(_component) + "_" + parameter;
+            if (parameter.trim().length() == 0) {
+                return generateVariableName(_component);
+            } else {
+                return generateVariableName(_component) + "_" + parameter;
+            }            
         } else if (macro.equals("actorClass")) {
             return _component.getClassName().replace('.', '_')
             + "_" + parameter;
@@ -2102,6 +2096,10 @@ public class CodeGeneratorHelper
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    public String generateVariableName(NamedObj namedobj) {
+        return _codeGenerator.generateVariableName(namedobj);
+    }
 
     /** A hashmap that keeps track of the bufferSizes of each channel
      *  of the actor.

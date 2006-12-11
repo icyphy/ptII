@@ -1,29 +1,42 @@
 /*** preinitBlock($ports, $signals, $components, $instantiation) ***/
-entity $actorSymbol(block) is
+// preinit
+entity $actorSymbol() is
 	port
 	(
-$ports
+		$ports
 		clk	: in std_logic
 	) ;
 end entity;
 
-architecture composite of $actorSymbol(block) is
 
-$signals
-$components
+// main entry
+architecture composite of $actorSymbol() is
+	// init
+	$signals
+	$components
 
 begin
 
-$instantiation
+	// fire
+	$instantiation
 
+// exit
 end architecture composite;
+
+
 /**/
+
+
+
 
 
 /*** shareBlock ***/
-	component $actorSymbol(block) is
+	component $actorSymbol() is
 	end component;
 /**/
+
+
+
 
 
 

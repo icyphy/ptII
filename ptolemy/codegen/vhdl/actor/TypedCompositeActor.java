@@ -36,11 +36,9 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.Director;
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.math.Precision;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
@@ -61,30 +59,6 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
      */
     public TypedCompositeActor(ptolemy.actor.TypedCompositeActor component) {
         super(component);
-    }
-
-    /**
-     * For each actor in this typed composite actor, determine which ports
-     * need type conversion.
-     * @exception IllegalActionException Thrown if any of the helpers of the
-     * inside actors is unavailable.
-     * @see ptolemy.codegen.kernel.CodeGeneratorHelper#analyzeTypeConvert
-     */
-    public void analyzeTypeConvert() throws IllegalActionException {
-        super.analyzeTypeConvert();
-    }
-
-    /** Create read and write offset variables if needed for the associated 
-     *  composite actor. It delegates to the director helper of the local 
-     *  director.
-     *  @return A string containing declared read and write offset variables. 
-     *  @exception IllegalActionException If the helper class cannot be found
-     *   or the director helper throws it.
-     */
-    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
-        return directorHelper.createOffsetVariablesIfNeeded();
     }
 
     /** Generate the fire code of the associated composite actor. This method
@@ -183,7 +157,6 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
         return processCode(result.toString());
     }
 
-    
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
      *  @return code The generated code.
@@ -196,7 +169,7 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
         // Generate variable declarations for input ports.
         
         // Generate variable declarations for output ports.
-
+        
         return processCode(code.toString());
     }
 
@@ -220,7 +193,32 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             files.addAll(helperObject.getHeaderFiles());
         }
-
         return files;
     }
+    
+    /**
+     * @throws IllegalActionException 
+     * 
+     */
+    public boolean isSynthesizeable() 
+            throws IllegalActionException {
+
+        // if this is the top level.
+        if (getComponent().getContainer() == null) {
+            return false;
+        } else {
+            Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+            .entityList().iterator();
+
+            while (actors.hasNext()) {
+                Actor actor = (Actor) actors.next();
+                if (((VHDLCodeGeneratorHelper) _getHelper((NamedObj) actor))
+                .isSynthesizeable()) {
+                    return false;
+                }
+            }            
+        }
+
+        return true;
+    }        
 }

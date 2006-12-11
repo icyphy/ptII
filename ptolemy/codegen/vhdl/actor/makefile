@@ -56,7 +56,8 @@ PTCLASSALLJARS = \
 	lib/lib.jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = \
+	TypedCompositeActor.java \
 
 
 OTHER_FILES_TO_BE_JARED =

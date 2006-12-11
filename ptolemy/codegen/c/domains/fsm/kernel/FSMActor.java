@@ -38,6 +38,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
+import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.BooleanToken;
@@ -401,7 +402,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                             }
                         } else if (destination instanceof Variable) {
                             codeBuffer
-                                    .append(generateVariableName((Variable) destination)
+                                    .append(_codeGenerator.generateVariableName((Variable) destination)
                                             + " = ");
                         }
 

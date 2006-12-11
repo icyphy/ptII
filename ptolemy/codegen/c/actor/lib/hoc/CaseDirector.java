@@ -30,6 +30,7 @@ package ptolemy.codegen.c.actor.lib.hoc;
 import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
 import ptolemy.data.BooleanToken;
@@ -78,7 +79,7 @@ public class CaseDirector extends Director {
                 .getContainer();
 
         code.append("switch ("
-                + CodeGeneratorHelper.generateVariableName(container.control)
+                + _codeGenerator.generateVariableName(container.control)
                 + ") {" + _eol);
 
         Iterator refinements = container.deepEntityList().iterator();

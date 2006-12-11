@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGenerator;
@@ -20,11 +19,8 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGeneratorUtilities;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -396,7 +392,7 @@ public class CCodeGenerator extends CodeGenerator {
 
                 code.append("static "
                         + CodeGeneratorHelper.cType(parameter.getType()) + " "
-                        + CodeGeneratorHelper.generateVariableName(parameter)
+                        + generateVariableName(parameter)
                         + ";" + _eol);
             }
         }
@@ -426,7 +422,7 @@ public class CCodeGenerator extends CodeGenerator {
                 NamedObj container = parameter.getContainer();
                 CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
                 code.append(_INDENT1
-                        + CodeGeneratorHelper.generateVariableName(parameter)
+                        + generateVariableName(parameter)
                         + " = "
                         + containerHelper.getParameterValue(
                                 parameter.getName(), parameter.getContainer())
