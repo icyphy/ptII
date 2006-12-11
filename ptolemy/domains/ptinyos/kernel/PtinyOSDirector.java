@@ -432,6 +432,11 @@ public class PtinyOSDirector extends Director {
         }
 
         // Port could not be found.
+        Exception e = new InternalErrorException(
+                "Could not find ParameterPort \""
+                + parameter
+                + "\".");
+        MessageHandler.error(e.toString(), e);
         return 0;
     }
 
@@ -869,13 +874,19 @@ public class PtinyOSDirector extends Director {
     //
     // The port number used is defined in the commandPort and
     // eventPort parameters.
+    //
+    // This is a JNI interface methods that gets called by TOSSIM
+    // through the Java loader.
+    //
     ///////////////////////////////////////////////////////////////////////
 
     /** Accept a connection on a ServerSocketChannel.  If serverSocketChannel 
      *  is blocking, this method blocks.
      * 
-     * @param serverSocketChannel The ServerSocketChannel on which connections are accepted.
-     * @return The SocketChannel for the connection that was accepted.
+     *  @param serverSocketChannel The ServerSocketChannel on which
+     *  connections are accepted.
+     *  @return The SocketChannel for the connection that was
+     *  accepted, null if error.
      */
     public SocketChannel acceptConnection(SelectableChannel serverSocketChannel) {
         if (serverSocketChannel instanceof ServerSocketChannel) {
@@ -887,12 +898,12 @@ public class PtinyOSDirector extends Director {
                 socketChannel = ((ServerSocketChannel) serverSocketChannel)
                         .accept();
             } catch (IOException e) {
-                System.out.println(e);
+                MessageHandler.error(e.toString(), e);
             }
             return socketChannel;
         } else {
-            System.out
-                    .println("The argument passed to acceptConnection() was not a ServerSocketChannel.");
+            Exception e = new IllegalActionException("The argument passed to acceptConnection() was not a ServerSocketChannel.");
+            MessageHandler.error(e.toString(), e);
             return null;
         }
     }
@@ -907,7 +918,8 @@ public class PtinyOSDirector extends Director {
                 if (_debugging) {
                     _debug("Begin call to selectorClose()");
                 }
-                // We have to call wakeup() here because of a possible bug in J2SE
+                // We have to call wakeup() here because of a possible
+                // bug in J2SE.
                 //
                 // Note that this also requires a locking machnism to
                 // prevent selector.select() from being called again after
@@ -920,9 +932,7 @@ public class PtinyOSDirector extends Director {
                     _debug("End call to selectorClose()");
                 }
             } catch (IOException e) {
-                System.out.println(e);
-            } catch (Exception e) {
-                System.out.println(e);
+                MessageHandler.error(e.toString(), e);
             }
         }
     }
@@ -930,17 +940,21 @@ public class PtinyOSDirector extends Director {
     /** Create a selector and register the ServerSocketChannel of the 
      *  ServerSocket with the selector.
      * 
-     *  @param serverSocket The ServerSocket whose channel should be registered
-     *      with the Selector created.
-     *  @param opAccept True if this SelectionKey option that should be enabled 
-     *      when registering the ServerSocketChannel to the Selector.
-     *  @param opConnect True if this SelectionKey option that should be enabled 
-     *      when registering the ServerSocketChannel to the Selector.
-     *  @param opRead True if this SelectionKey option that should be enabled 
-     *      when registering the ServerSocketChannel to the Selector.
-     *  @param opWrite True if this SelectionKey option that should be enabled 
-     *      when registering the ServerSocketChannel to the Selector.
-     *  @return The Selector created.
+     *  @param serverSocket The ServerSocket whose channel should be
+     *  registered with the Selector created.
+     *  @param opAccept True if this SelectionKey option that should
+     *  be enabled when registering the ServerSocketChannel to the
+     *  Selector.
+     *  @param opConnect True if this SelectionKey option that should
+     *  be enabled when registering the ServerSocketChannel to the
+     *  Selector.
+     *  @param opRead True if this SelectionKey option that should be
+     *  enabled when registering the ServerSocketChannel to the
+     *  Selector.
+     *  @param opWrite True if this SelectionKey option that should be
+     *  enabled when registering the ServerSocketChannel to the
+     *  Selector.
+     *  @return The Selector created, or null if error.
      */
     public Selector selectorCreate(ServerSocket serverSocket, boolean opAccept,
             boolean opConnect, boolean opRead, boolean opWrite) {
@@ -953,7 +967,8 @@ public class PtinyOSDirector extends Director {
                 _debug("Created selector.");
             }
 
-            ServerSocketChannel serverSocketChannel = serverSocket.getChannel();
+            ServerSocketChannel serverSocketChannel =
+                serverSocket.getChannel();
             if (serverSocketChannel != null) {
                 // Register channel with selector.
                 if (opAccept) {
@@ -973,32 +988,37 @@ public class PtinyOSDirector extends Director {
                             SelectionKey.OP_WRITE);
                 }
             } else {
-                System.out
-                        .println("Could not find ServerSocketChannel associated with ServerSocket!");
+                Exception e = new IllegalActionException("Could not find ServerSocketChannel associated with ServerSocket \""
+                        + serverSocket
+                        + "\".");
+                MessageHandler.error(e.toString(), e);
+                return null;
             }
         } catch (IOException e) {
-            System.out.println(e);
+            MessageHandler.error(e.toString(), e);
+            return null;
         }
         return selector;
     }
 
-    /** Register channel with selector.
+    /** Register the channel with the selector.
      * 
-     *  @param selector The selector to which the channel should be registered.
-     *  @param socketChannel The SocketChannel that should be registered.
-     *  @param opAccept True if this SelectionKey option that should be enabled 
-     *      when registering the SocketChannel to the Selector.
-     *  @param opConnect True if this SelectionKey option that should be enabled 
-     *      when registering the SocketChannel to the Selector.
-     *  @param opRead True if this SelectionKey option that should be enabled 
-     *      when registering the SocketChannel to the Selector.
-     *  @param opWrite True if this SelectionKey option that should be enabled 
-     *      when registering the SocketChannel to the Selector.
+     *  @param selector The selector to which the channel should be
+     *  registered.
+     *  @param socketChannel The SocketChannel that should be
+     *  registered.
+     *  @param opAccept True if this SelectionKey option that should
+     *  be enabled when registering the SocketChannel to the Selector.
+     *  @param opConnect True if this SelectionKey option that should
+     *  be enabled when registering the SocketChannel to the Selector.
+     *  @param opRead True if this SelectionKey option that should be
+     *  enabled when registering the SocketChannel to the Selector.
+     *  @param opWrite True if this SelectionKey option that should be
+     *  enabled when registering the SocketChannel to the Selector.
      */
     public void selectorRegister(Selector selector,
             SelectableChannel socketChannel, boolean opAccept,
             boolean opConnect, boolean opRead, boolean opWrite) {
-
         if (selector != null && socketChannel != null) {
             try {
                 // Register channel with selector.
@@ -1015,7 +1035,7 @@ public class PtinyOSDirector extends Director {
                     socketChannel.register(selector, SelectionKey.OP_WRITE);
                 }
             } catch (ClosedChannelException e) {
-                System.out.println(e);
+                MessageHandler.error(e.toString(), e);
             }
         }
     }
@@ -1039,6 +1059,7 @@ public class PtinyOSDirector extends Director {
     public SelectableChannel selectSocket(Selector selector,
             boolean[] notNullIfClosing, boolean opAccept, boolean opConnect,
             boolean opRead, boolean opWrite) {
+        SelectableChannel ssChannel = null;
         notNullIfClosing[0] = false;
         try {
             // Wait for an event
@@ -1051,7 +1072,8 @@ public class PtinyOSDirector extends Director {
                     // Get the selection key
                     SelectionKey selKey = (SelectionKey) iterator.next();
 
-                    // Remove it from the list to indicate that it is being processed
+                    // Remove it from the list to indicate that it is
+                    // being processed
                     iterator.remove();
 
                     // Check if it's a connection request
@@ -1060,20 +1082,20 @@ public class PtinyOSDirector extends Director {
                             || (opRead && selKey.isReadable())
                             || (opWrite && selKey.isWritable())) {
                         // Get channel with connection request
-                        SelectableChannel ssChannel = selKey.channel();
+                        ssChannel = selKey.channel();
                         return ssChannel;
                     }
                 }
             }
         } catch (IOException e) {
             // Handle error with selector.
-            System.out.println("Exception in selectSocket(): " + e);
+            MessageHandler.error(e.toString(), e);
         } catch (CancelledKeyException e) {
             // Handle error with selector.
-            System.out.println("Exception in selectSocket(): " + e);
+            MessageHandler.error(e.toString(), e);
         } catch (ClosedSelectorException e) {
             // Handle error with selector.
-            System.out.println("Exception in selectSocket(): " + e);
+            MessageHandler.error(e.toString(), e);
         }
         // Return null if this method didn't find a channel above.
         // This means the selector is about to close.
@@ -1090,17 +1112,16 @@ public class PtinyOSDirector extends Director {
             try {
                 serverSocket.close();
             } catch (IOException e) {
-                System.out.println(e);
-            } catch (Exception e) {
-                System.out.println(e);
+                MessageHandler.error(e.toString(), e);
             }
         }
     }
 
     /** Create a non-blocking server socket and check for connections on the 
      *   port specified by <i>port</i>.
-     *   @param port The port on which to create a server socket.
-     *   @return The ServerSocket created.
+     *   @param port The port number on which to create a server
+     *   socket.
+     *   @return The ServerSocket created, or null if error.
      */
     public ServerSocket serverSocketCreate(short port) {
         ServerSocket serverSocket = null;
@@ -1113,12 +1134,14 @@ public class PtinyOSDirector extends Director {
             try {
                 serverSocket.setReuseAddress(true);
             } catch (SocketException e) {
-                System.out.println(e);
+                MessageHandler.error(e.toString(), e);
+                return null;
             }
             serverSocket.bind(new InetSocketAddress(
                     InetAddress.getByName(null), port));
         } catch (IOException e) {
-            System.out.println(e);
+            MessageHandler.error(e.toString(), e);
+            return null;
         }
         return serverSocket;
     }
@@ -1132,24 +1155,26 @@ public class PtinyOSDirector extends Director {
             try {
                 socketChannel.close();
             } catch (IOException e) {
-                System.out.println(e);
+                MessageHandler.error(e.toString(), e);
             }
         } else {
-            System.out
-                    .println("The argument passed to socketChannelClose() was not a SocketChannel.");
+            Exception e = new IllegalActionException("The argument passed to socketChannelClose() was not a SocketChannel.");
+            MessageHandler.error(e.toString(), e);
         }
     }
 
-    /** Read from a SocketChannel into readBuffer.  
-     *  Returns number of bytes read.  0 if end of stream reached.  -1 if error.
-     * 
+    /** Read from a SocketChannel into readBuffer.
+     *
      * @param socketChannel SocketChannel from which to read.
      * @param readBuffer The bytes read.
-     * @return Number of bytes read.  0 if end of stream reached.  -1 if error.
+     * @return Number of bytes read.  Returns 0 if end of stream
+     * reached, -1 if error.
      */
-    public int socketChannelRead(SocketChannel socketChannel, byte[] readBuffer) {
+    public int socketChannelRead(SocketChannel socketChannel,
+            byte[] readBuffer) {
         // Create a direct buffer to get bytes from socket.
-        // Direct buffers should be long-lived and be reused as much as possible.
+        // Direct buffers should be long-lived and be reused as much
+        // as possible.
         ByteBuffer buffer = ByteBuffer.wrap(readBuffer);
     
         try {
@@ -1165,14 +1190,13 @@ public class PtinyOSDirector extends Director {
                 return numBytesRead;
             }
         } catch (IOException e) {
-            // Connection may have been closed
-            System.out.println(e);
+            // Connection may have been closed.
+            MessageHandler.error(e.toString(), e);
             return -1;
         }
     }
 
     /** Write the bytes in writeBuffer to a SocketChannel.
-     *  Returns number of bytes written.  -1 if error.
      * 
      *  @param socketChannel The SocketChannel on which to write.
      *  @param writeBuffer The bytes to write.
@@ -1181,16 +1205,16 @@ public class PtinyOSDirector extends Director {
     public int socketChannelWrite(SocketChannel socketChannel,
             byte[] writeBuffer) {
         // Create a direct buffer to write bytes to socket.
-        // Direct buffers should be long-lived and be reused as much as possible.
+        // Direct buffers should be long-lived and be reused as much
+        // as possible.
         ByteBuffer buffer = ByteBuffer.wrap(writeBuffer);
-
         try {
             // Write bytes
             int numBytesWritten = socketChannel.write(buffer);
             return numBytesWritten;
         } catch (IOException e) {
-            // Connection may have been closed
-            System.out.println(e);
+            // Connection may have been closed.
+            MessageHandler.error(e.toString(), e);
             return -1;
         }
     }
@@ -1220,6 +1244,9 @@ public class PtinyOSDirector extends Director {
             commandString.append(" " + command[i]);
         }
 
+        if (_debugging) {
+            _debug(commandString.toString());
+        }
         System.out.println(commandString.toString());
 
         int exitValue = 0;
@@ -1271,7 +1298,8 @@ public class PtinyOSDirector extends Director {
      *  @return True if ok to write file.
      *  @exception IllegalActionException If code generation should be halted.
      */
-    private boolean _confirmOverwrite(File file) throws IllegalActionException {
+    private boolean _confirmOverwrite(File file)
+            throws IllegalActionException {
         boolean confirmOverwriteValue = ((BooleanToken) confirmOverwrite
                 .getToken()).booleanValue();
 
@@ -1468,12 +1496,9 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
         text.addLine("public class Loader" + toplevelName
                 + " implements PtinyOSLoader {");
 
-        text
-                .addLine("    public void load(String path, PtinyOSDirector director) {");
-        text
-                .addLine("        String fileSeparator = System.getProperty(\"file.separator\");");
-        text
-                .addLine("        String toBeLoaded = path + fileSeparator + System.mapLibraryName(\""
+        text.addLine("    public void load(String path, PtinyOSDirector director) {");
+        text.addLine("        String fileSeparator = System.getProperty(\"file.separator\");");
+        text.addLine("        String toBeLoaded = path + fileSeparator + System.mapLibraryName(\""
                         + toplevelName + "\");");
         text.addLine("        toBeLoaded = toBeLoaded.replace('\\\\', '/');");
         text.addLine("        System.out.println(\"" + toplevelName
@@ -1490,11 +1515,9 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
 
         text.addLine("    public void startThreads() {");
         text.addLine("        try {");
-        text
-                .addLine("        this.eventAcceptThread = new EventAcceptThread();");
+        text.addLine("        this.eventAcceptThread = new EventAcceptThread();");
         text.addLine("        this.eventAcceptThread.start();");
-        text
-                .addLine("        this.commandReadThread = new CommandReadThread();");
+        text.addLine("        this.commandReadThread = new CommandReadThread();");
         text.addLine("        this.commandReadThread.start();");
         text.addLine("        } catch (Exception e) {");
         text.addLine("            MessageHandler.error(\"Could not join thread.\", e);");
@@ -1524,89 +1547,66 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
         text.addLine("        processEvent" + toplevelName + "(currentTime);");
         text.addLine("    }");
 
-        text
-                .addLine("    public void receivePacket(long currentTime, String packet) {");
+        text.addLine("    public void receivePacket(long currentTime, String packet) {");
         text.addLine("        receivePacket" + toplevelName
                 + "(currentTime, packet);");
         text.addLine("    }");
 
-        text
-                .addLine("    public void enqueueEvent(String newTime) {");
+        text.addLine("    public void enqueueEvent(String newTime) {");
         text.addLine("        this.director.enqueueEvent(newTime);");
         text.addLine("    }");
 
         text.addLine("    public char getCharParameterValue(String param) {");
-        text
-                .addLine("        return this.director.getCharParameterValue(param);");
+        text.addLine("        return this.director.getCharParameterValue(param);");
         text.addLine("    }");
 
-        text
-                .addLine("    public boolean sendToPort(String portName, String expression) {");
-        text
-                .addLine("        return this.director.sendToPort(portName, expression);");
+        text.addLine("    public boolean sendToPort(String portName, String expression) {");
+        text.addLine("        return this.director.sendToPort(portName, expression);");
         text.addLine("    }");
 
-        text
-                .addLine("    public void tosDebug(String debugMode, String message, String nodeID) {");
-        text
-                .addLine("        this.director.tosDebug(debugMode, message, nodeID);");
+        text.addLine("    public void tosDebug(String debugMode, String message, String nodeID) {");
+        text.addLine("        this.director.tosDebug(debugMode, message, nodeID);");
         text.addLine("    }");
 
         //////////////////////// Begin socket methods. ////////////////////
-        text
-                .addLine("    public ServerSocket serverSocketCreate(short port) {");
+        text.addLine("    public ServerSocket serverSocketCreate(short port) {");
         text.addLine("        return this.director.serverSocketCreate(port);");
         text.addLine("    }");
 
-        text
-                .addLine("    public void serverSocketClose(ServerSocket serverSocket) {");
+        text.addLine("    public void serverSocketClose(ServerSocket serverSocket) {");
         text.addLine("        this.director.serverSocketClose(serverSocket);");
         text.addLine("    }");
 
-        text
-                .addLine("    public Selector selectorCreate(ServerSocket serverSocket, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
-        text
-                .addLine("        return this.director.selectorCreate(serverSocket, opAccept, opConnect, opRead, opWrite);");
+        text.addLine("    public Selector selectorCreate(ServerSocket serverSocket, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
+        text.addLine("        return this.director.selectorCreate(serverSocket, opAccept, opConnect, opRead, opWrite);");
         text.addLine("    }");
 
-        text
-                .addLine("    public void selectorRegister(Selector selector, SelectableChannel SocketChannel, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
-        text
-                .addLine("        this.director.selectorRegister(selector, SocketChannel, opAccept, opConnect, opRead, opWrite);");
+        text.addLine("    public void selectorRegister(Selector selector, SelectableChannel SocketChannel, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
+        text.addLine("        this.director.selectorRegister(selector, SocketChannel, opAccept, opConnect, opRead, opWrite);");
         text.addLine("    }");
 
         text.addLine("    public void selectorClose(Selector selector) {");
         text.addLine("        this.director.selectorClose(selector);");
         text.addLine("    }");
 
-        text
-                .addLine("    public SelectableChannel selectSocket(Selector selector, boolean[] notNullIfClosing, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
-        text
-                .addLine("        return this.director.selectSocket(selector, notNullIfClosing, opAccept, opConnect, opRead, opWrite);");
+        text.addLine("    public SelectableChannel selectSocket(Selector selector, boolean[] notNullIfClosing, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
+        text.addLine("        return this.director.selectSocket(selector, notNullIfClosing, opAccept, opConnect, opRead, opWrite);");
         text.addLine("    }");
 
-        text
-                .addLine("    public SocketChannel acceptConnection(SelectableChannel serverSocketChannel) {");
-        text
-                .addLine("        return this.director.acceptConnection(serverSocketChannel);");
+        text.addLine("    public SocketChannel acceptConnection(SelectableChannel serverSocketChannel) {");
+        text.addLine("        return this.director.acceptConnection(serverSocketChannel);");
         text.addLine("    }");
 
-        text
-                .addLine("    public void socketChannelClose(SelectableChannel socketChannel) {");
-        text
-                .addLine("        this.director.socketChannelClose(socketChannel);");
+        text.addLine("    public void socketChannelClose(SelectableChannel socketChannel) {");
+        text.addLine("        this.director.socketChannelClose(socketChannel);");
         text.addLine("    }");
 
-        text
-                .addLine("    public int socketChannelWrite(SocketChannel socketChannel, byte[] writeBuffer) {");
-        text
-                .addLine("        return this.director.socketChannelWrite(socketChannel, writeBuffer);");
+        text.addLine("    public int socketChannelWrite(SocketChannel socketChannel, byte[] writeBuffer) {");
+        text.addLine("        return this.director.socketChannelWrite(socketChannel, writeBuffer);");
         text.addLine("    }");
 
-        text
-                .addLine("    public int socketChannelRead(SocketChannel socketChannel, byte[] readBuffer) {");
-        text
-                .addLine("        return this.director.socketChannelRead(socketChannel, readBuffer);");
+        text.addLine("    public int socketChannelRead(SocketChannel socketChannel, byte[] readBuffer) {");
+        text.addLine("        return this.director.socketChannelRead(socketChannel, readBuffer);");
         text.addLine("    }");
         //////////////////////// End socket methods. //////////////////////
 
@@ -1757,9 +1757,8 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
                 // Note: we do not conditionally add this in, so
                 // makefile must be regenerated if user wants to use
                 // makefile with non-ptII platform.
-                text
-                        .addLine("PFLAGS += "
-                                + "\"-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet\"");
+                text.addLine("PFLAGS += "
+                        + "\"-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet\"");
                 break;
             }
         }
@@ -1828,15 +1827,8 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
     
             //FIXME: can the list be empty?
     
-            /*
-             if (sourcePortList.size() > 1) {
-             throw new IllegalActionException(port, "Input port " +
-             "cannot receive data from multiple sources in NC.");
-             }*/
             CompositeActor container = (CompositeActor) getContainer();
     
-            //NamedObj toplevel = _toplevelNC();
-            //            if (sourcePortList != null && (container != toplevel)) {
             if ((sourcePortList != null)
                     && !(container instanceof PtinyOSCompositeActor)) {
                 // FIXME: test this code
@@ -1964,14 +1956,12 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
      */
     private void _initializeParameters() {
         try {
-            _attachText(
-                    "_iconDescription",
-                    "<svg>\n"
-                            + "<rect x=\"-40\" y=\"-15\" width=\"80\" height=\"30\" "
-                            + "style=\"fill:blue\"/>"
-                            + "<text x=\"-36\" y=\"8\" "
-                            + "style=\"font-size:20; font-family:SansSerif; fill:white\">"
-                            + "PtinyOS</text></svg>");
+            _attachText("_iconDescription", "<svg>\n"
+                    + "<rect x=\"-40\" y=\"-15\" width=\"80\" height=\"30\" "
+                    + "style=\"fill:blue\"/>"
+                    + "<text x=\"-36\" y=\"8\" "
+                    + "style=\"font-size:20; font-family:SansSerif; fill:white\">"
+                    + "PtinyOS</text></svg>");
 
             // Set the code generation output directory to the current
             // working directory.
@@ -2020,14 +2010,15 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
             // Set number of nodes to be simulated to be equal to 1.
             // NOTE: only the top level value of this parameter matters.
-            numberOfNodes = new Parameter(this, "numberOfNodes", new IntToken(1));
+            numberOfNodes = new Parameter(this, "numberOfNodes",
+                    new IntToken(1));
             numberOfNodes.setTypeEquals(BaseType.INT);
             numberOfNodes.setVisibility(Settable.NOT_EDITABLE);
 
             // Set the boot up time range to the defaul to of 10 sec.
             // NOTE: only the top level value of this parameter matters.
-            bootTimeRange = new Parameter(this, "bootTimeRange", new IntToken(
-                    10));
+            bootTimeRange = new Parameter(this, "bootTimeRange",
+                    new IntToken(10));
             bootTimeRange.setTypeEquals(BaseType.INT);
 
             // Set compile target platform to ptII.
@@ -2289,8 +2280,8 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
                     if (_debugging) {
                         _debug(_name + ">" + line);
                     }
-
                     System.out.println(_name + ">" + line);
+                    
                 }
 
                 if (printWriter != null) {
