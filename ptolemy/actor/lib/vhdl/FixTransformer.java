@@ -27,6 +27,8 @@
  */
 package ptolemy.actor.lib.vhdl;
 
+import java.util.Iterator;
+
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -146,17 +148,21 @@ public class FixTransformer extends TypedAtomicActor {
         precision.setExpression("31:0");  
 
         Parameter overflow = new StringParameter(this, name + "Overflow");
-        overflow.setExpression("GROW");
-        overflow.addChoice("GROW");
-        overflow.addChoice("ROUND");
-        overflow.addChoice("WRAP");        
-        overflow.addChoice("CLIP");        
-
         Parameter rounding = new StringParameter(this, name + "Rounding");
+
+        overflow.setExpression("CLIP");
+
+        Iterator iterator = Overflow.nameIterator();        
+        while (iterator.hasNext()) {
+            overflow.addChoice(((String) iterator.next()).toUpperCase());
+        }
+        
         rounding.setExpression("HALF_EVEN");
-        rounding.addChoice("HALF_EVEN");
-        rounding.addChoice("ROUND");
-        rounding.addChoice("WRAP");        
+        
+        iterator = Rounding.nameIterator();        
+        while (iterator.hasNext()) {
+            rounding.addChoice(((String) iterator.next()).toUpperCase());
+        }
         
         QueuedTypedIOPort port =
             new QueuedTypedIOPort(this, name, false, true);
