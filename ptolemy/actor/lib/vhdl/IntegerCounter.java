@@ -159,7 +159,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
                 
             _currentCount = _previousCount;
     
-            if (enable.hasToken(0)) {
+            if (enable.getContainer() != null && enable.hasToken(0)) {
                 FixToken enableToken = (FixToken) enable.get(0);
                 
                 _checkFixTokenWidth(enableToken, 1);
@@ -170,6 +170,8 @@ public class IntegerCounter extends SynchronousFixTransformer {
                 if (enableValue) {
                     _currentCount++;                    
                 }
+            } else if (enable.getContainer() == null) {
+                _currentCount++;                    
             }
             
             if (reset.hasToken(0)) {
