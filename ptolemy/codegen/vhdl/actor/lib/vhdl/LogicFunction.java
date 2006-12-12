@@ -111,7 +111,7 @@ public class LogicFunction extends VHDLCodeGeneratorHelper {
 
         Precision precisionA = _getSourcePortPrecision(actor.A);
         Precision precisionB = _getSourcePortPrecision(actor.B);
-        Precision precisionC = _getSourcePortPrecision(actor.output);
+        Precision precisionC = new Precision(_getPortPrecision(actor.output));
 
                
         ArrayList args = new ArrayList();
