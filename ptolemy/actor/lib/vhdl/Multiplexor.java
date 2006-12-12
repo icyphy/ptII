@@ -30,11 +30,12 @@ package ptolemy.actor.lib.vhdl;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.FixToken;
-import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.math.Precision;
 
 //////////////////////////////////////////////////////////////////////////
 //// Multiplexor
@@ -95,7 +96,6 @@ public class Multiplexor extends SynchronousFixTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
     /** output a consecutive subset of the input bits. 
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
@@ -111,14 +111,31 @@ public class Multiplexor extends SynchronousFixTransformer {
                 _channel = channel.fixValue().getUnscaledValue().intValue();
             }
     
-            Token tokenA = null;
-            Token tokenB = null;
+            Precision outputPrecision = 
+                new Precision(((Parameter) getAttribute(
+                        "outputPrecision")).getExpression());
+            
+
+            FixToken tokenA = null;
+            FixToken tokenB = null;
             
             if (A.hasToken(0)) {
-                tokenA = A.get(0);
+                tokenA = (FixToken) A.get(0);
+                if (tokenA.fixValue().getPrecision().getNumberOfBits() != 
+                    outputPrecision.getNumberOfBits()) {
+
+                    throw new IllegalActionException(this,
+                    "Input A has different width than the output port");
+                }        
             }
             if (B.hasToken(0)) {
-                tokenB = B.get(0);
+                tokenB = (FixToken) B.get(0);
+                if (tokenB.fixValue().getPrecision().getNumberOfBits() != 
+                    outputPrecision.getNumberOfBits()) {
+
+                    throw new IllegalActionException(this,
+                    "Input B has different width than the output port");
+                }        
             }
             
             if (_channel == 0) {
@@ -135,6 +152,7 @@ public class Multiplexor extends SynchronousFixTransformer {
     /** Initialize to the default, which is to use channel zero. */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        
         _channel = 0;
     }
     
