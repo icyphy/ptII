@@ -29,6 +29,7 @@ package ptolemy.actor.lib.vhdl;
 
 import java.util.Iterator;
 
+import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -39,7 +40,6 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
@@ -90,11 +90,13 @@ public class FixTransformer extends TypedAtomicActor {
      * @throws IllegalActionException If there is no precision
      *  parameter for the given port. 
      */
-    public String getPortPrecision(Port port) 
+    public String getPortPrecision(IOPort port) 
             throws IllegalActionException {
-        Parameter precision = (Parameter) ((Entity) port
-                .getContainer()).getAttribute(port.getName() + "Precision");  
-
+        
+        Parameter precision = null;
+        precision = (Parameter) ((Entity) port.getContainer())
+        .getAttribute(port.getName() + "Precision");  
+        
         if (precision == null) {
             throw new IllegalActionException(this, port.getName()
                     + " does not have an precision parameter.");
@@ -221,19 +223,46 @@ public class FixTransformer extends TypedAtomicActor {
     protected void _setAndHideQuantizationParameters(
             String precisionString, String overflowString, String roundingString) 
             throws IllegalActionException {
-        ((Parameter) getAttribute("outputPrecision")).setVisibility(Settable.NONE);
-        ((Parameter) getAttribute("outputOverflow")).setVisibility(Settable.NONE);
-        ((Parameter) getAttribute("outputRounding")).setVisibility(Settable.NONE);
    
         _setQuantizationParameters(precisionString, overflowString, roundingString);
+        _showQuantizationParameters(false, false, false);
+    }
+
+    protected void _showQuantizationParameters(
+            boolean showPrecision, boolean showOverflow, boolean showRounding) 
+            throws IllegalActionException {
+        Parameter precision = ((Parameter) getAttribute("outputPrecision"));
+        precision.setVisibility((showPrecision) ? Settable.FULL : Settable.NONE);
+
+        Parameter overflow = ((Parameter) getAttribute("outputOverflow"));
+        overflow.setVisibility((showOverflow) ? Settable.FULL : Settable.NONE);
+
+        Parameter rounding = ((Parameter) getAttribute("outputRounding"));
+        rounding.setVisibility((showRounding) ? Settable.FULL : Settable.NONE);
     }
     
+    /**
+     * 
+     * @param precisionString
+     * @param overflowString
+     * @param roundingString
+     * @throws IllegalActionException
+     */
     protected void _setQuantizationParameters(
             String precisionString, String overflowString, String roundingString) 
             throws IllegalActionException {
-        ((Parameter) getAttribute("outputPrecision")).setExpression(precisionString);
-        ((Parameter) getAttribute("outputOverflow")).setExpression(overflowString);
-        ((Parameter) getAttribute("outputRounding")).setExpression(roundingString);       
+        if (precisionString != null) {
+            ((Parameter) getAttribute("outputPrecision"))
+            .setExpression(precisionString);
+        }
+        if (overflowString != null) {
+            ((Parameter) getAttribute("outputOverflow"))
+            .setExpression(overflowString);
+        }
+        if (roundingString != null) {
+            ((Parameter) getAttribute("outputRounding"))
+            .setExpression(roundingString);       
+        }
     }
         
     ///////////////////////////////////////////////////////////////////
