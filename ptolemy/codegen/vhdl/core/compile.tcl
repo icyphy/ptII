@@ -46,6 +46,9 @@ array set entity_class {
 	pt_ufixed_compare_lat0 pt_ufixed_compare
 	ptmux2 ptmux2
 	ptmux2_lat0 ptmux2
+	ptcounter ptcounter
+	ptlogic ptlogic
+	ptlogic_lat0 ptlogic
 }
 
 array set entity1_class {

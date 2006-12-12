@@ -1,0 +1,22 @@
+<interfaceDefinition version='1.1' language='vhdl' kind='component' name='ptcounter'>
+  <useClause path='ieee.std_logic_arith.all' />
+  <useClause path='ieee.std_logic_unsigned.all' />
+  <useClause path='ieee.std_logic_1164.all' />
+    <macroList>
+
+      <macro name='width' type='integer' initializer='32' />
+      <macro name='use_enable' type='boolean' initializer='true' />
+      <macro name='reset_active_value' type='std_logic' initializer='&apos;0&apos;' />
+      <macro name='enable_active_value' type='std_logic' initializer='&apos;0&apos;' />
+      <macro name='wrap' type='boolean' initializer='true' />
+
+    </macroList>
+    <portList>
+
+      <port name='clk' direction='in' type='std_logic' />
+      <port name='reset' direction='in' type='std_logic' />
+      <port name='enable' direction='in' type='std_logic' />
+      <port name='output' direction='out' type='std_logic_vector (width - 1 downto 0)' />
+
+    </portList>
+</interfaceDefinition>

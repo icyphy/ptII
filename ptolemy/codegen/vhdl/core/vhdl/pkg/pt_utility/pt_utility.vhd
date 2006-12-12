@@ -14,6 +14,8 @@ type FIXED_TYPE_SIGN is (SIGNED_TYPE, UNSIGNED_TYPE);
 --Type to represent comparator operation
 type COMPARETYPE is (GEQ,LEQ,EQ,G,L,NEQ);
 
+type LOGICTYPE is (PT_OR,PT_AND,PT_XOR,PT_NAND,PT_NOR,PT_XNOR);
+
 end package pt_utility;
 
 package body pt_utility is
