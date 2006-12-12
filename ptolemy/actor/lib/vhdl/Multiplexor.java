@@ -111,15 +111,20 @@ public class Multiplexor extends SynchronousFixTransformer {
                 _channel = channel.fixValue().getUnscaledValue().intValue();
             }
     
+            Token tokenA = null;
+            Token tokenB = null;
+            
             if (A.hasToken(0)) {
-                if (_channel == 0) {
-                    sendOutput(output, 0, A.get(0));
-                }
+                tokenA = A.get(0);
             }
             if (B.hasToken(0)) {
-                if (_channel == 1) {
-                    sendOutput(output, 0, B.get(0));
-                }
+                tokenB = B.get(0);
+            }
+            
+            if (_channel == 0) {
+                sendOutput(output, 0, tokenA);
+            } else {
+                sendOutput(output, 0, tokenB);                
             }
         }
         else {
