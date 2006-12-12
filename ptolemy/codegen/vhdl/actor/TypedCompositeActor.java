@@ -29,9 +29,11 @@ package ptolemy.codegen.vhdl.actor;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGenerator;
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
@@ -77,12 +79,6 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer result = new StringBuffer();
-
-        if (getCodeGenerator().getGenerateFile() == 
-            VHDLCodeGenerator.TESTBENCH) {
-            result.append("clk <= not clk after 50 ns ;" + _eol);  
-            result.append("reset <= '1' after 110 ns ;" + _eol); 
-        }
         
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
         .deepEntityList().iterator();
@@ -126,6 +122,34 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
         return files;
     }
     
+
+    /** Generate a set of shared code fragments of the associated
+     *  composite actor.  It returns the result of calling
+     *  getSharedCode() method of the helpers of all contained actors.
+     *  
+     *  @return a set of shared code fragments.
+     *  @exception IllegalActionException If the helper associated with
+     *  an actor throws it while generating shared code for the actor.
+     */
+    public Set getSharedCode() throws IllegalActionException {
+        Set sharedCode = new HashSet();
+
+        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+                .deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            VHDLCodeGeneratorHelper helper =  
+                    _getHelper((NamedObj) actor);
+
+            if (helper.doGenerate()) {
+                sharedCode.addAll(helper.getSharedCode());
+            }
+        }
+
+        return sharedCode;
+    }
+
     /**
      * Throw an exception.
      * @throws IllegalActionException Thrown if a composite is asked

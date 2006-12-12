@@ -60,6 +60,9 @@ public class AddSubtract extends VHDLCodeGeneratorHelper {
         super(actor);
     }
 
+    /**
+     * 
+     */
     public Set getSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
         _codeStream.clear();
