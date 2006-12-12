@@ -14,6 +14,7 @@ end component ptregister;
 /**/
 
 /*** fireBlock ($width) ***/
+$actorSymbol(instance): ptregister
 	GENERIC MAP ( 
 		WIDTH => $width, 
 	)
