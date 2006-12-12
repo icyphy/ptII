@@ -66,9 +66,10 @@ public class Multiplexor extends SynchronousFixTransformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
-        input = new TypedIOPort(this,"input",true,false);
-        input.setMultiport(true);  
-        input.setTypeEquals(BaseType.FIX);
+        A = new TypedIOPort(this, "A", true, false);
+        A.setTypeEquals(BaseType.FIX);
+        B = new TypedIOPort(this, "B", true, false);
+        B.setTypeEquals(BaseType.FIX);
         
         select = new TypedIOPort(this,"select",true,false);
         select.setTypeEquals(BaseType.FIX);
@@ -77,10 +78,15 @@ public class Multiplexor extends SynchronousFixTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     
-    /** Input for different data tokens.  This is a multiport of fix 
-     *  point type.
+    /** Input for the first data token stream.  This is a port of 
+     *  fix point type.
      */
-    public TypedIOPort input;
+    public TypedIOPort A;
+
+    /** Input for the second data token stream.  This is a port of 
+     *  fix point type.
+     */
+    public TypedIOPort B;
  
     /** Input for select one of the inputs.  This port has int type.
      */
@@ -96,24 +102,25 @@ public class Multiplexor extends SynchronousFixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if( select.isKnown() && input.isKnown() ) {
+        if( select.isKnown() && A.isKnown() && B.isKnown()) {
             if (select.hasToken(0)) {
                 FixToken channel = (FixToken) select.get(0);
-                _checkFixMaxValue(channel,input.getWidth()-1);
-                _channel = channel.fixValue().getUnscaledValue().intValue();            
+                
+                _checkFixTokenWidth(channel, 1);
+                
+                _channel = channel.fixValue().getUnscaledValue().intValue();
             }
     
-            for (int i = 0; i < input.getWidth(); i++) {
-    
-                if (input.hasToken(i)) {
-                    Token token = input.get(i);
-    
-                    if (i == _channel) {
-                        sendOutput(output,0, token);
-                    }
+            if (A.hasToken(0)) {
+                if (_channel == 0) {
+                    sendOutput(output, 0, A.get(0));
                 }
             }
-    
+            if (B.hasToken(0)) {
+                if (_channel == 1) {
+                    sendOutput(output, 0, B.get(0));
+                }
+            }
         }
         else {
             output.resend(0);
@@ -131,7 +138,8 @@ public class Multiplexor extends SynchronousFixTransformer {
      */
     public void pruneDependencies() {
         super.pruneDependencies();
-        removeDependency(input, output);
+        removeDependency(A, output);
+        removeDependency(B, output);
         removeDependency(select, output);
     }
 
