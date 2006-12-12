@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="gameoflifecomposite" class="ptolemy.actor.TypedCompositeActor">
+<entity name="GameOfLifeComposite" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1448, 880}, maximized=true}">
@@ -12,73 +12,20 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{731.153409090909, 29.0383522727273}">
     </property>
-    <property name="Dead_Value" class="ptolemy.data.expr.Parameter" value="0">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, -265.0]">
-        </property>
-    </property>
-    <property name="Alive_Value" class="ptolemy.data.expr.Parameter" value="1">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, -240.0]">
-        </property>
-    </property>
-    <property name="Size" class="ptolemy.data.expr.Parameter" value="1">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, -260.0]">
-        </property>
-    </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{460, 245}">
         </property>
     </property>
-    <entity name="TypedCompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, -30.0]">
+    <property name="VHDLCodeGenerator" class="ptolemy.codegen.vhdl.kernel.VHDLCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{710, -210}">
         </property>
-        <property name="Alive_Value" class="ptolemy.data.expr.Parameter" value="Alive_Value">
+    </property>
+    <entity name="TypedCompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, -5.0]">
+        </property>
+        <property name="Alive_Value" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -97,7 +44,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 365.0}">
             </property>
         </property>
-        <property name="Dead_Value" class="ptolemy.data.expr.Parameter" value="Dead_Value">
+        <property name="Dead_Value" class="ptolemy.data.expr.Parameter" value="0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -116,7 +63,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 385.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={312, 293, 1002, 507}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 38, 1002, 507}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[787, 400]">
         </property>
@@ -504,114 +451,39 @@
         <link port="Multiplexor3.B" relation="relation19"/>
         <link port="Multiplexor3.select" relation="relation31"/>
     </entity>
-    <entity name="Dead" class="ptolemy.actor.lib.vhdl.FixConst">
-        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="U1.0">
+    <entity name="FixConst" class="ptolemy.actor.lib.vhdl.FixConst">
+        <property name="synthesizable" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="value" class="ptolemy.data.expr.Parameter" value="Dead_Value">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, -210.0]">
-        </property>
-    </entity>
-    <entity name="Alive" class="ptolemy.actor.lib.vhdl.FixConst">
-        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="U1.0">
-        </property>
-        <property name="value" class="ptolemy.data.expr.Parameter" value="Alive_Value">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, -175.0]">
-        </property>
-    </entity>
-    <entity name="FixSequence" class="ptolemy.actor.lib.vhdl.FixSequence">
-        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="U1.0">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1,0,0,1}">
-        </property>
-        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, -20.0]">
-        </property>
-    </entity>
-    <entity name="FixSequence2" class="ptolemy.actor.lib.vhdl.FixSequence">
-        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="U1.0">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 45.0]">
-        </property>
-    </entity>
-    <entity name="FixSequence3" class="ptolemy.actor.lib.vhdl.FixSequence">
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1,1,1,1}">
-        </property>
-        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, -90.0]">
-        </property>
-    </entity>
-    <entity name="FixSequence4" class="ptolemy.actor.lib.vhdl.FixSequence">
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{0,0,0,0}">
-        </property>
-        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, -80.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={554, 334, 332, 232}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{730, -15}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, -20.0]">
         </property>
     </entity>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <vertex name="vertex1" value="[470.0, -165.0]">
-        </vertex>
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <vertex name="vertex1" value="[469.25, -201.25]">
-        </vertex>
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <vertex name="vertex1" value="[480.0, -70.0]">
+        </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <vertex name="vertex1" value="[505.0, -90.0]">
-        </vertex>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <vertex name="vertex1" value="[580.0, 105.0]">
-        </vertex>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <link port="TypedCompositeActor.TL" relation="relation3"/>
-    <link port="TypedCompositeActor.TM" relation="relation3"/>
-    <link port="TypedCompositeActor.TR" relation="relation4"/>
-    <link port="TypedCompositeActor.MR" relation="relation4"/>
-    <link port="TypedCompositeActor.BR" relation="relation4"/>
-    <link port="TypedCompositeActor.BM" relation="relation4"/>
-    <link port="TypedCompositeActor.BL" relation="relation3"/>
-    <link port="TypedCompositeActor.ML" relation="relation3"/>
-    <link port="TypedCompositeActor.Output" relation="relation5"/>
+    <link port="TypedCompositeActor.TL" relation="relation"/>
+    <link port="TypedCompositeActor.TM" relation="relation"/>
+    <link port="TypedCompositeActor.TR" relation="relation"/>
+    <link port="TypedCompositeActor.MR" relation="relation"/>
+    <link port="TypedCompositeActor.BR" relation="relation"/>
+    <link port="TypedCompositeActor.BM" relation="relation"/>
+    <link port="TypedCompositeActor.BL" relation="relation"/>
+    <link port="TypedCompositeActor.ML" relation="relation"/>
+    <link port="TypedCompositeActor.Output" relation="relation2"/>
     <link port="TypedCompositeActor.InitialValue" relation="relation"/>
-    <link port="TypedCompositeActor.Initializing" relation="relation2"/>
-    <link port="Dead.output" relation="relation7"/>
-    <link port="Alive.output" relation="relation6"/>
-    <link port="FixSequence.output" relation="relation"/>
-    <link port="FixSequence2.output" relation="relation2"/>
-    <link port="FixSequence3.output" relation="relation3"/>
-    <link port="FixSequence4.output" relation="relation4"/>
-    <link port="Display.input" relation="relation5"/>
+    <link port="TypedCompositeActor.Initializing" relation="relation"/>
+    <link port="FixConst.output" relation="relation"/>
+    <link port="Display.input" relation="relation2"/>
 </entity>
