@@ -208,9 +208,14 @@ public class VHDLCodeGenerator extends CodeGenerator {
         result.append(_eol + "entity " + _sanitizedModelName + " is" + _eol);
         result.append("    port (" + _eol);
 
-        result.append("        clk : IN std_logic ;" + _eol);
-        result.append("        reset : IN std_logic ");
-                
+        if (_generateFile == SYNTHESIZABLE) {
+            result.append("        clk : IN std_logic ;" + _eol);
+            result.append("        reset : IN std_logic ");
+        } else if (_generateFile == TESTBENCH) {
+            result.append("        clk : OUT std_logic ;" + _eol);
+            result.append("        reset : OUT std_logic ");            
+        }
+        
         CompositeActor composite = 
             (ptolemy.actor.CompositeActor) getContainer();        
 
@@ -238,12 +243,12 @@ public class VHDLCodeGenerator extends CodeGenerator {
                     // Gateway exists.
                     if (sinkHelper.isSynthesizable() != helper.isSynthesizable()) {
 
-                        boolean isInput = helper.doGenerate();
+                        boolean isOutput = helper.doGenerate();
                             
                         result.append(";" + _eol + "        " + helper.getReference(
                             port.getName() + "#" + 0) + " : ");
 
-                        result.append((isInput) ? "IN " : "OUT ");
+                        result.append((isOutput) ? "OUT " : "IN ");
                         
                         result.append(helper._generateVHDLType(port));                            
 
@@ -273,6 +278,11 @@ public class VHDLCodeGenerator extends CodeGenerator {
         StringBuffer result = new StringBuffer();
         
         Iterator ports = _signals.iterator();
+        
+        if (_generateFile == TESTBENCH) {
+            result.append("    SIGNAL clk : std_logic : = '0';" + _eol);
+            result.append("    SIGNAL reset : std_logic : = '0';" + _eol);
+        }
         
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();

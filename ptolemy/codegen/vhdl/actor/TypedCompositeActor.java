@@ -32,11 +32,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.codegen.vhdl.kernel.VHDLCodeGenerator;
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -81,6 +78,12 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer result = new StringBuffer();
 
+        if (getCodeGenerator().getGenerateFile() == 
+            VHDLCodeGenerator.TESTBENCH) {
+            result.append("clk <= not clk after 50 ns ;" + _eol);  
+            result.append("reset <= '1' after 110 ns ;" + _eol); 
+        }
+        
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
         .deepEntityList().iterator();
 
