@@ -69,17 +69,11 @@ public class LogicFunction extends VHDLCodeGeneratorHelper {
         
         int latencyValue = ((IntToken) actor.latency.getToken()).intValue();
                   
-        ArrayList args = new ArrayList();
-        String operation = "ptlogic";
-       
-        operation += (latencyValue == 0) ? "_lat0" : "";
-        
-        args.add(operation);
-       
         if (latencyValue == 0) {
-            _codeStream.appendCodeBlock("sharedBlock_lat0", args);
+        
+            _codeStream.appendCodeBlock("sharedBlock_lat0");
         } else {
-            _codeStream.appendCodeBlock("sharedBlock", args);            
+            _codeStream.appendCodeBlock("sharedBlock");            
         }
         
         sharedCode.add(processCode(_codeStream.toString()));
