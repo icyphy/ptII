@@ -28,11 +28,16 @@
  */
 package ptolemy.codegen.vhdl.actor.lib.vhdl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
+import ptolemy.data.IntToken;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.math.Precision;
 
 /**
  * A helper class for ptolemy.actor.lib.Uniform.
@@ -52,6 +57,79 @@ public class Multiplexor extends VHDLCodeGeneratorHelper {
         super(actor);
     }
     
+    /**
+     * 
+     */
+    public Set getSharedCode() throws IllegalActionException {
+        Set sharedCode = new HashSet();
+        _codeStream.clear();
+
+        ptolemy.actor.lib.vhdl.Multiplexor actor = 
+            (ptolemy.actor.lib.vhdl.Multiplexor) getComponent();
+        
+        int latencyValue = ((IntToken) actor.latency.getToken()).intValue();
+
+        Precision precisionA = _getSourcePortPrecision(actor.A);
+        Precision precisionB = _getSourcePortPrecision(actor.B);
+        
+        if (latencyValue == 0) {
+            _codeStream.appendCodeBlock("sharedBlock_lat0");
+        } else {
+            _codeStream.appendCodeBlock("sharedBlock");
+        }
+        
+        sharedCode.add(processCode(_codeStream.toString()));
+        return sharedCode;
+    }
+
+    /**
+     * Generate fire code.
+     * The method reads in the <code>fireBlock</code> from FixConst.c,
+     * replaces macros with their values and returns the processed code
+     * block.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters
+     *  an error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+        super.generateFireCode();
+
+        ptolemy.actor.lib.vhdl.Multiplexor actor = 
+            (ptolemy.actor.lib.vhdl.Multiplexor) getComponent();
+
+        int latencyValue = ((IntToken) actor.latency.getToken()).intValue();
+
+        Precision precisionA = _getSourcePortPrecision(actor.A);
+        Precision precisionB = _getSourcePortPrecision(actor.B);
+
+            
+        ArrayList args = new ArrayList();
+
+        String componentName = 
+            (latencyValue == 0) ? "pt_mux2" : "pt_mux2_lat0";
+        
+        args.add(componentName);
+
+        Precision outputPrecision = 
+            new Precision(_getPortPrecision(actor.output));
+        
+        int width = outputPrecision.getNumberOfBits();
+        
+        args.add(new Integer(width));
+
+        if (((IntToken) actor.latency.getToken()).intValue() > 0) {
+
+            args.add(actor.latency.getExpression());
+            
+            _codeStream.appendCodeBlock("fireBlock", args);
+        } else {
+            
+            _codeStream.appendCodeBlock("fireBlock_lat0", args);
+        }
+        
+        return processCode(_codeStream.toString());
+    }
+
     /** Get the files needed by the code generated for the Concat actor.
      *  @return A set of strings that are names of the library and package.
      *  @exception IllegalActionException Not Thrown in this subclass.
@@ -59,6 +137,10 @@ public class Multiplexor extends VHDLCodeGeneratorHelper {
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
         files.add("ieee.std_logic_1164.all");
+        files.add("ieee.numeric_std.all");
+        files.add("ieee_proposed.math_utility_pkg.all");
+        files.add("ieee_proposed.fixed_pkg.all");
+        files.add("work.pt_utility.all");
         return files;
     }
 }
