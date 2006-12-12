@@ -38,7 +38,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.FixPoint;
+import ptolemy.math.FixPointQuantization;
+import ptolemy.math.Overflow;
 import ptolemy.math.Precision;
+import ptolemy.math.Rounding;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -143,9 +146,17 @@ public class LogicFunction extends SynchronousFixTransformer {
     
             if(intResult != null )
             {
-                Precision precision = new Precision(1, bitsInResult, 0);
-                FixToken result = new FixToken(intResult.doubleValue(), precision);
-                sendOutput(output, 0, result);
+                Precision precision = new Precision(((Parameter) 
+                        getAttribute("outputPrecision")).getExpression());
+                
+                Overflow overflow = Overflow.getName(((Parameter) getAttribute(
+                "outputOverflow")).getExpression().toLowerCase());
+            
+                Rounding rounding = Rounding.getName(((Parameter) getAttribute(
+                    "outputRounding")).getExpression().toLowerCase());
+                FixPoint result = new FixPoint(intResult.doubleValue(),
+                                       new FixPointQuantization(precision, overflow, rounding));
+                sendOutput(output, 0, new FixToken(result));
             }
         }
         else {

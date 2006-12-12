@@ -82,7 +82,6 @@ public class Slice extends FixTransformer {
         input.setMultiport(true);  
         input.setTypeEquals(BaseType.FIX);
         
-        width = new Parameter(this, "width");
         start = new Parameter(this, "start");
         end = new Parameter(this, "end");
         lsb = new StringParameter(this, "lsb");
@@ -95,10 +94,6 @@ public class Slice extends FixTransformer {
     ////                     ports and parameters                  ////
 
     public TypedIOPort input;
-    
-    public Parameter binaryPoint;
-
-    public Parameter width;
 
     public Parameter start;
 
@@ -115,31 +110,42 @@ public class Slice extends FixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        int widthValue = ((IntToken) width.getToken()).intValue();
-        int startValue = ((IntToken) start.getToken()).intValue();
-        int endValue = ((IntToken) end.getToken()).intValue() + 1;
-        int binaryPointValue = ((IntToken) binaryPoint.getToken()).intValue();
-        boolean lsbValue = ((StringToken) lsb.getToken()).stringValue().equals(
-                "LSB");
-
-        int newStartValue = (lsbValue) ? widthValue - endValue : startValue;
-        int newEndValue = (lsbValue) ? widthValue - startValue : endValue;
-        int shiftBits = (lsbValue) ? startValue : widthValue - endValue;
-
-        char[] mask = new char[widthValue];
-        Arrays.fill(mask, '0');
-        Arrays.fill(mask, newStartValue, newEndValue, '1');
-
-        if (input.hasToken(0)) {
+        if(input.hasToken(0)) {
             FixToken in = (FixToken) input.get(0);
+            int widthValue = in.fixValue().getPrecision().getNumberOfBits();
+            int startValue = ((IntToken) start.getToken()).intValue();
+            int endValue = ((IntToken) end.getToken()).intValue() + 1;
+            boolean lsbValue = ((StringToken) lsb.getToken()).stringValue().equals(
+                    "LSB");
+    
+            int newStartValue = (lsbValue) ? widthValue - endValue : startValue;
+            int newEndValue = (lsbValue) ? widthValue - startValue : endValue;
+            int shiftBits = (lsbValue) ? startValue : widthValue - endValue;
+    
+            char[] mask = new char[widthValue];
+            Arrays.fill(mask, '0');
+            Arrays.fill(mask, newStartValue, newEndValue, '1');
+
             BigDecimal value = new BigDecimal(in.fixValue().getUnscaledValue()
                     .and(new BigInteger(new String(mask), 2)).shiftRight(
                             shiftBits));
+            Precision precision = new Precision(((Parameter) 
+                    getAttribute("outputPrecision")).getExpression());
+            if( (newEndValue - newStartValue) != precision.getNumberOfBits() )
+            {
+                throw new IllegalActionException(this, "Bit width of " +
+                        (newEndValue - newStartValue) + " is not equal to precision "
+                        + precision);
+            }
+
+            Overflow overflow = Overflow.getName(((Parameter) getAttribute(
+            "outputOverflow")).getExpression().toLowerCase());
+        
+            Rounding rounding = Rounding.getName(((Parameter) getAttribute(
+                "outputRounding")).getExpression().toLowerCase());
 
             FixPoint result = new FixPoint(value, new FixPointQuantization(
-                    new Precision(0, newEndValue - newStartValue,
-                            binaryPointValue), Overflow.GROW,
-                    Rounding.HALF_EVEN));
+                    precision, overflow,rounding));
 
             sendOutput(output, 0, new FixToken(result));
         }

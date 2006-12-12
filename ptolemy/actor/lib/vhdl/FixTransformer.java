@@ -219,20 +219,21 @@ public class FixTransformer extends TypedAtomicActor {
      * @param roundingString The given expression for the rounding parameter.
      */
     protected void _setAndHideQuantizationParameters(
-            String precisionString, String overflowString, 
-            String roundingString) {
-        
-        Parameter precision = (Parameter) getAttribute("outputPrecision");
-        Parameter overflow = (Parameter) getAttribute("outputOverflow");
-        Parameter rounding = (Parameter) getAttribute("outputRounding");
-
-        precision.setVisibility(Settable.NONE);
-        overflow.setVisibility(Settable.NONE);
-        rounding.setVisibility(Settable.NONE);
+            String precisionString, String overflowString, String roundingString) 
+            throws IllegalActionException {
+        ((Parameter) getAttribute("outputPrecision")).setVisibility(Settable.NONE);
+        ((Parameter) getAttribute("outputOverflow")).setVisibility(Settable.NONE);
+        ((Parameter) getAttribute("outputRounding")).setVisibility(Settable.NONE);
    
-        precision.setExpression(precisionString);
-        overflow.setExpression(overflowString);
-        rounding.setExpression(roundingString);
+        _setQuantizationParameters(precisionString, overflowString, roundingString);
+    }
+    
+    protected void _setQuantizationParameters(
+            String precisionString, String overflowString, String roundingString) 
+            throws IllegalActionException {
+        ((Parameter) getAttribute("outputPrecision")).setExpression(precisionString);
+        ((Parameter) getAttribute("outputOverflow")).setExpression(overflowString);
+        ((Parameter) getAttribute("outputRounding")).setExpression(roundingString);       
     }
         
     ///////////////////////////////////////////////////////////////////

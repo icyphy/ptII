@@ -165,7 +165,7 @@ public class FixComparator extends SynchronousFixTransformer {
         
         else
         {
-            ((QueuedTypedIOPort) output).resend(0);
+            output.resend(0);
         }
     }
     
