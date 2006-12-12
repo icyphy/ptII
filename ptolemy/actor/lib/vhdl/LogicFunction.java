@@ -119,14 +119,21 @@ public class LogicFunction extends SynchronousFixTransformer {
         
         if( A.isKnown() && B.isKnown() ) {
             BigInteger intResult = null;
-            int bitsInResult = 0;
-            
+            Precision precision = new Precision(((Parameter) 
+                    getAttribute("outputPrecision")).getExpression());
             if (A.hasToken(0) && B.hasToken(0)) {
                 FixPoint valueA = ((FixToken) A.get(0)).fixValue();
                 FixPoint valueB = ((FixToken) B.get(0)).fixValue();
-                int bitsInA = valueA.getPrecision().getNumberOfBits();
-                int bitsInB = valueB.getPrecision().getNumberOfBits();
-                bitsInResult = bitsInA < bitsInB ? bitsInA : bitsInB ;
+                if (valueA.getPrecision().getNumberOfBits() != 
+                    precision.getNumberOfBits()) {
+                    throw new IllegalActionException(this,
+                    "Input A has different width than the output port");
+                }  
+                if (valueB.getPrecision().getNumberOfBits() != 
+                    precision.getNumberOfBits()) {
+                    throw new IllegalActionException(this,
+                    "Input B has different width than the output port");
+                } 
                 BigInteger bigIntA = valueA.getUnscaledValue();
                 BigInteger bigIntB = valueB.getUnscaledValue();
                 if (operation.getExpression().equals("AND")) {
@@ -145,10 +152,7 @@ public class LogicFunction extends SynchronousFixTransformer {
             }
     
             if(intResult != null )
-            {
-                Precision precision = new Precision(((Parameter) 
-                        getAttribute("outputPrecision")).getExpression());
-                
+            {   
                 Overflow overflow = Overflow.getName(((Parameter) getAttribute(
                 "outputOverflow")).getExpression().toLowerCase());
             

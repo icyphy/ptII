@@ -128,6 +128,13 @@ public class FixComparator extends SynchronousFixTransformer {
                 inputB = (FixToken) B.get(0);
             }
             
+            if (inputA.fixValue().getPrecision().getNumberOfBits() != 
+                inputB.fixValue().getPrecision().getNumberOfBits()) {
+
+                throw new IllegalActionException(this,
+                "Input A has different width than Input B port");
+            }  
+            
             if (operation.getExpression().equals("=")) {
                 if( inputA.equals(inputB) )
                 {
