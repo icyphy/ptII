@@ -43,6 +43,8 @@
         </property>
     </entity>
     <entity name="FixConst" class="ptolemy.actor.lib.vhdl.FixConst">
+        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="U1.0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 90.0]">
         </property>
     </entity>
