@@ -407,16 +407,8 @@ public class FixType extends StructuredType implements Serializable {
                 _precision.getFractionBitLength());
         int integerBits = Math.min(precision.getIntegerBitLength(), _precision
                 .getIntegerBitLength());
-
-        if (precision.isSigned() != _precision.isSigned()) {
-            throw new IllegalArgumentException("FixType._greatestLowerBound: "
-                + "Signed and Unsigned are not comparable");
-        }
-        
-        int sign = (precision.isSigned()) ? 1 : 0;
-        
-        return new FixType(new Precision(
-                sign, fractionBits + integerBits, integerBits));
+        return new FixType(new Precision(fractionBits + integerBits,
+                integerBits));
     }
 
     /** Return the least upper bound of this type with the specified
@@ -429,7 +421,7 @@ public class FixType extends StructuredType implements Serializable {
      */
     protected StructuredType _leastUpperBound(StructuredType type) {
         if (!(type instanceof FixType)) {
-            throw new IllegalArgumentException("FixType._leastUpperBound: "
+            throw new IllegalArgumentException("FixType._greatestLowerBound: "
                     + "The argument is not a FixType.");
         }
         Precision precision = ((FixType) type).getPrecision();
@@ -437,16 +429,8 @@ public class FixType extends StructuredType implements Serializable {
                 _precision.getFractionBitLength());
         int integerBits = Math.max(precision.getIntegerBitLength(), _precision
                 .getIntegerBitLength());
-        
-        if (precision.isSigned() != _precision.isSigned()) {
-            throw new IllegalArgumentException("FixType._leastUpperBound: "
-                + "Signed and Unsigned are not comparable");
-        }
-        
-        int sign = (precision.isSigned()) ? 1 : 0;
-        
-        FixType returnType = new FixType(new Precision(sign, 
-                fractionBits + integerBits, integerBits));
+        FixType returnType = new FixType(new Precision(fractionBits
+                + integerBits, integerBits));
         returnType._checkPrecision();
         return returnType;
     }
