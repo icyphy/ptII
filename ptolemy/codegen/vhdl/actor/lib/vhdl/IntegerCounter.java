@@ -85,8 +85,6 @@ public class IntegerCounter extends VHDLCodeGeneratorHelper {
         String overflow = ((Parameter)
                 actor.getAttribute("outputPrecision")).getExpression();
         
-        args.add(actor.hasEnable.getExpression());
-
         args.add(overflow.equals("WRAP") ? "true" : "false");
         
         boolean hasEnable = 
