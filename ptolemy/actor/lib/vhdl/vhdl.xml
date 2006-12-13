@@ -25,6 +25,8 @@
 		  <entity name="Slice" class="ptolemy.actor.lib.vhdl.Slice"></entity>
 		  
 		  <entity name="Clock" class="ptolemy.actor.lib.Clock"></entity>
+		  
+		  <entity name="PtalonActor" class="ptolemy.actor.ptalon.PtalonActor"/>
 
       </group>
     ?>
