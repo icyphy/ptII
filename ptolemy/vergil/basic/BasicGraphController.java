@@ -268,71 +268,74 @@ public abstract class BasicGraphController extends AbstractGraphController
                 public void run() {
                     Locatable location = (Locatable) settable;
                     Figure figure = getFigure(location);
-                    Point2D origin = figure.getOrigin();
-                    double originalUpperLeftX = origin.getX();
-                    double originalUpperLeftY = origin.getY();
-
-                    // NOTE: the following call may trigger an evaluation,
-                    // which results in another recursive call to this method.
-                    // Thus, we ignore the inside call and detect it with a
-                    // private variable.
-                    double[] newLocation;
-
-                    try {
-                        _inValueChanged = true;
-                        newLocation = location.getLocation();
-                    } finally {
-                        _inValueChanged = false;
-                    }
-
-                    double translationX = newLocation[0] - originalUpperLeftX;
-                    double translationY = newLocation[1] - originalUpperLeftY;
-
-                    if ((translationX != 0.0) || (translationY != 0.0)) {
-                        // The translate method supposedly handles the required
-                        // repaint.
-                        figure.translate(translationX, translationY);
-
-                        // Reroute edges linked to this figure.
-                        GraphModel model = getGraphModel();
-                        Object userObject = figure.getUserObject();
-
-                        if (userObject != null) {
-                            Iterator inEdges = model.inEdges(userObject);
-
-                            while (inEdges.hasNext()) {
-                                Figure connector = getFigure(inEdges.next());
-
-                                if (connector instanceof Connector) {
-                                    ((Connector) connector).reroute();
-                                }
-                            }
-
-                            Iterator outEdges = model.outEdges(userObject);
-
-                            while (outEdges.hasNext()) {
-                                Figure connector = getFigure(outEdges.next());
-
-                                if (connector instanceof Connector) {
-                                    ((Connector) connector).reroute();
-                                }
-                            }
-
-                            if (model.isComposite(userObject)) {
-                                Iterator edges = GraphUtilities
-                                        .partiallyContainedEdges(userObject,
-                                                model);
-
-                                while (edges.hasNext()) {
-                                    Figure connector = getFigure(edges.next());
-
+                    if (figure != null) {
+                        Point2D origin = figure.getOrigin();
+    
+                        double originalUpperLeftX = origin.getX();
+                        double originalUpperLeftY = origin.getY();
+    
+                        // NOTE: the following call may trigger an evaluation,
+                        // which results in another recursive call to this method.
+                        // Thus, we ignore the inside call and detect it with a
+                        // private variable.
+                        double[] newLocation;
+    
+                        try {
+                            _inValueChanged = true;
+                            newLocation = location.getLocation();
+                        } finally {
+                            _inValueChanged = false;
+                        }
+    
+                        double translationX = newLocation[0] - originalUpperLeftX;
+                        double translationY = newLocation[1] - originalUpperLeftY;
+    
+                        if ((translationX != 0.0) || (translationY != 0.0)) {
+                            // The translate method supposedly handles the required
+                            // repaint.
+                            figure.translate(translationX, translationY);
+    
+                            // Reroute edges linked to this figure.
+                            GraphModel model = getGraphModel();
+                            Object userObject = figure.getUserObject();
+    
+                            if (userObject != null) {
+                                Iterator inEdges = model.inEdges(userObject);
+    
+                                while (inEdges.hasNext()) {
+                                    Figure connector = getFigure(inEdges.next());
+    
                                     if (connector instanceof Connector) {
                                         ((Connector) connector).reroute();
                                     }
                                 }
+    
+                                Iterator outEdges = model.outEdges(userObject);
+    
+                                while (outEdges.hasNext()) {
+                                    Figure connector = getFigure(outEdges.next());
+    
+                                    if (connector instanceof Connector) {
+                                        ((Connector) connector).reroute();
+                                    }
+                                }
+    
+                                if (model.isComposite(userObject)) {
+                                    Iterator edges = GraphUtilities
+                                            .partiallyContainedEdges(userObject,
+                                                    model);
+    
+                                    while (edges.hasNext()) {
+                                        Figure connector = getFigure(edges.next());
+    
+                                        if (connector instanceof Connector) {
+                                            ((Connector) connector).reroute();
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
+                        }
                 } /* end of run() method */
             }; /* end of Runnable definition. */
 
