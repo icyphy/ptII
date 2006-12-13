@@ -82,6 +82,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.SharedParameter;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -155,9 +156,9 @@ import ptolemy.util.StringUtilities;
    using a separate PtinyOSDirector (and hence a separate instance of
    TOSSIM) for each node.  In TOSSIM, node 0 is the base station,
    which is the sink for routing.  This director overrides the
-   built-in id number using the <i>nodeID<i> and <i>isBaseStation</i>
-   parameters, and passes these values to the nesC compiler so that
-   they are hard coded into TOSSIM.
+   built-in id number using the <i>nodeID<i> and <i>baseStation</i>
+   parameters, and passes a node ID value to the nesC compiler so that
+   it is hard coded into TOSSIM.
 
    TOSSIM uses server sockets attached to network ports for commands
    and events in order to communicate with external tools, such as
@@ -179,7 +180,7 @@ import ptolemy.util.StringUtilities;
    <li><i>bootTimeRange</i>: TOSSIM setting for the number of seconds over which nodes may boot.
    <li><i>target</i>: Compilation target for the generated nesC code.
    <li><i>simulate</i>: Flag for choosing whether to simulate in ptII.
-   <li><i>isBaseStation</i>: Flag for indicating that this node is a base station.
+   <li><i>baseStation</i>: Name of base station node in this model.
    <li><i>commandPort</i>: Port number for TOSSIM command server socket.
    <li><i>eventPort</i>: Port number for TOSSIM event server socket.
    <li><i>timeResolution</i>: The time precision used by this director (inherited from Director).
@@ -288,13 +289,11 @@ public class PtinyOSDirector extends Director {
     /** Flag for choosing whether to simulate in ptII.  The value
      *  defaults to true, and is of type BooleanToken.
      */
-    public Parameter simulate;
+    public SharedParameter simulate;
 
-    /** Flag for indicating that this node is a base station.  True if
-     *  this is a base station.  The value defaults to false, and is
-     *  of type BooleanToken.
+    /** Specifies the name of the base station.
      */
-    public Parameter isBaseStation;
+    public SharedParameter baseStation;
 
     /** Port number for TOSSIM command server socket.  The value
      *  defaults to 10584.
@@ -1733,13 +1732,18 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         text.addLine("PFLAGS +=" + " -DCOMMAND_PORT=" + commandPort.getToken()
                 + " -DEVENT_PORT=" + eventPort.getToken());
 
-        // If isBaseStation is <i>true</i>, then _PTII_NODEID in the
-        // makefile is set to 0, which makes this a base station.  A
-        // non-zero value of the nodeID parameter will be ignored.  If
-        // <i>false</i>, use the regular node ID.
-        boolean isBaseStationValue = ((BooleanToken) isBaseStation.getToken())
-                .booleanValue();
-        if (isBaseStationValue == true) {
+        // If the value of <i>baseStation</i> is the same as the Ptolemy II name of
+        // the node, then make this node a base station by setting _PTII_NODEID in the
+        // makefile to 0.  A non-zero value of the nodeID parameter will be ignored.
+        // If the values are not equal, use the regular node ID value.
+        String baseStationValue = ((StringToken)baseStation.getToken()).stringValue();
+        NamedObj obj = this.getContainer();
+        NamedObj temp = obj.getContainer();
+        if (temp != null) {
+            obj = temp;
+        }
+        String containerName = temp.getName();
+        if (baseStationValue.equals(containerName)) {
             text.addLine("PFLAGS +=" + "-D_PTII_NODEID=" + "0");
         } else {
             text.addLine("PFLAGS +=" + "-D_PTII_NODEID=" + nodeID.getToken());
@@ -2028,14 +2032,13 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
             // Set simulate to true.
             // NOTE: only the top level value of this parameter matters.
-            simulate = new Parameter(this, "simulate", BooleanToken.TRUE);
+            simulate = new SharedParameter(this, "simulate", PtinyOSDirector.class, "true");
             simulate.setTypeEquals(BaseType.BOOLEAN);
 
-            // Set so that this is not a base station.
-            isBaseStation = new Parameter(this, "isBaseStation",
-                    BooleanToken.FALSE);
-            isBaseStation.setTypeEquals(BaseType.BOOLEAN);
-
+            // Set to the default node name.
+            baseStation = new SharedParameter(this, "baseStation",
+                    PtinyOSDirector.class, "\"MicaBoard\"");
+            
             // Set command and event ports for TOSSIM.
             commandPort = new PtinyOSIntegerParameter(this, "commandPort", 2);
             commandPort.setExpression("10584");
