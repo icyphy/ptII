@@ -370,7 +370,11 @@ public class InequalitySolver {
 
         if (init == null) {
             throw new InvalidStateException(
-                    "The underlying CPO is not a lattice.");
+                    "The underlying CPO is not a lattice because "
+                    + "the CPO has no "
+                    + (least ? "bottom" : "top")
+                    + ". The CPO was a " + _cpo.getClass().getName());
+            
         }
 
         for (Enumeration e = _Clist.keys(); e.hasMoreElements();) {
