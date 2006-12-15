@@ -198,9 +198,11 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
     }    
 
     /**
-     * 
-     * @return
-     * @throws IllegalActionException 
+     * Return whether or not this helper is synthesizable. It checks the
+     * synthesizable parameter of the actor. Return true if the parameter
+     * exists and it evaluates to true; otherwise, return false.  
+     * @return true if this helper is synthesizable, otherwise false.
+     * @exception IllegalActionException If the parameter cannot be evaluated.
      */
     public boolean isSynthesizable() throws IllegalActionException {
         Actor actor = (Actor) getComponent();

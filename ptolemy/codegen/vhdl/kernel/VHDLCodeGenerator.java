@@ -333,9 +333,9 @@ public class VHDLCodeGenerator extends CodeGenerator {
      *  @param attribute The attribute to generate variable name for.
      *  @return The generated variable name.
      */
-    public String generateVariableName(NamedObj namedObj) {
+    public String generateVariableName(NamedObj attribute) {
         String name = 
-            StringUtilities.sanitizeName(namedObj.getFullName());
+            StringUtilities.sanitizeName(attribute.getFullName());
         while (name.startsWith("_")) {
             name = name.substring(1);
         }
