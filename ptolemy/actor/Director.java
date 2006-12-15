@@ -247,6 +247,10 @@ public class Director extends Attribute implements Executable {
      *  of the associated actors throws it.
      */
     public void fire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Director: Called fire().");
+        }
+        
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
@@ -1132,6 +1136,10 @@ public class Director extends Attribute implements Executable {
      *   one of the associated actors throws it.
      */
     public void wrapup() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Director: Called wrapup().");
+        }
+        
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {

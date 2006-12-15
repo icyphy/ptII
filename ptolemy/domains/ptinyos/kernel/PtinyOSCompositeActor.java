@@ -1,4 +1,4 @@
-/* Base class for PtinyOS Actors
+/* Base class for PtinyOS Actors.
 
  Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
@@ -27,6 +27,7 @@
  */
 package ptolemy.domains.ptinyos.kernel;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.TypeOpaqueCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.StringToken;
@@ -41,15 +42,16 @@ import ptolemy.kernel.util.Workspace;
 //// PtinyOSCompositeActor
 
 /**
- * A composite actor for use in the PtinyOS domain.
+ * Base class for PtinyOS Actors.  A composite actor for use in the
+ * PtinyOS domain.
  *
  * <p>The local director of this actor must be a
  *  {@link ptolemy.domains.ptinyos.kernel.PtinyOSDirector}.
  *
  * @author Elaine Cheong
  * @version $Id$
- * @Pt.ProposedRating Red (celaine)
- * @Pt.AcceptedRating Red (celaine)
+ * @Pt.ProposedRating Green (celaine)
+ * @Pt.AcceptedRating Green (celaine)
  * @since Ptolemy II 5.1
  */
 public abstract class PtinyOSCompositeActor extends TypeOpaqueCompositeActor {
@@ -73,8 +75,9 @@ public abstract class PtinyOSCompositeActor extends TypeOpaqueCompositeActor {
         super(workspace);
     }
 
-    /** Construct an actor in the specified container with the specified
-     *  name.
+    /** Construct an actor in the specified container with the
+     *  specified name and instantiate a PtinyOSDirector that is
+     *  contained by this CompositeActor.
      *  @param container The container.
      *  @param name The name of this actor within the container.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -93,11 +96,11 @@ public abstract class PtinyOSCompositeActor extends TypeOpaqueCompositeActor {
         Location location = new Location(director, "_location");
         location.setExpression("[65.0, 35.0]");
 
-        // FIXME: is the next comment right?
-        // packetOut and packetIn must be RecordToken
+        // Create an output port for packets.
         packetOut = new TypedIOPort(this, "packetOut", false, true);
         packetOut.setTypeEquals(BaseType.STRING);
 
+        // Create an input port for packets.
         packetIn = new TypedIOPort(this, "packetIn", true, false);
         packetOut.setTypeEquals(BaseType.STRING);
 
@@ -115,12 +118,13 @@ public abstract class PtinyOSCompositeActor extends TypeOpaqueCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read a token from the input pass the string value of the token
-     *  to the PtinyOSDirector.  The local director of this actor must
-     *  be a PtinyOSDirector.
-     *  @see ptolemy.domains.ptinyos.kernel.PtinyOSDirector#receivePacket(String)
-     *  @exception IllegalActionException If a local director cannot
-     *  be found.
+    /** Read a token from the {@link packetIn} port and pass the
+     *  string value of the token to the PtinyOSDirector.  The local
+     *  director of this actor must be a PtinyOSDirector.
+     *  @see
+     *  ptolemy.domains.ptinyos.kernel.PtinyOSDirector#receivePacket(String)
+     *  @exception IllegalActionException If the fire() method in the
+     *  super class throws it, or a local director cannot be found.
      */
     public void fire() throws IllegalActionException {
         // Grab the packet before it gets thrown away, since it is not
@@ -129,19 +133,29 @@ public abstract class PtinyOSCompositeActor extends TypeOpaqueCompositeActor {
             if (packetIn.hasToken(0)) {
                 StringToken token = (StringToken) packetIn.get(0);
 
-                // FIXME: test this with a director that
-                // is not a PtinyOSDirector. Throw an IllegalActionException?
-                PtinyOSDirector director = (PtinyOSDirector) getDirector();
-
-                if (director == null) {
+                Director director = getDirector();
+                if (director != null) {
+                    if (director instanceof PtinyOSDirector) {
+                        ((PtinyOSDirector)director).receivePacket(
+                                token.stringValue());
+                        
+                    } else {
+                        throw new IllegalActionException(
+                                "Local director was not of type "
+                                + "PtinyOSDirector");
+                    }
+                } else {
                     throw new IllegalActionException(
                             "Could not find a local director!");
                 }
-
-                director.receivePacket(token.stringValue());
             }
         }
-
+        // Call super.fire() after passing the packet to TOSSIM, so
+        // that TOSSIM can enqueue a packet event.  If super.fire() is
+        // called before passing the packet to TOSSIM, ptII may have
+        // already advanced its clock past the TOSSIM time, and the
+        // packet will be enqueued in TOSSIM with a time that is in
+        // the past.
         super.fire();
     }
 }
