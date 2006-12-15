@@ -192,6 +192,13 @@ public class MatrixType extends StructuredType implements Serializable {
         // Ignore... This type has no components that are unknown.
     }
 
+    /** Return true if the element type is abstract.
+     *  @return True.
+     */
+    public boolean isAbstract() {
+        return _elementType.isAbstract();
+    }
+
     /** Test if the argument type is compatible with this type. The method
      *  returns true if this type is UNKNOWN, since any type is a substitution
      *  instance of it. If this type is not UNKNOWN, this method returns true
@@ -218,7 +225,7 @@ public class MatrixType extends StructuredType implements Serializable {
      *  @return True.
      */
     public boolean isInstantiable() {
-        return true;
+        return _elementType.isInstantiable();
     }
 
     /** Test if the argument is a substitution instance of this type.

@@ -56,7 +56,7 @@ test ArrayType-1.0 {Create a {unknown}} {
     list [$natArrayTypeMaster toString] [$natArrayType toString] \
          [[$natArrayTypeMaster getElementType] toString] \
          [[$natArrayType getElementType] toString]
-} {{{unknown}} {{unknown}} unknown unknown}
+} {arrayType(unknown) arrayType(unknown) unknown unknown}
 
 ######################################################################
 ####
@@ -71,7 +71,7 @@ test ArrayType-1.1 {Create a {string}} {
     list [$strArrayTypeMaster toString] [$strArrayType toString] \
          [[$strArrayTypeMaster getElementType] toString] \
          [[$strArrayType getElementType] toString]
-} {{{string}} {{string}} string string}
+} {arrayType(string) arrayType(string) string string}
 
 ######################################################################
 ####
@@ -100,7 +100,7 @@ test ArrayType-2.1 {Test convert} {
 
     list [[$c1 getType] toString] [$c1 toString] \
          [[$c2 getType] toString] [$c2 toString]
-} {{{int}} {{0, 1}} {{string}} {{"0", "1"}}}
+} {arrayType(int) {{0, 1}} arrayType(string) {{"0", "1"}}}
 
 ######################################################################
 ####
@@ -108,7 +108,7 @@ test ArrayType-2.1 {Test convert} {
 test ArrayType-3.0 {Test update} {
     $natArrayType updateType $strArrayType
     $natArrayType toString
-} {{string}}
+} {arrayType(string)}
 
 ######################################################################
 ####
@@ -117,7 +117,7 @@ test ArrayType-3.1 {Test initialize} {
     # continue from above test
     $natArrayType initialize $nat
     $natArrayType toString
-} {{unknown}}
+} {arrayType(unknown)}
 
 ######################################################################
 ####

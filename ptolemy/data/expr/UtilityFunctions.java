@@ -64,6 +64,7 @@ import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
+import ptolemy.data.UnsizedArrayToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
@@ -95,6 +96,53 @@ import ptolemy.util.StringUtilities;
 public class UtilityFunctions {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return a new UnsizedArrayToken whose element type is the same
+     * as the given type.
+     * @return a new ArrayToken.
+     */
+    public static ArrayToken arrayType(Token t) {
+        return new UnsizedArrayToken(t.getType());
+    }
+
+    /** Return the (exact) return type of the arrayType function above.
+     *  This function always returns an ArrayType whose element type
+     *  is the first argument, with length equal to the second argument.
+     *  @param type1 The type of the first argument to the
+     *  corresponding function.
+     *  @param type2 The type of the second argument to the
+     *  corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+    public static Type arrayTypeReturnType(Type type) {
+        return new ArrayType(type);
+    }
+
+    /** Return a new UnsizedArrayToken whose element type is the same
+     *  as the given type, and whose length is the given length.
+     *  @param t The element type of the array.
+     *  @param numberOfTimes The array length.
+     *  @return a new ArrayToken.
+     */
+    public static ArrayToken arrayType(Token t, IntToken numberOfTimes) {
+        return repeat(numberOfTimes, t);
+    }
+
+    /** Return the (not quite exact) return type of the arrayType
+     *  function above.  This function always returns an ArrayType
+     *  whose element type is the first argument, with length equal to
+     *  the second argument.  The result type is reported as being
+     *  unsized, which may result in an inexact type being inferred
+     *  for expressions including the arrayType function.
+     *  @param type1 The type of the first argument to the
+     *  corresponding function.
+     *  @param type2 The type of the second argument to the
+     *  corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+     public static Type arrayTypeReturnType(Type type1, Type type2) {
+        return new ArrayType(type2);
+    }
 
     /** Convert the argument from a fileName to a URL that begins with "file:".
      *  @param fileName The name of the file to be converted.
@@ -332,7 +380,8 @@ public class UtilityFunctions {
                                     + "compatible with function argument type.");
                 }
 
-                return (ArrayType) arrayTokenType;
+                // Force size to be unknown
+                return new ArrayType(((ArrayType) arrayTokenType).getElementType());
             }
         } else {
             return BaseType.UNKNOWN;

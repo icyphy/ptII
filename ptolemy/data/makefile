@@ -70,8 +70,8 @@ JSRCS = \
 	EventToken.java \
 	FixMatrixToken.java \
 	FixToken.java \
-        Function.java \
-        FunctionToken.java \
+	Function.java \
+  FunctionToken.java \
 	ImageToken.java \
 	IntMatrixToken.java \
 	IntToken.java \
@@ -88,6 +88,7 @@ JSRCS = \
 	TokenUtilities.java \
 	UnionToken.java \
 	UnsignedByteToken.java \
+	UnsizedArrayToken.java \
 	UnsizedFixToken.java \
 	XMLToken.java
 

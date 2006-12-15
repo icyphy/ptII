@@ -194,6 +194,17 @@ public class FixType extends StructuredType implements Serializable {
         // Ignore... This type has no components that are unknown.
     }
 
+    /** Return true if this type does not correspond to a single token
+     *  class.  This occurs if the type is not instantiable, or it
+     *  represents either an abstract base class or an interface.
+     *  This method should be overridden in derived classes to return
+     *  true only for types which are not abstract.
+     *  @return true.
+     */
+    public boolean isAbstract() {
+	return !isInstantiable();
+    }
+
     /** Test if the argument type is compatible with this type. The method
      *  returns true if this type is UNKNOWN, since any type is a substitution
      *  instance of it. If this type is not UNKNOWN, this method returns true
@@ -217,10 +228,14 @@ public class FixType extends StructuredType implements Serializable {
 
     /** Test if this type corresponds to an instantiable token
      *  classes.
-     *  @return True.
+     *  @return True if the precision of this fix type has any bits.
      */
     public boolean isInstantiable() {
-        return true;
+	if(_precision.getNumberOfBits() == 0) {
+	    return false;
+	} else {
+	    return true;
+	}
     }
 
     /** Test if the argument is a substitution instance of this type.

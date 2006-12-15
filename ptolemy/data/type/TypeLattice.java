@@ -138,6 +138,7 @@ public class TypeLattice {
                             + "one or both of the argument types is null: "
                             + " type1 = " + type1 + ", type2 = " + type2);
         }
+        // System.out.println("compare " + type1 + " and " + type2 + " = " + _lattice.compare(type1, type2));
 
         int i1 = type1.getTypeHash();
         int i2 = type2.getTypeHash();
@@ -234,8 +235,14 @@ public class TypeLattice {
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
                 return ((StructuredType) t1)._compare((StructuredType) t2);
             } else if (t1Rep instanceof ArrayType
-                    && !(t2Rep instanceof ArrayType)) {
+                    && !(t2Rep instanceof ArrayType)
+                    && !t2.equals(BaseType.UNKNOWN)
+                    && !t2.equals(BaseType.ARRAY_BOTTOM)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                ArrayType arrayType = (ArrayType) t1;
+                if(arrayType.hasKnownLength() && arrayType.length() != 1) {
+                    return INCOMPARABLE;
+                }
                 int elementComparison = compare(((ArrayType) ct1)
                         .getElementType(), t2Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
@@ -248,8 +255,14 @@ public class TypeLattice {
                     }
                 }
             } else if (t2Rep instanceof ArrayType
-                    && !(t1Rep instanceof ArrayType)) {
+                    && !(t1Rep instanceof ArrayType)
+                    && !t1.equals(BaseType.UNKNOWN)                    
+                    && !t1.equals(BaseType.ARRAY_BOTTOM)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                ArrayType arrayType = (ArrayType) t2;
+                if(arrayType.hasKnownLength() && arrayType.length() != 1) {
+                    return INCOMPARABLE;
+                }
                 int elementComparison = compare(((ArrayType) ct2)
                         .getElementType(), t1Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
@@ -319,12 +332,19 @@ public class TypeLattice {
                 return ((StructuredType) t1)
                         ._greatestLowerBound((StructuredType) t2);
             } else if (t1Rep instanceof ArrayType
-                    && !(t2Rep instanceof ArrayType)) {
+                    && !(t2Rep instanceof ArrayType)
+                    && !t2.equals(BaseType.UNKNOWN)
+                    && !t2.equals(BaseType.ARRAY_BOTTOM)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                ArrayType arrayType = (ArrayType) t1;
                 int elementComparison = compare(((ArrayType) ct1)
                         .getElementType(), t2Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
-                    return t2;
+                    if(arrayType.hasKnownLength() && arrayType.length() != 1) {
+                        return BaseType.UNKNOWN;
+                    } else {
+                        return t2;
+                    }
                 } else {
                     if (t2Rep == BaseType.GENERAL) {
                         return t1;
@@ -341,12 +361,19 @@ public class TypeLattice {
                     }
                 }
             } else if (t2Rep instanceof ArrayType
-                    && !(t1Rep instanceof ArrayType)) {
+                    && !(t1Rep instanceof ArrayType)
+                    && !t1.equals(BaseType.UNKNOWN)
+                    && !t1.equals(BaseType.ARRAY_BOTTOM)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                ArrayType arrayType = (ArrayType) t2;
                 int elementComparison = compare(((ArrayType) ct2)
                         .getElementType(), t1Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
-                    return t1;
+                    if(arrayType.hasKnownLength() && arrayType.length() != 1) {
+                        return BaseType.UNKNOWN;
+                    } else {
+                        return t1;
+                    }
                 } else {
                     if (t1Rep == BaseType.GENERAL) {
                         return t2;
@@ -494,7 +521,8 @@ public class TypeLattice {
                         "TheTypeLattice.leastUpperBound: "
                                 + "Arguments are not instances of Type.");
             }
-
+            
+            // System.out.println("LUB of " + t1 + " and " + t2); 
             Type ct1 = (Type) t1;
             Type ct2 = (Type) t2;
 
@@ -505,12 +533,20 @@ public class TypeLattice {
                 return ((StructuredType) t1)
                         ._leastUpperBound((StructuredType) t2);
             } else if (t1Rep instanceof ArrayType
-                    && !(t2Rep instanceof ArrayType)) {
+                    && !(t2Rep instanceof ArrayType)
+                    && !t2.equals(BaseType.UNKNOWN)
+                    && !t2.equals(BaseType.ARRAY_BOTTOM)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                ArrayType arrayType = (ArrayType) t1;
                 Type elementType = ((ArrayType) ct1).getElementType();
                 int elementComparison = compare(elementType, t2Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
-                    return t1;
+                    if(arrayType.hasKnownLength() && arrayType.length() != 1) {
+                        // Least upper bound is unsized type.
+                        return new ArrayType(elementType);
+                    } else {
+                        return t1;
+                    }
                 } else {
                     if (t2Rep == BaseType.GENERAL) {
                         return t2;
@@ -531,12 +567,20 @@ public class TypeLattice {
                     }
                 }
             } else if (t2Rep instanceof ArrayType
-                    && !(t1Rep instanceof ArrayType)) {
+                    && !(t1Rep instanceof ArrayType)
+                    && !t1.equals(BaseType.UNKNOWN)
+                    && !t1.equals(BaseType.ARRAY_BOTTOM)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                ArrayType arrayType = (ArrayType) t2;
                 Type elementType = ((ArrayType) ct2).getElementType();
                 int elementComparison = compare(elementType, t1Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
-                    return t2;
+                    if(arrayType.hasKnownLength() && arrayType.length() != 1) {
+                        // Least upper bound is unsized type.
+                        return new ArrayType(elementType);
+                    } else {
+                        return t2;
+                    }
                 } else {
                     if (t1Rep == BaseType.GENERAL) {
                         return t1;
@@ -676,6 +720,7 @@ public class TypeLattice {
             _basicLattice.addNodeWeight(BaseType.NIL);
 
             _basicLattice.addNodeWeight(arrayRep);
+            _basicLattice.addNodeWeight(BaseType.ARRAY_BOTTOM);
             _basicLattice.addNodeWeight(recordRep);
             _basicLattice.addNodeWeight(unionRep);
 
@@ -727,7 +772,8 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.EVENT);
 
             _basicLattice.addEdge(arrayRep, BaseType.STRING);
-            _basicLattice.addEdge(BaseType.UNKNOWN, arrayRep);
+            _basicLattice.addEdge(BaseType.ARRAY_BOTTOM, arrayRep);
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.ARRAY_BOTTOM);
 
             _basicLattice.addEdge(recordRep, BaseType.STRING);
             _basicLattice.addEdge(BaseType.UNKNOWN, recordRep);

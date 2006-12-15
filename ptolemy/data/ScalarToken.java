@@ -1,431 +1,817 @@
-/* Abstract base class for tokens that contain a scalar.
+ /* Abstract base class for tokens that contain a scalar.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+  Copyright (c) 1997-2006 The Regents of the University of California.
+  All rights reserved.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the above
+  copyright notice and the following two paragraphs appear in all copies
+  of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+  PT_COPYRIGHT_VERSION_2
+  COPYRIGHTENDKEY
 
- FIXME: setUnitCategory seems to violate immutability.
- */
-package ptolemy.data;
+  FIXME: setUnitCategory seems to violate immutability.
+  */
+ package ptolemy.data;
 
-import ptolemy.data.type.Type;
-import ptolemy.data.type.TypeLattice;
-import ptolemy.data.unit.UnitUtilities;
-import ptolemy.graph.CPO;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.math.Complex;
-import ptolemy.math.FixPoint;
+ import ptolemy.data.type.Type;
+ import ptolemy.data.type.TypeLattice;
+ import ptolemy.data.unit.UnitUtilities;
+ import ptolemy.graph.CPO;
+ import ptolemy.kernel.util.IllegalActionException;
+ import ptolemy.math.Complex;
+ import ptolemy.math.FixPoint;
 
-//////////////////////////////////////////////////////////////////////////
-//// ScalarToken
+ //////////////////////////////////////////////////////////////////////////
+ //// ScalarToken
 
-/**
- Abstract base class for tokens that contain a scalar.  This base class
- extends the Token class to properly implement type conversion and the
- units portion of the standard operations for scalar tokens.  It also
- adds methods for querying the natural ordering between scalars.
+ /**
+  Abstract base class for tokens that contain a scalar.  This base class
+  extends the Token class to properly implement type conversion and the
+  units portion of the standard operations for scalar tokens.  It also
+  adds methods for querying the natural ordering between scalars.
 
- <p> This class has a number of protected abstract methods that subclasses
- must implement.  These methods need only implement the numerical
- portion of the operation between two tokens of the same type.  This
- base class will handle the conversion of tokens from different types
- to the same type before calling the protected method, and the proper
- computation of the units of the returned token afterwards.
+  <p> This class has a number of protected abstract methods that subclasses
+  must implement.  These methods need only implement the numerical
+  portion of the operation between two tokens of the same type.  This
+  base class will handle the conversion of tokens from different types
+  to the same type before calling the protected method, and the proper
+  computation of the units of the returned token afterwards.
 
- <p> In general, any instance of a scalar token may be optionally
- associated with a set of units.  In the arithmetic methods add(),
- modulo(), and subtract(), the two operands must have the same
- units. Otherwise, an exception will be thrown. In the methods
- multiply() and divide(), the units of the resulting token will be
- computed automatically.  IMPORTANT: The protected methods implemented
- in derived classes are expected to return a new token in the case of
- multiply and divide.  This new token will automatically have its units
- set correctly by this base class implementation.  Certain cases, such
- as multiplication by one, cannot be optimized to simply return an the
- input token without performing the multiplication, since the units of
- the result may be different than the units of either input token.
+  <p> In general, any instance of a scalar token may be optionally
+  associated with a set of units.  In the arithmetic methods add(),
+  modulo(), and subtract(), the two operands must have the same
+  units. Otherwise, an exception will be thrown. In the methods
+  multiply() and divide(), the units of the resulting token will be
+  computed automatically.  IMPORTANT: The protected methods implemented
+  in derived classes are expected to return a new token in the case of
+  multiply and divide.  This new token will automatically have its units
+  set correctly by this base class implementation.  Certain cases, such
+  as multiplication by one, cannot be optimized to simply return an the
+  input token without performing the multiplication, since the units of
+  the result may be different than the units of either input token.
 
- @author Yuhong Xiong, Mudit Goel, Steve Neuendorffer
- @version $Id$
- @since Ptolemy II 0.2
- @Pt.ProposedRating Green (neuendor)
- @Pt.AcceptedRating Green (yuhong)
- */
-public abstract class ScalarToken extends Token implements
-        BitwiseOperationToken {
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+  @author Yuhong Xiong, Mudit Goel, Steve Neuendorffer
+  @version $Id$
+  @since Ptolemy II 0.2
+  @Pt.ProposedRating Green (neuendor)
+  @Pt.AcceptedRating Green (yuhong)
+  */
+ public abstract class ScalarToken extends Token implements
+         BitwiseOperationToken {
+     ///////////////////////////////////////////////////////////////////
+     ////                         public methods                    ////
 
-    /** Return a ScalarToken containing the absolute value of the
-     *  value of this token. If this token contains a non-negative
-     *  number, it is returned directly; otherwise, a new token is
-     *  returned.  Note that it is explicitly allowable to return this
-     *  token, since the units are the same.  This method defers to
-     *  the _absolute() method to perform the operation, and derived
-     *  classes should implement that method to provide type-specific
-     *  behavior.
-     *  @return A ScalarToken with the same units, and likely to be of
-     *  the same type as this token.
-     *  If this token is a nil token, then {@link ptolemy.data.Token#NIL}
-     *  is returned.
-     */
-    public final ScalarToken absolute() {
-        if (isNil()) {
-            return this;
-        }
-        ScalarToken result = _absolute();
+     /** Return a ScalarToken containing the absolute value of the
+      *  value of this token. If this token contains a non-negative
+      *  number, it is returned directly; otherwise, a new token is
+      *  returned.  Note that it is explicitly allowable to return this
+      *  token, since the units are the same.  This method defers to
+      *  the _absolute() method to perform the operation, and derived
+      *  classes should implement that method to provide type-specific
+      *  behavior.
+      *  @return A ScalarToken with the same units, and likely to be of
+      *  the same type as this token.
+      *  If this token is a nil token, then {@link ptolemy.data.Token#NIL}
+      *  is returned.
+      */
+     public final ScalarToken absolute() {
+         if (isNil()) {
+             return this;
+         }
+         ScalarToken result = _absolute();
 
-        if (_unitCategoryExponents != null && !_isUnitless()) {
-            result._unitCategoryExponents = _copyOfCategoryExponents();
-        }
-        return result;
-    }
+         if (_unitCategoryExponents != null && !_isUnitless()) {
+             result._unitCategoryExponents = _copyOfCategoryExponents();
+         }
+         return result;
+     }
 
-    /** Return a new token whose value is the sum of this token and
-     *  the argument. Type conversion also occurs here, so that the
-     *  operation is performed at the least type necessary to ensure
-     *  precision.  The returned type is the same as the type chosen
-     *  for the operation, which is the higher of the type of this
-     *  token and the argument type.  Subclasses should implement the
-     *  protected _add() method to perform the correct type-specific
-     *  operation.
-     *  @param rightArgument The token to add to this token.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or have different units,
-     *  or the operation does not make sense for the given types.
-     */
-    public final Token add(Token rightArgument) throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(getType(), rightArgument);
+     /** Return a new token whose value is the sum of this token and
+      *  the argument. Type conversion also occurs here, so that the
+      *  operation is performed at the least type necessary to ensure
+      *  precision.  The returned type is the same as the type chosen
+      *  for the operation, which is the higher of the type of this
+      *  token and the argument type.  Subclasses should implement the
+      *  protected _add() method to perform the correct type-specific
+      *  operation.
+      *  @param rightArgument The token to add to this token.
+      *  @return A new token containing the result.
+      *  @exception IllegalActionException If the argument token and
+      *  this token are of incomparable types, or have different units,
+      *  or the operation does not make sense for the given types.
+      */
+     public final Token add(Token rightArgument) throws IllegalActionException {
+         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
-            return _doAdd(rightArgument);
-        } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+         if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
+             return _doAdd(rightArgument);
+         } else if (typeInfo == CPO.HIGHER) {
+             ScalarToken convertedArgument = (ScalarToken) getType().convert(
+                     rightArgument);
 
-            try {
-                return _doAdd(convertedArgument);
-            } catch (IllegalActionException ex) {
-                // If the type-specific operation fails, then create a
-                // better error message that has the types of the
-                // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "add", this, rightArgument));
-            }
-        } else if ((typeInfo == CPO.LOWER)
-                || (rightArgument instanceof MatrixToken)) {
-            // NOTE: If the right argument is an instance of MatrixToken,
-            // then we try reversing the add.
-            return rightArgument.addReverse(this);
-        } else {
-            // Items being multiplied are incomparable.
-            // However, addition may still be possible because
-            // the LUB of the types might support it. E.g., [double]+complex,
-            // where the LUB is [complex].
-            Type lubType = (Type) TypeLattice.lattice().leastUpperBound(
-                    getType(), rightArgument.getType());
+             try {
+                 return _doAdd(convertedArgument);
+             } catch (IllegalActionException ex) {
+                 // If the type-specific operation fails, then create a
+                 // better error message that has the types of the
+                 // arguments that were passed in.
+                 throw new IllegalActionException(null, ex, notSupportedMessage(
+                         "add", this, rightArgument));
+             }
+         } else if ((typeInfo == CPO.LOWER)
+                 || (rightArgument instanceof MatrixToken)) {
+             // NOTE: If the right argument is an instance of MatrixToken,
+             // then we try reversing the add.
+             return rightArgument.addReverse(this);
+         } else {
+             // Items being multiplied are incomparable.
+             // However, addition may still be possible because
+             // the LUB of the types might support it. E.g., [double]+complex,
+             // where the LUB is [complex].
+             Type lubType = (Type) TypeLattice.lattice().leastUpperBound(
+                     getType(), rightArgument.getType());
 
-            // If the LUB is a new type, try it.
-            if (!lubType.equals(getType())) {
-                Token lub = lubType.convert(this);
+             // If the LUB is a new type, try it.
+             if (!lubType.equals(getType())) {
+                 Token lub = lubType.convert(this);
 
-                // Caution: convert() might return this again, e.g.
-                // if lubType is general.  Only proceed if the conversion
-                // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
-                    return lub.add(rightArgument);
-                }
-            }
+                 // Caution: convert() might return this again, e.g.
+                 // if lubType is general.  Only proceed if the conversion
+                 // returned a new type.
+                 if (!(lub.getType().equals(getType()))) {
+                     return lub.add(rightArgument);
+                 }
+             }
 
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "add", this, rightArgument));
-        }
-    }
+             throw new IllegalActionException(notSupportedIncomparableMessage(
+                     "add", this, rightArgument));
+         }
+     }
 
-    /** Return a new token whose value is the sum of this token and
-     *  the argument.  Type conversion also occurs here, so that the
-     *  operation is performed at the least type necessary to ensure
-     *  precision.  The returned type is the same as the type chosen
-     *  for the operation, which is the higher of the type of this
-     *  token and the argument type.  Subclasses should implement the
-     *  protected _add() method to perform the correct type-specific
-     *  operation.
-     *  @param leftArgument The token to add this token to.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or have different units,
-     *  or the operation does not make sense for the given types.
-     */
-    public final Token addReverse(ptolemy.data.Token leftArgument)
-            throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(leftArgument, getType());
+     /** Return a new token whose value is the sum of this token and
+      *  the argument.  Type conversion also occurs here, so that the
+      *  operation is performed at the least type necessary to ensure
+      *  precision.  The returned type is the same as the type chosen
+      *  for the operation, which is the higher of the type of this
+      *  token and the argument type.  Subclasses should implement the
+      *  protected _add() method to perform the correct type-specific
+      *  operation.
+      *  @param leftArgument The token to add this token to.
+      *  @return A new token containing the result.
+      *  @exception IllegalActionException If the argument token and
+      *  this token are of incomparable types, or have different units,
+      *  or the operation does not make sense for the given types.
+      */
+     public final Token addReverse(ptolemy.data.Token leftArgument)
+             throws IllegalActionException {
+         int typeInfo = TypeLattice.compare(leftArgument, getType());
 
-        // We would normally expect this to be LOWER, since this will almost
-        // always be called by add, so put that case first.
-        if (typeInfo == CPO.LOWER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    leftArgument);
+         // We would normally expect this to be LOWER, since this will almost
+         // always be called by add, so put that case first.
+         if (typeInfo == CPO.LOWER) {
+             ScalarToken convertedArgument = (ScalarToken) getType().convert(
+                     leftArgument);
 
-            try {
-                return convertedArgument._doAdd(this);
-            } catch (IllegalActionException ex) {
-                // If the type-specific operation fails, then create a
-                // better error message that has the types of the
-                // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "addReverse", this, leftArgument));
-            }
-        } else if (typeInfo == CPO.SAME) {
-            return ((ScalarToken) leftArgument)._doAdd(this);
-        } else if (typeInfo == CPO.HIGHER) {
-            return leftArgument.add(this);
-        } else {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "addReverse", this, leftArgument));
-        }
-    }
+             try {
+                 return convertedArgument._doAdd(this);
+             } catch (IllegalActionException ex) {
+                 // If the type-specific operation fails, then create a
+                 // better error message that has the types of the
+                 // arguments that were passed in.
+                 throw new IllegalActionException(null, ex, notSupportedMessage(
+                         "addReverse", this, leftArgument));
+             }
+         } else if (typeInfo == CPO.SAME) {
+             return ((ScalarToken) leftArgument)._doAdd(this);
+         } else if (typeInfo == CPO.HIGHER) {
+             return leftArgument.add(this);
+         } else {
+             throw new IllegalActionException(notSupportedIncomparableMessage(
+                     "addReverse", this, leftArgument));
+         }
+     }
 
-    /** Returns a token representing the bitwise AND of this token and
-     *  the given token.
-     *  @param rightArgument The ScalarToken to bitwise AND with this one.
-     *  @return The bitwise AND.
-     *  @exception IllegalActionException If the given token is not
-     *  compatible for this operation, or the operation does not make
-     *  sense for this type.
-     */
-    public BitwiseOperationToken bitwiseAnd(Token rightArgument)
-            throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(getType(), rightArgument);
+     /** Returns a token representing the bitwise AND of this token and
+      *  the given token.
+      *  @param rightArgument The ScalarToken to bitwise AND with this one.
+      *  @return The bitwise AND.
+      *  @exception IllegalActionException If the given token is not
+      *  compatible for this operation, or the operation does not make
+      *  sense for this type.
+      */
+     public BitwiseOperationToken bitwiseAnd(Token rightArgument)
+             throws IllegalActionException {
+         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME) {
-            return _doBitwiseAnd(rightArgument);
-        } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+         if (typeInfo == CPO.SAME) {
+             return _doBitwiseAnd(rightArgument);
+         } else if (typeInfo == CPO.HIGHER) {
+             ScalarToken convertedArgument = (ScalarToken) getType().convert(
+                     rightArgument);
 
-            try {
-                return _doBitwiseAnd(convertedArgument);
-            } catch (IllegalActionException ex) {
-                // If the type-specific operation fails, then create a
-                // better error message that has the types of the
-                // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "bitwiseAnd", this, rightArgument));
-            }
-        } else if (typeInfo == CPO.LOWER) {
-            if (!(rightArgument instanceof BitwiseOperationToken)) {
-                throw new IllegalActionException(notSupportedMessage(
-                        "bitwiseAnd", this, rightArgument));
-            } else {
-                // This code uses the fact that bitwise AND is always
-                // commutative, there is no need to add a bitwiseAndReverse
-                // method.
-                return ((BitwiseOperationToken) rightArgument).bitwiseAnd(this);
-            }
-        } else {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "bitwiseAnd", this, rightArgument));
-        }
-    }
+             try {
+                 return _doBitwiseAnd(convertedArgument);
+             } catch (IllegalActionException ex) {
+                 // If the type-specific operation fails, then create a
+                 // better error message that has the types of the
+                 // arguments that were passed in.
+                 throw new IllegalActionException(null, ex, notSupportedMessage(
+                         "bitwiseAnd", this, rightArgument));
+             }
+         } else if (typeInfo == CPO.LOWER) {
+             if (!(rightArgument instanceof BitwiseOperationToken)) {
+                 throw new IllegalActionException(notSupportedMessage(
+                         "bitwiseAnd", this, rightArgument));
+             } else {
+                 // This code uses the fact that bitwise AND is always
+                 // commutative, there is no need to add a bitwiseAndReverse
+                 // method.
+                 return ((BitwiseOperationToken) rightArgument).bitwiseAnd(this);
+             }
+         } else {
+             throw new IllegalActionException(notSupportedIncomparableMessage(
+                     "bitwiseAnd", this, rightArgument));
+         }
+     }
 
-    /** Returns a token representing the bitwise NOT of this token.
-     *  @return The bitwise NOT of this token.
-     *  @exception IllegalActionException If the given token is not
-     *  compatible for this operation, or the operation does not make
-     *  sense for this type.
-     */
-    public BitwiseOperationToken bitwiseNot() throws IllegalActionException {
-        ScalarToken result = _bitwiseNot();
-        if (_unitCategoryExponents != null && !_isUnitless()) {
-            result._unitCategoryExponents = _copyOfCategoryExponents();
-        }
-        return result;
-    }
+     /** Returns a token representing the bitwise NOT of this token.
+      *  @return The bitwise NOT of this token.
+      *  @exception IllegalActionException If the given token is not
+      *  compatible for this operation, or the operation does not make
+      *  sense for this type.
+      */
+     public BitwiseOperationToken bitwiseNot() throws IllegalActionException {
+         ScalarToken result = _bitwiseNot();
+         if (_unitCategoryExponents != null && !_isUnitless()) {
+             result._unitCategoryExponents = _copyOfCategoryExponents();
+         }
+         return result;
+     }
 
-    /** Returns a token representing the bitwise OR of this token and
-     *  the given token.
-     *  @param rightArgument The ScalarToken to bitwise OR with this one.
-     *  @return The bitwise OR.
-     *  @exception IllegalActionException If the given token is not
-     *  compatible for this operation, or the operation does not make
-     *  sense for this type.
-     */
-    public BitwiseOperationToken bitwiseOr(Token rightArgument)
-            throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(getType(), rightArgument);
+     /** Returns a token representing the bitwise OR of this token and
+      *  the given token.
+      *  @param rightArgument The ScalarToken to bitwise OR with this one.
+      *  @return The bitwise OR.
+      *  @exception IllegalActionException If the given token is not
+      *  compatible for this operation, or the operation does not make
+      *  sense for this type.
+      */
+     public BitwiseOperationToken bitwiseOr(Token rightArgument)
+             throws IllegalActionException {
+         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME) {
-            return _doBitwiseOr(rightArgument);
-        } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+         if (typeInfo == CPO.SAME) {
+             return _doBitwiseOr(rightArgument);
+         } else if (typeInfo == CPO.HIGHER) {
+             ScalarToken convertedArgument = (ScalarToken) getType().convert(
+                     rightArgument);
 
-            try {
-                return _doBitwiseOr(convertedArgument);
-            } catch (IllegalActionException ex) {
-                // If the type-specific operation fails, then create a
-                // better error message that has the types of the
-                // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "bitwiseOr", this, rightArgument));
-            }
-        } else if (typeInfo == CPO.LOWER) {
-            if (!(rightArgument instanceof BitwiseOperationToken)) {
-                throw new IllegalActionException(notSupportedMessage(
-                        "bitwiseOr", this, rightArgument));
-            } else {
-                // This code uses the fact that bitwise OR is always
-                // commutative, there is no need to add a bitwiseOrReverse
-                // method.
-                return ((BitwiseOperationToken) rightArgument).bitwiseOr(this);
-            }
-        } else {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "bitwiseOr", this, rightArgument));
-        }
-    }
+             try {
+                 return _doBitwiseOr(convertedArgument);
+             } catch (IllegalActionException ex) {
+                 // If the type-specific operation fails, then create a
+                 // better error message that has the types of the
+                 // arguments that were passed in.
+                 throw new IllegalActionException(null, ex, notSupportedMessage(
+                         "bitwiseOr", this, rightArgument));
+             }
+         } else if (typeInfo == CPO.LOWER) {
+             if (!(rightArgument instanceof BitwiseOperationToken)) {
+                 throw new IllegalActionException(notSupportedMessage(
+                         "bitwiseOr", this, rightArgument));
+             } else {
+                 // This code uses the fact that bitwise OR is always
+                 // commutative, there is no need to add a bitwiseOrReverse
+                 // method.
+                 return ((BitwiseOperationToken) rightArgument).bitwiseOr(this);
+             }
+         } else {
+             throw new IllegalActionException(notSupportedIncomparableMessage(
+                     "bitwiseOr", this, rightArgument));
+         }
+     }
 
-    /** Returns a token representing the bitwise XOR of this token and
-     *  the given token.
-     *  @param rightArgument The ScalarToken to bitwise XOR with this one.
-     *  @return The bitwise XOR.
-     *  @exception IllegalActionException If the given token is not
-     *  compatible for this operation, or the operation does not make
-     *  sense for this type.
-     */
-    public BitwiseOperationToken bitwiseXor(Token rightArgument)
-            throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(getType(), rightArgument);
+     /** Returns a token representing the bitwise XOR of this token and
+      *  the given token.
+      *  @param rightArgument The ScalarToken to bitwise XOR with this one.
+      *  @return The bitwise XOR.
+      *  @exception IllegalActionException If the given token is not
+      *  compatible for this operation, or the operation does not make
+      *  sense for this type.
+      */
+     public BitwiseOperationToken bitwiseXor(Token rightArgument)
+             throws IllegalActionException {
+         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME) {
-            return _doBitwiseXor(rightArgument);
-        } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+         if (typeInfo == CPO.SAME) {
+             return _doBitwiseXor(rightArgument);
+         } else if (typeInfo == CPO.HIGHER) {
+             ScalarToken convertedArgument = (ScalarToken) getType().convert(
+                     rightArgument);
 
-            try {
-                return _doBitwiseXor(convertedArgument);
-            } catch (IllegalActionException ex) {
-                // If the type-specific operation fails, then create a
-                // better error message that has the types of the
-                // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "bitwiseXor", this, rightArgument));
-            }
-        } else if (typeInfo == CPO.LOWER) {
-            if (!(rightArgument instanceof BitwiseOperationToken)) {
-                throw new IllegalActionException(notSupportedMessage(
-                        "bitwiseXor", this, rightArgument));
-            } else {
-                // This code uses the fact that bitwise XOR is always
-                // commutative, there is no need to add a bitwiseXorReverse
-                // method.
-                return ((BitwiseOperationToken) rightArgument).bitwiseXor(this);
-            }
-        } else {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "bitwiseXor", this, rightArgument));
-        }
-    }
+             try {
+                 return _doBitwiseXor(convertedArgument);
+             } catch (IllegalActionException ex) {
+                 // If the type-specific operation fails, then create a
+                 // better error message that has the types of the
+                 // arguments that were passed in.
+                 throw new IllegalActionException(null, ex, notSupportedMessage(
+                         "bitwiseXor", this, rightArgument));
+             }
+         } else if (typeInfo == CPO.LOWER) {
+             if (!(rightArgument instanceof BitwiseOperationToken)) {
+                 throw new IllegalActionException(notSupportedMessage(
+                         "bitwiseXor", this, rightArgument));
+             } else {
+                 // This code uses the fact that bitwise XOR is always
+                 // commutative, there is no need to add a bitwiseXorReverse
+                 // method.
+                 return ((BitwiseOperationToken) rightArgument).bitwiseXor(this);
+             }
+         } else {
+             throw new IllegalActionException(notSupportedIncomparableMessage(
+                     "bitwiseXor", this, rightArgument));
+         }
+     }
 
-    //     /** If the token is an instance of a subclass of ScalarToken,
-    //      *  then return the token. Otherwise, throw an exception.
-    //      *  @param token The token to be converted to a ScalarToken.
-    //      *  @return An instance of ScalarToken.
-    //      *  @exception IllegalActionException If the argument is not
-    //      *   already an instance of ScalarToken.
-    //      */
-    //     public static ScalarToken convert(Token token)
-    //             throws IllegalActionException {
-    //         if (token instanceof ScalarToken) {
-    //             return (ScalarToken) token;
-    //         }
-    //         throw new IllegalActionException(
-    //                 notSupportedIncomparableConversionMessage(token, "scalar"));
-    //     }
+     //     /** If the token is an instance of a subclass of ScalarToken,
+     //      *  then return the token. Otherwise, throw an exception.
+     //      *  @param token The token to be converted to a ScalarToken.
+     //      *  @return An instance of ScalarToken.
+     //      *  @exception IllegalActionException If the argument is not
+     //      *   already an instance of ScalarToken.
+     //      */
+     //     public static ScalarToken convert(Token token)
+     //             throws IllegalActionException {
+     //         if (token instanceof ScalarToken) {
+     //             return (ScalarToken) token;
+     //         }
+     //         throw new IllegalActionException(
+     //                 notSupportedIncomparableConversionMessage(token, "scalar"));
+     //     }
 
-    /** Return the value in the token as a byte.
-     *  In this base class, we just throw an exception.
-     *  @return The byte value contained in this token.
-     *  @exception IllegalActionException Always thrown.
-     */
-    public byte byteValue() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "byte"));
-    }
+     /** Return the value in the token as a byte.
+      *  In this base class, we just throw an exception.
+      *  @return The byte value contained in this token.
+      *  @exception IllegalActionException Always thrown.
+      */
+     public byte byteValue() throws IllegalActionException {
+         throw new IllegalActionException(notSupportedConversionMessage(this,
+                 "byte"));
+     }
 
-    /** Return the value of this token as a Complex.
-     *  In this base class, we just throw an exception.
-     *  @return A Complex
-     *  @exception IllegalActionException Always thrown.
-     */
-    public Complex complexValue() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "Complex"));
-    }
+     /** Return the value of this token as a Complex.
+      *  In this base class, we just throw an exception.
+      *  @return A Complex
+      *  @exception IllegalActionException Always thrown.
+      */
+     public Complex complexValue() throws IllegalActionException {
+         throw new IllegalActionException(notSupportedConversionMessage(this,
+                 "Complex"));
+     }
 
-    /** Return a new token whose value is the value of this token
-     *  divided by the value of the argument token. Type conversion
-     *  also occurs here, so that the operation is performed at the
-     *  least type necessary to ensure precision.  The returned type
-     *  is the same as the type chosen for the operation, which is the
-     *  higher of the type of this token and the argument type.  The
-     *  returned token will also have the correct units.  Subclasses
-     *  should implement the protected _divide() method to perform the
-     *  correct type-specific operation.
-     *  @param rightArgument The token to divide into this token.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or the operation does
-     *  not make sense for the given types.
-     */
-    public final Token divide(Token rightArgument)
-            throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(getType(), rightArgument);
+     /** Return a new token whose value is the value of this token
+      *  divided by the value of the argument token. Type conversion
+      *  also occurs here, so that the operation is performed at the
+      *  least type necessary to ensure precision.  The returned type
+      *  is the same as the type chosen for the operation, which is the
+      *  higher of the type of this token and the argument type.  The
+      *  returned token will also have the correct units.  Subclasses
+      *  should implement the protected _divide() method to perform the
+      *  correct type-specific operation.
+      *  @param rightArgument The token to divide into this token.
+      *  @return A new token containing the result.
+      *  @exception IllegalActionException If the argument token and
+      *  this token are of incomparable types, or the operation does
+      *  not make sense for the given types.
+      */
+     public final Token divide(Token rightArgument)
+             throws IllegalActionException {
+         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
-            return _doDivide(rightArgument);
-        } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+         if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
+             return _doDivide(rightArgument);
+         } else if (typeInfo == CPO.HIGHER) {
+             ScalarToken convertedArgument = (ScalarToken) getType().convert(
+                     rightArgument);
 
-            try {
-                return _doDivide(convertedArgument);
-            } catch (IllegalActionException ex) {
-                // If the type-specific operation fails, then create a
-                // better error message that has the types of the
-                // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "divide", this, rightArgument));
-            }
-        } else if (typeInfo == CPO.LOWER) {
-            return rightArgument.divideReverse(this);
-        } else {
-            // Items being divided are incomparable.
-            // However, division may still be possible because
-            // the LUB of the types might support it. E.g., [double]/complex,
-            // where the LUB is [complex].
+             try {
+                 return _doDivide(convertedArgument);
+             } catch (IllegalActionException ex) {
+                 // If the type-specific operation fails, then create a
+                 // better error message that has the types of the
+                 // arguments that were passed in.
+                 throw new IllegalActionException(null, ex, notSupportedMessage(
+                         "divide", this, rightArgument));
+             }
+         } else if (typeInfo == CPO.LOWER) {
+             return rightArgument.divideReverse(this);
+         } else {
+             // Items being divided are incomparable.
+             // However, division may still be possible because
+             // the LUB of the types might support it. E.g., [double]/complex,
+             // where the LUB is [complex].
+             Type lubType = (Type) TypeLattice.lattice().leastUpperBound(
+                     getType(), rightArgument.getType());
+
+             // If the LUB is a new type, try it.
+             if (lubType != null && !lubType.equals(getType())) {
+                 Token lub = lubType.convert(this);
+
+                 // Caution: convert() might return this again, e.g.
+                 // if lubType is general.  Only proceed if the conversion
+                 // returned a new type.
+                 if (!(lub.getType().equals(getType()))) {
+                     return lub.divide(rightArgument);
+                 }
+             }
+
+             // LUB does not support it, but it still might be
+             // possible, e.g. with expressions like double / {double}.
+             // Only divideReverse() could support it at this time however.
+             // This will throw an exception if it is not supported.
+             return rightArgument.divideReverse(this);
+         }
+     }
+
+     /** Return a new token whose value is the value of this token
+      *  divided into the value of the argument token.  Type conversion
+      *  also occurs here, so that the operation is performed at the
+      *  least type necessary to ensure precision.  The returned type
+      *  is the same as the type chosen for the operation, which is the
+      *  higher of the type of this token and the argument type.  The
+      *  returned token will also have the correct units.  Subclasses
+      *  should implement the protected _divide() method to perform the
+      *  correct type-specific operation.
+      *  @param leftArgument The token to be divided into the value of
+      *  this token.
+      *  @return A new token containing the result.
+      *  @exception IllegalActionException If the argument token and
+      *  this token are of incomparable types, or the operation does
+      *  not make sense for the given types.
+      */
+     public final Token divideReverse(Token leftArgument)
+             throws IllegalActionException {
+         int typeInfo = TypeLattice.compare(leftArgument, getType());
+
+         // We would normally expect this to be LOWER, since this will almost
+         // always be called by divide, so put that case first.
+         if (typeInfo == CPO.LOWER) {
+             ScalarToken convertedArgument = (ScalarToken) getType().convert(
+                     leftArgument);
+
+             try {
+                 return convertedArgument._doDivide(this);
+             } catch (IllegalActionException ex) {
+                 // If the type-specific operation fails, then create a
+                 // better error message that has the types of the
+                 // arguments that were passed in.
+                 throw new IllegalActionException(null, ex, notSupportedMessage(
+                         "divideReverse", this, leftArgument));
+             }
+         } else if (typeInfo == CPO.SAME) {
+             return ((ScalarToken) leftArgument)._doDivide(this);
+         } else if (typeInfo == CPO.HIGHER) {
+             return leftArgument.divide(this);
+         } else {
+             throw new IllegalActionException(notSupportedIncomparableMessage(
+                     "divideReverse", this, leftArgument));
+         }
+     }
+
+     /** Return the value of this token as a double.
+      *  In this base class, we just throw an exception.
+      *  @return A double
+      *  @exception IllegalActionException Always thrown
+      */
+     public double doubleValue() throws IllegalActionException {
+         throw new IllegalActionException(notSupportedConversionMessage(this,
+                 "double"));
+     }
+
+     /** Return the value of this token as a FixPoint.
+      *  In this base class, we just throw an exception.
+      *  @return A FixPoint
+      *  @exception IllegalActionException Always thrown.
+      */
+     public FixPoint fixValue() throws IllegalActionException {
+         throw new IllegalActionException(notSupportedConversionMessage(this,
+                 "fixedpoint"));
+     }
+
+     /** Return the type of this token.  Subclasses must implement this method
+      *  to return the correct type.
+      *  @return BaseType.SCALAR
+      */
+     public abstract Type getType();
+
+     /** Return a scalar token that contains the value of this token in the
+      *  units of the argument token. The unit category of the argument token
+      *  must be the same as that of this token, otherwise, an exception will
+      *  be thrown. The returned token is unitless.
+      *  @param units A scalar token that represents a unit.
+      *  @return A scalar token that does not have a unit.
+      *  @exception IllegalActionException If the unit category of the
+      *  argument token is not the same as that of this one.
+      */
+     public ScalarToken inUnitsOf(ScalarToken units)
+             throws IllegalActionException {
+         if (!_areUnitsEqual(units)) {
+             throw new IllegalActionException(notSupportedMessage("inUnitsOf",
+                     this, units)
+                     + " because the units are not the same.");
+         }
+
+         return (ScalarToken) this.divide(units);
+     }
+
+     /** Return the value of this token as an int.
+      *  In this base class, we just throw an exception.
+      *  @return The value of this token as an int.
+      *  @exception IllegalActionException Always thrown.
+      */
+     public int intValue() throws IllegalActionException {
+         throw new IllegalActionException(notSupportedConversionMessage(this,
+                 "int"));
+     }
+
+     /** Test whether the value of this Token is close to the argument
+      *  Token.  The argument and this token are converted to
+      *  equivalent types, and then compared.  Generally, this is the
+      *  higher of the type of this token and the argument type.
+      *  Subclasses should implement the protected _isCloseTo() method
+      *  to perform the correct type-specific operation.
+      *  @see #isEqualTo
+      *  @param rightArgument The token to test closeness of this token with.
+      *  @param epsilon The value that we use to determine whether two
+      *   tokens are close.
+      *  @return A boolean token that contains the value true if the
+      *   units of this token and the argument token are the same, and their
+      *   values are close.
+      *  @exception IllegalActionException If the argument token is not
+      *   of a type that can be compared with this token, or the units
+      *   are not the same.
+      */
+     public final BooleanToken isCloseTo(Token rightArgument, double epsilon)
+             throws IllegalActionException {
+         // Note that if we had absolute(), subtraction() and islessThan()
+         // we could perhaps define this method for all tokens.  However,
+         // Precise classes like IntToken not bother doing the absolute(),
+         // subtraction(), and isLessThan() method calls and should go
+         // straight to isEqualTo().  Also, these methods might introduce
+         // exceptions because of type conversion issues.
+         int typeInfo = TypeLattice.compare(getType(), rightArgument);
+
+         if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
+             return _doIsCloseTo(rightArgument, epsilon);
+         } else if (typeInfo == CPO.HIGHER) {
+             ScalarToken convertedArgument = (ScalarToken) getType().convert(
+                     rightArgument);
+
+             try {
+                 return _doIsCloseTo(convertedArgument, epsilon);
+             } catch (IllegalActionException ex) {
+                 // If the type-specific operation fails, then create a
+                 // better error message that has the types of the
+                 // arguments that were passed in.
+                 throw new IllegalActionException(null, ex, notSupportedMessage(
+                         "isCloseTo", this, rightArgument));
+             }
+         } else if (typeInfo == CPO.LOWER) {
+             return rightArgument.isCloseTo(this, epsilon);
+         } else {
+             throw new IllegalActionException(notSupportedIncomparableMessage(
+                     "isCloseTo", this, rightArgument));
+         }
+     }
+
+     /** Test for equality of the values of this Token and the argument
+      *  Token.  The argument and this token are converted to
+      *  equivalent types, and then compared.  Generally, this is the
+      *  higher of the type of this token and the argument type.  This
+      *  method defers to the _isEqualTo() method to perform a
+      *  type-specific equality check.  Derived classes should implement
+      *  that method to provide type specific actions for equality
+      *  testing.
+      *
+      *  @see #isCloseTo
+      *  @param rightArgument The token with which to test equality.
+      *  @exception IllegalActionException If this method is not
+      *  supported by the derived class.
+      *  @return A boolean token that contains the value true if the
+      *  values and units of this token and the argument token are the same.
+      */
+     public final BooleanToken isEqualTo(Token rightArgument)
+             throws IllegalActionException {
+         int typeInfo = TypeLattice.compare(getType(), rightArgument);
+
+         if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
+             return _doIsEqualTo(rightArgument);
+         } else if (typeInfo == CPO.HIGHER) {
+             ScalarToken convertedArgument = (ScalarToken) getType().convert(
+                     rightArgument);
+
+             try {
+                 return _doIsEqualTo(convertedArgument);
+             } catch (IllegalActionException ex) {
+                 // If the type-specific operation fails, then create a
+                 // better error message that has the types of the
+                 // arguments that were passed in.
+                 throw new IllegalActionException(null, ex, notSupportedMessage(
+                         "isEqualTo", this, rightArgument));
+             }
+         } else if (typeInfo == CPO.LOWER) {
+             return rightArgument.isEqualTo(this);
+         } else {
+             throw new IllegalActionException(notSupportedIncomparableMessage(
+                     "isEqualTo", this, rightArgument));
+         }
+     }
+
+     /** Check whether the value of this token is strictly greater than
+      *  that of the argument token.  The argument and this token are
+      *  converted to equivalent types, and then compared.  Generally,
+      *  this is the higher of the type of this token and the argument
+      *  type.  This method defers to the _isLessThan() method to perform
+      *  a type-specific equality check.  Derived classes should
+      *  implement that method to provide type specific actions for
+      *  equality testing.
+      *
+      *  @param rightArgument The token to compare against.
+      *  @return A boolean token with value true if this token has the
+      *  same units as the argument, and is strictly greater than the
+      *  argument.
+      *  @exception IllegalActionException If the argument token and
+      *  this token are of incomparable types, or have different units,
+      *  or the operation does not make sense for the given types.
+      */
+     public final BooleanToken isGreaterThan(ScalarToken rightArgument)
+             throws IllegalActionException {
+         int typeInfo = TypeLattice.compare(getType(), rightArgument);
+
+         if (typeInfo == CPO.SAME) {
+             return rightArgument._doIsLessThan(this);
+         } else if (typeInfo == CPO.HIGHER) {
+             ScalarToken convertedArgument = (ScalarToken) getType().convert(
+                     rightArgument);
+
+             try {
+                 return convertedArgument._doIsLessThan(this);
+             } catch (IllegalActionException ex) {
+                 // If the type-specific operation fails, then create a
+                 // better error message that has the types of the
+                 // arguments that were passed in.
+                 throw new IllegalActionException(null, ex, notSupportedMessage(
+                         "isGreaterThan", this, rightArgument));
+             }
+         } else if (typeInfo == CPO.LOWER) {
+             return rightArgument.isLessThan(this);
+         } else {
+             throw new IllegalActionException(notSupportedIncomparableMessage(
+                     "isGreaterThan", this, rightArgument));
+         }
+     }
+
+     /** Check whether the value of this token is strictly less than that of the
+      *  argument token.  The argument and this token are converted to
+      *  equivalent types, and then compared.  Generally, this is the
+      *  higher of the type of this token and the argument type.  This
+      *  method defers to the _isLessThan() method to perform a
+      *  type-specific equality check.  Derived classes should implement
+      *  that method to provide type specific actions for equality
+      *  testing.
+      *
+      *  @param rightArgument The token to compare against.
+      *  @return A boolean token with value true if this token has the
+      *  same units as the argument, and is strictly less than the
+      *  argument.
+      *  @exception IllegalActionException If the argument token and
+      *  this token are of incomparable types, or have different units,
+      *  or the operation does not make sense for the given types.
+      */
+     public final BooleanToken isLessThan(ScalarToken rightArgument)
+             throws IllegalActionException {
+         int typeInfo = TypeLattice.compare(getType(), rightArgument);
+
+         if (typeInfo == CPO.SAME) {
+             return _doIsLessThan(rightArgument);
+         } else if (typeInfo == CPO.HIGHER) {
+             ScalarToken convertedArgument = (ScalarToken) getType().convert(
+                     rightArgument);
+
+             try {
+                 return _doIsLessThan(convertedArgument);
+             } catch (IllegalActionException ex) {
+                 // If the type-specific operation fails, then create a
+                 // better error message that has the types of the
+                 // arguments that were passed in.
+                 throw new IllegalActionException(null, ex, notSupportedMessage(
+                         "isLessThan", this, rightArgument));
+             }
+         } else if (typeInfo == CPO.LOWER) {
+             return rightArgument.isGreaterThan(this);
+         } else {
+             throw new IllegalActionException(notSupportedIncomparableMessage(
+                     "isLessThan", this, rightArgument));
+         }
+     }
+
+     /** Returns a token representing the result of shifting the bits
+      *  of this token towards the most significant bit, filling the
+      *  least significant bits with zeros.
+      *  @param bits The number of bits to shift.
+      *  @return The left shift.
+      *  @exception IllegalActionException If the given token is not
+      *  compatible for this operation, or the operation does not make
+      *  sense for this type.
+      */
+     public ScalarToken leftShift(int bits) throws IllegalActionException {
+         throw new IllegalActionException(notSupportedMessage("leftShift", this,
+                 new IntToken(bits)));
+     }
+
+     /** Returns a token representing the result of shifting the bits
+      *  of this token towards the least significant bit, filling the
+      *  most significant bits with zeros.  This treats the value as an
+      *  unsigned number, which may have the effect of destroying the
+      *  sign of the value.
+      *  @param bits The number of bits to shift.
+      *  @return The right shift.
+      *  @exception IllegalActionException If the given token is not
+      *  compatible for this operation, or the operation does not make
+      *  sense for this type.
+      */
+     public ScalarToken logicalRightShift(int bits)
+             throws IllegalActionException {
+         throw new IllegalActionException(notSupportedMessage(
+                 "logicalRightShift", this, new IntToken(bits)));
+     }
+
+     /** Return the value of this token as a long integer.
+      *  In this base class, we just throw an exception.
+      *  @return The value of this token as a long.
+      *  @exception IllegalActionException Always thrown.
+      */
+     public long longValue() throws IllegalActionException {
+         throw new IllegalActionException(notSupportedConversionMessage(this,
+                 "long"));
+     }
+
+     /** Return a new token whose value is the value of this token
+      *  modulo the value of the argument token.  Type conversion also
+      *  occurs here, so that the operation is performed at the least
+      *  type necessary to ensure precision.  The returned type is the
+      *  same as the type chosen for the operation, which is the higher
+      *  of the type of this token and the argument type.  Subclasses
+      *  should implement the protected _modulo() method to perform the
+      *  correct type-specific operation.
+      *  @param rightArgument The token to modulo with this token.
+      *  @return A new token containing the result.
+      *  @exception IllegalActionException If the argument token and
+      *  this token are of incomparable types, or have different units,
+      *  or the operation does not make sense for the given types.
+      */
+     public final Token modulo(Token rightArgument)
+             throws IllegalActionException {
+         int typeInfo = TypeLattice.compare(getType(), rightArgument);
+
+         if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
+             return _doModulo(rightArgument);
+         } else if (typeInfo == CPO.HIGHER) {
+             ScalarToken convertedArgument = (ScalarToken) getType().convert(
+                     rightArgument);
+
+             try {
+                 return _doModulo(convertedArgument);
+             } catch (IllegalActionException ex) {
+                 // If the type-specific operation fails, then create a
+                 // better error message that has the types of the
+                 // arguments that were passed in.
+                 throw new IllegalActionException(null, ex, notSupportedMessage(
+                         "modulo", this, rightArgument));
+             }
+         } else if (typeInfo == CPO.LOWER) {
+             return rightArgument.moduloReverse(this);
+         } else {
+            // Items being moduloed are incomparable.  However, modulo
+            // may still be possible because the LUB of the types
+            // might support it. E.g., int mod arrayType(int, 2),
+            // where the LUB is arrayType(int).
             Type lubType = (Type) TypeLattice.lattice().leastUpperBound(
                     getType(), rightArgument.getType());
 
@@ -437,379 +823,15 @@ public abstract class ScalarToken extends Token implements
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
                 if (!(lub.getType().equals(getType()))) {
-                    return lub.divide(rightArgument);
+                    return lub.modulo(rightArgument);
                 }
             }
 
             // LUB does not support it, but it still might be
-            // possible, e.g. with expressions like double / {double}.
-            // Only divideReverse() could support it at this time however.
+            // possible, e.g. with expressions like double modulo {double}.
+            // Only moduloReverse() could support it at this time however.
             // This will throw an exception if it is not supported.
-            return rightArgument.divideReverse(this);
-        }
-    }
-
-    /** Return a new token whose value is the value of this token
-     *  divided into the value of the argument token.  Type conversion
-     *  also occurs here, so that the operation is performed at the
-     *  least type necessary to ensure precision.  The returned type
-     *  is the same as the type chosen for the operation, which is the
-     *  higher of the type of this token and the argument type.  The
-     *  returned token will also have the correct units.  Subclasses
-     *  should implement the protected _divide() method to perform the
-     *  correct type-specific operation.
-     *  @param leftArgument The token to be divided into the value of
-     *  this token.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or the operation does
-     *  not make sense for the given types.
-     */
-    public final Token divideReverse(Token leftArgument)
-            throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(leftArgument, getType());
-
-        // We would normally expect this to be LOWER, since this will almost
-        // always be called by divide, so put that case first.
-        if (typeInfo == CPO.LOWER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    leftArgument);
-
-            try {
-                return convertedArgument._doDivide(this);
-            } catch (IllegalActionException ex) {
-                // If the type-specific operation fails, then create a
-                // better error message that has the types of the
-                // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "divideReverse", this, leftArgument));
-            }
-        } else if (typeInfo == CPO.SAME) {
-            return ((ScalarToken) leftArgument)._doDivide(this);
-        } else if (typeInfo == CPO.HIGHER) {
-            return leftArgument.divide(this);
-        } else {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "divideReverse", this, leftArgument));
-        }
-    }
-
-    /** Return the value of this token as a double.
-     *  In this base class, we just throw an exception.
-     *  @return A double
-     *  @exception IllegalActionException Always thrown
-     */
-    public double doubleValue() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "double"));
-    }
-
-    /** Return the value of this token as a FixPoint.
-     *  In this base class, we just throw an exception.
-     *  @return A FixPoint
-     *  @exception IllegalActionException Always thrown.
-     */
-    public FixPoint fixValue() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "fixedpoint"));
-    }
-
-    /** Return the type of this token.  Subclasses must implement this method
-     *  to return the correct type.
-     *  @return BaseType.SCALAR
-     */
-    public abstract Type getType();
-
-    /** Return a scalar token that contains the value of this token in the
-     *  units of the argument token. The unit category of the argument token
-     *  must be the same as that of this token, otherwise, an exception will
-     *  be thrown. The returned token is unitless.
-     *  @param units A scalar token that represents a unit.
-     *  @return A scalar token that does not have a unit.
-     *  @exception IllegalActionException If the unit category of the
-     *  argument token is not the same as that of this one.
-     */
-    public ScalarToken inUnitsOf(ScalarToken units)
-            throws IllegalActionException {
-        if (!_areUnitsEqual(units)) {
-            throw new IllegalActionException(notSupportedMessage("inUnitsOf",
-                    this, units)
-                    + " because the units are not the same.");
-        }
-
-        return (ScalarToken) this.divide(units);
-    }
-
-    /** Return the value of this token as an int.
-     *  In this base class, we just throw an exception.
-     *  @return The value of this token as an int.
-     *  @exception IllegalActionException Always thrown.
-     */
-    public int intValue() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "int"));
-    }
-
-    /** Test whether the value of this Token is close to the argument
-     *  Token.  The argument and this token are converted to
-     *  equivalent types, and then compared.  Generally, this is the
-     *  higher of the type of this token and the argument type.
-     *  Subclasses should implement the protected _isCloseTo() method
-     *  to perform the correct type-specific operation.
-     *  @see #isEqualTo
-     *  @param rightArgument The token to test closeness of this token with.
-     *  @param epsilon The value that we use to determine whether two
-     *   tokens are close.
-     *  @return A boolean token that contains the value true if the
-     *   units of this token and the argument token are the same, and their
-     *   values are close.
-     *  @exception IllegalActionException If the argument token is not
-     *   of a type that can be compared with this token, or the units
-     *   are not the same.
-     */
-    public final BooleanToken isCloseTo(Token rightArgument, double epsilon)
-            throws IllegalActionException {
-        // Note that if we had absolute(), subtraction() and islessThan()
-        // we could perhaps define this method for all tokens.  However,
-        // Precise classes like IntToken not bother doing the absolute(),
-        // subtraction(), and isLessThan() method calls and should go
-        // straight to isEqualTo().  Also, these methods might introduce
-        // exceptions because of type conversion issues.
-        int typeInfo = TypeLattice.compare(getType(), rightArgument);
-
-        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
-            return _doIsCloseTo(rightArgument, epsilon);
-        } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
-
-            try {
-                return _doIsCloseTo(convertedArgument, epsilon);
-            } catch (IllegalActionException ex) {
-                // If the type-specific operation fails, then create a
-                // better error message that has the types of the
-                // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "isCloseTo", this, rightArgument));
-            }
-        } else if (typeInfo == CPO.LOWER) {
-            return rightArgument.isCloseTo(this, epsilon);
-        } else {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "isCloseTo", this, rightArgument));
-        }
-    }
-
-    /** Test for equality of the values of this Token and the argument
-     *  Token.  The argument and this token are converted to
-     *  equivalent types, and then compared.  Generally, this is the
-     *  higher of the type of this token and the argument type.  This
-     *  method defers to the _isEqualTo() method to perform a
-     *  type-specific equality check.  Derived classes should implement
-     *  that method to provide type specific actions for equality
-     *  testing.
-     *
-     *  @see #isCloseTo
-     *  @param rightArgument The token with which to test equality.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A boolean token that contains the value true if the
-     *  values and units of this token and the argument token are the same.
-     */
-    public final BooleanToken isEqualTo(Token rightArgument)
-            throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(getType(), rightArgument);
-
-        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
-            return _doIsEqualTo(rightArgument);
-        } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
-
-            try {
-                return _doIsEqualTo(convertedArgument);
-            } catch (IllegalActionException ex) {
-                // If the type-specific operation fails, then create a
-                // better error message that has the types of the
-                // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "isEqualTo", this, rightArgument));
-            }
-        } else if (typeInfo == CPO.LOWER) {
-            return rightArgument.isEqualTo(this);
-        } else {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "isEqualTo", this, rightArgument));
-        }
-    }
-
-    /** Check whether the value of this token is strictly greater than
-     *  that of the argument token.  The argument and this token are
-     *  converted to equivalent types, and then compared.  Generally,
-     *  this is the higher of the type of this token and the argument
-     *  type.  This method defers to the _isLessThan() method to perform
-     *  a type-specific equality check.  Derived classes should
-     *  implement that method to provide type specific actions for
-     *  equality testing.
-     *
-     *  @param rightArgument The token to compare against.
-     *  @return A boolean token with value true if this token has the
-     *  same units as the argument, and is strictly greater than the
-     *  argument.
-     *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or have different units,
-     *  or the operation does not make sense for the given types.
-     */
-    public final BooleanToken isGreaterThan(ScalarToken rightArgument)
-            throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(getType(), rightArgument);
-
-        if (typeInfo == CPO.SAME) {
-            return rightArgument._doIsLessThan(this);
-        } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
-
-            try {
-                return convertedArgument._doIsLessThan(this);
-            } catch (IllegalActionException ex) {
-                // If the type-specific operation fails, then create a
-                // better error message that has the types of the
-                // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "isGreaterThan", this, rightArgument));
-            }
-        } else if (typeInfo == CPO.LOWER) {
-            return rightArgument.isLessThan(this);
-        } else {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "isGreaterThan", this, rightArgument));
-        }
-    }
-
-    /** Check whether the value of this token is strictly less than that of the
-     *  argument token.  The argument and this token are converted to
-     *  equivalent types, and then compared.  Generally, this is the
-     *  higher of the type of this token and the argument type.  This
-     *  method defers to the _isLessThan() method to perform a
-     *  type-specific equality check.  Derived classes should implement
-     *  that method to provide type specific actions for equality
-     *  testing.
-     *
-     *  @param rightArgument The token to compare against.
-     *  @return A boolean token with value true if this token has the
-     *  same units as the argument, and is strictly less than the
-     *  argument.
-     *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or have different units,
-     *  or the operation does not make sense for the given types.
-     */
-    public final BooleanToken isLessThan(ScalarToken rightArgument)
-            throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(getType(), rightArgument);
-
-        if (typeInfo == CPO.SAME) {
-            return _doIsLessThan(rightArgument);
-        } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
-
-            try {
-                return _doIsLessThan(convertedArgument);
-            } catch (IllegalActionException ex) {
-                // If the type-specific operation fails, then create a
-                // better error message that has the types of the
-                // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "isLessThan", this, rightArgument));
-            }
-        } else if (typeInfo == CPO.LOWER) {
-            return rightArgument.isGreaterThan(this);
-        } else {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "isLessThan", this, rightArgument));
-        }
-    }
-
-    /** Returns a token representing the result of shifting the bits
-     *  of this token towards the most significant bit, filling the
-     *  least significant bits with zeros.
-     *  @param bits The number of bits to shift.
-     *  @return The left shift.
-     *  @exception IllegalActionException If the given token is not
-     *  compatible for this operation, or the operation does not make
-     *  sense for this type.
-     */
-    public ScalarToken leftShift(int bits) throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("leftShift", this,
-                new IntToken(bits)));
-    }
-
-    /** Returns a token representing the result of shifting the bits
-     *  of this token towards the least significant bit, filling the
-     *  most significant bits with zeros.  This treats the value as an
-     *  unsigned number, which may have the effect of destroying the
-     *  sign of the value.
-     *  @param bits The number of bits to shift.
-     *  @return The right shift.
-     *  @exception IllegalActionException If the given token is not
-     *  compatible for this operation, or the operation does not make
-     *  sense for this type.
-     */
-    public ScalarToken logicalRightShift(int bits)
-            throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage(
-                "logicalRightShift", this, new IntToken(bits)));
-    }
-
-    /** Return the value of this token as a long integer.
-     *  In this base class, we just throw an exception.
-     *  @return The value of this token as a long.
-     *  @exception IllegalActionException Always thrown.
-     */
-    public long longValue() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "long"));
-    }
-
-    /** Return a new token whose value is the value of this token
-     *  modulo the value of the argument token.  Type conversion also
-     *  occurs here, so that the operation is performed at the least
-     *  type necessary to ensure precision.  The returned type is the
-     *  same as the type chosen for the operation, which is the higher
-     *  of the type of this token and the argument type.  Subclasses
-     *  should implement the protected _modulo() method to perform the
-     *  correct type-specific operation.
-     *  @param rightArgument The token to modulo with this token.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or have different units,
-     *  or the operation does not make sense for the given types.
-     */
-    public final Token modulo(Token rightArgument)
-            throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(getType(), rightArgument);
-
-        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
-            return _doModulo(rightArgument);
-        } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
-
-            try {
-                return _doModulo(convertedArgument);
-            } catch (IllegalActionException ex) {
-                // If the type-specific operation fails, then create a
-                // better error message that has the types of the
-                // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "modulo", this, rightArgument));
-            }
-        } else if (typeInfo == CPO.LOWER) {
             return rightArgument.moduloReverse(this);
-        } else {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "modulo", this, rightArgument));
         }
     }
 

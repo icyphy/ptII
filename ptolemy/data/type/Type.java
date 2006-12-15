@@ -103,6 +103,12 @@ public interface Type {
      */
     public Class getTokenClass();
 
+    /** Return true if this type does not correspond to a single token
+     *  class.  This occurs if the type is not instantiable, or it
+     *  represents either an abstract base class or an interface.
+     */
+    public boolean isAbstract();
+
     /** Test if the argument type is compatible with this type.
      *  Compatible is defined as follows: If this type is a constant, the
      *  argument is compatible if it is the same or less than this type in

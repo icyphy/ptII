@@ -185,6 +185,27 @@ public abstract class BaseType implements Type, Serializable {
         return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
+    /** Return true if this type does not correspond to a single token
+     *  class.  This occurs if the type is not instantiable, or it
+     *  represents either an abstract base class or an interface.
+     */
+    public boolean isAbstract() {
+	if (!isInstantiable()) {
+	    return true;
+	}
+
+	int mod = _tokenClass.getModifiers();
+
+	if (Modifier.isAbstract(mod)) {
+	    return true;
+	}
+	
+	if (_tokenClass.isInterface()) {
+	    return true;
+	}
+	return false;
+    }
+
     /** Test if the argument type is compatible with this type. The method
      *  returns true if this type is UNKNOWN, since any type is a substitution
      *  instance of it. If this type is not UNKNOWN, this method returns true
@@ -216,16 +237,6 @@ public abstract class BaseType implements Type, Serializable {
      */
     public boolean isInstantiable() {
         if (this == UNKNOWN) {
-            return false;
-        }
-
-        int mod = _tokenClass.getModifiers();
-
-        if (Modifier.isAbstract(mod)) {
-            return false;
-        }
-
-        if (_tokenClass.isInterface()) {
             return false;
         }
 
@@ -305,6 +316,21 @@ public abstract class BaseType implements Type, Serializable {
 
     /** The bottom element of the data type lattice. */
     public static final UnknownType UNKNOWN = new UnknownType();
+
+    public static class ArrayBottomType extends BaseType {
+        private ArrayBottomType() {
+            super(Void.TYPE, "arrayBottom");
+        }
+
+        public Token convert(Token t) throws IllegalActionException {
+            // Since any type is a substitution instance of UNKNOWN, just
+            // return the argument.
+            return t;
+        }
+    }
+
+    /** The bottom element of the data type lattice. */
+    public static final ArrayBottomType ARRAY_BOTTOM = new ArrayBottomType();
 
     /** The boolean data type. */
     public static class BooleanType extends BaseType {
@@ -540,9 +566,9 @@ public abstract class BaseType implements Type, Serializable {
             return 9;
         }
 
-        public boolean isInstantiable() {
-            return true;
-        }
+//         public boolean isInstantiable() {
+//             return true;
+//         }
     }
 
     /** The scalar data type: The least upper bound of all the scalar types. */

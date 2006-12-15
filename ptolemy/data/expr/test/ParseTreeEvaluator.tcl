@@ -453,10 +453,10 @@ test ParseTreeEvaluator-14.0 {Test eval().} {
 ####
 # 
 test ParseTreeEvaluator-16.0 {Test method calls on arrays, matrices, etc.} {
-    list [evaluate "cast({int},{1,2,3}.add({3,4,5}))"] \
-            [evaluate "cast({int},{{a=1,b=2},{a=3,b=4},{a=5,b=6}}.get(\"a\"))"] \
+    list [evaluate "cast(arrayType(int,3),{1,2,3}.add({3,4,5}))"] \
+            [evaluate "cast(arrayType(int,3),{{a=1,b=2},{a=3,b=4},{a=5,b=6}}.get(\"a\"))"] \
             [evaluate "cast(\[int\],create({1,2,3,4,5,6},2,3))"] \
-            [evaluate "cast({int},{1,1,1,1}.leftShift({1,2,3,4}))"]
+            [evaluate "cast(arrayType(int,4),{1,1,1,1}.leftShift({1,2,3,4}))"]
 } {{{4, 6, 8}} {{1, 3, 5}} {[1, 2, 3; 4, 5, 6]} {{2, 4, 8, 16}}}
 
 test ParseTreeFreeVariableCollector-16.2 {Test record indexing} {

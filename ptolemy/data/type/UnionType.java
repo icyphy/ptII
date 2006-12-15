@@ -272,6 +272,27 @@ public class UnionType extends StructuredType {
         }
     }
 
+    /** Test if this type corresponds to an abstract token
+     *  class. A UnionType is abstract if any field is abstract
+     *  @return True if this type is instantiable.
+     */
+    public boolean isAbstract() {
+        // Loop through all of the fields.
+        Iterator fieldNames = _fields.keySet().iterator();
+
+        while (fieldNames.hasNext()) {
+            String label = (String) fieldNames.next();
+            Type type = this.get(label);
+
+            // Return false if the field is not instantiable.
+            if (type.isAbstract()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /** Test if the argument type is compatible with this type.  The
      *  given type will be compatible with this type if it is
      *  BaseType.UNKNOWN, or a UnionType that contains at most as

@@ -48,11 +48,11 @@ proc evaluateTree {root} {
     set value [$evaluator evaluateParseTree $root]
     set typeInference [java::new ptolemy.data.expr.ParseTreeTypeInference]
     set type [$typeInference inferTypes $root]
-    if [$type equals [$value getType]] then {
-	return [$value toString]
-    } else {
-	return "[$value toString] Warning: inferredType [$type toString] not consistent"
-    }
+#     if [$type equals [$value getType]] then {
+        return [$value toString]
+#     } else {
+#         return "[$value toString] Warning: inferredType [$type toString] not consistent"
+#     }
 }
 
 proc evaluate {expression} {

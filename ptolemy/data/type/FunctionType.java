@@ -261,6 +261,14 @@ public class FunctionType extends StructuredType {
         }
     }
 
+    /** Test if this type corresponds to an abstract token
+     *  class. A FunctionType is abstract only if it is not instantiable.
+     *  @return True if this type is abstract.
+     */
+    public boolean isAbstract() {
+	return !isInstantiable();
+    }
+
     /** Test if the argument type is compatible with this type.  The
      *  given type will be compatible with this type if it is
      *  BaseType.UNKNOWN, or...

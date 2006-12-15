@@ -108,6 +108,18 @@ public abstract class StructuredType implements Type {
         return Type.HASH_INVALID;
     }
 
+    /** Return true if this type does not correspond to a single token
+     *  class.  This occurs if the type is not instantiable, or it
+     *  represents either an abstract base class or an interface.
+     *  This method should be overridden in derived classes to return
+     *  true only for types which are not abstract.
+     *  @return true.
+     */
+    public boolean isAbstract() {
+	return true;
+	    
+    }
+
     /** Set the elements that have declared type BaseType.UNKNOWN to the
      *  specified type.
      *  @param type A Type.

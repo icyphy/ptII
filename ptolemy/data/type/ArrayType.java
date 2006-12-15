@@ -28,6 +28,7 @@
 package ptolemy.data.type;
 
 import ptolemy.data.ArrayToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.Token;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
@@ -66,7 +67,24 @@ public class ArrayType extends StructuredType {
         }
 
         _elementType = _declaredElementType;
+        _length = -1;
     }
+
+    /** Construct a new ArrayType with the specified type for the array
+     *  elements. To leave the element type undeclared, use BaseType.UNKNOWN.
+     *  @param elementType The type of the array elements.
+     *  @param length Then length of the array.
+     *  @exception IllegalArgumentException If the argument is null.
+     */
+    public ArrayType(Type elementType, int length) {
+        this(elementType);
+        if(length < 0) {
+            throw new IllegalArgumentException("Cannot create ArrayType " 
+                    + "with negative length.");
+        }
+        _length = length;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -91,25 +109,41 @@ public class ArrayType extends StructuredType {
         return new TypeableArrayTypeTerm(typeable);
     }
 
+    /** Return a type constraint that can be used to contrain
+     *  another typeable object to have a type related to an
+     *  array whose element type is the type of the specified
+     *  typeable.  A typical usage of this is as follows:
+     *  <pre>
+     *      output.setTypeAtLeast(ArrayType.arrayOf(input, length));
+     *  </pre>
+     *  where input and output are ports (this is the type
+     *  constraint of SequenceToArray, for example).
+     *  @param typeable A typeable.
+     *  @return An InequalityTerm that can be passed to methods
+     *   like setTypeAtLeast() of the Typeable interface.
+     *  @throws IllegalActionException If the specified typeable
+     *   cannot be set to an array type.
+     */
+    public static InequalityTerm arrayOf(Typeable typeable, int length)
+            throws IllegalActionException {
+        return new TypeableSizedArrayTypeTerm(typeable, length);
+    }
+
     /** Return a deep copy of this ArrayType if it is a variable, or
      *  itself if it is a constant.
      *  @return An ArrayType.
      */
     public Object clone() {
-        if (isConstant()) {
-            return this;
-        } else {
-            ArrayType newObj = new ArrayType(_declaredElementType);
-
-            try {
-                newObj.updateType(this);
-            } catch (IllegalActionException ex) {
-                throw new InternalErrorException("ArrayType.clone: "
-                        + "Cannot update new instance. " + ex.getMessage());
-            }
-
-            return newObj;
+        ArrayType newObj = new ArrayType(_declaredElementType);
+        newObj._length = _length;
+        
+        try {
+            newObj.updateType(this);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException("ArrayType.clone: "
+                    + "Cannot update new instance. " + ex.getMessage());
         }
+        return newObj;
     }
 
     /** Convert the argument token into an ArrayToken having this
@@ -136,6 +170,10 @@ public class ArrayType extends StructuredType {
                     + " to type {unknown}");
         }
         if (!(token instanceof ArrayToken)) {
+            if(hasKnownLength() && length() != 1) {
+                throw new IllegalActionException(null,
+                        Token.notSupportedConversionMessage(token, toString()));
+            }
             // NOTE: Added 7/17/06 by EAL to support type -> {type} conversion.
             Token[] contents = new Token[1];
             contents[0] = token;
@@ -143,7 +181,12 @@ public class ArrayType extends StructuredType {
         }
 
         ArrayToken argumentArrayToken = (ArrayToken) token;
+        if(hasKnownLength() && argumentArrayToken.length() != length()) {
+            throw new IllegalActionException(null,
+                    Token.notSupportedConversionMessage(token, toString()));
+        }
 
+ 
         if (myElementType.equals(argumentArrayToken.getElementType())) {
             return token;
         }
@@ -200,8 +243,10 @@ public class ArrayType extends StructuredType {
         if (!(object instanceof ArrayType)) {
             return false;
         }
-
-        return _elementType.equals(((ArrayType) object).getElementType());
+        
+        ArrayType argumentType = (ArrayType)object;
+        return _elementType.equals(argumentType.getElementType()) &&
+            _length == argumentType._length;
     }
 
     /** Return a type constraint that can be used to contrain
@@ -227,6 +272,13 @@ public class ArrayType extends StructuredType {
         return new TypeableElementTypeTerm(typeable);
     }
 
+    /** Return the declared type of the array elements.
+     *  @return a Type.
+     */
+    public Type getDeclaredElementType() {
+        return _declaredElementType;
+    }
+
     /** Return the type of the array elements.
      *  @return a Type.
      */
@@ -238,7 +290,7 @@ public class ArrayType extends StructuredType {
      *  @return An InequalityTerm.
      *  @see ptolemy.graph.InequalityTerm
      */
-    public InequalityTerm getElementTypeTerm() {
+    private InequalityTerm getElementTypeTerm() {
         return _elemTypeTerm;
     }
 
@@ -255,6 +307,22 @@ public class ArrayType extends StructuredType {
         return _elementType.hashCode() + 2917;
     }
 
+    /** Return true if the length of this array type has been determined.
+     *  @return true if the length has been determined.
+     */
+    public boolean hasKnownLength() {
+        return _length >= 0;
+    }
+
+    /** Return true if this type does not correspond to a single token
+     *  class.  This occurs if the type is not instantiable, or it
+     *  represents either an abstract base class or an interface.
+     *  @return true if the element type is abstract.
+     */
+    public boolean isAbstract() {
+	return _elementType.isAbstract() || !hasKnownLength();
+    }
+
     /** Set the elements that have declared type BaseType.UNKNOWN (the leaf
      *  type variable) to the specified type.
      *  @param t the type to set the leaf type variable to.
@@ -262,7 +330,7 @@ public class ArrayType extends StructuredType {
     public void initialize(Type t) {
         try {
             if (!isConstant()) {
-                getElementTypeTerm().initialize(t);
+                _elemTypeTerm.initialize(t);
             }
         } catch (IllegalActionException iae) {
             throw new InternalErrorException("ArrayType.initialize: Cannot "
@@ -285,7 +353,13 @@ public class ArrayType extends StructuredType {
 
         if (type instanceof ArrayType) {
             arrayType = (ArrayType) type;
-        } else {
+            if(hasKnownLength() && arrayType.hasKnownLength() &&
+                    length() != arrayType.length()) {
+                return false;
+            }
+            // If the length of this type is unknown, then the
+            // argument length is compatible.
+       } else {
             return false;
         }
 
@@ -317,12 +391,31 @@ public class ArrayType extends StructuredType {
      *  @see Type#isSubstitutionInstance
      */
     public boolean isSubstitutionInstance(Type type) {
-        if (!(type instanceof ArrayType)) {
+        ArrayType arrayType;
+        if (type instanceof ArrayType) {
+            arrayType = (ArrayType) type;
+            if(hasKnownLength() && arrayType.hasKnownLength() &&
+                    length() != arrayType.length()) {
+                return false;
+            }
+        } else {
             return false;
         }
 
         Type argElemType = ((ArrayType) type).getElementType();
         return _declaredElementType.isSubstitutionInstance(argElemType);
+    }
+
+    /** Return the length of this array type.
+     *  @return The length of this type.
+     *  @exception IllegalActionException If the length is not known.
+     */
+    public int length() {
+        if(!hasKnownLength()) {
+            throw new RuntimeException(
+                    "Length is not known.");
+        }
+        return _length;
     }
 
     /** Set the type to the specified type, which is required to be
@@ -340,6 +433,7 @@ public class ArrayType extends StructuredType {
             Type clone = (Type) ((ArrayType) type).getElementType().clone();
             _elementType = clone;
             _declaredElementType = clone;
+            _length = ((ArrayType) type).length();
         } catch (CloneNotSupportedException e) {
             throw new InternalErrorException(e);
         }
@@ -350,12 +444,17 @@ public class ArrayType extends StructuredType {
      *  @return A String.
      */
     public String toString() {
-        return "{" + _elementType.toString() + "}";
+        if(hasKnownLength()) {
+            return "arrayType(" + getElementType().toString() + "," 
+                + _length + ")";
+        } else {
+            return "arrayType(" + getElementType().toString() + ")";
+        }
     }
-
+    
     /** Update this Type to the specified ArrayType.
      *  The specified type must be an ArrayType with the same structure as
-     *  this type, and have depth less than the MAXDEPTHDOUND.
+     *  this type, and have depth less than the MAXDEPTHBOUND.
      *  This method will only update the component whose declared type is
      *  BaseType.UNKNOWN, and leave the constant part of this type intact.
      *  @param newType A StructuredType.
@@ -365,22 +464,18 @@ public class ArrayType extends StructuredType {
     public void updateType(StructuredType newType)
             throws IllegalActionException {
         super.updateType(newType);
-        if (this.isConstant()) {
-            if (this.equals(newType)) {
-                return;
-            } else {
-                throw new IllegalActionException("ArrayType.updateType: "
-                        + "This type is a constant and the argument is not "
-                        + "the same as this type. " + "This type: "
-                        + this.toString() + " argument: " + newType.toString());
-            }
-        }
 
         // This type is a variable.
         if (!this.isSubstitutionInstance(newType)) {
             throw new IllegalActionException("ArrayType.updateType: "
                     + "The type " + this + " cannot be updated to " + newType
                     + ".");
+        }
+
+        ArrayType arrayType = (ArrayType) newType;
+        if(!arrayType.hasKnownLength() || arrayType._length != _length) {
+            _length = -1;  // Other length cases should be guarded by
+                           // the isSubstituionInstance method
         }
 
         Type newElemType = ((ArrayType) newType).getElementType();
@@ -393,7 +488,7 @@ public class ArrayType extends StructuredType {
                         + "The specified element type cannot be cloned: "
                         + _elementType);
             }
-        } else {
+        } else if (!_declaredElementType.equals(newElemType)) {
             // _declaredElementType is a StructuredType. _elementType
             // must also be.
             ((StructuredType) _elementType)
@@ -411,21 +506,31 @@ public class ArrayType extends StructuredType {
      *  </pre>
      *  for a parameter "param".
      */
-    public static InequalityTerm ARRAY_BOTTOM = (new ArrayType(BaseType.UNKNOWN) {
-        // This particular inequality term always has an acceptable type
-        // because it has no visible array that will ever be evaluated.
-        // It is essential that isValueAcceptable() return true, or the
-        // idiom above will result in reported type errors.
-        public InequalityTerm getElementTypeTerm() {
-            return _replacementElementTerm;
-        }
+    public static InequalityTerm ARRAY_BOTTOM = new ArrayBottomTypeTerm(BaseType.ARRAY_BOTTOM);
 
-        private InequalityTerm _replacementElementTerm = new ElementTypeTerm() {
-            public boolean isValueAcceptable() {
-                return true;
-            }
-        };
-    }).getElementTypeTerm();
+    /** A term to use when declaring the type of some parameter or port
+     *  to be an array, with unknown length.  The way to use this is to declare:
+     *  <pre>
+     *     param.setTypeAtLeast(ArrayType.ARRAY_UNSIZED_BOTTOM);
+     *  </pre>
+     *  for a parameter "param".
+     */
+    public static InequalityTerm ARRAY_UNSIZED_BOTTOM = new ArrayBottomTypeTerm(new ArrayType(BaseType.UNKNOWN));
+//  (new ArrayType(BaseType.UNKNOWN) {
+//         // This particular inequality term always has an acceptable type
+//         // because it has no visible array that will ever be evaluated.
+//         // It is essential that isValueAcceptable() return true, or the
+//         // idiom above will result in reported type errors.
+//         public InequalityTerm getElementTypeTerm() {
+//             return _replacementElementTerm;
+//         }
+
+//         private InequalityTerm _replacementElementTerm = new ElementTypeTerm() {
+//             public boolean isValueAcceptable() {
+//                 return true;
+//             }
+//         };
+//     }).getElementTypeTerm();
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -447,9 +552,31 @@ public class ArrayType extends StructuredType {
             throw new IllegalArgumentException("ArrayType.compare: "
                     + "The argument " + type + " is not an ArrayType.");
         }
-
-        return TypeLattice.compare(_elementType, ((ArrayType) type)
+        
+        int retval = TypeLattice.compare(_elementType, ((ArrayType) type)
                 .getElementType());
+
+        ArrayType arrayArgType = (ArrayType)type;
+        if (hasKnownLength() && arrayArgType.hasKnownLength()) {
+            if (length() != arrayArgType.length()) {
+                retval = ptolemy.graph.CPO.INCOMPARABLE;
+            }
+        } else if (hasKnownLength()) {
+            if (retval == ptolemy.graph.CPO.HIGHER) {
+                retval = ptolemy.graph.CPO.INCOMPARABLE;
+            } else if (retval == ptolemy.graph.CPO.SAME) {
+                retval = ptolemy.graph.CPO.LOWER;
+            }
+        } else if (arrayArgType.hasKnownLength()) {
+            if (retval == ptolemy.graph.CPO.LOWER) {
+                retval = ptolemy.graph.CPO.INCOMPARABLE;
+            } else if (retval == ptolemy.graph.CPO.SAME) {
+                retval = ptolemy.graph.CPO.HIGHER;
+            }
+        }
+
+        //System.out.println("comparing " + this + " and " + arrayArgType + " = " + retval);
+        return retval;
     }
 
     /** Return a static instance of ArrayType.
@@ -475,7 +602,21 @@ public class ArrayType extends StructuredType {
 
         Type elementGLB = (Type) TypeLattice.lattice().greatestLowerBound(
                 _elementType, ((ArrayType) type).getElementType());
-        return new ArrayType(elementGLB);
+
+        ArrayType arrayArgType = (ArrayType)type;
+        if (!hasKnownLength() && !arrayArgType.hasKnownLength()) {
+            return new ArrayType(elementGLB);
+        } else if (hasKnownLength() && arrayArgType.hasKnownLength()) {
+            if (length() != arrayArgType.length()) {
+                // FIXME:
+                // return BaseType.ARRAY_BOTTOM;
+            }
+        }
+        if (hasKnownLength()) {
+            return new ArrayType(elementGLB, length());
+        } else {
+            return new ArrayType(elementGLB, arrayArgType.length());
+        }
     }
 
     /** Return the least Upper bound of this type with the specified
@@ -494,6 +635,16 @@ public class ArrayType extends StructuredType {
 
         Type elementLUB = (Type) TypeLattice.lattice().leastUpperBound(
                 _elementType, ((ArrayType) type).getElementType());
+
+        ArrayType arrayArgType = (ArrayType)type;
+        if (hasKnownLength() && arrayArgType.hasKnownLength()) {
+            if (length() == arrayArgType.length()) {
+                return new ArrayType(elementLUB, length());
+            }
+        }
+
+        //   System.out.println("least upper bound of " + this + " and " + type + " = " + new ArrayType(elementLUB));
+
         return new ArrayType(elementLUB);
     }
 
@@ -504,12 +655,105 @@ public class ArrayType extends StructuredType {
 
     private Type _elementType;
 
+    private int _length;
+
     private ElementTypeTerm _elemTypeTerm = new ElementTypeTerm();
 
     private static ArrayType _representative = new ArrayType(BaseType.UNKNOWN);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
+    /** An InequalityTerm representing an arbitrary array type.
+     */
+    private static class ArrayBottomTypeTerm implements InequalityTerm {
+
+        /** Construct a term.
+         */
+        public ArrayBottomTypeTerm(Type type) {
+            _arrayType = type;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                   public inner methods                ////
+
+        /** Return an array type with element types given by the
+         *  associated typeable.
+         *  @return An ArrayType.
+         */
+        public Object getAssociatedObject() {
+            return _arrayType;
+        }
+
+        /** Return an array type with element types given by the
+         *  associated typeable.
+         *  @return An ArrayType.
+         *  @throws IllegalActionException If the type of the
+         *  associated typeable cannot be determined.
+         */
+        public Object getValue() throws IllegalActionException {
+            return _arrayType;
+        }
+
+        /** Return an array of size zero.
+         *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+            return (new InequalityTerm[0]);
+        }
+
+        /** Throw an exception. This term cannot be set.
+         *  @parameter e A Type.
+         *  @exception IllegalActionException If this type is a constant,
+         *   or the argument is not a Type.
+         */
+        public void initialize(Object e) throws IllegalActionException {
+            throw new IllegalActionException(
+                    "ArrayType$ArraybottomTypeTerm.setValue: "
+                            + "Is not settable.");
+        }
+
+        /** Return false.
+         *  @return False.
+         */
+        public boolean isSettable() {
+            return false;
+        }
+
+        /** Delegate to an array type with elements given by the
+         *  type of the associated typeable.
+         *  @return True if the element type is acceptable.
+         */
+        public boolean isValueAcceptable() {
+            return true;
+        }
+
+        /** Throw an exception.
+         *  @param type a Type.
+         *  @exception IllegalActionException Always
+         */
+        public void setValue(Object type) throws IllegalActionException {
+            throw new IllegalActionException(
+                    "ArrayType$ArrayBottomTypeTerm.setValue: "
+                            + "Is not settable.");
+        }
+
+        /** Delegate to an array type with elements given by the
+         *  type of the associated typeable.
+         *  @return A String.
+         */
+        public String toString() {
+            return _arrayType.toString();
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                   private members                     ////
+
+
+        /** The array type with element types matching the typeable. */
+        private Type _arrayType;
+    }
+
 
     /** An InequalityTerm associated with an instance of ArrayType. */
     private class ElementTypeTerm implements InequalityTerm {
@@ -720,7 +964,12 @@ public class ArrayType extends StructuredType {
          *  @return A String.
          */
         public String toString() {
-            return _getArrayType().toString();
+            try {
+                return "(TypeableArrayType(" + getAssociatedObject() + "), "
+                    + getValue() + ")";
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
         }
 
         ///////////////////////////////////////////////////////////////
@@ -784,7 +1033,7 @@ public class ArrayType extends StructuredType {
          *  @return an ArrayType.
          */
         public Object getAssociatedObject() {
-            return _getElementTypeTerm().getAssociatedObject();
+            return _typeable;
         }
 
         /** Delegate to the element type term of the associated typeable.
@@ -792,14 +1041,25 @@ public class ArrayType extends StructuredType {
          *  @throws IllegalActionException If the delegate throws it.
          */
         public Object getValue() throws IllegalActionException {
-            return _getElementTypeTerm().getValue();
+            InequalityTerm term = _getElementTypeTerm();
+            if(term == null) {
+                return BaseType.UNKNOWN;
+            } else {
+                return term.getValue();
+            }
         }
 
         /** Delegate to the element type term of the associated typeable.
          *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-            return _getElementTypeTerm().getVariables();
+            if (isSettable()) {
+                InequalityTerm[] variable = new InequalityTerm[1];
+                variable[0] = this;
+                return variable;
+            }
+
+            return (new InequalityTerm[0]);
         }
 
         /** Delegate to the element type term of the associated typeable.
@@ -808,21 +1068,36 @@ public class ArrayType extends StructuredType {
          *  @throws IllegalActionException If the delegate throws it.
          */
         public void initialize(Object type) throws IllegalActionException {
-            _getElementTypeTerm().initialize(type);
+            InequalityTerm term = _getElementTypeTerm();
+            if(term == null) {
+                return;
+            } else {
+                term.initialize(type);
+            }
         }
 
         /** Delegate to the element type term of the associated typeable.
          *  @return True if the element type is a type variable.
          */
         public boolean isSettable() {
-            return _getElementTypeTerm().isSettable();
+            InequalityTerm term = _getElementTypeTerm();
+            if(term == null) {
+                return true;
+            } else {
+                return term.isSettable();
+            }
         }
 
         /** Delegate to the element type term of the associated typeable.
          *  @return True if the element type is acceptable.
          */
         public boolean isValueAcceptable() {
-            return _getElementTypeTerm().isValueAcceptable();
+            InequalityTerm term = _getElementTypeTerm();
+            if(term == null) {
+                return false;
+            } else {
+                return term.isValueAcceptable();
+            }
         }
 
         /** Delegate to the element type term of the associated typeable.
@@ -831,35 +1106,41 @@ public class ArrayType extends StructuredType {
          *   the declared type of the element.
          */
         public void setValue(Object type) throws IllegalActionException {
-            _getElementTypeTerm().setValue(type);
+            InequalityTerm term = _getElementTypeTerm();
+            if(term == null) {
+                return;
+            } else {
+                term.setValue(type);
+            }
         }
 
         /** Delegate to the element type term of the associated typeable.
          *  @return A String.
          */
         public String toString() {
-            return _getElementTypeTerm().toString();
+            try {
+                return "(ArrayElementType(" + getAssociatedObject() + "), "
+                    + getValue() + ")";
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
+
         }
 
         ///////////////////////////////////////////////////////////////
         ////                   private methods                     ////
 
-        /** Get an inequality term for elements of the
-         *  associated typeable. If the associated typeable does
-         *  not already have an array type, then assign it the type
-         *  {unknown} and return its element type term.
+        /** Get an inequality term for elements of the associated
+         *  typeable. If the associated typeable does not already have
+         *  an array type, then return null, indicating that the type
+         *  of the typeable hasn't yet resolved to an array type.
          *  @return An array type for the associated typeable.
          */
         private InequalityTerm _getElementTypeTerm() {
             try {
                 Type type = _typeable.getType();
                 if (!(type instanceof ArrayType)) {
-                    // Have to also declare the type equal to {unknown} to get
-                    // a type term.  This will be changed to a more specific type
-                    // during type resolution.
-                    _typeable.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-                    // Have to get the type again because it gets cloned.
-                    type = _typeable.getType();
+                    return null;
                 }
                 return ((ArrayType) type).getElementTypeTerm();
             } catch (IllegalActionException e) {
@@ -872,5 +1153,136 @@ public class ArrayType extends StructuredType {
 
         /** The associated typeable. */
         private Typeable _typeable;
+    }
+
+    /** An InequalityTerm representing an array types whose elements
+     *  have the type of the specified typeable.  The purpose of this class
+     *  is to defer to as late as possible actually accessing
+     *  the type of the typeable, since it may change dynamically.
+     *  This term is not variable and cannot be set.
+     */
+    private static class TypeableSizedArrayTypeTerm implements InequalityTerm {
+
+        /** Construct a term that will defer to the type of the
+         *  specified typeable.
+         *  @param typeable The object to defer requests to.
+         */
+        public TypeableSizedArrayTypeTerm(Typeable typeable, int length) {
+            _typeable = typeable;
+            _length = length;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                   public inner methods                ////
+
+        /** Return an array type with element types given by the associated typeable.
+         *  @return An ArrayType.
+         */
+        public Object getAssociatedObject() {
+            return _getArrayType();
+        }
+
+        /** Return an array type with element types given by the associated typeable.
+         *  @return An ArrayType.
+         *  @throws IllegalActionException If the type of the associated typeable
+         *   cannot be determined.
+         */
+        public Object getValue() throws IllegalActionException {
+            return _getArrayTypeRaw();
+        }
+
+        /** Return an array of size zero.
+         *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+            return (new InequalityTerm[0]);
+        }
+
+        /** Throw an exception. This term cannot be set.
+         *  @parameter e A Type.
+         *  @exception IllegalActionException If this type is a constant,
+         *   or the argument is not a Type.
+         */
+        public void initialize(Object e) throws IllegalActionException {
+            throw new IllegalActionException(
+                    "ArrayType$TypeableArrayTypeTerm.initialize: "
+                            + "This array type given with elements given by "
+                            + _typeable + " is not settable.");
+        }
+
+        /** Return false.
+         *  @return False.
+         */
+        public boolean isSettable() {
+            return false;
+        }
+
+        /** Delegate to an array type with elements given by the
+         *  type of the associated typeable.
+         *  @return True if the element type is acceptable.
+         */
+        public boolean isValueAcceptable() {
+            ArrayType type = _getArrayType();
+            return type.getElementTypeTerm().isValueAcceptable();
+        }
+
+        /** Throw an exception.
+         *  @param type a Type.
+         *  @exception IllegalActionException Always
+         */
+        public void setValue(Object type) throws IllegalActionException {
+            throw new IllegalActionException(
+                    "ArrayType$TypeableArrayTypeTerm.setValue: "
+                            + "The array type with element type given by "
+                            + _typeable + " is not settable.");
+        }
+
+        /** Delegate to an array type with elements given by the
+         *  type of the associated typeable.
+         *  @return A String.
+         */
+        public String toString() {
+            return _getArrayType().toString();
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                   private methods                     ////
+
+        /** Get an array type with element type matching the type
+         *  of the associated typeable.
+         *  @return An array type for the associated typeable.
+         */
+        private ArrayType _getArrayType() {
+            try {
+                return _getArrayTypeRaw();
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
+        }
+
+        /** Get an array type with element type matching the type
+         *  of the associated typeable.
+         *  @return An array type for the associated typeable.
+         *  @throws IllegalActionException If the type of the typeable
+         *   cannot be determined.
+         */
+        private ArrayType _getArrayTypeRaw() throws IllegalActionException {
+            Type type = _typeable.getType();
+            if (_arrayType == null || !_arrayType.getElementType().equals(type)) {
+                _arrayType = new ArrayType(type, _length);
+            }
+            return _arrayType;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                   private members                     ////
+
+        /** The associated typeable. */
+        private Typeable _typeable;
+
+        /** The array type with element types matching the typeable. */
+        private ArrayType _arrayType;
+
+        private int _length;
     }
 }

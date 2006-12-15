@@ -307,6 +307,28 @@ public class RecordType extends StructuredType {
         return _fields.keySet().hashCode() + 2917;
     }
 
+    /** Return true if this type does not correspond to a single token
+     *  class.  This occurs if the type is not instantiable, or it
+     *  represents either an abstract base class or an interface.
+     *  @return true if the type of any field is abstract.
+     */
+    public boolean isAbstract() {
+        // Loop through all of the fields.
+        Iterator fieldNames = _fields.keySet().iterator();
+
+        while (fieldNames.hasNext()) {
+            String label = (String) fieldNames.next();
+            Type type = this.get(label);
+
+            // Return false if the field is not instantiable.
+            if (type.isAbstract()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /** Set the elements that have declared type BaseType.UNKNOWN (the leaf
      *  type variable) to the specified type.
      *  @param type the type to set the leaf type variable to.

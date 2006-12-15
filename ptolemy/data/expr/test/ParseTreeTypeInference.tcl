@@ -655,11 +655,11 @@ test ParseTreeTypeInference-16.0 {Test method calls on arrays, matrices, etc.} {
     set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
 
     set p1 [java::new ptolemy.data.expr.PtParser]
-    set root [ $p1 {generateParseTree String} "cast({int},{1,2,3}.add({3,4,5}))"]
+    set root [ $p1 {generateParseTree String} "cast(arrayType(int,3),{1,2,3}.add({3,4,5}))"]
     set res1  [[ $evaluator evaluateParseTree $root] getType]
     set type1 [inferTypes $root]
 
-    set root [ $p1 {generateParseTree String} "cast({int},{{a=1,b=2},{a=3,b=4},{a=5,b=6}}.get(\"a\"))"]
+    set root [ $p1 {generateParseTree String} "cast(arrayType(int,3),{{a=1,b=2},{a=3,b=4},{a=5,b=6}}.get(\"a\"))"]
     set res2  [[ $evaluator evaluateParseTree $root] getType]
     set type2 [inferTypes $root]
     
@@ -667,7 +667,7 @@ test ParseTreeTypeInference-16.0 {Test method calls on arrays, matrices, etc.} {
     set res3 [[ $evaluator evaluateParseTree $root] getType]
     set type3 [inferTypes $root]
     
-    set root [ $p1 {generateParseTree String} "cast({int},{1,1,1,1}.leftShift({1,2,3,4}))"]
+    set root [ $p1 {generateParseTree String} "cast(arrayType(int,4),{1,1,1,1}.leftShift({1,2,3,4}))"]
     set res4 [[ $evaluator evaluateParseTree $root] getType]
     set type4 [inferTypes $root]
 
