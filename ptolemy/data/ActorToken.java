@@ -87,6 +87,15 @@ public class ActorToken extends Token {
         return TYPE;
     }
 
+    /** Return true if this type does not correspond to a single token
+     *  class.  This occurs if the type is not instantiable, or it
+     *  represents either an abstract base class or an interface.
+     *  @return Always return false, this token is instantiable.
+     */
+    public boolean isAbstract() {
+        return false;
+    }
+
     /** Model for equality of the values of this Token and the argument Token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for equality testing.
