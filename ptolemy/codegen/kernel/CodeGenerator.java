@@ -670,8 +670,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @param attribute The attribute to generate variable name for.
      *  @return The generated variable name.
      */
-    public String generateVariableName(NamedObj namedObj) {
-        return CodeGeneratorHelper.generateName(namedObj) + "_";
+    public String generateVariableName(NamedObj attribute) {
+        return CodeGeneratorHelper.generateName(attribute) + "_";
     }
 
     /** Generate into the specified code stream the code associated with
