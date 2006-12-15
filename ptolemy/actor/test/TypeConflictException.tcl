@@ -130,9 +130,9 @@ test TypeConflictException-1.1 {Test with structured types} {
     list [$ex getMessage]
 } {{Type conflicts occurred at the following inequalities:
   (ptolemy.actor.TypedIOPort {..E1.port}, unknown) <= (ptolemy.data.expr.Parameter {..E1.param} value undefined, unknown)
-  (ptolemy.actor.TypedIOPort {..E1.port}, unknown) <= (ptolemy.actor.TypedIOPort {..E1.port2}, {unknown})
+  (ptolemy.actor.TypedIOPort {..E1.port}, unknown) <= (ptolemy.actor.TypedIOPort {..E1.port2}, arrayType(unknown))
   (ptolemy.actor.TypedIOPort {..E1.port}, unknown) <= (ptolemy.data.expr.Parameter {..E1.param2} value undefined, {name = string, value = unknown})
-  (ptolemy.actor.TypedIOPort {..E1.port2}, {unknown}) <= (ptolemy.data.expr.Parameter {..E1.param} value undefined, unknown)
+  (ptolemy.actor.TypedIOPort {..E1.port2}, arrayType(unknown)) <= (ptolemy.data.expr.Parameter {..E1.param} value undefined, unknown)
   (ptolemy.data.expr.Parameter {..E1.param2} value undefined, {name = string, value = unknown}) <= (ptolemy.data.expr.Parameter {..E1.param} value undefined, unknown)
-  (ptolemy.actor.TypedIOPort {..E1.port2}, {unknown}) <= (ptolemy.data.expr.Parameter {..E1.param2} value undefined, {name = string, value = unknown})
+  (ptolemy.actor.TypedIOPort {..E1.port2}, arrayType(unknown)) <= (ptolemy.data.expr.Parameter {..E1.param2} value undefined, {name = string, value = unknown})
 }}

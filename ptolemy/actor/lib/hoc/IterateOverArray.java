@@ -763,12 +763,14 @@ public class IterateOverArray extends TypedCompositeActor implements
                     }
 
                     // Require the source port to be an array.
-                    Inequality arrayInequality = new Inequality(sourcePort
-                            .getTypeTerm(), ArrayType.ARRAY_BOTTOM);
+                    Inequality arrayInequality = 
+                        new Inequality(ArrayType.ARRAY_BOTTOM, 
+                                sourcePort.getTypeTerm());
                     result.add(arrayInequality);
 
-                    // Next require that the element type of the source port array
-                    // be compatible with the destination port.
+                    // Next require that the element type of the
+                    // source port array be compatible with the
+                    // destination port.
                     try {
                         Inequality ineq = new Inequality(ArrayType
                                 .elementType(sourcePort), destinationPort

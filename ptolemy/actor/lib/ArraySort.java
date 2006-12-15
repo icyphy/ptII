@@ -74,6 +74,8 @@ public class ArraySort extends Transformer {
         // Set Type Constraints.
         input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         output.setTypeAtLeast(input);
+        // FIXME: correct type constraint for length
+        output.setTypeAtLeast(ArrayType.ARRAY_UNSIZED_BOTTOM);
 
         // NOTE: Consider constraining input element types.
         // This is a bit complicated to do, however.

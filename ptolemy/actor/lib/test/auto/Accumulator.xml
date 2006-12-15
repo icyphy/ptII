@@ -2,41 +2,33 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Accumulator" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0.beta">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 816, 518}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 200.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="reset" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -49,13 +41,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 135.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Pulse2" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -68,13 +53,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 260.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -86,47 +64,26 @@
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 195.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 5, 3, 8}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 200.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
-        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Accumulator={init=&quot;int&quot;}, Pulse={firingCountLimit=&quot;int&quot;, indexes=&quot;{int}&quot;, repeat=&quot;boolean&quot;, values=&quot;{int}&quot;}, Pulse2={firingCountLimit=&quot;int&quot;, indexes=&quot;{int}&quot;, repeat=&quot;boolean&quot;, values=&quot;{boolean}&quot;}, Ramp={firingCountLimit=&quot;int&quot;, init=&quot;int&quot;, step=&quot;int&quot;}, Test={correctValues=&quot;{int}&quot;, tolerance=&quot;double&quot;, trainingMode=&quot;boolean&quot;}}">
+        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Accumulator = {init = &quot;int&quot;}, Pulse = {firingCountLimit = &quot;int&quot;, indexes = &quot;arrayType(int)&quot;, repeat = &quot;boolean&quot;, values = &quot;arrayType(int,2)&quot;}, Pulse2 = {firingCountLimit = &quot;int&quot;, indexes = &quot;arrayType(int)&quot;, repeat = &quot;boolean&quot;, values = &quot;arrayType(boolean,5)&quot;}, Ramp = {firingCountLimit = &quot;int&quot;, init = &quot;int&quot;, step = &quot;int&quot;}, Test = {correctValues = &quot;arrayType(int,5)&quot;, tolerance = &quot;double&quot;, trainingMode = &quot;boolean&quot;}}">
         </property>
-        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Accumulator={input=&quot;int&quot;, output=&quot;int&quot;, reset=&quot;boolean&quot;}, Pulse={output=&quot;int&quot;, trigger=&quot;unknown&quot;}, Pulse2={output=&quot;boolean&quot;, trigger=&quot;unknown&quot;}, Ramp={output=&quot;int&quot;, step=&quot;int&quot;, trigger=&quot;unknown&quot;}, Test={input=&quot;int&quot;, output=&quot;boolean&quot;}}">
+        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Accumulator = {input = &quot;int&quot;, output = &quot;int&quot;, reset = &quot;boolean&quot;}, Pulse = {output = &quot;int&quot;, trigger = &quot;unknown&quot;}, Pulse2 = {output = &quot;boolean&quot;, trigger = &quot;unknown&quot;}, Ramp = {output = &quot;int&quot;, step = &quot;int&quot;, trigger = &quot;unknown&quot;}, Test = {input = &quot;int&quot;, output = &quot;boolean&quot;}}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 200.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>

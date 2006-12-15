@@ -97,7 +97,7 @@ test TypedAtomicActor-2.1 {Test array valued parameter and port} {
 
     list [[$param getType] toString] [[$output getType] toString] \
          [[$recIn getType] toString]
-} {{{int}} {{int}} {{int}}}
+} {arrayType(int) arrayType(int) arrayType(int)}
 
 ######################################################################
 ####
@@ -108,7 +108,7 @@ test TypedAtomicActor-2.2 {Change initial value to double array} {
 
     list [[$param getType] toString] [[$output getType] toString] \
          [[$recIn getType] toString]
-} {{{double}} {{double}} {{double}}}
+} {arrayType(double) arrayType(double) arrayType(double)}
 
 ######################################################################
 ####

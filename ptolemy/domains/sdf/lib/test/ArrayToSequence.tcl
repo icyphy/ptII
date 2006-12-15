@@ -100,7 +100,7 @@ test ArrayToSequence-2.2 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$a2sIn getType] toString] \
 	[[$a2sOut getType] toString] [[$recIn getType] toString]
-} {double double {{double}} {{double}} double double}
+} {double double arrayType(double) arrayType(double) double double}
 
 ######################################################################
 #### Test string array
@@ -119,7 +119,7 @@ test ArrayToSequence-2.4 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$a2sIn getType] toString] \
 	[[$a2sOut getType] toString] [[$recIn getType] toString]
-} {string string {{string}} {{string}} string string}
+} {string string arrayType(string) arrayType(string) string string}
 
 ######################################################################
 #### Test cascading SequenceToArray and ArrayToSequence
@@ -164,7 +164,7 @@ test ArrayToSequence-2.6 {check types} {
 	[[$s2a2Out getType] toString] [[$a2s2In getType] toString] \
 	[[$a2s2Out getType] toString] [[$a2sIn getType] toString] \
 	[[$a2sOut getType] toString] [[$recIn getType] toString]
-} {int int {{int}} {{int}} {{{int}}} {{{int}}} {{int}} {{int}} int int}
+} {int int arrayType(int) arrayType(int) arrayType(arrayType(int)) arrayType(arrayType(int)) arrayType(int) arrayType(int) int int}
 
 ######################################################################
 #### Test array of array of string
@@ -186,4 +186,4 @@ test ArrayToSequence-2.8 {check types} {
 	[[$s2a2Out getType] toString] [[$a2s2In getType] toString] \
 	[[$a2s2Out getType] toString] [[$a2sIn getType] toString] \
 	[[$a2sOut getType] toString] [[$recIn getType] toString]
-} {string string {{string}} {{string}} {{{string}}} {{{string}}} {{string}} {{string}} string string}
+} {string string arrayType(string) arrayType(string) arrayType(arrayType(string)) arrayType(arrayType(string)) arrayType(string) arrayType(string) string string}

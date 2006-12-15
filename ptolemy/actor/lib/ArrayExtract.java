@@ -76,6 +76,8 @@ public class ArrayExtract extends Transformer {
         // Set type constraints.
         input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         output.setTypeAtLeast(input);
+        // FIXME: correct type constraint for length
+        output.setTypeAtLeast(ArrayType.ARRAY_UNSIZED_BOTTOM);
 
         // Set parameters.
         sourcePosition = new PortParameter(this, "sourcePosition");
