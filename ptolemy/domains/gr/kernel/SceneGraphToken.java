@@ -163,6 +163,15 @@ public class SceneGraphToken extends Token {
             return SceneGraphToken.class;
         }
 
+        /** Return true if this type does not correspond to a single token
+         *  class.  This occurs if the type is not instantiable, or it
+         *  represents either an abstract base class or an interface.
+         *  @return Always return false, this token is instantiable.
+         */
+        public boolean isAbstract() {
+            return false;
+        }
+        
         /** Test if the argument type is compatible with this type.
          *  The method returns true if this type is UNKNOWN, since any type
          *  is a substitution instance of it. If this type is not UNKNOWN,
