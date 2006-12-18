@@ -1,4 +1,5 @@
-/* Actor that serves as a placeholder for PtinyOS modules and configurations.
+/* Actor that serves as a placeholder for PtinyOS nesC modules and
+   configurations.
 
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
@@ -25,8 +26,6 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-
-
  */
 package ptolemy.domains.ptinyos.lib;
 
@@ -48,18 +47,20 @@ import ptolemy.vergil.icon.NameIcon;
 //// NCComponentBase
 
 /**
- Base class for nesC component classes.  These are classes with source
- code defined in a .nc file intended for use with TinyOS to program
- the Berkeley Motes.  This class provides a parameter <i>source</i>
- that is used to identify the nesC source file. It works in conjunction
- with the NCComponent MoML class, which attaches a tableau factory
- so that look inside will open the nesC source file.
+  Actor that serves as a placeholder for PtinyOS nesC modules and
+  configurations.  This class is a base class for nesC component
+  classes.  These are classes with source code defined in a .nc file
+  intended for use with TinyOS to program the Berkeley Motes.  This
+  class provides a parameter <i>source</i> that is used to identify
+  the nesC source file. It works in conjunction with the NCComponent
+  MoML class, which attaches a tableau factory so that selecting the
+  "Open Actor" menu choice will open the nesC source file.
 
  @author Elaine Cheong, Edward A. Lee, Yang Zhao
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (cxh)
+ @Pt.ProposedRating Green (celaine)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class NCComponentBase extends AtomicActor {
     /** Construct an actor in the specified workspace with an empty
@@ -93,7 +94,10 @@ public class NCComponentBase extends AtomicActor {
         super(container, name);
         _init();
 
-        // Set the displayed name.
+        // Set the displayed name.  "_displayedName" is a specially
+        // named attribute that is used in {@link
+        // ptolemy.vergil.icon.ActorNameIcon} to display the value of
+        // the attribute on the actor icon.
         displayedName = new StringAttribute(this, "_displayedName");
         displayedName.setExpression(name);
     }
@@ -101,16 +105,26 @@ public class NCComponentBase extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The source code file or URL. */
+    /** The source code file or URL.  The default value is
+     *  "$PTII/ptolemy/domains/ptinyos/lib/NCComponent.nc"
+     */
     public FileParameter source;
 
-    /** Relative orientation of ports on the icon of this actor. */
+    /** Relative orientation of ports on the icon of this actor.  The
+     *  default value is an IntegerToken of value 90.
+     */
     public Parameter rotatePorts;
 
-    /** Icon for this component. */
+    /** Icon for this component.  The default value is a NameIcon with
+     *  name "_icon", which will display the value of the {@link
+     *  #displayedName} attribute on the icon.
+     */
     public NameIcon icon;
 
-    /** Displayed name on icon. */
+    /** Displayed name on icon.  The value is set to the name of the
+     *  nesC component being represented.  Otherwise, the name of this
+     *  class is displayed.
+     */
     public StringAttribute displayedName;
 
     ///////////////////////////////////////////////////////////////////
@@ -120,21 +134,19 @@ public class NCComponentBase extends AtomicActor {
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         source = new FileParameter(this, "source");
-        source
-                .setExpression("$PTII/ptolemy/domains/ptinyos/lib/NCComponent.nc");
+        source.setExpression(
+                "$PTII/ptolemy/domains/ptinyos/lib/NCComponent.nc");
         source.setVisibility(Settable.EXPERT);
-        /*
-         _attachText("_iconDescription", "<svg>\n"
-         + "<rect x=\"-20\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-         + "style=\"fill:white\"/>\n" + "<text x=\"-12\" y=\"5\" "
-         + "style=\"font-size:18\">\n" + "nesC\n" + "</text>\n"
-         + "</svg>\n");
-         */
 
         // Set port orientation so that input ports are on top.
+        // "_rotatePorts" is a specially named Parameter that is used
+        // in {@link ptolemy.vergil.actor.IOPortControlle} and {@link
+        // ptolemy.vergil.toolbox.RotateOrFlipPorts} to change the
+        // location of the ports on the actor icon.
         rotatePorts = new Parameter(this, "_rotatePorts", new IntToken(90));
 
-        // Create the icon.
+        // Create an icon that displays the value of the
+        // "_displayedName" attribute on the icon.
         icon = new NameIcon(this, "_icon");
     }
 }

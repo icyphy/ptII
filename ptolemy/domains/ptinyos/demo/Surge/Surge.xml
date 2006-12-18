@@ -278,22 +278,22 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 96.82986111111109]">
                 </property>
             </port>
-            <port name="accelx" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="accelerometerX" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 114.60763888888883]">
                 </property>
             </port>
-            <port name="accely" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="accelerometerY" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 132.38541666666666]">
                 </property>
             </port>
-            <port name="magx" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="magnetometerX" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 150.16319444444437]">
                 </property>
             </port>
-            <port name="magy" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="magnetometerY" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 167.94097222222217]">
                 </property>
@@ -699,22 +699,22 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 96.82986111111109]">
                 </property>
             </port>
-            <port name="accelx" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="accelerometerX" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 114.60763888888883]">
                 </property>
             </port>
-            <port name="accely" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="accelerometerY" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 132.38541666666666]">
                 </property>
             </port>
-            <port name="magx" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="magnetometerX" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 150.16319444444437]">
                 </property>
             </port>
-            <port name="magy" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="magnetometerY" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 167.94097222222217]">
                 </property>
@@ -1198,22 +1198,22 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 96.82986111111109]">
                 </property>
             </port>
-            <port name="accelx" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="accelerometerX" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 114.60763888888883]">
                 </property>
             </port>
-            <port name="accely" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="accelerometerY" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 132.38541666666666]">
                 </property>
             </port>
-            <port name="magx" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="magnetometerX" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 150.16319444444437]">
                 </property>
             </port>
-            <port name="magy" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="magnetometerY" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 167.94097222222217]">
                 </property>
@@ -1619,22 +1619,22 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 96.82986111111109]">
                 </property>
             </port>
-            <port name="accelx" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="accelerometerX" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 114.60763888888883]">
                 </property>
             </port>
-            <port name="accely" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="accelerometerY" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 132.38541666666666]">
                 </property>
             </port>
-            <port name="magx" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="magnetometerX" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 150.16319444444437]">
                 </property>
             </port>
-            <port name="magy" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="magnetometerY" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 167.94097222222217]">
                 </property>
@@ -1998,9 +1998,9 @@
                 </property>
                 <property name="baseStation" class="ptolemy.moml.SharedParameter" value="&quot;MicaBoard0&quot;">
                 </property>
-                <property name="commandPort" class="ptolemy.domains.ptinyos.kernel.PtinyOSIntegerParameter" value="10584">
+                <property name="commandPort" class="ptolemy.domains.ptinyos.kernel.PtinyOSNodeParameter" value="10584">
                 </property>
-                <property name="nodeID" class="ptolemy.domains.ptinyos.kernel.PtinyOSIntegerParameter" value="0">
+                <property name="nodeID" class="ptolemy.domains.ptinyos.kernel.PtinyOSNodeParameter" value="0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 40.0]">
                 </property>
@@ -2046,22 +2046,22 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 96.82986111111109]">
                 </property>
             </port>
-            <port name="accelx" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="accelerometerX" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 114.60763888888883]">
                 </property>
             </port>
-            <port name="accely" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="accelerometerY" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 132.38541666666666]">
                 </property>
             </port>
-            <port name="magx" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="magnetometerX" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 150.16319444444437]">
                 </property>
             </port>
-            <port name="magy" class="ptolemy.actor.parameters.ParameterPort">
+            <port name="magnetometerY" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.5703125, 167.94097222222217]">
                 </property>

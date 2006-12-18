@@ -184,7 +184,7 @@ public class SharedParameter extends Parameter {
      *  to match the first one encountered.
      *  If there are no shared parameters, then assign the
      *  default value given as an argument.
-     *  @param defaultValue The default parameter value to give.
+     *  @param defaultValue The default parameter value to use.
      */
     public void inferValueFromContext(String defaultValue) {
         Iterator sharedParameters = sharedParameterSet().iterator();

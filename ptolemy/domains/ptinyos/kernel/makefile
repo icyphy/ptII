@@ -51,7 +51,7 @@ JSRCS = \
 	NCCompositeActor.java \
 	PtinyOSCompositeActor.java \
 	PtinyOSDirector.java \
-	PtinyOSIntegerParameter.java \
+	PtinyOSNodeParameter.java \
 	PtinyOSLoader.java
 
 OTHER_FILES_TO_BE_JARED =

@@ -245,7 +245,7 @@ public class PtinyOSDirector extends Director {
     /** Port number for the TOSSIM command server socket.  The value
      *  defaults to 10584.
      */
-    public PtinyOSIntegerParameter commandPort;
+    public PtinyOSNodeParameter commandPort;
 
     /** Flag to ask for confirmation before overwriting.  If false,
      *  then overwrite the specified file without asking, if the file
@@ -276,12 +276,12 @@ public class PtinyOSDirector extends Director {
      *  and <i>eventPort</i>, though this is not enforced.  The value
      *  defaults to 1.  Normally, the value of this parameter does not
      *  need to be changed, since the use of the
-     *  PtinyOSIntegerParameter type for this parameter will cause the
+     *  PtinyOSNodeParameter type for this parameter will cause the
      *  value of the node ID to be automatically incremented for each
      *  new node in the model.  Users should only change this
      *  parameter to force a node to have a particular node ID value.
      */
-    public PtinyOSIntegerParameter nodeID;
+    public PtinyOSNodeParameter nodeID;
 
     /** Number of nodes to simulate per instance of TOSSIM.  The value
      *  defaults to 1, is of type IntToken, and is set to be
@@ -335,7 +335,7 @@ public class PtinyOSDirector extends Director {
      *  by calling fireAt().
      *
      *  <p>This is a JNI method that gets called by TOSSIM through the
-     *  Java loader to enqueue an event.
+     *  Java loader.
      *
      *  @param newTime A string representation of the time of the next
      *  event.  In TOSSIM, unit of time is a tick of a 4MHz clock, and
@@ -371,8 +371,8 @@ public class PtinyOSDirector extends Director {
     /** If the {@link #simulate} parameter is true, process one event in
      *  the TOSSIM event queue and run tasks in task queue.  This
      *  method gets the model time from the director and calls {@link
-     *  ptolemy.domains.ptinyos.kernel.PtinyOSLoader.processEvent}
-     *  with the timea s the argument, which invokes TOSSIM.
+     *  ptolemy.domains.ptinyos.kernel.PtinyOSLoader.processEvent(long)}
+     *  with the time as the argument, which invokes TOSSIM.
      *  @exception IllegalActionException If the fire() method of the
      *  super class throws it, or getting a token from the
      *  <i>simulate</i>parameter throws it.
@@ -642,7 +642,7 @@ public class PtinyOSDirector extends Director {
         CompositeActor container = (CompositeActor) getContainer();
         String code = _generateCode(container);
 
-        // FIXME: test this code to makee sure it works even if this
+        // FIXME: test this code to make sure it works even if this
         // director is embedded more deeply.
 
         //Create file name relative to the toplevel NCCompositeActor.
@@ -658,13 +658,20 @@ public class PtinyOSDirector extends Director {
 
         if (_confirmOverwrite(writeFile)) {
             // Write the generated code to the file.
+            FileWriter writer = null;
             try {
-                FileWriter writer = new FileWriter(writeFile);
+                writer = new FileWriter(writeFile);
                 writer.write(code);
-                writer.close();
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
                         "Failed to open file for writing.");
+            } finally {
+                try {
+                    writer.close();
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to close file.");
+                }
             }
         }
 
@@ -896,7 +903,7 @@ public class PtinyOSDirector extends Director {
      *  is blocking, this method blocks.
      *
      *  <p>This is a JNI method that gets called by TOSSIM through the
-     *  Java loader to enqueue an event.
+     *  Java loader.
      *
      *  @param serverSocketChannel The ServerSocketChannel on which
      *  connections are accepted.
@@ -926,7 +933,7 @@ public class PtinyOSDirector extends Director {
     /** Close the java.nio.channels.Selector.
      *
      *  <p>This is a JNI method that gets called by TOSSIM through the
-     *  Java loader to enqueue an event.
+     *  Java loader.
      *
      *  @param selector The Selector that should be closed.
      */
@@ -937,13 +944,17 @@ public class PtinyOSDirector extends Director {
                     _debug("Begin call to selectorClose()");
                 }
                 // We have to call wakeup() here because of a possible
-                // bug in J2SE.
+                // bug in J2SE.  See this.selectSocket() for more
+                // details.
                 //
-                // Note that this also requires a locking machnism to
-                // prevent selector.select() from being called again after
-                // the selector wakes up but before close() is called.
-                // See:
-                // http://forum.java.sun.com/thread.jspa?threadID=293213&messageID=2671029
+                // Note that this also requires a locking mechanism to
+                // prevent Selector.select() from being called again
+                // after the Selector wakes up but before close() is
+                // called.  See:
+                // <a href="http://forum.java.sun.com/thread.jspa?threadID=293213&messageID=2671029">http://forum.java.sun.com/thread.jspa?threadID=293213&messageID=2671029</a>
+                // In {@link #selectSocket(Selector, boolean[],
+                // boolean, boolean, boolean)}, we use boolean[]
+                // notNullIfClosing as this locking mechanism.
                 selector.wakeup();
                 selector.close();
                 if (_debugging) {
@@ -959,20 +970,20 @@ public class PtinyOSDirector extends Director {
      *  ServerSocketChannel of the ServerSocket with the Selector.
      *
      *  <p>This is a JNI method that gets called by TOSSIM through the
-     *  Java loader to enqueue an event.
+     *  Java loader.
      * 
      *  @param serverSocket The ServerSocket whose channel should be
      *  registered with the Selector created.
-     *  @param opAccept True if this SelectionKey option that should
-     *  be enabled when registering the ServerSocketChannel to the
-     *  Selector.
-     *  @param opConnect True if this SelectionKey option that should
-     *  be enabled when registering the ServerSocketChannel to the
-     *  Selector.
-     *  @param opRead True if this SelectionKey option that should be
+     *  @param opAccept True if this SelectionKey option should be
      *  enabled when registering the ServerSocketChannel to the
      *  Selector.
-     *  @param opWrite True if this SelectionKey option that should be
+     *  @param opConnect True if this SelectionKey option should be
+     *  enabled when registering the ServerSocketChannel to the
+     *  Selector.
+     *  @param opRead True if this SelectionKey option should be
+     *  enabled when registering the ServerSocketChannel to the
+     *  Selector.
+     *  @param opWrite True if this SelectionKey option should be
      *  enabled when registering the ServerSocketChannel to the
      *  Selector.
      *  @return The Selector created, or null if error.
@@ -1024,19 +1035,19 @@ public class PtinyOSDirector extends Director {
     /** Register the channel with the java.nio.channels.Selector.
      *
      *  <p>This is a JNI method that gets called by TOSSIM through the
-     *  Java loader to enqueue an event.
+     *  Java loader.
      *
      *  @param selector The selector to which the channel should be
      *  registered.
      *  @param socketChannel The SocketChannel that should be
      *  registered.
-     *  @param opAccept True if this SelectionKey option that should
-     *  be enabled when registering the SocketChannel to the Selector.
-     *  @param opConnect True if this SelectionKey option that should
-     *  be enabled when registering the SocketChannel to the Selector.
-     *  @param opRead True if this SelectionKey option that should be
+     *  @param opAccept True if this SelectionKey option should be
      *  enabled when registering the SocketChannel to the Selector.
-     *  @param opWrite True if this SelectionKey option that should be
+     *  @param opConnect True if this SelectionKey option should be
+     *  enabled when registering the SocketChannel to the Selector.
+     *  @param opRead True if this SelectionKey option should be
+     *  enabled when registering the SocketChannel to the Selector.
+     *  @param opWrite True if this SelectionKey option should be
      *  enabled when registering the SocketChannel to the Selector.
      */
     public void selectorRegister(Selector selector,
@@ -1064,22 +1075,37 @@ public class PtinyOSDirector extends Director {
         }
     }
 
-    /** Returns a selected channel, or null if none.
+    /** Returns a selected channel, or null if none found.
+     *
+     *  In {@link #selectorClose(Selector)}, Selector.close() is
+     *  called, but because of a bug in J2SE described in <a
+     *  href="http://forum.java.sun.com/thread.jspa?threadID=293213&messageID=2671029">http://forum.java.sun.com/thread.jspa?threadID=293213&messageID=2671029</a>,
+     *  the call to Selector.close() in {@link
+     *  #selectorClose(Selector)} may never return because a thread is
+     *  blocked in the call to Selector.select() in this method.  So,
+     *  {@link #selectorClose(Selector)} also calls Selector.wakeup(),
+     *  but we have to make sure that this method (and the call to
+     *  Selector.select()) is not called again, before the Selector is
+     *  closed, especially since the call to this method will usually
+     *  be in a loop.  We use notNullIfClosing as a flag to indicate
+     *  that this method should not be called again.  We assume that
+     *  notNullIfClosing is a boolean array of at least size 1.
+     *  notNullIfClosing[0] is set to true if this method should not
+     *  be called again, otherwise it is not modified.
      *  
      *  <p>This is a JNI method that gets called by TOSSIM through the
-     *  Java loader to enqueue an event.
+     *  Java loader.
      * 
      *  @param selector The channel selector.
-     *  @param notNullIfClosing TRUE if returning NULL, otherwise left
-     *  as is.  We use notNullIfClosing because of threading issues
-     *  discussed in {@link #selectorClose(Selector selector)}.
-     *  @param opAccept True if this SelectionKey option that should
-     *  be enabled when returning a non-null SelectableChannel.
-     *  @param opConnect True if this SelectionKey option that should
-     *  be enabled when returning a non-null SelectableChannel.
-     *  @param opRead True if this SelectionKey option that should be
+     *  @param notNullIfClosing notNullIfClosing[0] set to TRUE if
+     *  returning NULL, otherwise left as is.
+     *  @param opAccept True if this SelectionKey option should be
      *  enabled when returning a non-null SelectableChannel.
-     *  @param opWrite True if this SelectionKey option that should be
+     *  @param opConnect True if this SelectionKey option should be
+     *  enabled when returning a non-null SelectableChannel.
+     *  @param opRead True if this SelectionKey option should be
+     *  enabled when returning a non-null SelectableChannel.
+     *  @param opWrite True if this SelectionKey option should be
      *  enabled when returning a non-null SelectableChannel.
      *  @return The selected channel, or null if none.
      */
@@ -1126,7 +1152,7 @@ public class PtinyOSDirector extends Director {
     /** Close the java.net.ServerSocket.
      *
      *  <p>This is a JNI method that gets called by TOSSIM through the
-     *  Java loader to enqueue an event.
+     *  Java loader.
      * 
      *  @param serverSocket The ServerSocket to be closed.
      */
@@ -1144,7 +1170,7 @@ public class PtinyOSDirector extends Director {
      *  port specified by <i>port</i>.
      *
      *  <p>This is a JNI method that gets called by TOSSIM through the
-     *  Java loader to enqueue an event.
+     *  Java loader.
      *
      *  @param port The port number on which to create a server
      *  socket.
@@ -1172,7 +1198,7 @@ public class PtinyOSDirector extends Director {
     /** Close the java.nio.channels.SocketChannel.
      *
      *  <p>This is a JNI method that gets called by TOSSIM through the
-     *  Java loader to enqueue an event.
+     *  Java loader.
      * 
      *  @param socketChannel The SocketChannel to close.
      */
@@ -1193,7 +1219,7 @@ public class PtinyOSDirector extends Director {
     /** Read from a java.nio.channels.SocketChannel into readBuffer.
      *
      *  <p>This is a JNI method that gets called by TOSSIM through the
-     *  Java loader to enqueue an event.
+     *  Java loader.
      *
      *  @param socketChannel SocketChannel from which to read.
      *  @param readBuffer The bytes read.
@@ -1230,7 +1256,7 @@ public class PtinyOSDirector extends Director {
      *  java.nio.channels.SocketChannel.
      *
      *  <p>This is a JNI method that gets called by TOSSIM through the
-     *  Java loader to enqueue an event.
+     *  Java loader.
      *
      *  @param socketChannel The SocketChannel on which to write.
      *  @param writeBuffer The bytes to write.
@@ -1263,6 +1289,11 @@ public class PtinyOSDirector extends Director {
      *  @exception IllegalActionException If there is a problem accessing
      *  the {@link #destinationDirectory} or {@link #target} parameters
      *  or if the make subprocess fails or returns a non-zero value.
+     *
+     *  FIXME: Might want to use JTextAreaExec instead.
+     *
+     *  @param makefileName Name of makefile on which to call make.
+     *  @throws IllegalActionException If call to stringValue() throws it.
      */
     private void _compile(String makefileName) throws IllegalActionException {
         // The command we run is:
@@ -1361,11 +1392,11 @@ public class PtinyOSDirector extends Director {
         return true;
     }
 
-    /** Generate NC code for the given model. This does not descend
+    /** Generate nesC code for the given model. This does not descend
      *  hierarchically into contained composites. It simply generates
      *  code for the top level of the specified model.
      *  @param model The model for which to generate code.
-     *  @return The NC code.
+     *  @return A String representation of the nesC code.
      */
     private String _generateCode(CompositeActor model)
             throws IllegalActionException {
@@ -1393,8 +1424,8 @@ public class PtinyOSDirector extends Director {
         return generatedCode.toString();
     }
 
-    /** Generate loader for shared library
-
+    /** Generate Java loader file.
+     *
 ===== Begin example Loader.java (from Dec 4, 2006) =====
 import java.net.ServerSocket;
 import java.nio.channels.Selector;
@@ -1512,7 +1543,9 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
     }
 }
 ===== End example Loader.java =====
-        
+     *
+     *  @throws IllegalActionException If thrown when confirming
+     *  overwrite, or if writing to the file fails.
      */
     private void _generateLoader() throws IllegalActionException {
         // Use filename relative to toplevel PtinyOSDirector.
@@ -1700,6 +1733,7 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
     }
 
     /** Generate makefile.
+     *
 ===== Begin example makefile (from Dec 9, 20060) =====        
 TOSROOT=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x
 TOSDIR=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos
@@ -1712,12 +1746,15 @@ MY_PTCC_FLAGS += -D_PTII_NODE_NAME=_1SenseToLeds_1InWireless_1MicaBoard_1MicaCom
 PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
 include /home/celaine/ptII/mk/ptII.mk
 include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
-===== End example makefile (from Dec 9, 20060) =====        
+===== End example makefile (from Dec 9, 20060) =====
+     *
+     * @exception IllegalActionException If thrown when accessing a
+     * parameter or if there is an error writing to the file.
      * @exception CancelException If the directory named by the
      * ptolemy.ptII.tosroot property does not exist.
      */
     private String _generateMakefile() throws IllegalActionException,
-            CancelException {
+    CancelException {
 
         // Check to make sure that tosRoot exists
         if (tosRoot == null || tosRoot.asFile() == null
@@ -1869,6 +1906,8 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
     /** Generate code for the nesC interface connections.  The order
      *  of ports in the model is the order in which the connections
      *  are generated.
+     *  @param model The model containing nesC components for which to
+     *  generate code.
      *  @return The code for the connections, or an empty string if error.
      */
     private String _includeConnection(CompositeActor model) {
@@ -1916,7 +1955,13 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         return codeString.toString();
     }
 
-    /** Generate code for the connections.
+    /** Generate code for the connections.  Called from {@link
+     *  _includeConnection(CompositeActor).
+     *
+     *  @param model The model containing nesC components for which to
+     *  generate code.
+     *  @actor actor The actor representing the nesC component for
+     *  which to generate code.
      *  @return The connections code.
      */
     private static String _includeConnection(
@@ -1973,8 +2018,10 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         return codeString.toString();
     }
 
-    /** Generate code for the components used in the model.
-     *  @return The code.
+    /** Generate code for the nesC components used in the model.
+     *  @param model The model containing nesC components for which to
+     *  generate code.
+     *  @return The code listing the components used in the model.
      */
     private static String _includeModule(CompositeActor model)
             throws IllegalActionException {
@@ -2104,7 +2151,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
                     PtinyOSDirector.class, "\"MicaBoard\"");
             
             // Set command and event ports for TOSSIM.
-            commandPort = new PtinyOSIntegerParameter(this, "commandPort", 2);
+            commandPort = new PtinyOSNodeParameter(this, "commandPort", 2);
             commandPort.setExpression("10584");
             eventPort = new Parameter(this, "eventPort");
             eventPort.setExpression("commandPort + 1");
@@ -2114,9 +2161,9 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
             timeResolution.moveToLast();
 
             // Set node ID to a starting value of 1.
-            // PtinyOSIntegerParameter will autoincrement this value
+            // PtinyOSNodeParameter will autoincrement this value
             // depending on how many other nodes are in the model.
-            nodeID = new PtinyOSIntegerParameter(this, "nodeID", 1);
+            nodeID = new PtinyOSNodeParameter(this, "nodeID", 1);
             nodeID.setExpression("1");
 
         } catch (KernelException ex) {
@@ -2125,8 +2172,11 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         }
     }
 
-    /** Generate NC code describing the input ports.  Input ports are
-     *  described in NC as interfaces "provided" by this module.
+    /** Generate nesC code describing the input ports.  Input ports
+     *  are described in nesC as interfaces that this module
+     *  "provides".
+     *  @param model The model containing nesC components for which to
+     *  generate code.    
      *  @return The code describing the input ports.
      */
     private static String _interfaceProvides(CompositeActor model)
@@ -2148,8 +2198,11 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         return codeString.toString();
     }
 
-    /** Generate interface the model uses.
-     *  @return The code.
+    /** Generate nesC code describing the output ports.  Output ports
+     *  are described in nesC as interfaces that this module "uses".
+     *  @param model The model containing nesC components for which to
+     *  generate code.
+     *  @return The code listing the interfaces used.
      */
     private static String _interfaceUses(CompositeActor model)
             throws IllegalActionException {
@@ -2196,6 +2249,8 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
     /** Return true if the given actor has at least one input port, which
      *  requires it to have an input driver.
+     *  @param actor Actor to inspect.
+     *  @return True if the given actor has at least one input port.
      */
     private static boolean _needsInputDriver(Actor actor) {
         if (actor.inputPortList().size() <= 0) {
@@ -2207,6 +2262,8 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
     /** Get the sanitized full name with workspace version number appended,
      *  or "Unnamed" with version number appended if no name.
+     *  @param obj The NamedObj to inspect.
+     *  @return String The sanitized full name of the NamedObj.
      */
     private String _sanitizedFullName(NamedObj obj) {
         String objName = obj.getFullName();

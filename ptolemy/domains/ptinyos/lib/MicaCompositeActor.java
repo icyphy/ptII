@@ -47,27 +47,26 @@ import ptolemy.kernel.util.Workspace;
  accelerometer (x- and y-axis), magnetometer (x- and y-axis); and
  output ports for the LEDs (red, green, and yellow).
 
- <p>Note: the ports are actually of type unsigned short (uint16_t),
- although we implement them with double tokens.
+ <p>This actor is always a type opaque composite actor.  The outside
+ types of the input ports (the sensor ports) are of type DoubleToken,
+ and the inside types are of type unsigned short (uint16_t) in C.  The
+ C code (
+ tinyos-1.x/contrib/ptII/ptinyos/tos/platform/ptII/adc_model.c) masks
+ the unsigned short for 10-bit usage (10 least significant bits), to
+ reflect the bit-width of the ADC registers on the actual Mica
+ hardware.  The outside types of the output ports (the LED ports) are
+ of type BooleanToken, and the inside types are of type short in C.
 
- <p>Port information from tinyos-1.x/tos/platform/pc/sensorboard.h:
- <pre>
- enum {
- TOS_ADC_PHOTO_PORT = 1,
- TOS_ADC_TEMP_PORT = 2,
- TOS_ADC_MIC_PORT = 3,
- TOS_ADC_ACCEL_X_PORT = 4,
- TOS_ADC_ACCEL_Y_PORT = 5,
- TOS_ADC_MAG_X_PORT = 6,
- // TOS_ADC_VOLTAGE_PORT = 7,  defined this in hardware.h
- TOS_ADC_MAG_Y_PORT = 8,
- };
- </pre>
+ <p>Detailed port information can be found in
+ tinyos-1.x/tos/platform/pc/sensorboard.h.
 
+ <p> Also see tinyos-1.x/contrib/ptII/ptinyos/tos/platform/ptII/ptII.c
+ and tinyos-1.x/contrib/ptII/ptinyos/tos/platform/ptII/adc_model.c
+   
  @author Elaine Cheong
  @version $Id$
- @Pt.ProposedRating Red (celaine)
- @Pt.AcceptedRating Red (celaine)
+ @Pt.ProposedRating Green (celaine)
+ @Pt.AcceptedRating Green (celaine)
  @since Ptolemy II 5.1
  */
 public class MicaCompositeActor extends PtinyOSCompositeActor {
@@ -119,24 +118,24 @@ public class MicaCompositeActor extends PtinyOSCompositeActor {
         microphone.setTypeEquals(BaseType.DOUBLE);
 
         // Persistent accelerometer (x-axis) input port.
-        accelx = new PortParameter(this, "accelx");
-        accelx.setExpression("0");
-        accelx.setTypeEquals(BaseType.DOUBLE);
+        accelerometerX = new PortParameter(this, "accelerometerX");
+        accelerometerX.setExpression("0");
+        accelerometerX.setTypeEquals(BaseType.DOUBLE);
 
         // Persistent accelerometer (y-axis) input port.
-        accely = new PortParameter(this, "accely");
-        accely.setExpression("0");
-        accely.setTypeEquals(BaseType.DOUBLE);
+        accelerometerY = new PortParameter(this, "accelerometerY");
+        accelerometerY.setExpression("0");
+        accelerometerY.setTypeEquals(BaseType.DOUBLE);
 
         // Persistent magnetometer (x-axis) input port.
-        magx = new PortParameter(this, "magx");
-        magx.setExpression("0");
-        magx.setTypeEquals(BaseType.DOUBLE);
+        magnetometerX = new PortParameter(this, "magnetometerX");
+        magnetometerX.setExpression("0");
+        magnetometerX.setTypeEquals(BaseType.DOUBLE);
 
         // Persistent magnetometer (y-axis) input port.
-        magy = new PortParameter(this, "magy");
-        magy.setExpression("0");
-        magy.setTypeEquals(BaseType.DOUBLE);
+        magnetometerY = new PortParameter(this, "magnetometerY");
+        magnetometerY.setExpression("0");
+        magnetometerY.setTypeEquals(BaseType.DOUBLE);
 
         // Red LED output port.
         ledRed = new TypedIOPort(this, "ledRed", false, true);
@@ -154,43 +153,57 @@ public class MicaCompositeActor extends PtinyOSCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Persistent photosensor input data.
+    /** Persistent photosensor input data.  The default value is a
+     *  DoubleToken with value 0.  The valid range is between 0 and
+     *  0x3FF.
      */
     public PortParameter photo;
 
-    /** Persistent temperature input data.
+    /** Persistent temperature input data.  The default value is a
+     *  DoubleToken with value 0.  The valid range is between 0 and
+     *  0x3FF.
      */
     public PortParameter temperature;
 
-    /** Persistent microphone input data.
+    /** Persistent microphone input data.  The default value is a
+     *  DoubleToken with value 0.  The valid range is between 0 and
+     *  0x3FF.
      */
     public PortParameter microphone;
 
-    /** Persistent accelerometer (x-axis) input data.
+    /** Persistent accelerometer (x-axis) input data.  The default
+     *  value is a DoubleToken with value 0.  The valid range is
+     *  between 0 and 0x3FF.
      */
-    public PortParameter accelx;
+    public PortParameter accelerometerX;
 
-    /** Persistent accelerometer (y-axis) input data.
+    /** Persistent accelerometer (y-axis) input data.  The default
+     *  value is a DoubleToken with value 0.  The valid range is
+     *  between 0 and 0x3FF.
      */
-    public PortParameter accely;
+    public PortParameter accelerometerY;
 
-    /** Persistent magnetometer (x-axis) input data.
+    /** Persistent magnetometer (x-axis) input data.  The default value is a
+     *  DoubleToken with value 0.  The valid range is between 0 and
+     *  0x3FF.
      */
-    public PortParameter magx;
+    public PortParameter magnetometerX;
 
-    /** Persistent magnetometer (y-axis) input data.
+    /** Persistent magnetometer (y-axis) input data.  The default
+     *  value is a DoubleToken with value 0.  The valid range is
+     *  between 0 and 0x3FF.
      */
-    public PortParameter magy;
+    public PortParameter magnetometerY;
 
-    /** Red LED output port.
+    /** Red LED output port.  The default type is BooleanToken.
      */
     public TypedIOPort ledRed;
 
-    /** Green LED output port.
+    /** Green LED output port.  The default type is BooleanToken.
      */
     public TypedIOPort ledGreen;
 
-    /** Yellow LED output port.
+    /** Yellow LED output port.  The default type is BooleanToken.
      */
     public TypedIOPort ledYellow;
 }

@@ -1,4 +1,4 @@
-/* A parameter for coordinated TOSSIM port numbering.
+/* A parameter for coordinated numbering in the PtinyOS domain.
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -39,22 +39,19 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.SharedParameter;
 
 //////////////////////////////////////////////////////////////////////////
-//// PtinyOSIntegerParameter
+//// PtinyOSNodeParameter
 
 /**
- This parameter is shared throughout a model for coordinated
- management of TOSSIM port numbers (command and event ports for
- connecting to TinyViz and other external tools). Changing the
+ A parameter for coordinated numbering in the PtinyOS domain.  This
+ parameter is shared throughout a model for coordinated management of
+ node ID's and TOSSIM port numbers (command and event ports for
+ connecting to TinyViz and other external tools).  Changing the
  expression of any one instance of the parameter will result in all
- instances that are shared being changed. If the value is being set to
- -1, then all other values will be set to -1.  If the value is being
- set to 0, then all other values are set to unique numbers by
- incrementing by a value specified by the user (default value of
- 1). If it is being set to anything else, then all other values are
- set to unique numbers obtained by adding the previously described
- increment value to the specified value while iterating through the
- shared parameters.  If the current value is 0, the value is
- unchanged.
+ instances that are shared being changed.  If the value is being set,
+ then all other non-zero values are set to unique numbers by
+ incrementing by a value specified by the user (default value of 1)
+ while iterating through the shared parameters.  Note that if the
+ current value is 0, the value is left unchanged.
  
  <p> An instance elsewhere in the model (within the same top level) is
  shared if it has the same type and its container is of the class
@@ -75,13 +72,13 @@ import ptolemy.moml.SharedParameter;
  
  @author Elaine Cheong
  @version $Id$
- @Pt.ProposedRating Red (celaine)
- @Pt.AcceptedRating Red (celaine)
+ @Pt.ProposedRating Yellow (celaine)
+ @Pt.AcceptedRating Yellow (celaine)
  */
-public class PtinyOSIntegerParameter extends SharedParameter {
+public class PtinyOSNodeParameter extends SharedParameter {
     /** Construct a parameter with the given container and name.
      *  The container class will be used to determine which other
-     *  instances of PtinyOSIntegerParameter are shared with this one.
+     *  instances of PtinyOSNodeParameter are shared with this one.
      *  @param container The container.
      *  @param name The name of the parameter.
      *  @exception IllegalActionException If the parameter is not of an
@@ -89,14 +86,14 @@ public class PtinyOSIntegerParameter extends SharedParameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public PtinyOSIntegerParameter(NamedObj container, String name)
+    public PtinyOSNodeParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
 
     /** Construct a parameter with the given container and name.
      *  The container class will be used to determine which other
-     *  instances of PtinyOSIntegerParameter are shared with this one.
+     *  instances of PtinyOSNodeParameter are shared with this one.
      *  @param container The container.
      *  @param name The name of the parameter.
      *  @param incrementValue The value with which to increment
@@ -106,7 +103,7 @@ public class PtinyOSIntegerParameter extends SharedParameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public PtinyOSIntegerParameter(NamedObj container, String name,
+    public PtinyOSNodeParameter(NamedObj container, String name,
             int incrementValue) throws IllegalActionException,
             NameDuplicationException {
         this(container, name, null);
@@ -114,8 +111,9 @@ public class PtinyOSIntegerParameter extends SharedParameter {
     }
 
     /** Construct a parameter with the given container, name, and
-     *  container class. The specified class will be used to determine
-     *  which other instances of PtinyOSIntegerParameter are shared with this one.
+     *  container class, using the default value. The specified class
+     *  will be used to determine which other instances of
+     *  PtinyOSNodeParameter are shared with this one.
      *  @param container The container.
      *  @param name The name of the parameter.
      *  @param containerClass The class used to determine shared instances.
@@ -124,7 +122,7 @@ public class PtinyOSIntegerParameter extends SharedParameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public PtinyOSIntegerParameter(NamedObj container, String name,
+    public PtinyOSNodeParameter(NamedObj container, String name,
             Class containerClass) throws IllegalActionException,
             NameDuplicationException {
         super(container, name, containerClass, String.valueOf(_defaultValue));
@@ -132,8 +130,9 @@ public class PtinyOSIntegerParameter extends SharedParameter {
     }
 
     /** Construct a parameter with the given container, name, and
-     *  container class. The specified class will be used to determine
-     *  which other instances of PtinyOSIntegerParameter are shared with this one.
+     *  container class, using the default value. The specified class
+     *  will be used to determine which other instances of
+     *  PtinyOSNodeParameter are shared with this one.
      *  @param container The container.
      *  @param name The name of the parameter.
      *  @param containerClass The class used to determine shared instances.
@@ -144,7 +143,7 @@ public class PtinyOSIntegerParameter extends SharedParameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public PtinyOSIntegerParameter(NamedObj container, String name,
+    public PtinyOSNodeParameter(NamedObj container, String name,
             Class containerClass, int incrementValue)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, containerClass, String.valueOf(_defaultValue));
@@ -159,8 +158,8 @@ public class PtinyOSIntegerParameter extends SharedParameter {
     /** Override the base class to set the declared type before
      *  attempting to infer the value.  This is necessary because
      *  this method is called in the constructor of the base class,
-     *  before the delcared type has been set.
-     *  @param defaultValue The default parameter value to give.
+     *  before the declared type has been set.
+     *  @param defaultValue The default parameter value to use.
      *  @exception InternalErrorException If there are multiple
      *   shared parameters in the model, but their values
      *   do not match.
@@ -175,8 +174,7 @@ public class PtinyOSIntegerParameter extends SharedParameter {
         super.inferValueFromContext(defaultValue);
     }
 
-    /** Override the base class to also set the expression of shared
-     *  parameters.
+    /** Set the expression of the shared parameters.
      */
     public void setExpression(String expression) {
         boolean previousSuppress = isSuppressingPropagation();
@@ -200,51 +198,46 @@ public class PtinyOSIntegerParameter extends SharedParameter {
                 value = token.intValue();
             }
 
-            if (value == _defaultValue) {
-                // Call again without suppression of propagation.
-                super.setExpression(expression);
-                // No need to record this, as it is the default value.
-                setPersistent(false);
-            } else {
-                // Need to assign unique values.
-                if (!isSuppressingPropagation()) {
-                    // Ensure that when the model is saved, that this
-                    // parameter value, and only this one, is saved.
-                    // The shared parameters are made non-persistent below.
-                    setPersistent(true);
-                    Iterator sharedParameters = sharedParameterSet().iterator();
 
-                    while (sharedParameters.hasNext()) {
-                        PtinyOSIntegerParameter sharedParameter = (PtinyOSIntegerParameter) sharedParameters
-                                .next();
+            // Need to assign unique values.
+            if (!isSuppressingPropagation()) {
+                // Ensure that when the model is saved, that this
+                // parameter value, and only this one, is saved.
+                // The shared parameters are made non-persistent below.
+                setPersistent(true);
+                Iterator sharedParameters =
+                    sharedParameterSet().iterator();
 
-                        if (sharedParameter != this) {
-                            try {
-                                sharedParameter.setSuppressingPropagation(true);
-                                if (((IntToken) sharedParameter.getToken())
-                                        .intValue() != 0) {
-                                    // Only auto increment value
-                                    // if the current value is not
-                                    // 0.
-                                    value += _incrementValue;
+                while (sharedParameters.hasNext()) {
+                    PtinyOSNodeParameter sharedParameter =
+                        (PtinyOSNodeParameter) sharedParameters.next();
 
-                                    String newExpression = String
-                                            .valueOf(value);
+                    if (sharedParameter != this) {
+                        try {
+                            sharedParameter.setSuppressingPropagation(
+                                    true);
+                            if (((IntToken) sharedParameter.getToken())
+                                    .intValue() != 0) {
+                                // Only auto increment value if
+                                // the current value is not 0.
+                                value += _incrementValue;
 
-                                    if (!sharedParameter.getExpression()
-                                            .equals(newExpression)) {
-                                        sharedParameter
-                                                .setExpression(newExpression);
+                                String newExpression = String
+                                    .valueOf(value);
 
-                                        // Make sure the new value
-                                        // is not persistent.
-                                        sharedParameter.setPersistent(false);
-                                    }
+                                if (!sharedParameter.getExpression()
+                                        .equals(newExpression)) {
+                                    sharedParameter.setExpression(
+                                            newExpression);
+
+                                    // Make sure the new value
+                                    // is not persistent.
+                                    sharedParameter.setPersistent(false);
                                 }
-                            } finally {
-                                sharedParameter
-                                        .setSuppressingPropagation(previousSuppress);
                             }
+                        } finally {
+                            sharedParameter.setSuppressingPropagation(
+                                    previousSuppress);
                         }
                     }
                 }
@@ -261,5 +254,5 @@ public class PtinyOSIntegerParameter extends SharedParameter {
 
     /** Default value of this parameter.
      */
-    private static int _defaultValue = -1;
+    private static int _defaultValue = 1;
 }
