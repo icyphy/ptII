@@ -290,7 +290,8 @@ public class ArrayType extends StructuredType {
      *  @return An InequalityTerm.
      *  @see ptolemy.graph.InequalityTerm
      */
-    private InequalityTerm getElementTypeTerm() {
+    public InequalityTerm getElementTypeTerm() {
+        // This should be public because of copernicus.java.TypeSpecializer
         return _elemTypeTerm;
     }
 
