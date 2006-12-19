@@ -48,11 +48,14 @@ JSRCS =
 
 
 OTHER_FILES_TO_BE_JARED = \
-	CntToLeds.ncxml
+	CntToLeds.ncxml \
+	CntToLeds.moml \
+	CntToLeds.txt
 
 EXTRA_SRCS = \
 	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
+	test-script
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
