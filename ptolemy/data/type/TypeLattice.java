@@ -240,7 +240,7 @@ public class TypeLattice {
                     && !t2.equals(BaseType.ARRAY_BOTTOM)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
                 ArrayType arrayType = (ArrayType) t1;
-                if(arrayType.hasKnownLength() && arrayType.length() != 1) {
+                if (arrayType.hasKnownLength() && arrayType.length() != 1) {
                     return INCOMPARABLE;
                 }
                 int elementComparison = compare(((ArrayType) ct1)
@@ -260,7 +260,7 @@ public class TypeLattice {
                     && !t1.equals(BaseType.ARRAY_BOTTOM)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
                 ArrayType arrayType = (ArrayType) t2;
-                if(arrayType.hasKnownLength() && arrayType.length() != 1) {
+                if (arrayType.hasKnownLength() && arrayType.length() != 1) {
                     return INCOMPARABLE;
                 }
                 int elementComparison = compare(((ArrayType) ct2)
@@ -340,7 +340,7 @@ public class TypeLattice {
                 int elementComparison = compare(((ArrayType) ct1)
                         .getElementType(), t2Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
-                    if(arrayType.hasKnownLength() && arrayType.length() != 1) {
+                    if (arrayType.hasKnownLength() && arrayType.length() != 1) {
                         return BaseType.UNKNOWN;
                     } else {
                         return t2;
@@ -369,7 +369,7 @@ public class TypeLattice {
                 int elementComparison = compare(((ArrayType) ct2)
                         .getElementType(), t1Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
-                    if(arrayType.hasKnownLength() && arrayType.length() != 1) {
+                    if (arrayType.hasKnownLength() && arrayType.length() != 1) {
                         return BaseType.UNKNOWN;
                     } else {
                         return t1;
@@ -541,7 +541,7 @@ public class TypeLattice {
                 Type elementType = ((ArrayType) ct1).getElementType();
                 int elementComparison = compare(elementType, t2Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
-                    if(arrayType.hasKnownLength() && arrayType.length() != 1) {
+                    if (arrayType.hasKnownLength() && arrayType.length() != 1) {
                         // Least upper bound is unsized type.
                         return new ArrayType(elementType);
                     } else {
@@ -575,7 +575,7 @@ public class TypeLattice {
                 Type elementType = ((ArrayType) ct2).getElementType();
                 int elementComparison = compare(elementType, t1Rep);
                 if (elementComparison == SAME || elementComparison == HIGHER) {
-                    if(arrayType.hasKnownLength() && arrayType.length() != 1) {
+                    if (arrayType.hasKnownLength() && arrayType.length() != 1) {
                         // Least upper bound is unsized type.
                         return new ArrayType(elementType);
                     } else {

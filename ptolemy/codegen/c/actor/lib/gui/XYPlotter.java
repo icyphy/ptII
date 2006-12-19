@@ -120,7 +120,7 @@ public class XYPlotter extends CCodeGeneratorHelper {
         String line = null;
         StringBuffer result = new StringBuffer();
         try {
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (line != "") {
                     line = line.replace("\"", "\\\\\"");

@@ -245,7 +245,7 @@ public class Publisher extends TypedAtomicActor {
 
     /** Remove the relation used for publishing an all connections
      *  to it.
-     *  @throws IllegalActionException If removing the relation
+     *  @exception IllegalActionException If removing the relation
      *   throws it.
      */
     private void _removeRelation() throws IllegalActionException {

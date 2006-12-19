@@ -16,7 +16,7 @@ public class RunMultipleModels {
 
     /** Create multiple models and execute them. */
     public synchronized void run() throws Exception {
-        for(int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
             Thread thread = new Thread(new Runnable() {
                 public void run() {
                     try {
@@ -82,7 +82,7 @@ public class RunMultipleModels {
 
     /** Create multiple models and execute them. */
     public synchronized void run2() throws Exception {
-        for(int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
             URL url = RunMultipleModels.class.getResource("RunMultipleModelsModel.xml");
             Workspace workspace = new Workspace("Workspace"
                     + i);

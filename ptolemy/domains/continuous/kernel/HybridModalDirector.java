@@ -412,7 +412,7 @@ public class HybridModalDirector extends ModalDirector implements
     /** Return the minimum of the step sizes suggested by any
      *  actors that were fired in the current iteration.
      *  @return The suggested refined step size.
-     *  @throws IllegalActionException If the step size cannot be further refined.
+     *  @exception IllegalActionException If the step size cannot be further refined.
      */
     public double refinedStepSize() throws IllegalActionException {
         double result = Double.POSITIVE_INFINITY;

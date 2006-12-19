@@ -114,7 +114,7 @@ public class QueuedTypedIOPort extends TypedIOPort {
     {
         myQueue.clear();
         _oldToken = initialToken;
-        for(int i = 1; i < latency; i++)
+        for (int i = 1; i < latency; i++)
         {
             myQueue.add(initialToken);
         }       
@@ -125,7 +125,7 @@ public class QueuedTypedIOPort extends TypedIOPort {
      */
     public void send(int channelIndex, Token token)
         throws IllegalActionException, NoRoomException {
-        if( latency == 0 ) {
+        if (latency == 0 ) {
             super.send(channelIndex,token);
         }
         else {         
@@ -137,7 +137,7 @@ public class QueuedTypedIOPort extends TypedIOPort {
     
     public void resend(int channelIndex)
         throws IllegalActionException, NoRoomException { 
-        if( latency != 0 ) {
+        if (latency != 0 ) {
             super.send(channelIndex, _oldToken);
         }
     }

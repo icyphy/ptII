@@ -513,7 +513,7 @@ public class Transition extends ComponentRelation {
     /** Return true if this transition is a default transition. Return false
      *  otherwise.
      *  @return True if this transition is a default transition.
-     *  @throws IllegalActionException If the defaultTransition parameter
+     *  @exception IllegalActionException If the defaultTransition parameter
      *   cannot be evaluated.
      */
     public boolean isDefault() throws IllegalActionException {

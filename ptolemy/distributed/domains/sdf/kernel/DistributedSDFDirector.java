@@ -389,7 +389,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  parallel schedule consisting of three levels, first if fires the
      *  actors in level 1, followed by actors in levels 1 and 2. 
      *
-     *  @throws IllegalActionException If there is no scheduler.
+     *  @exception IllegalActionException If there is no scheduler.
      */
     private void bufferingPhase() throws IllegalActionException {
         System.out.println("Buffering...");
@@ -857,7 +857,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  For each level of the Schedule, a commandMap is created and issued to
      *  the synchronizer.
      * 
-     *  @throws IllegalActionException If there is no scheduler.
+     *  @exception IllegalActionException If there is no scheduler.
      *  @see ptolemy.distributed.client.ThreadSynchronizer
      *  @exception IllegalActionException If port methods throw it.
      */

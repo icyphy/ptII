@@ -231,7 +231,7 @@ public class FixType extends StructuredType implements Serializable {
      *  @return True if the precision of this fix type has any bits.
      */
     public boolean isInstantiable() {
-	if(_precision.getNumberOfBits() == 0) {
+	if (_precision.getNumberOfBits() == 0) {
 	    return false;
 	} else {
 	    return true;

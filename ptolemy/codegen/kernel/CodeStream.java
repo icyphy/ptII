@@ -564,7 +564,7 @@ public class CodeStream {
     /**
      * 
      * @param mayNotExist Indicate if the file is required to exist.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _constructCodeTableHelper(boolean mayNotExist)
             throws IllegalActionException {
@@ -919,7 +919,7 @@ public class CodeStream {
          * 
          * @param functionName
          * @param numParameters
-         * @throws IllegalActionException
+         * @exception IllegalActionException
          */
         public Signature(String functionName, int numParameters)
                 throws IllegalActionException {

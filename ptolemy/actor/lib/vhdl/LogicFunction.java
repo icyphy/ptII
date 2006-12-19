@@ -117,7 +117,7 @@ public class LogicFunction extends SynchronousFixTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         
-        if( A.isKnown() && B.isKnown() ) {
+        if (A.isKnown() && B.isKnown() ) {
             BigInteger intResult = null;
             Precision precision = new Precision(((Parameter) 
                     getAttribute("outputPrecision")).getExpression());
@@ -151,7 +151,7 @@ public class LogicFunction extends SynchronousFixTransformer {
                 }      
             }
     
-            if(intResult != null )
+            if (intResult != null )
             {   
                 Overflow overflow = Overflow.getName(((Parameter) getAttribute(
                 "outputOverflow")).getExpression().toLowerCase());

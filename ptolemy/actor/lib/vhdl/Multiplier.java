@@ -93,7 +93,7 @@ public class Multiplier extends SynchronousFixTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         
-        if( A.isKnown() && B.isKnown() ) {
+        if (A.isKnown() && B.isKnown() ) {
             if (A.hasToken(0) && B.hasToken(0)) {
                 
                 Token result = A.get(0).multiply(B.get(0));              

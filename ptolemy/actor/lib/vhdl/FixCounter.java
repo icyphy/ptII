@@ -104,7 +104,7 @@ public class FixCounter extends SynchronousFixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if( increment.isKnown() && decrement.isKnown() ) {      
+        if (increment.isKnown() && decrement.isKnown() ) {      
             _latestCount = _count;
             _consumed = false;
     

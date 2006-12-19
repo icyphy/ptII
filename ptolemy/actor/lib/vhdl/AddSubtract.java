@@ -108,15 +108,15 @@ public class AddSubtract extends SynchronousFixTransformer {
         super.fire();
         Token result = null;
 
-        if( A.isKnown() && B.isKnown() ) {
+        if (A.isKnown() && B.isKnown() ) {
             Token tokenA = new FixToken();
             Token tokenB = new FixToken();
             
-            if( A.hasToken(0) ) {
+            if (A.hasToken(0) ) {
                 tokenA = A.get(0);
             }           
 
-            if( B.hasToken(0) ) {
+            if (B.hasToken(0) ) {
                 tokenB = B.get(0);
             }           
 

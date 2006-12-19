@@ -99,7 +99,7 @@ public class ROM extends SynchronousFixTransformer {
     /** Override the base class to determine which function is being
      *  specified.
      *  @param attribute The attribute that changed.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)

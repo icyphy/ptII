@@ -1294,7 +1294,7 @@ public class PtinyOSDirector extends Director {
      *  FIXME: Might want to use JTextAreaExec instead.
      *
      *  @param makefileName Name of makefile on which to call make.
-     *  @throws IllegalActionException If call to stringValue() throws it.
+     *  @exception IllegalActionException If call to stringValue() throws it.
      */
     private void _compile(String makefileName) throws IllegalActionException {
         // The command we run is:
@@ -1545,7 +1545,7 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
 }
 ===== End example Loader.java =====
      *
-     *  @throws IllegalActionException If thrown when confirming
+     *  @exception IllegalActionException If thrown when confirming
      *  overwrite, or if writing to the file fails.
      */
     private void _generateLoader() throws IllegalActionException {

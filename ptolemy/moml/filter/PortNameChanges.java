@@ -145,7 +145,7 @@ public class PortNameChanges implements MoMLFilter {
 
             MoMLParser.setModified(true);
             return newPort;
-            // The following else if() can be deleted if it causes trouble. 
+            // The following else if () can be deleted if it causes trouble. 
             // The reason to add the code is that a port may not be contained in 
             // _containerPortMap if it is encountered the first time here --- Gang
         } else if (_doneProcessingActorWithPortNameChanges

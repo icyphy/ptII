@@ -244,7 +244,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                 replaceTokenFields(entityClass, depth, unsafeLocalSet, debug);
             }
 
-            //                         if(depth == 1) {
+            //                         if (depth == 1) {
             //                             break;
             //                         }
 
@@ -1681,7 +1681,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                 //                         .hasNext();) {
                 //                     ValueBox box = (ValueBox) boxes.next();
                 //                     Value value = box.getValue();
-                //                     if(value instanceof FieldRef) {
+                //                     if (value instanceof FieldRef) {
                 //                         FieldRef ref = (FieldRef)value;
                 //                         SootField field = ref.getField();
                 //                          if (field.getName().equals("NIL")) {

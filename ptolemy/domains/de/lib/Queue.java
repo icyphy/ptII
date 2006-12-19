@@ -257,7 +257,7 @@ public class Queue extends Transformer {
 
     /** Commit additions or removals from the queue.
      *  @return True.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
         if (_token != null) {

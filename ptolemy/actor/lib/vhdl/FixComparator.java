@@ -120,11 +120,11 @@ public class FixComparator extends SynchronousFixTransformer {
             FixToken inputA = new FixToken();
             FixToken inputB = new FixToken();
             
-            if( A.hasToken(0) ) {
+            if (A.hasToken(0) ) {
                 inputA = (FixToken) A.get(0);
             }           
 
-            if( B.hasToken(0) ) {
+            if (B.hasToken(0) ) {
                 inputB = (FixToken) B.get(0);
             }
             
@@ -136,32 +136,32 @@ public class FixComparator extends SynchronousFixTransformer {
             }  
             
             if (operation.getExpression().equals("=")) {
-                if( inputA.equals(inputB) )
+                if (inputA.equals(inputB) )
                 {
                     result = new FixToken(1,precision);
                 }
             } else if (operation.getExpression().equals("!=")) {
-                if( !inputA.equals(inputB) )
+                if (!inputA.equals(inputB) )
                 {
                     result = new FixToken(1,precision);
                 }
             } else if (operation.getExpression().equals("<")) {
-                if( inputA.isLessThan(inputB).booleanValue() )
+                if (inputA.isLessThan(inputB).booleanValue() )
                 {
                     result = new FixToken(1,precision);
                 }
             } else if (operation.getExpression().equals("<=")) {
-                if( inputA.equals(inputB) ||  inputA.isLessThan(inputB).booleanValue() )
+                if (inputA.equals(inputB) ||  inputA.isLessThan(inputB).booleanValue() )
                 {
                     result = new FixToken(1,precision);
                 }
             } else if (operation.getExpression().equals(">")) {
-                if( inputA.isGreaterThan(inputB).booleanValue() )
+                if (inputA.isGreaterThan(inputB).booleanValue() )
                 {
                     result = new FixToken(1,precision);
                 }
             } else if (operation.getExpression().equals(">=")) {
-                if( inputA.equals(inputB) ||  inputA.isGreaterThan(inputB).booleanValue() )
+                if (inputA.equals(inputB) ||  inputA.isGreaterThan(inputB).booleanValue() )
                 {
                     result = new FixToken(1,precision);
                 }

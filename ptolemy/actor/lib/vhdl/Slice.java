@@ -110,7 +110,7 @@ public class Slice extends FixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if(input.hasToken(0)) {
+        if (input.hasToken(0)) {
             FixToken in = (FixToken) input.get(0);
             int widthValue = in.fixValue().getPrecision().getNumberOfBits();
             int startValue = ((IntToken) start.getToken()).intValue();
@@ -131,7 +131,7 @@ public class Slice extends FixTransformer {
                             shiftBits));
             Precision precision = new Precision(((Parameter) 
                     getAttribute("outputPrecision")).getExpression());
-            if( (newEndValue - newStartValue) != precision.getNumberOfBits() )
+            if ((newEndValue - newStartValue) != precision.getNumberOfBits() )
             {
                 throw new IllegalActionException(this, "Bit width of " +
                         (newEndValue - newStartValue) + " is not equal to precision "

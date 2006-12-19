@@ -50,7 +50,7 @@ public class TestTypeLattice {
     ////                         public methods                    ////
 
     public static void main(String [] args) throws Exception {
-        for(int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1000; i++) {
             Thread thread = new Thread(new Runnable() {
                     public void run() {
                         try {

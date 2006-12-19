@@ -487,7 +487,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Generate include files.
      *  @return The include files.
-     *  @throws IllegalActionException If the helper class for some actor 
+     *  @exception IllegalActionException If the helper class for some actor 
      *   cannot be found.
      */
     public String generateIncludeFiles() throws IllegalActionException {
@@ -590,7 +590,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      * data struct types and static methods or variables shared by multiple
      * instances of the same helper actor type.
      * @return The shared code of the containing composite actor.
-     * @throws IllegalActionException If an error occurrs when generating
+     * @exception IllegalActionException If an error occurrs when generating
      *  the globally shared code, or if the helper class for the model
      *  director cannot be found, or if an error occurs when the helper
      *  actor generates the shared code.
@@ -619,7 +619,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Generate type conversion code.
      * 
      *  @return The type conversion code.
-     *  @throws IllegalActionException If an error occurrs when generating
+     *  @exception IllegalActionException If an error occurrs when generating
      *   the type conversion code, or if the helper class for the model
      *   director cannot be found, or if an error occurs when the helper
      *   actor generates the type conversion code.

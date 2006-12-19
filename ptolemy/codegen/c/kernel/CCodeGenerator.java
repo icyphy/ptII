@@ -121,7 +121,7 @@ public class CCodeGenerator extends CodeGenerator {
 
     /** Generate include files.
      *  @return The include files.
-     *  @throws IllegalActionException If the helper class for some actor 
+     *  @exception IllegalActionException If the helper class for some actor 
      *   cannot be found.
      */
     public String generateIncludeFiles() throws IllegalActionException {
@@ -252,7 +252,7 @@ public class CCodeGenerator extends CodeGenerator {
      * of constants (MAX_NUM_TYPE, MAX_NUM_FUNC), the type map, the function
      * map, function definitions read from the files, and function table.
      * @return The type resolution code.
-     * @throws IllegalActionException If an error occurrs when generating
+     * @exception IllegalActionException If an error occurrs when generating
      *  the type resolution code, or if the helper class for the model
      *  director cannot be found, or if an error occurs when the helper
      *  actor generates the type resolution code.

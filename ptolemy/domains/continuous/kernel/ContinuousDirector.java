@@ -349,7 +349,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  If there is an enclosing ContinuousDirector, however, then this
      *  method simply performs the current round of execution of the enclosing
      *  director, using the step size of the enclosing director.
-     *  @throws IllegalActionException If an actor throws it.
+     *  @exception IllegalActionException If an actor throws it.
      */
     public void fire() throws IllegalActionException {
         // If there is an enclosing director, then just execute 
@@ -562,7 +562,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  parameter. This will be null before preinitialize()
      *  is called.
      *  @return The start time.
-     *  @throws IllegalActionException If the enclosing director throws it.
+     *  @exception IllegalActionException If the enclosing director throws it.
      */
     public final Time getModelStartTime() throws IllegalActionException {
         // This method is final for performance reason.
@@ -1663,7 +1663,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     }
 
     /** Synchronize to real time, if appropriate.
-     *  @throws IllegalActionException If evaluating the parameter fails
+     *  @exception IllegalActionException If evaluating the parameter fails
      *   or if an exception occurs during sleeping.
      */
     private void _synchronizeToRealTime() throws IllegalActionException {
@@ -1693,7 +1693,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     }
 
     /** Transfer outputs to the environment. 
-     *  @throws IllegalActionException If the transferOutputs(Port)
+     *  @exception IllegalActionException If the transferOutputs(Port)
      *   method throws it.
      */
     private void _transferOutputsToEnvironment() throws IllegalActionException {

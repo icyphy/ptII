@@ -87,7 +87,7 @@ public class FixTransformer extends TypedAtomicActor {
      * Return the precision string of the given port.
      * @param port The given port.
      * @return The precision string.
-     * @throws IllegalActionException If there is no precision
+     * @exception IllegalActionException If there is no precision
      *  parameter for the given port. 
      */
     public String getPortPrecision(IOPort port) 
@@ -184,7 +184,7 @@ public class FixTransformer extends TypedAtomicActor {
      * the given width. If not, an IllegalActionException is thrown.  
      * @param token The given fix-point token.
      * @param width The given width.
-     * @throws IllegalActionException Thrown If the bit width of the
+     * @exception IllegalActionException Thrown If the bit width of the
      *  given fix token is not equal to given width. 
      */
     protected void _checkFixTokenWidth(FixToken token, int width) 
@@ -202,7 +202,7 @@ public class FixTransformer extends TypedAtomicActor {
      * value.
      * @param token The given token.
      * @param max The given value.
-     * @throws IllegalActionException Thrown if 
+     * @exception IllegalActionException Thrown if 
      *  _checkFixToken(FixToken, in) throws it.
      */
     protected void _checkFixMaxValue(FixToken token, int max)
@@ -246,7 +246,7 @@ public class FixTransformer extends TypedAtomicActor {
      * @param precisionString
      * @param overflowString
      * @param roundingString
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected void _setQuantizationParameters(
             String precisionString, String overflowString, String roundingString) 

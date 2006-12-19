@@ -102,7 +102,7 @@ public class Multiplexor extends SynchronousFixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if( select.isKnown() && A.isKnown() && B.isKnown()) {
+        if (select.isKnown() && A.isKnown() && B.isKnown()) {
             if (select.hasToken(0)) {
                 FixToken channel = (FixToken) select.get(0);
                 

@@ -342,7 +342,7 @@ public class CodeGeneratorHelper
      * @param channel The referenced port channel.
      * @param isWrite Whether to generate the write or read offset.
      * @return The expression that represents the offset in the generated code.
-     * @throws IllegalActionException If there is problems getting the port
+     * @exception IllegalActionException If there is problems getting the port
      *  buffer size or the offset in the channel and offset map.
      */
     public String generateOffset(String offsetString, IOPort port, int channel,
@@ -1819,7 +1819,7 @@ public class CodeGeneratorHelper
      * @param refType The given type of the variable.
      * @return The variable expression that evaluates to a result of
      *  equivalent value with the cast type.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     protected String _generateTypeConvertMethod(String ref, String castType,
             String refType) throws IllegalActionException {
@@ -2055,7 +2055,7 @@ public class CodeGeneratorHelper
      * @param macro The given macro.
      * @param parameter The given parameter to the macro.
      * @return The replacement string of the given macro.
-     * @throws IllegalActionException Thrown if the given macro or
+     * @exception IllegalActionException Thrown if the given macro or
      *  parameter is not valid.
      */
     protected String _replaceMacro(String macro, String parameter) 
