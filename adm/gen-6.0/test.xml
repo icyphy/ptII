@@ -17,15 +17,14 @@
     </locale>
 
     <resources>
+        <res id="HTMLInfoPanel.info" src="index.htm"/> 
         <res id="HTMLLicencePanel.licence" src="copyright.htm"/>
+	<res id="Installer.image" src="../../doc/img/PtolemyIISmall.gif" />
 	<res id="StyleSheet" src="../../doc/default.css" />
-        <res src="border1.png" id="Installer.image.0"/>
-        <res src="border2.png" id="Installer.image.1"/>
-        <res src="border3.png" id="Installer.image.2"/>
     </resources>
     
     <panels>
-        <panel classname="HTMLLicencePanel"/>
+        <panel classname="HTMLInfoPanel"/>
         <panel classname="TargetPanel"/> 
         <panel classname="PacksPanel"/>
     </panels>
