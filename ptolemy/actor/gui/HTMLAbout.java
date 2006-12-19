@@ -502,8 +502,9 @@ public class HTMLAbout {
             while (demos.hasNext()) {
                 String demo = (String) demos.next();
                 if (!completeDemosList.contains(demo)) {
-                    results.append(" <li><a href=\"" + demo + "\">" + demo
-                            + "</a>\n");
+                    URL missingDemoURL = MoMLApplication.specToURL(demo);
+                    results.append(" <li><a href=\"" + missingDemoURL + "\">"
+                            + missingDemoURL + "</a>\n");
                 }
             }
             results.append("</ul>\n");
