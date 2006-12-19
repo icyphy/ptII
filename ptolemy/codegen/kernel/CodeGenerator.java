@@ -827,6 +827,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  <i>codeDirectory</i> directory. In this base class, 0 is
      *  returned by default.
      *  @return The result of the execution.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     protected int _executeCommands() throws IllegalActionException {
         return 0;
@@ -967,7 +968,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     /** Create a make file to compile the generated code file(s).
-     * In this base class, it does nothing.
+     *  In this base class, it does nothing.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _writeMakefile() throws IllegalActionException {}
 

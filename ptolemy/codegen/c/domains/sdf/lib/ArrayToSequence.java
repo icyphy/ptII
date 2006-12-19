@@ -34,7 +34,7 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- A code generation helper class for ptolemy.domains.sdf.lib.ArrayToSequence
+ A code generation helper class for ptolemy.domains.sdf.lib.ArrayToSequence.
 
  @author Christopher Brooks
  @version $Id$

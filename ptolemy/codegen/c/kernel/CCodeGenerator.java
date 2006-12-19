@@ -478,6 +478,8 @@ public class CCodeGenerator extends CodeGenerator {
      *  <i>codeDirectory</i> directory.
      *  @return The return value of the last subprocess that was executed
      *  or -1 if no commands were executed.
+     *  @exception IllegalActionException If there are problems reading
+     *  parameters or executing the commands.
      */
     protected int _executeCommands() throws IllegalActionException {
 
@@ -550,7 +552,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  <code>C:\Documents and Settings\mrptolemy\codegen\Foo.mk</code>.
      *
      *  <p>The following variables are substituted
-     *  <dd>
+     *  <dl>
      *  <dt><code>@modelName@</code>
      *  <dd>The sanitized model name, created by invoking
      *  {@link ptolemy.util.StringUtilities#sanitizeName(String)} 
