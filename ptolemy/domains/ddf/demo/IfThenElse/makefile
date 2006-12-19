@@ -56,8 +56,10 @@ EXTRA_SRCS = \
 	IfThenElseFSM.htm \
 	IfThenElseFSMDDFPlusMinus.png \
 	IfThenElseFSMModalModel.png \
-	IfThenElseFSMgainMinus.png \
-	IfThenElseFSMgainPlus.png
+	IfThenElseFSMGainMinus.png \
+	IfThenElseFSMGainPlus.png \
+	IfThenElseFSMKepler.xml \
+	IfThenElseFSM.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
