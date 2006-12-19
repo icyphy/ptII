@@ -59,6 +59,7 @@ OTHER_FILES_TO_BE_JARED = \
 	authors.htm \
 	configuration.xml \
 	copyright.htm \
+	demos.htm \
 	directors.xml \
 	docs.htm \
 	help.htm \
@@ -66,6 +67,7 @@ OTHER_FILES_TO_BE_JARED = \
 	install.htm \
 	library.xml \
 	makefile \
+	overview.htm \
 	viptos.gif \
 	viptosModels.txt \
 	welcomeWindow.xml \
