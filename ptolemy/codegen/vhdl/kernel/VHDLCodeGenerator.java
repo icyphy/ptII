@@ -1,3 +1,31 @@
+/* VHSIC Hardware Description Language (VHDL) code generator.
+
+ Copyright (c) 2006 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
+
 package ptolemy.codegen.vhdl.kernel;
 
 import java.util.ArrayList;
@@ -24,6 +52,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
+/**
+ VHSIC Hardware Description Language (VHDL) code generator.
+ VHDL is a language that is used to program hardware such as
+ Field Programmable Gate Arrays (FPGAs).
+
+ @author Man-kit Leung, Vinayak Nagpal
+ @version $Id$
+ @since Ptolemy II 6.1
+ @Pt.ProposedRating red (zgang)
+ @Pt.AcceptedRating red (zgang)
+*/
 public class VHDLCodeGenerator extends CodeGenerator {
 
     
@@ -356,8 +395,12 @@ public class VHDLCodeGenerator extends CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
-    /** Execute the compile and run commands.
-     *  @return The result of the execution.
+    /** Execute the compile and run commands in the
+     *  <i>codeDirectory</i> directory.
+     *  @return The return value of the last subprocess that was executed
+     *  or -1 if no commands were executed.
+     *  @exception IllegalActionException If there are problems reading
+     *  parameters or executing the commands.
      */
     protected int _executeCommands() throws IllegalActionException {
         List commands = new LinkedList();
