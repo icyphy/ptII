@@ -15,7 +15,7 @@ import ptolemy.moml.MoMLParser;
 public class RunMultipleModels {
 
     /** Create multiple models and execute them. */
-    public synchronized void run() throws Exception {
+    public void run() throws Exception {
         for(int i = 0; i < 100; i++) {
             Thread thread = new Thread(new Runnable() {
                 public void run() {
@@ -37,7 +37,7 @@ public class RunMultipleModels {
                         _activeCount--;
 
                         if (_activeCount == 0) {
-                            notifyAll();
+                            RunMultipleModels.this.notifyAll();
                         }
                     } catch (IllegalMonitorStateException ex) {
                         Thread thread = Thread.currentThread();
@@ -46,6 +46,9 @@ public class RunMultipleModels {
                         ex.printStackTrace();
                     } catch (Exception ex) {
                         _lastException = ex;
+                        Thread thread = Thread.currentThread();
+                        System.out.println("Thread: " + thread.getName()
+                                + " state: " + thread.getState());
                         ex.printStackTrace();
                         _activeCount--;
 
