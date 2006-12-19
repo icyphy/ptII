@@ -106,6 +106,8 @@ public interface Type {
     /** Return true if this type does not correspond to a single token
      *  class.  This occurs if the type is not instantiable, or it
      *  represents either an abstract base class or an interface.
+     *  @return True if this type does not correspond to a single token
+     *  class.
      */
     public boolean isAbstract();
 

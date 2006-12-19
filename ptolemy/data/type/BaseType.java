@@ -317,6 +317,7 @@ public abstract class BaseType implements Type, Serializable {
     /** The bottom element of the data type lattice. */
     public static final UnknownType UNKNOWN = new UnknownType();
 
+    /** The bottom element of the array type lattice. */ 
     public static class ArrayBottomType extends BaseType {
         private ArrayBottomType() {
             super(Void.TYPE, "arrayBottom");

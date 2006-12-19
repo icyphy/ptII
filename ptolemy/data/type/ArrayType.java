@@ -119,6 +119,7 @@ public class ArrayType extends StructuredType {
      *  where input and output are ports (this is the type
      *  constraint of SequenceToArray, for example).
      *  @param typeable A typeable.
+     *  @param length The length of array. 
      *  @return An InequalityTerm that can be passed to methods
      *   like setTypeAtLeast() of the Typeable interface.
      *  @throws IllegalActionException If the specified typeable

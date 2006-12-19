@@ -47,17 +47,20 @@ import thales.actor.gui.SingleWindowHTMLViewer;
  @Pt.AcceptedRating Red (cxh)
  */
 public class SingleWindowApplication extends VergilApplication {
-    //Main Frame
-    public static SingleWindowHTMLViewer _mainFrame;
 
-    /**
-     * @param args
+    /** Construct a single window appliation
+     * @param args Arguments to pass to
+     * {@link ptolemy.vergil.VergilApplication.VergilApplication(String[])}.
      * @exception Exception
      */
     public SingleWindowApplication(String[] args) throws Exception {
         super(args);
     }
 
+    /** Create a single window application.
+     * @param args Arguments to pass to
+     * {@link ptolemy.vergil.VergilApplication.VergilApplication(String[])}.
+     */
     public static void main(String[] args) {
         try {
             new SingleWindowApplication(args);
@@ -76,6 +79,9 @@ public class SingleWindowApplication extends VergilApplication {
             System.exit(0);
         }
     }
+
+    /** The main frame. */
+    public static SingleWindowHTMLViewer _mainFrame;
 
     /* (non-Javadoc)
      * @see ptolemy.actor.gui.MoMLApplication#_createDefaultConfiguration()

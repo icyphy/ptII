@@ -114,6 +114,7 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
      *  actor. The returned string is in the form 
      *  "fullName_portName[channelNumber]", if a channel number is given.
      *  @param name The name of the given port.
+     *  @return the reference to specified port.
      *  @exception IllegalActionException If the port does not exist.
      */
     public String getReference(String name) throws IllegalActionException {
