@@ -142,7 +142,8 @@ awk '{
 		} else {
 		    # Load everything else lazily
    	            printf("\n\t\tpart=%c%s%c", 34, part, 34)
-		    printf("\n\t\tdownload=%clazy%c", 34, 34)
+		    #printf("\n\t\tdownload=%clazy%c", 34, 34)
+		    printf("\n\t\tdownload=%ceager%c", 34, 34)
 		}
 	    }
 	    printf("/>\n")
