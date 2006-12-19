@@ -32,8 +32,8 @@ ME =		ptolemy/domains/sdf/demo
 
 # Keep these alphabetical please.
 DIRS = 		Array Butterfly Expression Eye FixFIR FixPoint \
-		FourierSeries HTVQ LMSAdaptive MaximumEntropySpectrum \
-		MultipleRuns NoisySinewave \
+		FourierSeries HTVQ LMSAdaptive LogisticeMap \
+		MaximumEntropySpectrum MultipleRuns NoisySinewave \
 		OrthogonalCom RijndaelEncryption \
 		Sketch SoundSpectrum Spectrum \
 		SynthesizedVoice Type
@@ -60,6 +60,7 @@ PTCLASSALLJARS = \
 	FourierSeries/FourierSeries.jar \
 	HTVQ/HTVQ.jar \
 	LMSAdaptive/LMSAdaptive.jar \
+	LogisticMap/LogisticMap.jar \
 	MaximumEntropySpectrum/MaximumEntropySpectrum.jar \
 	MultipleRuns/MultipleRuns.jar \
 	NoisySinewave/NoisySinewave.jar \
