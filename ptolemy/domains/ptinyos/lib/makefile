@@ -58,6 +58,7 @@ OTHER_FILES_TO_BE_JARED = \
 	NCComponent.nc \
 	NCComponent.xml \
 	README-MicaBoard.xml.txt \
+	SurgeVisualizerIcon.xml \
 	jdom-copyright.htm \
 	lib-composite.xml \
 	lib-simple.xml \
