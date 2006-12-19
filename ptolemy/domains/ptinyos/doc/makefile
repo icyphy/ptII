@@ -54,6 +54,7 @@ OTHER_FILES_TO_BE_JARED = \
 	installation.htm \
 	installViptosUnderCygwin.htm \
 	index.htm \
+	kernel.htm \
 	main.htm \
 	toc.htm
 
