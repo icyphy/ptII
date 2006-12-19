@@ -117,7 +117,10 @@ rm `make echo_OPTIONAL_JSRCS`
 cd $PTII
 rm -rf vendors apps
 rm -rf ptolemy/domains/ct/demo/Corba/util/*.java
-# Generate a list of files
+
+</pre>
+<li> Generate a list of files
+<pre>
 adm/bin/ptIItxtfiles > /tmp/f
 egrep '*.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
 </pre>
