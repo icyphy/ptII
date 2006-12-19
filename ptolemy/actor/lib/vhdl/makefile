@@ -67,10 +67,7 @@ JSRCS = \
 	RegisterSR.java \
 	ROM.java \
 	Slice.java \
-	SynchronousFixTransformer.java \
-
-
-
+	SynchronousFixTransformer.java
 
 OTHER_FILES_TO_BE_JARED = \
 	vhdl.xml
