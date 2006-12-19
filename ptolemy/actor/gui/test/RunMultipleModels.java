@@ -15,7 +15,7 @@ import ptolemy.moml.MoMLParser;
 public class RunMultipleModels {
 
     /** Create multiple models and execute them. */
-    public void run() throws Exception {
+    public synchronized void run() throws Exception {
         for(int i = 0; i < 100; i++) {
             Thread thread = new Thread(new Runnable() {
                 public void run() {
@@ -34,6 +34,7 @@ public class RunMultipleModels {
                                 + threadName);
                         ((CompositeActor)model).setManager(manager);
                         manager.execute();
+                        System.out.print(" " + _activeCount);
                         _activeCount--;
 
                         if (_activeCount == 0) {
@@ -79,9 +80,27 @@ public class RunMultipleModels {
         }
     }
 
+    /** Create multiple models and execute them. */
+    public synchronized void run2() throws Exception {
+        for(int i = 0; i < 100; i++) {
+            URL url = RunMultipleModels.class.getResource("RunMultipleModelsModel.xml");
+            Workspace workspace = new Workspace("Workspace"
+                    + i);
+            MoMLParser parser = new MoMLParser(workspace);
+            parser.purgeModelRecord(url);
+            NamedObj model = parser.parse(null, url);
+
+            Manager manager = new Manager(workspace, "Manager"
+                    + i);
+            ((CompositeActor)model).setManager(manager);
+            manager.startRun();
+            System.out.print(".");
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         RunMultipleModels runMultipleModels= new RunMultipleModels();
-        runMultipleModels.run();
+        runMultipleModels.run2();
     }
 
 
