@@ -5,7 +5,7 @@ rem
 rem Author: Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
 rem Version: 
 rem 
-rem @Copyright (c) 2005 The Regents of Aalborg University.
+rem @Copyright (c) 2005-2006 The Regents of Aalborg University.
 rem All rights reserved.
 rem
 rem Permission is hereby granted, without written agreement and without
