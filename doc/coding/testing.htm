@@ -17,6 +17,7 @@ mentioned below are not included in the Ptolemy II distribution.
 <LI> <A HREF="#testing documentation">Testing Documentation</A>
 <li> <a href="#testingxml">Testing XML</a>
 <li> <a href="#proofreading">Proofreading</a>
+<li> <a href="#runtimeTests">Runtime Tests</a>
 <li> <a href="#installer">Installer</a>
 </MENU>
 
@@ -708,6 +709,27 @@ of the document.
 so that editors can easily find the typo.
 
 <li> Proofreading symbols can be found at<a href="http://webster.commnet.edu/writing/symbols.htm" target="_top"><CODE>http://webster.commnet.edu/writing/symbols.htm</CODE></a>
+</ol>
+
+<h2><a href="#runtimeTests">Runtime Tests</a></h2>
+<ol>
+
+<li> It is easier to work with the 
+<a href="webStartHelp.htm">Webstart</a> version and check for missing
+files than it is to work with the installer.
+<br>Install <a href="../install.htm#X10">X10</a> and rerun
+<code>cd $PTII;./configure</code>
+
+<br>Build a webstart version with
+<pre>
+cd $PTII
+make install jnlp_all
+</pre>
+Invoke Webstart by pointing your browser at
+<a href="../../vergil.jnlp"><code>$PTII/vergil.jnlp</code></a>
+
+<li>Use the <code>about::copyright</code> facility to test
+for missing files and models that are the wrong size.
 </ol>
 
 <h2><a name="installer">How to test the installer</a></h2>
