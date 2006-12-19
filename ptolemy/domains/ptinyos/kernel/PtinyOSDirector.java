@@ -371,7 +371,7 @@ public class PtinyOSDirector extends Director {
     /** If the {@link #simulate} parameter is true, process one event in
      *  the TOSSIM event queue and run tasks in task queue.  This
      *  method gets the model time from the director and calls {@link
-     *  ptolemy.domains.ptinyos.kernel.PtinyOSLoader.processEvent(long)}
+     *  ptolemy.domains.ptinyos.kernel.PtinyOSLoader#processEvent(long)}
      *  with the time as the argument, which invokes TOSSIM.
      *  @exception IllegalActionException If the fire() method of the
      *  super class throws it, or getting a token from the
