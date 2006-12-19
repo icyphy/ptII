@@ -872,6 +872,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     /** Reset current state to the initial state.
+     *  @exception IllegalActionException If thrown while
+     *  getting the initial state or setting the current connection map.
      */
     public void reset() throws IllegalActionException {
         _currentState = getInitialState();
