@@ -110,7 +110,7 @@ demo: launcher jclass
 # $(PTMATLAB_cC) is set to cl or gcc by configure in $PTII/mk/ptII.mk
 #
 # To test finding jvm.dll by using PTJAVA_HOME, compile
-# with make TESTFLAGS=-DTESTING_PTJAVAHOME demo
+# with make TESTFLAGS=-DTESTING_PTJAVA_HOME demo
 #
 launcher: $(CPPSRCS) $(HEADERS)
 	g++ -g -I. \
