@@ -60,6 +60,7 @@ EXTRA_SRCS =	\
 	$(TCL_SRCS) $(JSRCS) \
 	Display.xml \
 	HistogramPlotter.xml \
+	LEDArray.xml \
 	Placeables.xml \
 	SketchedSource.xml \
 	XYScope.xml  #$(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS)
