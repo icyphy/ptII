@@ -174,7 +174,7 @@ import ptolemy.util.StringUtilities;
    using a separate PtinyOSDirector (and hence a separate instance of
    TOSSIM) for each node.  In TOSSIM, node 0 is the base station,
    which is the sink for routing.  This director overrides the
-   built-in id number using the <i>nodeID<i> and <i>baseStation</i>
+   built-in id number using the <i>nodeID</i> and <i>baseStation</i>
    parameters, and passes a node ID value to the nesC compiler so that
    it is hard coded into TOSSIM.
 
@@ -608,6 +608,7 @@ public class PtinyOSDirector extends Director {
      *  <li> Compiles nesC (.nc) code to a TOSSIM shared object (.so
      *       or .dll), and the Java PtinyOSLoader (.java) to a Java
      *       PtinyOSLoader class (.class).
+     *  </ul>
      *        
      *  @exception IllegalActionException If the container is not
      *  an instance of CompositeActor, the destination directory

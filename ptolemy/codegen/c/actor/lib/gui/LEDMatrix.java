@@ -35,7 +35,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A code generation helper class for ptolemy.actor.lib.gui.LEDMatrix
+ * A code generation helper class for ptolemy.actor.lib.gui.LEDMatrix.
  *
  * @author Christopher Brooks
  * @version $Id$

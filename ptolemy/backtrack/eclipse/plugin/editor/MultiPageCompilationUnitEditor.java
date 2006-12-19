@@ -172,12 +172,15 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
+
+    /** Set the preview tab so it is not editable. */
     public void test() {
     	//_preview.setInput(new FileEditorInput(previewFile));
         _preview.getViewer().setEditable(false);
     }
 
-	/** Update the "Preview" tab if the source code is changed in the "Raw" tab.
+    /** Update the "Preview" tab if the source code is changed in the
+     * "Raw" tab.
      */
     protected void _update() {
         if (!_needRefactoring) {

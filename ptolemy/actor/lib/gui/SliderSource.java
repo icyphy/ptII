@@ -317,8 +317,16 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         _val = slider.getValue();
     }
     
+    /** The frame for the slider. */
     public static class SliderFrame extends JFrame {
         
+        /**  Create a frame for the slider.
+         * @param minimum the minimum value.
+         * @param maximum the maximum value.
+         * @param majorTickSpacing the space between major ticks.
+         * @param minorTickSpacing the space between minor ticks.
+         * @param title the title.
+         */
         public SliderFrame(int minimum, int maximum, 
                 int majorTickSpacing, int minorTickSpacing, String title) {
             
@@ -330,6 +338,13 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
             setVisible(true);
         }
         
+        /** Create a slider panel.
+         * @param minimum the minimum value.
+         * @param maximum the maximum value.
+         * @param majorTickSpacing the space between major ticks.
+         * @param minorTickSpacing the space between minor ticks.
+         * @param title the title.
+         */  
         public static JPanel createSliderPanel(int minimum, int maximum, 
                 int majorTickSpacing, int minorTickSpacing, String title) {
             
@@ -351,6 +366,9 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
             return panel; 
         }
         
+        /** Get the value of the slider.
+         *  @return the slider value.
+         */   
         public int getValue() {
             return _slider.getValue();
         }
