@@ -34,7 +34,7 @@ ME =		ptolemy/domains/continuous/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		Integration Lorenz Sinusoid Switch
+DIRS =		ContinuousInsideDE Integration Lorenz Sinusoid Switch
 
 CLASSPATH =	$(ROOT)
 
@@ -49,7 +49,12 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	Integration/Integration.jar
+	ContinuousInsideDE/ContinuousInsideDE.jar \
+	Integration/Integration.jar \
+	Lorenz/Lorenz.jar \
+	Sinusoid/Sinusoid.jar \
+	Switch/Switch.jar 
+
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
