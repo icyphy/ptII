@@ -325,9 +325,11 @@ public class InequalitySolver {
                         "Port \" "
                         + variableObject + "\" of type \""
                         + variableValue
-                        + "\" in an InequalityTerm is not settable.");
+                        + "\" in an InequalityTerm is not settable."
+                        + " If the port is an input and has a type constraint,"
+                        + " try removing the type constraint and possibly"
+                        + " placing it on the output."); 
             }
-
             ArrayList entry = (ArrayList) (_Clist.get(variables[i]));
 
             if (entry == null) {
