@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  allowed to cross levels of the hierarchy).  Consequently,
  any data dependencies that the director might assume on a regular
  "wired" connection will also be assumed across Publisher-Subscriber
- pairs.  Similarly, type constraints will probagate across
+ pairs.  Similarly, type constraints will propagate across
  Publisher-Subscriber pairs. That is, the type of the Subscriber
  output will match the type of the Publisher input.
  
