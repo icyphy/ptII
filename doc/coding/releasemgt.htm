@@ -161,7 +161,14 @@ checked in to cvs with -kb:
 <pre>
 cat /tmp/f | xargs cvs status >& /tmp/cv.out
 </pre>
-Then search /tmp/cv.out for <code>-kb</code>
+Then search /tmp/cv.out for <code>-k</code>, and fix all 
+files that have <code>-kv</code> and <code>-kb</code> (except
+the <code>.plt</code> files, which can be <code>-kb</code>).
+To fix these files do:
+<pre>
+cvs admin -kkv <i>filename</i>
+cvs update -A <i>filename</i>
+</pre>
 
 
 <li> Run <CODE>$PTII/adm/copyright/fixcopyrights</CODE> (not shipped with
