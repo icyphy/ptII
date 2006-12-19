@@ -38,7 +38,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Precision;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FixComparator
 
@@ -68,21 +67,21 @@ public class FixComparator extends SynchronousFixTransformer {
 
         A = new TypedIOPort(this, "A", true, false);
         A.setTypeEquals(BaseType.FIX);
-        
+
         B = new TypedIOPort(this, "B", true, false);
         B.setTypeEquals(BaseType.FIX);
-        
+
         operation = new StringParameter(this, "operation");
         operation.setExpression("=");
         operation.addChoice("=");
         operation.addChoice("!=");
-        operation.addChoice("<");        
-        operation.addChoice("<=");        
-        operation.addChoice(">");    
+        operation.addChoice("<");
+        operation.addChoice("<=");
+        operation.addChoice(">");
         operation.addChoice(">=");
-        
-        _setAndHideQuantizationParameters("U1.0","CLIP","HALF_EVEN");
-        
+
+        _setAndHideQuantizationParameters("U1.0", "CLIP", "HALF_EVEN");
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,7 +91,7 @@ public class FixComparator extends SynchronousFixTransformer {
      *  type
      */
     public TypedIOPort A;
-    
+
     /** Input for tokens to be subtracted.  This is a multiport of fix
      *  point type.
      */
@@ -100,12 +99,11 @@ public class FixComparator extends SynchronousFixTransformer {
 
     /** Indicate whether addition or subtraction needs to be performed.
      */
-    public Parameter operation; 
-    
-        
+    public Parameter operation;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Output the fixpoint value of the sum of the input bits. 
      *  If there is no inputs, then produce null.
      *  @exception IllegalActionException If there is no director.
@@ -113,69 +111,64 @@ public class FixComparator extends SynchronousFixTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         FixToken result = null;
-        Precision precision = new Precision(0,1,0);
-        
-        if ( A.isKnown() && B.isKnown() ) {
-            result = new FixToken(0,precision);
+        Precision precision = new Precision(0, 1, 0);
+
+        if (A.isKnown() && B.isKnown()) {
+            result = new FixToken(0, precision);
             FixToken inputA = new FixToken();
             FixToken inputB = new FixToken();
-            
-            if (A.hasToken(0) ) {
-                inputA = (FixToken) A.get(0);
-            }           
 
-            if (B.hasToken(0) ) {
+            if (A.hasToken(0)) {
+                inputA = (FixToken) A.get(0);
+            }
+
+            if (B.hasToken(0)) {
                 inputB = (FixToken) B.get(0);
             }
-            
-            if (inputA.fixValue().getPrecision().getNumberOfBits() != 
-                inputB.fixValue().getPrecision().getNumberOfBits()) {
+
+            if (inputA.fixValue().getPrecision().getNumberOfBits() != inputB
+                    .fixValue().getPrecision().getNumberOfBits()) {
 
                 throw new IllegalActionException(this,
-                "Input A has different width than Input B port");
-            }  
-            
+                        "Input A has different width than Input B port");
+            }
+
             if (operation.getExpression().equals("=")) {
-                if (inputA.equals(inputB) )
-                {
-                    result = new FixToken(1,precision);
+                if (inputA.equals(inputB)) {
+                    result = new FixToken(1, precision);
                 }
             } else if (operation.getExpression().equals("!=")) {
-                if (!inputA.equals(inputB) )
-                {
-                    result = new FixToken(1,precision);
+                if (!inputA.equals(inputB)) {
+                    result = new FixToken(1, precision);
                 }
             } else if (operation.getExpression().equals("<")) {
-                if (inputA.isLessThan(inputB).booleanValue() )
-                {
-                    result = new FixToken(1,precision);
+                if (inputA.isLessThan(inputB).booleanValue()) {
+                    result = new FixToken(1, precision);
                 }
             } else if (operation.getExpression().equals("<=")) {
-                if (inputA.equals(inputB) ||  inputA.isLessThan(inputB).booleanValue() )
-                {
-                    result = new FixToken(1,precision);
+                if (inputA.equals(inputB)
+                        || inputA.isLessThan(inputB).booleanValue()) {
+                    result = new FixToken(1, precision);
                 }
             } else if (operation.getExpression().equals(">")) {
-                if (inputA.isGreaterThan(inputB).booleanValue() )
-                {
-                    result = new FixToken(1,precision);
+                if (inputA.isGreaterThan(inputB).booleanValue()) {
+                    result = new FixToken(1, precision);
                 }
             } else if (operation.getExpression().equals(">=")) {
-                if (inputA.equals(inputB) ||  inputA.isGreaterThan(inputB).booleanValue() )
-                {
-                    result = new FixToken(1,precision);
+                if (inputA.equals(inputB)
+                        || inputA.isGreaterThan(inputB).booleanValue()) {
+                    result = new FixToken(1, precision);
                 }
-            }  
-            
-            sendOutput(output,0, result);
+            }
+
+            sendOutput(output, 0, result);
         }
-        
-        else
-        {
+
+        else {
             output.resend(0);
         }
     }
-    
+
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
      */

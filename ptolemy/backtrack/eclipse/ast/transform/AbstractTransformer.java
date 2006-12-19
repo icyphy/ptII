@@ -27,6 +27,11 @@
  */
 package ptolemy.backtrack.eclipse.ast.transform;
 
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -36,14 +41,9 @@ import org.eclipse.jdt.core.dom.PrimitiveType;
 import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
 
 import ptolemy.backtrack.eclipse.ast.LocalClassLoader;
-import ptolemy.backtrack.eclipse.ast.LocalClassLoader.ClassImport;
 import ptolemy.backtrack.eclipse.ast.Type;
 import ptolemy.backtrack.eclipse.ast.TypeAnalyzerState;
-
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import ptolemy.backtrack.eclipse.ast.LocalClassLoader.ClassImport;
 
 //////////////////////////////////////////////////////////////////////////
 //// AbstractTransformer
@@ -79,7 +79,7 @@ public abstract class AbstractTransformer {
      *  @param value The value to be added.
      */
     public static <K, V> void addToLists(Hashtable<K, List<V>> lists, K key,
-    		V value) {
+            V value) {
         List<V> list = lists.get(key);
 
         if (list == null) {
@@ -136,8 +136,7 @@ public abstract class AbstractTransformer {
      *  @param type The type.
      *  @return The AST type node.
      */
-    public static org.eclipse.jdt.core.dom.Type createType(AST ast,
-    		String type) {
+    public static org.eclipse.jdt.core.dom.Type createType(AST ast, String type) {
         String elementName = Type.getElementType(type);
 
         org.eclipse.jdt.core.dom.Type elementType;
@@ -316,8 +315,8 @@ public abstract class AbstractTransformer {
         if (location.isChildProperty()) {
             parent.setStructuralProperty(location, null);
         } else {
-            List<ASTNode> properties =
-            	(List<ASTNode>) parent.getStructuralProperty(location);
+            List<ASTNode> properties = (List<ASTNode>) parent
+                    .getStructuralProperty(location);
             int position = properties.indexOf(node);
             properties.remove(position);
         }
@@ -336,8 +335,8 @@ public abstract class AbstractTransformer {
         if (location.isChildProperty()) {
             parent.setStructuralProperty(location, newNode);
         } else {
-        	List<ASTNode> properties =
-        		(List<ASTNode>) parent.getStructuralProperty(location);
+            List<ASTNode> properties = (List<ASTNode>) parent
+                    .getStructuralProperty(location);
             int position = properties.indexOf(node);
             properties.set(position, newNode);
         }

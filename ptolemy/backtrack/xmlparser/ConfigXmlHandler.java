@@ -27,10 +27,6 @@
  */
 package ptolemy.backtrack.xmlparser;
 
-import ptolemy.backtrack.util.PathFinder;
-
-import com.microstar.xml.XmlParser;
-
 import java.io.File;
 import java.io.StringReader;
 import java.util.Arrays;
@@ -38,17 +34,21 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import ptolemy.backtrack.util.PathFinder;
+
+import com.microstar.xml.XmlParser;
+
 //////////////////////////////////////////////////////////////////////////
 //// ConfigXmlHandler
 /**
-   XML handler that generates the library description for backtracking actors.
+ XML handler that generates the library description for backtracking actors.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class ConfigXmlHandler extends XmlHandler {
 
     ///////////////////////////////////////////////////////////////////
@@ -83,26 +83,26 @@ public class ConfigXmlHandler extends XmlHandler {
      *   Exception.
      */
     public void endElement(String elementName) throws Exception {
-        boolean keep =
-                _includedClasses == null
-                    // If null, every element is kept.
+        boolean keep = _includedClasses == null
+        // If null, every element is kept.
                 || !getCurrentTree().isLeaf()
-                    // If not leaf, at least a descendant is kept.
+                // If not leaf, at least a descendant is kept.
                 || (getCurrentTree().hasAttribute("class") && _includedClasses
                         .contains(getCurrentTree().getAttribute("class")));
-                    // A match in the set.
+        // A match in the set.
 
         if (keep) {
             String className = getCurrentTree().getAttribute("class");
 
             if (_REMOVED_ELEMENT_SET.contains(elementName)
-                    || (className != null) && _REMOVED_CLASS_SET.contains(
-                            className)) {
+                    || (className != null)
+                    && _REMOVED_CLASS_SET.contains(className)) {
                 // Omit this "input" element.
                 getCurrentTree().startTraverseChildren();
 
                 while (getCurrentTree().hasMoreChildren()) {
-                    getCurrentTree().getParent().addChild(getCurrentTree().nextChild());
+                    getCurrentTree().getParent().addChild(
+                            getCurrentTree().nextChild());
                 }
             } else {
                 getCurrentTree().getParent().addChild(getCurrentTree());
@@ -125,8 +125,8 @@ public class ConfigXmlHandler extends XmlHandler {
         if (target.equals("moml")) {
             StringReader dataReader = new StringReader(data);
             XmlParser newParser = new XmlParser();
-            ConfigXmlHandler newHandler = new ConfigXmlHandler(getCurrentTree(),
-                    getSystemId(), _includedClasses);
+            ConfigXmlHandler newHandler = new ConfigXmlHandler(
+                    getCurrentTree(), getSystemId(), _includedClasses);
             newHandler.addExcludedFiles(_excludedFiles);
             newParser.setHandler(newHandler);
             newParser.parse(getSystemId(), null, dataReader);
@@ -210,9 +210,7 @@ public class ConfigXmlHandler extends XmlHandler {
      *  is transformed to the library description of backtracking actors.
      */
     private static final String[] _REMOVED_CLASSES = new String[] {
-        "ptolemy.kernel.CompositeEntity", 
-        "ptolemy.actor.gui.Configuration"
-    };
+            "ptolemy.kernel.CompositeEntity", "ptolemy.actor.gui.Configuration" };
 
     /** The elements in the original XML document that should be removed when it
      *  is transformed to the library description of backtracking actors.
@@ -223,8 +221,7 @@ public class ConfigXmlHandler extends XmlHandler {
      *  is transformed to the library description of backtracking actors.
      */
     private static final String[] _REMOVED_ELEMENTS = new String[] {
-        "configure", "input"
-    };
+            "configure", "input" };
 
     ///////////////////////////////////////////////////////////////////
     ////                  static class initializer                 ////

@@ -1,51 +1,52 @@
 /* Vector.java -- Class that provides growable arrays.
-   Copyright (C) 1998, 1999, 2000, 2001, 2004, 2005  Free Software Foundation, Inc.
+ Copyright (C) 1998, 1999, 2000, 2001, 2004, 2005  Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ 02110-1301 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.Object;
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.ConcurrentModificationException;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.RandomAccess;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
@@ -64,8 +65,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * compliant Collection object. The iterators are fail-fast - if external
  * code structurally modifies the vector, any operation on the iterator will
  * then throw a {
-@link ConcurrentModificationException}
-. The Vector class is
+ @link ConcurrentModificationException}
+ . The Vector class is
  * fully synchronized, but the iterators are not. So, when iterating over a
  * vector, be sure to synchronize on the vector itself.  If you don't want the
  * expense of synchronization, use ArrayList instead. On the other hand, the
@@ -73,11 +74,11 @@ import ptolemy.backtrack.util.FieldRecord;
  * can lead to undefined behavior even in a single thread if you modify the
  * vector during iteration.<p>
  * Note: Some methods, especially those specified by List, specify throwing{
-@link IndexOutOfBoundsException}
-, but it is easier to implement by
+ @link IndexOutOfBoundsException}
+ , but it is easier to implement by
  * throwing the subclass {
-@link ArrayIndexOutOfBoundsException}
-. Others
+ @link ArrayIndexOutOfBoundsException}
+ . Others
  * directly specify this subclass.
  * @author Scott G. Miller
  * @author Bryce McKinlay
@@ -89,7 +90,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * @since 1.0
  * @status updated to 1.4
  */
-public class Vector extends AbstractList implements List, RandomAccess, Cloneable, Serializable, Rollbackable {
+public class Vector extends AbstractList implements List, RandomAccess,
+        Cloneable, Serializable, Rollbackable {
 
     /**     
      * Compatible with JDK 1.0+.
@@ -105,8 +107,8 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
 
     /**     
      * The number of elements currently in the vector, also returned by{
-@link #size    }
-.
+     @link #size    }
+     .
      * @serial the size
      */
     private int elementCount;
@@ -115,8 +117,8 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
      * The amount the Vector's internal array should be increased in size when
      * a new element is added that exceeds the current size of the array,
      * or when {
-@link #ensureCapacity    }
- is called. If &lt;= 0, the vector just
+     @link #ensureCapacity    }
+     is called. If &lt;= 0, the vector just
      * doubles in size.
      * @serial the amount to grow the vector by
      */
@@ -170,8 +172,8 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
     /**     
      * Copies the contents of the Vector into the provided array.  If the
      * array is too small to fit all the elements in the Vector, an {
-@link IndexOutOfBoundsException    }
- is thrown without modifying the array.  
+     @link IndexOutOfBoundsException    }
+     is thrown without modifying the array.  
      * Old elements in the array are overwritten by the new elements.
      * @param a target array for the copy
      * @throws IndexOutOfBoundsException the array is not large enough
@@ -309,50 +311,52 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
                     $RECORD$i.add(null, i, $CHECKPOINT.getTimestamp());
                 }
                 switch (operator) {
-                    case 0:
-                        return i += newValue;
-                    case 1:
-                        return i -= newValue;
-                    case 2:
-                        return i *= newValue;
-                    case 3:
-                        return i /= newValue;
-                    case 4:
-                        return i &= newValue;
-                    case 5:
-                        return i |= newValue;
-                    case 6:
-                        return i ^= newValue;
-                    case 7:
-                        return i %= newValue;
-                    case 8:
-                        return i <<= newValue;
-                    case 9:
-                        return i >>= newValue;
-                    case 10:
-                        return i >>>= newValue;
-                    case 11:
-                        return i++;
-                    case 12:
-                        return i--;
-                    case 13:
-                        return ++i;
-                    case 14:
-                        return --i;
-                    default:
-                        return i;
+                case 0:
+                    return i += newValue;
+                case 1:
+                    return i -= newValue;
+                case 2:
+                    return i *= newValue;
+                case 3:
+                    return i /= newValue;
+                case 4:
+                    return i &= newValue;
+                case 5:
+                    return i |= newValue;
+                case 6:
+                    return i ^= newValue;
+                case 7:
+                    return i %= newValue;
+                case 8:
+                    return i <<= newValue;
+                case 9:
+                    return i >>= newValue;
+                case 10:
+                    return i >>>= newValue;
+                case 11:
+                    return i++;
+                case 12:
+                    return i--;
+                case 13:
+                    return ++i;
+                case 14:
+                    return --i;
+                default:
+                    return i;
                 }
             }
 
             public void $COMMIT_ANONYMOUS(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                        .getTopTimestamp());
                 $RECORD$$CHECKPOINT.commit(timestamp);
             }
 
             public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
                 i = $RECORD$i.restore(i, timestamp, trim);
                 if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                            new _PROXY_(), timestamp, trim);
                     FieldRecord.popState($RECORDS);
                     $RESTORE_ANONYMOUS(timestamp, trim);
                 }
@@ -366,7 +370,8 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
                 if ($CHECKPOINT != checkpoint) {
                     Checkpoint oldCheckpoint = $CHECKPOINT;
                     if (checkpoint != null) {
-                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                .getTimestamp());
                         FieldRecord.pushState($RECORDS);
                     }
                     $CHECKPOINT = checkpoint;
@@ -378,9 +383,7 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
 
             private FieldRecord $RECORD$i = new FieldRecord(0);
 
-            private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    $RECORD$i
-                };
+            private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$i };
 
             {
                 $CHECKPOINT.addObject(new _PROXY_());
@@ -419,7 +422,7 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
      * @throws IndexOutOfBoundsException if index &lt; 0
      */
     public synchronized int indexOf(Object e, int index) {
-        for (int i = index; i < getElementCount(); i++) 
+        for (int i = index; i < getElementCount(); i++)
             if (equals(e, getElementData()[i]))
                 return i;
         return -1;
@@ -446,7 +449,7 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
      */
     public synchronized int lastIndexOf(Object e, int index) {
         checkBoundExclusive(index);
-        for (int i = index; i >= 0; i--) 
+        for (int i = index; i >= 0; i--)
             if (equals(e, getElementData()[i]))
                 return i;
         return -1;
@@ -521,7 +524,8 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
         if (getElementCount() == getElementData().length)
             ensureCapacity(getElementCount() + 1);
         setModCount(getModCount() + 1);
-        System.arraycopy(getElementData(), index, getElementData(), index + 1, getElementCount() - index);
+        System.arraycopy(getElementData(), index, getElementData(), index + 1,
+                getElementCount() - index);
         setElementCount(getElementCount() + 1);
         getElementData()[index] = obj;
     }
@@ -575,8 +579,8 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
      */
     public synchronized Object clone() {
         try {
-            Vector clone = (Vector)super.clone();
-            clone.setElementData((Object[])getElementData().clone());
+            Vector clone = (Vector) super.clone();
+            clone.setElementData((Object[]) getElementData().clone());
             return clone;
         } catch (CloneNotSupportedException ex) {
             // Impossible to get here.
@@ -616,7 +620,8 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
      */
     public synchronized Object[] toArray(Object[] a) {
         if (a.length < getElementCount())
-            a = (Object[])Array.newInstance(a.getClass().getComponentType(), getElementCount());
+            a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
+                    getElementCount());
         else if (a.length > getElementCount())
             a[getElementCount()] = null;
         System.arraycopy(getElementData(), 0, a, 0, getElementCount());
@@ -697,7 +702,8 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
         setModCount(getModCount() + 1);
         setElementCount(getElementCount() - 1);
         if (index < getElementCount())
-            System.arraycopy(getElementData(), index + 1, getElementData(), index, getElementCount() - index);
+            System.arraycopy(getElementData(), index + 1, getElementData(),
+                    index, getElementCount() - index);
         getElementData()[getElementCount()] = null;
         return temp;
     }
@@ -746,13 +752,13 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
             throw new NullPointerException();
         int i;
         int j;
-        for (i = 0; i < getElementCount(); i++) 
+        for (i = 0; i < getElementCount(); i++)
             if (c.contains(getElementData()[i]))
                 break;
         if (i == getElementCount())
             return false;
         setModCount(getModCount() + 1);
-        for (j = i++; i < getElementCount(); i++) 
+        for (j = i++; i < getElementCount(); i++)
             if (!c.contains(getElementData()[i]))
                 getElementData()[j++] = getElementData()[i];
         setElementCount(getElementCount() - (i - j));
@@ -771,13 +777,13 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
             throw new NullPointerException();
         int i;
         int j;
-        for (i = 0; i < getElementCount(); i++) 
+        for (i = 0; i < getElementCount(); i++)
             if (!c.contains(getElementData()[i]))
                 break;
         if (i == getElementCount())
             return false;
         setModCount(getModCount() + 1);
-        for (j = i++; i < getElementCount(); i++) 
+        for (j = i++; i < getElementCount(); i++)
             if (c.contains(getElementData()[i]))
                 getElementData()[j++] = getElementData()[i];
         setElementCount(getElementCount() - (i - j));
@@ -802,9 +808,10 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
         ensureCapacity(getElementCount() + csize);
         int end = index + csize;
         if (getElementCount() > 0 && index != getElementCount())
-            System.arraycopy(getElementData(), index, getElementData(), end, getElementCount() - index);
+            System.arraycopy(getElementData(), index, getElementData(), end,
+                    getElementCount() - index);
         setElementCount(getElementCount() + csize);
-        for (; index < end; index++) 
+        for (; index < end; index++)
             getElementData()[index] = itr.next();
         return (csize > 0);
     }
@@ -873,12 +880,13 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
      * @throws IndexOutOfBoundsException if fromIndex &gt; toIndex
      */
     // This does not need to be synchronized, because it is only called through
-        // clear() of a sublist, and clear() had already synchronized.
-protected void removeRange(int fromIndex, int toIndex) {
+    // clear() of a sublist, and clear() had already synchronized.
+    protected void removeRange(int fromIndex, int toIndex) {
         int change = toIndex - fromIndex;
         if (change > 0) {
             setModCount(getModCount() + 1);
-            System.arraycopy(getElementData(), toIndex, getElementData(), fromIndex, getElementCount() - toIndex);
+            System.arraycopy(getElementData(), toIndex, getElementData(),
+                    fromIndex, getElementCount() - toIndex);
             int save = getElementCount();
             setElementCount(getElementCount() - change);
             Arrays.fill(getElementData(), getElementCount(), save, null);
@@ -896,7 +904,8 @@ protected void removeRange(int fromIndex, int toIndex) {
         // use of a negative index will cause an ArrayIndexOutOfBoundsException
         // with no effort on our part.
         if (index > getElementCount())
-            throw new ArrayIndexOutOfBoundsException(index + " > "+getElementCount());
+            throw new ArrayIndexOutOfBoundsException(index + " > "
+                    + getElementCount());
     }
 
     /**     
@@ -909,7 +918,8 @@ protected void removeRange(int fromIndex, int toIndex) {
         // use of a negative index will cause an ArrayIndexOutOfBoundsException
         // with no effort on our part.
         if (index >= getElementCount())
-            throw new ArrayIndexOutOfBoundsException(index + " >= "+getElementCount());
+            throw new ArrayIndexOutOfBoundsException(index + " >= "
+                    + getElementCount());
     }
 
     /**     
@@ -918,7 +928,8 @@ protected void removeRange(int fromIndex, int toIndex) {
      * @throws IOException if the underlying stream fails
      * @serialData just calls default write function
      */
-    private synchronized void writeObject(ObjectOutputStream s) throws IOException  {
+    private synchronized void writeObject(ObjectOutputStream s)
+            throws IOException {
         s.defaultWriteObject();
     }
 
@@ -948,79 +959,88 @@ protected void removeRange(int fromIndex, int toIndex) {
 
     private final Object[] $ASSIGN$elementData(Object[] newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$elementData.add(null, elementData, $CHECKPOINT.getTimestamp());
+            $RECORD$elementData.add(null, elementData, $CHECKPOINT
+                    .getTimestamp());
         }
         return elementData = newValue;
     }
 
     private final Object[] $BACKUP$elementData() {
-        $RECORD$elementData.backup(null, elementData, $CHECKPOINT.getTimestamp());
+        $RECORD$elementData.backup(null, elementData, $CHECKPOINT
+                .getTimestamp());
         return elementData;
     }
 
     private final int $ASSIGN$elementCount(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$elementCount.add(null, elementCount, $CHECKPOINT.getTimestamp());
+            $RECORD$elementCount.add(null, elementCount, $CHECKPOINT
+                    .getTimestamp());
         }
         return elementCount = newValue;
     }
 
     private final int $ASSIGN$SPECIAL$elementCount(int operator, long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$elementCount.add(null, elementCount, $CHECKPOINT.getTimestamp());
+            $RECORD$elementCount.add(null, elementCount, $CHECKPOINT
+                    .getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return elementCount += newValue;
-            case 1:
-                return elementCount -= newValue;
-            case 2:
-                return elementCount *= newValue;
-            case 3:
-                return elementCount /= newValue;
-            case 4:
-                return elementCount &= newValue;
-            case 5:
-                return elementCount |= newValue;
-            case 6:
-                return elementCount ^= newValue;
-            case 7:
-                return elementCount %= newValue;
-            case 8:
-                return elementCount <<= newValue;
-            case 9:
-                return elementCount >>= newValue;
-            case 10:
-                return elementCount >>>= newValue;
-            case 11:
-                return elementCount++;
-            case 12:
-                return elementCount--;
-            case 13:
-                return ++elementCount;
-            case 14:
-                return --elementCount;
-            default:
-                return elementCount;
+        case 0:
+            return elementCount += newValue;
+        case 1:
+            return elementCount -= newValue;
+        case 2:
+            return elementCount *= newValue;
+        case 3:
+            return elementCount /= newValue;
+        case 4:
+            return elementCount &= newValue;
+        case 5:
+            return elementCount |= newValue;
+        case 6:
+            return elementCount ^= newValue;
+        case 7:
+            return elementCount %= newValue;
+        case 8:
+            return elementCount <<= newValue;
+        case 9:
+            return elementCount >>= newValue;
+        case 10:
+            return elementCount >>>= newValue;
+        case 11:
+            return elementCount++;
+        case 12:
+            return elementCount--;
+        case 13:
+            return ++elementCount;
+        case 14:
+            return --elementCount;
+        default:
+            return elementCount;
         }
     }
 
     private final int $ASSIGN$capacityIncrement(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$capacityIncrement.add(null, capacityIncrement, $CHECKPOINT.getTimestamp());
+            $RECORD$capacityIncrement.add(null, capacityIncrement, $CHECKPOINT
+                    .getTimestamp());
         }
         return capacityIncrement = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        elementData = (Object[])$RECORD$elementData.restore(elementData, timestamp, trim);
-        elementCount = $RECORD$elementCount.restore(elementCount, timestamp, trim);
-        capacityIncrement = $RECORD$capacityIncrement.restore(capacityIncrement, timestamp, trim);
+        elementData = (Object[]) $RECORD$elementData.restore(elementData,
+                timestamp, trim);
+        elementCount = $RECORD$elementCount.restore(elementCount, timestamp,
+                trim);
+        capacityIncrement = $RECORD$capacityIncrement.restore(
+                capacityIncrement, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
 
@@ -1030,11 +1050,7 @@ protected void removeRange(int fromIndex, int toIndex) {
 
     private FieldRecord $RECORD$capacityIncrement = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$elementData,
-            $RECORD$elementCount,
-            $RECORD$capacityIncrement
-        };
+    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$elementData,
+            $RECORD$elementCount, $RECORD$capacityIncrement };
 
 }
-

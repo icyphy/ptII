@@ -99,7 +99,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type[] childTypes = _inferAllChildren(node);
 
         _setType(node, new ArrayType((Type) TypeLattice.lattice()
-                        .leastUpperBound(childTypes), childTypes.length));
+                .leastUpperBound(childTypes), childTypes.length));
     }
 
     /** Set the type of the given node to be the type that is the

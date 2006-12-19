@@ -1,5 +1,5 @@
 /** An actor that slices the input bits and output a consecutive subset
-  of the input bits. 
+ of the input bits. 
 
  Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
@@ -66,19 +66,19 @@ public class Multiplexor extends SynchronousFixTransformer {
     public Multiplexor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         A = new TypedIOPort(this, "A", true, false);
         A.setTypeEquals(BaseType.FIX);
         B = new TypedIOPort(this, "B", true, false);
         B.setTypeEquals(BaseType.FIX);
-        
-        select = new TypedIOPort(this,"select",true,false);
+
+        select = new TypedIOPort(this, "select", true, false);
         select.setTypeEquals(BaseType.FIX);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** Input for the first data token stream.  This is a port of 
      *  fix point type.
      */
@@ -88,7 +88,7 @@ public class Multiplexor extends SynchronousFixTransformer {
      *  fix point type.
      */
     public TypedIOPort B;
- 
+
     /** Input for select one of the inputs.  This port has int type.
      */
     public TypedIOPort select;
@@ -105,57 +105,55 @@ public class Multiplexor extends SynchronousFixTransformer {
         if (select.isKnown() && A.isKnown() && B.isKnown()) {
             if (select.hasToken(0)) {
                 FixToken channel = (FixToken) select.get(0);
-                
+
                 _checkFixTokenWidth(channel, 1);
-                
+
                 _channel = channel.fixValue().getUnscaledValue().intValue();
             }
-    
-            Precision outputPrecision = 
-                new Precision(((Parameter) getAttribute(
-                        "outputPrecision")).getExpression());
-            
+
+            Precision outputPrecision = new Precision(
+                    ((Parameter) getAttribute("outputPrecision"))
+                            .getExpression());
 
             FixToken tokenA = null;
             FixToken tokenB = null;
-            
+
             if (A.hasToken(0)) {
                 tokenA = (FixToken) A.get(0);
-                if (tokenA.fixValue().getPrecision().getNumberOfBits() != 
-                    outputPrecision.getNumberOfBits()) {
+                if (tokenA.fixValue().getPrecision().getNumberOfBits() != outputPrecision
+                        .getNumberOfBits()) {
 
                     throw new IllegalActionException(this,
-                    "Input A has different width than the output port");
-                }        
+                            "Input A has different width than the output port");
+                }
             }
             if (B.hasToken(0)) {
                 tokenB = (FixToken) B.get(0);
-                if (tokenB.fixValue().getPrecision().getNumberOfBits() != 
-                    outputPrecision.getNumberOfBits()) {
+                if (tokenB.fixValue().getPrecision().getNumberOfBits() != outputPrecision
+                        .getNumberOfBits()) {
 
                     throw new IllegalActionException(this,
-                    "Input B has different width than the output port");
-                }        
+                            "Input B has different width than the output port");
+                }
             }
-            
+
             if (_channel == 0) {
                 sendOutput(output, 0, tokenA);
             } else {
-                sendOutput(output, 0, tokenB);                
+                sendOutput(output, 0, tokenB);
             }
-        }
-        else {
+        } else {
             output.resend(0);
         }
     }
-    
+
     /** Initialize to the default, which is to use channel zero. */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         _channel = 0;
     }
-    
+
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
      */
@@ -171,5 +169,5 @@ public class Multiplexor extends SynchronousFixTransformer {
 
     /** The most recently read select input. */
     private int _channel = 0;
-    
+
 }

@@ -119,7 +119,8 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             add(buttonBox);
             buttonBox.setBorder(spaceBelow);
-            _statusBar = new JLabel("Click Start to begin", SwingConstants.CENTER);
+            _statusBar = new JLabel("Click Start to begin",
+                    SwingConstants.CENTER);
         } else {
             _statusBar = new JLabel("", SwingConstants.CENTER);
         }

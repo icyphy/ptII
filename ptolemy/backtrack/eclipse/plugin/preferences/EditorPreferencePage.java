@@ -30,12 +30,10 @@ package ptolemy.backtrack.eclipse.plugin.preferences;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
-
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
-
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
@@ -44,17 +42,17 @@ import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 //// EditorPreferencePage
 
 /**
-   The class to create the editor preference page.
+ The class to create the editor preference page.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class EditorPreferencePage extends SectionPreferencePage implements
         IWorkbenchPreferencePage {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        constructors                       ////
 
@@ -99,10 +97,10 @@ public class EditorPreferencePage extends SectionPreferencePage implements
     private void _createHighlightingSection() {
         Composite composite = _createSection(
                 "Ptolemy Semantic Highlighting",
-                "Configure the semantic highlighting for Ptolemy source " +
-                "files. The semantic highlighting, in addition to Java " +
-                "semantic highlighting, colors different Ptolemy semantic " +
-                "elements in the source files.");
+                "Configure the semantic highlighting for Ptolemy source "
+                        + "files. The semantic highlighting, in addition to Java "
+                        + "semantic highlighting, colors different Ptolemy semantic "
+                        + "elements in the source files.");
 
         Composite currentComposite = _newComposite(composite);
         _highlightingEnabled = new BooleanFieldEditor(
@@ -133,8 +131,7 @@ public class EditorPreferencePage extends SectionPreferencePage implements
 
         //currentComposite = _newComposite(currentLine);
         BooleanFieldEditor bold = new BooleanFieldEditor(
-                PreferenceConstants.EDITOR_STATE_BOLD, "Bold",
-                currentComposite);
+                PreferenceConstants.EDITOR_STATE_BOLD, "Bold", currentComposite);
         addField(bold);
 
         BooleanFieldEditor italic = new BooleanFieldEditor(
@@ -159,8 +156,8 @@ public class EditorPreferencePage extends SectionPreferencePage implements
 
         IPreferenceStore store = EclipsePlugin.getDefault()
                 .getPreferenceStore();
-        _setEnabled(_colorGroup, store.getBoolean(
-                PreferenceConstants.EDITOR_HIGHLIGHTING_ENABLED));
+        _setEnabled(_colorGroup, store
+                .getBoolean(PreferenceConstants.EDITOR_HIGHLIGHTING_ENABLED));
 
         currentComposite.setLayout(new GridLayout(4, false));
     }

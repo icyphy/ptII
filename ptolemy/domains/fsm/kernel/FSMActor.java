@@ -427,7 +427,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 return _initialState;
             } finally {
                 workspace().doneReading();
-            }            
+            }
         }
         if (_initialState == null) {
             throw new IllegalActionException(this,

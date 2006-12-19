@@ -266,7 +266,7 @@ public class FunctionType extends StructuredType {
      *  @return True if this type is abstract.
      */
     public boolean isAbstract() {
-	return !isInstantiable();
+        return !isInstantiable();
     }
 
     /** Test if the argument type is compatible with this type.  The

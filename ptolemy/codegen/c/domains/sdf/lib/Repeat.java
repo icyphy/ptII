@@ -28,8 +28,6 @@
 package ptolemy.codegen.c.domains.sdf.lib;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.data.IntToken;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Repeat

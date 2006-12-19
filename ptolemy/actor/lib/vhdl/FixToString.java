@@ -66,7 +66,7 @@ public class FixToString extends Transformer {
      */
     public FixToString(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
-        super(container, name);        
+        super(container, name);
         input.setTypeEquals(BaseType.FIX);
         output.setTypeEquals(BaseType.STRING);
     }
@@ -83,8 +83,8 @@ public class FixToString extends Transformer {
 
         if (input.hasToken(0)) {
             FixPoint value = ((FixToken) input.get(0)).fixValue();
-            String string = value.bigDecimalValue().toString() + " " +
-            value.getPrecision().toString(Precision.VHDL); 
+            String string = value.bigDecimalValue().toString() + " "
+                    + value.getPrecision().toString(Precision.VHDL);
 
             output.send(0, new StringToken(string));
         }

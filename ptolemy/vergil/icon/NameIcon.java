@@ -90,14 +90,15 @@ public class NameIcon extends EditorIcon {
         // in Vergil, and giving a reasonable rendition.
         TextIcon icon = new TextIcon(this, "_icon");
         icon.setIconText("-N-");
-        icon.setText("NameIcon attribute: This sets the icon to be a box with the name.");
+        icon
+                .setText("NameIcon attribute: This sets the icon to be a box with the name.");
         icon.setPersistent(false);
 
         // Hide the name.
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
-        
+
         rounding = new Parameter(this, "rounding");
         rounding.setTypeEquals(BaseType.DOUBLE);
         rounding.setExpression("0.0");
@@ -167,10 +168,11 @@ public class NameIcon extends EditorIcon {
         height = Math.floor(stringBounds.getHeight()) + 10;
 
         if (_roundingValue == 0.0) {
-            return new BasicRectangle(0, 0, width, height, _getFill(), _getLineWidth());
+            return new BasicRectangle(0, 0, width, height, _getFill(),
+                    _getLineWidth());
         } else {
-            return new RoundedRectangle(0, 0, width, height, _getFill(), _getLineWidth(),
-                    _roundingValue, _roundingValue);            
+            return new RoundedRectangle(0, 0, width, height, _getFill(),
+                    _getLineWidth(), _roundingValue, _roundingValue);
         }
     }
 
@@ -226,7 +228,7 @@ public class NameIcon extends EditorIcon {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Return the paint to use to fill the icon.
      *  This base class returns Color.white.
      *  @return The paint to use to fill the icon.

@@ -46,7 +46,8 @@ public class RoundedRectangle extends BasicFigure {
      */
     public RoundedRectangle(double x, double y, double width, double height,
             Paint fill, float lineWidth, double arcWidth, double arcHeight) {
-        super(new RoundRectangle2D.Double(x, y, width, height, arcWidth, arcHeight), fill, lineWidth);
+        super(new RoundRectangle2D.Double(x, y, width, height, arcWidth,
+                arcHeight), fill, lineWidth);
     }
 
     /** Translate the rectangle the given distance

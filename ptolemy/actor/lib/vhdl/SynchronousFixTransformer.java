@@ -70,7 +70,7 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
     public SynchronousFixTransformer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         latency = new Parameter(this, "latency");
         latency.setExpression("0");
 
@@ -90,10 +90,9 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
         super.attributeChanged(attribute);
 
         if (attribute == latency) {
-            int latencyValue = 
-                ((ScalarToken) latency.getToken()).intValue();
-            output.resize(latencyValue);            
-            
+            int latencyValue = ((ScalarToken) latency.getToken()).intValue();
+            output.resize(latencyValue);
+
             try {
                 if (latencyValue == 0) {
                     initialValue.setContainer(null);
@@ -104,59 +103,65 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
                 throw new IllegalActionException(this, ex,
                         "Fail to set the initialValue parameter.");
             }
-            Precision precision = new Precision(((Parameter) 
-                    getAttribute("outputPrecision")).getExpression());
-            
-            Overflow overflow = Overflow.getName(((Parameter) getAttribute(
-            "outputOverflow")).getExpression().toLowerCase());
-        
-            Rounding rounding = Rounding.getName(((Parameter) getAttribute(
-                "outputRounding")).getExpression().toLowerCase());
-        
-            FixPoint result = new FixPoint(((ScalarToken)
-                    initialValue.getToken()).doubleValue(), 
-                    new FixPointQuantization(precision, overflow, rounding));
+            Precision precision = new Precision(
+                    ((Parameter) getAttribute("outputPrecision"))
+                            .getExpression());
+
+            Overflow overflow = Overflow
+                    .getName(((Parameter) getAttribute("outputOverflow"))
+                            .getExpression().toLowerCase());
+
+            Rounding rounding = Rounding
+                    .getName(((Parameter) getAttribute("outputRounding"))
+                            .getExpression().toLowerCase());
+
+            FixPoint result = new FixPoint(((ScalarToken) initialValue
+                    .getToken()).doubleValue(), new FixPointQuantization(
+                    precision, overflow, rounding));
             output.setInitToken(new FixToken(result));
         }
         if (attribute == initialValue) {
-            Precision precision = new Precision(((Parameter) 
-                    getAttribute("outputPrecision")).getExpression());
-            
-            Overflow overflow = Overflow.getName(((Parameter) getAttribute(
-            "outputOverflow")).getExpression().toLowerCase());
-        
-            Rounding rounding = Rounding.getName(((Parameter) getAttribute(
-                "outputRounding")).getExpression().toLowerCase());
-        
-            FixPoint result = new FixPoint(((ScalarToken)
-                    initialValue.getToken()).doubleValue(), 
-                    new FixPointQuantization(precision, overflow, rounding));
+            Precision precision = new Precision(
+                    ((Parameter) getAttribute("outputPrecision"))
+                            .getExpression());
+
+            Overflow overflow = Overflow
+                    .getName(((Parameter) getAttribute("outputOverflow"))
+                            .getExpression().toLowerCase());
+
+            Rounding rounding = Rounding
+                    .getName(((Parameter) getAttribute("outputRounding"))
+                            .getExpression().toLowerCase());
+
+            FixPoint result = new FixPoint(((ScalarToken) initialValue
+                    .getToken()).doubleValue(), new FixPointQuantization(
+                    precision, overflow, rounding));
             output.setInitToken(new FixToken(result));
         }
     }
-    
-
 
     /** Initialize the state of the actor.
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
-        Precision precision = new Precision(((Parameter) 
-                getAttribute("outputPrecision")).getExpression());
-        
-        Overflow overflow = Overflow.getName(((Parameter) getAttribute(
-        "outputOverflow")).getExpression().toLowerCase());
-    
-        Rounding rounding = Rounding.getName(((Parameter) getAttribute(
-            "outputRounding")).getExpression().toLowerCase());
-    
-        FixPoint result = new FixPoint(((ScalarToken)
-                initialValue.getToken()).doubleValue(), 
-                new FixPointQuantization(precision, overflow, rounding));
+        Precision precision = new Precision(
+                ((Parameter) getAttribute("outputPrecision")).getExpression());
+
+        Overflow overflow = Overflow
+                .getName(((Parameter) getAttribute("outputOverflow"))
+                        .getExpression().toLowerCase());
+
+        Rounding rounding = Rounding
+                .getName(((Parameter) getAttribute("outputRounding"))
+                        .getExpression().toLowerCase());
+
+        FixPoint result = new FixPoint(((ScalarToken) initialValue.getToken())
+                .doubleValue(), new FixPointQuantization(precision, overflow,
+                rounding));
         int latencyValue = ((ScalarToken) latency.getToken()).intValue();
         output.setSize(latencyValue, new FixToken(result));
     }
-    
+
     /** Return false. This actor can produce some output event the input 
      *  receiver has status unknown.
      *  
@@ -164,47 +169,45 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
      */
     public boolean isStrict() {
         try {
-            int latencyValue = 
-                ((ScalarToken) latency.getToken()).intValue();
-        
+            int latencyValue = ((ScalarToken) latency.getToken()).intValue();
+
             if (latencyValue > 0) {
                 return false;
             }
         } catch (IllegalActionException ex) {
-            
+
         }
         return true;
-    }  
-    
+    }
+
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
      */
     public void pruneDependencies() {
         super.pruneDependencies();
-        
+
         try {
-            int latencyValue = 
-                ((ScalarToken) latency.getToken()).intValue();
-        
+            int latencyValue = ((ScalarToken) latency.getToken()).intValue();
+
             if (latencyValue > 0) {
                 super.pruneDependencies();
-                
+
                 Iterator inputPorts = inputPortList().iterator();
                 while (inputPorts.hasNext()) {
-                    IOPort input = (IOPort) inputPorts.next(); 
+                    IOPort input = (IOPort) inputPorts.next();
                     removeDependency(input, output);
                 }
             }
         } catch (IllegalActionException ex) {
-            
+
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     //private ArrayList<Token> _previousOutput;
-    
+
     /** The number cycle delay of the output data. 
      */
     public Parameter latency;

@@ -32,13 +32,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.vhdl.FixTransformer;
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Precision;
 
@@ -64,24 +61,20 @@ public class LogicFunction extends VHDLCodeGeneratorHelper {
         Set sharedCode = new HashSet();
         _codeStream.clear();
 
-        ptolemy.actor.lib.vhdl.LogicFunction actor = 
-            (ptolemy.actor.lib.vhdl.LogicFunction) getComponent();
-        
+        ptolemy.actor.lib.vhdl.LogicFunction actor = (ptolemy.actor.lib.vhdl.LogicFunction) getComponent();
+
         int latencyValue = ((IntToken) actor.latency.getToken()).intValue();
-                  
+
         if (latencyValue == 0) {
-        
+
             _codeStream.appendCodeBlock("sharedBlock_lat0");
         } else {
-            _codeStream.appendCodeBlock("sharedBlock");            
+            _codeStream.appendCodeBlock("sharedBlock");
         }
-        
+
         sharedCode.add(processCode(_codeStream.toString()));
         return sharedCode;
     }
-
-
-
 
     /**
      * Generate fire code.
@@ -95,72 +88,70 @@ public class LogicFunction extends VHDLCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.vhdl.LogicFunction actor = 
-            (ptolemy.actor.lib.vhdl.LogicFunction) getComponent();
+        ptolemy.actor.lib.vhdl.LogicFunction actor = (ptolemy.actor.lib.vhdl.LogicFunction) getComponent();
 
         int latencyValue = ((IntToken) actor.latency.getToken()).intValue();
 
-        String operand  = 
-            actor.operation.getExpression();
+        String operand = actor.operation.getExpression();
 
         Precision precisionA = _getSourcePortPrecision(actor.A);
         Precision precisionB = _getSourcePortPrecision(actor.B);
         Precision precisionC = new Precision(_getPortPrecision(actor.output));
 
-               
         ArrayList args = new ArrayList();
         String operation = "ptlogic";
 
         operation += (latencyValue == 0) ? "_lat0" : "";
-        
+
         args.add(operation);
 
         TypedIOPort source1 = (TypedIOPort) actor.A.sourcePortList().get(0);
-        TypedAtomicActor sourceActor1 = (TypedAtomicActor) source1.getContainer();
-        
+        TypedAtomicActor sourceActor1 = (TypedAtomicActor) source1
+                .getContainer();
+
         TypedIOPort source2 = (TypedIOPort) actor.B.sourcePortList().get(0);
-        TypedAtomicActor sourceActor2 = (TypedAtomicActor) source2.getContainer();
-                         
+        TypedAtomicActor sourceActor2 = (TypedAtomicActor) source2
+                .getContainer();
+
         int bitsA = precisionA.getNumberOfBits();
         int bitsB = precisionB.getNumberOfBits();
         int bitsC = precisionC.getNumberOfBits();
-        
-        if(bitsA!=bitsB) {
-        	throw new IllegalActionException(this,
-                    "VHDL LogicFunction does not support " +
-                    "different widths at inputs.");
+
+        if (bitsA != bitsB) {
+            throw new IllegalActionException(this,
+                    "VHDL LogicFunction does not support "
+                            + "different widths at inputs.");
         }
-        if(bitsC!=bitsB) {
-        	throw new IllegalActionException(this,
-                    "VHDL LogicFunction does not support " +
-                    "change in bit width from input to output.");
+        if (bitsC != bitsB) {
+            throw new IllegalActionException(this,
+                    "VHDL LogicFunction does not support "
+                            + "change in bit width from input to output.");
         }
         args.add("" + bitsA);
-        
-        if(operand.equals("AND")){
-        	args.add("PT_AND");
-        } else if(operand.equals("OR")) {
-        	args.add("PT_OR");
-        } else if(operand.equals("NAND")) {
-        	args.add("PT_NAND");
-        } else if(operand.equals("NOR")) {
-        	args.add("PT_NOR");
-        } else if(operand.equals("XOR")) {
-        	args.add("PT_XOR");
-        } else if(operand.equals("XNOR")) {
-        	args.add("PT_XNOR");
+
+        if (operand.equals("AND")) {
+            args.add("PT_AND");
+        } else if (operand.equals("OR")) {
+            args.add("PT_OR");
+        } else if (operand.equals("NAND")) {
+            args.add("PT_NAND");
+        } else if (operand.equals("NOR")) {
+            args.add("PT_NOR");
+        } else if (operand.equals("XOR")) {
+            args.add("PT_XOR");
+        } else if (operand.equals("XNOR")) {
+            args.add("PT_XNOR");
         }
-        
+
         if (((IntToken) actor.latency.getToken()).intValue() > 0) {
-            args.add("," + _eol + "LATENCY =>"
-                    + actor.latency.getExpression() 
+            args.add("," + _eol + "LATENCY =>" + actor.latency.getExpression()
                     + "," + _eol + "RESET_ACTIVE_VALUE => '0'");
-            args.add("," + _eol +  "clk => clk," + _eol + "reset => reset");
+            args.add("," + _eol + "clk => clk," + _eol + "reset => reset");
         } else {
             args.add("");
-            args.add("");            
+            args.add("");
         }
-        
+
         _codeStream.appendCodeBlock("fireBlock", args);
 
         return processCode(_codeStream.toString());
@@ -172,7 +163,7 @@ public class LogicFunction extends VHDLCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
-        
+
         files.add("ieee.std_logic_1164.all");
         files.add("ieee.numeric_std.all");
         files.add("ieee_proposed.math_utility_pkg.all");

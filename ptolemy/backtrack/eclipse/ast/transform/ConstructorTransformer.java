@@ -27,6 +27,12 @@
  */
 package ptolemy.backtrack.eclipse.ast.transform;
 
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
+
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
@@ -43,12 +49,6 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import ptolemy.backtrack.eclipse.ast.Type;
 import ptolemy.backtrack.eclipse.ast.TypeAnalyzerState;
-
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConstructorTransformer
@@ -96,8 +96,8 @@ public class ConstructorTransformer extends AbstractTransformer implements
      *  @param state The current state of the type analyzer.
      */
     public void enter(FieldDeclaration node, TypeAnalyzerState state) {
-        _isStaticField.push(
-        		new Boolean(Modifier.isStatic(node.getModifiers())));
+        _isStaticField
+                .push(new Boolean(Modifier.isStatic(node.getModifiers())));
     }
 
     /** Enter a method declaration.
@@ -257,8 +257,7 @@ public class ConstructorTransformer extends AbstractTransformer implements
      *  the corresponding backtracking-enabled type (such as
      *  <tt>ptolemy.backtrack.util.java.util.Random</tt>).
      */
-    public static final Hashtable<String, String> SPECIAL_TYPE_MAPPING =
-    	new Hashtable<String, String>();
+    public static final Hashtable<String, String> SPECIAL_TYPE_MAPPING = new Hashtable<String, String>();
 
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
@@ -280,8 +279,8 @@ public class ConstructorTransformer extends AbstractTransformer implements
 
         if (SPECIAL_TYPE_MAPPING.containsKey(type.getName())) {
             type = Type.createType(SPECIAL_TYPE_MAPPING.get(type.getName()));
-            Name newName =
-                createName(ast, getClassName(type.getName(), state, root));
+            Name newName = createName(ast, getClassName(type.getName(), state,
+                    root));
             newNode.setType(ast.newSimpleType(newName));
             Type.setType(node, type);
         }
@@ -306,8 +305,7 @@ public class ConstructorTransformer extends AbstractTransformer implements
      *  object is added to this stack when a type declaration or an anonymous
      *  class declaration is entered.
      */
-    private Stack<MethodDeclaration> _currentMethods =
-    	new Stack<MethodDeclaration>();
+    private Stack<MethodDeclaration> _currentMethods = new Stack<MethodDeclaration>();
 
     /** The stack of {@link Boolean}s on whether the methods entered are
      *  static.
@@ -319,8 +317,7 @@ public class ConstructorTransformer extends AbstractTransformer implements
      *  type that a node depends on is added to the cross-analyzed set, the
      *  node must be refactored in {@link #handle(TypeAnalyzerState)}.
      */
-    private Hashtable<String, List<ASTNode>> _unhandledNodes =
-    	new Hashtable<String, List<ASTNode>>();
+    private Hashtable<String, List<ASTNode>> _unhandledNodes = new Hashtable<String, List<ASTNode>>();
 
     static {
         SPECIAL_TYPE_MAPPING.put("java.util.Random",

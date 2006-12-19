@@ -28,7 +28,6 @@
 
 package ptolemy.codegen.vhdl.kernel;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -62,10 +61,9 @@ import ptolemy.util.StringUtilities;
  @since Ptolemy II 6.1
  @Pt.ProposedRating red (zgang)
  @Pt.AcceptedRating red (zgang)
-*/
+ */
 public class VHDLCodeGenerator extends CodeGenerator {
 
-    
     /** Create a new instance of the VHDL code generator.
      *  @param container The container.
      *  @param name The name of the code generator.
@@ -78,7 +76,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         generatorPackage.setExpression("ptolemy.codegen.vhdl");
-        
+
         generateComment.setExpression("false");
 
         inline.setContainer(null);
@@ -95,7 +93,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
      *  @return A formatted comment.
      */
     public String formatComment(String comment) {
-        return "-- " + comment + "\n";            
+        return "-- " + comment + "\n";
     }
 
     /**
@@ -104,26 +102,28 @@ public class VHDLCodeGenerator extends CodeGenerator {
      */
     public String generateBodyCode() throws IllegalActionException {
 
-    	StringBuffer result = new StringBuffer();
-    	
-        VHDLCodeGeneratorHelper compositeActorHelper = 
-            (VHDLCodeGeneratorHelper) _getHelper(getContainer());
+        StringBuffer result = new StringBuffer();
+
+        VHDLCodeGeneratorHelper compositeActorHelper = (VHDLCodeGeneratorHelper) _getHelper(getContainer());
 
         Iterator gateways = _gatewayPorts.iterator();
-        
+
         while (gateways.hasNext()) {
-        	TypedIOPort port = (TypedIOPort) gateways.next();
-        	VHDLCodeGeneratorHelper helper = _getHelper(port.getContainer());
-        	
+            TypedIOPort port = (TypedIOPort) gateways.next();
+            VHDLCodeGeneratorHelper helper = _getHelper(port.getContainer());
+
             String signal = helper.getReference(port.getName() + "#" + 0);
-            String portName = helper.getReference(port.getName() + "#" + 0) + "_port";
+            String portName = helper.getReference(port.getName() + "#" + 0)
+                    + "_port";
 
             boolean isOutput = helper.doGenerate();
 
             if (isOutput) {
-            	result.append(_eol + "        " + portName + " <= " + signal + ";" + _eol);
+                result.append(_eol + "        " + portName + " <= " + signal
+                        + ";" + _eol);
             } else {
-            	result.append(_eol + "        " + signal + " <= " + portName + ";" + _eol);            	
+                result.append(_eol + "        " + signal + " <= " + portName
+                        + ";" + _eol);
             }
 
         }
@@ -132,8 +132,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
 
         return result.toString();
     }
-    
-    
+
     /** Generate code and append it to the given string buffer.
      *  Write the code to the directory specified by the codeDirectory
      *  parameter.  The file name is a sanitized version of the model
@@ -149,56 +148,56 @@ public class VHDLCodeGenerator extends CodeGenerator {
      *  or -1 if no commands were executed.
      *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
-     */    
+     */
     public int generateCode(StringBuffer code) throws KernelException {
         _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
 
         for (_generateFile = 0; _generateFile < 2; _generateFile++) {
             _signals.clear();
             code = new StringBuffer();
-            
+
             String includeFiles = generateIncludeFiles();
-            
+
             String preinitializeCode = generatePreinitializeCode();
-    
+
             String mainEntryCode = generateMainEntryCode();
-            
+
             CodeStream.setIndentLevel(1);
             String sharedCode = generateSharedCode();
             String signalDeclarationCode = generateVariableDeclaration();
             String bodyCode = generateBodyCode();
-            
+
             CodeStream.setIndentLevel(0);
             String mainExitCode = generateMainExitCode();
-    
+
             // The appending phase.
             code.append(includeFiles);
-            
+
             code.append(preinitializeCode);
-            
+
             code.append(mainEntryCode);
-            
+
             code.append(sharedCode);
             code.append(signalDeclarationCode);
-            
+
             code.append(_eol + "begin" + _eol);
-            
+
             code.append(bodyCode);
-            
+
             code.append(mainExitCode);
-                
+
             if (_generateFile == SYNTHESIZABLE) {
                 _codeFileName = _writeCode(code);
             } else {
                 _writeCode(code);
             }
-            
+
         }
-        
+
         _writeTopLevel();
-        
+
         _writeMakefile();
-        
+
         //return _executeCommands();
         return 0;
     }
@@ -210,7 +209,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
      */
     public String generateIncludeFiles() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         Set includingFiles = compositeActorHelper.getHeaderFiles();
 
@@ -218,12 +217,12 @@ public class VHDLCodeGenerator extends CodeGenerator {
 
         HashSet librarySet = new HashSet();
         librarySet.add("STD");
-        
+
         while (files.hasNext()) {
-            String file = (String) files.next();        
+            String file = (String) files.next();
             StringTokenizer tokens = new StringTokenizer(file, ".");
             String libraryName = tokens.nextToken();
-            if (librarySet.add(libraryName)) {  // true if not already exists.
+            if (librarySet.add(libraryName)) { // true if not already exists.
                 code.append("library " + libraryName + ";\n");
             }
         }
@@ -233,10 +232,9 @@ public class VHDLCodeGenerator extends CodeGenerator {
             code.append("use " + files.next() + ";" + _eol);
         }
         code.append("use work.pt_utility.all;\n");
-        
+
         return code.toString();
-    }        
-    
+    }
 
     /** Generate the main entry point.
      *  @return Return a string that declares the start of the
@@ -246,7 +244,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
     public String generateMainEntryCode() throws IllegalActionException {
 
         return "architecture composite of " + _sanitizedModelName + " is"
-        + _eol + _eol;
+                + _eol + _eol;
     }
 
     /** Generate the main exit point.
@@ -276,65 +274,67 @@ public class VHDLCodeGenerator extends CodeGenerator {
 
         result.append("        clk : IN std_logic ;" + _eol);
         result.append("        reset : IN std_logic ");
-        
-        CompositeActor composite = 
-            (ptolemy.actor.CompositeActor) getContainer();        
+
+        CompositeActor composite = (ptolemy.actor.CompositeActor) getContainer();
 
         Iterator actors = composite.deepEntityList().iterator();
-            
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
 
             VHDLCodeGeneratorHelper helper = _getHelper((NamedObj) actor);
 
             Iterator outputPorts = actor.outputPortList().iterator();
-            
+
             while (outputPorts.hasNext()) {
-                
+
                 TypedIOPort port = (TypedIOPort) outputPorts.next();
-                
+
                 Iterator sinks = helper.getSinkChannels(port, 0).iterator();
-                
+
                 boolean notGenerated = true;
-                
+
                 while (sinks.hasNext()) {
                     Port sink = ((Channel) sinks.next()).port;
-                    
-                    VHDLCodeGeneratorHelper sinkHelper = 
-                        _getHelper(sink.getContainer());
-                    
+
+                    VHDLCodeGeneratorHelper sinkHelper = _getHelper(sink
+                            .getContainer());
+
                     // Gateway exists.
-                    if (notGenerated && sinkHelper.isSynthesizable() != helper.isSynthesizable()) {
+                    if (notGenerated
+                            && sinkHelper.isSynthesizable() != helper
+                                    .isSynthesizable()) {
 
                         boolean isOutput = helper.doGenerate();
-                            
-                        result.append(";" + _eol + "        " + helper.getReference(
-                            port.getName() + "#" + 0) + "_port : ");
+
+                        result.append(";" + _eol + "        "
+                                + helper.getReference(port.getName() + "#" + 0)
+                                + "_port : ");
 
                         result.append((isOutput) ? "OUT " : "IN ");
-                        
-                        result.append(helper._generateVHDLType(port)); 
-                        
+
+                        result.append(helper._generateVHDLType(port));
+
                         _gatewayPorts.add(port);
-                        
+
                         notGenerated = false;
 
                         _signals.add(port);
 
                     } else {
-                            
+
                         _signals.add(port);
                     }
-                }                
+                }
             }
-        }            
-        
+        }
+
         result.append(_eol + "    ) ;" + _eol);
         result.append("end entity;" + _eol + _eol);
 
         return result.toString();
     }
-    
+
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
      *  @return code The generated code.
@@ -343,29 +343,30 @@ public class VHDLCodeGenerator extends CodeGenerator {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer result = new StringBuffer();
-        
+
         Iterator ports = _signals.iterator();
-        
+
         if (_generateFile == TESTBENCH) {
             result.append("    SIGNAL global_clk : std_logic := '0';" + _eol);
             result.append("    SIGNAL global_reset : std_logic := '0';" + _eol);
         }
-        
+
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
             VHDLCodeGeneratorHelper helper = _getHelper(port.getContainer());
-            
+
             result.append("    SIGNAL ");
 
-            result.append(helper.getReference(
-                    port.getName() + "#" + 0) + " : ");
+            result
+                    .append(helper.getReference(port.getName() + "#" + 0)
+                            + " : ");
 
-            result.append(helper._generateVHDLType(port) + ";\n");                            
+            result.append(helper._generateVHDLType(port) + ";\n");
         }
-            
+
         return result.toString();
     }
-    
+
     /** Generate variable name for the given attribute. The reason to append 
      *  underscore is to avoid conflict with the names of other objects. For
      *  example, the paired PortParameter and ParameterPort have the same name. 
@@ -373,8 +374,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
      *  @return The generated variable name.
      */
     public String generateVariableName(NamedObj attribute) {
-        String name = 
-            StringUtilities.sanitizeName(attribute.getFullName());
+        String name = StringUtilities.sanitizeName(attribute.getFullName());
         while (name.startsWith("_")) {
             name = name.substring(1);
         }
@@ -383,7 +383,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
         }
         return name;
     }
-    
+
     /**
      * Return the current index of the generate file.
      * @return The current index of the generate file.
@@ -391,10 +391,10 @@ public class VHDLCodeGenerator extends CodeGenerator {
     public int getGenerateFile() {
         return _generateFile;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Execute the compile and run commands in the
      *  <i>codeDirectory</i> directory.
      *  @return The return value of the last subprocess that was executed
@@ -404,10 +404,11 @@ public class VHDLCodeGenerator extends CodeGenerator {
      */
     protected int _executeCommands() throws IllegalActionException {
         List commands = new LinkedList();
-        
+
         // Run compile script.
         if (((BooleanToken) compile.getToken()).booleanValue()) {
-            commands.add("vsim -s compile.tcl " + _sanitizedModelName + ".vhdl");
+            commands
+                    .add("vsim -s compile.tcl " + _sanitizedModelName + ".vhdl");
         }
 
         // Run simulation script.
@@ -443,7 +444,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
         }
         return _executeCommands.getLastSubprocessReturnCode();
     }
-    
+
     /** Get the vhdl code generator helper associated with the
      *  given component.
      *  @param component The given component.
@@ -455,7 +456,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
             throws IllegalActionException {
         return (VHDLCodeGeneratorHelper) super._getHelper(component);
     }
-    
+
     /** Write the code with the sanitized model name postfixed with "_tb"
      *  if the current generate file is the testbench module; Otherwise,
      *  write code with the sanitized model name (as usual). 
@@ -463,161 +464,155 @@ public class VHDLCodeGenerator extends CodeGenerator {
      *  @return The name of the file that was written.
      *  @exception IllegalActionException  If the super class throws it.
      */
-    protected String _writeCode(StringBuffer code) throws IllegalActionException {
+    protected String _writeCode(StringBuffer code)
+            throws IllegalActionException {
 
         if (_generateFile == TESTBENCH) {
             _sanitizedModelName += "_tb";
         }
         return super._writeCode(code);
     }
-    
+
     /**
      * Write the top level file.
      * @throws IllegalActionException
      */
     protected void _writeTopLevel() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        _sanitizedModelName = 
-            StringUtilities.sanitizeName(_model.getName());
-        
+        _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
+
         code.append("library ieee;" + _eol);
         code.append("use ieee.std_logic_1164.all;" + _eol);
-        
+
         code.append("ENTITY " + _sanitizedModelName + "_top IS" + _eol);
         code.append("END ENTITY;" + _eol + _eol);
-        
-        code.append("ARCHITECTURE structure of " + 
-                _sanitizedModelName + "_top is" + _eol + _eol);
-        
+
+        code.append("ARCHITECTURE structure of " + _sanitizedModelName
+                + "_top is" + _eol + _eol);
+
         // generate model component.
         code.append("    COMPONENT " + _sanitizedModelName + " IS" + _eol);
-        
+
         code.append("        PORT (" + _eol);
         Iterator gateways = _gatewayPorts.iterator();
-        
+
         while (gateways.hasNext()) {
             TypedIOPort gateway = (TypedIOPort) gateways.next();
-            VHDLCodeGeneratorHelper helper = 
-                _getHelper(gateway.getContainer());
+            VHDLCodeGeneratorHelper helper = _getHelper(gateway.getContainer());
 
-            String signal = 
-                helper.getReference(gateway.getName() + "#" + 0);
-            
+            String signal = helper.getReference(gateway.getName() + "#" + 0);
+
             if (helper.isSynthesizable()) {
-                
-                code.append("            " + signal + " : OUT ");                    
-                code.append(helper._generateVHDLType(gateway)); 
+
+                code.append("            " + signal + " : OUT ");
+                code.append(helper._generateVHDLType(gateway));
             } else {
-                
-                code.append("            " + signal + " : IN ");                    
-                code.append(helper._generateVHDLType(gateway));                 
+
+                code.append("            " + signal + " : IN ");
+                code.append(helper._generateVHDLType(gateway));
             }
             code.append(" ;" + _eol);
         }
         code.append("            clk : IN std_logic ;" + _eol);
         code.append("            reset : IN std_logic ) ;" + _eol);
-        
+
         code.append("    END COMPONENT;" + _eol + _eol);
-        
+
         // generate testbench component.
         code.append("    COMPONENT " + _sanitizedModelName + "_tb IS" + _eol);
-        
+
         code.append("        PORT (" + _eol);
-        
+
         gateways = _gatewayPorts.iterator();
-                
+
         while (gateways.hasNext()) {
             TypedIOPort gateway = (TypedIOPort) gateways.next();
-            VHDLCodeGeneratorHelper helper = 
-                _getHelper(gateway.getContainer());
-            
-            String signal = 
-                helper.getReference(gateway.getName() + "#" + 0);
-            
+            VHDLCodeGeneratorHelper helper = _getHelper(gateway.getContainer());
+
+            String signal = helper.getReference(gateway.getName() + "#" + 0);
+
             if (helper.isSynthesizable()) {
-                
-                code.append("            " + signal + " : IN ");                    
-                code.append(helper._generateVHDLType(gateway)); 
+
+                code.append("            " + signal + " : IN ");
+                code.append(helper._generateVHDLType(gateway));
             } else {
-                
+
                 code.append("            " + signal + " : OUT ");
-                code.append(helper._generateVHDLType(gateway));                 
+                code.append(helper._generateVHDLType(gateway));
             }
             code.append(" ;" + _eol);
         }
         code.append("            clk : IN std_logic ;" + _eol);
         code.append("            reset : IN std_logic ) ;" + _eol);
-        
+
         code.append("    END COMPONENT;" + _eol);
-        
+
         gateways = _gatewayPorts.iterator();
-        
+
         while (gateways.hasNext()) {
             TypedIOPort gateway = (TypedIOPort) gateways.next();
-            VHDLCodeGeneratorHelper helper = 
-                _getHelper(gateway.getContainer());
+            VHDLCodeGeneratorHelper helper = _getHelper(gateway.getContainer());
 
-            String signal = 
-                helper.getReference(gateway.getName() + "#" + 0) + "_signal";
+            String signal = helper.getReference(gateway.getName() + "#" + 0)
+                    + "_signal";
 
-            code.append(_eol + "    SIGNAL " + signal + " : ");                
+            code.append(_eol + "    SIGNAL " + signal + " : ");
             code.append(helper._generateVHDLType(gateway));
-            code.append(" ;" + _eol);            
-        }        
+            code.append(" ;" + _eol);
+        }
 
         code.append("    SIGNAL global_clk : std_logic ;" + _eol);
         code.append("    SIGNAL global_reset : std_logic ; " + _eol);
-        
+
         code.append(_eol + "BEGIN" + _eol + _eol);
-        
+
         code.append("    " + "model : " + _sanitizedModelName + _eol);
         code.append("    PORT MAP (" + _eol);
 
-        gateways = _gatewayPorts.iterator();        
-        
+        gateways = _gatewayPorts.iterator();
+
         while (gateways.hasNext()) {
             TypedIOPort gateway = (TypedIOPort) gateways.next();
-            
-            VHDLCodeGeneratorHelper helper = 
-                _getHelper(gateway.getContainer());
 
-            String signal = 
-                helper.getReference(gateway.getName() + "#" + 0);            
-            
-            code.append("        " + signal + " => " + signal + "_signal," + _eol);
+            VHDLCodeGeneratorHelper helper = _getHelper(gateway.getContainer());
+
+            String signal = helper.getReference(gateway.getName() + "#" + 0);
+
+            code.append("        " + signal + " => " + signal + "_signal,"
+                    + _eol);
         }
-        
+
         code.append("        clk => global_clk," + _eol);
         code.append("        reset => global_reset ) ;" + _eol + _eol);
-        
-        code.append("    " + "testbench : " + _sanitizedModelName + "_tb" + _eol);
+
+        code.append("    " + "testbench : " + _sanitizedModelName + "_tb"
+                + _eol);
         code.append("    PORT MAP (" + _eol);
 
-        gateways = _gatewayPorts.iterator();        
-        
+        gateways = _gatewayPorts.iterator();
+
         while (gateways.hasNext()) {
             TypedIOPort gateway = (TypedIOPort) gateways.next();
-            
-            VHDLCodeGeneratorHelper helper = 
-                _getHelper(gateway.getContainer());
 
-            String signal = 
-                helper.getReference(gateway.getName() + "#" + 0);            
-            
-            code.append("        " + signal + " => " + signal + "_signal," + _eol);
+            VHDLCodeGeneratorHelper helper = _getHelper(gateway.getContainer());
+
+            String signal = helper.getReference(gateway.getName() + "#" + 0);
+
+            code.append("        " + signal + " => " + signal + "_signal,"
+                    + _eol);
         }
-        
+
         code.append("        clk => global_clk," + _eol);
         code.append("        reset => global_reset ) ;" + _eol + _eol);
-        
-        code.append("    global_clk <= not global_clk after 50 ns ;" + _eol);  
-        code.append("    global_reset <= '1' after 110 ns ;" + _eol + _eol); 
+
+        code.append("    global_clk <= not global_clk after 50 ns ;" + _eol);
+        code.append("    global_reset <= '1' after 110 ns ;" + _eol + _eol);
         //code.append("clk <= global_clk;" + _eol); 
         //code.append("reset <= global_reset;" + _eol); 
-        code.append("END structure;" + _eol); 
+        code.append("END structure;" + _eol);
 
         _sanitizedModelName += "_top";
-        
+
         _codeFileName = _writeCode(code);
     }
 
@@ -640,14 +635,14 @@ public class VHDLCodeGenerator extends CodeGenerator {
      * The Set of (non-gateway) signals that need to be declared.
      */
     protected Set<Port> _signals = new HashSet();
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /**
      * The index for the synthesizeable vhdl code file.  
      */
-    public final static int SYNTHESIZABLE = 0; 
+    public final static int SYNTHESIZABLE = 0;
 
     /**
      * The index for the testbench (non-synthesizeable) code file.  

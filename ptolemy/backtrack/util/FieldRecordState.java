@@ -49,7 +49,7 @@ import ptolemy.backtrack.util.FieldRecord.RecordList;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class FieldRecordState {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       constructor                         ////
 

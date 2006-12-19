@@ -61,7 +61,7 @@ public class MouseFilter {
      *  relations and right clicking.
      */
     private int _modifierMask = InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK
-          | InputEvent.META_MASK;
+            | InputEvent.META_MASK;
 
     // Do not or these masks in, they will conflict with right mousing
     // on transitions in modal models

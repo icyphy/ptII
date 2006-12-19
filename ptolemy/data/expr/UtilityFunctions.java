@@ -137,7 +137,7 @@ public class UtilityFunctions {
      *  corresponding function.
      *  @return The type of the value returned from the corresponding function.
      */
-     public static Type arrayTypeReturnType(Type type1, Type type2) {
+    public static Type arrayTypeReturnType(Type type1, Type type2) {
         return new ArrayType(type2);
     }
 
@@ -378,7 +378,8 @@ public class UtilityFunctions {
                 }
 
                 // Force size to be unknown
-                return new ArrayType(((ArrayType) arrayTokenType).getElementType());
+                return new ArrayType(((ArrayType) arrayTokenType)
+                        .getElementType());
             }
         } else {
             return BaseType.UNKNOWN;

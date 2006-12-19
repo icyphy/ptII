@@ -40,14 +40,14 @@ import ptolemy.backtrack.eclipse.plugin.console.OutputConsole;
 //////////////////////////////////////////////////////////////////////////
 //// EclipsePlugin
 /**
-   Main class for the Eclipse plugin. This class initializes the Eclipse plugin.
+ Main class for the Eclipse plugin. This class initializes the Eclipse plugin.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class EclipsePlugin extends AbstractUIPlugin {
 
     /** Construct a plugin object. Within one Eclipse process, there should be

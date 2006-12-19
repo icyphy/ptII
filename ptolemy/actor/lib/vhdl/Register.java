@@ -28,7 +28,6 @@
 package ptolemy.actor.lib.vhdl;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -93,11 +92,10 @@ public class Register extends SynchronousFixTransformer {
     public Register(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
-        input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(BaseType.FIX);        
-    }
 
+        input = new TypedIOPort(this, "input", true, false);
+        input.setTypeEquals(BaseType.FIX);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -127,5 +125,5 @@ public class Register extends SynchronousFixTransformer {
      *  type
      */
     public TypedIOPort input;
-    
+
 }

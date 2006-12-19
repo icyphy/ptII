@@ -78,10 +78,9 @@ public class ConfigureUnitsAction extends FigureAction {
             // Create a dialog for configuring the object.
             // First, identify the top parent frame.
             Frame parent = getFrame();
-            DialogTableau dialogTableau = DialogTableau.createDialog(
-                    parent, _configuration, ((TableauFrame) parent)
-                            .getEffigy(), UnitConstraintsDialog.class,
-                    (Entity) target);
+            DialogTableau dialogTableau = DialogTableau.createDialog(parent,
+                    _configuration, ((TableauFrame) parent).getEffigy(),
+                    UnitConstraintsDialog.class, (Entity) target);
 
             if (dialogTableau != null) {
                 dialogTableau.show();

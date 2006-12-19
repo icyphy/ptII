@@ -27,17 +27,6 @@
  */
 package ptolemy.backtrack.eclipse.plugin.editor;
 
-import org.eclipse.jdt.core.dom.IBinding;
-import org.eclipse.jdt.core.dom.IMethodBinding;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.IVariableBinding;
-import org.eclipse.jdt.core.dom.Modifier;
-
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.util.PropertyChangeEvent;
-
-import ptolemy.backtrack.eclipse.plugin.preferences.PreferenceConstants;
-
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -45,20 +34,30 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jdt.core.dom.IBinding;
+import org.eclipse.jdt.core.dom.IMethodBinding;
+import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.IVariableBinding;
+import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.PropertyChangeEvent;
+
+import ptolemy.backtrack.eclipse.plugin.preferences.PreferenceConstants;
+
 //////////////////////////////////////////////////////////////////////////
 //// SemanticHighlightings
 
 /**
-   Definition of a set of semantic highlightings. Each semantic highlighting is
-   a subclass of {@link SemanticHighlighting} and handles a special type of
-   semantic elements.
+ Definition of a set of semantic highlightings. Each semantic highlighting is
+ a subclass of {@link SemanticHighlighting} and handles a special type of
+ semantic elements.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class SemanticHighlightings {
 
     ///////////////////////////////////////////////////////////////////
@@ -136,16 +135,16 @@ public class SemanticHighlightings {
     //////////////////////////////////////////////////////////////////////////
     //// MethodHighlighting
     /**
-       Semantic highlighting for methods.
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
+     Semantic highlighting for methods.
+     
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     protected static class MethodHighlighting extends SemanticHighlighting {
-        
+
         /** Test whether a semantic token can be consumed.
          * 
          *  @param token The token to be tested.
@@ -199,22 +198,21 @@ public class SemanticHighlightings {
          *  classes that define the special methods; values are the special
          *  methods defined as {@link PtolemyMethod} objects.
          */
-        protected static final Hashtable<String, PtolemyMethod[]> _METHODS =
-        	new Hashtable<String, PtolemyMethod[]>();
+        protected static final Hashtable<String, PtolemyMethod[]> _METHODS = new Hashtable<String, PtolemyMethod[]>();
 
         //////////////////////////////////////////////////////////////////////////
         //// PtolemyMethod
         /**
-           Wrapper for Ptolemy methods to be highlighted.
-        
-           @author Thomas Feng
-           @version $Id$
-           @since Ptolemy II 5.1
-           @Pt.ProposedRating Red (tfeng)
-           @Pt.AcceptedRating Red (tfeng)
-        */
+         Wrapper for Ptolemy methods to be highlighted.
+         
+         @author Thomas Feng
+         @version $Id$
+         @since Ptolemy II 5.1
+         @Pt.ProposedRating Red (tfeng)
+         @Pt.AcceptedRating Red (tfeng)
+         */
         protected static class PtolemyMethod {
-            
+
             /** Get the names of the method's argument types.
              * 
              *  @return The names of the method's argument types.
@@ -327,8 +325,8 @@ public class SemanticHighlightings {
 
             while (keys.hasMoreElements()) {
                 String typeName = (String) keys.nextElement();
-                PtolemyMethod[] methods =
-                    (PtolemyMethod[]) _METHODS.get(typeName);
+                PtolemyMethod[] methods = (PtolemyMethod[]) _METHODS
+                        .get(typeName);
 
                 ITypeBinding type = binding.getDeclaringClass();
                 boolean classFound = false;
@@ -374,7 +372,7 @@ public class SemanticHighlightings {
 
             return false;
         }
-        
+
         // Initialize the array of special methods.
         static {
             PtolemyMethod[] executableMethods = new PtolemyMethod[] {
@@ -390,17 +388,17 @@ public class SemanticHighlightings {
     //////////////////////////////////////////////////////////////////////////
     //// StateVariableHighlighting
     /**
-       Semantic highlighting for state variables.
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
-    protected static class StateVariableHighlighting
-            extends SemanticHighlighting {
-        
+     Semantic highlighting for state variables.
+     
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
+    protected static class StateVariableHighlighting extends
+            SemanticHighlighting {
+
         /** Test whether a semantic token can be consumed.
          * 
          *  @param token The token to be tested.

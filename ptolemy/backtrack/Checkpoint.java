@@ -115,8 +115,8 @@ public class Checkpoint {
      *  @param object The object to be removed.
      */
     public void removeObject(Rollbackable object) {
-        Iterator<Rollbackable> objectsIter =
-            _state.getMonitoredObjects().iterator();
+        Iterator<Rollbackable> objectsIter = _state.getMonitoredObjects()
+                .iterator();
 
         while (objectsIter.hasNext()) {
             if (objectsIter.next() == object) {

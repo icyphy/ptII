@@ -1,49 +1,50 @@
 /* HashSet.java -- a class providing a HashMap-backed Set
-   Copyright (C) 1998, 1999, 2001, 2004, 2005  Free Software Foundation, Inc.
+ Copyright (C) 1998, 1999, 2001, 2004, 2005  Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ 02110-1301 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
-import ptolemy.backtrack.util.java.util.HashMap;
 
 /** 
  * This class provides a HashMap-backed implementation of the Set interface.
@@ -61,7 +62,7 @@ import ptolemy.backtrack.util.java.util.HashMap;
  * The iterators are <i>fail-fast</i>, meaning that any structural
  * modification, except for <code>remove()</code> called on the iterator
  * itself, cause the iterator to throw a{
-@link ConcurrentModificationException}
+ @link ConcurrentModificationException}
  rather than exhibit
  * non-deterministic behavior.
  * @author Jon Zeppieri
@@ -75,7 +76,8 @@ import ptolemy.backtrack.util.java.util.HashMap;
  * @since 1.2
  * @status updated to 1.4
  */
-public class HashSet extends AbstractSet implements Set, Cloneable, Serializable, Rollbackable {
+public class HashSet extends AbstractSet implements Set, Cloneable,
+        Serializable, Rollbackable {
 
     /**     
      * Compatible with JDK 1.2.
@@ -155,11 +157,11 @@ public class HashSet extends AbstractSet implements Set, Cloneable, Serializable
     public Object clone() {
         HashSet copy = null;
         try {
-            copy = (HashSet)super.clone();
+            copy = (HashSet) super.clone();
         } catch (CloneNotSupportedException x) {
             // Impossible to get here.
         }
-        copy.$ASSIGN$map((HashMap)map.clone());
+        copy.$ASSIGN$map((HashMap) map.clone());
         return copy;
     }
 
@@ -229,14 +231,14 @@ public class HashSet extends AbstractSet implements Set, Cloneable, Serializable
      * of the backing store, followed by the set size (int),
      * then a listing of its elements (Object) in no order
      */
-    private void writeObject(ObjectOutputStream s) throws IOException  {
+    private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
         // Avoid creating intermediate keySet() object by using non-public API.
         Iterator it = map.iterator(HashMap.KEYS);
         s.writeInt(map.getBuckets().length);
         s.writeFloat(map.loadFactor);
         s.writeInt(map.getSize());
-        while (it.hasNext()) 
+        while (it.hasNext())
             s.writeObject(it.next());
     }
 
@@ -249,10 +251,11 @@ public class HashSet extends AbstractSet implements Set, Cloneable, Serializable
      * of the backing store, followed by the set size (int),
      * then a listing of its elements (Object) in no order
      */
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException  {
+    private void readObject(ObjectInputStream s) throws IOException,
+            ClassNotFoundException {
         s.defaultReadObject();
         $ASSIGN$map(init(s.readInt(), s.readFloat()));
-        for (int size = s.readInt(); size > 0; size--) 
+        for (int size = s.readInt(); size > 0; size--)
             map.put(s.readObject(), "");
     }
 
@@ -267,20 +270,18 @@ public class HashSet extends AbstractSet implements Set, Cloneable, Serializable
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        map = (HashMap)$RECORD$map.restore(map, timestamp, trim);
+        map = (HashMap) $RECORD$map.restore(map, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
 
     private FieldRecord $RECORD$map = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$map
-        };
+    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$map };
 
 }
-

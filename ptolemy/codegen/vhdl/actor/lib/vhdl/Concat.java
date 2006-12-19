@@ -33,9 +33,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
-import ptolemy.data.ScalarToken;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.math.FixPoint;
 
 /**
  * A helper class for ptolemy.actor.lib.Uniform.
@@ -54,7 +52,7 @@ public class Concat extends VHDLCodeGeneratorHelper {
     public Concat(ptolemy.actor.lib.vhdl.Concat actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in the <code>fireBlock</code> from FixConst.c,
@@ -68,8 +66,7 @@ public class Concat extends VHDLCodeGeneratorHelper {
         super.generateFireCode();
 
         ArrayList args = new ArrayList();
-        ptolemy.actor.lib.vhdl.Concat actor = 
-            (ptolemy.actor.lib.vhdl.Concat) getComponent();
+        ptolemy.actor.lib.vhdl.Concat actor = (ptolemy.actor.lib.vhdl.Concat) getComponent();
 
         args.add("");
 
@@ -79,7 +76,7 @@ public class Concat extends VHDLCodeGeneratorHelper {
 
         return processCode(_codeStream.toString());
     }
-    
+
     /** Get the files needed by the code generated for the Concat actor.
      *  @return A set of strings that are names of the library and package.
      *  @exception IllegalActionException Not Thrown in this subclass.

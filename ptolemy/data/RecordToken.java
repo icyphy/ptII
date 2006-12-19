@@ -109,7 +109,6 @@ public class RecordToken extends AbstractNotConvertibleToken {
         }
     }
 
-
     /** Construct a RecordToken with the labels and values specified
      *  by a given Map object. The object cannot contain any null keys
      *  or values.
@@ -119,26 +118,23 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  keys or values, or if it contains non-String keys or non-Token
      *  values.
      */
-    public RecordToken(Map fieldMap)
-    		throws IllegalActionException {
-    	Iterator fields = fieldMap.entrySet().iterator();
-    	while (fields.hasNext()) {
-    		Map.Entry entry = (Map.Entry)fields.next();
-    		if (entry.getKey() == null || entry.getValue() == null) {
-    			throw new IllegalActionException("RecordToken: given "
-                                + "map contains either null keys "
-                                + "or null values.");
-    		}
-    		if (!(entry.getKey() instanceof String)
-                        || !(entry.getValue() instanceof Token)) {
-    			throw new IllegalActionException("RecordToken: given "
-                                + "map contains either non-String keys "
-                                + "or non-Token values.");
-    		}
+    public RecordToken(Map fieldMap) throws IllegalActionException {
+        Iterator fields = fieldMap.entrySet().iterator();
+        while (fields.hasNext()) {
+            Map.Entry entry = (Map.Entry) fields.next();
+            if (entry.getKey() == null || entry.getValue() == null) {
+                throw new IllegalActionException("RecordToken: given "
+                        + "map contains either null keys " + "or null values.");
+            }
+            if (!(entry.getKey() instanceof String)
+                    || !(entry.getValue() instanceof Token)) {
+                throw new IllegalActionException("RecordToken: given "
+                        + "map contains either non-String keys "
+                        + "or non-Token values.");
+            }
 
-
-    	}
-    	_fields.putAll(fieldMap);
+        }
+        _fields.putAll(fieldMap);
     }
 
     ///////////////////////////////////////////////////////////////////

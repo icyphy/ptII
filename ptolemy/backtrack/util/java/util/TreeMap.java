@@ -1,56 +1,55 @@
 /* TreeMap.java -- a class providing a basic Red-Black Tree data structure,
-   mapping Object --> Object
-   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005  Free Software Foundation, Inc.
+ mapping Object --> Object
+ Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005  Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ 02110-1301 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.Object;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
-import ptolemy.backtrack.util.java.util.Set;
 
 /** 
  * This class provides a red-black tree implementation of the SortedMap
@@ -93,7 +92,8 @@ import ptolemy.backtrack.util.java.util.Set;
  * @since 1.2
  * @status updated to 1.4
  */
-public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serializable, Rollbackable {
+public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
+        Serializable, Rollbackable {
 
     // Implementation note:
     // A red-black tree is a binary search tree with the additional properties
@@ -133,8 +133,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
 
     /**     
      * The cache for {
-@link #entrySet()    }
-.
+     @link #entrySet()    }
+     .
      */
     private transient Set entries;
 
@@ -157,7 +157,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      * plus pointers to parent and child nodes.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class Node extends AbstractMap.BasicMapEntry implements Rollbackable {
+    private static final class Node extends AbstractMap.BasicMapEntry implements
+            Rollbackable {
 
         // All fields package visible for use by nested classes.
         /**         
@@ -260,15 +261,16 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             color = $RECORD$color.restore(color, timestamp, trim);
-            left = (Node)$RECORD$left.restore(left, timestamp, trim);
-            right = (Node)$RECORD$right.restore(right, timestamp, trim);
-            parent = (Node)$RECORD$parent.restore(parent, timestamp, trim);
+            left = (Node) $RECORD$left.restore(left, timestamp, trim);
+            right = (Node) $RECORD$right.restore(right, timestamp, trim);
+            parent = (Node) $RECORD$parent.restore(parent, timestamp, trim);
             super.$RESTORE(timestamp, trim);
         }
 
@@ -280,12 +282,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
 
         private FieldRecord $RECORD$parent = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$color,
-                $RECORD$left,
-                $RECORD$right,
-                $RECORD$parent
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$color,
+                $RECORD$left, $RECORD$right, $RECORD$parent };
 
     }
 
@@ -395,13 +393,13 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
 
         /**         
          * The type of this Iterator: {
-@link #KEYS        }
-, {
-@link #VALUES        }
-,
+         @link #KEYS        }
+         , {
+         @link #VALUES        }
+         ,
          * or {
-@link #ENTRIES        }
-.
+         @link #ENTRIES        }
+         .
          */
         private final int type;
 
@@ -429,11 +427,11 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
         /**         
          * Construct a new TreeIterator with the supplied type.
          * @param type {
-@link #KEYS        }
-, {
-@link #VALUES        }
-, or {
-@link #ENTRIES        }
+         @link #KEYS        }
+         , {
+         @link #VALUES        }
+         , or {
+         @link #ENTRIES        }
 
          */
         TreeIterator(int type) {
@@ -446,11 +444,11 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
          * Construct a new TreeIterator with the supplied type. Iteration will
          * be from "first" (inclusive) to "max" (exclusive).
          * @param type {
-@link #KEYS        }
-, {
-@link #VALUES        }
-, or {
-@link #ENTRIES        }
+         @link #KEYS        }
+         , {
+         @link #VALUES        }
+         , or {
+         @link #ENTRIES        }
 
          * @param first where to start iteration, nil for empty iterator
          * @param max the cutoff for iteration, nil for all remaining nodes
@@ -507,41 +505,42 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
 
         private final int $ASSIGN$SPECIAL$knownMod(int operator, long newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                $RECORD$knownMod
+                        .add(null, knownMod, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-                case 0:
-                    return knownMod += newValue;
-                case 1:
-                    return knownMod -= newValue;
-                case 2:
-                    return knownMod *= newValue;
-                case 3:
-                    return knownMod /= newValue;
-                case 4:
-                    return knownMod &= newValue;
-                case 5:
-                    return knownMod |= newValue;
-                case 6:
-                    return knownMod ^= newValue;
-                case 7:
-                    return knownMod %= newValue;
-                case 8:
-                    return knownMod <<= newValue;
-                case 9:
-                    return knownMod >>= newValue;
-                case 10:
-                    return knownMod >>>= newValue;
-                case 11:
-                    return knownMod++;
-                case 12:
-                    return knownMod--;
-                case 13:
-                    return ++knownMod;
-                case 14:
-                    return --knownMod;
-                default:
-                    return knownMod;
+            case 0:
+                return knownMod += newValue;
+            case 1:
+                return knownMod -= newValue;
+            case 2:
+                return knownMod *= newValue;
+            case 3:
+                return knownMod /= newValue;
+            case 4:
+                return knownMod &= newValue;
+            case 5:
+                return knownMod |= newValue;
+            case 6:
+                return knownMod ^= newValue;
+            case 7:
+                return knownMod %= newValue;
+            case 8:
+                return knownMod <<= newValue;
+            case 9:
+                return knownMod >>= newValue;
+            case 10:
+                return knownMod >>>= newValue;
+            case 11:
+                return knownMod++;
+            case 12:
+                return knownMod--;
+            case 13:
+                return ++knownMod;
+            case 14:
+                return --knownMod;
+            default:
+                return knownMod;
             }
         }
 
@@ -566,17 +565,19 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
-            last = (Node)$RECORD$last.restore(last, timestamp, trim);
-            next = (Node)$RECORD$next.restore(next, timestamp, trim);
+            last = (Node) $RECORD$last.restore(last, timestamp, trim);
+            next = (Node) $RECORD$next.restore(next, timestamp, trim);
             $RECORD$max.restore(max, timestamp, trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -590,7 +591,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -612,28 +614,24 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
 
         private FieldRecord $RECORD$max = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$type,
-                $RECORD$knownMod,
-                $RECORD$last,
-                $RECORD$next,
-                $RECORD$max
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$type,
+                $RECORD$knownMod, $RECORD$last, $RECORD$next, $RECORD$max };
 
     }
 
     /**     
      * Implementation of {
-@link #subMap(Object, Object)    }
- and other map
+     @link #subMap(Object, Object)    }
+     and other map
      * ranges. This class provides a view of a portion of the original backing
      * map, and throws {
-@link IllegalArgumentException    }
- for attempts to
+     @link IllegalArgumentException    }
+     for attempts to
      * access beyond that range.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private final class SubMap extends AbstractMap implements SortedMap, Rollbackable {
+    private final class SubMap extends AbstractMap implements SortedMap,
+            Rollbackable {
 
         /**         
          * The lower range of this view, inclusive, or nil for unbounded.
@@ -649,8 +647,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
 
         /**         
          * The cache for {
-@link #entrySet()        }
-.
+         @link #entrySet()        }
+         .
          */
         private Set entries;
 
@@ -677,7 +675,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
          * @return true if the key is in range
          */
         boolean keyInRange(Object key) {
-            return ((minKey == nil || compare(key, minKey) >= 0) && (maxKey == nil || compare(key, maxKey) < 0));
+            return ((minKey == nil || compare(key, minKey) >= 0) && (maxKey == nil || compare(
+                    key, maxKey) < 0));
         }
 
         public void clear() {
@@ -731,23 +730,27 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                     public boolean contains(Object o) {
                         if (!(o instanceof Map.Entry))
                             return false;
-                        Map.Entry me = (Map.Entry)o;
+                        Map.Entry me = (Map.Entry) o;
                         Object key = me.getKey();
                         if (!keyInRange(key))
                             return false;
                         Node n = getNode(key);
-                        return n != nil && AbstractSet.equals(me.getValue(), n.getValueField());
+                        return n != nil
+                                && AbstractSet.equals(me.getValue(), n
+                                        .getValueField());
                     }
 
                     public boolean remove(Object o) {
                         if (!(o instanceof Map.Entry))
                             return false;
-                        Map.Entry me = (Map.Entry)o;
+                        Map.Entry me = (Map.Entry) o;
                         Object key = me.getKey();
                         if (!keyInRange(key))
                             return false;
                         Node n = getNode(key);
-                        if (n != nil && AbstractSet.equals(me.getValue(), n.getValueField())) {
+                        if (n != nil
+                                && AbstractSet.equals(me.getValue(), n
+                                        .getValueField())) {
                             removeNode(n);
                             return true;
                         }
@@ -768,7 +771,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                             return $GET$CHECKPOINT_ANONYMOUS();
                         }
 
-                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        public final Object $SET$CHECKPOINT(
+                                Checkpoint checkpoint) {
                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                             return this;
                         }
@@ -776,7 +780,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                     }
 
                     public void $COMMIT_ANONYMOUS(long timestamp) {
-                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        FieldRecord.commit($RECORDS, timestamp,
+                                $RECORD$$CHECKPOINT.getTopTimestamp());
                         super.$COMMIT(timestamp);
                     }
 
@@ -788,11 +793,13 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                         return $CHECKPOINT;
                     }
 
-                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(
+                            Checkpoint checkpoint) {
                         if ($CHECKPOINT != checkpoint) {
                             Checkpoint oldCheckpoint = $CHECKPOINT;
                             if (checkpoint != null) {
-                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                        .getTimestamp());
                                 FieldRecord.pushState($RECORDS);
                             }
                             $CHECKPOINT = checkpoint;
@@ -802,8 +809,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                         return this;
                     }
 
-                    private FieldRecord[] $RECORDS = new FieldRecord[] {
-                        };
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                     {
                         $CHECKPOINT.addObject(new _PROXY_());
@@ -882,7 +888,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                             return $GET$CHECKPOINT_ANONYMOUS();
                         }
 
-                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        public final Object $SET$CHECKPOINT(
+                                Checkpoint checkpoint) {
                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                             return this;
                         }
@@ -890,7 +897,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                     }
 
                     public void $COMMIT_ANONYMOUS(long timestamp) {
-                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        FieldRecord.commit($RECORDS, timestamp,
+                                $RECORD$$CHECKPOINT.getTopTimestamp());
                         super.$COMMIT(timestamp);
                     }
 
@@ -902,11 +910,13 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                         return $CHECKPOINT;
                     }
 
-                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(
+                            Checkpoint checkpoint) {
                         if ($CHECKPOINT != checkpoint) {
                             Checkpoint oldCheckpoint = $CHECKPOINT;
                             if (checkpoint != null) {
-                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                        .getTimestamp());
                                 FieldRecord.pushState($RECORDS);
                             }
                             $CHECKPOINT = checkpoint;
@@ -916,8 +926,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                         return this;
                     }
 
-                    private FieldRecord[] $RECORDS = new FieldRecord[] {
-                        };
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                     {
                         $CHECKPOINT.addObject(new _PROXY_());
@@ -1002,7 +1011,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                             return $GET$CHECKPOINT_ANONYMOUS();
                         }
 
-                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        public final Object $SET$CHECKPOINT(
+                                Checkpoint checkpoint) {
                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                             return this;
                         }
@@ -1010,7 +1020,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                     }
 
                     public void $COMMIT_ANONYMOUS(long timestamp) {
-                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        FieldRecord.commit($RECORDS, timestamp,
+                                $RECORD$$CHECKPOINT.getTopTimestamp());
                         super.$COMMIT(timestamp);
                     }
 
@@ -1022,11 +1033,13 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                         return $CHECKPOINT;
                     }
 
-                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(
+                            Checkpoint checkpoint) {
                         if ($CHECKPOINT != checkpoint) {
                             Checkpoint oldCheckpoint = $CHECKPOINT;
                             if (checkpoint != null) {
-                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                        .getTimestamp());
                                 FieldRecord.pushState($RECORDS);
                             }
                             $CHECKPOINT = checkpoint;
@@ -1036,8 +1049,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                         return this;
                     }
 
-                    private FieldRecord[] $RECORDS = new FieldRecord[] {
-                        };
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                     {
                         $CHECKPOINT.addObject(new _PROXY_());
@@ -1058,20 +1070,19 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
+            entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
             super.$RESTORE(timestamp, trim);
         }
 
         private FieldRecord $RECORD$entries = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$entries
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$entries };
 
     }
 
@@ -1081,23 +1092,23 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      * ordering to sort. All entries in the map must have a key which implements
      * Comparable, and which are <i>mutually comparable</i>, otherwise map
      * operations may throw a {
-@link ClassCastException    }
-. Attempts to use
+     @link ClassCastException    }
+     . Attempts to use
      * a null key will throw a {
-@link NullPointerException    }
-.
+     @link NullPointerException    }
+     .
      * @see Comparable
      */
     public TreeMap() {
-        this((Comparator)null);
+        this((Comparator) null);
     }
 
     /**     
      * Instantiate a new TreeMap with no elements, using the provided comparator
      * to sort. All entries in the map must have keys which are mutually
      * comparable by the Comparator, otherwise map operations may throw a{
-@link ClassCastException    }
-.
+     @link ClassCastException    }
+     .
      * @param c the sort order for the keys of this map, or null
      * for the natural order
      */
@@ -1112,8 +1123,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      * ordering of the keys. This algorithm runs in n*log(n) time. All entries
      * in the map must have keys which implement Comparable and are mutually
      * comparable, otherwise map operations may throw a{
-@link ClassCastException    }
-.
+     @link ClassCastException    }
+     .
      * @param map a Map, whose entries will be put into this TreeMap
      * @throws ClassCastException if the keys in the provided Map are not
      * comparable
@@ -1121,7 +1132,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      * @see Comparable
      */
     public TreeMap(Map map) {
-        this((Comparator)null);
+        this((Comparator) null);
         putAll(map);
     }
 
@@ -1139,7 +1150,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
         fabricateTree(pos);
         Node node = firstNode();
         while (--pos >= 0) {
-            Map.Entry me = (Map.Entry)itr.next();
+            Map.Entry me = (Map.Entry) itr.next();
             node.setKeyField(me.getKey());
             node.setValueField(me.getValue());
             node = successor(node);
@@ -1165,7 +1176,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
     public Object clone() {
         TreeMap copy = null;
         try {
-            copy = (TreeMap)super.clone();
+            copy = (TreeMap) super.clone();
         } catch (CloneNotSupportedException x) {
         }
         copy.$ASSIGN$entries(null);
@@ -1247,17 +1258,21 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                 public boolean contains(Object o) {
                     if (!(o instanceof Map.Entry))
                         return false;
-                    Map.Entry me = (Map.Entry)o;
+                    Map.Entry me = (Map.Entry) o;
                     Node n = getNode(me.getKey());
-                    return n != nil && AbstractSet.equals(me.getValue(), n.getValueField());
+                    return n != nil
+                            && AbstractSet.equals(me.getValue(), n
+                                    .getValueField());
                 }
 
                 public boolean remove(Object o) {
                     if (!(o instanceof Map.Entry))
                         return false;
-                    Map.Entry me = (Map.Entry)o;
+                    Map.Entry me = (Map.Entry) o;
                     Node n = getNode(me.getKey());
-                    if (n != nil && AbstractSet.equals(me.getValue(), n.getValueField())) {
+                    if (n != nil
+                            && AbstractSet.equals(me.getValue(), n
+                                    .getValueField())) {
                         removeNode(n);
                         return true;
                     }
@@ -1286,7 +1301,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     super.$COMMIT(timestamp);
                 }
 
@@ -1298,11 +1314,13 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -1312,8 +1330,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                     return this;
                 }
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    };
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
@@ -1355,8 +1372,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      * Returns a view of this Map including all entries with keys less than
      * <code>toKey</code>. The returned map is backed by the original, so changes
      * in one appear in the other. The submap will throw an{
-@link IllegalArgumentException    }
- for any attempt to access or add an
+     @link IllegalArgumentException    }
+     for any attempt to access or add an
      * element beyond the specified cutoff. The returned map does not include
      * the endpoint; if you want inclusion, pass the successor element.
      * @param toKey the (exclusive) cutoff point
@@ -1427,7 +1444,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     super.$COMMIT(timestamp);
                 }
 
@@ -1439,11 +1457,13 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -1453,8 +1473,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                     return this;
                 }
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    };
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
@@ -1534,7 +1553,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
         Iterator itr = m.entrySet().iterator();
         int pos = m.size();
         while (--pos >= 0) {
-            Map.Entry e = (Map.Entry)itr.next();
+            Map.Entry e = (Map.Entry) itr.next();
             put(e.getKey(), e.getValue());
         }
     }
@@ -1573,8 +1592,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      * equal to <code>fromKey</code> and less than <code>toKey</code> (a
      * half-open interval). The returned map is backed by the original, so
      * changes in one appear in the other. The submap will throw an{
-@link IllegalArgumentException    }
- for any attempt to access or add an
+     @link IllegalArgumentException    }
+     for any attempt to access or add an
      * element beyond the specified cutoffs. The returned map includes the low
      * endpoint but not the high; if you want to reverse this behavior on
      * either end, pass in the successor element.
@@ -1595,8 +1614,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      * Returns a view of this Map including all entries with keys greater or
      * equal to <code>fromKey</code>. The returned map is backed by the
      * original, so changes in one appear in the other. The submap will throw an{
-@link IllegalArgumentException    }
- for any attempt to access or add an
+     @link IllegalArgumentException    }
+     for any attempt to access or add an
      * element beyond the specified cutoff. The returned map includes the
      * endpoint; if you want to exclude it, pass in the successor element.
      * @param fromKey the (inclusive) low cutoff point
@@ -1656,7 +1675,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     super.$COMMIT(timestamp);
                 }
 
@@ -1668,11 +1688,13 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -1682,8 +1704,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                     return this;
                 }
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    };
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
@@ -1703,7 +1724,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      * @throws NullPointerException if o1 or o2 is null with natural ordering
      */
     final int compare(Object o1, Object o2) {
-        return (comparator == null?((Comparable)o1).compareTo(o2):comparator.compare(o1, o2));
+        return (comparator == null ? ((Comparable) o1).compareTo(o2)
+                : comparator.compare(o1, o2));
     }
 
     /**     
@@ -1721,7 +1743,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                     rotateLeft(parent);
                     sibling = parent.getRight();
                 }
-                if (sibling.getLeft().getColor() == BLACK && sibling.getRight().getColor() == BLACK) {
+                if (sibling.getLeft().getColor() == BLACK
+                        && sibling.getRight().getColor() == BLACK) {
                     sibling.setColor(RED);
                     node = parent;
                     parent = parent.getParent();
@@ -1746,7 +1769,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                     rotateRight(parent);
                     sibling = parent.getLeft();
                 }
-                if (sibling.getRight().getColor() == BLACK && sibling.getLeft().getColor() == BLACK) {
+                if (sibling.getRight().getColor() == BLACK
+                        && sibling.getLeft().getColor() == BLACK) {
                     sibling.setColor(RED);
                     node = parent;
                     parent = parent.getParent();
@@ -1836,7 +1860,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      */
     final Node firstNode() {
         Node node = root;
-        while (node.getLeft() != nil) 
+        while (node.getLeft() != nil)
             node = node.getLeft();
         return node;
     }
@@ -1883,7 +1907,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
             else
                 return predecessor(last);
         }
-        return comparison <= 0?predecessor(last):last;
+        return comparison <= 0 ? predecessor(last) : last;
     }
 
     /**     
@@ -1891,7 +1915,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      * @param n the newly inserted node
      */
     private void insertFixup(Node n) {
-        while (n.getParent().getColor() == RED && n.getParent().getParent() != nil) {
+        while (n.getParent().getColor() == RED
+                && n.getParent().getParent() != nil) {
             if (n.getParent() == n.getParent().getParent().getLeft()) {
                 Node uncle = n.getParent().getParent().getRight();
                 if (uncle.getColor() == RED) {
@@ -1935,7 +1960,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      */
     private Node lastNode() {
         Node node = root;
-        while (node.getRight() != nil) 
+        while (node.getRight() != nil)
             node = node.getRight();
         return node;
     }
@@ -1950,7 +1975,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      */
     final Node lowestGreaterThan(Object key, boolean first) {
         if (key == nil)
-            return first?firstNode():nil;
+            return first ? firstNode() : nil;
         Node last = nil;
         Node current = root;
         int comparison = 0;
@@ -1964,7 +1989,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
             else
                 return current;
         }
-        return comparison > 0?successor(last):last;
+        return comparison > 0 ? successor(last) : last;
     }
 
     /**     
@@ -1975,7 +2000,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
     private Node predecessor(Node node) {
         if (node.getLeft() != nil) {
             node = node.getLeft();
-            while (node.getRight() != nil) 
+            while (node.getRight() != nil)
                 node = node.getRight();
             return node;
         }
@@ -1998,12 +2023,13 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      * @see #readObject(ObjectInputStream)
      * @see TreeSet#readObject(ObjectInputStream)
      */
-    final void putFromObjStream(ObjectInputStream s, int count, boolean readValues) throws IOException, ClassNotFoundException  {
+    final void putFromObjStream(ObjectInputStream s, int count,
+            boolean readValues) throws IOException, ClassNotFoundException {
         fabricateTree(count);
         Node node = firstNode();
         while (--count >= 0) {
             node.setKeyField(s.readObject());
-            node.setValueField(readValues?s.readObject():"");
+            node.setValueField(readValues ? s.readObject() : "");
             node = successor(node);
         }
     }
@@ -2033,7 +2059,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      * @serialData the <i>size</i> (int), followed by key (Object) and value
      * (Object) pairs in sorted order
      */
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException  {
+    private void readObject(ObjectInputStream s) throws IOException,
+            ClassNotFoundException {
         s.defaultReadObject();
         int size = s.readInt();
         putFromObjStream(s, size, true);
@@ -2057,7 +2084,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
             child = node.getLeft();
         } else {
             splice = node.getLeft();
-            while (splice.getRight() != nil) 
+            while (splice.getRight() != nil)
                 splice = splice.getRight();
             child = splice.getLeft();
             node.setKeyField(splice.getKeyField());
@@ -2129,7 +2156,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
     final Node successor(Node node) {
         if (node.getRight() != nil) {
             node = node.getRight();
-            while (node.getLeft() != nil) 
+            while (node.getLeft() != nil)
                 node = node.getLeft();
             return node;
         }
@@ -2148,7 +2175,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
      * @serialData the <i>size</i> (int), followed by key (Object) and value
      * (Object) pairs in sorted order
      */
-    private void writeObject(ObjectOutputStream s) throws IOException  {
+    private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
         Node node = firstNode();
         s.writeInt(getSize());
@@ -2175,7 +2202,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
         return size;
     }
 
-static     {
+    static {
         nil.setParent(nil);
         nil.setLeft(nil);
         nil.setRight(nil);
@@ -2216,14 +2243,15 @@ static     {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        root = (Node)$RECORD$root.restore(root, timestamp, trim);
+        root = (Node) $RECORD$root.restore(root, timestamp, trim);
         size = $RECORD$size.restore(size, timestamp, trim);
-        entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
+        entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
         modCount = $RECORD$modCount.restore(modCount, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
@@ -2236,12 +2264,8 @@ static     {
 
     private FieldRecord $RECORD$modCount = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$root,
-            $RECORD$size,
-            $RECORD$entries,
-            $RECORD$modCount
-        };
+    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$root,
+            $RECORD$size, $RECORD$entries, $RECORD$modCount };
 
 }
 

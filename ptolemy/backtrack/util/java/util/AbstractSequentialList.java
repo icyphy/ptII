@@ -1,43 +1,44 @@
 /* AbstractSequentialList.java -- List implementation for sequential access
-   Copyright (C) 1998, 1999, 2000, 2001, 2005  Free Software Foundation, Inc.
+ Copyright (C) 1998, 1999, 2000, 2001, 2005  Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ 02110-1301 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
 
@@ -71,7 +72,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * @since 1.2
  * @status updated to 1.4
  */
-public abstract class AbstractSequentialList extends AbstractList implements Rollbackable {
+public abstract class AbstractSequentialList extends AbstractList implements
+        Rollbackable {
 
     /**     
      * The main constructor, for use by subclasses.
@@ -141,7 +143,7 @@ public abstract class AbstractSequentialList extends AbstractList implements Rol
         Iterator ci = c.iterator();
         int size = c.size();
         ListIterator i = listIterator(index);
-        for (int pos = size; pos > 0; pos--) 
+        for (int pos = size; pos > 0; pos--)
             i.add(ci.next());
         return size > 0;
     }
@@ -156,7 +158,8 @@ public abstract class AbstractSequentialList extends AbstractList implements Rol
     public Object get(int index) {
         // This is a legal listIterator position, but an illegal get.
         if (index == size())
-            throw new IndexOutOfBoundsException("Index: " + index+", Size:"+size());
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+                    + size());
         return listIterator(index).next();
     }
 
@@ -182,7 +185,8 @@ public abstract class AbstractSequentialList extends AbstractList implements Rol
     public Object remove(int index) {
         // This is a legal listIterator position, but an illegal remove.
         if (index == size())
-            throw new IndexOutOfBoundsException("Index: " + index+", Size:"+size());
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+                    + size());
         ListIterator i = listIterator(index);
         Object removed = i.next();
         i.remove();
@@ -208,7 +212,8 @@ public abstract class AbstractSequentialList extends AbstractList implements Rol
     public Object set(int index, Object o) {
         // This is a legal listIterator position, but an illegal set.
         if (index == size())
-            throw new IndexOutOfBoundsException("Index: " + index+", Size:"+size());
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+                    + size());
         ListIterator i = listIterator(index);
         Object old = i.next();
         i.set(o);
@@ -216,7 +221,8 @@ public abstract class AbstractSequentialList extends AbstractList implements Rol
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
@@ -224,8 +230,6 @@ public abstract class AbstractSequentialList extends AbstractList implements Rol
         super.$RESTORE(timestamp, trim);
     }
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
 }
-

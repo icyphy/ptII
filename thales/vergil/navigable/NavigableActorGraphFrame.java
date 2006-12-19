@@ -144,7 +144,8 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    protected JTabbedPane _tabbedPalette = new JTabbedPane(SwingConstants.BOTTOM);
+    protected JTabbedPane _tabbedPalette = new JTabbedPane(
+            SwingConstants.BOTTOM);
 
     protected UpAction _upAction = new UpAction();
 

@@ -63,11 +63,11 @@ public class Sleep extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
-      
+
         ptolemy.actor.lib.Sleep actor = (ptolemy.actor.lib.Sleep) getComponent();
         ArrayList args = new ArrayList();
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            if (i < actor.output.getWidth()) {    
+            if (i < actor.output.getWidth()) {
                 args.clear();
                 args.add(new Integer(i));
                 code.append(_generateBlockCode("transferBlock", args));

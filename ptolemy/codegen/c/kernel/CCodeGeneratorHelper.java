@@ -34,7 +34,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
-import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -100,43 +99,41 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
 
         // Generate variable declarations for referenced parameters.    
-        String referencedParameterDeclaration 
-                =  _generateReferencedParameterDeclaration();
+        String referencedParameterDeclaration = _generateReferencedParameterDeclaration();
         if (referencedParameterDeclaration.length() > 1) {
-            code.append(_eol +
-                    _codeGenerator.comment(getComponent().getName()
-                    + "'s referenced parameter declarations."));
+            code.append(_eol
+                    + _codeGenerator.comment(getComponent().getName()
+                            + "'s referenced parameter declarations."));
             code.append(referencedParameterDeclaration);
         }
-        
+
         // Generate variable declarations for input ports.
-        String inputVariableDeclaration =  _generateInputVariableDeclaration();
+        String inputVariableDeclaration = _generateInputVariableDeclaration();
         if (inputVariableDeclaration.length() > 1) {
-            code.append(_eol +
-                    _codeGenerator.comment(getComponent().getName()
-                    + "'s input variable declarations."));
+            code.append(_eol
+                    + _codeGenerator.comment(getComponent().getName()
+                            + "'s input variable declarations."));
             code.append(inputVariableDeclaration);
         }
 
         // Generate variable declarations for output ports.
-        String outputVariableDeclaration =  _generateOutputVariableDeclaration();
+        String outputVariableDeclaration = _generateOutputVariableDeclaration();
         if (outputVariableDeclaration.length() > 1) {
-            code.append(_eol +
-                    _codeGenerator.comment(getComponent().getName()
-                    + "'s output variable declarations."));
+            code.append(_eol
+                    + _codeGenerator.comment(getComponent().getName()
+                            + "'s output variable declarations."));
             code.append(outputVariableDeclaration);
         }
-        
+
         // Generate type convert variable declarations.
-        String typeConvertVariableDeclaration 
-                =  _generateTypeConvertVariableDeclaration();
+        String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration();
         if (typeConvertVariableDeclaration.length() > 1) {
-            code.append(_eol +
-                    _codeGenerator.comment(getComponent().getName()
-                    + "'s type convert variable declarations."));
+            code.append(_eol
+                    + _codeGenerator.comment(getComponent().getName()
+                            + "'s type convert variable declarations."));
             code.append(typeConvertVariableDeclaration);
         }
-        
+
         return processCode(code.toString());
     }
 
@@ -149,7 +146,8 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator inputPorts = ((Actor) getComponent()).inputPortList().iterator();
+        Iterator inputPorts = ((Actor) getComponent()).inputPortList()
+                .iterator();
 
         while (inputPorts.hasNext()) {
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
@@ -175,7 +173,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
         return code.toString();
     }
-    
+
     /** Generate output variable declarations.
      *  @return a String that declares output variables.
      *  @exception IllegalActionException If thrown while
@@ -185,7 +183,8 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator outputPorts = ((Actor) getComponent()).outputPortList().iterator();
+        Iterator outputPorts = ((Actor) getComponent()).outputPortList()
+                .iterator();
 
         while (outputPorts.hasNext()) {
             TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
@@ -211,7 +210,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
         return code.toString();
     }
-    
+
     /** Generate referenced parameter declarations.
      *  @return a String that declares referenced parameters.
      *  @exception IllegalActionException If thrown while
@@ -220,11 +219,10 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     protected String _generateReferencedParameterDeclaration()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         if (_referencedParameters != null) {
             Iterator parameters = _referencedParameters.iterator();
 
-            
             while (parameters.hasNext()) {
                 Parameter parameter = (Parameter) parameters.next();
 
@@ -235,10 +233,10 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
                 }
             }
         }
-        
+
         return code.toString();
     }
-    
+
     /** Generate type convert variable declarations.
      *  @return a String that declares type convert variables.
      *  @exception IllegalActionException If thrown while
@@ -247,7 +245,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     protected String _generateTypeConvertVariableDeclaration()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         Iterator channels = _getTypeConvertChannels().iterator();
         while (channels.hasNext()) {
             Channel channel = (Channel) channels.next();
@@ -264,7 +262,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             }
             code.append(";" + _eol);
         }
-        
+
         return code.toString();
     }
 }

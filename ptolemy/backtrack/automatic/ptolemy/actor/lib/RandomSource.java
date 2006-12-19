@@ -29,7 +29,6 @@
 //// RandomSource
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.lib.Source;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -88,7 +87,8 @@ public abstract class RandomSource extends Source implements Rollbackable {
     /**     
      * The Random object. 
      */
-    protected Random _random = (Random)new Random().$SET$CHECKPOINT($CHECKPOINT);
+    protected Random _random = (Random) new Random()
+            .$SET$CHECKPOINT($CHECKPOINT);
 
     /**     
      * Indicator that a new random number is needed. 
@@ -104,11 +104,13 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public RandomSource(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public RandomSource(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         seed = new Parameter(this, "seed", new LongToken(0));
         seed.setTypeEquals(BaseType.LONG);
-        new SingletonParameter(trigger, "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(trigger, "_showName")
+                .setToken(BooleanToken.TRUE);
     }
 
     /**     
@@ -119,8 +121,8 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        RandomSource newObject = (RandomSource)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        RandomSource newObject = (RandomSource) (super.clone(workspace));
         newObject._random = new Random();
         return newObject;
     }
@@ -130,7 +132,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * of the iteration.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         if (_needNew) {
             _generateRandomNumber();
@@ -143,7 +145,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * @exception IllegalActionException If the base class throws it.
      * @return True if it is ok to continue.
      */
-    public boolean postfire() throws IllegalActionException  {
+    public boolean postfire() throws IllegalActionException {
         $ASSIGN$_needNew(true);
         return super.postfire();
     }
@@ -156,9 +158,9 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * sure that two identical sequences will not be returned.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
-        long sd = ((LongToken)(seed.getToken())).longValue();
+        long sd = ((LongToken) (seed.getToken())).longValue();
         if (sd != 0) {
             _random.setSeed(sd);
         } else {
@@ -173,7 +175,8 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * Derived classes may throw it if there are problems getting parameter
      * values.
      */
-    protected abstract void _generateRandomNumber() throws IllegalActionException ;
+    protected abstract void _generateRandomNumber()
+            throws IllegalActionException;
 
     private final boolean $ASSIGN$_needNew(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
@@ -183,14 +186,16 @@ public abstract class RandomSource extends Source implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         _needNew = $RECORD$_needNew.restore(_needNew, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -218,9 +223,6 @@ public abstract class RandomSource extends Source implements Rollbackable {
 
     private FieldRecord $RECORD$_needNew = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_needNew
-        };
+    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_needNew };
 
 }
-

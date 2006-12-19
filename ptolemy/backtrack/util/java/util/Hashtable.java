@@ -1,41 +1,41 @@
 /* Hashtable.java -- a class providing a basic hashtable data structure,
-   mapping Object --> Object
-   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005, 2006
-   Free Software Foundation, Inc.
+ mapping Object --> Object
+ Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005, 2006
+ Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ 02110-1301 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 // NOTE: This implementation is very similar to that of HashMap. If you fix
 // a bug in here, chances are you should make a similar change to the HashMap
 // code.
@@ -45,19 +45,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.Object;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Dictionary;
 import java.util.Enumeration;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
-import ptolemy.backtrack.util.java.util.Collection;
-import ptolemy.backtrack.util.java.util.Set;
 
 /** 
  * A class which implements a hashtable data structure.
@@ -105,7 +104,8 @@ import ptolemy.backtrack.util.java.util.Set;
  * @since 1.0
  * @status updated to 1.4
  */
-public class Hashtable extends Dictionary implements Map, Cloneable, Serializable, Rollbackable {
+public class Hashtable extends Dictionary implements Map, Cloneable,
+        Serializable, Rollbackable {
 
     protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -168,22 +168,22 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
 
     /**     
      * The cache for {
-@link #keySet()    }
-.
+     @link #keySet()    }
+     .
      */
     private transient Set keys;
 
     /**     
      * The cache for {
-@link #values()    }
-.
+     @link #values()    }
+     .
      */
     private transient Collection values;
 
     /**     
      * The cache for {
-@link #entrySet()    }
-.
+     @link #entrySet()    }
+     .
      */
     private transient Set entries;
 
@@ -192,7 +192,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
      * pair. A Hashtable Entry is identical to a HashMap Entry, except that
      * `null' is not allowed for keys and values.
      */
-    private static final class HashEntry extends AbstractMap.BasicMapEntry implements Rollbackable {
+    private static final class HashEntry extends AbstractMap.BasicMapEntry
+            implements Rollbackable {
 
         /**         
          * The next entry in the linked list. 
@@ -239,20 +240,19 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            next = (HashEntry)$RECORD$next.restore(next, timestamp, trim);
+            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
             super.$RESTORE(timestamp, trim);
         }
 
         private FieldRecord $RECORD$next = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$next
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$next };
 
     }
 
@@ -312,13 +312,13 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
 
         /**         
          * The type of this Iterator: {
-@link #KEYS        }
-, {
-@link #VALUES        }
-,
+         @link #KEYS        }
+         , {
+         @link #VALUES        }
+         ,
          * or {
-@link #ENTRIES        }
-.
+         @link #ENTRIES        }
+         .
          */
         final int type;
 
@@ -352,11 +352,11 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
         /**         
          * Construct a new HashIterator with the supplied type.
          * @param type {
-@link #KEYS        }
-, {
-@link #VALUES        }
-, or {
-@link #ENTRIES        }
+         @link #KEYS        }
+         , {
+         @link #VALUES        }
+         , or {
+         @link #ENTRIES        }
 
          */
         HashIterator(int type) {
@@ -384,7 +384,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                 throw new NoSuchElementException();
             setCount(getCount() - 1);
             HashEntry e = getNext();
-            while (e == null) 
+            while (e == null)
                 e = getBuckets()[setIdx(getIdx() - 1)];
             setNext(e.getNext());
             setLast(e);
@@ -453,7 +453,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
 
         private final int $ASSIGN$knownMod(int newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                $RECORD$knownMod
+                        .add(null, knownMod, $CHECKPOINT.getTimestamp());
             }
             return knownMod = newValue;
         }
@@ -493,7 +494,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
@@ -501,10 +503,11 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
             knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
             count = $RECORD$count.restore(count, timestamp, trim);
             idx = $RECORD$idx.restore(idx, timestamp, trim);
-            last = (HashEntry)$RECORD$last.restore(last, timestamp, trim);
-            next = (HashEntry)$RECORD$next.restore(next, timestamp, trim);
+            last = (HashEntry) $RECORD$last.restore(last, timestamp, trim);
+            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -518,7 +521,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -540,13 +544,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
 
         private FieldRecord $RECORD$next = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$knownMod,
-                $RECORD$count,
-                $RECORD$idx,
-                $RECORD$last,
-                $RECORD$next
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$knownMod,
+                $RECORD$count, $RECORD$idx, $RECORD$last, $RECORD$next };
 
     }
 
@@ -569,10 +568,10 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
 
         /**         
          * The type of this Iterator: {
-@link #KEYS        }
- or {
-@link #VALUES        }
-.
+         @link #KEYS        }
+         or {
+         @link #VALUES        }
+         .
          */
         final int type;
 
@@ -596,10 +595,10 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
         /**         
          * Construct the enumeration.
          * @param type either {
-@link #KEYS        }
- or {
-@link #VALUES        }
-.
+         @link #KEYS        }
+         or {
+         @link #VALUES        }
+         .
          */
         Enumerator(int type) {
             this.type = type;
@@ -623,10 +622,10 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                 throw new NoSuchElementException("Hashtable Enumerator");
             setCount(getCount() - 1);
             HashEntry e = getNext();
-            while (e == null) 
+            while (e == null)
                 e = getBuckets()[setIdx(getIdx() - 1)];
             setNext(e.getNext());
-            return type == VALUES?e.getValueField():e.getKeyField();
+            return type == VALUES ? e.getValueField() : e.getKeyField();
         }
 
         void setCount(int count) {
@@ -678,16 +677,18 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             count = $RECORD$count.restore(count, timestamp, trim);
             idx = $RECORD$idx.restore(idx, timestamp, trim);
-            next = (HashEntry)$RECORD$next.restore(next, timestamp, trim);
+            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -701,7 +702,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -719,11 +721,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
 
         private FieldRecord $RECORD$next = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$count,
-                $RECORD$idx,
-                $RECORD$next
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$count,
+                $RECORD$idx, $RECORD$next };
 
     }
 
@@ -773,14 +772,15 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
      */
     public Hashtable(int initialCapacity, float loadFactor) {
         if (initialCapacity < 0)
-            throw new IllegalArgumentException("Illegal Capacity: " + initialCapacity);
+            throw new IllegalArgumentException("Illegal Capacity: "
+                    + initialCapacity);
         if (!(loadFactor > 0))
             throw new IllegalArgumentException("Illegal Load: " + loadFactor);
         if (initialCapacity == 0)
             initialCapacity = 1;
         setBuckets(new HashEntry[initialCapacity]);
         this.loadFactor = loadFactor;
-        $ASSIGN$threshold((int)(initialCapacity * loadFactor));
+        $ASSIGN$threshold((int) (initialCapacity * loadFactor));
     }
 
     /**     
@@ -975,9 +975,9 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
     public synchronized void putAll(Map m) {
         Iterator itr = m.entrySet().iterator();
         while (itr.hasNext()) {
-            Map.Entry e = (Map.Entry)itr.next();
+            Map.Entry e = (Map.Entry) itr.next();
             if (e instanceof AbstractMap.BasicMapEntry) {
-                AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry)e;
+                AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry) e;
                 put(entry.getKeyField(), entry.getValueField());
             } else {
                 put(e.getKey(), e.getValue());
@@ -1004,7 +1004,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
     public synchronized Object clone() {
         Hashtable copy = null;
         try {
-            copy = (Hashtable)super.clone();
+            copy = (Hashtable) super.clone();
         } catch (CloneNotSupportedException x) {
         }
         copy.setBuckets(new HashEntry[getBuckets().length]);
@@ -1044,8 +1044,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
      * in the JDK. Therefore, in this implementation, contains, remove,
      * containsAll, retainAll, removeAll, and equals just ignore a null key
      * rather than throwing a {
-@link NullPointerException    }
-.
+     @link NullPointerException    }
+     .
      * @return a set view of the keys
      * @see #values()
      * @see #entrySet()
@@ -1098,7 +1098,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     super.$COMMIT(timestamp);
                 }
 
@@ -1110,11 +1111,13 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -1124,8 +1127,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                     return this;
                 }
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    };
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
@@ -1146,8 +1148,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
      * this set, but has inconsistent behavior in the JDK. Therefore, in this
      * implementation, contains, remove, containsAll, retainAll, removeAll, and
      * equals just ignore a null value rather than throwing a{
-@link NullPointerException    }
-.
+     @link NullPointerException    }
+     .
      * @return a bag view of the values
      * @see #keySet()
      * @see #entrySet()
@@ -1190,7 +1192,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     super.$COMMIT(timestamp);
                 }
 
@@ -1202,11 +1205,13 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -1216,8 +1221,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                     return this;
                 }
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    };
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
@@ -1238,8 +1242,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
      * in the JDK. Therefore, in this implementation, contains, remove,
      * containsAll, retainAll, removeAll, and equals just ignore a null entry,
      * or an entry with a null key or value, rather than throwing a{
-@link NullPointerException    }
-. However, calling entry.setValue(null)
+     @link NullPointerException    }
+     . However, calling entry.setValue(null)
      * will fail.
      * <p>
      * Note that the iterators for all three views, from keySet(), entrySet(),
@@ -1300,7 +1304,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     super.$COMMIT(timestamp);
                 }
 
@@ -1312,11 +1317,13 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -1326,8 +1333,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                     return this;
                 }
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    };
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
@@ -1354,7 +1360,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
             return true;
         if (!(o instanceof Map))
             return false;
-        return entrySet().equals(((Map)o).entrySet());
+        return entrySet().equals(((Map) o).entrySet());
     }
 
     /**     
@@ -1366,7 +1372,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
     public synchronized int hashCode() {
         Iterator itr = new HashIterator(ENTRIES);
         int hashcode = 0;
-        for (int pos = getSize(); pos > 0; pos--) 
+        for (int pos = getSize(); pos > 0; pos--)
             hashcode += itr.next().hashCode();
         return hashcode;
     }
@@ -1380,7 +1386,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
      */
     private int hash(Object key) {
         int hash = key.hashCode() % getBuckets().length;
-        return hash < 0?-hash:hash;
+        return hash < 0 ? -hash : hash;
     }
 
     /**     
@@ -1393,7 +1399,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
     HashEntry getEntry(Object o) {
         if (!(o instanceof Map.Entry))
             return null;
-        Object key = ((Map.Entry)o).getKey();
+        Object key = ((Map.Entry) o).getKey();
         if (key == null)
             return null;
         int idx = hash(key);
@@ -1417,7 +1423,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
         setSize(0);
         while (itr.hasNext()) {
             setSize(getSize() + 1);
-            Map.Entry e = (Map.Entry)itr.next();
+            Map.Entry e = (Map.Entry) itr.next();
             Object key = e.getKey();
             int idx = hash(key);
             HashEntry he = new HashEntry(key, e.getValue());
@@ -1439,7 +1445,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
     protected void rehash() {
         HashEntry[] oldBuckets = getBuckets();
         int newcapacity = (getBuckets().length * 2) + 1;
-        $ASSIGN$threshold((int)(newcapacity * loadFactor));
+        $ASSIGN$threshold((int) (newcapacity * loadFactor));
         setBuckets(new HashEntry[newcapacity]);
         for (int i = oldBuckets.length - 1; i >= 0; i--) {
             HashEntry e = oldBuckets[i];
@@ -1447,7 +1453,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                 int idx = hash(e.getKeyField());
                 HashEntry dest = getBuckets()[idx];
                 if (dest != null) {
-                    while (dest.getNext() != null) 
+                    while (dest.getNext() != null)
                         dest = dest.getNext();
                     dest.setNext(e);
                 } else {
@@ -1469,13 +1475,14 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
      * are emitted first.  They are followed by size entries,
      * each consisting of a key (Object) and a value (Object).
      */
-    private synchronized void writeObject(ObjectOutputStream s) throws IOException  {
+    private synchronized void writeObject(ObjectOutputStream s)
+            throws IOException {
         s.defaultWriteObject();
         s.writeInt(getBuckets().length);
         s.writeInt(getSize());
         Iterator it = new HashIterator(ENTRIES);
         while (it.hasNext()) {
-            HashEntry entry = (HashEntry)it.next();
+            HashEntry entry = (HashEntry) it.next();
             s.writeObject(entry.getKeyField());
             s.writeObject(entry.getValueField());
         }
@@ -1491,11 +1498,12 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
      * are emitted first.  They are followed by size entries,
      * each consisting of a key (Object) and a value (Object).
      */
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException  {
+    private void readObject(ObjectInputStream s) throws IOException,
+            ClassNotFoundException {
         s.defaultReadObject();
         setBuckets(new HashEntry[s.readInt()]);
         int len = s.readInt();
-        while (--len >= 0) 
+        while (--len >= 0)
             put(s.readObject(), s.readObject());
     }
 
@@ -1587,20 +1595,23 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         threshold = $RECORD$threshold.restore(threshold, timestamp, trim);
-        buckets = (HashEntry[])$RECORD$buckets.restore(buckets, timestamp, trim);
+        buckets = (HashEntry[]) $RECORD$buckets.restore(buckets, timestamp,
+                trim);
         modCount = $RECORD$modCount.restore(modCount, timestamp, trim);
         size = $RECORD$size.restore(size, timestamp, trim);
-        keys = (Set)$RECORD$keys.restore(keys, timestamp, trim);
-        values = (Collection)$RECORD$values.restore(values, timestamp, trim);
-        entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
+        keys = (Set) $RECORD$keys.restore(keys, timestamp, trim);
+        values = (Collection) $RECORD$values.restore(values, timestamp, trim);
+        entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -1642,16 +1653,9 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
 
     private FieldRecord $RECORD$entries = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$threshold,
-            $RECORD$loadFactor,
-            $RECORD$buckets,
-            $RECORD$modCount,
-            $RECORD$size,
-            $RECORD$keys,
-            $RECORD$values,
-            $RECORD$entries
-        };
+    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$threshold,
+            $RECORD$loadFactor, $RECORD$buckets, $RECORD$modCount,
+            $RECORD$size, $RECORD$keys, $RECORD$values, $RECORD$entries };
 
 }
 

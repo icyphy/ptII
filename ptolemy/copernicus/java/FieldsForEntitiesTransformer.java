@@ -495,8 +495,8 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
             LocalDefs localDefs) {
         // FIXME: This is not enough.
         RefType type = (RefType) baseLocal.getType();
-        NamedObj object = ModelTransformer.getActorForClass(type
-                .getSootClass());
+        NamedObj object = ModelTransformer
+                .getActorForClass(type.getSootClass());
         Entity entity;
 
         if (object != null) {

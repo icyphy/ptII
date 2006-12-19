@@ -68,7 +68,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
 
         reset = new TypedIOPort(this, "reset", true, false);
         reset.setTypeEquals(BaseType.FIX);
-        
+
         width = new Parameter(this, "width");
         width.setTypeEquals(BaseType.INT);
         width.setExpression("4");
@@ -102,7 +102,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
      * 
      */
     public Parameter hasEnable;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -120,22 +120,20 @@ public class IntegerCounter extends SynchronousFixTransformer {
                 if (hasEnable.getExpression().equals("true")) {
                     enable.setContainer(this);
                 } else {
-                    enable.setContainer(null);                
+                    enable.setContainer(null);
                 }
             } catch (NameDuplicationException ex) {
                 throw new IllegalActionException(this, ex,
                         "Cannot set the container for the enable port");
             }
         } else if (attribute == width) {
-            _setQuantizationParameters(
-                "U" + width.getExpression() + ".0", null, null);
+            _setQuantizationParameters("U" + width.getExpression() + ".0",
+                    null, null);
         } else {
             super.attributeChanged(attribute);
         }
     }
 
-        
-        
     /** Consume at most one token from each input and update the
      *  counter appropriately. Send the current value of the counter
      *  to the output.  If there are no input tokens available, no
@@ -154,50 +152,50 @@ public class IntegerCounter extends SynchronousFixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (reset.isKnown() && (enable.getContainer() == null ||            
-            ( enable.getContainer() != null && enable.isKnown() ))) {
-                
+        if (reset.isKnown()
+                && (enable.getContainer() == null || (enable.getContainer() != null && enable
+                        .isKnown()))) {
+
             _currentCount = _previousCount;
-    
+
             if (enable.getContainer() != null && enable.hasToken(0)) {
                 FixToken enableToken = (FixToken) enable.get(0);
-                
+
                 _checkFixTokenWidth(enableToken, 1);
-                
-                boolean enableValue = 
-                    enableToken.fixValue().toBitString().equals("1");
-                
+
+                boolean enableValue = enableToken.fixValue().toBitString()
+                        .equals("1");
+
                 if (enableValue) {
-                    _currentCount++;                    
+                    _currentCount++;
                 }
             } else if (enable.getContainer() == null) {
-                _currentCount++;                    
+                _currentCount++;
             }
-            
+
             if (reset.hasToken(0)) {
                 FixToken resetToken = (FixToken) reset.get(0);
 
                 _checkFixTokenWidth(resetToken, 1);
 
-                boolean resetValue = 
-                    resetToken.fixValue().toBitString().equals("1");
+                boolean resetValue = resetToken.fixValue().toBitString()
+                        .equals("1");
 
                 if (resetValue) {
-                    _currentCount = 0; 
+                    _currentCount = 0;
                 }
             }
-    
+
             // Produce an output if we consumed an input.
             FixPoint result = new FixPoint(_currentCount);
             Token outputToken = new FixToken(result);
             sendOutput(output, 0, outputToken);
 
         } else {
-        
+
             ((QueuedTypedIOPort) output).resend(0);
         }
     }
-    
 
     /** Reset the count of inputs to zero.
      *  @exception IllegalActionException If the parent class throws it.
@@ -214,7 +212,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
         _previousCount = _currentCount;
         return super.postfire();
     }
-    
+
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
      */

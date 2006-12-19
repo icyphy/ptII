@@ -190,20 +190,20 @@ public abstract class BaseType implements Type, Serializable {
      *  represents either an abstract base class or an interface.
      */
     public boolean isAbstract() {
-	if (!isInstantiable()) {
-	    return true;
-	}
+        if (!isInstantiable()) {
+            return true;
+        }
 
-	int mod = _tokenClass.getModifiers();
+        int mod = _tokenClass.getModifiers();
 
-	if (Modifier.isAbstract(mod)) {
-	    return true;
-	}
-	
-	if (_tokenClass.isInterface()) {
-	    return true;
-	}
-	return false;
+        if (Modifier.isAbstract(mod)) {
+            return true;
+        }
+
+        if (_tokenClass.isInterface()) {
+            return true;
+        }
+        return false;
     }
 
     /** Test if the argument type is compatible with this type. The method
@@ -317,7 +317,7 @@ public abstract class BaseType implements Type, Serializable {
     /** The bottom element of the data type lattice. */
     public static final UnknownType UNKNOWN = new UnknownType();
 
-    /** The bottom element of the array type lattice. */ 
+    /** The bottom element of the array type lattice. */
     public static class ArrayBottomType extends BaseType {
         private ArrayBottomType() {
             super(Void.TYPE, "arrayBottom");
@@ -567,9 +567,9 @@ public abstract class BaseType implements Type, Serializable {
             return 9;
         }
 
-//         public boolean isInstantiable() {
-//             return true;
-//         }
+        //         public boolean isInstantiable() {
+        //             return true;
+        //         }
     }
 
     /** The scalar data type: The least upper bound of all the scalar types. */

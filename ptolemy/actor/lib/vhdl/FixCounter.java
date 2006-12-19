@@ -81,8 +81,6 @@ public class FixCounter extends SynchronousFixTransformer {
      */
     public TypedIOPort decrement;
 
-    
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -104,19 +102,19 @@ public class FixCounter extends SynchronousFixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (increment.isKnown() && decrement.isKnown() ) {      
+        if (increment.isKnown() && decrement.isKnown()) {
             _latestCount = _count;
             _consumed = false;
-    
+
             // Check the increment port.
             for (int i = 0; i < increment.getWidth(); i++) {
                 if (increment.hasToken(i)) {
                     increment.get(i);
-                    _latestCount=_latestCount+1;
+                    _latestCount = _latestCount + 1;
                     _consumed = true;
                 }
             }
-    
+
             // Check the decrement port.
             for (int i = 0; i < decrement.getWidth(); i++) {
                 if (decrement.hasToken(i)) {
@@ -125,19 +123,17 @@ public class FixCounter extends SynchronousFixTransformer {
                     _consumed = true;
                 }
             }
-    
+
             // Produce an output if we consumed an input.
             if (_consumed) {
                 FixPoint result = new FixPoint(_latestCount);
                 Token outputToken = new FixToken(result);
                 sendOutput(output, 0, outputToken);
             }
-        }
-        else {
+        } else {
             ((QueuedTypedIOPort) output).resend(0);
         }
     }
-    
 
     /** Reset the count of inputs to zero.
      *  @exception IllegalActionException If the parent class throws it.
@@ -154,7 +150,7 @@ public class FixCounter extends SynchronousFixTransformer {
         _count = _latestCount;
         return super.postfire();
     }
-    
+
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
      */

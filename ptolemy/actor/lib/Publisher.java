@@ -382,7 +382,7 @@ public class Publisher extends TypedAtomicActor {
 
     /** An indicator that connectionsChanged() has been called. */
     private boolean _inConnectionsChanged = false;
-    
+
     /** An indicator that _updateLinks has been called at least once. */
     private boolean _updatedLinks = false;
 }

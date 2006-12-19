@@ -78,10 +78,10 @@ public class Memory extends SynchronousFixTransformer {
 
         address = new TypedIOPort(this, "address", true, false);
         address.setTypeEquals(BaseType.FIX);
-        
+
         dataIn = new TypedIOPort(this, "dataIn", true, false);
         dataIn.setTypeEquals(BaseType.FIX);
- 
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,9 +120,10 @@ public class Memory extends SynchronousFixTransformer {
             _capacity = ((ScalarToken) capacity.getToken()).intValue();
 
             _addressWidth = (int) Math.floor(Math.log(_capacity) / Math.log(2));
-                        
-        } else if (attribute.getName().equals("outputPrecision")) {            
-            _dataWidth = new Precision(getPortPrecision(output)).getNumberOfBits();
+
+        } else if (attribute.getName().equals("outputPrecision")) {
+            _dataWidth = new Precision(getPortPrecision(output))
+                    .getNumberOfBits();
         }
     }
 
@@ -133,53 +134,48 @@ public class Memory extends SynchronousFixTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        if ( address.isKnown(0) && writeEnable.isKnown(0)
-                && dataIn.isKnown(0) ) 
-        {
+        if (address.isKnown(0) && writeEnable.isKnown(0) && dataIn.isKnown(0)) {
             int addressValue;
-    
+
             if (!address.hasToken(0) || !writeEnable.hasToken(0)
                     || !dataIn.hasToken(0)) {
                 return;
             }
-    
+
             // Consume tokens from all input ports.
             FixToken in = ((FixToken) dataIn.get(0));
-            
+
             FixToken addressToken = (FixToken) address.get(0);
             FixPoint addressFixValue = addressToken.fixValue();
-    
+
             FixToken writeEnableToken = (FixToken) writeEnable.get(0);
             FixPoint writeEnableValue = writeEnableToken.fixValue();
-            
+
             _checkFixTokenWidth(writeEnableToken, 1);
             _checkFixTokenWidth(addressToken, _addressWidth);
-            _checkFixTokenWidth(in,_dataWidth);
-    
+            _checkFixTokenWidth(in, _dataWidth);
+
             addressValue = addressFixValue.getUnscaledValue().intValue();
-            
+
             if (addressValue >= _capacity) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Address is out of range.");
-            }     
-    
+            }
+
             if (writeEnableValue.toBitString().equals("1")) {
                 _storage[addressValue] = in;
             }
-    
+
             Token result = _storage[addressValue];
             if (result == null) {
                 result = FixToken.NIL;
             }
-    
+
             sendOutput(output, 0, result);
-        }
-        else
-        {
+        } else {
             output.resend(0);
         }
     }
-
 
     /**
      * 
@@ -187,7 +183,7 @@ public class Memory extends SynchronousFixTransformer {
     public void initialize() throws IllegalActionException {
         _storage = new FixToken[_capacity];
     }
-    
+
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
      */
@@ -197,8 +193,7 @@ public class Memory extends SynchronousFixTransformer {
         removeDependency(dataIn, output);
         removeDependency(writeEnable, output);
     }
-    
-    
+
     private int _addressWidth;
 
     private int _capacity;

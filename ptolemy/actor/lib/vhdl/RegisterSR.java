@@ -36,7 +36,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NonstrictDelay
 
@@ -61,7 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Yellow (cxh)
  */
 public class RegisterSR extends SynchronousFixTransformer {
-	/** Construct an actor in the specified container with the specified
+    /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
      *  @param name The name of this actor within the container.
@@ -91,8 +90,7 @@ public class RegisterSR extends SynchronousFixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (input.isKnown(0)) 
-        {
+        if (input.isKnown(0)) {
             Token result;
             if (input.hasToken(0)) {
                 result = input.get(0);
@@ -100,11 +98,9 @@ public class RegisterSR extends SynchronousFixTransformer {
                 result = AbsentToken.ABSENT;
             }
             sendOutput(output, 0, result);
-        }
-        else
-        {
+        } else {
             ((QueuedTypedIOPort) output).resend(0);
-        } 
+        }
     }
 
     /** Override the base class to declare that the <i>output</i>
@@ -114,7 +110,6 @@ public class RegisterSR extends SynchronousFixTransformer {
         super.pruneDependencies();
         removeDependency(input, output);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

@@ -39,10 +39,13 @@
 
 package ptolemy.backtrack.eclipse.plugin.editor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaSourceViewer;
 import org.eclipse.jdt.internal.ui.text.JavaPresentationReconciler;
-
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.BadPositionCategoryException;
 import org.eclipse.jface.text.DocumentEvent;
@@ -56,28 +59,23 @@ import org.eclipse.jface.text.ITextPresentationListener;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.TextPresentation;
-
 import org.eclipse.swt.custom.StyleRange;
 
 import ptolemy.backtrack.eclipse.plugin.editor.SemanticHighlightingReconciler.HighlightedPosition;
 import ptolemy.backtrack.eclipse.plugin.editor.SemanticHighlightingReconciler.HighlightingStyle;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 //////////////////////////////////////////////////////////////////////////
 //// SemanticHighlightingPresenter
 /**
-   Semantic highlighting presenter. This class is a modification of Eclipse's
-   Java semantic highlighting presenter.
+ Semantic highlighting presenter. This class is a modification of Eclipse's
+ Java semantic highlighting presenter.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class SemanticHighlightingPresenter implements
         ITextPresentationListener, ITextInputListener, IDocumentListener {
 
@@ -164,8 +162,7 @@ public class SemanticHighlightingPresenter implements
     public TextPresentation createPresentation(List addedPositions,
             List removedPositions) {
         JavaSourceViewer sourceViewer = _sourceViewer;
-        JavaPresentationReconciler presentationReconciler =
-        	_presentationReconciler;
+        JavaPresentationReconciler presentationReconciler = _presentationReconciler;
 
         if ((sourceViewer == null) || (presentationReconciler == null)) {
             return null;
@@ -185,16 +182,16 @@ public class SemanticHighlightingPresenter implements
         int maxEnd = Integer.MIN_VALUE;
 
         for (int i = 0, n = removedPositions.size(); i < n; i++) {
-        	HighlightedPosition position =
-        		(HighlightedPosition) removedPositions.get(i);
+            HighlightedPosition position = (HighlightedPosition) removedPositions
+                    .get(i);
             int offset = position.getOffset();
             minStart = Math.min(minStart, offset);
             maxEnd = Math.max(maxEnd, offset + position.getLength());
         }
 
         for (int i = 0, n = addedPositions.size(); i < n; i++) {
-        	HighlightedPosition position =
-        		(HighlightedPosition) addedPositions.get(i);
+            HighlightedPosition position = (HighlightedPosition) addedPositions
+                    .get(i);
             int offset = position.getOffset();
             minStart = Math.min(minStart, offset);
             maxEnd = Math.max(maxEnd, offset + position.getLength());
@@ -231,12 +228,12 @@ public class SemanticHighlightingPresenter implements
         }
 
         // TODO: do clustering of positions and post multiple fast runnables
-        final HighlightedPosition[] added =
-        	new HighlightedPosition[addedPositions.size()];
+        final HighlightedPosition[] added = new HighlightedPosition[addedPositions
+                .size()];
         addedPositions.toArray(added);
 
-        final HighlightedPosition[] removed =
-        	new HighlightedPosition[removedPositions.size()];
+        final HighlightedPosition[] removed = new HighlightedPosition[removedPositions
+                .size()];
         removedPositions.toArray(removed);
 
         if (isCanceled()) {
@@ -410,16 +407,16 @@ public class SemanticHighlightingPresenter implements
 
         String positionCategory = _getPositionCategory();
 
-        List<HighlightedPosition> removedPositionsList =
-        	Arrays.asList(removedPositions);
+        List<HighlightedPosition> removedPositionsList = Arrays
+                .asList(removedPositions);
 
         try {
             synchronized (_positionLock) {
                 List<HighlightedPosition> oldPositions = _positions;
                 int newSize = (_positions.size() + addedPositions.length)
                         - removedPositions.length;
-                List<HighlightedPosition> newPositions =
-                	new ArrayList<HighlightedPosition>(newSize);
+                List<HighlightedPosition> newPositions = new ArrayList<HighlightedPosition>(
+                        newSize);
                 HighlightedPosition position = null;
                 HighlightedPosition addedPosition = null;
 
@@ -490,8 +487,8 @@ public class SemanticHighlightingPresenter implements
      */
     private void _addPositionFromUI(int offset, int length,
             HighlightingStyle highlighting) {
-    	HighlightedPosition position = createHighlightedPosition(offset, length,
-                highlighting);
+        HighlightedPosition position = createHighlightedPosition(offset,
+                length, highlighting);
 
         synchronized (_positionLock) {
             _insertPosition(position);
@@ -524,7 +521,7 @@ public class SemanticHighlightingPresenter implements
      * @return the index of the last position with an offset greater than the given offset
      */
     private int _computeIndexAfterOffset(List<HighlightedPosition> positions,
-    		int offset) {
+            int offset) {
         int i = -1;
         int j = positions.size();
 
@@ -550,13 +547,13 @@ public class SemanticHighlightingPresenter implements
      * @return the index of the last position with an offset equal or greater than the given offset
      */
     private int _computeIndexAtOffset(List<HighlightedPosition> positions,
-    		int offset) {
+            int offset) {
         int i = -1;
         int j = positions.size();
 
         while ((j - i) > 1) {
             int k = (i + j) >> 1;
-        	HighlightedPosition position = positions.get(k);
+            HighlightedPosition position = positions.get(k);
 
             if (position.getOffset() >= offset) {
                 j = k;
@@ -575,7 +572,7 @@ public class SemanticHighlightingPresenter implements
      * @return <code>true</code> iff the positions contain the position
      */
     private boolean _contain(List<HighlightedPosition> positions,
-    		HighlightedPosition position) {
+            HighlightedPosition position) {
         return _indexOf(positions, position) != -1;
     }
 
@@ -605,10 +602,10 @@ public class SemanticHighlightingPresenter implements
      * @return the index
      */
     private int _indexOf(List<HighlightedPosition> positions,
-    		HighlightedPosition position) {
+            HighlightedPosition position) {
         int index = _computeIndexAtOffset(positions, position.getOffset());
-        return ((index < positions.size())
-        		&& (positions.get(index) == position)) ? index : -1;
+        return ((index < positions.size()) && (positions.get(index) == position)) ? index
+                : -1;
     }
 
     /**
@@ -626,7 +623,7 @@ public class SemanticHighlightingPresenter implements
      */
     private void _invalidateTextPresentation() {
         for (int i = 0, n = _positions.size(); i < n; i++) {
-        	HighlightedPosition position = _positions.get(i);
+            HighlightedPosition position = _positions.get(i);
             _sourceViewer.invalidateTextPresentation(position.getOffset(),
                     position.getLength());
         }
@@ -680,8 +677,7 @@ public class SemanticHighlightingPresenter implements
     private Object _positionLock = new Object();
 
     /** UI's current highlighted positions - can contain <code>null</code> elements */
-    private List<HighlightedPosition> _positions =
-    	new ArrayList<HighlightedPosition>();
+    private List<HighlightedPosition> _positions = new ArrayList<HighlightedPosition>();
 
     /** Position updater */
     private IPositionUpdater _positionUpdater = new HighlightingPositionUpdater(

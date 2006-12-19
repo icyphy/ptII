@@ -111,19 +111,20 @@ public class CodeGeneratorUtilities {
         } catch (IOException ex) {
             try {
                 // Try it as a URL
-                inputFile = new BufferedReader(new InputStreamReader(new URL(inputFileName).openStream()));
+                inputFile = new BufferedReader(new InputStreamReader(new URL(
+                        inputFileName).openStream()));
             } catch (Throwable throwable) {
 
                 // Try it as a resource
-                URL inputFileURL = Thread.currentThread().getContextClassLoader()
-                    .getResource(inputFileName);
+                URL inputFileURL = Thread.currentThread()
+                        .getContextClassLoader().getResource(inputFileName);
 
                 if (inputFileURL == null) {
                     throw ex;
                 }
 
-                inputFile = new BufferedReader(new InputStreamReader(inputFileURL
-                      .openStream()));
+                inputFile = new BufferedReader(new InputStreamReader(
+                        inputFileURL.openStream()));
             }
         }
 

@@ -95,7 +95,8 @@ public class PitchSlider extends JFrame {
         super(windowTitle);
 
         //Create the slider and its label
-        JLabel sliderLabel = new JLabel("Pitch Scale Factor", SwingConstants.CENTER);
+        JLabel sliderLabel = new JLabel("Pitch Scale Factor",
+                SwingConstants.CENTER);
         sliderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         NumberFormat numberFormat = NumberFormat.getNumberInstance();

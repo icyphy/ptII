@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.concurrent.BlockingQueue;
 
-import ptolemy.actor.ptalon.demo.MapReduceAlgorithm;
-
 public class WordCount extends MapReduceAlgorithm {
 
     public List<KeyValuePair> map(String key, String value) {

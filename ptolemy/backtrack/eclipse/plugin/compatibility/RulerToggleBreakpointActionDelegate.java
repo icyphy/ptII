@@ -27,13 +27,12 @@
  */
 package ptolemy.backtrack.eclipse.plugin.compatibility;
 
+import java.lang.reflect.Method;
+
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-
 import org.eclipse.ui.IEditorActionDelegate;
 import org.eclipse.ui.IEditorPart;
-
-import java.lang.reflect.Method;
 
 //////////////////////////////////////////////////////////////////////////
 //// RulerToggleBreakpointActionDelegate
@@ -49,7 +48,7 @@ import java.lang.reflect.Method;
  */
 public class RulerToggleBreakpointActionDelegate implements
         IEditorActionDelegate {
-    
+
     public RulerToggleBreakpointActionDelegate() {
         for (int i = 0; i < DELEGATE_CLASSES.length; i++) {
             try {

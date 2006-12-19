@@ -45,14 +45,14 @@ import org.eclipse.jdt.core.dom.SimpleName;
 //////////////////////////////////////////////////////////////////////////
 //// SemanticToken
 /**
-   Semantic token in the Java source.
+ Semantic token in the Java source.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public final class SemanticToken {
 
     ///////////////////////////////////////////////////////////////////

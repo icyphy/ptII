@@ -27,14 +27,14 @@
  */
 package ptolemy.backtrack.eclipse.ast;
 
-import org.eclipse.jdt.core.dom.ASTNode;
-
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import org.eclipse.jdt.core.dom.ASTNode;
 
 //////////////////////////////////////////////////////////////////////////
 //// Type
@@ -72,7 +72,7 @@ import java.util.Set;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class Type {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -813,7 +813,7 @@ public class Type {
     /** The full name of this type, using run-time representation.
      */
     private String _fullName;
-    
+
     /** The integer identifier of primitive type. -1 if this type object
      *  does not represent a primitive type.
      */
@@ -824,27 +824,23 @@ public class Type {
      *  with the same name again, the first one created and
      *  stored in this table is returned.
      */
-    private static Hashtable<String, Type> _typeObjects =
-    	new Hashtable<String, Type>();
+    private static Hashtable<String, Type> _typeObjects = new Hashtable<String, Type>();
 
     /** Array nicknames for primitive element types. Keys are
      *  names of primitive types; keys are compact run-time
      *  representations.
      */
-    private static final Hashtable<String, String> PRIMITIVE_ARRAY_TYPES =
-    	new Hashtable<String, String>();
+    private static final Hashtable<String, String> PRIMITIVE_ARRAY_TYPES = new Hashtable<String, String>();
 
     /** Table of primitive {@link Class} objects. Each primitive
      *  type has a {@link Class} object to represent it.
      */
-    private static final Hashtable<String, Class> PRIMITIVE_CLASSES =
-    	new Hashtable<String, Class>();
+    private static final Hashtable<String, Class> PRIMITIVE_CLASSES = new Hashtable<String, Class>();
 
     /** Table of primitive types. Keys are names of primitive
      *  types; values are primitive {@link Type} objects.
      */
-    private static final Hashtable<String, Type> PRIMITIVE_TYPES =
-    	new Hashtable<String, Type>();
+    private static final Hashtable<String, Type> PRIMITIVE_TYPES = new Hashtable<String, Type>();
 
     // Initialize the constant tables.
     static {

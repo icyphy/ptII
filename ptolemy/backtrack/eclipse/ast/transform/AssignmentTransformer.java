@@ -354,7 +354,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         while (crossAnalysisIter.hasNext()) {
             String nextClassName = (String) crossAnalysisIter.next();
-            
+
             List<Block> blockList = _fixSetCheckpoint.get(nextClassName);
 
             if (blockList != null) {
@@ -370,17 +370,17 @@ public class AssignmentTransformer extends AbstractTransformer implements
                 }
             }
 
-            List<RehandleDeclarationRecord> recordList =
-            	_rehandleDeclaration.get(nextClassName);
+            List<RehandleDeclarationRecord> recordList = _rehandleDeclaration
+                    .get(nextClassName);
 
             if (recordList != null) {
-                Iterator<RehandleDeclarationRecord> recordsIter =
-                	recordList.iterator();
+                Iterator<RehandleDeclarationRecord> recordsIter = recordList
+                        .iterator();
 
                 while (recordsIter.hasNext()) {
                     RehandleDeclarationRecord record = recordsIter.next();
-                    Iterator<ASTNode> extendedIter =
-                    	record._getExtendedDeclarations().iterator();
+                    Iterator<ASTNode> extendedIter = record
+                            ._getExtendedDeclarations().iterator();
 
                     while (extendedIter.hasNext()) {
                         ASTNode declaration = extendedIter.next();
@@ -390,8 +390,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
                         }
                     }
 
-                    Iterator<ASTNode> fixedIter =
-                    	record._getFixedDeclarations().iterator();
+                    Iterator<ASTNode> fixedIter = record
+                            ._getFixedDeclarations().iterator();
 
                     while (fixedIter.hasNext()) {
                         ASTNode declaration = fixedIter.next();
@@ -416,8 +416,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
                     if (nodeReplace._getToNode() == null) {
                         removeNode(nodeReplace._getFromNode());
                     } else {
-                        replaceNode(nodeReplace._getFromNode(),
-                        		nodeReplace._getToNode());
+                        replaceNode(nodeReplace._getFromNode(), nodeReplace
+                                ._getToNode());
                     }
 
                     replaceIter.remove();
@@ -786,13 +786,12 @@ public class AssignmentTransformer extends AbstractTransformer implements
         // If the field is static, the method is also static; the method
         // is also private.
         List modifiers = method.modifiers();
-        modifiers.add(
-                ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
-        modifiers.add(
-                ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
+        modifiers
+                .add(ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
+        modifiers.add(ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
         if (isStatic) {
-            modifiers.add(
-                    ast.newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
+            modifiers.add(ast
+                    .newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
         }
 
         // Create the method body.
@@ -844,8 +843,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         MethodDeclaration method = ast.newMethodDeclaration();
         method.setName(ast.newSimpleName(methodName));
-        method.setReturnType2(createType(ast, getClassName(fieldTypeName, state,
-                root)));
+        method.setReturnType2(createType(ast, getClassName(fieldTypeName,
+                state, root)));
 
         // If the field is static, add a checkpoint object argument.
         if (isStatic) {
@@ -928,13 +927,12 @@ public class AssignmentTransformer extends AbstractTransformer implements
         // If the field is static, the method is also static; the method
         // is also private.
         List modifiers = method.modifiers();
-        modifiers.add(
-                ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
-        modifiers.add(
-                ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
+        modifiers
+                .add(ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
+        modifiers.add(ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
         if (isStatic) {
-            modifiers.add(
-                    ast.newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
+            modifiers.add(ast
+                    .newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
         }
 
         return method;
@@ -997,8 +995,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
         Class parent = currentClass.getSuperclass();
 
         if ((parent != null
-                && state.getCrossAnalyzedTypes().contains(parent.getName())
-                || isFieldDuplicated(parent, CHECKPOINT_RECORD_NAME))) {
+                && state.getCrossAnalyzedTypes().contains(parent.getName()) || isFieldDuplicated(
+                parent, CHECKPOINT_RECORD_NAME))) {
             return null;
         }
 
@@ -1166,11 +1164,11 @@ public class AssignmentTransformer extends AbstractTransformer implements
         // If the field is static, the record field is also static; the record
         // field is also private.
         List modifiers = field.modifiers();
-        modifiers.add(
-                ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
+        modifiers
+                .add(ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
         if (isStatic) {
-            modifiers.add(
-                    ast.newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
+            modifiers.add(ast
+                    .newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
         }
 
         return field;
@@ -1223,7 +1221,6 @@ public class AssignmentTransformer extends AbstractTransformer implements
             body.statements().add(returnStatement);
         }
 
-        
         method.modifiers().add(
                 ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
         if (!isInterface) {
@@ -1642,8 +1639,9 @@ public class AssignmentTransformer extends AbstractTransformer implements
     private Expression _createRollbackableObject(AST ast, boolean isAnonymous) {
         if (isAnonymous) {
             ClassInstanceCreation proxy = ast.newClassInstanceCreation();
-            proxy.setType(
-                    ast.newSimpleType(ast.newSimpleName(_getProxyName())));
+            proxy
+                    .setType(ast.newSimpleType(ast
+                            .newSimpleName(_getProxyName())));
             return proxy;
         } else {
             return ast.newThisExpression();
@@ -1723,9 +1721,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         if (!isAnonymous
                 && (parent != null)
-                && (state.getCrossAnalyzedTypes().contains(parent.getName())
-                        || hasMethod(parent, methodName,
-                                new Class[] { Checkpoint.class }))) {
+                && (state.getCrossAnalyzedTypes().contains(parent.getName()) || hasMethod(
+                        parent, methodName, new Class[] { Checkpoint.class }))) {
             return null;
         }
 
@@ -1743,8 +1740,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
         method.parameters().add(checkpoint);
 
         // Return type is Object.
-        method.setReturnType2(createType(ast, getClassName(Object.class,
-                state, root)));
+        method.setReturnType2(createType(ast, getClassName(Object.class, state,
+                root)));
 
         if (!isInterface) {
             // The test.
@@ -1813,8 +1810,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
             assignment.setLeftHandSide(ast.newSimpleName(CHECKPOINT_NAME));
             assignment.setRightHandSide(ast.newSimpleName("checkpoint"));
 
-            ExpressionStatement statement =
-                ast.newExpressionStatement(assignment);
+            ExpressionStatement statement = ast
+                    .newExpressionStatement(assignment);
             thenBranch.statements().add(statement);
 
             // Propagate the change to other objects monitored by the same old
@@ -2597,8 +2594,9 @@ public class AssignmentTransformer extends AbstractTransformer implements
             addInvocation.setName(ast.newSimpleName("addObject"));
 
             ClassInstanceCreation proxy = ast.newClassInstanceCreation();
-            proxy.setType(
-                    ast.newSimpleType(ast.newSimpleName(_getProxyName())));
+            proxy
+                    .setType(ast.newSimpleType(ast
+                            .newSimpleName(_getProxyName())));
             addInvocation.arguments().add(proxy);
             body.statements().add(ast.newExpressionStatement(addInvocation));
             bodyDeclarations.add(initializer);
@@ -2687,9 +2685,9 @@ public class AssignmentTransformer extends AbstractTransformer implements
      *  @param indices The number of indices.
      */
     private void _recordField(
-    		Hashtable<String, Hashtable<String, List<Integer>>> table,
-    		String className, String fieldName, int indices) {
-    	Hashtable<String, List<Integer>> classTable = table.get(className);
+            Hashtable<String, Hashtable<String, List<Integer>>> table,
+            String className, String fieldName, int indices) {
+        Hashtable<String, List<Integer>> classTable = table.get(className);
 
         if (classTable == null) {
             classTable = new Hashtable<String, List<Integer>>();
@@ -2717,57 +2715,46 @@ public class AssignmentTransformer extends AbstractTransformer implements
      *  valus are hash tables. In each table, keys are field names, values
      *  are lists of indices.
      */
-    private Hashtable<String, Hashtable<String, List<Integer>>>
-    		_accessedFields =
-    			new Hashtable<String, Hashtable<String, List<Integer>>>();
+    private Hashtable<String, Hashtable<String, List<Integer>>> _accessedFields = new Hashtable<String, Hashtable<String, List<Integer>>>();
 
     /** The Java operators that modify special types of values.
      */
-    private static Hashtable<String, String[]> _assignOperators =
-    	new Hashtable<String, String[]>();
+    private static Hashtable<String, String[]> _assignOperators = new Hashtable<String, String[]>();
 
     /** The table of backup of fields and their indices. Keys are class names;
      *  values are hash tables. In each table, keys are field names, values
      *  are lists of indices.
      */
-    private Hashtable<String, Hashtable<String, List<Integer>>> _backupFields =
-    	new Hashtable<String, Hashtable<String, List<Integer>>>();
+    private Hashtable<String, Hashtable<String, List<Integer>>> _backupFields = new Hashtable<String, Hashtable<String, List<Integer>>>();
 
     /** Keys are names of classes; values are {@link Block} nodes of assign
      *  method bodies. If the classes are cross-analyzed, calls to set
      *  checkpoints need to be added to those blocks.
      */
-    private Hashtable<String, List<Block>> _fixSetCheckpoint =
-    	new Hashtable<String, List<Block>>();
+    private Hashtable<String, List<Block>> _fixSetCheckpoint = new Hashtable<String, List<Block>>();
 
     /** Whether the analyzer is currently analyzing a static method or a static
      *  field.
      */
     private Stack<Boolean> _isInStatic = new Stack<Boolean>();
 
-    private Hashtable<String, List<NodeReplace>> _nodeSubstitution =
-    	new Hashtable<String, List<NodeReplace>>();
+    private Hashtable<String, List<NodeReplace>> _nodeSubstitution = new Hashtable<String, List<NodeReplace>>();
 
     /** Keys are names of classes; values are lists of {@link
      *  RehandleDeclarationRecord} objects. If the classes are cross-analyzed,
      *  declarations of anonymous classes recorded in this table must be fixed.
      */
-    private Hashtable<String, List<RehandleDeclarationRecord>>
-    		_rehandleDeclaration =
-    			new Hashtable<String, List<RehandleDeclarationRecord>>();
+    private Hashtable<String, List<RehandleDeclarationRecord>> _rehandleDeclaration = new Hashtable<String, List<RehandleDeclarationRecord>>();
 
     /** The types of values on the right-hand side of the special operators.
      */
-    private static Hashtable<String, PrimitiveType.Code> _rightHandTypes =
-    	new Hashtable<String, PrimitiveType.Code>();
+    private static Hashtable<String, PrimitiveType.Code> _rightHandTypes = new Hashtable<String, PrimitiveType.Code>();
 
     /** The table of fields accessed with special assign operators and their
      *  indices. Keys are class names; valus are hash tables. In each value,
      *  keys are field names, values are lists of indices.
      */
-    private Hashtable<String, Hashtable<String, List<Integer>>>
-    		_specialAccessedFields =
-    			new Hashtable<String, Hashtable<String, List<Integer>>>();
+    private Hashtable<String, Hashtable<String, List<Integer>>> _specialAccessedFields = new Hashtable<String, Hashtable<String, List<Integer>>>();
 
     private class NodeReplace {
         NodeReplace(ASTNode fromNode, ASTNode toNode) {

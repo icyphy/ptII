@@ -269,9 +269,8 @@ public class DoubleMatrixToJAI extends Transformer {
 
         // Create a grayscale colormodel.
         ComponentColorModel colorModel = new ComponentColorModel(
-                new ICC_ColorSpace(ICC_Profile
-                        .getInstance(ColorSpace.CS_GRAY)), false, false,
-                Transparency.OPAQUE, DataBuffer.TYPE_DOUBLE);
+                new ICC_ColorSpace(ICC_Profile.getInstance(ColorSpace.CS_GRAY)),
+                false, false, Transparency.OPAQUE, DataBuffer.TYPE_DOUBLE);
         TiledImage tiledImage = new TiledImage(0, 0, width, height, 0, 0,
                 sampleModel, colorModel);
         tiledImage.setData(raster);

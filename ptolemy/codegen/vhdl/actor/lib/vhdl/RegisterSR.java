@@ -54,7 +54,7 @@ public class RegisterSR extends VHDLCodeGeneratorHelper {
     public RegisterSR(ptolemy.actor.lib.vhdl.RegisterSR actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in the <code>fireBlock</code> RegisterSR.vhdl,
@@ -68,27 +68,25 @@ public class RegisterSR extends VHDLCodeGeneratorHelper {
         super.generateFireCode();
 
         ArrayList args = new ArrayList();
-        ptolemy.actor.lib.vhdl.RegisterSR actor = 
-            (ptolemy.actor.lib.vhdl.RegisterSR) getComponent();
-        Precision precision = new Precision(((Parameter) 
-                actor.getAttribute("outputPrecision")).getExpression());
-        int width=precision.getNumberOfBits()-1;
-        
-        args.add("" + width);
+        ptolemy.actor.lib.vhdl.RegisterSR actor = (ptolemy.actor.lib.vhdl.RegisterSR) getComponent();
+        Precision precision = new Precision(((Parameter) actor
+                .getAttribute("outputPrecision")).getExpression());
+        int width = precision.getNumberOfBits() - 1;
 
+        args.add("" + width);
 
         _codeStream.appendCodeBlock("fireBlock", args);
 
         return processCode(_codeStream.toString());
     }
-    
+
     /** Get the files needed by the code generated for the Concat actor.
      *  @return A set of strings that are names of the library and package.
      *  @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
-        
+
         files.add("ieee.std_logic_1164.all");
         files.add("ieee.numeric_std.all");
         files.add("ieee_proposed.math_utility_pkg.all");

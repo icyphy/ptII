@@ -1,30 +1,30 @@
 /* An actor for model checkpointing and rollback.
 
-Copyright (c) 2005-2006 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005-2006 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.backtrack.manual.ptolemy.actor.lib;
 
@@ -69,7 +69,7 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class Backtrack extends TypedAtomicActor {
-    
+
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -84,22 +84,22 @@ public class Backtrack extends TypedAtomicActor {
     public Backtrack(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _checkpoint = new TypedIOPort(this, "checkpoint", true, false);
         _checkpoint.setTypeEquals(BaseType.BOOLEAN);
-        
+
         _rollback = new TypedIOPort(this, "rollback", true, false);
         _rollback.setTypeEquals(BaseType.LONG);
-        
+
         _handle = new TypedIOPort(this, "handle", false, true);
         _handle.setTypeEquals(BaseType.LONG);
-        
+
         // Put the rollback input on the bottom of the actor.
         StringAttribute rollbackCardinal = new StringAttribute(_rollback,
                 "_cardinal");
         rollbackCardinal.setExpression("SOUTH");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -118,15 +118,15 @@ public class Backtrack extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
-        BooleanToken checkpointTrigger = (BooleanToken)_checkpoint.get(0);
-        
-        LongToken rollbackHandle = (LongToken)_rollback.get(0);
+
+        BooleanToken checkpointTrigger = (BooleanToken) _checkpoint.get(0);
+
+        LongToken rollbackHandle = (LongToken) _rollback.get(0);
         this._rollbackHandle = rollbackHandle.longValue();
-        
+
         if (checkpointTrigger.booleanValue()) {
             HashMap<Checkpoint, Long> handles = new HashMap<Checkpoint, Long>();
-            _checkpoint(handles, (CompositeActor)getContainer());
+            _checkpoint(handles, (CompositeActor) getContainer());
             _currentHandle++;
             _handleMap.put(new Long(_currentHandle), handles);
             _handle.send(0, new LongToken(_currentHandle));
@@ -143,31 +143,31 @@ public class Backtrack extends TypedAtomicActor {
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
-        
+
         if (_rollbackHandle > 0) {
-            HashMap<Checkpoint, Long> handles =
-                _handleMap.get(new Long(_rollbackHandle));
-            
+            HashMap<Checkpoint, Long> handles = _handleMap.get(new Long(
+                    _rollbackHandle));
+
             if (handles != null) {
                 for (Checkpoint checkpointObject : handles.keySet()) {
-                    long handle =
-                        ((Long)handles.get(checkpointObject)).longValue();
+                    long handle = ((Long) handles.get(checkpointObject))
+                            .longValue();
                     checkpointObject.rollback(handle);
                 }
             }
-            
+
             Iterator keys = _handleMap.keySet().iterator();
             while (keys.hasNext()) {
-                long handle = ((Long)keys.next()).longValue();
+                long handle = ((Long) keys.next()).longValue();
                 if (handle > _rollbackHandle) {
                     keys.remove();
                 }
             }
         }
-        
+
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
@@ -188,8 +188,7 @@ public class Backtrack extends TypedAtomicActor {
      */
     private void _checkpoint(HashMap<Checkpoint, Long> handles,
             CompositeActor container) {
-        Iterator entities =
-            container.entityList(Rollbackable.class).iterator();
+        Iterator entities = container.entityList(Rollbackable.class).iterator();
         while (entities.hasNext()) {
             Rollbackable entity = (Rollbackable) entities.next();
             Checkpoint checkpointObject = entity.$GET$CHECKPOINT();
@@ -198,18 +197,18 @@ public class Backtrack extends TypedAtomicActor {
                 handles.put(checkpointObject, new Long(handle));
             }
         }
-        
-        Iterator compositeActors =
-            container.entityList(CompositeActor.class).iterator();
+
+        Iterator compositeActors = container.entityList(CompositeActor.class)
+                .iterator();
         while (compositeActors.hasNext()) {
-            CompositeActor compositeActor =
-                (CompositeActor)compositeActors.next();
+            CompositeActor compositeActor = (CompositeActor) compositeActors
+                    .next();
             if (!(compositeActor instanceof Rollbackable)) {
                 _checkpoint(handles, compositeActor);
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
@@ -217,16 +216,16 @@ public class Backtrack extends TypedAtomicActor {
      *  should be created.
      */
     private TypedIOPort _checkpoint;
-    
+
     /** The last returned checkpoint handle. The next checkpoint handle to be
      *  returned will be greater by 1.
      */
     private long _currentHandle = 0;
-    
+
     /** The output port that sends out the newly created checkpoint handle.
      */
     private TypedIOPort _handle;
-    
+
     /** The map from checkpoint handle output by this actor to the map of
      *  checkpoint handles returned by checkpoint objects. For each checkpoint
      *  created by this actor, there is a unique handle. A map is recorded as
@@ -234,14 +233,13 @@ public class Backtrack extends TypedAtomicActor {
      *  managing the actors in the model; the values in the map are the
      *  checkpoint handles returned by those checkpoint objects.
      */
-    private HashMap<Long, HashMap<Checkpoint, Long>> _handleMap =
-        new HashMap<Long, HashMap<Checkpoint, Long>>();
-    
+    private HashMap<Long, HashMap<Checkpoint, Long>> _handleMap = new HashMap<Long, HashMap<Checkpoint, Long>>();
+
     /** The input port that receives long tokens as the checkpoint handles to
      *  roll back (if greater than 0).
      */
     private TypedIOPort _rollback;
-    
+
     /** The checkpoint handle to roll back if greater than 0. The fire method
      *  records this field. The postfire method performs the rollback if this
      *  field is greater then 0.

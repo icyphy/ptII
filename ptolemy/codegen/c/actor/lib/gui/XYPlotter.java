@@ -70,19 +70,18 @@ public class XYPlotter extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
-        ptolemy.actor.lib.gui.XYPlotter actor 
-                = (ptolemy.actor.lib.gui.XYPlotter) getComponent();       
+        ptolemy.actor.lib.gui.XYPlotter actor = (ptolemy.actor.lib.gui.XYPlotter) getComponent();
         int width = actor.inputX.getWidth();
         ArrayList args = new ArrayList();
         for (int i = width - 1; i >= 0; i--) {
             args.clear();
             args.add(new Integer(i));
-            code.append(_generateBlockCode("plotBlock", args));          
+            code.append(_generateBlockCode("plotBlock", args));
         }
 
         return code.toString();
     }
-    
+
     /** Generate initialize code.
      *  @return The generated code.
      *  @exception IllegalActionException If the code stream encounters 
@@ -90,33 +89,33 @@ public class XYPlotter extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
         ArrayList args = new ArrayList();
         args.add(ptIIDir);
         code.append(_generateBlockCode("createJVMBlock", args));
-        
+
         code.append(super.generateInitializeCode());
-        ptolemy.actor.lib.gui.XYPlotter actor 
-                = (ptolemy.actor.lib.gui.XYPlotter) getComponent();       
-        
+        ptolemy.actor.lib.gui.XYPlotter actor = (ptolemy.actor.lib.gui.XYPlotter) getComponent();
+
         // If the plot has not been created, we need to creat the plot
         // to get the configuration.
         if (actor.plot == null) {
             actor.initialize();
         }
-        
+
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
-        String header = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"" + _eol
-            + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
+        String header = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\""
+                + _eol
+                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
         printWriter.write(header);
         printWriter.write(_eol + "<plot>" + _eol);
         actor.plot.writeFormat(printWriter);
         printWriter.write("</plot>" + _eol);
-        
-        BufferedReader reader = new BufferedReader
-                (new StringReader(stringWriter.toString()));
+
+        BufferedReader reader = new BufferedReader(new StringReader(
+                stringWriter.toString()));
         String line = null;
         StringBuffer result = new StringBuffer();
         try {
@@ -128,16 +127,16 @@ public class XYPlotter extends CCodeGeneratorHelper {
                 }
             }
         } catch (IOException ex) {
-            
+
         }
-        
+
         args.clear();
         args.add(result.toString());
         code.append(_generateBlockCode("configureBlock", args));
-        
+
         return code.toString();
     }
-    
+
     /** Generate the wrapup code. 
      *  @return The generated wrapup code.
      *  @exception IllegalActionException 
@@ -153,7 +152,6 @@ public class XYPlotter extends CCodeGeneratorHelper {
         code.append("scanf(\"%s\",$actorSymbol(temp));" + _eol);
         return processCode(code.toString());
     }
-    
 
     /** Get the header files needed by the code generated for the
      *  XYPlotter actor.
@@ -169,11 +167,12 @@ public class XYPlotter extends CCodeGeneratorHelper {
         javaHome = javaHome.substring(0, index);
         getCodeGenerator().addInclude("-I\"" + javaHome + "include\"");
         getCodeGenerator().addInclude("-I\"" + javaHome + "include/win32\"");
-        
+
         String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
-        getCodeGenerator().addLibrary("-L\"" + ptIIDir + "/ptolemy/codegen/c\"");
+        getCodeGenerator()
+                .addLibrary("-L\"" + ptIIDir + "/ptolemy/codegen/c\"");
         getCodeGenerator().addLibrary("-ljvm");
-        
+
         Set files = new HashSet();
         files.add("<jni.h>");
         return files;

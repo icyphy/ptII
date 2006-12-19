@@ -44,7 +44,6 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.actor.util.DFUtilities;
@@ -185,7 +184,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the scheduler into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -201,7 +200,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         newObject._externalRates = new HashMap();
         newObject._rateVariables = new LinkedList();
         return newObject;
-    }    
+    }
 
     /** Declare the rate dependency on any external ports of the model.
      *  SDF directors should invoke this method once during preinitialize.
@@ -590,7 +589,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         Map entityToFiringsPerIteration = new HashMap();
 
         if (actorList.size() == 0) {
-            
+
             _checkDirectInputOutputConnection(container, externalRates);
             // If we've been given
             // no actors to do anything with, return an empty Map.
@@ -721,7 +720,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 break;
             }
         }
-        
+
         _checkDirectInputOutputConnection(container, externalRates);
 
         if (!remainingActors.isEmpty()) {
@@ -853,18 +852,18 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      */
     private void _checkDirectInputOutputConnection(CompositeActor container,
             Map externalRates) {
-        
-        Iterator inputPorts  = container.inputPortList().iterator();
+
+        Iterator inputPorts = container.inputPortList().iterator();
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
             Fraction rate = (Fraction) externalRates.get(inputPort);
             if (rate.equals(Fraction.ZERO)) {
-                
+
                 // Check to make sure that if this port is an external
                 // input port, then it does not drive the same relation as some
                 // other output port or some other external input port.
                 // This results in a non-deterministic merge and is illegal.
-                
+
                 Iterator connectedPorts = inputPort.deepInsidePortList()
                         .iterator();
 
@@ -893,11 +892,10 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                                         + "This is not legal in SDF.");
                     }
                 }
-                                
-                
+
                 boolean isDirectionConnection = true;
                 List insideSinkPorts = inputPort.insideSinkPortList();
-                
+
                 // A dangling port has zero rate.
                 if (insideSinkPorts.isEmpty()) {
                     isDirectionConnection = false;
@@ -906,17 +904,17 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     // propagation from a contained actor (i.e., connected to the 
                     // zero rate port of the actor), then the zero external rate 
                     // must be preserved.
-                    Iterator sinkPorts = insideSinkPorts.iterator(); 
+                    Iterator sinkPorts = insideSinkPorts.iterator();
                     while (sinkPorts.hasNext()) {
                         IOPort sinkPort = (IOPort) sinkPorts.next();
                         if (sinkPort.getContainer() != container) {
                             isDirectionConnection = false;
                             break;
                         }
-                    }    
+                    }
                 }
-                
-                if (isDirectionConnection) {                    
+
+                if (isDirectionConnection) {
                     externalRates.put(inputPort, new Fraction(1));
                     Iterator sinkPorts = insideSinkPorts.iterator();
                     while (sinkPorts.hasNext()) {
@@ -925,9 +923,9 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     }
                 }
             }
-        }       
+        }
     }
-    
+
     /** Create the parameter constrainBufferSizes and set its default
      *  value and type constraints.
      */
@@ -1248,7 +1246,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 if (!clusteredExternalPorts.contains(connectedPort)) {
                     clusteredExternalPorts.add(connectedPort);
                     externalRates.put(connectedPort, rate);
-                    
+
                     _propagatePort(container, connectedPort,
                             entityToFiringsPerIteration, externalRates,
                             remainingActors, pendingActors, clusteredActors,
@@ -1263,11 +1261,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             + connectedPort.getFullName());
                 }
 
-               // _propagatePort(container, connectedPort,
-               //         entityToFiringsPerIteration, externalRates,
-               //         remainingActors, pendingActors, clusteredActors,
-               //        clusteredExternalPorts);
-               // entityToFiringsPerIteration.remove(connectedActor);
+                // _propagatePort(container, connectedPort,
+                //         entityToFiringsPerIteration, externalRates,
+                //         remainingActors, pendingActors, clusteredActors,
+                //        clusteredExternalPorts);
+                // entityToFiringsPerIteration.remove(connectedActor);
             } else if (presentFiring.equals(_minusOne)) {
                 // So we are propagating here for the first time.
                 // Create the entry in the firing table.
@@ -1349,11 +1347,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         unscheduledActorList.addAll(actorList);
 
         try {
-            
+
             // Initializing waitingTokens at all the input ports of actors and
             // output ports of the model to zero is not necessary because
             // SDFReceiver.clear() does it.
-            
+
             // The above statement seems incorrect to me. The only place where
             // SDFReceiver.clear() is called is during initialization. 
             // For models that need to recompute the schedule during the 
@@ -1379,7 +1377,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     }
                 }
             }
-            Iterator externalOutputPorts = container.outputPortList().iterator();
+            Iterator externalOutputPorts = container.outputPortList()
+                    .iterator();
             while (externalOutputPorts.hasNext()) {
                 IOPort outputPort = (IOPort) externalOutputPorts.next();
                 Receiver[][] receivers = outputPort.getInsideReceivers();
@@ -1391,8 +1390,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     }
                 }
             }
-            
-            
+
             // Simulate the creation of initialization tokens (delays).
             // Fill readyToScheduleActorList with all the actors that have
             // no unfulfilled input ports, and are thus ready to fire.

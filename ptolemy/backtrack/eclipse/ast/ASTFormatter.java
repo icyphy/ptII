@@ -37,6 +37,14 @@
  *******************************************************************************/
 package ptolemy.backtrack.eclipse.ast;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -131,14 +139,6 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.core.dom.WhileStatement;
 import org.eclipse.jdt.core.dom.WildcardType;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.Iterator;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTFormatter
@@ -1308,7 +1308,7 @@ public class ASTFormatter extends ASTVisitor {
                     _output(", ");
                 }
             }
-            
+
             _output(">");
         }
 
@@ -2097,7 +2097,7 @@ public class ASTFormatter extends ASTVisitor {
             node.getSuperclassType().accept(this);
             _output(" ");
         }
-        
+
         if (!node.superInterfaceTypes().isEmpty()) {
             _output(node.isInterface() ? "extends " : "implements ");
             //$NON-NLS-2$
@@ -2375,8 +2375,7 @@ public class ASTFormatter extends ASTVisitor {
      *  @return The source code.
      *  @exception IOException If error occurs while reading from the source.
      */
-    private String _getSource(int startPosition, int length)
-            throws IOException {
+    private String _getSource(int startPosition, int length) throws IOException {
         if (_sourceStream != null) {
             byte[] skipContent;
 

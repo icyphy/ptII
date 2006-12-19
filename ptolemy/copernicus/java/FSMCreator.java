@@ -386,8 +386,7 @@ public class FSMCreator implements AtomicActorCreator {
                                 RefType.v(PtolemyUtilities.entityClass));
                         body.getLocals().add(entityLocal);
 
-                        NamedObj containerModel = entity
-                                .getContainer();
+                        NamedObj containerModel = entity.getContainer();
                         String deepName = ((NamedObj) refinement)
                                 .getName(containerModel);
 
@@ -646,8 +645,7 @@ public class FSMCreator implements AtomicActorCreator {
                                 RefType.v(PtolemyUtilities.entityClass));
                         body.getLocals().add(entityLocal);
 
-                        NamedObj containerModel = entity
-                                .getContainer();
+                        NamedObj containerModel = entity.getContainer();
                         String deepName = ((NamedObj) refinement)
                                 .getName(containerModel);
 
@@ -786,8 +784,7 @@ public class FSMCreator implements AtomicActorCreator {
                     // since the parameter we are assigning to may be
                     // above us in the hierarchy.
                     NamedObj containerModel = entity.getContainer();
-                    String deepName = (destination)
-                            .getName(containerModel);
+                    String deepName = (destination).getName(containerModel);
 
                     body.getUnits().add(
                             Jimple.v().newAssignStmt(

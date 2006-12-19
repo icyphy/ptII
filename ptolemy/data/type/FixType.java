@@ -140,8 +140,7 @@ public class FixType extends StructuredType implements Serializable {
                 FixType returnType = new FixType(newPrecision);
                 return returnType;
             } else {
-                return TypeLattice.leastUpperBound(this,
-                        rightArgumentType);
+                return TypeLattice.leastUpperBound(this, rightArgumentType);
             }
         } else {
             return TypeLattice.leastUpperBound(this, rightArgumentType);
@@ -202,7 +201,7 @@ public class FixType extends StructuredType implements Serializable {
      *  @return true.
      */
     public boolean isAbstract() {
-	return !isInstantiable();
+        return !isInstantiable();
     }
 
     /** Test if the argument type is compatible with this type. The method
@@ -231,11 +230,11 @@ public class FixType extends StructuredType implements Serializable {
      *  @return True if the precision of this fix type has any bits.
      */
     public boolean isInstantiable() {
-	if (_precision.getNumberOfBits() == 0) {
-	    return false;
-	} else {
-	    return true;
-	}
+        if (_precision.getNumberOfBits() == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /** Test if the argument is a substitution instance of this type.

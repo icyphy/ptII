@@ -31,7 +31,6 @@
 //// BooleanSelect
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.backtrack.Checkpoint;
@@ -118,7 +117,8 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      * @exception NameDuplicationException If the name coincides with
      * an actor already in the container.
      */
-    public BooleanSelect(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
+    public BooleanSelect(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         trueInput = new TypedIOPort(this, "trueInput", true, false);
         falseInput = new TypedIOPort(this, "falseInput", true, false);
@@ -127,9 +127,17 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(trueInput);
         output.setTypeAtLeast(falseInput);
-        StringAttribute controlCardinal = new StringAttribute(control, "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(control,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
-        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "+"width=\"40\" height=\"40\" "+"style=\"fill:white\"/>\n"+"<text x=\"-17\" y=\"-3\" "+"style=\"font-size:14\">\n"+"T \n"+"</text>\n"+"<text x=\"-17\" y=\"15\" "+"style=\"font-size:14\">\n"+"F \n"+"</text>\n"+"<text x=\"-5\" y=\"16\" "+"style=\"font-size:14\">\n"+"C \n"+"</text>\n"+"</svg>\n");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
+                + "style=\"fill:white\"/>\n" + "<text x=\"-17\" y=\"-3\" "
+                + "style=\"font-size:14\">\n" + "T \n" + "</text>\n"
+                + "<text x=\"-17\" y=\"15\" " + "style=\"font-size:14\">\n"
+                + "F \n" + "</text>\n" + "<text x=\"-5\" y=\"16\" "
+                + "style=\"font-size:14\">\n" + "C \n" + "</text>\n"
+                + "</svg>\n");
     }
 
     /**     
@@ -139,7 +147,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      * <i>falseInput</i> port.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         if (_control) {
             if (trueInput.hasToken(0)) {
@@ -157,7 +165,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      * from until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
         $ASSIGN$_control(false);
     }
@@ -170,9 +178,9 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      * @return False if there are not enough tokens to fire.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean prefire() throws IllegalActionException  {
+    public boolean prefire() throws IllegalActionException {
         if (control.hasToken(0)) {
-            $ASSIGN$_control(((BooleanToken)control.get(0)).booleanValue());
+            $ASSIGN$_control(((BooleanToken) control.get(0)).booleanValue());
             if (_control) {
                 if (!trueInput.hasToken(0)) {
                     return false;
@@ -196,14 +204,16 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         _control = $RECORD$_control.restore(_control, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -231,9 +241,6 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
 
     private FieldRecord $RECORD$_control = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_control
-        };
+    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_control };
 
 }
-

@@ -72,18 +72,18 @@ import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 //// SemanticHighlightingReconciler
 
 /**
-   Reconciler for Ptolemy semantic highlighting.
-   <p>
-   This is the main class for Ptolemy semantic highlighting. It parses the Java
-   source in the editor on-the-fly, and add Ptolemy semantic coloring to the
-   presentation.
+ Reconciler for Ptolemy semantic highlighting.
+ <p>
+ This is the main class for Ptolemy semantic highlighting. It parses the Java
+ source in the editor on-the-fly, and add Ptolemy semantic coloring to the
+ presentation.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class SemanticHighlightingReconciler implements
         IJavaReconcilingListener, IPropertyChangeListener, ITextInputListener {
 
@@ -222,14 +222,14 @@ public class SemanticHighlightingReconciler implements
     //////////////////////////////////////////////////////////////////////////
     //// HighlightedPosition
     /**
-       The position of a semantic highlighting.
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
+     The position of a semantic highlighting.
+     
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     protected static class HighlightedPosition extends Position {
 
         /** Initialize the styled positions with the given offset, length and
@@ -367,14 +367,14 @@ public class SemanticHighlightingReconciler implements
     //////////////////////////////////////////////////////////////////////////
     //// HighlightingStyle
     /**
-       The semantic highlighting style.
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
+     The semantic highlighting style.
+     
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     protected static class HighlightingStyle {
 
         /** Construct a highlighting style with the given text attribute.
@@ -382,8 +382,7 @@ public class SemanticHighlightingReconciler implements
          *  @param textAttribute The text attribute.
          *  @param isEnabled Whether this style is enabled.
          */
-        public HighlightingStyle(TextAttribute textAttribute,
-        		boolean isEnabled) {
+        public HighlightingStyle(TextAttribute textAttribute, boolean isEnabled) {
             setTextAttribute(textAttribute);
             setEnabled(isEnabled);
         }
@@ -478,16 +477,15 @@ public class SemanticHighlightingReconciler implements
 
             if (((color == null) || !rgb.equals(color.getRGB()))
                     && _colorManager instanceof IColorManagerExtension) {
-                IColorManagerExtension ext =
-                    (IColorManagerExtension) _colorManager;
+                IColorManagerExtension ext = (IColorManagerExtension) _colorManager;
                 ext.unbindColor(property);
                 ext.bindColor(property, rgb);
                 color = _colorManager.getColor(property);
             }
 
             TextAttribute oldAttr = highlighting.getTextAttribute();
-            highlighting.setTextAttribute(new TextAttribute(color,
-            		oldAttr.getBackground(), oldAttr.getStyle()));
+            highlighting.setTextAttribute(new TextAttribute(color, oldAttr
+                    .getBackground(), oldAttr.getStyle()));
         }
     }
 
@@ -508,8 +506,7 @@ public class SemanticHighlightingReconciler implements
         }
 
         TextAttribute oldAttr = highlighting.getTextAttribute();
-        boolean activeValue = (oldAttr.getStyle() & styleAttribute) ==
-        	styleAttribute;
+        boolean activeValue = (oldAttr.getStyle() & styleAttribute) == styleAttribute;
 
         if (activeValue != eventValue) {
             highlighting.setTextAttribute(new TextAttribute(oldAttr
@@ -530,8 +527,7 @@ public class SemanticHighlightingReconciler implements
             RGB rgb = PreferenceConverter.getColor(_preferenceStore, colorKey);
 
             if (_colorManager instanceof IColorManagerExtension) {
-                IColorManagerExtension ext =
-                	(IColorManagerExtension) _colorManager;
+                IColorManagerExtension ext = (IColorManagerExtension) _colorManager;
                 ext.unbindColor(colorKey);
                 ext.bindColor(colorKey, rgb);
             }
@@ -557,7 +553,7 @@ public class SemanticHighlightingReconciler implements
         if (_semanticHighlightings != null) {
             _disposeHighlightings();
         }
-        
+
         _enabled = false;
     }
 
@@ -571,7 +567,7 @@ public class SemanticHighlightingReconciler implements
         _semanticHighlightings = null;
         _highlightings = null;
     }
-    
+
     /** Enable the semantic highlightings.
      * 
      *  @return true if the highlightings are enabled successfully; false,
@@ -582,7 +578,7 @@ public class SemanticHighlightingReconciler implements
         if (_enabled) {
             return true;
         }
-        
+
         JavaSourceViewer viewer = (JavaSourceViewer) _editor.getViewer();
         if (viewer != null) {
             _initializeHighlightings();
@@ -590,16 +586,16 @@ public class SemanticHighlightingReconciler implements
             final String JAVA_PARTITIONING = "___java_partitioning";
             _configuration = new JavaSourceViewerConfiguration(_colorManager,
                     _preferenceStore, _editor, JAVA_PARTITIONING);
-            _presentationReconciler = (JavaPresentationReconciler)
-                    _configuration.getPresentationReconciler(viewer);
-    
+            _presentationReconciler = (JavaPresentationReconciler) _configuration
+                    .getPresentationReconciler(viewer);
+
             _presenter = new SemanticHighlightingPresenter();
             _presenter.install(viewer, _presentationReconciler);
-    
+
             _jobSemanticHighlightings = _semanticHighlightings;
-    
+
             _editor.addJavaReconcileListener(this);
-            
+
             _enabled = true;
             return true;
         } else {
@@ -636,8 +632,7 @@ public class SemanticHighlightingReconciler implements
         }
 
         for (int i = 0, n = _semanticHighlightings.length; i < n; i++) {
-            SemanticHighlighting semanticHighlighting =
-                _semanticHighlightings[i];
+            SemanticHighlighting semanticHighlighting = _semanticHighlightings[i];
 
             String colorKey = semanticHighlighting.getColorPreferenceKey();
 
@@ -681,8 +676,7 @@ public class SemanticHighlightingReconciler implements
         _highlightings = new HighlightingStyle[_semanticHighlightings.length];
 
         for (int i = 0, n = _semanticHighlightings.length; i < n; i++) {
-            SemanticHighlighting semanticHighlighting =
-                _semanticHighlightings[i];
+            SemanticHighlighting semanticHighlighting = _semanticHighlightings[i];
             String colorKey = semanticHighlighting.getColorPreferenceKey();
             _addColor(colorKey);
 
@@ -716,11 +710,11 @@ public class SemanticHighlightingReconciler implements
         }
 
         List<HighlightedPosition> oldPositions = _removedPositions;
-        List<HighlightedPosition> newPositions =
-        	new ArrayList<HighlightedPosition>(_removedPositionsNumber);
+        List<HighlightedPosition> newPositions = new ArrayList<HighlightedPosition>(
+                _removedPositionsNumber);
 
         for (int i = 0, n = oldPositions.size(); i < n; i++) {
-        	HighlightedPosition current = oldPositions.get(i);
+            HighlightedPosition current = oldPositions.get(i);
 
             if (current != null) {
                 newPositions.add(current);
@@ -765,9 +759,9 @@ public class SemanticHighlightingReconciler implements
                         _job = this;
                     }
 
-                    CompilationUnit ast =
-                    	JavaPlugin.getDefault().getASTProvider().getAST(element,
-                    			ASTProvider.WAIT_YES, monitor);
+                    CompilationUnit ast = JavaPlugin.getDefault()
+                            .getASTProvider().getAST(element,
+                                    ASTProvider.WAIT_YES, monitor);
                     reconciled(ast, false, monitor);
 
                     synchronized (_jobLock) {
@@ -850,8 +844,7 @@ public class SemanticHighlightingReconciler implements
 
     /** The highlighted positions added by the background job.
      */
-    private List<HighlightedPosition> _addedPositions =
-    	new ArrayList<HighlightedPosition>();
+    private List<HighlightedPosition> _addedPositions = new ArrayList<HighlightedPosition>();
 
     ///////////////////////////////////////////////////////////////////
     ////                    private inner classes                  ////
@@ -922,8 +915,7 @@ public class SemanticHighlightingReconciler implements
 
     /** The highlighted positions removed by the background job.
      */
-    private List<HighlightedPosition> _removedPositions =
-    	new ArrayList<HighlightedPosition>();
+    private List<HighlightedPosition> _removedPositions = new ArrayList<HighlightedPosition>();
 
     /** Number of the removed positions.
      */
@@ -936,14 +928,14 @@ public class SemanticHighlightingReconciler implements
     //////////////////////////////////////////////////////////////////////////
     //// PositionCollector
     /**
-       The AST visitor to collect positions to be reconciled.
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
+     The AST visitor to collect positions to be reconciled.
+     
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class PositionCollector extends GenericVisitor {
 
         /** Visit a simple name in the AST and record its position if it is
@@ -1004,8 +996,8 @@ public class SemanticHighlightingReconciler implements
 
             // TODO: use binary search
             for (int i = 0, n = _removedPositions.size(); i < n; i++) {
-                HighlightedPosition position =
-                    (HighlightedPosition) _removedPositions.get(i);
+                HighlightedPosition position = (HighlightedPosition) _removedPositions
+                        .get(i);
 
                 if (position == null) {
                     continue;
@@ -1020,9 +1012,8 @@ public class SemanticHighlightingReconciler implements
             }
 
             if (!isExisting) {
-            	HighlightedPosition position =
-            		_jobPresenter.createHighlightedPosition(offset, length,
-            				highlighting);
+                HighlightedPosition position = _jobPresenter
+                        .createHighlightedPosition(offset, length, highlighting);
                 _addedPositions.add(position);
             }
         }
@@ -1035,8 +1026,8 @@ public class SemanticHighlightingReconciler implements
         private void _retainPositions(int offset, int length) {
             // TODO: use binary search
             for (int i = 0, n = _removedPositions.size(); i < n; i++) {
-                HighlightedPosition position =
-                    (HighlightedPosition) _removedPositions.get(i);
+                HighlightedPosition position = (HighlightedPosition) _removedPositions
+                        .get(i);
 
                 if (position != null && position.isContained(offset, length)) {
                     _removedPositions.set(i, null);

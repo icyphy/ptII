@@ -309,26 +309,25 @@ public class InequalitySolver {
                 Object variableValue = null;
                 try {
                     variableValue = variables[i].getValue();
-                } catch(IllegalActionException ex) {
+                } catch (IllegalActionException ex) {
                     variableValue = ex.toString();
                 }
                 Object variableObject = null;
                 try {
                     variableObject = variables[i].getAssociatedObject();
                     if (variableObject instanceof NamedObj) {
-                        variableObject = ((NamedObj)variableObject).getFullName();
+                        variableObject = ((NamedObj) variableObject)
+                                .getFullName();
                     }
-                } catch(Exception ex) {
+                } catch (Exception ex) {
                     variableObject = ex.toString();
                 }
-                throw new InvalidStateException(
-                        "Port \" "
-                        + variableObject + "\" of type \""
-                        + variableValue
+                throw new InvalidStateException("Port \" " + variableObject
+                        + "\" of type \"" + variableValue
                         + "\" in an InequalityTerm is not settable."
                         + " If the port is an input and has a type constraint,"
                         + " try removing the type constraint and possibly"
-                        + " placing it on the output."); 
+                        + " placing it on the output.");
             }
             ArrayList entry = (ArrayList) (_Clist.get(variables[i]));
 
@@ -373,10 +372,9 @@ public class InequalitySolver {
         if (init == null) {
             throw new InvalidStateException(
                     "The underlying CPO is not a lattice because "
-                    + "the CPO has no "
-                    + (least ? "bottom" : "top")
-                    + ". The CPO was a " + _cpo.getClass().getName());
-            
+                            + "the CPO has no " + (least ? "bottom" : "top")
+                            + ". The CPO was a " + _cpo.getClass().getName());
+
         }
 
         for (Enumeration e = _Clist.keys(); e.hasMoreElements();) {

@@ -58,7 +58,7 @@ public class ClassFileLoader extends URLClassLoader {
      *  required by the class file to be loaded.
      *  @exception  MalformedURLException If a string is not a proper URL.
      */
-    public ClassFileLoader() throws MalformedURLException { 
+    public ClassFileLoader() throws MalformedURLException {
         this(null);
     }
 
@@ -113,20 +113,20 @@ public class ClassFileLoader extends URLClassLoader {
             }
         } catch (LinkageError e) {
             // Class already loaded.
-        	// FIXME: Any better solution here?
+            // FIXME: Any better solution here?
             String message = e.getMessage();
             int slashIndex = message.indexOf('/');
             if (slashIndex < 0) {
-            	throw e;
+                throw e;
             } else {
                 int startIndex = message.lastIndexOf(' ', slashIndex);
                 if (startIndex < 0) {
-                	throw e;
+                    throw e;
                 } else {
-                	int endIndex = message.indexOf(' ', slashIndex);
-                	if (endIndex < 0) {
-                		endIndex = message.length();
-                	}
+                    int endIndex = message.indexOf(' ', slashIndex);
+                    if (endIndex < 0) {
+                        endIndex = message.length();
+                    }
                     String path = message.substring(startIndex + 1, endIndex);
                     String classFullName = path.replace('/', '.');
                     return loadClass(classFullName);

@@ -27,10 +27,10 @@
  */
 package ptolemy.backtrack.util;
 
-import ptolemy.util.StringUtilities;
-
 import java.io.File;
 import java.io.FileFilter;
+
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PathFinder
@@ -47,7 +47,7 @@ import java.io.FileFilter;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class PathFinder {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -120,10 +120,11 @@ public class PathFinder {
         for (int i = 0; i < subdirs.length; i++) {
             files[i] = new File(PTII + subdirs[i]).listFiles(new PostfixFilter(
                     ".jar"));
-            if (files[i] != null) { 
+            if (files[i] != null) {
                 totalNumber += files[i].length;
             } else {
-                System.out.println("Warning: no jar files in \"" + PTII + subdirs[i] + "\"?");
+                System.out.println("Warning: no jar files in \"" + PTII
+                        + subdirs[i] + "\"?");
             }
         }
 
@@ -133,13 +134,13 @@ public class PathFinder {
         int currentNumber = 1;
 
         for (int i = 0; i < files.length; i++) {
-	    if (files[i] != null) {
-		for (int j = 0; j < files[i].length; j++) {
-		    if (files[i][j] != null) {
-			classPaths[currentNumber++] = files[i][j].getPath();
-		    }
-		}
-	    }
+            if (files[i] != null) {
+                for (int j = 0; j < files[i].length; j++) {
+                    if (files[i][j] != null) {
+                        classPaths[currentNumber++] = files[i][j].getPath();
+                    }
+                }
+            }
         }
 
         return classPaths;
@@ -192,7 +193,7 @@ public class PathFinder {
 
     ///////////////////////////////////////////////////////////////////
     ////                       nested classes                      ////
-    
+
     //////////////////////////////////////////////////////////////////////////
     //// DirectoryFilter
 

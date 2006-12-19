@@ -103,7 +103,7 @@ public class Director implements ActorCodeGenerator {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_codeGenerator.comment("The firing of the director."));
-        
+
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
 
@@ -129,8 +129,7 @@ public class Director implements ActorCodeGenerator {
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper 
-                    = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(actorHelper.generateFireFunctionCode());
         }
         return code.toString();
@@ -175,8 +174,8 @@ public class Director implements ActorCodeGenerator {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_codeGenerator
-                .comment(1, "The initialization of the director."));
+        code.append(_codeGenerator.comment(1,
+                "The initialization of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
@@ -216,8 +215,7 @@ public class Director implements ActorCodeGenerator {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject 
-                    = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(helperObject.generatePreinitializeCode());
         }
 
@@ -275,8 +273,8 @@ public class Director implements ActorCodeGenerator {
                     name = name + '#' + i;
                 }
 
-                code.append(CodeStream.indent(
-                        _compositeActorHelper.getReference("@" + name)));
+                code.append(CodeStream.indent(_compositeActorHelper
+                        .getReference("@" + name)));
                 code.append(" = ");
                 code.append(_compositeActorHelper.getReference(name));
                 code.append(";" + _eol);
@@ -295,8 +293,8 @@ public class Director implements ActorCodeGenerator {
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(CodeStream.indent(_codeGenerator.comment(
-                        "Transfer tokens to the outside")));
+        code.append(CodeStream.indent(_codeGenerator
+                .comment("Transfer tokens to the outside")));
 
         ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(_director
                 .getContainer());
@@ -309,8 +307,8 @@ public class Director implements ActorCodeGenerator {
                     name = name + '#' + i;
                 }
 
-                code.append(CodeStream.indent(
-                                _compositeActorHelper.getReference(name)));
+                code.append(CodeStream.indent(_compositeActorHelper
+                        .getReference(name)));
                 code.append(" =" + _eol);
                 code.append(CodeStream.indent(_INDENT2
                         + _compositeActorHelper.getReference("@" + name)));
@@ -353,7 +351,7 @@ public class Director implements ActorCodeGenerator {
      */
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
- 
+
         code.append(_codeGenerator.comment(1, "The wrapup of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
@@ -511,8 +509,9 @@ public class Director implements ActorCodeGenerator {
             } else { // If offset is a variable.
                 int modulo = helper.getBufferSize(port, j) - 1;
                 String offsetVariable = (String) helper.getReadOffset(port, j);
-                code.append(CodeStream.indent(offsetVariable + " = (" + offsetVariable + " + "
-                        + rate + ")&" + modulo + ";" + _eol));
+                code.append(CodeStream.indent(offsetVariable + " = ("
+                        + offsetVariable + " + " + rate + ")&" + modulo + ";"
+                        + _eol));
             }
         }
     }
@@ -559,7 +558,8 @@ public class Director implements ActorCodeGenerator {
                         sinkChannelNumber);
                 if (offsetObject instanceof Integer) {
                     int offset = ((Integer) offsetObject).intValue();
-                    int bufferSize = helper.getBufferSize(sinkPort, sinkChannelNumber);
+                    int bufferSize = helper.getBufferSize(sinkPort,
+                            sinkChannelNumber);
                     if (bufferSize != 0) {
                         offset = (offset + rate) % bufferSize;
                     }
@@ -570,9 +570,9 @@ public class Director implements ActorCodeGenerator {
                             sinkChannelNumber) - 1;
                     String offsetVariable = (String) helper.getWriteOffset(
                             sinkPort, sinkChannelNumber);
-                    code.append(CodeStream.indent(offsetVariable 
-                            + " = (" + offsetVariable
-                            + " + " + rate + ")&" + modulo + ";" + _eol));
+                    code.append(CodeStream.indent(offsetVariable + " = ("
+                            + offsetVariable + " + " + rate + ")&" + modulo
+                            + ";" + _eol));
                 }
             }
         }

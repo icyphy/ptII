@@ -78,7 +78,7 @@ public class FixConst extends FixTransformer {
 
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(true);
-        
+
         // Set the type constraint.
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
                 + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
@@ -87,14 +87,14 @@ public class FixConst extends FixTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** The value produced by this constant source.
      *  By default, it contains an IntToken with value 1.  If the
      *  type of this token is changed during the execution of a model,
      *  then the director will be asked to redo type resolution.
      */
     public Parameter value;
-    
+
     /** The trigger port.  The type of this port is undeclared, meaning
      *  that it will resolve to any data type.
      */
@@ -123,7 +123,7 @@ public class FixConst extends FixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         // NOTE: It might seem that using trigger.numberOfSources() is
         // correct here, but it is not. It is possible for channels
         // to be connected, for example, to other output ports or
@@ -134,23 +134,25 @@ public class FixConst extends FixTransformer {
                 trigger.get(i);
             }
         }
-        
-        Precision precision = new Precision(((Parameter) 
-                getAttribute("outputPrecision")).getExpression());
-        
-        Overflow overflow = Overflow.getName(((Parameter) getAttribute(
-        "outputOverflow")).getExpression().toLowerCase());
 
-        Rounding rounding = Rounding.getName(((Parameter) getAttribute(
-            "outputRounding")).getExpression().toLowerCase());
+        Precision precision = new Precision(
+                ((Parameter) getAttribute("outputPrecision")).getExpression());
 
-        FixPoint result = new FixPoint(((ScalarToken)
-                value.getToken()).doubleValue(), 
-                new FixPointQuantization(precision, overflow, rounding));
+        Overflow overflow = Overflow
+                .getName(((Parameter) getAttribute("outputOverflow"))
+                        .getExpression().toLowerCase());
+
+        Rounding rounding = Rounding
+                .getName(((Parameter) getAttribute("outputRounding"))
+                        .getExpression().toLowerCase());
+
+        FixPoint result = new FixPoint(((ScalarToken) value.getToken())
+                .doubleValue(), new FixPointQuantization(precision, overflow,
+                rounding));
 
         sendOutput(output, 0, new FixToken(result));
     }
-    
+
     /** If the trigger input is connected and it has no input or an unknown
      *  state, then return false. Otherwise, return true.
      *  @return True, unless the trigger input is connected

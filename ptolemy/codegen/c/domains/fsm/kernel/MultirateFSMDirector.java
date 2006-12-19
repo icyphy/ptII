@@ -38,7 +38,6 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.c.domains.fsm.kernel.FSMActor.TransitionRetriever;
-import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.expr.ASTPtRootNode;

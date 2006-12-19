@@ -36,14 +36,14 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 //// HelpAction
 
 /**
-   Action to trigger the help center of the Eclipse backtracking plugin.
+ Action to trigger the help center of the Eclipse backtracking plugin.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class HelpAction implements IWorkbenchWindowActionDelegate {
 
     /** Dispose of system resources allocated for this actions.
@@ -80,8 +80,7 @@ public class HelpAction implements IWorkbenchWindowActionDelegate {
 
     /** The table of contents of the Eclipse backtracking plugin help.
      */
-    public static final String HELP_RESOURCE =
-        "/ptolemy.backtrack/ptolemy/backtrack/eclipse/plugin/doc/toc.xml";
+    public static final String HELP_RESOURCE = "/ptolemy.backtrack/ptolemy/backtrack/eclipse/plugin/doc/toc.xml";
 
     /** The parent window.
      */

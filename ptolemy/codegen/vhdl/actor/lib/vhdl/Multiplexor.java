@@ -32,8 +32,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.util.IllegalActionException;
@@ -56,7 +54,7 @@ public class Multiplexor extends VHDLCodeGeneratorHelper {
     public Multiplexor(ptolemy.actor.lib.vhdl.Multiplexor actor) {
         super(actor);
     }
-    
+
     /**
      * 
      */
@@ -64,20 +62,19 @@ public class Multiplexor extends VHDLCodeGeneratorHelper {
         Set sharedCode = new HashSet();
         _codeStream.clear();
 
-        ptolemy.actor.lib.vhdl.Multiplexor actor = 
-            (ptolemy.actor.lib.vhdl.Multiplexor) getComponent();
-        
+        ptolemy.actor.lib.vhdl.Multiplexor actor = (ptolemy.actor.lib.vhdl.Multiplexor) getComponent();
+
         int latencyValue = ((IntToken) actor.latency.getToken()).intValue();
 
         Precision precisionA = _getSourcePortPrecision(actor.A);
         Precision precisionB = _getSourcePortPrecision(actor.B);
-        
+
         if (latencyValue == 0) {
             _codeStream.appendCodeBlock("sharedBlock_lat0");
         } else {
             _codeStream.appendCodeBlock("sharedBlock");
         }
-        
+
         sharedCode.add(processCode(_codeStream.toString()));
         return sharedCode;
     }
@@ -94,39 +91,36 @@ public class Multiplexor extends VHDLCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.vhdl.Multiplexor actor = 
-            (ptolemy.actor.lib.vhdl.Multiplexor) getComponent();
+        ptolemy.actor.lib.vhdl.Multiplexor actor = (ptolemy.actor.lib.vhdl.Multiplexor) getComponent();
 
         int latencyValue = ((IntToken) actor.latency.getToken()).intValue();
 
         Precision precisionA = _getSourcePortPrecision(actor.A);
         Precision precisionB = _getSourcePortPrecision(actor.B);
 
-            
         ArrayList args = new ArrayList();
 
-        String componentName = 
-            (latencyValue == 0) ? "pt_mux2" : "pt_mux2_lat0";
-        
+        String componentName = (latencyValue == 0) ? "pt_mux2" : "pt_mux2_lat0";
+
         args.add(componentName);
 
-        Precision outputPrecision = 
-            new Precision(_getPortPrecision(actor.output));
-        
+        Precision outputPrecision = new Precision(
+                _getPortPrecision(actor.output));
+
         int width = outputPrecision.getNumberOfBits();
-        
+
         args.add(new Integer(width));
 
         if (((IntToken) actor.latency.getToken()).intValue() > 0) {
 
             args.add(actor.latency.getExpression());
-            
+
             _codeStream.appendCodeBlock("fireBlock", args);
         } else {
-            
+
             _codeStream.appendCodeBlock("fireBlock_lat0", args);
         }
-        
+
         return processCode(_codeStream.toString());
     }
 

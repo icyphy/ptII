@@ -27,11 +27,11 @@
  */
 package ptolemy.backtrack.util;
 
-import ptolemy.backtrack.Checkpoint;
-import ptolemy.backtrack.Rollbackable;
-
 import java.util.Iterator;
 import java.util.Stack;
+
+import ptolemy.backtrack.Checkpoint;
+import ptolemy.backtrack.Rollbackable;
 
 //////////////////////////////////////////////////////////////////////////
 //// CheckpointRecord
@@ -55,7 +55,7 @@ import java.util.Stack;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class CheckpointRecord {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -164,7 +164,7 @@ public class CheckpointRecord {
 
     ///////////////////////////////////////////////////////////////////
     ////                        nested class                       ////
-    
+
     //////////////////////////////////////////////////////////////////////////
     //// Record
 

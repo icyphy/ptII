@@ -29,7 +29,6 @@
 package ptolemy.data;
 
 import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 
 //////////////////////////////////////////////////////////////////////////

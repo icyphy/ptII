@@ -1,30 +1,30 @@
 /* Backtracking controller for composite actors.
 
-Copyright (c) 2005-2006 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005-2006 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.backtrack.ui;
 
@@ -40,20 +40,20 @@ import ptolemy.backtrack.Rollbackable;
 //////////////////////////////////////////////////////////////////////////
 //// BacktrackController
 /**
-   Backtracking controller for composite actors. This controller is built on top
-   of the backtracking sub-system. It helps to create checkpoints for Ptolemy II
-   composite actors. Each of those checkpoints may correspond to multiple
-   checkpoints in the backtracking sub-system, due to the fact that entities in
-   a composite actor may be monitored by different checkpoint objects. This
-   controller also allows to roll back the composite actor to its previous
-   state.
+ Backtracking controller for composite actors. This controller is built on top
+ of the backtracking sub-system. It helps to create checkpoints for Ptolemy II
+ composite actors. Each of those checkpoints may correspond to multiple
+ checkpoints in the backtracking sub-system, due to the fact that entities in
+ a composite actor may be monitored by different checkpoint objects. This
+ controller also allows to roll back the composite actor to its previous
+ state.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class BacktrackController {
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
@@ -70,18 +70,18 @@ public class BacktrackController {
         while (handles.hasNext()) {
             Long handleKey = handles.next();
             if (handleKey.longValue() <= handle) {
-                HashMap<Checkpoint, Long> checkpointsAndHandles =
-                    _checkpoints.get(handleKey);
+                HashMap<Checkpoint, Long> checkpointsAndHandles = _checkpoints
+                        .get(handleKey);
                 for (Checkpoint checkpoint : checkpointsAndHandles.keySet()) {
-                    long timestamp =
-                        checkpointsAndHandles.get(checkpoint).longValue();
+                    long timestamp = checkpointsAndHandles.get(checkpoint)
+                            .longValue();
                     checkpoint.commit(timestamp);
                 }
             }
             handles.remove();
         }
     }
-    
+
     /** Create a checkpoint for the given composite actor, and return the
      *  checkpoint handle.
      *  
@@ -99,8 +99,7 @@ public class BacktrackController {
      *  @return The checkpoint handle.
      */
     public synchronized long createCheckpoint(CompositeActor container) {
-        HashMap<Checkpoint, Long> checkpointsAndHandles =
-            new HashMap<Checkpoint, Long>();
+        HashMap<Checkpoint, Long> checkpointsAndHandles = new HashMap<Checkpoint, Long>();
         Set<Checkpoint> checkpoints = new HashSet<Checkpoint>();
         Iterator objectsIterator = container.containedObjectsIterator();
         while (objectsIterator.hasNext()) {
@@ -118,7 +117,7 @@ public class BacktrackController {
         _checkpoints.put(new Long(_currentHandle), checkpointsAndHandles);
         return _currentHandle++;
     }
-    
+
     /** Roll back the system state with the records in the checkpoint with the
      *  given handle.
      *  
@@ -135,20 +134,20 @@ public class BacktrackController {
      *  @return Whether the given handle is valid.
      */
     public boolean rollback(long handle, boolean trim) {
-        HashMap<Checkpoint, Long> checkpointsAndHandles =
-            _checkpoints.get(new Long(handle));
+        HashMap<Checkpoint, Long> checkpointsAndHandles = _checkpoints
+                .get(new Long(handle));
         if (checkpointsAndHandles == null) {
             return false;
         } else {
             for (Checkpoint checkpoint : checkpointsAndHandles.keySet()) {
-                long timestamp = 
-                    ((Long)checkpointsAndHandles.get(checkpoint)).longValue();
+                long timestamp = ((Long) checkpointsAndHandles.get(checkpoint))
+                        .longValue();
                 checkpoint.rollback(timestamp, trim);
             }
             return true;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
 
@@ -158,9 +157,8 @@ public class BacktrackController {
      *  keys are checkpoint objects, and the values are the checkpoint handles
      *  returned by those checkpoint objects.
      */
-    private HashMap<Long, HashMap<Checkpoint, Long>> _checkpoints =
-        new HashMap<Long, HashMap<Checkpoint, Long>>();
-    
+    private HashMap<Long, HashMap<Checkpoint, Long>> _checkpoints = new HashMap<Long, HashMap<Checkpoint, Long>>();
+
     /** The current checkpoint handle.
      */
     private long _currentHandle = 0;

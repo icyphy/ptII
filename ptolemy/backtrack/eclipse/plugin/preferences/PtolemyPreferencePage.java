@@ -27,37 +27,35 @@
  */
 package ptolemy.backtrack.eclipse.plugin.preferences;
 
+import java.io.File;
+
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 import ptolemy.backtrack.eclipse.plugin.widgets.DirectoryFieldEditor;
 
-import java.io.File;
-
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyPreferencePage
 /**
-   The class to create the Ptolemy preference page.
+ The class to create the Ptolemy preference page.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class PtolemyPreferencePage extends FieldEditorPreferencePage implements
         IWorkbenchPreferencePage {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        constructors                       ////
 

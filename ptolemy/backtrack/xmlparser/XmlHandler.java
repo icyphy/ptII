@@ -35,16 +35,16 @@ import ptolemy.moml.MoMLParser;
 //////////////////////////////////////////////////////////////////////////
 //// XmlHandler
 /**
-   The XML element handler that builds the XML tree.
+ The XML element handler that builds the XML tree.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class XmlHandler implements com.microstar.xml.XmlHandler {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -63,7 +63,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
             _currentAttributes.put(name, value);
         }
     }
-    
+
     /** Handle a chunk of char data.
      * 
      *  @param ch The character data.
@@ -135,7 +135,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     public String getSystemId() {
         return _systemId;
     }
-    
+
     /** Handle consecutive ignorable white spaces.
      * 
      *  @param ch The literal whitespace characters.
@@ -192,8 +192,8 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
         _currentTree = newtree;
 
         for (String attribute : _currentAttributes.keySet()) {
-            _currentTree.setAttribute(attribute,
-                    _currentAttributes.get(attribute));
+            _currentTree.setAttribute(attribute, _currentAttributes
+                    .get(attribute));
         }
 
         _currentAttributes.clear();
@@ -235,14 +235,13 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
         _currentTree = tree;
         this._systemId = systemId;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
 
     /** The attributes of the current XML node.
      */
-    private Hashtable<String, String> _currentAttributes =
-        new Hashtable<String, String>();
+    private Hashtable<String, String> _currentAttributes = new Hashtable<String, String>();
 
     /** XML tree starting from the current node.
      */

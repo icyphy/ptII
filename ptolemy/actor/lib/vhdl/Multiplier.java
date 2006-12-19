@@ -35,7 +35,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// AddSubtract
 
@@ -65,9 +64,9 @@ public class Multiplier extends SynchronousFixTransformer {
 
         A = new TypedIOPort(this, "A", true, false);
         A.setTypeEquals(BaseType.FIX);
-        
+
         B = new TypedIOPort(this, "B", true, false);
-        B.setTypeEquals(BaseType.FIX);           
+        B.setTypeEquals(BaseType.FIX);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -77,35 +76,34 @@ public class Multiplier extends SynchronousFixTransformer {
      *  type
      */
     public TypedIOPort A;
-    
+
     /** Input for tokens to be subtracted.  This is a multiport of fix
      *  point type.
      */
     public TypedIOPort B;
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Output the fixpoint value of the sum of the input bits. 
      *  If there is no inputs, then produce null.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
-        if (A.isKnown() && B.isKnown() ) {
+
+        if (A.isKnown() && B.isKnown()) {
             if (A.hasToken(0) && B.hasToken(0)) {
-                
-                Token result = A.get(0).multiply(B.get(0));              
-    
+
+                Token result = A.get(0).multiply(B.get(0));
+
                 sendOutput(output, 0, result);
             }
-        }
-        else {
+        } else {
             ((QueuedTypedIOPort) output).resend(0);
         }
     }
-    
+
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
      */

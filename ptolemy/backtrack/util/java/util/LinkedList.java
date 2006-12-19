@@ -1,51 +1,51 @@
 /* LinkedList.java -- Linked list implementation of the List interface
-   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005  Free Software Foundation, Inc.
+ Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005  Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ 02110-1301 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.Object;
 import java.lang.reflect.Array;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
@@ -64,7 +64,7 @@ import ptolemy.backtrack.util.FieldRecord;
  * The iterators are <i>fail-fast</i>, meaning that any structural
  * modification, except for <code>remove()</code> called on the iterator
  * itself, cause the iterator to throw a{
-@link ConcurrentModificationException}
+ @link ConcurrentModificationException}
  rather than exhibit
  * non-deterministic behavior.
  * @author Original author unknown
@@ -77,7 +77,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * @since 1.2
  * @status missing javadoc, but complete to 1.4
  */
-public class LinkedList extends AbstractSequentialList implements List, Cloneable, Serializable, Rollbackable {
+public class LinkedList extends AbstractSequentialList implements List,
+        Cloneable, Serializable, Rollbackable {
 
     /**     
      * Compatible with JDK 1.2.
@@ -172,7 +173,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
 
         private final Entry $ASSIGN$previous(Entry newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$previous.add(null, previous, $CHECKPOINT.getTimestamp());
+                $RECORD$previous
+                        .add(null, previous, $CHECKPOINT.getTimestamp());
             }
             if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
@@ -181,16 +183,19 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            data = (Object)$RECORD$data.restore(data, timestamp, trim);
-            next = (Entry)$RECORD$next.restore(next, timestamp, trim);
-            previous = (Entry)$RECORD$previous.restore(previous, timestamp, trim);
+            data = (Object) $RECORD$data.restore(data, timestamp, trim);
+            next = (Entry) $RECORD$next.restore(next, timestamp, trim);
+            previous = (Entry) $RECORD$previous.restore(previous, timestamp,
+                    trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -204,7 +209,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -222,11 +228,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
 
         private FieldRecord $RECORD$previous = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$data,
-                $RECORD$next,
-                $RECORD$previous
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$data,
+                $RECORD$next, $RECORD$previous };
 
     }
 
@@ -376,7 +379,7 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             checkMod();
             if (lastReturned == null)
                 throw new IllegalStateException();
-                // Adjust the position to before the removed element, if the element
+            // Adjust the position to before the removed element, if the element
             // being removed is behind the cursor.
             if (lastReturned == previous)
                 $ASSIGN$SPECIAL$position(12, position);
@@ -428,41 +431,42 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
 
         private final int $ASSIGN$SPECIAL$knownMod(int operator, long newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                $RECORD$knownMod
+                        .add(null, knownMod, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-                case 0:
-                    return knownMod += newValue;
-                case 1:
-                    return knownMod -= newValue;
-                case 2:
-                    return knownMod *= newValue;
-                case 3:
-                    return knownMod /= newValue;
-                case 4:
-                    return knownMod &= newValue;
-                case 5:
-                    return knownMod |= newValue;
-                case 6:
-                    return knownMod ^= newValue;
-                case 7:
-                    return knownMod %= newValue;
-                case 8:
-                    return knownMod <<= newValue;
-                case 9:
-                    return knownMod >>= newValue;
-                case 10:
-                    return knownMod >>>= newValue;
-                case 11:
-                    return knownMod++;
-                case 12:
-                    return knownMod--;
-                case 13:
-                    return ++knownMod;
-                case 14:
-                    return --knownMod;
-                default:
-                    return knownMod;
+            case 0:
+                return knownMod += newValue;
+            case 1:
+                return knownMod -= newValue;
+            case 2:
+                return knownMod *= newValue;
+            case 3:
+                return knownMod /= newValue;
+            case 4:
+                return knownMod &= newValue;
+            case 5:
+                return knownMod |= newValue;
+            case 6:
+                return knownMod ^= newValue;
+            case 7:
+                return knownMod %= newValue;
+            case 8:
+                return knownMod <<= newValue;
+            case 9:
+                return knownMod >>= newValue;
+            case 10:
+                return knownMod >>>= newValue;
+            case 11:
+                return knownMod++;
+            case 12:
+                return knownMod--;
+            case 13:
+                return ++knownMod;
+            case 14:
+                return --knownMod;
+            default:
+                return knownMod;
             }
         }
 
@@ -478,7 +482,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
 
         private final Entry $ASSIGN$previous(Entry newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$previous.add(null, previous, $CHECKPOINT.getTimestamp());
+                $RECORD$previous
+                        .add(null, previous, $CHECKPOINT.getTimestamp());
             }
             if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
@@ -488,7 +493,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
 
         private final Entry $ASSIGN$lastReturned(Entry newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$lastReturned.add(null, lastReturned, $CHECKPOINT.getTimestamp());
+                $RECORD$lastReturned.add(null, lastReturned, $CHECKPOINT
+                        .getTimestamp());
             }
             if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
@@ -498,64 +504,70 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
 
         private final int $ASSIGN$position(int newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                $RECORD$position
+                        .add(null, position, $CHECKPOINT.getTimestamp());
             }
             return position = newValue;
         }
 
         private final int $ASSIGN$SPECIAL$position(int operator, long newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                $RECORD$position
+                        .add(null, position, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-                case 0:
-                    return position += newValue;
-                case 1:
-                    return position -= newValue;
-                case 2:
-                    return position *= newValue;
-                case 3:
-                    return position /= newValue;
-                case 4:
-                    return position &= newValue;
-                case 5:
-                    return position |= newValue;
-                case 6:
-                    return position ^= newValue;
-                case 7:
-                    return position %= newValue;
-                case 8:
-                    return position <<= newValue;
-                case 9:
-                    return position >>= newValue;
-                case 10:
-                    return position >>>= newValue;
-                case 11:
-                    return position++;
-                case 12:
-                    return position--;
-                case 13:
-                    return ++position;
-                case 14:
-                    return --position;
-                default:
-                    return position;
+            case 0:
+                return position += newValue;
+            case 1:
+                return position -= newValue;
+            case 2:
+                return position *= newValue;
+            case 3:
+                return position /= newValue;
+            case 4:
+                return position &= newValue;
+            case 5:
+                return position |= newValue;
+            case 6:
+                return position ^= newValue;
+            case 7:
+                return position %= newValue;
+            case 8:
+                return position <<= newValue;
+            case 9:
+                return position >>= newValue;
+            case 10:
+                return position >>>= newValue;
+            case 11:
+                return position++;
+            case 12:
+                return position--;
+            case 13:
+                return ++position;
+            case 14:
+                return --position;
+            default:
+                return position;
             }
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
-            next = (Entry)$RECORD$next.restore(next, timestamp, trim);
-            previous = (Entry)$RECORD$previous.restore(previous, timestamp, trim);
-            lastReturned = (Entry)$RECORD$lastReturned.restore(lastReturned, timestamp, trim);
+            next = (Entry) $RECORD$next.restore(next, timestamp, trim);
+            previous = (Entry) $RECORD$previous.restore(previous, timestamp,
+                    trim);
+            lastReturned = (Entry) $RECORD$lastReturned.restore(lastReturned,
+                    timestamp, trim);
             position = $RECORD$position.restore(position, timestamp, trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -569,7 +581,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -591,13 +604,9 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
 
         private FieldRecord $RECORD$position = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$knownMod,
-                $RECORD$next,
-                $RECORD$previous,
-                $RECORD$lastReturned,
-                $RECORD$position
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$knownMod,
+                $RECORD$next, $RECORD$previous, $RECORD$lastReturned,
+                $RECORD$position };
 
     }
 
@@ -617,11 +626,11 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         Entry e;
         if (n < getSize() / 2) {
             e = getFirstField();
-            while (n-- > 0) 
+            while (n-- > 0)
                 e = e.getNext();
         } else {
             e = getLastField();
-            while (++n < getSize()) 
+            while (++n < getSize())
                 e = e.getPrevious();
         }
         return e;
@@ -658,7 +667,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      */
     private void checkBoundsInclusive(int index) {
         if (index < 0 || index > getSize())
-            throw new IndexOutOfBoundsException("Index: " + index+", Size:"+getSize());
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+                    + getSize());
     }
 
     /**     
@@ -668,7 +678,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      */
     private void checkBoundsExclusive(int index) {
         if (index < 0 || index >= getSize())
-            throw new IndexOutOfBoundsException("Index: " + index+", Size:"+getSize());
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+                    + getSize());
     }
 
     /**     
@@ -1028,7 +1039,7 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
     public Object clone() {
         LinkedList copy = null;
         try {
-            copy = (LinkedList)super.clone();
+            copy = (LinkedList) super.clone();
         } catch (CloneNotSupportedException ex) {
         }
         copy.clear();
@@ -1065,7 +1076,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      */
     public Object[] toArray(Object[] a) {
         if (a.length < getSize())
-            a = (Object[])Array.newInstance(a.getClass().getComponentType(), getSize());
+            a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
+                    getSize());
         else if (a.length > getSize())
             a[getSize()] = null;
         Entry e = getFirstField();
@@ -1083,7 +1095,7 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      * @serialData the size of the list (int), followed by all the elements
      * (Object) in proper order
      */
-    private void writeObject(ObjectOutputStream s) throws IOException  {
+    private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
         s.writeInt(getSize());
         Entry e = getFirstField();
@@ -1101,10 +1113,11 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      * @serialData the size of the list (int), followed by all the elements
      * (Object) in proper order
      */
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException  {
+    private void readObject(ObjectInputStream s) throws IOException,
+            ClassNotFoundException {
         s.defaultReadObject();
         int i = s.readInt();
-        while (--i >= 0) 
+        while (--i >= 0)
             addLastEntry(new Entry(s.readObject()));
     }
 
@@ -1160,13 +1173,14 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        first = (Entry)$RECORD$first.restore(first, timestamp, trim);
-        last = (Entry)$RECORD$last.restore(last, timestamp, trim);
+        first = (Entry) $RECORD$first.restore(first, timestamp, trim);
+        last = (Entry) $RECORD$last.restore(last, timestamp, trim);
         size = $RECORD$size.restore(size, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
@@ -1177,11 +1191,7 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
 
     private FieldRecord $RECORD$size = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$first,
-            $RECORD$last,
-            $RECORD$size
-        };
+    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$first,
+            $RECORD$last, $RECORD$size };
 
 }
-

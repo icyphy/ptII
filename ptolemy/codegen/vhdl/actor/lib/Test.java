@@ -37,7 +37,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.FixToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Precision;
 
@@ -71,45 +70,44 @@ public class Test extends VHDLCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.Test actor = 
-            (ptolemy.actor.lib.Test) getComponent();
+        ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
 
         // FIXME: we should implement this later.
         if (actor.input.getWidth() > 1) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
                     "Code generation does not support multiport connections.");
         }
-        
+
         ArrayList args = new ArrayList();
 
         TypedIOPort source = (TypedIOPort) actor.input.sourcePortList().get(0);
         TypedAtomicActor sourceActor = (TypedAtomicActor) source.getContainer();
-        
+
         Precision precision = _getSourcePortPrecision(actor.input);
-        
+
         int high = precision.getIntegerBitLength() - 1;
         int low = -precision.getFractionBitLength();
-                
+
         args.add(new Integer(high));
         args.add(new Integer(low));
-        
+
         ArrayToken valueArray = (ArrayToken) actor.correctValues.getToken();
 
         int i;
         String values = "";
         for (i = 0; i < valueArray.length() - 1; i++) {
-            values += ((FixToken) 
-                    valueArray.getElement(i)).convertToDouble() + ", ";
+            values += ((FixToken) valueArray.getElement(i)).convertToDouble()
+                    + ", ";
         }
         values += ((FixToken) valueArray.getElement(i)).convertToDouble();
 
         args.add(values);
 
-        String signed = 
-            (precision.isSigned()) ? "SIGNED_TYPE" : "UNSIGNED_TYPE";
-        
+        String signed = (precision.isSigned()) ? "SIGNED_TYPE"
+                : "UNSIGNED_TYPE";
+
         args.add(signed);
-        
+
         _codeStream.appendCodeBlock("fireBlock", args);
 
         return processCode(_codeStream.toString());
@@ -121,7 +119,7 @@ public class Test extends VHDLCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
-        
+
         files.add("ieee.std_logic_1164.all");
         files.add("ieee.numeric_std.all");
         files.add("ieee_proposed.math_utility_pkg.all");

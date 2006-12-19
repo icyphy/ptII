@@ -280,7 +280,6 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put("ptolemy.vergil.basic.DocAttribute",
                 "ptolemy.kernel.util.Attribute");
 
-        
     }
 
     /** True if we should remove the GR domain. */

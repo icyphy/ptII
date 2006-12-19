@@ -27,12 +27,7 @@
  */
 package ptolemy.codegen.c.actor.lib.gui;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A code generation helper class for ptolemy.actor.lib.gui.LEDMatrix.

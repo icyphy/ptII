@@ -83,9 +83,8 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Yellow (eal)
  */
-public class CodeGeneratorHelper 
-        extends NamedObj implements ActorCodeGenerator {
-    
+public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator {
+
     /** Construct the code generator helper associated
      *  with the given component.
      *  @param component The associated component.
@@ -127,7 +126,7 @@ public class CodeGeneratorHelper
             }
         };
     }
-    
+
     /** Construct the code generator helper associated
      *  with the given component.
      *  @param component The associated component.
@@ -135,7 +134,7 @@ public class CodeGeneratorHelper
      *  replaced with underscores.
      */
     public CodeGeneratorHelper(NamedObj component, String name) {
-        this(component);        
+        this(component);
 
         try {
             setName(name.replaceAll("\\.", "_") + " helper");
@@ -251,11 +250,12 @@ public class CodeGeneratorHelper
     public String generateFireCode() throws IllegalActionException {
         _codeStream.clear();
 
-        String composite = (getComponent() instanceof CompositeActor) ? 
-                "Composite Actor: " : "";
+        String composite = (getComponent() instanceof CompositeActor) ? "Composite Actor: "
+                : "";
 
-        _codeStream.append(_eol + CodeStream.indent(_codeGenerator.comment("Fire " 
-                + composite + getComponent().getName())));
+        _codeStream.append(_eol
+                + CodeStream.indent(_codeGenerator.comment("Fire " + composite
+                        + getComponent().getName())));
 
         _codeStream.appendCodeBlock(_defaultBlocks[2], true); // fireBlock
         return processCode(_codeStream.toString());
@@ -290,8 +290,9 @@ public class CodeGeneratorHelper
         _codeStream.appendCodeBlock(_defaultBlocks[1], true); // initBlock
         // There is no need to generate comment for empty code block.
         if (!_codeStream.isEmpty()) {
-            _codeStream.insert(0, _eol + CodeStream.indent(_codeGenerator
-                    .comment("initialize " + getComponent().getName())));
+            _codeStream.insert(0, _eol
+                    + CodeStream.indent(_codeGenerator.comment("initialize "
+                            + getComponent().getName())));
         }
         return processCode(_codeStream.toString());
     }
@@ -440,13 +441,14 @@ public class CodeGeneratorHelper
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         _createBufferSizeAndOffsetMap();
-        
+
         _codeStream.clear();
         _codeStream.appendCodeBlock(_defaultBlocks[0], true); // preinitBlock
         // There is no need to generate comment for empty code block.
         if (!_codeStream.isEmpty()) {
-            _codeStream.insert(0, _eol +_codeGenerator.comment
-                    ("preinitialize " + getComponent().getName()));
+            _codeStream.insert(0, _eol
+                    + _codeGenerator.comment("preinitialize "
+                            + getComponent().getName()));
         }
         return processCode(_codeStream.toString());
     }
@@ -485,8 +487,7 @@ public class CodeGeneratorHelper
 
                 while (sinkChannels.hasNext()) {
                     Channel sink = (Channel) sinkChannels.next();
-                    code.append(_generateTypeConvertStatements(
-                                            source, sink));
+                    code.append(_generateTypeConvertStatements(source, sink));
                 }
             }
         }
@@ -514,9 +515,9 @@ public class CodeGeneratorHelper
 
         //  Generate variable initialization for referenced parameters.    
         if (!_referencedParameters.isEmpty()) {
-            code.append(_eol + _codeGenerator
-                    .comment(1, _component.getName()
-                    + "'s parameter initialization"));
+            code.append(_eol
+                    + _codeGenerator.comment(1, _component.getName()
+                            + "'s parameter initialization"));
 
             Iterator parameters = _referencedParameters.iterator();
 
@@ -525,16 +526,17 @@ public class CodeGeneratorHelper
                 try {
                     // avoid duplication.
                     if (!_codeGenerator._modifiedVariables.contains(parameter)) {
-                        code.append(_INDENT1 
-                                    + _codeGenerator.generateVariableName(parameter)
-                                    + " = "
-                                    + getParameterValue(parameter.getName(),
-                                            _component) + ";" + _eol);
+                        code.append(_INDENT1
+                                + _codeGenerator
+                                        .generateVariableName(parameter)
+                                + " = "
+                                + getParameterValue(parameter.getName(),
+                                        _component) + ";" + _eol);
                     }
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(_component, throwable,
                             "Failed to generate variable initialization for \""
-                            + parameter + "\"");
+                                    + parameter + "\"");
                 }
             }
         }
@@ -553,8 +555,9 @@ public class CodeGeneratorHelper
         _codeStream.appendCodeBlock(_defaultBlocks[3], true); // wrapupBlock
         // There is no need to generate comment for empty code block.
         if (!_codeStream.isEmpty()) {
-            _codeStream.insert(0, _eol + CodeStream.indent(_codeGenerator
-                    .comment("wrapup " + getComponent().getName())));
+            _codeStream.insert(0, _eol
+                    + CodeStream.indent(_codeGenerator.comment("wrapup "
+                            + getComponent().getName())));
         }
         return processCode(_codeStream.toString());
     }
@@ -614,7 +617,7 @@ public class CodeGeneratorHelper
             return actorHelper.getBufferSize(port, channelNumber);
         }
     }
-    
+
     /** Get the code generator associated with this helper class.
      *  @return The code generator associated with this helper class.
      *  @see #setCodeGenerator(CodeGenerator)
@@ -831,9 +834,9 @@ public class CodeGeneratorHelper
         if (attribute == null) {
             attribute = container.getAttribute(attributeName);
             if (attribute == null) {
-                throw new IllegalActionException(container, 
+                throw new IllegalActionException(container,
                         "No attribute named: " + name);
-            }    
+            }
         }
 
         if (offset == null) {
@@ -1075,11 +1078,14 @@ public class CodeGeneratorHelper
                             if (i != 0) {
                                 result.append(" = ");
                             }
-                            result.append(_getTypeConvertReference(sourceChannel));
-                            int rate = Math.max(DFUtilities
-                                    .getTokenProductionRate(sourceChannel.port), 
-                                    DFUtilities
-                                    .getTokenConsumptionRate(sourceChannel.port));
+                            result
+                                    .append(_getTypeConvertReference(sourceChannel));
+                            int rate = Math
+                                    .max(
+                                            DFUtilities
+                                                    .getTokenProductionRate(sourceChannel.port),
+                                            DFUtilities
+                                                    .getTokenConsumptionRate(sourceChannel.port));
                             if (rate > 1) {
                                 result.append("[" + channelAndOffset[1] + "]");
                             }
@@ -1097,8 +1103,8 @@ public class CodeGeneratorHelper
                         if (sinkPort.isMultiport()) {
                             result.append("[" + sinkChannelNumber + "]");
                         }
-                        result.append(generateOffset(channelAndOffset[1], sinkPort,
-                                sinkChannelNumber, true));  
+                        result.append(generateOffset(channelAndOffset[1],
+                                sinkPort, sinkChannelNumber, true));
                     }
                 }
 
@@ -1312,7 +1318,7 @@ public class CodeGeneratorHelper
      *  @exception IllegalActionException If there is a problem getting
      *  information about the receivers or constructing the new Channel.
      */
-    public Channel getSourceChannel(IOPort port, int channelNumber) 
+    public Channel getSourceChannel(IOPort port, int channelNumber)
             throws IllegalActionException {
         List sourceChannels = new LinkedList();
         Receiver[][] receivers;
@@ -1320,16 +1326,15 @@ public class CodeGeneratorHelper
         if (port.isInput()) {
             receivers = port.getReceivers();
         } else {
-            receivers = port.getRemoteReceivers();            
+            receivers = port.getRemoteReceivers();
         }
-        
-        TypedIOPort sourcePort = 
-            ((TypedIOPort) port.sourcePortList().get(0));
-            
-        Channel source = new Channel(sourcePort, 
-                sourcePort.getChannelForReceiver(receivers[0][0]));
-        
-        return source;        
+
+        TypedIOPort sourcePort = ((TypedIOPort) port.sourcePortList().get(0));
+
+        Channel source = new Channel(sourcePort, sourcePort
+                .getChannelForReceiver(receivers[0][0]));
+
+        return source;
     }
 
     /** Get the write offset in the buffer of a given channel to which a token
@@ -1460,14 +1465,14 @@ public class CodeGeneratorHelper
                 if (readOffset instanceof Integer) {
                     setReadOffset(port, i, new Integer(0));
                 } else {
-                    code.append(CodeStream.indent(((String) readOffset) 
+                    code.append(CodeStream.indent(((String) readOffset)
                             + " = 0;" + _eol));
                 }
                 Object writeOffset = getWriteOffset(port, i);
                 if (writeOffset instanceof Integer) {
                     setWriteOffset(port, i, new Integer(0));
                 } else {
-                    code.append(CodeStream.indent(((String) writeOffset) 
+                    code.append(CodeStream.indent(((String) writeOffset)
                             + " = 0;" + _eol));
                 }
             }
@@ -1567,7 +1572,7 @@ public class CodeGeneratorHelper
                     && port.equals(((Channel) object).port)
                     && channelNumber == ((Channel) object).channelNumber;
         }
-        
+
         /**
          * Return the string representation of this channel.
          * @return The string representation of this channel.
@@ -1575,7 +1580,7 @@ public class CodeGeneratorHelper
         public String toString() {
             return port.getName() + "_" + channelNumber;
         }
-        
+
         /**
          * Return the hash code for this channel. Implementing this method
          * is required for comparing the equality of channels.
@@ -1629,7 +1634,7 @@ public class CodeGeneratorHelper
          *   sizes or creating ObjectToken.
          */
         public Token get(String name) throws IllegalActionException {
-           
+
             NamedObj container = _component;
             if (_variable != null) {
                 container = _variable.getContainer();
@@ -1644,7 +1649,8 @@ public class CodeGeneratorHelper
                 // variable is declared in the target language and should be
                 // referenced by the name anywhere it is used.
                 if (_codeGenerator._modifiedVariables.contains(result)) {
-                    return new ObjectToken(_codeGenerator.generateVariableName(result));
+                    return new ObjectToken(_codeGenerator
+                            .generateVariableName(result));
                 } else {
                     // This will lead to recursive call until a variable found 
                     // is either directly specified by a constant or it is a  
@@ -1859,10 +1865,10 @@ public class CodeGeneratorHelper
                 DFUtilities.getTokenConsumptionRate(source.port));
 
         for (int offset = 0; offset < rate || (offset == 0 && rate == 0); offset++) {
-            statements.append(CodeStream
-                    .indent(_generateTypeConvertStatement(source, sink, offset)));
+            statements.append(CodeStream.indent(_generateTypeConvertStatement(
+                    source, sink, offset)));
         }
-    	return processCode(statements.toString());
+        return processCode(statements.toString());
     }
 
     /**
@@ -1899,14 +1905,12 @@ public class CodeGeneratorHelper
         //String sourceRef = ((CodeGeneratorHelper) _getHelper(source.port
         //        .getContainer())).getReference(sourcePortChannel);
         String sourceRef = _getTypeConvertReference(source);
-        int rate = Math.max(DFUtilities
-                .getTokenProductionRate(source.port), 
-                DFUtilities
-                .getTokenConsumptionRate(source.port));
+        int rate = Math.max(DFUtilities.getTokenProductionRate(source.port),
+                DFUtilities.getTokenConsumptionRate(source.port));
         if (rate > 1) {
             sourceRef += "[" + offset + "]";
         }
-        
+
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
                 + ", " + offset;
 
@@ -2048,7 +2052,7 @@ public class CodeGeneratorHelper
     protected String _getTypeConvertReference(Channel channel) {
         return generateName(channel.port) + "_" + channel.channelNumber;
     }
-    
+
     /** Return the replacement string of the given macro. Subclass
      * of CodeGenerator may overriding this method to extend or support
      * a different set of macros.
@@ -2058,15 +2062,15 @@ public class CodeGeneratorHelper
      * @exception IllegalActionException Thrown if the given macro or
      *  parameter is not valid.
      */
-    protected String _replaceMacro(String macro, String parameter) 
+    protected String _replaceMacro(String macro, String parameter)
             throws IllegalActionException {
         if (macro.equals("ref")) {
             return getReference(parameter);
         } else if (macro.equals("targetType")) {
             TypedIOPort port = getPort(parameter);
             if (port == null) {
-                throw new IllegalActionException(parameter + 
-                        " is not a port. $type macro takes in a port.");
+                throw new IllegalActionException(parameter
+                        + " is not a port. $type macro takes in a port.");
             }
             return cType(port.getType());
 
@@ -2075,8 +2079,8 @@ public class CodeGeneratorHelper
             TypedIOPort port = getPort(parameter);
 
             if (port == null) {
-                throw new IllegalActionException(parameter +
-                        " is not a port. $type macro takes in a port.");
+                throw new IllegalActionException(parameter
+                        + " is not a port. $type macro takes in a port.");
             }
             String type = "";
             if (macro.equals("type")) {
@@ -2093,10 +2097,10 @@ public class CodeGeneratorHelper
                 return generateVariableName(_component);
             } else {
                 return generateVariableName(_component) + "_" + parameter;
-            }            
+            }
         } else if (macro.equals("actorClass")) {
-            return _component.getClassName().replace('.', '_')
-            + "_" + parameter;
+            return _component.getClassName().replace('.', '_') + "_"
+                    + parameter;
         } else if (macro.equals("new")) {
             return getNewInvocation(parameter);
         } else if (macro.equals("tokenFunc")) {

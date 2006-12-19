@@ -50,6 +50,6 @@ public class UnknownASTException extends ASTRuntimeException {
      *  @param cause The cause.
      */
     public UnknownASTException(Throwable cause) {
-        super("Unknown AST exception.", cause );
+        super("Unknown AST exception.", cause);
     }
 }

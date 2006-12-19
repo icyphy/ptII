@@ -27,6 +27,8 @@
  */
 package ptolemy.backtrack.eclipse.plugin.widgets;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -34,29 +36,25 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
-
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 import ptolemy.backtrack.eclipse.plugin.util.Environment;
-
-import java.io.File;
 
 //////////////////////////////////////////////////////////////////////////
 //// DirectoryFieldEditor
 
 /**
-   A field editor for a directory.
+ A field editor for a directory.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class DirectoryFieldEditor extends
         org.eclipse.jface.preference.DirectoryFieldEditor {
 
@@ -78,8 +76,8 @@ public class DirectoryFieldEditor extends
      *  @param parent The parent.
      *  @param canBeEmpty Whether the file name can be left empty.
      */
-    public DirectoryFieldEditor(String name, String labelText, Composite parent,
-            boolean canBeEmpty) {
+    public DirectoryFieldEditor(String name, String labelText,
+            Composite parent, boolean canBeEmpty) {
         super(name, labelText, parent);
         _canBeEmpty = canBeEmpty;
     }

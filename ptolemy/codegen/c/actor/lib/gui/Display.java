@@ -65,8 +65,7 @@ public class Display extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
 
-        ptolemy.actor.lib.gui.Display actor 
-                = (ptolemy.actor.lib.gui.Display) getComponent();
+        ptolemy.actor.lib.gui.Display actor = (ptolemy.actor.lib.gui.Display) getComponent();
 
         String type = codeGenType(actor.input.getType());
         if (!isPrimitive(type)) {

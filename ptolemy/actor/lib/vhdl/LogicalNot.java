@@ -29,6 +29,7 @@
 package ptolemy.actor.lib.vhdl;
 
 import java.math.BigInteger;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.FixToken;
 import ptolemy.data.type.BaseType;
@@ -37,7 +38,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.FixPoint;
 import ptolemy.math.Precision;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// LogicalNot
@@ -68,7 +68,7 @@ public class LogicalNot extends SynchronousFixTransformer {
 
         A = new TypedIOPort(this, "A", true, false);
         A.setTypeEquals(BaseType.FIX);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -79,10 +79,9 @@ public class LogicalNot extends SynchronousFixTransformer {
      */
     public TypedIOPort A;
 
-        
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Output the fixpoint value of the sum of the input bits. 
      *  If there is no inputs, then produce null.
      *  @exception IllegalActionException If there is no director.
@@ -91,22 +90,19 @@ public class LogicalNot extends SynchronousFixTransformer {
         super.fire();
         BigInteger intResult = null;
         int bitsInResult = 0;
-        
+
         if (A.isKnown() && A.hasToken(0)) {
             FixPoint valueA = ((FixToken) A.get(0)).fixValue();
             bitsInResult = valueA.getPrecision().getNumberOfBits();
             BigInteger bigIntA = valueA.getUnscaledValue();
-            intResult = bigIntA.not();     
+            intResult = bigIntA.not();
             Precision precision = new Precision(1, bitsInResult, 0);
             FixToken result = new FixToken(intResult.doubleValue(), precision);
             sendOutput(output, 0, result);
-        }
-        else
-        {
+        } else {
             output.resend(0);
-        } 
+        }
     }
-    
 
     /** Return false. This actor can produce some output event the input 
      *  receiver has status unknown.
@@ -116,8 +112,6 @@ public class LogicalNot extends SynchronousFixTransformer {
     public boolean isStrict() {
         return false;
     }
-
-
 
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.

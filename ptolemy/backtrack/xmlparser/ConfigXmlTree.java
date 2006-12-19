@@ -36,16 +36,16 @@ import java.util.Vector;
 //////////////////////////////////////////////////////////////////////////
 //// ConfigXmlTree
 /**
-   Tree representation of XML starting from an element.
+ Tree representation of XML starting from an element.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class ConfigXmlTree {
-    
+
     /** Construct a node in the tree with no child.
      * 
      *  @param elementName The XML element name of the node.
@@ -204,7 +204,7 @@ public class ConfigXmlTree {
 
         while (attrenu.hasMoreElements()) {
             String attr = attrenu.nextElement();
-            _dumpString(indent + 2, "+A " + attr + " = " + getAttribute(attr), 
+            _dumpString(indent + 2, "+A " + attr + " = " + getAttribute(attr),
                     stream);
         }
 
@@ -261,8 +261,7 @@ public class ConfigXmlTree {
 
     /** The hash table of attributes from their names to their values.
      */
-    private Hashtable<String, String> _attributes =
-        new Hashtable<String, String>();
+    private Hashtable<String, String> _attributes = new Hashtable<String, String>();
 
     /** The list of children.
      */

@@ -53,17 +53,17 @@ import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 //// SectionPreferencePage
 
 /**
-   The superclass for preference pages with multiple sections.
+ The superclass for preference pages with multiple sections.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class SectionPreferencePage extends FieldEditorPreferencePage implements
         IWorkbenchPreferencePage {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        constructors                       ////
 
@@ -239,8 +239,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
      *  sections. The keys are field editor objects; the values are their
      *  parents.
      */
-    private Hashtable<FieldEditor, Composite> _composites =
-        new Hashtable<FieldEditor, Composite>();
+    private Hashtable<FieldEditor, Composite> _composites = new Hashtable<FieldEditor, Composite>();
 
     /** The main form.
      */

@@ -1,52 +1,51 @@
 /* AbstractMap.java -- Abstract implementation of most of Map
-   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2005  Free Software Foundation, Inc.
+ Copyright (C) 1998, 1999, 2000, 2001, 2002, 2005  Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ 02110-1301 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 // Package visible for use by subclasses.
 // Package visible for use by subclasses.
 // Package visible for use by subclasses.
 package ptolemy.backtrack.util.java.util;
 
-import java.lang.Object;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
-import ptolemy.backtrack.util.java.util.Collection;
-import ptolemy.backtrack.util.java.util.Set;
 
 /** 
  * An abstract implementation of Map to make it easier to create your own
@@ -83,15 +82,15 @@ public abstract class AbstractMap implements Map, Rollbackable {
 
     /**     
      * The cache for {
-@link #keySet()    }
-.
+     @link #keySet()    }
+     .
      */
     private Set keys;
 
     /**     
      * The cache for {
-@link #values()    }
-.
+     @link #values()    }
+     .
      */
     private Collection values;
 
@@ -153,13 +152,15 @@ public abstract class AbstractMap implements Map, Rollbackable {
         public final boolean equals(Object o) {
             if (!(o instanceof Map.Entry))
                 return false;
-                // Optimize for our own entries.
+            // Optimize for our own entries.
             if (o instanceof BasicMapEntry) {
-                BasicMapEntry e = (BasicMapEntry)o;
-                return (AbstractMap.equals(getKeyField(), e.getKeyField()) && AbstractMap.equals(getValueField(), e.getValueField()));
+                BasicMapEntry e = (BasicMapEntry) o;
+                return (AbstractMap.equals(getKeyField(), e.getKeyField()) && AbstractMap
+                        .equals(getValueField(), e.getValueField()));
             }
-            Map.Entry e = (Map.Entry)o;
-            return (AbstractMap.equals(getKeyField(), e.getKey()) && AbstractMap.equals(getValueField(), e.getValue()));
+            Map.Entry e = (Map.Entry) o;
+            return (AbstractMap.equals(getKeyField(), e.getKey()) && AbstractMap
+                    .equals(getValueField(), e.getValue()));
         }
 
         /**         
@@ -188,7 +189,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
          * @return the hash code
          */
         public final int hashCode() {
-            return (AbstractMap.hashCode(getKeyField()) ^ AbstractMap.hashCode(getValueField()));
+            return (AbstractMap.hashCode(getKeyField()) ^ AbstractMap
+                    .hashCode(getValueField()));
         }
 
         /**         
@@ -217,7 +219,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
          * @return the string representation
          */
         public final String toString() {
-            return getKeyField() + "="+getValueField();
+            return getKeyField() + "=" + getValueField();
         }
 
         void setKeyField(Object key) {
@@ -251,15 +253,17 @@ public abstract class AbstractMap implements Map, Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            key = (Object)$RECORD$key.restore(key, timestamp, trim);
-            value = (Object)$RECORD$value.restore(value, timestamp, trim);
+            key = (Object) $RECORD$key.restore(key, timestamp, trim);
+            value = (Object) $RECORD$value.restore(value, timestamp, trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -273,7 +277,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -289,10 +294,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
 
         private FieldRecord $RECORD$value = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$key,
-                $RECORD$value
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$key,
+                $RECORD$value };
 
     }
 
@@ -339,8 +342,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
      * @see Cloneable
      * @see Object#clone()
      */
-    protected Object clone() throws CloneNotSupportedException  {
-        AbstractMap copy = (AbstractMap)super.clone();
+    protected Object clone() throws CloneNotSupportedException {
+        AbstractMap copy = (AbstractMap) super.clone();
         copy.setKeys(null);
         copy.setValues(null);
         return copy;
@@ -361,8 +364,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
     public boolean containsKey(Object key) {
         Iterator entries = entrySet().iterator();
         int pos = size();
-        while (--pos >= 0) 
-            if (equals(key, ((Map.Entry)entries.next()).getKey()))
+        while (--pos >= 0)
+            if (equals(key, ((Map.Entry) entries.next()).getKey()))
                 return true;
         return false;
     }
@@ -382,8 +385,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
     public boolean containsValue(Object value) {
         Iterator entries = entrySet().iterator();
         int pos = size();
-        while (--pos >= 0) 
-            if (equals(value, ((Map.Entry)entries.next()).getValue()))
+        while (--pos >= 0)
+            if (equals(value, ((Map.Entry) entries.next()).getValue()))
                 return true;
         return false;
     }
@@ -398,7 +401,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
      * @see Set#equals(Object)
      */
     public boolean equals(Object o) {
-        return (o == this || (o instanceof Map && entrySet().equals(((Map)o).entrySet())));
+        return (o == this || (o instanceof Map && entrySet().equals(
+                ((Map) o).entrySet())));
     }
 
     /**     
@@ -416,7 +420,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         Iterator entries = entrySet().iterator();
         int pos = size();
         while (--pos >= 0) {
-            Map.Entry entry = (Map.Entry)entries.next();
+            Map.Entry entry = (Map.Entry) entries.next();
             if (equals(key, entry.getKey()))
                 return entry.getValue();
         }
@@ -494,7 +498,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
                         /**                         
                          * The iterator returned by <code>entrySet()</code>.
                          */
-                        private final Iterator map_iterator = entrySet().iterator();
+                        private final Iterator map_iterator = entrySet()
+                                .iterator();
 
                         /**                         
                          * Returns true if a call to <code>next()</code> will
@@ -512,7 +517,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                          * @return The next key.
                          */
                         public Object next() {
-                            return ((Map.Entry)map_iterator.next()).getKey();
+                            return ((Map.Entry) map_iterator.next()).getKey();
                         }
 
                         /**                         
@@ -532,7 +537,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
                                 $COMMIT_ANONYMOUS(timestamp);
                             }
 
-                            public final void $RESTORE(long timestamp, boolean trim) {
+                            public final void $RESTORE(long timestamp,
+                                    boolean trim) {
                                 $RESTORE_ANONYMOUS(timestamp, trim);
                             }
 
@@ -540,7 +546,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
                                 return $GET$CHECKPOINT_ANONYMOUS();
                             }
 
-                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            public final Object $SET$CHECKPOINT(
+                                    Checkpoint checkpoint) {
                                 $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                                 return this;
                             }
@@ -548,14 +555,20 @@ public abstract class AbstractMap implements Map, Rollbackable {
                         }
 
                         public void $COMMIT_ANONYMOUS(long timestamp) {
-                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                            FieldRecord.commit($RECORDS, timestamp,
+                                    $RECORD$$CHECKPOINT.getTopTimestamp());
                             $RECORD$$CHECKPOINT.commit(timestamp);
                         }
 
-                        public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                            $RECORD$map_iterator.restore(map_iterator, timestamp, trim);
-                            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                        public void $RESTORE_ANONYMOUS(long timestamp,
+                                boolean trim) {
+                            $RECORD$map_iterator.restore(map_iterator,
+                                    timestamp, trim);
+                            if (timestamp <= $RECORD$$CHECKPOINT
+                                    .getTopTimestamp()) {
+                                $CHECKPOINT = $RECORD$$CHECKPOINT.restore(
+                                        $CHECKPOINT, new _PROXY_(), timestamp,
+                                        trim);
                                 FieldRecord.popState($RECORDS);
                                 $RESTORE_ANONYMOUS(timestamp, trim);
                             }
@@ -565,11 +578,13 @@ public abstract class AbstractMap implements Map, Rollbackable {
                             return $CHECKPOINT;
                         }
 
-                        public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        public final Object $SET$CHECKPOINT_ANONYMOUS(
+                                Checkpoint checkpoint) {
                             if ($CHECKPOINT != checkpoint) {
                                 Checkpoint oldCheckpoint = $CHECKPOINT;
                                 if (checkpoint != null) {
-                                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                    $RECORD$$CHECKPOINT.add($CHECKPOINT,
+                                            checkpoint.getTimestamp());
                                     FieldRecord.pushState($RECORDS);
                                 }
                                 $CHECKPOINT = checkpoint;
@@ -579,11 +594,10 @@ public abstract class AbstractMap implements Map, Rollbackable {
                             return this;
                         }
 
-                        private FieldRecord $RECORD$map_iterator = new FieldRecord(0);
+                        private FieldRecord $RECORD$map_iterator = new FieldRecord(
+                                0);
 
-                        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                                $RECORD$map_iterator
-                            };
+                        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$map_iterator };
 
                         {
                             $CHECKPOINT.addObject(new _PROXY_());
@@ -614,7 +628,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     super.$COMMIT(timestamp);
                 }
 
@@ -626,11 +641,13 @@ public abstract class AbstractMap implements Map, Rollbackable {
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -640,8 +657,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                     return this;
                 }
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    };
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
@@ -691,7 +707,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         Iterator entries = m.entrySet().iterator();
         int pos = m.size();
         while (--pos >= 0) {
-            Map.Entry entry = (Map.Entry)entries.next();
+            Map.Entry entry = (Map.Entry) entries.next();
             put(entry.getKey(), entry.getValue());
         }
     }
@@ -716,7 +732,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         Iterator entries = entrySet().iterator();
         int pos = size();
         while (--pos >= 0) {
-            Map.Entry entry = (Map.Entry)entries.next();
+            Map.Entry entry = (Map.Entry) entries.next();
             if (equals(key, entry.getKey())) {
                 Object r = entry.getValue();
                 entries.remove();
@@ -752,7 +768,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         Iterator entries = entrySet().iterator();
         StringBuffer r = new StringBuffer("{");
         for (int pos = size(); pos > 0; pos--) {
-            Map.Entry entry = (Map.Entry)entries.next();
+            Map.Entry entry = (Map.Entry) entries.next();
             r.append(entry.getKey());
             r.append('=');
             r.append(entry.getValue());
@@ -814,7 +830,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
                         /**                         
                          * The iterator returned by <code>entrySet()</code>.
                          */
-                        private final Iterator map_iterator = entrySet().iterator();
+                        private final Iterator map_iterator = entrySet()
+                                .iterator();
 
                         /**                         
                          * Returns true if a call to <code>next()</call> will
@@ -832,7 +849,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                          * @return The next value.
                          */
                         public Object next() {
-                            return ((Map.Entry)map_iterator.next()).getValue();
+                            return ((Map.Entry) map_iterator.next()).getValue();
                         }
 
                         /**                         
@@ -852,7 +869,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
                                 $COMMIT_ANONYMOUS(timestamp);
                             }
 
-                            public final void $RESTORE(long timestamp, boolean trim) {
+                            public final void $RESTORE(long timestamp,
+                                    boolean trim) {
                                 $RESTORE_ANONYMOUS(timestamp, trim);
                             }
 
@@ -860,7 +878,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
                                 return $GET$CHECKPOINT_ANONYMOUS();
                             }
 
-                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            public final Object $SET$CHECKPOINT(
+                                    Checkpoint checkpoint) {
                                 $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                                 return this;
                             }
@@ -868,14 +887,20 @@ public abstract class AbstractMap implements Map, Rollbackable {
                         }
 
                         public void $COMMIT_ANONYMOUS(long timestamp) {
-                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                            FieldRecord.commit($RECORDS, timestamp,
+                                    $RECORD$$CHECKPOINT.getTopTimestamp());
                             $RECORD$$CHECKPOINT.commit(timestamp);
                         }
 
-                        public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                            $RECORD$map_iterator.restore(map_iterator, timestamp, trim);
-                            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                        public void $RESTORE_ANONYMOUS(long timestamp,
+                                boolean trim) {
+                            $RECORD$map_iterator.restore(map_iterator,
+                                    timestamp, trim);
+                            if (timestamp <= $RECORD$$CHECKPOINT
+                                    .getTopTimestamp()) {
+                                $CHECKPOINT = $RECORD$$CHECKPOINT.restore(
+                                        $CHECKPOINT, new _PROXY_(), timestamp,
+                                        trim);
                                 FieldRecord.popState($RECORDS);
                                 $RESTORE_ANONYMOUS(timestamp, trim);
                             }
@@ -885,11 +910,13 @@ public abstract class AbstractMap implements Map, Rollbackable {
                             return $CHECKPOINT;
                         }
 
-                        public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        public final Object $SET$CHECKPOINT_ANONYMOUS(
+                                Checkpoint checkpoint) {
                             if ($CHECKPOINT != checkpoint) {
                                 Checkpoint oldCheckpoint = $CHECKPOINT;
                                 if (checkpoint != null) {
-                                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                    $RECORD$$CHECKPOINT.add($CHECKPOINT,
+                                            checkpoint.getTimestamp());
                                     FieldRecord.pushState($RECORDS);
                                 }
                                 $CHECKPOINT = checkpoint;
@@ -899,11 +926,10 @@ public abstract class AbstractMap implements Map, Rollbackable {
                             return this;
                         }
 
-                        private FieldRecord $RECORD$map_iterator = new FieldRecord(0);
+                        private FieldRecord $RECORD$map_iterator = new FieldRecord(
+                                0);
 
-                        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                                $RECORD$map_iterator
-                            };
+                        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$map_iterator };
 
                         {
                             $CHECKPOINT.addObject(new _PROXY_());
@@ -934,7 +960,8 @@ public abstract class AbstractMap implements Map, Rollbackable {
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     super.$COMMIT(timestamp);
                 }
 
@@ -946,11 +973,13 @@ public abstract class AbstractMap implements Map, Rollbackable {
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -960,8 +989,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                     return this;
                 }
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    };
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
@@ -987,7 +1015,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
      * @return o1 == null ? 0 : o1.hashCode()
      */
     static final int hashCode(Object o) {
-        return o == null?0:o.hashCode();
+        return o == null ? 0 : o.hashCode();
     }
 
     void setKeys(Set keys) {
@@ -1027,15 +1055,17 @@ public abstract class AbstractMap implements Map, Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        keys = (Set)$RECORD$keys.restore(keys, timestamp, trim);
-        values = (Collection)$RECORD$values.restore(values, timestamp, trim);
+        keys = (Set) $RECORD$keys.restore(keys, timestamp, trim);
+        values = (Collection) $RECORD$values.restore(values, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -1065,10 +1095,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
 
     private FieldRecord $RECORD$values = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$keys,
-            $RECORD$values
-        };
+    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$keys,
+            $RECORD$values };
 
 }
-

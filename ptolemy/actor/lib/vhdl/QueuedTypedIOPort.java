@@ -1,5 +1,5 @@
 /** An actor that slices the input bits and output a consecutive subset
-  of the input bits. 
+ of the input bits. 
 
  Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
@@ -53,7 +53,6 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class QueuedTypedIOPort extends TypedIOPort {
 
-    
     /** Construct a QueuedTypedIOPort with a container and a name that is
      *  either an input, an output, or both, depending on the third
      *  and fourth arguments. The specified container must implement
@@ -69,11 +68,11 @@ public class QueuedTypedIOPort extends TypedIOPort {
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
-    public QueuedTypedIOPort(ComponentEntity container, String name, boolean isInput,
-            boolean isOutput) throws IllegalActionException,
+    public QueuedTypedIOPort(ComponentEntity container, String name,
+            boolean isInput, boolean isOutput) throws IllegalActionException,
             NameDuplicationException {
         super(container, name, isInput, isOutput);
-        
+
         myQueue = new LinkedList<Token>();
         _oldToken = null;
         latency = 0;
@@ -83,72 +82,67 @@ public class QueuedTypedIOPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
     /** Set the size of the queue.  This operation will clear whatever
      *  is currently enqueued and create a queue of the new size.
      */
-    public void setSize(int size, Token initialValue)
-    {   
+    public void setSize(int size, Token initialValue) {
         latency = size;
         initialToken = initialValue;
-        _createQueue();       
-    } 
-    
+        _createQueue();
+    }
+
     /** Set the size of the queue.  This operation will clear whatever
      *  is currently enqueued and create a queue of the new size.
      */
-    public void resize(int size)
-    {   
-        latency = size; 
+    public void resize(int size) {
+        latency = size;
         _createQueue();
 
-    } 
-    
-    public void setInitToken(Token initialValue)
-    {
+    }
+
+    public void setInitToken(Token initialValue) {
         initialToken = initialValue;
         _createQueue();
     }
-    
-    private void _createQueue()
-    {
+
+    private void _createQueue() {
         myQueue.clear();
         _oldToken = initialToken;
-        for (int i = 1; i < latency; i++)
-        {
+        for (int i = 1; i < latency; i++) {
             myQueue.add(initialToken);
-        }       
+        }
     }
-    
+
     /** Enqueue the token that is being sent and send to the parent whatever
      *  is at the end of the queue
      */
     public void send(int channelIndex, Token token)
-        throws IllegalActionException, NoRoomException {
-        if (latency == 0 ) {
-            super.send(channelIndex,token);
-        }
-        else {         
+            throws IllegalActionException, NoRoomException {
+        if (latency == 0) {
+            super.send(channelIndex, token);
+        } else {
             myQueue.add(token);
             super.send(channelIndex, _oldToken);
             _oldToken = myQueue.removeFirst();
         }
     }
-    
-    public void resend(int channelIndex)
-        throws IllegalActionException, NoRoomException { 
-        if (latency != 0 ) {
+
+    public void resend(int channelIndex) throws IllegalActionException,
+            NoRoomException {
+        if (latency != 0) {
             super.send(channelIndex, _oldToken);
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private LinkedList<Token> myQueue;
+
     private Token _oldToken;
+
     private int latency;
+
     private Token initialToken;
-    
+
 }

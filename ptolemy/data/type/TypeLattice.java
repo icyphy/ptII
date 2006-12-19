@@ -256,7 +256,7 @@ public class TypeLattice {
                 }
             } else if (t2Rep instanceof ArrayType
                     && !(t1Rep instanceof ArrayType)
-                    && !t1.equals(BaseType.UNKNOWN)                    
+                    && !t1.equals(BaseType.UNKNOWN)
                     && !t1.equals(BaseType.ARRAY_BOTTOM)) {
                 // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
                 ArrayType arrayType = (ArrayType) t2;
@@ -521,7 +521,7 @@ public class TypeLattice {
                         "TheTypeLattice.leastUpperBound: "
                                 + "Arguments are not instances of Type.");
             }
-            
+
             // System.out.println("LUB of " + t1 + " and " + t2); 
             Type ct1 = (Type) t1;
             Type ct2 = (Type) t2;

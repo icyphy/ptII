@@ -27,18 +27,18 @@
  */
 package ptolemy.backtrack.eclipse.ast;
 
-import ptolemy.backtrack.util.Strings;
-
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URLClassLoader;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import ptolemy.backtrack.util.Strings;
 
 //////////////////////////////////////////////////////////////////////////
 //// LocalClassLoader
@@ -264,8 +264,8 @@ public class LocalClassLoader extends URLClassLoader {
         }
 
         if (c == null) {
-            Iterator<ClassImport> importedClassesIter =
-            	_importedClasses.iterator();
+            Iterator<ClassImport> importedClassesIter = _importedClasses
+                    .iterator();
 
             while ((c == null) && importedClassesIter.hasNext()) {
                 c = _checkClassNameWithImportClass(dollarName,
@@ -278,8 +278,8 @@ public class LocalClassLoader extends URLClassLoader {
         }
 
         if (c == null) {
-            Iterator<String> importedPackagesIter =
-            	_importedPackages.iterator();
+            Iterator<String> importedPackagesIter = _importedPackages
+                    .iterator();
 
             while ((c == null) && importedPackagesIter.hasNext()) {
                 c = _checkClassNameWithImportPackage(dollarName,
@@ -398,8 +398,7 @@ public class LocalClassLoader extends URLClassLoader {
      *   enclosing class.
      *  @deprecated
      */
-    public void setEnclosingClass(String anonymousClass,
-    		Class enclosingClass) {
+    public void setEnclosingClass(String anonymousClass, Class enclosingClass) {
         _enclosingClasses.put(anonymousClass, enclosingClass);
     }
 
@@ -514,7 +513,7 @@ public class LocalClassLoader extends URLClassLoader {
                         searchURLs.append("\n");
                     }
                     searchURLs.append(urls[i]);
-                } 
+                }
                 throw new ClassNotFoundException(namesTried.toString()
                         + "URL Search Path:\n" + searchURLs.toString(),
                         firstException);
@@ -527,7 +526,7 @@ public class LocalClassLoader extends URLClassLoader {
 
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
-    
+
     //----------------------------------------------------------------
     // All these private methods return null if no class is found.
     // They throw ClassNotFoundException only when an error is detected.
@@ -585,8 +584,7 @@ public class LocalClassLoader extends URLClassLoader {
             return c;
         } else {
             // Try to load the object class.
-            Class c = search ?
-            		searchForClass(new StringBuffer(name.substring(
+            Class c = search ? searchForClass(new StringBuffer(name.substring(
                     nameStart, nameEnd + 1)), _currentClass) : super.loadClass(
                     name.substring(nameStart, nameEnd + 1), true);
             name.delete(nameStart, nameEnd + 1);
@@ -712,8 +710,7 @@ public class LocalClassLoader extends URLClassLoader {
      *   error occurs while loading, the return value is <tt>null</tt>.
      *  @see #searchForClass(StringBuffer, boolean, Class)
      */
-    private Class _checkNestedClass(StringBuffer dollarName,
-    		Class currentClass) {
+    private Class _checkNestedClass(StringBuffer dollarName, Class currentClass) {
         if (currentClass == null) {
             return null;
         }
@@ -772,7 +769,7 @@ public class LocalClassLoader extends URLClassLoader {
     }
 
     //----------------------------------------------------------------
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        private fields                     ////
 
@@ -783,8 +780,7 @@ public class LocalClassLoader extends URLClassLoader {
     /** The table of enclosing classes of anonymous classes met during
      *  AST analysis.
      */
-    private Hashtable<String, Class> _enclosingClasses =
-    	new Hashtable<String, Class>();
+    private Hashtable<String, Class> _enclosingClasses = new Hashtable<String, Class>();
 
     /** The list of imported classes. Each element is a {@link
      *  ClassImport}.
@@ -799,8 +795,7 @@ public class LocalClassLoader extends URLClassLoader {
     /** The cache of all the loaded classes. Keys are class names while
      *  values are {@link Class} objects.
      */
-    private Hashtable<String, Class> _loadedClasses =
-    	new Hashtable<String, Class>();
+    private Hashtable<String, Class> _loadedClasses = new Hashtable<String, Class>();
 
     /** The name of the current package, possibly with "." in it.
      */

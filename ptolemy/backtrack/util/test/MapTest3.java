@@ -27,9 +27,9 @@
  */
 package ptolemy.backtrack.util.test;
 
-import ptolemy.backtrack.util.java.util.Map;
-
 import java.util.Iterator;
+
+import ptolemy.backtrack.util.java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// TreeMapTest1

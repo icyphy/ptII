@@ -302,7 +302,7 @@ public class RecordUpdater extends TypedAtomicActor {
             Iterator results = result.iterator();
             int i = 0;
             while (results.hasNext()) {
-                variables[i] = (InequalityTerm)results.next();
+                variables[i] = (InequalityTerm) results.next();
                 i++;
             }
             return variables;

@@ -27,16 +27,16 @@
  */
 package ptolemy.backtrack.eclipse.ast;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
-
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTDump
@@ -85,9 +85,9 @@ public class ASTDump extends ASTVisitor {
      */
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
-            System.err.println(
-                    "USAGE: java ptolemy.backtrack.eclipse.ast.ASTDump" +
-                    " [.java files...]");
+            System.err
+                    .println("USAGE: java ptolemy.backtrack.eclipse.ast.ASTDump"
+                            + " [.java files...]");
         } else {
             Writer writer = new OutputStreamWriter(System.out);
 

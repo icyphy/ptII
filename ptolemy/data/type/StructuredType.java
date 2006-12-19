@@ -116,8 +116,8 @@ public abstract class StructuredType implements Type {
      *  @return true.
      */
     public boolean isAbstract() {
-	return true;
-	    
+        return true;
+
     }
 
     /** Set the elements that have declared type BaseType.UNKNOWN to the

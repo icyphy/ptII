@@ -763,9 +763,8 @@ public class IterateOverArray extends TypedCompositeActor implements
                     }
 
                     // Require the source port to be an array.
-                    Inequality arrayInequality = 
-                        new Inequality(ArrayType.ARRAY_BOTTOM, 
-                                sourcePort.getTypeTerm());
+                    Inequality arrayInequality = new Inequality(
+                            ArrayType.ARRAY_BOTTOM, sourcePort.getTypeTerm());
                     result.add(arrayInequality);
 
                     // Next require that the element type of the
@@ -1153,9 +1152,9 @@ public class IterateOverArray extends TypedCompositeActor implements
                         }
 
                         port.send(i, new ArrayToken(elementType, tokens));
-                     } else {
-                         // Send an empty list
-                         port.send(i, new ArrayToken(elementType));
+                    } else {
+                        // Send an empty list
+                        port.send(i, new ArrayToken(elementType));
                     }
 
                     result = true;

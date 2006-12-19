@@ -511,57 +511,57 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         }
 
         /*
-        if (node.getFunctionName().compareTo("eval") == 0) {
-            if (argCount == 1) {
-                ptolemy.data.Token token = argValues[0];
+         if (node.getFunctionName().compareTo("eval") == 0) {
+         if (argCount == 1) {
+         ptolemy.data.Token token = argValues[0];
 
-                if (token instanceof StringToken) {
-                    // Note that we do not want to store a reference to
-                    // the parser, because parsers take up alot of memory.
-                    PtParser parser = new PtParser();
-                    ASTPtRootNode tree = parser
-                            .generateParseTree(((StringToken) token)
-                                    .stringValue());
+         if (token instanceof StringToken) {
+         // Note that we do not want to store a reference to
+         // the parser, because parsers take up alot of memory.
+         PtParser parser = new PtParser();
+         ASTPtRootNode tree = parser
+         .generateParseTree(((StringToken) token)
+         .stringValue());
 
-                    // Note that we evaluate the recursed parse tree
-                    // in the same scope as this parse tree.
-                    tree.visit(this);
+         // Note that we evaluate the recursed parse tree
+         // in the same scope as this parse tree.
+         tree.visit(this);
 
-                    //  _evaluatedChildToken = (tree.getToken());
-                    // FIXME cache?
-                    return;
-                }
-            }
+         //  _evaluatedChildToken = (tree.getToken());
+         // FIXME cache?
+         return;
+         }
+         }
 
-            throw new IllegalActionException("The function \"eval\" is"
-                    + " reserved for reinvoking the parser, and takes"
-                    + " exactly one String argument.");
-        }
+         throw new IllegalActionException("The function \"eval\" is"
+         + " reserved for reinvoking the parser, and takes"
+         + " exactly one String argument.");
+         }
 
-        if (node.getFunctionName().compareTo("matlab") == 0) {
-            _evaluateChild(node, 1);
+         if (node.getFunctionName().compareTo("matlab") == 0) {
+         _evaluateChild(node, 1);
 
-            ptolemy.data.Token token = _evaluatedChildToken;
+         ptolemy.data.Token token = _evaluatedChildToken;
 
-            if (token instanceof StringToken) {
-                String expression = ((StringToken) token).stringValue();
-                ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
-                Set freeVariables = collector
-                        .collectFreeVariables(node, _scope);
-                _evaluatedChildToken = MatlabUtilities.evaluate(expression,
-                        freeVariables, _scope);
-                return;
-            } else {
-                throw new IllegalActionException(
-                        "The function \"matlab\" is"
-                                + " reserved for invoking the matlab engine, and takes"
-                                + " a string matlab expression argument followed by"
-                                + " a list of variable names that the matlab expression"
-                                + " refers to.");
-            }
-        }
-        */
-        
+         if (token instanceof StringToken) {
+         String expression = ((StringToken) token).stringValue();
+         ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
+         Set freeVariables = collector
+         .collectFreeVariables(node, _scope);
+         _evaluatedChildToken = MatlabUtilities.evaluate(expression,
+         freeVariables, _scope);
+         return;
+         } else {
+         throw new IllegalActionException(
+         "The function \"matlab\" is"
+         + " reserved for invoking the matlab engine, and takes"
+         + " a string matlab expression argument followed by"
+         + " a list of variable names that the matlab expression"
+         + " refers to.");
+         }
+         }
+         */
+
         _fireCode.append(functionName + "(");
 
         for (int i = 0; i < argCount; i++) {
@@ -631,28 +631,28 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         // evaluate the first sub-expression
         _evaluateChild(node, 0);
 
-/*
-        ptolemy.data.Token test = _evaluatedChildToken;
+        /*
+         ptolemy.data.Token test = _evaluatedChildToken;
 
-        if (!(test instanceof BooleanToken)) {
-            throw new IllegalActionException(
-                    "Functional-if must branch on a boolean, but instead test "
-                            + (test == null ? "was null " : "was "
-                                    + test.toString() + "an instance of "
-                                    + test.getClass().getName()));
-        }
+         if (!(test instanceof BooleanToken)) {
+         throw new IllegalActionException(
+         "Functional-if must branch on a boolean, but instead test "
+         + (test == null ? "was null " : "was "
+         + test.toString() + "an instance of "
+         + test.getClass().getName()));
+         }
 
-        boolean value = ((BooleanToken) test).booleanValue();
+         boolean value = ((BooleanToken) test).booleanValue();
 
-        // Choose the correct sub-expression to evaluate,
-        // and type check the other.
-        if (_typeInference == null) {
-            _typeInference = new ParseTreeTypeInference();
-        }
+         // Choose the correct sub-expression to evaluate,
+         // and type check the other.
+         if (_typeInference == null) {
+         _typeInference = new ParseTreeTypeInference();
+         }
 
 
-        if (value) {
-*/
+         if (value) {
+         */
         _fireCode.append(" ? ");
 
         ASTPtRootNode tokenChild1 = (ASTPtRootNode) node.jjtGetChild(1);
@@ -665,7 +665,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         ptolemy.data.Token token1 = _evaluatedChildToken;
         ptolemy.data.Token token2 = _evaluatedChildToken;
-
 
         Type conversionType = (Type) TypeLattice.lattice().leastUpperBound(
                 token1.getType(), token2.getType());
@@ -1426,26 +1425,25 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      *  @param type The element type.
      *  @exception IllegalActionException If an parse error occurs.
      */
-    protected void _evaluateArrayIndex(ASTPtRootNode node, 
+    protected void _evaluateArrayIndex(ASTPtRootNode node,
             ptolemy.data.Token value, Type type) throws IllegalActionException {
 
-        
-            _fireCode.append("Array_get(");
-            
-            String name = value.toString();
-            if (name.startsWith("object(")) {
-                _fireCode.append(name.substring(7, name.length() - 1) + ", ");
-            }
-            
-            // get the array index
-            _evaluateChild(node, 1);
-            
-            _fireCode.append(")");
-            
-            Type elementType = ((ArrayType) type).getElementType();
+        _fireCode.append("Array_get(");
 
-            _fireCode.append(".payload." + 
-                    CodeGeneratorHelper.codeGenType(elementType));
+        String name = value.toString();
+        if (name.startsWith("object(")) {
+            _fireCode.append(name.substring(7, name.length() - 1) + ", ");
+        }
+
+        // get the array index
+        _evaluateChild(node, 1);
+
+        _fireCode.append(")");
+
+        Type elementType = ((ArrayType) type).getElementType();
+
+        _fireCode.append(".payload."
+                + CodeGeneratorHelper.codeGenType(elementType));
     }
 
     /** Evaluate the child with the given index of the given node.

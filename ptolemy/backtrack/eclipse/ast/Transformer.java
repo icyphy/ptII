@@ -70,7 +70,7 @@ import ptolemy.backtrack.xmlparser.XmlOutput;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class Transformer {
-	
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -127,7 +127,8 @@ public class Transformer {
                     String line = reader.readLine();
 
                     while (line != null) {
-                        strings.add(new File(listPath, line)
+                        strings
+                                .add(new File(listPath, line)
                                         .getCanonicalPath());
                         line = reader.readLine();
                     }
@@ -573,8 +574,8 @@ public class Transformer {
     /** Print the command-line usage of the transformer.
      */
     private static void _printUsage() {
-        System.err.println(
-                "USAGE: java ptolemy.backtrack.eclipse.ast.Transform");
+        System.err
+                .println("USAGE: java ptolemy.backtrack.eclipse.ast.Transform");
         System.err.println("           " + "[options] "
                 + "[java_files | directories | @file_lists]");
         System.err.println();
@@ -646,7 +647,7 @@ public class Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                        nested class                       ////
-    
+
     //////////////////////////////////////////////////////////////////////////
     //// InnerClassFilter
 

@@ -28,6 +28,8 @@
  */
 package ptolemy.backtrack.eclipse.plugin.util;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -35,10 +37,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
-
 import org.eclipse.swt.widgets.Shell;
 
 import ptolemy.backtrack.eclipse.ast.Transformer;
@@ -47,31 +47,28 @@ import ptolemy.backtrack.eclipse.plugin.preferences.PreferenceConstants;
 import ptolemy.backtrack.util.PathFinder;
 import ptolemy.backtrack.util.Strings;
 
-import java.io.File;
-
 //////////////////////////////////////////////////////////////////////////
 //// Environment
 
 /**
-   The class containing a set of static methods for the transformation
-   environment.
+ The class containing a set of static methods for the transformation
+ environment.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class Environment {
-    
+
     /** Create the folder represented by the container object, and all its
      *  parent folders if necessary.
      *  
      *  @param container The container representing the folder to be created.
      *  @exception CoreException If the folder creation fails.
      */
-    public static void createFolders(IContainer container)
-    throws CoreException {
+    public static void createFolders(IContainer container) throws CoreException {
         if (!container.exists()) {
             if (container instanceof IFolder) {
                 createFolders(container.getParent());

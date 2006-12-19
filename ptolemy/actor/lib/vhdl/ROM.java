@@ -41,7 +41,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.FixPoint;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Memory
 
@@ -78,7 +77,6 @@ public class ROM extends SynchronousFixTransformer {
         address = new TypedIOPort(this, "address", true, false);
         address.setTypeEquals(BaseType.FIX);
 
- 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,12 +105,12 @@ public class ROM extends SynchronousFixTransformer {
         super.attributeChanged(attribute);
 
         if (attribute == values) {
-            
+
             _capacity = ((ArrayToken) values.getToken()).length();
 
             _addressWidth = (int) Math.floor(Math.log(_capacity) / Math.log(2));
-                        
-        } 
+
+        }
     }
 
     /** Output the fixpoint value of the concatenation of the input bits. 
@@ -122,41 +120,39 @@ public class ROM extends SynchronousFixTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        if ( address.isKnown(0) ) 
-        {
+        if (address.isKnown(0)) {
             int addressValue;
-    
-            if (!address.hasToken(0) ) {
+
+            if (!address.hasToken(0)) {
                 return;
             }
-            
+
             FixToken addressToken = (FixToken) address.get(0);
             FixPoint addressFixValue = addressToken.fixValue();
 
             _checkFixTokenWidth(addressToken, _addressWidth);
-    
+
             addressValue = addressFixValue.getUnscaledValue().intValue();
-            
+
             if (addressValue >= _capacity) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Address is out of range.");
-            }     
-            
+            }
+
             ArrayToken valuesArray = (ArrayToken) values.getToken();
-            FixPoint value = new FixPoint(((ScalarToken) valuesArray.getElement(addressValue)).intValue());
+            FixPoint value = new FixPoint(((ScalarToken) valuesArray
+                    .getElement(addressValue)).intValue());
             Token result = new FixToken(value);
             if (result == null) {
                 result = FixToken.NIL;
             }
-    
+
             sendOutput(output, 0, result);
-        }
-        else
-        {
+        } else {
             output.resend(0);
         }
     }
-    
+
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
      */
@@ -164,8 +160,7 @@ public class ROM extends SynchronousFixTransformer {
         super.pruneDependencies();
         removeDependency(address, output);
     }
-    
-    
+
     private int _addressWidth;
 
     private int _capacity;

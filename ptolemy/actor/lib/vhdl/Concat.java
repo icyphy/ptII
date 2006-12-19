@@ -73,18 +73,17 @@ public class Concat extends FixTransformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        input = new TypedIOPort(this,"input",true,false);
-        input.setMultiport(true);  
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
         input.setTypeEquals(BaseType.FIX);
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     public TypedIOPort input;
-    
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -96,13 +95,15 @@ public class Concat extends FixTransformer {
         super.fire();
 
         Precision precision = new Precision(getPortPrecision(output));
-        
-        Overflow overflow = Overflow.getName(((Parameter) getAttribute(
-                "outputOverflow")).getExpression().toLowerCase());
-        
-        Rounding rounding = Rounding.getName(((Parameter) getAttribute(
-                "outputRounding")).getExpression().toLowerCase());
-        
+
+        Overflow overflow = Overflow
+                .getName(((Parameter) getAttribute("outputOverflow"))
+                        .getExpression().toLowerCase());
+
+        Rounding rounding = Rounding
+                .getName(((Parameter) getAttribute("outputRounding"))
+                        .getExpression().toLowerCase());
+
         String bits = "";
 
         // Concat bits from each input port.

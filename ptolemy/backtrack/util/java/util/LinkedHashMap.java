@@ -1,46 +1,46 @@
 /* LinkedHashMap.java -- a class providing hashtable data structure,
-   mapping Object --> Object, with linked list traversal
-   Copyright (C) 2001, 2002, 2005 Free Software Foundation, Inc.
+ mapping Object --> Object, with linked list traversal
+ Copyright (C) 2001, 2002, 2005 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ 02110-1301 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
-import java.lang.Object;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
@@ -72,12 +72,12 @@ import ptolemy.backtrack.util.FieldRecord;
  * without needing the overhead of <code>TreeMap</code>.
  * <p>
  * When using this {
-@link #LinkedHashMap(int, float, boolean) constructor}
-,
+ @link #LinkedHashMap(int, float, boolean) constructor}
+ ,
  * you can build an access-order mapping.  This can be used to implement LRU
  * caches, for example.  By overriding {
-@link #removeEldestEntry(Map.Entry)}
-,
+ @link #removeEldestEntry(Map.Entry)}
+ ,
  * you can also control the removal of the oldest entry, and thereby do
  * things like keep the map at a fixed size.
  * <p>
@@ -96,7 +96,7 @@ import ptolemy.backtrack.util.FieldRecord;
  * The iterators are <i>fail-fast</i>, meaning that any structural
  * modification, except for <code>remove()</code> called on the iterator
  * itself, cause the iterator to throw a{
-@link ConcurrentModificationException}
+ @link ConcurrentModificationException}
  rather than exhibit
  * non-deterministic behavior.
  * @author Eric Blake (ebb9@email.byu.edu)
@@ -242,13 +242,16 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            pred = (LinkedHashEntry)$RECORD$pred.restore(pred, timestamp, trim);
-            succ = (LinkedHashEntry)$RECORD$succ.restore(succ, timestamp, trim);
+            pred = (LinkedHashEntry) $RECORD$pred
+                    .restore(pred, timestamp, trim);
+            succ = (LinkedHashEntry) $RECORD$succ
+                    .restore(succ, timestamp, trim);
             super.$RESTORE(timestamp, trim);
         }
 
@@ -256,10 +259,8 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
 
         private FieldRecord $RECORD$succ = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$pred,
-                $RECORD$succ
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$pred,
+                $RECORD$succ };
 
     }
 
@@ -323,7 +324,8 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
      * @throws IllegalArgumentException if (initialCapacity &lt; 0) ||
      * ! (loadFactor &gt; 0.0)
      */
-    public LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder) {
+    public LinkedHashMap(int initialCapacity, float loadFactor,
+            boolean accessOrder) {
         super(initialCapacity, loadFactor);
         this.accessOrder = accessOrder;
     }
@@ -449,11 +451,11 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
      * Generates a parameterized iterator. This allows traversal to follow
      * the doubly-linked list instead of the random bin order of HashMap.
      * @param type {
-@link #KEYS    }
-, {
-@link #VALUES    }
-, or {
-@link #ENTRIES    }
+     @link #KEYS    }
+     , {
+     @link #VALUES    }
+     , or {
+     @link #ENTRIES    }
 
      * @return the appropriate iterator
      */
@@ -495,7 +497,8 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                     throw new NoSuchElementException();
                 setLast(getCurrent());
                 setCurrent(getCurrent().getSucc());
-                return type == VALUES?getLast().getValueField():type == KEYS?getLast().getKeyField():getLast();
+                return type == VALUES ? getLast().getValueField()
+                        : type == KEYS ? getLast().getKeyField() : getLast();
             }
 
             /**             
@@ -559,11 +562,14 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
 
             }
 
-            private final LinkedHashEntry $ASSIGN$current(LinkedHashEntry newValue) {
+            private final LinkedHashEntry $ASSIGN$current(
+                    LinkedHashEntry newValue) {
                 if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$current.add(null, current, $CHECKPOINT.getTimestamp());
+                    $RECORD$current.add(null, current, $CHECKPOINT
+                            .getTimestamp());
                 }
-                if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                if (newValue != null
+                        && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
                     newValue.$SET$CHECKPOINT($CHECKPOINT);
                 }
                 return current = newValue;
@@ -573,7 +579,8 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                 if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
                     $RECORD$last.add(null, last, $CHECKPOINT.getTimestamp());
                 }
-                if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                if (newValue != null
+                        && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
                     newValue.$SET$CHECKPOINT($CHECKPOINT);
                 }
                 return last = newValue;
@@ -581,22 +588,27 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
 
             private final int $ASSIGN$knownMod(int newValue) {
                 if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                    $RECORD$knownMod.add(null, knownMod, $CHECKPOINT
+                            .getTimestamp());
                 }
                 return knownMod = newValue;
             }
 
             public void $COMMIT_ANONYMOUS(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                        .getTopTimestamp());
                 $RECORD$$CHECKPOINT.commit(timestamp);
             }
 
             public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                current = (LinkedHashEntry)$RECORD$current.restore(current, timestamp, trim);
-                last = (LinkedHashEntry)$RECORD$last.restore(last, timestamp, trim);
+                current = (LinkedHashEntry) $RECORD$current.restore(current,
+                        timestamp, trim);
+                last = (LinkedHashEntry) $RECORD$last.restore(last, timestamp,
+                        trim);
                 knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
                 if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                            new _PROXY_(), timestamp, trim);
                     FieldRecord.popState($RECORDS);
                     $RESTORE_ANONYMOUS(timestamp, trim);
                 }
@@ -610,7 +622,8 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                 if ($CHECKPOINT != checkpoint) {
                     Checkpoint oldCheckpoint = $CHECKPOINT;
                     if (checkpoint != null) {
-                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                .getTimestamp());
                         FieldRecord.pushState($RECORDS);
                     }
                     $CHECKPOINT = checkpoint;
@@ -627,10 +640,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
             private FieldRecord $RECORD$knownMod = new FieldRecord(0);
 
             private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    $RECORD$current,
-                    $RECORD$last,
-                    $RECORD$knownMod
-                };
+                    $RECORD$current, $RECORD$last, $RECORD$knownMod };
 
             {
                 $CHECKPOINT.addObject(new _PROXY_());
@@ -658,20 +668,19 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        root = (LinkedHashEntry)$RECORD$root.restore(root, timestamp, trim);
+        root = (LinkedHashEntry) $RECORD$root.restore(root, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
 
     private FieldRecord $RECORD$root = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$root
-        };
+    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$root };
 
 }
 

@@ -29,12 +29,9 @@ package ptolemy.codegen.vhdl.actor;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.vhdl.kernel.VHDLCodeGenerator;
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -79,19 +76,19 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer result = new StringBuffer();
-        
+
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            
+
             VHDLCodeGeneratorHelper helper = _getHelper((NamedObj) actor);
-            
+
             if (helper.doGenerate()) {
                 result.append(helper.generateFireCode());
             }
-        }                
+        }
         return processCode(result.toString());
     }
 
@@ -111,17 +108,16 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
                 .deepEntityList().iterator();
 
         while (actors.hasNext()) {
-            
-            VHDLCodeGeneratorHelper helper= 
-                _getHelper((NamedObj) actors.next());
-                                    
+
+            VHDLCodeGeneratorHelper helper = _getHelper((NamedObj) actors
+                    .next());
+
             if (helper.doGenerate()) {
                 files.addAll(helper.getHeaderFiles());
             }
         }
         return files;
     }
-    
 
     /** Generate a set of shared code fragments of the associated
      *  composite actor.  It returns the result of calling
@@ -139,8 +135,7 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            VHDLCodeGeneratorHelper helper =  
-                    _getHelper((NamedObj) actor);
+            VHDLCodeGeneratorHelper helper = _getHelper((NamedObj) actor);
 
             if (helper.doGenerate()) {
                 sharedCode.addAll(helper.getSharedCode());
@@ -156,8 +151,8 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
      *  if it is synthesizable. 
      */
     public boolean isSynthesizable() throws IllegalActionException {
-        throw new IllegalActionException(this, 
-                "TypedCompositeActor should not be " +
-                "asked if it is synthesizeable.");
-    }        
+        throw new IllegalActionException(this,
+                "TypedCompositeActor should not be "
+                        + "asked if it is synthesizeable.");
+    }
 }

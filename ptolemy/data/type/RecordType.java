@@ -109,22 +109,22 @@ public class RecordType extends StructuredType {
      *  keys or values, or if it contains non-String keys or non-Type
      *  values
      */
-    public RecordType(Map fieldMap) throws IllegalActionException  {
-   	Iterator fields = fieldMap.entrySet().iterator();
-   	while (fields.hasNext()) {
-            Map.Entry entry = (Map.Entry)fields.next();
+    public RecordType(Map fieldMap) throws IllegalActionException {
+        Iterator fields = fieldMap.entrySet().iterator();
+        while (fields.hasNext()) {
+            Map.Entry entry = (Map.Entry) fields.next();
             if (entry.getKey() == null || entry.getValue() == null) {
                 throw new IllegalActionException("RecordType: given map"
                         + " contains either null keys or null values.");
             }
-            if (!(entry.getKey() instanceof String) 
+            if (!(entry.getKey() instanceof String)
                     || !(entry.getValue() instanceof Type)) {
                 throw new IllegalActionException("RecordType: given map"
                         + " contains either non-String keys or"
                         + " non-Type values.");
             }
-            _fields.put(entry.getKey(), new FieldType((Type)entry.getValue()));
-   	}
+            _fields.put(entry.getKey(), new FieldType((Type) entry.getValue()));
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

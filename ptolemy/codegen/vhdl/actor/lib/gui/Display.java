@@ -35,9 +35,6 @@ import java.util.Set;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.FixToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Precision;
 
@@ -71,34 +68,33 @@ public class Display extends VHDLCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.gui.Display actor = 
-            (ptolemy.actor.lib.gui.Display) getComponent();
+        ptolemy.actor.lib.gui.Display actor = (ptolemy.actor.lib.gui.Display) getComponent();
 
         // FIXME: we should implement this later.
         if (actor.input.getWidth() > 1) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
                     "VHDL Code generation does not support multiport connections.");
         }
-        
+
         ArrayList args = new ArrayList();
 
         TypedIOPort source = (TypedIOPort) actor.input.sourcePortList().get(0);
         TypedAtomicActor sourceActor = (TypedAtomicActor) source.getContainer();
-        
+
         Precision precision = _getSourcePortPrecision(actor.input);
-        
+
         int high = precision.getIntegerBitLength() - 1;
         int low = -precision.getFractionBitLength();
-                
+
         args.add(new Integer(high));
         args.add(new Integer(low));
         args.add(actor.getName());
-        
-        String signed = 
-            (precision.isSigned()) ? "SIGNED_TYPE" : "UNSIGNED_TYPE";
-        
+
+        String signed = (precision.isSigned()) ? "SIGNED_TYPE"
+                : "UNSIGNED_TYPE";
+
         args.add(signed);
-        
+
         _codeStream.appendCodeBlock("fireBlock", args);
 
         return processCode(_codeStream.toString());
@@ -110,7 +106,7 @@ public class Display extends VHDLCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
-        
+
         files.add("ieee.std_logic_1164.all");
         files.add("ieee.numeric_std.all");
         files.add("ieee_proposed.math_utility_pkg.all");
@@ -119,4 +115,3 @@ public class Display extends VHDLCodeGeneratorHelper {
         return files;
     }
 }
-

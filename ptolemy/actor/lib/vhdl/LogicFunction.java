@@ -29,6 +29,7 @@
 package ptolemy.actor.lib.vhdl;
 
 import java.math.BigInteger;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.FixToken;
 import ptolemy.data.expr.Parameter;
@@ -42,7 +43,6 @@ import ptolemy.math.FixPointQuantization;
 import ptolemy.math.Overflow;
 import ptolemy.math.Precision;
 import ptolemy.math.Rounding;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// LogicFunction
@@ -73,20 +73,19 @@ public class LogicFunction extends SynchronousFixTransformer {
 
         A = new TypedIOPort(this, "A", true, false);
         A.setTypeEquals(BaseType.FIX);
-        
+
         B = new TypedIOPort(this, "B", true, false);
         B.setTypeEquals(BaseType.FIX);
-       
-                
+
         operation = new StringParameter(this, "operation");
         operation.setExpression("AND");
         operation.addChoice("AND");
         operation.addChoice("OR");
-        operation.addChoice("NAND");        
-        operation.addChoice("NOR");        
-        operation.addChoice("XOR");    
+        operation.addChoice("NAND");
+        operation.addChoice("NOR");
+        operation.addChoice("XOR");
         operation.addChoice("XNOR");
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,7 +95,7 @@ public class LogicFunction extends SynchronousFixTransformer {
      *  type
      */
     public TypedIOPort A;
-    
+
     /** Input for tokens to be subtracted.  This is a multiport of fix
      *  point type.
      */
@@ -104,36 +103,36 @@ public class LogicFunction extends SynchronousFixTransformer {
 
     /** Indicate whether addition or subtraction needs to be performed.
      */
-    public Parameter operation; 
-    
-        
+    public Parameter operation;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Output the fixpoint value of the sum of the input bits. 
      *  If there is no inputs, then produce null.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
-        if (A.isKnown() && B.isKnown() ) {
+
+        if (A.isKnown() && B.isKnown()) {
             BigInteger intResult = null;
-            Precision precision = new Precision(((Parameter) 
-                    getAttribute("outputPrecision")).getExpression());
+            Precision precision = new Precision(
+                    ((Parameter) getAttribute("outputPrecision"))
+                            .getExpression());
             if (A.hasToken(0) && B.hasToken(0)) {
                 FixPoint valueA = ((FixToken) A.get(0)).fixValue();
                 FixPoint valueB = ((FixToken) B.get(0)).fixValue();
-                if (valueA.getPrecision().getNumberOfBits() != 
-                    precision.getNumberOfBits()) {
+                if (valueA.getPrecision().getNumberOfBits() != precision
+                        .getNumberOfBits()) {
                     throw new IllegalActionException(this,
-                    "Input A has different width than the output port");
-                }  
-                if (valueB.getPrecision().getNumberOfBits() != 
-                    precision.getNumberOfBits()) {
+                            "Input A has different width than the output port");
+                }
+                if (valueB.getPrecision().getNumberOfBits() != precision
+                        .getNumberOfBits()) {
                     throw new IllegalActionException(this,
-                    "Input B has different width than the output port");
-                } 
+                            "Input B has different width than the output port");
+                }
                 BigInteger bigIntA = valueA.getUnscaledValue();
                 BigInteger bigIntB = valueB.getUnscaledValue();
                 if (operation.getExpression().equals("AND")) {
@@ -148,26 +147,26 @@ public class LogicFunction extends SynchronousFixTransformer {
                     intResult = bigIntA.xor(bigIntB);
                 } else if (operation.getExpression().equals("XNOR")) {
                     intResult = bigIntA.xor(bigIntB).not();
-                }      
+                }
             }
-    
-            if (intResult != null )
-            {   
-                Overflow overflow = Overflow.getName(((Parameter) getAttribute(
-                "outputOverflow")).getExpression().toLowerCase());
-            
-                Rounding rounding = Rounding.getName(((Parameter) getAttribute(
-                    "outputRounding")).getExpression().toLowerCase());
+
+            if (intResult != null) {
+                Overflow overflow = Overflow
+                        .getName(((Parameter) getAttribute("outputOverflow"))
+                                .getExpression().toLowerCase());
+
+                Rounding rounding = Rounding
+                        .getName(((Parameter) getAttribute("outputRounding"))
+                                .getExpression().toLowerCase());
                 FixPoint result = new FixPoint(intResult.doubleValue(),
-                                       new FixPointQuantization(precision, overflow, rounding));
+                        new FixPointQuantization(precision, overflow, rounding));
                 sendOutput(output, 0, new FixToken(result));
             }
-        }
-        else {
+        } else {
             output.resend(0);
         }
     }
-    
+
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
      */

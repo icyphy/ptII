@@ -28,7 +28,6 @@
 package ptolemy.data.type;
 
 import ptolemy.data.ArrayToken;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.Token;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
@@ -79,12 +78,11 @@ public class ArrayType extends StructuredType {
     public ArrayType(Type elementType, int length) {
         this(elementType);
         if (length < 0) {
-            throw new IllegalArgumentException("Cannot create ArrayType " 
+            throw new IllegalArgumentException("Cannot create ArrayType "
                     + "with negative length.");
         }
         _length = length;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -137,7 +135,7 @@ public class ArrayType extends StructuredType {
     public Object clone() {
         ArrayType newObj = new ArrayType(_declaredElementType);
         newObj._length = _length;
-        
+
         try {
             newObj.updateType(this);
         } catch (IllegalActionException ex) {
@@ -172,8 +170,8 @@ public class ArrayType extends StructuredType {
         }
         if (!(token instanceof ArrayToken)) {
             if (hasKnownLength() && length() != 1) {
-                throw new IllegalActionException(null,
-                        Token.notSupportedConversionMessage(token, toString()));
+                throw new IllegalActionException(null, Token
+                        .notSupportedConversionMessage(token, toString()));
             }
             // NOTE: Added 7/17/06 by EAL to support type -> {type} conversion.
             Token[] contents = new Token[1];
@@ -183,11 +181,10 @@ public class ArrayType extends StructuredType {
 
         ArrayToken argumentArrayToken = (ArrayToken) token;
         if (hasKnownLength() && argumentArrayToken.length() != length()) {
-            throw new IllegalActionException(null,
-                    Token.notSupportedConversionMessage(token, toString()));
+            throw new IllegalActionException(null, Token
+                    .notSupportedConversionMessage(token, toString()));
         }
 
- 
         if (myElementType.equals(argumentArrayToken.getElementType())) {
             return token;
         }
@@ -244,10 +241,10 @@ public class ArrayType extends StructuredType {
         if (!(object instanceof ArrayType)) {
             return false;
         }
-        
-        ArrayType argumentType = (ArrayType)object;
-        return _elementType.equals(argumentType.getElementType()) &&
-            _length == argumentType._length;
+
+        ArrayType argumentType = (ArrayType) object;
+        return _elementType.equals(argumentType.getElementType())
+                && _length == argumentType._length;
     }
 
     /** Return a type constraint that can be used to contrain
@@ -322,7 +319,7 @@ public class ArrayType extends StructuredType {
      *  @return true if the element type is abstract.
      */
     public boolean isAbstract() {
-	return _elementType.isAbstract() || !hasKnownLength();
+        return _elementType.isAbstract() || !hasKnownLength();
     }
 
     /** Set the elements that have declared type BaseType.UNKNOWN (the leaf
@@ -355,13 +352,13 @@ public class ArrayType extends StructuredType {
 
         if (type instanceof ArrayType) {
             arrayType = (ArrayType) type;
-            if (hasKnownLength() && arrayType.hasKnownLength() &&
-                    length() != arrayType.length()) {
+            if (hasKnownLength() && arrayType.hasKnownLength()
+                    && length() != arrayType.length()) {
                 return false;
             }
             // If the length of this type is unknown, then the
             // argument length is compatible.
-       } else {
+        } else {
             return false;
         }
 
@@ -396,8 +393,8 @@ public class ArrayType extends StructuredType {
         ArrayType arrayType;
         if (type instanceof ArrayType) {
             arrayType = (ArrayType) type;
-            if (hasKnownLength() && arrayType.hasKnownLength() &&
-                    length() != arrayType.length()) {
+            if (hasKnownLength() && arrayType.hasKnownLength()
+                    && length() != arrayType.length()) {
                 return false;
             }
         } else {
@@ -414,8 +411,7 @@ public class ArrayType extends StructuredType {
      */
     public int length() {
         if (!hasKnownLength()) {
-            throw new RuntimeException(
-                    "Length is not known.");
+            throw new RuntimeException("Length is not known.");
         }
         return _length;
     }
@@ -447,13 +443,13 @@ public class ArrayType extends StructuredType {
      */
     public String toString() {
         if (hasKnownLength()) {
-            return "arrayType(" + getElementType().toString() + "," 
-                + _length + ")";
+            return "arrayType(" + getElementType().toString() + "," + _length
+                    + ")";
         } else {
             return "arrayType(" + getElementType().toString() + ")";
         }
     }
-    
+
     /** Update this Type to the specified ArrayType.
      *  The specified type must be an ArrayType with the same structure as
      *  this type, and have depth less than the MAXDEPTHBOUND.
@@ -476,8 +472,8 @@ public class ArrayType extends StructuredType {
 
         ArrayType arrayType = (ArrayType) newType;
         if (!arrayType.hasKnownLength() || arrayType._length != _length) {
-            _length = -1;  // Other length cases should be guarded by
-                           // the isSubstituionInstance method
+            _length = -1; // Other length cases should be guarded by
+            // the isSubstituionInstance method
         }
 
         Type newElemType = ((ArrayType) newType).getElementType();
@@ -508,7 +504,8 @@ public class ArrayType extends StructuredType {
      *  </pre>
      *  for a parameter "param".
      */
-    public static InequalityTerm ARRAY_BOTTOM = new ArrayBottomTypeTerm(BaseType.ARRAY_BOTTOM);
+    public static InequalityTerm ARRAY_BOTTOM = new ArrayBottomTypeTerm(
+            BaseType.ARRAY_BOTTOM);
 
     /** A term to use when declaring the type of some parameter or port
      *  to be an array, with unknown length.  The way to use this is to declare:
@@ -517,22 +514,24 @@ public class ArrayType extends StructuredType {
      *  </pre>
      *  for a parameter "param".
      */
-    public static InequalityTerm ARRAY_UNSIZED_BOTTOM = new ArrayBottomTypeTerm(new ArrayType(BaseType.UNKNOWN));
-//  (new ArrayType(BaseType.UNKNOWN) {
-//         // This particular inequality term always has an acceptable type
-//         // because it has no visible array that will ever be evaluated.
-//         // It is essential that isValueAcceptable() return true, or the
-//         // idiom above will result in reported type errors.
-//         public InequalityTerm getElementTypeTerm() {
-//             return _replacementElementTerm;
-//         }
+    public static InequalityTerm ARRAY_UNSIZED_BOTTOM = new ArrayBottomTypeTerm(
+            new ArrayType(BaseType.UNKNOWN));
 
-//         private InequalityTerm _replacementElementTerm = new ElementTypeTerm() {
-//             public boolean isValueAcceptable() {
-//                 return true;
-//             }
-//         };
-//     }).getElementTypeTerm();
+    //  (new ArrayType(BaseType.UNKNOWN) {
+    //         // This particular inequality term always has an acceptable type
+    //         // because it has no visible array that will ever be evaluated.
+    //         // It is essential that isValueAcceptable() return true, or the
+    //         // idiom above will result in reported type errors.
+    //         public InequalityTerm getElementTypeTerm() {
+    //             return _replacementElementTerm;
+    //         }
+
+    //         private InequalityTerm _replacementElementTerm = new ElementTypeTerm() {
+    //             public boolean isValueAcceptable() {
+    //                 return true;
+    //             }
+    //         };
+    //     }).getElementTypeTerm();
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -554,11 +553,11 @@ public class ArrayType extends StructuredType {
             throw new IllegalArgumentException("ArrayType.compare: "
                     + "The argument " + type + " is not an ArrayType.");
         }
-        
+
         int retval = TypeLattice.compare(_elementType, ((ArrayType) type)
                 .getElementType());
 
-        ArrayType arrayArgType = (ArrayType)type;
+        ArrayType arrayArgType = (ArrayType) type;
         if (hasKnownLength() && arrayArgType.hasKnownLength()) {
             if (length() != arrayArgType.length()) {
                 retval = ptolemy.graph.CPO.INCOMPARABLE;
@@ -605,7 +604,7 @@ public class ArrayType extends StructuredType {
         Type elementGLB = (Type) TypeLattice.lattice().greatestLowerBound(
                 _elementType, ((ArrayType) type).getElementType());
 
-        ArrayType arrayArgType = (ArrayType)type;
+        ArrayType arrayArgType = (ArrayType) type;
         if (!hasKnownLength() && !arrayArgType.hasKnownLength()) {
             return new ArrayType(elementGLB);
         } else if (hasKnownLength() && arrayArgType.hasKnownLength()) {
@@ -638,7 +637,7 @@ public class ArrayType extends StructuredType {
         Type elementLUB = (Type) TypeLattice.lattice().leastUpperBound(
                 _elementType, ((ArrayType) type).getElementType());
 
-        ArrayType arrayArgType = (ArrayType)type;
+        ArrayType arrayArgType = (ArrayType) type;
         if (hasKnownLength() && arrayArgType.hasKnownLength()) {
             if (length() == arrayArgType.length()) {
                 return new ArrayType(elementLUB, length());
@@ -751,11 +750,9 @@ public class ArrayType extends StructuredType {
         ///////////////////////////////////////////////////////////////
         ////                   private members                     ////
 
-
         /** The array type with element types matching the typeable. */
         private Type _arrayType;
     }
-
 
     /** An InequalityTerm associated with an instance of ArrayType. */
     private class ElementTypeTerm implements InequalityTerm {
@@ -968,7 +965,7 @@ public class ArrayType extends StructuredType {
         public String toString() {
             try {
                 return "(TypeableArrayType(" + getAssociatedObject() + "), "
-                    + getValue() + ")";
+                        + getValue() + ")";
             } catch (IllegalActionException e) {
                 throw new InternalErrorException(e);
             }
@@ -1122,7 +1119,7 @@ public class ArrayType extends StructuredType {
         public String toString() {
             try {
                 return "(ArrayElementType(" + getAssociatedObject() + "), "
-                    + getValue() + ")";
+                        + getValue() + ")";
             } catch (IllegalActionException e) {
                 throw new InternalErrorException(e);
             }

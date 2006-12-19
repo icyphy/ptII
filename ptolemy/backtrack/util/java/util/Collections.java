@@ -1,44 +1,43 @@
 /* Collections.java -- Utility class with methods to operate on collections
-   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005
-   Free Software Foundation, Inc.
+ Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005
+ Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ 02110-1301 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
 import java.io.Serializable;
-import java.lang.Object;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -46,13 +45,11 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.RandomAccess;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
-import ptolemy.backtrack.util.java.util.Collection;
-import ptolemy.backtrack.util.java.util.Set;
-import ptolemy.backtrack.util.java.util.SortedSet;
 
 /** 
  * Utility class consisting of static methods that operate on, or return
@@ -63,11 +60,11 @@ import ptolemy.backtrack.util.java.util.SortedSet;
  * them extra properties, such as thread-safety and unmodifiability.
  * <p>
  * All methods which take a collection throw a {
-@link NullPointerException}
+ @link NullPointerException}
  if
  * that collection is null. Algorithms which can change a collection may, but
  * are not required, to throw the {
-@link UnsupportedOperationException}
+ @link UnsupportedOperationException}
  that
  * the underlying collection would throw during an attempt at modification.
  * For example,
@@ -141,8 +138,8 @@ public class Collections implements Rollbackable {
     // class CopiesList
     /**     
      * The object for {
-@link #reverseOrder()    }
-.
+     @link #reverseOrder()    }
+     .
      */
     private static final ReverseComparator rcInstance = new ReverseComparator();
 
@@ -160,12 +157,13 @@ public class Collections implements Rollbackable {
 
     /**     
      * The implementation of {
-@link #EMPTY_SET    }
-. This class name is required
+     @link #EMPTY_SET    }
+     . This class name is required
      * for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class EmptySet extends AbstractSet implements Serializable, Rollbackable {
+    private static final class EmptySet extends AbstractSet implements
+            Serializable, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -219,7 +217,7 @@ public class Collections implements Rollbackable {
          * @return <code>true</code> if o is an empty instance of <code>Set</code>.
          */
         public boolean equals(Object o) {
-            return o instanceof Set && ((Set)o).isEmpty();
+            return o instanceof Set && ((Set) o).isEmpty();
         }
 
         /**         
@@ -288,7 +286,8 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -296,19 +295,19 @@ public class Collections implements Rollbackable {
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
     /**     
      * The implementation of {
-@link #EMPTY_LIST    }
-. This class name is required
+     @link #EMPTY_LIST    }
+     . This class name is required
      * for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class EmptyList extends AbstractList implements Serializable, RandomAccess, Rollbackable {
+    private static final class EmptyList extends AbstractList implements
+            Serializable, RandomAccess, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -367,7 +366,7 @@ public class Collections implements Rollbackable {
          * <code>List</code>.
          */
         public boolean equals(Object o) {
-            return o instanceof List && ((List)o).isEmpty();
+            return o instanceof List && ((List) o).isEmpty();
         }
 
         /**         
@@ -454,7 +453,8 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -462,19 +462,19 @@ public class Collections implements Rollbackable {
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
     /**     
      * The implementation of {
-@link #EMPTY_MAP    }
-. This class name is required
+     @link #EMPTY_MAP    }
+     . This class name is required
      * for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class EmptyMap extends AbstractMap implements Serializable, Rollbackable {
+    private static final class EmptyMap extends AbstractMap implements
+            Serializable, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -520,7 +520,7 @@ public class Collections implements Rollbackable {
          * <code>Map</code>.
          */
         public boolean equals(Object o) {
-            return o instanceof Map && ((Map)o).isEmpty();
+            return o instanceof Map && ((Map) o).isEmpty();
         }
 
         /**         
@@ -583,7 +583,8 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -591,19 +592,19 @@ public class Collections implements Rollbackable {
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
     /**     
      * The implementation of {
-@link #nCopies(int, Object)    }
-. This class name
+     @link #nCopies(int, Object)    }
+     . This class name
      * is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class CopiesList extends AbstractList implements Serializable, RandomAccess, Rollbackable {
+    private static final class CopiesList extends AbstractList implements
+            Serializable, RandomAccess, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -670,7 +671,7 @@ public class Collections implements Rollbackable {
          * @return 0 if <code>o == element</code>, -1 if not.
          */
         public int indexOf(Object o) {
-            return (n > 0 && equals(o, element))?0:-1;
+            return (n > 0 && equals(o, element)) ? 0 : -1;
         }
 
         /**         
@@ -680,7 +681,7 @@ public class Collections implements Rollbackable {
          * -1 if not.
          */
         public int lastIndexOf(Object o) {
-            return equals(o, element)?n - 1:-1;
+            return equals(o, element) ? n - 1 : -1;
         }
 
         /**         
@@ -714,14 +715,15 @@ public class Collections implements Rollbackable {
          */
         public String toString() {
             StringBuffer r = new StringBuffer("{");
-            for (int i = n - 1; --i > 0; ) 
+            for (int i = n - 1; --i > 0;)
                 r.append(element).append(", ");
             r.append(element).append("}");
             return r.toString();
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -734,21 +736,20 @@ public class Collections implements Rollbackable {
 
         private FieldRecord $RECORD$element = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$n,
-                $RECORD$element
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$n,
+                $RECORD$element };
 
     }
 
     /**     
      * The implementation of {
-@link #reverseOrder()    }
-. This class name
+     @link #reverseOrder()    }
+     . This class name
      * is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class ReverseComparator implements Comparator, Serializable, Rollbackable {
+    private static final class ReverseComparator implements Comparator,
+            Serializable, Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -770,17 +771,19 @@ public class Collections implements Rollbackable {
          * @return &lt;, ==, or &gt; 0 according to b.compareTo(a)
          */
         public int compare(Object a, Object b) {
-            return ((Comparable)b).compareTo(a);
+            return ((Comparable) b).compareTo(a);
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -794,7 +797,8 @@ public class Collections implements Rollbackable {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -806,8 +810,7 @@ public class Collections implements Rollbackable {
 
         protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
@@ -817,12 +820,13 @@ public class Collections implements Rollbackable {
     // Swap the desired element.
     /**     
      * The implementation of {
-@link #singleton(Object)    }
-. This class name
+     @link #singleton(Object)    }
+     . This class name
      * is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class SingletonSet extends AbstractSet implements Serializable, Rollbackable {
+    private static final class SingletonSet extends AbstractSet implements
+            Serializable, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -920,20 +924,23 @@ public class Collections implements Rollbackable {
 
                 private final boolean $ASSIGN$hasNext(boolean newValue) {
                     if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                        $RECORD$hasNext.add(null, hasNext, $CHECKPOINT.getTimestamp());
+                        $RECORD$hasNext.add(null, hasNext, $CHECKPOINT
+                                .getTimestamp());
                     }
                     return hasNext = newValue;
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     $RECORD$$CHECKPOINT.commit(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
                     hasNext = $RECORD$hasNext.restore(hasNext, timestamp, trim);
                     if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                                new _PROXY_(), timestamp, trim);
                         FieldRecord.popState($RECORDS);
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -943,11 +950,13 @@ public class Collections implements Rollbackable {
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -959,9 +968,7 @@ public class Collections implements Rollbackable {
 
                 private FieldRecord $RECORD$hasNext = new FieldRecord(0);
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                        $RECORD$hasNext
-                    };
+                private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$hasNext };
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
@@ -969,6 +976,7 @@ public class Collections implements Rollbackable {
 
             };
         }
+
         // The remaining methods are optional, but provide a performance
 
         // advantage by not allocating unnecessary iterators in AbstractSet.
@@ -990,7 +998,7 @@ public class Collections implements Rollbackable {
         public boolean containsAll(Collection c) {
             Iterator i = c.iterator();
             int pos = c.size();
-            while (--pos >= 0) 
+            while (--pos >= 0)
                 if (!equals(i.next(), element))
                     return false;
             return true;
@@ -1009,9 +1017,7 @@ public class Collections implements Rollbackable {
          * @return An array containing the element.
          */
         public Object[] toArray() {
-            return new Object[] {
-                    element
-                };
+            return new Object[] { element };
         }
 
         /**         
@@ -1020,11 +1026,12 @@ public class Collections implements Rollbackable {
          * square brackets.
          */
         public String toString() {
-            return "[" + element+"]";
+            return "[" + element + "]";
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -1032,20 +1039,20 @@ public class Collections implements Rollbackable {
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
     // class SingletonSet
     /**     
      * The implementation of {
-@link #singletonList(Object)    }
-. This class name
+     @link #singletonList(Object)    }
+     . This class name
      * is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class SingletonList extends AbstractList implements Serializable, RandomAccess, Rollbackable {
+    private static final class SingletonList extends AbstractList implements
+            Serializable, RandomAccess, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -1088,6 +1095,7 @@ public class Collections implements Rollbackable {
                 return element;
             throw new IndexOutOfBoundsException();
         }
+
         // The remaining methods are optional, but provide a performance
 
         // advantage by not allocating unnecessary iterators in AbstractList.
@@ -1109,7 +1117,7 @@ public class Collections implements Rollbackable {
         public boolean containsAll(Collection c) {
             Iterator i = c.iterator();
             int pos = c.size();
-            while (--pos >= 0) 
+            while (--pos >= 0)
                 if (!equals(i.next(), element))
                     return false;
             return true;
@@ -1130,7 +1138,7 @@ public class Collections implements Rollbackable {
          * @return 0 if o is the singleton element, -1 if not.
          */
         public int indexOf(Object o) {
-            return equals(o, element)?0:-1;
+            return equals(o, element) ? 0 : -1;
         }
 
         /**         
@@ -1139,7 +1147,7 @@ public class Collections implements Rollbackable {
          * @return 0 if o is the singleton element, -1 if not.
          */
         public int lastIndexOf(Object o) {
-            return equals(o, element)?0:-1;
+            return equals(o, element) ? 0 : -1;
         }
 
         /**         
@@ -1167,9 +1175,7 @@ public class Collections implements Rollbackable {
          * @return An array containing the element.
          */
         public Object[] toArray() {
-            return new Object[] {
-                    element
-                };
+            return new Object[] { element };
         }
 
         /**         
@@ -1178,11 +1184,12 @@ public class Collections implements Rollbackable {
          * square brackets. 
          */
         public String toString() {
-            return "[" + element+"]";
+            return "[" + element + "]";
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -1193,21 +1200,20 @@ public class Collections implements Rollbackable {
 
         private FieldRecord $RECORD$element = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$element
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$element };
 
     }
 
     // class SingletonList
     /**     
      * The implementation of {
-@link #singletonMap(Object, Object)    }
-. This class
+     @link #singletonMap(Object, Object)    }
+     . This class
      * name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class SingletonMap extends AbstractMap implements Serializable, Rollbackable {
+    private static final class SingletonMap extends AbstractMap implements
+            Serializable, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -1274,7 +1280,8 @@ public class Collections implements Rollbackable {
                             return $GET$CHECKPOINT_ANONYMOUS();
                         }
 
-                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        public final Object $SET$CHECKPOINT(
+                                Checkpoint checkpoint) {
                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                             return this;
                         }
@@ -1282,7 +1289,8 @@ public class Collections implements Rollbackable {
                     }
 
                     public void $COMMIT_ANONYMOUS(long timestamp) {
-                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        FieldRecord.commit($RECORDS, timestamp,
+                                $RECORD$$CHECKPOINT.getTopTimestamp());
                         super.$COMMIT(timestamp);
                     }
 
@@ -1294,11 +1302,13 @@ public class Collections implements Rollbackable {
                         return $CHECKPOINT;
                     }
 
-                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(
+                            Checkpoint checkpoint) {
                         if ($CHECKPOINT != checkpoint) {
                             Checkpoint oldCheckpoint = $CHECKPOINT;
                             if (checkpoint != null) {
-                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                        .getTimestamp());
                                 FieldRecord.pushState($RECORDS);
                             }
                             $CHECKPOINT = checkpoint;
@@ -1308,8 +1318,7 @@ public class Collections implements Rollbackable {
                         return this;
                     }
 
-                    private FieldRecord[] $RECORDS = new FieldRecord[] {
-                        };
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                     {
                         $CHECKPOINT.addObject(new _PROXY_());
@@ -1318,6 +1327,7 @@ public class Collections implements Rollbackable {
                 }));
             return entries;
         }
+
         // The remaining methods are optional, but provide a performance
 
         // advantage by not allocating unnecessary iterators in AbstractMap.
@@ -1348,7 +1358,7 @@ public class Collections implements Rollbackable {
          * singleton key, null otherwise.
          */
         public Object get(Object key) {
-            return equals(key, k)?v:null;
+            return equals(key, k) ? v : null;
         }
 
         /**         
@@ -1395,7 +1405,7 @@ public class Collections implements Rollbackable {
          * and its associated value.
          */
         public String toString() {
-            return "{" + k+"="+v+"}";
+            return "{" + k + "=" + v + "}";
         }
 
         private final Set $ASSIGN$entries(Set newValue) {
@@ -1409,14 +1419,15 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             $RECORD$k.restore(k, timestamp, trim);
             $RECORD$v.restore(v, timestamp, trim);
-            entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
+            entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
             super.$RESTORE(timestamp, trim);
         }
 
@@ -1426,25 +1437,23 @@ public class Collections implements Rollbackable {
 
         private FieldRecord $RECORD$entries = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$k,
-                $RECORD$v,
-                $RECORD$entries
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$k,
+                $RECORD$v, $RECORD$entries };
 
     }
 
     // class SingletonMap
     /**     
      * The implementation of {
-@link #synchronizedCollection(Collection)    }
-. This
+     @link #synchronizedCollection(Collection)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * Package visible, so that collections such as the one for
      * Hashtable.values() can specify which object to synchronize on.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    static class SynchronizedCollection implements Collection, Serializable, Rollbackable {
+    static class SynchronizedCollection implements Collection, Serializable,
+            Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -1727,13 +1736,15 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -1747,7 +1758,8 @@ public class Collections implements Rollbackable {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -1759,8 +1771,7 @@ public class Collections implements Rollbackable {
 
         protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
@@ -1841,14 +1852,16 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             $RECORD$i.restore(i, timestamp, trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -1862,7 +1875,8 @@ public class Collections implements Rollbackable {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -1876,23 +1890,22 @@ public class Collections implements Rollbackable {
 
         private FieldRecord $RECORD$i = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$i
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$i };
 
     }
 
     // class SynchronizedIterator
     /**     
      * The implementation of {
-@link #synchronizedList(List)    }
- for sequential
+     @link #synchronizedList(List)    }
+     for sequential
      * lists. This class name is required for compatibility with Sun's JDK
      * serializability. Package visible, so that lists such as Vector.subList()
      * can specify which object to synchronize on.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    static class SynchronizedList extends SynchronizedCollection implements List, Rollbackable {
+    static class SynchronizedList extends SynchronizedCollection implements
+            List, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -2085,7 +2098,8 @@ public class Collections implements Rollbackable {
          */
         public ListIterator listIterator(int index) {
             synchronized (mutex) {
-                return new SynchronizedListIterator(mutex, list.listIterator(index));
+                return new SynchronizedListIterator(mutex, list
+                        .listIterator(index));
             }
         }
 
@@ -2147,12 +2161,14 @@ public class Collections implements Rollbackable {
          */
         public List subList(int fromIndex, int toIndex) {
             synchronized (mutex) {
-                return new SynchronizedList(mutex, list.subList(fromIndex, toIndex));
+                return new SynchronizedList(mutex, list.subList(fromIndex,
+                        toIndex));
             }
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -2160,21 +2176,21 @@ public class Collections implements Rollbackable {
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
     // class SynchronizedList
     /**     
      * The implementation of {
-@link #synchronizedList(List)    }
- for random-access
+     @link #synchronizedList(List)    }
+     for random-access
      * lists. This class name is required for compatibility with Sun's JDK
      * serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class SynchronizedRandomAccessList extends SynchronizedList implements RandomAccess, Rollbackable {
+    private static final class SynchronizedRandomAccessList extends
+            SynchronizedList implements RandomAccess, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -2220,12 +2236,14 @@ public class Collections implements Rollbackable {
          */
         public List subList(int fromIndex, int toIndex) {
             synchronized (mutex) {
-                return new SynchronizedRandomAccessList(mutex, list.subList(fromIndex, toIndex));
+                return new SynchronizedRandomAccessList(mutex, list.subList(
+                        fromIndex, toIndex));
             }
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -2233,20 +2251,20 @@ public class Collections implements Rollbackable {
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
     // class SynchronizedRandomAccessList
     /**     
      * The implementation of {
-@link SynchronizedList#listIterator()    }
-. This
+     @link SynchronizedList#listIterator()    }
+     . This
      * iterator must "sync" on the same object as the list it iterates over.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class SynchronizedListIterator extends SynchronizedIterator implements ListIterator, Rollbackable {
+    private static final class SynchronizedListIterator extends
+            SynchronizedIterator implements ListIterator, Rollbackable {
 
         /**         
          * The wrapped iterator, stored both here and in the superclass to
@@ -2365,7 +2383,8 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -2376,21 +2395,20 @@ public class Collections implements Rollbackable {
 
         private FieldRecord $RECORD$li = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$li
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$li };
 
     }
 
     // class SynchronizedListIterator
     /**     
      * The implementation of {
-@link #synchronizedMap(Map)    }
-. This
+     @link #synchronizedMap(Map)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static class SynchronizedMap implements Map, Serializable, Rollbackable {
+    private static class SynchronizedMap implements Map, Serializable,
+            Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -2495,6 +2513,7 @@ public class Collections implements Rollbackable {
                 return m.containsValue(value);
             }
         }
+
         // This is one of the ickiest cases of nesting I've ever seen. It just
 
         // means "return a SynchronizedSet, except that the iterator() method
@@ -2509,7 +2528,7 @@ public class Collections implements Rollbackable {
                 final Map.Entry e;
 
                 SynchronizedMapEntry(Object o) {
-                    e = (Map.Entry)o;
+                    e = (Map.Entry) o;
                 }
 
                 /**                 
@@ -2594,13 +2613,15 @@ public class Collections implements Rollbackable {
                 }
 
                 public void $COMMIT(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     $RECORD$$CHECKPOINT.commit(timestamp);
                 }
 
                 public void $RESTORE(long timestamp, boolean trim) {
                     if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                                this, timestamp, trim);
                         FieldRecord.popState($RECORDS);
                         $RESTORE(timestamp, trim);
                     }
@@ -2614,7 +2635,8 @@ public class Collections implements Rollbackable {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -2626,8 +2648,7 @@ public class Collections implements Rollbackable {
 
                 protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    };
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
             }
 
@@ -2645,7 +2666,8 @@ public class Collections implements Rollbackable {
                          */
                         public Iterator iterator() {
                             synchronized (super.mutex) {
-                                return new SynchronizedIterator(super.mutex, c.iterator()) {
+                                return new SynchronizedIterator(super.mutex, c
+                                        .iterator()) {
                                     /**                                     
                                      * Retrieves the next map entry from the iterator.
                                      * A lock is obtained on the iterator's mutex before
@@ -2655,7 +2677,8 @@ public class Collections implements Rollbackable {
                                      */
                                     public Object next() {
                                         synchronized (super.mutex) {
-                                            return new SynchronizedMapEntry(super.next());
+                                            return new SynchronizedMapEntry(
+                                                    super.next());
                                         }
                                     }
 
@@ -2665,7 +2688,8 @@ public class Collections implements Rollbackable {
                                             $COMMIT_ANONYMOUS(timestamp);
                                         }
 
-                                        public final void $RESTORE(long timestamp, boolean trim) {
+                                        public final void $RESTORE(
+                                                long timestamp, boolean trim) {
                                             $RESTORE_ANONYMOUS(timestamp, trim);
                                         }
 
@@ -2673,7 +2697,8 @@ public class Collections implements Rollbackable {
                                             return $GET$CHECKPOINT_ANONYMOUS();
                                         }
 
-                                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                                        public final Object $SET$CHECKPOINT(
+                                                Checkpoint checkpoint) {
                                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                                             return this;
                                         }
@@ -2681,11 +2706,14 @@ public class Collections implements Rollbackable {
                                     }
 
                                     public void $COMMIT_ANONYMOUS(long timestamp) {
-                                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                                        FieldRecord.commit($RECORDS, timestamp,
+                                                $RECORD$$CHECKPOINT
+                                                        .getTopTimestamp());
                                         super.$COMMIT(timestamp);
                                     }
 
-                                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                                    public void $RESTORE_ANONYMOUS(
+                                            long timestamp, boolean trim) {
                                         super.$RESTORE(timestamp, trim);
                                     }
 
@@ -2693,22 +2721,27 @@ public class Collections implements Rollbackable {
                                         return $CHECKPOINT;
                                     }
 
-                                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                                    public final Object $SET$CHECKPOINT_ANONYMOUS(
+                                            Checkpoint checkpoint) {
                                         if ($CHECKPOINT != checkpoint) {
                                             Checkpoint oldCheckpoint = $CHECKPOINT;
                                             if (checkpoint != null) {
-                                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                                $RECORD$$CHECKPOINT
+                                                        .add(
+                                                                $CHECKPOINT,
+                                                                checkpoint
+                                                                        .getTimestamp());
                                                 FieldRecord.pushState($RECORDS);
                                             }
                                             $CHECKPOINT = checkpoint;
-                                            oldCheckpoint.setCheckpoint(checkpoint);
+                                            oldCheckpoint
+                                                    .setCheckpoint(checkpoint);
                                             checkpoint.addObject(new _PROXY_());
                                         }
                                         return this;
                                     }
 
-                                    private FieldRecord[] $RECORDS = new FieldRecord[] {
-                                        };
+                                    private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                                     {
                                         $CHECKPOINT.addObject(new _PROXY_());
@@ -2724,7 +2757,8 @@ public class Collections implements Rollbackable {
                                 $COMMIT_ANONYMOUS(timestamp);
                             }
 
-                            public final void $RESTORE(long timestamp, boolean trim) {
+                            public final void $RESTORE(long timestamp,
+                                    boolean trim) {
                                 $RESTORE_ANONYMOUS(timestamp, trim);
                             }
 
@@ -2732,7 +2766,8 @@ public class Collections implements Rollbackable {
                                 return $GET$CHECKPOINT_ANONYMOUS();
                             }
 
-                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            public final Object $SET$CHECKPOINT(
+                                    Checkpoint checkpoint) {
                                 $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                                 return this;
                             }
@@ -2740,11 +2775,13 @@ public class Collections implements Rollbackable {
                         }
 
                         public void $COMMIT_ANONYMOUS(long timestamp) {
-                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                            FieldRecord.commit($RECORDS, timestamp,
+                                    $RECORD$$CHECKPOINT.getTopTimestamp());
                             super.$COMMIT(timestamp);
                         }
 
-                        public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        public void $RESTORE_ANONYMOUS(long timestamp,
+                                boolean trim) {
                             super.$RESTORE(timestamp, trim);
                         }
 
@@ -2752,11 +2789,13 @@ public class Collections implements Rollbackable {
                             return $CHECKPOINT;
                         }
 
-                        public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        public final Object $SET$CHECKPOINT_ANONYMOUS(
+                                Checkpoint checkpoint) {
                             if ($CHECKPOINT != checkpoint) {
                                 Checkpoint oldCheckpoint = $CHECKPOINT;
                                 if (checkpoint != null) {
-                                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                    $RECORD$$CHECKPOINT.add($CHECKPOINT,
+                                            checkpoint.getTimestamp());
                                     FieldRecord.pushState($RECORDS);
                                 }
                                 $CHECKPOINT = checkpoint;
@@ -2766,8 +2805,7 @@ public class Collections implements Rollbackable {
                             return this;
                         }
 
-                        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                            };
+                        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                         {
                             $CHECKPOINT.addObject(new _PROXY_());
@@ -2995,17 +3033,20 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             $RECORD$m.restore(m, timestamp, trim);
-            entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
-            keys = (Set)$RECORD$keys.restore(keys, timestamp, trim);
-            values = (Collection)$RECORD$values.restore(values, timestamp, trim);
+            entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
+            keys = (Set) $RECORD$keys.restore(keys, timestamp, trim);
+            values = (Collection) $RECORD$values.restore(values, timestamp,
+                    trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -3019,7 +3060,8 @@ public class Collections implements Rollbackable {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -3039,26 +3081,23 @@ public class Collections implements Rollbackable {
 
         private FieldRecord $RECORD$values = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$m,
-                $RECORD$entries,
-                $RECORD$keys,
-                $RECORD$values
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$m,
+                $RECORD$entries, $RECORD$keys, $RECORD$values };
 
     }
 
     // class SynchronizedMap
     /**     
      * The implementation of {
-@link #synchronizedSet(Set)    }
-. This class
+     @link #synchronizedSet(Set)    }
+     . This class
      * name is required for compatibility with Sun's JDK serializability.
      * Package visible, so that sets such as Hashtable.keySet()
      * can specify which object to synchronize on.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    static class SynchronizedSet extends SynchronizedCollection implements Set, Rollbackable {
+    static class SynchronizedSet extends SynchronizedCollection implements Set,
+            Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -3112,7 +3151,8 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -3120,20 +3160,20 @@ public class Collections implements Rollbackable {
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
     // class SynchronizedSet
     /**     
      * The implementation of {
-@link #synchronizedSortedMap(SortedMap)    }
-. This
+     @link #synchronizedSortedMap(SortedMap)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class SynchronizedSortedMap extends SynchronizedMap implements SortedMap, Rollbackable {
+    private static final class SynchronizedSortedMap extends SynchronizedMap
+            implements SortedMap, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -3246,7 +3286,8 @@ public class Collections implements Rollbackable {
          */
         public SortedMap subMap(Object fromKey, Object toKey) {
             synchronized (mutex) {
-                return new SynchronizedSortedMap(mutex, sm.subMap(fromKey, toKey));
+                return new SynchronizedSortedMap(mutex, sm.subMap(fromKey,
+                        toKey));
             }
         }
 
@@ -3272,7 +3313,8 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -3283,21 +3325,20 @@ public class Collections implements Rollbackable {
 
         private FieldRecord $RECORD$sm = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$sm
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$sm };
 
     }
 
     // class SynchronizedSortedMap
     /**     
      * The implementation of {
-@link #synchronizedSortedSet(SortedSet)    }
-. This
+     @link #synchronizedSortedSet(SortedSet)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class SynchronizedSortedSet extends SynchronizedSet implements SortedSet, Rollbackable {
+    private static final class SynchronizedSortedSet extends SynchronizedSet
+            implements SortedSet, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -3410,7 +3451,8 @@ public class Collections implements Rollbackable {
          */
         public SortedSet subSet(Object fromElement, Object toElement) {
             synchronized (mutex) {
-                return new SynchronizedSortedSet(mutex, ss.subSet(fromElement, toElement));
+                return new SynchronizedSortedSet(mutex, ss.subSet(fromElement,
+                        toElement));
             }
         }
 
@@ -3436,7 +3478,8 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -3447,21 +3490,20 @@ public class Collections implements Rollbackable {
 
         private FieldRecord $RECORD$ss = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$ss
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$ss };
 
     }
 
     // class SynchronizedSortedSet
     /**     
      * The implementation of {
-@link #unmodifiableCollection(Collection)    }
-. This
+     @link #unmodifiableCollection(Collection)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static class UnmodifiableCollection implements Collection, Serializable, Rollbackable {
+    private static class UnmodifiableCollection implements Collection,
+            Serializable, Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -3658,13 +3700,15 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -3678,7 +3722,8 @@ public class Collections implements Rollbackable {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -3690,8 +3735,7 @@ public class Collections implements Rollbackable {
 
         protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
@@ -3750,14 +3794,16 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             $RECORD$i.restore(i, timestamp, trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -3771,7 +3817,8 @@ public class Collections implements Rollbackable {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -3785,22 +3832,21 @@ public class Collections implements Rollbackable {
 
         private FieldRecord $RECORD$i = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$i
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$i };
 
     }
 
     // class UnmodifiableIterator
     /**     
      * The implementation of {
-@link #unmodifiableList(List)    }
- for sequential
+     @link #unmodifiableList(List)    }
+     for sequential
      * lists. This class name is required for compatibility with Sun's JDK
      * serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static class UnmodifiableList extends UnmodifiableCollection implements List, Rollbackable {
+    private static class UnmodifiableList extends UnmodifiableCollection
+            implements List, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -3983,7 +4029,8 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -3991,21 +4038,21 @@ public class Collections implements Rollbackable {
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
     // class UnmodifiableList
     /**     
      * The implementation of {
-@link #unmodifiableList(List)    }
- for random-access
+     @link #unmodifiableList(List)    }
+     for random-access
      * lists. This class name is required for compatibility with Sun's JDK
      * serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class UnmodifiableRandomAccessList extends UnmodifiableList implements RandomAccess, Rollbackable {
+    private static final class UnmodifiableRandomAccessList extends
+            UnmodifiableList implements RandomAccess, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -4022,7 +4069,8 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -4030,19 +4078,19 @@ public class Collections implements Rollbackable {
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
     // class UnmodifiableRandomAccessList
     /**     
      * The implementation of {
-@link UnmodifiableList#listIterator()    }
-.
+     @link UnmodifiableList#listIterator()    }
+     .
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class UnmodifiableListIterator extends UnmodifiableIterator implements ListIterator, Rollbackable {
+    private static final class UnmodifiableListIterator extends
+            UnmodifiableIterator implements ListIterator, Rollbackable {
 
         /**         
          * The wrapped iterator, stored both here and in the superclass to
@@ -4124,7 +4172,8 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -4135,21 +4184,20 @@ public class Collections implements Rollbackable {
 
         private FieldRecord $RECORD$li = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$li
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$li };
 
     }
 
     // class UnmodifiableListIterator
     /**     
      * The implementation of {
-@link #unmodifiableMap(Map)    }
-. This
+     @link #unmodifiableMap(Map)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static class UnmodifiableMap implements Map, Serializable, Rollbackable {
+    private static class UnmodifiableMap implements Map, Serializable,
+            Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -4181,12 +4229,13 @@ public class Collections implements Rollbackable {
 
         /**         
          * The implementation of {
-@link UnmodifiableMap#entrySet()        }
-. This class
+         @link UnmodifiableMap#entrySet()        }
+         . This class
          * name is required for compatibility with Sun's JDK serializability.
          * @author Eric Blake (ebb9@email.byu.edu)
          */
-        private static final class UnmodifiableEntrySet extends UnmodifiableSet implements Serializable, Rollbackable {
+        private static final class UnmodifiableEntrySet extends UnmodifiableSet
+                implements Serializable, Rollbackable {
 
             /**             
              * Compatible with JDK 1.4.
@@ -4200,6 +4249,7 @@ public class Collections implements Rollbackable {
             UnmodifiableEntrySet(Set s) {
                 super(s);
             }
+
             // The iterator must return unmodifiable map entries.
 
             public Iterator iterator() {
@@ -4211,9 +4261,10 @@ public class Collections implements Rollbackable {
                      * @throws NoSuchElementException if there are no more elements.
                      */
                     public Object next() {
-                        final Map.Entry e = (Map.Entry)super.next();
+                        final Map.Entry e = (Map.Entry) super.next();
                         return new Map.Entry() {
-                            protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+                            protected Checkpoint $CHECKPOINT = new Checkpoint(
+                                    this);
 
                             /**                             
                              * Returns <code>true</code> if the object, o, is also a map entry with an
@@ -4273,13 +4324,16 @@ public class Collections implements Rollbackable {
                             }
 
                             public void $COMMIT(long timestamp) {
-                                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                                FieldRecord.commit($RECORDS, timestamp,
+                                        $RECORD$$CHECKPOINT.getTopTimestamp());
                                 $RECORD$$CHECKPOINT.commit(timestamp);
                             }
 
                             public void $RESTORE(long timestamp, boolean trim) {
-                                if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                                if (timestamp <= $RECORD$$CHECKPOINT
+                                        .getTopTimestamp()) {
+                                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore(
+                                            $CHECKPOINT, this, timestamp, trim);
                                     FieldRecord.popState($RECORDS);
                                     $RESTORE(timestamp, trim);
                                 }
@@ -4289,11 +4343,13 @@ public class Collections implements Rollbackable {
                                 return $CHECKPOINT;
                             }
 
-                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            public final Object $SET$CHECKPOINT(
+                                    Checkpoint checkpoint) {
                                 if ($CHECKPOINT != checkpoint) {
                                     Checkpoint oldCheckpoint = $CHECKPOINT;
                                     if (checkpoint != null) {
-                                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                        $RECORD$$CHECKPOINT.add($CHECKPOINT,
+                                                checkpoint.getTimestamp());
                                         FieldRecord.pushState($RECORDS);
                                     }
                                     $CHECKPOINT = checkpoint;
@@ -4305,8 +4361,7 @@ public class Collections implements Rollbackable {
 
                             protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-                            private FieldRecord[] $RECORDS = new FieldRecord[] {
-                                };
+                            private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                         };
                     }
@@ -4325,7 +4380,8 @@ public class Collections implements Rollbackable {
                             return $GET$CHECKPOINT_ANONYMOUS();
                         }
 
-                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        public final Object $SET$CHECKPOINT(
+                                Checkpoint checkpoint) {
                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                             return this;
                         }
@@ -4333,7 +4389,8 @@ public class Collections implements Rollbackable {
                     }
 
                     public void $COMMIT_ANONYMOUS(long timestamp) {
-                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        FieldRecord.commit($RECORDS, timestamp,
+                                $RECORD$$CHECKPOINT.getTopTimestamp());
                         super.$COMMIT(timestamp);
                     }
 
@@ -4345,11 +4402,13 @@ public class Collections implements Rollbackable {
                         return $CHECKPOINT;
                     }
 
-                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(
+                            Checkpoint checkpoint) {
                         if ($CHECKPOINT != checkpoint) {
                             Checkpoint oldCheckpoint = $CHECKPOINT;
                             if (checkpoint != null) {
-                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                        .getTimestamp());
                                 FieldRecord.pushState($RECORDS);
                             }
                             $CHECKPOINT = checkpoint;
@@ -4359,8 +4418,7 @@ public class Collections implements Rollbackable {
                         return this;
                     }
 
-                    private FieldRecord[] $RECORDS = new FieldRecord[] {
-                        };
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                     {
                         $CHECKPOINT.addObject(new _PROXY_());
@@ -4370,7 +4428,8 @@ public class Collections implements Rollbackable {
             }
 
             public void $COMMIT(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                        .getTopTimestamp());
                 super.$COMMIT(timestamp);
             }
 
@@ -4378,8 +4437,7 @@ public class Collections implements Rollbackable {
                 super.$RESTORE(timestamp, trim);
             }
 
-            private FieldRecord[] $RECORDS = new FieldRecord[] {
-                };
+            private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
         }
 
@@ -4610,17 +4668,20 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             $RECORD$m.restore(m, timestamp, trim);
-            entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
-            keys = (Set)$RECORD$keys.restore(keys, timestamp, trim);
-            values = (Collection)$RECORD$values.restore(values, timestamp, trim);
+            entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
+            keys = (Set) $RECORD$keys.restore(keys, timestamp, trim);
+            values = (Collection) $RECORD$values.restore(values, timestamp,
+                    trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -4634,7 +4695,8 @@ public class Collections implements Rollbackable {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -4654,24 +4716,21 @@ public class Collections implements Rollbackable {
 
         private FieldRecord $RECORD$values = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$m,
-                $RECORD$entries,
-                $RECORD$keys,
-                $RECORD$values
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$m,
+                $RECORD$entries, $RECORD$keys, $RECORD$values };
 
     }
 
     // class UnmodifiableMap
     /**     
      * The implementation of {
-@link #unmodifiableSet(Set)    }
-. This class
+     @link #unmodifiableSet(Set)    }
+     . This class
      * name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static class UnmodifiableSet extends UnmodifiableCollection implements Set, Rollbackable {
+    private static class UnmodifiableSet extends UnmodifiableCollection
+            implements Set, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -4706,7 +4765,8 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -4714,20 +4774,20 @@ public class Collections implements Rollbackable {
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
     // class UnmodifiableSet
     /**     
      * The implementation of {
-@link #unmodifiableSortedMap(SortedMap)    }
-. This
+     @link #unmodifiableSortedMap(SortedMap)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static class UnmodifiableSortedMap extends UnmodifiableMap implements SortedMap, Rollbackable {
+    private static class UnmodifiableSortedMap extends UnmodifiableMap
+            implements SortedMap, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -4855,7 +4915,8 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -4866,21 +4927,20 @@ public class Collections implements Rollbackable {
 
         private FieldRecord $RECORD$sm = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$sm
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$sm };
 
     }
 
     // class UnmodifiableSortedMap
     /**     
      * The implementation of {
-@link #synchronizedSortedMap(SortedMap)    }
-. This
+     @link #synchronizedSortedMap(SortedMap)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static class UnmodifiableSortedSet extends UnmodifiableSet implements SortedSet, Rollbackable {
+    private static class UnmodifiableSortedSet extends UnmodifiableSet
+            implements SortedSet, Rollbackable {
 
         /**         
          * Compatible with JDK 1.4.
@@ -5020,20 +5080,19 @@ public class Collections implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            ss = (SortedSet)$RECORD$ss.restore(ss, timestamp, trim);
+            ss = (SortedSet) $RECORD$ss.restore(ss, timestamp, trim);
             super.$RESTORE(timestamp, trim);
         }
 
         private FieldRecord $RECORD$ss = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$ss
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$ss };
 
     }
 
@@ -5064,7 +5123,7 @@ public class Collections implements Rollbackable {
      * Note: This code is also used in Arrays (for sort as well as search).
      */
     static final int compare(Object o1, Object o2, Comparator c) {
-        return c == null?((Comparable)o1).compareTo(o2):c.compare(o1, o2);
+        return c == null ? ((Comparable) o1).compareTo(o2) : c.compare(o1, o2);
     }
 
     /**     
@@ -5075,12 +5134,12 @@ public class Collections implements Rollbackable {
      * the list contains the key more than once, any one of them may be found.
      * <p>
      * This algorithm behaves in log(n) time for {
-@link RandomAccess    }
- lists,
+     @link RandomAccess    }
+     lists,
      * and uses a linear search with O(n) link traversals and log(n) comparisons
      * with {
-@link AbstractSequentialList    }
- lists. Note: although the
+     @link AbstractSequentialList    }
+     lists. Note: although the
      * specification allows for an infinite loop if the list is unsorted, it will
      * not happen in this (Classpath) implementation.
      * @param l the list to search (must be sorted)
@@ -5106,12 +5165,12 @@ public class Collections implements Rollbackable {
      * found. If the comparator is null, the elements' natural ordering is used.
      * <p>
      * This algorithm behaves in log(n) time for {
-@link RandomAccess    }
- lists,
+     @link RandomAccess    }
+     lists,
      * and uses a linear search with O(n) link traversals and log(n) comparisons
      * with {
-@link AbstractSequentialList    }
- lists. Note: although the
+     @link AbstractSequentialList    }
+     lists. Note: although the
      * specification allows for an infinite loop if the list is unsorted, it will
      * not happen in this (Classpath) implementation.
      * @param l the list to search (must be sorted)
@@ -5140,13 +5199,13 @@ public class Collections implements Rollbackable {
                 if (i < pos) {
                     if (!forward)
                         itr.next();
-                    for (; i != pos; i++, o = itr.next()) 
+                    for (; i != pos; i++, o = itr.next())
                         ;
                     forward = true;
                 } else {
                     if (forward)
                         itr.previous();
-                    for (; i != pos; i--, o = itr.previous()) 
+                    for (; i != pos; i--, o = itr.previous())
                         ;
                     forward = false;
                 }
@@ -5157,7 +5216,8 @@ public class Collections implements Rollbackable {
                     hi = pos - 1;
                 else
                     low = ++pos;
-            }        } else {
+            }
+        } else {
             while (low <= hi) {
                 pos = (low + hi) >> 1;
                 final int d = compare(l.get(pos), key, c);
@@ -5256,7 +5316,7 @@ public class Collections implements Rollbackable {
      */
     public static int indexOfSubList(List source, List target) {
         int ssize = source.size();
-        for (int i = 0, j = target.size(); j <= ssize; i++, j++) 
+        for (int i = 0, j = target.size(); j <= ssize; i++, j++)
             if (source.subList(i, j).equals(target))
                 return i;
         return -1;
@@ -5276,7 +5336,7 @@ public class Collections implements Rollbackable {
      */
     public static int lastIndexOfSubList(List source, List target) {
         int ssize = source.size();
-        for (int i = ssize - target.size(), j = ssize; i >= 0; i--, j--) 
+        for (int i = ssize - target.size(), j = ssize; i >= 0; i--, j--)
             if (source.subList(i, j).equals(target))
                 return i;
         return -1;
@@ -5293,7 +5353,7 @@ public class Collections implements Rollbackable {
      */
     public static ArrayList list(Enumeration e) {
         ArrayList l = new ArrayList();
-        while (e.hasMoreElements()) 
+        while (e.hasMoreElements())
             l.add(e.nextElement());
         return l;
     }
@@ -5413,7 +5473,7 @@ public class Collections implements Rollbackable {
     public static boolean replaceAll(List list, Object oldval, Object newval) {
         ListIterator itr = list.listIterator();
         boolean replace_occured = false;
-        for (int i = list.size(); --i >= 0; ) 
+        for (int i = list.size(); --i >= 0;)
             if (AbstractCollection.equals(oldval, itr.next())) {
                 itr.set(newval);
                 replace_occured = true;
@@ -5470,16 +5530,16 @@ public class Collections implements Rollbackable {
      * result in <code>[t, n, k, a, s]</code>.
      * <p>
      * If the list is small or implements {
-@link RandomAccess    }
-, the
+     @link RandomAccess    }
+     , the
      * implementation exchanges the first element to its destination, then the
      * displaced element, and so on until a circuit has been completed. The
      * process is repeated if needed on the second element, and so forth, until
      * all elements have been swapped.  For large non-random lists, the
      * implementation breaks the list into two sublists at index
      * <code>-distance mod size</code>, calls {
-@link #reverse(List)    }
- on the
+     @link #reverse(List)    }
+     on the
      * pieces, then reverses the overall list.
      * @param list the list to rotate
      * @param distance the distance to rotate by; unrestricted in value
@@ -5510,7 +5570,8 @@ public class Collections implements Rollbackable {
             }
             while (--lcm >= 0) {
                 Object o = list.get(lcm);
-                for (int i = lcm + distance; i != lcm; i = (i + distance) % size) 
+                for (int i = lcm + distance; i != lcm; i = (i + distance)
+                        % size)
                     o = list.set(i, o);
                 list.set(lcm, o);
             }
@@ -5530,8 +5591,8 @@ public class Collections implements Rollbackable {
      * <p>
      * This method operates in linear time. To do this on large lists which do
      * not implement {
-@link RandomAccess    }
-, a temporary array is used to acheive
+     @link RandomAccess    }
+     , a temporary array is used to acheive
      * this speed, since it would be quadratic access otherwise.
      * @param l the list to shuffle
      * @throws UnsupportedOperationException if l.listIterator() does not
@@ -5560,8 +5621,8 @@ public class Collections implements Rollbackable {
      * <p>
      * This method operates in linear time. To do this on large lists which do
      * not implement {
-@link RandomAccess    }
-, a temporary array is used to acheive
+     @link RandomAccess    }
+     , a temporary array is used to acheive
      * this speed, since it would be quadratic access otherwise.
      * @param l the list to shuffle
      * @param r the source of randomness to use for the shuffle
@@ -5858,8 +5919,8 @@ public class Collections implements Rollbackable {
      * "read-only" access, although changes in the backing collection show up
      * in this view. Attempts to modify the collection directly or via iterators
      * will fail with {
-@link UnsupportedOperationException    }
-.  Although this view
+     @link UnsupportedOperationException    }
+     .  Although this view
      * prevents changes to the structure of the collection and its elements, the values
      * referenced by the objects in the collection can still be modified.
      * <p>
@@ -5881,8 +5942,8 @@ public class Collections implements Rollbackable {
      * "read-only" access, although changes in the backing list show up
      * in this view. Attempts to modify the list directly, via iterators, or
      * via sublists, will fail with {
-@link UnsupportedOperationException    }
-.
+     @link UnsupportedOperationException    }
+     .
      * Although this view prevents changes to the structure of the list and
      * its elements, the values referenced by the objects in the list can
      * still be modified.   
@@ -5906,8 +5967,8 @@ public class Collections implements Rollbackable {
      * access, although changes in the backing map show up in this view.
      * Attempts to modify the map directly, or via collection views or their
      * iterators will fail with {
-@link UnsupportedOperationException    }
-.
+     @link UnsupportedOperationException    }
+     .
      * Although this view prevents changes to the structure of the map and its
      * entries, the values referenced by the objects in the map can still be
      * modified.   
@@ -5927,8 +5988,8 @@ public class Collections implements Rollbackable {
      * "read-only" access, although changes in the backing set show up
      * in this view. Attempts to modify the set directly or via iterators
      * will fail with {
-@link UnsupportedOperationException    }
-.
+     @link UnsupportedOperationException    }
+     .
      * Although this view prevents changes to the structure of the set and its
      * entries, the values referenced by the objects in the set can still be
      * modified.   
@@ -5948,8 +6009,8 @@ public class Collections implements Rollbackable {
      * "read-only" access, although changes in the backing map show up in this
      * view. Attempts to modify the map directly, via subviews, via collection
      * views, or iterators, will fail with {
-@link UnsupportedOperationException    }
-.
+     @link UnsupportedOperationException    }
+     .
      * Although this view prevents changes to the structure of the map and its
      * entries, the values referenced by the objects in the map can still be
      * modified.   
@@ -5969,8 +6030,8 @@ public class Collections implements Rollbackable {
      * "read-only" access, although changes in the backing set show up
      * in this view. Attempts to modify the set directly, via subsets, or via
      * iterators, will fail with {
-@link UnsupportedOperationException    }
-.
+     @link UnsupportedOperationException    }
+     .
      * Although this view prevents changes to the structure of the set and its
      * entries, the values referenced by the objects in the set can still be
      * modified.   
@@ -5986,13 +6047,15 @@ public class Collections implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -6018,8 +6081,7 @@ public class Collections implements Rollbackable {
 
     protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
 }
 

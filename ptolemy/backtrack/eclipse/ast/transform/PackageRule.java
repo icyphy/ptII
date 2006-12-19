@@ -27,6 +27,12 @@
  */
 package ptolemy.backtrack.eclipse.ast.transform;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -40,12 +46,6 @@ import ptolemy.backtrack.eclipse.ast.LocalClassLoader;
 import ptolemy.backtrack.eclipse.ast.Type;
 import ptolemy.backtrack.eclipse.ast.TypeAnalyzer;
 import ptolemy.backtrack.eclipse.ast.TypeAnalyzerState;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// PackageRule
@@ -328,10 +328,9 @@ public class PackageRule extends TransformRule {
 
                     if (ConstructorTransformer.SPECIAL_TYPE_MAPPING
                             .containsKey(fullName)) {
-                        newName = AbstractTransformer.createName(
-                        		node.getAST(),
-                        		ConstructorTransformer.SPECIAL_TYPE_MAPPING
-                                                .get(fullName));
+                        newName = AbstractTransformer.createName(node.getAST(),
+                                ConstructorTransformer.SPECIAL_TYPE_MAPPING
+                                        .get(fullName));
                     } else {
                         newName = _addPrefix(node, _prefix);
                     }
@@ -347,8 +346,8 @@ public class PackageRule extends TransformRule {
                 }
 
                 if (!convert && !(node.getParent() instanceof Name)) {
-                	
-                	for (String specialType : _specialTypes) {
+
+                    for (String specialType : _specialTypes) {
                         String simpleType = specialType.substring(specialType
                                 .lastIndexOf(".") + 1);
                         String newId = null;
@@ -363,8 +362,8 @@ public class PackageRule extends TransformRule {
 
                         if (newId != null) {
                             AbstractTransformer.replaceNode(node,
-                                    AbstractTransformer.createName(
-                                    		node.getAST(), newId));
+                                    AbstractTransformer.createName(node
+                                            .getAST(), newId));
                         }
                     }
                 }

@@ -29,7 +29,6 @@ package ptolemy.backtrack.eclipse.plugin.actions;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
@@ -39,16 +38,16 @@ import ptolemy.backtrack.eclipse.plugin.dialogs.AboutDialog;
 //// AboutAction
 
 /**
-   Action to trigger the About dialog of the Eclipse backtracking plugin.
+ Action to trigger the About dialog of the Eclipse backtracking plugin.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class AboutAction implements IWorkbenchWindowActionDelegate {
-    
+
     /** Dispose of system resources allocated for this actions.
      */
     public void dispose() {

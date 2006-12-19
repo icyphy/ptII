@@ -98,10 +98,9 @@ public class SDFDirector extends StaticSchedulingDirector {
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
 
-        ptolemy.actor.CompositeActor container 
-                = (ptolemy.actor.CompositeActor) getComponent().getContainer();
-        CodeGeneratorHelper containerHelper 
-                = (CodeGeneratorHelper) _getHelper(container);
+        ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
+                .getContainer();
+        CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
 
         // Generate code for creating external initial production.
         Iterator outputPorts = container.outputPortList().iterator();
@@ -119,8 +118,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                         }
 
                         for (int k = 0; k < rate; k++) {
-                            code.append(CodeStream.indent(
-                                    containerHelper.getReference(name + "," + k)));
+                            code.append(CodeStream.indent(containerHelper
+                                    .getReference(name + "," + k)));
                             code.append(" = ");
                             code.append(containerHelper.getReference("@" + name
                                     + "," + k));
@@ -171,9 +170,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper 
-                = (ptolemy.codegen.c.actor.TypedCompositeActor)
-                _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
         if (container instanceof TypedCompositeActorWithCoSimulation) {
 
@@ -202,8 +199,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                         code.append("jdouble * "
                                 + pointerToTokensFromOneChannel
                                 + " = (*env)->GetDoubleArrayElements"
-                                + "(env, " + tokensFromOneChannel
-                                + ", NULL);" + _eol);
+                                + "(env, " + tokensFromOneChannel + ", NULL);"
+                                + _eol);
                     } else {
                         // FIXME: need to deal with other types
                     }
@@ -223,12 +220,14 @@ public class SDFDirector extends StaticSchedulingDirector {
                     if (type == BaseType.INT) {
                         code.append("(*env)->ReleaseIntArrayElements(env, "
                                 + tokensFromOneChannel + ", "
-                                + pointerToTokensFromOneChannel + ", 0);" + _eol);
+                                + pointerToTokensFromOneChannel + ", 0);"
+                                + _eol);
 
                     } else if (type == BaseType.DOUBLE) {
                         code.append("(*env)->ReleaseDoubleArrayElements(env, "
                                 + tokensFromOneChannel + ", "
-                                + pointerToTokensFromOneChannel + ", 0);" + _eol);
+                                + pointerToTokensFromOneChannel + ", 0);"
+                                + _eol);
                     } else {
                         // FIXME: need to deal with other types
                     }
@@ -245,13 +244,12 @@ public class SDFDirector extends StaticSchedulingDirector {
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(CodeStream.indent(
-                                compositeActorHelper.getReference
-                                ("@" + name + "," + k)));
+                        code.append(CodeStream.indent(compositeActorHelper
+                                .getReference("@" + name + "," + k)));
                         code.append(" =" + _eol);
                         code.append(CodeStream.indent(_INDENT2
-                                + compositeActorHelper
-                                .getReference(name + "," + k)));
+                                + compositeActorHelper.getReference(name + ","
+                                        + k)));
                         code.append(";" + _eol);
                     }
                 }
@@ -276,18 +274,15 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper 
-                = (ptolemy.codegen.c.actor.TypedCompositeActor) 
-                _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
         if (container instanceof TypedCompositeActorWithCoSimulation) {
 
             if (_portNumber == 0) {
                 int numberOfOutputPorts = container.outputPortList().size();
 
-                code
-                        .append(_INDENT2
-                                + "jobjectArray tokensToAllOutputPorts;" + _eol);
+                code.append(_INDENT2 + "jobjectArray tokensToAllOutputPorts;"
+                        + _eol);
                 code.append(_INDENT2
                         + "jclass objClass = (*env)->FindClass(env, "
                         + "\"Ljava/lang/Object;\");" + _eol);
@@ -302,7 +297,8 @@ public class SDFDirector extends StaticSchedulingDirector {
             Type type = ((TypedIOPort) outputPort).getType();
 
             int numberOfChannels = outputPort.getWidthInside();
-            code.append(_INDENT2 + "jobjectArray " + tokensToThisPort + ";" + _eol);
+            code.append(_INDENT2 + "jobjectArray " + tokensToThisPort + ";"
+                    + _eol);
 
             if (type == BaseType.INT) {
                 if (!_intFlag) {
@@ -373,7 +369,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                 } else if (type == BaseType.DOUBLE) {
                     code.append(_INDENT2 + "jdoubleArray "
                             + tokensToOneChannelArray + " = "
-                            + "(*env)->NewDoubleArray(env, " + rate + ");" + _eol);
+                            + "(*env)->NewDoubleArray(env, " + rate + ");"
+                            + _eol);
                     code.append(_INDENT2 + "(*env)->SetDoubleArrayRegion"
                             + "(env, " + tokensToOneChannelArray + ", 0, "
                             + rate + ", " + tokensToOneChannel + ");" + _eol);
@@ -407,13 +404,12 @@ public class SDFDirector extends StaticSchedulingDirector {
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(CodeStream.indent(
-                                compositeActorHelper
+                        code.append(CodeStream.indent(compositeActorHelper
                                 .getReference(name + "," + k)));
                         code.append(" =" + _eol);
                         code.append(CodeStream.indent(_INDENT2
-                                + compositeActorHelper
-                                .getReference("@" + name + "," + k)));
+                                + compositeActorHelper.getReference("@" + name
+                                        + "," + k)));
                         code.append(";" + _eol);
                     }
                 }
@@ -524,8 +520,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                             .iterator();
                     label1: while (sourcePorts.hasNext()) {
                         IOPort sourcePort = (IOPort) sourcePorts.next();
-                        CodeGeneratorHelper helper = (CodeGeneratorHelper) 
-                                _getHelper(sourcePort.getContainer());
+                        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
+                                .getContainer());
                         int width;
                         if (sourcePort.isInput()) {
                             width = sourcePort.getWidthInside();
@@ -547,13 +543,14 @@ public class SDFDirector extends StaticSchedulingDirector {
                         }
                     }
                 }
-            tempCode.append(_createOffsetVariablesIfNeeded(outputPort, i,
-                    readTokens, writeTokens));
+                tempCode.append(_createOffsetVariablesIfNeeded(outputPort, i,
+                        readTokens, writeTokens));
             }
         }
         if (tempCode.length() > 0) {
-            code.append("\n" + _codeGenerator.comment(container.getName() 
-                    + "'s offset variables"));
+            code.append("\n"
+                    + _codeGenerator.comment(container.getName()
+                            + "'s offset variables"));
             code.append(tempCode);
         }
 
@@ -595,8 +592,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                                 .iterator();
                         label2: while (sourcePorts.hasNext()) {
                             IOPort sourcePort = (IOPort) sourcePorts.next();
-                            CodeGeneratorHelper helper = (CodeGeneratorHelper) 
-                                    _getHelper(sourcePort.getContainer());
+                            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
+                                    .getContainer());
                             int width;
                             if (sourcePort.isInput()) {
                                 width = sourcePort.getWidthInside();
@@ -618,13 +615,14 @@ public class SDFDirector extends StaticSchedulingDirector {
                             }
                         }
                     }
-                    tempCode2.append(_createOffsetVariablesIfNeeded(inputPort, i,
-                            readTokens, writeTokens));
+                    tempCode2.append(_createOffsetVariablesIfNeeded(inputPort,
+                            i, readTokens, writeTokens));
                 }
             }
             if (tempCode2.length() > 0) {
-                code.append("\n" + _codeGenerator.comment(actor.getName() 
-                        + "'s offset variables"));
+                code.append("\n"
+                        + _codeGenerator.comment(actor.getName()
+                                + "'s offset variables"));
                 code.append(tempCode2);
             }
         }
@@ -721,18 +719,14 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     protected void _updatePortBufferSize() throws IllegalActionException {
 
-        ptolemy.domains.sdf.kernel.SDFDirector director 
-                = (ptolemy.domains.sdf.kernel.SDFDirector) getComponent();
+        ptolemy.domains.sdf.kernel.SDFDirector director = (ptolemy.domains.sdf.kernel.SDFDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper 
-                = (ptolemy.codegen.c.actor.TypedCompositeActor) 
-                _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
         Iterator actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper 
-                    = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();

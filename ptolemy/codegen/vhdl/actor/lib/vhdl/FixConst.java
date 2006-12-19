@@ -73,26 +73,24 @@ public class FixConst extends VHDLCodeGeneratorHelper {
         super.generateFireCode();
 
         ArrayList args = new ArrayList();
-        ptolemy.actor.lib.vhdl.FixConst actor = 
-            (ptolemy.actor.lib.vhdl.FixConst) getComponent();
+        ptolemy.actor.lib.vhdl.FixConst actor = (ptolemy.actor.lib.vhdl.FixConst) getComponent();
 
-        Precision precision = new Precision(((Parameter) 
-                actor.getAttribute("outputPrecision")).getExpression());
+        Precision precision = new Precision(((Parameter) actor
+                .getAttribute("outputPrecision")).getExpression());
 
-        Overflow overflow = Overflow.getName(((Parameter) actor.getAttribute(
-            "outputOverflow")).getExpression().toLowerCase());
+        Overflow overflow = Overflow.getName(((Parameter) actor
+                .getAttribute("outputOverflow")).getExpression().toLowerCase());
 
-        Rounding rounding = Rounding.getName(((Parameter) actor.getAttribute(
-            "outputRounding")).getExpression().toLowerCase());
+        Rounding rounding = Rounding.getName(((Parameter) actor
+                .getAttribute("outputRounding")).getExpression().toLowerCase());
 
-        FixPoint fixValue = new FixPoint(((ScalarToken)
-                actor.value.getToken()).doubleValue(), 
-                new FixPointQuantization(
-                        precision, overflow, rounding));
+        FixPoint fixValue = new FixPoint(((ScalarToken) actor.value.getToken())
+                .doubleValue(), new FixPointQuantization(precision, overflow,
+                rounding));
 
         int high = fixValue.getPrecision().getIntegerBitLength() - 1;
         int low = -fixValue.getPrecision().getFractionBitLength();
-        
+
         String realValue = fixValue.bigDecimalValue().toString();
 
         args.add("" + high);
@@ -110,7 +108,7 @@ public class FixConst extends VHDLCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
-        
+
         files.add("ieee.std_logic_1164.all");
         files.add("ieee.numeric_std.all");
         files.add("ieee_proposed.math_utility_pkg.all");

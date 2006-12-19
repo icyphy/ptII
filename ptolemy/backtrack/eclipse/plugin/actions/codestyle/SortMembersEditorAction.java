@@ -13,38 +13,37 @@ import ptolemy.backtrack.eclipse.plugin.editor.MultiPageCompilationUnitEditor;
 
 public class SortMembersEditorAction implements IWorkbenchWindowActionDelegate {
 
-	public void dispose() {
-	}
+    public void dispose() {
+    }
 
-	public void init(IWorkbenchWindow window) {
-		_window = window;
-	}
+    public void init(IWorkbenchWindow window) {
+        _window = window;
+    }
 
-	/** Sort the source code in the editor.
+    /** Sort the source code in the editor.
      * 
      *  @param action The action proxy (not used in this method).
      */
     public void run(IAction action) {
-		IEditorPart editorPart = _window.getActivePage().getActiveEditor();
-		MultiPageCompilationUnitEditor editor =
-			(MultiPageCompilationUnitEditor) editorPart;
-		
-		IWorkingCopyManager manager =
-			JavaPlugin.getDefault().getWorkingCopyManager();
-		ICompilationUnit compilationUnit =
-			manager.getWorkingCopy(editor.getEditorInput());
-		
-		SortMembersUtility.sortICompilationUnit(compilationUnit, editor);
-	}
+        IEditorPart editorPart = _window.getActivePage().getActiveEditor();
+        MultiPageCompilationUnitEditor editor = (MultiPageCompilationUnitEditor) editorPart;
 
-	/** Handle the change of selection.
+        IWorkingCopyManager manager = JavaPlugin.getDefault()
+                .getWorkingCopyManager();
+        ICompilationUnit compilationUnit = manager.getWorkingCopy(editor
+                .getEditorInput());
+
+        SortMembersUtility.sortICompilationUnit(compilationUnit, editor);
+    }
+
+    /** Handle the change of selection.
      * 
      *  @param action The action proxy (not used in this method).
      *  @param selection The new selection (not used in this method).
      */
     public void selectionChanged(IAction action, ISelection selection) {
-	}
-	
-	private IWorkbenchWindow _window;
+    }
+
+    private IWorkbenchWindow _window;
 
 }

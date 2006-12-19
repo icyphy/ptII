@@ -77,11 +77,11 @@ public class Slice extends FixTransformer {
     public Slice(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
-        input = new TypedIOPort(this,"input",true,false);
-        input.setMultiport(true);  
+
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
         input.setTypeEquals(BaseType.FIX);
-        
+
         start = new Parameter(this, "start");
         end = new Parameter(this, "end");
         lsb = new StringParameter(this, "lsb");
@@ -115,13 +115,13 @@ public class Slice extends FixTransformer {
             int widthValue = in.fixValue().getPrecision().getNumberOfBits();
             int startValue = ((IntToken) start.getToken()).intValue();
             int endValue = ((IntToken) end.getToken()).intValue() + 1;
-            boolean lsbValue = ((StringToken) lsb.getToken()).stringValue().equals(
-                    "LSB");
-    
+            boolean lsbValue = ((StringToken) lsb.getToken()).stringValue()
+                    .equals("LSB");
+
             int newStartValue = (lsbValue) ? widthValue - endValue : startValue;
             int newEndValue = (lsbValue) ? widthValue - startValue : endValue;
             int shiftBits = (lsbValue) ? startValue : widthValue - endValue;
-    
+
             char[] mask = new char[widthValue];
             Arrays.fill(mask, '0');
             Arrays.fill(mask, newStartValue, newEndValue, '1');
@@ -129,23 +129,25 @@ public class Slice extends FixTransformer {
             BigDecimal value = new BigDecimal(in.fixValue().getUnscaledValue()
                     .and(new BigInteger(new String(mask), 2)).shiftRight(
                             shiftBits));
-            Precision precision = new Precision(((Parameter) 
-                    getAttribute("outputPrecision")).getExpression());
-            if ((newEndValue - newStartValue) != precision.getNumberOfBits() )
-            {
-                throw new IllegalActionException(this, "Bit width of " +
-                        (newEndValue - newStartValue) + " is not equal to precision "
-                        + precision);
+            Precision precision = new Precision(
+                    ((Parameter) getAttribute("outputPrecision"))
+                            .getExpression());
+            if ((newEndValue - newStartValue) != precision.getNumberOfBits()) {
+                throw new IllegalActionException(this, "Bit width of "
+                        + (newEndValue - newStartValue)
+                        + " is not equal to precision " + precision);
             }
 
-            Overflow overflow = Overflow.getName(((Parameter) getAttribute(
-            "outputOverflow")).getExpression().toLowerCase());
-        
-            Rounding rounding = Rounding.getName(((Parameter) getAttribute(
-                "outputRounding")).getExpression().toLowerCase());
+            Overflow overflow = Overflow
+                    .getName(((Parameter) getAttribute("outputOverflow"))
+                            .getExpression().toLowerCase());
+
+            Rounding rounding = Rounding
+                    .getName(((Parameter) getAttribute("outputRounding"))
+                            .getExpression().toLowerCase());
 
             FixPoint result = new FixPoint(value, new FixPointQuantization(
-                    precision, overflow,rounding));
+                    precision, overflow, rounding));
 
             sendOutput(output, 0, new FixToken(result));
         }

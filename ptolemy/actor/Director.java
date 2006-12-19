@@ -250,7 +250,7 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Director: Called fire().");
         }
-        
+
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
@@ -1139,7 +1139,7 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Director: Called wrapup().");
         }
-        
+
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {

@@ -34,16 +34,16 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// XmlOutput
 /**
-   XML output from its tree representation.
+ XML output from its tree representation.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class XmlOutput {
-    
+
     /** Output an XML tree to the writer.
      * 
      *  @param tree The XML tree.
@@ -62,15 +62,13 @@ public class XmlOutput {
 
     /** DTD header before the root element name.
      */
-    public static final String DTD_HEAD1 =
-        "<?xml version=\"1.0\" standalone=\"no\"?>\n" +
-        "<!DOCTYPE ";
+    public static final String DTD_HEAD1 = "<?xml version=\"1.0\" standalone=\"no\"?>\n"
+            + "<!DOCTYPE ";
 
     /** DTD header after the root element name.
      */
-    public static final String DTD_HEAD2 =
-        " PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n" +
-        "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">\n";
+    public static final String DTD_HEAD2 = " PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n"
+            + "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">\n";
 
     /** Output the sub-tree to the writer with the specified number of
      *  indentations.

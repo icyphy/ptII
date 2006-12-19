@@ -79,7 +79,7 @@ public class TypeAnalyzerState {
     public void enterBlock() {
         _previousClasses.push(new Hashtable<String, Class>());
     }
-    
+
     /** Enter the scope of a class. The current class is set to the class
      *  entered and the last current class is pushed to the previous class
      *  stack.
@@ -88,11 +88,11 @@ public class TypeAnalyzerState {
      *  @see #leaveClass()
      */
     public void enterClass(Class c) {
-    	if (_currentClass == null) {
-    		_previousClasses.push(null);
-    	} else {
-    		_previousClasses.push(new CurrentClassElement(_currentClass));
-    	}
+        if (_currentClass == null) {
+            _previousClasses.push(null);
+        } else {
+            _previousClasses.push(new CurrentClassElement(_currentClass));
+        }
         _anonymousCounts.push(new Integer(0));
         _currentClass = c;
         _loader.setCurrentClass(_currentClass, false);
@@ -254,13 +254,12 @@ public class TypeAnalyzerState {
         int i = _previousClasses.size() - 1;
 
         while ((i >= 0)
-        		&& !(_previousClasses.get(i) instanceof CurrentClassElement)) {
+                && !(_previousClasses.get(i) instanceof CurrentClassElement)) {
             i--;
         }
 
-        _currentClass = (i >= 0) ?
-        		((CurrentClassElement) _previousClasses.get(i))
-        		.getCurrentClassElement() : null;
+        _currentClass = (i >= 0) ? ((CurrentClassElement) _previousClasses
+                .get(i)).getCurrentClassElement() : null;
         _previousClasses.pop();
         _anonymousCounts.pop();
         _loader.setCurrentClass(_currentClass, false);
@@ -321,7 +320,7 @@ public class TypeAnalyzerState {
      *  @see #getPreviousClasses()
      */
     public void setPreviousClasses(
-    		Stack<Hashtable<String, Class>> previousClasses) {
+            Stack<Hashtable<String, Class>> previousClasses) {
         _previousClasses = previousClasses;
     }
 
@@ -355,26 +354,25 @@ public class TypeAnalyzerState {
      * 
      *  @author tfeng
      */
-    public static class CurrentClassElement
-    extends Hashtable<String, Class> {
-    	
-    	/** Construct a table with a single element (the current class object)
-    	 *  in it.
-    	 * 
-    	 *  @param currentClass The current class.
-    	 */
-    	public CurrentClassElement(Class currentClass) {
-    		super.put(_EMPTY_NAME, currentClass);
-    	}
-    	
-    	/** Get the current class element recorded in this table.
-    	 * 
-    	 *  @return The current class element.
-    	 */
-    	public Class getCurrentClassElement() {
-    		return get(_EMPTY_NAME);
-    	}
-    	
+    public static class CurrentClassElement extends Hashtable<String, Class> {
+
+        /** Construct a table with a single element (the current class object)
+         *  in it.
+         * 
+         *  @param currentClass The current class.
+         */
+        public CurrentClassElement(Class currentClass) {
+            super.put(_EMPTY_NAME, currentClass);
+        }
+
+        /** Get the current class element recorded in this table.
+         * 
+         *  @return The current class element.
+         */
+        public Class getCurrentClassElement() {
+            return get(_EMPTY_NAME);
+        }
+
         /** An empty name as the key for the current class in the tables.
          */
         private static final String _EMPTY_NAME = "";
@@ -413,18 +411,16 @@ public class TypeAnalyzerState {
     /** The stack of previously opened class, which has not been closed
      *  yet.
      */
-    private Stack<Hashtable<String, Class>> _previousClasses =
-    	new Stack<Hashtable<String, Class>>();
+    private Stack<Hashtable<String, Class>> _previousClasses = new Stack<Hashtable<String, Class>>();
 
     /** The counter for anonymous classes.
      */
     private int _totalAnonymousCount = 0;
-    
+
     /** The stack of currently opened scopes for variable
      *  declaration. Each element is a {@link Hashtable}. In each table,
      *  keys are variable names while values are {@link Type}'s of the
      *  corresponding variables.
      */
-    private Stack<Hashtable<String, Type>> _variableStack =
-    	new Stack<Hashtable<String, Type>>();
+    private Stack<Hashtable<String, Type>> _variableStack = new Stack<Hashtable<String, Type>>();
 }

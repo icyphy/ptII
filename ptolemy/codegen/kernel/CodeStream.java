@@ -284,7 +284,7 @@ public class CodeStream {
             if (mayNotExist) {
                 return;
             } else {
-                throw new IllegalActionException(_helper, 
+                throw new IllegalActionException(_helper,
                         "Cannot find code block: \"" + signature + "\".");
             }
         }
@@ -306,8 +306,8 @@ public class CodeStream {
         }
 
         if (indentLevel > 0) {
-            codeBlock = new StringBuffer(indent(indentLevel,
-                                  codeBlock.toString()));
+            codeBlock = new StringBuffer(indent(indentLevel, codeBlock
+                    .toString()));
         }
         _stream.append(codeBlock);
     }
@@ -363,8 +363,7 @@ public class CodeStream {
             Signature signature = (Signature) keys.next();
             buffer.append(signature.functionName);
 
-            ArrayList parameters = _declarations
-                    .getParameters(signature);
+            ArrayList parameters = _declarations.getParameters(signature);
 
             if ((parameters != null) && (parameters.size() > 0)) {
                 for (int i = 0; i < parameters.size(); i++) {
@@ -380,9 +379,7 @@ public class CodeStream {
 
             buffer.append(":" + _eol);
             buffer.append(_declarations.getCode(signature));
-            buffer.append(_eol
-                    + "-------------------------------"
-                    + _eol
+            buffer.append(_eol + "-------------------------------" + _eol
                     + _eol);
         }
 
@@ -409,8 +406,8 @@ public class CodeStream {
 
         String indent = StringUtilities.getIndentPrefix(indentLevel);
         // For every line.separator, substitute line.separator + indent.
-        String tmpString = StringUtilities.substitute(inputString,
-                _eol, _eol + indent);
+        String tmpString = StringUtilities.substitute(inputString, _eol, _eol
+                + indent);
         if (tmpString.endsWith(_eol + indent)) {
             // Chop off the last indent
             tmpString = tmpString.substring(0, tmpString.length()
@@ -419,7 +416,7 @@ public class CodeStream {
         // Insert the initial indent.
         return indent + tmpString;
     }
-    
+
     /**
      * Insert the contents of the given String to this code stream
      * at the given position.
@@ -452,12 +449,10 @@ public class CodeStream {
         try {
             CodeStream code = new CodeStream(args[0]);
 
-            System.out.println(_eol +
-                    "----------Result-----------------------"
+            System.out.println(_eol + "----------Result-----------------------"
                     + _eol);
             System.out.println(code.description());
-            System.out.println(_eol +
-                    "----------Result-----------------------"
+            System.out.println(_eol + "----------Result-----------------------"
                     + _eol);
 
             ArrayList codeBlockArgs = new ArrayList();
@@ -601,7 +596,7 @@ public class CodeStream {
             if (reader == null) {
                 if (mayNotExist) {
                     /* System.out.println("Warning: Helper .[target] file " +
-                            _filePath + " not found"); */
+                     _filePath + " not found"); */
                 } else {
                     _declarations = null;
                     throw new IllegalActionException(null, ex,
@@ -636,11 +631,11 @@ public class CodeStream {
         if (codeGenerator == null) {
             return "";
         }
-        String extension = 
-            _helper._codeGenerator.generatorPackage.getExpression();
+        String extension = _helper._codeGenerator.generatorPackage
+                .getExpression();
         extension = extension.substring(extension.lastIndexOf(".") + 1);
-        return "$CLASSPATH/" + helperClass.getName().replace('.', '/')
-            + "." + extension;
+        return "$CLASSPATH/" + helperClass.getName().replace('.', '/') + "."
+                + extension;
     }
 
     /**
@@ -682,25 +677,23 @@ public class CodeStream {
 
         StringBuffer body = new StringBuffer(codeInFile.substring(_parseIndex,
                 endIndex));
-        
-        
+
         // strip beginning new lines and white spaces
-        while (body.length() > 0 && 
-                (body.charAt(0) == '\n' || body.charAt(0) == '\r' 
-                || body.charAt(0) == ' ')) {
+        while (body.length() > 0
+                && (body.charAt(0) == '\n' || body.charAt(0) == '\r' || body
+                        .charAt(0) == ' ')) {
             body.deleteCharAt(0);
-        }        
+        }
         // strip ending new lines and white spaces
         int endChar = body.length() - 1;
-        while (endChar >= 0 && 
-                (body.charAt(endChar) == '\n' || body.charAt(endChar) == '\r' 
-                || body.charAt(endChar) == ' ')) {
+        while (endChar >= 0
+                && (body.charAt(endChar) == '\n'
+                        || body.charAt(endChar) == '\r' || body.charAt(endChar) == ' ')) {
             body.deleteCharAt(endChar);
             endChar = body.length() - 1;
         }
         // add back one ending new line
         body.append(_eol);
-        
 
         // Recursively parsing for nested code blocks
         //for (String subBlockKey = _parseCodeBlock(body); subBlockKey != null;) {
@@ -850,7 +843,7 @@ public class CodeStream {
                     return (String) ((Object[]) table.get(signature))[0];
                 }
             }
-            throw new IllegalActionException(_helper, 
+            throw new IllegalActionException(_helper,
                     "Cannot find code block: " + signature + ".");
         }
 

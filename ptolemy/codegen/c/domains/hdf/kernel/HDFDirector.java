@@ -267,7 +267,8 @@ public class HDFDirector extends SDFDirector {
 
                     int count = firing.getIterationCount();
                     if (count > 1) {
-                        code.append("for (i = 0; i < " + count + " ; i++) {" + _eol);
+                        code.append("for (i = 0; i < " + count + " ; i++) {"
+                                + _eol);
                     }
 
                     code.append(CodeGeneratorHelper
@@ -305,7 +306,8 @@ public class HDFDirector extends SDFDirector {
         // A variable is set to record the firing of the director.
         // This variable is used when doing mode transition after
         // one global iteration.
-        code.append(containerHelper.processCode("$actorSymbol(fired) = 1;" + _eol));
+        code.append(containerHelper.processCode("$actorSymbol(fired) = 1;"
+                + _eol));
 
         return code.toString();
     }
@@ -344,11 +346,11 @@ public class HDFDirector extends SDFDirector {
         CompositeActor container = (CompositeActor) director.getContainer();
         ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
-        code
-                .append(containerHelper
-                        .processCode("if ($actorSymbol(fired)) {" + _eol));
+        code.append(containerHelper.processCode("if ($actorSymbol(fired)) {"
+                + _eol));
         _updateConfigurationNumber(code);
-        code.append(containerHelper.processCode("$actorSymbol(fired) = 0;" + _eol));
+        code.append(containerHelper.processCode("$actorSymbol(fired) = 0;"
+                + _eol));
         code.append("}" + _eol);
     }
 
@@ -369,12 +371,12 @@ public class HDFDirector extends SDFDirector {
         ptolemy.domains.hdf.kernel.HDFDirector director = (ptolemy.domains.hdf.kernel.HDFDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
         ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
-        code
-                .append(containerHelper
-                        .processCode("static int $actorSymbol(currentConfiguration);" + _eol));
-        code
-                .append(containerHelper
-                        .processCode("static unsigned char $actorSymbol(fired) = 0;" + _eol));
+        code.append(containerHelper
+                .processCode("static int $actorSymbol(currentConfiguration);"
+                        + _eol));
+        code.append(containerHelper
+                .processCode("static unsigned char $actorSymbol(fired) = 0;"
+                        + _eol));
         List actors = container.deepEntityList();
         int numberOfActors = actors.size();
         _divisors = new int[numberOfActors];
@@ -816,9 +818,9 @@ public class HDFDirector extends SDFDirector {
                 }
             } else {
                 if (rates != null) {
-                    code
-                            .append(actorHelper
-                                    .processCode("$actorSymbol(currentConfiguration);" + _eol));
+                    code.append(actorHelper
+                            .processCode("$actorSymbol(currentConfiguration);"
+                                    + _eol));
                 } else {
                     code.append("0;" + _eol);
                 }

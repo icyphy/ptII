@@ -1,30 +1,30 @@
 /* Model transformer for backtracking.
 
-Copyright (c) 2005-2006 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005-2006 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.backtrack.ui;
 
@@ -45,21 +45,21 @@ import ptolemy.moml.MoMLParser;
 //////////////////////////////////////////////////////////////////////////
 //// BacktrackTransformer
 /**
-   Model transformer for backtracking. This class parses the MoML of the given
-   model, and applies a renaming filter to the MoML. The actors with their
-   backtracking versions will be replaced. Actors without existing backtracking
-   versions will remain unchanged. Other entities in the model, such as
-   relations between ports, are kept. The resulting model supports backtracking
-   for the transformed actors.
+ Model transformer for backtracking. This class parses the MoML of the given
+ model, and applies a renaming filter to the MoML. The actors with their
+ backtracking versions will be replaced. Actors without existing backtracking
+ versions will remain unchanged. Other entities in the model, such as
+ relations between ports, are kept. The resulting model supports backtracking
+ for the transformed actors.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class BacktrackTransformer {
-    
+
     /** Transform a model by replacing the actors with existing backtracking
      *  versions, and return the resulting model.
      *  
@@ -82,66 +82,65 @@ public class BacktrackTransformer {
             MoMLParser.addMoMLFilter(filter);
             NamedObj topLevel = parser.parse(null, moml.toString());
             MoMLParser.getMoMLFilters().remove(filter);
-            
+
             Iterator entitiesToRename = filter.entitiesChanged();
             while (entitiesToRename.hasNext()) {
-                NamedObj entity = (NamedObj)entitiesToRename.next();
-                
+                NamedObj entity = (NamedObj) entitiesToRename.next();
+
                 // Add a little visual effect to the transformed entity.
-                String imageMoML = 
-                    "<property name=\"_decorate\" " +
-                    "class=\"ptolemy.data.expr.FileParameter\" " +
-                    "value=\"$CLASSPATH/ptolemy/backtrack/manual/ptolemy/" +
-                    "actor/lib/BacktrackIconSmall.gif\">\n" +
-                    "</property>";
+                String imageMoML = "<property name=\"_decorate\" "
+                        + "class=\"ptolemy.data.expr.FileParameter\" "
+                        + "value=\"$CLASSPATH/ptolemy/backtrack/manual/ptolemy/"
+                        + "actor/lib/BacktrackIconSmall.gif\">\n"
+                        + "</property>";
                 parser.setContext(entity);
                 try {
                     parser.parse(null, imageMoML);
                     MoMLParser.setModified(true);
                 } catch (Exception ex) {
-                    throw new IllegalActionException("Unable to parse\n" +
-                            imageMoML);
+                    throw new IllegalActionException("Unable to parse\n"
+                            + imageMoML);
                 }
-               
+
                 /* Do not modify the actor names any more.
-                // Add "(B)" to the end of the entity's name.
-                String oldName = entity.getName();
-                try {
-                    entity.setName(oldName + " (B)");
-                } catch (NameDuplicationException ex1) {
-                    int i = 0;
-                    while (true) {
-                        try {
-                            entity.setName(oldName + " (B" + i + ")");
-                            break;
-                        } catch (NameDuplicationException ex2) {
-                            // Ignore; try another name.
-                        }
-                        i++;
-                    }
-                }*/
+                 // Add "(B)" to the end of the entity's name.
+                 String oldName = entity.getName();
+                 try {
+                 entity.setName(oldName + " (B)");
+                 } catch (NameDuplicationException ex1) {
+                 int i = 0;
+                 while (true) {
+                 try {
+                 entity.setName(oldName + " (B" + i + ")");
+                 break;
+                 } catch (NameDuplicationException ex2) {
+                 // Ignore; try another name.
+                 }
+                 i++;
+                 }
+                 }*/
             }
-            
+
             return topLevel;
         } catch (Exception e) {
             throw new IllegalActionException(e.toString());
         }
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     //// RenameClassMoMLFilter
-    
+
     /**
-       The MoML filter that renames the actor classes in the model, if there are
-       backtracking versions for them. No change is done on the actor classes
-       that do not have backtracking versions.
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
+     The MoML filter that renames the actor classes in the model, if there are
+     backtracking versions for them. No change is done on the actor classes
+     that do not have backtracking versions.
+     
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private static class RenameClassMoMLFilter implements MoMLFilter {
 
         /** Return the entities that are changed during the last XML parsing.
@@ -161,7 +160,7 @@ public class BacktrackTransformer {
          *  @param attributeName The attribute name.
          *  @param attributeValue The attribute value.
          */
-        public String filterAttributeValue(NamedObj container, String element, 
+        public String filterAttributeValue(NamedObj container, String element,
                 String attributeName, String attributeValue) {
             if (attributeValue == null) {
                 return null;
@@ -184,7 +183,7 @@ public class BacktrackTransformer {
                         _classStack.push(null);
                         return attributeValue;
                     }
-                    
+
                     String newClassName = _newClassName(attributeValue);
                     if (newClassName != null) {
                         _classStack.push(attributeValue);
@@ -200,7 +199,7 @@ public class BacktrackTransformer {
                 return attributeValue;
             }
         }
-        
+
         /** Further process the XML element when it is closed with an end tag.
          *  If the element corresponds to a Ptolemy actor that has been changed
          *  to its backtracking version, the MoML description of the original
@@ -216,12 +215,12 @@ public class BacktrackTransformer {
                 throws IllegalActionException {
             if ((elementName.equals("entity") || elementName.equals("property"))
                     && container != null && container.getClassName() != null) {
-                if (_classStack.peek() != null &&
-                        container.getClassName().equals(
+                if (_classStack.peek() != null
+                        && container.getClassName().equals(
                                 _newClassName((String) _classStack.peek()))) {
                     // Copy the original icon to the MoML.
                     _copyIcon(container);
-                    
+
                     // Add "(B)" to the actor's name later.
                     _entitiesChanged.add(container);
                 }
@@ -232,14 +231,12 @@ public class BacktrackTransformer {
         /** The prefix to the automatically generated backtracking version of
          *  actors.
          */
-        public static final String AUTOMATIC_PREFIX = 
-            "ptolemy.backtrack.automatic";
-        
+        public static final String AUTOMATIC_PREFIX = "ptolemy.backtrack.automatic";
+
         /** The prefix to the manually written backtracking version of actors.
          */
-        public static final String MANUAL_PREFIX = 
-            "ptolemy.backtrack.manual";
-        
+        public static final String MANUAL_PREFIX = "ptolemy.backtrack.manual";
+
         /** Test whether a class with the given name can be found.
          * 
          *  @param className The name of the class.
@@ -253,7 +250,7 @@ public class BacktrackTransformer {
                 return false;
             }
         }
-        
+
         /** Copy the icon of the last modified class (of a Ptolemy actor) to the
          *  MoML within the container's context.
          *  
@@ -262,15 +259,15 @@ public class BacktrackTransformer {
          */
         private void _copyIcon(NamedObj container)
                 throws IllegalActionException {
-            String iconFileName = 
-                ((String)_classStack.peek()).replace('.', '/') + "Icon.xml";
+            String iconFileName = ((String) _classStack.peek()).replace('.',
+                    '/')
+                    + "Icon.xml";
 
             URL iconFile = getClass().getClassLoader()
                     .getResource(iconFileName);
             if (iconFile != null) {
                 try {
-                    Reader reader = 
-                        new InputStreamReader(iconFile.openStream());
+                    Reader reader = new InputStreamReader(iconFile.openStream());
                     _parse(reader, container);
                     reader.close();
                 } catch (Exception e) {
@@ -278,7 +275,7 @@ public class BacktrackTransformer {
                 }
             }
         }
-        
+
         /** Get the new name for class to be changed to its backtracking
          *  version. If the class has a manually written backtracking version, 
          *  the name of that backtracking version will be returned; if there is
@@ -301,7 +298,7 @@ public class BacktrackTransformer {
                 return null;
             }
         }
-        
+
         /** Parse the content in the reader within the context of the container.
          * 
          *  @param reader The reader to be read from.
@@ -324,7 +321,7 @@ public class BacktrackTransformer {
         /** The stack of the name of the classes that have been changed.
          */
         private Stack<String> _classStack = new Stack<String>();
-        
+
         /** The list of entities changed during the parsing.
          */
         private List<NamedObj> _entitiesChanged = new LinkedList<NamedObj>();

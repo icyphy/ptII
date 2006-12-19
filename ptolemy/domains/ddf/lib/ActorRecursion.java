@@ -281,12 +281,9 @@ public class ActorRecursion extends TypedCompositeActor {
                         + port.getFullName() + " and "
                         + matchingPort.getFullName()
                         + " must have the same width. Port "
-                        + port.getFullName() + "'s width "
-                        + port.getWidth() + " is not equal to "
-                        + matchingPort.getFullName()
-                        + "'s width "
-                        + matchingPort.getWidth()
-                        + ".");
+                        + port.getFullName() + "'s width " + port.getWidth()
+                        + " is not equal to " + matchingPort.getFullName()
+                        + "'s width " + matchingPort.getWidth() + ".");
             }
 
             if ((port.isInput() && !matchingPort.isInput())

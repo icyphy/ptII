@@ -91,7 +91,7 @@ public class FixSequence extends FixTransformer {
 
         enable = new TypedIOPort(this, "enable", true, false);
         enable.setTypeEquals(BaseType.BOOLEAN);
-        
+
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(true);
     }
@@ -116,7 +116,7 @@ public class FixSequence extends FixTransformer {
      *  This parameter is an array, with default value {1}.
      */
     public Parameter values;
-    
+
     /** The trigger port.  The type of this port is undeclared, meaning
      *  that it will resolve to any data type.
      */
@@ -146,7 +146,7 @@ public class FixSequence extends FixTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         // NOTE: It might seem that using trigger.numberOfSources() is
         // correct here, but it is not. It is possible for channels
         // to be connected, for example, to other output ports or
@@ -157,24 +157,27 @@ public class FixSequence extends FixTransformer {
                 trigger.get(i);
             }
         }
-        
+
         if ((enable.getWidth() == 0)
                 || (enable.hasToken(0) && ((BooleanToken) enable.get(0))
                         .booleanValue())) {
             ArrayToken valuesArray = (ArrayToken) values.getToken();
 
             if (_currentIndex < valuesArray.length()) {
-                Precision precision = new Precision(((Parameter) 
-                        getAttribute("outputPrecision")).getExpression());
-                
-                Overflow overflow = Overflow.getName(((Parameter) getAttribute(
-                "outputOverflow")).getExpression().toLowerCase());
+                Precision precision = new Precision(
+                        ((Parameter) getAttribute("outputPrecision"))
+                                .getExpression());
 
-                Rounding rounding = Rounding.getName(((Parameter) getAttribute(
-                    "outputRounding")).getExpression().toLowerCase());
-                
-                FixPoint result = new FixPoint(((ScalarToken)
-                        valuesArray.getElement(_currentIndex)).doubleValue(), 
+                Overflow overflow = Overflow
+                        .getName(((Parameter) getAttribute("outputOverflow"))
+                                .getExpression().toLowerCase());
+
+                Rounding rounding = Rounding
+                        .getName(((Parameter) getAttribute("outputRounding"))
+                                .getExpression().toLowerCase());
+
+                FixPoint result = new FixPoint(((ScalarToken) valuesArray
+                        .getElement(_currentIndex)).doubleValue(),
                         new FixPointQuantization(precision, overflow, rounding));
                 sendOutput(output, 0, new FixToken(result));
                 _outputProduced = true;
@@ -216,8 +219,8 @@ public class FixSequence extends FixTransformer {
         }
 
         return super.prefire();
-    }    
-    
+    }
+
     /** Update the state of the actor by moving to the next value
      *  in the <i>values</i> array.
      *  @exception IllegalActionException If there is no director.

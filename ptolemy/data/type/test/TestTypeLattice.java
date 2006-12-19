@@ -31,7 +31,6 @@ package ptolemy.data.type.test;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.DirectedAcyclicGraph;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TestTypeLattice
 
@@ -49,17 +48,18 @@ public class TestTypeLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public static void main(String [] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         for (int i = 0; i < 1000; i++) {
             Thread thread = new Thread(new Runnable() {
-                    public void run() {
-                        try {
-                            ((DirectedAcyclicGraph) TypeLattice.basicLattice()).bottom();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
+                public void run() {
+                    try {
+                        ((DirectedAcyclicGraph) TypeLattice.basicLattice())
+                                .bottom();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
-                });
+                }
+            });
             System.out.print(".");
             thread.start();
         }

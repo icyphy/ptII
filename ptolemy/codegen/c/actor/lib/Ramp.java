@@ -69,8 +69,9 @@ public class Ramp extends CCodeGeneratorHelper {
         ArrayList args = new ArrayList();
         args.add(codeGenType(actor.output.getType()));
 
-        _codeStream.append(_eol + CodeStream.indent(_codeGenerator
-                .comment("initialize " + getComponent().getName())));
+        _codeStream.append(_eol
+                + CodeStream.indent(_codeGenerator.comment("initialize "
+                        + getComponent().getName())));
         if (actor.output.getType() == BaseType.STRING) {
             _codeStream.appendCodeBlock("StringInitBlock");
         } else {
@@ -105,8 +106,9 @@ public class Ramp extends CCodeGeneratorHelper {
         args.add(cType(actor.output.getType()));
 
         if (_codeStream.isEmpty()) {
-            _codeStream.append(_eol +_codeGenerator.comment
-                    ("preinitialize " + getComponent().getName()));
+            _codeStream.append(_eol
+                    + _codeGenerator.comment("preinitialize "
+                            + getComponent().getName()));
         }
         _codeStream.appendCodeBlock("preinitBlock", args);
         return processCode(_codeStream.toString());

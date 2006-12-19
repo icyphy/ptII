@@ -31,15 +31,15 @@ package ptolemy.backtrack.eclipse.plugin.editor;
 //// SemanticHighlighting
 
 /**
-   Abstract superclass of Ptolemy semantic highlighting.
+ Abstract superclass of Ptolemy semantic highlighting.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-   @see SemanticHighlightings
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ @see SemanticHighlightings
+ */
 public abstract class SemanticHighlighting {
 
     /** Test whether a semantic token can be consumed.
@@ -48,7 +48,7 @@ public abstract class SemanticHighlighting {
      *  @return true if the token can be consumed.
      */
     public abstract boolean consumes(SemanticToken token);
-    
+
     /** Get the key of the bold face preference.
      * 
      *  @return The key for the bold face preference.
@@ -60,7 +60,7 @@ public abstract class SemanticHighlighting {
      *  @return The key of the color preference.
      */
     public abstract String getColorPreferenceKey();
-    
+
     /** Get the key of the enabled preference.
      * 
      *  @return The key of the enabled preference.

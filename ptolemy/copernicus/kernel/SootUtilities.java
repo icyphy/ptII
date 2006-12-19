@@ -878,8 +878,8 @@ public class SootUtilities {
         }
 
         // Push the constructor code into the <clinit> method.
-        SootMethod constructorMethod = (constructorStmt
-                .getInvokeExpr()).getMethod();
+        SootMethod constructorMethod = (constructorStmt.getInvokeExpr())
+                .getMethod();
         SootMethod staticConstructorMethod = staticClass
                 .getMethod(constructorMethod.getSubSignature());
 
@@ -906,8 +906,7 @@ public class SootUtilities {
         // constructor.
         // Later we will come back and inline this after we make all the
         // method static.
-        InvokeExpr constructorExpr = constructorStmt
-                .getInvokeExpr();
+        InvokeExpr constructorExpr = constructorStmt.getInvokeExpr();
         Stmt insertStmt = Jimple.v().newInvokeStmt(
                 Jimple.v().newStaticInvokeExpr(
                         staticConstructorMethod.makeRef(),
@@ -1490,9 +1489,7 @@ public class SootUtilities {
 
     public static SootMethod resolveSpecialInvokationForInlining(
             SpecialInvokeExpr expr, SootMethod callingMethod) {
-        SootMethod inlinee = Scene
-                .v()
-                .getActiveHierarchy()
+        SootMethod inlinee = Scene.v().getActiveHierarchy()
                 .resolveSpecialDispatch(expr, callingMethod);
 
         // Make sure we can access the body of the method that is

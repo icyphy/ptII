@@ -27,12 +27,12 @@
  */
 package ptolemy.backtrack.eclipse.ast.transform;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import ptolemy.backtrack.eclipse.ast.TypeAnalyzer;
-
-import java.util.LinkedList;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// AssignmentRule
@@ -68,10 +68,8 @@ public class AssignmentRule extends TransformRule {
      *  @param root The root of the AST.
      */
     public void beforeTraverse(TypeAnalyzer analyzer, CompilationUnit root) {
-        AssignmentTransformer assignmentTransformer =
-        	new AssignmentTransformer();
-        ConstructorTransformer constructorTransformer =
-        	new ConstructorTransformer();
+        AssignmentTransformer assignmentTransformer = new AssignmentTransformer();
+        ConstructorTransformer constructorTransformer = new ConstructorTransformer();
 
         _transformers.add(assignmentTransformer);
         _transformers.add(constructorTransformer);
@@ -97,6 +95,5 @@ public class AssignmentRule extends TransformRule {
 
     /** The list of handlers used.
      */
-    private List<AbstractTransformer> _transformers =
-    	new LinkedList<AbstractTransformer>();
+    private List<AbstractTransformer> _transformers = new LinkedList<AbstractTransformer>();
 }

@@ -27,12 +27,10 @@
  */
 package ptolemy.backtrack.eclipse.ast.transform;
 
-import ptolemy.backtrack.eclipse.ast.TypeAnalyzer;
-import ptolemy.backtrack.eclipse.ast.transform.AssignmentHandler;
-import ptolemy.backtrack.eclipse.ast.transform.ClassHandler;
-
 import java.util.LinkedList;
 import java.util.List;
+
+import ptolemy.backtrack.eclipse.ast.TypeAnalyzer;
 
 //////////////////////////////////////////////////////////////////////////
 //// HandlerList
@@ -291,31 +289,25 @@ public class HandlerList {
 
     /** The list of assignment handlers.
      */
-    private List<AssignmentHandler> _assignmentHandlers =
-    	new LinkedList<AssignmentHandler>();
+    private List<AssignmentHandler> _assignmentHandlers = new LinkedList<AssignmentHandler>();
 
     /** The list of class declaration handlers.
      */
-    private List<ClassHandler> _classHandlers =
-    	new LinkedList<ClassHandler>();
+    private List<ClassHandler> _classHandlers = new LinkedList<ClassHandler>();
 
     /** The list of constructor handlers.
      */
-    private List<ConstructorHandler> _constructorHandlers =
-    	new LinkedList<ConstructorHandler>();
+    private List<ConstructorHandler> _constructorHandlers = new LinkedList<ConstructorHandler>();
 
     /** The list of cross-analysis handlers.
      */
-    private List<CrossAnalysisHandler> _crossAnalysisHandlers =
-    	new LinkedList<CrossAnalysisHandler>();
+    private List<CrossAnalysisHandler> _crossAnalysisHandlers = new LinkedList<CrossAnalysisHandler>();
 
     /** The list of field declaration handlers.
      */
-    private List<FieldDeclarationHandler> _fieldDeclarationHandlers =
-    	new LinkedList<FieldDeclarationHandler>();
+    private List<FieldDeclarationHandler> _fieldDeclarationHandlers = new LinkedList<FieldDeclarationHandler>();
 
     /** The list of method declaration handlers.
      */
-    private List<MethodDeclarationHandler> _methodDeclarationHandlers =
-    	new LinkedList<MethodDeclarationHandler>();
+    private List<MethodDeclarationHandler> _methodDeclarationHandlers = new LinkedList<MethodDeclarationHandler>();
 }

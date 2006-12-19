@@ -28,6 +28,22 @@
  */
 package ptolemy.backtrack.eclipse.ast;
 
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
+
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
@@ -94,22 +110,6 @@ import ptolemy.backtrack.eclipse.ast.transform.FieldDeclarationHandler;
 import ptolemy.backtrack.eclipse.ast.transform.HandlerList;
 import ptolemy.backtrack.eclipse.ast.transform.MethodDeclarationHandler;
 import ptolemy.backtrack.util.PathFinder;
-
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeAnalyzer
@@ -178,8 +178,8 @@ public class TypeAnalyzer extends ASTVisitor {
         _state.getCrossAnalyzedTypes().add(fullName);
 
         if (_handlers.hasCrossAnalysisHandler()) {
-        	for (CrossAnalysisHandler handler :
-        		_handlers.getCrossAnalysisHandlers()) {
+            for (CrossAnalysisHandler handler : _handlers
+                    .getCrossAnalysisHandlers()) {
                 handler.handle(_state);
             }
         }
@@ -195,9 +195,9 @@ public class TypeAnalyzer extends ASTVisitor {
         _state.getCrossAnalyzedTypes().addAll(Arrays.asList(fullNames));
 
         if (_handlers.hasCrossAnalysisHandler()) {
-        	for (CrossAnalysisHandler handler :
-        		_handlers.getCrossAnalysisHandlers()) {
-        		handler.handle(_state);
+            for (CrossAnalysisHandler handler : _handlers
+                    .getCrossAnalysisHandlers()) {
+                handler.handle(_state);
             }
         }
     }
@@ -209,8 +209,8 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void endVisit(AnonymousClassDeclaration node) {
         if (_handlers.hasClassHandler()) {
-        	for (ClassHandler handler : _handlers.getClassHandlers()) {
-        		handler.exit(node, _state);
+            for (ClassHandler handler : _handlers.getClassHandlers()) {
+                handler.exit(node, _state);
             }
         }
 
@@ -263,9 +263,8 @@ public class TypeAnalyzer extends ASTVisitor {
         Type.propagateType(node, node.getLeftHandSide());
 
         if (_handlers.hasAssignmentHandler()) {
-        	for (AssignmentHandler handler :
-        		_handlers.getAssignmentHandlers()) {
-        		handler.handle(node, _state);
+            for (AssignmentHandler handler : _handlers.getAssignmentHandlers()) {
+                handler.handle(node, _state);
             }
         }
     }
@@ -321,14 +320,14 @@ public class TypeAnalyzer extends ASTVisitor {
         }
 
         if (_handlers.hasConstructorHandler()) {
-        	for (ConstructorHandler handler :
-        		_handlers.getConstructorHandlers()) {
+            for (ConstructorHandler handler : _handlers
+                    .getConstructorHandlers()) {
                 handler.handle(node, _state);
             }
         }
 
         if (_handlers.hasAliasHandler()) {
-        	for (AliasHandler handler : _handlers.getAliasHandlers()) {
+            for (AliasHandler handler : _handlers.getAliasHandlers()) {
                 handler.handle(node, _state);
             }
         }
@@ -402,15 +401,15 @@ public class TypeAnalyzer extends ASTVisitor {
         Type.propagateType(node, node.getType());
 
         if (_handlers.hasConstructorHandler()) {
-        	for (ConstructorHandler handler :
-        		_handlers.getConstructorHandlers()) {
+            for (ConstructorHandler handler : _handlers
+                    .getConstructorHandlers()) {
                 handler.exit(node, _state);
             }
         }
 
         if (_handlers.hasFieldDeclarationHandler()) {
-        	for (FieldDeclarationHandler handler :
-        		_handlers.getFieldDeclarationHandlers()) {
+            for (FieldDeclarationHandler handler : _handlers
+                    .getFieldDeclarationHandlers()) {
                 handler.exit(node, _state);
             }
         }
@@ -512,15 +511,15 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void endVisit(MethodDeclaration node) {
         if (node.isConstructor() && _handlers.hasConstructorHandler()) {
-        	for (ConstructorHandler handler :
-        		_handlers.getConstructorHandlers()) {
+            for (ConstructorHandler handler : _handlers
+                    .getConstructorHandlers()) {
                 handler.handle(node, _state);
             }
         }
 
         if (_handlers.hasMethodDeclarationHandler()) {
-        	for (MethodDeclarationHandler handler :
-        		_handlers.getMethodDeclarationHandlers()) {
+            for (MethodDeclarationHandler handler : _handlers
+                    .getMethodDeclarationHandlers()) {
                 handler.exit(node, _state);
             }
         }
@@ -568,7 +567,7 @@ public class TypeAnalyzer extends ASTVisitor {
         }
 
         if (_handlers.hasAliasHandler()) {
-        	for (AliasHandler handler : _handlers.getAliasHandlers()) {
+            for (AliasHandler handler : _handlers.getAliasHandlers()) {
                 handler.handle(node, _state);
             }
         }
@@ -646,11 +645,9 @@ public class TypeAnalyzer extends ASTVisitor {
 
         PostfixExpression.Operator operator = node.getOperator();
 
-        if (((operator == PostfixExpression.Operator.INCREMENT)
-        		|| (operator == PostfixExpression.Operator.DECREMENT))
+        if (((operator == PostfixExpression.Operator.INCREMENT) || (operator == PostfixExpression.Operator.DECREMENT))
                 && _handlers.hasClassHandler()) {
-        	for (AssignmentHandler handler :
-        		_handlers.getAssignmentHandlers()) {
+            for (AssignmentHandler handler : _handlers.getAssignmentHandlers()) {
                 handler.handle(node, _state);
             }
         }
@@ -665,11 +662,9 @@ public class TypeAnalyzer extends ASTVisitor {
 
         PrefixExpression.Operator operator = node.getOperator();
 
-        if (((operator == PrefixExpression.Operator.INCREMENT)
-        		|| (operator == PrefixExpression.Operator.DECREMENT))
+        if (((operator == PrefixExpression.Operator.INCREMENT) || (operator == PrefixExpression.Operator.DECREMENT))
                 && _handlers.hasClassHandler()) {
-        	for (AssignmentHandler handler :
-        		_handlers.getAssignmentHandlers()) {
+            for (AssignmentHandler handler : _handlers.getAssignmentHandlers()) {
                 handler.handle(node, _state);
             }
         }
@@ -735,7 +730,7 @@ public class TypeAnalyzer extends ASTVisitor {
             }
         }
     }
-    
+
     /** Visit a return statement.
      *
      *  @param node The node to be visited.
@@ -744,7 +739,7 @@ public class TypeAnalyzer extends ASTVisitor {
         super.visit(node);
 
         if (_handlers.hasAliasHandler()) {
-        	for (AliasHandler handler : _handlers.getAliasHandlers()) {
+            for (AliasHandler handler : _handlers.getAliasHandlers()) {
                 handler.handle(node, _state);
             }
         }
@@ -778,9 +773,9 @@ public class TypeAnalyzer extends ASTVisitor {
                 handle = false;
             } else if (parent instanceof SimpleType
                     && parent.getParent() instanceof ClassInstanceCreation) {
-            	Expression expression =
-            	    ((ClassInstanceCreation) parent.getParent()).getExpression();
-            	
+                Expression expression = ((ClassInstanceCreation) parent
+                        .getParent()).getExpression();
+
                 if (expression != null) {
                     owner = Type.getType(expression);
                 }
@@ -809,8 +804,8 @@ public class TypeAnalyzer extends ASTVisitor {
                 TypeAndOwner typeAndOwner = _resolveName(name, owner);
 
                 if (typeAndOwner == null) {
-                    String currentClassName =
-                    	_state.getCurrentClass().getName();
+                    String currentClassName = _state.getCurrentClass()
+                            .getName();
                     throw new ASTResolutionException(currentClassName, name);
                 }
 
@@ -829,7 +824,7 @@ public class TypeAnalyzer extends ASTVisitor {
         if (node.getParent() instanceof ClassInstanceCreation) {
             Type.propagateType(node, node.getName());
         }
-        
+
         super.endVisit(node);
     }
 
@@ -865,8 +860,8 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void endVisit(SuperConstructorInvocation node) {
         if (_handlers.hasConstructorHandler()) {
-        	for (ConstructorHandler handler :
-        		_handlers.getConstructorHandlers()) {
+            for (ConstructorHandler handler : _handlers
+                    .getConstructorHandlers()) {
                 handler.handle(node, _state);
             }
         }
@@ -989,7 +984,7 @@ public class TypeAnalyzer extends ASTVisitor {
         Class currentClass = _state.getCurrentClass();
 
         if (_handlers.hasClassHandler()) {
-        	for (ClassHandler handler : _handlers.getClassHandlers()) {
+            for (ClassHandler handler : _handlers.getClassHandlers()) {
                 handler.exit(node, _state);
             }
         }
@@ -1001,8 +996,8 @@ public class TypeAnalyzer extends ASTVisitor {
 
         if (node.getParent() instanceof TypeDeclarationStatement) {
             String typeName = node.getName().getIdentifier();
-            Hashtable<String, Class> classTable =
-            	_state.getPreviousClasses().peek();
+            Hashtable<String, Class> classTable = _state.getPreviousClasses()
+                    .peek();
             classTable.put(typeName, currentClass);
         }
     }
@@ -1018,7 +1013,7 @@ public class TypeAnalyzer extends ASTVisitor {
     public void endVisit(TypeLiteral node) {
         Type.setType(node, Type.createType("java.lang.Class"));
     }
-    
+
     /** Visit a variable declaration expression and set its type to be
      *  the declared type.
      *
@@ -1059,7 +1054,7 @@ public class TypeAnalyzer extends ASTVisitor {
         _state.addVariable(node.getName().getIdentifier(), type);
 
         if (_handlers.hasAliasHandler()) {
-        	for (AliasHandler handler : _handlers.getAliasHandlers()) {
+            for (AliasHandler handler : _handlers.getAliasHandlers()) {
                 handler.handle(node, _state);
             }
         }
@@ -1168,7 +1163,7 @@ public class TypeAnalyzer extends ASTVisitor {
         _sortBodyDeclarations(node);
 
         if (_handlers.hasClassHandler()) {
-        	for (ClassHandler handler : _handlers.getClassHandlers()) {
+            for (ClassHandler handler : _handlers.getClassHandlers()) {
                 handler.enter(node, _state);
             }
         }
@@ -1205,15 +1200,15 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public boolean visit(FieldDeclaration node) {
         if (_handlers.hasConstructorHandler()) {
-        	for (ConstructorHandler handler :
-        		_handlers.getConstructorHandlers()) {
+            for (ConstructorHandler handler : _handlers
+                    .getConstructorHandlers()) {
                 handler.enter(node, _state);
             }
         }
 
         if (_handlers.hasFieldDeclarationHandler()) {
-        	for (FieldDeclarationHandler handler :
-        		_handlers.getFieldDeclarationHandlers()) {
+            for (FieldDeclarationHandler handler : _handlers
+                    .getFieldDeclarationHandlers()) {
                 handler.enter(node, _state);
             }
         }
@@ -1251,8 +1246,8 @@ public class TypeAnalyzer extends ASTVisitor {
         _openScope();
 
         if (_handlers.hasMethodDeclarationHandler()) {
-        	for (MethodDeclarationHandler handler :
-        		_handlers.getMethodDeclarationHandlers()) {
+            for (MethodDeclarationHandler handler : _handlers
+                    .getMethodDeclarationHandlers()) {
                 handler.enter(node, _state);
             }
         }
@@ -1348,7 +1343,7 @@ public class TypeAnalyzer extends ASTVisitor {
         _sortBodyDeclarations(node);
 
         if (_handlers.hasClassHandler()) {
-        	for (ClassHandler handler : _handlers.getClassHandlers()) {
+            for (ClassHandler handler : _handlers.getClassHandlers()) {
                 handler.enter(node, _state);
             }
         }
@@ -1465,8 +1460,8 @@ public class TypeAnalyzer extends ASTVisitor {
 
                         for (int j = 0; j < formalParams.length; j++) {
                             try {
-                                Type formalType =
-                                	Type.createType(formalParams[j].getName());
+                                Type formalType = Type
+                                        .createType(formalParams[j].getName());
                                 int comp = args[j].compatibility(formalType,
                                         _state.getClassLoader());
 
@@ -1478,8 +1473,7 @@ public class TypeAnalyzer extends ASTVisitor {
                                 }
                             } catch (ClassNotFoundException ex) {
                                 // Not exact.
-                                throw new ASTClassNotFoundException(args[j],
-                                		ex);
+                                throw new ASTClassNotFoundException(args[j], ex);
                             }
                         }
 
@@ -1609,8 +1603,8 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @return
      */
     private TypeAndOwner _findVariable(String name) {
-        Stack<Hashtable<String, Type>> variableStack =
-        	_state.getVariableStack();
+        Stack<Hashtable<String, Type>> variableStack = _state
+                .getVariableStack();
         int i = variableStack.size() - 1;
 
         if (i == -1) {
@@ -1627,8 +1621,8 @@ public class TypeAnalyzer extends ASTVisitor {
             Type type = table.get(name);
             Integer hashCode = new Integer(i);
             Class ownerClass = _classScopeRelation.get(hashCode);
-            Type owner = (ownerClass == null) ? null :
-            	Type.createType(ownerClass.getName());
+            Type owner = (ownerClass == null) ? null : Type
+                    .createType(ownerClass.getName());
             return new TypeAndOwner(type, owner);
         } else {
             return null;
@@ -1709,8 +1703,8 @@ public class TypeAnalyzer extends ASTVisitor {
         Class result = null;
 
         if (result == null) {
-            Stack<Hashtable<String, Class>> previousClasses =
-            	_state.getPreviousClasses();
+            Stack<Hashtable<String, Class>> previousClasses = _state
+                    .getPreviousClasses();
             int previousNumber = previousClasses.size();
 
             for (int i = previousNumber; i >= 0; i--) {
@@ -1719,20 +1713,18 @@ public class TypeAnalyzer extends ASTVisitor {
                 if (i == previousNumber) {
                     workingClass = _state.getCurrentClass();
                 } else {
-                	Hashtable<String, Class> previousTable =
-                		previousClasses.get(i);
+                    Hashtable<String, Class> previousTable = previousClasses
+                            .get(i);
 
-                	if (previousTable != null) {
-	                    if (previousTable instanceof CurrentClassElement) {
-	                        workingClass =
-	                        	((CurrentClassElement) previousTable)
-	                        	.getCurrentClassElement();
-	                    } else if (previousTable.keySet().contains(
-	                    		simpleName)) {
-	                    	result = previousTable.get(simpleName);
-	                        break;
-	                    }
-                	}
+                    if (previousTable != null) {
+                        if (previousTable instanceof CurrentClassElement) {
+                            workingClass = ((CurrentClassElement) previousTable)
+                                    .getCurrentClassElement();
+                        } else if (previousTable.keySet().contains(simpleName)) {
+                            result = previousTable.get(simpleName);
+                            break;
+                        }
+                    }
                 }
 
                 if (workingClass != null) {
@@ -1741,8 +1733,7 @@ public class TypeAnalyzer extends ASTVisitor {
                         break;
                     }
 
-                    Class[] declaredClasses =
-                    	workingClass.getDeclaredClasses();
+                    Class[] declaredClasses = workingClass.getDeclaredClasses();
 
                     for (int j = 0; j < declaredClasses.length; j++) {
                         if (_getSimpleClassName(declaredClasses[j]).equals(
@@ -1832,8 +1823,8 @@ public class TypeAnalyzer extends ASTVisitor {
 
                     if (!table.containsKey(fieldName)) {
                         Class fieldType = fields[j].getType();
-                        table.put(fieldName,
-                        		Type.createType(fieldType.getName()));
+                        table.put(fieldName, Type.createType(fieldType
+                                .getName()));
                     }
                 }
             }
@@ -1862,8 +1853,8 @@ public class TypeAnalyzer extends ASTVisitor {
     private TypeAndOwner _resolveMethod(Class owner, String methodName,
             Type[] arguments) {
         Set<Class> handledSet = new HashSet<Class>();
-        Stack<Hashtable<String, Class>> previousClasses =
-        	_state.getPreviousClasses();
+        Stack<Hashtable<String, Class>> previousClasses = _state
+                .getPreviousClasses();
         int previousNum = previousClasses.size();
         Class oldOwner = owner;
 
@@ -1885,13 +1876,13 @@ public class TypeAnalyzer extends ASTVisitor {
                 while ((owner == null) && (previousNum > 0)) {
                     previousNum--;
 
-                    Hashtable<String, Class> previousTable =
-                    	previousClasses.get(previousNum);
+                    Hashtable<String, Class> previousTable = previousClasses
+                            .get(previousNum);
 
                     if (previousTable != null
-                    		&& previousTable instanceof CurrentClassElement) {
+                            && previousTable instanceof CurrentClassElement) {
                         owner = ((CurrentClassElement) previousTable)
-                        		.getCurrentClassElement();
+                                .getCurrentClassElement();
 
                         if (handledSet.contains(owner)) {
                             owner = null;
@@ -1950,19 +1941,18 @@ public class TypeAnalyzer extends ASTVisitor {
         }
 
         if ((typeAndOwner == null) && (lastType == null)) {
-            Stack<Hashtable<String, Class>> previousClasses =
-            	_state.getPreviousClasses();
+            Stack<Hashtable<String, Class>> previousClasses = _state
+                    .getPreviousClasses();
             int previousNumber = previousClasses.size() - 1;
 
             while ((typeAndOwner == null) && (previousNumber >= 0)) {
-            	Hashtable<String, Class> previousTable =
-            		previousClasses.get(previousNumber--);
+                Hashtable<String, Class> previousTable = previousClasses
+                        .get(previousNumber--);
 
                 if (previousTable != null
-                		&& previousTable instanceof CurrentClassElement) {
-                    Class previousClass =
-                    	((CurrentClassElement) previousTable)
-                    	.getCurrentClassElement();
+                        && previousTable instanceof CurrentClassElement) {
+                    Class previousClass = ((CurrentClassElement) previousTable)
+                            .getCurrentClassElement();
 
                     if (previousClass != null) {
                         typeAndOwner = _resolveNameFromClass(previousClass,
@@ -2012,24 +2002,20 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @see #_sortBodyDeclarations(AnonymousClassDeclaration)
      */
     private static void _sortBodyDeclarations(
-    		List<BodyDeclaration> bodyDeclarations) {
-    	int size = bodyDeclarations.size();
-    	BodyDeclaration[] bodyArray =
-    		bodyDeclarations.toArray(new BodyDeclaration[size]);
+            List<BodyDeclaration> bodyDeclarations) {
+        int size = bodyDeclarations.size();
+        BodyDeclaration[] bodyArray = bodyDeclarations
+                .toArray(new BodyDeclaration[size]);
         Arrays.sort(bodyArray, new Comparator<BodyDeclaration>() {
             public int compare(BodyDeclaration bodyDeclaration1,
-            		BodyDeclaration bodyDeclaration2) {
+                    BodyDeclaration bodyDeclaration2) {
                 if (bodyDeclaration1.getClass().isInstance(bodyDeclaration2)) {
                     return 0;
                 }
 
-                Class[] classes =
-                	new Class[] {
-                		FieldDeclaration.class,
-                        TypeDeclaration.class,
-                        MethodDeclaration.class,
-                        Initializer.class
-                    };
+                Class[] classes = new Class[] { FieldDeclaration.class,
+                        TypeDeclaration.class, MethodDeclaration.class,
+                        Initializer.class };
 
                 for (int i = 0; i < classes.length; i++) {
                     if (classes[i].isInstance(bodyDeclaration1)) {
@@ -2065,8 +2051,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  Integer} objects of the hash code of scopes ({@link Hashtable});
      *  values are {@link Class} objects.
      */
-    private Hashtable<Integer, Class> _classScopeRelation =
-    	new Hashtable<Integer, Class>();
+    private Hashtable<Integer, Class> _classScopeRelation = new Hashtable<Integer, Class>();
 
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
@@ -2083,8 +2068,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  package importations). Keys are class names; values are {@link
      *  Class} objects.
      */
-    private Hashtable<String, Class> _importedClasses =
-    	new Hashtable<String, Class>();
+    private Hashtable<String, Class> _importedClasses = new Hashtable<String, Class>();
 
     /** The current state of the analyzer.
      */

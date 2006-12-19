@@ -28,7 +28,6 @@
 package ptolemy.backtrack.eclipse.plugin.dialogs;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;

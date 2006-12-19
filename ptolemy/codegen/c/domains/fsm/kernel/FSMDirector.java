@@ -176,8 +176,8 @@ public class FSMDirector extends Director {
                         if (rates != null) {
                             code.append("switch ("
                                     + actorHelper.processCode("$actorSymbol("
-                                            + "currentConfiguration)")
-                                    + ") {" + _eol);
+                                            + "currentConfiguration)") + ") {"
+                                    + _eol);
                             for (int k = 0; k < rates.length; k++) {
                                 code.append("case " + k + ":" + _eol);
                                 if (rates[k] != null) {

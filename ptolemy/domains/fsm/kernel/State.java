@@ -106,7 +106,7 @@ public class State extends ComponentEntity {
         SingletonParameter center = new SingletonParameter(this, "_centerName");
         center.setExpression("true");
         center.setVisibility(Settable.EXPERT);
-        
+
         isInitialState = new Parameter(this, "isInitialState");
         isInitialState.setTypeEquals(BaseType.BOOLEAN);
         // If this is the only state in the container, then make
@@ -117,7 +117,8 @@ public class State extends ComponentEntity {
         // name.
         String initialStateName = "";
         if (container instanceof FSMActor) {
-            initialStateName = ((FSMActor)container).initialStateName.getExpression().trim();
+            initialStateName = ((FSMActor) container).initialStateName
+                    .getExpression().trim();
         }
         if (initialStateName.equals("")) {
             if (container.entityList(State.class).size() == 1) {
@@ -131,7 +132,7 @@ public class State extends ComponentEntity {
             if (initialStateName.equals(name)) {
                 isInitialState.setExpression("true");
             } else {
-                isInitialState.setExpression("false");                
+                isInitialState.setExpression("false");
             }
         }
     }
@@ -142,7 +143,7 @@ public class State extends ComponentEntity {
     /** The port linking incoming transitions.
      */
     public ComponentPort incomingPort = null;
-    
+
     /** An indicator of whether this state is the initial state.
      *  This is a boolean that defaults to false, unless this state
      *  is the only one in the container, in which case it defaults
@@ -192,14 +193,15 @@ public class State extends ComponentEntity {
             // Container might not be an FSMActor if, for example,
             // the state is in a library.
             if (container instanceof FSMActor) {
-                if (((BooleanToken)isInitialState.getToken()).booleanValue()) {
+                if (((BooleanToken) isInitialState.getToken()).booleanValue()) {
                     // If there is a previous initial state, unset its
                     // isInitialState parameter.
-                    if (((FSMActor)container)._initialState != null
-                            && ((FSMActor)container)._initialState != this) {
-                        ((FSMActor)container)._initialState.isInitialState.setToken("false");
+                    if (((FSMActor) container)._initialState != null
+                            && ((FSMActor) container)._initialState != this) {
+                        ((FSMActor) container)._initialState.isInitialState
+                                .setToken("false");
                     }
-                    ((FSMActor)container)._initialState = this;
+                    ((FSMActor) container)._initialState = this;
                 }
             }
         }

@@ -27,26 +27,25 @@
  */
 package ptolemy.backtrack.eclipse.plugin.widgets;
 
-import org.eclipse.jface.preference.FileFieldEditor;
+import java.io.File;
 
+import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
-
-import java.io.File;
 
 //////////////////////////////////////////////////////////////////////////
 //// SaveFileFieldEditor
 
 /**
-   A field editor for a file to be saved to. 
+ A field editor for a file to be saved to. 
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class SaveFileFieldEditor extends FileFieldEditor {
 
     ///////////////////////////////////////////////////////////////////

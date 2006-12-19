@@ -1,14 +1,12 @@
 package ptolemy.actor.gui.test;
 
 import java.net.URL;
-import java.util.Vector;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
-
 
 /** This test (from Rome AFRL) was causing a stack trace.
  */
@@ -22,7 +20,8 @@ public class RunMultipleModels {
                     try {
                         _activeCount++;
                         String threadName = Thread.currentThread().getName();
-                        URL url = RunMultipleModels.class.getResource("RunMultipleModelsModel.xml");
+                        URL url = RunMultipleModels.class
+                                .getResource("RunMultipleModelsModel.xml");
 
                         Workspace workspace = new Workspace("Workspace"
                                 + threadName);
@@ -32,7 +31,7 @@ public class RunMultipleModels {
 
                         Manager manager = new Manager(workspace, "Manager"
                                 + threadName);
-                        ((CompositeActor)model).setManager(manager);
+                        ((CompositeActor) model).setManager(manager);
                         manager.execute();
                         System.out.print(" " + _activeCount);
                         _activeCount--;
@@ -64,8 +63,7 @@ public class RunMultipleModels {
             thread.start();
         }
         System.out.println("");
-        System.out.println("Sleeping "
-                + Thread.currentThread().getName()
+        System.out.println("Sleeping " + Thread.currentThread().getName()
                 + " 30 seconds so that other threads may run.");
         Thread.sleep(30000);
         while (_activeCount > 0) {
@@ -83,26 +81,24 @@ public class RunMultipleModels {
     /** Create multiple models and execute them. */
     public synchronized void run2() throws Exception {
         for (int i = 0; i < 100; i++) {
-            URL url = RunMultipleModels.class.getResource("RunMultipleModelsModel.xml");
-            Workspace workspace = new Workspace("Workspace"
-                    + i);
+            URL url = RunMultipleModels.class
+                    .getResource("RunMultipleModelsModel.xml");
+            Workspace workspace = new Workspace("Workspace" + i);
             MoMLParser parser = new MoMLParser(workspace);
             parser.purgeModelRecord(url);
             NamedObj model = parser.parse(null, url);
 
-            Manager manager = new Manager(workspace, "Manager"
-                    + i);
-            ((CompositeActor)model).setManager(manager);
+            Manager manager = new Manager(workspace, "Manager" + i);
+            ((CompositeActor) model).setManager(manager);
             manager.startRun();
             System.out.print(".");
         }
     }
 
     public static void main(String[] args) throws Exception {
-        RunMultipleModels runMultipleModels= new RunMultipleModels();
+        RunMultipleModels runMultipleModels = new RunMultipleModels();
         runMultipleModels.run2();
     }
-
 
     // The count of currently executing runs.
     private int _activeCount = 0;

@@ -536,8 +536,7 @@ public class Transition extends ComponentRelation {
                 _guardParseTree = parser.generateParseTree(expr);
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to parse guard expression \""
-                        + expr + "\"");
+                        "Failed to parse guard expression \"" + expr + "\"");
             }
         }
         Token token = parseTreeEvaluator.evaluateParseTree(_guardParseTree,

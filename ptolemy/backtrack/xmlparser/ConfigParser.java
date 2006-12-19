@@ -27,10 +27,6 @@
  */
 package ptolemy.backtrack.xmlparser;
 
-import ptolemy.backtrack.util.PathFinder;
-
-import com.microstar.xml.XmlParser;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.OutputStreamWriter;
@@ -38,6 +34,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import ptolemy.backtrack.util.PathFinder;
+
+import com.microstar.xml.XmlParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConfigParser
@@ -166,11 +166,11 @@ public class ConfigParser {
      *   constructed XML tree to be the "backtrack" node.
      *  @exception Exception If error occurs.
      */
-    public void parseConfigFile(String fileName, Set<String> includedClasses, 
+    public void parseConfigFile(String fileName, Set<String> includedClasses,
             boolean backtrackingElement) throws Exception {
         XmlParser parser = new XmlParser();
         BufferedReader br = new BufferedReader(new FileReader(fileName));
-        ConfigXmlHandler handler = new ConfigXmlHandler(_xmlTree, fileName, 
+        ConfigXmlHandler handler = new ConfigXmlHandler(_xmlTree, fileName,
                 includedClasses);
         handler.addExcludedFiles(_excludedFiles);
         parser.setHandler(handler);
@@ -204,7 +204,7 @@ public class ConfigParser {
      *  @param packagePrefix The package prefix to be added.
      *  @param classes The set of names of affected classes.
      */
-    private void addPackagePrefix(ConfigXmlTree tree, String packagePrefix, 
+    private void addPackagePrefix(ConfigXmlTree tree, String packagePrefix,
             Set classes) {
         String className = tree.getAttribute("class");
 

@@ -27,6 +27,10 @@
  */
 package ptolemy.backtrack.manual.ptolemy.domains.ct.kernel;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -35,10 +39,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTCompositeActor

@@ -58,17 +58,17 @@ import ptolemy.backtrack.util.Strings;
 //// BacktrackingPreferencePage
 
 /**
-   The class to create the backtracking preference page.
+ The class to create the backtracking preference page.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class BacktrackingPreferencePage extends SectionPreferencePage implements
         IWorkbenchPreferencePage {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        constructors                       ////
 
@@ -123,11 +123,11 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
     private void _createSection1() {
         Composite composite = _createSection(
                 "Sources for Batch Refactoring",
-                "Set the sources of refactoring. A source list file stores " +
-                "the complete list of Java source files to be refactored. " +
-                "A single Java source file name is written on each line of " +
-                "the source list. The source file names may use paths " +
-                "relative to the path where the source list file is in.");
+                "Set the sources of refactoring. A source list file stores "
+                        + "the complete list of Java source files to be refactored. "
+                        + "A single Java source file name is written on each line of "
+                        + "the source list. The source file names may use paths "
+                        + "relative to the path where the source list file is in.");
 
         Composite currentComposite = _newComposite(composite);
         _sourceList = new FileFieldEditor(
@@ -204,8 +204,8 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
                 String sourceList = _sourceList.getStringValue();
                 String sourceListPath = new File(sourceList).getParent();
                 FileDialog dialog = new FileDialog(getShell());
-                dialog.setText(
-                        "Please choose a file to be added to the source list");
+                dialog
+                        .setText("Please choose a file to be added to the source list");
                 dialog.setFilterPath(sourceListPath);
                 dialog.setFilterExtensions(new String[] { "*.java" });
 
@@ -241,11 +241,11 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
     private void _createSection2() {
         Composite composite = _createSection(
                 "Location",
-                "Set the location to store the refactored Java code. The " +
-                "location of the output files is defined by the root of the " +
-                "classes, and packages where the classes are in. A prefix " +
-                "may be added to existing package declarations at the time " +
-                "of refactoring.");
+                "Set the location to store the refactored Java code. The "
+                        + "location of the output files is defined by the root of the "
+                        + "classes, and packages where the classes are in. A prefix "
+                        + "may be added to existing package declarations at the time "
+                        + "of refactoring.");
 
         Composite currentComposite = _newComposite(composite);
         _root = new DirectoryFieldEditor(PreferenceConstants.BACKTRACK_ROOT,
@@ -272,9 +272,9 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
     private void _createSection3() {
         Composite composite = _createSection(
                 "Extra Class Paths",
-                "Add class paths to locate classes in name resolving. The " +
-                "directories of the projects in the current workspace are " +
-                "added automatically and need not be specified explicitly.");
+                "Add class paths to locate classes in name resolving. The "
+                        + "directories of the projects in the current workspace are "
+                        + "added automatically and need not be specified explicitly.");
 
         Composite currentComposite = _newComposite(composite);
         _extraClassPaths = new PathEditor(
@@ -299,9 +299,9 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
     private void _createSection4() {
         Composite composite = _createSection(
                 "Actor Library Configuration",
-                "Set the file name of the XML configuration to be generated." +
-                "This configuration can be linked to the Ptolemy II actor " +
-                "library.");
+                "Set the file name of the XML configuration to be generated."
+                        + "This configuration can be linked to the Ptolemy II actor "
+                        + "library.");
 
         Group group = _newGroup(composite, "Configuration");
 

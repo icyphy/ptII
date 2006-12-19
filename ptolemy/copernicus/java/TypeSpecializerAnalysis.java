@@ -711,8 +711,7 @@ public class TypeSpecializerAnalysis {
                     _addInequality(debug, solver, baseTerm, newTerm);
                     _addInequality(debug, solver, newTerm, baseTerm);
 
-                    InequalityTerm elementTerm = arrayType
-                            .getElementTypeTerm();
+                    InequalityTerm elementTerm = arrayType.getElementTypeTerm();
                     _addInequality(debug, solver, firstArgTerm, elementTerm);
                     _addInequality(debug, solver, elementTerm, firstArgTerm);
                     return baseTerm;
@@ -726,8 +725,7 @@ public class TypeSpecializerAnalysis {
                     _addInequality(debug, solver, baseTerm, newTerm);
                     _addInequality(debug, solver, newTerm, baseTerm);
 
-                    InequalityTerm elementTerm = arrayType
-                            .getElementTypeTerm();
+                    InequalityTerm elementTerm = arrayType.getElementTypeTerm();
                     _addInequality(debug, solver, elementTypeTerm, elementTerm);
                     _addInequality(debug, solver, elementTerm, elementTypeTerm);
                     return baseTerm;
@@ -890,9 +888,8 @@ public class TypeSpecializerAnalysis {
             } else if (SootUtilities.derivesFrom(baseClass,
                     PtolemyUtilities.componentPortClass)) {
                 // If we are invoking a method on a port.
-                TypedIOPort port = InlinePortTransformer
-                        .getPortValue(method, (Local) r.getBase(), unit,
-                                localDefs, localUses);
+                TypedIOPort port = InlinePortTransformer.getPortValue(method,
+                        (Local) r.getBase(), unit, localDefs, localUses);
 
                 if (port == null) {
                     throw new RuntimeException("Failed to find port for "
@@ -1094,8 +1091,7 @@ public class TypeSpecializerAnalysis {
                 _addInequality(debug, solver, baseTerm, variableTerm);
                 _addInequality(debug, solver, variableTerm, baseTerm);
 
-                InequalityTerm returnTypeTerm = arrayType
-                        .getElementTypeTerm();
+                InequalityTerm returnTypeTerm = arrayType.getElementTypeTerm();
                 return returnTypeTerm;
             } else if (field.equals(PtolemyUtilities.unknownTypeField)) {
                 return new ConstantTerm(ptolemy.data.type.BaseType.UNKNOWN, r);

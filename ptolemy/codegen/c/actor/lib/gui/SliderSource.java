@@ -56,7 +56,7 @@ public class SliderSource extends CCodeGeneratorHelper {
     public SliderSource(ptolemy.actor.lib.gui.SliderSource actor) {
         super(actor);
     }
-    
+
     /** Generate initialize code.
      *  @return The generated code.
      *  @exception IllegalActionException If the code stream encounters 
@@ -64,18 +64,17 @@ public class SliderSource extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
         ArrayList args = new ArrayList();
         args.add(ptIIDir);
         code.append(_generateBlockCode("createJVMBlock", args));
-        
+
         code.append(super.generateInitializeCode());
-     
+
         return code.toString();
     }
-    
-    
+
     /** Get the header files needed by the code generated for the
      *  SliderSource actor.
      *  @return A set of strings that are names of the header files
@@ -90,18 +89,19 @@ public class SliderSource extends CCodeGeneratorHelper {
         javaHome = javaHome.substring(0, index);
         getCodeGenerator().addInclude("-I\"" + javaHome + "include\"");
         getCodeGenerator().addInclude("-I\"" + javaHome + "include/win32\"");
-        
+
         String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
-        getCodeGenerator().addLibrary("-L\"" + ptIIDir + "/ptolemy/codegen/c\"");
+        getCodeGenerator()
+                .addLibrary("-L\"" + ptIIDir + "/ptolemy/codegen/c\"");
         getCodeGenerator().addLibrary("-ljvm");
-        
+
         //getCodeGenerator().addInclude
         //        ("-I\"C:/Program Files/Java/jdk1.5.0_06/include\"");
         //getCodeGenerator().addInclude
         //        ("-I\"C:\\Program Files\\Java\\jdk1.5.0_06\\include\\win32\"");
         //getCodeGenerator().addLibrary("-LC:/ptII/ptolemy/codegen/c");
         //getCodeGenerator().addLibrary("-ljvm");
-        
+
         Set files = new HashSet();
         files.add("<jni.h>");
         return files;

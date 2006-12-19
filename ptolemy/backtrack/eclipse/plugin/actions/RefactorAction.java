@@ -58,16 +58,16 @@ import ptolemy.backtrack.util.Strings;
 //////////////////////////////////////////////////////////////////////////
 //// RefactorAction
 /**
-   Action to trigger Java source batch transformation. When triggered, the
-   source transformer will be invoked to transform all the source files listed
-   in the preferences, and place the generated class in the correct packages.
+ Action to trigger Java source batch transformation. When triggered, the
+ source transformer will be invoked to transform all the source files listed
+ in the preferences, and place the generated class in the correct packages.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class RefactorAction implements IWorkbenchWindowActionDelegate {
 
     /** Dispose of system resources allocated for this actions.
@@ -153,19 +153,19 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
 
     //////////////////////////////////////////////////////////////////////////
     //// AsyncPrintStream
-    
+
     /**
-       The subclass of PrintStream that asynchronously sends the output to the
-       Eclipse console.
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
+     The subclass of PrintStream that asynchronously sends the output to the
+     Eclipse console.
+     
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class AsyncPrintStream extends PrintStream {
-        
+
         /** Check whether there is an IO error. This method always returns
          *  false.
          *  
@@ -379,17 +379,17 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
 
         //////////////////////////////////////////////////////////////////////////
         //// PrintRunnable
-        
+
         /**
-           The runnable object to execute asynchronously with the Eclipse GUI
-           thread. It produces output to the Eclipse console.
-        
-           @author Thomas Feng
-           @version $Id$
-           @since Ptolemy II 5.1
-           @Pt.ProposedRating Red (tfeng)
-           @Pt.AcceptedRating Red (tfeng)
-        */
+         The runnable object to execute asynchronously with the Eclipse GUI
+         thread. It produces output to the Eclipse console.
+         
+         @author Thomas Feng
+         @version $Id$
+         @since Ptolemy II 5.1
+         @Pt.ProposedRating Red (tfeng)
+         @Pt.AcceptedRating Red (tfeng)
+         */
         private class PrintRunnable implements Runnable {
 
             /** Print the output.
@@ -406,9 +406,9 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
                 // Flush every time, does not work with Eclipse 3.0.
 
                 try {
-                	_stream.flush();
-                 } catch (IOException e) {
-                 }
+                    _stream.flush();
+                } catch (IOException e) {
+                }
             }
 
             /** The operation to flush the output.
@@ -446,18 +446,18 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
 
     //////////////////////////////////////////////////////////////////////////
     //// ErrorDialogRunnable
-    
+
     /**
-       The runnable object to asynchronously pop up an error dialog.
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
+     The runnable object to asynchronously pop up an error dialog.
+     
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class ErrorDialogRunnable implements Runnable {
-        
+
         /** Open the error dialog.
          */
         public void run() {
@@ -480,18 +480,18 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
 
     //////////////////////////////////////////////////////////////////////////
     //// TransformThread
-    
+
     /**
-       The thread to execute the transformation.
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
+     The thread to execute the transformation.
+     
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class TransformThread extends Thread {
-        
+
         /** Execute the transformation in the thread.
          */
         public void run() {
@@ -523,10 +523,10 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
                     IContainer container = Environment.getAffectedFolder();
                     container.refreshLocal(IResource.DEPTH_INFINITE, null);
                 } catch (Exception e) {
-                	e.printStackTrace(_error);
+                    e.printStackTrace(_error);
                 }
                 _output.flush();
-            	_error.flush();
+                _error.flush();
 
                 if (oldErr != null) {
                     System.setErr(oldErr);

@@ -234,7 +234,7 @@ public abstract class Rounding implements Cloneable, Serializable {
      * @return An iterator for the names of all overflow types.
      */
     public static Iterator nameIterator() {
-        return _nameToRounding.keySet().iterator();        
+        return _nameToRounding.keySet().iterator();
     }
 
     /**

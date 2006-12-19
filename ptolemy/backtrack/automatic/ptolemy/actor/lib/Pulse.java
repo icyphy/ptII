@@ -29,7 +29,6 @@
 //// Pulse
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.lib.SequenceSource;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -150,7 +149,8 @@ public class Pulse extends SequenceSource implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public Pulse(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public Pulse(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         indexes = new Parameter(this, "indexes");
         indexes.setExpression("{0, 1}");
@@ -171,30 +171,38 @@ public class Pulse extends SequenceSource implements Rollbackable {
      * @exception IllegalActionException If the indexes vector is not
      * increasing and nonnegative, or the indexes is not a row vector.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == indexes) {
-            ArrayToken indexesValue = (ArrayToken)indexes.getToken();
+            ArrayToken indexesValue = (ArrayToken) indexes.getToken();
             $ASSIGN$_indexes(new int[indexesValue.length()]);
             int previous = 0;
             for (int i = 0; i < indexesValue.length(); i++) {
-                $ASSIGN$_indexes(i, ((IntToken)indexesValue.getElement(i)).intValue());
+                $ASSIGN$_indexes(i, ((IntToken) indexesValue.getElement(i))
+                        .intValue());
                 if (_indexes[i] < previous) {
-                    throw new IllegalActionException(this, "Value of indexes is not nondecreasing " + "and nonnegative.");
+                    throw new IllegalActionException(this,
+                            "Value of indexes is not nondecreasing "
+                                    + "and nonnegative.");
                 }
                 previous = _indexes[i];
             }
         } else if (attribute == values) {
             try {
-                ArrayToken valuesArray = (ArrayToken)values.getToken();
+                ArrayToken valuesArray = (ArrayToken) values.getToken();
                 Token prototype = valuesArray.getElement(0);
                 $ASSIGN$_zero(prototype.zero());
             } catch (ArrayIndexOutOfBoundsException ex) {
-                throw new IllegalActionException(this, "Cannot set values to an empty array.");
+                throw new IllegalActionException(this,
+                        "Cannot set values to an empty array.");
             } catch (ClassCastException ex) {
-                throw new IllegalActionException(this, "Cannot set values to something that is not an array: " + values.getToken());
+                throw new IllegalActionException(this,
+                        "Cannot set values to something that is not an array: "
+                                + values.getToken());
             }
         } else if (attribute == repeat) {
-            $ASSIGN$_repeatFlag(((BooleanToken)repeat.getToken()).booleanValue());
+            $ASSIGN$_repeatFlag(((BooleanToken) repeat.getToken())
+                    .booleanValue());
         } else {
             super.attributeChanged(attribute);
         }
@@ -208,10 +216,11 @@ public class Pulse extends SequenceSource implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        Pulse newObject = (Pulse)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Pulse newObject = (Pulse) super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.values));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
@@ -226,13 +235,15 @@ public class Pulse extends SequenceSource implements Rollbackable {
      * @exception IllegalActionException If the values and indexes parameters
      * do not have the same length, or if there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         int currentIndex = 0;
-        ArrayToken val = (ArrayToken)values.getToken();
+        ArrayToken val = (ArrayToken) values.getToken();
         if (_indexColCount < _indexes.length) {
             if (val.length() != _indexes.length) {
-                throw new IllegalActionException(this, "Parameters values and indexes have " + "different lengths.");
+                throw new IllegalActionException(this,
+                        "Parameters values and indexes have "
+                                + "different lengths.");
             }
             currentIndex = _indexes[_indexColCount];
             if (_iterationCount == currentIndex) {
@@ -260,7 +271,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
      * Set the iteration count to zero.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
         $ASSIGN$_iterationCount(0);
         $ASSIGN$_indexColCount(0);
@@ -272,7 +283,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
      * @exception IllegalActionException If the expression of indexes
      * is not valid.
      */
-    public boolean postfire() throws IllegalActionException  {
+    public boolean postfire() throws IllegalActionException {
         if (_iterationCount <= _indexes[_indexes.length - 1]) {
             $ASSIGN$SPECIAL$_iterationCount(13, _iterationCount);
         }
@@ -286,102 +297,107 @@ public class Pulse extends SequenceSource implements Rollbackable {
      * Start an iteration.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean prefire() throws IllegalActionException  {
+    public boolean prefire() throws IllegalActionException {
         $ASSIGN$_match(false);
         return super.prefire();
     }
 
     private final int $ASSIGN$_iterationCount(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_iterationCount.add(null, _iterationCount, $CHECKPOINT.getTimestamp());
+            $RECORD$_iterationCount.add(null, _iterationCount, $CHECKPOINT
+                    .getTimestamp());
         }
         return _iterationCount = newValue;
     }
 
-    private final int $ASSIGN$SPECIAL$_iterationCount(int operator, long newValue) {
+    private final int $ASSIGN$SPECIAL$_iterationCount(int operator,
+            long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_iterationCount.add(null, _iterationCount, $CHECKPOINT.getTimestamp());
+            $RECORD$_iterationCount.add(null, _iterationCount, $CHECKPOINT
+                    .getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return _iterationCount += newValue;
-            case 1:
-                return _iterationCount -= newValue;
-            case 2:
-                return _iterationCount *= newValue;
-            case 3:
-                return _iterationCount /= newValue;
-            case 4:
-                return _iterationCount &= newValue;
-            case 5:
-                return _iterationCount |= newValue;
-            case 6:
-                return _iterationCount ^= newValue;
-            case 7:
-                return _iterationCount %= newValue;
-            case 8:
-                return _iterationCount <<= newValue;
-            case 9:
-                return _iterationCount >>= newValue;
-            case 10:
-                return _iterationCount >>>= newValue;
-            case 11:
-                return _iterationCount++;
-            case 12:
-                return _iterationCount--;
-            case 13:
-                return ++_iterationCount;
-            case 14:
-                return --_iterationCount;
-            default:
-                return _iterationCount;
+        case 0:
+            return _iterationCount += newValue;
+        case 1:
+            return _iterationCount -= newValue;
+        case 2:
+            return _iterationCount *= newValue;
+        case 3:
+            return _iterationCount /= newValue;
+        case 4:
+            return _iterationCount &= newValue;
+        case 5:
+            return _iterationCount |= newValue;
+        case 6:
+            return _iterationCount ^= newValue;
+        case 7:
+            return _iterationCount %= newValue;
+        case 8:
+            return _iterationCount <<= newValue;
+        case 9:
+            return _iterationCount >>= newValue;
+        case 10:
+            return _iterationCount >>>= newValue;
+        case 11:
+            return _iterationCount++;
+        case 12:
+            return _iterationCount--;
+        case 13:
+            return ++_iterationCount;
+        case 14:
+            return --_iterationCount;
+        default:
+            return _iterationCount;
         }
     }
 
     private final int $ASSIGN$_indexColCount(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_indexColCount.add(null, _indexColCount, $CHECKPOINT.getTimestamp());
+            $RECORD$_indexColCount.add(null, _indexColCount, $CHECKPOINT
+                    .getTimestamp());
         }
         return _indexColCount = newValue;
     }
 
     private final int $ASSIGN$SPECIAL$_indexColCount(int operator, long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_indexColCount.add(null, _indexColCount, $CHECKPOINT.getTimestamp());
+            $RECORD$_indexColCount.add(null, _indexColCount, $CHECKPOINT
+                    .getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return _indexColCount += newValue;
-            case 1:
-                return _indexColCount -= newValue;
-            case 2:
-                return _indexColCount *= newValue;
-            case 3:
-                return _indexColCount /= newValue;
-            case 4:
-                return _indexColCount &= newValue;
-            case 5:
-                return _indexColCount |= newValue;
-            case 6:
-                return _indexColCount ^= newValue;
-            case 7:
-                return _indexColCount %= newValue;
-            case 8:
-                return _indexColCount <<= newValue;
-            case 9:
-                return _indexColCount >>= newValue;
-            case 10:
-                return _indexColCount >>>= newValue;
-            case 11:
-                return _indexColCount++;
-            case 12:
-                return _indexColCount--;
-            case 13:
-                return ++_indexColCount;
-            case 14:
-                return --_indexColCount;
-            default:
-                return _indexColCount;
+        case 0:
+            return _indexColCount += newValue;
+        case 1:
+            return _indexColCount -= newValue;
+        case 2:
+            return _indexColCount *= newValue;
+        case 3:
+            return _indexColCount /= newValue;
+        case 4:
+            return _indexColCount &= newValue;
+        case 5:
+            return _indexColCount |= newValue;
+        case 6:
+            return _indexColCount ^= newValue;
+        case 7:
+            return _indexColCount %= newValue;
+        case 8:
+            return _indexColCount <<= newValue;
+        case 9:
+            return _indexColCount >>= newValue;
+        case 10:
+            return _indexColCount >>>= newValue;
+        case 11:
+            return _indexColCount++;
+        case 12:
+            return _indexColCount--;
+        case 13:
+            return ++_indexColCount;
+        case 14:
+            return --_indexColCount;
+        default:
+            return _indexColCount;
         }
     }
 
@@ -394,9 +410,8 @@ public class Pulse extends SequenceSource implements Rollbackable {
 
     private final int $ASSIGN$_indexes(int index0, int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_indexes.add(new int[] {
-                    index0
-                }, _indexes[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_indexes.add(new int[] { index0 }, _indexes[index0],
+                    $CHECKPOINT.getTimestamp());
         }
         return _indexes[index0] = newValue;
     }
@@ -417,25 +432,30 @@ public class Pulse extends SequenceSource implements Rollbackable {
 
     private final boolean $ASSIGN$_repeatFlag(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_repeatFlag.add(null, _repeatFlag, $CHECKPOINT.getTimestamp());
+            $RECORD$_repeatFlag.add(null, _repeatFlag, $CHECKPOINT
+                    .getTimestamp());
         }
         return _repeatFlag = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _iterationCount = $RECORD$_iterationCount.restore(_iterationCount, timestamp, trim);
-        _indexColCount = $RECORD$_indexColCount.restore(_indexColCount, timestamp, trim);
-        _indexes = (int[])$RECORD$_indexes.restore(_indexes, timestamp, trim);
-        _zero = (Token)$RECORD$_zero.restore(_zero, timestamp, trim);
+        _iterationCount = $RECORD$_iterationCount.restore(_iterationCount,
+                timestamp, trim);
+        _indexColCount = $RECORD$_indexColCount.restore(_indexColCount,
+                timestamp, trim);
+        _indexes = (int[]) $RECORD$_indexes.restore(_indexes, timestamp, trim);
+        _zero = (Token) $RECORD$_zero.restore(_zero, timestamp, trim);
         _match = $RECORD$_match.restore(_match, timestamp, trim);
         _repeatFlag = $RECORD$_repeatFlag.restore(_repeatFlag, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -474,13 +494,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
     private FieldRecord $RECORD$_repeatFlag = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_iterationCount,
-            $RECORD$_indexColCount,
-            $RECORD$_indexes,
-            $RECORD$_zero,
-            $RECORD$_match,
-            $RECORD$_repeatFlag
-        };
+            $RECORD$_iterationCount, $RECORD$_indexColCount, $RECORD$_indexes,
+            $RECORD$_zero, $RECORD$_match, $RECORD$_repeatFlag };
 
 }
-

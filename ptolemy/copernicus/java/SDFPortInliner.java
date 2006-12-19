@@ -1071,8 +1071,7 @@ public class SDFPortInliner implements PortInliner {
                         initBody.getLocals().add(arrayLocal);
 
                         // Create the new buffer
-                        Stmt insertPoint = initBody
-                                .getFirstNonIdentityStmt();
+                        Stmt insertPoint = initBody.getFirstNonIdentityStmt();
 
                         // This *should* be the statment after the constructor.
                         insertPoint = (Stmt) initUnits.getSuccOf(insertPoint);
@@ -1174,8 +1173,7 @@ public class SDFPortInliner implements PortInliner {
                 // multiple types.  Create a reference to the
                 // port for each type that the port may reference.
                 if (port.isInput()) {
-                    ptolemy.data.type.Type type = port
-                            .getType();
+                    ptolemy.data.type.Type type = port.getType();
 
                     _createPortBufferReference(entityClass, port, type,
                             typeNameToBufferField);
@@ -1429,8 +1427,7 @@ public class SDFPortInliner implements PortInliner {
                                 type, typeNameToInsideBufferField);
                     }
                 } else if (port.isOutput()) {
-                    ptolemy.data.type.Type type = port
-                            .getType();
+                    ptolemy.data.type.Type type = port.getType();
 
                     _createPortInsideBufferReference(_modelClass, port, type,
                             typeNameToInsideBufferField);

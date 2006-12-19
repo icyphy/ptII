@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.vhdl.kernel;
 
-import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
@@ -95,11 +94,9 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     public boolean doGenerate() throws IllegalActionException {
         if (isSynthesizable()) {
-            return getCodeGenerator().getGenerateFile() == 
-                VHDLCodeGenerator.SYNTHESIZABLE;
+            return getCodeGenerator().getGenerateFile() == VHDLCodeGenerator.SYNTHESIZABLE;
         } else {
-            return getCodeGenerator().getGenerateFile() == 
-                VHDLCodeGenerator.TESTBENCH;            
+            return getCodeGenerator().getGenerateFile() == VHDLCodeGenerator.TESTBENCH;
         }
     }
 
@@ -109,7 +106,7 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
     public VHDLCodeGenerator getCodeGenerator() {
         return (VHDLCodeGenerator) _codeGenerator;
     }
-    
+
     /** Return the reference to the specified port of the container
      *  actor. The returned string is in the form 
      *  "fullName_portName[channelNumber]", if a channel number is given.
@@ -158,7 +155,7 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
         if (port != null) {
 
             int channelNumber = 0;
-            
+
             if (!channelAndOffset[0].equals("")) {
                 channelNumber = (new Integer(channelAndOffset[0])).intValue();
             }
@@ -190,13 +187,13 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
 
                 result.append(generateVariableName(sourceChannel.port));
                 result.append("_" + sourceChannel.channelNumber);
-                return result.toString();                
+                return result.toString();
             }
         }
 
-        throw new IllegalActionException(getComponent(), 
+        throw new IllegalActionException(getComponent(),
                 "Reference not found: " + name);
-    }    
+    }
 
     /**
      * Return whether or not this helper is synthesizable. It checks the
@@ -208,18 +205,18 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
     public boolean isSynthesizable() throws IllegalActionException {
         Actor actor = (Actor) getComponent();
         if (actor instanceof FixTransformer) {
-            Parameter parameter = (Parameter)
-                ((FixTransformer) actor).getAttribute("synthesizable");
-            
+            Parameter parameter = (Parameter) ((FixTransformer) actor)
+                    .getAttribute("synthesizable");
+
             return ((BooleanToken) parameter.getToken()).booleanValue();
         }
-        
+
         return false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
-    
+
     /**
      * Generate a string that represents the VHDL type for the given port. 
      * For a fix type port, this generates a "std_logic_vector" type in
@@ -231,23 +228,22 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
     protected String _generateVHDLType(TypedIOPort port) {
         StringBuffer code = new StringBuffer();
         if (port.getType() == BaseType.FIX) {
-            int bits = new Precision(
-                    _getPortPrecision(port)).getNumberOfBits() - 1;
-            
+            int bits = new Precision(_getPortPrecision(port)).getNumberOfBits() - 1;
+
             if (bits == 0) {
-                code.append("std_logic");                
+                code.append("std_logic");
             } else {
                 code.append("std_logic_vector (" + bits + " DOWNTO 0)");
             }
-            
+
         } else if (port.getType() == BaseType.BOOLEAN) {
-            
+
             code.append("std_logic");
-            
+
         } else {
             // FIXME: we are only dealing with fix point type and boolean type.
             code.append("UNKNOWN TYPE");
-            
+
         }
         return code.toString();
     }
@@ -259,9 +255,9 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     protected VHDLCodeGeneratorHelper _getHelper(NamedObj component)
             throws IllegalActionException {
-        return (VHDLCodeGeneratorHelper) super._getHelper(component);        
+        return (VHDLCodeGeneratorHelper) super._getHelper(component);
     }
-    
+
     /**
      * Return the precision expression string associated with the given
      * port. This assumes that there is a precision parameter named 
@@ -270,10 +266,9 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
      * @return The precision expression string.
      */
     protected String _getPortPrecision(Port port) {
-        Parameter precision = (Parameter) 
-        ((Entity) port.getContainer())
-        .getAttribute(port.getName() + "Precision");  
-        
+        Parameter precision = (Parameter) ((Entity) port.getContainer())
+                .getAttribute(port.getName() + "Precision");
+
         return precision.getExpression();
     }
 
@@ -286,13 +281,13 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException If getSourceChannel(IOPort, int)
      *  throws it.
      */
-    protected Actor _getSourcePortActor(IOPort port) 
+    protected Actor _getSourcePortActor(IOPort port)
             throws IllegalActionException {
         IOPort sourcePort = getSourceChannel(port, 0).port;
 
-        return (Actor) sourcePort.getContainer();    
+        return (Actor) sourcePort.getContainer();
     }
-    
+
     /**
      * Return the precision of the source port that is connected to the
      * given port.
@@ -302,13 +297,13 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
      * @throws IllegalActionException If getSourceChannel(IOPort, int) or
      *  getPrecision(IOPort) throw it.
      */
-    protected Precision _getSourcePortPrecision(IOPort port) throws IllegalActionException {
+    protected Precision _getSourcePortPrecision(IOPort port)
+            throws IllegalActionException {
         IOPort sourcePort = getSourceChannel(port, 0).port;
 
-        FixTransformer sourceActor = 
-        ((FixTransformer) _getSourcePortActor(port));
-        
+        FixTransformer sourceActor = ((FixTransformer) _getSourcePortActor(port));
+
         return new Precision(sourceActor.getPortPrecision(sourcePort));
-    }        
-    
+    }
+
 }

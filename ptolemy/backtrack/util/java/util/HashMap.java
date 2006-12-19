@@ -1,40 +1,40 @@
 /* HashMap.java -- a class providing a basic hashtable data structure,
-   mapping Object --> Object
-   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005  Free Software Foundation, Inc.
+ mapping Object --> Object
+ Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005  Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ 02110-1301 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 // NOTE: This implementation is very similar to that of Hashtable. If you fix
 // a bug in here, chances are you should make a similar change to the Hashtable
 // code.
@@ -46,16 +46,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.Object;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
-import ptolemy.backtrack.util.java.util.Set;
 
 /** 
  * This class provides a hashtable-backed implementation of the
@@ -97,7 +97,8 @@ import ptolemy.backtrack.util.java.util.Set;
  * @since 1.2
  * @status updated to 1.4
  */
-public class HashMap extends AbstractMap implements Map, Cloneable, Serializable, Rollbackable {
+public class HashMap extends AbstractMap implements Map, Cloneable,
+        Serializable, Rollbackable {
 
     /**     
      * Default number of buckets. This is the value the JDK 1.3 uses. Some
@@ -153,8 +154,8 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
 
     /**     
      * The cache for {
-@link #entrySet()    }
-.
+     @link #entrySet()    }
+     .
      */
     private transient Set entries;
 
@@ -163,7 +164,8 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
      * pair. Package visible for use by subclass.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    static class HashEntry extends AbstractMap.BasicMapEntry implements Rollbackable {
+    static class HashEntry extends AbstractMap.BasicMapEntry implements
+            Rollbackable {
 
         /**         
          * The next entry in the linked list. Package visible for use by subclass.
@@ -181,8 +183,8 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
 
         /**         
          * Called when this entry is accessed via {
-@link #put(Object, Object)        }
-.
+         @link #put(Object, Object)        }
+         .
          * This version does nothing, but in LinkedHashMap, it must do some
          * bookkeeping for access-traversal mode.
          */
@@ -217,20 +219,19 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            next = (HashEntry)$RECORD$next.restore(next, timestamp, trim);
+            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
             super.$RESTORE(timestamp, trim);
         }
 
         private FieldRecord $RECORD$next = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$next
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$next };
 
     }
 
@@ -272,13 +273,13 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
 
         /**         
          * The type of this Iterator: {
-@link #KEYS        }
-, {
-@link #VALUES        }
-,
+         @link #KEYS        }
+         , {
+         @link #VALUES        }
+         ,
          * or {
-@link #ENTRIES        }
-.
+         @link #ENTRIES        }
+         .
          */
         private final int type;
 
@@ -312,11 +313,11 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
         /**         
          * Construct a new HashIterator with the supplied type.
          * @param type {
-@link #KEYS        }
-, {
-@link #VALUES        }
-, or {
-@link #ENTRIES        }
+         @link #KEYS        }
+         , {
+         @link #VALUES        }
+         , or {
+         @link #ENTRIES        }
 
          */
         HashIterator(int type) {
@@ -344,7 +345,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                 throw new NoSuchElementException();
             $ASSIGN$SPECIAL$count(12, count);
             HashEntry e = next;
-            while (e == null) 
+            while (e == null)
                 e = getBuckets()[$ASSIGN$SPECIAL$idx(14, idx)];
             $ASSIGN$next(e.getNext());
             $ASSIGN$last(e);
@@ -373,41 +374,42 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
 
         private final int $ASSIGN$SPECIAL$knownMod(int operator, long newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                $RECORD$knownMod
+                        .add(null, knownMod, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-                case 0:
-                    return knownMod += newValue;
-                case 1:
-                    return knownMod -= newValue;
-                case 2:
-                    return knownMod *= newValue;
-                case 3:
-                    return knownMod /= newValue;
-                case 4:
-                    return knownMod &= newValue;
-                case 5:
-                    return knownMod |= newValue;
-                case 6:
-                    return knownMod ^= newValue;
-                case 7:
-                    return knownMod %= newValue;
-                case 8:
-                    return knownMod <<= newValue;
-                case 9:
-                    return knownMod >>= newValue;
-                case 10:
-                    return knownMod >>>= newValue;
-                case 11:
-                    return knownMod++;
-                case 12:
-                    return knownMod--;
-                case 13:
-                    return ++knownMod;
-                case 14:
-                    return --knownMod;
-                default:
-                    return knownMod;
+            case 0:
+                return knownMod += newValue;
+            case 1:
+                return knownMod -= newValue;
+            case 2:
+                return knownMod *= newValue;
+            case 3:
+                return knownMod /= newValue;
+            case 4:
+                return knownMod &= newValue;
+            case 5:
+                return knownMod |= newValue;
+            case 6:
+                return knownMod ^= newValue;
+            case 7:
+                return knownMod %= newValue;
+            case 8:
+                return knownMod <<= newValue;
+            case 9:
+                return knownMod >>= newValue;
+            case 10:
+                return knownMod >>>= newValue;
+            case 11:
+                return knownMod++;
+            case 12:
+                return knownMod--;
+            case 13:
+                return ++knownMod;
+            case 14:
+                return --knownMod;
+            default:
+                return knownMod;
             }
         }
 
@@ -416,38 +418,38 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                 $RECORD$count.add(null, count, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-                case 0:
-                    return count += newValue;
-                case 1:
-                    return count -= newValue;
-                case 2:
-                    return count *= newValue;
-                case 3:
-                    return count /= newValue;
-                case 4:
-                    return count &= newValue;
-                case 5:
-                    return count |= newValue;
-                case 6:
-                    return count ^= newValue;
-                case 7:
-                    return count %= newValue;
-                case 8:
-                    return count <<= newValue;
-                case 9:
-                    return count >>= newValue;
-                case 10:
-                    return count >>>= newValue;
-                case 11:
-                    return count++;
-                case 12:
-                    return count--;
-                case 13:
-                    return ++count;
-                case 14:
-                    return --count;
-                default:
-                    return count;
+            case 0:
+                return count += newValue;
+            case 1:
+                return count -= newValue;
+            case 2:
+                return count *= newValue;
+            case 3:
+                return count /= newValue;
+            case 4:
+                return count &= newValue;
+            case 5:
+                return count |= newValue;
+            case 6:
+                return count ^= newValue;
+            case 7:
+                return count %= newValue;
+            case 8:
+                return count <<= newValue;
+            case 9:
+                return count >>= newValue;
+            case 10:
+                return count >>>= newValue;
+            case 11:
+                return count++;
+            case 12:
+                return count--;
+            case 13:
+                return ++count;
+            case 14:
+                return --count;
+            default:
+                return count;
             }
         }
 
@@ -456,38 +458,38 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                 $RECORD$idx.add(null, idx, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-                case 0:
-                    return idx += newValue;
-                case 1:
-                    return idx -= newValue;
-                case 2:
-                    return idx *= newValue;
-                case 3:
-                    return idx /= newValue;
-                case 4:
-                    return idx &= newValue;
-                case 5:
-                    return idx |= newValue;
-                case 6:
-                    return idx ^= newValue;
-                case 7:
-                    return idx %= newValue;
-                case 8:
-                    return idx <<= newValue;
-                case 9:
-                    return idx >>= newValue;
-                case 10:
-                    return idx >>>= newValue;
-                case 11:
-                    return idx++;
-                case 12:
-                    return idx--;
-                case 13:
-                    return ++idx;
-                case 14:
-                    return --idx;
-                default:
-                    return idx;
+            case 0:
+                return idx += newValue;
+            case 1:
+                return idx -= newValue;
+            case 2:
+                return idx *= newValue;
+            case 3:
+                return idx /= newValue;
+            case 4:
+                return idx &= newValue;
+            case 5:
+                return idx |= newValue;
+            case 6:
+                return idx ^= newValue;
+            case 7:
+                return idx %= newValue;
+            case 8:
+                return idx <<= newValue;
+            case 9:
+                return idx >>= newValue;
+            case 10:
+                return idx >>>= newValue;
+            case 11:
+                return idx++;
+            case 12:
+                return idx--;
+            case 13:
+                return ++idx;
+            case 14:
+                return --idx;
+            default:
+                return idx;
             }
         }
 
@@ -512,7 +514,8 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
@@ -520,10 +523,11 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
             knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
             count = $RECORD$count.restore(count, timestamp, trim);
             idx = $RECORD$idx.restore(idx, timestamp, trim);
-            last = (HashEntry)$RECORD$last.restore(last, timestamp, trim);
-            next = (HashEntry)$RECORD$next.restore(next, timestamp, trim);
+            last = (HashEntry) $RECORD$last.restore(last, timestamp, trim);
+            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -537,7 +541,8 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -561,14 +566,9 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
 
         private FieldRecord $RECORD$next = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$type,
-                $RECORD$knownMod,
-                $RECORD$count,
-                $RECORD$idx,
-                $RECORD$last,
-                $RECORD$next
-            };
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$type,
+                $RECORD$knownMod, $RECORD$count, $RECORD$idx, $RECORD$last,
+                $RECORD$next };
 
     }
 
@@ -613,14 +613,15 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
      */
     public HashMap(int initialCapacity, float loadFactor) {
         if (initialCapacity < 0)
-            throw new IllegalArgumentException("Illegal Capacity: " + initialCapacity);
+            throw new IllegalArgumentException("Illegal Capacity: "
+                    + initialCapacity);
         if (!(loadFactor > 0))
             throw new IllegalArgumentException("Illegal Load: " + loadFactor);
         if (initialCapacity == 0)
             initialCapacity = 1;
         setBuckets(new HashEntry[initialCapacity]);
         this.loadFactor = loadFactor;
-        $ASSIGN$threshold((int)(initialCapacity * loadFactor));
+        $ASSIGN$threshold((int) (initialCapacity * loadFactor));
     }
 
     /**     
@@ -720,9 +721,9 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
     public void putAll(Map m) {
         Iterator itr = m.entrySet().iterator();
         while (itr.hasNext()) {
-            Map.Entry e = (Map.Entry)itr.next();
+            Map.Entry e = (Map.Entry) itr.next();
             if (e instanceof AbstractMap.BasicMapEntry) {
-                AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry)e;
+                AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry) e;
                 put(entry.getKeyField(), entry.getValueField());
             } else
                 put(e.getKey(), e.getValue());
@@ -796,7 +797,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
     public Object clone() {
         HashMap copy = null;
         try {
-            copy = (HashMap)super.clone();
+            copy = (HashMap) super.clone();
         } catch (CloneNotSupportedException x) {
         }
         copy.setBuckets(new HashEntry[getBuckets().length]);
@@ -860,7 +861,8 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     super.$COMMIT(timestamp);
                 }
 
@@ -872,11 +874,13 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -886,8 +890,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                     return this;
                 }
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    };
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
@@ -943,7 +946,8 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     super.$COMMIT(timestamp);
                 }
 
@@ -955,11 +959,13 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -969,8 +975,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                     return this;
                 }
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    };
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
@@ -1041,7 +1046,8 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     super.$COMMIT(timestamp);
                 }
 
@@ -1053,11 +1059,13 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -1067,8 +1075,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                     return this;
                 }
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    };
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
@@ -1103,13 +1110,13 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
     final HashEntry getEntry(Object o) {
         if (!(o instanceof Map.Entry))
             return null;
-        Map.Entry me = (Map.Entry)o;
+        Map.Entry me = (Map.Entry) o;
         Object key = me.getKey();
         int idx = hash(key);
         HashEntry e = getBuckets()[idx];
         while (e != null) {
             if (equals(e.getKeyField(), key))
-                return equals(e.getValueField(), me.getValue())?e:null;
+                return equals(e.getValueField(), me.getValue()) ? e : null;
             e = e.getNext();
         }
         return null;
@@ -1122,18 +1129,18 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
      * @return the bucket number
      */
     final int hash(Object key) {
-        return key == null?0:Math.abs(key.hashCode() % getBuckets().length);
+        return key == null ? 0 : Math.abs(key.hashCode() % getBuckets().length);
     }
 
     /**     
      * Generates a parameterized iterator.  Must be overrideable, since
      * LinkedHashMap iterates in a different order.
      * @param type {
-@link #KEYS    }
-, {
-@link #VALUES    }
-, or {
-@link #ENTRIES    }
+     @link #KEYS    }
+     , {
+     @link #VALUES    }
+     , or {
+     @link #ENTRIES    }
 
      * @return the appropriate iterator
      */
@@ -1152,7 +1159,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
         setSize(0);
         while (itr.hasNext()) {
             setSize(getSize() + 1);
-            Map.Entry e = (Map.Entry)itr.next();
+            Map.Entry e = (Map.Entry) itr.next();
             Object key = e.getKey();
             int idx = hash(key);
             addEntry(key, e.getValue(), idx, false);
@@ -1170,7 +1177,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
     private void rehash() {
         HashEntry[] oldBuckets = getBuckets();
         int newcapacity = (getBuckets().length * 2) + 1;
-        $ASSIGN$threshold((int)(newcapacity * loadFactor));
+        $ASSIGN$threshold((int) (newcapacity * loadFactor));
         setBuckets(new HashEntry[newcapacity]);
         for (int i = oldBuckets.length - 1; i >= 0; i--) {
             HashEntry e = oldBuckets[i];
@@ -1194,13 +1201,13 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
      * are emitted first.  They are followed by size entries,
      * each consisting of a key (Object) and a value (Object).
      */
-    private void writeObject(ObjectOutputStream s) throws IOException  {
+    private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
         s.writeInt(getBuckets().length);
         s.writeInt(getSize());
         Iterator it = iterator(ENTRIES);
         while (it.hasNext()) {
-            HashEntry entry = (HashEntry)it.next();
+            HashEntry entry = (HashEntry) it.next();
             s.writeObject(entry.getKeyField());
             s.writeObject(entry.getValueField());
         }
@@ -1216,7 +1223,8 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
      * are emitted first.  They are followed by size entries,
      * each consisting of a key (Object) and a value (Object).
      */
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException  {
+    private void readObject(ObjectInputStream s) throws IOException,
+            ClassNotFoundException {
         s.defaultReadObject();
         setBuckets(new HashEntry[s.readInt()]);
         int len = s.readInt();
@@ -1295,16 +1303,18 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         threshold = $RECORD$threshold.restore(threshold, timestamp, trim);
-        buckets = (HashEntry[])$RECORD$buckets.restore(buckets, timestamp, trim);
+        buckets = (HashEntry[]) $RECORD$buckets.restore(buckets, timestamp,
+                trim);
         modCount = $RECORD$modCount.restore(modCount, timestamp, trim);
         size = $RECORD$size.restore(size, timestamp, trim);
-        entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
+        entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
 
@@ -1318,13 +1328,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
 
     private FieldRecord $RECORD$entries = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$threshold,
-            $RECORD$buckets,
-            $RECORD$modCount,
-            $RECORD$size,
-            $RECORD$entries
-        };
+    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$threshold,
+            $RECORD$buckets, $RECORD$modCount, $RECORD$size, $RECORD$entries };
 
 }
-

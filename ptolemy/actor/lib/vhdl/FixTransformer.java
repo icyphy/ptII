@@ -64,7 +64,7 @@ import ptolemy.math.Rounding;
  @Pt.AcceptedRating Red (mankit)
  */
 public class FixTransformer extends TypedAtomicActor {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -76,9 +76,9 @@ public class FixTransformer extends TypedAtomicActor {
     public FixTransformer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-    
+
         output = newFixOutputPort("output");
-        Parameter synthesizable = new Parameter(this, "synthesizable");            
+        Parameter synthesizable = new Parameter(this, "synthesizable");
         synthesizable.setExpression("true");
         synthesizable.setTypeEquals(BaseType.BOOLEAN);
     }
@@ -90,21 +90,20 @@ public class FixTransformer extends TypedAtomicActor {
      * @exception IllegalActionException If there is no precision
      *  parameter for the given port. 
      */
-    public String getPortPrecision(IOPort port) 
-            throws IllegalActionException {
-        
+    public String getPortPrecision(IOPort port) throws IllegalActionException {
+
         Parameter precision = null;
         precision = (Parameter) ((Entity) port.getContainer())
-        .getAttribute(port.getName() + "Precision");  
-        
+                .getAttribute(port.getName() + "Precision");
+
         if (precision == null) {
             throw new IllegalActionException(this, port.getName()
                     + " does not have an precision parameter.");
         }
-        
+
         return precision.getExpression();
     }
-    
+
     /**
      * Send the quantized output token according the output precision,
      * overflow and rounding parameters of the output port.
@@ -115,27 +114,30 @@ public class FixTransformer extends TypedAtomicActor {
      *  be converted to the type of this port, or if the token is null.
      * @exception NoRoomException If there is no room in the receiver.
      */
-    public void sendOutput(TypedIOPort port, int channel, Token token) 
+    public void sendOutput(TypedIOPort port, int channel, Token token)
             throws NoRoomException, IllegalActionException {
         if (port.getType() == BaseType.FIX && token instanceof FixToken) {
-            Precision precision = new Precision(((Parameter) 
-                getAttribute(port.getName() + "Precision")).getExpression());
-    
-            Overflow overflow = Overflow.getName(((Parameter) getAttribute(
-                port.getName() + "Overflow")).getExpression().toLowerCase());
-    
-            Rounding rounding = Rounding.getName(((Parameter) getAttribute(
-                port.getName() + "Rounding")).getExpression().toLowerCase());
-    
-            Quantization quantization = 
-                new FixPointQuantization(precision, overflow, rounding);
-            
-            token = ((FixToken) token).quantize(quantization); 
+            Precision precision = new Precision(((Parameter) getAttribute(port
+                    .getName()
+                    + "Precision")).getExpression());
+
+            Overflow overflow = Overflow.getName(((Parameter) getAttribute(port
+                    .getName()
+                    + "Overflow")).getExpression().toLowerCase());
+
+            Rounding rounding = Rounding.getName(((Parameter) getAttribute(port
+                    .getName()
+                    + "Rounding")).getExpression().toLowerCase());
+
+            Quantization quantization = new FixPointQuantization(precision,
+                    overflow, rounding);
+
+            token = ((FixToken) token).quantize(quantization);
         }
 
         port.send(channel, token);
     }
-    
+
     /** Create a new fix point type output port with given the name.
      *  The container of the created port is this actor. This also
      *  create a new precision parameter associated with this port.   
@@ -145,40 +147,38 @@ public class FixTransformer extends TypedAtomicActor {
      * @exception NameDuplicationException If a parameter with the
      *  same name already exists.
      */
-    public QueuedTypedIOPort newFixOutputPort(String name) throws
-            IllegalActionException, NameDuplicationException {
-        
+    public QueuedTypedIOPort newFixOutputPort(String name)
+            throws IllegalActionException, NameDuplicationException {
+
         // For each output port, we want to have an assoicated
         // precision, overflow and rounding parameters.
-        Parameter precision = 
-            new StringParameter(this, name + "Precision");            
-        precision.setExpression("31:0");  
+        Parameter precision = new StringParameter(this, name + "Precision");
+        precision.setExpression("31:0");
 
         Parameter overflow = new StringParameter(this, name + "Overflow");
         Parameter rounding = new StringParameter(this, name + "Rounding");
 
         overflow.setExpression("CLIP");
 
-        Iterator iterator = Overflow.nameIterator();        
+        Iterator iterator = Overflow.nameIterator();
         while (iterator.hasNext()) {
             overflow.addChoice(((String) iterator.next()).toUpperCase());
         }
-        
+
         rounding.setExpression("HALF_EVEN");
-        
-        iterator = Rounding.nameIterator();        
+
+        iterator = Rounding.nameIterator();
         while (iterator.hasNext()) {
             rounding.addChoice(((String) iterator.next()).toUpperCase());
         }
-        
-        QueuedTypedIOPort port =
-            new QueuedTypedIOPort(this, name, false, true);
-        
+
+        QueuedTypedIOPort port = new QueuedTypedIOPort(this, name, false, true);
+
         port.setTypeEquals(BaseType.FIX);
 
         return port;
     }
-    
+
     /**
      * Verify that the bit width of the given FixToken is equal to
      * the given width. If not, an IllegalActionException is thrown.  
@@ -187,15 +187,14 @@ public class FixTransformer extends TypedAtomicActor {
      * @exception IllegalActionException Thrown If the bit width of the
      *  given fix token is not equal to given width. 
      */
-    protected void _checkFixTokenWidth(FixToken token, int width) 
+    protected void _checkFixTokenWidth(FixToken token, int width)
             throws IllegalActionException {
         if (token.fixValue().getPrecision().getNumberOfBits() != width) {
-            throw new IllegalActionException(this, 
-                    "Bit width violation: " + token
-                    + " is not equal to " + width);
+            throw new IllegalActionException(this, "Bit width violation: "
+                    + token + " is not equal to " + width);
         }
     }
-    
+
     /**
      * Verify that the bit width of the given fix-point token is equal
      * to the minimum bit width that is required to represent the given
@@ -207,11 +206,10 @@ public class FixTransformer extends TypedAtomicActor {
      */
     protected void _checkFixMaxValue(FixToken token, int max)
             throws IllegalActionException {
-        
-        _checkFixTokenWidth(token, 
-                Integer.toBinaryString(max).length());
+
+        _checkFixTokenWidth(token, Integer.toBinaryString(max).length());
     }
-    
+
     /**
      * Set quantization parameters of the output port with the given
      * parameter expression strings. Hide the parameters in the configure
@@ -220,19 +218,21 @@ public class FixTransformer extends TypedAtomicActor {
      * @param overflowString The given expression for the overflow parameter.
      * @param roundingString The given expression for the rounding parameter.
      */
-    protected void _setAndHideQuantizationParameters(
-            String precisionString, String overflowString, String roundingString) 
+    protected void _setAndHideQuantizationParameters(String precisionString,
+            String overflowString, String roundingString)
             throws IllegalActionException {
-   
-        _setQuantizationParameters(precisionString, overflowString, roundingString);
+
+        _setQuantizationParameters(precisionString, overflowString,
+                roundingString);
         _showQuantizationParameters(false, false, false);
     }
 
-    protected void _showQuantizationParameters(
-            boolean showPrecision, boolean showOverflow, boolean showRounding) 
+    protected void _showQuantizationParameters(boolean showPrecision,
+            boolean showOverflow, boolean showRounding)
             throws IllegalActionException {
         Parameter precision = ((Parameter) getAttribute("outputPrecision"));
-        precision.setVisibility((showPrecision) ? Settable.FULL : Settable.NONE);
+        precision
+                .setVisibility((showPrecision) ? Settable.FULL : Settable.NONE);
 
         Parameter overflow = ((Parameter) getAttribute("outputOverflow"));
         overflow.setVisibility((showOverflow) ? Settable.FULL : Settable.NONE);
@@ -240,7 +240,7 @@ public class FixTransformer extends TypedAtomicActor {
         Parameter rounding = ((Parameter) getAttribute("outputRounding"));
         rounding.setVisibility((showRounding) ? Settable.FULL : Settable.NONE);
     }
-    
+
     /**
      * 
      * @param precisionString
@@ -248,27 +248,26 @@ public class FixTransformer extends TypedAtomicActor {
      * @param roundingString
      * @exception IllegalActionException
      */
-    protected void _setQuantizationParameters(
-            String precisionString, String overflowString, String roundingString) 
+    protected void _setQuantizationParameters(String precisionString,
+            String overflowString, String roundingString)
             throws IllegalActionException {
         if (precisionString != null) {
             ((Parameter) getAttribute("outputPrecision"))
-            .setExpression(precisionString);
+                    .setExpression(precisionString);
         }
         if (overflowString != null) {
             ((Parameter) getAttribute("outputOverflow"))
-            .setExpression(overflowString);
+                    .setExpression(overflowString);
         }
         if (roundingString != null) {
             ((Parameter) getAttribute("outputRounding"))
-            .setExpression(roundingString);       
+                    .setExpression(roundingString);
         }
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    
     /** Queued ouput to simulate pipelined add.  The output is fix 
      *  point type.
      */

@@ -104,7 +104,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         generateComment = new Parameter(this, "generateComment");
         generateComment.setTypeEquals(BaseType.BOOLEAN);
         generateComment.setExpression("true");
-        
+
         inline = new Parameter(this, "inline");
         inline.setTypeEquals(BaseType.BOOLEAN);
         inline.setExpression("true");
@@ -212,7 +212,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String comment(String comment) {
         return formatComment(comment) + _eol;
     }
-    
+
     /** Return a formatted comment containing the
      *  specified string with a specified indent level.
      *  @param comment The string to put in the comment.
@@ -221,7 +221,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String comment(int indentLevel, String comment) {
         if (generateComment.getExpression().equals("true")) {
-            return StringUtilities.getIndentPrefix(indentLevel) 
+            return StringUtilities.getIndentPrefix(indentLevel)
                     + formatComment(comment);
         } else {
             return "";
@@ -235,11 +235,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  produce comments that match the code generation language.
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
-     */  
+     */
     public String formatComment(String comment) {
         return "/* " + comment + " */\n";
     }
-        
+
     /** Generate the body code that lies between initialize and wrapup.
      *  In this base class, nothing is generated.
      *  @return The empty string.
@@ -579,8 +579,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
             code.append(compositeActorHelper.createOffsetVariablesIfNeeded());
         } catch (Throwable throwable) {
-            throw new IllegalActionException(compositeActorHelper.getComponent(),
-                    throwable, "Failed to generate preinitialize code");
+            throw new IllegalActionException(compositeActorHelper
+                    .getComponent(), throwable,
+                    "Failed to generate preinitialize code");
         }
         return code.toString();
     }
@@ -597,7 +598,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateSharedCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         Set sharedCodeBlocks = compositeActorHelper.getSharedCode();
         Iterator blocks = sharedCodeBlocks.iterator();
@@ -605,10 +606,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             String block = (String) blocks.next();
             code.append(block);
         }
-        
+
         if (code.length() > 0) {
-            code.insert(0, _eol + comment("Generate shared code for "
-                    + getContainer().getName()));
+            code.insert(0, _eol
+                    + comment("Generate shared code for "
+                            + getContainer().getName()));
             code.append(comment("Finished generating shared code for "
                     + getContainer().getName()));
         }
@@ -743,14 +745,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String getCodeFileName() {
         return _codeFileName;
     }
-    
+
     /** Return a list of macros this code generator supports. 
      *  @return Returns the _macros.
      */
     public List getMacros() {
         return _macros;
     }
-    
+
     /** Return the set of modified variables.
      *  @return The set of modified variables.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -758,7 +760,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public Set getModifiedVariables() throws IllegalActionException {
         return _modifiedVariables;
     }
-    
+
     /** Test if the containing actor is in the top level.
      *  @return true if the containing actor is in the top level.
      */
@@ -906,7 +908,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
      */
-    protected String _writeCode(StringBuffer code) throws IllegalActionException {
+    protected String _writeCode(StringBuffer code)
+            throws IllegalActionException {
         // This method is private so that the body of the caller shorter.
 
         String extension = generatorPackage.stringValue().substring(
@@ -971,7 +974,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  In this base class, it does nothing.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected void _writeMakefile() throws IllegalActionException {}
+    protected void _writeMakefile() throws IllegalActionException {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

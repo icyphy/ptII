@@ -38,14 +38,12 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
-import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
@@ -135,7 +133,9 @@ public class FSMActor extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
         code.append("static int $actorSymbol(currentState);" + _eol);
-        code.append("static unsigned char $actorSymbol(transitionFlag);" + _eol);
+        code
+                .append("static unsigned char $actorSymbol(transitionFlag);"
+                        + _eol);
         return processCode(code.toString());
     }
 
@@ -148,8 +148,7 @@ public class FSMActor extends CCodeGeneratorHelper {
     public Set getSharedCode() throws IllegalActionException {
         Set set = new HashSet();
         set.addAll(super.getSharedCode());
-        set.add("#define true 1" + _eol
-                + "#define false 0" + _eol);
+        set.add("#define true 1" + _eol + "#define false 0" + _eol);
         return set;
     }
 
@@ -402,7 +401,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                             }
                         } else if (destination instanceof Variable) {
                             codeBuffer
-                                    .append(_codeGenerator.generateVariableName((Variable) destination)
+                                    .append(_codeGenerator
+                                            .generateVariableName((Variable) destination)
                                             + " = ");
                         }
 
@@ -546,7 +546,7 @@ public class FSMActor extends CCodeGeneratorHelper {
      *  and commit action.
      */
     protected PortScope _scope = new PortScope();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
 

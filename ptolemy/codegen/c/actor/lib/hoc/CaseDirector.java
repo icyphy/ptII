@@ -30,7 +30,6 @@ package ptolemy.codegen.c.actor.lib.hoc;
 import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
 import ptolemy.data.BooleanToken;

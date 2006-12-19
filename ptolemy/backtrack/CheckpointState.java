@@ -87,6 +87,5 @@ public class CheckpointState {
 
     /** The list of objects monitored by the checkpoint object.
      */
-    private List<Rollbackable> _monitoredObjects =
-        new LinkedList<Rollbackable>();
+    private List<Rollbackable> _monitoredObjects = new LinkedList<Rollbackable>();
 }

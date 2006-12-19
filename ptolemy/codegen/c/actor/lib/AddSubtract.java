@@ -85,7 +85,8 @@ public class AddSubtract extends CCodeGeneratorHelper {
             String blockType = isPrimitive(type) ? "" : "Token";
             String blockPort = (minusOnly) ? "Minus" : "";
 
-            _codeStream.appendCodeBlock(blockType + blockPort + "PreFireBlock", false);
+            _codeStream.appendCodeBlock(blockType + blockPort + "PreFireBlock",
+                    false);
         }
 
         String blockType = isPrimitive(type) ? codeGenType(type) : "Token";
@@ -117,19 +118,19 @@ public class AddSubtract extends CCodeGeneratorHelper {
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
 
-        ptolemy.actor.lib.AddSubtract actor 
-                = (ptolemy.actor.lib.AddSubtract) getComponent();
+        ptolemy.actor.lib.AddSubtract actor = (ptolemy.actor.lib.AddSubtract) getComponent();
 
         ArrayList args = new ArrayList();
 
         Type type = actor.output.getType();
         args.add(cType(type));
-        
+
         if (_codeStream.isEmpty()) {
-            _codeStream.append(_eol +_codeGenerator.comment
-                    ("preinitialize " + getComponent().getName()));
+            _codeStream.append(_eol
+                    + _codeGenerator.comment("preinitialize "
+                            + getComponent().getName()));
         }
-        
+
         _codeStream.appendCodeBlock("preinitBlock", args);
 
         return processCode(_codeStream.toString());

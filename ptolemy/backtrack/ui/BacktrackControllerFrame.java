@@ -1,30 +1,30 @@
 /* User interface to the backtracking controller.
 
-Copyright (c) 2005-2006 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005-2006 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.backtrack.ui;
 
@@ -54,37 +54,37 @@ import ptolemy.util.MessageHandler;
 //////////////////////////////////////////////////////////////////////////
 //// BacktrackControllerFrame
 /**
-   User interface to the backtracking controller. This tableau is a dialog that
-   allows the user to create checkpoints for individual models opened in
-   Ptolemy, and also to roll back the states of those models.
+ User interface to the backtracking controller. This tableau is a dialog that
+ allows the user to create checkpoints for individual models opened in
+ Ptolemy, and also to roll back the states of those models.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class BacktrackControllerFrame extends TableauFrame {
-    
+
     /** Construct a backtrack controller frame with a model selector, a list
      *  of checkpoint handles and three buttons: "checkpoint", "rollback"
      *  and "commit".
      */
     public BacktrackControllerFrame() {
         super(null, null);
-        
+
         setTitle(NAME);
-        
+
         Container container = getContentPane();
-        
+
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BorderLayout());
         container.add(topPanel, BorderLayout.NORTH);
-        
+
         // The model selector.
         _modelSelector = new JComboBox();
         topPanel.add(_modelSelector, BorderLayout.CENTER);
-        
+
         // The "refresh" button.
         _refresh = new JButton("refresh");
         _refresh.addActionListener(new ActionListener() {
@@ -93,10 +93,10 @@ public class BacktrackControllerFrame extends TableauFrame {
             }
         });
         topPanel.add(_refresh, BorderLayout.EAST);
-        
+
         // The list of checkpoint handles.
         _handleTable = new JTable(_handleTableModel) {
-            public void changeSelection(int rowIndex, int columnIndex, 
+            public void changeSelection(int rowIndex, int columnIndex,
                     boolean toggle, boolean extend) {
                 super.changeSelection(rowIndex, columnIndex, toggle, extend);
                 _rollbackButton.setEnabled(true);
@@ -107,11 +107,11 @@ public class BacktrackControllerFrame extends TableauFrame {
         _handleTable.getColumnModel().getColumn(1).setPreferredWidth(30);
         _handleTable.getColumnModel().getColumn(2).setPreferredWidth(120);
         container.add(new JScrollPane(_handleTable), BorderLayout.CENTER);
-        
+
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout());
         container.add(bottomPanel, BorderLayout.SOUTH);
-        
+
         // The "checkpoint" button.
         _checkpointButton = new JButton("checkpoint");
         _checkpointButton.addActionListener(new ActionListener() {
@@ -130,7 +130,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         });
         _rollbackButton.setEnabled(false);
         bottomPanel.add(_rollbackButton);
-        
+
         // The "commit" button.
         _commitButton = new JButton("commit");
         _commitButton.addActionListener(new ActionListener() {
@@ -140,11 +140,11 @@ public class BacktrackControllerFrame extends TableauFrame {
         });
         _commitButton.setEnabled(false);
         bottomPanel.add(_commitButton);
-        
+
         pack();
         setVisible(true);
     }
-    
+
     /** Commit the selected checkpoint handle.
      */
     public synchronized void commit() {
@@ -159,24 +159,24 @@ public class BacktrackControllerFrame extends TableauFrame {
             _rollbackButton.setEnabled(false);
         }
     }
-    
+
     /** Create a checkpoint, and add its handle to the list of checkpoint
      *  handles.
      */
     public synchronized void createCheckpoint() {
-        ModelSelectorElement selectedModel = 
-            (ModelSelectorElement)_modelSelector.getSelectedItem();
+        ModelSelectorElement selectedModel = (ModelSelectorElement) _modelSelector
+                .getSelectedItem();
         if (selectedModel != null) {
             NamedObj model = selectedModel.getFrame().getModel();
             if (model instanceof CompositeActor) {
-                long handle = 
-                    _controller.createCheckpoint((CompositeActor)model);
-                _handleTableModel.insertElement(
-                        new HandleTableElement(handle, new Date()));
+                long handle = _controller
+                        .createCheckpoint((CompositeActor) model);
+                _handleTableModel.insertElement(new HandleTableElement(handle,
+                        new Date()));
             }
         }
     }
-    
+
     /** Look up the opened Ptolemy models, and add their names to the model
      *  selector.
      */
@@ -187,11 +187,11 @@ public class BacktrackControllerFrame extends TableauFrame {
             for (int i = 0; i < frames.length; i++) {
                 Frame frame = frames[i];
                 if (frame.isVisible() && frame instanceof PtolemyFrame) {
-                    PtolemyFrame ptolemyFrame = (PtolemyFrame)frame;
+                    PtolemyFrame ptolemyFrame = (PtolemyFrame) frame;
                     NamedObj model = ptolemyFrame.getModel();
                     if (model instanceof CompositeActor) {
-                        _modelSelector.addItem(
-                                new ModelSelectorElement(ptolemyFrame));
+                        _modelSelector.addItem(new ModelSelectorElement(
+                                ptolemyFrame));
                     }
                 }
             }
@@ -199,13 +199,13 @@ public class BacktrackControllerFrame extends TableauFrame {
             MessageHandler.error("Unable to refresh model selector.", e);
         }
     }
-    
+
     /** Roll back the selected checkpoint handle, and delete the records
      *  for that checkpoint and for all older checkpoints.
      */
     public synchronized void rollback() {
         int selectedRow = _handleTable.getSelectedRow();
-        Long handle = (Long)_handleTableModel.getValueAt(selectedRow, 0);
+        Long handle = (Long) _handleTableModel.getValueAt(selectedRow, 0);
         _controller.rollback(handle.longValue(), true);
         while (_handleTableModel.getRowCount() > selectedRow) {
             _handleTableModel.removeElement(selectedRow);
@@ -215,15 +215,15 @@ public class BacktrackControllerFrame extends TableauFrame {
             _rollbackButton.setEnabled(false);
         }
     }
-    
+
     /** The title of this tableau.
      */
     public static final String NAME = "Backtrack Controller";
-    
+
     /** The "checkpoint" button.
      */
     private JButton _checkpointButton;
-    
+
     /** The "commit" button.
      */
     private JButton _commitButton;
@@ -236,37 +236,37 @@ public class BacktrackControllerFrame extends TableauFrame {
     /** The list of checkpoint handles.
      */
     private JTable _handleTable;
-    
+
     /** Data for the list of checkpoint handles.
      */
     private HandleTableModel _handleTableModel = new HandleTableModel();
-    
+
     /** The model selector.
      */
     private JComboBox _modelSelector;
-    
+
     /** The "refresh" button.
      */
     private JButton _refresh;
-    
+
     /** The "rollback" button.
      */
     private JButton _rollbackButton;
-    
+
     //////////////////////////////////////////////////////////////////////////
     //// HandleTableElement
-    
+
     /**
-       Element of the checkpoint handle table.
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
+     Element of the checkpoint handle table.
+     
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class HandleTableElement {
-        
+
         /** Return the checkpoint handle.
          * 
          *  @return The checkpoint handle.
@@ -274,7 +274,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         public long getHandle() {
             return _handle;
         }
-        
+
         /** Return the time at which the checkpoint was created.
          * 
          *  @return The checkpoint creation time.
@@ -282,7 +282,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         public Date getTime() {
             return _time;
         }
-        
+
         /** Construct an element in the checkpoint handle list.
          *  
          *  @param handle The checkpoint handle.
@@ -292,24 +292,24 @@ public class BacktrackControllerFrame extends TableauFrame {
             _handle = handle;
             _time = time;
         }
-        
+
         private long _handle;
-        
+
         private Date _time;
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     //// HandleTableModel
-    
+
     /**
-       The data store for the list of checkpoint handles.
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
+     The data store for the list of checkpoint handles.
+     
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class HandleTableModel extends AbstractTableModel {
 
         /** Return the number of columns in the list.
@@ -348,14 +348,14 @@ public class BacktrackControllerFrame extends TableauFrame {
             case 0:
                 return new Long(element.getHandle());
             case 1:
-                return null;    // TODO: We cannot count element number.
+                return null; // TODO: We cannot count element number.
             case 2:
                 return element.getTime();
             default:
                 return null;
             }
         }
-        
+
         /** Insert a element to the end of the data store. One more row will be
          *  added to the checkpoint handle list.
          * 
@@ -365,7 +365,7 @@ public class BacktrackControllerFrame extends TableauFrame {
             _data.add(element);
             fireTableRowsInserted(_data.size() - 1, _data.size() - 1);
         }
-        
+
         /** Remove the element at the given position from the data store.
          * 
          *  @param position The position of the element.
@@ -374,36 +374,34 @@ public class BacktrackControllerFrame extends TableauFrame {
             _data.remove(position);
             this.fireTableRowsDeleted(position, position);
         }
-        
+
         /** Names of the columns.
          */
-        private String[] _columnNames = new String[] {
-                "Handle", "Objects", "Time Created"
-        };
-        
+        private String[] _columnNames = new String[] { "Handle", "Objects",
+                "Time Created" };
+
         /** The list of elements.
          */
-        private List<HandleTableElement> _data =
-            new LinkedList<HandleTableElement>();
+        private List<HandleTableElement> _data = new LinkedList<HandleTableElement>();
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     //// ModelSelectorElement
-    
+
     /**
-       Elements of the model selector. It is a wrapper around PtolemyFrame.
-       In the model selector (a JTable), the item names are retrieved with
-       toString(), so this class returns the PtolemyFrame's title in
-       toString().
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
+     Elements of the model selector. It is a wrapper around PtolemyFrame.
+     In the model selector (a JTable), the item names are retrieved with
+     toString(), so this class returns the PtolemyFrame's title in
+     toString().
+     
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class ModelSelectorElement {
-        
+
         /** Get the frame of the Ptolemy model.
          * 
          *  @return The frame of the Ptolemy model.
@@ -411,7 +409,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         public PtolemyFrame getFrame() {
             return _frame;
         }
-        
+
         /** Return the title of the Ptolemy frame.
          * 
          *  @return The title of the Ptolemy frame.
@@ -419,7 +417,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         public String toString() {
             return _frame.getTitle();
         }
-        
+
         /** Construct a model selector element.
          * 
          *  @param frame The frame of the Ptolemy model.
@@ -427,7 +425,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         ModelSelectorElement(PtolemyFrame frame) {
             _frame = frame;
         }
-        
+
         /** The frame.
          */
         private PtolemyFrame _frame;

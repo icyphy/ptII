@@ -130,7 +130,7 @@ public class CCodeGenerator extends CodeGenerator {
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         Set includingFiles = compositeActorHelper.getHeaderFiles();
 
-        includingFiles.add("<stdlib.h>");  // Sun requires stdlib.h for malloc
+        includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
 
         if (!isTopLevel()) {
             includingFiles.add("\"Jni" + _sanitizedModelName + ".h\"");
@@ -205,14 +205,15 @@ public class CCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            mainEntryCode.append(_eol + _eol + "main(int argc, char *argv[]) {" + _eol);
+            mainEntryCode.append(_eol + _eol + "main(int argc, char *argv[]) {"
+                    + _eol);
 
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
         } else {
-            mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL" + _eol
-                    + "Java_Jni" + _sanitizedModelName + "_fire (" + _eol
-                    + "JNIEnv *env, jobject obj");
+            mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL"
+                    + _eol + "Java_Jni" + _sanitizedModelName + "_fire ("
+                    + _eol + "JNIEnv *env, jobject obj");
 
             Iterator inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
@@ -236,10 +237,9 @@ public class CCodeGenerator extends CodeGenerator {
             return _INDENT1 + "exit(0);" + _eol + "}" + _eol;
         } else {
             return _INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
-                + _eol;
+                    + _eol;
         }
     }
-
 
     /**
      * Generate type conversion code.
@@ -261,8 +261,9 @@ public class CCodeGenerator extends CodeGenerator {
 
         StringBuffer code = new StringBuffer();
 
-        code.append(_eol + comment("Generate type resolution code for "
-                + getContainer().getFullName()));
+        code.append(_eol
+                + comment("Generate type resolution code for "
+                        + getContainer().getFullName()));
 
         // Include the constantsBlock at the top so that sharedBlocks from
         // actors can use true and false etc.  StringMatches needs this.
@@ -305,11 +306,11 @@ public class CCodeGenerator extends CodeGenerator {
 
             // Dynamically generate all the types within the union.
             if (i > 0) {
-                typeMembers += _INDENT2; 
+                typeMembers += _INDENT2;
             }
             typeMembers += typesArray[i] + "Token " + typesArray[i] + ";";
             if (i < typesArray.length - 1) {
-                typeMembers += _eol; 
+                typeMembers += _eol;
             }
         }
 
@@ -351,7 +352,7 @@ public class CCodeGenerator extends CodeGenerator {
             }
         }
         code.append(sharedStream.toString());
-        
+
         // Append functions that are specified used by this type (without
         // going through the function table).
         for (int i = 0; i < typesArray.length; i++) {
@@ -412,15 +413,14 @@ public class CCodeGenerator extends CodeGenerator {
         // Generate variable declarations for modified variables.
         if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
             code.append(comment("Generate variable declarations for "
-                                + "modified parameters"));
+                    + "modified parameters"));
             Iterator modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
                 Parameter parameter = (Parameter) modifiedVariables.next();
 
                 code.append("static "
                         + CodeGeneratorHelper.cType(parameter.getType()) + " "
-                        + generateVariableName(parameter)
-                        + ";" + _eol);
+                        + generateVariableName(parameter) + ";" + _eol);
             }
         }
 
@@ -439,8 +439,7 @@ public class CCodeGenerator extends CodeGenerator {
 
         // Generate variable initialization for modified variables.
         if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
-            code.append(comment
-                    (1, "Generate variable initialization for "
+            code.append(comment(1, "Generate variable initialization for "
                     + "modified parameters"));
             Iterator modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
@@ -494,7 +493,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupProcedureName() throws IllegalActionException {
-        
+
         return _INDENT1 + "wrapup();" + _eol;
     }
 
@@ -650,20 +649,20 @@ public class CCodeGenerator extends CodeGenerator {
 
         // Look for a .mk.in file with the same name as the model.
         String makefileTemplateName;
-        URIAttribute uriAttribute = (URIAttribute)_model.getAttribute(
-                "_uri", URIAttribute.class);
+        URIAttribute uriAttribute = (URIAttribute) _model.getAttribute("_uri",
+                URIAttribute.class);
         if (uriAttribute != null) {
             String uriString = uriAttribute.getURI().toString();
-            makefileTemplateName = uriString.substring(0,
-                    uriString.lastIndexOf("/") + 1)
-                + _sanitizedModelName + ".mk.in";
+            makefileTemplateName = uriString.substring(0, uriString
+                    .lastIndexOf("/") + 1)
+                    + _sanitizedModelName + ".mk.in";
         } else {
             // The model does not have a _uri attribute, so 
             // Look for the generic C makefile.in
             // Note this code is repeated in the catch below.
-            makefileTemplateName = generatorPackage.stringValue().replace(
-                    '.', '/')
-                + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in");
+            makefileTemplateName = generatorPackage.stringValue().replace('.',
+                    '/')
+                    + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in");
         }
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()
@@ -680,22 +679,23 @@ public class CCodeGenerator extends CodeGenerator {
                 try {
                     // Look for the generic C makefile.in
                     // Note this line is a repeat from the _uri check above.
-                    makefileTemplateName2 = generatorPackage.stringValue().replace(
-                            '.', '/')
-                        + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in");
+                    makefileTemplateName2 = generatorPackage.stringValue()
+                            .replace('.', '/')
+                            + (isTopLevel() ? "/makefile.in"
+                                    : "/jnimakefile.in");
                     makefileTemplateReader = CodeGeneratorUtilities
-                        .openAsFileOrURL(makefileTemplateName2);
+                            .openAsFileOrURL(makefileTemplateName2);
                 } catch (IOException ex2) {
-                    throw new IllegalActionException(this, ex2, "Failed to open \""
-                            + makefileTemplateName + "\" and \""
-                            + makefileTemplateName2 + "\" for reading.");
+                    throw new IllegalActionException(this, ex2,
+                            "Failed to open \"" + makefileTemplateName
+                                    + "\" and \"" + makefileTemplateName2
+                                    + "\" for reading.");
                 }
                 makefileTemplateName = makefileTemplateName2;
             }
 
-            _executeCommands.stdout("Reading \"" + makefileTemplateName
-                    + "\"," + _eol + "    writing \"" + makefileOutputName
-                    + "\"");
+            _executeCommands.stdout("Reading \"" + makefileTemplateName + "\","
+                    + _eol + "    writing \"" + makefileOutputName + "\"");
             CodeGeneratorUtilities.substitute(makefileTemplateReader,
                     substituteMap, makefileOutputName);
         } catch (Exception ex) {
@@ -736,5 +736,3 @@ public class CCodeGenerator extends CodeGenerator {
         return buffer.toString();
     }
 }
-
-

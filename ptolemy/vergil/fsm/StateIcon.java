@@ -68,14 +68,14 @@ public class StateIcon extends NameIcon {
     public StateIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         // Change the default rounding to 20.
         rounding.setExpression("20");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Return the paint to use to fill the icon.
      *  This class returns Color.white, unless the refinement name
      *  is not empty, in which case it returns a light green.
@@ -85,7 +85,7 @@ public class StateIcon extends NameIcon {
         NamedObj container = getContainer();
         if (container instanceof State) {
             try {
-                TypedActor[] refinement = ((State)container).getRefinement();
+                TypedActor[] refinement = ((State) container).getRefinement();
                 if (refinement != null && refinement.length > 0) {
                     return _REFINEMENT_COLOR;
                 }
@@ -105,7 +105,8 @@ public class StateIcon extends NameIcon {
         NamedObj container = getContainer();
         if (container instanceof State) {
             try {
-                if (((BooleanToken)(((State)container).isInitialState.getToken())).booleanValue()) {
+                if (((BooleanToken) (((State) container).isInitialState
+                        .getToken())).booleanValue()) {
                     return 2.0f;
                 }
             } catch (IllegalActionException e) {
@@ -114,10 +115,10 @@ public class StateIcon extends NameIcon {
         }
         return 1.0f;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The fill color for states with refinements. */
-    private static Color _REFINEMENT_COLOR = new Color(0.8f,1.0f,0.8f,1.0f);
+    private static Color _REFINEMENT_COLOR = new Color(0.8f, 1.0f, 0.8f, 1.0f);
 }

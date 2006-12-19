@@ -41,17 +41,17 @@ import org.eclipse.swt.widgets.Composite;
 //// PtolemyEditor
 
 /**
-   Editor with Ptolemy semantic highlighting. Ptolemy syntax highlighting is
-   added to Eclipse's Java syntax highlighting as an extension.
+ Editor with Ptolemy semantic highlighting. Ptolemy syntax highlighting is
+ added to Eclipse's Java syntax highlighting as an extension.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class PtolemyEditor extends CompilationUnitEditor {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -89,7 +89,7 @@ public class PtolemyEditor extends CompilationUnitEditor {
         _installSemanticHighlighting(JavaPlugin.getDefault().getJavaTextTools()
                 .getColorManager());
     }
-    
+
     /** Get the Java element wrapped by this editors input. This method is the
      *  same as the overridden method in the superclass. It is made public.
      *  

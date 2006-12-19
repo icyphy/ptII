@@ -265,7 +265,7 @@ public class Subscriber extends TypedAtomicActor {
 
     /** Cached channel name. */
     protected String _channel;
-    
+
     /** An indicator that _updateLinks has been called at least once. */
     protected boolean _updatedLinks = false;
 

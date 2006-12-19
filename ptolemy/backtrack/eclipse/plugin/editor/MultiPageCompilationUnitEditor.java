@@ -78,19 +78,19 @@ import ptolemy.backtrack.util.Strings;
 //////////////////////////////////////////////////////////////////////////
 //// MultiPageCompilationUnitEditor
 /**
-   Multi-page editor with Ptolemy semantic highlighting and transformation tab.
-   This editor is the main user interface in the Eclipse plugin. It extends
-   Eclipse's Java editor, with Ptolemy semantic highlighting added. It also
-   creates two tabs in the editor: the "Raw" tab provides an ordinary Java
-   editing environment to the user; the "Preview" tab shows the preview of
-   backtracking transformation.
+ Multi-page editor with Ptolemy semantic highlighting and transformation tab.
+ This editor is the main user interface in the Eclipse plugin. It extends
+ Eclipse's Java editor, with Ptolemy semantic highlighting added. It also
+ creates two tabs in the editor: the "Raw" tab provides an ordinary Java
+ editing environment to the user; the "Preview" tab shows the preview of
+ backtracking transformation.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class MultiPageCompilationUnitEditor extends PtolemyEditor {
 
     ///////////////////////////////////////////////////////////////////
@@ -156,8 +156,8 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     /** Dispose the two views in this editor.
      */
     public void dispose() {
-    	_preview.dispose();
-    	super.dispose();
+        _preview.dispose();
+        super.dispose();
     }
 
     /** Set the active tab of the editor.
@@ -172,10 +172,9 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-
     /** Set the preview tab so it is not editable. */
     public void test() {
-    	//_preview.setInput(new FileEditorInput(previewFile));
+        //_preview.setInput(new FileEditorInput(previewFile));
         _preview.getViewer().setEditable(false);
     }
 
@@ -240,8 +239,8 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
 
             if (!Environment.setupTransformerArguments(_container.getShell(),
                     false, true)) {
-                OutputConsole.outputError(
-                        "Cannot setup Transformer environment.");
+                OutputConsole
+                        .outputError("Cannot setup Transformer environment.");
                 return;
             }
 
@@ -263,7 +262,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
             }
         }
     }
-    
+
     /** Override the title image so that the Ptolemy icon is always used as the
      *  editor's title image.
      *  
@@ -271,10 +270,10 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
      *   ignored.
      */
     protected void setTitleImage(Image titleImage) {
-    	ImageDescriptor descriptor = EclipsePlugin.getImageDescriptor(
-    			"ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif");
-		super.setTitleImage(descriptor.createImage());
-	}
+        ImageDescriptor descriptor = EclipsePlugin
+                .getImageDescriptor("ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif");
+        super.setTitleImage(descriptor.createImage());
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
@@ -351,20 +350,20 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
      */
     private CompilationUnit _getCompilationUnit() throws JavaModelException {
 
-		IWorkingCopyManager manager = JavaPlugin.getDefault()
+        IWorkingCopyManager manager = JavaPlugin.getDefault()
                 .getWorkingCopyManager();
         ICompilationUnit unit = manager.getWorkingCopy(getEditorInput());
-        
-		CompilerOptions options =
-			new CompilerOptions(unit.getJavaProject().getOptions(true));
-		ASTParser parser = ASTParser.newParser(AST.JLS3); // FIXME
-		parser.setCompilerOptions(options.getMap());
-		parser.setSource(unit.getBuffer().getCharacters());
-		parser.setKind(ASTParser.K_COMPILATION_UNIT);
-		parser.setResolveBindings(false);
-		CompilationUnit result = (CompilationUnit) parser.createAST(null);
 
-		return result; //AST.parseCompilationUnit(unit, false);
+        CompilerOptions options = new CompilerOptions(unit.getJavaProject()
+                .getOptions(true));
+        ASTParser parser = ASTParser.newParser(AST.JLS3); // FIXME
+        parser.setCompilerOptions(options.getMap());
+        parser.setSource(unit.getBuffer().getCharacters());
+        parser.setKind(ASTParser.K_COMPILATION_UNIT);
+        parser.setResolveBindings(false);
+        CompilationUnit result = (CompilationUnit) parser.createAST(null);
+
+        return result; //AST.parseCompilationUnit(unit, false);
     }
 
     /** Get the file containing the transformed code for preview.
@@ -389,7 +388,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
 
             return previewFile;
         } catch (Exception e) {
-        	// Ignore the errors, and return null.
+            // Ignore the errors, and return null.
             // OutputConsole.outputError(e.getMessage());
             return null;
         }
@@ -403,14 +402,14 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
         // In Eclipse 3.2, always set up the editor site and editor input.
         // IFile previewFile = _getPreviewFile();
         // if (previewFile != null) {
-            try {
-                _preview.init(_editor.getEditorSite(), getEditorInput());
-            } catch (Exception e) {
-                OutputConsole.outputError(e.getMessage());
-            }
+        try {
+            _preview.init(_editor.getEditorSite(), getEditorInput());
+        } catch (Exception e) {
+            OutputConsole.outputError(e.getMessage());
+        }
         // }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                    private inner classes                  ////
 
@@ -437,17 +436,17 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     //////////////////////////////////////////////////////////////////////////
     //// RefactoringOutputThread
     /**
-       The thread to output the refactoring result to the "Preview" tab, and
-       output any error message to the backtracking console.
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
+     The thread to output the refactoring result to the "Preview" tab, and
+     output any error message to the backtracking console.
+     
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class RefactoringOutputThread extends Thread {
-        
+
         /** Read the refactoring result from the input stream to the "Preview"
          *  tab.
          */
@@ -491,16 +490,16 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     //////////////////////////////////////////////////////////////////////////
     //// TransformerRunnable
     /**
-       The runnable object that executes the transformation.
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
+     The runnable object that executes the transformation.
+     
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class TransformerRunnable implements Runnable {
-        
+
         /** Execute the transformation.
          */
         public void run() {
@@ -523,8 +522,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
          *   the same time.
          */
         TransformerRunnable(String fileName, CompilationUnit compilationUnit,
-                Writer writer, String[] classPaths,
-                String[] crossAnalyzedTypes) {
+                Writer writer, String[] classPaths, String[] crossAnalyzedTypes) {
             _classPaths = classPaths;
             _compilationUnit = compilationUnit;
             _crossAnalyzedTypes = crossAnalyzedTypes;

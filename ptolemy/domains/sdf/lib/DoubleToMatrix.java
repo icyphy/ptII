@@ -136,8 +136,7 @@ public class DoubleToMatrix extends SDFConverter {
             }
         }
 
-        output.send(0, new DoubleMatrixToken(result,
-                MatrixToken.DO_NOT_COPY));
+        output.send(0, new DoubleMatrixToken(result, MatrixToken.DO_NOT_COPY));
     }
 
     ///////////////////////////////////////////////////////////////////

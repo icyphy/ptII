@@ -29,7 +29,6 @@
 //// Accumulator
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
@@ -104,7 +103,8 @@ public class Accumulator extends Transformer implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public Accumulator(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public Accumulator(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
         reset = new TypedIOPort(this, "reset", true, false);
@@ -124,8 +124,8 @@ public class Accumulator extends Transformer implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        Accumulator newObject = (Accumulator)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Accumulator newObject = (Accumulator) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.init);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
@@ -142,14 +142,15 @@ public class Accumulator extends Transformer implements Rollbackable {
      * @exception IllegalActionException If addition is not
      * supported by the supplied tokens.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         $ASSIGN$_latestSum(_sum);
         for (int i = 0; i < reset.getWidth(); i++) {
             if (reset.hasToken(i)) {
-                BooleanToken r = (BooleanToken)reset.get(i);
+                BooleanToken r = (BooleanToken) reset.get(i);
                 if (r.booleanValue()) {
-                    $ASSIGN$_latestSum(output.getType().convert(init.getToken()));
+                    $ASSIGN$_latestSum(output.getType()
+                            .convert(init.getToken()));
                 }
             }
         }
@@ -166,9 +167,10 @@ public class Accumulator extends Transformer implements Rollbackable {
      * Reset the running sum to equal the value of <i>init</i>.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
-        $ASSIGN$_latestSum($ASSIGN$_sum(output.getType().convert(init.getToken())));
+        $ASSIGN$_latestSum($ASSIGN$_sum(output.getType().convert(
+                init.getToken())));
     }
 
     /**     
@@ -176,7 +178,7 @@ public class Accumulator extends Transformer implements Rollbackable {
      * Do nothing if there is no input.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException  {
+    public boolean postfire() throws IllegalActionException {
         $ASSIGN$_sum(_latestSum);
         return super.postfire();
     }
@@ -190,21 +192,25 @@ public class Accumulator extends Transformer implements Rollbackable {
 
     private final Token $ASSIGN$_latestSum(Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_latestSum.add(null, _latestSum, $CHECKPOINT.getTimestamp());
+            $RECORD$_latestSum
+                    .add(null, _latestSum, $CHECKPOINT.getTimestamp());
         }
         return _latestSum = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _sum = (Token)$RECORD$_sum.restore(_sum, timestamp, trim);
-        _latestSum = (Token)$RECORD$_latestSum.restore(_latestSum, timestamp, trim);
+        _sum = (Token) $RECORD$_sum.restore(_sum, timestamp, trim);
+        _latestSum = (Token) $RECORD$_latestSum.restore(_latestSum, timestamp,
+                trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -234,10 +240,7 @@ public class Accumulator extends Transformer implements Rollbackable {
 
     private FieldRecord $RECORD$_latestSum = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_sum,
-            $RECORD$_latestSum
-        };
+    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_sum,
+            $RECORD$_latestSum };
 
 }
-

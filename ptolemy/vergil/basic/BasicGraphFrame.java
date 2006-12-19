@@ -1805,27 +1805,30 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
 
-
         // First, delete all the non-attributes.
         // This helps avoid deleting properties such as top level parameters
         // upon which the entities depend.
         // FIXME: what if we have a parameter that is used by both the selection
         // and the other parts of the model?
-        for (int i = 0; i < selection.length ; i++) {
+        for (int i = 0; i < selection.length; i++) {
             Object userObject = userObjects[i];
 
-            NamedObjNodeModel namedObjNodeModel = (NamedObjNodeModel) graphModel.getNodeModel(userObject);
-            if (graphModel.isNode(userObject) && ! (namedObjNodeModel instanceof AttributeNodeModel)) {
+            NamedObjNodeModel namedObjNodeModel = (NamedObjNodeModel) graphModel
+                    .getNodeModel(userObject);
+            if (graphModel.isNode(userObject)
+                    && !(namedObjNodeModel instanceof AttributeNodeModel)) {
                 moml.append(graphModel.getDeleteNodeMoML(userObject));
             }
         }
 
         // Now delete attributes.
-        for (int i = 0; i < selection.length ; i++) {
+        for (int i = 0; i < selection.length; i++) {
             Object userObject = userObjects[i];
 
-            NamedObjNodeModel namedObjNodeModel = (NamedObjNodeModel) graphModel.getNodeModel(userObject);
-            if (graphModel.isNode(userObject) && namedObjNodeModel instanceof AttributeNodeModel) {
+            NamedObjNodeModel namedObjNodeModel = (NamedObjNodeModel) graphModel
+                    .getNodeModel(userObject);
+            if (graphModel.isNode(userObject)
+                    && namedObjNodeModel instanceof AttributeNodeModel) {
                 moml.append(graphModel.getDeleteNodeMoML(userObject));
             }
         }
