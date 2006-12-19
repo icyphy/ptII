@@ -131,7 +131,8 @@ public class CodeGeneratorHelper
     /** Construct the code generator helper associated
      *  with the given component.
      *  @param component The associated component.
-     *  @param name
+     *  @param name The name of helper.  All periods are 
+     *  replaced with underscores.
      */
     public CodeGeneratorHelper(NamedObj component, String name) {
         this(component);        
@@ -616,6 +617,7 @@ public class CodeGeneratorHelper
     
     /** Get the code generator associated with this helper class.
      *  @return The code generator associated with this helper class.
+     *  @see #setCodeGenerator(CodeGenerator)
      */
     public CodeGenerator getCodeGenerator() {
         return _codeGenerator;
@@ -1302,6 +1304,14 @@ public class CodeGeneratorHelper
                 + name);
     }
 
+    /** Given a port and channel number, create a Channel that sends
+     *  data to the specified port and channel number.
+     *  @param port The port.
+     *  @param channelNumber The channel number of the port.
+     *  @return the source channel.
+     *  @exception IllegalActionException If there is a problem getting
+     *  information about the receivers or constructing the new Channel.
+     */
     public Channel getSourceChannel(IOPort port, int channelNumber) 
             throws IllegalActionException {
         List sourceChannels = new LinkedList();
@@ -1482,6 +1492,7 @@ public class CodeGeneratorHelper
     /** Set the code generator associated with this helper class.
      *  @param codeGenerator The code generator associated with this
      *   helper class.
+     *  @see #getCodeGenerator()
      */
     public void setCodeGenerator(CodeGenerator codeGenerator) {
         _codeGenerator = codeGenerator;
@@ -1650,6 +1661,7 @@ public class CodeGeneratorHelper
         /** Look up and return the type of the attribute with the
          *  specified name in the scope. Return null if such an
          *  attribute does not exist.
+         *  @param name The name of the attribute to look up.
          *  @return The attribute with the specified name in the scope.
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
@@ -1665,6 +1677,7 @@ public class CodeGeneratorHelper
         /** Look up and return the type term for the specified name
          *  in the scope. Return null if the name is not defined in this
          *  scope, or is a constant type.
+         *  @param name The name of the type term to look up.
          *  @return The InequalityTerm associated with the given name in
          *  the scope.
          *  @exception IllegalActionException If a value in the scope
@@ -1680,6 +1693,8 @@ public class CodeGeneratorHelper
 
         /** Return the list of identifiers within the scope.
          *  @return The list of variable names within the scope.
+         *  @exception If there is a problem getting the identifier
+         *  set from the variable.
          */
         public Set identifierSet() throws IllegalActionException {
             if (_variable != null) {
@@ -2097,8 +2112,12 @@ public class CodeGeneratorHelper
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    public String generateVariableName(NamedObj namedobj) {
-        return _codeGenerator.generateVariableName(namedobj);
+    /** Generate a variable name for the NamedObj.
+     *  @param namedObj The NamedObj to generate variable name for.
+     *  @see ptolemy.codegen.kernel.CodeGenerator#generateVariableName(NamedObj)
+     */
+    public String generateVariableName(NamedObj namedObj) {
+        return _codeGenerator.generateVariableName(namedObj);
     }
 
     /** A hashmap that keeps track of the bufferSizes of each channel
