@@ -97,7 +97,7 @@ public class RunMultipleModels {
 
     public static void main(String[] args) throws Exception {
         RunMultipleModels runMultipleModels = new RunMultipleModels();
-        runMultipleModels.run2();
+        runMultipleModels.run();
     }
 
     // The count of currently executing runs.
