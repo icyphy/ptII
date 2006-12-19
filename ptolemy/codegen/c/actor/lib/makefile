@@ -107,6 +107,7 @@ JSRCS = \
 	Scale.java \
 	Sequence.java \
 	Sink.java \
+	Sleep.java \
 	Stop.java \
 	StringConst.java \
 	Synchronizer.java \
@@ -162,6 +163,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Scale.c \
 	Sequence.c \
 	Sink.c \
+	Sleep.c \
 	Stop.c \
 	StringConst.c \
 	Synchronizer.c \
