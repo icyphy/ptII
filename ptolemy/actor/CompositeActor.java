@@ -1007,7 +1007,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public void setManager(Manager manager) throws IllegalActionException {
         if ((manager != null) && (_workspace != manager.workspace())) {
             throw new IllegalActionException(this, manager,
-                    "Cannot set manager because workspaces are different.");
+                    "Cannot set manager because workspaces are different."
+                    + "manager: " + manager.workspace() + ", " 
+                    + _workspace);
         }
 
         try {
