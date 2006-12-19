@@ -92,6 +92,7 @@ EXTRA_EXECUTABLE_SRCS = \
 EXTRA_SRCS = \
 	$(EXTRA_EXECUTABLE_SRCS) \
 	policy.all \
+	ptcygpath \
 	ptinvoke.in \
 	sandbox.policy \
 	comm.policy.in \
