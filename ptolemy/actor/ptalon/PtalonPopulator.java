@@ -94,8 +94,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
         PtalonAST r_AST = null;
 
         try { // for error handling
-            if (_t == null)
+            if (_t == null) {
                 _t = ASTNULL;
+            }
             switch (_t.getType()) {
             case PORT: {
                 AST __t431 = _t;
@@ -110,8 +111,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 match(_t, PORT);
                 _t = _t.getFirstChild();
                 {
-                    if (_t == null)
+                    if (_t == null) {
                         _t = ASTNULL;
+                    }
                     switch (_t.getType()) {
                     case ID: {
                         a = (PtalonAST) _t;
@@ -195,8 +197,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 match(_t, INPORT);
                 _t = _t.getFirstChild();
                 {
-                    if (_t == null)
+                    if (_t == null) {
                         _t = ASTNULL;
+                    }
                     switch (_t.getType()) {
                     case ID: {
                         b = (PtalonAST) _t;
@@ -280,8 +283,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 match(_t, OUTPORT);
                 _t = _t.getFirstChild();
                 {
-                    if (_t == null)
+                    if (_t == null) {
                         _t = ASTNULL;
+                    }
                     switch (_t.getType()) {
                     case ID: {
                         c = (PtalonAST) _t;
@@ -365,8 +369,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 match(_t, MULTIPORT);
                 _t = _t.getFirstChild();
                 {
-                    if (_t == null)
+                    if (_t == null) {
                         _t = ASTNULL;
+                    }
                     switch (_t.getType()) {
                     case ID: {
                         d = (PtalonAST) _t;
@@ -450,8 +455,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 match(_t, MULTIINPORT);
                 _t = _t.getFirstChild();
                 {
-                    if (_t == null)
+                    if (_t == null) {
                         _t = ASTNULL;
+                    }
                     switch (_t.getType()) {
                     case ID: {
                         e = (PtalonAST) _t;
@@ -535,8 +541,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 match(_t, MULTIOUTPORT);
                 _t = _t.getFirstChild();
                 {
-                    if (_t == null)
+                    if (_t == null) {
                         _t = ASTNULL;
+                    }
                     switch (_t.getType()) {
                     case ID: {
                         f = (PtalonAST) _t;
@@ -638,8 +645,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
         PtalonAST b_AST = null;
 
         try { // for error handling
-            if (_t == null)
+            if (_t == null) {
                 _t = ASTNULL;
+            }
             switch (_t.getType()) {
             case PARAMETER: {
                 AST __t450 = _t;
@@ -654,8 +662,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 match(_t, PARAMETER);
                 _t = _t.getFirstChild();
                 {
-                    if (_t == null)
+                    if (_t == null) {
                         _t = ASTNULL;
+                    }
                     switch (_t.getType()) {
                     case ID: {
                         a = (PtalonAST) _t;
@@ -792,8 +801,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
         boolean dynamic_name = false;
 
         try { // for error handling
-            if (_t == null)
+            if (_t == null) {
                 _t = ASTNULL;
+            }
             switch (_t.getType()) {
             case PARAM_EQUALS: {
                 AST __t455 = _t;
@@ -819,8 +829,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 match(_t, PARAMETER);
                 _t = _t.getFirstChild();
                 {
-                    if (_t == null)
+                    if (_t == null) {
                         _t = ASTNULL;
+                    }
                     switch (_t.getType()) {
                     case ID: {
                         a = (PtalonAST) _t;
@@ -1013,8 +1024,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
             match(_t, RELATION);
             _t = _t.getFirstChild();
             {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case ID: {
                     a = (PtalonAST) _t;
@@ -1119,8 +1131,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
             match(_t, TRANSPARENT);
             _t = _t.getFirstChild();
             {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case ID: {
                     a = (PtalonAST) _t;
@@ -1235,8 +1248,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
             match(_t, ASSIGN);
             _t = _t.getFirstChild();
             {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case ID: {
                     PtalonAST tmp27_AST = null;
@@ -1292,8 +1306,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 }
             }
             {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case ID: {
                     b = (PtalonAST) _t;
@@ -1412,8 +1427,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
 
         {
             _loop483: do {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 if ((_t.getType() == ASSIGN)) {
                     b = _t == ASTNULL ? null : (PtalonAST) _t;
                     assignment(_t);
@@ -1472,8 +1488,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
 
         {
             _loop479: do {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 if ((_t.getType() == ASSIGN)) {
                     b = _t == ASTNULL ? null : (PtalonAST) _t;
                     assignment(_t);
@@ -1510,8 +1527,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
         PtalonAST atomic_statement_AST = null;
 
         {
-            if (_t == null)
+            if (_t == null) {
                 _t = ASTNULL;
+            }
             switch (_t.getType()) {
             case PORT:
             case INPORT:
@@ -1624,8 +1642,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
 
         {
             _loop490: do {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case PORT:
                 case INPORT:
@@ -1684,8 +1703,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
 
         {
             _loop493: do {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case PORT:
                 case INPORT:
@@ -1839,8 +1859,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
 
         {
             _loop500: do {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case PORT:
                 case INPORT:
@@ -2003,8 +2024,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
         _t = _t.getNextSibling();
         {
             _loop508: do {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case PORT:
                 case INPORT:
@@ -2095,8 +2117,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
         match(_t, ACTOR_DEFINITION);
         _t = _t.getFirstChild();
         {
-            if (_t == null)
+            if (_t == null) {
                 _t = ASTNULL;
+            }
             switch (_t.getType()) {
             case DANGLING_PORTS_OKAY: {
                 PtalonAST tmp39_AST = null;
@@ -2133,8 +2156,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
             }
         }
         {
-            if (_t == null)
+            if (_t == null) {
                 _t = ASTNULL;
+            }
             switch (_t.getType()) {
             case ATTACH_DANGLING_PORTS: {
                 PtalonAST tmp40_AST = null;
@@ -2174,8 +2198,9 @@ public class PtalonPopulator extends antlr.TreeParser implements
 
         {
             _loop515: do {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case PORT:
                 case INPORT:

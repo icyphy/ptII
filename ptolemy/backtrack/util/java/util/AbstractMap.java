@@ -150,8 +150,9 @@ public abstract class AbstractMap implements Map, Rollbackable {
          * @return <code>true</code> if it is equal
          */
         public final boolean equals(Object o) {
-            if (!(o instanceof Map.Entry))
+            if (!(o instanceof Map.Entry)) {
                 return false;
+            }
             // Optimize for our own entries.
             if (o instanceof BasicMapEntry) {
                 BasicMapEntry e = (BasicMapEntry) o;
@@ -364,9 +365,11 @@ public abstract class AbstractMap implements Map, Rollbackable {
     public boolean containsKey(Object key) {
         Iterator entries = entrySet().iterator();
         int pos = size();
-        while (--pos >= 0)
-            if (equals(key, ((Map.Entry) entries.next()).getKey()))
+        while (--pos >= 0) {
+            if (equals(key, ((Map.Entry) entries.next()).getKey())) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -385,9 +388,11 @@ public abstract class AbstractMap implements Map, Rollbackable {
     public boolean containsValue(Object value) {
         Iterator entries = entrySet().iterator();
         int pos = size();
-        while (--pos >= 0)
-            if (equals(value, ((Map.Entry) entries.next()).getValue()))
+        while (--pos >= 0) {
+            if (equals(value, ((Map.Entry) entries.next()).getValue())) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -421,8 +426,9 @@ public abstract class AbstractMap implements Map, Rollbackable {
         int pos = size();
         while (--pos >= 0) {
             Map.Entry entry = (Map.Entry) entries.next();
-            if (equals(key, entry.getKey()))
+            if (equals(key, entry.getKey())) {
                 return entry.getValue();
+            }
         }
         return null;
     }
@@ -467,7 +473,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
      * @see #values()
      */
     public Set keySet() {
-        if (getKeys() == null)
+        if (getKeys() == null) {
             setKeys(new AbstractSet() {
                 /**                 
                  * Retrieves the number of keys in the backing map.
@@ -664,6 +670,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                 }
 
             });
+        }
         return getKeys();
     }
 
@@ -772,8 +779,9 @@ public abstract class AbstractMap implements Map, Rollbackable {
             r.append(entry.getKey());
             r.append('=');
             r.append(entry.getValue());
-            if (pos > 1)
+            if (pos > 1) {
                 r.append(", ");
+            }
         }
         r.append("}");
         return r.toString();
@@ -798,7 +806,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
      * @see #keySet()
      */
     public Collection values() {
-        if (getValues() == null)
+        if (getValues() == null) {
             setValues(new AbstractCollection() {
                 /**                 
                  * Returns the number of values stored in
@@ -996,6 +1004,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                 }
 
             });
+        }
         return getValues();
     }
 

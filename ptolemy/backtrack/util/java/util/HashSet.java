@@ -192,7 +192,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
      */
     public Iterator iterator() {
         // Avoid creating intermediate keySet() object by using non-public API.
-        return map.iterator(HashMap.KEYS);
+        return map.iterator(AbstractMap.KEYS);
     }
 
     /**     
@@ -234,12 +234,13 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
     private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
         // Avoid creating intermediate keySet() object by using non-public API.
-        Iterator it = map.iterator(HashMap.KEYS);
+        Iterator it = map.iterator(AbstractMap.KEYS);
         s.writeInt(map.getBuckets().length);
         s.writeFloat(map.loadFactor);
         s.writeInt(map.getSize());
-        while (it.hasNext())
+        while (it.hasNext()) {
             s.writeObject(it.next());
+        }
     }
 
     /**     
@@ -255,8 +256,9 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
             ClassNotFoundException {
         s.defaultReadObject();
         $ASSIGN$map(init(s.readInt(), s.readFloat()));
-        for (int size = s.readInt(); size > 0; size--)
+        for (int size = s.readInt(); size > 0; size--) {
             map.put(s.readObject(), "");
+        }
     }
 
     private final HashMap $ASSIGN$map(HashMap newValue) {

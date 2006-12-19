@@ -257,11 +257,13 @@ public class Random implements Serializable, Rollbackable {
      * @since 1.2
      */
     public int nextInt(int n) {
-        if (n <= 0)
+        if (n <= 0) {
             throw new IllegalArgumentException("n must be positive");
-        if ((n & -n) == n)
+        }
+        if ((n & -n) == n) {
             // i.e., n is a power of 2
             return (int) ((n * (long) next(31)) >> 31);
+        }
         int bits, val;
         do {
             bits = next(31);

@@ -41,6 +41,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
@@ -119,7 +120,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
      */
     protected Composite _createSection(String title, String description) {
         Section section = _toolkit.createSection(_form.getBody(),
-                Section.DESCRIPTION | Section.TWISTIE | Section.CLIENT_INDENT);
+                Section.DESCRIPTION | ExpandableComposite.TWISTIE | ExpandableComposite.CLIENT_INDENT);
         TableWrapData data = new TableWrapData();
         data.grabHorizontal = true;
         section.setLayoutData(data);

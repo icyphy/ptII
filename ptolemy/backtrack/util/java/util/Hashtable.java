@@ -216,8 +216,9 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
          * @throws NullPointerException if <code>newVal</code> is null
          */
         public Object setValue(Object newVal) {
-            if (newVal == null)
+            if (newVal == null) {
                 throw new NullPointerException();
+            }
             return super.setValue(newVal);
         }
 
@@ -378,20 +379,25 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
          * @throws NoSuchElementException if there is none
          */
         public Object next() {
-            if (getKnownMod() != getModCount())
+            if (getKnownMod() != getModCount()) {
                 throw new ConcurrentModificationException();
-            if (getCount() == 0)
+            }
+            if (getCount() == 0) {
                 throw new NoSuchElementException();
+            }
             setCount(getCount() - 1);
             HashEntry e = getNext();
-            while (e == null)
+            while (e == null) {
                 e = getBuckets()[setIdx(getIdx() - 1)];
+            }
             setNext(e.getNext());
             setLast(e);
-            if (type == VALUES)
+            if (type == VALUES) {
                 return e.getValueField();
-            if (type == KEYS)
+            }
+            if (type == KEYS) {
                 return e.getKeyField();
+            }
             return e;
         }
 
@@ -402,10 +408,12 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
          * @throws IllegalStateException if called when there is no last element
          */
         public void remove() {
-            if (getKnownMod() != getModCount())
+            if (getKnownMod() != getModCount()) {
                 throw new ConcurrentModificationException();
-            if (getLast() == null)
+            }
+            if (getLast() == null) {
                 throw new IllegalStateException();
+            }
             Hashtable.this.remove(getLast().getKeyField());
             setLast(null);
             setKnownMod(getKnownMod() + 1);
@@ -618,12 +626,14 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
          * @throws NoSuchElementException if there is none.
          */
         public Object nextElement() {
-            if (getCount() == 0)
+            if (getCount() == 0) {
                 throw new NoSuchElementException("Hashtable Enumerator");
+            }
             setCount(getCount() - 1);
             HashEntry e = getNext();
-            while (e == null)
+            while (e == null) {
                 e = getBuckets()[setIdx(getIdx() - 1)];
+            }
             setNext(e.getNext());
             return type == VALUES ? e.getValueField() : e.getKeyField();
         }
@@ -771,13 +781,16 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * ! (loadFactor &gt; 0.0)
      */
     public Hashtable(int initialCapacity, float loadFactor) {
-        if (initialCapacity < 0)
+        if (initialCapacity < 0) {
             throw new IllegalArgumentException("Illegal Capacity: "
                     + initialCapacity);
-        if (!(loadFactor > 0))
+        }
+        if (!(loadFactor > 0)) {
             throw new IllegalArgumentException("Illegal Load: " + loadFactor);
-        if (initialCapacity == 0)
+        }
+        if (initialCapacity == 0) {
             initialCapacity = 1;
+        }
         setBuckets(new HashEntry[initialCapacity]);
         this.loadFactor = loadFactor;
         $ASSIGN$threshold((int) (initialCapacity * loadFactor));
@@ -835,13 +848,15 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * @see #containsKey(Object)
      */
     public synchronized boolean contains(Object value) {
-        if (value == null)
+        if (value == null) {
             throw new NullPointerException();
+        }
         for (int i = getBuckets().length - 1; i >= 0; i--) {
             HashEntry e = getBuckets()[i];
             while (e != null) {
-                if (e.getValueField().equals(value))
+                if (e.getValueField().equals(value)) {
                     return true;
+                }
                 e = e.getNext();
             }
         }
@@ -875,8 +890,9 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         int idx = hash(key);
         HashEntry e = getBuckets()[idx];
         while (e != null) {
-            if (e.getKeyField().equals(key))
+            if (e.getKeyField().equals(key)) {
                 return true;
+            }
             e = e.getNext();
         }
         return false;
@@ -895,8 +911,9 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         int idx = hash(key);
         HashEntry e = getBuckets()[idx];
         while (e != null) {
-            if (e.getKeyField().equals(key))
+            if (e.getKeyField().equals(key)) {
                 return e.getValueField();
+            }
             e = e.getNext();
         }
         return null;
@@ -916,8 +933,9 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     public synchronized Object put(Object key, Object value) {
         int idx = hash(key);
         HashEntry e = getBuckets()[idx];
-        if (value == null)
+        if (value == null) {
             throw new NullPointerException();
+        }
         while (e != null) {
             if (e.getKeyField().equals(key)) {
                 Object r = e.getValueField();
@@ -952,10 +970,11 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         while (e != null) {
             if (e.getKeyField().equals(key)) {
                 setModCount(getModCount() + 1);
-                if (last == null)
+                if (last == null) {
                     getBuckets()[idx] = e.getNext();
-                else
+                } else {
                     last.setNext(e.getNext());
+                }
                 setSize(getSize() - 1);
                 return e.getValueField();
             }
@@ -1028,8 +1047,9 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         StringBuffer r = new StringBuffer("{");
         for (int pos = getSize(); pos > 0; pos--) {
             r.append(entries.next());
-            if (pos > 1)
+            if (pos > 1) {
                 r.append(", ");
+            }
         }
         r.append("}");
         return r.toString();
@@ -1067,8 +1087,9 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
                 }
 
                 public boolean contains(Object o) {
-                    if (o == null)
+                    if (o == null) {
                         return false;
+                    }
                     return containsKey(o);
                 }
 
@@ -1356,10 +1377,12 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * @since 1.2
      */
     public boolean equals(Object o) {
-        if (o == this)
+        if (o == this) {
             return true;
-        if (!(o instanceof Map))
+        }
+        if (!(o instanceof Map)) {
             return false;
+        }
         return entrySet().equals(((Map) o).entrySet());
     }
 
@@ -1372,8 +1395,9 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     public synchronized int hashCode() {
         Iterator itr = new HashIterator(ENTRIES);
         int hashcode = 0;
-        for (int pos = getSize(); pos > 0; pos--)
+        for (int pos = getSize(); pos > 0; pos--) {
             hashcode += itr.next().hashCode();
+        }
         return hashcode;
     }
 
@@ -1397,16 +1421,19 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * @see #entrySet()
      */
     HashEntry getEntry(Object o) {
-        if (!(o instanceof Map.Entry))
+        if (!(o instanceof Map.Entry)) {
             return null;
+        }
         Object key = ((Map.Entry) o).getKey();
-        if (key == null)
+        if (key == null) {
             return null;
+        }
         int idx = hash(key);
         HashEntry e = getBuckets()[idx];
         while (e != null) {
-            if (e.equals(o))
+            if (e.equals(o)) {
                 return e;
+            }
             e = e.getNext();
         }
         return null;
@@ -1453,8 +1480,9 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
                 int idx = hash(e.getKeyField());
                 HashEntry dest = getBuckets()[idx];
                 if (dest != null) {
-                    while (dest.getNext() != null)
+                    while (dest.getNext() != null) {
                         dest = dest.getNext();
+                    }
                     dest.setNext(e);
                 } else {
                     getBuckets()[idx] = e;
@@ -1503,8 +1531,9 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         s.defaultReadObject();
         setBuckets(new HashEntry[s.readInt()]);
         int len = s.readInt();
-        while (--len >= 0)
+        while (--len >= 0) {
             put(s.readObject(), s.readObject());
+        }
     }
 
     void setBuckets(HashEntry[] buckets) {

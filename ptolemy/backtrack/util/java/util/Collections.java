@@ -272,8 +272,9 @@ public class Collections implements Rollbackable {
          * initial element set to null.
          */
         public Object[] toArray(Object[] a) {
-            if (a.length > 0)
+            if (a.length > 0) {
                 a[0] = null;
+            }
             return a;
         }
 
@@ -439,8 +440,9 @@ public class Collections implements Rollbackable {
          * initial element set to null.
          */
         public Object[] toArray(Object[] a) {
-            if (a.length > 0)
+            if (a.length > 0) {
                 a[0] = null;
+            }
             return a;
         }
 
@@ -630,8 +632,9 @@ public class Collections implements Rollbackable {
          * @throws IllegalArgumentException if n &lt; 0
          */
         CopiesList(int n, Object o) {
-            if (n < 0)
+            if (n < 0) {
                 throw new IllegalArgumentException();
+            }
             this.n = n;
             element = o;
         }
@@ -651,8 +654,9 @@ public class Collections implements Rollbackable {
          * @return The element used by this list.
          */
         public Object get(int index) {
-            if (index < 0 || index >= n)
+            if (index < 0 || index >= n) {
                 throw new IndexOutOfBoundsException();
+            }
             return element;
         }
 
@@ -693,8 +697,9 @@ public class Collections implements Rollbackable {
          * used by this list.
          */
         public List subList(int from, int to) {
-            if (from < 0 || to > n)
+            if (from < 0 || to > n) {
                 throw new IndexOutOfBoundsException();
+            }
             return new CopiesList(to - from, element);
         }
 
@@ -715,8 +720,9 @@ public class Collections implements Rollbackable {
          */
         public String toString() {
             StringBuffer r = new StringBuffer("{");
-            for (int i = n - 1; --i > 0;)
+            for (int i = n - 1; --i > 0;) {
                 r.append(element).append(", ");
+            }
             r.append(element).append("}");
             return r.toString();
         }
@@ -885,8 +891,9 @@ public class Collections implements Rollbackable {
                     if (hasNext) {
                         $ASSIGN$hasNext(false);
                         return element;
-                    } else
+                    } else {
                         throw new NoSuchElementException();
+                    }
                 }
 
                 /**                 
@@ -998,9 +1005,11 @@ public class Collections implements Rollbackable {
         public boolean containsAll(Collection c) {
             Iterator i = c.iterator();
             int pos = c.size();
-            while (--pos >= 0)
-                if (!equals(i.next(), element))
+            while (--pos >= 0) {
+                if (!equals(i.next(), element)) {
                     return false;
+                }
+            }
             return true;
         }
 
@@ -1091,8 +1100,9 @@ public class Collections implements Rollbackable {
          * index is not 0.
          */
         public Object get(int index) {
-            if (index == 0)
+            if (index == 0) {
                 return element;
+            }
             throw new IndexOutOfBoundsException();
         }
 
@@ -1117,9 +1127,11 @@ public class Collections implements Rollbackable {
         public boolean containsAll(Collection c) {
             Iterator i = c.iterator();
             int pos = c.size();
-            while (--pos >= 0)
-                if (!equals(i.next(), element))
+            while (--pos >= 0) {
+                if (!equals(i.next(), element)) {
                     return false;
+                }
+            }
             return true;
         }
 
@@ -1161,12 +1173,15 @@ public class Collections implements Rollbackable {
          * than 1.
          */
         public List subList(int from, int to) {
-            if (from == to && (to == 0 || to == 1))
+            if (from == to && (to == 0 || to == 1)) {
                 return EMPTY_LIST;
-            if (from == 0 && to == 1)
+            }
+            if (from == 0 && to == 1) {
                 return this;
-            if (from > to)
+            }
+            if (from > to) {
                 throw new IllegalArgumentException();
+            }
             throw new IndexOutOfBoundsException();
         }
 
@@ -1252,7 +1267,7 @@ public class Collections implements Rollbackable {
          * @return A singleton containing the map entry.
          */
         public Set entrySet() {
-            if (entries == null)
+            if (entries == null) {
                 $ASSIGN$entries(singleton(new AbstractMap.BasicMapEntry(k, v) {
                     /**                     
                      * Sets the value of the map entry to the supplied value.
@@ -1325,6 +1340,7 @@ public class Collections implements Rollbackable {
                     }
 
                 }));
+            }
             return entries;
         }
 
@@ -1375,8 +1391,9 @@ public class Collections implements Rollbackable {
          * @return A singleton containing the key.
          */
         public Set keySet() {
-            if (getKeys() == null)
+            if (getKeys() == null) {
                 setKeys(singleton(k));
+            }
             return getKeys();
         }
 
@@ -1394,8 +1411,9 @@ public class Collections implements Rollbackable {
          * @return A singleton containing the value.
          */
         public Collection values() {
-            if (getValues() == null)
+            if (getValues() == null) {
                 setValues(singleton(v));
+            }
             return getValues();
         }
 
@@ -1484,8 +1502,9 @@ public class Collections implements Rollbackable {
         SynchronizedCollection(Collection c) {
             this.c = c;
             mutex = this;
-            if (c == null)
+            if (c == null) {
                 throw new NullPointerException();
+            }
         }
 
         /**         
@@ -2455,8 +2474,9 @@ public class Collections implements Rollbackable {
         SynchronizedMap(Map m) {
             this.m = m;
             mutex = this;
-            if (m == null)
+            if (m == null) {
                 throw new NullPointerException();
+            }
         }
 
         /**         
@@ -2654,7 +2674,7 @@ public class Collections implements Rollbackable {
 
             // class SynchronizedMapEntry
             // Now the actual code.
-            if (entries == null)
+            if (entries == null) {
                 synchronized (mutex) {
                     $ASSIGN$entries(new SynchronizedSet(mutex, m.entrySet()) {
                         /**                         
@@ -2813,6 +2833,7 @@ public class Collections implements Rollbackable {
 
                     });
                 }
+            }
             return entries;
         }
 
@@ -2887,10 +2908,11 @@ public class Collections implements Rollbackable {
          * @return A synchronized set containing the keys of the underlying map.
          */
         public Set keySet() {
-            if (keys == null)
+            if (keys == null) {
                 synchronized (mutex) {
                     $ASSIGN$keys(new SynchronizedSet(mutex, m.keySet()));
                 }
+            }
             return keys;
         }
 
@@ -2995,10 +3017,11 @@ public class Collections implements Rollbackable {
          * @return the collection of all values in the underlying map.
          */
         public Collection values() {
-            if (values == null)
+            if (values == null) {
                 synchronized (mutex) {
                     $ASSIGN$values(new SynchronizedCollection(mutex, m.values()));
                 }
+            }
             return values;
         }
 
@@ -3525,8 +3548,9 @@ public class Collections implements Rollbackable {
          */
         UnmodifiableCollection(Collection c) {
             this.c = c;
-            if (c == null)
+            if (c == null) {
                 throw new NullPointerException();
+            }
         }
 
         /**         
@@ -4449,8 +4473,9 @@ public class Collections implements Rollbackable {
          */
         UnmodifiableMap(Map m) {
             this.m = m;
-            if (m == null)
+            if (m == null) {
                 throw new NullPointerException();
+            }
         }
 
         /**         
@@ -4503,8 +4528,9 @@ public class Collections implements Rollbackable {
          * @see Map.Entry
          */
         public Set entrySet() {
-            if (entries == null)
+            if (entries == null) {
                 $ASSIGN$entries(new UnmodifiableEntrySet(m.entrySet()));
+            }
             return entries;
         }
 
@@ -4574,8 +4600,9 @@ public class Collections implements Rollbackable {
          * @return the set view of all keys.
          */
         public Set keySet() {
-            if (keys == null)
+            if (keys == null) {
                 $ASSIGN$keys(new UnmodifiableSet(m.keySet()));
+            }
             return keys;
         }
 
@@ -4632,8 +4659,9 @@ public class Collections implements Rollbackable {
          * @return the collection view of all values.
          */
         public Collection values() {
-            if (values == null)
+            if (values == null) {
                 $ASSIGN$values(new UnmodifiableCollection(m.values()));
+            }
             return values;
         }
 
@@ -5197,36 +5225,42 @@ public class Collections implements Rollbackable {
             while (low <= hi) {
                 pos = (low + hi) >> 1;
                 if (i < pos) {
-                    if (!forward)
+                    if (!forward) {
                         itr.next();
-                    for (; i != pos; i++, o = itr.next())
+                    }
+                    for (; i != pos; i++, o = itr.next()) {
                         ;
+                    }
                     forward = true;
                 } else {
-                    if (forward)
+                    if (forward) {
                         itr.previous();
-                    for (; i != pos; i--, o = itr.previous())
+                    }
+                    for (; i != pos; i--, o = itr.previous()) {
                         ;
+                    }
                     forward = false;
                 }
                 final int d = compare(o, key, c);
-                if (d == 0)
+                if (d == 0) {
                     return pos;
-                else if (d > 0)
+                } else if (d > 0) {
                     hi = pos - 1;
-                else
+                } else {
                     low = ++pos;
+                }
             }
         } else {
             while (low <= hi) {
                 pos = (low + hi) >> 1;
                 final int d = compare(l.get(pos), key, c);
-                if (d == 0)
+                if (d == 0) {
                     return pos;
-                else if (d > 0)
+                } else if (d > 0) {
                     hi = pos - 1;
-                else
+                } else {
                     low = ++pos;
+                }
             }
         }
         return -pos - 1;
@@ -5245,8 +5279,9 @@ public class Collections implements Rollbackable {
      */
     public static void copy(List dest, List source) {
         int pos = source.size();
-        if (dest.size() < pos)
+        if (dest.size() < pos) {
             throw new IndexOutOfBoundsException("Source does not fit in dest");
+        }
         Iterator i1 = source.iterator();
         ListIterator i2 = dest.listIterator();
         while (--pos >= 0) {
@@ -5316,9 +5351,11 @@ public class Collections implements Rollbackable {
      */
     public static int indexOfSubList(List source, List target) {
         int ssize = source.size();
-        for (int i = 0, j = target.size(); j <= ssize; i++, j++)
-            if (source.subList(i, j).equals(target))
+        for (int i = 0, j = target.size(); j <= ssize; i++, j++) {
+            if (source.subList(i, j).equals(target)) {
                 return i;
+            }
+        }
         return -1;
     }
 
@@ -5336,9 +5373,11 @@ public class Collections implements Rollbackable {
      */
     public static int lastIndexOfSubList(List source, List target) {
         int ssize = source.size();
-        for (int i = ssize - target.size(), j = ssize; i >= 0; i--, j--)
-            if (source.subList(i, j).equals(target))
+        for (int i = ssize - target.size(), j = ssize; i >= 0; i--, j--) {
+            if (source.subList(i, j).equals(target)) {
                 return i;
+            }
+        }
         return -1;
     }
 
@@ -5353,8 +5392,9 @@ public class Collections implements Rollbackable {
      */
     public static ArrayList list(Enumeration e) {
         ArrayList l = new ArrayList();
-        while (e.hasMoreElements())
+        while (e.hasMoreElements()) {
             l.add(e.nextElement());
+        }
         return l;
     }
 
@@ -5391,8 +5431,9 @@ public class Collections implements Rollbackable {
         int csize = c.size();
         for (int i = 1; i < csize; i++) {
             Object o = itr.next();
-            if (compare(max, o, order) < 0)
+            if (compare(max, o, order) < 0) {
                 max = o;
+            }
         }
         return max;
     }
@@ -5430,8 +5471,9 @@ public class Collections implements Rollbackable {
         int csize = c.size();
         for (int i = 1; i < csize; i++) {
             Object o = itr.next();
-            if (compare(min, o, order) > 0)
+            if (compare(min, o, order) > 0) {
                 min = o;
+            }
         }
         return min;
     }
@@ -5473,11 +5515,12 @@ public class Collections implements Rollbackable {
     public static boolean replaceAll(List list, Object oldval, Object newval) {
         ListIterator itr = list.listIterator();
         boolean replace_occured = false;
-        for (int i = list.size(); --i >= 0;)
+        for (int i = list.size(); --i >= 0;) {
             if (AbstractCollection.equals(oldval, itr.next())) {
                 itr.set(newval);
                 replace_occured = true;
             }
+        }
         return replace_occured;
     }
 
@@ -5548,13 +5591,16 @@ public class Collections implements Rollbackable {
      */
     public static void rotate(List list, int distance) {
         int size = list.size();
-        if (size == 0)
+        if (size == 0) {
             return;
+        }
         distance %= size;
-        if (distance == 0)
+        if (distance == 0) {
             return;
-        if (distance < 0)
+        }
+        if (distance < 0) {
             distance += size;
+        }
         if (isSequential(list)) {
             reverse(list);
             reverse(list.subList(0, distance));
@@ -5571,8 +5617,9 @@ public class Collections implements Rollbackable {
             while (--lcm >= 0) {
                 Object o = list.get(lcm);
                 for (int i = lcm + distance; i != lcm; i = (i + distance)
-                        % size)
+                        % size) {
                     o = list.set(i, o);
+                }
                 list.set(lcm, o);
             }
         }
@@ -5601,8 +5648,9 @@ public class Collections implements Rollbackable {
     public static void shuffle(List l) {
         if (defaultRandom == null) {
             synchronized (Collections.class) {
-                if (defaultRandom == null)
+                if (defaultRandom == null) {
                     defaultRandom = new Random();
+                }
             }
         }
         shuffle(l, defaultRandom);
@@ -5634,16 +5682,18 @@ public class Collections implements Rollbackable {
         ListIterator i = l.listIterator(lsize);
         boolean sequential = isSequential(l);
         Object[] a = null;
-        if (sequential)
+        if (sequential) {
             a = l.toArray();
+        }
         for (int pos = lsize - 1; pos > 0; --pos) {
             int swap = r.nextInt(pos + 1);
             Object o;
             if (sequential) {
                 o = a[swap];
                 a[swap] = i.previous();
-            } else
+            } else {
                 o = l.set(swap, i.previous());
+            }
             i.set(o);
         }
     }
@@ -5797,8 +5847,9 @@ public class Collections implements Rollbackable {
      * @see RandomAccess
      */
     public static List synchronizedList(List l) {
-        if (l instanceof RandomAccess)
+        if (l instanceof RandomAccess) {
             return new SynchronizedRandomAccessList(l);
+        }
         return new SynchronizedList(l);
     }
 
@@ -5957,8 +6008,9 @@ public class Collections implements Rollbackable {
      * @see RandomAccess
      */
     public static List unmodifiableList(List l) {
-        if (l instanceof RandomAccess)
+        if (l instanceof RandomAccess) {
             return new UnmodifiableRandomAccessList(l);
+        }
         return new UnmodifiableList(l);
     }
 

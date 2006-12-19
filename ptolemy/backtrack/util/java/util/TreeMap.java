@@ -474,16 +474,19 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
          * @throws NoSuchElementException if there is none
          */
         public Object next() {
-            if (knownMod != getModCount())
+            if (knownMod != getModCount()) {
                 throw new ConcurrentModificationException();
-            if (next == max)
+            }
+            if (next == max) {
                 throw new NoSuchElementException();
+            }
             $ASSIGN$last(next);
             $ASSIGN$next(successor(last));
-            if (type == VALUES)
+            if (type == VALUES) {
                 return last.getValueField();
-            else if (type == KEYS)
+            } else if (type == KEYS) {
                 return last.getKeyField();
+            }
             return last;
         }
 
@@ -494,10 +497,12 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
          * @throws IllegalStateException if called when there is no last element
          */
         public void remove() {
-            if (last == null)
+            if (last == null) {
                 throw new IllegalStateException();
-            if (knownMod != getModCount())
+            }
+            if (knownMod != getModCount()) {
                 throw new ConcurrentModificationException();
+            }
             removeNode(last);
             $ASSIGN$last(null);
             $ASSIGN$SPECIAL$knownMod(11, knownMod);
@@ -661,8 +666,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
          * @throws IllegalArgumentException if minKey &gt; maxKey
          */
         SubMap(Object minKey, Object maxKey) {
-            if (minKey != nil && maxKey != nil && compare(minKey, maxKey) > 0)
+            if (minKey != nil && maxKey != nil && compare(minKey, maxKey) > 0) {
                 throw new IllegalArgumentException("fromKey > toKey");
+            }
             this.minKey = minKey;
             this.maxKey = maxKey;
         }
@@ -701,15 +707,16 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
             Node node = lowestGreaterThan(minKey, true);
             Node max = lowestGreaterThan(maxKey, false);
             while (node != max) {
-                if (equals(value, node.getValue()))
+                if (equals(value, node.getValue())) {
                     return true;
+                }
                 node = successor(node);
             }
             return false;
         }
 
         public Set entrySet() {
-            if (entries == null)
+            if (entries == null) {
                 // Create an AbstractSet with custom implementations of those methods
                 // that can be overriden easily and efficiently.
                 $ASSIGN$entries(new AbstractSet() {
@@ -728,28 +735,32 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
                     }
 
                     public boolean contains(Object o) {
-                        if (!(o instanceof Map.Entry))
+                        if (!(o instanceof Map.Entry)) {
                             return false;
+                        }
                         Map.Entry me = (Map.Entry) o;
                         Object key = me.getKey();
-                        if (!keyInRange(key))
+                        if (!keyInRange(key)) {
                             return false;
+                        }
                         Node n = getNode(key);
                         return n != nil
-                                && AbstractSet.equals(me.getValue(), n
+                                && AbstractCollection.equals(me.getValue(), n
                                         .getValueField());
                     }
 
                     public boolean remove(Object o) {
-                        if (!(o instanceof Map.Entry))
+                        if (!(o instanceof Map.Entry)) {
                             return false;
+                        }
                         Map.Entry me = (Map.Entry) o;
                         Object key = me.getKey();
-                        if (!keyInRange(key))
+                        if (!keyInRange(key)) {
                             return false;
+                        }
                         Node n = getNode(key);
                         if (n != nil
-                                && AbstractSet.equals(me.getValue(), n
+                                && AbstractCollection.equals(me.getValue(), n
                                         .getValueField())) {
                             removeNode(n);
                             return true;
@@ -816,30 +827,34 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
                     }
 
                 });
+            }
             return entries;
         }
 
         public Object firstKey() {
             Node node = lowestGreaterThan(minKey, true);
-            if (node == nil || !keyInRange(node.getKeyField()))
+            if (node == nil || !keyInRange(node.getKeyField())) {
                 throw new NoSuchElementException();
+            }
             return node.getKeyField();
         }
 
         public Object get(Object key) {
-            if (keyInRange(key))
+            if (keyInRange(key)) {
                 return TreeMap.this.get(key);
+            }
             return null;
         }
 
         public SortedMap headMap(Object toKey) {
-            if (!keyInRange(toKey))
+            if (!keyInRange(toKey)) {
                 throw new IllegalArgumentException("key outside range");
+            }
             return new SubMap(minKey, toKey);
         }
 
         public Set keySet() {
-            if (this.getKeys() == null)
+            if (this.getKeys() == null) {
                 // Create an AbstractSet with custom implementations of those methods
                 // that can be overriden easily and efficiently.
                 this.setKeys(new AbstractSet() {
@@ -858,14 +873,16 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
                     }
 
                     public boolean contains(Object o) {
-                        if (!keyInRange(o))
+                        if (!keyInRange(o)) {
                             return false;
+                        }
                         return getNode(o) != nil;
                     }
 
                     public boolean remove(Object o) {
-                        if (!keyInRange(o))
+                        if (!keyInRange(o)) {
                             return false;
+                        }
                         Node n = getNode(o);
                         if (n != nil) {
                             removeNode(n);
@@ -933,25 +950,29 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
                     }
 
                 });
+            }
             return this.getKeys();
         }
 
         public Object lastKey() {
             Node node = highestLessThan(maxKey);
-            if (node == nil || !keyInRange(node.getKeyField()))
+            if (node == nil || !keyInRange(node.getKeyField())) {
                 throw new NoSuchElementException();
+            }
             return node.getKeyField();
         }
 
         public Object put(Object key, Object value) {
-            if (!keyInRange(key))
+            if (!keyInRange(key)) {
                 throw new IllegalArgumentException("Key outside range");
+            }
             return TreeMap.this.put(key, value);
         }
 
         public Object remove(Object key) {
-            if (keyInRange(key))
+            if (keyInRange(key)) {
                 return TreeMap.this.remove(key);
+            }
             return null;
         }
 
@@ -967,19 +988,21 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         }
 
         public SortedMap subMap(Object fromKey, Object toKey) {
-            if (!keyInRange(fromKey) || !keyInRange(toKey))
+            if (!keyInRange(fromKey) || !keyInRange(toKey)) {
                 throw new IllegalArgumentException("key outside range");
+            }
             return new SubMap(fromKey, toKey);
         }
 
         public SortedMap tailMap(Object fromKey) {
-            if (!keyInRange(fromKey))
+            if (!keyInRange(fromKey)) {
                 throw new IllegalArgumentException("key outside range");
+            }
             return new SubMap(fromKey, maxKey);
         }
 
         public Collection values() {
-            if (this.getValues() == null)
+            if (this.getValues() == null) {
                 // Create an AbstractCollection with custom implementations of those
                 // methods that can be overriden easily and efficiently.
                 this.setValues(new AbstractCollection() {
@@ -1056,6 +1079,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
                     }
 
                 });
+            }
             return this.getValues();
         }
 
@@ -1222,8 +1246,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     public boolean containsValue(Object value) {
         Node node = firstNode();
         while (node != nil) {
-            if (equals(value, node.getValueField()))
+            if (equals(value, node.getValueField())) {
                 return true;
+            }
             node = successor(node);
         }
         return false;
@@ -1241,7 +1266,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * @see Map.Entry
      */
     public Set entrySet() {
-        if (entries == null)
+        if (entries == null) {
             $ASSIGN$entries(new AbstractSet() {
                 public int size() {
                     return getSize();
@@ -1256,22 +1281,24 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
                 }
 
                 public boolean contains(Object o) {
-                    if (!(o instanceof Map.Entry))
+                    if (!(o instanceof Map.Entry)) {
                         return false;
+                    }
                     Map.Entry me = (Map.Entry) o;
                     Node n = getNode(me.getKey());
                     return n != nil
-                            && AbstractSet.equals(me.getValue(), n
+                            && AbstractCollection.equals(me.getValue(), n
                                     .getValueField());
                 }
 
                 public boolean remove(Object o) {
-                    if (!(o instanceof Map.Entry))
+                    if (!(o instanceof Map.Entry)) {
                         return false;
+                    }
                     Map.Entry me = (Map.Entry) o;
                     Node n = getNode(me.getKey());
                     if (n != nil
-                            && AbstractSet.equals(me.getValue(), n
+                            && AbstractCollection.equals(me.getValue(), n
                                     .getValueField())) {
                         removeNode(n);
                         return true;
@@ -1337,6 +1364,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
                 }
 
             });
+        }
         return entries;
     }
 
@@ -1346,8 +1374,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * @throws NoSuchElementException if the map is empty
      */
     public Object firstKey() {
-        if (root == nil)
+        if (root == nil) {
             throw new NoSuchElementException();
+        }
         return firstNode().getKeyField();
     }
 
@@ -1396,7 +1425,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * @see #entrySet()
      */
     public Set keySet() {
-        if (getKeys() == null)
+        if (getKeys() == null) {
             setKeys(new AbstractSet() {
                 public int size() {
                     return getSize();
@@ -1416,8 +1445,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
 
                 public boolean remove(Object key) {
                     Node n = getNode(key);
-                    if (n == nil)
+                    if (n == nil) {
                         return false;
+                    }
                     removeNode(n);
                     return true;
                 }
@@ -1480,6 +1510,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
                 }
 
             });
+        }
         return getKeys();
     }
 
@@ -1489,8 +1520,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * @throws NoSuchElementException if the map is empty
      */
     public Object lastKey() {
-        if (root == nil)
+        if (root == nil) {
             throw new NoSuchElementException("empty");
+        }
         return lastNode().getKeyField();
     }
 
@@ -1516,12 +1548,13 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         while (current != nil) {
             parent = current;
             comparison = compare(key, current.getKeyField());
-            if (comparison > 0)
+            if (comparison > 0) {
                 current = current.getRight();
-            else if (comparison < 0)
+            } else if (comparison < 0) {
                 current = current.getLeft();
-            else
+            } else {
                 return current.setValue(value);
+            }
         }
         Node n = new Node(key, value, RED);
         n.setParent(parent);
@@ -1531,10 +1564,11 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
             $ASSIGN$root(n);
             return null;
         }
-        if (comparison > 0)
+        if (comparison > 0) {
             parent.setRight(n);
-        else
+        } else {
             parent.setLeft(n);
+        }
         insertFixup(n);
         return null;
     }
@@ -1572,8 +1606,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      */
     public Object remove(Object key) {
         Node n = getNode(key);
-        if (n == nil)
+        if (n == nil) {
             return null;
+        }
         Object result = n.getValueField();
         removeNode(n);
         return result;
@@ -1639,7 +1674,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * @see #entrySet()
      */
     public Collection values() {
-        if (getValues() == null)
+        if (getValues() == null) {
             setValues(new AbstractCollection() {
                 public int size() {
                     return getSize();
@@ -1711,6 +1746,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
                 }
 
             });
+        }
         return getValues();
     }
 
@@ -1820,8 +1856,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
                 Node next = parent.getRight();
                 parent.setRight(right);
                 parent = next;
-                if (last != null)
+                if (last != null) {
                     last.setRight(left);
+                }
                 last = right;
             }
             row = row.getLeft();
@@ -1860,8 +1897,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      */
     final Node firstNode() {
         Node node = root;
-        while (node.getLeft() != nil)
+        while (node.getLeft() != nil) {
             node = node.getLeft();
+        }
         return node;
     }
 
@@ -1875,12 +1913,13 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         Node current = root;
         while (current != nil) {
             int comparison = compare(key, current.getKeyField());
-            if (comparison > 0)
+            if (comparison > 0) {
                 current = current.getRight();
-            else if (comparison < 0)
+            } else if (comparison < 0) {
                 current = current.getLeft();
-            else
+            } else {
                 return current;
+            }
         }
         return current;
     }
@@ -1892,20 +1931,22 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * @return the previous node
      */
     final Node highestLessThan(Object key) {
-        if (key == nil)
+        if (key == nil) {
             return lastNode();
+        }
         Node last = nil;
         Node current = root;
         int comparison = 0;
         while (current != nil) {
             last = current;
             comparison = compare(key, current.getKeyField());
-            if (comparison > 0)
+            if (comparison > 0) {
                 current = current.getRight();
-            else if (comparison < 0)
+            } else if (comparison < 0) {
                 current = current.getLeft();
-            else
+            } else {
                 return predecessor(last);
+            }
         }
         return comparison <= 0 ? predecessor(last) : last;
     }
@@ -1960,8 +2001,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      */
     private Node lastNode() {
         Node node = root;
-        while (node.getRight() != nil)
+        while (node.getRight() != nil) {
             node = node.getRight();
+        }
         return node;
     }
 
@@ -1974,20 +2016,22 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * @return the next node
      */
     final Node lowestGreaterThan(Object key, boolean first) {
-        if (key == nil)
+        if (key == nil) {
             return first ? firstNode() : nil;
+        }
         Node last = nil;
         Node current = root;
         int comparison = 0;
         while (current != nil) {
             last = current;
             comparison = compare(key, current.getKeyField());
-            if (comparison > 0)
+            if (comparison > 0) {
                 current = current.getRight();
-            else if (comparison < 0)
+            } else if (comparison < 0) {
                 current = current.getLeft();
-            else
+            } else {
                 return current;
+            }
         }
         return comparison > 0 ? successor(last) : last;
     }
@@ -2000,8 +2044,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     private Node predecessor(Node node) {
         if (node.getLeft() != nil) {
             node = node.getLeft();
-            while (node.getRight() != nil)
+            while (node.getRight() != nil) {
                 node = node.getRight();
+            }
             return node;
         }
         Node parent = node.getParent();
@@ -2084,25 +2129,29 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
             child = node.getLeft();
         } else {
             splice = node.getLeft();
-            while (splice.getRight() != nil)
+            while (splice.getRight() != nil) {
                 splice = splice.getRight();
+            }
             child = splice.getLeft();
             node.setKeyField(splice.getKeyField());
             node.setValueField(splice.getValueField());
         }
         Node parent = splice.getParent();
-        if (child != nil)
+        if (child != nil) {
             child.setParent(parent);
+        }
         if (parent == nil) {
             $ASSIGN$root(child);
             return;
         }
-        if (splice == parent.getLeft())
+        if (splice == parent.getLeft()) {
             parent.setLeft(child);
-        else
+        } else {
             parent.setRight(child);
-        if (splice.getColor() == BLACK)
+        }
+        if (splice.getColor() == BLACK) {
             deleteFixup(child, parent);
+        }
     }
 
     /**     
@@ -2112,16 +2161,19 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     private void rotateLeft(Node node) {
         Node child = node.getRight();
         node.setRight(child.getLeft());
-        if (child.getLeft() != nil)
+        if (child.getLeft() != nil) {
             child.getLeft().setParent(node);
+        }
         child.setParent(node.getParent());
         if (node.getParent() != nil) {
-            if (node == node.getParent().getLeft())
+            if (node == node.getParent().getLeft()) {
                 node.getParent().setLeft(child);
-            else
+            } else {
                 node.getParent().setRight(child);
-        } else
+            }
+        } else {
             $ASSIGN$root(child);
+        }
         child.setLeft(node);
         node.setParent(child);
     }
@@ -2133,16 +2185,19 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     private void rotateRight(Node node) {
         Node child = node.getLeft();
         node.setLeft(child.getRight());
-        if (child.getRight() != nil)
+        if (child.getRight() != nil) {
             child.getRight().setParent(node);
+        }
         child.setParent(node.getParent());
         if (node.getParent() != nil) {
-            if (node == node.getParent().getRight())
+            if (node == node.getParent().getRight()) {
                 node.getParent().setRight(child);
-            else
+            } else {
                 node.getParent().setLeft(child);
-        } else
+            }
+        } else {
             $ASSIGN$root(child);
+        }
         child.setRight(node);
         node.setParent(child);
     }
@@ -2156,8 +2211,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     final Node successor(Node node) {
         if (node.getRight() != nil) {
             node = node.getRight();
-            while (node.getLeft() != nil)
+            while (node.getLeft() != nil) {
                 node = node.getLeft();
+            }
             return node;
         }
         Node parent = node.getParent();

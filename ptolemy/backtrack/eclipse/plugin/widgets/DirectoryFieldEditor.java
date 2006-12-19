@@ -36,6 +36,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -119,7 +120,7 @@ public class DirectoryFieldEditor extends
             ContainerSelectionDialog dialog = new ContainerSelectionDialog(
                     getShell(), container, false, "Select the Ptolemy home");
 
-            if (dialog.open() == ContainerSelectionDialog.OK) {
+            if (dialog.open() == Window.OK) {
                 IPath result = (IPath) dialog.getResult()[0];
                 return result.toOSString();
             } else {

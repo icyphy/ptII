@@ -193,8 +193,9 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         Object cleanup() {
             if (this == getRoot()) {
                 setRoot(getSucc());
-                if (getSucc() != null)
+                if (getSucc() != null) {
                     getSucc().setPred(pred);
+                }
             } else if (getSucc() == null) {
                 getPred().setSucc(null);
                 getRoot().setPred(pred);
@@ -347,8 +348,9 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
     public boolean containsValue(Object value) {
         LinkedHashEntry e = getRoot();
         while (e != null) {
-            if (equals(value, e.getValueField()))
+            if (equals(value, e.getValueField())) {
                 return true;
+            }
             e = e.getSucc();
         }
         return false;
@@ -433,8 +435,9 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         LinkedHashEntry e = new LinkedHashEntry(key, value);
         e.setNext(getBuckets()[idx]);
         getBuckets()[idx] = e;
-        if (callRemove && removeEldestEntry(getRoot()))
+        if (callRemove && removeEldestEntry(getRoot())) {
             remove(getRoot().getKeyField());
+        }
     }
 
     /**     
@@ -491,10 +494,12 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
              * @throws NoSuchElementException if there is none
              */
             public Object next() {
-                if (getKnownMod() != getModCount())
+                if (getKnownMod() != getModCount()) {
                     throw new ConcurrentModificationException();
-                if (getCurrent() == null)
+                }
+                if (getCurrent() == null) {
                     throw new NoSuchElementException();
+                }
                 setLast(getCurrent());
                 setCurrent(getCurrent().getSucc());
                 return type == VALUES ? getLast().getValueField()
@@ -508,10 +513,12 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
              * @throws IllegalStateException if called when there is no last element
              */
             public void remove() {
-                if (getKnownMod() != getModCount())
+                if (getKnownMod() != getModCount()) {
                     throw new ConcurrentModificationException();
-                if (getLast() == null)
+                }
+                if (getLast() == null) {
                     throw new IllegalStateException();
+                }
                 LinkedHashMap.this.remove(getLast().getKeyField());
                 setLast(null);
                 setKnownMod(getKnownMod() + 1);

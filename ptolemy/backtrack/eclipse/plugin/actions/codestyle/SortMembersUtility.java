@@ -77,8 +77,9 @@ public class SortMembersUtility {
                                     IDialogConstants.OK_LABEL,
                                     IDialogConstants.CANCEL_LABEL }, 0);
             if (returnCode != OptionalMessageDialog.NOT_SHOWN
-                    && returnCode != Window.OK)
+                    && returnCode != Window.OK) {
                 return;
+            }
         }
 
         ISchedulingRule schedulingRule = ResourcesPlugin.getWorkspace()
@@ -356,8 +357,9 @@ public class SortMembersUtility {
             if (element instanceof IJavaAnnotation) {
                 IJavaAnnotation annot = (IJavaAnnotation) element;
                 if (!annot.isMarkedDeleted() && annot.isPersistent()
-                        && !annot.isProblem())
+                        && !annot.isProblem()) {
                     return true;
+                }
             }
         }
         return false;

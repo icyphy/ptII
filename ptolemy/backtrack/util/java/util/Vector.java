@@ -153,8 +153,9 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * @throws IllegalArgumentException if initialCapacity &lt; 0
      */
     public Vector(int initialCapacity, int capacityIncrement) {
-        if (initialCapacity < 0)
+        if (initialCapacity < 0) {
             throw new IllegalArgumentException();
+        }
         setElementData(new Object[initialCapacity]);
         this.setCapacityIncrement(capacityIncrement);
     }
@@ -208,13 +209,15 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * @param minCapacity the desired minimum capacity, negative values ignored
      */
     public synchronized void ensureCapacity(int minCapacity) {
-        if (getElementData().length >= minCapacity)
+        if (getElementData().length >= minCapacity) {
             return;
+        }
         int newCapacity;
-        if (getCapacityIncrement() <= 0)
+        if (getCapacityIncrement() <= 0) {
             newCapacity = getElementData().length * 2;
-        else
+        } else {
             newCapacity = getElementData().length + getCapacityIncrement();
+        }
         Object[] newArray = new Object[Math.max(newCapacity, minCapacity)];
         System.arraycopy(getElementData(), 0, newArray, 0, getElementCount());
         setElementData(newArray);
@@ -234,8 +237,9 @@ public class Vector extends AbstractList implements List, RandomAccess,
         // not do the check and lose a bit of performance in that infrequent case
         setModCount(getModCount() + 1);
         ensureCapacity(newSize);
-        if (newSize < getElementCount())
+        if (newSize < getElementCount()) {
             Arrays.fill(getElementData(), newSize, getElementCount(), null);
+        }
         setElementCount(newSize);
     }
 
@@ -280,8 +284,9 @@ public class Vector extends AbstractList implements List, RandomAccess,
             }
 
             public Object nextElement() {
-                if (i >= getElementCount())
+                if (i >= getElementCount()) {
                     throw new NoSuchElementException();
+                }
                 return getElementData()[$ASSIGN$SPECIAL$i(11, i)];
             }
 
@@ -422,9 +427,11 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * @throws IndexOutOfBoundsException if index &lt; 0
      */
     public synchronized int indexOf(Object e, int index) {
-        for (int i = index; i < getElementCount(); i++)
-            if (equals(e, getElementData()[i]))
+        for (int i = index; i < getElementCount(); i++) {
+            if (equals(e, getElementData()[i])) {
                 return i;
+            }
+        }
         return -1;
     }
 
@@ -449,9 +456,11 @@ public class Vector extends AbstractList implements List, RandomAccess,
      */
     public synchronized int lastIndexOf(Object e, int index) {
         checkBoundExclusive(index);
-        for (int i = index; i >= 0; i--)
-            if (equals(e, getElementData()[i]))
+        for (int i = index; i >= 0; i--) {
+            if (equals(e, getElementData()[i])) {
                 return i;
+            }
+        }
         return -1;
     }
 
@@ -473,8 +482,9 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * @throws NoSuchElementException the Vector is empty
      */
     public synchronized Object firstElement() {
-        if (getElementCount() == 0)
+        if (getElementCount() == 0) {
             throw new NoSuchElementException();
+        }
         return getElementData()[0];
     }
 
@@ -484,8 +494,9 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * @throws NoSuchElementException the Vector is empty
      */
     public synchronized Object lastElement() {
-        if (getElementCount() == 0)
+        if (getElementCount() == 0) {
             throw new NoSuchElementException();
+        }
         return getElementData()[getElementCount() - 1];
     }
 
@@ -521,8 +532,9 @@ public class Vector extends AbstractList implements List, RandomAccess,
      */
     public synchronized void insertElementAt(Object obj, int index) {
         checkBoundInclusive(index);
-        if (getElementCount() == getElementData().length)
+        if (getElementCount() == getElementData().length) {
             ensureCapacity(getElementCount() + 1);
+        }
         setModCount(getModCount() + 1);
         System.arraycopy(getElementData(), index, getElementData(), index + 1,
                 getElementCount() - index);
@@ -536,8 +548,9 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * @param obj the object to add to the Vector
      */
     public synchronized void addElement(Object obj) {
-        if (getElementCount() == getElementData().length)
+        if (getElementCount() == getElementData().length) {
             ensureCapacity(getElementCount() + 1);
+        }
         setModCount(getModCount() + 1);
         getElementData()[$ASSIGN$SPECIAL$elementCount(11, elementCount)] = obj;
     }
@@ -565,8 +578,9 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * @see #clear()
      */
     public synchronized void removeAllElements() {
-        if (getElementCount() == 0)
+        if (getElementCount() == 0) {
             return;
+        }
         setModCount(getModCount() + 1);
         Arrays.fill(getElementData(), 0, getElementCount(), null);
         setElementCount(0);
@@ -619,11 +633,12 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * @since 1.2
      */
     public synchronized Object[] toArray(Object[] a) {
-        if (a.length < getElementCount())
+        if (a.length < getElementCount()) {
             a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
                     getElementCount());
-        else if (a.length > getElementCount())
+        } else if (a.length > getElementCount()) {
             a[getElementCount()] = null;
+        }
         System.arraycopy(getElementData(), 0, a, 0, getElementCount());
         return a;
     }
@@ -701,9 +716,10 @@ public class Vector extends AbstractList implements List, RandomAccess,
         Object temp = getElementData()[index];
         setModCount(getModCount() + 1);
         setElementCount(getElementCount() - 1);
-        if (index < getElementCount())
+        if (index < getElementCount()) {
             System.arraycopy(getElementData(), index + 1, getElementData(),
                     index, getElementCount() - index);
+        }
         getElementData()[getElementCount()] = null;
         return temp;
     }
@@ -748,19 +764,25 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * @since 1.2
      */
     public synchronized boolean removeAll(Collection c) {
-        if (c == null)
+        if (c == null) {
             throw new NullPointerException();
+        }
         int i;
         int j;
-        for (i = 0; i < getElementCount(); i++)
-            if (c.contains(getElementData()[i]))
+        for (i = 0; i < getElementCount(); i++) {
+            if (c.contains(getElementData()[i])) {
                 break;
-        if (i == getElementCount())
+            }
+        }
+        if (i == getElementCount()) {
             return false;
+        }
         setModCount(getModCount() + 1);
-        for (j = i++; i < getElementCount(); i++)
-            if (!c.contains(getElementData()[i]))
+        for (j = i++; i < getElementCount(); i++) {
+            if (!c.contains(getElementData()[i])) {
                 getElementData()[j++] = getElementData()[i];
+            }
+        }
         setElementCount(getElementCount() - (i - j));
         return true;
     }
@@ -773,19 +795,25 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * @since 1.2
      */
     public synchronized boolean retainAll(Collection c) {
-        if (c == null)
+        if (c == null) {
             throw new NullPointerException();
+        }
         int i;
         int j;
-        for (i = 0; i < getElementCount(); i++)
-            if (!c.contains(getElementData()[i]))
+        for (i = 0; i < getElementCount(); i++) {
+            if (!c.contains(getElementData()[i])) {
                 break;
-        if (i == getElementCount())
+            }
+        }
+        if (i == getElementCount()) {
             return false;
+        }
         setModCount(getModCount() + 1);
-        for (j = i++; i < getElementCount(); i++)
-            if (c.contains(getElementData()[i]))
+        for (j = i++; i < getElementCount(); i++) {
+            if (c.contains(getElementData()[i])) {
                 getElementData()[j++] = getElementData()[i];
+            }
+        }
         setElementCount(getElementCount() - (i - j));
         return true;
     }
@@ -807,12 +835,14 @@ public class Vector extends AbstractList implements List, RandomAccess,
         setModCount(getModCount() + 1);
         ensureCapacity(getElementCount() + csize);
         int end = index + csize;
-        if (getElementCount() > 0 && index != getElementCount())
+        if (getElementCount() > 0 && index != getElementCount()) {
             System.arraycopy(getElementData(), index, getElementData(), end,
                     getElementCount() - index);
+        }
         setElementCount(getElementCount() + csize);
-        for (; index < end; index++)
+        for (; index < end; index++) {
             getElementData()[index] = itr.next();
+        }
         return (csize > 0);
     }
 
@@ -890,8 +920,9 @@ public class Vector extends AbstractList implements List, RandomAccess,
             int save = getElementCount();
             setElementCount(getElementCount() - change);
             Arrays.fill(getElementData(), getElementCount(), save, null);
-        } else if (change < 0)
+        } else if (change < 0) {
             throw new IndexOutOfBoundsException();
+        }
     }
 
     /**     
@@ -903,9 +934,10 @@ public class Vector extends AbstractList implements List, RandomAccess,
         // Implementation note: we do not check for negative ranges here, since
         // use of a negative index will cause an ArrayIndexOutOfBoundsException
         // with no effort on our part.
-        if (index > getElementCount())
+        if (index > getElementCount()) {
             throw new ArrayIndexOutOfBoundsException(index + " > "
                     + getElementCount());
+        }
     }
 
     /**     
@@ -917,9 +949,10 @@ public class Vector extends AbstractList implements List, RandomAccess,
         // Implementation note: we do not check for negative ranges here, since
         // use of a negative index will cause an ArrayIndexOutOfBoundsException
         // with no effort on our part.
-        if (index >= getElementCount())
+        if (index >= getElementCount()) {
             throw new ArrayIndexOutOfBoundsException(index + " >= "
                     + getElementCount());
+        }
     }
 
     /**     

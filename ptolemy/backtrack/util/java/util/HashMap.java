@@ -339,20 +339,25 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
          * @throws NoSuchElementException if there is none
          */
         public Object next() {
-            if (knownMod != getModCount())
+            if (knownMod != getModCount()) {
                 throw new ConcurrentModificationException();
-            if (count == 0)
+            }
+            if (count == 0) {
                 throw new NoSuchElementException();
+            }
             $ASSIGN$SPECIAL$count(12, count);
             HashEntry e = next;
-            while (e == null)
+            while (e == null) {
                 e = getBuckets()[$ASSIGN$SPECIAL$idx(14, idx)];
+            }
             $ASSIGN$next(e.getNext());
             $ASSIGN$last(e);
-            if (type == VALUES)
+            if (type == VALUES) {
                 return e.getValueField();
-            if (type == KEYS)
+            }
+            if (type == KEYS) {
                 return e.getKeyField();
+            }
             return e;
         }
 
@@ -363,10 +368,12 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
          * @throws IllegalStateException if called when there is no last element
          */
         public void remove() {
-            if (knownMod != getModCount())
+            if (knownMod != getModCount()) {
                 throw new ConcurrentModificationException();
-            if (last == null)
+            }
+            if (last == null) {
                 throw new IllegalStateException();
+            }
             HashMap.this.remove(last.getKeyField());
             $ASSIGN$last(null);
             $ASSIGN$SPECIAL$knownMod(11, knownMod);
@@ -612,13 +619,16 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
      * ! (loadFactor &gt; 0.0)
      */
     public HashMap(int initialCapacity, float loadFactor) {
-        if (initialCapacity < 0)
+        if (initialCapacity < 0) {
             throw new IllegalArgumentException("Illegal Capacity: "
                     + initialCapacity);
-        if (!(loadFactor > 0))
+        }
+        if (!(loadFactor > 0)) {
             throw new IllegalArgumentException("Illegal Load: " + loadFactor);
-        if (initialCapacity == 0)
+        }
+        if (initialCapacity == 0) {
             initialCapacity = 1;
+        }
         setBuckets(new HashEntry[initialCapacity]);
         this.loadFactor = loadFactor;
         $ASSIGN$threshold((int) (initialCapacity * loadFactor));
@@ -654,8 +664,9 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
         int idx = hash(key);
         HashEntry e = getBuckets()[idx];
         while (e != null) {
-            if (equals(key, e.getKeyField()))
+            if (equals(key, e.getKeyField())) {
                 return e.getValueField();
+            }
             e = e.getNext();
         }
         return null;
@@ -672,8 +683,9 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
         int idx = hash(key);
         HashEntry e = getBuckets()[idx];
         while (e != null) {
-            if (equals(key, e.getKeyField()))
+            if (equals(key, e.getKeyField())) {
                 return true;
+            }
             e = e.getNext();
         }
         return false;
@@ -700,8 +712,9 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
                 Object r = e.getValueField();
                 e.setValueField(value);
                 return r;
-            } else
+            } else {
                 e = e.getNext();
+            }
         }
         setModCount(getModCount() + 1);
         if (setSize(getSize() + 1) > threshold) {
@@ -725,8 +738,9 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
             if (e instanceof AbstractMap.BasicMapEntry) {
                 AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry) e;
                 put(entry.getKeyField(), entry.getValueField());
-            } else
+            } else {
                 put(e.getKey(), e.getValue());
+            }
         }
     }
 
@@ -746,10 +760,11 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
         while (e != null) {
             if (equals(key, e.getKeyField())) {
                 setModCount(getModCount() + 1);
-                if (last == null)
+                if (last == null) {
                     getBuckets()[idx] = e.getNext();
-                else
+                } else {
                     last.setNext(e.getNext());
+                }
                 setSize(getSize() - 1);
                 return e.cleanup();
             }
@@ -781,8 +796,9 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
         for (int i = getBuckets().length - 1; i >= 0; i--) {
             HashEntry e = getBuckets()[i];
             while (e != null) {
-                if (equals(value, e.getValueField()))
+                if (equals(value, e.getValueField())) {
                     return true;
+                }
                 e = e.getNext();
             }
         }
@@ -815,7 +831,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
      * @see #entrySet()
      */
     public Set keySet() {
-        if (getKeys() == null)
+        if (getKeys() == null) {
             setKeys(new AbstractSet() {
                 public int size() {
                     return getSize();
@@ -897,6 +913,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
                 }
 
             });
+        }
         return getKeys();
     }
 
@@ -910,7 +927,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
      * @see #entrySet()
      */
     public Collection values() {
-        if (getValues() == null)
+        if (getValues() == null) {
             setValues(new AbstractCollection() {
                 public int size() {
                     return getSize();
@@ -982,6 +999,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
                 }
 
             });
+        }
         return getValues();
     }
 
@@ -997,7 +1015,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
      * @see Map.Entry
      */
     public Set entrySet() {
-        if (entries == null)
+        if (entries == null) {
             $ASSIGN$entries(new AbstractSet() {
                 public int size() {
                     return getSize();
@@ -1082,6 +1100,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
                 }
 
             });
+        }
         return entries;
     }
 
@@ -1108,15 +1127,17 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
      * @see #entrySet()
      */
     final HashEntry getEntry(Object o) {
-        if (!(o instanceof Map.Entry))
+        if (!(o instanceof Map.Entry)) {
             return null;
+        }
         Map.Entry me = (Map.Entry) o;
         Object key = me.getKey();
         int idx = hash(key);
         HashEntry e = getBuckets()[idx];
         while (e != null) {
-            if (equals(e.getKeyField(), key))
+            if (equals(e.getKeyField(), key)) {
                 return equals(e.getValueField(), me.getValue()) ? e : null;
+            }
             e = e.getNext();
         }
         return null;

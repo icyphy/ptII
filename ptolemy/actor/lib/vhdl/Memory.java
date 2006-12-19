@@ -168,7 +168,7 @@ public class Memory extends SynchronousFixTransformer {
 
             Token result = _storage[addressValue];
             if (result == null) {
-                result = FixToken.NIL;
+                result = Token.NIL;
             }
 
             sendOutput(output, 0, result);

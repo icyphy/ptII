@@ -140,8 +140,9 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = c.iterator();
         boolean modified = false;
         int pos = c.size();
-        while (--pos >= 0)
+        while (--pos >= 0) {
             modified |= add(itr.next());
+        }
         return modified;
     }
 
@@ -178,9 +179,11 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public boolean contains(Object o) {
         Iterator itr = iterator();
         int pos = size();
-        while (--pos >= 0)
-            if (equals(o, itr.next()))
+        while (--pos >= 0) {
+            if (equals(o, itr.next())) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -198,9 +201,11 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public boolean containsAll(Collection c) {
         Iterator itr = c.iterator();
         int pos = c.size();
-        while (--pos >= 0)
-            if (!contains(itr.next()))
+        while (--pos >= 0) {
+            if (!contains(itr.next())) {
                 return false;
+            }
+        }
         return true;
     }
 
@@ -235,11 +240,12 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public boolean remove(Object o) {
         Iterator itr = iterator();
         int pos = size();
-        while (--pos >= 0)
+        while (--pos >= 0) {
             if (equals(o, itr.next())) {
                 itr.remove();
                 return true;
             }
+        }
         return false;
     }
 
@@ -281,11 +287,12 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = iterator();
         boolean modified = false;
         int pos = size();
-        while (--pos >= 0)
+        while (--pos >= 0) {
             if (c.contains(itr.next())) {
                 itr.remove();
                 modified = true;
             }
+        }
         return modified;
     }
 
@@ -328,11 +335,12 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = iterator();
         boolean modified = false;
         int pos = size();
-        while (--pos >= 0)
+        while (--pos >= 0) {
             if (!c.contains(itr.next())) {
                 itr.remove();
                 modified = true;
             }
+        }
         return modified;
     }
 
@@ -348,8 +356,9 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = iterator();
         int size = size();
         Object[] a = new Object[size];
-        for (int pos = 0; pos < size; pos++)
+        for (int pos = 0; pos < size; pos++) {
             a[pos] = itr.next();
+        }
         return a;
     }
 
@@ -376,14 +385,16 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      */
     public Object[] toArray(Object[] a) {
         int size = size();
-        if (a.length < size)
+        if (a.length < size) {
             a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
                     size);
-        else if (a.length > size)
+        } else if (a.length > size) {
             a[size] = null;
+        }
         Iterator itr = iterator();
-        for (int pos = 0; pos < size; pos++)
+        for (int pos = 0; pos < size; pos++) {
             a[pos] = itr.next();
+        }
         return a;
     }
 
@@ -403,13 +414,15 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         boolean hasNext = itr.hasNext();
         while (hasNext) {
             Object o = itr.next();
-            if (o == this)
+            if (o == this) {
                 r.append("<this>");
-            else
+            } else {
                 r.append(o);
+            }
             hasNext = itr.hasNext();
-            if (hasNext)
+            if (hasNext) {
                 r.append(", ");
+            }
         }
         r.append("]");
         return r.toString();

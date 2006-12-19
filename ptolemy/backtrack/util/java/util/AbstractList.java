@@ -147,8 +147,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
          */
         // This can be inlined. Package visible, for use by iterator.
         void checkMod() {
-            if (getModCount() != backingList.getModCount())
+            if (getModCount() != backingList.getModCount()) {
                 throw new ConcurrentModificationException();
+            }
         }
 
         /**         
@@ -159,9 +160,10 @@ public abstract class AbstractList extends AbstractCollection implements List,
          */
         // This will get inlined, since it is private.
         private void checkBoundsInclusive(int index) {
-            if (index < 0 || index > getSize())
+            if (index < 0 || index > getSize()) {
                 throw new IndexOutOfBoundsException("Index: " + index
                         + ", Size:" + getSize());
+            }
         }
 
         /**         
@@ -172,9 +174,10 @@ public abstract class AbstractList extends AbstractCollection implements List,
          */
         // This will get inlined, since it is private.
         private void checkBoundsExclusive(int index) {
-            if (index < 0 || index >= getSize())
+            if (index < 0 || index >= getSize()) {
                 throw new IndexOutOfBoundsException("Index: " + index
                         + ", Size:" + getSize());
+            }
         }
 
         /**         
@@ -381,8 +384,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
                  * list has been modified elsewhere.
                  */
                 public Object next() {
-                    if (position == getSize())
+                    if (position == getSize()) {
                         throw new NoSuchElementException();
+                    }
                     $ASSIGN$SPECIAL$position(11, position);
                     return i.next();
                 }
@@ -396,8 +400,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
                  * list has been modified elsewhere.
                  */
                 public Object previous() {
-                    if (position == 0)
+                    if (position == 0) {
                         throw new NoSuchElementException();
+                    }
                     $ASSIGN$SPECIAL$position(12, position);
                     return i.previous();
                 }
@@ -769,8 +774,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
     public boolean addAll(int index, Collection c) {
         Iterator itr = c.iterator();
         int size = c.size();
-        for (int pos = size; pos > 0; pos--)
+        for (int pos = size; pos > 0; pos--) {
             add(index++, itr.next());
+        }
         return size > 0;
     }
 
@@ -806,18 +812,23 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * @see #hashCode()
      */
     public boolean equals(Object o) {
-        if (o == this)
+        if (o == this) {
             return true;
-        if (!(o instanceof List))
+        }
+        if (!(o instanceof List)) {
             return false;
+        }
         int size = size();
-        if (size != ((List) o).size())
+        if (size != ((List) o).size()) {
             return false;
+        }
         Iterator itr1 = iterator();
         Iterator itr2 = ((List) o).iterator();
-        while (--size >= 0)
-            if (!equals(itr1.next(), itr2.next()))
+        while (--size >= 0) {
+            if (!equals(itr1.next(), itr2.next())) {
                 return false;
+            }
+        }
         return true;
     }
 
@@ -841,8 +852,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
         int hashCode = 1;
         Iterator itr = iterator();
         int pos = size();
-        while (--pos >= 0)
+        while (--pos >= 0) {
             hashCode = 31 * hashCode + hashCode(itr.next());
+        }
         return hashCode;
     }
 
@@ -857,9 +869,11 @@ public abstract class AbstractList extends AbstractCollection implements List,
     public int indexOf(Object o) {
         ListIterator itr = listIterator();
         int size = size();
-        for (int pos = 0; pos < size; pos++)
-            if (equals(o, itr.next()))
+        for (int pos = 0; pos < size; pos++) {
+            if (equals(o, itr.next())) {
                 return pos;
+            }
+        }
         return -1;
     }
 
@@ -891,8 +905,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
              * list has been modified elsewhere.
              */
             private void checkMod() {
-                if (knownMod != getModCount())
+                if (knownMod != getModCount()) {
                     throw new ConcurrentModificationException();
+                }
             }
 
             /**             
@@ -915,8 +930,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
              */
             public Object next() {
                 checkMod();
-                if (pos == size)
+                if (pos == size) {
                     throw new NoSuchElementException();
+                }
                 $ASSIGN$last(pos);
                 return get($ASSIGN$SPECIAL$pos(11, pos));
             }
@@ -934,8 +950,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
              */
             public void remove() {
                 checkMod();
-                if (last < 0)
+                if (last < 0) {
                     throw new IllegalStateException();
+                }
                 AbstractList.this.remove(last);
                 $ASSIGN$SPECIAL$pos(12, pos);
                 $ASSIGN$SPECIAL$size(12, size);
@@ -1125,9 +1142,11 @@ public abstract class AbstractList extends AbstractCollection implements List,
     public int lastIndexOf(Object o) {
         int pos = size();
         ListIterator itr = listIterator(pos);
-        while (--pos >= 0)
-            if (equals(o, itr.previous()))
+        while (--pos >= 0) {
+            if (equals(o, itr.previous())) {
                 return pos;
+            }
+        }
         return -1;
     }
 
@@ -1158,9 +1177,10 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * @see #modCount
      */
     public ListIterator listIterator(final int index) {
-        if (index < 0 || index > size())
+        if (index < 0 || index > size()) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
                     + size());
+        }
         return new ListIterator() {
             private int knownMod = getModCount();
 
@@ -1177,8 +1197,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
              * list has been modified elsewhere.
              */
             private void checkMod() {
-                if (knownMod != getModCount())
+                if (knownMod != getModCount()) {
                     throw new ConcurrentModificationException();
+                }
             }
 
             /**             
@@ -1211,8 +1232,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
              */
             public Object next() {
                 checkMod();
-                if (position == size)
+                if (position == size) {
                     throw new NoSuchElementException();
+                }
                 $ASSIGN$lastReturned(position);
                 return get($ASSIGN$SPECIAL$position(11, position));
             }
@@ -1227,8 +1249,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
              */
             public Object previous() {
                 checkMod();
-                if (position == 0)
+                if (position == 0) {
                     throw new NoSuchElementException();
+                }
                 $ASSIGN$lastReturned($ASSIGN$SPECIAL$position(14, position));
                 return get(lastReturned);
             }
@@ -1265,8 +1288,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
              */
             public void remove() {
                 checkMod();
-                if (lastReturned < 0)
+                if (lastReturned < 0) {
                     throw new IllegalStateException();
+                }
                 AbstractList.this.remove(lastReturned);
                 $ASSIGN$SPECIAL$size(12, size);
                 $ASSIGN$position(lastReturned);
@@ -1293,8 +1317,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
              */
             public void set(Object o) {
                 checkMod();
-                if (lastReturned < 0)
+                if (lastReturned < 0) {
                     throw new IllegalStateException();
+                }
                 AbstractList.this.set(lastReturned, o);
             }
 
@@ -1606,12 +1631,15 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * @see RandomAccess
      */
     public List subList(int fromIndex, int toIndex) {
-        if (fromIndex > toIndex)
+        if (fromIndex > toIndex) {
             throw new IllegalArgumentException(fromIndex + " > " + toIndex);
-        if (fromIndex < 0 || toIndex > size())
+        }
+        if (fromIndex < 0 || toIndex > size()) {
             throw new IndexOutOfBoundsException();
-        if (this instanceof RandomAccess)
+        }
+        if (this instanceof RandomAccess) {
             return new RandomAccessSubList(this, fromIndex, toIndex);
+        }
         return new SubList(this, fromIndex, toIndex);
     }
 

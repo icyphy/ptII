@@ -30,21 +30,15 @@
 package ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib;
 
 import java.lang.Object;
-import java.util.LinkedList;
-import java.util.List;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
-import ptolemy.backtrack.automatic.ptolemy.actor.lib.Pulse;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.lib.SDFTransformer;
-import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;

@@ -176,8 +176,9 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         boolean result = false;
         int pos = c.size();
         Iterator itr = c.iterator();
-        while (--pos >= 0)
+        while (--pos >= 0) {
             result |= (map.put(itr.next(), "") == null);
+        }
         return result;
     }
 
@@ -350,8 +351,9 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         int pos = map.size();
         s.writeObject(map.comparator());
         s.writeInt(pos);
-        while (--pos >= 0)
+        while (--pos >= 0) {
             s.writeObject(itr.next());
+        }
     }
 
     /**     

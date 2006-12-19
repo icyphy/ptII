@@ -243,9 +243,10 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                  */
                 private void checkMod() {
                     cleanQueue();
-                    if (getKnownMod() != getModCount())
+                    if (getKnownMod() != getModCount()) {
                         throw new ConcurrentModificationException(getKnownMod()
                                 + " != " + getModCount());
+                    }
                 }
 
                 /**                 
@@ -269,13 +270,15 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                     while (true) {
                         while (nextBucket != null) {
                             WeakBucket.WeakEntry entry = nextBucket.getEntry();
-                            if (entry != null)
+                            if (entry != null) {
                                 return entry;
+                            }
                             nextBucket = nextBucket.getNext();
                         }
                         slot++;
-                        if (slot == getBuckets().length)
+                        if (slot == getBuckets().length) {
                             return null;
+                        }
                         nextBucket = getBuckets()[slot];
                     }
                 }
@@ -297,8 +300,9 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                  */
                 public Object next() {
                     checkMod();
-                    if (getNextEntry() == null)
+                    if (getNextEntry() == null) {
                         throw new NoSuchElementException();
+                    }
                     setLastEntry(getNextEntry());
                     setNextEntry(findNext(getLastEntry()));
                     return getLastEntry();
@@ -314,8 +318,9 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                  */
                 public void remove() {
                     checkMod();
-                    if (getLastEntry() == null)
+                    if (getLastEntry() == null) {
                         throw new IllegalStateException();
+                    }
                     setModCount(getModCount() + 1);
                     internalRemove(getLastEntry().getBucket());
                     setLastEntry(null);
@@ -573,7 +578,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
              */
             public int hashCode() {
                 return getKeyField().hashCode()
-                        ^ WeakHashMap.hashCode(getValue());
+                        ^ AbstractMap.hashCode(getValue());
             }
 
             /**             
@@ -584,8 +589,8 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
             public boolean equals(Object o) {
                 if (o instanceof Map.Entry) {
                     Map.Entry e = (Map.Entry) o;
-                    return WeakHashMap.equals(getKey(), e.getKey())
-                            && WeakHashMap.equals(getValue(), e.getValue());
+                    return AbstractMap.equals(getKey(), e.getKey())
+                            && AbstractMap.equals(getValue(), e.getValue());
                 }
                 return false;
             }
@@ -675,8 +680,9 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
          */
         WeakEntry getEntry() {
             final Object key = this.get();
-            if (key == null)
+            if (key == null) {
                 return null;
+            }
             return new WeakEntry(key);
         }
 
@@ -806,10 +812,12 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
      */
     public WeakHashMap(int initialCapacity, float loadFactor) {
         // Check loadFactor for NaN as well.
-        if (initialCapacity < 0 || !(loadFactor > 0))
+        if (initialCapacity < 0 || !(loadFactor > 0)) {
             throw new IllegalArgumentException();
-        if (initialCapacity == 0)
+        }
+        if (initialCapacity == 0) {
             initialCapacity = 1;
+        }
         this.$ASSIGN$loadFactor(loadFactor);
         $ASSIGN$threshold((int) (initialCapacity * loadFactor));
         theEntrySet = new WeakEntrySet();
@@ -899,14 +907,16 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
      * @return The WeakBucket.WeakEntry or null, if the key wasn't found.
      */
     private WeakBucket.WeakEntry internalGet(Object key) {
-        if (key == null)
+        if (key == null) {
             key = NULL_KEY;
+        }
         int slot = hash(key);
         WeakBucket bucket = getBuckets()[slot];
         while (bucket != null) {
             WeakBucket.WeakEntry entry = bucket.getEntry();
-            if (entry != null && equals(key, entry.getKeyField()))
+            if (entry != null && equals(key, entry.getKeyField())) {
                 return entry;
+            }
             bucket = bucket.getNext();
         }
         return null;
@@ -918,8 +928,9 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
      * @param value the value.
      */
     private void internalAdd(Object key, Object value) {
-        if (key == null)
+        if (key == null) {
             key = NULL_KEY;
+        }
         int slot = hash(key);
         WeakBucket bucket = new WeakBucket(key, queue, value, slot);
         bucket.setNext(getBuckets()[slot]);
@@ -935,25 +946,28 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
      */
     void internalRemove(WeakBucket bucket) {
         int slot = bucket.getSlot();
-        if (slot == -1)
+        if (slot == -1) {
             // This bucket was already removed.
             // Mark the bucket as removed.  This is necessary, since the
             // bucket may be enqueued later by the garbage collection, and
             // internalRemove will be called a second time.
             return;
+        }
         bucket.setSlot(-1);
         WeakBucket prev = null;
         WeakBucket next = getBuckets()[slot];
         while (next != bucket) {
-            if (next == null)
+            if (next == null) {
                 throw new InternalError("WeakHashMap in incosistent state");
+            }
             prev = next;
             next = prev.getNext();
         }
-        if (prev == null)
+        if (prev == null) {
             getBuckets()[slot] = bucket.getNext();
-        else
+        } else {
             prev.setNext(bucket.getNext());
+        }
         setSize(getSize() - 1);
     }
 
@@ -1012,11 +1026,13 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
     public Object put(Object key, Object value) {
         cleanQueue();
         WeakBucket.WeakEntry entry = internalGet(key);
-        if (entry != null)
+        if (entry != null) {
             return entry.setValue(value);
+        }
         setModCount(getModCount() + 1);
-        if (getSize() >= threshold)
+        if (getSize() >= threshold) {
             rehash();
+        }
         internalAdd(key, value);
         return null;
     }
@@ -1031,8 +1047,9 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
     public Object remove(Object key) {
         cleanQueue();
         WeakBucket.WeakEntry entry = internalGet(key);
-        if (entry == null)
+        if (entry == null) {
             return null;
+        }
         setModCount(getModCount() + 1);
         internalRemove(entry.getBucket());
         return entry.getValue();

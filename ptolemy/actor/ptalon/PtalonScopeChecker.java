@@ -69,8 +69,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         PtalonAST f = null;
         PtalonAST f_AST = null;
 
-        if (_t == null)
+        if (_t == null) {
             _t = ASTNULL;
+        }
         switch (_t.getType()) {
         case PORT: {
             AST __t353 = _t;
@@ -85,8 +86,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             match(_t, PORT);
             _t = _t.getFirstChild();
             {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case ID: {
                     a = (PtalonAST) _t;
@@ -155,8 +157,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             match(_t, INPORT);
             _t = _t.getFirstChild();
             {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case ID: {
                     b = (PtalonAST) _t;
@@ -225,8 +228,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             match(_t, OUTPORT);
             _t = _t.getFirstChild();
             {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case ID: {
                     c = (PtalonAST) _t;
@@ -295,8 +299,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             match(_t, MULTIPORT);
             _t = _t.getFirstChild();
             {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case ID: {
                     d = (PtalonAST) _t;
@@ -365,8 +370,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             match(_t, MULTIINPORT);
             _t = _t.getFirstChild();
             {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case ID: {
                     e = (PtalonAST) _t;
@@ -435,8 +441,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             match(_t, MULTIOUTPORT);
             _t = _t.getFirstChild();
             {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case ID: {
                     f = (PtalonAST) _t;
@@ -513,8 +520,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         PtalonAST b = null;
         PtalonAST b_AST = null;
 
-        if (_t == null)
+        if (_t == null) {
             _t = ASTNULL;
+        }
         switch (_t.getType()) {
         case PARAMETER: {
             AST __t372 = _t;
@@ -529,8 +537,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             match(_t, PARAMETER);
             _t = _t.getFirstChild();
             {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case ID: {
                     a = (PtalonAST) _t;
@@ -634,8 +643,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         PtalonAST b = null;
         PtalonAST b_AST = null;
 
-        if (_t == null)
+        if (_t == null) {
             _t = ASTNULL;
+        }
         switch (_t.getType()) {
         case PARAM_EQUALS: {
             AST __t377 = _t;
@@ -661,8 +671,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             match(_t, PARAMETER);
             _t = _t.getFirstChild();
             {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case ID: {
                     a = (PtalonAST) _t;
@@ -807,8 +818,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         match(_t, RELATION);
         _t = _t.getFirstChild();
         {
-            if (_t == null)
+            if (_t == null) {
                 _t = ASTNULL;
+            }
             switch (_t.getType()) {
             case ID: {
                 a = (PtalonAST) _t;
@@ -889,8 +901,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         match(_t, TRANSPARENT);
         _t = _t.getFirstChild();
         {
-            if (_t == null)
+            if (_t == null) {
                 _t = ASTNULL;
+            }
             switch (_t.getType()) {
             case ID: {
                 a = (PtalonAST) _t;
@@ -984,8 +997,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         match(_t, ASSIGN);
         _t = _t.getFirstChild();
         {
-            if (_t == null)
+            if (_t == null) {
                 _t = ASTNULL;
+            }
             switch (_t.getType()) {
             case ID: {
                 a = (PtalonAST) _t;
@@ -1035,14 +1049,16 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             }
         }
         {
-            if (_t == null)
+            if (_t == null) {
                 _t = ASTNULL;
+            }
             switch (_t.getType()) {
             case ID:
             case DYNAMIC_NAME: {
                 {
-                    if (_t == null)
+                    if (_t == null) {
                         _t = ASTNULL;
+                    }
                     switch (_t.getType()) {
                     case ID: {
                         b = (PtalonAST) _t;
@@ -1163,8 +1179,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
 
         {
             _loop405: do {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 if ((_t.getType() == ASSIGN)) {
                     b = _t == ASTNULL ? null : (PtalonAST) _t;
                     assignment(_t);
@@ -1218,8 +1235,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
 
         {
             _loop401: do {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 if ((_t.getType() == ASSIGN)) {
                     b = _t == ASTNULL ? null : (PtalonAST) _t;
                     assignment(_t);
@@ -1255,8 +1273,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         PtalonAST atomic_statement_AST = null;
 
         {
-            if (_t == null)
+            if (_t == null) {
                 _t = ASTNULL;
+            }
             switch (_t.getType()) {
             case PORT:
             case INPORT:
@@ -1357,8 +1376,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
 
         {
             _loop412: do {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case PORT:
                 case INPORT:
@@ -1415,8 +1435,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
 
         {
             _loop415: do {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case PORT:
                 case INPORT:
@@ -1562,8 +1583,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
 
         {
             _loop422: do {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case PORT:
                 case INPORT:
@@ -1664,8 +1686,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         info.setDanglingPortsOkay(true);
 
         {
-            if (_t == null)
+            if (_t == null) {
                 _t = ASTNULL;
+            }
             switch (_t.getType()) {
             case DANGLING_PORTS_OKAY: {
                 PtalonAST tmp59_AST = null;
@@ -1702,8 +1725,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             }
         }
         {
-            if (_t == null)
+            if (_t == null) {
                 _t = ASTNULL;
+            }
             switch (_t.getType()) {
             case ATTACH_DANGLING_PORTS: {
                 PtalonAST tmp60_AST = null;
@@ -1743,8 +1767,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         }
         {
             _loop429: do {
-                if (_t == null)
+                if (_t == null) {
                     _t = ASTNULL;
+                }
                 switch (_t.getType()) {
                 case PORT:
                 case INPORT:

@@ -26,7 +26,7 @@ public class RunMultipleModels {
                         Workspace workspace = new Workspace("Workspace"
                                 + threadName);
                         MoMLParser parser = new MoMLParser(workspace);
-                        parser.purgeModelRecord(url);
+                        MoMLParser.purgeModelRecord(url);
                         NamedObj model = parser.parse(null, url);
 
                         Manager manager = new Manager(workspace, "Manager"
@@ -85,7 +85,7 @@ public class RunMultipleModels {
                     .getResource("RunMultipleModelsModel.xml");
             Workspace workspace = new Workspace("Workspace" + i);
             MoMLParser parser = new MoMLParser(workspace);
-            parser.purgeModelRecord(url);
+            MoMLParser.purgeModelRecord(url);
             NamedObj model = parser.parse(null, url);
 
             Manager manager = new Manager(workspace, "Manager" + i);

@@ -144,7 +144,7 @@ public class ROM extends SynchronousFixTransformer {
                     .getElement(addressValue)).intValue());
             Token result = new FixToken(value);
             if (result == null) {
-                result = FixToken.NIL;
+                result = Token.NIL;
             }
 
             sendOutput(output, 0, result);

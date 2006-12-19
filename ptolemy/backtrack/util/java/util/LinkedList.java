@@ -302,8 +302,9 @@ public class LinkedList extends AbstractSequentialList implements List,
          * @throws ConcurrentModificationException if the list was modified
          */
         private void checkMod() {
-            if (knownMod != getModCount())
+            if (knownMod != getModCount()) {
                 throw new ConcurrentModificationException();
+            }
         }
 
         /**         
@@ -346,8 +347,9 @@ public class LinkedList extends AbstractSequentialList implements List,
          */
         public Object next() {
             checkMod();
-            if (next == null)
+            if (next == null) {
                 throw new NoSuchElementException();
+            }
             $ASSIGN$SPECIAL$position(11, position);
             $ASSIGN$lastReturned($ASSIGN$previous(next));
             $ASSIGN$next(lastReturned.getNext());
@@ -362,8 +364,9 @@ public class LinkedList extends AbstractSequentialList implements List,
          */
         public Object previous() {
             checkMod();
-            if (previous == null)
+            if (previous == null) {
                 throw new NoSuchElementException();
+            }
             $ASSIGN$SPECIAL$position(12, position);
             $ASSIGN$lastReturned($ASSIGN$next(previous));
             $ASSIGN$previous(lastReturned.getPrevious());
@@ -377,12 +380,14 @@ public class LinkedList extends AbstractSequentialList implements List,
          */
         public void remove() {
             checkMod();
-            if (lastReturned == null)
+            if (lastReturned == null) {
                 throw new IllegalStateException();
+            }
             // Adjust the position to before the removed element, if the element
             // being removed is behind the cursor.
-            if (lastReturned == previous)
+            if (lastReturned == previous) {
                 $ASSIGN$SPECIAL$position(12, position);
+            }
             $ASSIGN$next(lastReturned.getNext());
             $ASSIGN$previous(lastReturned.getPrevious());
             removeEntry(lastReturned);
@@ -404,14 +409,16 @@ public class LinkedList extends AbstractSequentialList implements List,
             Entry e = new Entry(o);
             e.setPrevious(previous);
             e.setNext(next);
-            if (previous != null)
+            if (previous != null) {
                 previous.setNext(e);
-            else
+            } else {
                 setFirstField(e);
-            if (next != null)
+            }
+            if (next != null) {
                 next.setPrevious(e);
-            else
+            } else {
                 setLastField(e);
+            }
             $ASSIGN$previous(e);
             $ASSIGN$lastReturned(null);
         }
@@ -424,8 +431,9 @@ public class LinkedList extends AbstractSequentialList implements List,
          */
         public void set(Object o) {
             checkMod();
-            if (lastReturned == null)
+            if (lastReturned == null) {
                 throw new IllegalStateException();
+            }
             lastReturned.setData(o);
         }
 
@@ -626,12 +634,14 @@ public class LinkedList extends AbstractSequentialList implements List,
         Entry e;
         if (n < getSize() / 2) {
             e = getFirstField();
-            while (n-- > 0)
+            while (n-- > 0) {
                 e = e.getNext();
+            }
         } else {
             e = getLastField();
-            while (++n < getSize())
+            while (++n < getSize()) {
                 e = e.getPrevious();
+            }
         }
         return e;
     }
@@ -644,9 +654,9 @@ public class LinkedList extends AbstractSequentialList implements List,
     void removeEntry(Entry e) {
         setModCount(getModCount() + 1);
         setSize(getSize() - 1);
-        if (getSize() == 0)
+        if (getSize() == 0) {
             setFirstField(setLastField(null));
-        else {
+        } else {
             if (e == getFirstField()) {
                 setFirstField(e.getNext());
                 e.getNext().setPrevious(null);
@@ -666,9 +676,10 @@ public class LinkedList extends AbstractSequentialList implements List,
      * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size
      */
     private void checkBoundsInclusive(int index) {
-        if (index < 0 || index > getSize())
+        if (index < 0 || index > getSize()) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
                     + getSize());
+        }
     }
 
     /**     
@@ -677,9 +688,10 @@ public class LinkedList extends AbstractSequentialList implements List,
      * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size
      */
     private void checkBoundsExclusive(int index) {
-        if (index < 0 || index >= getSize())
+        if (index < 0 || index >= getSize()) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
                     + getSize());
+        }
     }
 
     /**     
@@ -704,8 +716,9 @@ public class LinkedList extends AbstractSequentialList implements List,
      * @throws NoSuchElementException if the list is empty
      */
     public Object getFirst() {
-        if (getSize() == 0)
+        if (getSize() == 0) {
             throw new NoSuchElementException();
+        }
         return getFirstField().getData();
     }
 
@@ -715,8 +728,9 @@ public class LinkedList extends AbstractSequentialList implements List,
      * @throws NoSuchElementException if the list is empty
      */
     public Object getLast() {
-        if (getSize() == 0)
+        if (getSize() == 0) {
             throw new NoSuchElementException();
+        }
         return getLastField().getData();
     }
 
@@ -726,15 +740,17 @@ public class LinkedList extends AbstractSequentialList implements List,
      * @throws NoSuchElementException if the list is empty
      */
     public Object removeFirst() {
-        if (getSize() == 0)
+        if (getSize() == 0) {
             throw new NoSuchElementException();
+        }
         setModCount(getModCount() + 1);
         setSize(getSize() - 1);
         Object r = getFirstField().getData();
-        if (getFirstField().getNext() != null)
+        if (getFirstField().getNext() != null) {
             getFirstField().getNext().setPrevious(null);
-        else
+        } else {
             setLastField(null);
+        }
         setFirstField(getFirstField().getNext());
         return r;
     }
@@ -745,15 +761,17 @@ public class LinkedList extends AbstractSequentialList implements List,
      * @throws NoSuchElementException if the list is empty
      */
     public Object removeLast() {
-        if (getSize() == 0)
+        if (getSize() == 0) {
             throw new NoSuchElementException();
+        }
         setModCount(getModCount() + 1);
         setSize(getSize() - 1);
         Object r = getLastField().getData();
-        if (getLastField().getPrevious() != null)
+        if (getLastField().getPrevious() != null) {
             getLastField().getPrevious().setNext(null);
-        else
+        } else {
             setFirstField(null);
+        }
         setLastField(getLastField().getPrevious());
         return r;
     }
@@ -765,9 +783,9 @@ public class LinkedList extends AbstractSequentialList implements List,
     public void addFirst(Object o) {
         Entry e = new Entry(o);
         setModCount(getModCount() + 1);
-        if (getSize() == 0)
+        if (getSize() == 0) {
             setFirstField(setLastField(e));
-        else {
+        } else {
             e.setNext(getFirstField());
             getFirstField().setPrevious(e);
             setFirstField(e);
@@ -789,9 +807,9 @@ public class LinkedList extends AbstractSequentialList implements List,
      */
     private void addLastEntry(Entry e) {
         setModCount(getModCount() + 1);
-        if (getSize() == 0)
+        if (getSize() == 0) {
             setFirstField(setLastField(e));
-        else {
+        } else {
             e.setPrevious(getLastField());
             getLastField().setNext(e);
             setLastField(e);
@@ -808,8 +826,9 @@ public class LinkedList extends AbstractSequentialList implements List,
     public boolean contains(Object o) {
         Entry e = getFirstField();
         while (e != null) {
-            if (equals(o, e.getData()))
+            if (equals(o, e.getData())) {
                 return true;
+            }
             e = e.getNext();
         }
         return false;
@@ -875,16 +894,18 @@ public class LinkedList extends AbstractSequentialList implements List,
     public boolean addAll(int index, Collection c) {
         checkBoundsInclusive(index);
         int csize = c.size();
-        if (csize == 0)
+        if (csize == 0) {
             return false;
+        }
         Iterator itr = c.iterator();
         Entry after = null;
         Entry before = null;
         if (index != getSize()) {
             after = getEntry(index);
             before = after.getPrevious();
-        } else
+        } else {
             before = getLastField();
+        }
         Entry e = new Entry(itr.next());
         e.setPrevious(before);
         Entry prev = e;
@@ -898,14 +919,16 @@ public class LinkedList extends AbstractSequentialList implements List,
         setModCount(getModCount() + 1);
         setSize(getSize() + csize);
         prev.setNext(after);
-        if (after != null)
+        if (after != null) {
             after.setPrevious(e);
-        else
+        } else {
             setLastField(e);
-        if (before != null)
+        }
+        if (before != null) {
             before.setNext(firstNew);
-        else
+        } else {
             setFirstField(firstNew);
+        }
         return true;
     }
 
@@ -961,14 +984,16 @@ public class LinkedList extends AbstractSequentialList implements List,
             Entry after = getEntry(index);
             e.setNext(after);
             e.setPrevious(after.getPrevious());
-            if (after.getPrevious() == null)
+            if (after.getPrevious() == null) {
                 setFirstField(e);
-            else
+            } else {
                 after.getPrevious().setNext(e);
+            }
             after.setPrevious(e);
             setSize(getSize() + 1);
-        } else
+        } else {
             addLastEntry(e);
+        }
     }
 
     /**     
@@ -993,8 +1018,9 @@ public class LinkedList extends AbstractSequentialList implements List,
         int index = 0;
         Entry e = getFirstField();
         while (e != null) {
-            if (equals(o, e.getData()))
+            if (equals(o, e.getData())) {
                 return index;
+            }
             index++;
             e = e.getNext();
         }
@@ -1010,8 +1036,9 @@ public class LinkedList extends AbstractSequentialList implements List,
         int index = getSize() - 1;
         Entry e = getLastField();
         while (e != null) {
-            if (equals(o, e.getData()))
+            if (equals(o, e.getData())) {
                 return index;
+            }
             index--;
             e = e.getPrevious();
         }
@@ -1075,11 +1102,12 @@ public class LinkedList extends AbstractSequentialList implements List,
      * @throws NullPointerException if a is null
      */
     public Object[] toArray(Object[] a) {
-        if (a.length < getSize())
+        if (a.length < getSize()) {
             a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
                     getSize());
-        else if (a.length > getSize())
+        } else if (a.length > getSize()) {
             a[getSize()] = null;
+        }
         Entry e = getFirstField();
         for (int i = 0; i < getSize(); i++) {
             a[i] = e.getData();
@@ -1117,8 +1145,9 @@ public class LinkedList extends AbstractSequentialList implements List,
             ClassNotFoundException {
         s.defaultReadObject();
         int i = s.readInt();
-        while (--i >= 0)
+        while (--i >= 0) {
             addLastEntry(new Entry(s.readObject()));
+        }
     }
 
     void setFirstField(Entry first) {

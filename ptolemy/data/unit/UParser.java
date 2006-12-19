@@ -133,8 +133,9 @@ public class UParser implements UParserConstants {
             }
         }
         {
-            if (true)
+            if (true) {
                 return unitExpr;
+            }
         }
         throw new Error("Missing return statement in function");
     }
@@ -158,17 +159,19 @@ public class UParser implements UParserConstants {
                     unitTerm.setUnit(unit);
                 } else {
                     {
-                        if (true)
+                        if (true) {
                             throw new ParseException(
                                     unitLabel
                                             + " is a not variable and is not grounded in the Units Library");
+                        }
                     }
                 }
             } else {
                 {
-                    if (true)
+                    if (true) {
                         throw new ParseException(unitLabel
                                 + " is a not variable and is not a Unit");
+                    }
                 }
             }
 
@@ -187,17 +190,19 @@ public class UParser implements UParserConstants {
                         unitTerm.setUnit(unit);
                     } else {
                         {
-                            if (true)
+                            if (true) {
                                 throw new ParseException(
                                         unitLabel
                                                 + " is a not variable and is not grounded in the Units Library");
+                            }
                         }
                     }
                 } else {
                     {
-                        if (true)
+                        if (true) {
                             throw new ParseException(unitLabel
                                     + " is a not variable and is not a Unit");
+                        }
                     }
                 }
                 break;
@@ -222,8 +227,9 @@ public class UParser implements UParserConstants {
             }
         }
         {
-            if (true)
+            if (true) {
                 return unitTerm;
+            }
         }
         throw new Error("Missing return statement in function");
     }
@@ -243,8 +249,9 @@ public class UParser implements UParserConstants {
             throw new ParseException();
         }
         {
-            if (true)
+            if (true) {
                 return retv;
+            }
         }
         throw new Error("Missing return statement in function");
     }
@@ -267,8 +274,9 @@ public class UParser implements UParserConstants {
         }
         l.add(node);
         {
-            if (true)
+            if (true) {
                 return l;
+            }
         }
         throw new Error("Missing return statement in function");
     }
@@ -293,8 +301,9 @@ public class UParser implements UParserConstants {
         rhs = uExpr();
         uEquation = new UnitEquation(lhs, rhs);
         {
-            if (true)
+            if (true) {
                 return uEquation;
+            }
         }
         throw new Error("Missing return statement in function");
     }
@@ -307,8 +316,9 @@ public class UParser implements UParserConstants {
             x = jj_consume_token(INTEGER);
             retv = Integer.parseInt(x.image);
             {
-                if (true)
+                if (true) {
                     return retv;
+                }
             }
             break;
         case MINUS:
@@ -316,8 +326,9 @@ public class UParser implements UParserConstants {
             x = jj_consume_token(INTEGER);
             retv = -Integer.parseInt(x.image);
             {
-                if (true)
+                if (true) {
                     return retv;
+                }
             }
             break;
         default:
@@ -346,14 +357,16 @@ public class UParser implements UParserConstants {
                 }
             } catch (NumberFormatException ee) {
                 {
-                    if (true)
+                    if (true) {
                         throw new ParseException("Unable to convert token "
                                 + token.image + " to an float or double");
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     return value.doubleValue();
+                }
             }
             break;
         case INTEGER:
@@ -394,29 +407,33 @@ public class UParser implements UParserConstants {
                 if (mustBeLong) {
                     // If the size was specified as long, then create a long.
                     {
-                        if (true)
+                        if (true) {
                             return Long.parseLong(x, radix);
+                        }
                     }
                 } else {
                     // Try to infer the size.  Inferred sizes are at least
                     // integer.
                     try {
                         {
-                            if (true)
+                            if (true) {
                                 return Integer.parseInt(x, radix);
+                            }
                         }
                     } catch (NumberFormatException nfe) {
                         {
-                            if (true)
+                            if (true) {
                                 return Double.NaN;
+                            }
                         }
                     }
                 }
             } catch (NumberFormatException ee) {
                 {
-                    if (true)
+                    if (true) {
                         throw new ParseException("Unable to convert token "
                                 + token.image + " to an integer or long");
+                    }
                 }
             }
             break;
@@ -453,8 +470,9 @@ public class UParser implements UParserConstants {
     }
 
     final private boolean jj_3R_9() {
-        if (jj_3R_11())
+        if (jj_3R_11()) {
             return true;
+        }
         return false;
     }
 
@@ -467,8 +485,9 @@ public class UParser implements UParserConstants {
                 jj_scanpos = xsp;
                 if (jj_3R_9()) {
                     jj_scanpos = xsp;
-                    if (jj_3R_10())
+                    if (jj_3R_10()) {
                         return true;
+                    }
                 }
             }
         }
@@ -476,8 +495,9 @@ public class UParser implements UParserConstants {
     }
 
     final private boolean jj_3R_13() {
-        if (jj_scan_token(INTEGER))
+        if (jj_scan_token(INTEGER)) {
             return true;
+        }
         return false;
     }
 
@@ -486,15 +506,17 @@ public class UParser implements UParserConstants {
         xsp = jj_scanpos;
         if (jj_scan_token(17)) {
             jj_scanpos = xsp;
-            if (jj_scan_token(19))
+            if (jj_scan_token(19)) {
                 return true;
+            }
         }
         return false;
     }
 
     final private boolean jj_3R_12() {
-        if (jj_scan_token(DOUBLE))
+        if (jj_scan_token(DOUBLE)) {
             return true;
+        }
         return false;
     }
 
@@ -503,55 +525,65 @@ public class UParser implements UParserConstants {
         xsp = jj_scanpos;
         if (jj_3R_12()) {
             jj_scanpos = xsp;
-            if (jj_3R_13())
+            if (jj_3R_13()) {
                 return true;
+            }
         }
         return false;
     }
 
     final private boolean jj_3R_4() {
-        if (jj_3R_5())
+        if (jj_3R_5()) {
             return true;
+        }
         return false;
     }
 
     final private boolean jj_3_2() {
-        if (jj_scan_token(SEMICOLON))
+        if (jj_scan_token(SEMICOLON)) {
             return true;
-        if (jj_3R_4())
+        }
+        if (jj_3R_4()) {
             return true;
+        }
         return false;
     }
 
     final private boolean jj_3R_6() {
-        if (jj_3R_7())
+        if (jj_3R_7()) {
             return true;
+        }
         return false;
     }
 
     final private boolean jj_3R_10() {
-        if (jj_scan_token(LPAREN))
+        if (jj_scan_token(LPAREN)) {
             return true;
+        }
         return false;
     }
 
     final private boolean jj_3R_5() {
-        if (jj_3R_6())
+        if (jj_3R_6()) {
             return true;
+        }
         return false;
     }
 
     final private boolean jj_3R_8() {
-        if (jj_3R_3())
+        if (jj_3R_3()) {
             return true;
+        }
         return false;
     }
 
     final private boolean jj_3_1() {
-        if (jj_3R_3())
+        if (jj_3R_3()) {
             return true;
-        if (jj_scan_token(POWER))
+        }
+        if (jj_scan_token(POWER)) {
             return true;
+        }
         return false;
     }
 
@@ -597,10 +629,12 @@ public class UParser implements UParserConstants {
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 7; i++) {
             jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++)
+        }
+        for (int i = 0; i < jj_2_rtns.length; i++) {
             jj_2_rtns[i] = new JJCalls();
+        }
     }
 
     public void ReInit(java.io.InputStream stream) {
@@ -609,10 +643,12 @@ public class UParser implements UParserConstants {
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 7; i++) {
             jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++)
+        }
+        for (int i = 0; i < jj_2_rtns.length; i++) {
             jj_2_rtns[i] = new JJCalls();
+        }
     }
 
     public UParser(java.io.Reader stream) {
@@ -621,10 +657,12 @@ public class UParser implements UParserConstants {
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 7; i++) {
             jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++)
+        }
+        for (int i = 0; i < jj_2_rtns.length; i++) {
             jj_2_rtns[i] = new JJCalls();
+        }
     }
 
     public void ReInit(java.io.Reader stream) {
@@ -633,10 +671,12 @@ public class UParser implements UParserConstants {
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 7; i++) {
             jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++)
+        }
+        for (int i = 0; i < jj_2_rtns.length; i++) {
             jj_2_rtns[i] = new JJCalls();
+        }
     }
 
     public UParser(UParserTokenManager tm) {
@@ -644,10 +684,12 @@ public class UParser implements UParserConstants {
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 7; i++) {
             jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++)
+        }
+        for (int i = 0; i < jj_2_rtns.length; i++) {
             jj_2_rtns[i] = new JJCalls();
+        }
     }
 
     public void ReInit(UParserTokenManager tm) {
@@ -655,18 +697,21 @@ public class UParser implements UParserConstants {
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 7; i++) {
             jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++)
+        }
+        for (int i = 0; i < jj_2_rtns.length; i++) {
             jj_2_rtns[i] = new JJCalls();
+        }
     }
 
     final private Token jj_consume_token(int kind) throws ParseException {
         Token oldToken;
-        if ((oldToken = token).next != null)
+        if ((oldToken = token).next != null) {
             token = token.next;
-        else
+        } else {
             token = token.next = token_source.getNextToken();
+        }
         jj_ntk = -1;
         if (token.kind == kind) {
             jj_gen++;
@@ -675,8 +720,9 @@ public class UParser implements UParserConstants {
                 for (int i = 0; i < jj_2_rtns.length; i++) {
                     JJCalls c = jj_2_rtns[i];
                     while (c != null) {
-                        if (c.gen < jj_gen)
+                        if (c.gen < jj_gen) {
                             c.first = null;
+                        }
                         c = c.next;
                     }
                 }
@@ -712,21 +758,25 @@ public class UParser implements UParserConstants {
                 i++;
                 tok = tok.next;
             }
-            if (tok != null)
+            if (tok != null) {
                 jj_add_error_token(kind, i);
+            }
         }
-        if (jj_scanpos.kind != kind)
+        if (jj_scanpos.kind != kind) {
             return true;
-        if (jj_la == 0 && jj_scanpos == jj_lastpos)
+        }
+        if (jj_la == 0 && jj_scanpos == jj_lastpos) {
             throw jj_ls;
+        }
         return false;
     }
 
     final public Token getNextToken() {
-        if (token.next != null)
+        if (token.next != null) {
             token = token.next;
-        else
+        } else {
             token = token.next = token_source.getNextToken();
+        }
         jj_ntk = -1;
         jj_gen++;
         return token;
@@ -735,19 +785,21 @@ public class UParser implements UParserConstants {
     final public Token getToken(int index) {
         Token t = lookingAhead ? jj_scanpos : token;
         for (int i = 0; i < index; i++) {
-            if (t.next != null)
+            if (t.next != null) {
                 t = t.next;
-            else
+            } else {
                 t = t.next = token_source.getNextToken();
+            }
         }
         return t;
     }
 
     final private int jj_ntk() {
-        if ((jj_nt = token.next) == null)
+        if ((jj_nt = token.next) == null) {
             return (jj_ntk = (token.next = token_source.getNextToken()).kind);
-        else
+        } else {
             return (jj_ntk = jj_nt.kind);
+        }
     }
 
     private java.util.Vector jj_expentries = new java.util.Vector();
@@ -761,8 +813,9 @@ public class UParser implements UParserConstants {
     private int jj_endpos;
 
     private void jj_add_error_token(int kind, int pos) {
-        if (pos >= 100)
+        if (pos >= 100) {
             return;
+        }
         if (pos == jj_endpos + 1) {
             jj_lasttokens[jj_endpos++] = kind;
         } else if (jj_endpos != 0) {
@@ -782,14 +835,17 @@ public class UParser implements UParserConstants {
                             break;
                         }
                     }
-                    if (exists)
+                    if (exists) {
                         break;
+                    }
                 }
             }
-            if (!exists)
+            if (!exists) {
                 jj_expentries.addElement(jj_expentry);
-            if (pos != 0)
+            }
+            if (pos != 0) {
                 jj_lasttokens[(jj_endpos = pos) - 1] = kind;
+            }
         }
     }
 

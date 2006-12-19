@@ -32,6 +32,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
@@ -82,7 +83,7 @@ public class ASTBuilder {
 
         CompilationUnit ast = (CompilationUnit) parser.createAST(null);
 
-        if ((ast.getFlags() & CompilationUnit.MALFORMED) != 0) {
+        if ((ast.getFlags() & ASTNode.MALFORMED) != 0) {
             throw new ASTMalformedException();
         }
 

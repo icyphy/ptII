@@ -143,8 +143,9 @@ public abstract class AbstractSequentialList extends AbstractList implements
         Iterator ci = c.iterator();
         int size = c.size();
         ListIterator i = listIterator(index);
-        for (int pos = size; pos > 0; pos--)
+        for (int pos = size; pos > 0; pos--) {
             i.add(ci.next());
+        }
         return size > 0;
     }
 
@@ -157,9 +158,10 @@ public abstract class AbstractSequentialList extends AbstractList implements
      */
     public Object get(int index) {
         // This is a legal listIterator position, but an illegal get.
-        if (index == size())
+        if (index == size()) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
                     + size());
+        }
         return listIterator(index).next();
     }
 
@@ -184,9 +186,10 @@ public abstract class AbstractSequentialList extends AbstractList implements
      */
     public Object remove(int index) {
         // This is a legal listIterator position, but an illegal remove.
-        if (index == size())
+        if (index == size()) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
                     + size());
+        }
         ListIterator i = listIterator(index);
         Object removed = i.next();
         i.remove();
@@ -211,9 +214,10 @@ public abstract class AbstractSequentialList extends AbstractList implements
      */
     public Object set(int index, Object o) {
         // This is a legal listIterator position, but an illegal set.
-        if (index == size())
+        if (index == size()) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
                     + size());
+        }
         ListIterator i = listIterator(index);
         Object old = i.next();
         i.set(o);

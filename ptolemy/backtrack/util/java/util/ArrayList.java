@@ -113,8 +113,9 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      */
     public ArrayList(int capacity) {
         // Must explicitly check, to get correct exception.
-        if (capacity < 0)
+        if (capacity < 0) {
             throw new IllegalArgumentException();
+        }
         $ASSIGN$data(new Object[capacity]);
     }
 
@@ -201,9 +202,11 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      * @return the index where e was found
      */
     public int indexOf(Object e) {
-        for (int i = 0; i < size; i++)
-            if (equals(e, data[i]))
+        for (int i = 0; i < size; i++) {
+            if (equals(e, data[i])) {
                 return i;
+            }
+        }
         return -1;
     }
 
@@ -214,9 +217,11 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      * @return the index where e was found
      */
     public int lastIndexOf(Object e) {
-        for (int i = size - 1; i >= 0; i--)
-            if (equals(e, data[i]))
+        for (int i = size - 1; i >= 0; i--) {
+            if (equals(e, data[i])) {
                 return i;
+            }
+        }
         return -1;
     }
 
@@ -260,11 +265,12 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      * @throws NullPointerException if a is null
      */
     public Object[] toArray(Object[] a) {
-        if (a.length < size)
+        if (a.length < size) {
             a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
                     size);
-        else if (a.length > size)
+        } else if (a.length > size) {
             a[size] = null;
+        }
         System.arraycopy($BACKUP$data(), 0, a, 0, size);
         return a;
     }
@@ -302,8 +308,9 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      */
     public boolean add(Object e) {
         setModCount(getModCount() + 1);
-        if (size == data.length)
+        if (size == data.length) {
             ensureCapacity(size + 1);
+        }
         $ASSIGN$data($ASSIGN$SPECIAL$size(11, size), e);
         return true;
     }
@@ -319,11 +326,13 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
     public void add(int index, Object e) {
         checkBoundInclusive(index);
         setModCount(getModCount() + 1);
-        if (size == data.length)
+        if (size == data.length) {
             ensureCapacity(size + 1);
-        if (index != size)
+        }
+        if (index != size) {
             System.arraycopy($BACKUP$data(), index, $BACKUP$data(), index + 1,
                     size - index);
+        }
         $ASSIGN$data(index, e);
         $ASSIGN$SPECIAL$size(11, size);
     }
@@ -338,9 +347,10 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         checkBoundExclusive(index);
         Object r = data[index];
         setModCount(getModCount() + 1);
-        if (index != $ASSIGN$SPECIAL$size(14, size))
+        if (index != $ASSIGN$SPECIAL$size(14, size)) {
             System.arraycopy($BACKUP$data(), index + 1, $BACKUP$data(), index,
                     size - index);
+        }
         // Aid for garbage collection by releasing this pointer.
         $ASSIGN$data(size, null);
         return r;
@@ -385,15 +395,18 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         Iterator itr = c.iterator();
         int csize = c.size();
         setModCount(getModCount() + 1);
-        if (csize + size > data.length)
+        if (csize + size > data.length) {
             ensureCapacity(size + csize);
+        }
         int end = index + csize;
-        if (size > 0 && index != size)
+        if (size > 0 && index != size) {
             System.arraycopy($BACKUP$data(), index, $BACKUP$data(), end, size
                     - index);
+        }
         $ASSIGN$SPECIAL$size(0, csize);
-        for (; index < end; index++)
+        for (; index < end; index++) {
             $ASSIGN$data(index, itr.next());
+        }
         return csize > 0;
     }
 
@@ -411,8 +424,9 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
             System.arraycopy($BACKUP$data(), toIndex, $BACKUP$data(),
                     fromIndex, size - toIndex);
             $ASSIGN$SPECIAL$size(1, change);
-        } else if (change < 0)
+        } else if (change < 0) {
             throw new IndexOutOfBoundsException();
+        }
     }
 
     /**     
@@ -424,9 +438,10 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         // Implementation note: we do not check for negative ranges here, since
         // use of a negative index will cause an ArrayIndexOutOfBoundsException,
         // a subclass of the required exception, with no effort on our part.
-        if (index > size)
+        if (index > size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: "
                     + size);
+        }
     }
 
     /**     
@@ -438,9 +453,10 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         // Implementation note: we do not check for negative ranges here, since
         // use of a negative index will cause an ArrayIndexOutOfBoundsException,
         // a subclass of the required exception, with no effort on our part.
-        if (index >= size)
+        if (index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: "
                     + size);
+        }
     }
 
     /**     
@@ -454,15 +470,20 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
     boolean removeAllInternal(Collection c) {
         int i;
         int j;
-        for (i = 0; i < size; i++)
-            if (c.contains(data[i]))
+        for (i = 0; i < size; i++) {
+            if (c.contains(data[i])) {
                 break;
-        if (i == size)
+            }
+        }
+        if (i == size) {
             return false;
+        }
         setModCount(getModCount() + 1);
-        for (j = i++; i < size; i++)
-            if (!c.contains(data[i]))
+        for (j = i++; i < size; i++) {
+            if (!c.contains(data[i])) {
                 $ASSIGN$data(j++, data[i]);
+            }
+        }
         $ASSIGN$SPECIAL$size(1, i - j);
         return true;
     }
@@ -479,15 +500,20 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
     boolean retainAllInternal(Collection c) {
         int i;
         int j;
-        for (i = 0; i < size; i++)
-            if (!c.contains(data[i]))
+        for (i = 0; i < size; i++) {
+            if (!c.contains(data[i])) {
                 break;
-        if (i == size)
+            }
+        }
+        if (i == size) {
             return false;
+        }
         setModCount(getModCount() + 1);
-        for (j = i++; i < size; i++)
-            if (c.contains(data[i]))
+        for (j = i++; i < size; i++) {
+            if (c.contains(data[i])) {
                 $ASSIGN$data(j++, data[i]);
+            }
+        }
         $ASSIGN$SPECIAL$size(1, i - j);
         return true;
     }
@@ -507,8 +533,9 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         s.writeInt(len);
         // it would be more efficient to just write "size" items,
         // this need readObject read "size" items too.
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < size; i++) {
             s.writeObject(data[i]);
+        }
     }
 
     /**     
@@ -525,8 +552,9 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         s.defaultReadObject();
         int capacity = s.readInt();
         $ASSIGN$data(new Object[capacity]);
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < size; i++) {
             $ASSIGN$data(i, s.readObject());
+        }
     }
 
     private final int $ASSIGN$size(int newValue) {

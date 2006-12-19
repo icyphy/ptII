@@ -34,6 +34,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -351,7 +352,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         public static JPanel createSliderPanel(int minimum, int maximum,
                 int majorTickSpacing, int minorTickSpacing, String title) {
 
-            JSlider slider = new JSlider(JSlider.HORIZONTAL, minimum, maximum,
+            JSlider slider = new JSlider(SwingConstants.HORIZONTAL, minimum, maximum,
                     (maximum + minimum) / 2);
             slider.setBackground(null);
             slider.setMajorTickSpacing(majorTickSpacing);
