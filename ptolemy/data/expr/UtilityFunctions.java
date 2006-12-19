@@ -108,10 +108,7 @@ public class UtilityFunctions {
     /** Return the (exact) return type of the arrayType function above.
      *  This function always returns an ArrayType whose element type
      *  is the first argument, with length equal to the second argument.
-     *  @param type1 The type of the first argument to the
-     *  corresponding function.
-     *  @param type2 The type of the second argument to the
-     *  corresponding function.
+     *  @param type The type of the array.
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type arrayTypeReturnType(Type type) {
