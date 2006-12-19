@@ -37,9 +37,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
    for 1Mhz speed (chip is shipped at 1Mhz) use:
    #define F_CPU 1000000UL
 */
-#define F_CPU 1000000UL
-#include <avr/delay.h>
-#endif
+#define F_CPU 8000000UL
+//WinAVR 20040404 does not have util/delay.h, so _delay_ms is not defined
+//#include <avr/delay.h>
+
+#define _DELAY_MS
+#include <util/delay.h>
+
+#endif /*__AVR__*/
 #include "game_of_life.h"
 
 /* constants and variables defining the size and properties 
@@ -47,10 +52,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
    the GOL array will hold information about the current and
    next state for each cell in the GOL array/grid.
 */
-const unsigned char number_rows = 6;
-const unsigned char number_columns = 14; 
-const unsigned char size_of_array = 84;
-volatile unsigned char array [6][14]; 
+//const unsigned char number_rows = 6;
+//const unsigned char number_columns = 14; 
+//const unsigned char size_of_array = 84;
+//volatile unsigned char array [6][14]; 
+
+const unsigned char number_rows = 4;
+const unsigned char number_columns = 4; 
+const unsigned char size_of_array = 16;
+volatile unsigned char array [4][4]; 
 
 /* constants for resetting the values of the GOL array */
 const unsigned char on_next_on = 3;			//current state is on and next state is on
@@ -98,6 +108,9 @@ void initialize_tank_pins_as_output (void)
    at position i,j in the LED array for 1ms */
 void row_column_display (unsigned char i, unsigned char j)
 {	
+#ifndef __AVR__
+    printf("%d %d\n", i, j);
+#else
 	if (i==0)
 		row0_low;
 	else
@@ -157,9 +170,10 @@ void row_column_display (unsigned char i, unsigned char j)
 	else
 		if (j==13)
 			col13_high;
+#endif
 	
 #ifdef _DELAY_MS
-	_delay_ms(1);
+	_delay_ms(1000);
 #endif	
 	all_off ();
 }
@@ -297,8 +311,11 @@ void loop_lights (void)
 		y=0;
 		for (y=0;y<number_columns;y++)
 		{
-			for (z=0;z<1000;z++)
+                 //  for (z=0;z<10000;z++)
 				row_column_display(x,y);
+#ifdef _DELAY_MS
+                                _delay_ms(5000);
+#endif
 		}
 	}
 }
