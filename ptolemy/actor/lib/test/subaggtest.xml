@@ -10,13 +10,19 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={125, -5, 932, 605}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[717, 489]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{358.5, 244.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="the modeling team just reported a regression in&#10;SubscriberAggregate... not sure when it was introduced though.  In a&#10;nutshell, the it looks like the aggregate is not unlinking old relations if&#10;the channel name changes, or if the actor is cloned.  In either case, the&#10;aggregate ends up representing a combination of the original relations, and                                                 &#10;the new relations that result from the change (see attached).  I took a&#10;quick peek at the code again to refresh my memory, and my money is on&#10;something going wrong in the area of lines 180-185 of                                                                       &#10;SubscriberAggregate.java (clearing out previous relations).  I know this                                                    &#10;worked when I did my original testing, but not sure when this was broken, or&#10;what caused it to start behaving this way.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 270.0]">
+        </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <doc>Create a constant sequence.</doc>
@@ -30,6 +36,8 @@
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -37,10 +45,12 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 170.0}">
         </property>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -48,7 +58,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 215.0}">
         </property>
     </entity>
     <entity name="Publisher" class="ptolemy.actor.lib.Publisher">
@@ -95,13 +105,13 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={140, 42, 330, 237}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={140, 42, 347, 237}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 125.0]">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={556, 484, 330, 237}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={556, 484, 347, 237}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 170.0]">
         </property>
@@ -154,7 +164,7 @@
             <property name="boxColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.8, 0.0, 1.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 220.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
