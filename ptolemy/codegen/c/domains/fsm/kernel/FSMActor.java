@@ -674,6 +674,7 @@ public class FSMActor extends CCodeGeneratorHelper {
         /** Look up and return the type of the attribute with the
          *  specified name in the scope. Return null if such an
          *  attribute does not exist.
+         *  @param name The name of the attribute.
          *  @return The attribute with the specified name in the scope.
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
@@ -687,6 +688,7 @@ public class FSMActor extends CCodeGeneratorHelper {
         /** Look up and return the type term for the specified name
          *  in the scope. Return null if the name is not defined in this
          *  scope, or is a constant type.
+         *  @param name The name of the attribute.
          *  @return The InequalityTerm associated with the given name in
          *  the scope.
          *  @exception IllegalActionException If a value in the scope
@@ -700,6 +702,8 @@ public class FSMActor extends CCodeGeneratorHelper {
 
         /** Return the list of identifiers within the scope.
          *  @return The list of variable names within the scope.
+         *  @exception IllegalActionException If thrown while getting
+         *  the identifier set from associated component.
          */
         public Set identifierSet() throws IllegalActionException {
             return ((ptolemy.domains.fsm.kernel.FSMActor) getComponent())
