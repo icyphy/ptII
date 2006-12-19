@@ -47,8 +47,9 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 
 /** An actor that displays an array of LEDs.  The array display only
  one color, red.  This actor has two inputs, row and column which
- are integers that identify the row and column of the LED to be
- illuminated.
+ are integers that identify the row and column of the LED to possibly be
+ illuminated and a control input which determines whether the
+ LED is illuminated or not.
 
  @author Christopher Brooks, Based on MicaLeds byElaine Cheong
  @version $Id$
