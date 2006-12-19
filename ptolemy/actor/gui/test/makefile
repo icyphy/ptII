@@ -61,6 +61,7 @@ JSIMPLE_TESTS = \
 	Configuration.tcl \
 	EffigyFactory.tcl \
 	HTMLAbout.tcl \
+	RunMultipleModels.tcl \
 	UserActorLibrary.tcl \
 	ZZZConfiguration.tcl
 

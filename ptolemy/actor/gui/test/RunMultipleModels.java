@@ -13,11 +13,14 @@ import ptolemy.moml.MoMLParser;
 /** This test (from Rome AFRL) was causing a stack trace.
  */
 public class RunMultipleModels {
-    public static void main(String[] args) throws Exception {
+
+    /** Create multiple models and execute them. */
+    public synchronized void run() throws Exception {
         for(int i = 0; i < 100; i++) {
             Thread thread = new Thread(new Runnable() {
                 public void run() {
                     try {
+                        _activeCount++;
                         String threadName = Thread.currentThread().getName();
                         URL url = RunMultipleModels.class.getResource("RunMultipleModelsModel.xml");
 
@@ -31,16 +34,57 @@ public class RunMultipleModels {
                                 + threadName);
                         ((CompositeActor)model).setManager(manager);
                         manager.execute();
-                    } catch (Exception ex) {
-                        //System.err.println("Thread "
-                        //        + Thread.currentThread().getName());
+                        _activeCount--;
+
+                        if (_activeCount == 0) {
+                            notifyAll();
+                        }
+                    } catch (IllegalMonitorStateException ex) {
+                        Thread thread = Thread.currentThread();
+                        System.out.println("Thread: " + thread.getName()
+                                + " state: " + thread.getState());
                         ex.printStackTrace();
+                    } catch (Exception ex) {
+                        _lastException = ex;
+                        ex.printStackTrace();
+                        _activeCount--;
+
+                        //if (_activeCount == 0) {
+                        //    notifyAll();
+                        //}
                     }
                 }
             });
 
-            System.out.println("Starting " + thread.getName());
+            System.out.print(" " + thread.getName());
             thread.start();
         }
+        System.out.println("");
+        System.out.println("Sleeping "
+                + Thread.currentThread().getName()
+                + " 30 seconds so that other threads may run.");
+        Thread.sleep(30000);
+        while (_activeCount > 0) {
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                break;
+            }
+        }
+        if (_lastException != null) {
+            throw _lastException;
+        }
     }
+
+    public static void main(String[] args) throws Exception {
+        RunMultipleModels runMultipleModels= new RunMultipleModels();
+        runMultipleModels.run();
+    }
+
+
+    // The count of currently executing runs.
+    private int _activeCount = 0;
+
+    // The last exception that was thrown.
+    private Exception _lastException;
 }
