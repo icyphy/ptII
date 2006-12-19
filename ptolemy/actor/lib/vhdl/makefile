@@ -48,16 +48,17 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-    AddSubtract.java \
-    Concat.java \
-    FixComparator.java \
-    FixConst.java \
+	AddSubtract.java \
+	Concat.java \
+	FixComparator.java \
+	FixConst.java \
 	FixCounter.java \
 	FixSequence.java \
 	FixToString.java \
 	FixTransformer.java \
+	IntegerCounter.java \
 	LogicalNot.java \
-    LogicFunction.java \
+	LogicFunction.java \
 	Memory.java \
 	Multiplexor.java \
 	Multiplier.java \
