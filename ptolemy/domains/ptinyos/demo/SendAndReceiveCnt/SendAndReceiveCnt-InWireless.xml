@@ -2,19 +2,19 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SendAndReceiveCnt-InWireless" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="Wireless Director" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={24, 4, 926, 468}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 25, 951, 460}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[711, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[729, 350]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9764387794515">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.5, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{371.2626222669735, 177.0994318181818}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -148,6 +148,10 @@
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_ledRed" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 0.0}">
+                    </property>
+                </property>
+                <property name="_ledGreen" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
                 </property>
                 <property name="_ledYellow" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -287,7 +291,7 @@
             <link port="TimerC.Timer" relation="relation2"/>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 399, 657, 227}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={81, 410, 453, 203}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 40.0]">
             </property>
@@ -414,6 +418,10 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 0.0}">
                     </property>
                 </property>
+                <property name="_ledGreen" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                    </property>
+                </property>
                 <property name="_ledYellow" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 0.0}">
                     </property>
@@ -427,6 +435,10 @@
                 <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/SendAndReceiveCnt/output">
                 </property>
                 <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="commandPort" class="ptolemy.domains.ptinyos.kernel.PtinyOSNodeParameter" value="10584">
+                </property>
+                <property name="nodeID" class="ptolemy.domains.ptinyos.kernel.PtinyOSNodeParameter" value="1">
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 175.0]">
@@ -530,7 +542,7 @@
             <link port="RfmToInt.StdControl" relation="relation"/>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={364, 539, 653, 227}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={534, 410, 453, 203}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 100.0]">
             </property>
