@@ -196,6 +196,7 @@ The actor .E1.Consumer was iterated.
 Ramp: ENABLED_NOT_DEFERRABLE
 Consumer: NOT_ENABLED
 iteration limit reached
+Director: Called wrapup().
 }}
 
 # See $PTII/ptolemy/domains/sdf/kernel/test/SDFDirector.tcl for other possible tests
