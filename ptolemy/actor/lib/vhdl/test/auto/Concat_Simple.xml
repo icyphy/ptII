@@ -18,12 +18,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <property name="VHDLCodeGenerator" class="ptolemy.codegen.vhdl.kernel.VHDLCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="C:\Documents and Settings\Administrator\Desktop\TestCases\codegen">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{370, 240}">
-        </property>
-    </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{fix(3,3,3), fix(3,3,3), fix(3,3,3), fix(3,3,3), fix(3,3,3)}">
         </property>

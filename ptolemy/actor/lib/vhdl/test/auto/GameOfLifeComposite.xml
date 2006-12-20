@@ -18,10 +18,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{460, 245}">
         </property>
     </property>
-    <property name="VHDLCodeGenerator" class="ptolemy.codegen.vhdl.kernel.VHDLCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{710, -210}">
-        </property>
-    </property>
     <entity name="TypedCompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, -5.0]">
         </property>

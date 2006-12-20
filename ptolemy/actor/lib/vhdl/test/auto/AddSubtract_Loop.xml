@@ -18,10 +18,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 200.0]">
         </property>
     </property>
-    <property name="VHDLCodeGenerator" class="ptolemy.codegen.vhdl.kernel.VHDLCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 110.0]">
-        </property>
-    </property>
     <entity name="FixConst" class="ptolemy.actor.lib.vhdl.FixConst">
         <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="0:-31">
         </property>
