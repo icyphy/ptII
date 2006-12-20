@@ -32,7 +32,7 @@
         </property>
     </entity>
     <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 220.0]">
         </property>
