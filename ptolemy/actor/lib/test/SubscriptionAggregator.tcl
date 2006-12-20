@@ -37,6 +37,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs jdkCapture] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
+}
+
 ######################################################################
 ####
 #
@@ -69,3 +73,82 @@ test SubscriptionAggregator-1.2 {Change one actor} {
     $channel setToken [java::new ptolemy.data.StringToken "channel1"]
     $manager execute
 } {}
+
+test SubscriptionAggregator-2.0 {No Publisher} {
+    set e0 [sdfModel 5]
+    set subAgg [java::new ptolemy.actor.lib.SubscriptionAggregator $e0 subagg]
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Subscriber $subAgg] \
+		 output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    catch {[$e0 getManager] execute} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Subscriber has no matching Publisher.
+  in .top.subagg}}
+
+test SubscriptionAggregator-3.0 {Debugging messages} {
+    set e3 [sdfModel 5]
+
+    set const [java::new ptolemy.actor.lib.Const $e3 const]
+    set publisher [java::new ptolemy.actor.lib.Publisher $e3 publisher]
+    set channelP [getParameter $publisher channel]
+    $channelP setExpression "channel42"
+    $publisher attributeChanged $channelP
+
+    $e3 connect \
+	[java::field [java::cast ptolemy.actor.lib.Source $const] \
+	     output] \
+	[java::field $publisher input]
+
+    set subAgg [java::new ptolemy.actor.lib.SubscriptionAggregator $e3 subagg]
+    set channelS [getParameter $subAgg channel]
+    $channelS setExpression "channel42"
+    $subAgg attributeChanged $channelS
+
+    set rec [java::new ptolemy.actor.lib.Recorder $e3 rec]
+    $e3 connect \
+	[java::field [java::cast ptolemy.actor.lib.Subscriber $subAgg] \
+	     output] \
+	[java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.StreamListener $printStream]
+    $subAgg addDebugListener $listener
+
+    [$e3 getManager] execute
+    $subAgg removeDebugListener $listener
+    $printStream flush
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" output
+    list $output \
+	[enumToTokenValues [$rec getRecord 0]]
+} {{Called preinitialize()
+Called stopFire()
+Added attribute firingsPerIteration to .top.subagg
+Called initialize()
+Called iterate(1)
+Called prefire(), which returns true
+Called fire()
+Called postfire()
+Called iterate(1)
+Called prefire(), which returns true
+Called fire()
+Called postfire()
+Called iterate(1)
+Called prefire(), which returns true
+Called fire()
+Called postfire()
+Called iterate(1)
+Called prefire(), which returns true
+Called fire()
+Called postfire()
+Called iterate(1)
+Called prefire(), which returns true
+Called fire()
+Called postfire()
+Called wrapup()
+} {1 1 1 1 1}}
