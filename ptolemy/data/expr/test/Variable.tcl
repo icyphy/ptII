@@ -493,7 +493,7 @@ test Variable-13.0 {Test setting structured type} {
     $v setToken $doubleArrayToken
 
     list [[$v getType] toString] [[$v getToken] toString]
-} {{{double}} {{2.2, 3.3}}}
+} {arrayType(double) {{2.2, 3.3}}}
 
 ######################################################################
 ####
@@ -518,7 +518,7 @@ test Variable-13.2 {Test setting structured type} {
     $v setToken $intArrayToken
 
     list [[$v getType] toString] [[$v getToken] toString]
-} {{{int}} {{0, 1}}}
+} {arrayType(int) {{0, 1}}}
 
 ######################################################################
 ####
