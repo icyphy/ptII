@@ -210,7 +210,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return A formatted comment.
      */
     public String comment(String comment) {
-        return formatComment(comment) + _eol;
+        return formatComment(comment);
     }
 
     /** Return a formatted comment containing the
@@ -228,16 +228,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
     }
 
-    /** Return a formatted comment containing the
-     *  specified string. In this base class, the
-     *  comments is a C-style comment, which begins with
-     *  "\/*" and ends with "*\/". Subclasses may override this
-     *  produce comments that match the code generation language.
+    /** Return a formatted comment containing the specified string. In
+     *  this base class, the comments is a C-style comment, which
+     *  begins with "\/*" and ends with "*\/" followed by the platform
+     *  dependent end of line character(s): under Unix: "\n", under
+     *  Windows: "\n\r". Subclasses may override this produce comments
+     *  that match the code generation language.
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
      */
     public String formatComment(String comment) {
-        return "/* " + comment + " */\n";
+        return "/* " + comment + " */" + _eol;
     }
 
     /** Generate the body code that lies between initialize and wrapup.
