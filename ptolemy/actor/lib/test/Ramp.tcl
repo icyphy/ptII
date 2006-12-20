@@ -239,8 +239,7 @@ test Ramp-2.6 {test an array of record} {
 
 test Ramp-2.7 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{{name = string, value = double}}} {{{name = string, value = double}}}}
-
+} {{arrayType({name = string, value = double},2)} {arrayType({name = string, value = double},2)}}
 
 test Ramp-3.1 {Run a CT model which will detect errors in scheduling} {
     set e0 [ctModel 5]
