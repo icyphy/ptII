@@ -44,8 +44,7 @@ include $(CONFIG)
 PTPACKAGE = 	LogisticMap
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
-	LogisticMap.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	LogisticMap.xml \
