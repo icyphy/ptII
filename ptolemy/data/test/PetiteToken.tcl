@@ -380,7 +380,7 @@ test PetiteToken-6.1 {Test modulo operator between petites and ints.} {
     #set res3 [$tok2 modulo $tok1]
    
     list $msg	
-} {{ptolemy.kernel.util.IllegalActionException: modulo method not supported between ptolemy.data.PetiteToken '0.61p' and ptolemy.data.IntToken '3' because the types are incomparable.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.PetiteToken '0.61p' to the type double.}}
 
 ######################################################################
 ####
