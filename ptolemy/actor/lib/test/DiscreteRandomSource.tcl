@@ -112,7 +112,7 @@ test DiscreteRandomSource-2.5 {change type to array} {
     $v setExpression {{{0}, {1}}} 
     $manager execute
     list [[$out getType] toString] [[$in getType] toString]
-} {{{int}} {{int}}}
+} {arrayType(int,1) arrayType(int,1)}
 
 ######################################################################
 #### Change type

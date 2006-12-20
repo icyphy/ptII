@@ -195,7 +195,7 @@ test Ramp-2.4 {test with record containing array} {
 
 test Ramp-2.5 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{anArray = {double}, name = string, value = double}} {{anArray = {double}, name = string, value = double}}}
+} {{{anArray = arrayType(double,2), name = string, value = double}} {{anArray = arrayType(double,2), name = string, value = double}}}
 
 test Ramp-2.6 {test an array of record} {
     # init is {{name = "a", value = 1}, {name = "b", value = 2}}
