@@ -225,13 +225,13 @@ public class PtinyOSNodeParameter extends SharedParameter {
                                 String newExpression = String
                                     .valueOf(value);
 
-                                if (!sharedParameter.getExpression()
-                                        .equals(newExpression)) {
+                                if (!sharedParameter.getExpression().equals(
+                                            newExpression)) {
                                     sharedParameter.setExpression(
                                             newExpression);
 
-                                    // Make sure the new value
-                                    // is not persistent.
+                                    // Make sure the new value is not
+                                    // persistent.
                                     sharedParameter.setPersistent(false);
                                 }
                             }
