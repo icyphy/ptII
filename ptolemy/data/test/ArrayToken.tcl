@@ -782,7 +782,7 @@ test ArrayToken-10.0 {Construct an ArrayToken with 0 elements: a nil ArrayToken}
     set t [java::new {ptolemy.data.ArrayToken String} "{}"]
     list [$t toString] [[$t getType] toString] [[$t getElementType] toString] \
 	[[$t zero] toString] [$t isNil]
-} {{{}} {{niltype}} niltype {{}} 0}
+} {{{}} arrayType(niltype,0) niltype {{}} 0}
 
 test ArrayToken-10.1 {nil ArrayToken equals methods} {
     set t [java::new {ptolemy.data.ArrayToken String} "{}"]
@@ -834,5 +834,5 @@ test ArrayToken-20.1 {elementMultiplyReturnType} {
     set t3 [java::call ptolemy.data.ArrayToken elementMultiplyReturnType \
 		[$intToken getType] [$valToken getType]]
     list [$t1 toString] [$t2 toString] [$t3 toString]
-} {{{{int}}} {{int}} {{unknown}}}
+} {arrayType(arrayType(int)) arrayType(int) arrayType(unknown)}
 
