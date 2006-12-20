@@ -99,7 +99,7 @@ clean: ptmatlab_clean
 
 #--- Specialized part of the makefile: ---
 libjvm.dll.a: jvm.def
-    dlltool --input-def jvm.def --kill-at --dllname jvm.dll \
+	dlltool --input-def jvm.def --kill-at --dllname jvm.dll \
 		--output-lib libjvm.dll.a
 
 # Get the rest of the rules
