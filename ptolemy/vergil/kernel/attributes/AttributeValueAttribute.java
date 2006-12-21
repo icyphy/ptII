@@ -35,6 +35,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -221,14 +222,30 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
     /** Set the attribute name.
      *  @param attributeName The attribute name.
      */
-    protected void _setAttributeName(String attributeName) {
+    protected void _setAttributeName(final String attributeName) {
         NamedObj container = getContainer();
 
         if (container != null) {
             Attribute newAttribute = ModelScope.getScopedVariable(null,
                     container, attributeName);
-
-            if (_attribute != newAttribute) {
+            if (newAttribute == null) {
+                // Either the specified attribute name is invalid,
+                // or this is getting invoked in the constructor, and the
+                // attribute being referenced has not yet been constructed.
+                // To support the latter situation, we try again (just one
+                // more time) in a ChangeRequest.
+                if (!_deferred) {
+                    ChangeRequest request = new ChangeRequest(this, "AttributeValueAttribute") {
+                        protected void _execute() {
+                            _setAttributeName(attributeName);
+                            _deferred = false;
+                        }
+                    };
+                    container.requestChange(request);
+                    _deferred = true;
+                }
+                _attribute = null;
+            } else if (_attribute != newAttribute) {
                 if (_attribute != null) {
                     _attribute.removeValueListener(this);
                 }
@@ -297,4 +314,10 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
 
     /** The associated attribute. */
     protected Settable _attribute = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          private members                  ////
+
+    /** Flag indicating that we have already tried deferring evaluation. */
+    private boolean _deferred = false;
 }
