@@ -52,6 +52,7 @@ proc removeGraphicalClasses {parser} {
     $filter put "ptolemy.actor.lib.gui.BarGraph" [java::null]
     $filter put "ptolemy.actor.lib.gui.Display" [java::null]
     $filter put "ptolemy.actor.lib.gui.HistogramPlotter" [java::null]
+    $filter put "ptolemy.actor.lib.gui.LEDMatrix" [java::null]
     $filter put "ptolemy.actor.lib.gui.RealTimePlotter" [java::null]
     $filter put "ptolemy.actor.lib.gui.SequencePlotter" [java::null]
     $filter put "ptolemy.actor.lib.gui.SequenceScope" [java::null]
