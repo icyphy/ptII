@@ -2,13 +2,13 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II PtinyOSDirector</title>
+<title>Ptolemy II PtinyOSDirector Control Flow</title>
 <link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h1>Ptolemy II PtinyOSDirector</h1> 
+<h1>Ptolemy II PtinyOSDirector Control Flow</h1> 
 
-<p> The following are tables that show the sequence of calls between Java and C when the PtinyOSDirector is used in simulation mode in Viptos.  The PtinyOSDirector uses a Java PtinyOSLoader class for each instance of TOSSIM to keep the namespace separate for each TinyOS node in the model.  <i>unique_name</i> is used in native method names to maintain separate namespaces.  All calls that cross the Java / C (and C / Java) boundary are JNI calls.
+<p> Below are tables that show the sequence of calls between Java and C when the PtinyOSDirector is used in simulation mode in Viptos.  The PtinyOSDirector uses a Java PtinyOSLoader class for each instance of TOSSIM to keep the namespace separate for each TinyOS node in the model.  <i>unique_name</i> is used in native method names to maintain separate namespaces.  All calls that cross the Java / C (and C / Java) boundary are JNI calls.
 
 <p> A JNI call from TOSSIM to the Java PtinyOSLoader class (_loader) refers to a call from the C code in TOSSIM to the Java PtinyOSLoader class associated with that instance of TOSSIM.  The same is true for a JNI call from the Java PtinyOSLoader class to TOSSIM.
 
@@ -309,16 +309,16 @@ TOSSIM also contains JNI wrapper calls to Java socket routines in the Java Ptiny
 <p>
 Detailed list of socket routines:
 <ul>
-<li>serverSocketCreate()
-<li>serverSocketClose()
+<li>acceptConnection()
+<li>selectorClose()
 <li>selectorCreate()
 <li>selectorRegister()
-<li>selectorClose()
 <li>selectSocket()
-<li>acceptConnection()
+<li>serverSocketClose()
+<li>serverSocketCreate()
 <li>socketChannelClose()
-<li>socketChannelWrite()
 <li>socketChannelRead()
+<li>socketChannelWrite()
 </ul>
 </body>
 </html>

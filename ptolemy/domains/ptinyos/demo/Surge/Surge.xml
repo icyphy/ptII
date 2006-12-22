@@ -5,21 +5,21 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="Wireless Director" class="ptolemy.domains.wireless.kernel.WirelessDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -20.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 733, 718}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 25, 737, 718}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 608]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[515, 608]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9125925925926">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{273.4715909090906, 271.5549918831168}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{275.663149350649, 271.5549918831168}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains 5 nodes.  Each node is running a version of Surge,&#10;with a unique nodeID which corresponds to the number in their given name.  &#10;Surge is an example application developed for TinyOS that uses MultiHop &#10;ad-hoc routing.  Each Surge node takes light readings and forwards them to &#10;a base station.  The routing protocol uses a windowed average success rate &#10;to perform link estimation, and uses it to choose its parent, to whom the node &#10;forwards all packets. The base station (the node labeled MicaBoard0) &#10;periodically sends out a beacon message so that nodes can update their &#10;position in the network if necessary.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains 5 nodes.  Each node is running a version of Surge,&#10;with a unique nodeID that corresponds to the number in their given name.  &#10;Surge is an example application developed for TinyOS that uses MultiHop &#10;ad-hoc routing.  Each Surge node takes light readings and forwards them to &#10;a base station.  The routing protocol uses a windowed average success rate &#10;to perform link estimation, and uses it to choose its parent, to whom the node &#10;forwards all packets. The base station (node 0) periodically sends out a &#10;beacon message so that nodes can update their position in the network &#10;if necessary.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 430.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -46,7 +46,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 385.0]">
         </property>
     </property>
     <entity name="MicaBoard1" class="ptolemy.domains.wireless.kernel.WirelessComposite">
@@ -56,7 +56,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 120.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={202, 25, 822, 510}, maximized=false}">
         </property>
@@ -477,7 +477,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 325.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={202, 25, 822, 510}, maximized=false}">
         </property>
@@ -960,13 +960,13 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, -5.0]">
         </property>
     </entity>
     <entity name="LimitedRangeChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range = range}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, -10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, -20.0]">
         </property>
     </entity>
     <entity name="MicaBoard3" class="ptolemy.domains.wireless.kernel.WirelessComposite">
@@ -976,7 +976,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 140.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={202, 25, 822, 510}, maximized=false}">
         </property>
@@ -1397,7 +1397,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 170.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={202, 25, 822, 510}, maximized=false}">
         </property>
@@ -1815,18 +1815,18 @@
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
         </property>
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 40.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 140.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 233, 822, 510}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={152, 134, 747, 407}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[525, 297]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{262.5, 148.5}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -1930,7 +1930,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 285.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 265.0}">
             </property>
         </property>
         <property name="nodeID" class="ptolemy.data.expr.Parameter" value="MicaCompositeActor::PtinyOSDirector::nodeID">
@@ -1949,14 +1949,14 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 240}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 245.0}">
             </property>
         </property>
         <port name="packetOutPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 115.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{425.0, 130.0}">
             </property>
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -1965,7 +1965,7 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 110.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 125.0}">
             </property>
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -1985,7 +1985,7 @@
                     </property>
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 175.0}">
             </property>
         </entity>
         <entity name="MicaCompositeActor" class="ptolemy.domains.ptinyos.lib.MicaCompositeActor">
@@ -2002,24 +2002,24 @@
                 </property>
                 <property name="nodeID" class="ptolemy.domains.ptinyos.kernel.PtinyOSNodeParameter" value="0">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 40.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 45.0}">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 150.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 165.0}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To automatically rearrange the component layout,&#10;select Graph | Automatic Layout from the menu,&#10;or type Ctrl-T.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 510.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 520.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={149, 25, 875, 684}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 25, 905, 699}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[653, 574]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[683, 589]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{341.8705922719595, 285.0736380912162}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{356.8705922719595, 292.5736380912162}">
             </property>
             <port name="packetOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2084,13 +2084,13 @@
             <entity name="Sounder" class="tos.sensorboards.micasb.Sounder">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 390.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{635.0, 465.0}">
                 </property>
             </entity>
             <entity name="QueuedSend" class="tos.lib.Queue.QueuedSend">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 495.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 480.0}">
                 </property>
             </entity>
             <entity name="SurgeM" class="apps.Surge.SurgeM">
@@ -2102,7 +2102,7 @@
             <entity name="LedsC" class="tos.system.LedsC">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 490.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{585.0, 490.0}">
                 </property>
             </entity>
             <entity name="GenericCommPromiscuous" class="tos.system.GenericCommPromiscuous">
@@ -2114,35 +2114,35 @@
             <entity name="MultiHopRouter" class="tos.lib.Route.MultiHopRouter">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 250.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{565.0, 250.0}">
                 </property>
             </entity>
             <entity name="Photo" class="tos.sensorboards.micasb.Photo">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 495.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 530.0}">
                 </property>
             </entity>
             <entity name="Main" class="tos.system.Main">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 10.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 35.0}">
                 </property>
             </entity>
             <entity name="TimerC" class="tos.system.TimerC">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 495.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 515.0}">
                 </property>
             </entity>
             <entity name="Bcast" class="tos.lib.Broadcast.Bcast">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 350.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 430.0}">
                 </property>
             </entity>
             <relation name="relation1" class="ptolemy.actor.IORelation">
-                <vertex name="vertex" value="[75.0, 105.0]">
+                <vertex name="vertex" value="{100.0, 105.0}">
                 </vertex>
             </relation>
             <relation name="relation2" class="ptolemy.actor.IORelation">
@@ -2156,7 +2156,7 @@
             <relation name="relation6" class="ptolemy.actor.IORelation">
             </relation>
             <relation name="relation7" class="ptolemy.actor.IORelation">
-                <vertex name="vertex" value="[370.0, 485.0]">
+                <vertex name="vertex" value="{370.0, 505.0}">
                 </vertex>
             </relation>
             <relation name="relation8" class="ptolemy.actor.IORelation">
@@ -2194,13 +2194,13 @@
         <entity name="packetOutDisplay" class="ptolemy.actor.lib.gui.Display">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={571, 87, 453, 203}, maximized=false}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 50.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 65.0}">
             </property>
         </entity>
         <entity name="packetInDisplay" class="ptolemy.actor.lib.gui.Display">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={571, 25, 453, 203}, maximized=false}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 85.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 100.0}">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -2216,13 +2216,13 @@
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="{325.0, 115.0}">
+            <vertex name="vertex1" value="{365.0, 130.0}">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[70.0, 110.0]">
+            <vertex name="vertex1" value="{105.0, 125.0}">
             </vertex>
         </relation>
         <link port="packetOutPort" relation="relation4"/>
