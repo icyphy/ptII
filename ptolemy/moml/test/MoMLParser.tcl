@@ -60,6 +60,68 @@ set classheader {<?xml version="1.0" standalone="no"?>
 ######################################################################
 ####
 #
+test MoMLParser-0.8 {parse text in two different workspaces} {
+    set moml_1 "$header
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <doc>xxx</doc>
+</entity>
+"
+    set w1 [java::new ptolemy.kernel.util.Workspace w1]
+    set parser1 [java::new ptolemy.moml.MoMLParser $w1]
+    set url1 [[java::new java.io.File toplevel.xml] toURL]
+    set toplevel1 [$parser1 parse $moml_1]
+    #$parser1 setContext $toplevel1
+
+    set w2 [java::new ptolemy.kernel.util.Workspace w2]
+    set parser2 [java::new ptolemy.moml.MoMLParser $w2]
+    set url2 [[java::new java.io.File toplevel.xml] toURL]
+    set toplevel2 [$parser2 parse $moml_1]
+    #$parser2 setContext $toplevel2
+
+    list "\n" [$toplevel1 getFullName] [[$parser1 getToplevel] getFullName] \
+	[[$toplevel1 workspace] toString] "\n" \
+	[$toplevel2 getFullName] [[$parser2 getToplevel] getFullName] \
+	[[$toplevel2 workspace] toString]
+} {{
+} .top .top {ptolemy.kernel.util.Workspace {w1}} {
+} .top .top {ptolemy.kernel.util.Workspace {w2}}}
+
+######################################################################
+####
+#
+test MoMLParser-0.9 {parse a file in two different workspaces.  Note use of setContext and purgeModelRecord} {
+    set moml_1 "$header
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <doc>xxx</doc>
+</entity>
+"
+    set w3 [java::new ptolemy.kernel.util.Workspace w3]
+    set parser1 [java::new ptolemy.moml.MoMLParser $w3]
+    set url1 [[java::new java.io.File toplevel.xml] toURL]
+    set toplevel1 [$parser1 {parse java.net.URL java.net.URL} \
+	[java::null] $url1]
+    $parser1 setContext $toplevel1
+
+    $parser1 purgeModelRecord $url1
+
+    set w4 [java::new ptolemy.kernel.util.Workspace w4]
+    set parser2 [java::new ptolemy.moml.MoMLParser $w4]
+    set url2 [[java::new java.io.File toplevel.xml] toURL]
+    set toplevel2 [$parser2 {parse java.net.URL java.net.URL} \
+	[java::null] $url2]
+    $parser2 setContext $toplevel2
+
+    list "\n" [$toplevel1 getFullName] [[$parser1 getToplevel] getFullName] \
+	[[$toplevel1 workspace] toString] "\n" \
+	[$toplevel2 getFullName] [[$parser2 getToplevel] getFullName] \
+	[[$toplevel2 workspace] toString]
+} {{
+} .top .top {ptolemy.kernel.util.Workspace {w3}} {
+} .top .top {ptolemy.kernel.util.Workspace {w4}}}
+
+######################################################################
+####
+#
 test MoMLParser-1.1 {parse tolerated incorrect MoML} {
     set moml_1 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
