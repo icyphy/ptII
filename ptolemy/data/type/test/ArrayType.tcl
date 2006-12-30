@@ -100,7 +100,7 @@ test ArrayType-2.1 {Test convert} {
 
     list [[$c1 getType] toString] [$c1 toString] \
          [[$c2 getType] toString] [$c2 toString]
-} {arrayType(int) {{0, 1}} arrayType(string) {{"0", "1"}}}
+} {arrayType(int,2) {{0, 1}} arrayType(string,2) {{"0", "1"}}}
 
 ######################################################################
 ####
