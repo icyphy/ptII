@@ -215,7 +215,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
 
     /**Update the input values of the state.
      * @return Returns the value from its super class.
-     * @exception IllegalActionException Thrown if super class throws it.
+     * @exception IllegalActionException If super class throws it.
      */
     public boolean postfire() throws IllegalActionException {
         _position = (ArrayToken) viewerPosition.getToken();
@@ -225,7 +225,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
     }
 
     /**Reset the state to the initial values.
-     * @exception IllegalActionException Thrown if super class throws it.
+     * @exception IllegalActionException If super class throws it.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();

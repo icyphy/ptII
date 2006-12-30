@@ -357,7 +357,7 @@ public class VisualModelReference extends ModelReference implements
      *  AWT event thread completes the close.  This creates the possibility
      *  of a deadlock.
      *  @return Whatever the superclass returns (probably true).
-     *  @exception IllegalActionException Thrown if a parent class throws it.
+     *  @exception IllegalActionException If a parent class throws it.
      */
     public boolean postfire() throws IllegalActionException {
         // Call this first so execution stops before closing.

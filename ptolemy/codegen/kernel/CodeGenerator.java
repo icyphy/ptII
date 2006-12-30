@@ -27,23 +27,20 @@
  */
 package ptolemy.codegen.kernel;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
@@ -53,7 +50,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -91,7 +87,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         super(container, name);
 
         codeDirectory = new FileParameter(this, "codeDirectory");
-
         codeDirectory.setExpression("$HOME/codegen/");
 
         // FIXME: This should not be necessary, but if we don't
@@ -105,7 +100,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         compile.setExpression("true");
 
         generatorPackage = new StringParameter(this, "generatorPackage");
-        generatorPackage.setExpression("ptolemy.codegen.c");
+
+        generateComment = new Parameter(this, "generateComment");
+        generateComment.setTypeEquals(BaseType.BOOLEAN);
+        generateComment.setExpression("true");
 
         inline = new Parameter(this, "inline");
         inline.setTypeEquals(BaseType.BOOLEAN);
@@ -147,6 +145,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public Parameter compile;
 
+    /** If true, generate comments in the output code; otherwise,
+     *  no comments is generated. The default value is a parameter
+     *  with the value true.
+     */
+    public Parameter generateComment;
+
     /** The name of the package in which to look for helper class
      *  code generators. This is a string that defaults to
      *  "ptolemy.codegen.c".
@@ -175,11 +179,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /**
      * Analyze the model to find out what connections need to be type
      * converted. This should be called before all the generate methods.
-     * @exception IllegalActionException Thrown if the helper of the
+     * @exception IllegalActionException If the helper of the
      * top composite actor is unavailable.
      */
     public void analyzeTypeConvert() throws IllegalActionException {
-        ((TypedCompositeActor) _getHelper(getContainer())).analyzeTypeConvert();
+        ((CodeGeneratorHelper) _getHelper(getContainer())).analyzeTypeConvert();
     }
 
     /** Add an include command line argument the compile command.
@@ -201,28 +205,39 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Return a formatted comment containing the
      *  specified string. In this base class, the
      *  comments is a C-style comment, which begins with
-     *  "\/*" and ends with "*\/". Subclasses may override this
-     *  produce comments that match the code generation language.
+     *  "\/*" and ends with "*\/". 
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
      */
     public String comment(String comment) {
-        return comment(1, comment);
+        return formatComment(comment) + _eol;
     }
 
     /** Return a formatted comment containing the
      *  specified string with a specified indent level.
-     *  In this base class, the
-     *  comments is a C-style comment, which begins with
-     *  "\/*" and ends with "*\/". Subclasses may override this
-     *  produce comments that match the code generation language.
      *  @param comment The string to put in the comment.
      *  @param indentLevel The indentation level.
      *  @return A formatted comment.
      */
     public String comment(int indentLevel, String comment) {
-        return StringUtilities.getIndentPrefix(indentLevel) + "/* " + comment
-                + " */\n";
+        if (generateComment.getExpression().equals("true")) {
+            return StringUtilities.getIndentPrefix(indentLevel)
+                    + formatComment(comment);
+        } else {
+            return "";
+        }
+    }
+
+    /** Return a formatted comment containing the
+     *  specified string. In this base class, the
+     *  comments is a C-style comment, which begins with
+     *  "\/*" and ends with "*\/". Subclasses may override this
+     *  produce comments that match the code generation language.
+     *  @param comment The string to put in the comment.
+     *  @return A formatted comment.
+     */
+    public String formatComment(String comment) {
+        return "/* " + comment + " */\n";
     }
 
     /** Generate the body code that lies between initialize and wrapup.
@@ -282,8 +297,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String sharedCode = generateSharedCode();
         String includeFiles = generateIncludeFiles();
         String preinitializeCode = generatePreinitializeCode();
-        CodeStream.setIndentLevel(2);
+        CodeStream.setIndentLevel(1);
         String initializeCode = generateInitializeCode();
+        CodeStream.setIndentLevel(2);
         String bodyCode = generateBodyCode();
         CodeStream.setIndentLevel(0);
         String mainEntryCode = generateMainEntryCode();
@@ -297,9 +313,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         String fireFunctionCode = null;
         if (!inline) {
+            CodeStream.setIndentLevel(1);
             fireFunctionCode = generateFireFunctionCode();
+            CodeStream.setIndentLevel(0);
         }
+        CodeStream.setIndentLevel(1);
         String wrapupCode = generateWrapupCode();
+        CodeStream.setIndentLevel(0);
 
         // Generating variable declarations needs to happen after buffer
         // sizes are set(?).
@@ -368,7 +388,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (args.length == 0) {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.codegen.kernel.CodeGenerator model.xml "
-                    + "[model.xml . . .]\n"
+                    + "[model.xml . . .]" + _eol
                     + "  The arguments name MoML files containing models");
             return -1;
         }
@@ -467,7 +487,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Generate include files.
      *  @return The include files.
-     *  @throws IllegalActionException If the helper class for some actor 
+     *  @exception IllegalActionException If the helper class for some actor 
      *   cannot be found.
      */
     public String generateIncludeFiles() throws IllegalActionException {
@@ -486,7 +506,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment("Initialize " + getContainer().getFullName()));
+        //code.append(comment("Initialize " + getContainer().getFullName()));
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateInitializeCode());
@@ -552,12 +572,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
 
-        _modifiedVariables = compositeActorHelper.getModifiedVariables();
+        try {
+            _modifiedVariables = compositeActorHelper.getModifiedVariables();
 
-        code.append(compositeActorHelper.generatePreinitializeCode());
+            code.append(compositeActorHelper.generatePreinitializeCode());
 
-        code.append(compositeActorHelper.createOffsetVariablesIfNeeded());
-
+            code.append(compositeActorHelper.createOffsetVariablesIfNeeded());
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(compositeActorHelper
+                    .getComponent(), throwable,
+                    "Failed to generate preinitialize code");
+        }
         return code.toString();
     }
 
@@ -566,7 +591,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      * data struct types and static methods or variables shared by multiple
      * instances of the same helper actor type.
      * @return The shared code of the containing composite actor.
-     * @throws IllegalActionException If an error occurrs when generating
+     * @exception IllegalActionException If an error occurrs when generating
      *  the globally shared code, or if the helper class for the model
      *  director cannot be found, or if an error occurs when the helper
      *  actor generates the shared code.
@@ -574,22 +599,21 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateSharedCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(comment(0, "Generate shared code for "
-                + getContainer().getFullName()));
-
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
-
         Set sharedCodeBlocks = compositeActorHelper.getSharedCode();
-
         Iterator blocks = sharedCodeBlocks.iterator();
-
         while (blocks.hasNext()) {
             String block = (String) blocks.next();
             code.append(block);
         }
 
-        code.append(comment(0, "Finished generating shared code for "
-                + getContainer().getFullName()));
+        if (code.length() > 0) {
+            code.insert(0, _eol
+                    + comment("Generate shared code for "
+                            + getContainer().getName()));
+            code.append(comment("Finished generating shared code for "
+                    + getContainer().getName()));
+        }
 
         return code.toString();
     }
@@ -597,7 +621,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Generate type conversion code.
      * 
      *  @return The type conversion code.
-     *  @throws IllegalActionException If an error occurrs when generating
+     *  @exception IllegalActionException If an error occurrs when generating
      *   the type conversion code, or if the helper class for the model
      *   director cannot be found, or if an error occurs when the helper
      *   actor generates the type conversion code.
@@ -615,9 +639,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\n\n");
-        code.append(comment(0, "Variable Declarations "
-                + getContainer().getFullName()));
+        //code.append(_eol + _eol);
+        //code.append(comment(0, "Variable Declarations "
+        //        + getContainer().getFullName()));
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateVariableDeclaration());
@@ -632,14 +656,24 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\n\n");
-        code.append(comment("Variable initialization "
-                + getContainer().getFullName()));
+        //code.append(_eol + _eol);
+        //code.append(comment(1, "Variable initialization "
+        //       + getContainer().getFullName()));
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
 
         code.append(compositeActorHelper.generateVariableInitialization());
         return code.toString();
+    }
+
+    /** Generate variable name for the given attribute. The reason to append 
+     *  underscore is to avoid conflict with the names of other objects. For
+     *  example, the paired PortParameter and ParameterPort have the same name. 
+     *  @param attribute The attribute to generate variable name for.
+     *  @return The generated variable name.
+     */
+    public String generateVariableName(NamedObj attribute) {
+        return CodeGeneratorHelper.generateName(attribute) + "_";
     }
 
     /** Generate into the specified code stream the code associated with
@@ -652,7 +686,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment("Wrapup " + getContainer().getFullName()));
+        //code.append(comment(1, "Wrapup " + getContainer().getFullName()));
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateWrapupCode());
@@ -712,8 +746,22 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return _codeFileName;
     }
 
+    /** Return a list of macros this code generator supports. 
+     *  @return Returns the _macros.
+     */
+    public List getMacros() {
+        return _macros;
+    }
+
+    /** Return the set of modified variables.
+     *  @return The set of modified variables.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public Set getModifiedVariables() throws IllegalActionException {
+        return _modifiedVariables;
+    }
+
     /** Test if the containing actor is in the top level.
-     *
      *  @return true if the containing actor is in the top level.
      */
     public boolean isTopLevel() {
@@ -776,6 +824,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Execute the compile and run commands in the
+     *  <i>codeDirectory</i> directory. In this base class, 0 is
+     *  returned by default.
+     *  @return The result of the execution.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected int _executeCommands() throws IllegalActionException {
+        return 0;
+    }
 
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.
@@ -840,128 +898,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return castHelperObject;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Indent string for indent level 1.
-     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
-     */
-    protected static String _INDENT1 = StringUtilities.getIndentPrefix(1);
-
-    /** Set of include command line arguments where each element is 
-     *  a string, for example "-I/usr/local/include".
-     */
-    protected Set _includes = new HashSet();
-
-    /** The model we for which we are generating code. */
-    protected CompositeEntity _model;
-
-    /** A set that contains all variables in the model whose values can be 
-     *  changed during execution.
-     */
-    protected Set _modifiedVariables;
-
-    /** A HashSet that contains all codegen types referenced in the model.
-     * When the codegen kernel processes a $new() macro, it would add the
-     * codegen type to this set. Codegen types are supported by the code
-     * generator package. (e.g. Int, Double, Array, and etc.)
-     */
-    protected HashSet _newTypesUsed = new HashSet();
-
-    /** 
-     * A static list of all macros supported by the code generator. 
-     */
-    protected static final List _macros = Arrays.asList(new String[] { "ref",
-            "val", "size", "type", "targetType", "cgType", "tokenFunc",
-            "typeFunc", "actorSymbol", "actorClass", "new" });
-
-    /** 
-     * A static list of all primitive types supported by the code generator. 
-     */
-    protected static final List _primitiveTypes = Arrays.asList(new String[] {
-            "Int", "Double", "String", "Long", "Boolean" });
-
-    /** The sanitized model name. */
-    protected String _sanitizedModelName;
-
-    /** A HashSet that contains all token functions referenced in the model.
-     *  When the codegen kernel processes a $tokenFunc() macro, it would add
-     *  the type function to this set. 
-     */
-    protected HashSet _tokenFuncUsed = new HashSet();
-
-    /** A HashSet that contains all type functions referenced in the model.
-     *  When the codegen kernel processes a $tokenFunc() macro, it would add
-     *  the type function to this set. 
-     */
-    protected HashSet _typeFuncUsed = new HashSet();
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Given a Set of Strings, return a string where each element of the
-     *  Set is separated by a space.
-     *  @param set The Set of Strings.
-     *  @return A String that contains each element of the Set separated by
-     *  a space.
-     */
-    private static String _concatenateElements(Set set) {
-        StringBuffer buffer = new StringBuffer();
-        Iterator sets = set.iterator();
-        while (sets.hasNext()) {
-            if (buffer.length() > 0) {
-                buffer.append(" ");
-            }
-            buffer.append((String) sets.next());
-        }
-        return buffer.toString();
-    }
-
-    /** Execute the compile and run commands in the
-     *  <i>codeDirectory</i> directory.
-     *  @return The return value of the last subprocess that was executed
-     *  or -1 if no commands were executed.
-     */
-    private int _executeCommands() throws IllegalActionException {
-
-        List commands = new LinkedList();
-        if (((BooleanToken) compile.getToken()).booleanValue()) {
-            commands.add("make -f " + _sanitizedModelName + ".mk");
-        }
-
-        if (isTopLevel()) {
-            if (((BooleanToken) compile.getToken()).booleanValue()) {
-                String command = codeDirectory.stringValue()
-                        + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
-                                .stringValue().endsWith("\\")) ? "/" : "")
-                        + _sanitizedModelName;
-
-                commands.add("\"" + command.replace('\\', '/') + "\"");
-            }
-        }
-
-        if (commands.size() == 0) {
-            return -1;
-        }
-
-        _executeCommands.setCommands(commands);
-        _executeCommands.setWorkingDirectory(codeDirectory.asFile());
-
-        try {
-            // FIXME: need to put this output in to the UI, if any. 
-            _executeCommands.start();
-        } catch (Exception ex) {
-            StringBuffer errorMessage = new StringBuffer();
-            Iterator allCommands = commands.iterator();
-            while (allCommands.hasNext()) {
-                errorMessage.append((String) allCommands.next() + "\n");
-            }
-            throw new IllegalActionException("Problem executing the "
-                    + "commands:\n" + errorMessage);
-        }
-        return _executeCommands.getLastSubprocessReturnCode();
-    }
-
     /** Write the code to a directory named by the codeDirectory
      *  parameter, with a file name that is a sanitized version of the
      *  model name, and an extension that is the last package of
@@ -972,7 +908,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
      */
-    private String _writeCode(StringBuffer code) throws IllegalActionException {
+    protected String _writeCode(StringBuffer code)
+            throws IllegalActionException {
         // This method is private so that the body of the caller shorter.
 
         String extension = generatorPackage.stringValue().substring(
@@ -1033,148 +970,103 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
     }
 
-    /** Read in a template makefile, substitute variables and write
-     *  the resulting makefile.
-     *
-     *  <p>The makefile template can be found by looking up a resource
-     *  name makefile.in in the package named by the 
-     *  <i>generatorPackage</i> parameter.  Thus, if the 
-     *  <i>generatorPackage</i> has the value "ptolemy.codegen.c",
-     *  then we look for the resouce "ptolemy.codegen.c.makefile.in"
-     *  <p>
-     *  <p>The makefile is written to a directory named by the codeDirectory
-     *  parameter, with a file name that is a sanitized version of the
-     *  model name, and a ".mk" extension.  Thus, for a model named "Foo",
-     *  we might generate a makefile in "$HOME/codegen/Foo.mk".
-     *
-     *  <p>The following variables are substituted
-     *  <dd>
-     *  <dt><code>@modelName@</code>
-     *  <dd>The sanitized model name, created by invoking
-     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)} 
-     *  on the model name.
-     *  <dt><code>@PTCGIncludes@</code>
-     *  <dd>The elements of the set of include command arguments that
-     *  were added by calling {@link #addInclude(String)}, where each
-     *  element is separated by a space.
-     *  <dt><code>@PTCGLibraries@</code>
-     *  <dd>The elements of the set of library command arguments that
-     *  were added by calling {@link #addLibrary(String)}, where each
-     *  element is separated by a space.
-     *  </dl>
-
-     *  @exception IllegalActionException  If there is a problem reading
-     *  a parameter, if there is a problem creating the codeDirectory directory
-     *  or if there is a problem writing the code to a file.
+    /** Create a make file to compile the generated code file(s).
+     *  In this base class, it does nothing.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    private void _writeMakefile() throws IllegalActionException {
-
-        // Write the code to a file with the same name as the model into
-        // the directory named by the codeDirectory parameter.
-        //try {
-        // Check if needs to overwrite.
-        if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
-                && codeDirectory.asFile().exists()) {
-            // FIXME: It is totally bogus to ask a yes/no question
-            // like this, since it makes it impossible to call
-            // this method from a script.  If the question is
-            // asked, the build will hang.
-            if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
-                    + " exists. OK to overwrite?")) {
-                throw new IllegalActionException(this,
-                        "Please select another file name.");
-            }
-        }
-
-        File codeDirectoryFile = codeDirectory.asFile();
-        if (codeDirectoryFile.isFile()) {
-            throw new IllegalActionException(this, "Error: "
-                    + codeDirectory.stringValue() + " is a file, "
-                    + " it should be a directory.");
-        }
-
-        if (!codeDirectoryFile.isDirectory() && !codeDirectoryFile.mkdirs()) {
-            throw new IllegalActionException(this, "Failed to make the \""
-                    + codeDirectory.stringValue() + "\" directory.");
-        }
-
-        Map substituteMap;
-        try {
-            // Add substitutions for all the parameter.
-            // For example, @generatorPackage@ will be replaced with
-            // the value of the generatorPackage.
-            substituteMap = CodeGeneratorUtilities.newMap(this);
-            substituteMap.put("@modelName@", _sanitizedModelName);
-            substituteMap
-                    .put("@PTCGIncludes@", _concatenateElements(_includes));
-            substituteMap.put("@PTCGLibraries@",
-                    _concatenateElements(_libraries));
-
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(this, ex,
-                    "Problem generating substitution map from " + _model);
-        }
-
-        BufferedReader makefileTemplateReader = null;
-
-        String makefileTemplateName = generatorPackage.stringValue().replace(
-                '.', '/')
-                + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in");
-
-        // If necessary, add a trailing / after codeDirectory.
-        String makefileOutputName = codeDirectory.stringValue()
-                + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
-                        .stringValue().endsWith("\\")) ? "/" : "")
-                + _sanitizedModelName + ".mk";
-
-        try {
-            try {
-                makefileTemplateReader = CodeGeneratorUtilities
-                        .openAsFileOrURL(makefileTemplateName);
-            } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "Failed to open \""
-                        + makefileTemplateName + "\" for reading.");
-            }
-
-            _executeCommands.stdout("Reading \"" + makefileTemplateName
-                    + "\",\n    writing \"" + makefileOutputName + "\"");
-            CodeGeneratorUtilities.substitute(makefileTemplateReader,
-                    substituteMap, makefileOutputName);
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Failed to read \""
-                    + makefileTemplateName + "\" or write \""
-                    + makefileOutputName + "\"");
-        } finally {
-            if (makefileTemplateReader != null) {
-                try {
-                    makefileTemplateReader.close();
-                } catch (IOException ex) {
-                    throw new IllegalActionException(this, ex,
-                            "Failed to close \"" + makefileTemplateName + "\"");
-                }
-            }
-        }
-        //}
+    protected void _writeMakefile() throws IllegalActionException {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
     /** The name of the file that was written.
      *  If no file was written, then the value is null.
      */
-    private String _codeFileName = null;
+    protected String _codeFileName = null;
+
+    /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
+     *  We use a end of line charactor so that the files we generate
+     *  have the proper end of line character for use by other native tools.
+     */
+    protected static String _eol;
+    static {
+        _eol = StringUtilities.getProperty("line.separator");
+    }
+
+    /** Set of execute commands to run the generated code.
+     */
+    protected ExecuteCommands _executeCommands;
+
+    /** Set of library command line arguments where each element is 
+     *  a string, for example "-L/usr/local/lib".
+     */
+    protected Set _libraries = new HashSet();
+
+    /** Indent string for indent level 1.
+     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
+     */
+    protected static String _INDENT1 = StringUtilities.getIndentPrefix(1);
+
+    /** Indent string for indent level 2.
+     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
+     */
+    protected static String _INDENT2 = StringUtilities.getIndentPrefix(2);
+
+    /** Set of include command line arguments where each element is 
+     *  a string, for example "-I/usr/local/include".
+     */
+    protected Set _includes = new HashSet();
+
+    /** The model we for which we are generating code. */
+    protected CompositeEntity _model;
+
+    /** A set that contains all variables in the model whose values can be 
+     *  changed during execution.
+     */
+    protected Set _modifiedVariables;
+
+    /** A HashSet that contains all codegen types referenced in the model.
+     * When the codegen kernel processes a $new() macro, it would add the
+     * codegen type to this set. Codegen types are supported by the code
+     * generator package. (e.g. Int, Double, Array, and etc.)
+     */
+    protected HashSet _newTypesUsed = new HashSet();
+
+    /** 
+     * A static list of all macros supported by the code generator. 
+     */
+    protected List _macros = new ArrayList(Arrays.asList(new String[] { "ref",
+            "val", "size", "type", "targetType", "cgType", "tokenFunc",
+            "typeFunc", "actorSymbol", "actorClass", "new" }));
+
+    /** 
+     * A static list of all primitive types supported by the code generator. 
+     */
+    protected static final List _primitiveTypes = Arrays.asList(new String[] {
+            "Int", "Double", "String", "Long", "Boolean" });
+
+    /** The sanitized model name. */
+    protected String _sanitizedModelName;
+
+    /** A HashSet that contains all token functions referenced in the model.
+     *  When the codegen kernel processes a $tokenFunc() macro, it would add
+     *  the type function to this set. 
+     */
+    protected HashSet _tokenFuncUsed = new HashSet();
+
+    /** A HashSet that contains all type functions referenced in the model.
+     *  When the codegen kernel processes a $tokenFunc() macro, it would add
+     *  the type function to this set. 
+     */
+    protected HashSet _typeFuncUsed = new HashSet();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** A hash map that stores the code generator helpers associated
      *  with the actors.
      */
     private HashMap _helperStore = new HashMap();
-
-    /** Set of library command line arguments where each element is 
-     *  a string, for example "-L/usr/local/lib".
-     */
-    private Set _libraries = new HashSet();
-
-    private ExecuteCommands _executeCommands;
 
 }

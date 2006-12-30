@@ -233,7 +233,7 @@ public class MoMLApplet extends PtolemyApplet {
      *  If the modelURL applet parameter does not exist, then
      *  read the model applet parameter.  As a side effect,
      *  the _fragment field is set with any text after a "#".
-     *  @exception Exception Thrown if there is no modelURL or model
+     *  @exception Exception If there is no modelURL or model
      *  applet parameter.
      *  @return the value of the modelURL or model parameter.
      */

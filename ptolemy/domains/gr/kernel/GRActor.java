@@ -121,7 +121,7 @@ abstract public class GRActor extends TypedAtomicActor {
 
     /** Set the view screen that the actor is connected to.
      *  @param actor The actor.
-     *  @exception IllegalActionException Thrown if there is a problem
+     *  @exception IllegalActionException If there is a problem
      *  setting the view screen.
      */
     abstract protected void _setViewScreen(GRActor actor)

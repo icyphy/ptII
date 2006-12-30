@@ -99,11 +99,10 @@ public class CodeStream {
 
     /**
      * Construct a new code stream, given a specified file path of the
-     * helper .c file as a URL suitable for
+     * helper .[target] file as a URL suitable for
      * {@link ptolemy.util.FileUtilities#openForReading(String, URI, ClassLoader)},
      *  for example "file:./test/testCodeBlock.c".
      * @param path The given file path.
-     * .c file 
      */
     public CodeStream(String path) {
         _filePath = path;
@@ -285,8 +284,8 @@ public class CodeStream {
             if (mayNotExist) {
                 return;
             } else {
-                throw new IllegalActionException("Cannot find code block: "
-                        + signature + ".\n");
+                throw new IllegalActionException(_helper,
+                        "Cannot find code block: \"" + signature + "\".");
             }
         }
 
@@ -349,8 +348,8 @@ public class CodeStream {
 
     /**
      * Return a StringBuffer that contains all the code block names and
-     * bodies from the associated helper .c file.
-     * @return The content from parsing the helper .c file.
+     * bodies from the associated helper .[target] file.
+     * @return The content from parsing the helper .[target] file.
      * @exception IllegalActionException If an error occurs during parsing.
      */
     public String description() throws IllegalActionException {
@@ -364,8 +363,7 @@ public class CodeStream {
             Signature signature = (Signature) keys.next();
             buffer.append(signature.functionName);
 
-            ArrayList parameters = _declarations
-                    .getParameters(signature);
+            ArrayList parameters = _declarations.getParameters(signature);
 
             if ((parameters != null) && (parameters.size() > 0)) {
                 for (int i = 0; i < parameters.size(); i++) {
@@ -379,9 +377,10 @@ public class CodeStream {
                 buffer.append(")");
             }
 
-            buffer.append(":\n");
+            buffer.append(":" + _eol);
             buffer.append(_declarations.getCode(signature));
-            buffer.append("\n-------------------------------\n\n");
+            buffer.append(_eol + "-------------------------------" + _eol
+                    + _eol);
         }
 
         return buffer.toString();
@@ -407,9 +406,9 @@ public class CodeStream {
 
         String indent = StringUtilities.getIndentPrefix(indentLevel);
         // For every line.separator, substitute line.separator + indent.
-        String tmpString = StringUtilities.substitute(inputString,
-                _lineSeparator, _lineSeparator + indent);
-        if (tmpString.endsWith(_lineSeparator + indent)) {
+        String tmpString = StringUtilities.substitute(inputString, _eol, _eol
+                + indent);
+        if (tmpString.endsWith(_eol + indent)) {
             // Chop off the last indent
             tmpString = tmpString.substring(0, tmpString.length()
                     - indent.length());
@@ -419,22 +418,42 @@ public class CodeStream {
     }
 
     /**
-     * Simple stand alone test method. Parse a helper .c file, and print
-     * all the code blocks.
+     * Insert the contents of the given String to this code stream
+     * at the given position.
+     * @param offset The given position.
+     * @param code The given string.
+     */
+    public void insert(int offset, String code) {
+        _stream.insert(offset, code);
+    }
+
+    /**
+     * return a boolean indicating if this stream is empty.
+     * @return true if this stream is empty.
+     */
+    public boolean isEmpty() {
+        return _stream.length() == 0;
+    }
+
+    /**
+     * Simple stand alone test method. Parse a helper .[target] file,
+     * and print all the code blocks.
      * @param args Command-line arguments, the first of which names a 
-     * .c file as a URL , for example file:./test/testCodeBlock.c.
+     * .[target] file as a URL , for example file:./test/testCodeBlock.c.
      * @exception IOException If an error occurs when reading user inputs.
      * @exception IllegalActionException If an error occurs during parsing
-     *  the helper .c file.
+     *  the helper .[target] file.
      */
     public static void main(String[] args) throws IOException,
             IllegalActionException {
         try {
             CodeStream code = new CodeStream(args[0]);
 
-            System.out.println("\n----------Result-----------------------\n");
+            System.out.println(_eol + "----------Result-----------------------"
+                    + _eol);
             System.out.println(code.description());
-            System.out.println("\n----------Result-----------------------\n");
+            System.out.println(_eol + "----------Result-----------------------"
+                    + _eol);
 
             ArrayList codeBlockArgs = new ArrayList();
             codeBlockArgs.add(Integer.toString(3));
@@ -498,7 +517,7 @@ public class CodeStream {
             throws IllegalActionException {
         if (!name.startsWith("$")) {
             throw new IllegalActionException("Parameter \"" + name
-                    + "\" is not well-formed.\n"
+                    + "\" is not well-formed." + _eol
                     + "Parameter name for code block needs to starts with '$'");
         }
         //name.matches("[a-zA-Z_0-9]");
@@ -512,9 +531,9 @@ public class CodeStream {
      * Otherwise, it recursively searches code blocks from super classes'
      * helpers.
      * @param mayNotExist Indicate if the file is required to exist.
-     * @param filePath The given .c file to read from.
+     * @param filePath The given .[target] file to read from.
      * @exception IllegalActionException If an error occurs when parsing the
-     *  helper .c file.
+     *  helper .[target] file.
      */
     private void _constructCodeTable(boolean mayNotExist)
             throws IllegalActionException {
@@ -540,7 +559,7 @@ public class CodeStream {
     /**
      * 
      * @param mayNotExist Indicate if the file is required to exist.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _constructCodeTableHelper(boolean mayNotExist)
             throws IllegalActionException {
@@ -550,13 +569,17 @@ public class CodeStream {
             // Open the .c file for reading.
             reader = FileUtilities.openForReading(_filePath, null, null);
 
+            if (reader == null) {
+                return;
+            }
+
             StringBuffer codeInFile = new StringBuffer();
 
             // FIXME: is there a better way to read the entire file?
             // create a string of all code in the file
             for (String line = reader.readLine(); line != null; line = reader
                     .readLine()) {
-                codeInFile.append(line + "\n");
+                codeInFile.append(line + _eol);
             }
 
             _declarations.addScope();
@@ -572,6 +595,8 @@ public class CodeStream {
         } catch (IOException ex) {
             if (reader == null) {
                 if (mayNotExist) {
+                    /* System.out.println("Warning: Helper .[target] file " +
+                     _filePath + " not found"); */
                 } else {
                     _declarations = null;
                     throw new IllegalActionException(null, ex,
@@ -595,13 +620,22 @@ public class CodeStream {
     }
 
     /**
-     * Get the file path for the helper .c file associated with the given
-     * helper class.
+     * Get the file path for the helper .[target] file associated with
+     * the given helper class.  If the helper has no code generator,
+     * then the empty string is returned.  
      * @param helperClass The given helper class
-     * @return Path for the helper .c file.
+     * @return Path for the helper .[target] file.
      */
     private String _getPath(Class helperClass) {
-        return "$CLASSPATH/" + helperClass.getName().replace('.', '/') + ".c";
+        CodeGenerator codeGenerator = _helper.getCodeGenerator();
+        if (codeGenerator == null) {
+            return "";
+        }
+        String extension = _helper._codeGenerator.generatorPackage
+                .getExpression();
+        extension = extension.substring(extension.lastIndexOf(".") + 1);
+        return "$CLASSPATH/" + helperClass.getName().replace('.', '/') + "."
+                + extension;
     }
 
     /**
@@ -643,6 +677,23 @@ public class CodeStream {
 
         StringBuffer body = new StringBuffer(codeInFile.substring(_parseIndex,
                 endIndex));
+
+        // strip beginning new lines and white spaces
+        while (body.length() > 0
+                && (body.charAt(0) == '\n' || body.charAt(0) == '\r' || body
+                        .charAt(0) == ' ')) {
+            body.deleteCharAt(0);
+        }
+        // strip ending new lines and white spaces
+        int endChar = body.length() - 1;
+        while (endChar >= 0
+                && (body.charAt(endChar) == '\n'
+                        || body.charAt(endChar) == '\r' || body.charAt(endChar) == ' ')) {
+            body.deleteCharAt(endChar);
+            endChar = body.length() - 1;
+        }
+        // add back one ending new line
+        body.append(_eol);
 
         // Recursively parsing for nested code blocks
         //for (String subBlockKey = _parseCodeBlock(body); subBlockKey != null;) {
@@ -792,8 +843,8 @@ public class CodeStream {
                     return (String) ((Object[]) table.get(signature))[0];
                 }
             }
-            throw new IllegalActionException("Cannot find code block "
-                    + signature + ".\n");
+            throw new IllegalActionException(_helper,
+                    "Cannot find code block: " + signature + ".");
         }
 
         public StringBuffer getCode(Signature signature)
@@ -861,7 +912,7 @@ public class CodeStream {
          * 
          * @param functionName
          * @param numParameters
-         * @throws IllegalActionException
+         * @exception IllegalActionException
          */
         public Signature(String functionName, int numParameters)
                 throws IllegalActionException {
@@ -938,6 +989,15 @@ public class CodeStream {
      */
     private CodeBlockTable _declarations = null;
 
+    /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
+     *  We use a end of line charactor so that the files we generate
+     *  have the proper end of line character for use by other native tools.
+     */
+    private static String _eol;
+    static {
+        _eol = StringUtilities.getProperty("line.separator");
+    }
+
     /**
      * The path of the current .c file being parsed.
      */
@@ -958,10 +1018,4 @@ public class CodeStream {
      * The content of this CodeStream.
      */
     private StringBuffer _stream = new StringBuffer();
-
-    /** The end of line character. */
-    private static String _lineSeparator;
-    static {
-        _lineSeparator = System.getProperty("line.separator");
-    }
 }
