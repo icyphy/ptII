@@ -10,17 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 290}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 190, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={111, 117, 815, 516}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
-    </property>
-    <property name="VHDLCodeGenerator" class="ptolemy.codegen.vhdl.kernel.VHDLCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{390, 305}">
-        </property>
     </property>
     <entity name="FixConst" class="ptolemy.actor.lib.vhdl.FixConst">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
@@ -48,10 +44,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 70.0]">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 363, 332, 232}, maximized=false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 135.0]">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{420, 155}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -63,22 +57,27 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <vertex name="vertex" value="[200.0, 50.0]">
+        </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <vertex name="vertex" value="[195.0, 90.0]">
+        </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <vertex name="vertex" value="[220.0, 135.0]">
+        </vertex>
     </relation>
     <link port="FixConst.output" relation="relation2"/>
     <link port="FixConst2.output" relation="relation3"/>
     <link port="FixConst3.output" relation="relation4"/>
     <link port="Multiplexor.output" relation="relation"/>
-    <link port="Multiplexor.input" relation="relation2"/>
-    <link port="Multiplexor.input" relation="relation3"/>
-    <link port="Multiplexor.input" relation="relation4"/>
-    <link port="Multiplexor.select" relation="relation"/>
-    <link port="Display.input" relation="relation"/>
+    <link port="Multiplexor.A" relation="relation2"/>
+    <link port="Multiplexor.B" relation="relation3"/>
+    <link port="Multiplexor.select" relation="relation4"/>
+    <link port="NonStrictTest.input" relation="relation"/>
 </entity>
