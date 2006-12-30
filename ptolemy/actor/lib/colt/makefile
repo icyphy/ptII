@@ -72,6 +72,7 @@ JSRCS = \
 	ColtZeta.java
 
 OTHER_FILES_TO_BE_JARED = \
+	binomialSelector.xml \
 	colt.xml \
 	colt-copyright.htm
 
