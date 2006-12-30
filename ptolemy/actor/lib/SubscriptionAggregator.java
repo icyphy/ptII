@@ -190,6 +190,7 @@ public class SubscriptionAggregator extends Subscriber {
             Publisher publisher = (Publisher) publishers.next();
             ComponentRelation relation = publisher._relation;
             input.liberalLink(relation);
+            _relations.add(relation);
         }
         Director director = getDirector();
         if (director != null) {
