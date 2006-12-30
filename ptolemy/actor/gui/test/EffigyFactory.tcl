@@ -78,3 +78,12 @@ test EffigyFactory-7.0 {getExtension} {
 	[java::call ptolemy.actor.gui.EffigyFactory getExtension $url2]
 } {xml {}}
 
+######################################################################
+####
+#
+test EffigyFactory-7.1 {getExtension with . in path name} {
+    set file1 [java::new java.io.File foo.bar/makefile]
+    set url1 [$file1 toURL]
+    list [java::call ptolemy.actor.gui.EffigyFactory getExtension $url1]
+} {{}}
+

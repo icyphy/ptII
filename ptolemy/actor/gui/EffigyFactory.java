@@ -1,6 +1,6 @@
 /* An object that can create a new Effigy
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -155,14 +155,20 @@ public class EffigyFactory extends CompositeEntity {
      */
     public static String getExtension(URL url) {
         String filename = url.getFile();
-        int index = filename.lastIndexOf(".");
+        int dotIndex = filename.lastIndexOf(".");
 
-        if (index < 0) {
+        if (dotIndex < 0) {
             return "";
         }
 
         try {
-            return filename.substring(index + 1);
+            int slashIndex = filename.lastIndexOf("/");
+            if (slashIndex > 0 && slashIndex > dotIndex) {
+                // The last / is after the last .
+                // for example foo.bar/bif
+                return "";
+            }
+            return filename.substring(dotIndex + 1);
         } catch (IndexOutOfBoundsException ex) {
             return "";
         }
