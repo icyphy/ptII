@@ -184,74 +184,10 @@ public class GenerateCopyrights {
         } catch (Exception ex) {
             System.out.println(ex);
 
-            // Ignore and use the default applicationName
+            // This application has no _applicationCopyrights
         }
 
-        // Now generate the HTML
-        String applicationName = "Ptolemy II";
-
-        try {
-            StringAttribute applicationNameAttribute = (StringAttribute) configuration
-                    .getAttribute("_applicationName", StringAttribute.class);
-
-            if (applicationNameAttribute != null) {
-                applicationName = applicationNameAttribute.getExpression();
-            }
-        } catch (Exception ex) {
-            // Ignore and use the default applicationName
-        }
-
-        String defaultApplicationCopyright = "ptolemy/configs/doc/copyright.htm";
-        String applicationCopyright = defaultApplicationCopyright;
-
-        try {
-            StringAttribute applicationCopyrightAttribute = (StringAttribute) configuration
-                    .getAttribute("_applicationCopyright",
-                            StringAttribute.class);
-
-            if (applicationCopyrightAttribute != null) {
-                applicationCopyright = applicationCopyrightAttribute
-                        .getExpression();
-            }
-        } catch (Exception ex) {
-            // Ignore and use the default applicationCopyright
-        }
-
-        String applicationCopyrightURL = _findURL(applicationCopyright);
-
-        String aelfredCopyright = _findURL("com/microstar/xml/README.txt");
-
-        String defaultCSS = _findURL("doc/default.css");
-        StringBuffer htmlBuffer = new StringBuffer();
-        htmlBuffer.append("<html>\n<head>\n<title>Copyrights</title>\n"
-                + "<link href=\"" + defaultCSS + "\" rel=\"stylesheet\""
-                + "type=\"text/css\">\n" + "</head>\n<body>\n" + "<h1>"
-                + applicationName + "</h1>\n"
-                + "The primary copyright for the " + applicationName
-                + " System can be\n" + "found in <a href=\""
-                + applicationCopyrightURL + "\"><code>"
-                + _canonicalizeURLToPTII(applicationCopyrightURL)
-                + "</code></a>.\n"
-                + "This configuration includes code that uses packages\n"
-                + "with the following copyrights.\n");
-
-        if (!applicationCopyright.equals(defaultApplicationCopyright)) {
-            // If the Ptolemy II copyright is not the main copyright, add it.
-            String ptolemyIICopyright = _findURL(defaultApplicationCopyright);
-            htmlBuffer.append("<p>" + applicationName + " uses Ptolemy II "
-                    + VersionAttribute.CURRENT_VERSION.getExpression() + ".\n"
-                    + "PtolemyII is covered by the copyright in\n "
-                    + "<a href=\"" + ptolemyIICopyright + "\"><code>"
-                    + _canonicalizeURLToPTII(ptolemyIICopyright)
-                    + "</code></a>\n");
-        }
-
-        htmlBuffer.append("<p>" + applicationName
-                + " uses AElfred as an XML Parser.\n"
-                + "AElfred is covered by the copyright in\n " + "<a href=\""
-                + aelfredCopyright + "\"><code>"
-                + _canonicalizeURLToPTII(aelfredCopyright) + "</code></a>\n");
-
+        StringBuffer htmlBuffer = new StringBuffer(generatePrimaryCopyrightHTML(configuration));
         Iterator copyrights = copyrightsMap.entrySet().iterator();
 
         if (copyrights.hasNext()) {
@@ -261,7 +197,7 @@ public class GenerateCopyrights {
                             + "corresponding copyright "
                             + " of the package that is used.  If a feature is not "
                             + "listed below, then the "
-                            + applicationName
+                            + _getApplicationName(configuration)
                             + " copyright is the "
                             + "only copyright."
                             + "<table>\n"
@@ -307,6 +243,71 @@ public class GenerateCopyrights {
 
         htmlBuffer.append("<p>Other information <a href=\"about:\">about</a>\n"
                 + "this configuration.\n" + "</body>\n</html>");
+        return htmlBuffer.toString();
+    }
+
+    /** Generate the primary copyright.  Include a link to the other
+     *  copyrights.
+     *  @param configuration The configuration in which to look for the
+     *  _applicationName attribute.
+     *  @return A String containing HTML that describes what
+     *  copyrights are used by Entities in the configuration
+     */
+    public static String generatePrimaryCopyrightHTML(
+            Configuration configuration) {
+
+        String defaultApplicationCopyright = "ptolemy/configs/doc/copyright.htm";
+        String applicationCopyright = defaultApplicationCopyright;
+
+        try {
+            StringAttribute applicationCopyrightAttribute = (StringAttribute) configuration
+                    .getAttribute("_applicationCopyright",
+                            StringAttribute.class);
+
+            if (applicationCopyrightAttribute != null) {
+                applicationCopyright = applicationCopyrightAttribute
+                        .getExpression();
+            }
+        } catch (Exception ex) {
+            // Ignore and use the default applicationCopyright
+        }
+
+        String applicationName = _getApplicationName(configuration);
+        String applicationCopyrightURL = _findURL(applicationCopyright);
+
+        String aelfredCopyright = _findURL("com/microstar/xml/README.txt");
+
+        String defaultCSS = _findURL("doc/default.css");
+        StringBuffer htmlBuffer = new StringBuffer();
+        htmlBuffer.append("<html>\n<head>\n<title>Copyrights</title>\n"
+                + "<link href=\"" + defaultCSS + "\" rel=\"stylesheet\""
+                + "type=\"text/css\">\n" + "</head>\n<body>\n" + "<h1>"
+                + applicationName + "</h1>\n"
+                + "The primary copyright for the " + applicationName
+                + " System can be\n" + "found in <a href=\""
+                + applicationCopyrightURL + "\"><code>"
+                + _canonicalizeURLToPTII(applicationCopyrightURL)
+                + "</code></a>.\n"
+                + "This configuration includes code that uses packages\n"
+                + "with the following copyrights.\n");
+
+        if (!applicationCopyright.equals(defaultApplicationCopyright)) {
+            // If the Ptolemy II copyright is not the main copyright, add it.
+            String ptolemyIICopyright = _findURL(defaultApplicationCopyright);
+            htmlBuffer.append("<p>" + applicationName + " uses Ptolemy II "
+                    + VersionAttribute.CURRENT_VERSION.getExpression() + ".\n"
+                    + "PtolemyII is covered by the copyright in\n "
+                    + "<a href=\"" + ptolemyIICopyright + "\"><code>"
+                    + _canonicalizeURLToPTII(ptolemyIICopyright)
+                    + "</code></a>\n");
+        }
+
+        htmlBuffer.append("<p>" + applicationName
+                + " uses AElfred as an XML Parser.\n"
+                + "AElfred is covered by the copyright in\n " + "<a href=\""
+                + aelfredCopyright + "\"><code>"
+                + _canonicalizeURLToPTII(aelfredCopyright) + "</code></a>\n");
+
         return htmlBuffer.toString();
     }
 
@@ -392,4 +393,27 @@ public class GenerateCopyrights {
                     + majorVersion + "/ptII" + majorVersion + "/" + localURL;
         }
     }
+
+    
+    /** Get the application name from the _applicationName parameter.
+     *  If the _applicationName parameter is not set, then return
+     *  "Ptolemy II"
+     */
+    private static String _getApplicationName(Configuration configuration) {
+        // Now generate the HTML
+        String applicationName = "Ptolemy II";
+
+        try {
+            StringAttribute applicationNameAttribute = (StringAttribute) configuration
+                    .getAttribute("_applicationName", StringAttribute.class);
+
+            if (applicationNameAttribute != null) {
+                applicationName = applicationNameAttribute.getExpression();
+            }
+        } catch (Exception ex) {
+            // Ignore and use the default applicationName
+        }
+        return applicationName;
+    }
+
 }
