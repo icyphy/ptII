@@ -300,7 +300,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/jmf/jmf.jar \
 	ptolemy/actor/lib/jmf/demo/demo.jar \
 	ptolemy/actor/lib/joystick/joystick.jar \
-ptolemy/actor/lib/jxta/jxta.jar \
+	ptolemy/actor/lib/jxta/jxta.jar \
 	ptolemy/actor/lib/x10/x10.jar \
 	vendors/misc/joystick/Joystick.jar \
 	ptolemy/actor/lib/x10/demo/demo.jar \
@@ -413,7 +413,6 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(DSP_ONLY_JNLP_JARS) \
 	ptolemy/plot/plotapplication.jar 
-
 
 # All the jar files, include the application jars
 ALL_JNLP_JARS = \
@@ -899,10 +898,16 @@ sign_jar_dist_update_remote: sign_jar_dist
 MKL4J = $(ROOT)/bin/mkl4j
 
 # Location of Launch4J, see http://launch4j.sourceforge.net/
-L4J_DIR=c:/Program Files/Launch4j
+#L4J_DIR=c:/Program Files/Launch4j
+L4J_DIR=$(PTII)/vendors/launch4j
+
+# Cygpath command
+#PTCYGPATH=cygpath --windows
+PTCYGPATH=$(ROOT)/bin/ptcygpath
 
 # Launch4J console application that reads in .xml files and creates .exe files.
-L4JC=$(L4J_DIR)/launch4jc.exe
+#L4JC=$(L4J_DIR)/launch4jc.exe
+L4JC=$(L4J_DIR)/launch4j
 
 # .exe files to be created by Launch4J
 L4J_DOC_EXES = 		designdocv1.exe designdocv2.exe designdocv3.exe \
@@ -933,7 +938,7 @@ designdocv1_l4j.xml:
 		 doc/design/ptIIdesign1-intro.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/ptIIdesign1-intro.pdf
 designdocv1.exe: designdocv1_l4j.xml
-	"$(L4JC)" `cygpath --windows $$PWD/$<`
+	"$(L4JC)" `$(PTCYGPATH) $<`
 
 designdocv2_l4j.xml:
 	$(MKL4J) designdocv2 ptolemy.actor.gui.BrowserLauncher \
@@ -941,7 +946,7 @@ designdocv2_l4j.xml:
 	        doc/design/ptIIdesign2-software.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/ptIIdesign2-software.pdf
 designdocv2.exe: designdocv2_l4j.xml
-	"$(L4JC)" `cygpath --windows $$PWD/$<`
+	"$(L4JC)" `$(PTCYGPATH) $<`
 
 designdocv3_l4j.xml:
 	$(MKL4J) designdocv3 ptolemy.actor.gui.BrowserLauncher \
@@ -949,22 +954,21 @@ designdocv3_l4j.xml:
 		doc/design/ptIIdesign3-domains.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/ptIIdesign3-domains.pdf
 designdocv3.exe: designdocv3_l4j.xml
-	"$(L4JC)" `cygpath --windows $$PWD/$<`
+	"$(L4JC)" `$(PTCYGPATH) $<`
 
 histogram_l4j.xml:
 	$(MKL4J) histogram ptolemy.plot.plotml.HistogramMLApplication \
 		doc/img/histogram.ico \
 		"" ptolemy/plot/plotapplication.jar > $@
-
 histogram.exe: histogram_l4j.xml
-	"$(L4JC)" `cygpath --windows $$PWD/$^`
+	"$(L4JC)" `$(PTCYGPATH) $^`
 
 hyvisual_l4j.xml:
 	$(MKL4J) hyvisual ptolemy.vergil.VergilApplication \
 		doc/img/hyvisual.ico \
 		-hyvisual $(HYBRID_SYSTEMS_JNLP_JARS) > $@> $@
 hyvisual.exe: hyvisual_l4j.xml
-	"$(L4JC)" `cygpath --windows $$PWD/$^`
+	"$(L4JC)" `$(PTCYGPATH) $^`
 
 hyvisualdoc_l4j.xml:
 	$(MKL4J) hyvisualdoc ptolemy.actor.gui.BrowserLauncher \
@@ -972,22 +976,21 @@ hyvisualdoc_l4j.xml:
 		doc/design/hyvisual.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/hyvisual.pdf
 hyvisualdoc.exe: hyvisualdoc_l4j.xml
-	"$(L4JC)" `cygpath --windows $$PWD/$<`
+	"$(L4JC)" `$(PTCYGPATH) $<`
 
 ptiny_l4j.xml: $(MKL4J)
 	$(MKL4J) ptiny ptolemy.vergil.VergilApplication \
 		doc/img/ptiny.ico \
 		-ptiny $(PTINY_JNLP_JARS) > $@
 ptiny.exe: ptiny_l4j.xml
-	"$(L4JC)" `cygpath --windows $$PWD/$^`
+	"$(L4JC)" `$(PTCYGPATH) $^`
 
 ptplot_l4j.xml:
 	$(MKL4J) ptplot ptolemy.plot.plotml.EditablePlotMLApplication \
 		doc/img/ptplot.ico \
 		"" ptolemy/plot/plotapplication.jar > $@
-
 ptplot.exe: ptplot_l4j.xml
-	"$(L4JC)" `cygpath --windows $$PWD/$^`
+	"$(L4JC)" `$(PTCYGPATH) $^`
 
 
 vergil_l4j.xml:
@@ -995,7 +998,7 @@ vergil_l4j.xml:
 		doc/img/vergil.ico \
 		"" $(FULL_JNLP_JARS) > $@
 vergil.exe: vergil_l4j.xml
-	"$(L4JC)" `cygpath --windows $$PWD/$^`
+	"$(L4JC)" `$(PTCYGPATH) $^`
 
 viptos_l4j.xml:
 	$(MKL4J) viptos ptolemy.vergil.VergilApplication \
@@ -1003,7 +1006,7 @@ viptos_l4j.xml:
 		-viptos $(VIPTOS_JNLP_JARS) > $@
 
 viptos.exe: viptos_l4j.xml
-	"$(L4JC)" `cygpath --windows $$PWD/$^`
+	"$(L4JC)" `$(PTCYGPATH) $^`
 
 visualsense_l4j.xml:
 	$(MKL4J) visualsense ptolemy.vergil.VergilApplication \
@@ -1011,14 +1014,14 @@ visualsense_l4j.xml:
 		-visualsense $(VISUAL_SENSE_JNLP_JARS) > $@
 
 visualsense.exe: visualsense_l4j.xml
-	"$(L4JC)" `cygpath --windows $$PWD/$^`
+	"$(L4JC)" `$(PTCYGPATH) $^`
 
 visualsensedoc_l4j.xml:
 	$(MKL4J) visualsensedoc ptolemy.actor.gui.BrowserLauncher \
 		doc/img/pdf.ico $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/visualsense.pdf
 visualsensedoc.exe: visualsensedoc_l4j.xml
-	"$(L4JC)" `cygpath --windows $$PWD/$<`
+	"$(L4JC)" `$(PTCYGPATH) $<`
 
 ################################################################
 ################################################################
