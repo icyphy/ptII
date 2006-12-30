@@ -92,7 +92,7 @@ test CompositeActor-3.3 {Test failure mode of setManager} {
     catch {$e0 setManager $m4} msg2
     list $msg $msg2
 } {{ptolemy.kernel.util.IllegalActionException: Cannot set the Manager of an actor with a container.
-  in .E0.E3.E5 and .<Unnamed Object>} {ptolemy.kernel.util.IllegalActionException: Cannot set manager because workspaces are different.
+  in .E0.E3.E5 and .<Unnamed Object>} {ptolemy.kernel.util.IllegalActionException: Cannot set manager because workspaces are different.manager: ptolemy.kernel.util.Workspace {W}, ptolemy.kernel.util.Workspace {}
   in .E0 and .Manager}}
 
 test CompositeActor-3.3a {Test failure mode of setDirector} {
