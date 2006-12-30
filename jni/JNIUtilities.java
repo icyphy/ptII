@@ -155,7 +155,8 @@ import ptolemy.util.StringUtilities;
  <pre>
  /cygdrive/c/Program Files/j2sdk1.4.1_01/include/win32/jni_md.h:16: syntax error before `;'
  </pre>
- Then follow these steps:
+ See <a href="http://java.sun.com/products/jdk/faq/jni-j2sdk-faq.html#compiler">http://java.sun.com/products/jdk/faq/jni-j2sdk-faq.html#compiler"</a>
+ and then follow these steps:
  <ol>
  <li> Edit the file <code><i>jdk_root</i>>/include/win32/jni_md.h</code>,
  Where <code><i>jdk_root</i></code> is the installation root (eg.,
