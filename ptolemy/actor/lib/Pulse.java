@@ -70,6 +70,15 @@ import ptolemy.kernel.util.Workspace;
  <p>
  The type of the output can be any token type. This type is inferred
  from the element type of the <i>values</i> parameter.
+ <p>The Ptolemy Expression language has several constructs that are
+ useful for creating arrays for use as values or indexes:
+ <dl>
+ <dt><code>[0:1:100].toArray()</code>
+ <dd>Matlab style array construction that creates an array of 100 elements,
+ 0 through 99.
+ <dt><code>repeat(100, {1}(0))</code>
+ <dd>Creat a sequence of one hundred 1's.
+ </dl>
  <p>
  NOTE: A reset input for this actor would be useful.  This would reset
  the iterations count, to cause the pulse to emerge again.
