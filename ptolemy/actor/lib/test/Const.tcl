@@ -146,7 +146,7 @@ test Const-2.5 {test RecordToken containing ArrayToken} {
 
 test Const-2.6 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{anArray = {double}, name = string, value = int}} {{anArray = {double}, name = string, value = int}}}
+} {{{anArray = arrayType(double,2), name = string, value = int}} {{anArray = arrayType(double,2), name = string, value = int}}}
 
 test Const-2.7 {test an array of record} {
     # first record is {name = "foo", value = 5}
@@ -180,7 +180,7 @@ test Const-2.7 {test an array of record} {
 
 test Const-2.8 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{{name = string, value = int}}} {{{name = string, value = int}}}}
+} {{arrayType({name = string, value = int},2)} {arrayType({name = string, value = int},2)}}
 
 
 test Const-3.0 {check out ReadFile} {
