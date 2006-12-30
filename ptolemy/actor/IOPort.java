@@ -873,7 +873,7 @@ public class IOPort extends ComponentPort {
     /** Return the channel number for the specified receiver.
      *  @param receiver A receiver in this port.
      *  @return The channel number for the receiver.
-     *  @throws IllegalActionException If the receiver is not in the port.
+     *  @exception IllegalActionException If the receiver is not in the port.
      */
     public int getChannelForReceiver(Receiver receiver)
             throws IllegalActionException {

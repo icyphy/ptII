@@ -239,7 +239,7 @@ public abstract class ODESolver extends NamedObj {
 
     /** Advance the current model time. In this abstract base class, nothing
      *  is done. The derived classes specify the detailed implementations. 
-     * @throws IllegalActionException Not thrown in this abstract base class.
+     * @exception IllegalActionException Not thrown in this abstract base class.
      */
     protected void _advanceModelTime() throws IllegalActionException {
     }

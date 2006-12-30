@@ -121,7 +121,7 @@ public class FixPoint implements Cloneable, Serializable {
      *
      *  @param doubleValue The floating point value.
      *  @param quant The quantization specification.
-     *  @throws IllegalArgumentException If the doubleValue is equal
+     *  @exception IllegalArgumentException If the doubleValue is equal
      *   to Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
      *   or Double.NaN.
      */
@@ -815,7 +815,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  @param unscaledIntegerValue The integer value of the scaled
      *  floating point value.
      *  @param precision The precision to represent the new unscalled value.
-     *  @throws ArithmeticException when precision is not sufficient
+     *  @exception ArithmeticException when precision is not sufficient
      *  to represent integerValue.
      *  
      *  Note that this is package scope
