@@ -1,6 +1,6 @@
 /* An actor that outputs a sequence with a given step in values.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -193,7 +193,7 @@ public class Ramp extends SequenceSource {
                 _stateToken = _stateToken.add(step.getToken());
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
-                        "Should not be thrown because we have already"
+                        "Should not be thrown because we have already "
                                 + "verified that the tokens can be added");
             }
         }
