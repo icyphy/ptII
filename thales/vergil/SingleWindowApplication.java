@@ -59,7 +59,7 @@ public class SingleWindowApplication extends VergilApplication {
 
     /** Create a single window application.
      * @param args Arguments to pass to
-     * {@link ptolemy.vergil.VergilApplication.VergilApplication(String[])}.
+     * {@link ptolemy.vergil.VergilApplication#VergilApplication(String[])}.
      */
     public static void main(String[] args) {
         try {
