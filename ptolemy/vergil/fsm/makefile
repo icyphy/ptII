@@ -65,6 +65,7 @@ JSRCS = \
 	FSMGraphTableau.java \
 	FSMViewerGraphController.java \
 	StateController.java \
+	StateIcon.java \
 	TransitionController.java
 
 EXTRA_SRCS =	$(JSRCS)
