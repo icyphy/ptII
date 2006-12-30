@@ -226,9 +226,12 @@ public class Expression extends TypedAtomicActor {
             }
 
             result = _parseTreeEvaluator.evaluateParseTree(_parseTree, _scope);
-        } catch (IllegalActionException ex) {
+        } catch (Throwable throwable) {
             // Chain exceptions to get the actor that threw the exception.
-            throw new IllegalActionException(this, ex, "Expression invalid.");
+            // Note that if evaluateParseTree does a divide by zero, we
+            // need to catch an ArithmeticException here. 
+            throw new IllegalActionException(this, throwable,
+                    "Expression invalid.");
         }
 
         if (result == null) {
