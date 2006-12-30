@@ -1,6 +1,6 @@
 /* An actor that updates fields in a RecordToken.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -289,15 +289,22 @@ public class RecordUpdater extends TypedAtomicActor {
          *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-            List inputPorts = inputPortList();
-            Object[] portsObj = inputPorts.toArray();
-            InequalityTerm[] variables = new InequalityTerm[portsObj.length];
-
-            for (int i = 0; i < variables.length; i++) {
-                TypedIOPort port = (TypedIOPort) portsObj[i];
-                variables[i] = port.getTypeTerm();
+            Iterator inputPorts = inputPortList().iterator();
+            LinkedList result = new LinkedList();
+            while (inputPorts.hasNext()) {
+                TypedIOPort port = (TypedIOPort) inputPorts.next();
+                InequalityTerm term = port.getTypeTerm();
+                if (term.isSettable()) {
+                    result.add(term);
+                }
             }
-
+            InequalityTerm[] variables = new InequalityTerm[result.size()];
+            Iterator results = result.iterator();
+            int i = 0;
+            while (results.hasNext()) {
+                variables[i] = (InequalityTerm) results.next();
+                i++;
+            }
             return variables;
         }
     }
