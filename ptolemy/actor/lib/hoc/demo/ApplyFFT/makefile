@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2002-2005 The Regents of the University of California.
+# @Copyright (c) 2002-2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -51,11 +51,8 @@ OTHER_FILES_TO_BE_JARED = \
 	ApplyFFT.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
-
-#	ApplyFFT.htm
-
-
+	$(OTHER_FILES_TO_BE_JARED) \
+	ApplyFFT.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
