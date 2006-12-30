@@ -210,6 +210,9 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // 4/04 BooleanSwitch uses EditorIcon
         _graphicalClasses.put("ptolemy.vergil.icon.EditorIcon", null);
 
+        // 11/06 FSM uses StateIcon
+        _graphicalClasses.put("ptolemy.vergil.fsm.StateIcon", null);
+
         _graphicalClasses.put(
                 "ptolemy.vergil.kernel.attributes.EllipseAttribute", null);
 
