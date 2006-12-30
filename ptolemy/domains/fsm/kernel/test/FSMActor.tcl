@@ -172,13 +172,6 @@ test FSMActor-5.2 {test handling port name change} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: The ID p1 is undefined.}}
   
-test FSMActor-5.3 {guard must be true whenever trigger is true} {
-    $t0 setTriggerExpression "pp > -5"
-    catch {$t0 isTriggered} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: The trigger: pp > -5 is true but the guard: pp > 5 is false.
-  in .<Unnamed Object>.fsm.t0}}
- 
 ######################################################################
 ####
 #
@@ -429,8 +422,12 @@ test FSMActor-9.1 {test working with MoML} {
     <link port="rec.input" relation="r1"/>
 </entity>}
 
-    set par [java::new ptolemy.moml.MoMLParser]
-    set top [java::cast ptolemy.actor.TypedCompositeActor [$par parse $model]]
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+    set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
+    $parser addMoMLFilter $filter
+    set top [java::cast ptolemy.actor.TypedCompositeActor [$parser parse $model]]
     set mag [java::new ptolemy.actor.Manager [$top workspace] mag]
     $top setManager $mag
     $mag execute
