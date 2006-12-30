@@ -513,7 +513,7 @@ public class Transition extends ComponentRelation {
     /** Return true if this transition is a default transition. Return false
      *  otherwise.
      *  @return True if this transition is a default transition.
-     *  @throws IllegalActionException If the defaultTransition parameter
+     *  @exception IllegalActionException If the defaultTransition parameter
      *   cannot be evaluated.
      */
     public boolean isDefault() throws IllegalActionException {
@@ -532,7 +532,12 @@ public class Transition extends ComponentRelation {
             String expr = getGuardExpression();
             // Parse the guard expression.
             PtParser parser = new PtParser();
-            _guardParseTree = parser.generateParseTree(expr);
+            try {
+                _guardParseTree = parser.generateParseTree(expr);
+            } catch (IllegalActionException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to parse guard expression \"" + expr + "\"");
+            }
         }
         Token token = parseTreeEvaluator.evaluateParseTree(_guardParseTree,
                 fsmActor.getPortScope());
