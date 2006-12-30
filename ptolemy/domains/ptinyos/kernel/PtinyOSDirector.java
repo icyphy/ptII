@@ -40,18 +40,16 @@ import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.net.SocketException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.ByteBuffer;
-import java.nio.channels.CancelledKeyException;
-import java.nio.channels.ClosedChannelException;
-import java.nio.channels.ClosedSelectorException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -59,6 +57,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.Time;
@@ -79,6 +78,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.SharedParameter;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -87,20 +87,111 @@ import ptolemy.util.StringUtilities;
 //// PtinyOSDirector
 
 /**
- A director for generating, compiling, and simulating nesC code from
- TinyOS components.
+   A director for generating, compiling, and simulating nesC code from
+   TinyOS components.
 
- <p>NOTE: if target is blank, but simulate is true, then the model will
- assume that the ptII target has already been compiled and will
- attempt to simulate.
+   <p>TinyOS is an event-driven operating system designed for sensor
+   network nodes that have very limited resources (e.g., 8K bytes of
+   program memory, 512 bytes of RAM).  (More info at
+   <a href="http://www.tinyos.net">http://www.tinyos.net</a>).
 
- @see ptolemy.actor.lib.io.LineWriter
+   <p>nesC is an extension to the C programming language designed to
+   embody the structuring concepts and execution model of TinyOS.
+   (More info at <a
+   href="http://nescc.sourceforge.net">http://nescc.sourceforge.net</a>).
 
- @author Elaine Cheong, Yang Zhao, Edward A. Lee
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (celaine)
- @Pt.AcceptedRating Red (celaine)
+   <p>TOSSIM is a C-based simulator for homogeneous TinyOS networks,
+   where all nodes run the same TinyOS program.  (More info at <a
+   href="http://www.cs.berkeley.edu/~pal/research/tossim.html">
+   http://www.cs.berkeley.edu/~pal/research/tossim.html</a>).
+
+   <p>This version of the PtinyOSDirector is for use with TinyOS 1.x
+   only.  It is not compatible with TinyOS 2.x.
+   
+   <p>When embedded in a model containing nesC components (component
+   descriptions converted to MoML from the TinyOS 1.x library using
+   $PTII/ptolemy/domains/ptinyos/util/nc2moml/nc2moml), this director
+   can generate the top-level nesC application file (.nc).  This
+   director can also compile the nesC application for use with any
+   TinyOS 1.x-compatible hardware (e.g., mica), or for simulation
+   within Ptolemy II.
+
+   <p>When this director is used for code generation only, and not
+   simulation, the user sets the PtinyOSDirector <i>target</i>
+   parameter to a string such as "mica", "mica2", "pc", or another
+   TinyOS 1.x-compatible target.  The director will generate a nesC
+   application file (.nc) and a makefile for the application.
+
+   <p>When this director is used in simulation mode, the user sets the
+   PtinyOSDirector <i>target</i> parameter to the string "ptII".  In
+   addition to the previously mentioned nesC application file (.nc)
+   and a makefile for the application, ththe director will generate a
+   Java loader file (.java).  This loader file implements {@link
+   ptolemy.domains.ptinyos.kernel.PtinyOSLoader}, which is used as a
+   wrapper for calls to JNI methods in TOSSIM.  The director uses the
+   nesC compiler to compile the .nc file into a pre-processed C file.
+   It then uses a C compiler to compile the C file into a shared
+   object (the TOSSIM shared object).  The C compiler is usually gcc,
+   though it can use another compiler if $PTCC (defined in
+   $PTII/mk/ptII.mk and used in
+   $TOSROOT/contrib/ptII/ptinyos/tools/make/ptII/ptII.rules) is
+   modified.  The director then uses the Java compiler to compile the
+   Java loader file into a .class file.  Finally, this director loads
+   the resulting .class using the Java loader, which loads the TOSSIM
+   shared object.
+
+   <p>For more information on compilation rules, see:
+     $TOSROOT/contrib/ptII/ptinyos/tools/make/ptII/ptII.rules
+
+   <p>TOSSIM contains its own discrete event simulation engine, which
+   consists of a main scheduling loop and a discrete event queue.
+   Events in this queue are ordered by timestamp, which is implemented
+   as a long long (a 64-bit integer on most systems; this is a
+   standard type used in gcc).  The timestamp value is a
+   representation of the number of ticks of a 4 MHz clock (the
+   original CPU frequency of the Rene/Mica motes).  After initializing
+   its data structures and performing other initialization routines,
+   TOSSIM creates a boot-up event and places the event in its event
+   queue.  The version of TOSSIM compiled by this director contains
+   additional calls that are not in the original version of TOSSIM.
+   These calls are JNI calls that cause the TOSSIM scheduler to
+   communicate all events to the PtinyOSDirector, and allow events
+   (and sensor values) generated by Ptolemy II to be passed to the
+   TOSSIM scheduler.
+
+   <p>Since TOSSIM operates on a 4MHz clock, users will usually set
+   the <i>timeResolution</i> parameter of this director to the value
+   0.25E-6, since TOSSIM cannot detect changes in sensor values
+   with time differences less than this time resolution.
+
+   <p>When the nesC compiler generates the pre-processed C file for
+   TOSSIM, it automatically generates support for homogeneous networks
+   by instrumenting all component state variables with an array.  The
+   array stores the state for each node.  Therefore, array index 0
+   stores the state for node 0, and so on.  This director only uses
+   one node per instance of TOSSIM, and hence, only uses array index 0
+   for all variables.  Models containing multiple nodes are created by
+   using a separate PtinyOSDirector (and hence a separate instance of
+   TOSSIM) for each node.  In TOSSIM, node 0 is the base station,
+   which is the sink for routing.  This director overrides the
+   built-in id number using the <i>nodeID</i> and <i>baseStation</i>
+   parameters, and passes a node ID value to the nesC compiler so that
+   it is hard coded into TOSSIM.
+
+   <p>TOSSIM uses TCP/IP sockets attached to network ports for commands
+   and events in order to communicate with external tools, such as
+   TinyViz, a Java-based visualization tool for TOSSIM.  We retain
+   these ports for backwards compatibility with TinyViz and other
+   tools.  The port numbers are set in <i>commandPort</i> and
+   <i>eventPort</i>.  Because of limitations in the implementation of
+   TOSSIM, a separate instance of TinyViz must be attached to each
+   instance of TOSSIM.
+
+   @author Elaine Cheong, Yang Zhao, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Yellow (celaine)
+   @Pt.AcceptedRating Yellow (celaine)
  */
 public class PtinyOSDirector extends Director {
     /** Construct a director in the default workspace with an empty string
@@ -109,7 +200,7 @@ public class PtinyOSDirector extends Director {
      */
     public PtinyOSDirector() {
         super();
-        _initParameters();
+        _initializeParameters();
     }
 
     /** Construct a director in the workspace with an empty name.
@@ -119,7 +210,7 @@ public class PtinyOSDirector extends Director {
      */
     public PtinyOSDirector(Workspace workspace) {
         super(workspace);
-        _initParameters();
+        _initializeParameters();
     }
 
     /** Construct a director with the specified container and name.
@@ -133,108 +224,128 @@ public class PtinyOSDirector extends Director {
     public PtinyOSDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _initParameters();
+        _initializeParameters();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The directory into which to write the code.
+    /** Specifies the name of the base station as a string value.  The
+     *  value defaults to the string "\"MicaBoard\"".
      */
-    public FileParameter destinationDirectory;
+    public SharedParameter baseStation;
 
-    /** Path to the root of the TinyOS tree (.../tinyos-1.x).
-     */
-    public FileParameter tosRoot;
-
-    /** Path to the tos directory of the TinyOS tree (.../tinyos-1.x/tos).
-     */
-    public FileParameter tosDir;
-
-    /** If <i>false</i>, then overwrite the specified file if it exists
-     *  without asking.  If <i>true</i> (the default), then if the file
-     *  exists, ask for confirmation before overwriting.
-     */
-    public Parameter confirmOverwrite;
-
-    /** Additional include directories for compilation.
-     */
-    public StringParameter pflags;
-
-    /** Number of nodes to simulate in TOSSIM.
-     */
-    public Parameter numNodes;
-
-    /** TOSSIM node bootup time range.
+    /** TOSSIM setting for the number of seconds over which nodes may
+     *  boot.  The node(s) boots at a random time within this time
+     *  frame (time starts at 0 seconds).  The value defaults to 10
+     *  and is of type IntToken.
      */
     public Parameter bootTimeRange;
 
-    /** Choose what target for which to compile the generated code.
+    /** Port number for the TOSSIM command server socket.  The value
+     *  defaults to 10584.
      */
-    public StringParameter target;
+    public PtinyOSNodeParameter commandPort;
 
-    /** Choose whether to simulate in ptII.
+    /** Flag to ask for confirmation before overwriting.  If false,
+     *  then overwrite the specified file without asking, if the file
+     *  exists.  If true, then ask for confirmation before
+     *  overwriting, if the file exists.  The value defaults to false,
+     *  and is of type BooleanToken.
      */
-    public Parameter simulate;
+    public Parameter confirmOverwrite;
 
-    /** If <i>true</i>, then _PTII_NODEID in the makefile is set to 0,
-     *  which makes this a base station.  A non-zero value of the
-     *  nodeID parameter will be ignored.  If <i>false</i> (the
-     *  default), do nothing.
+    /** Output directory for generated code.  The value defaults to
+     *  the current working directory (the ptII expression $CWD).
      */
-    public Parameter isBaseStation;
+    public FileParameter destinationDirectory;
 
-    /** Port for TOSSIM to accept commands.
-     */
-    public PtinyOSIntegerParameter commandPort;
-
-    /** Port for TOSSIM to publish events.
+    /** Port number for the TOSSIM event server socket.  This is a
+     *  public value so that the port number can be set by hand, if
+     *  necessary.  The value defaults to (commandPort + 1).
      */
     public Parameter eventPort;
 
-    /** Node ID number.  This is a substitute for TOS_LOCAL_ADDRESS,
-     *  which in TOSSIM is normally set to the mote array index.
-     *  However, we assume only one mote per TOSSIM.  To avoid all
-     *  motes being set to the same ID, we use this parameter.
+    /** Node ID of this node.  This is a substitute for
+     *  TOS_LOCAL_ADDRESS, which in TOSSIM is normally set to the node
+     *  array index.  However, we assume only one node per TOSSIM.  To
+     *  avoid all nodes being set to the same ID, we use this
+     *  parameter.  In practice, the range is limited by
+     *  <i>numberOfNodes</i>, and should be such that enough network
+     *  ports are available for each instance of <i>commandPort</i>
+     *  and <i>eventPort</i>, though this is not enforced.  The value
+     *  defaults to 1.  Normally, the value of this parameter does not
+     *  need to be changed, since the use of the
+     *  PtinyOSNodeParameter type for this parameter will cause the
+     *  value of the node ID to be automatically incremented for each
+     *  new node in the model.  Users should only change this
+     *  parameter to force a node to have a particular node ID value.
      */
-    public PtinyOSIntegerParameter nodeID;
+    public PtinyOSNodeParameter nodeID;
 
+    /** Number of nodes to simulate per instance of TOSSIM.  The value
+     *  defaults to 1, is of type IntToken, and is set to be
+     *  NOT_EDITABLE.
+     */
+    public Parameter numberOfNodes;
+
+    /** Additional flags passed to the nesC compiler.  This can be
+     *  used, for example, to include additional compilation
+     *  directories.  The value defaults to "-I%T/lib/Counters".  "-I"
+     *  is the normal gcc include directory option.  "%T" is a nesC
+     *  compiler flag that is equivalent to the value of $TOSDIR.
+     */
+    public StringParameter pflags;
+
+    /** Flag for choosing whether to simulate the model in ptII.  The
+     *  value defaults to true, and is of type BooleanToken.  If
+     *  false, this director only generates files and does not atempt
+     *  to simulate the model.
+     */
+    public SharedParameter simulate;
+
+    /** Compilation target for the generated nesC code.  Target can be
+     *  any TinyOS-compatible target, such as mica, mica2, pc, or
+     *  ptII.  The value defaults to "ptII".  If <i>target</i> is
+     *  blank, but <i>simulate</i> is true, then the model will assume
+     *  that the ptII target has already been compiled and will
+     *  attempt to simulate.
+     */
+    public StringParameter target;
+
+    /** Path to the tos directory of the TinyOS tree.  TinyOS can be
+     *  obtained from <a
+     *  href="http://www.tinyos.net">http://www.tinyos.net</a>.  The
+     *  value defaults to $PTII/vendors/ptinyos/tinyos-1.x/tos
+     */
+    public FileParameter tosDir;
+
+    /** Path to the root of the TinyOS tree.  TinyOS can be obtained
+     *  from <a
+     *  href="http://www.tinyos.net">http://www.tinyos.net</a>. The
+     *  value defaults to $PTII/vendors/ptinyos/tinyos-1.x
+     */
+    public FileParameter tosRoot;
+
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** A callback method (from C code) for the application to enqueue
-     *  the next event.
+    /** Enqueue the next TOSSIM event into ptII at the specified time
+     *  by calling fireAt().
      *
-     *  @param newTime The time of the next event, a long long in C.
-     *  @exception IllegalActionException If Director.fireAt() throws it.
+     *  <p>This is a JNI method that gets called by TOSSIM through the
+     *  Java loader.
+     *
+     *  @param newTime A string representation of the time of the next
+     *  event.  In TOSSIM, unit of time is a tick of a 4MHz clock, and
+     *  time is stored in a long long in C (a 64-bit integer on most
+     *  systems).
      */
-    public void enqueueEvent(String newTime) throws IllegalActionException {
-        // Assumes that we already checked in preinitialize() that the
-        // container is a CompositeActor.
-        CompositeActor container = (CompositeActor) getContainer();
-
-        // Get the executive director.  If there is none, use this instead.
-        Director director = container.getExecutiveDirector();
-
-        if (director == null) {
-            director = this;
-        }
-
-        //System.out.println("PtinyOSDirector.enqueueEvent : " + newtime);
-        Time t = new Time(director, Long.parseLong(newTime));
-        director.fireAt(container, t);
-    }
-
-    /** Process one event in the TOSSIM event queue and run tasks in
-     *  task queue.
-     *  @exception IllegalActionException If something goes wrong.
-     */
-    public void fire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called fire()");
-        }
-
-        if (((BooleanToken) simulate.getToken()).booleanValue()) {
+    public void enqueueEvent(String newTime) {
+        try {
+            // Assumes that we already checked in preinitialize() that the
+            // container is a CompositeActor.
             CompositeActor container = (CompositeActor) getContainer();
 
             // Get the executive director.  If there is none, use this instead.
@@ -244,127 +355,129 @@ public class PtinyOSDirector extends Director {
                 director = this;
             }
 
-            long currentTimeValue = 0;
-            Time currentTime = director.getModelTime();
-
-            if (currentTime != null) {
-                // NOTE: this could overflow.
-                currentTimeValue = currentTime.getLongValue();
-            }
-
-            //System.out.println("PtinyOSDirector.fire: " + currentTimeValue);
-            _loader.processEvent(currentTimeValue);
+            Time t = new Time(director, Long.parseLong(newTime));
+            director.fireAt(container, t);
+        } catch (Exception ex) {
+            // We use MessageHandler instead of throwing an exception
+            // because this method is called from C.
+            // MessageHandler.error() will pop up a window with the
+            // exception description and stack trace, and after the
+            // user clicks on the "Dismiss" button, ptII causes
+            // wrapup() to be invoked.
+            MessageHandler.error(ex.toString(), ex);
         }
     }
 
-    /** Get boolean value from PortParameter named param.
+    /** If the {@link #simulate} parameter is true, process one event in
+     *  the TOSSIM event queue and run tasks in task queue.  This
+     *  method gets the model time from the director and calls {@link
+     *  ptolemy.domains.ptinyos.kernel.PtinyOSLoader#processEvent(long)}
+     *  with the time as the argument, which invokes TOSSIM.
+     *  @exception IllegalActionException If the fire() method of the
+     *  super class throws it, or getting a token from the
+     *  <i>simulate</i>parameter throws it.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+
+        // This looks like the code for {@link #receivePacket}, only
+        // this method calls processEvent() instead of
+        // receivePacket().
+        if (((BooleanToken) simulate.getToken()).booleanValue()) {
+            long currentTimeValue = _getModelTimeAsLongValue();
+            try {
+                _loader.processEvent(currentTimeValue);
+            } catch (Throwable throwable) {
+                MessageHandler.error("JNI error in fire(): ", throwable);
+            }
+        }
+    }
+
+    /** Get a DoubleToken from the named parameter and convert it
+     *  to a char.
      *
-     *  NOTE: gets a BooleanToken from port and converts to boolean.
-     *  @param param The parameter.
-     *  @return FALSE if there is an error.
-     *  @exception IllegalActionException If there is a problem getting
-     *  a token from the input parameter port.
-     */
-    public boolean getBooleanParameterValue(String param)
-            throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called getBooleanParameterValue with " + param
-                    + " as argument.");
-        }
-
-        // FIXME Delete later
-        CompositeActor model = (CompositeActor) getContainer();
-        Iterator inPorts;
-
-        inPorts = model.inputPortList().iterator();
-
-        while (inPorts.hasNext()) {
-            IOPort p = (IOPort) inPorts.next();
-
-            if (p.getName().equals(param) && (p instanceof ParameterPort)) {
-                Token t = ((ParameterPort) p).getParameter().getToken();
-
-                if (t != null) {
-                    //System.out.println(p.getName() + " " + t);
-                    try {
-                        BooleanToken dt = BooleanToken.convert(t);
-                        return dt.booleanValue();
-                    } catch (IllegalActionException e) {
-                        System.out.println("Couldn't convert to BooleanToken.");
-
-                        // FIXME
-                        return false;
-                    }
-                } else {
-                    // FIXME
-                    System.out.println("Couldn't get token from ParameterPort "
-                            + p.getName());
-                }
-            }
-        }
-
-        // FIXME
-        System.out.println("Couldn't find PortParameter " + param);
-        return false;
-    }
-
-    /** Get a DoubleToken from PortParameter and convert it to a char.
+     *  <p>This is a JNI method that gets called by TOSSIM through the
+     *  Java loader to get a sensor value.
+     *
      *  @param parameter The parameter.
-     *  @return 0 if there is an error.
-     *  @exception IllegalActionException If there is a problem getting
-     *  a token from the input parameter port.
+     *  @return The parameter value, or 0 if the port is not connected
+     *  or not found or a token cannot be obtained succesfully.
      */
-    public char getCharParameterValue(String parameter)
-            throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called getCharParameterValue with " + parameter
-                    + " as argument.");
-        }
-
-        // FIXME Delete later
-        CompositeActor model = (CompositeActor) getContainer();
-        Iterator inPorts;
-
-        inPorts = model.inputPortList().iterator();
-
-        while (inPorts.hasNext()) {
-            IOPort p = (IOPort) inPorts.next();
-
-            if (p.getName().equals(parameter) && (p instanceof ParameterPort)) {
-                Token t = ((ParameterPort) p).getParameter().getToken();
-
-                if (t != null) {
-                    //System.out.println(p.getName() + " " + t);
-                    try {
-                        DoubleToken dt = DoubleToken.convert(t);
-                        return (char) dt.doubleValue();
-                    } catch (IllegalActionException e) {
-                        System.out.println("Couldn't convert to DoubleToken.");
-
-                        // FIXME
-                        return 0;
+    public char getCharParameterValue(String parameter) {
+        char parameterValue = 0;
+        try {
+            if (_debugging) {
+                _debug("Called getCharParameterValue with " + parameter
+                        + " as argument.");
+            }
+            
+            CompositeActor model = (CompositeActor) getContainer();
+            IOPort port = (IOPort) model.getPort(parameter);
+            if (port != null) {
+                if (port instanceof ParameterPort) {
+                    Token token = ((ParameterPort) port).getParameter()
+                        .getToken();
+                    if (token != null) {
+                        DoubleToken doubleToken = DoubleToken.convert(token);
+                        parameterValue = (char) doubleToken.doubleValue();
+                    } else {
+                        // We throw an exception here but catch it
+                        // below because this method is called from C.
+                        throw new InternalErrorException(
+                                "Could not get token from ParameterPort \""
+                                + parameter
+                                + "\".");
                     }
                 } else {
-                    // FIXME
-                    System.out.println("Couldn't get token from ParameterPort "
-                            + p.getName());
+                    throw new InternalErrorException(
+                            "No implementation found to handle parameter \""
+                            + parameter
+                            + "\", whose type is not ParameterPort.");
                 }
+            } else {
+                // Port could not be found.
+                throw new InternalErrorException(
+                        "Could not find ParameterPort \""
+                        + parameter
+                        + "\".");
             }
-        }
-
-        // FIXME
-        System.out.println("Couldn't find PortParameter " + parameter);
-        return 0;
+        } catch (Exception ex) {
+            MessageHandler.error(ex.toString(), ex);
+        } 
+        return parameterValue;
     }
 
-    /** Load TOSSIM library and call main().
+    /** If the {@link #simulate} parameter is true, then load the
+     *  TOSSIM shared library and call TOSSIM main(), by using Java
+     *  loader calls.
+     *
+     *  <p>The sequence of calls is as follows (assuming simulate is true):
+     *  <ul>
+     *  <li> PtinyOSDirector.initialize() 
+     *    <ul>
+     *    <li> Loads Java PtinyOSLoader class into memory using
+     *      ClassLoader.loadClass()
+     *    <li> Creates instance of PtinyOSLoader class (_loader),
+     *      using Class.newInstance() 
+     *    <li> Calls Java _loader.load()
+     *    </ul>
+     *  <li> Java _loader.load() loads the TOSSIM shared object into
+     *    memory, using Java System.load()
+     *  <li> PtinyOSDirector.initialize(), continued
+     *    <ul>
+     *    <li> Calls Java _loader.main()
+     *    </ul>
+     *  <li> Java _loader.main() calls JNI main_unique_name() native
+     *    method.
+     *  <li> JNI main_unique_name() calls TOSSIM main(), which starts up
+     *    TOSSIM.
+     *  </ul>
+     *
      *  @exception IllegalActionException If there is a problem initializing
      *  the director, such as a problem loading the JNI loader.
      */
     public void initialize() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called initialize()");
-        }
+        super.initialize();
 
         if (((BooleanToken) simulate.getToken()).booleanValue()) {
             NamedObj toplevel = _toplevelNC();
@@ -372,9 +485,9 @@ public class PtinyOSDirector extends Director {
 
             // Add the destinationDirectory to the classpath.
             String fileSeparator = StringUtilities
-                    .getProperty("file.separator");
+                .getProperty("file.separator");
             String outputDir = destinationDirectory.stringValue()
-                    + fileSeparator + "build" + fileSeparator + "ptII";
+                + fileSeparator + "build" + fileSeparator + "ptII";
 
             // From: http://javaalmanac.com/egs/java.lang/LoadClass.html
             // Create a File object on the root of the directory
@@ -383,21 +496,18 @@ public class PtinyOSDirector extends Director {
 
             try {
                 // Convert File to a URL
-                URL url = file.toURL(); // file:/c:/myclasses/
+                URI uri = file.toURI();
+                URL url = uri.toURL();
                 URL[] urls = new URL[] { url };
 
                 // Create a new class loader with the directory
                 ClassLoader cl = new URLClassLoader(urls);
 
-                // Load in the class; MyClass.class should be located in
-                // the directory file:/c:/myclasses/com/mycompany
-                //Class cls = Class.forName("Loader" + toplevelName, true, cl);
+                // Load in the class.
                 String className = "Loader" + toplevelName;
-
                 if (_debugging) {
                     _debug("About to load '" + className + "'");
                 }
-
                 Class cls = cl.loadClass(className);
                 Object o = cls.newInstance();
 
@@ -407,29 +517,51 @@ public class PtinyOSDirector extends Director {
                     // Call main with the boot up time range and
                     // number of nodes as arguments.
                     String[] argsToMain = {
-                            "-b=" + bootTimeRange.getToken().toString(),
-                            numNodes.getToken().toString() };
+                        "-b=" + bootTimeRange.getToken().toString(),
+                        numberOfNodes.getToken().toString() };
 
                     if (_debugging) {
                         _debug("Done loading '" + className
                                 + "', about to load(" + outputDir + ")");
                     }
 
-                    // Load the library with the native methods for TOSSIM.
+                    // Load the library with the native methods for
+                    // TOSSIM.
+                    // _loader.load() only needs the
+                    // directory path and does not need the name of the
+                    // shared object to load, since the name is
+                    // compiled into the loader.
                     _loader.load(outputDir, this);
 
                     if (_debugging) {
                         _debug("Done with load(), about to call main("
                                 + argsToMain[0] + ", " + argsToMain[1] + ")");
                     }
-
-                    if (_loader.main(argsToMain) < 0) {
+                    
+                    // Note: For statistical purposes.
+                    //System.gc();
+                    _startTime = (new Date()).getTime();
+                    
+                    int result = 0;
+                    try {
+                        result = _loader.main(argsToMain);
+                    } catch (Throwable throwable) {
+                        throw new IllegalActionException(
+                                this,
+                                throwable,
+                                "JNI error in call to main("
+                                + argsToMain[0] + ", " + argsToMain[1] + ")");
+                    }
+                    if (result < 0) {
                         throw new InternalErrorException(
-                                "Could not initialize TOSSIM.");
+                                "Could not initialize TOSSIM.  Call to main("
+                                + argsToMain[0] + ", " + argsToMain[1] + ")"
+                                + " returned "
+                                + result);
                     }
 
                     if (_debugging) {
-                        _debug("call to main completed");
+                        _debug("Call to main completed.");
                     }
                 } else {
                     throw new InternalErrorException(
@@ -442,41 +574,49 @@ public class PtinyOSDirector extends Director {
         }
     }
 
-    /** Return true if simulation is requested.
-     *  @return The value of the <i>simulate</i> parameter
+    /** Return true if simulation is requested, so that simulated
+     *  event handling can proceed.
+     *
+     *  @return The value of result of the call to postfire() of the
+     *  super class && the value of the <i>simulate</i> parameter
      *  @exception IllegalActionException If thrown while reading the
      *  <i>simulate</i> parameter.
      */
     public boolean postfire() throws IllegalActionException {
-        return ((BooleanToken) simulate.getToken()).booleanValue();
+        // Note: We override the postfire() method instead of the
+        // prefire() method because in Manager.iterate(), if prefire()
+        // returns false, true is returned at the end of the iteration
+        // (prefire(), fire(), postfire()) of a model, which is not
+        // what we want if simulation is not requested.
+        boolean result = super.postfire();
+        return (result &&
+                ((BooleanToken) simulate.getToken()).booleanValue());
     }
 
-    /** Always return true, indicating that the director is ready to fire.
+    /** Generate nesC code in a .nc file.  If this director is the top
+     *  most PtinyOSDirector, and the {@link #target} parameter is
+     *  non-empty then a .java loader file and a makefile are created.
+     *  This methods then compiles the .nc and .java files by calling
+     *  make.  The .java file implements the {@link
+     *  ptolemy.domains.ptinyos.kernel.PtinyOSLoader} interface.
      *
-     *  <p>NOTE: If we return false, the run doesn't terminate on its
-     *  own, since in Manager.iterate(), "result" defaults to true.
-     *  @exception IllegalActionException Not thrown in this base class.
-     *  @return true
-     */
-    public boolean prefire() throws IllegalActionException {
-        return true;
-    }
-
-    /** Generate nesC code.
-     *  <p>If this director is the top most PtinyOSDirector, and the
-     *  {@link #target} parameter is non-empty then
-     *  a .java file is created.  The .java file implements
-     *  the {@link ptolemy.domains.ptinyos.kernel.PtinyOSLoader}
-     *  interface and is compiled by this method.
+     *  <p>The sequence of calls is as follows:
+     *  <ul>
+     *  <li> Generates nesC code (.nc), makefile, and Java
+     *       PtinyOSLoader (.java).
+     *  <li> Runs make, using Runtime.exec()
+     *  <li> Compiles nesC (.nc) code to a TOSSIM shared object (.so
+     *       or .dll), and the Java PtinyOSLoader (.java) to a Java
+     *       PtinyOSLoader class (.class).
+     *  </ul>
+     *        
      *  @exception IllegalActionException If the container is not
      *  an instance of CompositeActor, the destination directory
      *  does not exist and cannot be created, or the nesC file
      *  cannot be written.
      */
     public void preinitialize() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called preinitialize()");
-        }
+        super.preinitialize();
 
         if (!(getContainer() instanceof CompositeActor)) {
             throw new IllegalActionException(this,
@@ -484,7 +624,9 @@ public class PtinyOSDirector extends Director {
                             + "instance of CompositeActor.");
         }
 
-        _version = workspace().getVersion();
+        // FIXME: old TOSSIM can't be used again.
+        //long newVersion = workspace().getVersion();
+        _version++;
 
         // Open directory, creating it if necessary.
         File directory = destinationDirectory.asFile();
@@ -501,13 +643,12 @@ public class PtinyOSDirector extends Director {
         CompositeActor container = (CompositeActor) getContainer();
         String code = _generateCode(container);
 
-        // Create file name relative to the toplevel NCCompositeActor.
-        // FIXME working here
-        //   if (_isTopLevelNC()) {
+        // FIXME: test this code to make sure it works even if this
+        // director is embedded more deeply.
+
+        //Create file name relative to the toplevel NCCompositeActor.
         NamedObj toplevel = _toplevelNC(); //container.toplevel();
-
         String filename = _sanitizedFullName(toplevel);
-
         if (container != toplevel) {
             filename = filename + "_" + container.getName(toplevel);
             filename = StringUtilities.sanitizeName(filename);
@@ -518,13 +659,20 @@ public class PtinyOSDirector extends Director {
 
         if (_confirmOverwrite(writeFile)) {
             // Write the generated code to the file.
+            FileWriter writer = null;
             try {
-                FileWriter writer = new FileWriter(writeFile);
+                writer = new FileWriter(writeFile);
                 writer.write(code);
-                writer.close();
-            } catch (IOException e) {
-                throw new IllegalActionException(this, e,
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex,
                         "Failed to open file for writing.");
+            } finally {
+                try {
+                    writer.close();
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to close file.");
+                }
             }
         }
 
@@ -555,200 +703,306 @@ public class PtinyOSDirector extends Director {
         }
     }
 
-    /** Notify the loader that a packet has been received.
-     *  The {@link ptolemy.domains.ptinyos.kernel.PtinyOSDirector#fire()}
-     *  method calls this method with the string value of the input packet.
-     *  @param packet The string value of the input packet.
+    /** If the {@link #simulate} parameter is true, notify the loader
+     *  that a packet has been received.  The {@link
+     *  ptolemy.domains.ptinyos.kernel.PtinyOSCompositeActor#fire()}
+     *  method calls this method with the string value of the input
+     *  packet.
+     *
+     * <p>The sequence of calls is as follows:
+     * <ul>
+     * <li> PtinyOSDirector.receivePacket() called (e.g., by the
+     *      fire() method of the container, which should be a
+     *      PtinyOSCompositeActor, in response to a packet arriving at the
+     *      packetIn port).
+     *      <ul>
+     *      <li> Calls Java _loader.receivePacket() with the packet as a
+     *      Java String argument.
+     *      </ul>
+     * <li> _loader.receivePacket() calls JNI
+     *      receivePacket_unique_name() native method with the packet as a
+     *      Java String argument.
+     * <li> JNI receivePacket_unique_name() receives the packet as a
+     *      JNI jstring argument and converts it into a C const char
+     *      array. It then calls TOSSIM ptII_receive_packet(), which copies
+     *      the C const char array into a TOS_Msg data structure. TOSSIM
+     *      ptII_receive_packet() then calls TOSSIM
+     *      ptII_insert_packet_event(), which creates a TOSSIM packet
+     *      event.
+     * </ul>
+     *
+     *  <p>This is a wrapper for a native method, where the
+     *  PtinyOSDirector calls this method (Java) to activate routines
+     *  in TOSSIM (C).
+     *
+     *  @param packet The string value of the packet to send to TOSSIM.
      *  @exception IllegalActionException If there is a problem reading
      *  the {@link #simulate} parameter.
      */
     public void receivePacket(String packet) throws IllegalActionException {
+        // This looks like the code for {@link #fire}, only this
+        // method calls receivePacket() instead of processEvent().
         if (((BooleanToken) simulate.getToken()).booleanValue()) {
-            CompositeActor container = (CompositeActor) getContainer();
-
-            // Get the executive director.  If there is none, use this instead.
-            Director director = container.getExecutiveDirector();
-
-            if (director == null) {
-                director = this;
+            long currentTimeValue = _getModelTimeAsLongValue();
+            try {
+                _loader.receivePacket(currentTimeValue, packet);
+            } catch (Throwable throwable) {
+                MessageHandler.error("JNI error in receivePacket(): ",
+                        throwable);
             }
-
-            long currentTimeValue = 0;
-            Time currentTime = director.getModelTime();
-
-            if (currentTime != null) {
-                // NOTE: this could overflow.
-                currentTimeValue = currentTime.getLongValue();
-            }
-
-            _loader.receivePacket(currentTimeValue, packet);
         }
     }
 
-    /**
-     *  Send an expression to a port.
-     *  <p>The loader class has a method with the same name that calls
-     *  this method.  The C code (ptII.c) calls <i>loader</i>.sendToPort in
-     *  order to send data from the C code to the Java (Ptolemy II)
-     *  simulation.
+    /** Send an expression to a ptII port.  This is used, for example,
+     *  to send LED or packet data from TOSSIM to the rest of the
+     *  Ptolemy II model.
      *
-     *  @param portName The name of the port
-     *  @param expression The expression
-     *  @return 1 if the expression was successfully sent, 0 if the
-     *  port is not connected or not found and -1 if the port is
-     *  of any type other than Boolean or String.
-     *  @exception IllegalActionException If throw while sending to the port.
+     *  <p>This is a JNI method that gets called by TOSSIM through the
+     *  Java loader to send a value to a ptII port.
+     *
+     *  <p>The sequence of calls is as follows:
+     *  <ul>
+     *  <li>TOSSIM generates an LED or packet value and calls TOSSIM
+     *    ptII_updateLeds() or TOSSIM ptII_send_packet(), both of which
+     *    call JNI _loader.sendToPort() with the port name and value as
+     *    string arguments.
+     *  <li>_loader.sendToPort() calls Java PtinyOSDirector.sendToPort().
+     *  <li>PtinyOSDirector.sendToPort() performs type conversion from
+     *    a Java string to the appropriate Token type (depending on the
+     *    type of the requested port), and sends the token to the
+     *    requested port using the Java Ptolemy II Port.send() method.
+     *  </ul>
+     *
+     *  @param portName The name of the port.
+     *  @param expression The expression to send to the ptII port.
+     *  @return true if the expression was successfully sent, false if the
+     *  port is not connected or not found.
      */
-    public int sendToPort(String portName, String expression)
-            throws IllegalActionException {
-        CompositeActor model = (CompositeActor) getContainer();
-        Iterator outPorts;
-
-        outPorts = model.outputPortList().iterator();
-
-        while (outPorts.hasNext()) {
-            TypedIOPort port = (TypedIOPort) outPorts.next();
-
-            if (port.getName().equals(portName)) {
+    public boolean sendToPort(String portName, String expression) {
+        try {
+            CompositeActor model = (CompositeActor) getContainer();
+            TypedIOPort port = (TypedIOPort) model.getPort(portName);
+            if (port != null) {
                 if (port.getWidth() > 0) {
-                    // FIXME always boolean?
                     if (port.getType() == BaseType.BOOLEAN) {
                         port.send(0, new BooleanToken(expression));
-                        return 1;
+                        return true;
                     } else if (port.getType() == BaseType.STRING) {
                         port.send(0, new StringToken(expression));
-                        return 1;
+                        return true;
                     } else {
-                        // Port does not have correct type.
-                        // FIXME
-                        System.out.println("error: could not find matching "
-                                + "type for sendToPort()");
-                        return -1;
+                        throw new InternalErrorException(
+                                "Handler for port \""
+                                + portName
+                                + "\" with type \""
+                                + port.getType()
+                                + "\" not implemented.");
                     }
                 } else {
                     // Port not connected to anything.
-                    return 0;
+                    return false;
                 }
             }
+        } catch (Exception ex) {
+            MessageHandler.error(ex.toString(), ex);
         }
-
-        // Port not found.
-        return 0;
+        // Port could not be found.
+        return false;
     }
 
-    /** A callback method (from C code) for the application to print a
-     *  debug message.
+    /** Print a debug message.
      *
-     *  @param debugMode A long long in C (currently unused)
-     *  @param message A char * in C
-     *  @param nodeNumber is a short in C
+     *  <p>This is a JNI method that gets called by TOSSIM through the
+     *  Java loader to print a debug message.
      *
+     *  @param debugMode A long long in C (currently unused).
+     *  @param message A char * in C.
+     *  @param nodeID A short in C.
      */
-    public void tosDebug(String debugMode, String message, String nodeNumber) {
-        if (_debugging) {
-            // Remove leading and trailing whitespace.
-            String trimmedMessage = message.trim();
+    public void tosDebug(String debugMode, String message, String nodeID) {
+        try {
+            if (_debugging) {
+                // Remove leading and trailing whitespace.
+                String trimmedMessage = message.trim();
 
-            if (nodeNumber != null) {
-                _debug(nodeNumber + ": " + trimmedMessage);
-            } else {
-                _debug(trimmedMessage);
+                if (nodeID != null) {
+                    _debug(nodeID + ": " + trimmedMessage);
+                } else {
+                    _debug(trimmedMessage);
+                }
             }
+        } catch (Exception ex) {
+            MessageHandler.error(ex.toString(), ex);
         }
     }
 
-    /** Invoke the wrapup method of the super class. Reset the private
-     *  state variables.
+    /** If the {@link #simulate} parameter is true, call wrapup() in
+     *  TOSSIM to shut down threads created in initialize().
+     *
+     *  <p>The sequence of calls is as follows:
+     *  <ul>
+     *  <li> PtinyOSDirector.wrapup() 
+     *       <ul>
+     *       <li> Calls Java _loader.wrapup()
+     *       </ul>
+     *  <li> _loader.wrapup() calls JNI wrapup_unique_name() native method.
+     *  <li> JNI wrapup_unique_name() calls TOSSIM shutdownSockets(), which: 
+     *       <ul>
+     *       <li>Closes sockets.
+     *       <li>Joins threads by calling TOSSIM ptII_joinThreads(),
+     *           which calls JNI _loader.joinThreads().
+     *       </ul>
+     *  <li>_loader.joinThreads() calls Java Thread.join() on all
+     *      threads created during initialization. Returns Java int value
+     *      of 0 upon success.
+     *  <li>JNI _loader.joinThreads() returns jint value of 0 upon
+     *      success, which is converted into a C int and returned by
+     *      ptII_joinThreads(). If successful, TOSSIM execution stops.
+     *  </ul>
+     *
+     *  <p>This is a wrapper for a native method, where the
+     *  PtinyOSDirector calls this method (Java) to activate routines
+     *  in TOSSIM (C).
+     *        
      *  @exception IllegalActionException If the wrapup() method of
      *   one of the associated actors throws it.
      */
     public void wrapup() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called wrapup()");
-        }
+        super.wrapup();
+        
+        // Note: For statistical purposes.
+        System.err.println(Manager.timeAndMemory(_startTime)
+                + " "
+                + _sanitizedFullName(this));
 
         if (((BooleanToken) simulate.getToken()).booleanValue()) {
             if (_loader != null) {
-                _loader.wrapup(); // SIGSTOP: man 7 signal
+                try {
+                    _loader.wrapup();
+                } catch (Throwable throwable) {
+                    throw new IllegalActionException(this, throwable,
+                            "JNI error in wrapup().");
+                }
             }
         }
     }
 
     ///////////////////////////////////////////////////////////////////////
-    // Methods for accessing sockets in external_comm.c
+    // Methods for accessing sockets from TOSSIM in
+    // $TOSROOT/contrib/ptII/ptinyos/tos/platform/ptII/external_comm.c
+    //
+    // The port number used is defined in the commandPort and
+    // eventPort parameters.
+    //
+    // These are all JNI methods that get called by TOSSIM through the
+    // Java loader.
+    //
     ///////////////////////////////////////////////////////////////////////
-
-    /** Create a non-blocking server socket and check for connections on the 
-     *   port specified by <i>port</i>.
-     *   @param port The port on which to create a server socket.
-     *   @return The ServerSocket created.
+    
+    /** Accept a connection on a
+     *  java.nio.channels.ServerSocketChannel.  If serverSocketChannel
+     *  is blocking, this method blocks.
+     *
+     *  <p>This is a JNI method that gets called by TOSSIM through the
+     *  Java loader.
+     *
+     *  @param serverSocketChannel The ServerSocketChannel on which
+     *  connections are accepted.
+     *  @return The SocketChannel for the connection that was
+     *  accepted, null if error.
      */
-    public ServerSocket serverSocketCreate(short port) {
-        ServerSocket serverSocket = null;
+    public SocketChannel acceptConnection(
+            SelectableChannel serverSocketChannel) {
         try {
-            // Create non-blocking server sockets on port.
-            ServerSocketChannel serverSocketChannel = ServerSocketChannel
-                    .open();
-            serverSocketChannel.configureBlocking(false);
-            serverSocket = serverSocketChannel.socket();
-            try {
-                serverSocket.setReuseAddress(true);
-            } catch (SocketException e) {
-                System.out.println(e);
+            if (serverSocketChannel instanceof ServerSocketChannel) {
+                // Accept the connection request.
+                // If serverSocketChannel is blocking, this method blocks.
+                // The returned channel is in blocking mode.
+                return ((ServerSocketChannel) serverSocketChannel)
+                    .accept();
+            } else {
+                throw new IllegalActionException(
+                        "The argument passed to acceptConnection() "
+                        + "was not a ServerSocketChannel.");
             }
-            serverSocket.bind(new InetSocketAddress(
-                    InetAddress.getByName(null), port));
-        } catch (IOException e) {
-            System.out.println(e);
+        } catch (Exception ex) {
+            MessageHandler.error(ex.toString(), ex);
         }
-        return serverSocket;
+        return null;
     }
 
-    /** Close the ServerSocket.
-     * 
-     *  @param serverSocket The ServerSocket to be closed.
+    /** Close the java.nio.channels.Selector.
+     *
+     *  <p>This is a JNI method that gets called by TOSSIM through the
+     *  Java loader.
+     *
+     *  @param selector The Selector that should be closed.
      */
-    public void serverSocketClose(ServerSocket serverSocket) {
-        if (serverSocket != null) {
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                System.out.println(e);
-            } catch (Exception e) {
-                System.out.println(e);
+    public void selectorClose(Selector selector) {
+        try {
+            if (selector != null) {
+                if (_debugging) {
+                    _debug("Begin call to selectorClose()");
+                }
+                // We have to call wakeup() here because of a possible
+                // bug in J2SE.  See this.selectSocket() for more
+                // details.
+                //
+                // Note that this also requires a locking mechanism to
+                // prevent Selector.select() from being called again
+                // after the Selector wakes up but before close() is
+                // called.  See:
+                // <a href="http://forum.java.sun.com/thread.jspa?threadID=293213&messageID=2671029">http://forum.java.sun.com/thread.jspa?threadID=293213&messageID=2671029</a>
+                // In {@link #selectSocket(Selector, boolean[],
+                // boolean, boolean, boolean)}, we use boolean[]
+                // notNullIfClosing as this locking mechanism.
+                selector.wakeup();
+                selector.close();
+                if (_debugging) {
+                    _debug("End call to selectorClose()");
+                }
             }
+        } catch (Exception ex) {
+            MessageHandler.error(ex.toString(), ex);
         }
     }
 
-    /** Create a selector and register the ServerSocketChannel of the 
-     *  ServerSocket with the selector.
+    /** Create a java.nio.channels.Selector and register the
+     *  ServerSocketChannel of the ServerSocket with the Selector.
+     *
+     *  <p>This is a JNI method that gets called by TOSSIM through the
+     *  Java loader.
      * 
-     *  @param serverSocket The ServerSocket whose channel should be registered
-     *      with the Selector created.
-     *  @param opAccept True if this SelectionKey option that should be enabled 
-     *      when registering the ServerSocketChannel to the Selector.
-     *  @param opConnect True if this SelectionKey option that should be enabled 
-     *      when registering the ServerSocketChannel to the Selector.
-     *  @param opRead True if this SelectionKey option that should be enabled 
-     *      when registering the ServerSocketChannel to the Selector.
-     *  @param opWrite True if this SelectionKey option that should be enabled 
-     *      when registering the ServerSocketChannel to the Selector.
-     *  @return The Selector created.
+     *  @param serverSocket The ServerSocket whose channel should be
+     *  registered with the Selector created.
+     *  @param opAccept True if this SelectionKey option should be
+     *  enabled when registering the ServerSocketChannel to the
+     *  Selector.
+     *  @param opConnect True if this SelectionKey option should be
+     *  enabled when registering the ServerSocketChannel to the
+     *  Selector.
+     *  @param opRead True if this SelectionKey option should be
+     *  enabled when registering the ServerSocketChannel to the
+     *  Selector.
+     *  @param opWrite True if this SelectionKey option should be
+     *  enabled when registering the ServerSocketChannel to the
+     *  Selector.
+     *  @return The Selector created, or null if error.
      */
-    public Selector selectorCreate(ServerSocket serverSocket, boolean opAccept,
-            boolean opConnect, boolean opRead, boolean opWrite) {
-        Selector selector = null;
+    public Selector selectorCreate(ServerSocket serverSocket,
+            boolean opAccept, boolean opConnect,
+            boolean opRead, boolean opWrite) {
         try {
-            // Create the selector
-            selector = Selector.open();
-
+            // Create the Selector.
+            Selector selector = Selector.open();
             if (_debugging) {
                 _debug("Created selector.");
             }
 
-            ServerSocketChannel serverSocketChannel = serverSocket.getChannel();
+            ServerSocketChannel serverSocketChannel =
+                serverSocket.getChannel();
             if (serverSocketChannel != null) {
-                // Register channel with selector.
+                // Register channel with the Selector.
                 if (opAccept) {
                     serverSocketChannel.register(selector,
                             SelectionKey.OP_ACCEPT);
@@ -758,42 +1012,51 @@ public class PtinyOSDirector extends Director {
                             SelectionKey.OP_CONNECT);
                 }
                 if (opRead) {
-                    serverSocketChannel
-                            .register(selector, SelectionKey.OP_READ);
+                    serverSocketChannel.register(selector,
+                            SelectionKey.OP_READ);
                 }
                 if (opWrite) {
                     serverSocketChannel.register(selector,
                             SelectionKey.OP_WRITE);
                 }
+                return selector;
             } else {
-                System.out
-                        .println("Could not find ServerSocketChannel associated with ServerSocket!");
+                throw new IllegalActionException(
+                        "Could not find ServerSocketChannel "
+                        + "associated with ServerSocket \""
+                        + serverSocket
+                        + "\".");
             }
-        } catch (IOException e) {
-            System.out.println(e);
+        } catch (Exception ex) {
+            MessageHandler.error(ex.toString(), ex);
         }
-        return selector;
+        return null;
     }
 
-    /** Register channel with selector.
-     * 
-     *  @param selector The selector to which the channel should be registered.
-     *  @param socketChannel The SocketChannel that should be registered.
-     *  @param opAccept True if this SelectionKey option that should be enabled 
-     *      when registering the SocketChannel to the Selector.
-     *  @param opConnect True if this SelectionKey option that should be enabled 
-     *      when registering the SocketChannel to the Selector.
-     *  @param opRead True if this SelectionKey option that should be enabled 
-     *      when registering the SocketChannel to the Selector.
-     *  @param opWrite True if this SelectionKey option that should be enabled 
-     *      when registering the SocketChannel to the Selector.
+    /** Register the channel with the java.nio.channels.Selector.
+     *
+     *  <p>This is a JNI method that gets called by TOSSIM through the
+     *  Java loader.
+     *
+     *  @param selector The selector to which the channel should be
+     *  registered.
+     *  @param socketChannel The SocketChannel that should be
+     *  registered.
+     *  @param opAccept True if this SelectionKey option should be
+     *  enabled when registering the SocketChannel to the Selector.
+     *  @param opConnect True if this SelectionKey option should be
+     *  enabled when registering the SocketChannel to the Selector.
+     *  @param opRead True if this SelectionKey option should be
+     *  enabled when registering the SocketChannel to the Selector.
+     *  @param opWrite True if this SelectionKey option should be
+     *  enabled when registering the SocketChannel to the Selector.
      */
     public void selectorRegister(Selector selector,
-            SelectableChannel socketChannel, boolean opAccept,
-            boolean opConnect, boolean opRead, boolean opWrite) {
-
-        if (selector != null && socketChannel != null) {
-            try {
+            SelectableChannel socketChannel,
+            boolean opAccept, boolean opConnect,
+            boolean opRead, boolean opWrite) {
+        try {
+            if (selector != null && socketChannel != null) {
                 // Register channel with selector.
                 if (opAccept) {
                     socketChannel.register(selector, SelectionKey.OP_ACCEPT);
@@ -807,63 +1070,51 @@ public class PtinyOSDirector extends Director {
                 if (opWrite) {
                     socketChannel.register(selector, SelectionKey.OP_WRITE);
                 }
-            } catch (ClosedChannelException e) {
-                System.out.println(e);
             }
+        } catch (Exception exception) {
+            MessageHandler.error(exception.toString(), exception);
         }
     }
 
-    /** Close the selector.
-     * 
-     *  @param selector The selector that should be closed.
-     */
-    public void selectorClose(Selector selector) {
-        if (selector != null) {
-            try {
-                if (_debugging) {
-                    _debug("Begin call to selectorClose()");
-                }
-                // We have to call wakeup() here because of a possible bug in J2SE
-                //
-                // Note that this also requires a locking machnism to
-                // prevent selector.select() from being called again after
-                // the selector wakes up but before close() is called.
-                // See:
-                // http://forum.java.sun.com/thread.jspa?threadID=293213&messageID=2671029
-                selector.wakeup();
-                selector.close();
-                if (_debugging) {
-                    _debug("End call to selectorClose()");
-                }
-            } catch (IOException e) {
-                System.out.println(e);
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-        }
-    }
-
-    /** Returns a selected channel, or null if none.
+    /** Returns a selected channel, or null if none found.
+     *
+     *  In {@link #selectorClose(Selector)}, Selector.close() is
+     *  called, but because of a bug in J2SE described in <a
+     *  href="http://forum.java.sun.com/thread.jspa?threadID=293213&messageID=2671029">http://forum.java.sun.com/thread.jspa?threadID=293213&messageID=2671029</a>,
+     *  the call to Selector.close() in {@link
+     *  #selectorClose(Selector)} may never return because a thread is
+     *  blocked in the call to Selector.select() in this method.  So,
+     *  {@link #selectorClose(Selector)} also calls Selector.wakeup(),
+     *  but we have to make sure that this method (and the call to
+     *  Selector.select()) is not called again, before the Selector is
+     *  closed, especially since the call to this method will usually
+     *  be in a loop.  We use notNullIfClosing as a flag to indicate
+     *  that this method should not be called again.  We assume that
+     *  notNullIfClosing is a boolean array of at least size 1.
+     *  notNullIfClosing[0] is set to true if this method should not
+     *  be called again, otherwise it is not modified.
      *  
+     *  <p>This is a JNI method that gets called by TOSSIM through the
+     *  Java loader.
+     * 
      *  @param selector The channel selector.
-     *  @param notNullIfClosing TRUE if returning NULL, otherwise left
-     *  as is.  We use notNullIfClosing because of threading issues
-     *  discussed in {@link #selectorClose(Selector selector)}.
-     *  @param opAccept True if this SelectionKey option that should
-     *  be enabled when returning a non-null SelectableChannel.
-     *  @param opConnect True if this SelectionKey option that should
-     *  be enabled when returning a non-null SelectableChannel.
-     *  @param opRead True if this SelectionKey option that should be
+     *  @param notNullIfClosing notNullIfClosing[0] set to TRUE if
+     *  returning NULL, otherwise left as is.
+     *  @param opAccept True if this SelectionKey option should be
      *  enabled when returning a non-null SelectableChannel.
-     *  @param opWrite True if this SelectionKey option that should be
+     *  @param opConnect True if this SelectionKey option should be
+     *  enabled when returning a non-null SelectableChannel.
+     *  @param opRead True if this SelectionKey option should be
+     *  enabled when returning a non-null SelectableChannel.
+     *  @param opWrite True if this SelectionKey option should be
      *  enabled when returning a non-null SelectableChannel.
      *  @return The selected channel, or null if none.
      */
     public SelectableChannel selectSocket(Selector selector,
             boolean[] notNullIfClosing, boolean opAccept, boolean opConnect,
             boolean opRead, boolean opWrite) {
-        notNullIfClosing[0] = false;
         try {
+            notNullIfClosing[0] = false;
             // Wait for an event
             if (selector.select() > 0) {
                 // Get list of selection keys with pending events
@@ -874,7 +1125,8 @@ public class PtinyOSDirector extends Director {
                     // Get the selection key
                     SelectionKey selKey = (SelectionKey) iterator.next();
 
-                    // Remove it from the list to indicate that it is being processed
+                    // Remove it from the list to indicate that it is
+                    // being processed
                     iterator.remove();
 
                     // Check if it's a connection request
@@ -883,111 +1135,110 @@ public class PtinyOSDirector extends Director {
                             || (opRead && selKey.isReadable())
                             || (opWrite && selKey.isWritable())) {
                         // Get channel with connection request
-                        SelectableChannel ssChannel = selKey.channel();
-                        return ssChannel;
+                        return selKey.channel();
                     }
                 }
             }
-        } catch (IOException e) {
+            // This method didn't find a channel above, which means
+            // the selector is about to close, so set notNullIfClosing
+            // and return null below.
+            notNullIfClosing[0] = true;
+        } catch (Exception ex) {
             // Handle error with selector.
-            System.out.println("Exception in selectSocket(): " + e);
-        } catch (CancelledKeyException e) {
-            // Handle error with selector.
-            System.out.println("Exception in selectSocket(): " + e);
-        } catch (ClosedSelectorException e) {
-            // Handle error with selector.
-            System.out.println("Exception in selectSocket(): " + e);
+            MessageHandler.error(ex.toString(), ex);
         }
-        // Return null if this method didn't find a channel above.
-        // This means the selector is about to close.
-        notNullIfClosing[0] = true;
         return null;
     }
 
-    /** Accept a connection on a ServerSocketChannel.  If serverSocketChannel 
-     *  is blocking, this method blocks.
+    /** Close the java.net.ServerSocket.
+     *
+     *  <p>This is a JNI method that gets called by TOSSIM through the
+     *  Java loader.
      * 
-     * @param serverSocketChannel The ServerSocketChannel on which connections are accepted.
-     * @return The SocketChannel for the connection that was accepted.
+     *  @param serverSocket The ServerSocket to be closed.
      */
-    public SocketChannel acceptConnection(SelectableChannel serverSocketChannel) {
-        if (serverSocketChannel instanceof ServerSocketChannel) {
-            SocketChannel socketChannel = null;
-            try {
-                // Accept the connection request.
-                // If serverSocketChannel is blocking, this method blocks.
-                // The returned channel is in blocking mode.
-                socketChannel = ((ServerSocketChannel) serverSocketChannel)
-                        .accept();
-            } catch (IOException e) {
-                System.out.println(e);
+    public void serverSocketClose(ServerSocket serverSocket) {
+        try {
+            if (serverSocket != null) {
+                serverSocket.close();
             }
-            return socketChannel;
-        } else {
-            System.out
-                    .println("The argument passed to acceptConnection() was not a ServerSocketChannel.");
-            return null;
+        } catch (Exception ex) {
+            MessageHandler.error(ex.toString(), ex);
         }
     }
 
-    /** Close the SocketChannel.
+    /** Create a non-blocking server socket and check for connections on the 
+     *  port specified by <i>port</i>.
+     *
+     *  <p>This is a JNI method that gets called by TOSSIM through the
+     *  Java loader.
+     *
+     *  @param port The port number on which to create a server
+     *  socket.
+     *  @return The ServerSocket created, or null if error.
+     */
+    public ServerSocket serverSocketCreate(short port) {
+        try {
+            // Create non-blocking server sockets on port.
+            ServerSocketChannel serverSocketChannel = ServerSocketChannel
+                    .open();
+            serverSocketChannel.configureBlocking(false);
+            
+            ServerSocket serverSocket = serverSocketChannel.socket();
+                serverSocket.setReuseAddress(true);
+            serverSocket.bind(new InetSocketAddress(
+                    InetAddress.getByName(null), port));
+            
+            return serverSocket;
+        } catch (Exception ex) {
+            MessageHandler.error(ex.toString(), ex);
+        }
+        return null;
+    }
+
+    /** Close the java.nio.channels.SocketChannel.
+     *
+     *  <p>This is a JNI method that gets called by TOSSIM through the
+     *  Java loader.
      * 
-     * @param socketChannel The SocketChannel to close.
+     *  @param socketChannel The SocketChannel to close.
      */
     public void socketChannelClose(SelectableChannel socketChannel) {
-        if (socketChannel instanceof SocketChannel) {
-            try {
+        try {
+            if (socketChannel instanceof SocketChannel) {
                 socketChannel.close();
-            } catch (IOException e) {
-                System.out.println(e);
+            } else {
+                throw new IllegalActionException(
+                        "The argument passed to socketChannelClose() "
+                        + "was not a SocketChannel.");
             }
-        } else {
-            System.out
-                    .println("The argument passed to socketChannelClose() was not a SocketChannel.");
+        } catch (Exception ex) {
+            MessageHandler.error(ex.toString(), ex);
         }
     }
 
-    /** Write the bytes in writeBuffer to a SocketChannel.
-     *  Returns number of bytes written.  -1 if error.
-     * 
-     *  @param socketChannel The SocketChannel on which to write.
-     *  @param writeBuffer The bytes to write.
-     *  @return Number of bytes written.  -1 if error.
+    /** Read from a java.nio.channels.SocketChannel into readBuffer.
+     *
+     *  <p>This is a JNI method that gets called by TOSSIM through the
+     *  Java loader.
+     *
+     *  @param socketChannel SocketChannel from which to read.
+     *  @param readBuffer The bytes read.
+     *  @return Number of bytes read.  Returns 0 if end of stream
+     *  reached, -1 if error.
      */
-    public int socketChannelWrite(SocketChannel socketChannel,
-            byte[] writeBuffer) {
-        // Create a direct buffer to write bytes to socket.
-        // Direct buffers should be long-lived and be reused as much as possible.
-        ByteBuffer buffer = ByteBuffer.wrap(writeBuffer);
-
+    public int socketChannelRead(SocketChannel socketChannel,
+            byte[] readBuffer) {
         try {
-            // Write bytes
-            int numBytesWritten = socketChannel.write(buffer);
-            return numBytesWritten;
-        } catch (IOException e) {
-            // Connection may have been closed
-            System.out.println(e);
-            return -1;
-        }
-    }
-
-    /** Read from a SocketChannel into readBuffer.  
-     *  Returns number of bytes read.  0 if end of stream reached.  -1 if error.
-     * 
-     * @param socketChannel SocketChannel from which to read.
-     * @param readBuffer The bytes read.
-     * @return Number of bytes read.  0 if end of stream reached.  -1 if error.
-     */
-    public int socketChannelRead(SocketChannel socketChannel, byte[] readBuffer) {
-        // Create a direct buffer to get bytes from socket.
-        // Direct buffers should be long-lived and be reused as much as possible.
-        ByteBuffer buffer = ByteBuffer.wrap(readBuffer);
-
-        try {
+            // Create a direct buffer to get bytes from socket.
+            // Direct buffers should be long-lived and be reused as much
+            // as possible.
+            ByteBuffer buffer = ByteBuffer.wrap(readBuffer);
+    
             // Clear the buffer and read bytes from socket
             buffer.clear();
             int numBytesRead = socketChannel.read(buffer);
-
+    
             if (numBytesRead == -1) {
                 // No more bytes can be read from the channel
                 socketChannel.close(); // FIXME: is this ok?
@@ -995,13 +1246,41 @@ public class PtinyOSDirector extends Director {
             } else {
                 return numBytesRead;
             }
-        } catch (IOException e) {
-            // Connection may have been closed
-            System.out.println(e);
-            return -1;
+        } catch (Exception ex) {
+            // Connection may have been closed.
+            MessageHandler.error(ex.toString(), ex);
         }
+        return -1;
     }
 
+    /** Write the bytes in writeBuffer to a
+     *  java.nio.channels.SocketChannel.
+     *
+     *  <p>This is a JNI method that gets called by TOSSIM through the
+     *  Java loader.
+     *
+     *  @param socketChannel The SocketChannel on which to write.
+     *  @param writeBuffer The bytes to write.
+     *  @return Number of bytes written.  -1 if error.
+     */
+    public int socketChannelWrite(SocketChannel socketChannel,
+            byte[] writeBuffer) {
+        try {
+            // Create a direct buffer to write bytes to socket.
+            // Direct buffers should be long-lived and be reused as much
+            // as possible.
+            ByteBuffer buffer = ByteBuffer.wrap(writeBuffer);
+
+            // Write bytes
+            int numBytesWritten = socketChannel.write(buffer);
+            return numBytesWritten;
+        } catch (Exception ex) {
+            // Connection may have been closed.
+            MessageHandler.error(ex.toString(), ex);
+        }
+        return -1;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1011,6 +1290,11 @@ public class PtinyOSDirector extends Director {
      *  @exception IllegalActionException If there is a problem accessing
      *  the {@link #destinationDirectory} or {@link #target} parameters
      *  or if the make subprocess fails or returns a non-zero value.
+     *
+     *  FIXME: Might want to use JTextAreaExec instead.
+     *
+     *  @param makefileName Name of makefile on which to call make.
+     *  @exception IllegalActionException If call to stringValue() throws it.
      */
     private void _compile(String makefileName) throws IllegalActionException {
         // The command we run is:
@@ -1030,6 +1314,9 @@ public class PtinyOSDirector extends Director {
             commandString.append(" " + command[i]);
         }
 
+        if (_debugging) {
+            _debug(commandString.toString());
+        }
         System.out.println(commandString.toString());
 
         int exitValue = 0;
@@ -1081,7 +1368,8 @@ public class PtinyOSDirector extends Director {
      *  @return True if ok to write file.
      *  @exception IllegalActionException If code generation should be halted.
      */
-    private boolean _confirmOverwrite(File file) throws IllegalActionException {
+    private boolean _confirmOverwrite(File file)
+            throws IllegalActionException {
         boolean confirmOverwriteValue = ((BooleanToken) confirmOverwrite
                 .getToken()).booleanValue();
 
@@ -1105,13 +1393,11 @@ public class PtinyOSDirector extends Director {
         return true;
     }
 
-    // FIXME comment
-
-    /** Generate NC code for the given model. This does not descend
+    /** Generate nesC code for the given model. This does not descend
      *  hierarchically into contained composites. It simply generates
      *  code for the top level of the specified model.
      *  @param model The model for which to generate code.
-     *  @return The NC code.
+     *  @return A String representation of the nesC code.
      */
     private String _generateCode(CompositeActor model)
             throws IllegalActionException {
@@ -1139,14 +1425,138 @@ public class PtinyOSDirector extends Director {
         return generatedCode.toString();
     }
 
-    /** Generate loader for shared library
+    /** Generate Java loader file.
+     *
+===== Begin example Loader.java (from Dec 4, 2006) =====
+import java.net.ServerSocket;
+import java.nio.channels.Selector;
+import java.nio.channels.SelectableChannel;
+import java.nio.channels.SocketChannel;
+import ptolemy.domains.ptinyos.kernel.PtinyOSLoader;
+import ptolemy.domains.ptinyos.kernel.PtinyOSDirector;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.util.MessageHandler;        
+public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 implements PtinyOSLoader {
+    public void load(String path, PtinyOSDirector director) {
+        String fileSeparator = System.getProperty("file.separator");
+        String toBeLoaded = path + fileSeparator + System.mapLibraryName("_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0");
+        toBeLoaded = toBeLoaded.replace('\\', '/');
+        System.out.println("_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0.java : about to load " + toBeLoaded);
+        System.load(toBeLoaded);
+        this.director = director;
+    }
+    public int main(String argsToMain[]) throws InternalErrorException {
+        return main_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0(argsToMain);
+    }
+    public void startThreads() {
+        try {
+            this.eventAcceptThread = new EventAcceptThread();
+            this.eventAcceptThread.start();
+            this.commandReadThread = new CommandReadThread();
+            this.commandReadThread.start();
+        } catch (Exception ex) {
+            MessageHandler.error("Could not join thread.", ex);
+        }
+    }
+    public boolean joinThreads() {
+        try {
+            if (this.commandReadThread != null) {
+                this.commandReadThread.join();
+            }
+            if (this.eventAcceptThread != null) {
+                this.eventAcceptThread.join();
+            }
+            return true;
+        } catch (Exception ex) {
+            MessageHandler.error("Could not join thread.", ex);
+        }
+        return false;
+    }
+    public void wrapup() {
+        wrapup_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0();
+    }
+    public void processEvent(long currentTime) {
+        processEvent_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0(currentTime);
+    }
+    public void receivePacket(long currentTime, String packet) {
+        receivePacket_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0(currentTime, packet);
+    }
+    public void enqueueEvent(String newTime) {
+        this.director.enqueueEvent(newTime);
+    }
+    public char getCharParameterValue(String param) {
+        return this.director.getCharParameterValue(param);
+    }
+    public boolean sendToPort(String portName, String expression) {
+        return this.director.sendToPort(portName, expression);
+    }
+    public void tosDebug(String debugMode, String message, String nodeID) {
+        this.director.tosDebug(debugMode, message, nodeID);
+    }
+    public ServerSocket serverSocketCreate(short port) {
+        return this.director.serverSocketCreate(port);
+    }
+    public void serverSocketClose(ServerSocket serverSocket) {
+        this.director.serverSocketClose(serverSocket);
+    }
+    public Selector selectorCreate(ServerSocket serverSocket, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {
+        return this.director.selectorCreate(serverSocket, opAccept, opConnect, opRead, opWrite);
+    }
+    public void selectorRegister(Selector selector, SelectableChannel SocketChannel, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {
+        this.director.selectorRegister(selector, SocketChannel, opAccept, opConnect, opRead, opWrite);
+    }
+    public void selectorClose(Selector selector) {
+        this.director.selectorClose(selector);
+    }
+    public SelectableChannel selectSocket(Selector selector, boolean[] notNullIfClosing, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {
+        return this.director.selectSocket(selector, notNullIfClosing, opAccept, opConnect, opRead, opWrite);
+    }
+    public SocketChannel acceptConnection(SelectableChannel serverSocketChannel) {
+        return this.director.acceptConnection(serverSocketChannel);
+    }
+    public void socketChannelClose(SelectableChannel socketChannel) {
+        this.director.socketChannelClose(socketChannel);
+    }
+    public int socketChannelWrite(SocketChannel socketChannel, byte[] writeBuffer) {
+        return this.director.socketChannelWrite(socketChannel, writeBuffer);
+    }
+    public int socketChannelRead(SocketChannel socketChannel, byte[] readBuffer) {
+        return this.director.socketChannelRead(socketChannel, readBuffer);
+    }
+    private PtinyOSDirector director;
+    private native int main_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0(String argsToMain[]) throws InternalErrorException ;
+    private native void commandReadThread_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0();
+    private native void eventAcceptThread_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0();
+    private native void wrapup_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0();
+    private native void processEvent_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0(long currentTime);
+    private native void receivePacket_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0(long currentTime, String packet);
+    private CommandReadThread commandReadThread;
+    private EventAcceptThread eventAcceptThread;
+    class CommandReadThread extends Thread {
+         public void run() {
+             commandReadThread_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0();
+         }
+    }
+    class EventAcceptThread extends Thread {
+         public void run() {
+             eventAcceptThread_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0();
+         }
+    }
+}
+===== End example Loader.java =====
+     *
+     *  @exception IllegalActionException If thrown when confirming
+     *  overwrite, or if writing to the file fails.
      */
     private void _generateLoader() throws IllegalActionException {
         // Use filename relative to toplevel PtinyOSDirector.
         NamedObj toplevel = _toplevelNC();
         String toplevelName = _sanitizedFullName(toplevel);
 
-        // FIXME: why not just use a StringBuffer?
+        // We use _CodeString as a wrapper for a StringBuffer instead
+        // of creating a giant string so that it easy to add a newline
+        // character at the end of each string and to add intermediate
+        // debugging statements, if necessary.
         _CodeString text = new _CodeString();
 
         text.addLine("import java.net.ServerSocket;");
@@ -1156,17 +1566,15 @@ public class PtinyOSDirector extends Director {
 
         text.addLine("import ptolemy.domains.ptinyos.kernel.PtinyOSLoader;");
         text.addLine("import ptolemy.domains.ptinyos.kernel.PtinyOSDirector;");
-        text.addLine("import ptolemy.kernel.util.IllegalActionException;");
+        text.addLine("import ptolemy.kernel.util.InternalErrorException;");
+        text.addLine("import ptolemy.util.MessageHandler;");
 
         text.addLine("public class Loader" + toplevelName
                 + " implements PtinyOSLoader {");
 
-        text
-                .addLine("    public void load(String path, PtinyOSDirector director) {");
-        text
-                .addLine("        String fileSeparator = System.getProperty(\"file.separator\");");
-        text
-                .addLine("        String toBeLoaded = path + fileSeparator + System.mapLibraryName(\""
+        text.addLine("    public void load(String path, PtinyOSDirector director) {");
+        text.addLine("        String fileSeparator = System.getProperty(\"file.separator\");");
+        text.addLine("        String toBeLoaded = path + fileSeparator + System.mapLibraryName(\""
                         + toplevelName + "\");");
         text.addLine("        toBeLoaded = toBeLoaded.replace('\\\\', '/');");
         text.addLine("        System.out.println(\"" + toplevelName
@@ -1177,20 +1585,22 @@ public class PtinyOSDirector extends Director {
         text.addLine("        this.director = director;");
         text.addLine("    }");
 
-        text.addLine("    public int main(String argsToMain[]) {");
+        text.addLine("    public int main(String argsToMain[]) throws InternalErrorException {");
         text.addLine("        return main" + toplevelName + "(argsToMain);");
         text.addLine("    }");
 
         text.addLine("    public void startThreads() {");
-        text
-                .addLine("        this.eventAcceptThread = new EventAcceptThread();");
+        text.addLine("        try {");
+        text.addLine("        this.eventAcceptThread = new EventAcceptThread();");
         text.addLine("        this.eventAcceptThread.start();");
-        text
-                .addLine("        this.commandReadThread = new CommandReadThread();");
+        text.addLine("        this.commandReadThread = new CommandReadThread();");
         text.addLine("        this.commandReadThread.start();");
+        text.addLine("        } catch (Exception ex) {");
+        text.addLine("            MessageHandler.error(\"Could not join thread.\", ex);");
+        text.addLine("        }");
         text.addLine("    }");
 
-        text.addLine("    public int joinThreads() {");
+        text.addLine("    public boolean joinThreads() {");
         text.addLine("        try {");
         text.addLine("            if (this.commandReadThread != null) {");
         text.addLine("                this.commandReadThread.join();");
@@ -1198,12 +1608,11 @@ public class PtinyOSDirector extends Director {
         text.addLine("            if (this.eventAcceptThread != null) {");
         text.addLine("                this.eventAcceptThread.join();");
         text.addLine("            }");
-        text.addLine("        } catch (Exception e) {");
-        text
-                .addLine("            System.err.println(\"Could not join thread: \" + e);");
-        text.addLine("            return -1;");
+        text.addLine("            return true;");
+        text.addLine("        } catch (Exception ex) {");
+        text.addLine("            MessageHandler.error(\"Could not join thread.\", ex);");
         text.addLine("        }");
-        text.addLine("        return 0;");
+        text.addLine("        return false;");
         text.addLine("    }");
 
         text.addLine("    public void wrapup() {");
@@ -1214,105 +1623,73 @@ public class PtinyOSDirector extends Director {
         text.addLine("        processEvent" + toplevelName + "(currentTime);");
         text.addLine("    }");
 
-        text
-                .addLine("    public void receivePacket(long currentTime, String packet) {");
+        text.addLine("    public void receivePacket(long currentTime, String packet) {");
         text.addLine("        receivePacket" + toplevelName
                 + "(currentTime, packet);");
         text.addLine("    }");
 
-        text
-                .addLine("    public void enqueueEvent(String newTime) throws IllegalActionException {");
+        text.addLine("    public void enqueueEvent(String newTime) {");
         text.addLine("        this.director.enqueueEvent(newTime);");
         text.addLine("    }");
 
-        text.addLine("    public char getCharParameterValue(String param)");
-        text.addLine("            throws IllegalActionException {");
-        text
-                .addLine("        return this.director.getCharParameterValue(param);");
+        text.addLine("    public char getCharParameterValue(String param) {");
+        text.addLine("        return this.director.getCharParameterValue(param);");
         text.addLine("    }");
 
-        text
-                .addLine("    public boolean getBooleanParameterValue(String param)");
-        text.addLine("            throws IllegalActionException {");
-        text
-                .addLine("        return this.director.getBooleanParameterValue(param);");
+        text.addLine("    public boolean sendToPort(String portName, String expression) {");
+        text.addLine("        return this.director.sendToPort(portName, expression);");
         text.addLine("    }");
 
-        text
-                .addLine("    public int sendToPort(String portName, String expression)");
-        text.addLine("            throws IllegalActionException {");
-        text
-                .addLine("        return this.director.sendToPort(portName, expression);");
-        text.addLine("    }");
-
-        text
-                .addLine("    public void tosDebug(String debugMode, String message, String nodeNumber) {");
-        text
-                .addLine("        this.director.tosDebug(debugMode, message, nodeNumber);");
+        text.addLine("    public void tosDebug(String debugMode, String message, String nodeID) {");
+        text.addLine("        this.director.tosDebug(debugMode, message, nodeID);");
         text.addLine("    }");
 
         //////////////////////// Begin socket methods. ////////////////////
-        text
-                .addLine("    public ServerSocket serverSocketCreate(short port) {");
+        text.addLine("    public ServerSocket serverSocketCreate(short port) {");
         text.addLine("        return this.director.serverSocketCreate(port);");
         text.addLine("    }");
 
-        text
-                .addLine("    public void serverSocketClose(ServerSocket serverSocket) {");
+        text.addLine("    public void serverSocketClose(ServerSocket serverSocket) {");
         text.addLine("        this.director.serverSocketClose(serverSocket);");
         text.addLine("    }");
 
-        text
-                .addLine("    public Selector selectorCreate(ServerSocket serverSocket, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
-        text
-                .addLine("        return this.director.selectorCreate(serverSocket, opAccept, opConnect, opRead, opWrite);");
+        text.addLine("    public Selector selectorCreate(ServerSocket serverSocket, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
+        text.addLine("        return this.director.selectorCreate(serverSocket, opAccept, opConnect, opRead, opWrite);");
         text.addLine("    }");
 
-        text
-                .addLine("    public void selectorRegister(Selector selector, SelectableChannel SocketChannel, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
-        text
-                .addLine("        this.director.selectorRegister(selector, SocketChannel, opAccept, opConnect, opRead, opWrite);");
+        text.addLine("    public void selectorRegister(Selector selector, SelectableChannel SocketChannel, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
+        text.addLine("        this.director.selectorRegister(selector, SocketChannel, opAccept, opConnect, opRead, opWrite);");
         text.addLine("    }");
 
         text.addLine("    public void selectorClose(Selector selector) {");
         text.addLine("        this.director.selectorClose(selector);");
         text.addLine("    }");
 
-        text
-                .addLine("    public SelectableChannel selectSocket(Selector selector, boolean[] notNullIfClosing, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
-        text
-                .addLine("        return this.director.selectSocket(selector, notNullIfClosing, opAccept, opConnect, opRead, opWrite);");
+        text.addLine("    public SelectableChannel selectSocket(Selector selector, boolean[] notNullIfClosing, boolean opAccept, boolean opConnect, boolean opRead, boolean opWrite) {");
+        text.addLine("        return this.director.selectSocket(selector, notNullIfClosing, opAccept, opConnect, opRead, opWrite);");
         text.addLine("    }");
 
-        text
-                .addLine("    public SocketChannel acceptConnection(SelectableChannel serverSocketChannel) {");
-        text
-                .addLine("        return this.director.acceptConnection(serverSocketChannel);");
+        text.addLine("    public SocketChannel acceptConnection(SelectableChannel serverSocketChannel) {");
+        text.addLine("        return this.director.acceptConnection(serverSocketChannel);");
         text.addLine("    }");
 
-        text
-                .addLine("    public void socketChannelClose(SelectableChannel socketChannel) {");
-        text
-                .addLine("        this.director.socketChannelClose(socketChannel);");
+        text.addLine("    public void socketChannelClose(SelectableChannel socketChannel) {");
+        text.addLine("        this.director.socketChannelClose(socketChannel);");
         text.addLine("    }");
 
-        text
-                .addLine("    public int socketChannelWrite(SocketChannel socketChannel, byte[] writeBuffer) {");
-        text
-                .addLine("        return this.director.socketChannelWrite(socketChannel, writeBuffer);");
+        text.addLine("    public int socketChannelWrite(SocketChannel socketChannel, byte[] writeBuffer) {");
+        text.addLine("        return this.director.socketChannelWrite(socketChannel, writeBuffer);");
         text.addLine("    }");
 
-        text
-                .addLine("    public int socketChannelRead(SocketChannel socketChannel, byte[] readBuffer) {");
-        text
-                .addLine("        return this.director.socketChannelRead(socketChannel, readBuffer);");
+        text.addLine("    public int socketChannelRead(SocketChannel socketChannel, byte[] readBuffer) {");
+        text.addLine("        return this.director.socketChannelRead(socketChannel, readBuffer);");
         text.addLine("    }");
         //////////////////////// End socket methods. //////////////////////
 
         text.addLine("    private PtinyOSDirector director;");
 
         text.addLine("    private native int main" + toplevelName
-                + "(String argsToMain[]);");
+                + "(String argsToMain[]) throws InternalErrorException;");
         text.addLine("    private native void commandReadThread" + toplevelName
                 + "();");
         text.addLine("    private native void eventAcceptThread" + toplevelName
@@ -1349,33 +1726,36 @@ public class PtinyOSDirector extends Director {
                 FileWriter writer = new FileWriter(writeFile);
                 writer.write(text.toString());
                 writer.close();
-            } catch (IOException e) {
-                throw new IllegalActionException(this, e,
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex,
                         "Failed to open file for writing.");
             }
         }
     }
 
     /** Generate makefile.
-     // FIXME example
-     
-     TOSROOT=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x
-     TOSDIR=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos
-     TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make
-     COMPONENT=_SenseToLedsInWireless_MicaBoard_MicaActor3071
-     PFLAGS += -I%T/lib/Counters
-     PFLAGS += -DCOMMAND_PORT=10584 -DEVENT_PORT=10585
-     PFLAGS += -D_PTII_NODEID=0
-     MY_PTCC_FLAGS += -D_PTII_NODE_NAME=_1SenseToLedsInWireless_1MicaBoard_1MicaActor3071
-     PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
-     include /home/celaine/ptII/mk/ptII.mk
-     include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
-
+     *
+===== Begin example makefile (from Dec 9, 20060) =====        
+TOSROOT=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x
+TOSDIR=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos
+TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make
+COMPONENT=_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor1
+PFLAGS += -I%T/lib/Counters
+PFLAGS += -DCOMMAND_PORT=10584 -DEVENT_PORT=10585
+PFLAGS +=-D_PTII_NODEID=1
+MY_PTCC_FLAGS += -D_PTII_NODE_NAME=_1SenseToLeds_1InWireless_1MicaBoard_1MicaCompositeActor1
+PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
+include /home/celaine/ptII/mk/ptII.mk
+include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
+===== End example makefile (from Dec 9, 20060) =====
+     *
+     * @exception IllegalActionException If thrown when accessing a
+     * parameter or if there is an error writing to the file.
      * @exception CancelException If the directory named by the
      * ptolemy.ptII.tosroot property does not exist.
      */
     private String _generateMakefile() throws IllegalActionException,
-            CancelException {
+    CancelException {
 
         // Check to make sure that tosRoot exists
         if (tosRoot == null || tosRoot.asFile() == null
@@ -1433,9 +1813,18 @@ public class PtinyOSDirector extends Director {
         text.addLine("PFLAGS +=" + " -DCOMMAND_PORT=" + commandPort.getToken()
                 + " -DEVENT_PORT=" + eventPort.getToken());
 
-        boolean isBaseStationValue = ((BooleanToken) isBaseStation.getToken())
-                .booleanValue();
-        if (isBaseStationValue == true) {
+        // If the value of <i>baseStation</i> is the same as the Ptolemy II name of
+        // the node, then make this node a base station by setting _PTII_NODEID in the
+        // makefile to 0.  A non-zero value of the nodeID parameter will be ignored.
+        // If the values are not equal, use the regular node ID value.
+        String baseStationValue = ((StringToken)baseStation.getToken()).stringValue();
+        NamedObj obj = this.getContainer();
+        NamedObj temp = obj.getContainer();
+        if (temp != null) {
+            obj = temp;
+        }
+        String containerName = temp.getName();
+        if (baseStationValue.equals(containerName)) {
             text.addLine("PFLAGS +=" + "-D_PTII_NODEID=" + "0");
         } else {
             text.addLine("PFLAGS +=" + "-D_PTII_NODEID=" + nodeID.getToken());
@@ -1453,9 +1842,8 @@ public class PtinyOSDirector extends Director {
                 // Note: we do not conditionally add this in, so
                 // makefile must be regenerated if user wants to use
                 // makefile with non-ptII platform.
-                text
-                        .addLine("PFLAGS += "
-                                + "\"-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet\"");
+                text.addLine("PFLAGS += "
+                        + "\"-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet\"");
                 break;
             }
         }
@@ -1484,8 +1872,8 @@ public class PtinyOSDirector extends Director {
                 FileWriter writer = new FileWriter(writeFile);
                 writer.write(text.toString());
                 writer.close();
-            } catch (IOException e) {
-                throw new IllegalActionException(this, e,
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex,
                         "Failed to open file for writing.");
             }
         }
@@ -1493,11 +1881,92 @@ public class PtinyOSDirector extends Director {
         return makefileName;
     }
 
-    /** Generate code for the connections.
+    /** Get the current model time and return the long value.
+     *  @return The model time as a long value, or 0 if the model time
+     *  is null.
+     */
+    private long _getModelTimeAsLongValue() {
+        CompositeActor container = (CompositeActor) getContainer();
+
+        // Get the executive director.  If there is none, use this instead.
+        Director director = container.getExecutiveDirector();
+        if (director == null) {
+            director = this;
+        }
+
+        // Get the current model time.
+        long currentTimeValue = 0;
+        Time currentTime = director.getModelTime();
+        if (currentTime != null) {
+            // NOTE: this could overflow.
+            currentTimeValue = currentTime.getLongValue();
+        }
+        return currentTimeValue;
+    }
+    
+    /** Generate code for the nesC interface connections.  The order
+     *  of ports in the model is the order in which the connections
+     *  are generated.
+     *  @param model The model containing nesC components for which to
+     *  generate code.
+     *  @return The code for the connections, or an empty string if error.
+     */
+    private String _includeConnection(CompositeActor model) {
+        _CodeString codeString = new _CodeString();
+        Actor actor;
+    
+        // Generate "Driver functions" for common actors.
+        Iterator actors = model.entityList().iterator();
+    
+        while (actors.hasNext()) {
+            actor = (Actor) actors.next();
+    
+            if (_needsInputDriver(actor)) {
+                codeString.add(_includeConnection(model, actor));
+            }
+        }
+    
+        Iterator outPorts = model.outputPortList().iterator();
+        while (outPorts.hasNext()) {
+            IOPort port = (IOPort) outPorts.next();
+    
+            // FIXME: Assuming ports are either
+            // input or output and not both.
+            List sourcePortList = port.insidePortList();
+    
+            //FIXME: can the list be empty?
+    
+            CompositeActor container = (CompositeActor) getContainer();
+    
+            if ((sourcePortList != null)
+                    && !(container instanceof PtinyOSCompositeActor)) {
+                // FIXME: test this code
+                for (int i = 0; i < sourcePortList.size(); i++) {
+                    IOPort sourcePort = (IOPort) sourcePortList.get(i);
+                    String sanitizedOutPortName = StringUtilities
+                            .sanitizeName(sourcePort.getName());
+                    String sourceActorName = StringUtilities
+                            .sanitizeName(sourcePort.getContainer().getName());
+                    codeString.addLine(sourceActorName + "."
+                            + sanitizedOutPortName + " = " + port.getName()
+                            + ";");
+                }
+            }
+        }
+        return codeString.toString();
+    }
+
+    /** Generate code for the connections.  Called from {@link
+     *  _includeConnection(CompositeActor).
+     *
+     *  @param model The model containing nesC components for which to
+     *  generate code.
+     *  @actor actor The actor representing the nesC component for
+     *  which to generate code.
      *  @return The connections code.
      */
-    private static String _includeConnection(CompositeActor model, Actor actor)
-            throws IllegalActionException {
+    private static String _includeConnection(
+            CompositeActor model, Actor actor) {
         _CodeString codeString = new _CodeString();
 
         String actorName = StringUtilities.sanitizeName(((NamedObj) actor)
@@ -1550,67 +2019,10 @@ public class PtinyOSDirector extends Director {
         return codeString.toString();
     }
 
-    /** Generate code for the connections.  The order of ports in
-     *  model has effect on the order of driver input parameters.
-     *  @return The drivers code.
-     */
-    private String _includeConnection(CompositeActor model)
-            throws IllegalActionException {
-        _CodeString codeString = new _CodeString();
-        Actor actor;
-
-        // Generate "Driver functions" for common actors.
-        Iterator actors = model.entityList().iterator();
-
-        while (actors.hasNext()) {
-            actor = (Actor) actors.next();
-
-            if (_needsInputDriver(actor)) {
-                codeString.add(_includeConnection(model, actor));
-            }
-        }
-
-        Iterator outPorts = model.outputPortList().iterator();
-
-        while (outPorts.hasNext()) {
-            IOPort port = (IOPort) outPorts.next();
-
-            // FIXME: Assuming ports are either
-            // input or output and not both.
-            List sourcePortList = port.insidePortList();
-
-            //FIXME: can the list be empty?
-
-            /*
-             if (sourcePortList.size() > 1) {
-             throw new IllegalActionException(port, "Input port " +
-             "cannot receive data from multiple sources in NC.");
-             }*/
-            CompositeActor container = (CompositeActor) getContainer();
-
-            //NamedObj toplevel = _toplevelNC();
-            //            if (sourcePortList != null && (container != toplevel)) {
-            if ((sourcePortList != null)
-                    && !(container instanceof PtinyOSCompositeActor)) {
-                // FIXME: test this code
-                for (int i = 0; i < sourcePortList.size(); i++) {
-                    IOPort sourcePort = (IOPort) sourcePortList.get(i);
-                    String sanitizedOutPortName = StringUtilities
-                            .sanitizeName(sourcePort.getName());
-                    String sourceActorName = StringUtilities
-                            .sanitizeName(sourcePort.getContainer().getName());
-                    codeString.addLine(sourceActorName + "."
-                            + sanitizedOutPortName + " = " + port.getName()
-                            + ";");
-                }
-            }
-        }
-
-        return codeString.toString();
-    }
-
-    /** Generate code for the components used in the model.
-     *  @return The code.
+    /** Generate code for the nesC components used in the model.
+     *  @param model The model containing nesC components for which to
+     *  generate code.
+     *  @return The code listing the components used in the model.
      */
     private static String _includeModule(CompositeActor model)
             throws IllegalActionException {
@@ -1658,16 +2070,14 @@ public class PtinyOSDirector extends Director {
 
     /** Initialize parameters. Set all parameters to their default values.
      */
-    private void _initParameters() {
+    private void _initializeParameters() {
         try {
-            _attachText(
-                    "_iconDescription",
-                    "<svg>\n"
-                            + "<rect x=\"-40\" y=\"-15\" width=\"80\" height=\"30\" "
-                            + "style=\"fill:blue\"/>"
-                            + "<text x=\"-36\" y=\"8\" "
-                            + "style=\"font-size:20; font-family:SansSerif; fill:white\">"
-                            + "PtinyOS</text></svg>");
+            _attachText("_iconDescription", "<svg>\n"
+                    + "<rect x=\"-40\" y=\"-15\" width=\"80\" height=\"30\" "
+                    + "style=\"fill:blue\"/>"
+                    + "<text x=\"-36\" y=\"8\" "
+                    + "style=\"font-size:20; font-family:SansSerif; fill:white\">"
+                    + "PtinyOS</text></svg>");
 
             // Set the code generation output directory to the current
             // working directory.
@@ -1710,20 +2120,21 @@ public class PtinyOSDirector extends Director {
                 tosDir.setExpression("$PTII/vendors/ptinyos/tinyos-1.x/tos");
             }
 
-            // Set additional make flags.
+            // Set additional flags passed to the nesC compiler.
             pflags = new StringParameter(this, "pflags");
             pflags.setExpression("-I%T/lib/Counters");
 
             // Set number of nodes to be simulated to be equal to 1.
             // NOTE: only the top level value of this parameter matters.
-            numNodes = new Parameter(this, "numNodes", new IntToken(1));
-            numNodes.setTypeEquals(BaseType.INT);
-            numNodes.setVisibility(Settable.NOT_EDITABLE);
+            numberOfNodes = new Parameter(this, "numberOfNodes",
+                    new IntToken(1));
+            numberOfNodes.setTypeEquals(BaseType.INT);
+            numberOfNodes.setVisibility(Settable.NOT_EDITABLE);
 
             // Set the boot up time range to the defaul to of 10 sec.
             // NOTE: only the top level value of this parameter matters.
-            bootTimeRange = new Parameter(this, "bootTimeRange", new IntToken(
-                    10));
+            bootTimeRange = new Parameter(this, "bootTimeRange",
+                    new IntToken(10));
             bootTimeRange.setTypeEquals(BaseType.INT);
 
             // Set compile target platform to ptII.
@@ -1733,16 +2144,15 @@ public class PtinyOSDirector extends Director {
 
             // Set simulate to true.
             // NOTE: only the top level value of this parameter matters.
-            simulate = new Parameter(this, "simulate", BooleanToken.TRUE);
+            simulate = new SharedParameter(this, "simulate", PtinyOSDirector.class, "true");
             simulate.setTypeEquals(BaseType.BOOLEAN);
 
-            // Set so that this is not a base station.
-            isBaseStation = new Parameter(this, "isBaseStation",
-                    BooleanToken.FALSE);
-            isBaseStation.setTypeEquals(BaseType.BOOLEAN);
-
+            // Set to the default node name.
+            baseStation = new SharedParameter(this, "baseStation",
+                    PtinyOSDirector.class, "\"MicaBoard\"");
+            
             // Set command and event ports for TOSSIM.
-            commandPort = new PtinyOSIntegerParameter(this, "commandPort", 2);
+            commandPort = new PtinyOSNodeParameter(this, "commandPort", 2);
             commandPort.setExpression("10584");
             eventPort = new Parameter(this, "eventPort");
             eventPort.setExpression("commandPort + 1");
@@ -1752,18 +2162,22 @@ public class PtinyOSDirector extends Director {
             timeResolution.moveToLast();
 
             // Set node ID to a starting value of 1.
-            // PtinyOSIntegerParameter will autoincrement this value
+            // PtinyOSNodeParameter will autoincrement this value
             // depending on how many other nodes are in the model.
-            nodeID = new PtinyOSIntegerParameter(this, "nodeID", 1);
+            nodeID = new PtinyOSNodeParameter(this, "nodeID", 1);
             nodeID.setExpression("1");
 
         } catch (KernelException ex) {
-            throw new InternalErrorException(this, ex, "Cannot set parameter");
+            throw new InternalErrorException(this, ex,
+                    "Cannot set parameter");
         }
     }
 
-    /** Generate NC code describing the input ports.  Input ports are
-     *  described in NC as interfaces "provided" by this module.
+    /** Generate nesC code describing the input ports.  Input ports
+     *  are described in nesC as interfaces that this module
+     *  "provides".
+     *  @param model The model containing nesC components for which to
+     *  generate code.    
      *  @return The code describing the input ports.
      */
     private static String _interfaceProvides(CompositeActor model)
@@ -1774,21 +2188,22 @@ public class PtinyOSDirector extends Director {
 
         while (inPorts.hasNext()) {
             IOPort port = (IOPort) inPorts.next();
-
             if (port.isOutput()) {
                 throw new IllegalActionException(port,
                         "Ports that are both inputs and outputs "
                                 + "are not allowed.");
             }
-
             codeString.addLine("provides interface " + port.getName() + ";");
         }
 
         return codeString.toString();
     }
 
-    /** Generate interface the model uses.
-     *  @return The code.
+    /** Generate nesC code describing the output ports.  Output ports
+     *  are described in nesC as interfaces that this module "uses".
+     *  @param model The model containing nesC components for which to
+     *  generate code.
+     *  @return The code listing the interfaces used.
      */
     private static String _interfaceUses(CompositeActor model)
             throws IllegalActionException {
@@ -1798,13 +2213,11 @@ public class PtinyOSDirector extends Director {
 
         while (outPorts.hasNext()) {
             IOPort port = (IOPort) outPorts.next();
-
             if (port.isInput()) {
                 throw new IllegalActionException(port,
                         "Ports that are both inputs and outputs "
                                 + "are not allowed.");
             }
-
             codeString.addLine("uses interface " + port.getName() + ";");
         }
 
@@ -1837,6 +2250,8 @@ public class PtinyOSDirector extends Director {
 
     /** Return true if the given actor has at least one input port, which
      *  requires it to have an input driver.
+     *  @param actor Actor to inspect.
+     *  @return True if the given actor has at least one input port.
      */
     private static boolean _needsInputDriver(Actor actor) {
         if (actor.inputPortList().size() <= 0) {
@@ -1848,6 +2263,8 @@ public class PtinyOSDirector extends Director {
 
     /** Get the sanitized full name with workspace version number appended,
      *  or "Unnamed" with version number appended if no name.
+     *  @param obj The NamedObj to inspect.
+     *  @return String The sanitized full name of the NamedObj.
      */
     private String _sanitizedFullName(NamedObj obj) {
         String objName = obj.getFullName();
@@ -1858,7 +2275,6 @@ public class PtinyOSDirector extends Director {
         }
 
         objName = objName + _version;
-
         return objName;
     }
 
@@ -1883,7 +2299,6 @@ public class PtinyOSDirector extends Director {
                 }
             }
         }
-
         return getContainer();
     }
 
@@ -1896,7 +2311,9 @@ public class PtinyOSDirector extends Director {
     private static String _unnamed = "Unnamed";
 
     // Workspace version number at preinitialize.
-    private long _version;
+    private long _version = -1;
+    
+    private long _startTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -1983,8 +2400,8 @@ public class PtinyOSDirector extends Director {
                     if (_debugging) {
                         _debug(_name + ">" + line);
                     }
-
                     System.out.println(_name + ">" + line);
+                    
                 }
 
                 if (printWriter != null) {

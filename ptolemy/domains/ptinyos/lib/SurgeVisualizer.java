@@ -1,4 +1,5 @@
-/* An actor that displays link properties based on the interpretation of the token.
+/* An actor that displays link properties based on the interpretation
+   of the token.
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -32,7 +33,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.domains.ptinyos.kernel.PtinyOSDirector;
-import ptolemy.domains.ptinyos.kernel.PtinyOSIntegerParameter;
+import ptolemy.domains.ptinyos.kernel.PtinyOSNodeParameter;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.domains.wireless.lib.LinkVisualizer;
 import ptolemy.kernel.ComponentEntity;
@@ -130,10 +131,10 @@ public class SurgeVisualizer extends LinkVisualizer {
                             .getDirector();
                     if (director instanceof PtinyOSDirector) {
                         Attribute nodeID = director.getAttribute("nodeID");
-                        if (nodeID instanceof PtinyOSIntegerParameter) {
+                        if (nodeID instanceof PtinyOSNodeParameter) {
                             // Get the token that stores the node ID.
                             try {
-                                Token nodeIDToken = ((PtinyOSIntegerParameter) nodeID)
+                                Token nodeIDToken = ((PtinyOSNodeParameter) nodeID)
                                         .getToken();
 
                                 if (nodeIDToken instanceof IntToken) {

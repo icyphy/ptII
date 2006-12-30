@@ -53,6 +53,7 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
+	index.htm \
 	unzip-opts.sh \
 	zip-opts.sh
 

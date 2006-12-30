@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2005 The Regents of the University of California.
+# @Copyright (c) 2004-2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -48,11 +48,14 @@ JSRCS =
 
 
 OTHER_FILES_TO_BE_JARED = \
-	Blink.ncxml
+	Blink.ncxml \
+	Blink.moml \
+	Blink.txt
 
 EXTRA_SRCS = \
 	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
+	test-script
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
