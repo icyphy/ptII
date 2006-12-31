@@ -82,28 +82,6 @@ public class SliderSource extends CCodeGeneratorHelper {
      *  @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
-        // FIXME: This only works under windows.
-        String javaHome = StringUtilities.getProperty("java.home");
-        javaHome = javaHome.replace('\\', '/');
-        int index = javaHome.lastIndexOf("jre");
-        javaHome = javaHome.substring(0, index);
-        getCodeGenerator().addInclude("-I\"" + javaHome + "include\"");
-        getCodeGenerator().addInclude("-I\"" + javaHome + "include/win32\"");
-
-        String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
-        getCodeGenerator()
-                .addLibrary("-L\"" + ptIIDir + "/ptolemy/codegen/c\"");
-        getCodeGenerator().addLibrary("-ljvm");
-
-        //getCodeGenerator().addInclude
-        //        ("-I\"C:/Program Files/Java/jdk1.5.0_06/include\"");
-        //getCodeGenerator().addInclude
-        //        ("-I\"C:\\Program Files\\Java\\jdk1.5.0_06\\include\\win32\"");
-        //getCodeGenerator().addLibrary("-LC:/ptII/ptolemy/codegen/c");
-        //getCodeGenerator().addLibrary("-ljvm");
-
-        Set files = new HashSet();
-        files.add("<jni.h>");
-        return files;
+        return getJVMHeaderFiles();
     }
 }
