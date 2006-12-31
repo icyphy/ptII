@@ -97,7 +97,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (vogel)
  */
 public class Display extends Sink implements Placeable {
-    /** Construct an actor with an input multiport of type GENERAL.
+    /** Construct the Display actor.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -108,9 +108,6 @@ public class Display extends Sink implements Placeable {
     public Display(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        // Set the type of the input port.
-        input.setTypeEquals(BaseType.GENERAL);
 
         rowsDisplayed = new Parameter(this, "rowsDisplayed");
         rowsDisplayed.setExpression("10");
