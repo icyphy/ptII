@@ -27,7 +27,9 @@
  */
 package ptolemy.codegen.c.kernel;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
@@ -37,6 +39,7 @@ import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// CCodeGeneratorHelper
@@ -135,6 +138,30 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         }
 
         return processCode(code.toString());
+    }
+
+   /** Get the header files needed to compile with the jvm library.
+     *  @return A set of strings that are names of the header files
+     *   needed by the code generated for jvm library
+     *  @exception IllegalActionException Not Thrown in this subclass.
+     */
+    public Set getJVMHeaderFiles() throws IllegalActionException {
+        // FIXME: This only works under windows.
+        String javaHome = StringUtilities.getProperty("java.home");
+        javaHome = javaHome.replace('\\', '/');
+        int index = javaHome.lastIndexOf("jre");
+        javaHome = javaHome.substring(0, index);
+        getCodeGenerator().addInclude("-I\"" + javaHome + "include\"");
+        getCodeGenerator().addInclude("-I\"" + javaHome + "include/win32\"");
+
+        String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
+        getCodeGenerator()
+                .addLibrary("-L\"" + ptIIDir + "/ptolemy/codegen/c/lib/win\"");
+        getCodeGenerator().addLibrary("-ljvm");
+
+        Set files = new HashSet();
+        files.add("<jni.h>");
+        return files;
     }
 
     /** Generate input variable declarations.
