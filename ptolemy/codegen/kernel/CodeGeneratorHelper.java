@@ -77,6 +77,18 @@ import ptolemy.util.StringUtilities;
  * generateWrapupCode() methods by appending a corresponding code
  * block.
  *
+ * <p>Subclasses should be sure to properly indent the code by
+ * either using the code block functionality in methods like
+ * {@link #_generateBlockCode(String) and
+ * {@link #_generateBlockCode(String, ArrayList) or by calling {@link
+ * ptolemy.codegen.kernel.CodeStream#indent(String)}, for example:
+ * <pre>
+ *     StringBuffer code = new StringBuffer();
+ *     code.append(super.generateWrapupCode());
+ *     code.append("// Local wrapup code");
+ *     return processCode(CodeStream.indent(code.toString()));
+ * </pre>
+ * 
  * @author Ye Zhou, Gang Zhou, Edward A. Lee, Contributors: Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 6.0
@@ -547,6 +559,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * Generate the wrapup code. In this base class, do nothing. Subclasses
      * may extend this method to generate the wrapup code of the associated
      * component and append the code to the given string buffer.
+     *
      * @return The generated wrapup code.
      * @exception IllegalActionException Not thrown in this base class.
      */
