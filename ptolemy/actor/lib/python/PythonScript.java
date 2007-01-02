@@ -127,7 +127,11 @@ import ptolemy.util.StringUtilities;
  </pre>
  <p>
  This class relies on Jython, which is a Java implementation of Python.
- Follow the links below for more information about the Python language,
+ <p>As of 1/2/2006, $PTII/lib/jython.jar was based on Jython 1.1 .
+ 
+ <p><a href="http://www.jython.org/Project/userguide.html#the-jython-registry">The Jython Registry</a> - information about how to set the search path.
+
+ <p> Follow the links below for more information about the Python language,
  licensing, downloads, etc.
 
  @author Xiaojun Liu
@@ -137,6 +141,9 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (reviewmoderator)
  @see <a href="http://www.python.org" target="_top">Python</a>
  @see <a href="http://www.jython.org" target="_top">Jython</a>
+ @see <a href="http://www.jython.org/docs/differences.html">Differences between Jython and the C version of Python</a>
+
+
  */
 public class PythonScript extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
