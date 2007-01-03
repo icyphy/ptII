@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II User contributed actor lib classes
+# Makefile for Ptolemy II user contributed actors (example dir)
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2006 The Regents of the University of California.
+# @Copyright (c) 2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,54 +26,51 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                                               PT_COPYRIGHT_VERSION_2
+#                                               COPYRIGHTENDKEY
 
-ME =		contrib/actor/lib
+ME =            contrib/actor/lib/example
 
-# Place your actor code in a subdirectory.
-# If you update DIRS, be sure to update PTCLASSALLJARS
-DIRS = 		example
+DIRS =
 
-# Root of the Ptolemy II directory
-ROOT =		../../..
+# Root of the Java directory
+ROOT =          ../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(X10_JAR)$(CLASSPATHSEPARATOR)$(COMMAPI_DIR)/comm.jar
+
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =        $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# jar files are of the format abc/abc.jar
-PTCLASSALLJARS = \
-	example/example.jar 
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE =    example
+PTDIST =        $(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	ExampleDiscard.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED =
+
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	demo \
+        doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
