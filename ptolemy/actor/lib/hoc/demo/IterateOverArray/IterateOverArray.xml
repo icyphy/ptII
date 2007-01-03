@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="IterateOverArray" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="numberOfElements" class="ptolemy.data.expr.Parameter" value="8">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -137,7 +137,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 80.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-1, 0, 1013, 603}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 13, 1013, 603}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[798, 487]">
     </property>
@@ -146,59 +146,59 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{399.0, 243.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model the stimulus&#10;measured by each&#10;antenna element.">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model the stimulus&#10;measured by each&#10;antenna element.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 235.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Input signal is a phasor representation&#10;of a sinusoidal waveform.">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Input signal is a phasor representation&#10;of a sinusoidal waveform.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 285.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Apply a&#10;steering&#10;angle.">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Apply a&#10;steering&#10;angle.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 245.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Angle of arrival of a plane wave.">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Angle of arrival of a plane wave.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 205.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Ye Zhou and Edward A. Lee">
-        </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Ye Zhou and Edward A. Lee">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 460.0}">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="These two actors apply a contained&#10;model to each element of the input&#10;arrays. They are examples of higher-&#10;order components.">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="These two actors apply a contained&#10;model to each element of the input&#10;arrays. They are examples of higher-&#10;order components.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 85.0]">
         </property>
@@ -210,19 +210,19 @@
         </property>
     </property>
     <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Reverse Y direction (the plotter&#10;has Y increasing upwards, whereas&#10;standard Cartesian coordinates have&#10;it increasing upwards).">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Reverse Y direction (the plotter&#10;has Y increasing upwards, whereas&#10;standard Cartesian coordinates have&#10;it increasing upwards).">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 390.0]">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="201">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 35.0]">
         </property>
@@ -233,7 +233,8 @@
         </property>
         <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
         </property>
-        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory"/>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 200.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 125, 815, 516}, maximized = false}">
@@ -316,11 +317,11 @@
                 </property>
             </property>
             <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The iterationCount parameter is set&#10;automatically by the IterateOverArray&#10;actor. It will range from 1 to 8,&#10;for example, if the input array has&#10;8 elements.">
-                </property>
                 <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
                 </property>
                 <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The iterationCount parameter is set&#10;automatically by the IterateOverArray&#10;actor. It will range from 1 to 8,&#10;for example, if the input array has&#10;8 elements.">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 95.0]">
                 </property>
@@ -391,18 +392,6 @@
             <link port="expjx.output" relation="relation3"/>
             <link port="expjx.x" relation="relation"/>
         </entity>
-        <relation name="insideRelation1" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="insideRelation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="insideRelation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="angle" relation="insideRelation1"/>
-        <link port="signal" relation="insideRelation2"/>
-        <link port="output" relation="insideRelation3"/>
-        <link port="composite actor.angle" relation="insideRelation1"/>
-        <link port="composite actor.signal" relation="insideRelation2"/>
-        <link port="composite actor.output" relation="insideRelation3"/>
     </entity>
     <entity name="HammingWindow" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="generateHammingWindow(numberOfElements)">
@@ -487,7 +476,8 @@
         </property>
         <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
         </property>
-        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory"/>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 210.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 125, 815, 516}, maximized = false}">
@@ -616,18 +606,6 @@
             <link port="MultiplyDivide.output" relation="relation5"/>
             <link port="Const.output" relation="relation2"/>
         </entity>
-        <relation name="insideRelation1" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="insideRelation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="insideRelation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="signal" relation="insideRelation2"/>
-        <link port="window" relation="insideRelation1"/>
-        <link port="output" relation="insideRelation3"/>
-        <link port="composite actor.window" relation="insideRelation1"/>
-        <link port="composite actor.signal" relation="insideRelation2"/>
-        <link port="composite actor.output" relation="insideRelation3"/>
     </entity>
     <entity name="PlaneWavePhasor" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="repeat(numberOfElements, cos(x) + i * sin(x))">
