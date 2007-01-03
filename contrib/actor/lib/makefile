@@ -32,7 +32,7 @@
 ME =		contrib/actor/lib
 
 
-DIRS = 		ptesdf
+DIRS = 		#Add your directories here
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -48,8 +48,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	ptesdf/ptesdf.jar
+# jar files are of the format abc/abc.jar
+PTCLASSALLJARS = 
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
