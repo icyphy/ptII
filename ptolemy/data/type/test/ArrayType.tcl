@@ -91,7 +91,7 @@ test ArrayType-2.0 {Test isCompatible} {
 test ArrayType-2.0.5 {Test isCompatible with GENERAL} {
     # Connecting a const with an array of ints to a Display was failing.
     list [$natArrayType isCompatible [java::field ptolemy.data.type.BaseType GENERAL]] \
-	 [$natArrayType isCompatible [java::field ptolemy.data.type.BaseType GENERAL]]
+	 [$strArrayType isCompatible [java::field ptolemy.data.type.BaseType GENERAL]]
 } {1 1}
 
 ######################################################################
