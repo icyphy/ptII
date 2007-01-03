@@ -252,7 +252,10 @@ public class TypeLattice {
                         && !t2.equals(BaseType.ARRAY_BOTTOM)) {
                     // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
                     ArrayType arrayType = (ArrayType) t1;
-                    if (arrayType.hasKnownLength() && arrayType.length() != 1) {
+                    if (arrayType.hasKnownLength() && arrayType.length() != 1
+                            && !t2.equals(BaseType.GENERAL)) {
+                        // If we have a Const with {1,2,3} -> Display
+                        // then we used to fail here.
                         return INCOMPARABLE;
                     }
                     int elementComparison = compare(((ArrayType) ct1)
