@@ -291,6 +291,10 @@ public class MatrixType extends StructuredType implements Serializable {
             if (token instanceof MatrixToken) {
                 return ComplexMatrixToken.convert(token);
             } else {
+                if (token.isNil()) {
+                    throw new IllegalActionException(Token
+                            .notSupportedConversionMessage(token, toString()));
+                }
                 // Try to create a new [complex] type with just one member.
                 // The following conversion will fail if the member cannot
                 // be converted to an int.
@@ -313,6 +317,17 @@ public class MatrixType extends StructuredType implements Serializable {
             if (token instanceof MatrixToken) {
                 return DoubleMatrixToken.convert(token);
             } else {
+                if (token.isNil()) {
+                    // MatrixTokens do not support nil because there is no
+                    // way to represent a nil double as a Java.lang.Double.
+                    // Double.NaN is a possibility, but NaN is a value, whereas
+                    // nil is the absent value.  Other types, like int do
+                    // not have NaN, so we catch this problem here.
+                    // Note that this code is called by the "cast" expression
+                    // language method from data.expr.UtilityFunctions
+                    throw new IllegalActionException(Token.
+                            notSupportedConversionMessage(token, toString()));
+                }
                 // Try to create a new [double] type with just one member.
                 // The following conversion will fail if the member cannot
                 // be converted to an int.
@@ -334,6 +349,11 @@ public class MatrixType extends StructuredType implements Serializable {
             if (token instanceof MatrixToken) {
                 return IntMatrixToken.convert(token);
             } else {
+                if (token.isNil()) {
+                    throw new IllegalActionException(Token
+                            .notSupportedConversionMessage(token, toString()));
+                }
+
                 // Try to create a new [int] type with just one member.
                 // The following conversion will fail if the member cannot
                 // be converted to an int.
@@ -355,6 +375,10 @@ public class MatrixType extends StructuredType implements Serializable {
             if (token instanceof MatrixToken) {
                 return FixMatrixToken.convert(token);
             } else {
+                if (token.isNil()) {
+                    throw new IllegalActionException(Token
+                            .notSupportedConversionMessage(token, toString()));
+                }
                 // Try to create a new [fix] type with just one member.
                 // The following conversion will fail if the member cannot
                 // be converted to an int.
@@ -376,6 +400,10 @@ public class MatrixType extends StructuredType implements Serializable {
             if (token instanceof MatrixToken) {
                 return LongMatrixToken.convert(token);
             } else {
+                if (token.isNil()) {
+                    throw new IllegalActionException(Token
+                            .notSupportedConversionMessage(token, toString()));
+                }
                 // Try to create a new [long] type with just one member.
                 // The following conversion will fail if the member cannot
                 // be converted to an int.
