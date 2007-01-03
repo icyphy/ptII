@@ -31,8 +31,9 @@
 
 ME =		contrib/actor/lib
 
-
-DIRS = 		ptesdf
+# Place your actor code in a subdirectory.
+# If you update DIRS, be sure to update PTCLASSALLJARS
+DIRS = 		example
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -48,8 +49,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
+# jar files are of the format abc/abc.jar
 PTCLASSALLJARS = \
-	ptesdf/ptesdf.jar
+	example/example.jar 
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

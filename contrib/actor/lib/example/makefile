@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II user contributed actors from the ptesdf effort
+# Makefile for Ptolemy II user contributed actors (example dir)
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2006 The Regents of the University of California.
+# @Copyright (c) 2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 #                                               PT_COPYRIGHT_VERSION_2
 #                                               COPYRIGHTENDKEY
 
-ME =            contrib/actor/lib/ptesdf
+ME =            contrib/actor/lib/example
 
 DIRS =
 
@@ -43,14 +43,13 @@ CONFIG =        $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     ptesdf
+PTPACKAGE =    example
 PTDIST =        $(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	Publisher.java \
-	Subscriber.java
+	ExampleDiscard.java
 
 OTHER_FILES_TO_BE_JARED =
 
