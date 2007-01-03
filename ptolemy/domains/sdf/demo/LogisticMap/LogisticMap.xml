@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LogisticMap" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -10,22 +10,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 87, 1014, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 18, 1014, 728}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[799, 516]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[799, 612]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{399.5, 258.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{399.5, 306.0}">
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 100.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a polynomial mapping described by the &#10;equation: x(n+1) = rx(n)(1-x(n)) which was originally &#10;introduced as a demographic model where x(n) is a number &#10;between 0 and 1, and represents the population at year n&#10;and r is a positive number, and represents a combined &#10;rate for reproduction and starvation. &#10;&#10;It is often cited as an archetypal example of how complex,&#10;chaotic behavior can arise from very simple non-linear &#10;dynamical equations:&#10;With 0&lt;r&lt;1, the population will eventually die.&#10;With 1&lt;r&lt;2, the population will quickly stabilize to (r-1)/r.&#10;With 2&lt;r&lt;3, the population will eventually stabilize to (r-1)/r,&#10;after oscillating around that value for some time.&#10;With 3&lt;r&lt;3.45, the population will oscillate between 2 values forever.&#10;With 3.45&lt;r&lt;3.54, the population will oscillate between 4 values.&#10;With r slightly bigger than 3.54, the population will oscillate&#10;between 8 values, then 16, 32, etc. The lengths of the parameter&#10;intervals which yield the same number of oscillations decrease rapidly...&#10;At r = 3.57 is the onset of chaos and we can on longer see any oscallations.&#10;&#10;For more details, see http://en.wikipedia.org/wiki/Logistic_map&#10;&#10;To execute the generated code, you need to have the directory &#10;containing jvm.dll in your path variable. On my machine, it is&#10;C:\Program Files\Java\jdk1.5.0_06\jre\bin\client or&#10;C:\Program Files\Java\jdk1.5.0_06\jre\bin\server.&#10;It is used for invoking JVM to load GUI interface only. ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a polynomial mapping described by&#10;the equation: x(n+1) = rx(n)(1-x(n)) which was &#10;originally introduced as a demographic model where&#10;x(n) is a number between 0 and 1, and represents&#10;the population at year n and r is a positive number,&#10;and represents a combined rate for reproduction and&#10;starvation. &#10;&#10;It is often cited as an archetypal example of how&#10;complex, chaotic behavior can arise from very simple&#10;non-linear dynamical equations:&#10;* With 0&lt;r&lt;1, the population will eventually die.&#10;* With 1&lt;r&lt;2, the population will quickly stabilize to&#10;  (r-1)/r.&#10;* With 2&lt;r&lt;3, the population will eventually stabilize &#10;  to (r-1)/r, after oscillating around that value for&#10;  some time.&#10;* With 3&lt;r&lt;3.45, the population will oscillate between&#10;  2 values forever.&#10;* With 3.45&lt;r&lt;3.54, the population will oscillate&#10;  between 4 values.&#10;* With r slightly bigger than 3.54, the population &#10;  will oscillate between 8 values, then 16, 32, etc.&#10;  The lengths of the parameter intervals which yield&#10;  the same number of oscillations decrease rapidly...&#10;* At r = 3.57 is the onset of chaos and we can no&#10;  longer see any oscillations.&#10;&#10;For more details, see &#10;http://en.wikipedia.org/wiki/Logistic_map">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 15.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -34,6 +34,16 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gang Zhou">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 465.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To execute the generated code, you need to have the&#10;directory containing jvm.dll in your path variable.&#10;jvm.dll is found in directories like&#10;C:\Program Files\Java\jdk1.5.0_06\jre\bin\client or&#10;C:\Program Files\Java\jdk1.5.0_06\jre\bin\server.&#10;It is used for invoking JVM to load GUI interface only. ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 510.0]">
         </property>
     </property>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -87,8 +97,8 @@
 <title>SequenceScope</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="50.0"/>
-<yRange min="0.0" max="1.0"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 <wrap/>
 <default marks="pixels"/>
 </plot>?>
