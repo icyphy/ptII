@@ -1129,6 +1129,143 @@ test Function-zeroMatrixComplex {Test zeroMatrixComplex} {
 ####################################################################
 # eval
 
+test Function-cast-1 {cast} {
+    list \
+	[evaluate {cast(int,eval("1+2"))}] \
+	[evaluate {cast(double,eval("1.0+2.0"))}] \
+	[evaluate {cast([1],eval("1+2"))}] \
+	[evaluate {cast([1.0],eval("1+2"))}] \
+	[evaluate {cast([1.0],eval("1.0+2.0"))}] \
+	[evaluate {cast({1},eval("1+2"))}] \
+	[evaluate {cast({1.0},eval("1+2"))}] \
+	[evaluate {cast({1.0},eval("1.0+2.0"))}]
+} {3 3.0 {[3]} {[3.0]} {[3.0]} {{3}} {{3.0}} {{3.0}}}
+
+test Function-cast-2 {cast that fails} {
+    catch {[evaluate {cast(int,eval("1.0+2.0"))}]} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Error invoking function public static ptolemy.data.Token ptolemy.data.expr.UtilityFunctions.cast(ptolemy.data.Token,ptolemy.data.Token) throws ptolemy.kernel.util.IllegalActionException
+
+Because:
+Conversion is not supported from ptolemy.data.DoubleToken '3.0' to the type int because the type of the token is higher or incomparable with the given type.}}
+
+proc tokenInfo {token} {
+    return [list [$token toString] \
+	    [java::info class $token] \
+   	    [[$token getType] toString]]
+}
+
+test Function-cast-3 {cast nils} {
+   set nil [java::call ptolemy.data.expr.Constants get nil]
+
+   set booleanToken [java::new ptolemy.data.BooleanToken true]
+   set booleanNil [java::call ptolemy.data.expr.UtilityFunctions cast $booleanToken $nil]
+
+   set complexToken [java::new ptolemy.data.ComplexToken "1 + 1i"]
+   set complexNil [java::call ptolemy.data.expr.UtilityFunctions cast $complexToken $nil]
+
+   set doubleToken [java::new ptolemy.data.DoubleToken 2.0]
+   set doubleNil [java::call ptolemy.data.expr.UtilityFunctions cast $doubleToken $nil]
+
+   set intToken [java::new ptolemy.data.IntToken 3]
+   set intNil [java::call ptolemy.data.expr.UtilityFunctions cast $intToken $nil]
+
+   set longToken [java::new ptolemy.data.LongToken "4L"]
+   set longNil [java::call ptolemy.data.expr.UtilityFunctions cast $longToken $nil]
+
+   set stringToken [java::new ptolemy.data.StringToken "myString"]
+   set stringNil [java::call ptolemy.data.expr.UtilityFunctions cast $stringToken $nil]
+
+   set tokenToken [java::new ptolemy.data.Token]
+   set tokenNil [java::call ptolemy.data.expr.UtilityFunctions cast $tokenToken $nil]
+
+   set unsignedByteToken [java::new ptolemy.data.UnsignedByteToken "6"]
+   set unsignedByteNil [java::call ptolemy.data.expr.UtilityFunctions cast $unsignedByteToken $nil]
+
+   list \
+	[tokenInfo $nil] \n \
+	[tokenInfo $booleanNil] \n \
+	[tokenInfo $complexNil] \n \
+	[tokenInfo $doubleNil] \n \
+	[tokenInfo $intNil] \n \
+	[tokenInfo $longNil] \n \
+	[tokenInfo $stringNil] \n \
+	[tokenInfo $tokenNil] \n \
+	[tokenInfo $unsignedByteNil] \
+
+} {{nil ptolemy.data.Token niltype} {
+} {nil ptolemy.data.Token boolean} {
+} {nil ptolemy.data.Token complex} {
+} {nil ptolemy.data.Token double} {
+} {nil ptolemy.data.Token int} {
+} {nil ptolemy.data.Token long} {
+} {nil ptolemy.data.Token string} {
+} {nil ptolemy.data.Token niltype} {
+} {nil ptolemy.data.Token unsignedByte}}
+
+test Function-cast-4 {cast nils in an ArrayToken} {
+   set nil [java::call ptolemy.data.expr.Constants get nil]
+
+   set arrayToken [java::new ptolemy.data.ArrayToken "{1,2,3}"]
+   catch {[java::call ptolemy.data.expr.UtilityFunctions cast $arrayToken $nil]} errMsg
+   set arrayNilToken [java::new ptolemy.data.ArrayToken "{nil,nil,nil}"]
+   set arrayNil [java::call ptolemy.data.expr.UtilityFunctions cast $arrayToken $arrayNilToken]
+
+   list \
+	$errMsg \n \
+	[tokenInfo $arrayNil]
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.Token$1 'nil' to the type arrayType(int,3).} {
+} {{{nil, nil, nil}} ptolemy.data.Token arrayType(int,3)}}
+
+
+test Function-cast-5 {cast nil to intMatrixToken} {
+   set nil [java::call ptolemy.data.expr.Constants get nil]
+
+   set booleanMatrix [java::new {boolean[][]} {2 2} {{true false} {true false}}]
+   set booleanMatrixToken [java::new {ptolemy.data.BooleanMatrixToken boolean[][]} $booleanMatrix]
+   catch {[java::call ptolemy.data.expr.UtilityFunctions cast $booleanMatrixToken $nil]} errMsg1
+
+   set complexMatrixToken [java::new \
+	{ptolemy.data.ComplexMatrixToken String} \
+	"\[5.0+0.0i, 4.0+0.0i; 3.0+0.0i, 2.0+0.0i\]"]
+   catch {[java::call ptolemy.data.expr.UtilityFunctions cast $complexMatrixToken $nil]} errMsg2
+
+   set doubleMatrix [java::new {double[][]} {2 2} {{1.0 2.0} {3.0 4.0}}]
+   set doubleMatrixToken [java::new {ptolemy.data.DoubleMatrixToken double[][]} $doubleMatrix]
+   catch {[java::call ptolemy.data.expr.UtilityFunctions cast $doubleMatrixToken $nil]} errMsg3
+
+   set intMatrix [java::new {int[][]} {2 2} {{1 2} {3 4}}]
+   set intMatrixToken [java::new {ptolemy.data.IntMatrixToken int[][]} $intMatrix]
+   catch {[java::call ptolemy.data.expr.UtilityFunctions cast $intMatrixToken $nil]} errMsg4
+
+   set fixMatrixToken [java::new \
+	{ptolemy.data.FixMatrixToken String} \
+	"fix(\[1.0, 2.0; 3.0, 4.0\], 8, 4)"]
+   catch {[java::call ptolemy.data.expr.UtilityFunctions cast $fixMatrixToken $nil]} errMsg5
+
+   set longMatrix [java::new {long[][]} {2 2} {{1 2} {3 4}}]
+   set longMatrixToken [java::new {ptolemy.data.LongMatrixToken long[][]} $longMatrix]
+   catch {[java::call ptolemy.data.expr.UtilityFunctions cast $longMatrixToken $nil]} errMsg6
+
+
+   list \
+	$errMsg1 \n \
+	$errMsg2 \n \
+	$errMsg3 \n \
+	$errMsg4 \n \
+	$errMsg5 \n \
+	$errMsg6
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.Token$1 'nil' to the type [boolean].} {
+} {ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.Token$1 'nil' to the type [complex].} {
+} {ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.Token$1 'nil' to the type [double].} {
+} {ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.Token$1 'nil' to the type [int].} {
+} {ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.Token$1 'nil' to the type [fixedpoint].} {
+} {ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.Token$1 'nil' to the type [long].}}
+
+
+####################################################################
+# eval
+
 test Function-eval {Test eval} {
     # Note that eval requires the cast!
     list [evaluate {cast(int,eval("1+2"))}] \
