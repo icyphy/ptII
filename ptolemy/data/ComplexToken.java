@@ -215,6 +215,11 @@ public class ComplexToken extends ScalarToken {
             unitString = " * " + unitsString();
         }
 
+        if (isNil()) {
+            // FIXME: what about units?
+            return super.toString();
+        }
+
         return _value.toString() + unitString;
     }
 
