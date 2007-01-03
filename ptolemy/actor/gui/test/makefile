@@ -47,7 +47,6 @@ TCL_SRCS = \
 
 JSRCS = \
 	Rerun.java \
-	RunMultipleModels.java \
 	SimpleTableau.java \
 	TestModel.java
 
@@ -61,7 +60,6 @@ JSIMPLE_TESTS = \
 	Configuration.tcl \
 	EffigyFactory.tcl \
 	HTMLAbout.tcl \
-	RunMultipleModels.tcl \
 	UserActorLibrary.tcl \
 	ZZZConfiguration.tcl
 
@@ -73,7 +71,6 @@ JGRAPHICAL_TESTS = \
 	PtExecuteApplication.tcl
 
 EXTRA_SRCS =	\
-	RunMultipleModelsModel.xml \
 	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS) test.xml
 
 # Sources that may or may not be present, but if they are present, we don't
