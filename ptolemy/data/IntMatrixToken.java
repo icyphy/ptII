@@ -300,6 +300,10 @@ public class IntMatrixToken extends MatrixToken {
         int compare = TypeLattice.compare(BaseType.INT, token);
 
         if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+            if (token.isNil()) {
+                throw new IllegalActionException(Token
+                        .notSupportedConversionMessage(token, "[int]"));
+            }
             IntToken intToken = IntToken.convert(token);
             int intValue = intToken.intValue();
             int[] result = new int[size * size];
