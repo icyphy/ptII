@@ -288,6 +288,11 @@ public class LongMatrixToken extends MatrixToken {
         int compare = TypeLattice.compare(BaseType.LONG, token);
 
         if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+            if (token.isNil()) {
+                throw new IllegalActionException(Token
+                        .notSupportedConversionMessage(token, "[long]"));
+            }
+
             LongToken longToken = LongToken.convert(token);
             long longValue = longToken.longValue();
             long[] result = new long[size * size];

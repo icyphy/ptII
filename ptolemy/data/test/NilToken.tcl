@@ -154,5 +154,45 @@ foreach type $types {
 #	} {{ptolemy.kernel.util.IllegalActionException: isLessThan operation not supported between ptolemy.data.XXXToken 'nil' and ptolemy.data.XXXToken 'nil' because one or the other is nil}}
 #    }
 #
+
+
+    puts "."
+}
+
+# Check out MatrixToken operations.
+# FIXME: FixToken.NIL does not exist
+set types [list Boolean Complex Double Int Long]
+foreach type $types {
+    puts -nonewline "${type}MatrixToken "
+
+    # Perform convert(ScalarToken)
+    set operation convert
+    test "$type-$operation" "Test $operation on ${type}MatrixToken" {
+	    puts -nonewline " ${operation}(nil)"
+	    #set nil [java::new ptolemy.data.$type [java::null]] 
+	    set nil [java::field ptolemy.data.${type}Token NIL]
+	    set matrixToken [java::new ptolemy.data.${type}MatrixToken] 
+	    catch {$matrixToken $operation $nil} msg
+	    regsub -all $type $msg "XXX" result
+	    regsub -all {\[[a-zA-Z].*\]}  $result "xxx" result2
+	    list $result2
+	} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.XXXToken 'nil' to the type xxx.}}
+
+
+    if { $type == "Int" || $type == "Long" } {
+    # Perform convert(ScalarToken, int)
+    set operation convert
+    test "$type-$operation" "Test $operation on ${type}MatrixToken" {
+	    puts -nonewline " ${operation}(nil, 2)"
+	    #set nil [java::new ptolemy.data.$type [java::null]] 
+	    set nil [java::field ptolemy.data.${type}Token NIL]
+	    set matrixToken [java::new ptolemy.data.${type}MatrixToken] 
+	    catch {$matrixToken $operation $nil 2} msg
+	    regsub -all $type $msg "XXX" result
+	    regsub -all {\[[a-zA-Z].*\]}  $result "xxx" result2
+	    list $result2
+	} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.XXXToken 'nil' to the type xxx.}}
+    }
+
     puts "."
 }
