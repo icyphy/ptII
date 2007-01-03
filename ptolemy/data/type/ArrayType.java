@@ -359,6 +359,12 @@ public class ArrayType extends StructuredType {
             // If the length of this type is unknown, then the
             // argument length is compatible.
         } else {
+            if (type.equals(BaseType.GENERAL)) {
+                // If we have a Const {1,2,3} -> Display, then
+                // this method needs to return true because Display
+                // has an input port of type General.
+                return true;
+            }
             return false;
         }
 
