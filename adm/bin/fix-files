@@ -83,3 +83,13 @@ EGREPMATCH='@throws'
 LOGMESSAGE='@throws -> @exception'
 
 search $@
+
+doit() {
+    sed -e 's#@exception \([a-zA-Z0-9_]*\) Thrown if#@exception \1 If#g' \
+	    $file > /tmp/fix-files.tmp
+	diff -c $file /tmp/fix-files.tmp
+}
+EGREPMATCH='@exception [a-zA-Z0-9_]* Thrown if'
+LOGMESSAGE='@exception .* Throw if -> @exception .* If'
+
+search $@
