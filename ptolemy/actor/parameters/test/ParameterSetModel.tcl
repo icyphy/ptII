@@ -44,10 +44,10 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test ParameterSet-1.0 {Read in fileReadingAttribute.txt} {
+test ParameterSetModel-1.0 {Change the contents of the file read by ParameterSet.  The new value should be re-read when the model is re-run} {
     set e0 [sdfModel 5]
 
-#    set parameterSet [java::new ptolemy.data.expr.ParameterSet $e0 "parameterSet"]
+    set parameterSet [java::new ptolemy.data.expr.ParameterSet $e0 "parameterSet"]
 
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
@@ -55,19 +55,33 @@ test ParameterSet-1.0 {Read in fileReadingAttribute.txt} {
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
-#     set fd [open TestParameterSet.txt w]
-#     puts $fd "a=10"
-#     close $fd
-#     set fileOrURL [java::cast ptolemy.data.expr.FileParameter \
-# 		       [$parameterSet getAttribute fileOrURL]]
-#     set URL [[java::new java.io.File TestParameterSet.txt] \
-# 	toURL]
-#     $fileOrURL setExpression [$URL toString]
+    set fd [open TestParameterSet.txt w]
+    puts $fd "a=11"
+    close $fd
+    set fileOrURL [java::cast ptolemy.data.expr.FileParameter \
+ 		       [$parameterSet getAttribute fileOrURL]]
+     set URL [[java::new java.io.File TestParameterSet.txt] \
+ 	toURL]
+     $fileOrURL setExpression [$URL toString]
+
+    $parameterSet read
 
     set p [getParameter $const value]
     $p setExpression "a"
 
+    [$e0 getManager] execute
+    set r1 [enumToTokenValues [$rec getRecord 0]]
+
+    set fd [open TestParameterSet.txt w]
+    puts $fd "a=42"
+    close $fd
+
+    # Should not have to call read here
+    #$parameterSet read
 
     [$e0 getManager] execute
-    enumToTokenValues [$rec getRecord 0]
-} {}
+    set r2 [enumToTokenValues [$rec getRecord 0]]
+
+    file delete -force TestParameterSet.txt
+    list $r1 $r2	
+} {{11 11 11 11 11} {42 42 42 42 42}}
