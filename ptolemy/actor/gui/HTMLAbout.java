@@ -250,7 +250,23 @@ public class HTMLAbout {
             Configuration configuration) throws Throwable {
         URL newURL = null;
 
-        if (event.getDescription().startsWith("about:checkCompleteDemos")) {
+        if (event.getDescription().equals("about:allcopyrights")) {
+            // Note that if we have a link that is
+            // <a href="about:copyright">about:allcopyrights</a>
+            // then event.getURL() will return null, so we have
+            // to use getDescription()
+            try {
+                newURL = _temporaryHTMLFile("generatecopyright", ".htm",
+                        GenerateCopyrights.generateHTML(configuration));
+            } catch (SecurityException ex) {
+                // Could be that we were running with -sandbox and
+                // cannot write the temporary file.
+                newURL = FileUtilities.nameToURL(
+                        "$CLASSPATH/ptolemy/configs/doc/copyright.htm", null,
+                        null);
+            }
+
+        } else if (event.getDescription().startsWith("about:checkCompleteDemos")) {
             newURL = _temporaryHTMLFile(
                     "checkCompleteDemos",
                     ".htm",
@@ -275,7 +291,11 @@ public class HTMLAbout {
             // to use getDescription()
             try {
                 newURL = _temporaryHTMLFile("copyright", ".htm",
-                        GenerateCopyrights.generateHTML(configuration));
+                        GenerateCopyrights.generatePrimaryCopyrightHTML(configuration)
+                        + "<p>Other <a href=\"about:allcopyrights\">copyrights</a>\n"
+                        + "about this configuration \n"
+                        + "(<i>may take a moment to run</i>).\n"
+                        + "</body>\n</html>");
             } catch (SecurityException ex) {
                 // Could be that we were running with -sandbox and
                 // cannot write the temporary file.
