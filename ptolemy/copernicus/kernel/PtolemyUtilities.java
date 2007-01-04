@@ -515,8 +515,13 @@ public class PtolemyUtilities {
             return typeLocal;
         } else if (type instanceof ptolemy.data.type.ArrayType) {
             // recurse
-            SootMethod typeConstructor = SootUtilities.searchForMethodByName(
-                    arrayTypeClass, "<init>");
+            //SootMethod typeConstructor = SootUtilities.searchForMethodByName(
+            //        arrayTypeClass, "<init>");
+            // The array changes resulted in ArrayType having two
+            // constructors: ArrayType(Type) and ArrayType(Type, int)
+            SootMethod typeConstructor = arrayTypeClass.getMethod(
+                    "void <init>(ptolemy.data.type.Type)");
+
             Local elementTypeLocal = buildConstantTypeLocal(body, insertPoint,
                     ((ptolemy.data.type.ArrayType) type).getElementType());
             Local typeLocal = Jimple.v().newLocal(
