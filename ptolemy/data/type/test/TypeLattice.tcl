@@ -43,7 +43,126 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 #
 
+set unknownType [java::field ptolemy.data.type.BaseType UNKNOWN]
+set generalType [java::field ptolemy.data.type.BaseType GENERAL]
+set baseTypes [list \
+                   [java::field ptolemy.data.type.BaseType ARRAY_BOTTOM] \
+                   [java::field ptolemy.data.type.BaseType BOOLEAN] \
+                   [java::field ptolemy.data.type.BaseType BOOLEAN_MATRIX] \
+                   [java::field ptolemy.data.type.BaseType UNSIGNED_BYTE] \
+                   [java::field ptolemy.data.type.BaseType COMPLEX] \
+                   [java::field ptolemy.data.type.BaseType COMPLEX_MATRIX] \
+                   [java::field ptolemy.data.type.BaseType DOUBLE] \
+                   [java::field ptolemy.data.type.BaseType DOUBLE_MATRIX] \
+                   [java::field ptolemy.data.type.BaseType FIX] \
+                   [java::field ptolemy.data.type.BaseType UNSIZED_FIX] \
+                   [java::field ptolemy.data.type.BaseType SIZED_FIX] \
+                   [java::field ptolemy.data.type.BaseType FIX_MATRIX] \
+                   [java::field ptolemy.data.type.BaseType INT] \
+                   [java::field ptolemy.data.type.BaseType INT_MATRIX] \
+                   [java::field ptolemy.data.type.BaseType LONG] \
+                   [java::field ptolemy.data.type.BaseType LONG_MATRIX] \
+                   [java::field ptolemy.data.type.BaseType OBJECT] \
+                   [java::field ptolemy.data.type.BaseType XMLTOKEN] \
+                   [java::field ptolemy.data.type.BaseType SCALAR] \
+                   [java::field ptolemy.data.type.BaseType MATRIX] \
+                   [java::field ptolemy.data.type.BaseType STRING] \
+                   [java::field ptolemy.data.type.BaseType EVENT] \
+                   [java::field ptolemy.data.type.BaseType PETITE] \
+                   [java::field ptolemy.data.type.BaseType NIL] ]
 
+set unsizedArrayTypes {}
+foreach type $baseTypes {
+    lappend unsizedArrayTypes [java::new ptolemy.data.type.ArrayType $type]
+}
+
+set lengthOneArrayTypes {}
+foreach type $baseTypes {
+    lappend lengthOneArrayTypes [java::new ptolemy.data.type.ArrayType $type 1]
+}
+
+set lengthTwoArrayTypes {}
+foreach type $baseTypes {
+    lappend lengthTwoArrayTypes [java::new ptolemy.data.type.ArrayType $type 2]
+}
+
+proc testInvariants {type1 type2} {
+    set lattice [java::new ptolemy.data.type.TypeLattice]
+    # LUB is commutative
+    test TypeLattice-testInvariants-[$type1 toString]-[$type2 toString] {LUB commutative} {[$lattice leastUpperBound $type1 $type2] equals [$lattice leastUpperBound $type2 $type1]} {1}
+    # < is antisymmetric, == and != are symmetric
+    set cmp1 [$lattice compare $type1 $type2]
+    set cmp2 [$lattice compare $type2 $type1]
+    test TypeLattice-testInvariants-[$type1 toString]-[$type2 toString] {compare symmetry} {expr ( $cmp1 == 0 && $cmp2 == 0 ) || ( $cmp1 == 1 && $cmp2 == -1 ) || ( $cmp1 == -1 && $cmp2 == 1 ) || ( $cmp1 == 2 && $cmp2 == 2 )} {1}
+    return 0
+}
+
+proc testTypeIsLessThan {type1 type2} {
+    set lattice [java::new ptolemy.data.type.TypeLattice]
+    testInvariants $type1 $type2
+
+    test TypeLattice-testTypeIsLessThan-[$type1 toString]-[$type2 toString] {compare} {$lattice compare $type1 $type2} {-1}
+    test TypeLattice-testTypeIsLessThan-[$type1 toString]-[$type2 toString] {compareReverse} {$lattice compare $type2 $type1} {1}
+
+    set lub [$lattice leastUpperBound $type1 $type2] 
+    test TypeLattice-testTypeIsLessThan-[$type1 toString]-[$type2 toString] {lubCompare1} {$lattice compare $lub $type1} {1}
+    test TypeLattice-testTypeIsLessThan-[$type1 toString]-[$type2 toString] {lubCompare2} {$lattice compare $lub $type2} {0}
+    test TypeLattice-testTypeIsLessThan-[$type1 toString]-[$type2 toString] {lubEquals1} {$lub equals $type1} {0}
+    test TypeLattice-testTypeIsLessThan-[$type1 toString]-[$type2 toString] {lubEquals2} {$lub equals $type2} {1}
+}        
+
+proc testTypesEqual {type1 type2} {
+    set lattice [java::new ptolemy.data.type.TypeLattice]
+    testInvariants $type1 $type2
+
+    test TypeLattice-testTypesEqual-[$type1 toString]-[$type2 toString] {compare} {$lattice compare $type1 $type2} {0}
+    test TypeLattice-testTypesEqual-[$type1 toString]-[$type2 toString] {compare} {$lattice compare $type2 $type1} {0}
+
+    set lub [$lattice leastUpperBound $type1 $type2] 
+    test TypeLattice-testTypesEqual-[$type1 toString]-[$type2 toString] {lubCompare1} {$lattice compare $lub $type1} {0}
+    test TypeLattice-testTypesEqual-[$type1 toString]-[$type2 toString] {lubCompare2} {$lattice compare $lub $type2} {0}
+    test TypeLattice-testTypesEqual-[$type1 toString]-[$type2 toString] {lubEquals1} {$lub equals $type1} {1}
+    test TypeLattice-testTypesEqual-[$type1 toString]-[$type2 toString] {lubEquals2} {$lub equals $type2} {1}
+}        
+
+proc testTypesIncomparable {type1 type2} {
+    set lattice [java::new ptolemy.data.type.TypeLattice]
+    testInvariants $type1 $type2
+    test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {compare} {$lattice compare $type1 $type2} {2}
+
+    set lub [$lattice leastUpperBound $type1 $type2] 
+    test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {lubCompare1} {$lattice compare $lub $type1} {1}
+    test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {lubCompare2} {$lattice compare $lub $type2} {1}
+    test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {lubEquals1} {$lub equals $type1} {0}
+    test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {lubEquals2} {$lub equals $type2} {0}
+}        
+
+foreach type [concat $baseTypes $unsizedArrayTypes $lengthOneArrayTypes $lengthTwoArrayTypes] {
+    testTypeIsLessThan $type $generalType
+}
+
+foreach type [concat $baseTypes $unsizedArrayTypes $lengthOneArrayTypes $lengthTwoArrayTypes] {
+    testTypeIsLessThan $unknownType $type
+}
+           
+foreach type [concat $baseTypes $unsizedArrayTypes $lengthOneArrayTypes $lengthTwoArrayTypes] {
+    testTypesEqual $type $type
+}
+
+foreach type $baseTypes {
+    set arrayType [java::new ptolemy.data.type.ArrayType $type]
+    set sized1ArrayType [java::new ptolemy.data.type.ArrayType $type 1]
+    set sized2ArrayType [java::new ptolemy.data.type.ArrayType $type 2]
+
+    testTypeIsLessThan $type $arrayType
+    testTypeIsLessThan $type $sized1ArrayType
+    testTypesIncomparable $type $sized2ArrayType
+    testTypeIsLessThan $sized1ArrayType $arrayType
+    testTypeIsLessThan $sized2ArrayType $arrayType
+    testTypesIncomparable $sized1ArrayType $sized2ArrayType
+}
+           
+        
 ######################################################################
 ####
 # 
