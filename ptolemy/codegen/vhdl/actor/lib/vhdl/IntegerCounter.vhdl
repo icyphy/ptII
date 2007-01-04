@@ -1,15 +1,13 @@
 /*** sharedBlock ***/
 component ptcounter is
-	generic
-	(
+	GENERIC (
 		WIDTH 				: INTEGER := 32;     
 		USE_ENABLE			: boolean := TRUE;
 		RESET_ACTIVE_VALUE	: std_logic := '0';
 		ENABLE_ACTIVE_VALUE	: std_logic := '0';
 		WRAP				: boolean := TRUE
 	);
-	port
-	(
+	PORT (
 		clk 	: IN std_logic ;
 		reset	: IN std_logic ;
 		enable	: IN std_logic ;
