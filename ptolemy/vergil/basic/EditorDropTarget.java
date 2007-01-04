@@ -117,6 +117,12 @@ public class EditorDropTarget extends DropTarget {
       _additionalListeners.addElement(listener);
     }
 
+    /** Remove an additional listener.
+     *  @param listener The DropTargetListener to be removed.
+     */
+    public void deRegisterAdditionalListener(DropTargetListener listener) {
+      _additionalListeners.remove(listener);
+    }
 
     /** If the argument is false, then disable the feature that a
      *  a drop onto an instance of NamedObj results in that NamedObj
