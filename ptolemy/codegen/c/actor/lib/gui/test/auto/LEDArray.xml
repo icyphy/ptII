@@ -1,0 +1,785 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LEDArray" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{155, 55}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 8, 984, 631}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[769, 513]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{384.5, 256.5}">
+    </property>
+    <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+        <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 130.0}">
+        </property>
+    </entity>
+    <entity name="Sinewave2" class="ptolemy.actor.lib.Sinewave">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{200, 145}">
+        </property>
+    </entity>
+    <entity name="Scale2" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 205.0}">
+        </property>
+    </entity>
+    <entity name="Round" class="ptolemy.actor.lib.conversions.Round">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="round">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="ceil" class="ptolemy.kernel.util.StringAttribute" value="ceil">
+                </property>
+                <property name="floor" class="ptolemy.kernel.util.StringAttribute" value="floor">
+                </property>
+                <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
+                </property>
+                <property name="truncate" class="ptolemy.kernel.util.StringAttribute" value="truncate">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 140.0}">
+        </property>
+    </entity>
+    <entity name="Round2" class="ptolemy.actor.lib.conversions.Round">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="round">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="ceil" class="ptolemy.kernel.util.StringAttribute" value="ceil">
+                </property>
+                <property name="floor" class="ptolemy.kernel.util.StringAttribute" value="floor">
+                </property>
+                <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
+                </property>
+                <property name="truncate" class="ptolemy.kernel.util.StringAttribute" value="truncate">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 255.0}">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 85.0}">
+        </property>
+    </entity>
+    <entity name="LEDArray" class="ptolemy.actor.lib.gui.LEDArray">
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_led_0_0" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                </property>
+                <property name="_location_0_0" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                </property>
+            </property>
+            <property name="_led_0_1" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 20.0}">
+                </property>
+                <property name="_location_0_1" class="ptolemy.kernel.util.Location" value="{0.0, 20.0}">
+                </property>
+            </property>
+            <property name="_led_0_2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 40.0}">
+                </property>
+                <property name="_location_0_2" class="ptolemy.kernel.util.Location" value="{0.0, 40.0}">
+                </property>
+            </property>
+            <property name="_led_0_3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 60.0}">
+                </property>
+                <property name="_location_0_3" class="ptolemy.kernel.util.Location" value="{0.0, 60.0}">
+                </property>
+            </property>
+            <property name="_led_0_4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 80.0}">
+                </property>
+                <property name="_location_0_4" class="ptolemy.kernel.util.Location" value="{0.0, 80.0}">
+                </property>
+            </property>
+            <property name="_led_0_5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 100.0}">
+                </property>
+                <property name="_location_0_5" class="ptolemy.kernel.util.Location" value="{0.0, 100.0}">
+                </property>
+            </property>
+            <property name="_led_0_6" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 120.0}">
+                </property>
+                <property name="_location_0_6" class="ptolemy.kernel.util.Location" value="{0.0, 120.0}">
+                </property>
+            </property>
+            <property name="_led_0_7" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 140.0}">
+                </property>
+                <property name="_location_0_7" class="ptolemy.kernel.util.Location" value="{0.0, 140.0}">
+                </property>
+            </property>
+            <property name="_led_0_8" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 160.0}">
+                </property>
+                <property name="_location_0_8" class="ptolemy.kernel.util.Location" value="{0.0, 160.0}">
+                </property>
+            </property>
+            <property name="_led_0_9" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 180.0}">
+                </property>
+                <property name="_location_0_9" class="ptolemy.kernel.util.Location" value="{0.0, 180.0}">
+                </property>
+            </property>
+            <property name="_led_1_0" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 0.0}">
+                </property>
+                <property name="_location_1_0" class="ptolemy.kernel.util.Location" value="{20.0, 0.0}">
+                </property>
+            </property>
+            <property name="_led_1_1" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 20.0}">
+                </property>
+                <property name="_location_1_1" class="ptolemy.kernel.util.Location" value="{20.0, 20.0}">
+                </property>
+            </property>
+            <property name="_led_1_2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 40.0}">
+                </property>
+                <property name="_location_1_2" class="ptolemy.kernel.util.Location" value="{20.0, 40.0}">
+                </property>
+            </property>
+            <property name="_led_1_3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 60.0}">
+                </property>
+                <property name="_location_1_3" class="ptolemy.kernel.util.Location" value="{20.0, 60.0}">
+                </property>
+            </property>
+            <property name="_led_1_4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 80.0}">
+                </property>
+                <property name="_location_1_4" class="ptolemy.kernel.util.Location" value="{20.0, 80.0}">
+                </property>
+            </property>
+            <property name="_led_1_5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 100.0}">
+                </property>
+                <property name="_location_1_5" class="ptolemy.kernel.util.Location" value="{20.0, 100.0}">
+                </property>
+            </property>
+            <property name="_led_1_6" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 120.0}">
+                </property>
+                <property name="_location_1_6" class="ptolemy.kernel.util.Location" value="{20.0, 120.0}">
+                </property>
+            </property>
+            <property name="_led_1_7" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 140.0}">
+                </property>
+                <property name="_location_1_7" class="ptolemy.kernel.util.Location" value="{20.0, 140.0}">
+                </property>
+            </property>
+            <property name="_led_1_8" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 160.0}">
+                </property>
+                <property name="_location_1_8" class="ptolemy.kernel.util.Location" value="{20.0, 160.0}">
+                </property>
+            </property>
+            <property name="_led_1_9" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 180.0}">
+                </property>
+                <property name="_location_1_9" class="ptolemy.kernel.util.Location" value="{20.0, 180.0}">
+                </property>
+            </property>
+            <property name="_led_2_0" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 0.0}">
+                </property>
+                <property name="_location_2_0" class="ptolemy.kernel.util.Location" value="{40.0, 0.0}">
+                </property>
+            </property>
+            <property name="_led_2_1" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 20.0}">
+                </property>
+                <property name="_location_2_1" class="ptolemy.kernel.util.Location" value="{40.0, 20.0}">
+                </property>
+            </property>
+            <property name="_led_2_2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 40.0}">
+                </property>
+                <property name="_location_2_2" class="ptolemy.kernel.util.Location" value="{40.0, 40.0}">
+                </property>
+            </property>
+            <property name="_led_2_3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 60.0}">
+                </property>
+                <property name="_location_2_3" class="ptolemy.kernel.util.Location" value="{40.0, 60.0}">
+                </property>
+            </property>
+            <property name="_led_2_4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 80.0}">
+                </property>
+                <property name="_location_2_4" class="ptolemy.kernel.util.Location" value="{40.0, 80.0}">
+                </property>
+            </property>
+            <property name="_led_2_5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 100.0}">
+                </property>
+                <property name="_location_2_5" class="ptolemy.kernel.util.Location" value="{40.0, 100.0}">
+                </property>
+            </property>
+            <property name="_led_2_6" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 120.0}">
+                </property>
+                <property name="_location_2_6" class="ptolemy.kernel.util.Location" value="{40.0, 120.0}">
+                </property>
+            </property>
+            <property name="_led_2_7" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 140.0}">
+                </property>
+                <property name="_location_2_7" class="ptolemy.kernel.util.Location" value="{40.0, 140.0}">
+                </property>
+            </property>
+            <property name="_led_2_8" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 160.0}">
+                </property>
+                <property name="_location_2_8" class="ptolemy.kernel.util.Location" value="{40.0, 160.0}">
+                </property>
+            </property>
+            <property name="_led_2_9" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 180.0}">
+                </property>
+                <property name="_location_2_9" class="ptolemy.kernel.util.Location" value="{40.0, 180.0}">
+                </property>
+            </property>
+            <property name="_led_3_0" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 0.0}">
+                </property>
+                <property name="_location_3_0" class="ptolemy.kernel.util.Location" value="{60.0, 0.0}">
+                </property>
+            </property>
+            <property name="_led_3_1" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 20.0}">
+                </property>
+                <property name="_location_3_1" class="ptolemy.kernel.util.Location" value="{60.0, 20.0}">
+                </property>
+            </property>
+            <property name="_led_3_2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 40.0}">
+                </property>
+                <property name="_location_3_2" class="ptolemy.kernel.util.Location" value="{60.0, 40.0}">
+                </property>
+            </property>
+            <property name="_led_3_3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 60.0}">
+                </property>
+                <property name="_location_3_3" class="ptolemy.kernel.util.Location" value="{60.0, 60.0}">
+                </property>
+            </property>
+            <property name="_led_3_4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 80.0}">
+                </property>
+                <property name="_location_3_4" class="ptolemy.kernel.util.Location" value="{60.0, 80.0}">
+                </property>
+            </property>
+            <property name="_led_3_5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 100.0}">
+                </property>
+                <property name="_location_3_5" class="ptolemy.kernel.util.Location" value="{60.0, 100.0}">
+                </property>
+            </property>
+            <property name="_led_3_6" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 120.0}">
+                </property>
+                <property name="_location_3_6" class="ptolemy.kernel.util.Location" value="{60.0, 120.0}">
+                </property>
+            </property>
+            <property name="_led_3_7" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 140.0}">
+                </property>
+                <property name="_location_3_7" class="ptolemy.kernel.util.Location" value="{60.0, 140.0}">
+                </property>
+            </property>
+            <property name="_led_3_8" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 160.0}">
+                </property>
+                <property name="_location_3_8" class="ptolemy.kernel.util.Location" value="{60.0, 160.0}">
+                </property>
+            </property>
+            <property name="_led_3_9" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 180.0}">
+                </property>
+                <property name="_location_3_9" class="ptolemy.kernel.util.Location" value="{60.0, 180.0}">
+                </property>
+            </property>
+            <property name="_led_4_0" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 0.0}">
+                </property>
+                <property name="_location_4_0" class="ptolemy.kernel.util.Location" value="{80.0, 0.0}">
+                </property>
+            </property>
+            <property name="_led_4_1" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 20.0}">
+                </property>
+                <property name="_location_4_1" class="ptolemy.kernel.util.Location" value="{80.0, 20.0}">
+                </property>
+            </property>
+            <property name="_led_4_2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 40.0}">
+                </property>
+                <property name="_location_4_2" class="ptolemy.kernel.util.Location" value="{80.0, 40.0}">
+                </property>
+            </property>
+            <property name="_led_4_3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 60.0}">
+                </property>
+                <property name="_location_4_3" class="ptolemy.kernel.util.Location" value="{80.0, 60.0}">
+                </property>
+            </property>
+            <property name="_led_4_4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 80.0}">
+                </property>
+                <property name="_location_4_4" class="ptolemy.kernel.util.Location" value="{80.0, 80.0}">
+                </property>
+            </property>
+            <property name="_led_4_5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 100.0}">
+                </property>
+                <property name="_location_4_5" class="ptolemy.kernel.util.Location" value="{80.0, 100.0}">
+                </property>
+            </property>
+            <property name="_led_4_6" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 120.0}">
+                </property>
+                <property name="_location_4_6" class="ptolemy.kernel.util.Location" value="{80.0, 120.0}">
+                </property>
+            </property>
+            <property name="_led_4_7" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 140.0}">
+                </property>
+                <property name="_location_4_7" class="ptolemy.kernel.util.Location" value="{80.0, 140.0}">
+                </property>
+            </property>
+            <property name="_led_4_8" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 160.0}">
+                </property>
+                <property name="_location_4_8" class="ptolemy.kernel.util.Location" value="{80.0, 160.0}">
+                </property>
+            </property>
+            <property name="_led_4_9" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 180.0}">
+                </property>
+                <property name="_location_4_9" class="ptolemy.kernel.util.Location" value="{80.0, 180.0}">
+                </property>
+            </property>
+            <property name="_led_5_0" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 0.0}">
+                </property>
+                <property name="_location_5_0" class="ptolemy.kernel.util.Location" value="{100.0, 0.0}">
+                </property>
+            </property>
+            <property name="_led_5_1" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 20.0}">
+                </property>
+                <property name="_location_5_1" class="ptolemy.kernel.util.Location" value="{100.0, 20.0}">
+                </property>
+            </property>
+            <property name="_led_5_2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 40.0}">
+                </property>
+                <property name="_location_5_2" class="ptolemy.kernel.util.Location" value="{100.0, 40.0}">
+                </property>
+            </property>
+            <property name="_led_5_3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 60.0}">
+                </property>
+                <property name="_location_5_3" class="ptolemy.kernel.util.Location" value="{100.0, 60.0}">
+                </property>
+            </property>
+            <property name="_led_5_4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 80.0}">
+                </property>
+                <property name="_location_5_4" class="ptolemy.kernel.util.Location" value="{100.0, 80.0}">
+                </property>
+            </property>
+            <property name="_led_5_5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 100.0}">
+                </property>
+                <property name="_location_5_5" class="ptolemy.kernel.util.Location" value="{100.0, 100.0}">
+                </property>
+            </property>
+            <property name="_led_5_6" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 120.0}">
+                </property>
+                <property name="_location_5_6" class="ptolemy.kernel.util.Location" value="{100.0, 120.0}">
+                </property>
+            </property>
+            <property name="_led_5_7" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 140.0}">
+                </property>
+                <property name="_location_5_7" class="ptolemy.kernel.util.Location" value="{100.0, 140.0}">
+                </property>
+            </property>
+            <property name="_led_5_8" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 160.0}">
+                </property>
+                <property name="_location_5_8" class="ptolemy.kernel.util.Location" value="{100.0, 160.0}">
+                </property>
+            </property>
+            <property name="_led_5_9" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 180.0}">
+                </property>
+                <property name="_location_5_9" class="ptolemy.kernel.util.Location" value="{100.0, 180.0}">
+                </property>
+            </property>
+            <property name="_led_6_0" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 0.0}">
+                </property>
+                <property name="_location_6_0" class="ptolemy.kernel.util.Location" value="{120.0, 0.0}">
+                </property>
+            </property>
+            <property name="_led_6_1" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 20.0}">
+                </property>
+                <property name="_location_6_1" class="ptolemy.kernel.util.Location" value="{120.0, 20.0}">
+                </property>
+            </property>
+            <property name="_led_6_2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 40.0}">
+                </property>
+                <property name="_location_6_2" class="ptolemy.kernel.util.Location" value="{120.0, 40.0}">
+                </property>
+            </property>
+            <property name="_led_6_3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 60.0}">
+                </property>
+                <property name="_location_6_3" class="ptolemy.kernel.util.Location" value="{120.0, 60.0}">
+                </property>
+            </property>
+            <property name="_led_6_4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 80.0}">
+                </property>
+                <property name="_location_6_4" class="ptolemy.kernel.util.Location" value="{120.0, 80.0}">
+                </property>
+            </property>
+            <property name="_led_6_5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 100.0}">
+                </property>
+                <property name="_location_6_5" class="ptolemy.kernel.util.Location" value="{120.0, 100.0}">
+                </property>
+            </property>
+            <property name="_led_6_6" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 120.0}">
+                </property>
+                <property name="_location_6_6" class="ptolemy.kernel.util.Location" value="{120.0, 120.0}">
+                </property>
+            </property>
+            <property name="_led_6_7" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 140.0}">
+                </property>
+                <property name="_location_6_7" class="ptolemy.kernel.util.Location" value="{120.0, 140.0}">
+                </property>
+            </property>
+            <property name="_led_6_8" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 160.0}">
+                </property>
+                <property name="_location_6_8" class="ptolemy.kernel.util.Location" value="{120.0, 160.0}">
+                </property>
+            </property>
+            <property name="_led_6_9" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 180.0}">
+                </property>
+                <property name="_location_6_9" class="ptolemy.kernel.util.Location" value="{120.0, 180.0}">
+                </property>
+            </property>
+            <property name="_led_7_0" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 0.0}">
+                </property>
+                <property name="_location_7_0" class="ptolemy.kernel.util.Location" value="{140.0, 0.0}">
+                </property>
+            </property>
+            <property name="_led_7_1" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 20.0}">
+                </property>
+                <property name="_location_7_1" class="ptolemy.kernel.util.Location" value="{140.0, 20.0}">
+                </property>
+            </property>
+            <property name="_led_7_2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 40.0}">
+                </property>
+                <property name="_location_7_2" class="ptolemy.kernel.util.Location" value="{140.0, 40.0}">
+                </property>
+            </property>
+            <property name="_led_7_3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 60.0}">
+                </property>
+                <property name="_location_7_3" class="ptolemy.kernel.util.Location" value="{140.0, 60.0}">
+                </property>
+            </property>
+            <property name="_led_7_4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 80.0}">
+                </property>
+                <property name="_location_7_4" class="ptolemy.kernel.util.Location" value="{140.0, 80.0}">
+                </property>
+            </property>
+            <property name="_led_7_5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 100.0}">
+                </property>
+                <property name="_location_7_5" class="ptolemy.kernel.util.Location" value="{140.0, 100.0}">
+                </property>
+            </property>
+            <property name="_led_7_6" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 120.0}">
+                </property>
+                <property name="_location_7_6" class="ptolemy.kernel.util.Location" value="{140.0, 120.0}">
+                </property>
+            </property>
+            <property name="_led_7_7" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 140.0}">
+                </property>
+                <property name="_location_7_7" class="ptolemy.kernel.util.Location" value="{140.0, 140.0}">
+                </property>
+            </property>
+            <property name="_led_7_8" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 160.0}">
+                </property>
+                <property name="_location_7_8" class="ptolemy.kernel.util.Location" value="{140.0, 160.0}">
+                </property>
+            </property>
+            <property name="_led_7_9" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 180.0}">
+                </property>
+                <property name="_location_7_9" class="ptolemy.kernel.util.Location" value="{140.0, 180.0}">
+                </property>
+            </property>
+            <property name="_led_8_0" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 0.0}">
+                </property>
+                <property name="_location_8_0" class="ptolemy.kernel.util.Location" value="{160.0, 0.0}">
+                </property>
+            </property>
+            <property name="_led_8_1" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 20.0}">
+                </property>
+                <property name="_location_8_1" class="ptolemy.kernel.util.Location" value="{160.0, 20.0}">
+                </property>
+            </property>
+            <property name="_led_8_2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 40.0}">
+                </property>
+                <property name="_location_8_2" class="ptolemy.kernel.util.Location" value="{160.0, 40.0}">
+                </property>
+            </property>
+            <property name="_led_8_3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 60.0}">
+                </property>
+                <property name="_location_8_3" class="ptolemy.kernel.util.Location" value="{160.0, 60.0}">
+                </property>
+            </property>
+            <property name="_led_8_4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 80.0}">
+                </property>
+                <property name="_location_8_4" class="ptolemy.kernel.util.Location" value="{160.0, 80.0}">
+                </property>
+            </property>
+            <property name="_led_8_5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 100.0}">
+                </property>
+                <property name="_location_8_5" class="ptolemy.kernel.util.Location" value="{160.0, 100.0}">
+                </property>
+            </property>
+            <property name="_led_8_6" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 120.0}">
+                </property>
+                <property name="_location_8_6" class="ptolemy.kernel.util.Location" value="{160.0, 120.0}">
+                </property>
+            </property>
+            <property name="_led_8_7" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 140.0}">
+                </property>
+                <property name="_location_8_7" class="ptolemy.kernel.util.Location" value="{160.0, 140.0}">
+                </property>
+            </property>
+            <property name="_led_8_8" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 160.0}">
+                </property>
+                <property name="_location_8_8" class="ptolemy.kernel.util.Location" value="{160.0, 160.0}">
+                </property>
+            </property>
+            <property name="_led_8_9" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 180.0}">
+                </property>
+                <property name="_location_8_9" class="ptolemy.kernel.util.Location" value="{160.0, 180.0}">
+                </property>
+            </property>
+            <property name="_led_9_0" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 0.0}">
+                </property>
+                <property name="_location_9_0" class="ptolemy.kernel.util.Location" value="{180.0, 0.0}">
+                </property>
+            </property>
+            <property name="_led_9_1" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 20.0}">
+                </property>
+                <property name="_location_9_1" class="ptolemy.kernel.util.Location" value="{180.0, 20.0}">
+                </property>
+            </property>
+            <property name="_led_9_2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 40.0}">
+                </property>
+                <property name="_location_9_2" class="ptolemy.kernel.util.Location" value="{180.0, 40.0}">
+                </property>
+            </property>
+            <property name="_led_9_3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 60.0}">
+                </property>
+                <property name="_location_9_3" class="ptolemy.kernel.util.Location" value="{180.0, 60.0}">
+                </property>
+            </property>
+            <property name="_led_9_4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 80.0}">
+                </property>
+                <property name="_location_9_4" class="ptolemy.kernel.util.Location" value="{180.0, 80.0}">
+                </property>
+            </property>
+            <property name="_led_9_5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 100.0}">
+                </property>
+                <property name="_location_9_5" class="ptolemy.kernel.util.Location" value="{180.0, 100.0}">
+                </property>
+            </property>
+            <property name="_led_9_6" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 120.0}">
+                </property>
+                <property name="_location_9_6" class="ptolemy.kernel.util.Location" value="{180.0, 120.0}">
+                </property>
+            </property>
+            <property name="_led_9_7" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 140.0}">
+                </property>
+                <property name="_location_9_7" class="ptolemy.kernel.util.Location" value="{180.0, 140.0}">
+                </property>
+            </property>
+            <property name="_led_9_8" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 160.0}">
+                </property>
+                <property name="_location_9_8" class="ptolemy.kernel.util.Location" value="{180.0, 160.0}">
+                </property>
+            </property>
+            <property name="_led_9_9" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 180.0}">
+                </property>
+                <property name="_location_9_9" class="ptolemy.kernel.util.Location" value="{180.0, 180.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 175.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[405.0, 140.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[375.0, 205.0]">
+        </vertex>
+    </relation>
+    <link port="Sinewave.output" relation="relation"/>
+    <link port="Sinewave2.output" relation="relation3"/>
+    <link port="Scale.input" relation="relation"/>
+    <link port="Scale.output" relation="relation5"/>
+    <link port="Scale2.input" relation="relation3"/>
+    <link port="Scale2.output" relation="relation8"/>
+    <link port="Round.input" relation="relation7"/>
+    <link port="Round.output" relation="relation4"/>
+    <link port="Round2.input" relation="relation6"/>
+    <link port="Round2.output" relation="relation2"/>
+    <link port="AddSubtract.plus" relation="relation5"/>
+    <link port="AddSubtract.plus" relation="relation10"/>
+    <link port="AddSubtract.output" relation="relation7"/>
+    <link port="AddSubtract2.plus" relation="relation8"/>
+    <link port="AddSubtract2.plus" relation="relation9"/>
+    <link port="AddSubtract2.output" relation="relation6"/>
+    <link port="Const2.output" relation="relation9"/>
+    <link port="Const.output" relation="relation10"/>
+    <link port="LEDArray.column" relation="relation4"/>
+    <link port="LEDArray.row" relation="relation2"/>
+</entity>

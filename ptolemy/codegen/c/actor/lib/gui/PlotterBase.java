@@ -38,6 +38,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
@@ -99,6 +100,9 @@ public class PlotterBase extends CCodeGeneratorHelper {
         args.add(ptIIDir);
         code.append(_generateBlockCode("createJVMBlock", args));
 
+        // We don't have inheritance of blocks, so we use a separate block
+        code.append(_generateBlockCode("plotterBaseInitBlock"));
+
         code.append(super.generateInitializeCode());
         ptolemy.actor.lib.gui.PlotterBase actor = (ptolemy.actor.lib.gui.PlotterBase) getComponent();
 
@@ -153,6 +157,21 @@ public class PlotterBase extends CCodeGeneratorHelper {
         return code.toString();
     }
 
+    /** Generate preinitialize code.
+     *  @return The generated code.
+     *  @exception IllegalActionException If the code stream encounters 
+     *   errors in processing the specified code blocks.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        // We don't have inheritance of blocks, so we use a separate block.
+        code.append(_generateBlockCode("plotterBasePreinitBlock"));
+
+        code.append(super.generateInitializeCode());
+        return code.toString();
+    }
+
     /** Generate the wrapup code. 
      *  @return The generated wrapup code.
      *  @exception IllegalActionException 
@@ -166,7 +185,7 @@ public class PlotterBase extends CCodeGeneratorHelper {
         code.append("char $actorSymbol(temp)[80];" + _eol);
         code.append("printf(\"close plot window to exit...\");" + _eol);
         code.append("scanf(\"%s\",$actorSymbol(temp));" + _eol);
-        return processCode(code.toString());
+        return processCode(CodeStream.indent(code.toString()));
     }
 
     /** Get the header files needed by the code generated for the

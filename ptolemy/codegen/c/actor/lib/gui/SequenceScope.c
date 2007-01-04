@@ -1,42 +1,5 @@
 /***preinitBlock***/
-#ifndef _JAVA_INVOCATION_INTERFACE_PREINIT
-#define _JAVA_INVOCATION_INTERFACE_PREINIT
-    JavaVM* jvm;
-    JNIEnv* env;
-    JavaVMInitArgs args;
-    JavaVMOption options[1];
-#endif
-   
     jdouble $actorSymbol(xValue);
-    
-    jclass $actorSymbol(plotClass);
-    jobject $actorSymbol(plotObject);
-    jmethodID $actorSymbol(plotConstructor);
-    jmethodID $actorSymbol(plotAddPoint);
-    
-    jmethodID $actorSymbol(plotSetPointsPersistence);
-    
-    jclass $actorSymbol(plotMLApplicationClass);
-    jobject $actorSymbol(plotMLApplicationObject);
-    jmethodID $actorSymbol(plotMLApplicationConstructor);   
-    
-    jclass $actorSymbol(plotMLParserClass);
-    jobject $actorSymbol(plotMLParserObject);
-    jmethodID $actorSymbol(plotMLParserConstructor);
-    jmethodID $actorSymbol(plotMLParserParse);
-/**/
-
-/***createJVMBlock($path)***/
-#ifndef _JAVA_INVOCATION_INTERFACE_INIT
-#define _JAVA_INVOCATION_INTERFACE_INIT
-    args.version = JNI_VERSION_1_4;
-    args.nOptions = 1;
-	options[0].optionString = "-Djava.class.path=$path";
-	args.options = options;
-	args.ignoreUnrecognized = JNI_FALSE;
-
-    JNI_CreateJavaVM(&jvm, (void **)&env, &args);   
-#endif
 /**/
 
 /***initBlock***/     
