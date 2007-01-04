@@ -1749,7 +1749,8 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         }
 
         // Add these items last so they are at the bottom.
-        jComboBox.addItem("{int}");
+        jComboBox.addItem("arrayType(int)");
+        jComboBox.addItem("arrayType(int,5)");
         jComboBox.addItem("[double]");
         jComboBox.addItem("{x=double, y=double}");
         return jComboBox;
