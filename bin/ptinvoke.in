@@ -134,7 +134,12 @@ PTJAVA_DIR_CLEAN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 # For Cygwin, this would be ;
 CLASSPATHSEPARATOR="@CLASSPATHSEPARATOR@"
 
-
+# Under Windows, look for jvm.dll for use with codegen Java
+if [ "$windows" = "yes" ]; then
+    if [ -f "$PTJAVA_DIR/jre/bin/client/jvm.dll" ]; then
+	export PATH="$PTJAVA_DIR/jre/bin/client;${PATH}"
+    fi	
+fi
 ##################################################################
 # Below here, we set up for each of the optional packages.
 # In general, for each package Foo, we end up setting FOO_JARS
