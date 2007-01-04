@@ -1,6 +1,6 @@
 /* A drop target for the ptolemy editor.
 
- Copyright (c) 1999-2006 The Regents of the University of California.
+ Copyright (c) 1999-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,6 +37,7 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.ToolTipManager;
@@ -99,7 +100,7 @@ public class EditorDropTarget extends DropTarget {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
     /** Return true if the feature is enabled that a a drop onto an
      *  instance of NamedObj results in that NamedObj containing the
      *  dropped object. Otherwise, return false.
@@ -108,6 +109,14 @@ public class EditorDropTarget extends DropTarget {
     public boolean isDropIntoEnabled() {
         return _dropIntoEnabled;
     }
+
+    /** Register additional DropTargetListeners.
+     *  @param listener The DropTargetListener to be added.
+     */
+    public void registerAdditionalListener(DropTargetListener listener) {
+      _additionalListeners.addElement(listener);
+    }
+
 
     /** If the argument is false, then disable the feature that a
      *  a drop onto an instance of NamedObj results in that NamedObj
@@ -121,8 +130,12 @@ public class EditorDropTarget extends DropTarget {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Flag indicating whether drop into is enabled.
+
+    /** Flag indicating whether drop into is enabled. */
     private boolean _dropIntoEnabled = true;
+    
+    /** Vector to contain additional listeners. */
+    private Vector _additionalListeners = new Vector();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -141,6 +154,13 @@ public class EditorDropTarget extends DropTarget {
          *  @param dtde The drop event.
          */
         public void dragEnter(DropTargetDragEvent dtde) {
+            //notify additionalListeners
+            for(int i=0; i<_additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener)
+                  _additionalListeners.elementAt(i);
+                l.dragEnter(dtde);
+            }
+           
             if (dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
                 dtde.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
             } else {
@@ -155,6 +175,12 @@ public class EditorDropTarget extends DropTarget {
          *  @param dtde The drop event.
          */
         public void dragExit(DropTargetEvent dtde) {
+            //notify additionalListeners
+            for(int i=0; i<_additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener)
+                  _additionalListeners.elementAt(i);
+                l.dragExit(dtde);
+            }
             if (_highlighted != null) {
                 _highlighter.renderDeselected(_highlightedFigure);
                 _highlighted = null;
@@ -171,6 +197,12 @@ public class EditorDropTarget extends DropTarget {
          *  @param dtde The drop event.
          */
         public void dragOver(DropTargetDragEvent dtde) {
+            //notify additionalListeners
+            for(int i=0; i<_additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener)
+                  _additionalListeners.elementAt(i);
+                l.dragOver(dtde);
+            }
             // See whether there is a container under the point.
             Point2D originalPoint = SnapConstraint.constrainPoint(dtde
                     .getLocation());
@@ -211,6 +243,12 @@ public class EditorDropTarget extends DropTarget {
          *  @param dtde The drop event.
          */
         public void drop(DropTargetDropEvent dtde) {
+            //notify additionalListeners
+            for(int i=0; i<_additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener)
+                  _additionalListeners.elementAt(i);
+                l.drop(dtde);
+            }
             // Unhighlight the target. Do this first in case
             // errors occur... Don't want to leave highlighting.
             if (_highlighted != null) {
@@ -314,6 +352,12 @@ public class EditorDropTarget extends DropTarget {
          *  @param dtde The drop event.
          */
         public void dropActionChanged(DropTargetDragEvent dtde) {
+            //notify additionalListeners
+            for(int i=0; i<_additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener)
+                  _additionalListeners.elementAt(i);
+                l.dropActionChanged(dtde);
+            }
             // Used to do this... Not needed?
             // dragEnter(dtde);
         }
