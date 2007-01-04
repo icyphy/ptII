@@ -55,6 +55,7 @@ EXTRA_SRCS = \
 	IfThenElse.htm \
 	IfThenElseFSM.htm \
 	IfThenElseFSMDDFPlusMinus.png \
+	IfThenElseFSMKepler.htm \
 	IfThenElseFSMModalModel.png \
 	IfThenElseFSMGainMinus.png \
 	IfThenElseFSMGainPlus.png \
