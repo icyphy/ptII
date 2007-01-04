@@ -1800,13 +1800,36 @@ public class SootUtilities {
 
     /** Get the method with the given name in the given class
      *  (or one of its super classes).
+     *  If the method name is ambiguous or there is some other problem,
+     *  then a RuntimeException is thrown that includes the names of
+     *  all possible methods for that class at that level.
      */
     public static SootMethod searchForMethodByName(SootClass theClass,
             String name) {
         while (theClass != null) {
             if (theClass.declaresMethodByName(name)) {
                 //System.out.println("found method " + name + " in " + theClass);
-                return theClass.getMethodByName(name);
+                try {
+                    return theClass.getMethodByName(name);
+                } catch (RuntimeException ex) {
+                    // Print out what the possible methods are.
+                    StringBuffer results = new StringBuffer("Methods are: ");
+                    boolean commaNeeded = false;
+                    Iterator methods = theClass.getMethods().iterator();
+                    while (methods.hasNext()) {
+                        SootMethod method = (SootMethod) methods.next();
+                        if (commaNeeded) {
+                            // Add a comma after the first method
+                            results.append(", ");
+                        } else {
+                            commaNeeded = true;
+                        }
+                        results.append(method.toString());
+                    }
+                    throw new RuntimeException("Failed to search \""
+                            + theClass + "\" for \"" + name + "\" possible "
+                            + "methods: " + results.toString(), ex);
+                }
             }
 
             theClass = theClass.getSuperclass();
