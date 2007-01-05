@@ -61,6 +61,7 @@ import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -77,6 +78,18 @@ import ptolemy.util.StringUtilities;
  * generateWrapupCode() methods by appending a corresponding code
  * block.
  *
+ * <p>Subclasses should be sure to properly indent the code by
+ * either using the code block functionality in methods like
+ * {@link #_generateBlockCode(String)} and
+ * {@link #_generateBlockCode(String, ArrayList)} or by calling {@link
+ * ptolemy.codegen.kernel.CodeStream#indent(String)}, for example:
+ * <pre>
+ *     StringBuffer code = new StringBuffer();
+ *     code.append(super.generateWrapupCode());
+ *     code.append("// Local wrapup code");
+ *     return processCode(CodeStream.indent(code.toString()));
+ * </pre>
+ * 
  * @author Ye Zhou, Gang Zhou, Edward A. Lee, Contributors: Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 6.0
@@ -194,7 +207,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * type. 
      * @param ptType The given Ptolemy type.
      * @return The code generation type.
-     * @exception IllegalActionException If the given ptolemy cannot
+     * @exception IllegalActionException Thrown if the given ptolemy cannot
      *  be resolved.
      */
     public static String codeGenType(Type ptType) throws IllegalActionException {
@@ -547,6 +560,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * Generate the wrapup code. In this base class, do nothing. Subclasses
      * may extend this method to generate the wrapup code of the associated
      * component and append the code to the given string buffer.
+     *
      * @return The generated wrapup code.
      * @exception IllegalActionException Not thrown in this base class.
      */
@@ -610,6 +624,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public int getBufferSize(IOPort port, int channelNumber)
             throws IllegalActionException {
         if (port.getContainer() == _component) {
+            if (_bufferSizes == null) {
+                throw new InternalErrorException(this, null,
+                        "_bufferSizes is null?");
+            }
+            if (_bufferSizes.get(port) == null) {
+                throw new InternalErrorException(this, null,
+                        "_bufferSizes.get(" + port 
+                        + ") is null?");
+            }
             return ((int[]) _bufferSizes.get(port))[channelNumber];
         } else {
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(port
@@ -925,7 +948,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @param channelNumber The given channel number.
      *  @return The offset in the buffer of a given channel from which a token
      *   should be read.
-     *  @exception IllegalActionException If the helper class cannot
+     *  @exception IllegalActionException Thrown if the helper class cannot
      *   be found.
      *  @see #setReadOffset(IOPort, int, Object)
      */
@@ -1344,7 +1367,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @param channelNumber The given channel number.
      *  @return The offset in the buffer of a given channel to which a token
      *   should be put.
-     *  @exception IllegalActionException If the helper class cannot
+     *  @exception IllegalActionException Thrown if the helper class cannot
      *   be found.
      *  @see #setWriteOffset(IOPort, int, Object)
      */
@@ -1363,7 +1386,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * Determine if the given type is primitive.
      * @param ptType The given ptolemy type.
      * @return true if the given type is primitive, otherwise false.
-     * @exception IllegalActionException If there is no
+     * @exception IllegalActionException Thrown if there is no
      *  corresponding codegen type.
      */
     public static boolean isPrimitive(Type ptType)
@@ -1508,7 +1531,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @param inputPort The given port.
      *  @param channelNumber The given channel.
      *  @param readOffset The offset to be set to the buffer of that channel.
-     *  @exception IllegalActionException If the helper class cannot
+     *  @exception IllegalActionException Thrown if the helper class cannot
      *   be found.
      *  @see #getReadOffset(IOPort, int)
      */
@@ -2059,7 +2082,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param macro The given macro.
      * @param parameter The given parameter to the macro.
      * @return The replacement string of the given macro.
-     * @exception IllegalActionException If the given macro or
+     * @exception IllegalActionException Thrown if the given macro or
      *  parameter is not valid.
      */
     protected String _replaceMacro(String macro, String parameter)
