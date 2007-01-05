@@ -62,7 +62,7 @@ while {[$models hasNext]} {
 	    # FIXME: we should use $relativeFilename here, but it
 	    # might have backslashes under Windows, which causes no end
 	    # of trouble.
-        set application [createAndExecute $file]
+        #set application [createAndExecute $file]
 	set timeout 60000
 	puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
@@ -80,7 +80,7 @@ while {[$models hasNext]} {
 	list $returnValue
     } {{}}
 }
-puts "Sleeping for 20 seconds so that we can see the last test"
+puts "Sleeping for 20 seconds so that we can see the last test\n"
 sleep 20 0
 # Print out stats
 doneTests
