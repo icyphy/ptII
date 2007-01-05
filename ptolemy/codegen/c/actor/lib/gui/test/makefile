@@ -88,7 +88,7 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests require a graphics terminal, but do use Jacl and Java
 test_jgraphical: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	@echo "We invoke \$PTII/bin/ptjacl so that the path to jvm.dll is set"
+	@echo "We invoke $$PTII/bin/ptjacl so that the path to jvm.dll is set"
 	${PTII}/bin/ptjacl alljtests.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
