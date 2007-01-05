@@ -61,6 +61,7 @@ import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -623,6 +624,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public int getBufferSize(IOPort port, int channelNumber)
             throws IllegalActionException {
         if (port.getContainer() == _component) {
+            if (_bufferSizes == null) {
+                throw new InternalErrorException(this, null,
+                        "_bufferSizes is null?");
+            }
+            if (_bufferSizes.get(port) == null) {
+                throw new InternalErrorException(this, null,
+                        "_bufferSizes.get(" + port 
+                        + ") is null?");
+            }
             return ((int[]) _bufferSizes.get(port))[channelNumber];
         } else {
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(port
