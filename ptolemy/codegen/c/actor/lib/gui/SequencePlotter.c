@@ -1,34 +1,18 @@
 /***preinitBlock***/
-FILE* $actorSymbol(filePtr);
-static int $actorSymbol(count) = 0;
+jdouble $actorSymbol(xValue);
 /**/
 
-/***initBlock***/
-if(!($actorSymbol(filePtr) = fopen("$actorSymbol(output)","w"))) {
-    fprintf(stderr,"ERROR: cannot open output file for Plotter actor.\n");
-    exit(1);
-}
-fprintf($actorSymbol(filePtr), "Grid: on\n");
-fprintf($actorSymbol(filePtr), "Impulses: on\n");
-fprintf($actorSymbol(filePtr), "Marks: dots\n");
-fprintf($actorSymbol(filePtr), "ReuseDataSets: on\n");
+/***initBlock***/           
+    $actorSymbol(xValue) = $val(xInit);  
 /**/
 
-/***annotateBlock($annotation)***/
-fprintf($actorSymbol(filePtr), "$annotation\n");
+/***plotBlock($channel)***/
+    (*env)->CallVoidMethod(env, $actorSymbol(plotObject), $actorSymbol(plotAddPoint), 
+            $channel + $val(startingDataset), $actorSymbol(xValue), 
+            $ref(input#$channel), JNI_TRUE);           
 /**/
 
-/***writeFile($channel)***/
-fprintf($actorSymbol(filePtr),"%d %g\n", $actorSymbol(count), $ref(input#$channel));
+/***updateBlock***/   
+    $actorSymbol(xValue) += $val(xUnit);         
 /**/
-
-/***countIncrease***/
-$actorSymbol(count) ++;
-/**/
-
-/***wrapupBlock***/
-fclose($actorSymbol(filePtr));
-system("ptplot $actorSymbol(output) &"); 
-/**/
-
 

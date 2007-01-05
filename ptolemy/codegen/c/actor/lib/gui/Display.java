@@ -77,9 +77,8 @@ public class Display extends CCodeGeneratorHelper {
         args.add(new Integer(0));
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(1, Integer.toString(i));
-            _codeStream.appendCodeBlock(type + "PrintBlock", args);
+            code.append(_generateBlockCode(type + "PrintBlock", args));
         }
-        code.append(processCode(_codeStream.toString()));
 
         return code.toString();
     }
