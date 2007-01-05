@@ -533,7 +533,7 @@ alljtests.tcl: makefile
 		for x in $(JGRAPHICAL_TESTS); do \
 			echo "puts stderr $$x" >> $@; \
 			echo "cd \"\$$savedir\"" >> $@; \
-			echo "if [ file exists $$x ] { if [catch {source $$x} msg] {puts \"\nWARNING: Sourcing \$$x resulted in an error,\nso we are incrementing the error count\nThe error was \$$msg\n\"; incr FAILED}}" >> $@; \
+			echo "if [ file exists $$x ] { if [catch {source $$x} msg] {puts \"\nWARNING: Sourcing $$x resulted in an error,\nso we are incrementing the error count\nThe error was \$$msg\n\"; incr FAILED}}" >> $@; \
 		done; \
 	fi
 	echo "catch {doneTests}" >> $@
