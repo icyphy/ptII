@@ -350,6 +350,8 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </port>
         <port name="inoutout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int,4)">
+            </property>
         </port>
         <port name="ret" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -383,6 +385,8 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </port>
         <port name="inoutout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int,4)">
+            </property>
         </port>
         <port name="ret" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -478,6 +482,8 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </port>
         <port name="inoutout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int,4)">
+            </property>
         </port>
         <port name="ret" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
