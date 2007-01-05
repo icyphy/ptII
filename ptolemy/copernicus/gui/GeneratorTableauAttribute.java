@@ -31,6 +31,10 @@ import java.awt.Frame;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.ModelDirectory;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
@@ -79,8 +83,15 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
         hide.setVisibility(Settable.EXPERT);
 
         new GeneratorTableauEditorFactory(this, "_editorFactory");
+        _tableauFactory = new GeneratorTableau.Factory(this, "_tableauFactory");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The tableau factory. */
+    private TableauFactory _tableauFactory;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     private class GeneratorTableauEditorFactory extends EditorFactory {
@@ -96,14 +107,13 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
          */
         public void createEditor(NamedObj object, Frame parent) {
             try {
-                Configuration configuration = ((TableauFrame) parent)
-                        .getConfiguration();
-
-                TextEffigy codeEffigy = TextEffigy.newTextEffigy(configuration
-                        .getDirectory(), toString());
-                codeEffigy.setModified(true);
-
-                configuration.createPrimaryTableau(codeEffigy);
+                Effigy effigy = ((TableauFrame)parent).getEffigy();
+                Tableau tableau = _tableauFactory.createTableau(effigy);
+                if (tableau == null) {
+                    throw new Exception("Tableau factory returns null.");
+                }
+                tableau.setEditable(effigy.isModifiable());
+                tableau.show();
             } catch (Exception ex) {
                 throw new InternalErrorException(object, ex,
                         "Cannot generate code. Perhaps outside Vergil?");
