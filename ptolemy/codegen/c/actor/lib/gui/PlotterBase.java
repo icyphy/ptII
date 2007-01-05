@@ -54,7 +54,7 @@ import ptolemy.util.StringUtilities;
  need to extend CCode
 
  
- @author Christopher Brooks
+ @author Christopher Brooks, Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (cxh) 

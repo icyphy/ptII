@@ -47,7 +47,7 @@ import ptolemy.util.StringUtilities;
 /**
  A helper class for ptolemy.actor.lib.gui.XYPlotter.
  
- @author Gang Zhou
+ @author Gang Zhou, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Yellow (zgang) 
