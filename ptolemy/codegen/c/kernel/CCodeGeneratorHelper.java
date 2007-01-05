@@ -39,7 +39,9 @@ import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.ExecuteCommands;
 import ptolemy.util.StringUtilities;
+import ptolemy.util.StreamExec;
 
 //////////////////////////////////////////////////////////////////////////
 //// CCodeGeneratorHelper
@@ -146,6 +148,34 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      *  @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getJVMHeaderFiles() throws IllegalActionException {
+        if(!_printedJVMWarning) {
+            // We only print this once.
+            _printedJVMWarning = true;
+            ExecuteCommands executeCommands = getCodeGenerator()
+                .getExecuteCommands();
+            String javaHome = StringUtilities.getProperty("java.home");
+
+            if (executeCommands == null) {
+                executeCommands = new StreamExec();
+            }
+            executeCommands.stdout( _eol + _eol
+                    + "WARNING: This model uses an actor that "
+                    + "links with the jvm library." + _eol
+                    + "  To properly run the executable, you must have jvm.dll"
+                    + " in your path." + _eol
+                    + "  If you do not, then when you run the executable, "
+                    + "it will immediately exit" + _eol
+                    + "  with no message!" + _eol
+                    + "  For example, place " + javaHome + "\\bin\\client"
+                    + _eol
+                    + "  in your path.  If you are running Vergil from the "
+                    + "command line as " + _eol + "  $PTII/bin/ptinvoke, "
+                    + "then this has been handled for you." + _eol
+                    + "  If you are running via Eclipse, then you must update "
+                    + "your path by hand." + _eol + _eol + _eol);
+        }
+
+
         // FIXME: This only works under windows.
         String javaHome = StringUtilities.getProperty("java.home");
         javaHome = javaHome.replace('\\', '/');
@@ -163,6 +193,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         files.add("<jni.h>");
         return files;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Generate input variable declarations.
      *  @return a String that declares input variables.
@@ -292,4 +325,11 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
         return code.toString();
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
+    /** True if we have printed the JVM warning. */
+    private boolean _printedJVMWarning;
 }
