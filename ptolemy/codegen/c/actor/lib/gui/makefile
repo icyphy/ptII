@@ -51,7 +51,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	Display.java \
-	LEDMatrix.java \
 	PlotterBase.java \
 	SequencePlotter.java \
 	SequenceScope.java \
