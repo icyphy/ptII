@@ -43,7 +43,6 @@ $actorSymbol(plotObject) = (*env)->NewObject
         (env, $actorSymbol(plotClass), $actorSymbol(plotConstructor));
 $actorSymbol(plotAddPoint) = (*env)->GetMethodID
         (env, $actorSymbol(plotClass), "addPoint", "(IDDZ)V");
-
 $actorSymbol(plotMLApplicationClass) = (*env)->FindClass
         (env, "ptolemy/plot/plotml/PlotMLApplication");
 $actorSymbol(plotMLApplicationConstructor) = (*env)->GetMethodID
@@ -62,19 +61,19 @@ $actorSymbol(plotMLApplicationObject) = (*env)->NewObject
 /**/
 
 /***configureBlock($text)***/
-    $actorSymbol(plotMLParserClass) = (*env)->FindClass
-            (env, "ptolemy/plot/plotml/PlotMLParser");
-    $actorSymbol(plotMLParserConstructor) = (*env)->GetMethodID
-            (env, $actorSymbol(plotMLParserClass), "<init>", "(Lptolemy/plot/Plot;)V");
-    $actorSymbol(plotMLParserObject) = (*env)->NewObject
-            (env, $actorSymbol(plotMLParserClass), 
-            $actorSymbol(plotMLParserConstructor), $actorSymbol(plotObject));
-    $actorSymbol(plotMLParserParse) = (*env)->GetMethodID
-            (env, $actorSymbol(plotMLParserClass), "parse", 
-            "(Ljava/net/URL;Ljava/lang/String;)V");
-    (*env)->CallVoidMethod(env, $actorSymbol(plotMLParserObject),         
-            $actorSymbol(plotMLParserParse), NULL, 
-            (*env)->NewStringUTF(env, $text));
+$actorSymbol(plotMLParserClass) = (*env)->FindClass
+        (env, "ptolemy/plot/plotml/PlotMLParser");
+$actorSymbol(plotMLParserConstructor) = (*env)->GetMethodID
+        (env, $actorSymbol(plotMLParserClass), "<init>", "(Lptolemy/plot/Plot;)V");
+$actorSymbol(plotMLParserObject) = (*env)->NewObject
+        (env, $actorSymbol(plotMLParserClass), 
+        $actorSymbol(plotMLParserConstructor), $actorSymbol(plotObject));
+$actorSymbol(plotMLParserParse) = (*env)->GetMethodID
+        (env, $actorSymbol(plotMLParserClass), "parse", 
+       "(Ljava/net/URL;Ljava/lang/String;)V");
+(*env)->CallVoidMethod(env, $actorSymbol(plotMLParserObject),         
+        $actorSymbol(plotMLParserParse), NULL, 
+        (*env)->NewStringUTF(env, $text));
 /**/
 
 
