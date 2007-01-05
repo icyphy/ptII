@@ -168,7 +168,7 @@ public class PlotterBase extends CCodeGeneratorHelper {
         // We don't have inheritance of blocks, so we use a separate block.
         code.append(_generateBlockCode("plotterBasePreinitBlock"));
 
-        code.append(super.generateInitializeCode());
+        code.append(super.generatePreinitializeCode());
         return code.toString();
     }
 
