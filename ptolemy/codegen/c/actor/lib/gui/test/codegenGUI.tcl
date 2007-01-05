@@ -37,71 +37,18 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-proc createAndExecute {file} {
-    set args [java::new {String[]} 1 \
-			  [list $file]]
-    java::new ptolemy.vergil.VergilApplication $args
-}
-
-	set parser [java::new ptolemy.moml.MoMLParser]
-
-    if {[info vars configuration] == ""} {
-    set configurationURL [java::call ptolemy.util.FileUtilities nameToURL \
-			      {$CLASSPATH/ptolemy/actor/gui/test/testConfiguration.xml} \
-			      [java::null] \
-			      [java::null]]
-
-
-	set configuration [java::call ptolemy.actor.gui.MoMLApplication readConfiguration $configurationURL]
-    }
-
-
-
-if [ file isdirectory auto/knownFailedTests ] {
-    foreach file [glob -nocomplain auto/knownFailedTests/*.xml] {
-	# Get the name of the current directory relative to $PTII
-	set relativeFilename \
-		[java::call ptolemy.util.StringUtilities substituteFilePrefix \
-		$PTII [file join [pwd] $file] {$PTII}]
-	puts "------------------ testing $relativeFilename (Known Failure) "
-	test "Auto" "Automatic test in file $relativeFilename" {
-	    # FIXME: we should use $relativeFilename here, but it
-	    # might have backslashes under Windows, which causes no end
-	    # of trouble.
-	    set args [java::new {String[]} 1 [list $file]]
-
-	    set timeout 60000
-	    puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
-                  seconds at [clock format [clock seconds]]"
-	    set watchDog [java::new util.testsuite.WatchDog $timeout]
-
-	    set returnValue 0
-	    set vergil [java::new ptolemy.vergil.VergilApplication $args]
-	    set models [$vergil models]
-	    # The first model is the configuration, the second is the UserLib
-	    set toplevel [java::cast ptolemy.kernel.util.NamedObj [$models get 2]]
-	    set cg [java::cast ptolemy.codegen.kernel.StaticSchedulingCodeGenerator 			[$toplevel getAttribute StaticSchedulingCodeGenerator]]
-	    if [catch {set returnValue [$cg generateCode]}] {
-	        $watchDog cancel
-	        error "$errMsg\n[jdkStackTrace]"
-	    } else {
-	        $watchDog cancel
-	    }
-	    list $returnValue
-	} {{}} {KNOWN_FAILURE}
-    }
-}
-
 # Open all the files in Vergil
 set files [glob auto/*.xml]
 set args [java::new {String[]} [llength $files] $files]
 set vergil [java::new ptolemy.vergil.VergilApplication $args]
 
+# Iterate through the models
 set models [[$vergil models] iterator]
 while {[$models hasNext]} {
     set model [java::cast ptolemy.kernel.util.NamedObj [$models next]]
     set modelName [$model getName]
     if {$modelName == "configuration" || $modelName == "UserLibrary"} {
+	# Skip the configuration and UserLibrary
 	continue
     }
     set uri [java::cast ptolemy.kernel.attributes.URIAttribute [$model getAttribute _uri]]
@@ -133,6 +80,7 @@ while {[$models hasNext]} {
 	list $returnValue
     } {{}}
 }
-
+puts "Sleeping for 20 seconds so that we can see the last test"
+sleep 20 0
 # Print out stats
 doneTests

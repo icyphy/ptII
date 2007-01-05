@@ -79,16 +79,21 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+tests:: $(EXTRA_SRCS) jclass test_java test_jgraphical #test_jsimple
 
 test_java: jclass
 
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
+# These tests require a graphics terminal, but do use Jacl and Java
+test_jgraphical: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+	@echo "We invoke \$PTII/bin/ptjacl so that the path to jvm.dll is set"
+	${PTII}/bin/ptjacl alljtests.tcl
+
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl #test_auto test_codegen
-	$(JTCLSH) alljtests.tcl
+#	PATH="${PTJAVA_DIR}/jre/bin/client;${PATH}" $(JTCLSH) alljtests.tcl
 
 # 'make clean' removes $(KRUFT)
 KRUFT = 
