@@ -1,10 +1,11 @@
-<!-- $Id$ -->
-<html>
-<head>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"><HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+<META NAME="GENERATOR" CONTENT="Adobe FrameMaker 6.0/HTML Export Filter">
 <link href="style.css" rel="stylesheet" type="text/css">
 <title>Programming Style for Ptolemy II</title>
-</head>
+</HEAD>
 <body>
 <h1>Programming Style for Ptolemy II</h1>
 This document is also <a href="style.pdf" target="_top">Available in PDF format</a>
@@ -56,9 +57,7 @@ $PTII/util/testsuite/chkjava *.java</EM>
 <H3 CLASS="FM2Heading">
 <A NAME="pgfId-176671"></A>Anatomy of a File</H3>
 <P CLASS="FirstBody">
-<A NAME="pgfId-176733"></A>A Java file has the structure shown in figure <A HREF="style.htm#31451" CLASS="XRef">See Anatomy of a Java file.</A>. 
-
-
+<A NAME="pgfId-176733"></A>A Java file has the structure shown in figure <A HREF="style.htm#31451" CLASS="XRef">See Anatomy of a Java file.</A>. The key points to note about this organization are:</P>
 <DIV>
 <MAP NAME="codingStyle-1">
 </MAP>
@@ -132,14 +131,36 @@ public class ClassName ... {
 <A NAME="pgfId-176030"></A>Copyright</H4>
 <P CLASS="FirstBody">
 <A NAME="pgfId-176041"></A>The copyright used in Ptolemy II is shown in figure <A HREF="style.htm#66094" CLASS="XRef">See Copyright notice used in Ptolemy II.</A>. This style of copyright is often referred to the community as a &quot;BSD&quot; copyright because it was used for the &quot;Berkeley standard distribution&quot; of Unix. It is much more liberal that the commonly used &quot;GPL&quot; or &quot;Gnu Public License,&quot; which encumbers the software and derivative works with the requirement that they carry the source code and the same copyright agreement. The BSD copyright requires that the software and derivative work carry the identity of the copyright owner, as embodied in the lines:</P>
-<P CLASS="Code">
-<A NAME="pgfId-176858"></A>&nbsp;</P>
-<P CLASS="Code">
-<A NAME="pgfId-176864"></A>Copyright (c) 1999-2005 The Regents of the University of California.</P>
-<P CLASS="Code">
-<A NAME="pgfId-176865"></A>All rights reserved.</P>
-<P CLASS="Code">
-<A NAME="pgfId-176862"></A>&nbsp;</P>
+<DIV>
+<MAP NAME="codingStyle-2">
+</MAP>
+<pre>
+Below is the copyright agreement for the Ptolemy II system.
+Version: $Id$
+
+Copyright (c) 1995-2007 The Regents of the University of California.
+All rights reserved.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+</pre>
+</DIV>
 <P CLASS="LBody">
 <A NAME="pgfId-176875"></A>The copyright also requires that copies and derivative works include the disclaimer of liability in BOLD. It specifically does not require that copies of the software or derivative works carry the middle paragraph, so such copies and derivative works need not grant similarly liberal rights to users of the software.</P>
 <P CLASS="Body">
@@ -157,7 +178,7 @@ public class ClassName ... {
 <P CLASS="Body">
 <A NAME="pgfId-177500"></A>The date of the copyright for newly created files should be the current year:</P>
 <P CLASS="Code">
-<A NAME="pgfId-177503"></A>Copyright (c) 2005 The Regents of the University of California.</P>
+<A NAME="pgfId-177503"></A>Copyright (c) 2007 The Regents of the University of California.</P>
 <P CLASS="Code">
 <A NAME="pgfId-177504"></A>All rights reserved.</P>
 <P CLASS="Body">
@@ -165,7 +186,7 @@ public class ClassName ... {
 <P CLASS="Body">
 <A NAME="pgfId-177342"></A>If a file is a copy of a previously copyrighted file, then the start date of the new file should be the same as that of the original file:</P>
 <P CLASS="Code">
-<A NAME="pgfId-177525"></A>Copyright (c) 1999-2005 The Regents of the University of California.</P>
+<A NAME="pgfId-177525"></A>Copyright (c) 1999-2007 The Regents of the University of California.</P>
 <P CLASS="Code">
 <A NAME="pgfId-177526"></A>All rights reserved.</P>
 <P CLASS="Body">
@@ -173,7 +194,7 @@ public class ClassName ... {
 <P CLASS="Body">
 <A NAME="pgfId-177519"></A>Ideally, files should have at most one copyright from one institution. Files with multiple copyrights are often in legal limbo if the copyrights conflict. If necessary, two institutions can share the same copyright:</P>
 <P CLASS="Code">
-<A NAME="pgfId-177541"></A>Copyright (c) 2005 The Ptolemy Institute and The Regents of the</P>
+<A NAME="pgfId-177541"></A>Copyright (c) 2007 The Ptolemy Institute and The Regents of the</P>
 <P CLASS="Code">
 <A NAME="pgfId-177547"></A>University of California.</P>
 <P CLASS="Code">
@@ -181,7 +202,7 @@ public class ClassName ... {
 <P CLASS="Code">
 <A NAME="pgfId-177551"></A>&nbsp;</P>
 <P CLASS="Body">
-<A NAME="pgfId-177534"></A>Ptolemy II includes a copyright management system that will display the copyrights of packages that are included in Ptolemy II at runtime. The copyright management system is under development and likely to change. Currently, URLs such as <EM CLASS="Code">
+<A NAME="pgfId-177534"></A>Ptolemy II includes a copyright management system that will display the copyrights of packages that are included in Ptolemy II at runtime. Currently, URLs such as <EM CLASS="Code">
 about:</EM>
  and <EM CLASS="Code">
 about:copyright</EM>
@@ -285,10 +306,16 @@ The @version tag includes text that CVS automatically substitutes in the version
 </EM>
 When the file is committed using CVS, the $Id$ gets substituted, so the tag might look like:<BR>
 <EM CLASS="Code">
-@version $Id$</EM>
+@version $Id$<BR>
+</EM>
+Note that for CVS keyword substitution to work properly, the file must have the -kkv attribute set. Usually, this is the default, but for some odd reason, Eclipse might check in files with -kv. The solution is to run<BR>
+<EM CLASS="Code">
+cvs admin -kkv filename<BR>
+cvs update -A filename<BR>
+</EM>
 </LI>
 <LI CLASS="Bulleted">
-<A NAME="pgfId-177440"></A>@since<BR>
+<A NAME="pgfId-180830"></A>@since<BR>
 The @since tag refers the release that the class first appeared in. Usually, this is one decimal place after the current release. For example if the current release is 3.0.2, then the @since tag would read:<BR>
 <EM CLASS="Code">
 @since Ptolemy II 3.1<BR>
@@ -361,15 +388,15 @@ $PTII/doc/doclets/RatingTaglet.java</EM>
 <P CLASS="Code">
 <A NAME="pgfId-177091"></A>/** Mark the object invalid, indicating that when a method</P>
 <P CLASS="Code">
-<A NAME="pgfId-177079"></A> *  is next called to get information from the object, that</P>
+<A NAME="pgfId-177079"></A>&nbsp;*  is next called to get information from the object, that</P>
 <P CLASS="Code">
-<A NAME="pgfId-177081"></A> *  information needs to be reconstructed from the database.</P>
+<A NAME="pgfId-177081"></A>&nbsp;*  information needs to be reconstructed from the database.</P>
 <P CLASS="Code">
-<A NAME="pgfId-177082"></A> */</P>
+<A NAME="pgfId-177082"></A>&nbsp;*/</P>
 <P CLASS="Code">
 <A NAME="pgfId-177083"></A>public void invalidate() {</P>
 <P CLASS="Code">
-<A NAME="pgfId-177116"></A>    _valid = false;</P>
+<A NAME="pgfId-177116"></A>&nbsp;&nbsp;&nbsp;&nbsp;_valid = false;</P>
 <P CLASS="Code">
 <A NAME="pgfId-177115"></A>}</P>
 <P CLASS="Code">
@@ -381,11 +408,11 @@ $PTII/doc/doclets/RatingTaglet.java</EM>
 <P CLASS="Code">
 <A NAME="pgfId-177098"></A>/** Set the variable _valid to false.</P>
 <P CLASS="Code">
-<A NAME="pgfId-177101"></A> */</P>
+<A NAME="pgfId-177101"></A>&nbsp;*/</P>
 <P CLASS="Code">
 <A NAME="pgfId-177120"></A>public void invalidate() {</P>
 <P CLASS="Code">
-<A NAME="pgfId-177121"></A>    _valid = false;</P>
+<A NAME="pgfId-177121"></A>&nbsp;&nbsp;&nbsp;&nbsp;_valid = false;</P>
 <P CLASS="Code">
 <A NAME="pgfId-177122"></A>}</P>
 <P CLASS="Code">
@@ -399,11 +426,11 @@ $PTII/doc/doclets/RatingTaglet.java</EM>
 <P CLASS="Code">
 <A NAME="pgfId-177134"></A>/** Invalidate this object.</P>
 <P CLASS="Code">
-<A NAME="pgfId-177135"></A> */</P>
+<A NAME="pgfId-177135"></A>&nbsp;*/</P>
 <P CLASS="Code">
 <A NAME="pgfId-177136"></A>public void invalidate() {</P>
 <P CLASS="Code">
-<A NAME="pgfId-177137"></A>    _valid = false;</P>
+<A NAME="pgfId-177137"></A>&nbsp;&nbsp;&nbsp;&nbsp;_valid = false;</P>
 <P CLASS="Code">
 <A NAME="pgfId-177138"></A>}</P>
 <P CLASS="Code">
@@ -415,8 +442,8 @@ $PTII/doc/doclets/RatingTaglet.java</EM>
 <P CLASS="Code">
 <A NAME="pgfId-177170"></A><BR>
 /** Sets the expression of this variable. <BR>
- *  @param expression The expression for this variable.<BR>
- */<BR>
+&nbsp;*  @param expression The expression for this variable.<BR>
+&nbsp;*/<BR>
 public void setExpression(String expression) {<BR>
 	...<BR>
 }<BR>
@@ -426,8 +453,8 @@ public void setExpression(String expression) {<BR>
 <P CLASS="Code">
 <A NAME="pgfId-177172"></A><BR>
 /** Set the expression of this variable.<BR>
- *  @param expression The expression for this variable.<BR>
- */<BR>
+&nbsp;*  @param expression The expression for this variable.<BR>
+&nbsp;*/<BR>
 public void setExpression(String expression) {<BR>
 	...<BR>
 }<BR>
@@ -439,11 +466,11 @@ public void setExpression(String expression) {<BR>
 <P CLASS="Code">
 <A NAME="pgfId-177175"></A>/** Invoked when an item has been selected or deselected.</P>
 <P CLASS="Code">
-<A NAME="pgfId-177176"></A> *  The code written for this method performs the operations</P>
+<A NAME="pgfId-177176"></A>&nbsp;*  The code written for this method performs the operations</P>
 <P CLASS="Code">
-<A NAME="pgfId-177177"></A> *  that need to occur when an item is selected (or deselected).</P>
+<A NAME="pgfId-177177"></A>&nbsp;*  that need to occur when an item is selected (or deselected).</P>
 <P CLASS="Code">
-<A NAME="pgfId-177178"></A> */</P>
+<A NAME="pgfId-177178"></A>&nbsp;*/</P>
 <P CLASS="Code">
 <A NAME="pgfId-177179"></A>void itemStateChanged(ItemEvent e);</P>
 <P CLASS="Code">
@@ -455,7 +482,7 @@ public void setExpression(String expression) {<BR>
 <P CLASS="Code">
 <A NAME="pgfId-177183"></A>/** Notify this object that an item has been selected or deselected.</P>
 <P CLASS="Code">
-<A NAME="pgfId-177184"></A> */</P>
+<A NAME="pgfId-177184"></A>&nbsp;*/</P>
 <P CLASS="Code">
 <A NAME="pgfId-177185"></A>void itemStateChanged(ItemEvent e);	</P>
 <P CLASS="Code">
@@ -467,7 +494,7 @@ public void setExpression(String expression) {<BR>
 <P CLASS="Code">
 <A NAME="pgfId-177189"></A>/** React to the selection or deselection of an item.</P>
 <P CLASS="Code">
-<A NAME="pgfId-177190"></A> */</P>
+<A NAME="pgfId-177190"></A>&nbsp;*/</P>
 <P CLASS="Code">
 <A NAME="pgfId-177191"></A>void itemStateChanged(ItemEvent event);	</P>
 <P CLASS="Code">
@@ -479,7 +506,7 @@ public void setExpression(String expression) {<BR>
 <P CLASS="Code">
 <A NAME="pgfId-177195"></A>/** React to the selection or deselection of an item by doing...</P>
 <P CLASS="Code">
-<A NAME="pgfId-177196"></A> */</P>
+<A NAME="pgfId-177196"></A>&nbsp;*/</P>
 <P CLASS="Code">
 <A NAME="pgfId-177197"></A>void itemStateChanged(ItemEvent event) { ... implementation ... }</P>
 <P CLASS="Code">
@@ -592,15 +619,14 @@ make docs</EM>
 <A NAME="pgfId-176384"></A><A NAME="marker-167870"></A>Indentation and brackets</H4>
 <P CLASS="Body">
 <A NAME="pgfId-167618"></A>Nested statements should be indented by 4 characters, as in: </P>
-<P CLASS="Code">
-<A NAME="pgfId-167770"></A><BR>
-if (container != null) {<BR>
-    Manager manager = container.getManager();<BR>
-    if (manager != null) {<BR>
-        manager.requestChange(change);<BR>
-    }<BR>
-}<BR>
-</P>
+<pre>
+if (container != null) {
+    Manager manager = container.getManager();
+    if (manager != null) {
+        manager.requestChange(change);
+    }
+}
+</pre>
 <P CLASS="LBody">
 <A NAME="pgfId-180523"></A>Closing brackets should be on a line by themselves, aligned with the beginning of the line that contains the open bracket. Please avoid using the Tab character in source files. The reason for this is that code becomes unreadable when the Tab character is interpreted differently by different programs. Your text editor should be configured to react to the Tab key by inserting spaces rather than the tab character. To set up Emacs to follow the Ptolemy II indentation style, see $PTII/util/lisp/ptemacs.el. To set up Eclipse to follow the Ptolemy II indentation style, see the instructions in $PTII/doc/coding/eclipse.htm.</P>
 <P CLASS="Body">
@@ -647,33 +673,31 @@ if (container != null) {<BR>
 <A NAME="pgfId-167986"></A>The convention we follow is that a run-time exception is acceptable only if the cause of the exception can be tested for prior to calling the method. This is called a <A NAME="marker-167987"></A>testable <A NAME="marker-167988"></A>precondition. For example, if a particular method will fail if the argument is negative, and this fact is documented, then the method can throw a run-time exception if the argument is negative. On the other hand, consider a method that takes a string argument and evaluates it as an expression. The expression may be malformed, in which case an exception will be thrown. Can this be a run-time exception? No, because to determine whether the expression is malformed, you really need to invoke the evaluator. Making this a compile-time exception forces the caller to explicitly deal with the exception, or to declare that it too throws the same exception. In general, we prefer to use compile-time exceptions wherever possible.</P>
 <P CLASS="Body">
 <A NAME="pgfId-167449"></A>When throwing an exception, the detail message should be a complete sentence that includes a string that fully describes what caused the exception. For example</P>
-<P CLASS="Code">
-<A NAME="pgfId-167452"></A><BR>
-throw IllegalActionException(this,<BR>
-        &quot;Cannot append an object of type: &quot;<BR>
-                + obj.getClass().getName() + &quot; because &quot;</P>
-<P CLASS="Code">
-<A NAME="pgfId-170566"></A>                + &quot;it does not implement Cloneable.&quot;);<BR>
-</P>
+<pre>
+throw IllegalActionException(this,
+        &quot;Cannot append an object of type: &quot;
+                + obj.getClass().getName() + &quot; because &quot;
+                + &quot;it does not implement Cloneable.&quot;);
+</pre>
 <P CLASS="LBody">
 <A NAME="pgfId-168925"></A>Note that the exception not only gives a way to identify the objects that caused the exception, but also why the exception occurred. There is no need to include in the message an identification of the &quot;this&quot; object passed as the first argument to the exception constructor. That object will be identified when the exception is reported to the user.</P>
 <P CLASS="Body">
 <A NAME="pgfId-177623"></A>If an exception is caught, be sure to use exception chaining to include the original exception. For example:</P>
-<P CLASS="Code">
-<A NAME="pgfId-177624"></A>&nbsp;</P>
-<P CLASS="Code">
-<A NAME="pgfId-180508"></A>String fileName = foo();</P>
-<P CLASS="Code">
-<A NAME="pgfId-177638"></A>try {</P>
-<P CLASS="Code">
-<A NAME="pgfId-177639"></A>    // Try to open the file</P>
-<P CLASS="Code">
-<A NAME="pgfId-177625"></A>} catch (IOException ex) {</P>
-<P CLASS="Code">
-<A NAME="pgfId-177640"></A>    throw new IllegalActionException(this, ex,</P>
-<P CLASS="Code">
-<A NAME="pgfId-177641"></A>            &quot;Failed to open '&quot; + fileName + &quot;'&quot;);<BR>
-}</P>
+<pre>
+String fileName = foo();
+try {
+    // Try to open the file
+} catch (IOException ex) {
+    throw new IllegalActionException(this, ex,
+            Failed to open '&quot; + fileName + &quot;'&quot;);
+}
+</pre>
+</DIV>
+<DIV>
+<H4 CLASS="FM3Heading">
+<A NAME="pgfId-180845"></A>Code Cleaning</H4>
+<P CLASS="FirstBody">
+<A NAME="pgfId-180852"></A>Code cleaning is the act of homogenizing the coding style, looking for and repairing common problems. Fortunately, Eclipse includes a file formatter and a cleaner that fixes many common problems. Software that is to be formally released should be cleaned according to the guidelines set forth in $PTII/doc/coding/releasemgt.htm</P>
 </DIV>
 </DIV>
 <DIV>
