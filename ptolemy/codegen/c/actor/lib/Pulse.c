@@ -6,7 +6,8 @@ unsigned char $actorSymbol(match) = 0;
 
 /***fireBlock***/
 if ($actorSymbol(indexColCount) < $size(indexes) 
-        && $actorSymbol(iterationCount) == $ref(indexes, $actorSymbol(indexColCount))) {
+        && $actorSymbol(iterationCount)
+                == $ref(indexes, $actorSymbol(indexColCount))) {
     $ref(output) = $ref(values, $actorSymbol(indexColCount));
     $actorSymbol(match) = 1;
 } else {

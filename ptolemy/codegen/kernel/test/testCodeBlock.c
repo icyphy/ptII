@@ -1,5 +1,5 @@
 /*** initBlock($arg) ***/
-    if ($ref(input) != $arg) {
-        $ref(output) = $arg;
-    }
+if ($ref(input) != $arg) {
+    $ref(output) = $arg;
+}
 /**/

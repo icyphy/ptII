@@ -1,24 +1,58 @@
+/* Code generator for the C language.
+
+ Copyright (c) 2005-2006 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
 package ptolemy.codegen.c.kernel;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.codegen.kernel.CodeGeneratorUtilities;
 import ptolemy.codegen.kernel.CodeStream;
-import ptolemy.data.IntToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
-import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 ////CodeGenerator
@@ -45,7 +79,12 @@ public class CCodeGenerator extends CodeGenerator {
     public CCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        generatorPackage.setExpression("ptolemy.codegen.c");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Generate the function table.  In this base class return
      *  the empty string.
@@ -58,10 +97,10 @@ public class CCodeGenerator extends CodeGenerator {
 
         if (functions.length > 0 && types.length > 0) {
 
-            code.append("#define NUM_TYPE " + types.length + "\n");
-            code.append("#define NUM_FUNC " + functions.length + "\n");
+            code.append("#define NUM_TYPE " + types.length + _eol);
+            code.append("#define NUM_FUNC " + functions.length + _eol);
             code.append("Token (*functionTable[NUM_TYPE][NUM_FUNC])"
-                    + "(Token, ...)= {\n");
+                    + "(Token, ...)= {" + _eol);
 
             for (int i = 0; i < types.length; i++) {
                 code.append("\t");
@@ -72,17 +111,17 @@ public class CCodeGenerator extends CodeGenerator {
                         code.append(", ");
                     }
                 }
-                code.append("\n");
+                code.append(_eol);
             }
 
-            code.append("};\n");
+            code.append("};" + _eol);
         }
         return code.toString();
     }
 
     /** Generate include files.
      *  @return The include files.
-     *  @throws IllegalActionException If the helper class for some actor 
+     *  @exception IllegalActionException If the helper class for some actor 
      *   cannot be found.
      */
     public String generateIncludeFiles() throws IllegalActionException {
@@ -90,6 +129,8 @@ public class CCodeGenerator extends CodeGenerator {
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         Set includingFiles = compositeActorHelper.getHeaderFiles();
+
+        includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
 
         if (!isTopLevel()) {
             includingFiles.add("\"Jni" + _sanitizedModelName + ".h\"");
@@ -107,7 +148,7 @@ public class CCodeGenerator extends CodeGenerator {
         while (files.hasNext()) {
             String file = (String) files.next();
 
-            code.append("#include " + file + "\n");
+            code.append("#include " + file + _eol);
         }
 
         return code.toString();
@@ -122,14 +163,14 @@ public class CCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            return "\n\ninitialize() {\n";
+            return _eol + _eol + "initialize() {" + _eol;
 
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
         } else {
-            return "\n\nJNIEXPORT void JNICALL\n" + "Java_Jni"
+            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_Jni"
                     + _sanitizedModelName + "_initialize("
-                    + "JNIEnv *env, jobject obj) {\n";
+                    + "JNIEnv *env, jobject obj) {" + _eol;
         }
     }
 
@@ -139,7 +180,7 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generateInitializeExitCode() throws IllegalActionException {
 
-        return "}\n";
+        return "}" + _eol;
     }
 
     /** Generate the initialization procedure name.
@@ -149,7 +190,7 @@ public class CCodeGenerator extends CodeGenerator {
     public String generateInitializeProcedureName()
             throws IllegalActionException {
 
-        return _INDENT1 + "initialize();\n";
+        return _INDENT1 + "initialize();" + _eol;
     }
 
     /** Generate the main entry point.
@@ -164,14 +205,15 @@ public class CCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            mainEntryCode.append("\n\nmain(int argc, char *argv[]) {\n");
+            mainEntryCode.append(_eol + _eol + "main(int argc, char *argv[]) {"
+                    + _eol);
 
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
         } else {
-            mainEntryCode.append("\n\nJNIEXPORT jobjectArray JNICALL\n"
-                    + "Java_Jni" + _sanitizedModelName + "_fire (\n"
-                    + "JNIEnv *env, jobject obj");
+            mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL"
+                    + _eol + "Java_Jni" + _sanitizedModelName + "_fire ("
+                    + _eol + "JNIEnv *env, jobject obj");
 
             Iterator inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
@@ -180,7 +222,7 @@ public class CCodeGenerator extends CodeGenerator {
                 mainEntryCode.append(", jobjectArray " + inputPort.getName());
             }
 
-            mainEntryCode.append("){\n");
+            mainEntryCode.append("){" + _eol);
         }
         return mainEntryCode.toString();
     }
@@ -192,44 +234,11 @@ public class CCodeGenerator extends CodeGenerator {
     public String generateMainExitCode() throws IllegalActionException {
 
         if (isTopLevel()) {
-            return _INDENT1 + "exit(0);\n}\n";
+            return _INDENT1 + "exit(0);" + _eol + "}" + _eol;
         } else {
-            return _INDENT1 + "return tokensToAllOutputPorts;\n}\n";
+            return _INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
+                    + _eol;
         }
-    }
-
-    /** Generate preinitialize code (if there is any).
-     *  This method calls the generatePreinitializeCode() method
-     *  of the code generator helper associated with the model director
-     *  @return The preinitialize code of the containing composite actor.
-     *  @exception IllegalActionException If the helper class for the model
-     *   director cannot be found, or if an error occurs when the director
-     *   helper generates preinitialize code.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-
-        ptolemy.actor.Director director = ((CompositeActor) getContainer())
-                .getDirector();
-
-        if (director == null) {
-            throw new IllegalActionException(this, "The model "
-                    + _model.getName() + " does not have a director.");
-        }
-
-        Attribute iterations = director.getAttribute("iterations");
-
-        if (iterations != null) {
-            int iterationCount = ((IntToken) ((Variable) iterations).getToken())
-                    .intValue();
-
-            if (iterationCount > 0) {
-                code.append("static int iteration = 0;\n");
-            }
-        }
-
-        return code.toString();
     }
 
     /**
@@ -243,7 +252,7 @@ public class CCodeGenerator extends CodeGenerator {
      * of constants (MAX_NUM_TYPE, MAX_NUM_FUNC), the type map, the function
      * map, function definitions read from the files, and function table.
      * @return The type resolution code.
-     * @throws IllegalActionException If an error occurrs when generating
+     * @exception IllegalActionException If an error occurrs when generating
      *  the type resolution code, or if the helper class for the model
      *  director cannot be found, or if an error occurs when the helper
      *  actor generates the type resolution code.
@@ -252,8 +261,9 @@ public class CCodeGenerator extends CodeGenerator {
 
         StringBuffer code = new StringBuffer();
 
-        code.append(comment(0, "Generate type resolution code for "
-                + getContainer().getFullName()));
+        code.append(_eol
+                + comment("Generate type resolution code for "
+                        + getContainer().getFullName()));
 
         // Include the constantsBlock at the top so that sharedBlocks from
         // actors can use true and false etc.  StringMatches needs this.
@@ -285,18 +295,23 @@ public class CCodeGenerator extends CodeGenerator {
 
         // Generate type map.
         String typeMembers = "";
-        code.append("#define TYPE_Token -1 \n");
+        code.append("#define TYPE_Token -1 " + _eol);
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .c file for each type.
             typeStreams[i] = new CodeStream(
                     "$CLASSPATH/ptolemy/codegen/kernel/type/" + typesArray[i]
                             + ".c");
 
-            code.append("#define TYPE_" + typesArray[i] + " " + i + "\n");
+            code.append("#define TYPE_" + typesArray[i] + " " + i + _eol);
 
             // Dynamically generate all the types within the union.
-            typeMembers += "\t\t" + typesArray[i] + "Token " + typesArray[i]
-                    + ";\n";
+            if (i > 0) {
+                typeMembers += _INDENT2;
+            }
+            typeMembers += typesArray[i] + "Token " + typesArray[i] + ";";
+            if (i < typesArray.length - 1) {
+                typeMembers += _eol;
+            }
         }
 
         Object[] functionsArray = functions.toArray();
@@ -304,10 +319,10 @@ public class CCodeGenerator extends CodeGenerator {
         // Generate function map.
         for (int i = 0; i < functionsArray.length; i++) {
 
-            code.append("#define FUNC_" + functionsArray[i] + " " + i + "\n");
+            code.append("#define FUNC_" + functionsArray[i] + " " + i + _eol);
         }
 
-        code.append("typedef struct token Token;");
+        code.append("typedef struct token Token;" + _eol);
 
         // Generate type and function definitions.
         for (int i = 0; i < typesArray.length; i++) {
@@ -319,10 +334,9 @@ public class CCodeGenerator extends CodeGenerator {
         }
 
         ArrayList args = new ArrayList();
-        args.add("");
         // Token declareBlock.
         if (!typeMembers.equals("")) {
-            args.set(0, typeMembers);
+            args.add(typeMembers);
             sharedStream.clear();
             sharedStream.appendCodeBlock("tokenDeclareBlock", args);
         }
@@ -332,7 +346,8 @@ public class CCodeGenerator extends CodeGenerator {
             // The "funcDeclareBlock" contains all function declarations for
             // the type.
             for (int j = 0; j < functionsArray.length; j++) {
-                args.set(0, typesArray[i] + "_" + functionsArray[j]);
+                args.clear();
+                args.add(typesArray[i] + "_" + functionsArray[j]);
                 sharedStream.appendCodeBlock("funcHeaderBlock", args);
             }
         }
@@ -374,7 +389,7 @@ public class CCodeGenerator extends CodeGenerator {
                     // reference to this label.
 
                     typeStreams[i].append("#define " + typesArray[i] + "_"
-                            + functionsArray[j] + " MISSING \n");
+                            + functionsArray[j] + " MISSING " + _eol);
 
                     // It is ok because this polymorphic function may not be
                     // supported by all types. 
@@ -396,15 +411,16 @@ public class CCodeGenerator extends CodeGenerator {
         code.append(super.generateVariableDeclaration());
 
         // Generate variable declarations for modified variables.
-        if (_modifiedVariables != null) {
+        if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
+            code.append(comment("Generate variable declarations for "
+                    + "modified parameters"));
             Iterator modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
                 Parameter parameter = (Parameter) modifiedVariables.next();
 
                 code.append("static "
                         + CodeGeneratorHelper.cType(parameter.getType()) + " "
-                        + CodeGeneratorHelper.generateVariableName(parameter)
-                        + ";\n");
+                        + generateVariableName(parameter) + ";" + _eol);
             }
         }
 
@@ -422,18 +438,21 @@ public class CCodeGenerator extends CodeGenerator {
         code.append(super.generateVariableInitialization());
 
         // Generate variable initialization for modified variables.
-        if (_modifiedVariables != null) {
+        if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
+            code.append(comment(1, "Generate variable initialization for "
+                    + "modified parameters"));
             Iterator modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
                 Parameter parameter = (Parameter) modifiedVariables.next();
 
                 NamedObj container = parameter.getContainer();
                 CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
-                code.append(CodeGeneratorHelper.generateVariableName(parameter)
+                code.append(_INDENT1
+                        + generateVariableName(parameter)
                         + " = "
                         + containerHelper.getParameterValue(
                                 parameter.getName(), parameter.getContainer())
-                        + ";\n");
+                        + ";" + _eol);
             }
         }
 
@@ -449,14 +468,14 @@ public class CCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            return "\n\nwrapup() {\n";
+            return _eol + _eol + "wrapup() {" + _eol;
 
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
         } else {
-            return "\n\nJNIEXPORT void JNICALL\n" + "Java_Jni"
+            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_Jni"
                     + _sanitizedModelName + "_wrapup("
-                    + "JNIEnv *env, jobject obj) {\n";
+                    + "JNIEnv *env, jobject obj) {" + _eol;
         }
     }
 
@@ -466,7 +485,7 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generateWrapupExitCode() throws IllegalActionException {
 
-        return "}\n";
+        return "}" + _eol;
     }
 
     /** Generate the wrapup procedure name.
@@ -475,7 +494,245 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generateWrapupProcedureName() throws IllegalActionException {
 
-        return _INDENT1 + "wrapup();\n";
+        return _INDENT1 + "wrapup();" + _eol;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Execute the compile and run commands in the
+     *  <i>codeDirectory</i> directory.
+     *  @return The return value of the last subprocess that was executed
+     *  or -1 if no commands were executed.
+     *  @exception IllegalActionException If there are problems reading
+     *  parameters or executing the commands.
+     */
+    protected int _executeCommands() throws IllegalActionException {
+
+        List commands = new LinkedList();
+        if (((BooleanToken) compile.getToken()).booleanValue()) {
+            commands.add("make -f " + _sanitizedModelName + ".mk");
+        }
+
+        if (isTopLevel()) {
+            if (((BooleanToken) compile.getToken()).booleanValue()) {
+                String command = codeDirectory.stringValue()
+                        + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
+                                .stringValue().endsWith("\\")) ? "/" : "")
+                        + _sanitizedModelName;
+
+                commands.add("\"" + command.replace('\\', '/') + "\"");
+            }
+        }
+
+        if (commands.size() == 0) {
+            return -1;
+        }
+
+        _executeCommands.setCommands(commands);
+        _executeCommands.setWorkingDirectory(codeDirectory.asFile());
+
+        try {
+            // FIXME: need to put this output in to the UI, if any. 
+            _executeCommands.start();
+        } catch (Exception ex) {
+            StringBuffer errorMessage = new StringBuffer();
+            Iterator allCommands = commands.iterator();
+            while (allCommands.hasNext()) {
+                errorMessage.append((String) allCommands.next() + _eol);
+            }
+            throw new IllegalActionException("Problem executing the "
+                    + "commands:" + _eol + errorMessage);
+        }
+        return _executeCommands.getLastSubprocessReturnCode();
+    }
+
+    /** Read in a template makefile, substitute variables and write
+     *  the resulting makefile.
+     *
+     *  <p>If a <code>.mk.in</code> file with the name of the sanitized model
+     *  name, then that file is used as a template.  For example, if the
+     *  model name is <code>Foo</code> and the file <code>Foo.mk.in</code>
+     *  exists, then the file <code>Foo.mk.in</code> is used as a makefile
+     *  template.
+     *
+     *  <p>If no <code>.mk.in</code> file is found, then the makefile
+     *  template can be found by looking up a resource name
+     *  makefile.in in the package named by the
+     *  <i>generatorPackage</i> parameter.  Thus, if the
+     *  <i>generatorPackage</i> has the value "ptolemy.codegen.c",
+     *  then we look for the resouce "ptolemy.codegen.c.makefile.in", which
+     *  is usually found as <code>$PTII/ptolemy/codegen/c/makefile.in</code>.
+     *
+     *  <p>The makefile is written to a directory named by the
+     *  <i>codeDirectory</i> parameter, with a file name that is a
+     *  sanitized version of the model name, and a ".mk" extension.
+     *  Thus, for a model named "Foo", we might generate a makefile in
+     *  "$HOME/codegen/Foo.mk".
+
+     *  <p>Under Java under Windows, your <code>$HOME</code> variable
+     *  is set to the value of the <code>user.home</code>System property,
+     *  which is usually something like
+     *  <code>C:\Documents and Settings\<i>yourlogin</i></code>, thus
+     *  for user <code>mrptolemy</code> the makefile would be
+     *  <code>C:\Documents and Settings\mrptolemy\codegen\Foo.mk</code>.
+     *
+     *  <p>The following variables are substituted
+     *  <dl>
+     *  <dt><code>@modelName@</code>
+     *  <dd>The sanitized model name, created by invoking
+     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)} 
+     *  on the model name.
+     *  <dt><code>@PTCGIncludes@</code>
+     *  <dd>The elements of the set of include command arguments that
+     *  were added by calling {@link #addInclude(String)}, where each
+     *  element is separated by a space.
+     *  <dt><code>@PTCGLibraries@</code>
+     *  <dd>The elements of the set of library command arguments that
+     *  were added by calling {@link #addLibrary(String)}, where each
+     *  element is separated by a space.
+     *  </dl>
+
+     *  @exception IllegalActionException  If there is a problem reading
+     *  a parameter, if there is a problem creating the codeDirectory directory
+     *  or if there is a problem writing the code to a file.
+     */
+    protected void _writeMakefile() throws IllegalActionException {
+
+        // Write the code to a file with the same name as the model into
+        // the directory named by the codeDirectory parameter.
+        //try {
+        // Check if needs to overwrite.
+        if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
+                && codeDirectory.asFile().exists()) {
+            // FIXME: It is totally bogus to ask a yes/no question
+            // like this, since it makes it impossible to call
+            // this method from a script.  If the question is
+            // asked, the build will hang.
+            if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
+                    + " exists. OK to overwrite?")) {
+                throw new IllegalActionException(this,
+                        "Please select another file name.");
+            }
+        }
+
+        File codeDirectoryFile = codeDirectory.asFile();
+        if (codeDirectoryFile.isFile()) {
+            throw new IllegalActionException(this, "Error: "
+                    + codeDirectory.stringValue() + " is a file, "
+                    + " it should be a directory.");
+        }
+
+        if (!codeDirectoryFile.isDirectory() && !codeDirectoryFile.mkdirs()) {
+            throw new IllegalActionException(this, "Failed to make the \""
+                    + codeDirectory.stringValue() + "\" directory.");
+        }
+
+        Map substituteMap;
+        try {
+            // Add substitutions for all the parameter.
+            // For example, @generatorPackage@ will be replaced with
+            // the value of the generatorPackage.
+            substituteMap = CodeGeneratorUtilities.newMap(this);
+            substituteMap.put("@modelName@", _sanitizedModelName);
+            substituteMap
+                    .put("@PTCGIncludes@", _concatenateElements(_includes));
+            substituteMap.put("@PTCGLibraries@",
+                    _concatenateElements(_libraries));
+
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(this, ex,
+                    "Problem generating substitution map from " + _model);
+        }
+
+        BufferedReader makefileTemplateReader = null;
+
+        // Look for a .mk.in file with the same name as the model.
+        String makefileTemplateName;
+        URIAttribute uriAttribute = (URIAttribute) _model.getAttribute("_uri",
+                URIAttribute.class);
+        if (uriAttribute != null) {
+            String uriString = uriAttribute.getURI().toString();
+            makefileTemplateName = uriString.substring(0, uriString
+                    .lastIndexOf("/") + 1)
+                    + _sanitizedModelName + ".mk.in";
+        } else {
+            // The model does not have a _uri attribute, so 
+            // Look for the generic C makefile.in
+            // Note this code is repeated in the catch below.
+            makefileTemplateName = generatorPackage.stringValue().replace('.',
+                    '/')
+                    + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in");
+        }
+        // If necessary, add a trailing / after codeDirectory.
+        String makefileOutputName = codeDirectory.stringValue()
+                + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
+                        .stringValue().endsWith("\\")) ? "/" : "")
+                + _sanitizedModelName + ".mk";
+
+        try {
+            try {
+                makefileTemplateReader = CodeGeneratorUtilities
+                        .openAsFileOrURL(makefileTemplateName);
+            } catch (IOException ex) {
+                String makefileTemplateName2 = "<unknown>";
+                try {
+                    // Look for the generic C makefile.in
+                    // Note this line is a repeat from the _uri check above.
+                    makefileTemplateName2 = generatorPackage.stringValue()
+                            .replace('.', '/')
+                            + (isTopLevel() ? "/makefile.in"
+                                    : "/jnimakefile.in");
+                    makefileTemplateReader = CodeGeneratorUtilities
+                            .openAsFileOrURL(makefileTemplateName2);
+                } catch (IOException ex2) {
+                    throw new IllegalActionException(this, ex2,
+                            "Failed to open \"" + makefileTemplateName
+                                    + "\" and \"" + makefileTemplateName2
+                                    + "\" for reading.");
+                }
+                makefileTemplateName = makefileTemplateName2;
+            }
+
+            _executeCommands.stdout("Reading \"" + makefileTemplateName + "\","
+                    + _eol + "    writing \"" + makefileOutputName + "\"");
+            CodeGeneratorUtilities.substitute(makefileTemplateReader,
+                    substituteMap, makefileOutputName);
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, "Failed to read \""
+                    + makefileTemplateName + "\" or write \""
+                    + makefileOutputName + "\"");
+        } finally {
+            if (makefileTemplateReader != null) {
+                try {
+                    makefileTemplateReader.close();
+                } catch (IOException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to close \"" + makefileTemplateName + "\"");
+                }
+            }
+        }
+        //}
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Given a Set of Strings, return a string where each element of the
+     *  Set is separated by a space.
+     *  @param set The Set of Strings.
+     *  @return A String that contains each element of the Set separated by
+     *  a space.
+     */
+    private static String _concatenateElements(Set set) {
+        StringBuffer buffer = new StringBuffer();
+        Iterator sets = set.iterator();
+        while (sets.hasNext()) {
+            if (buffer.length() > 0) {
+                buffer.append(" ");
+            }
+            buffer.append((String) sets.next());
+        }
+        return buffer.toString();
+    }
 }

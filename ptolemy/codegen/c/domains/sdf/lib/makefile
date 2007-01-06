@@ -50,18 +50,23 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	ArrayToSequence.java \
 	CountTrues.java \
 	DotProduct.java \
 	FIR.java \
 	Repeat.java \
 	SampleDelay.java \
+	SequenceToArray.java \
 	VariableRecursiveLattice.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ArrayToSequence.c \
 	CountTrues.c \
 	DotProduct.c \
 	FIR.c \
+	Repeat.c \
 	SampleDelay.c \
+	SequenceToArray.c \
 	VariableRecursiveLattice.c \
 	sdfentities.xml
 

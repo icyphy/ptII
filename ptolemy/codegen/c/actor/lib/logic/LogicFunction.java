@@ -62,7 +62,7 @@ public class LogicFunction extends CCodeGeneratorHelper {
 
         String function = actor.function.getExpression();
 
-        codeBuffer.append("\n    ");
+        codeBuffer.append(_eol + "    ");
         codeBuffer.append("$ref(output) = ");
 
         if (function.equals("nand") || function.equals("nor")
@@ -96,7 +96,7 @@ public class LogicFunction extends CCodeGeneratorHelper {
             codeBuffer.append("%2");
         }
 
-        codeBuffer.append(");\n");
+        codeBuffer.append(");" + _eol);
         return processCode(codeBuffer.toString());
     }
 }

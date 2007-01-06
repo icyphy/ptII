@@ -67,7 +67,7 @@ test Director-1.1 {Instantiate a Director, call a few methods} {
 test Director-2.1 {generateFireCode(StringBuffer)} {
     set results [$cgDirector generateFireCode]
     list $results
-} {{    /* The firing of the director. */
+} {{/* The firing of the director. */
 }}
 
 #####
@@ -105,6 +105,6 @@ test Director-7.1 {getComponent()} {
 test Director-2.1 {generateMainEntryCode, generateMainExitCode} {
     list [$cgDirector generateMainEntryCode] \
 	[$cgDirector generateMainExitCode] 
-} {{    /* main entry code */
-} {    /* main exit code */
+} {{/* main entry code */
+} {/* main exit code */
 }}

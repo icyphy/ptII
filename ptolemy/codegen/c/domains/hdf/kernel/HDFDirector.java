@@ -192,12 +192,12 @@ public class HDFDirector extends SDFDirector {
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
         if (!inline) {
-            code.append("int i;\n");
+            code.append("int i;" + _eol);
         }
         code.append("switch ("
                 + containerHelper
                         .processCode("$actorSymbol(currentConfiguration)")
-                + ") {\n");
+                + ") {" + _eol);
         for (int configurationNumber = 0; configurationNumber < _schedules.length; configurationNumber++) {
 
             // Find the configuration number of each contained actor
@@ -209,7 +209,7 @@ public class HDFDirector extends SDFDirector {
             }
             actorConfigurations[numberOfActors - 1] = remainder;
 
-            code.append("case " + configurationNumber + ":\n");
+            code.append("case " + configurationNumber + ":" + _eol);
 
             Schedule schedule = _schedules[configurationNumber];
 
@@ -267,12 +267,13 @@ public class HDFDirector extends SDFDirector {
 
                     int count = firing.getIterationCount();
                     if (count > 1) {
-                        code.append("for (i = 0; i < " + count + " ; i++) {\n");
+                        code.append("for (i = 0; i < " + count + " ; i++) {"
+                                + _eol);
                     }
 
                     code.append(CodeGeneratorHelper
                             .generateName((NamedObj) actor)
-                            + "();\n");
+                            + "();" + _eol);
 
                     // update buffer offset after firing each actor once
                     Iterator ports = ((Entity) actor).portList().iterator();
@@ -294,18 +295,19 @@ public class HDFDirector extends SDFDirector {
                     }
 
                     if (count > 1) {
-                        code.append("}\n");
+                        code.append("}" + _eol);
                     }
                 }
             }
-            code.append("break;\n");
+            code.append("break;" + _eol);
         }
-        code.append("}\n");
+        code.append("}" + _eol);
 
         // A variable is set to record the firing of the director.
         // This variable is used when doing mode transition after
         // one global iteration.
-        code.append(containerHelper.processCode("$actorSymbol(fired) = 1;\n"));
+        code.append(containerHelper.processCode("$actorSymbol(fired) = 1;"
+                + _eol));
 
         return code.toString();
     }
@@ -344,12 +346,12 @@ public class HDFDirector extends SDFDirector {
         CompositeActor container = (CompositeActor) director.getContainer();
         ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
-        code
-                .append(containerHelper
-                        .processCode("if ($actorSymbol(fired)) {\n"));
+        code.append(containerHelper.processCode("if ($actorSymbol(fired)) {"
+                + _eol));
         _updateConfigurationNumber(code);
-        code.append(containerHelper.processCode("$actorSymbol(fired) = 0;\n"));
-        code.append("}\n");
+        code.append(containerHelper.processCode("$actorSymbol(fired) = 0;"
+                + _eol));
+        code.append("}" + _eol);
     }
 
     /** Generate the preinitialize code for this director. It computes
@@ -369,12 +371,12 @@ public class HDFDirector extends SDFDirector {
         ptolemy.domains.hdf.kernel.HDFDirector director = (ptolemy.domains.hdf.kernel.HDFDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
         ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
-        code
-                .append(containerHelper
-                        .processCode("static int $actorSymbol(currentConfiguration);\n"));
-        code
-                .append(containerHelper
-                        .processCode("static unsigned char $actorSymbol(fired) = 0;\n"));
+        code.append(containerHelper
+                .processCode("static int $actorSymbol(currentConfiguration);"
+                        + _eol));
+        code.append(containerHelper
+                .processCode("static unsigned char $actorSymbol(fired) = 0;"
+                        + _eol));
         List actors = container.deepEntityList();
         int numberOfActors = actors.size();
         _divisors = new int[numberOfActors];
@@ -563,7 +565,7 @@ public class HDFDirector extends SDFDirector {
         code.append("switch ("
                 + containerHelper
                         .processCode("$actorSymbol(currentConfiguration)")
-                + ") {\n");
+                + ") {" + _eol);
 
         // Each configuration has a schedule, therefore the number of
         // configurations is equal to the number of schedules.
@@ -571,7 +573,7 @@ public class HDFDirector extends SDFDirector {
         int[][] rates = containerHelper.getRates();
         for (int configurationNumber = 0; configurationNumber < _schedules.length; configurationNumber++) {
 
-            code.append("case " + configurationNumber + ":\n");
+            code.append("case " + configurationNumber + ":" + _eol);
 
             if (rates[configurationNumber] == null) {
                 continue;
@@ -593,7 +595,7 @@ public class HDFDirector extends SDFDirector {
                         code.append(" = ");
                         code.append(containerHelper
                                 .getReference(name + "," + k));
-                        code.append(";\n");
+                        code.append(";" + _eol);
                     }
                 }
             }
@@ -602,9 +604,9 @@ public class HDFDirector extends SDFDirector {
             // outside director.
             _updateConnectedPortsOffset(inputPort, code, rate);
 
-            code.append("break;\n");
+            code.append("break;" + _eol);
         }
-        code.append("}\n");
+        code.append("}" + _eol);
     }
 
     /** Generate code for transferring enough tokens to fulfill the output
@@ -636,7 +638,7 @@ public class HDFDirector extends SDFDirector {
         code.append("switch ("
                 + containerHelper
                         .processCode("$actorSymbol(currentConfiguration)")
-                + ") {\n");
+                + ") {" + _eol);
 
         // Each configuration has a schedule, therefore the number of
         // configurations is equal to the number of schedules.
@@ -644,7 +646,7 @@ public class HDFDirector extends SDFDirector {
         int[][] rates = containerHelper.getRates();
         for (int configurationNumber = 0; configurationNumber < _schedules.length; configurationNumber++) {
 
-            code.append("case " + configurationNumber + ":\n");
+            code.append("case " + configurationNumber + ":" + _eol);
 
             if (rates[configurationNumber] == null) {
                 continue;
@@ -665,7 +667,7 @@ public class HDFDirector extends SDFDirector {
                         code.append(" = ");
                         code.append(containerHelper.getReference("@" + name
                                 + "," + k));
-                        code.append(";\n");
+                        code.append(";" + _eol);
                     }
                 }
             }
@@ -674,9 +676,9 @@ public class HDFDirector extends SDFDirector {
             // its downstream is updated by outside director.
             _updatePortOffset(outputPort, code, rate);
 
-            code.append("break;\n");
+            code.append("break;" + _eol);
         }
-        code.append("}\n");
+        code.append("}" + _eol);
     }
 
     /** Create read and write offset variables if needed for any output port
@@ -765,9 +767,9 @@ public class HDFDirector extends SDFDirector {
             String channelWriteOffsetVariable = channelWriteOffset.toString();
 
             code.append("static int " + channelReadOffsetVariable + " = "
-                    + actorHelper.getReadOffset(port, channel) + ";\n");
+                    + actorHelper.getReadOffset(port, channel) + ";" + _eol);
             code.append("static int " + channelWriteOffsetVariable + " = "
-                    + actorHelper.getWriteOffset(port, channel) + ";\n");
+                    + actorHelper.getWriteOffset(port, channel) + ";" + _eol);
 
             // Now replace these concrete offsets with the variables.
             actorHelper.setReadOffset(port, channel, channelReadOffsetVariable);
@@ -816,11 +818,11 @@ public class HDFDirector extends SDFDirector {
                 }
             } else {
                 if (rates != null) {
-                    code
-                            .append(actorHelper
-                                    .processCode("$actorSymbol(currentConfiguration);\n"));
+                    code.append(actorHelper
+                            .processCode("$actorSymbol(currentConfiguration);"
+                                    + _eol));
                 } else {
-                    code.append("0;\n");
+                    code.append("0;" + _eol);
                 }
             }
             actorNumber++;

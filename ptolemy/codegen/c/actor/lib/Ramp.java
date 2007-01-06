@@ -30,6 +30,7 @@ package ptolemy.codegen.c.actor.lib;
 import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -68,6 +69,9 @@ public class Ramp extends CCodeGeneratorHelper {
         ArrayList args = new ArrayList();
         args.add(codeGenType(actor.output.getType()));
 
+        _codeStream.append(_eol
+                + CodeStream.indent(_codeGenerator.comment("initialize "
+                        + getComponent().getName())));
         if (actor.output.getType() == BaseType.STRING) {
             _codeStream.appendCodeBlock("StringInitBlock");
         } else {
@@ -101,6 +105,11 @@ public class Ramp extends CCodeGeneratorHelper {
         ArrayList args = new ArrayList();
         args.add(cType(actor.output.getType()));
 
+        if (_codeStream.isEmpty()) {
+            _codeStream.append(_eol
+                    + _codeGenerator.comment("preinitialize "
+                            + getComponent().getName()));
+        }
         _codeStream.appendCodeBlock("preinitBlock", args);
         return processCode(_codeStream.toString());
     }

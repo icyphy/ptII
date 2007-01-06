@@ -2,7 +2,7 @@
 struct array {
     int size;           			// size of the array.
     Token* elements;    			// array of Token elements.
-    //char elementType;  				// type of the elements.
+    //char elementType;  			// type of the elements.
 };
 typedef struct array* ArrayToken;
 /**/

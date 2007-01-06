@@ -10,5 +10,5 @@ public class TestCodeGeneratorHelper extends CodeGeneratorHelper {
         super(namedObj);
     }
 
-    public HelperScope helperScope = new HelperScope();
+    public VariableScope variableScope = new VariableScope();
 }

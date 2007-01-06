@@ -54,16 +54,16 @@ test CodeGeneratorHelper-1.1 {Constructor} {
 } {present {/* ParseTreeCodeGenerator.generateFireCode() not implemented in codegen.kernel.CodeGenerator */}}
 
 #####
-test CodeGeneratorHelper-2.1 {HelperScope methods} {
+test CodeGeneratorHelper-2.1 {VariableScope methods} {
     set testCodeGeneratorHelper \
 	[java::new ptolemy.codegen.kernel.test.TestCodeGeneratorHelper \
 	     $model]
-    set helperScope [java::field $testCodeGeneratorHelper helperScope]
-    catch {$helperScope getType "foo"} errMsg1
-    catch {$helperScope getTypeTerm "bar"} errMsg2
-    catch {$helperScope identifierSet} errMsg3
-    list $errMsg1 $errMsg2 $errMsg3
-} {{ptolemy.kernel.util.IllegalActionException: This method should not be called.} {ptolemy.kernel.util.IllegalActionException: This method should not be called.} {ptolemy.kernel.util.IllegalActionException: This method should not be called.}}
+    set variableScope [java::field $testCodeGeneratorHelper variableScope]
+    set msg1 [$variableScope getType "foo"] 
+    set msg2 [$variableScope getTypeTerm "bar"] 
+    set msg3 [$variableScope identifierSet]
+    list $msg1 $msg2 $msg3
+} {java0x0 java0x0 java0x0}
 
 
 #####

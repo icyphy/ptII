@@ -89,10 +89,10 @@ public class Expression extends CCodeGeneratorHelper {
         //        }
 
         //code.append(processCode("    $ref(output)." + portType + "Port = ("
-        //        + _cParseTreeCodeGenerator.generateFireCode()) + ");\n");
+        //        + _cParseTreeCodeGenerator.generateFireCode()) + ");" + _eol);
         code.append(processCode("    $ref(output) = "
                 + _cParseTreeCodeGenerator.generateFireCode())
-                + ";\n");
+                + ";" + _eol);
         return code.toString();
     }
 
@@ -139,11 +139,12 @@ public class Expression extends CCodeGeneratorHelper {
                     new VariableScope(actor));
         } catch (IllegalActionException ex) {
             // Chain exceptions to get the actor that threw the exception.
-            throw new IllegalActionException(null, ex, "Expression invalid.");
+            throw new IllegalActionException(actor, ex, "Expression \""
+                    + actor.expression.getExpression() + "\" invalid.");
         }
 
         if (result == null) {
-            throw new IllegalActionException(null,
+            throw new IllegalActionException(actor,
                     "Expression yields a null result: "
                             + actor.expression.getExpression());
         }
