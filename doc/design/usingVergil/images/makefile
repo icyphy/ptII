@@ -140,6 +140,8 @@ OTHER_FILES_TO_BE_JARED = \
 	usingVergil89.gif \
 	usingVergil8.gif \
 	usingVergil9.gif \
+	usingVergil90.gif \
+	usingVergil91.gif \
 	usingVergila.gif
 
 EXTRA_SRCS = \
