@@ -235,7 +235,6 @@ public class Subscriber extends TypedAtomicActor {
      *   triggers an exception.
      */
     protected void _updateLinks() throws IllegalActionException {
-        System.out.println("Subscriber: _updateLinks");
         // If the channel has not been set, then there is nothing
         // to do.  This is probably the first setContainer() call,
         // before the object is fully constructed.
