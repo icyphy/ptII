@@ -5,7 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="07/18/05 09:38:43">
+<meta name="LASTUPDATED" content="01/06/07 10:36:25">
+<link href="../../default.css" rel="stylesheet" type="text/css">
 <title>2.2 Quick Start</title>
 </head>
 
@@ -45,8 +46,8 @@
 
 
 <p>
-  <a name="165846"> </a>First start Vergil. From the command line, enter "vergil", or select Ptolemy II and Vergil in the Start menu<a href="#176974"><sup>1</sup></a>, or click on a Web Start link on a web page supporting the web edition. You should see an initial welcome window that looks like the one in figure <img src="images/usingVergil46.gif" height="264" width="599" align="left" border="0" hspace="0" vspace="0">
-<a href="usingVergila3.htm#165846">2.2</a>. Feel free to explore the links in this window. The "Quick tour" link takes you to the page shown in figure <img src="images/usingVergil88.gif" height="527" width="600" align="left" border="0" hspace="0" vspace="0">
+  <a name="165846"> </a>First start Vergil. From the command line, enter "vergil", or if you installed on Windows, select Ptolemy II and Vergil in the Start menu<a href="#176974"><sup>1</sup></a>, or click on a Web Start link on a web page supporting the web edition. You should see an initial welcome window that looks like the one in figure <img src="images/usingVergil46.gif" height="264" width="599" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#165846">2.2</a>. Feel free to explore the links in this window. The "Quick tour" link takes you to the page shown in figure <img src="images/usingVergil90.gif" height="587" width="600" align="left" border="0" hspace="0" vspace="0">
 <a href="usingVergila3.htm#165846">2.3</a>.
 </p>
 
@@ -57,7 +58,7 @@
 
 
 <p>
-  <a name="175696"> </a>The very first example on the quick tour page is the model shown in figure <a href="usingVergila2.htm#167754">2.1</a>. It creates a sinusoidal signal, multiplies it by a sinusoidal carrier, adds noise, and then estimates the power spectrum. You can execute this model in either of two ways. First, you can select Run Window in the View menu, and then click on Go. The result is shown in figure <img src="images/usingVergila.gif" usemap="#usingVergila_gif" height="436" width="600" align="left" border="0" hspace="0" vspace="0">
+  <a name="175696"> </a>The first example listed under "Basic Modeling Capabilities" on the quick tour page is the model shown in figure <a href="usingVergila2.htm#167754">2.1</a>. It creates a sinusoidal signal, multiplies it by a sinusoidal carrier, adds noise, and then estimates the power spectrum. You can execute this model in either of two ways. First, you can select Run Window in the View menu, and then click on Go. The result is shown in figure <img src="images/usingVergila.gif" usemap="#usingVergila_gif" height="436" width="600" align="left" border="0" hspace="0" vspace="0">
 <map name="usingVergila_gif">
 
 <area href="usingVergila2.htm#167754" shape=rect coords="0,416,597,434">
@@ -72,12 +73,12 @@
 
 
 <p>
-  <a name="175730"> </a>You can study the way the model is constructed in figure <a href="usingVergila2.htm#167754">2.1</a>. Note the Expression actor in the middle, whose icon indicates the expression being calculated: "signal*carrier + noise". The identifiers in this expression, signal, carrier, and noise refer to the input ports by name. The names of these ports are shown in the diagram. The Expression actor is a very flexible actor in the Ptolemy II actor library. It can have any number of input ports, with arbitrary names, and uses a rich and expressive expression language to specify the value of the output as a function of the inputs (and parameters of the containing model, if desired).
+  <a name="175730"> </a>You can study the way the model is constructed in figure <a href="usingVergila2.htm#167754">2.1</a>. Note the Expression actor in the middle, whose icon indicates the expression being calculated: "signal*carrier + noise</font>". The identifiers in this expression, signal</font>, carrier</font>, and noise refer to the input ports by name. The names of these ports are shown in the diagram. The Expression actor is a very flexible actor in the Ptolemy II actor library. It can have any number of input ports, with arbitrary names, and uses a rich and expressive expression language to specify the value of the output as a function of the inputs (and parameters of the containing model, if desired).
 </p>
 
 
 <p>
-  <a name="175749"> </a>Three of the actors in figure <a href="usingVergila2.htm#167754">2.1</a> are <i>composite actors</i>, which means that their implementation is itself given as a block diagram. Composite actors are indicated visually by the red outline. You can look inside to reveal the implementation, as shown in figure <img src="images/usingVergil4.gif" height="930" width="937" align="left" border="0" hspace="0" vspace="0">
+  <a name="175749"> </a>Three of the actors in figure <a href="usingVergila2.htm#167754">2.1</a> are <i>composite actors</i>, which means that their implementation is itself given as a block diagram. Composite actors are indicated visually by the red outline. You can invoke the "Open Actor" context menu choice to reveal the implementation, as shown in figure <img src="images/usingVergil4.gif" height="567" width="600" align="left" border="0" hspace="0" vspace="0">
 <a href="usingVergila3.htm#175749">2.5</a>, which shows the implementation of the Signal Source in figure <a href="usingVergila2.htm#167754">2.1</a>. It is evident from the block diagram how a sinusoidal signal is generated.
 </p>
 
@@ -87,10 +88,10 @@
 </h4>
 
 
-<a name="175978"> </a>A key principle of the Ptolemy II system is that the model of computation that defines the meaning of a block diagram is not built-in, but is rather specified by the <i>director</i> component that is included in the model. The box labeled "SDF Director" in figures <a href="usingVergila2.htm#167754">2.1</a> and <a href="usingVergila3.htm#175749">2.5</a> specifies that these block diagrams have <i>synchronous dataflow</i> semantics, which is explained further below. The second example in the quick tour of figure <a href="usingVergila3.htm#165846">2.3</a>, by contrast, has continuous-time semantics (the one labeled "Continuous-Time Modeling"). The example is the well-known <i>Lorenz attractor</i>, a non-linear feedback system that exhibits chaotic behavior.<br>
+<a name="175978"> </a>A key principle of the Ptolemy II system is that the model of computation that defines the meaning of a block diagram is not built-in, but is rather specified by the <i>director</i> component that is included in the model. The box labeled "SDF Director" in figures <a href="usingVergila2.htm#167754">2.1</a> and <a href="usingVergila3.htm#175749">2.5</a> specifies that these block diagrams have <i>synchronous dataflow</i> semantics, which is explained further below. The second example under "Basic Modeling Capabilities" in the quick tour of figure <a href="usingVergila3.htm#165846">2.3</a>, by contrast, has continuous-time semantics (the one labeled "Continuous-Time Modeling"). The example is the well-known <i>Lorenz attractor</i>, a non-linear feedback system that exhibits chaotic behavior.<br>
 
 
-<a name="175992"> </a>The Lorenz attractor model, shown in figure <img src="images/usingVergil6.gif" height="629" width="937" align="center" border="0" hspace="0" vspace="0">
+<a name="175992"> </a>The Lorenz attractor model, shown in figure <img src="images/usingVergil6.gif" height="422" width="600" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila3.htm#175992">2.6</a>, is a block diagram representation of a set of nonlinear ordinary differential equations. The blocks with integration signs in their icons are integrators. At any given time <i>t</i>, their output is given by<br>
 
 <div align="center">
@@ -139,10 +140,10 @@
 
 
 <p>
-  <a name="175908"> </a>The Continuous-Time (CT) Solver, shown at the upper left, manages a simulation of the model. It contains a sophisticated ODE solver, and to use it effectively, you will need to understand some of its parameters. The parameters are accessed by double clicking on the solver box, which results in the dialog shown in figure <img src="images/usingVergil41.gif" usemap="#usingVergil41_gif" height="456" width="937" align="left" border="0" hspace="0" vspace="0">
+  <a name="175908"> </a>The Continuous-Time (CT) Solver, shown at the upper left, manages a simulation of the model. It contains a sophisticated ODE solver, and to use it effectively, you will need to understand some of its parameters. The parameters are accessed by double clicking on the solver box, which results in the dialog shown in figure <img src="images/usingVergil41.gif" usemap="#usingVergil41_gif" height="292" width="600" align="left" border="0" hspace="0" vspace="0">
 <map name="usingVergil41_gif">
 
-<area href="usingVergila3.htm#175992" shape=rect coords="0,421,929,450">
+<area href="usingVergila3.htm#175992" shape=rect coords="0,269,594,288">
 </map>
 <a href="usingVergila3.htm#175908">2.7</a>. The simplest of these parameters are the <i>startTime</i> and the <i>stopTime</i>, which are self-explanatory. They define the region of the time line over which a simulation will execute.
 </p>
@@ -190,7 +191,7 @@
 
 
 <p>
-  <a name="166518"> </a>To run the example, go to the View menu and select the Run Window. If you click the "Go" button, you will see a large number of strings in the display at the right. To stop the execution, click the "Stop" button. To see only one string, change the <i>iterations</i> parameter of the SDF Director to 1, which can be done in the run window, or in the graph editor in the same way you edited the parameter of the <i>Const</i> actor before. The run window is shown in figure <img src="images/usingVergil28.gif" height="384" width="937" align="center" border="0" hspace="0" vspace="0">
+  <a name="166518"> </a>To run the example, go to the View menu and select the Run Window. If you click the "Go" button, you will see a large number of strings in the display at the right. To stop the execution, click the "Stop" button. To see only one string, change the <i>iterations</i> parameter of the SDF Director to 1, which can be done in the run window, or in the graph editor in the same way you edited the parameter of the <i>Const</i> actor before. The run window is shown in figure <img src="images/usingVergil28.gif" height="456" width="937" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila3.htm#166518">2.12</a>.
 </p>
 
@@ -205,10 +206,10 @@
 
 <p>
   <a name="169954"> </a>First create a model in a new graph editor that includes an <i>SDFDirector</i>, a <i>Ramp</i> actor (found in the <i>Sources</i>) library, a <i>Display </i>actor, and a <i>SequencePlotter</i> actor, found in the <i>Sinks</i> library, as shown in figure <img src="images/usingVergil43.gif" height="195" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergila3.htm#169954">2.13</a>. Suppose we wish to route the output of the <i>Ramp</i> to both the <i>Display</i> and the <i>SequencePlotter</i>. If we simply attempt to make the connections, we get the exception shown in figure <img src="images/usingVergil54.gif" usemap="#usingVergil54_gif" height="257" width="937" align="center" border="0" hspace="0" vspace="0">
-<map name="usingVergil54_gif">
+<a href="usingVergila3.htm#169954">2.13</a>. Suppose we wish to route the output of the <i>Ramp</i> to both the <i>Display</i> and the <i>SequencePlotter</i>. If we simply attempt to make the connections, we get the exception shown in figure <img src="images/usingVergil56.gif" usemap="#usingVergil56_gif" height="203" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil56_gif">
 
-<area href="usingVergila3.htm#169954" shape=rect coords="5,206,933,248">
+<area href="usingVergila3.htm#169954" shape=rect coords="5,151,933,193">
 </map>
 <a href="usingVergila3.htm#169954">2.14</a>. Don't panic! Exceptions are normal and common. The key information in this exception report is the text:
 </p>
@@ -223,11 +224,11 @@ Attempt to link more than one relation to a single port.<a name="169903"> </a>
 
 <pre>
 <a name="169915"> </a>
-in .broadcastRelations.Ramp.output and .broadcastRelations.relation2<a name="177012"> </a>
+in .relation.Ramp.output and .relation.relation2<a name="177012"> </a>
 <a name="169931"> </a>
 </pre>
 
-<a name="169932"> </a>(This assumes the model has been saved under the name "broadcastRelations.") In Ptolemy II models, all objects have a dotted name. The dots separate elements in the hierarchy. Thus, ".&lt;Unnamed Object&gt;.Ramp.output" is an object named "output" contained by an object named "Ramp", which is contained by an unnamed object (the model itself). The model has no name because we have not assigned one (it acquires a name when we save it).<br>
+<a name="169932"> </a>(This assumes the model has been saved under the name "relation.") In Ptolemy II models, all objects have a dotted name. The dots separate elements in the hierarchy. Thus, ".relation.Ramp.output" is an object named "output" contained by an object named "Ramp", which is contained by an object named "relation" (the model itself). The model acquires a name when we save it.<br>
 
 
 <p>

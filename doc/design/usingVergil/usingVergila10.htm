@@ -5,7 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="07/18/05 09:38:43">
+<meta name="LASTUPDATED" content="01/06/07 10:36:25">
+<link href="../../default.css" rel="stylesheet" type="text/css">
 <title>2.9 Domains</title>
 </head>
 
@@ -63,13 +64,13 @@
 
 
 <p>
-  <a name="176791"> </a>One such actor is a spectral estimation actor. Figure <img src="images/usingVergil52.gif" height="195" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergila10.htm#176791">2.48</a> shows a system that computes the spectrum of the same noisy sine wave that we constructed in figure <a href="usingVergila5.htm#168725">2.25</a>. The <i>Spectrum</i> actor has a single parameter, which gives the <i>order</i> of the FFT used to calculate the spectrum. Figure <img src="images/usingVergil57.gif" usemap="#usingVergil57_gif" height="270" width="600" align="center" border="0" hspace="0" vspace="0">
-<map name="usingVergil57_gif">
+  <a name="176791"> </a>One such actor is a spectral estimation actor. Figure <img src="images/usingVergil53.gif" height="195" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila10.htm#176791">2.50</a> shows a system that computes the spectrum of the same noisy sine wave that we constructed in figure <a href="usingVergila5.htm#168725">2.25</a>. The <i>Spectrum</i> actor has a single parameter, which gives the <i>order</i> of the FFT used to calculate the spectrum. Figure <img src="images/usingVergil60.gif" usemap="#usingVergil60_gif" height="270" width="600" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil60_gif">
 
 <area href="usingVergila10.htm#176791" shape=rect coords="3,238,597,264">
 </map>
-<a href="usingVergila10.htm#176791">2.49</a> shows the output of the model with <i>order</i> set to 8 and the number of <i>iterations</i> set to 1. <b>Note that there are 256 output samples output from the </b></font><i>Spectrum</i><b> actor</b></font>. This is because the <i>Spectrum</i> actor requires 2^8, or 256 input samples to fire, and produces 2^8, or 256 output samples when it fires. Thus, one iteration of the model produces 256 samples. The <i>Spectrum</i> actor makes this a <i>multirate</i> model, because the firing rates of the actors are not all identical.
+<a href="usingVergila10.htm#176791">2.51</a> shows the output of the model with <i>order</i> set to 8 and the number of <i>iterations</i> set to 1. <b>Note that there are 256 output samples output from the </b></font><i>Spectrum</i><b> actor</b></font>. This is because the <i>Spectrum</i> actor requires 2^8, or 256 input samples to fire, and produces 2^8, or 256 output samples when it fires. Thus, one iteration of the model produces 256 samples. The <i>Spectrum</i> actor makes this a <i>multirate</i> model, because the firing rates of the actors are not all identical.
 </p>
 
 
@@ -79,8 +80,8 @@
 
 
 <p>
-  <a name="170224"> </a>A second subtlety with SDF models is that if there is a feedback loop, as in figure <img src="images/usingVergil79.gif" height="183" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergila10.htm#170224">2.50</a>, then the loop must have at least one instance of the <i>SampleDelay</i> actor in it (found in the <i>FlowControl</i> library, <i>SequenceControl</i> sublibrary). Without this actor, the loop will deadlock. The <i>SampleDelay</i> actor produces initial tokens on its output, before the model begins firing. The initial tokens produced are given by a the <i>initialOutputs</i> parameter, which specifies an array of tokens. These initial tokens enable downstream actors and break the circular dependencies that would result otherwise from a feedback loop.
+  <a name="170224"> </a>A second subtlety with SDF models is that if there is a feedback loop, as in figure <img src="images/usingVergil81.gif" height="183" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila10.htm#170224">2.52</a>, then the loop must have at least one instance of the <i>SampleDelay</i> actor in it (found in the <i>FlowControl</i> library, <i>SequenceControl</i> sublibrary). Without this actor, the loop will deadlock. The <i>SampleDelay</i> actor produces initial tokens on its output, before the model begins firing. The initial tokens produced are given by a the <i>initialOutputs</i> parameter, which specifies an array of tokens. These initial tokens enable downstream actors and break the circular dependencies that would result otherwise from a feedback loop.
 </p>
 
 
@@ -113,13 +114,13 @@
 
 
 <p>
-  <a name="170593"> </a>Consider the DE model shown in figure <img src="images/usingVergil81.gif" height="378" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergila10.htm#170593">2.51</a>. This model includes a <i>PoissonClock</i> actor, a <i>CurrentTime</i> actor, and a <i>WallClockTime</i> actor, all found in the <i>Sources</i> library, <i>TimedSources</i> sublibrary. The <i>PoissonClock</i> actor generates a sequence of events with random times, where the time between events is exponentially distributed. Such an event sequence is known as a Poisson process. The value of the events produced by the <i>PoissonClock</i> actor is a constant, but the value of that constant is ignored in this model. Instead, these events trigger the <i>CurrentTime</i> and <i>WallClockTime</i> actors. The <i>CurrentTime</i> actor outputs an event with the same time stamp as the input, but whose value is the current model time (equal to the time stamp of the input). The <i>WallClockTime</i> actor produces an event with the same time stamp as the input, but whose value is the current real time, in seconds since initialization of the model.
+  <a name="170593"> </a>Consider the DE model shown in figure <img src="images/usingVergil83.gif" height="378" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila10.htm#170593">2.53</a>. This model includes a <i>PoissonClock</i> actor, a <i>CurrentTime</i> actor, and a <i>WallClockTime</i> actor, all found in the <i>Sources</i> library, <i>TimedSources</i> sublibrary. The <i>PoissonClock</i> actor generates a sequence of events with random times, where the time between events is exponentially distributed. Such an event sequence is known as a Poisson process. The value of the events produced by the <i>PoissonClock</i> actor is a constant, but the value of that constant is ignored in this model. Instead, these events trigger the <i>CurrentTime</i> and <i>WallClockTime</i> actors. The <i>CurrentTime</i> actor outputs an event with the same time stamp as the input, but whose value is the current model time (equal to the time stamp of the input). The <i>WallClockTime</i> actor produces an event with the same time stamp as the input, but whose value is the current real time, in seconds since initialization of the model.
 </p>
 
 
 <p>
-  <a name="170654"> </a>The plot in figure <a href="usingVergila10.htm#170593">2.51</a> shows an execution. Note that model time has advanced approximately 10 seconds, but real time has advanced almost not at all. In this model, model time advances much more rapidly than real time. If you build this model, and set the <i>synchronizeToRealTime</i> parameter of the director to true, then you will find that the two plots coincide almost perfectly.
+  <a name="170654"> </a>The plot in figure <a href="usingVergila10.htm#170593">2.53</a> shows an execution. Note that model time has advanced approximately 10 seconds, but real time has advanced almost not at all. In this model, model time advances much more rapidly than real time. If you build this model, and set the <i>synchronizeToRealTime</i> parameter of the director to true, then you will find that the two plots coincide almost perfectly.
 </p>
 
 
@@ -129,8 +130,8 @@
 
 
 <p>
-  <a name="170730"> </a>Consider the model shown in figure <img src="images/usingVergil83.gif" height="365" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergila10.htm#170730">2.52</a>, which produces a histogram of the interarrival times of events from the <i>PoissonClock</i> actor. In this model, we calculate the difference between the current event time and the previous event time, resulting in the plot that is shown in the figure. The <i>Previous </i>actor is a <i>zero-delay</i> actor, meaning that it produces an output with the same time stamp as the input (except on the first firing, where in this case it produces no output). Thus, when the <i>PoissonClock </i>actor produces an output, there will be two simultaneous events, one at the input to the <i>plus</i> port of the <i>AddSubtract</i> actor, and one at the input of the <i>Previous</i> actor. Should the director fire the <i>AddSubtract </i>actor or the <i>Previous</i> actor? Either seems OK if it is to respect chronological order, but it seems intuitive that the <i>Previous</i> actor should be fired first.
+  <a name="170730"> </a>Consider the model shown in figure <img src="images/usingVergil85.gif" height="365" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila10.htm#170730">2.54</a>, which produces a histogram of the interarrival times of events from the <i>PoissonClock</i> actor. In this model, we calculate the difference between the current event time and the previous event time, resulting in the plot that is shown in the figure. The <i>Previous </i>actor is a <i>zero-delay</i> actor, meaning that it produces an output with the same time stamp as the input (except on the first firing, where in this case it produces no output). Thus, when the <i>PoissonClock </i>actor produces an output, there will be two simultaneous events, one at the input to the <i>plus</i> port of the <i>AddSubtract</i> actor, and one at the input of the <i>Previous</i> actor. Should the director fire the <i>AddSubtract </i>actor or the <i>Previous</i> actor? Either seems OK if it is to respect chronological order, but it seems intuitive that the <i>Previous</i> actor should be fired first.
 </p>
 
 
@@ -140,12 +141,12 @@
 
 
 <p>
-  <a name="170953"> </a>How does the director deliver on the intuition that the <i>Previous</i> actor should be fired first? Before executing the model, the DE director constructs a <i>topological sort</i> of the model. A topological sort is simply a list of the actors in data-precedence order. For the model in figure <a href="usingVergila10.htm#170730">2.52</a>, there is only one allowable topological sort:
+  <a name="170953"> </a>How does the director deliver on the intuition that the <i>Previous</i> actor should be fired first? Before executing the model, the DE director constructs a <i>topological sort</i> of the model. A topological sort is simply a list of the actors in data-precedence order. For the model in figure <a href="usingVergila10.htm#170730">2.54</a>, there is only one allowable topological sort:
 </p>
 
-<ul>
-  <li><a name="170958"> </a><i>PoissonClock</i>, <i>CurrentTime</i>, <i>Previous</i>, <i>AddSubtract</i>, <i>HistogramPlotter</i>
-</ul>
+
+<a name="170958"> </a>	 <i>PoissonClock</i>, <i>CurrentTime</i>, <i>Previous</i>, <i>AddSubtract</i>, <i>HistogramPlotter</i><br>
+
 
 <a name="170873"> </a>In this list, <i>AddSubtract</i> is after <i>Previous</i>. So the when they have simultaneous events, the DE director fires <i>Previous</i> first.<br>
 
@@ -156,8 +157,8 @@
 
 
 <p>
-  <a name="170882"> </a>There remains one key subtlety. If the model has a directed loop, then a topological sort is not possible. In the DE domain, every feedback loop is required to have at least one actor in it that introduces a time delay, such as the <i>TimedDelay</i> actor, which can be found in the <i>DomainSpecific</i> library under <i>DiscreteEvent</i> (this library is shown on the left in figure <img src="images/usingVergil85.gif" height="777" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergila10.htm#170882">2.53</a>). Consider for example the model shown in figure <a href="usingVergila10.htm#170882">2.53</a>. That model has a <i>Clock</i> actor, which is set to produce events every 1.0 time units. Those events trigger the <i>Ramp</i> actor, which produces outputs that start at 0 and increase by 1 on each firing. In this model, the output of the <i>Ramp</i> goes into an <i>AddSubtract</i> actor, which subtracts from the <i>Ramp</i> output its own prior output delayed by one time unit. The result is shown in the plot in the figure.
+  <a name="170882"> </a>There remains one key subtlety. If the model has a directed loop, then a topological sort is not possible. In the DE domain, every feedback loop is required to have at least one actor in it that introduces a time delay, such as the <i>TimedDelay</i> actor, which can be found in the <i>DomainSpecific</i> library under <i>DiscreteEvent</i> (this library is shown on the left in figure <img src="images/usingVergil87.gif" height="777" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila10.htm#170882">2.55</a>). Consider for example the model shown in figure <a href="usingVergila10.htm#170882">2.55</a>. That model has a <i>Clock</i> actor, which is set to produce events every 1.0 time units. Those events trigger the <i>Ramp</i> actor, which produces outputs that start at 0 and increase by 1 on each firing. In this model, the output of the <i>Ramp</i> goes into an <i>AddSubtract</i> actor, which subtracts from the <i>Ramp</i> output its own prior output delayed by one time unit. The result is shown in the plot in the figure.
 </p>
 
 
@@ -172,7 +173,7 @@
 
 
 <p>
-  <a name="178853"> </a>The wireless domain builds on the discrete event domain to support modeling of wireless and sensor network systems. In the wireless domain, channel models mediate communication between actors, and the visual syntax does not require wiring between components. See [10] and [11] for details.
+  <a name="178853"> </a>The wireless domain builds on the discrete event domain to support modeling of wireless and sensor network systems. In the wireless domain, channel models mediate communication between actors, and the visual syntax does not require wiring between components. See [11] and [12] for details.
 </p>
 
 
