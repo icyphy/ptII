@@ -5,9 +5,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="07/18/05 08:45:20">
-<title>3.2 Simple Arithmetic Expressions</title>
+<meta name="LASTUPDATED" content="01/05/07 18:39:43">
 <link href="default.css" rel="stylesheet" type="text/css">
+<title>3.2 Simple Arithmetic Expressions</title>
 </head>
 
 <body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
@@ -133,9 +133,9 @@ java -Dptolemy.ptII.dir=${PTII} <i>classname</i><a name="176699"> </a>
 
 <pre>
 <a name="183584"> </a>
-
-{CWD="C:\ptII\ptolemy\data\expr", E=2.718281828459, H
-OME="C:\Documents and Settings\eal", Infinity=Infinity, MaxDouble=1.7976931348623E308,
+{CWD="C:\ptII\ptolemy\data\expr", E=2.718281828459,
+HOME="C:\Documents and Settings\eal",
+Infinity=Infinity, MaxDouble=1.7976931348623E308,
 MaxInt=2147483647, MaxLong=9223372036854775807L,
 MaxUnsignedByte=255ub, MinDouble=4.9E-324, MinInt=-2147483648,
 MinLong=-9223372036854775808L, MinUnsignedByte=0ub, NaN=NaN,
@@ -144,8 +144,7 @@ PositiveInfinity=Infinity, boolean=false, complex=0.0 + 0.0i,
 double=0.0, e=2.718281828459, false=false, fixedpoint=fix(0.0,2,1),
 general=present, i=0.0 + 1.0i, int=0, j=0.0 + 1.0i, long=0L,
 matrix=[], object=object(null),pi=3.1415926535898, scalar=present,
-string="", true=true, unknown=present, unsignedByte=0ub}<a name="183585"> </a>
-
+string="", true=true, unknown=present, unsignedByte=0ub}<a name="183585">
 </pre>
 
 <h4>
@@ -225,7 +224,7 @@ PI*x/2.0<a name="175697"> </a>
 <a name="187587"> </a>
 </pre>
 
-<a name="187588"> </a>The magnitude of the result is always less than the magnitude of the divisor (the right argument). Note that when this operator is used on doubles, the result is not the same as that produced by the remainder() function (see <a href="expressionsa10.htm#194754">Table 5 on page 119</a>). For instance,<br>
+<a name="187588"> </a>The magnitude of the result is always less than the magnitude of the divisor (the right argument). Note that when this operator is used on doubles, the result is not the same as that produced by the remainder() function (see <a href="expressionsa12.htm#194754">Table 5 on page 125</a>). For instance,<br>
 
 <pre>
 <a name="187601"> </a>
@@ -234,7 +233,7 @@ PI*x/2.0<a name="175697"> </a>
 <a name="187611"> </a>
 </pre>
 
-<a name="186986"> </a>The remainder() function calculates the IEEE 754 standard remainder operation. It uses a rounding division rather than a truncating division, and hence the sign can be positive or negative, depending on complicated rules (see <a href="expressionsa8.htm#186842">page 113</a>). For example, counter intuitively,<br>
+<a name="186986"> </a>The remainder() function calculates the IEEE 754 standard remainder operation. It uses a rounding division rather than a truncating division, and hence the sign can be positive or negative, depending on complicated rules (see <a href="expressionsa8.htm#186842">page 118</a>). For example, counter intuitively,<br>
 
 <pre>
 <a name="187628"> </a>
@@ -252,8 +251,7 @@ PI*x/2.0<a name="175697"> </a>
 Error evaluating expression "2.0/2L"<a name="183743"> </a>
  in .Expression.evaluator<a name="183726"> </a>
 Because:<a name="183727"> </a>
-divide method not supported between ptolemy.data.DoubleToken '2.0' and
-ptolemy.data.LongToken '2L' because the types are incomparable.<a name="183700"> </a>
+divide method not supported between ptolemy.data.DoubleToken '2.0' and ptolemy.data.LongToken '2L' because the types are incomparable.<a name="183700"> </a>
 <a name="183744"> </a>
 </pre>
 
