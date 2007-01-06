@@ -1,0 +1,324 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FSMBorder" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0.beta">
+    </property>
+    <property name="matrixSize" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 110.0]">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate a circular array.&#10;The Pulse actor iterates through the array.&#10;The Border FSM generates the neighbors for each element.&#10;Thus, for the 0th element of a 5 element array, the&#10;neighbors are at index 4 and index 1.  Index 4 is&#10;used because we wrap around.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 25.0]">
+        </property>
+    </property>
+    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 200.0]">
+        </property>
+    </property>
+    <entity name="Pulse y" class="ptolemy.actor.lib.Pulse">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0:1:matrixSize-1].toArray()">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[0:1:matrixSize-1].toArray()">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 280.0}">
+        </property>
+    </entity>
+    <entity name="Borders y" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Ok">
+        </property>
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+            <configure>
+    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+  </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 280.0}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Generate the low and high neighbors that we should check. Handle wrapping on&#10;the world matrix. If the input index is at the high edge,then we wrap around&#10;and check the 0th index. If the input index is at the low edge, then we wrap&#10;around and check the matrixSize-1 index.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 25.0]">
+            </property>
+        </property>
+        <port name="index" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+        </port>
+        <port name="lowIndex" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 85.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="highIndex" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 140.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="Low" class="ptolemy.domains.fsm.kernel.State">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 320.0]">
+            </property>
+        </entity>
+        <entity name="High" class="ptolemy.domains.fsm.kernel.State">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 165.0]">
+            </property>
+        </entity>
+        <entity name="Ok" class="ptolemy.domains.fsm.kernel.State">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 280.0}">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="index == 0">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="lowIndex = matrixSize - 1;highIndex = index + 1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.8849555921538759">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.2753546705704901">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="index &gt; 0 &amp;&amp; index &lt; matrixSize - 1">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="lowIndex = index -1; highIndex = index +1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.22680527777806408">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.8922920465681043">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="index == matrixSize - 1">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value=" lowIndex = index -1; highIndex = 0">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.4178596408579516">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.0004156035758904">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="index &gt; 0 &amp;&amp; index &lt; matrixSize - 1">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="lowIndex = index -1; highIndex = index +1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.7180869186639705">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.0976433509410257">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation8" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="index &gt; 0 &amp;&amp; index &lt; matrixSize - 1">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="lowIndex = index -1; highIndex = index +1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.9044712558411612">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.7453369082104067">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="index == matrixSize - 1">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="lowIndex = index - 1;highIndex = 0">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-1.9401810029817106">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.6118126850469241">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="index == matrixSize - 1">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="lowIndex = index - 1; highIndex = 0">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.12194833775581806">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.8964921101723526">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="index == 0">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="lowIndex = matrixSize - 1; highIndex = index + 1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.7786079776701659">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.29580245099137925">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation9" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="index == 0">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="lowIndex = matrixSize -1; highIndex = index + 1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.10770138956028608">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.3546157332188709">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <link port="Low.incomingPort" relation="relation2"/>
+        <link port="Low.incomingPort" relation="relation4"/>
+        <link port="Low.incomingPort" relation="relation9"/>
+        <link port="Low.outgoingPort" relation="relation5"/>
+        <link port="Low.outgoingPort" relation="relation2"/>
+        <link port="Low.outgoingPort" relation="relation6"/>
+        <link port="High.incomingPort" relation="relation6"/>
+        <link port="High.incomingPort" relation="relation"/>
+        <link port="High.incomingPort" relation="relation3"/>
+        <link port="High.outgoingPort" relation="relation7"/>
+        <link port="High.outgoingPort" relation="relation"/>
+        <link port="High.outgoingPort" relation="relation9"/>
+        <link port="Ok.incomingPort" relation="relation5"/>
+        <link port="Ok.incomingPort" relation="relation7"/>
+        <link port="Ok.incomingPort" relation="relation8"/>
+        <link port="Ok.outgoingPort" relation="relation8"/>
+        <link port="Ok.outgoingPort" relation="relation3"/>
+        <link port="Ok.outgoingPort" relation="relation4"/>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{4, 1}, {0, 2}, {1, 3}, {2, 4}, {3, 0}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{460, 275}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Pulse y.output" relation="relation3"/>
+    <link port="Borders y.index" relation="relation3"/>
+    <link port="Borders y.lowIndex" relation="relation"/>
+    <link port="Borders y.highIndex" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Test.input" relation="relation2"/>
+</entity>
