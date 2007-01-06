@@ -1,0 +1,57 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="en-us">
+<link REL="stylesheet" TYPE="text/css" HREF="global.css" TITLE="Style">
+<title>The Java X10 Project - Project Plan</title>
+</head>
+
+<body>
+
+<table class="main">
+  <tr>
+    <td class="header" colspan="2"><table WIDTH="100%">
+      <tr>
+        <td ALIGN="CENTER" WIDTH="100%"><h1>Project Plan</h1>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+  <tr>
+    <td class="menu"><!--#include file = "menu.html" --></td>
+    <td class="body">The purpose of this page is to provide a current plan of what is to come
+    for The Java X10 Project.<h3>1.&nbsp; Modular UI</h3>
+    <p><strong>Description:&nbsp; </strong>I would like to create a modular AWT interface that
+    can automatically construct ApplianceUnitPanel, LightUnitPanel, and MasterUnitPanel
+    classes and add them to a frame based on an ini file. The ini file would specify tuples
+    consisting of the UnitPanel class to construct and the module code (ie A1 or B6) for any
+    devices you wish to include. Also, this would include the ability to incorporate any of
+    your own extensions to the UnitPanel class without modification or recompilation of the
+    UI.</p>
+    <p><strong>Status:</strong> This mini-project has not yet been started.</p>
+    <h3>2.&nbsp; X10 MP3UnitPanel</h3>
+    <p><strong>Description:&nbsp; </strong>This is a UnitPanel that has the ability to play an
+    M3U playlist. The X10 Dim and Bright commands are used to advance and return to the
+    various tracks, and the X10 On and Off commands are equivalent to play and pause.</p>
+    <p><strong>Status:</strong> This is actually complete and already working on my testbed,
+    but it still needs quite a bit of work for efficiency as well as needing to be cleaned up
+    for re-use purposes. Also I need to clean it up before I publish it.</p>
+    <h3>3.&nbsp; X10 Logger</h3>
+    <p><strong>Description:&nbsp; </strong>This is an implementation of the x10.UnitListener
+    interface that simply logs date and time followed by the command issued to a log file.
+    This will actually be fairly simple to implement and shouldn't take much time. The reason
+    I personally look forward to this one is not actually for debugging reasons though it will
+    help in that area as well. The use that I have for this, is that by using this in
+    conjunction with X10's hawkeye motion detector, I will have an effective log of when
+    someone enters or exits my home.</p>
+    <p><strong>Status:</strong> This mini-project has not yet been started.</p>
+    <h3>4.&nbsp; TW523SerialController</h3>
+    <p><strong>Description:&nbsp; </strong>Serial Controller for the TW523 Controller.</p>
+    <p><strong>Status:</strong> This mini-project has not yet been started.</td>
+  </tr>
+</table>
+</body>
+</html>
