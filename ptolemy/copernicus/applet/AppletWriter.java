@@ -515,6 +515,45 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // files.
         Map classMap = _allAtomicEntityJars();
 
+        classMap.put("ptolemy.actor.lib.colt.ColtBeta",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtBinomial",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtBinomialSelector",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtBreitWigner",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtChiSquare",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtExponential",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtExponentialPower",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtGamma",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtHyperGeometric",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtLogarithmic",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtNegativeBinomial",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtNormal",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtPoisson",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtPoissonSlow",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtRandomSource",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtSeedParameter",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtStudentT",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtVonMises",
+                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtZeta",
+                "lib/ptcolt.jar");
+
         classMap.put("ptolemy.actor.gui.MoMLApplet", "ptolemy/ptsupport.jar");
 
         // classMap.put("ptolemy.actor.lib.python.PythonScript",
