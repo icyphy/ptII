@@ -5,9 +5,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="07/18/05 08:45:20">
-<title>3.4 Composite Data Types</title>
+<meta name="LASTUPDATED" content="01/05/07 18:39:43">
 <link href="default.css" rel="stylesheet" type="text/css">
+<title>3.4 Composite Data Types</title>
 </head>
 
 <body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
@@ -58,16 +58,37 @@
 <a name="183829"> </a>
 </pre>
 
-<a name="183821"> </a>Its type is {double}. The elements of the array can be given by expressions, as in the example "{2*pi, 3*pi}." Arrays can be nested; for example, "{{1, 2}, {3, 4, 5}}" is an array of arrays of integers. The elements of an array can be accessed as follows:<br>
+<a name="183821"> </a>Its type is {double}. The common type might be <i>scalar</i>, which is a union type (a type that can contain multiple distinct types). For example,<br>
+
+<pre>
+<a name="198941"> </a>
+{1, 2.3, true}<a name="198945"> </a>
+<a name="198954"> </a>
+</pre>
+
+<a name="198955"> </a>has value<br>
+
+<pre>
+<a name="198959"> </a>
+{1, 2.3, true}<a name="198963"> </a>
+<a name="198968"> </a>
+</pre>
+
+<a name="198969"> </a>The value is unchanged, although the type of the array is now {<i>scalar</i>}.<br>
+
+
+<p>
+  <a name="198940"> </a>The elements of the array can be given by expressions, as in the example "{2*pi, 3*pi}." Arrays can be nested; for example, "{{1, 2}, {3, 4, 5}}" is an array of arrays of integers. The elements of an array can be accessed as follows:
+</p>
 
 <pre>
 <a name="184963"> </a>
 &gt;&gt; {1.0, 2.3}(1)<a name="184967"> </a>
 2.3<a name="196065"> </a>
-<a name="184976"> </a>
+<a name="198977"> </a>
 </pre>
 
-<a name="184977"> </a>which yields 2.3. Note that indexing begins at 0. Of course, if <i>name</i> is the name of a variable in scope whose value is an array, then its elements may be accessed similarly, as shown in this example:<br>
+<a name="198978"> </a>which yields 2.3. Note that indexing begins at 0. Of course, if <i>name</i> is the name of a variable in scope whose value is an array, then its elements may be accessed similarly, as shown in this example:<br>
 
 <pre>
 <a name="196069"> </a>
@@ -75,11 +96,16 @@
 {1.0, 2.3}<a name="196076"> </a>
 &gt;&gt; x(0)<a name="196077"> </a>
 1.0<a name="196078"> </a>
-<a name="196086"> </a>
+<a name="198806"> </a>
 </pre>
 
 <p>
-  <a name="198557"> </a>Arithmetic operations on arrays are carried out element-by-element, as shown by the following examples:
+  <a name="198807"> </a>
+</p>
+
+
+<p>
+  <a name="198981"> </a>Arithmetic operations on arrays are carried out element-by-element, as shown by the following examples:
 </p>
 
 <pre>
@@ -97,10 +123,55 @@
 <a name="186473"> </a>
 </pre>
 
-<a name="186419"> </a><br>
+<p>
+  <a name="198810"> </a>Addition, subtraction, multiplication, division, and modulo of arrays by scalars is also supported, as in the following examples:
+</p>
+
+<pre>
+<a name="198766"> </a>
+&gt;&gt; {1.0, 2.0} / 2.0<a name="198813"> </a>
+{0.5, 1.0}<a name="198814"> </a>
+&gt;&gt; 1.0 / {2.0, 4.0}<a name="198825"> </a>
+{0.5, 0.25}<a name="198826"> </a>
+&gt;&gt; 3 *{2, 3}<a name="198833"> </a>
+{6, 9}<a name="198834"> </a>
+&gt;&gt; 12 / {3, 4}<a name="198895"> </a>
+{4, 3}<a name="198893"> </a>
+<a name="198831"> </a>
+</pre>
+
+<a name="198811"> </a>Arrays of length 1 are equivalent to scalars, as illustrated below:<br>
+
+<pre>
+<a name="198907"> </a>
+&gt;&gt; {1.0, 2.0} / {2.0}<a name="198913"> </a>
+{0.5, 1.0}<a name="198914"> </a>
+&gt;&gt; {1.0} / {2.0, 4.0}<a name="198915"> </a>
+{0.5, 0.25}<a name="198916"> </a>
+&gt;&gt; {3} * {2, 3}<a name="198917"> </a>
+{6, 9}<a name="198918"> </a>
+&gt;&gt; {12} / {3, 4}<a name="198919"> </a>
+{4, 3}<a name="198911"> </a>
+<a name="198923"> </a>
+</pre>
+
+<p>
+  <a name="198903"> </a>A significant subtlety arises when using nested arrays. Note the following example
+</p>
+
+<pre>
+<a name="198818"> </a>
+&gt;&gt; {{1.0, 2.0}, {3.0, 1.0}} / {0.5, 2.0}<a name="198779"> </a>
+{{2.0, 4.0}, {1.5, 0.5}}<a name="198780"> </a>
+<a name="198781"> </a>
+</pre>
+
+<a name="198845"> </a>In this example, the left argument of the divide is an array with two elements, and the right argument is also an array with two elements. The divide is thus elementwise. However, each division is the division of an array by a scalar.<br>
 
 
-<a name="198558"> </a>An array can be checked for equality with another array as follows:<br>
+<p>
+  <a name="198859"> </a>An array can be checked for equality with another array as follows:
+</p>
 
 <pre>
 <a name="186420"> </a>
@@ -111,7 +182,7 @@ true<a name="186579"> </a>
 <a name="186425"> </a>
 </pre>
 
-<a name="186430"> </a>For other comparisons of arrays, use the compare() function (see <a href="expressionsa10.htm#194754">Table 5 on page 119</a>). As with scalars, testing for equality using the == or != operators tests the values, independent of type. For example,<br>
+<a name="186430"> </a>For other comparisons of arrays, use the compare() function (see <a href="expressionsa12.htm#194754">Table 5 on page 125</a>). As with scalars, testing for equality using the == or != operators tests the values, independent of type. For example,<br>
 
 <pre>
 <a name="188887"> </a>
@@ -120,7 +191,10 @@ true<a name="188891"> </a>
 <a name="198579"> </a>
 </pre>
 
-<a name="198567"> </a>You can extract a subarray by invoking the subarray() method as follows:<br>
+<a name="198567"> </a><br>
+
+
+<a name="198924"> </a>You can extract a subarray by invoking the subarray() method as follows:<br>
 
 <pre>
 <a name="198568"> </a>
@@ -143,17 +217,20 @@ true<a name="188891"> </a>
 <a name="198612"> </a>
 </pre>
 
-<a name="198613"> </a>The second form takes an array of integers giving the indices to extract, as in the following example:<br>
+<a name="198860"> </a><br>
+
+
+<a name="198887"> </a>The second form takes an array of integers giving the indices to extract, as in the following example:<br>
 
 <pre>
 <a name="198607"> </a>
 &gt;&gt; {"red","green","blue"}.extract({2,0,1,1})<a name="198617"> </a>
-{"blue", "red", "green", "green"}<a name="198603"> </a>
-<a name="198618"> </a>
+{"blue", "red", "green", "green"}<a name="198882"> </a>
+<a name="198883"> </a>
 </pre>
 
 <h4>
-  <a name="169767"> </a>3.4.2   Matrices
+  <a name="198884"> </a>3.4.2   Matrices
 </h4>
 
 
@@ -183,7 +260,7 @@ true<a name="188891"> </a>
 </pre>
 
 <p>
-  <a name="183127"> </a>Matrix multiplication works as expected. For example, as seen in the expression evaluator (see figure <a href="expressionsa2.htm#183566">3.1</a>),
+  <a name="198925"> </a>Matrix multiplication works as expected. For example, as seen in the expression evaluator (see figure <a href="expressionsa2.htm#183566">3.1</a>),
 </p>
 
 <pre>
@@ -193,7 +270,7 @@ true<a name="188891"> </a>
 <a name="183175"> </a>
 </pre>
 
-<a name="190332"> </a>Of course, if the dimensions of the matrix don't match, then you will get an error message. To do element wise multiplication, use the multipyElements() function (see <a href="expressionsa10.htm#195091">Table 6 on page 121</a>). Matrix addition and subtraction are element wise, as expected, but the division operator is not supported. Element wise division can be accomplished with the divideElements() function, and multiplication by a matrix inverse can be accomplished using the inverse() function (see <a href="expressionsa10.htm#195091">Table 6 on page 121</a>). A matrix can be raised to an <i>int</i> or <i>unsignedByte</i> power, which is equivalent to multiplying it by itself some number of times. For instance,<br>
+<a name="190332"> </a>Of course, if the dimensions of the matrix don't match, then you will get an error message. To do element wise multiplication, use the multipyElements() function (see <a href="expressionsa12.htm#195091">Table 6 on page 127</a>). Matrix addition and subtraction are element wise, as expected, but the division operator is not supported. Element wise division can be accomplished with the divideElements() function, and multiplication by a matrix inverse can be accomplished using the inverse() function (see <a href="expressionsa12.htm#195091">Table 6 on page 127</a>). A matrix can be raised to an <i>int</i> or <i>unsignedByte</i> power, which is equivalent to multiplying it by itself some number of times. For instance,<br>
 
 <pre>
 <a name="183193"> </a>
@@ -220,7 +297,10 @@ true<a name="188891"> </a>
 <a name="184038"> </a>
 </pre>
 
-<a name="184020"> </a>A matrix can be checked for equality with another matrix as follows:<br>
+<a name="184020"> </a><br>
+
+
+<a name="198982"> </a>A matrix can be checked for equality with another matrix as follows:<br>
 
 <pre>
 <a name="183267"> </a>
@@ -231,7 +311,7 @@ true<a name="183271"> </a>
 <a name="183279"> </a>
 </pre>
 
-<a name="188905"> </a>For other comparisons of matrices, use the compare() function (see <a href="expressionsa10.htm#194754">Table 5 on page 119</a>). As with scalars, testing for equality using the == or != operators tests the values, independent of type. For example,<br>
+<a name="188905"> </a>For other comparisons of matrices, use the compare() function (see <a href="expressionsa12.htm#194754">Table 5 on page 125</a>). As with scalars, testing for equality using the == or != operators tests the values, independent of type. For example,<br>
 
 <pre>
 <a name="188906"> </a>
@@ -285,15 +365,17 @@ true<a name="190361"> </a>
 <a name="184837"> </a>
 </pre>
 
-<a name="184838"> </a>yields the result<br>
+<a name="198983"> </a>yields the result<br>
 
 <pre>
 <a name="184841"> </a>
 {foodCost=60}<a name="184842"> </a>
-<a name="184843"> </a>
 </pre>
 
-<a name="191471"> </a>You can think of an operation as a set intersection, where the operation specifies how to merge the values of the intersecting fields. You can also form an intersection without applying an operation. In this case, using the intersect() function, you form a record that has only the common fields of two specified records, with the values taken from the first record. For example,<br>
+<a name="198986"> </a><br>
+
+
+<a name="198991"> </a>You can think of an operation as a set intersection, where the operation specifies how to merge the values of the intersecting fields. You can also form an intersection without applying an operation. In this case, using the intersect() function, you form a record that has only the common fields of two specified records, with the values taken from the first record. For example,<br>
 
 <pre>
 <a name="191481"> </a>
@@ -365,6 +447,8 @@ false<a name="188863"> </a>
 true<a name="188865"> </a>
 &gt;&gt; <a name="188855"> </a>
 </pre>
+
+<a name="198992"> </a><br>
 </blockquote>
 
 
