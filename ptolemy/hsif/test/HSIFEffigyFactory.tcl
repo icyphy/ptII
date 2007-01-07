@@ -74,10 +74,14 @@ test HSIFEffigyFactory-2.2 { createEffigy with a non .xml or .hsif file} {
     java::isnull $effigy
 } {1}
 
-test HSIFEffigyFactory-2.2 { createEffigy with a non-existant .xml file} {
+test HSIFEffigyFactory-2.3 { createEffigy with a non-existant .xml file} {
     # Uses 1.1 above
     set top [java::new ptolemy.kernel.CompositeEntity]
     catch {set effigy [$hsifEffigyFactory createEffigy $top [java::null] \
 	[java::new java.net.URL "file:/C:/DoesNotExist.xml"]]} msg
-    list $msg	
-} {{java.io.FileNotFoundException: /C:/DoesNotExist.xml (No such file or directory)}}
+    regsub {\\} $msg {/} msg2
+    regsub { /} $msg2 { } msg3
+    # Java 1.4 reports (The system cannot find the file specified)
+    regsub {The system cannot find the file specified} $msg3 {No such file or directory} msg4
+    list $msg4	
+} {{java.io.FileNotFoundException: C:/DoesNotExist.xml (No such file or directory)}}
