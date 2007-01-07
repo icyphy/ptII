@@ -1203,20 +1203,20 @@ test Function-cast-3 {cast nils} {
 } {nil ptolemy.data.Token niltype} {
 } {nil ptolemy.data.Token unsignedByte}}
 
-test Function-cast-4 {cast nils in an ArrayToken} {
+test Function-cast-4 {cast nils in an ArrayToken In 6.0.1, casting nil to an array works.  In 6.1-devel, it does not.} {
    set nil [java::call ptolemy.data.expr.Constants get nil]
 
    set arrayToken [java::new ptolemy.data.ArrayToken "{1,2,3}"]
-   catch {[java::call ptolemy.data.expr.UtilityFunctions cast $arrayToken $nil]} errMsg
+   set castArrayToken [java::call ptolemy.data.expr.UtilityFunctions cast $arrayToken $nil]
+
    set arrayNilToken [java::new ptolemy.data.ArrayToken "{nil,nil,nil}"]
    set arrayNil [java::call ptolemy.data.expr.UtilityFunctions cast $arrayToken $arrayNilToken]
 
    list \
-	$errMsg \n \
-	[tokenInfo $arrayNil]
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.Token$1 'nil' to the type arrayType(int,3).} {
-} {{{nil, nil, nil}} ptolemy.data.Token arrayType(int,3)}}
-
+       [tokenInfo $castArrayToken] \n \
+       [tokenInfo $arrayNil]
+} {{{{nil}} ptolemy.data.Token {{int}}} {
+} {{{nil, nil, nil}} ptolemy.data.Token {{int}}}}
 
 test Function-cast-5 {cast nil to intMatrixToken} {
    set nil [java::call ptolemy.data.expr.Constants get nil]
