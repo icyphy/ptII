@@ -53,7 +53,7 @@ test CheckModelSize-1.0 {checkModelSize} {
     set args [java::new {String[]} {1} {../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml}]
     set results \
 	[java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args]
-    if { [regsub -all "file:$ptolemyPtIIDir/" $results {} results2] == 0} {
+    if { [regsub -all "file:/*$ptolemyPtIIDir/" $results {} results2] == 0} {
 	regsub -all {file:[^>]*/ptII/} $results {} results2
     }
     list $results2
@@ -76,7 +76,7 @@ test CheckModelSize-1.1 {checkModelSize: no _vergilSize} {
     set args [java::new {String[]} {1} {test.xml}]
     set results \
 	[java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args]
-    if { [regsub -all "file:$ptolemyPtIIDir/" $results {} results2] == 0} {
+    if { [regsub -all "file:/*$ptolemyPtIIDir/" $results {} results2] == 0} {
 	regsub -all {file:[^>]*/ptII/} $results {} results2
     }
     list $results2
@@ -98,7 +98,7 @@ test CheckModelSize-1.2 {checkModelSize: bad moml} {
     set args [java::new {String[]} {1} {badMoML.moml}]
     set results \
 	[java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args]
-    if { [regsub -all "file:$ptolemyPtIIDir/" $results {} results2] == 0} {
+    if { [regsub -all "file:/*$ptolemyPtIIDir/" $results {} results2] == 0} {
 	regsub -all {file:[^>]*/ptII/} $results {} results2
     }
     list [string range $results2 0 290]
@@ -118,7 +118,7 @@ test CheckModelSize-2.0 {main} {
     jdkCapture {
         java::call ptolemy.actor.gui.CheckModelSize main $args
     } results
-    if { [regsub -all "file:$ptolemyPtIIDir/" $results {} results2] == 0} {
+    if { [regsub -all "file:/*$ptolemyPtIIDir/" $results {} results2] == 0} {
 	regsub -all {file:[^>]*/ptII/} $results {} results2
     }
     list $results2
