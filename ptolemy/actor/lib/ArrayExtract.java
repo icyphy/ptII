@@ -135,6 +135,7 @@ public class ArrayExtract extends Transformer {
         // Set the type constraints.
         newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         newObject.output.setTypeAtLeast(newObject.input);
+        newObject.output.setTypeAtLeast(ArrayType.ARRAY_UNSIZED_BOTTOM);
 
         return newObject;
     }
