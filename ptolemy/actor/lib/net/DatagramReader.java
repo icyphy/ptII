@@ -60,6 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  responds to datagrams whenever they arrive, giving the actor the ability
  to read the datagrams asynchronously.
 
+
  Datagrams are connectionless, open-loop internet communications.  Each
  datagram packet contains data plus a return address.  The return
  address consists of an IP address and a socket number.  Datagrams use
@@ -72,6 +73,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p>NOTE: This actor has been developed to work in the Discrete Event
  (DE) and Synchronous Data Flow (SDF) domains.  Use elsewhere with
  caution.
+
+ <p>NOTE: This actor has problems, the tests do not reliably pass.  
+ For details, see <a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=54"><code>https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=54</code></a>.
 
  <p> <p>The simplest scenario has the thread constantly stalled
  awaiting a packet.  When a packet arrives, the thread quickly queues
