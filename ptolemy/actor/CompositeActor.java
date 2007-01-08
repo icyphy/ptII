@@ -1,6 +1,6 @@
 /* An aggregation of actors.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 1997-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -903,7 +903,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 }
                 throw new IllegalActionException(this,
                         "Cannot preinitialize a non-opaque actor, "
-                                + "please add a shdirector.");
+                                + "please add a director.");
             }
 
             if (_director == null) {
