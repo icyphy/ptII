@@ -1,6 +1,6 @@
 /* An actor that asynchronously reads datagram packets.
 
- Copyright (c) 2001-2006 The Regents of the University of California.
+ Copyright (c) 2001-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -72,6 +72,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p>NOTE: This actor has been developed to work in the Discrete Event
  (DE) and Synchronous Data Flow (SDF) domains.  Use elsewhere with
  caution.
+
+ <p>NOTE: This actor has problems, the tests do not reliably pass.  
+ For details, see <a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=54"><code>https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=54</code></a>.
 
  <p> <p>The simplest scenario has the thread constantly stalled
  awaiting a packet.  When a packet arrives, the thread quickly queues
