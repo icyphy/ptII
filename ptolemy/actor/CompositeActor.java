@@ -903,7 +903,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 }
                 throw new IllegalActionException(this,
                         "Cannot preinitialize a non-opaque actor, "
-                                + "please add a shdirector.");
+                                + "please add a director.");
             }
 
             if (_director == null) {
