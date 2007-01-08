@@ -59,6 +59,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  selected, any Ptolemy data type may be represented.
  See the <i>encoding</i> parameter.
 
+ <p>NOTE: This actor has problems, the tests do not reliably pass.  
+ For details, see <a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=54"><code>https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=54</code></a>.
+
  <p>The address and socket number towards which the datagram is sent
  are given by the optional inputs <i>remoteAddress</i> and
  <i>remoteSocketNumber</i>.  However, unless/until token(s) arrive at
