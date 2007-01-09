@@ -273,7 +273,7 @@ doc/codeDoc/tree.html:	$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS)
 	fi
 
 # Generate index.xml from all the Java classes in a lib directory
-index.xml: makefile $(ROOT)/mk/ptcommon.mk
+index.xml: makefile
 	echo "<?xml version=\"1.0\" standalone=\"no\"?>" > $@
 	echo "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"" >> $@
 	echo "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">" >> $@
