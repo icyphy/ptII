@@ -273,7 +273,9 @@ doc/codeDoc/tree.html:	$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS)
 	fi
 
 # Generate index.xml from all the Java classes in a lib directory
-index.xml: makefile $(ROOT)/mk/ptcommon.mk
+# Don't make index.xml depend on ptcommon.mk, it results in problems
+# with the jni tests in Ptolemy II 6.0.1 under GNU Make 3.8.1.
+index.xml: makefile
 	echo "<?xml version=\"1.0\" standalone=\"no\"?>" > $@
 	echo "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"" >> $@
 	echo "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">" >> $@
