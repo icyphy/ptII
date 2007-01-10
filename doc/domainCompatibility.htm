@@ -348,16 +348,16 @@ domain and second level domain.
    <td>&nbsp;</td>
    <td>&nbsp;</td>
    <th>CSP</th>
-   <th>Continuous</th>
+   <th>Rendezvous</th>
+   <th>PN</th>
    <th>CT</th>
    <th>DDF</th>
    <th>DE</th>
    <th>FSM</th>
    <th>Giotto</th>
-   <th>PN</th>
-   <th>Rendezvous</th>
    <th>PSDF</th>
    <th>SDF</th>
+   <th>Continuous</th>
    <th>DE2</th>
    <th>SR</th>
   </tr>
@@ -366,16 +366,16 @@ domain and second level domain.
    <td>&nbsp;</td>
    <td>&nbsp;</td>
    <th><!--CSP-->(<i>loosest</i>)</th>
-   <th><!--Continuous-->(<i>strict</i>)</th>
+   <th><!--Rendezvous-->(<i>loosest</i>)</th>
+   <th><!--PN-->(<i>loosest</i>)</th>
    <th><!--CT-->(<i>strict</i>)</th>
    <th><!--DDF-->(<i>loose</i>)<sup>4</sup></th>
    <th><!--DE-->(<i>loose</i>)</th>
    <th><!--FSM-->(<i>loose</i>)</th>
    <th><!--Giotto-->&nbsp;</th>
-   <th><!--PN-->(<i>loosest</i>)</th>
-   <th><!--Rendezvous-->(<i>loosest</i>)</th>
    <th><!--PSDF-->(<i>loose</i>)</th>
    <th><!--SDF-->(<i>loose</i>)</th>
+   <th><!--Continuous-->(<i>strict</i>)</th>
    <th><!--DE2-->(<i>strict</i>)</th>
    <th><!--SR-->(<i>strict</i>)</th>
   </tr>
@@ -385,16 +385,16 @@ domain and second level domain.
    <th rowspan=14>Inner Director (<b>exports X</b>)</th>
    <th align="left">CSP (<b>loosest</b>)</th>
    <td>&nbsp;<!-- CSP --></td>
-   <td>&nbsp;<!-- Continuous--></td>
+   <td>&nbsp;<!-- Rendezvous --></td>
+   <td>&nbsp;<!-- PN --></td>
    <td>&nbsp;<!-- CT --></td>
    <td>&nbsp;<!-- DDF --></td>
    <td>&nbsp;<!-- DE --></td>
    <td>&nbsp;<!-- FSM --></td>
    <td>&nbsp;<!-- Giotto --></td>
-   <td>&nbsp;<!-- PN --></td>
-   <td>&nbsp;<!-- Rendezvous --></td>
    <td>&nbsp;<!-- PSDF --></td>
    <td>&nbsp;<!-- SDF --></td>
+   <td>&nbsp;<!-- Continuous--></td>
    <td>&nbsp;<!-- DE2 --></td>
    <td>&nbsp;<!-- SR --></td>
   </tr>
@@ -402,19 +402,16 @@ domain and second level domain.
   <tr>
    <th align="left">Rendezvous (<b>loosest</b>)</th>
    <td>&nbsp;<!-- CSP --></td>
-   <td>&nbsp;<!-- Continuous--></td>
+   <td>&nbsp;<!-- Rendezvous --></td>
+   <td>&nbsp;<!-- PN --></td>
    <td>&nbsp;<!-- CT --></td>
    <td>&nbsp;<!-- DDF --></td>
    <td>&nbsp;<!-- DE --></td>
    <td>&nbsp;<!-- FSM --></td>
    <td>&nbsp;<!-- Giotto --></td>
-   <td>&nbsp;<!-- PN --></td>
-   <td>Rendezvous/SDF
-     <a href="../ptolemy/backtrack/demo/TrialModule/TrialModule.xml">+</a>,
-     <a href="../ptolemy/backtrack/demo/TrialModule/TrialModuleNonBacktrack.xml">+</a>
-   </td>
    <td>&nbsp;<!-- PSDF --></td>
    <td>&nbsp;<!-- SDF --></td>
+   <td>&nbsp;<!-- Continuous--></td>
    <td>&nbsp;<!-- DE2 --></td>
    <td>&nbsp;<!-- SR --></td>
   </tr>
@@ -422,7 +419,10 @@ domain and second level domain.
   <tr>
    <th align="left">PN (<b>loosest</b>)</th>
    <td>&nbsp;<!-- CSP --></td>
-   <td>&nbsp;<!-- Continuous--></td>
+   <td>&nbsp;<!-- Rendezvous --></td>
+   <td>PN/PN
+     <a href="../ptolemy/domains/pn/test/PNPNSleep.xml">-</a>
+   </td>
    <td>&nbsp;<!-- CT --></td>
    <td>&nbsp;<!-- DDF --></td>
    <td>DE/PN
@@ -430,12 +430,9 @@ domain and second level domain.
    </td>
    <td>&nbsp;<!-- FSM --></td>
    <td>&nbsp;<!-- Giotto --></td>
-   <td>PN/PN
-     <a href="../ptolemy/domains/pn/test/PNPNSleep.xml">-</a>
-   </td>
-   <td>&nbsp;<!-- Rendezvous --></td>
    <td>&nbsp;<!-- PSDF --></td>
    <td>&nbsp;<!-- SDF --></td>
+   <td>&nbsp;<!-- Continuous--></td>
    <td>&nbsp;<!-- DE2 --></td>
    <td>&nbsp;<!-- SR --></td>
   </tr>
@@ -444,14 +441,13 @@ domain and second level domain.
   <tr>
    <th align="left">DDF (<b>loose</b>)</th>
    <td>CSP/DDF</td>
-   <td>&nbsp;<!-- Continuous--></td>
+   <td>&nbsp;<!-- Rendezvous --></td>
+   <td>PN/DDF</td>
    <td>&nbsp;<!-- CT --></td>
    <td>DDF/DDF</td>
    <td>DE/DDF</td>
    <td>FSM/DDF</td>
    <td>?<!-- Giotto --></td>
-   <td>PN/DDF</td>
-   <td>&nbsp;<!-- Rendezvous --></td>
    <td>PSDF/DDF</td>
    <td>SDF/DDF
       <a href="../ptolemy/domains/ddf/demo/IfThenElse/IfThenElse.xml">+</a>,
@@ -459,6 +455,7 @@ domain and second level domain.
       <a href="../ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml">+</a>
 
    </td>
+   <td>&nbsp;<!-- Continuous--></td>
    <td>&nbsp;<!-- DE2 --></td>
    <td>&nbsp;<!-- SR --></td>
   </tr>
@@ -467,7 +464,8 @@ domain and second level domain.
   <tr>
    <th align="left">CT (<b>loose</b>)</th>
    <td>CSP/CT</td>
-   <td>&nbsp;<!-- Continuous--></td>
+   <td>Rendezvous/CT</td>
+   <td>PN/CT</td>
    <td>CT/CT<sup>3</sup>
      <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor.xml">+</a>,
      <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor2.xml">+</a>,
@@ -483,10 +481,9 @@ domain and second level domain.
    </td>
    <td>FSM/CT</td>
    <td>?<!-- Giotto --></td>
-   <td>PN/CT</td>
-   <td>&nbsp;<!-- Rendezvous --></td>
    <td>PSDF/CT</td>
    <td>SDF/CT</td>
+   <td>&nbsp;<!-- Continuous--></td>
    <td>&nbsp;<!-- DE2 --></td>
    <td>&nbsp;<!-- SR --></td>
   </tr>
@@ -496,7 +493,16 @@ domain and second level domain.
    <td>CSP/SDF
      <a href="../ptolemy/domains/test/auto/CSPSDFtest1.xml">+</a>
    </td>
-   <td>&nbsp;<!-- Continuous--></td>
+   <td>Rendezvous/SDF
+     <a href="../ptolemy/backtrack/demo/TrialModule/TrialModule.xml">+</a>,
+     <a href="../ptolemy/backtrack/demo/TrialModule/TrialModuleNonBacktrack.xml">+</a>
+   </td>
+   <td>PN/SDF
+     <a href="../ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSDFtest1.xml">-</a>
+     <a href="../ptolemy/actor/lib/io/demo/FilePortParameter.xml">+</a>,
+     <a href="../ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.xml">+</a>
+   </td>
    <td>&nbsp;<!-- CT --></td>
    <td>DDF/SDF
      <a href="../ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.xml">+</a>
@@ -506,18 +512,11 @@ domain and second level domain.
    </td>
    <td>FSM/SDF</td>
    <td>?<!-- Giotto --></td>
-   <td>PN/SDF
-     <a href="../ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml">+</a>,
-     <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSDFtest1.xml">-</a>
-     <a href="../ptolemy/actor/lib/io/demo/FilePortParameter.xml">+</a>,
-     <a href="../ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.xml">+</a>
-   </td>
-   </td>
-   <td>&nbsp;<!-- Rendezvous --></td>
    <td>PSDF/SDF</td>
    <td>SDF/SDF
      <a href="../ptolemy/domains/sdf/demo/Spectrum/Spectrum.xml">+</a>
    </td>
+   <td>&nbsp;<!-- Continuous--></td>
    <td>&nbsp;<!-- DE2 --></td>
    <td>SR/SDF
      <a href="../ptolemy/domains/test/auto/SRSDFtest3.xml">+</a>,
@@ -529,7 +528,10 @@ domain and second level domain.
   <tr>
    <th align="left">PSDF (<b>loose</b>)</th>
    <td>CSP/PSDF</td>
-   <td>&nbsp;<!-- Continuous--></td>
+   <td>Rendezvous/PSDF</td>
+   <td>PSDF/PN
+     <a href="../ptolemy/domains/psdf/kernel/test/auto/SDFDirector1.xml">+</a>
+   </td>
    <td>CT/PSDF</td>
    <td>DDF/PSDF</td>
    <td>DE/PSDF</td>
@@ -538,11 +540,9 @@ domain and second level domain.
    <td>PN/PSDF
      <a href="../ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.xml">+</a>
    </td>
-   <td>&nbsp;<!-- Rendezvous --></td>
    <td>PSDF/PSDF</td>
-   <td>SDF/PN
-     <a href="../ptolemy/domains/psdf/kernel/test/auto/SDFDirector1.xml">+</a>
-   </td>
+
+   <td>&nbsp;<!-- Continuous--></td>
    <td>&nbsp;<!-- DE2 --></td>
    <td>SR/PSDF</td>
   </tr>
@@ -550,7 +550,8 @@ domain and second level domain.
   <tr>
    <th align="left">DE (<b>loose</b>)</th>
    <td>&nbsp;<!-- CSP --></td>
-   <td>&nbsp;<!-- Continuous--></td>
+   <td>&nbsp;<!-- Rendezvous --></td>
+   <td>PN/DE</td>
    <td>CT/DE
      <a href="../ptolemy/domains/de/test/auto/deInCt.xml">+</a>,
      <a href="../ptolemy/domains/de/test/auto/deInCt2.xml">+</a>
@@ -561,11 +562,10 @@ domain and second level domain.
    </td>
    <td>FSM/DE</td>
    <td>?<!-- Giotto --></td>
-   <td>PN/DE</td>
-   <td>&nbsp;<!-- Rendezvous --></td>
    <td>PSDF/DE</td>
    <td><a href="../ptolemy/domains/sdf/test/auto/de_in_sdf.xml">?</a>
    </td>
+   <td>&nbsp;<!-- Continuous--></td>
    <td>&nbsp;<!-- DE2 --></td>
    <td>&nbsp;<!-- SR --></td>
   </tr>
@@ -573,9 +573,8 @@ domain and second level domain.
   <tr>
    <th align="left">FSM (<b>refinement</b>)</th>
    <td>CSP/FSM<sup>1</sup></td>
-   <td>Continuous/FSM<sup>1</sup>
-      <a href="../ptolemy/domains/continuous/demo/Switch/Switch.xml">+</a>
-   </td>
+   <td>RendezvousCSP/FSM<sup>1</sup></td>
+   <td>PN/FSM<sup>1</sup></td>
    <td>CT/FSM<sup>2</sup>
      <a href="../ptolemy/domains/ct/demo/Switch/Switch.xml">+</a>
    </td>
@@ -585,11 +584,12 @@ domain and second level domain.
    </td>
    <td>FSM/FSM</td>
    <td>?<!-- Giotto --></td>
-   <td>PN/FSM<sup>1</sup></td>
-   <td>&nbsp;<!-- Rendezvous --></td>
    <td>PSDF/FSM<sup>1</sup></td>
    <td>SDF/FSM<sup>1</sup>
      <a href="../ptolemy/domains/fsm/test/auto/SDF-FSMComposite.xml">+</a>
+   </td>
+   <td>Continuous/FSM<sup>1</sup>
+      <a href="../ptolemy/domains/continuous/demo/Switch/Switch.xml">+</a>
    </td>
    <td>DE2/FSM<sup>1</sup></td>
    <td>SR/FSM<sup>1</sup></td>
@@ -598,7 +598,8 @@ domain and second level domain.
   <tr>
    <th align="left">Giotto</th>
    <td>?<!-- CSP --></td>
-   <td>?<!-- Continuous --></td>
+   <td>?<!-- Rendezvous --></td>
+   <td>?<!-- PN --></td>
    <td>?<!-- CT --></td>
    <td>?<!-- DDF --></td>
    <td>DE/Giotto
@@ -606,10 +607,9 @@ domain and second level domain.
    </td>
    <td>?<!-- FSM --></td>
    <td>?<!-- Giotto --></td>
-   <td>?<!-- PN --></td>
-   <td>?<!-- Rendezvous --></td>
    <td>?<!-- PSDF --></td>
    <td>?<!-- SDF --></td>
+   <td>?<!-- Continuous --></td>
    <td>?<!-- DE2 --></td>
    <td>?<!-- SR --></td>
   </tr>
@@ -617,16 +617,16 @@ domain and second level domain.
   <tr>
    <th>Continuous(<b>strict</b>)</th>
    <td>CSP/Continuous</td>
-   <td>Continuous/Continuous</td>
+   <td>Rendezvous/Continuous</td>
+   <td>PN/Continuous</td>
    <td>CT/Continuous</td>
    <td>DDF/Continuous</td>
    <td>DE/Continuous</td>
    <td>FSM/Continuous</td>
    <td>?<!-- Giotto --></td>
-   <td>PN/Continuous</td>
-   <td>Rendezvous/Continuous</td>
    <td>PSDF/Continuous</td>
    <td>SDF/Continuous</td>
+   <td>Continuous/Continuous</td>
    <td>DE2/Continuous</td>
    <td>SR/Continuous</td>
   </tr>
@@ -634,16 +634,16 @@ domain and second level domain.
   <tr>
    <th align="left">DE2(<b>strict</b>)</th>
    <td>CSP/DE2</td>
-   <td>Continuous/DE2</td>
+   <td>Rendezvous/DE2</td>
+   <td>PN/DE2</td>
    <td>CT/DE2</td>
    <td>DDF/DE2</td>
    <td>DE/DE2</td>
    <td>FSM/DE2</td>
    <td>?<!-- Giotto --></td>
-   <td>PN/DE2</td>
-   <td>Rendezvous/DE2</td>
    <td>PSDF/DE2</td>
    <td>SDF/DE2</td>
+   <td>Continuous/DE2</td>
    <td>DE2/DE2</td>
    <td>SR/DE2</td>
   </tr>
@@ -654,24 +654,24 @@ domain and second level domain.
      <a href="../ptolemy/domains/test/auto/CSPSRtest1.xml">+</a>,
      <a href="../ptolemy/domains/test/auto/CSPSRtest2.xml">+</a>
    </td>
-   <td>Continuous/SR</td>
-   <td>CT/SR</td>
-   <td>DDF/SR</td>
-   <td>DE/SR</td>
-   <td>FSM/SR</td>
-   <td>?<!-- Giotto --></td>
+   <td>Rendezvous/SR</td>
    <td>PN/SR
      <a href="../ptolemy/domains/test/auto/PNSRtest1.xml">+</a>,
      <a href="../ptolemy/domains/test/auto/PNSRtest2.xml">+</a>,
      <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSRTimedtest.xml">-</a>,
      <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSRtest3.xml">-</a>   </td>
-   <td>Rendezvous/SR</td>
+   <td>CT/SR</td>
+   <td>DDF/SR</td>
+   <td>DE/SR</td>
+   <td>FSM/SR</td>
+   <td>?<!-- Giotto --></td>
    <td>PSDF/SR</td>
    <td>SDF/SR
      <a href="../ptolemy/domains/test/auto/SDFSRtest1.xml">+</a>,
      <a href="../ptolemy/domains/test/auto/SDFSRtest3.xml">+</a>,
      <a href="../ptolemy/domains/test/auto/knownFailedTests/SDFSRtest2.xml">-</a>
    </td>
+   <td>Continuous/SR</td>
    <td>DE2/SR</td>
    <td>SR/SR
      <a href="../ptolemy/domains/sr/demo/GuardedCount/GuardedCount.xml">+</a>
