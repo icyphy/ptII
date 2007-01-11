@@ -2,7 +2,7 @@
 #
 # @Version: $Id$
 #
-# Copyright (c) 1995-2006 The Regents of the University of California.
+# Copyright (c) 1995-2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -55,7 +55,7 @@ PTPACKAGE = 	ptII
 # If you change the version number, be sure to edit doc/*,
 # ptolemy/configs/*, ptolemy/configs/doc and
 # ptolemy/kernel/attributes/VersionAttribute.java
-PTVERSION =	6.0.beta
+PTVERSION =	6.0.1
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
