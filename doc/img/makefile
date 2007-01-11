@@ -50,6 +50,60 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 OTHER_FILES_TO_BE_JARED = \
 	copernicus2.gif \
 	copernicusa.gif \
+	codegen10.gif \
+	codegen11.gif \
+	codegen12.gif \
+	codegen13.gif \
+	codegen14.gif \
+	codegen15.gif \
+	codegen16.gif \
+	codegen17.gif \
+	codegen18.gif \
+	codegen19.gif \
+	codegen2.gif \
+	codegen20.gif \
+	codegen21.gif \
+	codegen22.gif \
+	codegen23.gif \
+	codegen24.gif \
+	codegen25.gif \
+	codegen26.gif \
+	codegen27.gif \
+	codegen28.gif \
+	codegen29.gif \
+	codegen3.gif \
+	codegen30.gif \
+	codegen31.gif \
+	codegen32.gif \
+	codegen33.gif \
+	codegen34.gif \
+	codegen35.gif \
+	codegen36.gif \
+	codegen37.gif \
+	codegen38.gif \
+	codegen39.gif \
+	codegen4.gif \
+	codegen40.gif \
+	codegen41.gif \
+	codegen42.gif \
+	codegen43.gif \
+	codegen44.gif \
+	codegen45.gif \
+	codegen46.gif \
+	codegen47.gif \
+	codegen48.gif \
+	codegen49.gif \
+	codegen5.gif \
+	codegen50.gif \
+	codegen51.gif \
+	codegen52.gif \
+	codegen53.gif \
+	codegen54.gif \
+	codegen6.gif \
+	codegen7.gif \
+	codegen8.gif \
+	codegen9.gif \
+	codegena.gif \
 	expressions10.gif \
 	expressions11.gif \
 	expressions12.gif \
