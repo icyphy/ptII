@@ -5,12 +5,12 @@
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
-<TITLE>IfThenElse</TITLE>
+<TITLE>IfThenElseFSM</TITLE>
 </HEAD>
 <BODY>
-<H1>IfThenElse</H1>
+<H1>IfThenElseFSM</H1>
 <P>
-The IfThenElse model shown using Vergil, the Ptolemy II schematic editor:
+The IfThenElseFSM model shown using Vergil, the Ptolemy II schematic editor:
 
 <CENTER>
 <P>
@@ -43,24 +43,24 @@ The IfThenElse model shown using Vergil, the Ptolemy II schematic editor:
     if (_ie == true) document.writeln('\
         <OBJECT \
             classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "591" \
-            height = "878"  \
+            width = "634" \
+            height = "816"  \
             codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
             <PARAM NAME = "code" \
                    VALUE = "ptolemy.vergil.MoMLViewerApplet" > \
 	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
 	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/ddf/ddf.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/sdf/sdf.jar,ptolemy/vergil/vergilApplet.jar" > \
+                   VALUE = "ptolemy/ptsupport.jar,ptolemy/domains/domains.jar,lib/diva.jar,ptolemy/domains/sdf/sdf.jar" > \
             <PARAM NAME = "type" \
                    VALUE = "application/x-java-applet;version=1.4.2" > \
             <PARAM NAME = "progressbar" VALUE = "true"> \
             <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "NAME" VALUE = "IfThenElseViewer" > \
+            <PARAM NAME = "NAME" VALUE = "IfThenElseFSMViewer" > \
 	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "modelURL" VALUE = "IfThenElse.xml" > \
+	    <PARAM NAME = "modelURL" VALUE = "IfThenElseFSM.xml" > \
 	    <PARAM NAME = "controls" VALUE = "buttons" > \
 	    <PARAM NAME = "includeRunPanel" VALUE = "true" > \
-            <a href="IfThenElse.xml">MoML specification for this model.</a> \
+            <a href="IfThenElseFSM.xml">MoML specification for this model.</a> \
         </OBJECT> \
         ');
     else if (_ns == true || _ns6 == true)
@@ -70,15 +70,15 @@ The IfThenElse model shown using Vergil, the Ptolemy II schematic editor:
             type = "application/x-java-applet;version=1.4.2" \
             code = "ptolemy.vergil.MoMLViewerApplet" \
             codebase = "../../../../.." \
-            archive = "ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/ddf/ddf.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/sdf/sdf.jar,ptolemy/vergil/vergilApplet.jar" \
-            width = "591" \
-            height = "878" \
-            NAME = "IfThenElseViewer" background = "#ffffff" modelURL = "IfThenElse.xml" controls = "buttons" includeRunPanel = "true"  \
+            archive = "ptolemy/ptsupport.jar,ptolemy/domains/domains.jar,lib/diva.jar,ptolemy/domains/sdf/sdf.jar" \
+            width = "634" \
+            height = "816" \
+            NAME = "IfThenElseFSMViewer" background = "#ffffff" modelURL = "IfThenElseFSM.xml" controls = "buttons" includeRunPanel = "true"  \
             progressbar = "true" \
             scriptable = "false" \
             pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
               <NOEMBED> \
-              <a href="IfThenElse.xml">MoML specification for this model.</a> \
+              <a href="IfThenElseFSM.xml">MoML specification for this model.</a> \
               </NOEMBED> \
            </EMBED> \
         <COMMENT> \
@@ -87,22 +87,35 @@ The IfThenElse model shown using Vergil, the Ptolemy II schematic editor:
         <APPLET \
             code = "ptolemy.vergil.MoMLViewerApplet" \
             codebase = "../../../../.." \
-            archive = "ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/ddf/ddf.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/sdf/sdf.jar,ptolemy/vergil/vergilApplet.jar" \
-            width = "591" \
-            height = "878" \
+            archive = "ptolemy/ptsupport.jar,ptolemy/domains/domains.jar,lib/diva.jar,ptolemy/domains/sdf/sdf.jar" \
+            width = "634" \
+            height = "816" \
             > \
-            <PARAM NAME = "NAME" VALUE = "IfThenElseViewer" > \
+            <PARAM NAME = "NAME" VALUE = "IfThenElseFSMViewer" > \
 	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "modelURL" VALUE = "IfThenElse.xml" > \
+	    <PARAM NAME = "modelURL" VALUE = "IfThenElseFSM.xml" > \
 	    <PARAM NAME = "controls" VALUE = "buttons" > \
 	    <PARAM NAME = "includeRunPanel" VALUE = "true" > \
-            <a href="IfThenElse.xml">MoML specification for this model.</a> \
+            <a href="IfThenElseFSM.xml">MoML specification for this model.</a> \
         </APPLET> \
         ');
 //--></SCRIPT>
 <!-- /HTML CONVERTER -->
 </CENTER>
 </p>
-See also a comparison between a <a href="IfThenElseFSM.htm">Finite State Machine (FSM) implementation and a DDF implementation of this model</a>.
+
+This model illustrates how a Finite State Machine (FSM) Modal Model and
+a Dynamic Dataflow (DDF) model may be embedded in a Synchronous Dataflow (SDF) model.  The top level is illustrated in the applet above.
+<p>The inside of the "FSM ModalModel +1/-1 Gain" component:
+<br><img src="IfThenElseFSMModalModel.png" alt="Modal Model"> 
+
+<p>The "FSM ModalModel +1/-1 Gain" component has a "gainPlus" component: 
+<br><img src="IfThenElseFSMGainPlus.png" alt="Gain Plus"> 
+<p>and a "gainMinus" component: 
+<br><img src="IfThenElseFSMGainMinus.png" alt="Gain Minus"> 
+
+<p>Going back up to the top level, the inside of the "DDF +1/-1 Gain.ramp":
+<br><img src="IfThenElseFSMDDFPlusMinus.png" alt=""DDF +1/-1 Gain.ramp" valign="top">
+
 </BODY>
 </HTML>

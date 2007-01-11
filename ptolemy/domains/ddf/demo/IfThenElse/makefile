@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2005 The Regents of the University of California.
+# @Copyright (c) 2004-2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -52,7 +52,15 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
-	IfThenElse.htm
+	IfThenElse.htm \
+	IfThenElseFSM.htm \
+	IfThenElseFSMDDFPlusMinus.png \
+	IfThenElseFSMKepler.htm \
+	IfThenElseFSMModalModel.png \
+	IfThenElseFSMGainMinus.png \
+	IfThenElseFSMGainPlus.png \
+	IfThenElseFSMKepler.xml \
+	IfThenElseFSM.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
