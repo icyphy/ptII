@@ -60,17 +60,19 @@ public class ElementsToArray extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
-        ptolemy.actor.lib.ElementsToArray actor = (ptolemy.actor.lib.ElementsToArray) getComponent();
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
+        ptolemy.actor.lib.ElementsToArray actor 
+                = (ptolemy.actor.lib.ElementsToArray) getComponent();
 
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
 
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, new Integer(i));
-            _codeStream.appendCodeBlock("fillArray", args);
+            code.append(_generateBlockCode("fillArray", args));
         }
-        _codeStream.appendCodeBlock("sendOutput");
-        return processCode(_codeStream.toString());
+        code.append(_generateBlockCode("sendOutput"));
+        return processCode(code.toString());
     }
 }
