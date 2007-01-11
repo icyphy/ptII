@@ -897,17 +897,22 @@ sign_jar_dist_update_remote: sign_jar_dist
 # mkl4j is a script that generates an xml file that is then read by Launch4j 
 MKL4J = $(ROOT)/bin/mkl4j
 
+#############
+# NOTE: If you are running under windows, switch the lines for
+# L4J_DIR, PTCYGPATH and L4JC
+#############
+
 # Location of Launch4J, see http://launch4j.sourceforge.net/
-#L4J_DIR=c:/Program Files/Launch4j
-L4J_DIR=$(PTII)/vendors/launch4j
+L4J_DIR=c:/Program Files/Launch4j
+#L4J_DIR=$(PTII)/vendors/launch4j
 
 # Cygpath command
-#PTCYGPATH=cygpath --windows
-PTCYGPATH=$(ROOT)/bin/ptcygpath
+PTCYGPATH=$(ROOT)/bin/ptcygpath --windows
+#PTCYGPATH=$(ROOT)/bin/ptcygpath
 
 # Launch4J console application that reads in .xml files and creates .exe files.
-#L4JC=$(L4J_DIR)/launch4jc.exe
-L4JC=$(L4J_DIR)/launch4j
+L4JC=$(L4J_DIR)/launch4jc.exe
+#L4JC=$(L4J_DIR)/launch4j
 
 # .exe files to be created by Launch4J
 L4J_DOC_EXES = 		designdocv1.exe designdocv2.exe designdocv3.exe \
