@@ -91,6 +91,7 @@ JGRAPHICAL_TESTS = \
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	Exit.xml \
 	FileWriter.xml \
+	subaggtest.xml \
 	#$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
