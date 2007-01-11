@@ -1,2 +1,11 @@
 #!/bin/sh
-echo `pwd`/$1
+# $Id$
+# Script used by mk/jnlp.mk to handle pathnames
+#
+if [ $1 = "--windows" ]; then
+    shift;
+    pwd=`pwd`
+    echo `cygpath --windows $pwd/$1 | sed 's@\\\@/@g'`
+else 
+    echo `pwd`/$1
+fi
