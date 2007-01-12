@@ -810,7 +810,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // System.out.println(moml.toString());
 
             MoMLChangeRequest request = null;
-            System.out.println("BasicGraphFrame moml: " + moml.toString());
+            //System.out.println("BasicGraphFrame moml: " + moml.toString());
             request = new MoMLChangeRequest(this, container, moml.toString());
             request.setUndoable(true);
 
