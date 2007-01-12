@@ -140,6 +140,6 @@ public abstract class VisibleAttribute extends Attribute {
             // but that is better than trashing user data.
         }
 
-        return super.moveToFirst();
+        return super.moveToLast();
     }
 }
