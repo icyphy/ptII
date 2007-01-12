@@ -347,7 +347,14 @@ test AttributeValueAttribute-8.7 {setContainer recursively} {
   in .top.d and .top.d.c}}
 
 test AttributeValueAttribute-10.1 {updateContent} {
+    set n [java::new ptolemy.kernel.util.NamedObj top]
     set c [java::new ptolemy.vergil.kernel.attributes.AttributeValueAttribute $n C]
     # AttributeValueAttribute.updateContent does nothing.
     $c updateContent
+} {}
+
+test AttributeValueAttribute-11.1 {validate} {
+    set n [java::new ptolemy.kernel.util.NamedObj top]
+    set c [java::new ptolemy.vergil.kernel.attributes.AttributeValueAttribute $n C]
+     $c validate
 } {}
