@@ -87,7 +87,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // Try uncommenting the next lines to see what is being
         // expanding before the error:
         //System.out.println("filterAttributeValue: " + container + "\t"
-        //   +  attributeName + "\t" + attributeValue);
+            //   +  attributeName + "\t" + attributeValue);
         if (attributeValue == null) {
             return null;
         } else if (_graphicalClasses.containsKey(attributeValue)) {
@@ -279,6 +279,15 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // Sinewave has a DocAttribute, which we need to remove
         _graphicalClasses.put("ptolemy.vergil.basic.DocAttribute",
                 "ptolemy.kernel.util.Attribute");
+
+        _graphicalClasses.put("ptolemy.domains.wireless.lib.GraphicalLocator",
+                "ptolemy.domains.wireless.lib.Locator");
+
+        _graphicalClasses.put("ptolemy.domains.wireless.lib.TerrainProperty",
+                null);
+
+        _graphicalClasses.put("ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor",
+                null);
 
     }
 
