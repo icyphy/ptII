@@ -15,12 +15,11 @@ the resulting file.
 
 <ul>
 <li><a href="#Simple Demo">Simple Demo</a>
-<li><a href="#How it works">How it works</a>
 <li><a href="#Invoking the code generator by hand">Invoking the code generator by hand</a>
 <li><a href="#Macro description">Macro description</a>
-<li><a href="#Helper writer style guide">Helper writer style guide</a>
 <li><a href="#Limitations">Limitations</a>
 <li><a href="#FAQ">FAQ</a>
+<li><a href="../../doc/codegen.htm">Ptolemy II Design Doc Codegen Chapter</a>
 </ul>
 
 <h2><a name="Simple Demo">Simple Demo</a></h2>
@@ -33,139 +32,6 @@ Open <a href="demo/Ramp/Ramp.xml"><code>$PTII/ptolemy/codegen/Demo/Ramp/Ramp.xml
 </ol>
 
 <a href="../configs/codegen/demos.htm">Other Codegen Demonstrations</a>
-
-<h2><a name="How it works">How it works</a></h2>
-This code generator uses reflection to find helper classes that in
-turn refer to code blocks.  
-<p>For example, if a model contains <code>ptolemy.actor.lib.Ramp</code>,
-we look for in <code>$PTII/ptolemy/codegen/c/actor/lib/</code>
-for <code>Ramp.java</code> and <code>Ramp.c</code>.
-
-<p><code>Ramp.java</code> contains a method:
-<pre>
-public void generateFireCode(StringBuffer stream)
-                throws IllegalActionException 
-        ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
-
-        String type = codeGenType(TypeLattice.leastUpperBound(actor.init
-                .getType(), actor.step.getType()));
-        if (!isPrimitiveType(type)) {
-            type = "Token";
-        }
-
-        _codeStream.appendCodeBlock(type + "FireBlock");
-        return processCode(_codeStream.toString());
-}
-</pre>
-The method first gets the type and then appends a <i>codeBlock</i>
-called <code>type + "FireBlock"</code>.  For example, if
-the type is Int, then we append the codeBlock 
-<code>IntFireBlock</code>, which can be found in
- <code>Ramp.c</code>:
-<pre>
-/***IntFireBlock***/
-        $ref(output) = $actorSymbol(state);
-        $actorSymbol(state) += $val(step);
-/**/
-</pre>
-(There are other codeBlocks for other types. )
-
-When the code generator runs, it runs <code>generateFireCode()</code>
-which reads in <code>IntFireBlock</code> and writes it to the output file,
-<code>~/codegen/Ramp.c, which will contain
-<pre>
-        _Ramp_Ramp_output_0 = _Ramp_Ramp_state;
-        _Ramp_Ramp_state += 2;
-</pre>
-
-The <code>$ref</code> and <code>$val</code> in <code>IntFireBlock</code>
-are macros, which represent ports, states (including parameters) of
-the actor. For example, <code>$ref(output)</code> represents the
-<code>output</code> port of the <code>Ramp</code> actor in this
-model. When the code generator process a macro in the code string, it
-replaces the macro with a unique variable or a concrete value
-pertinent to the actor.
-
-<p>
-Currently, we have the following macros:
-<p> <code>$ref(name)</code>
-
-<br>Returns a reference of a state or a port. If the argument,
-<code>name</code>, refers to a port, it by default refers to the first
-token in the buffer of that port. If the port is a multiport, say
-<code>input</code>, we use <code>$ref(input#0)</code> to refer to the
-first channel of the <code>input</code> port.
-
-<p> <code>$ref(name, offset)</code>
-
-<br> Returns a reference to an array state or a port with an offset
-that is not negative.  For a port, it refers to the
-<code>offset</code>-th token in the buffer of that port. For an array
-state, it refers to the <code>offset</code>-th element in the array.
-
-<p><code>$val(name)</code>
-<br>Returns the current value of a state.
-<p><code>$size(name)</code>
-
-<br>Returns the size of a state. The size of a non-array state is one;
-the size of an array state is the length of the array.
-<p>
-<code>$actorSymbol(name)</code>
-<br>
-Returns a unique variable for the actor.
-<p>
-
-<h2><a name="Invoking the code generator by hand">Invoking the code generator by hand</a></h2>
-Use the command below to invoke the code generator by hand:
-<pre>
-$PTII/bin/ptinvoke ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
-</pre>
-Or, you can run <code>$PTII/bin/ptcg</code>, which invokes the CodeGenerator
-class for you:
-<pre>
-$PTII/bin/ptcg $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
-</pre>
-
-<h2><a name="Macro description">Macro description</a></h2>
-<i>FIXME</i>
-
-<h2><a name="Helper writer style guide">Helper writer style guide</a></h2>
-<i>FIXME: Include details about running template generator</i>
-
-<menu>
-<li> Be sure to add and @see tag to the base actor
-
-<li> When writing helpers, try to put as much as possible into
-the .c file.  The reason is that if we have keep the language
-specific code in the .c files, then in the future it will be easier
-to support other languages.
-
-
-<li> To add a comment to output from within a Java file, use
-<CODE>CodeGenerator.comment()</CODE> so that the comment is
-properly indented and has the appropriate language specific
-comment tag.  For example,
-<pre>
-       code.append(_codeGenerator.comment(1, "My Comment.");
-</pre>
-will append a comment with one level of indent
-<pre>
-    /* My Comment. */
-</pre>
-to the output.
-<br>Currently, only C-style comments are supported
-<CODE>/* <I>comment</I> */</CODE>, but support for other 
-languages will be easier if we avoid C specific code.
-
-<li> Code should be properly indented.  Usually, actor
-helper code written in .c files is indented 8 spaces so that
-it is properly indented in the output file (four spaces
-for the <CODE>main()</CODE> body, four spaces for the
-<CODE>while()</CODE> or <CODE>for()</CODE> loop that
-iterates through the actors.
-
-</menu>
-
 
 <h2><a name="Limitations">Limitations</a></h2>
 This is a highly preliminary code generator facility, with many 
