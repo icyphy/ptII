@@ -364,6 +364,22 @@ public class StringUtilities {
                             _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
                                     _ptolemyPtIIDir
                                             .lastIndexOf(ptsupportJarName));
+                        } else {
+                            // Ptolemy II 6.0.1 under Windows: remove
+                            // "\ptolemy\ptsupport.jar!"
+                            // If we don't do this, then ptolemy.ptII.dir
+                            // is set incorrectly and then links to the javadoc
+                            // files will not be found if the javadoc only
+                            // exists in codeDoc.jar and lib/ptII.properties
+                            // is not present.
+                            ptsupportJarName = File.separator + "ptolemy"
+                                + File.separator + "ptsupport.jar";
+
+                            if (_ptolemyPtIIDir.lastIndexOf(ptsupportJarName) != -1) {
+                                _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
+                                    _ptolemyPtIIDir
+                                        .lastIndexOf(ptsupportJarName));
+                            }
                         }
                     }
                 }
