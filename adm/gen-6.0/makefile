@@ -457,6 +457,7 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/configs/copernicus \
 		ptolemy/copernicus \
 		ptolemy/domains/ci \
+		ptolemy/domains/continuous \
 		ptolemy/domains/ct/lib/IPCInterface.java \
 		ptolemy/domains/ct/lib/IPCInterface.class \
 		ptolemy/domains/dde \
