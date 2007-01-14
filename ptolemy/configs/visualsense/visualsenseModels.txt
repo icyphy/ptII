@@ -1,0 +1,9 @@
+$CLASSPATH/ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml
+$CLASSPATH/ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.xml
+$CLASSPATH/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml
+$CLASSPATH/ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml
+$CLASSPATH/ptolemy/domains/wireless/demo/Collisions/Collisions.xml
+$CLASSPATH/ptolemy/domains/wireless/demo/CircularRange/CircularRange.xml
+$CLASSPATH/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml
+$CLASSPATH/ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.xml
+$CLASSPATH/ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.xml
