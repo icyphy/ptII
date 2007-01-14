@@ -558,7 +558,8 @@ fixtmpdist:
 	echo "<html>" > $(PTTMPME)/doc/download/index.htm
 	echo "<head>" >> $(PTTMPME)/doc/download/index.htm
 	echo "<title>Download Ptplot</title>" >> $(PTTMPME)/doc/download/index.htm
-	echo '<body bgcolor="#faf0e6">'  >> $(PTTMPME)/doc/download/index.htm
+	echo '<link href="../default.css" rel="stylesheet" type="text/css">' >> $(PTTMPME)/doc/download/index.htm
+	echo '<body bgcolor="#ffffff">'  >> $(PTTMPME)/doc/download/index.htm
 	echo "<H1>Download Ptplot</H1>" >> $(PTTMPME)/doc/download/index.htm
 	echo "The Ptplot distribution itself does not include all the available download formats." >> $(PTTMPME)/doc/download/index.htm
 	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot" target="_top"><code>http://ptolemy.eecs.berkeley.edu/java/ptplot</code></a>' >> $(PTTMPME)/doc/download/index.htm
