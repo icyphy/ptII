@@ -508,7 +508,17 @@ public class PtinyOSDirector extends Director {
                 if (_debugging) {
                     _debug("About to load '" + className + "'");
                 }
-                Class cls = cl.loadClass(className);
+
+                Class cls = null;
+                try {
+                    cls = cl.loadClass(className);
+                } catch (ClassNotFoundException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "\"simulate\" option was selected, " +
+                            "but the \"ptII\" target was not " +
+                            "selected/compiled for: " +
+                            toplevelName);
+                }
                 Object o = cls.newInstance();
 
                 if (o instanceof PtinyOSLoader) {
