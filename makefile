@@ -281,12 +281,17 @@ cvs_delete_clean_shipping:
 
 # Build a release
 # See doc/coding/releasemgt.htm
-dist:
+dist: dist_1 dist_2 dist_3 dist_4
+
+dist_1:
 	cvs update
+dist_2:
 	$(MAKE) clean fast install
+dist_3:
 	rm -rf jar_dist *.exe
 	$(MAKE) jar_dist exes
-	$(MAKE) -C adm/gen-6.0 PTIIHOME=$(PTII) COMPRESS=gzip TAR=tar make_izpack clean all src.jar setup
+dist_4:
+	$(MAKE) -C adm/gen-6.0 PTIIHOME=`cygpath --unix $(PTII)` COMPRESS=gzip TAR=tar make_izpack clean all src.jar setup
 
 # Include rules to build Web Start JNLP files
 include $(ROOT)/mk/jnlp.mk
