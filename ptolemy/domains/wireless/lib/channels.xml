@@ -11,19 +11,15 @@
 </entity>
 
 <entity name="DelayChannel" class="ptolemy.domains.wireless.lib.DelayChannel">
-<doc></doc>
 </entity>
 
 <entity name="LimitedRangeChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
-<doc></doc>
 </entity>
 
 <entity name="ErasureChannel" class="ptolemy.domains.wireless.lib.ErasureChannel">
-<doc></doc>
 </entity>
 
 <entity name="PowerLossChannel" class="ptolemy.domains.wireless.lib.PowerLossChannel">
-<doc></doc>
 </entity>
       </group>
     ?>
