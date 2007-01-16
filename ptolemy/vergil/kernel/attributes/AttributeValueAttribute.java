@@ -241,8 +241,8 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
                             _deferred = false;
                         }
                     };
-                    container.requestChange(request);
                     _deferred = true;
+                    container.requestChange(request);
                 }
                 _attribute = null;
             } else if (_attribute != newAttribute) {
