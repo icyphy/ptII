@@ -104,7 +104,8 @@ public class PlotterBase extends CCodeGeneratorHelper {
         code.append(_generateBlockCode("plotterBaseInitBlock"));
 
         code.append(super.generateInitializeCode());
-        ptolemy.actor.lib.gui.PlotterBase actor = (ptolemy.actor.lib.gui.PlotterBase) getComponent();
+        ptolemy.actor.lib.gui.PlotterBase actor 
+                = (ptolemy.actor.lib.gui.PlotterBase) getComponent();
 
         // If the plot has not been created, we need to creat the plot
         // to get the configuration.
@@ -181,7 +182,7 @@ public class PlotterBase extends CCodeGeneratorHelper {
         code.append(super.generateWrapupCode());
         // FIXME: this is a dumb way to leave the plot window open 
         // when the program runs to the end. I need to figure out a
-        // better way. Or is there any?
+        // better way.
         code.append("char $actorSymbol(temp)[80];" + _eol);
         code.append("printf(\"close plot window to exit...\");" + _eol);
         code.append("scanf(\"%s\",$actorSymbol(temp));" + _eol);

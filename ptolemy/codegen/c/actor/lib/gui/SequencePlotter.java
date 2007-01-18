@@ -70,8 +70,10 @@ public class SequencePlotter extends PlotterBase {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
-        ptolemy.actor.lib.gui.SequencePlotter actor = (ptolemy.actor.lib.gui.SequencePlotter) getComponent();
+        ptolemy.actor.lib.gui.SequencePlotter actor 
+                = (ptolemy.actor.lib.gui.SequencePlotter) getComponent();
         code.append(generatePlotFireCode(actor.input.getWidth()));
+        code.append(_generateBlockCode("updateBlock"));
         return code.toString();
     }
 }
