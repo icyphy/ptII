@@ -28,18 +28,7 @@
 
 package ptolemy.codegen.c.actor.lib.gui;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
-import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// SequencePlotter
