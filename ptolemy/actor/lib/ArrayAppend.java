@@ -72,6 +72,8 @@ public class ArrayAppend extends Transformer {
         // Set type constraints.
         input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         output.setTypeAtLeast(input);
+        // FIXME: correct type constraint for length
+        output.setTypeAtLeast(ArrayType.ARRAY_UNSIZED_BOTTOM);
     }
 
     ///////////////////////////////////////////////////////////////////
