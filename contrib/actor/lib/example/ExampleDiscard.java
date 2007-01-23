@@ -25,8 +25,9 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.actor.lib;
+package contrib.actor.lib.example;
 
+import ptolemy.actor.lib.Sink;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
