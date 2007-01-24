@@ -31,12 +31,14 @@ import java.util.Iterator;
 
 import ptolemy.actor.IOPort;
 import ptolemy.data.FixToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.FixPoint;
 import ptolemy.math.FixPointQuantization;
@@ -71,13 +73,27 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        latency = new Parameter(this, "latency");
-        latency.setExpression("0");
+        latency = new Parameter(this, "latency", new IntToken(0));
 
         initialValue = new Parameter(this, "initialValue");
         initialValue.setTypeEquals(BaseType.SCALAR);
         initialValue.setExpression("0.0");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The number cycle delay of the output data. 
+     */
+    public Parameter latency;
+
+    /** The number cycle delay of the output data. 
+     */
+    public Parameter initialValue;
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
 
     /** Override the base class to determine which function is being
      *  specified.
@@ -175,7 +191,8 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
                 return false;
             }
         } catch (IllegalActionException ex) {
-
+            throw new InternalErrorException(this, ex,
+                    "Failed to get the value of the latency parameter?");
         }
         return true;
     }
@@ -199,20 +216,8 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
                 }
             }
         } catch (IllegalActionException ex) {
-
+            throw new InternalErrorException(this, ex,
+                    "Failed to get the value of the latency parameter?");
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    //private ArrayList<Token> _previousOutput;
-
-    /** The number cycle delay of the output data. 
-     */
-    public Parameter latency;
-
-    /** The number cycle delay of the output data. 
-     */
-    public Parameter initialValue;
 }
