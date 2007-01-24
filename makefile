@@ -96,7 +96,6 @@ EXTRA_SRCS = \
 	.classpath.in \
 	.eclipse.epf \
 	README.txt \
-	build.xml \
 	copyright.txt \
 	configure.in \
 	configure \
