@@ -3,7 +3,7 @@ dnl	generate the file "configure", which is run to configure the
 dnl	Makefile in this directory.
 
 # Version: $Id$
-# Copyright (c) 1997-2006 The Regents of the University of California.
+# Copyright (c) 1997-2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -1031,7 +1031,7 @@ if test ! -d "$DOCLETS_USER_DIR"; then
 
     TOOLS_JAR='${PTJAVA_HOME}/../lib/tools.jar'
 else
-    AC_MSG_CHECKING([for tools.jar directory])
+    AC_MSG_CHECKING([for tools.jar for use with doclets])
     AC_ARG_WITH(tools_jar, [  --with-tools_jar=DIR    use tools.jar from DIR,
                           defaults to \$PTJAVA_HOME/../lib/tools.jar],
 	TOOLS_JAR=$withval,
@@ -1039,14 +1039,22 @@ else
     if test -f "$TOOLS_JAR"; then
 	AC_MSG_RESULT([$TOOLS_JAR])
 	PTDOCLETS_DIR=doclets
-	# Use curly brackets so PTII gets expanded in the makefile
-	JDOCTAGLET='-tagletpath "${PTII}" -taglet doc.doclets.RatingTaglet'
     else	
-	AC_MSG_WARN([Could not find tools.jar.
+        AC_MSG_WARN([Could not find tools.jar, checking for classes.jar])
+	AC_MSG_CHECKING([for classes.jar for use with doclets])
+	TOOLS_JAR=${PTJAVA_HOME}/../Classes/classesFFF.jar
+        if test -f "$TOOLS_JAR"; then
+	    AC_MSG_RESULT([$TOOLS_JAR])
+	    PTDOCLETS_DIR=doclets
+        else 
+	    AC_MSG_WARN([Could not find tools.jar or classes.jar in
     PTJAVA_HOME = $PTJAVA_HOME
     Usually, tools.jar is in PTJAVA_HOME/../lib/tools.jar
-    Since tools.jar cannot be found, we will not use doclets from
-    ptII/doc/doclets])
+    or classes.jar is in PTJAVA_HOME/../Classes/classes.jar
+    Since tools.jar and classes.jar cannot be found,
+    we will not use doclets from ptII/doc/doclets, which
+    means that the actor documentation index system will not work.])
+        fi
     fi	
 fi
 
@@ -1055,6 +1063,10 @@ if test -z "$PTDOCLETS_DIR"; then
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$TOOLS_JAR\"/>"
+
+    JDOCTAG="-tag Pt.AcceptedRating -tag Pt.ProposedRating"
+    # Use curly brackets so PTII gets expanded in the makefile
+    JDOCTAGLET='-tagletpath "${PTII}" -taglet doc.doclets.RatingTaglet'
 fi 
 
 #--------------------------------------------------------------------
@@ -2136,104 +2148,113 @@ else
 	CYGWIN_98-*) PTJNI_ARCHITECTURE=win32;;
 	Linux) PTJNI_ARCHITECTURE=linux;;
 	SunOS) PTJNI_ARCHITECTURE=solaris;;
+	Darwin) PTJNI_ARCHITECTURE=darwin
+		PTJNI_DIR=
+		AC_MSG_WARN([
+   The Ptolemy JNI facilty is not supported on MacOS
+   because Apple laid out the Java directory differently
+   than the Windows, Solaris and Linux Java directories.
+   As a result, the Ptolemy JNI facility will not work.]);
+		;;
 	*) PTJNI_ARCHITECTURE=unknown;;
     esac
 
-    AC_MSG_RESULT(['$PTJNI_ARCHITECTURE'])
+    if test ! -z $PTJNI_DIR; then 
+        AC_MSG_RESULT(['$PTJNI_ARCHITECTURE'])
 
-    AC_MSG_CHECKING([for the proper JNI architecture include directory])
-    if test ! -d "$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE"; then 
-	AC_MSG_WARN(["$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE" was not found.
+        AC_MSG_CHECKING([for the proper JNI architecture include directory])
+        if test ! -d "$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE"; then 
+	    AC_MSG_WARN(["$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE" was not found.
     As a result, compilation of JNI actors will fail.])
-    else 
-	AC_MSG_RESULT([$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE])
-    fi
+        else 
+	    AC_MSG_RESULT([$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE])
+        fi
 
-    AC_MSG_CHECKING([for the proper JNI architecture])
-    case "`uname -p`" in
-	*86) PTJNI_LIB_ARCHITECTURE=i386;;
-	sparc) PTJNI_LIB_ARCHITECTURE=sparc;;
-	unknown) if test $PTJNI_ARCHITECTURE = "win32"; then
-		     PTJNI_LIB_ARCHITECTURE=i386
-		 else    
-		     PTJNI_LIB_ARCHITECTURE=unknown
-		 fi    
-                 ;;
-	*) PTJNI_LIB_ARCHITECTURE=unknown;;
-    esac
+        AC_MSG_CHECKING([for the proper JNI architecture])
+        case "`uname -p`" in
+	    *86) PTJNI_LIB_ARCHITECTURE=i386;;
+	    sparc) PTJNI_LIB_ARCHITECTURE=sparc;;
+	    unknown) if test $PTJNI_ARCHITECTURE = "win32"; then
+		         PTJNI_LIB_ARCHITECTURE=i386
+		     else    
+		         PTJNI_LIB_ARCHITECTURE=unknown
+		     fi    
+                     ;;
+	    *) PTJNI_LIB_ARCHITECTURE=unknown;;
+        esac
 
-    AC_MSG_RESULT(['$PTJNI_LIB_ARCHITECTURE'])
+        AC_MSG_RESULT(['$PTJNI_LIB_ARCHITECTURE'])
 
-    AC_MSG_CHECKING([for the proper JNI architecture lib directory])
-    if test ! -d "$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE"; then 
-	AC_MSG_WARN(["$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE" was not found.
+        AC_MSG_CHECKING([for the proper JNI architecture lib directory])
+        if test ! -d "$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE"; then 
+	    AC_MSG_WARN(["$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE" was not found.
     As a result, $PTII/jni/launcher/launcher might not work.])
-    else 
-	AC_MSG_RESULT([$PTJAVA_HOME/lib/$PTJNI_ARCHITECTURE])
-    fi
+        else 
+	    AC_MSG_RESULT([$PTJAVA_HOME/lib/$PTJNI_ARCHITECTURE])
+        fi
 
-    AC_MSG_CHECKING([for if the -mno-cygwin flag is available])
-    case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
-	CYGWIN_NT-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
-	CYGWIN_98-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
-	*) PTJNI_NO_CYGWIN=;;
-    esac
-    AC_MSG_RESULT(['$PTJNI_NO_CYGWIN'])
+        AC_MSG_CHECKING([for if the -mno-cygwin flag is available])
+        case "`uname -s`" in
+            CYGWIN_ME-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	    CYGWIN_NT-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	    CYGWIN_98-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	    *) PTJNI_NO_CYGWIN=;;
+        esac
+        AC_MSG_RESULT(['$PTJNI_NO_CYGWIN'])
 
-    AC_MSG_CHECKING([for the proper shared library cc flag])
-    case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-	SunOS)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
-	*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-    esac
-    AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_CFLAG'])
+        AC_MSG_CHECKING([for the proper shared library cc flag])
+        case "`uname -s`" in
+            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
+	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
+	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
+	    SunOS)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
+	    *) PTJNI_SHAREDLIBRARY_CFLAG=;;
+        esac
+        AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_CFLAG'])
 
-    AC_MSG_CHECKING([for the proper shared library link flag])
-    case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
-	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
-	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
-	SunOS)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
-	*) PTJNI_SHAREDLIBRARY_LDFLAG=;;
-    esac
-    AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_LDFLAG'])
+        AC_MSG_CHECKING([for the proper shared library link flag])
+        case "`uname -s`" in
+            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
+	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
+	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
+	    SunOS)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
+	    *) PTJNI_SHAREDLIBRARY_LDFLAG=;;
+        esac
+        AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_LDFLAG'])
 
-    AC_MSG_CHECKING([for the proper shared library prefix])
-    case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
-	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
-	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
-	SunOS)	 PTJNI_SHAREDLIBRARY_PREFIX=lib;;
-	*) PTJNI_SHAREDLIBRARY_PREFIX=lib;;
-    esac
-    AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_PREFIX'])
+        AC_MSG_CHECKING([for the proper shared library prefix])
+        case "`uname -s`" in
+            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	    SunOS)	 PTJNI_SHAREDLIBRARY_PREFIX=lib;;
+	    *) PTJNI_SHAREDLIBRARY_PREFIX=lib;;
+        esac
+        AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_PREFIX'])
 
-    AC_MSG_CHECKING([for the proper shared library suffix])
-    case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
-	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
-	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
-	SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	Linux)   PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	*) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
-    esac
-    AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_SUFFIX'])
+        AC_MSG_CHECKING([for the proper shared library suffix])
+        case "`uname -s`" in
+            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
+	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
+	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
+	    SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	    Linux)   PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	    *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
+        esac
+        AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_SUFFIX'])
 
-    AC_MSG_CHECKING([for JNI libraries needed to link JNI])
-    PTJNI_DL_LIBRARY=
-    case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_LIBRARIES=-lcygwin;;
-	CYGWIN_NT-*) PTJNI_LIBRARIES=-lcygwin;;
-	CYGWIN_98-*) PTJNI_LIBRARIES=-lcygwin;;
-	Linux) PTJNI_LIBRARIES=
+        AC_MSG_CHECKING([for JNI libraries needed to link JNI])
+        PTJNI_DL_LIBRARY=
+        case "`uname -s`" in
+            CYGWIN_ME-*) PTJNI_LIBRARIES=-lcygwin;;
+	    CYGWIN_NT-*) PTJNI_LIBRARIES=-lcygwin;;
+	    CYGWIN_98-*) PTJNI_LIBRARIES=-lcygwin;;
+	    Linux) PTJNI_LIBRARIES=
 	       PTJNI_DL_LIBRARY=-ldl;;
-	*) PTJNI_LIBRARIES=;;
-    esac
-    AC_MSG_RESULT(['$PTJNI_LIBRARIES'])
-
+	    *) PTJNI_LIBRARIES=;;
+        esac
+        AC_MSG_RESULT(['$PTJNI_LIBRARIES'])
+    fi
 fi
 
 #--------------------------------------------------------------------
@@ -3343,6 +3364,10 @@ AC_SUBST(JDOCBREAKITERATOR)
 # Ptalon uses generics, if we are running JDK1.5,
 # then JDOCSOURCEFLAGS = -source 1.5
 AC_SUBST(JDOCSOURCEFLAGS)
+
+# If we can compile in doc/doclets, we set JDOCTAG appropriately
+# and use JDOCTAG in doc/makefile
+AC_SUBST(JDOCTAG)
 
 # If we can compile in doc/doclets, we set JDOCTAGLET appropriately
 # and use JDOCTAGLET in doc/makefile
