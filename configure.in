@@ -1042,7 +1042,7 @@ else
     else	
         AC_MSG_WARN([Could not find tools.jar, checking for classes.jar])
 	AC_MSG_CHECKING([for classes.jar for use with doclets])
-	TOOLS_JAR=${PTJAVA_HOME}/../Classes/classesFFF.jar
+	TOOLS_JAR=${PTJAVA_HOME}/../Classes/classesXXX.jar
         if test -f "$TOOLS_JAR"; then
 	    AC_MSG_RESULT([$TOOLS_JAR])
 	    PTDOCLETS_DIR=doclets
@@ -1068,6 +1068,23 @@ else
     # Use curly brackets so PTII gets expanded in the makefile
     JDOCTAGLET='-tagletpath "${PTII}" -taglet doc.doclets.RatingTaglet'
 fi 
+
+# The javadoc program
+AC_PATH_PROG(JAVADOC, javadoc)
+if test -x "$JAVADOC"; then
+    case "`uname -s`" in
+    CYGWIN*) 	
+		# We use cygpath here
+		# so that we can run make from within the doc builder gui.  The reason is that
+		# the doc builder gui runs make within a cmd shell, not a bash shell, which
+		# means that /cygdrive/c notation will not be understood.
+		AC_MSG_CHECKING([Under windows, javadoc should use the non-cywin path])
+		JAVADOC=`cygpath --mixed "$JAVADOC"`
+	        AC_MSG_RESULT([$JAVADOC])
+    ;;  
+    esac
+fi
+
 
 #--------------------------------------------------------------------
 #       We use Eclipse for parsing java backtracking.
@@ -3351,6 +3368,9 @@ AC_SUBST(JAVACC)
 
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
 AC_SUBST(JAVACC_DIR)
+
+# The javadoc binary, used to create html documentation of java classes.
+AC_SUBST(JAVADOC)
 
 # Location of jce.jar, usually $(PTJAVA_HOME)/lib/jce.jar
 # Java 1.5 has javax.crypto.Cipher in jce.jar
