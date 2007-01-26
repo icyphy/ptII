@@ -310,7 +310,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH FIND JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTECLIPSE PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB PTMATLAB_CC CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR COLT_DIR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT ECLIPSE_DIR GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS IMAGEJ_JAR JAI_JARS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JAVAX_CRYPTO_JAR JDOCBREAKITERATOR JDOCSOURCEFLAGS JDOCTAGLET JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBACKTRACK_DIR PTBACKTRACK_ECLIPSE_DIR PTBACKTRACK_ECLIPSE_DOC_JARS PTBACKTRACK_ECLIPSE_JARS PTBACKTRACK_ECLIPSE_PACKAGES PTBOOST_INCLUDE PTCALTROP_DIR PTCHIC_DIR PTCM_DIR PTCOLT_DIR PTCOLT_JARS PTCOLT_PACKAGES PTCOMM_DIR PTCOMM_PACKAGES PTCOPERNICUS_DIR PTDISTRIBUTED_DIR PTDISTRIBUTED_JARS PTDISTRIBUTED_PACKAGES PTDOCLETS_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTGRDOMAIN_JAR PTGR_PACKAGES PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAI_PACKAGES PTJAVA_DIR PTJAVA_DIR_NO_CYGDRIVE PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJMF_PACKAGES PTJNI_DIR PTJNI_ARCHITECTURE PTJNI_DL_LIBRARY PTJNI_LIB_ARCHITECTURE PTJNI_NO_CYGWIN PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJNI_LIBRARIES PTJOYSTICK_DIR PTJOYSTICK_PACKAGES PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMATLAB_LD_ARGS PTMESCAL_DIR PTPSDF_DIR PTSVG_DIR PTSVG_JAR PTPTALON_DIR PTPTALON_PACKAGES ANTLR_DIR PTQUICKTIME_DIR PTQUICKTIME_PACKAGES PTTINI_DIR PTTINYOS_DIR PTGIOTTO_DIR PTVR_DIR PTVR_JAR PTVR_PACKAGES PTWABA_DIR PTX10_DIR PTX10_PACKAGES PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR TOOLS_JAR TOSROOT_NO_CYGDRIVE TOSDIR_NO_CYGDRIVE GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH FIND JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTECLIPSE PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB PTMATLAB_CC CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR COLT_DIR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT ECLIPSE_DIR GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS IMAGEJ_JAR JAI_JARS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JAVAX_CRYPTO_JAR JDOCBREAKITERATOR JDOCSOURCEFLAGS JDOCTAG JDOCTAGLET JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBACKTRACK_DIR PTBACKTRACK_ECLIPSE_DIR PTBACKTRACK_ECLIPSE_DOC_JARS PTBACKTRACK_ECLIPSE_JARS PTBACKTRACK_ECLIPSE_PACKAGES PTBOOST_INCLUDE PTCALTROP_DIR PTCHIC_DIR PTCM_DIR PTCOLT_DIR PTCOLT_JARS PTCOLT_PACKAGES PTCOMM_DIR PTCOMM_PACKAGES PTCOPERNICUS_DIR PTDISTRIBUTED_DIR PTDISTRIBUTED_JARS PTDISTRIBUTED_PACKAGES PTDOCLETS_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTGRDOMAIN_JAR PTGR_PACKAGES PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAI_PACKAGES PTJAVA_DIR PTJAVA_DIR_NO_CYGDRIVE PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJMF_PACKAGES PTJNI_DIR PTJNI_ARCHITECTURE PTJNI_DL_LIBRARY PTJNI_LIB_ARCHITECTURE PTJNI_NO_CYGWIN PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJNI_LIBRARIES PTJOYSTICK_DIR PTJOYSTICK_PACKAGES PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMATLAB_LD_ARGS PTMESCAL_DIR PTPSDF_DIR PTSVG_DIR PTSVG_JAR PTPTALON_DIR PTPTALON_PACKAGES ANTLR_DIR PTQUICKTIME_DIR PTQUICKTIME_PACKAGES PTTINI_DIR PTTINYOS_DIR PTGIOTTO_DIR PTVR_DIR PTVR_JAR PTVR_PACKAGES PTWABA_DIR PTX10_DIR PTX10_PACKAGES PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR TOOLS_JAR TOSROOT_NO_CYGDRIVE TOSDIR_NO_CYGDRIVE GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -4418,8 +4418,8 @@ echo "${ECHO_T}$DOCLETS_USER_DIR is not present,
 
     TOOLS_JAR='${PTJAVA_HOME}/../lib/tools.jar'
 else
-    echo "$as_me:$LINENO: checking for tools.jar directory" >&5
-echo $ECHO_N "checking for tools.jar directory... $ECHO_C" >&6
+    echo "$as_me:$LINENO: checking for tools.jar for use with doclets" >&5
+echo $ECHO_N "checking for tools.jar for use with doclets... $ECHO_C" >&6
 
 # Check whether --with-tools_jar or --without-tools_jar was given.
 if test "${with_tools_jar+set}" = set; then
@@ -4432,19 +4432,32 @@ fi;
 	echo "$as_me:$LINENO: result: $TOOLS_JAR" >&5
 echo "${ECHO_T}$TOOLS_JAR" >&6
 	PTDOCLETS_DIR=doclets
-	# Use curly brackets so PTII gets expanded in the makefile
-	JDOCTAGLET='-tagletpath "${PTII}" -taglet doc.doclets.RatingTaglet'
     else
-	{ echo "$as_me:$LINENO: WARNING: Could not find tools.jar.
+        { echo "$as_me:$LINENO: WARNING: Could not find tools.jar, checking for classes.jar" >&5
+echo "$as_me: WARNING: Could not find tools.jar, checking for classes.jar" >&2;}
+	echo "$as_me:$LINENO: checking for classes.jar for use with doclets" >&5
+echo $ECHO_N "checking for classes.jar for use with doclets... $ECHO_C" >&6
+	TOOLS_JAR=${PTJAVA_HOME}/../Classes/classesFFF.jar
+        if test -f "$TOOLS_JAR"; then
+	    echo "$as_me:$LINENO: result: $TOOLS_JAR" >&5
+echo "${ECHO_T}$TOOLS_JAR" >&6
+	    PTDOCLETS_DIR=doclets
+        else
+	    { echo "$as_me:$LINENO: WARNING: Could not find tools.jar or classes.jar in
     PTJAVA_HOME = $PTJAVA_HOME
     Usually, tools.jar is in PTJAVA_HOME/../lib/tools.jar
-    Since tools.jar cannot be found, we will not use doclets from
-    ptII/doc/doclets" >&5
-echo "$as_me: WARNING: Could not find tools.jar.
+    or classes.jar is in PTJAVA_HOME/../Classes/classes.jar
+    Since tools.jar and classes.jar cannot be found,
+    we will not use doclets from ptII/doc/doclets, which
+    means that the actor documentation index system will not work." >&5
+echo "$as_me: WARNING: Could not find tools.jar or classes.jar in
     PTJAVA_HOME = $PTJAVA_HOME
     Usually, tools.jar is in PTJAVA_HOME/../lib/tools.jar
-    Since tools.jar cannot be found, we will not use doclets from
-    ptII/doc/doclets" >&2;}
+    or classes.jar is in PTJAVA_HOME/../Classes/classes.jar
+    Since tools.jar and classes.jar cannot be found,
+    we will not use doclets from ptII/doc/doclets, which
+    means that the actor documentation index system will not work." >&2;}
+        fi
     fi
 fi
 
@@ -4453,6 +4466,10 @@ if test -z "$PTDOCLETS_DIR"; then
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$TOOLS_JAR\"/>"
+
+    JDOCTAG="-tag Pt.AcceptedRating -tag Pt.ProposedRating"
+    # Use curly brackets so PTII gets expanded in the makefile
+    JDOCTAGLET='-tagletpath "${PTII}" -taglet doc.doclets.RatingTaglet'
 fi
 
 #--------------------------------------------------------------------
@@ -6703,127 +6720,141 @@ echo $ECHO_N "checking for the proper JNI architecture... $ECHO_C" >&6
 	CYGWIN_98-*) PTJNI_ARCHITECTURE=win32;;
 	Linux) PTJNI_ARCHITECTURE=linux;;
 	SunOS) PTJNI_ARCHITECTURE=solaris;;
+	Darwin) PTJNI_ARCHITECTURE=darwin
+		PTJNI_DIR=
+		{ echo "$as_me:$LINENO: WARNING:
+   The Ptolemy JNI facilty is not supported on MacOS
+   because Apple laid out the Java directory differently
+   than the Windows, Solaris and Linux Java directories.
+   As a result, the Ptolemy JNI facility will not work." >&5
+echo "$as_me: WARNING:
+   The Ptolemy JNI facilty is not supported on MacOS
+   because Apple laid out the Java directory differently
+   than the Windows, Solaris and Linux Java directories.
+   As a result, the Ptolemy JNI facility will not work." >&2;};
+		;;
 	*) PTJNI_ARCHITECTURE=unknown;;
     esac
 
-    echo "$as_me:$LINENO: result: '$PTJNI_ARCHITECTURE'" >&5
+    if test ! -z $PTJNI_DIR; then
+        echo "$as_me:$LINENO: result: '$PTJNI_ARCHITECTURE'" >&5
 echo "${ECHO_T}'$PTJNI_ARCHITECTURE'" >&6
 
-    echo "$as_me:$LINENO: checking for the proper JNI architecture include directory" >&5
+        echo "$as_me:$LINENO: checking for the proper JNI architecture include directory" >&5
 echo $ECHO_N "checking for the proper JNI architecture include directory... $ECHO_C" >&6
-    if test ! -d "$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE"; then
-	{ echo "$as_me:$LINENO: WARNING: \"$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE\" was not found.
+        if test ! -d "$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE"; then
+	    { echo "$as_me:$LINENO: WARNING: \"$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE\" was not found.
     As a result, compilation of JNI actors will fail." >&5
 echo "$as_me: WARNING: \"$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE\" was not found.
     As a result, compilation of JNI actors will fail." >&2;}
-    else
-	echo "$as_me:$LINENO: result: $PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE" >&5
+        else
+	    echo "$as_me:$LINENO: result: $PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE" >&5
 echo "${ECHO_T}$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE" >&6
-    fi
+        fi
 
-    echo "$as_me:$LINENO: checking for the proper JNI architecture" >&5
+        echo "$as_me:$LINENO: checking for the proper JNI architecture" >&5
 echo $ECHO_N "checking for the proper JNI architecture... $ECHO_C" >&6
-    case "`uname -p`" in
-	*86) PTJNI_LIB_ARCHITECTURE=i386;;
-	sparc) PTJNI_LIB_ARCHITECTURE=sparc;;
-	unknown) if test $PTJNI_ARCHITECTURE = "win32"; then
-		     PTJNI_LIB_ARCHITECTURE=i386
-		 else
-		     PTJNI_LIB_ARCHITECTURE=unknown
-		 fi
-                 ;;
-	*) PTJNI_LIB_ARCHITECTURE=unknown;;
-    esac
+        case "`uname -p`" in
+	    *86) PTJNI_LIB_ARCHITECTURE=i386;;
+	    sparc) PTJNI_LIB_ARCHITECTURE=sparc;;
+	    unknown) if test $PTJNI_ARCHITECTURE = "win32"; then
+		         PTJNI_LIB_ARCHITECTURE=i386
+		     else
+		         PTJNI_LIB_ARCHITECTURE=unknown
+		     fi
+                     ;;
+	    *) PTJNI_LIB_ARCHITECTURE=unknown;;
+        esac
 
-    echo "$as_me:$LINENO: result: '$PTJNI_LIB_ARCHITECTURE'" >&5
+        echo "$as_me:$LINENO: result: '$PTJNI_LIB_ARCHITECTURE'" >&5
 echo "${ECHO_T}'$PTJNI_LIB_ARCHITECTURE'" >&6
 
-    echo "$as_me:$LINENO: checking for the proper JNI architecture lib directory" >&5
+        echo "$as_me:$LINENO: checking for the proper JNI architecture lib directory" >&5
 echo $ECHO_N "checking for the proper JNI architecture lib directory... $ECHO_C" >&6
-    if test ! -d "$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE"; then
-	{ echo "$as_me:$LINENO: WARNING: \"$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE\" was not found.
+        if test ! -d "$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE"; then
+	    { echo "$as_me:$LINENO: WARNING: \"$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE\" was not found.
     As a result, $PTII/jni/launcher/launcher might not work." >&5
 echo "$as_me: WARNING: \"$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE\" was not found.
     As a result, $PTII/jni/launcher/launcher might not work." >&2;}
-    else
-	echo "$as_me:$LINENO: result: $PTJAVA_HOME/lib/$PTJNI_ARCHITECTURE" >&5
+        else
+	    echo "$as_me:$LINENO: result: $PTJAVA_HOME/lib/$PTJNI_ARCHITECTURE" >&5
 echo "${ECHO_T}$PTJAVA_HOME/lib/$PTJNI_ARCHITECTURE" >&6
-    fi
+        fi
 
-    echo "$as_me:$LINENO: checking for if the -mno-cygwin flag is available" >&5
+        echo "$as_me:$LINENO: checking for if the -mno-cygwin flag is available" >&5
 echo $ECHO_N "checking for if the -mno-cygwin flag is available... $ECHO_C" >&6
-    case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
-	CYGWIN_NT-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
-	CYGWIN_98-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
-	*) PTJNI_NO_CYGWIN=;;
-    esac
-    echo "$as_me:$LINENO: result: '$PTJNI_NO_CYGWIN'" >&5
+        case "`uname -s`" in
+            CYGWIN_ME-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	    CYGWIN_NT-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	    CYGWIN_98-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	    *) PTJNI_NO_CYGWIN=;;
+        esac
+        echo "$as_me:$LINENO: result: '$PTJNI_NO_CYGWIN'" >&5
 echo "${ECHO_T}'$PTJNI_NO_CYGWIN'" >&6
 
-    echo "$as_me:$LINENO: checking for the proper shared library cc flag" >&5
+        echo "$as_me:$LINENO: checking for the proper shared library cc flag" >&5
 echo $ECHO_N "checking for the proper shared library cc flag... $ECHO_C" >&6
-    case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-	SunOS)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
-	*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-    esac
-    echo "$as_me:$LINENO: result: '$PTJNI_SHAREDLIBRARY_CFLAG'" >&5
+        case "`uname -s`" in
+            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
+	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
+	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
+	    SunOS)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
+	    *) PTJNI_SHAREDLIBRARY_CFLAG=;;
+        esac
+        echo "$as_me:$LINENO: result: '$PTJNI_SHAREDLIBRARY_CFLAG'" >&5
 echo "${ECHO_T}'$PTJNI_SHAREDLIBRARY_CFLAG'" >&6
 
-    echo "$as_me:$LINENO: checking for the proper shared library link flag" >&5
+        echo "$as_me:$LINENO: checking for the proper shared library link flag" >&5
 echo $ECHO_N "checking for the proper shared library link flag... $ECHO_C" >&6
-    case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
-	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
-	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
-	SunOS)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
-	*) PTJNI_SHAREDLIBRARY_LDFLAG=;;
-    esac
-    echo "$as_me:$LINENO: result: '$PTJNI_SHAREDLIBRARY_LDFLAG'" >&5
+        case "`uname -s`" in
+            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
+	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
+	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
+	    SunOS)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
+	    *) PTJNI_SHAREDLIBRARY_LDFLAG=;;
+        esac
+        echo "$as_me:$LINENO: result: '$PTJNI_SHAREDLIBRARY_LDFLAG'" >&5
 echo "${ECHO_T}'$PTJNI_SHAREDLIBRARY_LDFLAG'" >&6
 
-    echo "$as_me:$LINENO: checking for the proper shared library prefix" >&5
+        echo "$as_me:$LINENO: checking for the proper shared library prefix" >&5
 echo $ECHO_N "checking for the proper shared library prefix... $ECHO_C" >&6
-    case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
-	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
-	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
-	SunOS)	 PTJNI_SHAREDLIBRARY_PREFIX=lib;;
-	*) PTJNI_SHAREDLIBRARY_PREFIX=lib;;
-    esac
-    echo "$as_me:$LINENO: result: '$PTJNI_SHAREDLIBRARY_PREFIX'" >&5
+        case "`uname -s`" in
+            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	    SunOS)	 PTJNI_SHAREDLIBRARY_PREFIX=lib;;
+	    *) PTJNI_SHAREDLIBRARY_PREFIX=lib;;
+        esac
+        echo "$as_me:$LINENO: result: '$PTJNI_SHAREDLIBRARY_PREFIX'" >&5
 echo "${ECHO_T}'$PTJNI_SHAREDLIBRARY_PREFIX'" >&6
 
-    echo "$as_me:$LINENO: checking for the proper shared library suffix" >&5
+        echo "$as_me:$LINENO: checking for the proper shared library suffix" >&5
 echo $ECHO_N "checking for the proper shared library suffix... $ECHO_C" >&6
-    case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
-	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
-	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
-	SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	Linux)   PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	*) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
-    esac
-    echo "$as_me:$LINENO: result: '$PTJNI_SHAREDLIBRARY_SUFFIX'" >&5
+        case "`uname -s`" in
+            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
+	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
+	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
+	    SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	    Linux)   PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	    *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
+        esac
+        echo "$as_me:$LINENO: result: '$PTJNI_SHAREDLIBRARY_SUFFIX'" >&5
 echo "${ECHO_T}'$PTJNI_SHAREDLIBRARY_SUFFIX'" >&6
 
-    echo "$as_me:$LINENO: checking for JNI libraries needed to link JNI" >&5
+        echo "$as_me:$LINENO: checking for JNI libraries needed to link JNI" >&5
 echo $ECHO_N "checking for JNI libraries needed to link JNI... $ECHO_C" >&6
-    PTJNI_DL_LIBRARY=
-    case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_LIBRARIES=-lcygwin;;
-	CYGWIN_NT-*) PTJNI_LIBRARIES=-lcygwin;;
-	CYGWIN_98-*) PTJNI_LIBRARIES=-lcygwin;;
-	Linux) PTJNI_LIBRARIES=
+        PTJNI_DL_LIBRARY=
+        case "`uname -s`" in
+            CYGWIN_ME-*) PTJNI_LIBRARIES=-lcygwin;;
+	    CYGWIN_NT-*) PTJNI_LIBRARIES=-lcygwin;;
+	    CYGWIN_98-*) PTJNI_LIBRARIES=-lcygwin;;
+	    Linux) PTJNI_LIBRARIES=
 	       PTJNI_DL_LIBRARY=-ldl;;
-	*) PTJNI_LIBRARIES=;;
-    esac
-    echo "$as_me:$LINENO: result: '$PTJNI_LIBRARIES'" >&5
+	    *) PTJNI_LIBRARIES=;;
+        esac
+        echo "$as_me:$LINENO: result: '$PTJNI_LIBRARIES'" >&5
 echo "${ECHO_T}'$PTJNI_LIBRARIES'" >&6
-
+    fi
 fi
 
 #--------------------------------------------------------------------
@@ -8398,6 +8429,10 @@ fi
 # then JDOCSOURCEFLAGS = -source 1.5
 
 
+# If we can compile in doc/doclets, we set JDOCTAG appropriately
+# and use JDOCTAG in doc/makefile
+
+
 # If we can compile in doc/doclets, we set JDOCTAGLET appropriately
 # and use JDOCTAGLET in doc/makefile
 
@@ -9475,6 +9510,7 @@ s,@JAVACC_DIR@,$JAVACC_DIR,;t t
 s,@JAVAX_CRYPTO_JAR@,$JAVAX_CRYPTO_JAR,;t t
 s,@JDOCBREAKITERATOR@,$JDOCBREAKITERATOR,;t t
 s,@JDOCSOURCEFLAGS@,$JDOCSOURCEFLAGS,;t t
+s,@JDOCTAG@,$JDOCTAG,;t t
 s,@JDOCTAGLET@,$JDOCTAGLET,;t t
 s,@JHDL_JAR@,$JHDL_JAR,;t t
 s,@JINI_DIR@,$JINI_DIR,;t t
