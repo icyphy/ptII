@@ -103,6 +103,29 @@ test RecordType-2.0 {Test convert} {
         [[[$r1 getType] convert $r1] toString]
 } {{{}} {{name = "foo", value = 1.0}} {{extra = 2.5, name = "foo", value = 1}}}
 
+
+######################################################################
+####
+# 
+test RecordType-2.0.5 {Test convert: Converting from something with more records to less records fails} {
+    # token is {name = "foo", value = 1}
+    set l5 [java::new {String[]} {2} {{name} {value}}]
+
+    set nt5 [java::new {ptolemy.data.StringToken String} foo]
+    set vt5 [java::new {ptolemy.data.IntToken int} 1]
+    set v5 [java::new {ptolemy.data.Token[]} 2 [list $nt1 $vt1]]
+
+    set r5 [java::new {ptolemy.data.RecordToken} $l5 $v5]
+
+    catch {[$r1 getType] convert $r5} errMsg
+
+    list [[$empRT convert $r5] toString] [[$sdRT convert $r5] toString] \
+        [[[$r5 getType] convert $r5] toString] \
+        [[[$r5 getType] convert $r1] toString] "\n" \
+	$errMsg
+} {{{}} {{name = "foo", value = 1.0}} {{name = "foo", value = 1}} {{name = "foo", value = 1}} {
+} {java.lang.IllegalArgumentException: Conversion is not supported from ptolemy.data.RecordToken '{name = "foo", value = 1}' to the type {extra = double, name = string, value = int}.}}
+
 #######################################################################
 ####
 # 
