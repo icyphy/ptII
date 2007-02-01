@@ -16,7 +16,7 @@
   </property>
 </property>
 <property name="ParameterSet" 
-          class="ptolemy.data.expr.ParameterSet">
+          class="ptolemy.actor.parameters.ParameterSet">
   <property name="_editorFactory" class="ptolemy.actor.gui.FileOrURLEditorFactory">
       <!-- property name="attributeName" value="fileOrURL"/ -->
   </property> 
