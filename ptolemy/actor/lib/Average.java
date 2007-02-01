@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Average
 
 /**
- Output the average of the inputs after the last time a true token is
+ <p>Output the average of the inputs after the last time a true token is
  received at the reset port.
  One output is produced each time the actor is fired.
  The inputs and outputs can be any token type that
@@ -49,12 +49,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  Note that if the input is an integer, then the output is an
  integer, which may not be what you want. You may need to set
  the input and output ports to double to force the result to be
- a double.
+ a double.</p>
  <p>
  Note that the type system will fail to catch some errors. Static type
  checking may result in a resolved type that does not support addition
  and division.  In this case, a run-time error will occur.
- <p>
+ </p>
 
  @author Edward A. Lee, Jie Liu
  @version $Id$

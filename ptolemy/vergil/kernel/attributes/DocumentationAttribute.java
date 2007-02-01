@@ -44,10 +44,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
 /**
- This attribute is a visible attribute that displays documentation when
+ <p>This attribute is a visible attribute that displays documentation when
  configured by double clicking on it or by invoking Configure in the context
  menu.
- <p>
+ </p><p>
  The method
  that causes the documentation to be displayed is createEditor, which
  is normally used to configure an attribute. This means that the
@@ -56,7 +56,7 @@ import ptolemy.util.StringUtilities;
  documentation will be displayed, and the normal configure dialog
  will not be offered. Special provisions for "configuring" a
  DocumentationAttribute are described below.
- <p>
+ </p><p>
  The documentation is in a file specified by the FileParameter
  attribute with the name _documentation. The _documentation FileParameter can
  be on any object, including this DocumentationAttribute, in the containment
@@ -73,9 +73,9 @@ import ptolemy.util.StringUtilities;
  _documentation FileParameter will be on the container the
  specification for the file containing the documentation can be
  modified.
- <p>
+ </p><p>
  The DocumentationAttribute attribute can be found under more Utilities -&gt;
- Decorative -&gt; Documentation.
+ Decorative -&gt; Documentation.</p>
 
  @deprecated Use DocAttribute instead.
  @author Rowland R Johnson

@@ -60,22 +60,22 @@ import ptolemy.kernel.util.Workspace;
 //// InteractiveShell
 
 /**
- This actor creates a command shell on the screen, sending commands
+ <p>This actor creates a command shell on the screen, sending commands
  that are typed by the user to its output port, and reporting strings
  received at its input by displaying them.  Each time it fires, it
  reads the input, displays it, then displays a command prompt
- (which by default is "&gt;&gt"), and waits for a command to be
+ (which by default is "&gt;&gt;"), and waits for a command to be
  typed.  The command is terminated by an enter or return character,
  which then results in the command being produced on the output.
  In a typical use of this actor, it will be preceded by a SampleDelay
  actor which will provide an initial welcome message or instructions.
  The output will then be routed to some subsystem for processing,
  and the result will be fed back to the input.
- <p>
+ </p><p>
  Note that because of complexities in Swing, if you resize the display
  window, then, unlike the plotters, the new size will not be persistent.
  That is, if you save the model and then re-open it, the new size is
- forgotten.  The position, however, is persistent.
+ forgotten.  The position, however, is persistent.</p>
 
  @author  Edward A. Lee
  @version $Id$

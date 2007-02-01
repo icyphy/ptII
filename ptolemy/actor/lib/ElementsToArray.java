@@ -41,15 +41,15 @@ import ptolemy.kernel.util.Workspace;
 //// ElementsToArray
 
 /**
- On each firing, this actor reads exactly one token from each channel
+ <p>On each firing, this actor reads exactly one token from each channel
  of the input port and assembles the tokens into an ArrayToken. The
  ArrayToken is sent to the output port. If there is no input token
  at any channel of the input port, the prefire() will return false.
- <p>
+ </p><p>
  This actor is polymorphic. It can accept inputs of any type, as long
  as the type does not change, and will produce an array with elements
  of the corresponding type.
- <p>
+ </p>
 
  @author Ye Zhou
  @version $Id$

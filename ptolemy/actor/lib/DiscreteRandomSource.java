@@ -45,19 +45,20 @@ import ptolemy.math.SignalProcessing;
 //// DiscreteRandomSource
 
 /**
- An actor that produces tokens with a given probability mass function.
  <p>
+ An actor that produces tokens with a given probability mass function.
+ </p><p>
  The probability mass function is a parameter, <i>pmf</i>, of this
  actor. The <i>pmf</i> must be an array that contains entries that
  are all between 0.0 and 1.1, and sum to 1.0. By default, <i>pmf</i> is
  initialized to {0.5, 0.5}.
- <p>
+ </p><p>
  Output values are selected at random from the <i>values</i> parameter,
  which contains an ArrayToken. This array must have the same length as
  <i>pmf</i>.  Thus the <i>i</i>-th token in <i>values</i> has probability
  <i>pmf</i>[<i>i</i>]. The output port has the same type as the elements of
  the <i>values</i> array.  The default <i>values</i> are {0, 1}, which are
- integers.
+ integers.</p>
 
  @author Jeff Tsay, Yuhong Xiong
  @version $Id$

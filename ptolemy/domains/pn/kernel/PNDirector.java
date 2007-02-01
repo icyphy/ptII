@@ -52,16 +52,16 @@ import ptolemy.kernel.util.Workspace;
 //// PNDirector
 
 /**
- A PNDirector governs the execution of a CompositeActor with extended
+ <p>A PNDirector governs the execution of a CompositeActor with extended
  Kahn-MacQueen process networks (PN) semantics. This model of computation has
  been extended to support mutations of graphs in a non-deterministic way.
- <p>
+ </p><p>
  The thread that calls the various execution methods (initialize, prefire, fire
  and postfire) on the director is referred to as the <i>directing thread</i>.
  This directing thread might be the main thread responsible for the execution
  of the entire simulation or might be the thread created by the executive
  director of the containing composite actor.
- <p>
+ </p><p>
  In the PN domain, the director creates a thread (an instance of
  ProcessThread), representing a Kahn process, for each actor in the model.
  The threads are created in initialize() and started in the prefire() method
@@ -70,12 +70,12 @@ import ptolemy.kernel.util.Workspace;
  read from a channel (read-blocked), when trying to write to a channel
  (write-blocked) or when waiting for a queued topology change request to be
  processed (mutation-blocked).
- <p>
+ </p><p>
  A <i>deadlock</i> is when all the active processes are blocked.
  The director is responsible for handling deadlocks during execution.
  This director handles two different sorts of deadlocks, <i>real deadlock</i>
  and <i>artificial deadlock</i>.
- <p>
+ </p><p>
  A real deadlock is when all the processes are blocked on a read meaning that
  no process can proceed until it receives new data. The execution can be
  terminated, if desired, in such a situation. If the container of this director
@@ -85,7 +85,7 @@ import ptolemy.kernel.util.Workspace;
  executive director of the container to decide on the termination of the
  execution. To terminate the execution after detection of a real deadlock, the
  manager or the executive director calls wrapup() on the director.
- <p>
+ </p><p>
  An artificial deadlock is when all processes are blocked and at least one
  process is blocked on a write. In this case the director increases the
  capacity of the receiver with the smallest capacity amongst all the
@@ -94,7 +94,7 @@ import ptolemy.kernel.util.Workspace;
  If the increase results in a capacity that exceeds the value of
  <i>maximumQueueCapacity</i>, then instead of breaking the deadlock,
  an exception is thrown.  This can be used to detect erroneous models
- that require unbounded queues.
+ that require unbounded queues.</p>
 
  @author Mudit Goel, Edward A. Lee, Xiaowen Xin
  @version $Id$
@@ -414,7 +414,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  Unblock the process blocked on a write to the receiver containing this
      *  queue.
      *  Notify the thread corresponding to the blocked process to resume
-     *  its execution and return.
+     *  its execution and return.</p>
      *  @exception IllegalActionException If the resulting capacity would
      *   exceed the value of <i>maximumQueueCapacity</i>.
      */
@@ -500,7 +500,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  If derived classes introduce new forms of deadlocks, they should
      *  override this method to introduce mechanisms of handling those
      *  deadlocks. This method is called from the fire() method of the director
-     *  alone.
+     *  alone.</p>
      *  @return True after handling an artificial deadlock. Otherwise return
      *  false.
      *  @exception IllegalActionException If the maximum queue capacity

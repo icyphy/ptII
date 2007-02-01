@@ -38,6 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// AddSubtract
 
 /**
+ <p>
  A polymorphic adder/subtractor.
  This adder has two input ports, both of which are multiports,
  and one output port, which is not.
@@ -48,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  Any token type supporting addition and subtraction can be used.
  In most domains, either input port can be left unconnected.
  Thus, to get a simple adder (with no subtractor), just leave the
- <i>minus</i> input unconnected.
+ <i>minus</i> input unconnected.</p>
  <p>
  The <i>plus</i> input port will typically resolve to the least upper bound
  of the types presented to it.  Thus, for example, if one input channel
@@ -57,20 +58,20 @@ import ptolemy.kernel.util.NameDuplicationException;
  will be that implemented in StringToken (which concatenates strings).
  Notice that StringToken does not support subtraction, so if any
  inputs are presented to the <i>minus</i> port, an exception will
- be thrown at run time.
+ be thrown at run time.</p>
  <p>
  Currently, the type system is quite liberal about the resolved
  types it will permit at the inputs. In particular, it may permit the
  <i>plus</i> and <i>minus</i> inputs to resolve to types that cannot in fact
  be subtracted.  In these cases, a run-time error will occur.
  In the future, we hope that the type system will intercept such errors
- before run time.
+ before run time.</p>
  <p>
  This actor does not require that each input
  channel have a token upon firing. It will add or subtract available
  tokens at the inputs and ignore the channels that do not have tokens.
  It consumes at most one input token from each port.
- If no input tokens are available at all, then no output is produced.
+ If no input tokens are available at all, then no output is produced.</p>
 
  @author Yuhong Xiong and Edward A. Lee
  @version $Id$

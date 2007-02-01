@@ -35,16 +35,17 @@ import ptolemy.kernel.util.NamedObj;
 //// UnitSystem
 
 /**
- A unit system as defined by a set of base and derived units.
+ <p>A unit system as defined by a set of base and derived units.</p>
  <p>
  The various measurement units of a unit system are represented by the
  parameters of an instance of UnitSystem.
  The units belong to a number of categories, such as length and time
  in the International System of Units (SI). Each category has a base unit,
- for example meter in the length category.
+ for example meter in the length category.</p>
  <p>
  Several basic unit systems are provided with Ptolemy II. They are specified
  using MoML. Customized unit systems can be created following these examples.
+ </p>
 
  @author Xiaojun Liu
  @version $Id$

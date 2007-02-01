@@ -65,12 +65,12 @@ import ptolemy.kernel.util.Workspace;
 //// DEDirector
 
 /**
- This director implements the discrete-event (DE) model of computation (MoC).
+ <p>This director implements the discrete-event (DE) model of computation (MoC).
  It should be used as the local director of a CompositeActor that is
  to be executed according to the DE MoC. This director maintains a totally
  ordered set of events and processes these events in the order defined on
  their tags and depths.
- <p>
+ </p><p>
  An event is associated with a tag, which is a tuple of timestamp and
  microstep. A timestamp indicates the model time when this event occurs. It
  is an object of the {@link ptolemy.actor.util.Time} class. A microstep is an
@@ -78,33 +78,33 @@ import ptolemy.kernel.util.Workspace;
  this director processes events with the same timestamp. Two tags are equal
  if they have the same timestamp and microstep. If two events have the same
  tag, they are called simultaneous events.
- <p>
+ </p><p>
  Microsteps can only be increased by calling the fireAt() method. For example,
  when an actor requests to be fired again at the current model time, a
  new event with the same timestamp but a bigger microstep (incremented by 1)
  will be generated.
- <p>
+ </p><p>
  An event is also associated with a depth reflecting its priority, based
  on which a DE director chooses the execution order for simultaneous events.
  A depth is an integer and a larger value of depth indicates a lower priority.
  The depth of an event is determined by topologically sorting all the ports
  of actors according to their data dependencies over which there is no time
  delay.
- <p>
+ </p><p>
  The order of events is defined as follows. An event A is said to be earlier
  than another event B if A's timestamp is smaller than B's; or if A's
  timestamp is the same as B's, and A's microstep is smaller than B's; or if
  A's tag is the same as B's, and A's depth is smaller than B's. By giving
  events this well-defined order, this director can handle simultaneous events
  in a deterministic way.
- <p>
+ </p><p>
  The bottleneck in a typical DE simulator is in the maintenance of the
  global event queue. This director uses the calendar queue as the global
  event queue. This is an efficient algorithm with O(1) time complexity in
  both enqueue and dequeue operations. Sorting in the
  {@link ptolemy.actor.util.CalendarQueue} class is done according to the
  order defined above.
- <p>
+ </p><p>
  The complexity of the calendar algorithm is sensitive to the length of the
  event queue. When the size of the event queue becomes too long or changes
  very often, the simulation performance suffers from the penalties of queuing
@@ -119,7 +119,7 @@ import ptolemy.kernel.util.Workspace;
  to schedule a future firing. The last mechanism is to maintain a list which
  records all actors that are disabled. Any triggers sent to the actors in
  this list are discarded.
- <p>
+ </p><p>
  In the initialize() method, depths of actors and IO ports are statically
  analyzed and calculated. They are not calculated in the preinitialize()
  method because hierarchical models may change their structures during their
@@ -128,7 +128,7 @@ import ptolemy.kernel.util.Workspace;
  method. See {@link ptolemy.domains.fsm.kernel.FSMActor}. In order to support
  mutation, this director recalculates the depths at the beginning of its next
  iteration.
- <p>
+ </p><p>
  There are two types of depths: one is associated with IO ports, which
  reflects the order of trigger events; the other one is associated with
  actors, which is for pure events. The relationship between the depths of IO
@@ -136,7 +136,7 @@ import ptolemy.kernel.util.Workspace;
  of its IO ports. Pure events can only be produced by calling the fireAt()
  method, and trigger events can only be produced by actors that produce
  outputs. See {@link ptolemy.domains.de.kernel.DEReceiver#put}.
- <p>
+ </p><p>
  Directed loops of IO ports with no delay are not permitted because it is
  impossible to do a topological sort to assign depths. Such a loop can be
  broken by inserting some special actors, such as the <i>TimedDelay</i> actor.
@@ -147,12 +147,12 @@ import ptolemy.kernel.util.Workspace;
  actors because port connections reflect the data dependencies more
  accurately. The information of port connections are stored in the
  nonpersistent attribute <i>FunctionDependency</i>.
- <p>
+ </p><p>
  An input port in a DE model contains an instance of DEReceiver.
  When a token is put into a DEReceiver, that receiver posts a trigger
  event to the director. This director sorts trigger events in a global event
  queue.
- <p>
+ </p><p>
  An iteration, in the DE domain, is defined as processing all the events
  whose tags are equal to the current tag of the director (also called the
  model tag). At the beginning of the fire() method, this director dequeues
@@ -171,12 +171,12 @@ import ptolemy.kernel.util.Workspace;
  After calling the postfire() method, this director finishes an iteration.
  This director is responsible to advance the model tag to perform another
  iteration.
- <p>
+ </p><p>
  A model starts from the time specified by <i>startTime</i>, which
  has default value 0.0. The stop time of the execution can be set
  using the <i>stopTime</i> parameter. The parameter has a default value
  <i>Infinity</i>, which means the execution runs forever.
- <P>
+ </p><p>
  Execution of a DE model ends when the timestamp of the earliest event
  exceeds the stop time. This stopping condition is checked inside
  the postfire() method of this director. By default, execution also ends
@@ -186,24 +186,24 @@ import ptolemy.kernel.util.Workspace;
  events when a user hits a button on the screen. To prevent ending the
  execution when there are no more events, set the
  <i>stopWhenQueueIsEmpty</i> parameter to <code>false</code>.
- <p>
+ </p><p>
  Parameters <i>isCQAdaptive</i>, <i>minBinCount</i>, and
  <i>binCountFactor</i>, are used to configure the calendar queue.
  Changes to these parameters are ignored when the model is running.
- <p>
+ </p><p>
  If the parameter <i>synchronizeToRealTime</i> is set to <code>true</code>,
  then the director will not process events until the real time elapsed
  since the model started matches the timestamp of the event.
  This ensures that the director does not get ahead of real time. However,
  of course, this does not ensure that the director keeps up with real time.
- <p>
+ </p><p>
  This director tolerates changes to the model during execution.
  The change should be queued with a component in the hierarchy using
  requestChange().  While invoking those changes, the method
  invalidateSchedule() is expected to be called, notifying the director
  that the topology it used to calculate the priorities of the actors
  is no longer valid.  This will result in the priorities (depths of actors)
- being recalculated the next time prefire() is invoked.
+ being recalculated the next time prefire() is invoked.</p>
 
  @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
  @version $Id$
@@ -347,22 +347,22 @@ public class DEDirector extends Director implements TimedDirector {
         }
     }
 
-    /** Advance the current model tag to that of the earliest event in
+    /** <p>Advance the current model tag to that of the earliest event in
      *  the event queue, and fire all actors that have requested or
      *  are triggered to be fired at the current tag. If
      *  <i>synchronizeToRealTime</i> is true, then before firing, wait
      *  until real time matches or exceeds the timestamp of the
      *  event. Note that the default unit for time is seconds.
-     *  <p>
+     *  </p><p>
      *  Each actor is iterated repeatedly (prefire(), fire(), postfire()),
      *  until either it has no more input tokens, or its prefire() method
      *  returns false.
-     *  <p>
+     *  </p><p>
      *  If there are no events in the event queue, then the behavior
      *  depends on the <i>stopWhenQueueIsEmpty</i> parameter. If it is
      *  false, then this thread will stall until events become
      *  available in the event queue. Otherwise, time will advance to
-     *  the stop time and the execution will halt.
+     *  the stop time and the execution will halt.</p>
      *
      *  @exception IllegalActionException If the firing actor throws it, or
      *  event queue is not ready, or an event is missed, or time is set
@@ -716,7 +716,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  <p>
      *  When the start time is too big, the double representation loses
      *  the specified time resolution. To avoid this loss, use the
-     *  {@link #getModelStartTime()} instead.
+     *  {@link #getModelStartTime()} instead.</p>
      *  @return the start time.
      *  @deprecated As Ptolemy II 4.1, use {@link #getModelStartTime()}
      *  instead.
@@ -730,7 +730,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  <p>
      *  When the stop time is too big, the double representation loses
      *  the specified time resolution. To avoid this loss, use the
-     *  {@link #getModelStopTime()} instead.
+     *  {@link #getModelStopTime()} instead.</p>
      *  @return the stop time.
      *  @deprecated As Ptolemy II 4.1, use {@link #getModelStopTime()}
      *  instead.
@@ -747,7 +747,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  <p>
      *  The real start time of the model is recorded when this method
      *  is called. This method is <i>not</i> synchronized on the workspace,
-     *  so the caller should be.
+     *  so the caller should be.</p>
      *
      *  @exception IllegalActionException If the initialize() method of
      *   the super class throws it.
@@ -884,14 +884,14 @@ public class DEDirector extends Director implements TimedDirector {
      *  timestamp. Otherwise, return false.
      *  <p>
      *  Note that microsteps are not synchronized.
-     *  <p>
+     *  </p><p>
      *  Throw an exception if the current model time is greater than the next
      *  event timestamp.
      *  @return True if the composite actor is ready to fire.
      *  @exception IllegalActionException If there is a missed event,
      *  or the prefire method of the super class throws it, or can not
      *  query the tokens of the input ports of the container of this
-     *  director.
+     *  director.</p>
      */
     public boolean prefire() throws IllegalActionException {
         // NOTE: The inside model does not need to have the same
@@ -984,9 +984,9 @@ public class DEDirector extends Director implements TimedDirector {
      *  iteration. Actors cannot produce output data in their preinitialize()
      *  methods. If initial events are needed, e.g. pure events for source
      *  actor, the actors should do so in their initialize() method.
-     *  <p>
+     *  </p><p>
      *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
+     *  caller should be.</p>
      *
      *  @exception IllegalActionException If the preinitialize() method of the
      *  container or one of the deeply contained actors throws it, or the
@@ -1146,12 +1146,12 @@ public class DEDirector extends Director implements TimedDirector {
      *  The default microstep for the queued event is equal to zero,
      *  unless the time is equal to the current time, where the microstep
      *  will be the current microstep plus one.
-     *  <p>
+     *  </p><p>
      *  The depth for the queued event is the minimum of the depths of
      *  all the ports of the destination actor.
-     *  <p>
+     *  </p><p>
      *  If there is no event queue or the given actor is disabled, then
-     *  this method does nothing.
+     *  this method does nothing.</p>
      *
      *  @param actor The actor to be fired.
      *  @param time The timestamp of the event.
@@ -1206,9 +1206,9 @@ public class DEDirector extends Director implements TimedDirector {
      *  The microstep of this event is always equal to the current microstep
      *  of this director. The depth for the queued event is the
      *  depth of the destination IO port.
-     *  <p>
+     *  </p><p>
      *  If the event queue is not ready or the actor contains the destination
-     *  port is disabled, do nothing.
+     *  port is disabled, do nothing.</p>
      *
      *  @param ioPort The destination IO port.
      *  @exception IllegalActionException If the time argument is not the
@@ -1682,7 +1682,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  until there are new events available.  If the synchronizeToRealTime
      *  parameter is true, then this method may suspend the calling thread
      *  by using Object.wait(long) to let elapsed real time catch up with the
-     *  current model time.
+     *  current model time.</p>
      *  @return The next actor to be fired, which can be null.
      *  @exception IllegalActionException If event queue is not ready, or
      *  an event is missed, or time is set backwards.

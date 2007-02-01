@@ -64,16 +64,15 @@ import ptolemy.kernel.util.Workspace;
 //// Expression
 
 /**
- On each firing, evaluate an expression that may include references
+ <p>On each firing, evaluate an expression that may include references
  to the inputs, current time, and a count of the firing.  The ports
  are referenced by the identifiers that have the same name as the
  port.  To use this class, instantiate it, then add ports (instances
  of TypedIOPort).  In vergil, you can add ports by right clicking on
  the icon and selecting "Configure Ports".  In MoML you can add
  ports by just including ports of class TypedIOPort, set to be
- inputs, as in the following example:
+ inputs, as in the following example:</p>
 
- <p>
  <pre>
  &lt;entity name="exp" class="ptolemy.actor.lib.Expression"&gt;
  &lt;port name="in" class="ptolemy.actor.TypedIOPort"&gt;
@@ -84,7 +83,7 @@ import ptolemy.kernel.util.Workspace;
 
  <p> This actor is type-polymorphic.  The types of the inputs can be
  arbitrary and the types of the outputs are inferred from the
- expression based on the types inferred for the inputs.
+ expression based on the types inferred for the inputs.</p>
 
  <p> The <i>expression</i> parameter specifies an expression that
  can refer to the inputs by name.  By default, the expression is
@@ -92,20 +91,20 @@ import ptolemy.kernel.util.Workspace;
  triggers an exception.  This actor can be used instead of many of
  the arithmetic actors, such as AddSubtract, MultiplyDivide, and
  TrigFunction.  However, those actors will be usually be more
- efficient, and sometimes more convenient to use.
+ efficient, and sometimes more convenient to use.</p>
 
  <p> The expression language understood by this actor is the same as
  <a href="../../../../expressions.htm">that used to set any
  parameter value</a>, with the exception that the expressions
  evaluated by this actor can refer to the values of inputs, and to
  the current time by the identifier name "time", and to the current
- iteration count by the identifier named "iteration."
+ iteration count by the identifier named "iteration."</p>
 
  <p> This actor requires its all of its inputs to be present.  If
- inputs are not all present, then an exception will be thrown.
+ inputs are not all present, then an exception will be thrown.</p>
 
  <p> NOTE: There are a number of limitations in the current
- implementation.  Primarily, multiports are not supported.
+ implementation.  Primarily, multiports are not supported.</p>
 
  @author Xiaojun Liu, Edward A. Lee, Steve Neuendorffer
  @version $Id$

@@ -48,23 +48,23 @@ import ptolemy.util.MessageHandler;
 //// LineWriter
 
 /**
- This actor reads string-valued input tokens and writes them,
+ <p>This actor reads string-valued input tokens and writes them,
  one line at a time, to a specified file.  It does not
  include any enclosing quotation marks in the output.
- If you need the enclosing quotation marks, use ExpressionWriter.
+ If you need the enclosing quotation marks, use ExpressionWriter.</p>
  <p>
  The file is specified by the <i>fileName</i> attribute
- using any form acceptable to FileParameter.
+ using any form acceptable to FileParameter.</p>
  <p>
  If the <i>append</i> attribute has value <i>true</i>,
  then the file will be appended to. If it has value <i>false</i>,
  then if the file exists, the user will be queried for permission
- to overwrite, and if granted, the file will be overwritten.
+ to overwrite, and if granted, the file will be overwritten.</p>
  <p>
  If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
  then this actor will overwrite the specified file if it exists
  without asking.  If <i>true</i> (the default), then if the file
- exists, then this actor will ask for confirmation before overwriting.
+ exists, then this actor will ask for confirmation before overwriting.</p>
 
  @see FileParameter
  @see ExpressionWriter

@@ -40,7 +40,7 @@ import ptolemy.kernel.util.StringAttribute;
 //// Switch
 
 /**
- A polymorphic switch, which routes inputs to specified output channels.
+ <p>A polymorphic switch, which routes inputs to specified output channels.
  This actor has two input ports, the <i>input</i> port for data,
  and the <i>control</i> port to select which output channel to use.
  When it fires, if an input token is available at the <i>control</i>
@@ -53,10 +53,10 @@ import ptolemy.kernel.util.StringAttribute;
  on the <i>control</i> port is out of range (less than zero,
  or greater than or equal to the width of the output), then no
  output is produced, and the token is lost.
- <p>
+</p><p>
  Note that it may be tempting to call an instance of this
  class "switch", but recall that "switch" is a Java keyword, and
- thus it cannot be the name of an object.
+ thus it cannot be the name of an object.</p>
 
  @author Edward A. Lee
  @version $Id$

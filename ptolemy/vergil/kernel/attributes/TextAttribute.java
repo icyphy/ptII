@@ -38,8 +38,9 @@ import ptolemy.kernel.util.StringAttribute;
 //// TextAttribute
 
 /**
- This is an attribute that is rendered as text annotation.
  <p>
+ This is an attribute that is rendered as text annotation.
+ </p>
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0

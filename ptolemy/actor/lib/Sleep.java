@@ -42,7 +42,7 @@ import ptolemy.kernel.util.Workspace;
 //// Sleep
 
 /**
- On each firing, read at most one token from each input channel, sleep
+ <p>On each firing, read at most one token from each input channel, sleep
  by the specified amount of real time, and then produce the same input
  tokens on the respective output channels. This actor calls Thread.sleep()
  in the fire() method, so the thread that calls fire() will be suspended.
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
  the first time.
  If the width of the output port is less than that of the input port,
  the tokens in the extra channels are lost.
- <p>
+ </p><p>
  The effect of this actor is different in different domains.
  In domains where all actors are iterated from within a single director
  thread (like SDF and DE), then multiple instances of this actor will
@@ -59,7 +59,7 @@ import ptolemy.kernel.util.Workspace;
  instances. In domains where actors execute in their own thread (like PN
  and CSP), only the execution of the individual actor is slowed.
  Note that another way to slow down the execution of a model while running
- inside vergil is to turn on animation.
+ inside vergil is to turn on animation.</p>
 
  @author Jie Liu, Christopher Hylands, Edward A. Lee
  @version $Id$

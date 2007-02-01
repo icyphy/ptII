@@ -40,21 +40,21 @@ import ptolemy.plot.Plot;
 //// TimedScope
 
 /**
- A signal plotter that plots in an oscilloscope style, meaning that the
+ <p>A signal plotter that plots in an oscilloscope style, meaning that the
  horizontal axis is wrapped and that there is finite persistence.  This
  plotter contains an instance of the Plot class from the Ptolemy plot
  package as a public member.  Data at the input, which can consist of
  any number of channels, are plotted on this instance.  Each channel is
  plotted as a separate data set.  The input is of type DoubleToken.
 
- <p>The horizontal axis represents time.  The <i>width</i> parameter is
+ </p><p>The horizontal axis represents time.  The <i>width</i> parameter is
  a double that gives the width of the plot. The horizontal axis will be
  labeled from 0.0 to <i>width</i>.  It defaults to 10.0.
 
- <p>If the <i>persistence</i> parameter is positive, then it specifies
+ </p><p>If the <i>persistence</i> parameter is positive, then it specifies
  the amount of time into the past that points are shown.  It also
  defaults to 10.0, so any point older than 10.0 time units is erased and
- forgotten.
+ forgotten.</p>
 
  @author  Edward A. Lee
  @version $Id$

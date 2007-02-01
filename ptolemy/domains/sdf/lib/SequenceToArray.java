@@ -43,14 +43,14 @@ import ptolemy.kernel.util.Workspace;
 //// SequenceToArray
 
 /**
- This actor bundles a specified number of input tokens into a single array.
+ <p>This actor bundles a specified number of input tokens into a single array.
  The number of tokens to be bundled is specified by the <i>arrayLength</i>
  parameter.
- <p>
+ </p><p>
  This actor is polymorphic. It can accept inputs of any type, as long
  as the type does not change, and will produce an array with elements
  of the corresponding type.
- <p>
+ </p>
 
  @author Yuhong Xiong
  @version $Id$

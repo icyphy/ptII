@@ -46,12 +46,12 @@ import ptolemy.plot.Plot;
 //// ArrayPlotter
 
 /**
- A plotter that plots a sequence of arrays of doubles.
+ <p>A plotter that plots a sequence of arrays of doubles.
  This plotter contains an instance of the Plot
  class from the Ptolemy plot package as a public member. Data at
  the input, which can consist of any number of channels, are plotted
  on this instance.  Each input channel is plotted as a separate data set.
- Each input token is an array of doubles.
+ Each input token is an array of doubles.</p>
  <p>
  The <i>iterationsPerUpdate</i> parameter can be used to fine tune
  the display.  It can be quite expensive to generate the display, and
@@ -62,11 +62,11 @@ import ptolemy.plot.Plot;
  second time this actor fires, it will update the display. That is,
  it will update its display on the first firing, the third, the
  fifth, etc. It will, however, consume its inputs on every firing.
- The plot is always updated in the wrapup() method.
+ The plot is always updated in the wrapup() method.</p>
  <p>
  Note that this can be used to generate live plots, like SequenceScope,
  but it has fewer drawing artifacts than SequenceScope since it does
- not use XOR drawing mode.
+ not use XOR drawing mode.</p>
 
  @author  Edward A. Lee
  @version $Id$

@@ -46,10 +46,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ImageReader
 
 /**
- This actor reads an Image from a FileParameter, and outputs it as an
- AWTImageToken.
+ <p>This actor reads an Image from a FileParameter, and outputs it as an
+ AWTImageToken.</p>
 
- <p>FIXME: It would be nice if we could read images from stdin.
+ <p>FIXME: It would be nice if we could read images from stdin.</p>
 
  @see FileParameter
  @see AWTImageToken

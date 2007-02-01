@@ -45,13 +45,13 @@ import ptolemy.kernel.util.NamedObj;
 //// ResizablePolygonAttribute
 
 /**
- This is an attribute that is rendered as a polygon.  The <i>vertices</i>
+ <p>This is an attribute that is rendered as a polygon.  The <i>vertices</i>
  parameter is an array of doubles that specify the vertices of the polygon
  in the form {x1, y1, x2, y2, ... }.
  The <i>width</i> and <i>height</i> parameters, somewhat awkwardly,
  are used to specify the overall width and height. The polygon will be
- scaled to fit the specified width and height.
- <p>
+ scaled to fit the specified width and height.</p>
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0

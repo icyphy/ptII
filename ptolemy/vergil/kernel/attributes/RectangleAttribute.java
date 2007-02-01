@@ -43,8 +43,9 @@ import ptolemy.kernel.util.NamedObj;
 //// RectangleAttribute
 
 /**
- This is an attribute that is rendered as a rectangle.
  <p>
+ This is an attribute that is rendered as a rectangle.
+ </p>
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0

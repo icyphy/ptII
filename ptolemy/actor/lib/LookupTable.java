@@ -42,26 +42,27 @@ import ptolemy.kernel.util.Workspace;
 //// LookupTable
 
 /**
- Output to the <i>output</i> port the value in the array of tokens
+ <p>Output to the <i>output</i> port the value in the array of tokens
  specified by the <i>table</i> parameter at the index specified by the
  <i>input</i> port.  The index must be an integer.  If the index is out
- of range, no token produced.
+ of range, no token produced.</p>
 
  <p>LookupTable is different from ArrayElement in that in
  ArrayElement, the array is read in as input, and the index is a parameter,
  In LookupTable, the array is a parameter, and the index is read
- in as an input.
+ in as an input.</p>
 
  <p>Note that there are three similar actors here
  <dl>
- <dt>LookupTable
- <dd>array is a parameter, index is a port.
- <dt>ArrayElement
- <dd>array is a port, index is a parameter
- <dt>Array<i>XXX</i> (not yet developed)
- <dd>array and index are both ports
+ <dt>LookupTable</dt>
+ <dd>array is a parameter, index is a port.</dd>
+ <dt>ArrayElement</dt>
+ <dd>array is a port, index is a parameter</dd>
+ <dt>Array<i>XXX</i> (not yet developed)</dt>
+ <dd>array and index are both ports</dd>
  </dl>
-
+ </p>
+ 
  @see ArrayElement
  @author Paul Whitaker, Christopher Hylands
  @version $Id$

@@ -53,7 +53,7 @@ import ptolemy.util.StringUtilities;
 
 /**
 
- This actor compares the inputs against the value specified by the
+ <p>This actor compares the inputs against the value specified by the
  <i>correctValues</i> parameter.  That parameter is an ArrayToken,
  where each element of the array is of the same type as the input.
  On each firing where the input is present, the value of the input
@@ -62,17 +62,17 @@ import ptolemy.util.StringUtilities;
  match, then an exception is thrown. After matching each of
  the value in the <i>correctValues</i> parameter, subsequent iterations
  always succeed, so the actor can be used as a "power-up" test for a model,
- checking the first few iterations against some known results.
+ checking the first few iterations against some known results.</p>
  <p>
  Unlike the Test actor, NonStrictTest does not support a multiport
  input, only single port inputs are supported.  This also differs
  from Test in that it ignores absent inputs, and it checks the inputs
- in the postfire() method rather than the fire() method.
+ in the postfire() method rather than the fire() method.</p>
  <p>
  If the input is a DoubleToken or ComplexToken, then the comparison
  passes if the value is close to what it should be, within the
  specified <i>tolerance</i> (which defaults to 10<sup>-9</sup>.  The
- input data type is undeclared, so it can resolve to anything.
+ input data type is undeclared, so it can resolve to anything.</p>
  <p>
  If the parameter <i>trainingMode</i> is <i>true</i>, then instead
  of performing the test, this actor collects the inputs into the
@@ -84,7 +84,7 @@ import ptolemy.util.StringUtilities;
  The value of the reference token is set in the wrapup() method.
  The <i>trainingMode</i> parameter is a shared parameter,
  meaning that if you change it for any one instance of this
- actor in the model, then it will be changed for all instances.
+ actor in the model, then it will be changed for all instances.</p>
 
  @see Test
  @author Paul Whitaker, Christopher Hylands, Edward A. Lee

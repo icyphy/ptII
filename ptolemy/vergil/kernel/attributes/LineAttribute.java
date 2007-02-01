@@ -48,9 +48,8 @@ import ptolemy.kernel.util.NamedObj;
  This contains two parameters, <i>x</i> and <i>y</i>, which control the
  run and rise, respectively, of the line.  Note that the origin is in the
  upper-left hand corner, so positive x values will extend to the right, and
- positive y values will extend downwards on the screen.
+ positive y values will extend downwards on the screen.</p>
  
- <p>
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0

@@ -42,7 +42,7 @@ import ptolemy.kernel.util.StringAttribute;
 //// BooleanSwitch
 
 /**
- A type polymorphic switch with boolean valued control.  In an
+ <p>A type polymorphic switch with boolean valued control.  In an
  iteration, if an input token is available at the <i>control</i> input,
  that token is read, and its value is noted.  Its value specifies the
  input port that should be read next. If the <i>control</i> input is
@@ -50,10 +50,10 @@ import ptolemy.kernel.util.StringAttribute;
  then it is is read and sent to the <i>trueOutput</i>.  Likewise with a
  false input and the <i>falseOutput</i> port.  Because tokens are
  immutable, the same Token is sent to the output, rather than a copy.
- The <i>input</i> port may receive Tokens of any type.
+ The <i>input</i> port may receive Tokens of any type.</p>
 
  <p>If no token has ever been received on the <i>control</i> port, then
- <i>falseOutput</i> is assumed to be the one to receive data.
+ <i>falseOutput</i> is assumed to be the one to receive data.</p>
 
  @author Steve Neuendorffer
  @version $Id$

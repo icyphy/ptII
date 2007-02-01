@@ -46,14 +46,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 
- This actor compares the inputs against the value specified by the
+ <p>This actor compares the inputs against the value specified by the
  <i>correctValues</i> parameter.  That parameter is an ArrayToken,
  where each element of the array should have the same type as the
  input.  The length of this array is the number of iterations of this
  actor that are tested.  Subsequent iterations always succeed, so the
  actor can be used as a "power-up" test for a model, checking the first
  few iterations against some known results.
- <p>
+ </p><p>
  The input is a multiport.  If there is more than one channel connected
  to it, then each element of <i>correctValues</i> must itself be an
  ArrayToken, with length matching the number of channels.
@@ -72,25 +72,25 @@ import ptolemy.kernel.util.NameDuplicationException;
  </pre>
  With this setting, no tests are performed after the first two iterations
  of this actor.
- <p>
+ </p><p>
  The input values are checked in the fire() method, which checks to
  make sure that each input channel has a token.  If an input value is
  missing or differs from what it should be, then fire() throws an
  exception. Thus, the test passes if no exception is thrown.
  If you need to check the input value in postfire() (say, after
  a fixed-point iteration has converged), then use NonStrictTest.
- <p>
+ </p><p>
  If the input is a DoubleToken or ComplexToken,
  then the comparison passes if the value is close to what it should
  be, within the specified <i>tolerance</i> (which defaults to
  10<sup>-9</sup>.  The input data type is undeclared, so it can
  resolve to anything.
- <p>
+ </p><p>
  On each firing, this actor produces the output <i>false</i> until
  it reaches the end of the <i>correctValues</i> array, at which point
  it outputs <i>true</i>.  This can be fed, for example, to an instance
  of the Stop actor to stop the test upon successfully matching the
- test data.
+ test data.</p>
 
  @see NonStrictTest
  @author Edward A. Lee, Christopher Hylands, Jim Armstrong

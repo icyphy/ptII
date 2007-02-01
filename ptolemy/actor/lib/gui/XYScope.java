@@ -40,7 +40,7 @@ import ptolemy.plot.Plot;
 //// XYScope
 
 /**
- An X-Y plotter that plots with finite persistence.
+ <p>An X-Y plotter that plots with finite persistence.
  This plotter contains an instance of the Plot class
  from the Ptolemy plot package as a public member.
  Data at <i>inputX</i> and <i>inputY</i> are plotted on this instance.
@@ -52,16 +52,16 @@ import ptolemy.plot.Plot;
  of <i>inputY</i> are considered the second signal, and so on.
  This requires that <i>inputX</i> and
  <i>inputY</i> have the same width.
- <p>
+ </p><p>
  This actor
  assumes that there is at least one token available on each channel
  when it fires. The horizontal axis is given by the value of the
  input from <i>inputX</i> and vertical axis is given by <i>inputY</i>.
- <p>
+ </p><p>
  If the <i>persistence</i> parameter is positive, then it specifies
  the number of points that are shown.
  It defaults to 100, so any point older than 100 samples is
- erased and forgotten.
+ erased and forgotten.</p>
 
  @author  Edward A. Lee
  @version $Id$

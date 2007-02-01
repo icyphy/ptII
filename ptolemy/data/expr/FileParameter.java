@@ -45,11 +45,11 @@ import ptolemy.util.FileUtilities;
 //// FileParameter
 
 /**
- This is an attribute that specifies a file or URL.  The value of this
+ <p>This is an attribute that specifies a file or URL.  The value of this
  attribute, accessed by getExpression(), is a string that names a file
  or URL, possibly containing references to variables defined in scope
  using the syntax $ID, ${ID} or $(ID). The value returned by getToken()
- is name of the file with such references resolved.
+ is name of the file with such references resolved.</p>
  <p>
  If this attribute contains a parameter named <i>allowFiles</i> with
  value false, then when a file browser is used to select a file,
@@ -58,20 +58,20 @@ import ptolemy.util.FileUtilities;
  <i>allowDirectories</i> with value true, then the file browser
  will permit the user to select directories (the default behavior
  is that when a directory is selected, that directory is opened
- and its contained files and directories are listed).
+ and its contained files and directories are listed).</p>
  <p>
  If the model containing this
  attribute has been saved to a MoML file, then the file name can be
  given relative to the directory containing that MoML file.
  If the model has not been saved to a file,
- then the classpath is used for identifying relative file names.
+ then the classpath is used for identifying relative file names.</p>
  <p>
  Files can be given relative to a <i>base</i>, where the base is
  the URI of the first container above this one that has a URIAttribute.
  Normally, this URI specifies the file or URL containing the model
  definition. Thus, files that are referred to here can be kept in the
  same directory as the model, or in a related directory, and can
- moved together with the model.
+ moved together with the model.</p>
  <p>
  The following special file names are understood:
  <ul>
@@ -82,7 +82,7 @@ import ptolemy.util.FileUtilities;
  using the asURL() method.
  A file name can also contain the following strings that start
  with "$", which get substituted
- with the appropriate values.
+ with the appropriate values.</p>
  <table>
  <tr>
  <th>String</th>
@@ -110,7 +110,7 @@ import ptolemy.util.FileUtilities;
  <tr><code>java.io.tmpdir</code></tr>
  </tr>
  </table>
- The above properties are normally set when a Ptolemy II application starts.
+ <p>The above properties are normally set when a Ptolemy II application starts.</p>
  <p>
  If a file name begins with the reference "$CLASSPATH", then when
  the file is opened for reading, the openForReading() method
@@ -124,8 +124,8 @@ import ptolemy.util.FileUtilities;
  method (which is typically used when accessing a file for writing).
  NOTE: If the container of this parameter also contains a variable
  named CLASSPATH, then the value of that variable is used instead
- of the Java classpath.
- <p>
+ of the Java classpath.</p>
+ 
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0

@@ -44,31 +44,31 @@ import ptolemy.kernel.util.StringAttribute;
 //// LogicFunction
 
 /**
- Produce an output token on each firing with a value that is
+ <p>Produce an output token on each firing with a value that is
  equal to the specified logic operator of the input(s).
- The functions are:
+ The functions are:</p>
  <ul>
  <li> <b>and</b>: The logical and operator.
- This is the default function for this actor.
- <li> <b>or</b>: The logical or operator.
- <li> <b>xor</b>: The logical xor operator.
+ This is the default function for this actor.</li>
+ <li> <b>or</b>: The logical or operator.</li>
+ <li> <b>xor</b>: The logical xor operator.</li>
  <li> <b>nand</b>: The logical nand operator.
- Equivalent to the negation of <i>and</i>.
+ Equivalent to the negation of <i>and</i>.</li>
  <li> <b>nor</b>: The logical nor operator.
- Equivalent to the negation of <i>or</i>.
+ Equivalent to the negation of <i>or</i>.</li>
  <li> <b>xnor</b>: The logical xnor operator.
- Equivalent to the negation of <i>xor</i>.
+ Equivalent to the negation of <i>xor</i>.</li>
  </ul>
  <p>
  NOTE: All operators have
  a single input port, which is a multiport, and a single output port, which
- is not a multiport.  All ports have type boolean.
+ is not a multiport.  All ports have type boolean.</p>
  <p>
  This actor does not require that each input
  channel have a token upon firing.  As long as one channel contains a
  token, output will be produced.  If no input tokens are available at
  all, then no output is produced.  At most one token is consumed
- on each input channel.
+ on each input channel.</p>
 
  @author Paul Whitaker
  @version $Id$

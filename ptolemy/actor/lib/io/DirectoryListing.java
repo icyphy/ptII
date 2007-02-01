@@ -61,20 +61,20 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// DirectoryListing
 
 /**
- Given a URL or directory name, this actor produces an array of file names
+ <p>Given a URL or directory name, this actor produces an array of file names
  in that directory that match an (optional) pattern.  The file names that
  are returned are absolute. The pattern is
  a regular expression. For a reference on regular expression syntax see:
  <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
  http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
- <p>
+ </p><p>
  If <i>directoryOrURL</i> is a local directory (not a URL), then you can
  optionally list only contained files or directories.
  If <i>listOnlyDirectories</i> is true, then only directories will be
  listed on the output.  If <i>listOnlyFiles</i> is true, then only
  files will be listed on the output. If both are true, then an exception
  is thrown.
- <p>
+ </p><p>
  If <i>directoryOrURL</i> is a URL, then this actor assumes that the
  server will list the contents of the referenced directory in an
  HTML file where each file listed will have the following form:
@@ -84,11 +84,11 @@ import ptolemy.kernel.util.NameDuplicationException;
  If the filename is longer than 20 characters, then only the first
  20 characters of the two appearances of the filename are compared,
  since some servers truncate the file names.
-
+ </p>
  <p>Note that DirectoryListing returns the contents of the directory
  in a different order depending on whether one is using the Sun JVM
  or the IBM JVM.  Thus, you may want to connect the output to an
- ArraySort actor.
+ ArraySort actor.</p>
 
  @author  Christopher Hylands, Edward A. Lee
  @version $Id$

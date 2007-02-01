@@ -197,9 +197,10 @@ public class GetDocumentationAction extends FigureAction {
 
             // Look for the PtDoc .xml file or the javadoc.
             // Don't look for the source or the index.
+            System.out.println("classname: " + className);
             URL toRead = DocManager.docClassNameToURL(configuration, className,
                     true, true, false, false);
-
+            System.out.println("url to read: " + toRead);
             if (toRead != null) {
                 _lastClassName = null;
                 configuration.openModel(null, toRead, toRead.toExternalForm());

@@ -46,8 +46,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ImageReader
 
 /**
- An actor that reads a String input token naming a URL and outputs an
- Object Token that contains a java.awt.Image
+ <p>An actor that reads a String input token naming a URL and outputs an
+ Object Token that contains a java.awt.Image</p>
 
  <p>It is possible to load a file
  from the local file system by using the prefix "file://" instead of
@@ -59,7 +59,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  should be set to "file:../test.jpg". To reference the file
  test.jpg, located at "/tmp/test.jpg", <i>sourceURL</i>
  should be set to "file:///tmp/test.jpg" The default value is
- "file:///tmp/test.jpg".
+ "file:///tmp/test.jpg".</p>
 
  @see ImageReader
  @author  Christopher Hylands

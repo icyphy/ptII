@@ -37,8 +37,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// VectorDisassembler
 
 /**
- An actor that disassembles a DoubleMatrixToken to a multiport output.
- <p>On each firing, read one column vector (i.e. a DoubleMatrixToken with
+ <p>An actor that disassembles a DoubleMatrixToken to a multiport output.
+ </p><p>On each firing, read one column vector (i.e. a DoubleMatrixToken with
  one column) from the <i>input</i> port and send out individual
  DoubleTokens to each channel of the <i>output</i> port.  If the width
  of the <i>output</i> port (say, <i>n</i>) is less than the number of
@@ -48,10 +48,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  <i>n-m</i> channels of the output port will never send tokens out.
  This class throws an exception if the input is not a column vector.
 
- <p>For sequential domains like SDF, the combination of
+ </p><p>For sequential domains like SDF, the combination of
  domains.sdf.lib.MatrixToDouble and a Distributor is equivalent to this
  actor.  However, that combination will not work in CT, so we need this
- actor.
+ actor.</p>
 
  @author Jie Liu, Elaine Cheong
  @version $Id$

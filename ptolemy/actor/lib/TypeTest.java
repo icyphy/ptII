@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// TypeTest
 
 /**
- An actor that can be used for regression test of the type resolution
+ <p>An actor that can be used for regression test of the type resolution
  system.  During the initialize phase, after type resolution has been
  performed, this actor compares resolved types in the model with types
  stored in several parameters.  If the types are the same, then the
@@ -56,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  can be easily used to build automatically executed tests of the type
  system from within Vergil.
 
- <p> The types expected by this actor are stored in two parameters,
+ </p><p> The types expected by this actor are stored in two parameters,
  each parameter contains a record of record of strings.  The outer
  record contains labels corresponding to the names of actors in the
  same level of hierarchy as this actor.  The inner record contains
@@ -67,7 +67,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  ports, and for the <i>parameterTypes</i> parameter, the objects are
  assumed to be parameters.
 
- <p> Note that this actor only tests type resolution at one level of
+ </p><p> Note that this actor only tests type resolution at one level of
  opaque hierarchy.  Hierarchical models should include multiple
  instances of this actor.  Since filling in the types manually is
  difficult, this actor includes a training mode, similar to the
@@ -76,9 +76,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  of all typeable objects.  Any objects for which no type is specified
  are not checked.
 
- <p> During runtime, this actor consumes and ignores any input tokens.
+ </p><p> During runtime, this actor consumes and ignores any input tokens.
  This makes it very easy to add this actor to an existing model without
- changing the behavior of the model.
+ changing the behavior of the model.</p>
 
  @author Steve Neuendorffer
  @version $Id$

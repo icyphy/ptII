@@ -45,16 +45,16 @@ import ptolemy.util.StringUtilities;
 //// Parameter
 
 /**
- Parameter extends Variable with additional support for string-valued
+ <p>Parameter extends Variable with additional support for string-valued
  variables that makes these friendlier at the user interface level.
  In particular, this class supports an annotation that specifies
  choices for values.  A user interface can use this to present a
  choice dialog that offers the specified values.  This is typically
  used when a particular set of choices make sense.  The values can
  be any expression, or if used in conjunction with string mode,
- any string.
+ any string.</p>
  <p>
- By default, an instance of Parameter, unlike Variable, is persistent.
+ By default, an instance of Parameter, unlike Variable, is persistent.</p>
  <p>
  By convention, an instance of NamedObj has a set of attributes,
  some of which are visible to users and some of which are not.
@@ -62,7 +62,7 @@ import ptolemy.util.StringUtilities;
  for editing, it presents only those that are visible.
  By default, an instance of Parameter is visible, as indicated by the fact
  that it returns FULL in its getVisibility() method.  This can be overridden
- by calling setVisibility().
+ by calling setVisibility().</p>
 
  @author Neil Smyth, Edward A. Lee, Xiaojun Liu
  @version $Id$

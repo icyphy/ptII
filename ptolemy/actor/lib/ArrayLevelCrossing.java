@@ -49,7 +49,7 @@ import ptolemy.kernel.util.SingletonAttribute;
 
 /**
 
- Search an array from the specified starting index and report the
+ <p>Search an array from the specified starting index and report the
  index of the first item in the array that is below or above the
  specified threshold.  If there is no such item, then -1 is
  returned.  The threshold can be absolute or relative to the value
@@ -59,11 +59,11 @@ import ptolemy.kernel.util.SingletonAttribute;
  above the value at the starting index by more than the threshold
  are reported.  If the threshold is relative and we are looking for
  values below the threshold, then values that are below the value at
- the starting index by more than the threshold are reported.
+ the starting index by more than the threshold are reported.</p>
 
  <p> This actor is a generalization of Matlab code developed by John
  Signorotti of Southwest Research Institute. The original function
- was called UFDipSearch.
+ was called UFDipSearch.</p>
 
  @author Edward A. Lee, Steve Neuendorffer
  @version $Id$

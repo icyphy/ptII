@@ -74,9 +74,9 @@ import ptolemy.kernel.util.Workspace;
  <h2>Schedule Properties</h2>
  <ul>
  <li>The number of tokens accumulated on every relation is bounded, given
- an infinite number of executions of the schedule.
+ an infinite number of executions of the schedule.</li>
  <li>Deadlock will never occur, given an infinite number of executions of
- the schedule.
+ the schedule.</li>
  </ul>
  <h1>Class comments</h1>
  An SDFDirector is the class that controls execution of actors under the
@@ -92,7 +92,7 @@ import ptolemy.kernel.util.Workspace;
  {@link ptolemy.domains.sdf.kernel.SDFScheduler} for more information.
  The {@link ptolemy.domains.sdf.lib.SampleDelay} actor is usually used
  in a model to specify the delay across a relation.
- <p>
+ </p><p>
  The <i>allowDisconnectedGraphs</i> parameter of this director determines
  whether disconnected graphs are permitted.
  A model may have two or more graphs of actors that
@@ -105,19 +105,19 @@ import ptolemy.kernel.util.Workspace;
  error.
  The default value of the allowDisconnectedGraphs parameter is a
  BooleanToken with the value false.
- <p>
+ </p><p>
  The <i>iterations</i> parameter of this director corresponds to a
  limit on the number of times the director will fire its hierarchy
  before it returns false in postfire.  If this number is not greater
  than zero, then no limit is set and postfire will always return true.
  The default value of the iterations parameter is an IntToken with value zero.
- <p>
+ </p><p>
  The <i>vectorizationFactor</i> parameter of this director sets the number
  of times that the basic schedule is executed during each firing of this
  director.  This might allow the director to execute the model more efficiently,
  by combining multiple firings of each actor.  The default value of the
  vectorizationFactor parameter is an IntToken with value one.
- <p>
+ </p><p>
  The SDF director has a <i>period</i> parameter which specifies the
  amount of model time that elapses per iteration. If the value of
  <i>period</i> is 0.0 (the default), then it has no effect, and
@@ -127,13 +127,13 @@ import ptolemy.kernel.util.Workspace;
  time by this amount in each invocation of postfire().
  If it is not at the top level, then it calls
  fireAt(currentTime + period) in postfire().
- <p>
+ </p><p>
  This behavior gives an interesting use of SDF within DE:
  You can "kick start" an SDF submodel with a single
  event, and then if the director of that SDF submodel
  has a period greater than 0.0, then it will continue to fire
  periodically with the specified period.
- <p>
+ </p><p>
  If <i>period</i> is greater than 0.0 and the parameter
  <i>synchronizeToRealTime</i> is set to <code>true</code>,
  then the prefire() method stalls until the real time elapsed
@@ -141,7 +141,7 @@ import ptolemy.kernel.util.Workspace;
  the iteration count.
  This ensures that the director does not get ahead of real time. However,
  of course, this does not ensure that the director keeps up with real time.
-
+ </p>
  @see ptolemy.domains.sdf.kernel.SDFScheduler
  @see ptolemy.domains.sdf.kernel.SDFReceiver
 

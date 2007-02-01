@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Workspace;
 //// ArrayToSequence
 
 /**
- This actor reads an array at the input and writes the array elements
+ <p>This actor reads an array at the input and writes the array elements
  as a sequence to the output. The parameter <i>arrayLength</i> can be
  used to specify the length of arrays that the actor will accept.
  If the <i>enforceArrayLength</i> parameter true, then if an input
@@ -56,11 +56,11 @@ import ptolemy.kernel.util.Workspace;
  that do static scheduling based on production and consumption
  rates.  For other domains, such as DE and PN, the <i>enforceArrayLength</i>
  parameter can be set to false, in which case the <i>arrayLength</i>
- parameter will be ignored.
+ parameter will be ignored.</p>
  <p>
  This actor is polymorphic. It can accept ArrayTokens with any element
  type and send out tokens corresponding to that type.
- <p>
+ </p>
 
  @author Yuhong Xiong
  @version $Id$

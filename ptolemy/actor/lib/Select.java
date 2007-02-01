@@ -40,7 +40,7 @@ import ptolemy.kernel.util.StringAttribute;
 //// Select
 
 /**
- A polymorphic select, which routes specified input channels to the
+ <p>A polymorphic select, which routes specified input channels to the
  output.  This actor has two input ports, the <i>input</i> port for
  data, and the <i>control</i> port to select which input channel to
  read.  In an iteration, if an input token is available at the
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.StringAttribute;
  input token is available on the specified channel of the <i>input</i>
  port, then that token is read and sent to the output.
 
- <p> The actor indicates a willingness to fire in its prefire() method
+ </p><p> The actor indicates a willingness to fire in its prefire() method
  if there is an input available on the channel specified by the most
  recently seen token on the <i>control</i> port.  If no token has ever
  been received on the <i>control</i> port, then channel zero is assumed
@@ -59,14 +59,14 @@ import ptolemy.kernel.util.StringAttribute;
  not fire() (although it will continue to consume tokens on the
  <i>control</i> port in its prefire() method).
 
- <p> This actor is similar to the Multiplexor actor, except that it
+ </p><p> This actor is similar to the Multiplexor actor, except that it
  never discards input tokens.  Tokens on channels that are not selected
  are not consumed.
 
- <p> Note that in the DE domain, where this actor is commonly used, if
+ </p><p> Note that in the DE domain, where this actor is commonly used, if
  a new value is given to the <i>control</i> port, then all previously
  unread input tokens on the specified input channel will be read at the
- same firing time, in the order in which they arrived.
+ same firing time, in the order in which they arrived.</p>
 
  @author Edward A. Lee
  @version $Id$

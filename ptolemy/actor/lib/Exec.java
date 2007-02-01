@@ -58,7 +58,7 @@ import ptolemy.util.StringUtilities;
 //// Execute
 
 /**
- Execute a command as a separately running subprocess. A command
+ <p>Execute a command as a separately running subprocess. A command
  is a single executable.  To get the get the effect of executing
  a command provided in a shell interpreter, you can set
  <i>command</i> to "cmd" (Windows) or "sh" (Windows with Cygwin
@@ -66,37 +66,38 @@ import ptolemy.util.StringUtilities;
  Note that each command must be terminated with a newline.
  For example, to open a model in vergil and run it, you can
  set <i>command</i> to "sh" and use a Const actor to provide
- on the <i>input</i> port the string:
+ on the <i>input</i> port the string:</p>
  <pre>
  "vergil -run model.xml\n exit\n"
  </pre>
-
+ 
  <p>This actor uses java.lang.Runtime.exec() to invoke a subprocess
  named by the <i>command</i> parameter in a <i>directory</i> with an
  <i>environment</i>.  Data from the <i>input</i> port (if any) is
  passed to the input of the subprocess.  The subprocess is run until it
  exits and then contents of the output and error streams of the
  subprocess (if any) are passed to the <i>output</i> and <i>error</i>
- ports.
+ ports.</p>
 
  <p>If the subprocess generates no data on the output or error stream,
- then the data on the corresponding port(s) will consist of the empty string.
+ then the data on the corresponding port(s) will consist of the empty string.</p>
 
  <p>A much more interesting actor could be written using a
  Kahn Process Network.  This actor would generate output asynchronously
- as the process was executing.
+ as the process was executing.</p>
 
  <p>Currently, there appears to be no way to get the subprocess to
  exit by passing it input. For example, if the <i>command</i> is set
  to the <code>cat</code> command, and we pass in a Const with the
  value <code>\04</code>, then the cat subprocess does <b>not</b> interpret
- this as the end of file marker and exit.
+ this as the end of file marker and exit.</p>
 
  <p>For information about Runtime.exec(), see:
- <br><a href="http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html" target="_top">http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>
- <br>and
- <br><a href="http://mindprod.com/jgloss/exec.html" target="_top">http://mindprod.com/jgloss/exec.html</a>
-
+ <br/><a href="http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html" target="_top">http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>
+ <br/>and
+ <br/><a href="http://mindprod.com/jgloss/exec.html" target="_top">http://mindprod.com/jgloss/exec.html</a>
+ </p>
+ 
  @author Christopher Hylands Brooks, Contributor: Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0
@@ -165,7 +166,7 @@ public class Exec extends TypedAtomicActor {
      *
      * <p>The command parameter is read only once during fire().
      * If you want to spawn another different command,
-     * use life cycle management actors such RunCompositeActor.
+     * use life cycle management actors such RunCompositeActor.</p>
      */
     public PortParameter command;
 
@@ -180,7 +181,7 @@ public class Exec extends TypedAtomicActor {
      *  directory.  Note that if we are running inside a menu launched
      *  application, then ptolemy.actor.gui.jnlp.MenuApplication will
      *  change user.dir to be the value of user.home, which is the
-     *  name of the user's home directory.
+     *  name of the user's home directory.</p>
      */
     public FileParameter directory;
 
@@ -190,25 +191,25 @@ public class Exec extends TypedAtomicActor {
      *  read again until fire() is called again.
      *
      *  <p>This parameter is an array of records that name an environment
-     *  variable and the value for the value.  The format is:
+     *  variable and the value for the value.  The format is:</p>
      *  <pre>
      *  {{name = "<i>NAME1</i>", value = "<i>value1</i>"}...}
      *  </pre>
      *  Where <code><i>NAME1</i></code> is the name of the environment
      *  variable, and <code><i>value1</i></code> is the value.
      *  <p>For example <code>{{name = "PTII", value = "c:/ptII"}}</code>
-     *  would set the value of the <code>PTII</code> to <code>c:/ptII</code>.
+     *  would set the value of the <code>PTII</code> to <code>c:/ptII</code>.</p>
      *
      *  <p>If the initial value of the parameter is <code>{{name="",
      *  value = ""}}</code>, then the environment from the calling or parent
-     *  process is used in the new command.
+     *  process is used in the new command.</p>
      *
      *  <p>Note that if this parameter sets any environment variable,
      *  then under Windows the other environment variables in the calling
      *  or parent process might not be passed to the subprocess.  This
      *  behaviour could be platform or JVM dependent. When in doubt,
      *  try setting the <i>command</i> value to "env" to print out the
-     *  environment.
+     *  environment.</p>
      */
     public Parameter environment;
 
@@ -249,7 +250,7 @@ public class Exec extends TypedAtomicActor {
      *  <p>If there is no data on the <i>input</i> port, then the
      *  subprocess executes without reading any input. If there is no
      *  output or error data from the subprocess, then the empty
-     *  string is sent to the appropriate port(s).
+     *  string is sent to the appropriate port(s).</p>
      *
      *  @exception IllegalActionException If the subprocess cannot be
      *  started, if the input of the subprocess cannot be written,

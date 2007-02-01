@@ -48,36 +48,36 @@ import ptolemy.kernel.util.Workspace;
 //// CTMixedSignalDirector
 
 /**
- A CTDirector that supports the interaction of the continuous-time
+ <p>A CTDirector that supports the interaction of the continuous-time
  simulation with event-based domains. This director can both serve as
  a top-level director and an inside director that is contained by
  a composite actor in an event-based domain. If it is a top-level
  director, it behaves exactly like a CTMultiSolverDirector. If it is
  embedded in an event-based domain, it will run ahead of the global
  time and prepare to roll back if necessary.
- <P>
+ </p><p>
  This director has an extra parameter compared to the CTMultiSolverDirector,
  the maximum run ahead of time length (<code>runAheadLength</code>).
  Its default value is 1.0.
- <P>
- The running ahead of time is achieved by the following mechanism.<br>
- <UL>
- <LI> At the initialize stage of an execution, the director requests
+ </p><p>
+ The running ahead of time is achieved by the following mechanism.<br/>
+ <ul>
+ <li> At the initialize stage of an execution, the director requests
  a firing at the global current time.
- <LI> At each prefire stage of the execution, the end time the the firing is
+ </li><li> At each prefire stage of the execution, the end time the the firing is
  computed based on the current time of the executive director, t1, the next
  iteration time of the executive director, t2, and the value of the parameter
  <code>runAheadLength</code>, t3. The fire end time is t1 + min(t2, t3)
- <LI> At the fire stage, the director will stop at the first of the
+ </li><li> At the fire stage, the director will stop at the first of the
  following two times, the fire end time and the time of the first detected
  event.
- </ul>
- At the prefire stage, the local current time is compared with the
+ </li></ul>
+ </p><p>At the prefire stage, the local current time is compared with the
  current time of the executive director. If the local time is later than
  the executive director time, then the directed system will rollback to a
  "known good" state. The "known good" state is the state of the system at
  the time when local time is equal to the current time of the executive
- director.
+ director</p>.
 
  @author  Jie Liu, Haiyang Zheng
  @version $Id$
@@ -219,17 +219,17 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
     /** Always returns true, indicating that the (sub)system is always ready
      *  for one iteration.
-     *  <P>
+     *  <p>
      *  If this is not a top-level director, some additional work is done
      *  to synchronize time with the executive director. In particular,
      *  it will compare its local time, say t, with the current time
      *  of the executive director, say t0.
-     *  If t == t0, do nothing. <BR>
+     *  If t == t0, do nothing. <br/>
      *  If t > t0, then rollback to the "known good" time (which should be
-     *  less than the outside time). <BR>
+     *  less than the outside time). <br/>
      *  If t < t0, then throw an exception because the CT subsystem
-     *  should always run ahead of the outside event-based system. <BR>
-     *  <P>
+     *  should always run ahead of the outside event-based system. <br/>
+     *  </p><p>
      *  If this director is not a top-level director, the iteration end time is
      *  resolved from the current time of the outside system, say t1,
      *  the next iteration time of the outside system, say t2, and
@@ -239,8 +239,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  due to possible event generated during the iteration.
      *  In particular, when the first event is detected, say at t5 and t5 < t4,
      *  then the iteration ends at t5.
-     *  <p> 
-     *  This method updates the suggested step size.
+     *  </p><p>
+     *  This method updates the suggested step size.</p>
      *  
      *  @return true Always.
      *  @exception IllegalActionException If the local time is

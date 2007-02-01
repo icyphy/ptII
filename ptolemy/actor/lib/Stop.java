@@ -43,14 +43,14 @@ import ptolemy.kernel.util.Settable;
 
 /**
 
- An actor that stops execution of a model when it receives a true
+ <p>An actor that stops execution of a model when it receives a true
  token on any input channel. This is accomplished by calling
  finish() on the manager, which requests that the current iteration
  be completed and then the model execution be halted. If the input
  is not connected to anything, then this actor requests a stop
  whenever it fires.
 
- <p>
+ </p><p>
  When exactly this stops the execution depends on the domain.  For
  example, in DE, if an event with time stamp <i>T</i> and value
  <i>true</i> arrives at this actor, then the current iteration will
@@ -59,13 +59,12 @@ import ptolemy.kernel.util.Settable;
  stamp <i>T</i>. Thus, it is possible for actors to be invoked after
  this one is invoked with a <i>true</i> input.
 
- <p>
-
+ </p><p>
  In SDF, if this actor receives <i>true</i>, then the current
  iteration is concluded and then execution is stopped.  Similarly in
  SR.
 
- <p>
+ </p><p>
  In PN, where each actor has its own thread, there is no
  well-defined notion of an iteration. The finish() method of the
  manager calls stopFire() on all actors, which for threaded actors
@@ -78,7 +77,7 @@ import ptolemy.kernel.util.Settable;
  stop a PN model, it is better to design the model so that all
  actors are starved of data when the model is to stop.  The director
  will detect this starvation, and halt the model.  Nonetheless, if
- the nondeterminism is acceptable, this actor can be used.
+ the nondeterminism is acceptable, this actor can be used.</p>
 
  @author Edward A. Lee
  @version $Id$

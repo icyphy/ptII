@@ -38,22 +38,22 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Rician
 
 /**
- Produce a random sequence with a Rician distribution.
+ <p>Produce a random sequence with a Rician distribution.
  A Rician random variable is defined as follows:
  Let Z = sqrt(X<sup>2</sup> + Y<sup>2</sup>), where X and Y are statistically
  independent Gaussian random variables with means given by parameters
  <i>xMean</i> and <i>yMean</i> respectively, and common variance given by
  parameter <i>standardDeviation</i>.
- <p>
+ </p><p>
  The default values of <i>xMean</i> and <i>yMean</i> are both set to be zero,
  in which the distribution is also called a Rayleigh distribution. Hence,
  the actor is by default a Rayleigh random generator.
- <p>
+ </p><p>
  On each iteration, a new random number is produced. The output port
  is of type DoubleToken. The values that are generated are independent
  and identically distributed with the means and the standard deviation
  given by parameters. In addition, the seed can be specified as a
- parameter to control the sequence that is generated.
+ parameter to control the sequence that is generated.</p>
 
  @author Ye Zhou
  @version $Id$

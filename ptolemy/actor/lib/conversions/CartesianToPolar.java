@@ -39,11 +39,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 /// CartesianToPolar
 
 /**
- Convert a Cartesian pair, which is represented by two double tokens (x and y),
+ <p>Convert a Cartesian pair, which is represented by two double tokens (x and y),
  to a polar form, which is also represented by two double tokens (magnitude
  and angle).  The angle is in radians.
- <p>
- The implementation uses java.lang.Math.atan2(double, double).
+ </p><p>
+ The implementation uses java.lang.Math.atan2(double, double).</p>
  @see java.lang.Math#atan2(double, double)
 
  @author Michael Leung, Edward A. Lee, Paul Whitaker

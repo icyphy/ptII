@@ -46,7 +46,7 @@ import ptolemy.kernel.util.StringAttribute;
 //// Comparator
 
 /**
- Compare two double-valued inputs, and output the boolean result
+ <p>Compare two double-valued inputs, and output the boolean result
  of the comparison.  The exact comparison performed is given by the
  <i>comparison</i> attribute, which can take any of the following
  values:
@@ -60,14 +60,17 @@ import ptolemy.kernel.util.StringAttribute;
  The default is "&gt;".
  The input ports are named <i>left</i> and <i>right</i> to indicate
  which side of the comparison operator their value appears on.
+ </p>
  <p>
  The <i>tolerance</i> parameter, which defaults to zero, defines
  an error tolerance.  That is, the actor may produce true even if
  the specified test is not exactly satisfied, but rather is almost
  satisfied, within the specified tolerance.
+ </p>
  <p>
  Note that this actor will work with any data type that can be losslessly
  converted to doubles, such as integers.
+ </p>
 
  @author Edward A. Lee
  @version $Id$

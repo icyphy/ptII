@@ -55,30 +55,30 @@ import ptolemy.util.MessageHandler;
 //// SetVariable
 
 /**
- Set the value of a variable contained by the container.  The result
+ <p>Set the value of a variable contained by the container.  The result
  may occur at two different times, depending on the value of the
  delayed parameter.
 
- <p> If <it>delayed</it> is true, then the change to
+ </p><p> If <it>delayed</it> is true, then the change to
  the value of the variable is implemented in a change request, and
  consequently will not take hold until the end of the current
  toplevel iteration.  This helps ensure that users of value of the
  variable will see changes to the value deterministically
  (independent of the schedule of execution of the actors).
 
- <p> If <it>delayed</it> is false, then the change to the value of
+ </p><p> If <it>delayed</it> is false, then the change to the value of
  the variable is performed immediately.  This allows more frequent
  reconfiguration, and can mimic the operation of PGM's graph
  variables.
 
- <p>
+ </p><p>
  Note that the variable name is observed during preinitialize().
  If it is changed after that, the change will not take effect
  until the next time the model is executed. Moreover, the
  type of the variable is constrained in preinitialize()
  to be at least that of the input port for this actor.
 
- <p>
+ </p><p>
  The variable can be either any attribute that implements
  the Settable interface. If it is in addition an instance of
  Variable, then the input token is used directly to set the
@@ -87,12 +87,12 @@ import ptolemy.util.MessageHandler;
  token is converted to a string and the setExpression() method
  on the variable is used to set the value.
 
- <p>The variable can occur anywhere in the hierarchy above
+ </p><p>The variable can occur anywhere in the hierarchy above
  the current level.  If the variable is not found in the container,
  then the container of the container is checked until we reach the
- top level.
+ top level.</p>
 
- @author Edward A. Lee, Steve Neuendorffer, Contributor: J&eacute;r&ocirc;me Blanc
+ @author Edward A. Lee, Steve Neuendorffer, Contributor: Blanc
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Red (yuhong)

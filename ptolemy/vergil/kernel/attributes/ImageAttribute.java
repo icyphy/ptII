@@ -47,10 +47,11 @@ import ptolemy.vergil.icon.ImageIcon;
 //// ImageAttribute
 
 /**
- This is an attribute that is rendered as an image.  Its <i>source</i>
+ <p>This is an attribute that is rendered as an image.  Its <i>source</i>
  parameter specifies a file containing an image (GIF, JPEG, etc.), and
  its <i>scale</i> attribute specifies a scaling factor, as a percentage.
- <p>
+ </p>
+ 
  @author Edward A. Lee and Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 4.0

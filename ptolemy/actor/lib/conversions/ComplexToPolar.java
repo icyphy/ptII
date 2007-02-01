@@ -41,10 +41,12 @@ import ptolemy.math.Complex;
 /// ComplexToPolar
 
 /**
- Convert a complex token to polar coordinates, which are represented by two
- double tokens (magnitude and angle).  The output angle is in radians.
+ <p>Convert a complex token to polar coordinates, which are represented by two
+ double tokens (magnitude and angle).  The output angle is in radians.</p>
  <p>
  The implementation uses java.lang.Math.atan2(double, double).
+ </p>
+ 
  @see java.lang.Math#atan2(double, double)
 
  @author Michael Leung, Edward A. Lee, and Paul Whitaker

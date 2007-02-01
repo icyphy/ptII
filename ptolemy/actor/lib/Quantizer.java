@@ -41,31 +41,32 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Quantizer
 
 /**
- Produce an output token on each firing with a value that is
+ <p>Produce an output token on each firing with a value that is
  a quantized version of the input.  The input and output types
- are both double.
- <P>
+ are both double.</p>
+ <p>
  The <i>levels</i> parameter contains an array of doubles
  specifying the quantization levels. The elements must be in
  an increasing order, or an exception will be thrown.
- The default value of <i>levels</i> is {-1.0, 1.0}.
- <P>
+ The default value of <i>levels</i> is {-1.0, 1.0}.</p>
+ <p>
  Suppose <i>u</i> is the input, and
  <i>levels</i> = {<i>a</i>, <i>b</i>, <i>c</i>}, where
  <i>a</i> &lt; <i>b</i> &lt; <i>c</i>, then the output of the actor will be:
- <P>
- <i>y</i> = <i>a</i>, for <i>u</i> &lt;= (<i>b</i>+<i>a</i>)/2;<BR>
- <i>y</i> = <i>b</i>, for (<i>b</i>+<i>a</i>)/2 &lt;
- <i>u</i> &lt;= (<i>c</i>+<i>b</i>)/2;<BR>
- <i>y</i> = <i>c</i>, for <i>u</i> &gt; (<i>c</i>+<i>b</i>)/2;<BR>
+ </p>
  <p>
+ <i>y</i> = <i>a</i>, for <i>u</i> &lt;= (<i>b</i>+<i>a</i>)/2;<br/>
+ <i>y</i> = <i>b</i>, for (<i>b</i>+<i>a</i>)/2 &lt;
+ <i>u</i> &lt;= (<i>c</i>+<i>b</i>)/2;<br/>
+ <i>y</i> = <i>c</i>, for <i>u</i> &gt; (<i>c</i>+<i>b</i>)/2;<br/>
+ </p><p>
  Thus, for the default <i>levels</i>, the output is (almost)
  the signum function of the input, or +1.0 if the input is positive,
  and -1.0 otherwise.  This is almost the signum function because it
  outputs -1.0 if the input is zero.
- <p>
+ </p><p>
  This actor does not require that the quantization intervals be equal,
- i.e. we allow that (<i>c</i>-<i>b</i>) != (<i>b</i>-<i>a</i>).
+ i.e. we allow that (<i>c</i>-<i>b</i>) != (<i>b</i>-<i>a</i>).</p>
 
  @author Jie Liu
  @version $Id$

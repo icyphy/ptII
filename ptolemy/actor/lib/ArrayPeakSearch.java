@@ -51,9 +51,9 @@ import ptolemy.kernel.util.Workspace;
 //// ArrayPeakSearch
 
 /**
- This actor outputs the indices and values of peaks in an input array.
+ <p>This actor outputs the indices and values of peaks in an input array.</p>
 
- The <i>dip</i> and <i>squelch</i> parameters control the
+ <p>The <i>dip</i> and <i>squelch</i> parameters control the
  sensitivity to noise.  These are given either as absolute numbers
  or as relative numbers.  If they are absolute numbers, then a peak
  is detected if a rise above <i>dip</i> is detected before the peak
@@ -66,8 +66,9 @@ import ptolemy.kernel.util.Workspace;
  This is determined by the value of the <i>scale</i> parameter. For
  example, if <i>dip</i> is given as 2.0 and <i>scale</i> has value
  "relative linear", then a dip must drop to half of a local peak
- value to be considered a dip.
- If <i>squelch</i> is given as 10.0 and <i>scale</i> has value
+ value to be considered a dip.</p>
+ 
+ <p>If <i>squelch</i> is given as 10.0 and <i>scale</i> has value
  "relative linear", then any peaks that lie below 1/10 of the global
  peak are ignored.  Note that <i>dip</i> is relative to the most
  recently seen peak or valley, and <i>squelch</i> is relative to the
@@ -77,10 +78,10 @@ import ptolemy.kernel.util.Workspace;
  value "relative power decibels", then a value of 3.0 is equivalent
  to the linear value 2.0.  In either decibel scale, 0.0 is
  equivalent to 0.0 linear.  Other parameters control how the search
- is conducted.
+ is conducted.</p>
 
  <p>This actor is based on Matlab code developed by John Signorotti of
- Southwest Research Institute.
+ Southwest Research Institute.</p>
 
  @author Edward A. Lee
  @version $Id$

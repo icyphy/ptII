@@ -47,24 +47,25 @@ import ptolemy.kernel.util.Workspace;
 //// PortParameter
 
 /**
- This parameter creates an associated port that can be used to update
+ <p>This parameter creates an associated port that can be used to update
  the current value of the parameter. This parameter has two values,
  which may not be equal, a <i>current value</i> and a <i>persistent value</i>.
  The persistent value is returned by
- getExpression() and is set by any of three different mechanisms:
+ getExpression() and is set by any of three different mechanisms:</p>
  <ul>
- <li> calling setExpression();
- <li> calling setToken(); and
- <li> specifying a value as a constructor argument.
+ <li> calling setExpression();</li>
+ <li> calling setToken(); and </li>
+ <li> specifying a value as a constructor argument.</li>
  </ul>
+ <p>
  All three of these will also set the current value, which is then
  equal to the persistent value.
  The current value is returned by get getToken()
- and is set by any of three different mechanisms:
+ and is set by any of three different mechanisms:</p>
  <ul>
- <li> calling setCurrentValue();
+ <li> calling setCurrentValue();</li>
  <li> calling update() sets the current value if there is an associated
- port, and that port has a token to consume; and
+ port, and that port has a token to consume; and</li>
  </ul>
  These three techniques do not change the persistent value, so after
  these are used, the persistent value and current value may be different.
@@ -81,23 +82,23 @@ import ptolemy.kernel.util.Workspace;
  is consumed.  In DE, the actor will be repeatedly fired until
  the token is consumed.  Thus, it is an error to not call update()
  once per iteration.  For an example of an actor that uses this
- mechanism, see Ramp.
+ mechanism, see Ramp.</p>
  <p>
  If this actor is placed in a container that does not implement
  the TypedActor interface, then no associated port is created,
  and it functions as an ordinary parameter.  This is useful,
  for example, if this is put in a library, where one would not
- want the associated port to appear.
+ want the associated port to appear.</p>
 
  <p>There are a few situations where PortParameter might not do what
- you expect:
+ you expect:</p>
 
  <ol>
  <li> If it is used in a transparent composite actor, then a token provided
  to a PortParameter will never be read.  A transparent composite actor
  is one without a director.
 
- <br>Workaround: Put a director in the composite.
+ <br/>Workaround: Put a director in the composite.</li>
 
  <li> Certain actors (such as the Integrator in CT) read parameter
  values only during initialization.  During initialization, a
@@ -107,8 +108,8 @@ import ptolemy.kernel.util.Workspace;
  see only the parameter value, never the value provided via the
  port.
 
- <br>Workaround: Use a RunCompositeActor to contain the model with the
- Integrator.
+ <br/>Workaround: Use a RunCompositeActor to contain the model with the
+ Integrator.</li>
 
  </ol>
 
@@ -298,7 +299,7 @@ public class PortParameter extends Parameter {
      *  constraint is satisfied, and if not, throw an exception.
      *  Note that you can call this with a null argument regardless
      *  of type constraints, unless there are other variables that
-     *  depend on its value.
+     *  depend on its value.</p>
      *  @param token The new token to be stored in this variable.
      *  @exception IllegalActionException If the token type is not
      *   compatible with specified constraints, or if you are attempting

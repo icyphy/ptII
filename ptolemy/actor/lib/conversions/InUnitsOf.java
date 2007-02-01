@@ -39,11 +39,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// InUnitsOf
 
 /**
- An actor that converts input tokens to specified units by dividing the
+ <p>An actor that converts input tokens to specified units by dividing the
  input by the value of the <i>units</i> parameter.  This actor is designed
  to be used with a <i>unit system</i>, which must be included in the
  model (note that some Ptolemy II applications do not include unit systems).
- <p>
+ </p><p>
  The units are specified by the <i>units</i> parameter, which contains a
  DoubleToken with units. The input tokens and the token in the <i>unit</i>
  parameter must have the same unit category. Otherwise, an exception
@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  defined in the MoML file, such as length, time, mass, and the composite
  ones formed through the base categories, such as length/time (speed),
  and length * length (area). The output token is a DoubleToken without
- units.
+ units.</p>
 
  @author Yuhong Xiong, Xiaojun Liu, Edward Lee
  @version $Id$

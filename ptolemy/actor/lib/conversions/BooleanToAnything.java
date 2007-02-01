@@ -40,12 +40,12 @@ import ptolemy.kernel.util.Workspace;
 //// BooleanToAnything
 
 /**
- This actor converts a boolean input token into any data type.
- A <i>true</i> at the input results in an output with value given
+ <p>This actor converts a boolean input token into any data type.</p>
+ <p>A <i>true</i> at the input results in an output with value given
  by the <i>trueValue</i> parameter.
  A <i>false</i> at the input results in an output with value given
  by the <i>falseValue</i> parameter.
- <p>
+ </p>
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 2.0

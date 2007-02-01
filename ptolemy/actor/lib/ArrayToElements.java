@@ -42,7 +42,7 @@ import ptolemy.kernel.util.Workspace;
 //// ArrayToElements
 
 /**
- An actor that disassembles an ArrayToken to a multiport output.
+ <p>An actor that disassembles an ArrayToken to a multiport output.</p>
  <p>On each firing, this actor reads an ArrayToken from the input
  port and send out each element token to each channel of the output
  port. If the width of the output port (say, <i>n</i>) is less than
@@ -50,11 +50,11 @@ import ptolemy.kernel.util.Workspace;
  <i>n</i> elements in the array will be sent, and the remaining
  tokens are discarded. If <i>n</i> is greater than <i>m</i>, then
  the last <i>n-m</i> channels of the output port will never send
- tokens out.
+ tokens out.</p>
  <p>
  This actor is polymorphic. It can accept ArrayTokens with any element
  type and send out tokens corresponding to that type.
- <p>
+ </p>
 
  @author Ye Zhou
  @version $Id$

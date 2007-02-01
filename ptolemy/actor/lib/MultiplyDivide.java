@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 
- A polymorphic multiplier and/or divider.  This adder has two input
+ <p>A polymorphic multiplier and/or divider.  This adder has two input
  ports, both of which are multiports, and one output port, which is
  not.  The types on the ports are undeclared and will be resolved by
  the type resolution mechanism. Data that arrives on the input port
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  domains, either input port can be left unconnected.  Thus, to get a
  simple multiplier (with no division), just leave the <i>divide</i>
  input unconnected.
-
+ </p>
  <p>
  Currently, the type system is quite liberal about the resolved
  types it will permit at the inputs. In particular, it may permit
@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  that cannot in fact be multiplied or divided.  In these cases, a
  run-time error will occur.  In the future, we hope that the type
  system will intercept such errors before run time.
-
+ </p>
  <p>
  This actor does not require that each input channel have a token
  upon firing. It will multiply or divide available tokens at the
@@ -68,7 +68,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  is obtained by calling the one() method of the first token seen at
  the <i>divide</i> input.  If no input tokens are available at all,
  then no output is produced.
-
+ </p>
+ 
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.3

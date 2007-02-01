@@ -38,11 +38,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Remainder
 
 /**
- Compute the remainder after dividing the input by the divisor.
+ <p>Compute the remainder after dividing the input by the divisor.
  The input and output data types are both double.
  This is implemented using the IEEEremainder() method of the java Math
  class, which computes the remainder as prescribed by the IEEE 754
- standard. The method documentation states:
+ standard. The method documentation states:</p>
  <quote>
  "The remainder value is mathematically equal to f1 - f2 ? n, where n
  is the mathematical integer closest to the exact mathematical value
@@ -53,15 +53,15 @@ import ptolemy.kernel.util.NameDuplicationException;
  <ul>
  <li> If either argument is NaN, or the first argument is infinite,
  or the second argument is positive zero or negative zero,
- then the result is NaN.
+ then the result is NaN.</li>
  <li> If the first argument is finite and the second argument is
- infinite, then the result is the same as the first argument."
+ infinite, then the result is the same as the first argument."</li>
  </ul>
  </quote>
 
- Note: The divisor parameter is available as an input port in
+ <p>Note: The divisor parameter is available as an input port in
  the MathFunction.Modulo() method. If you need to change the divisor
- during run-time, the MathFunction actor may be the a better choice.
+ during run-time, the MathFunction actor may be the a better choice.</p>
 
  @author Edward A. Lee
  @version $Id$

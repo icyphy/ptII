@@ -47,20 +47,20 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Recorder
 
 /**
- Record all input tokens for later querying.  This actor can be used for
+ <p>Record all input tokens for later querying.  This actor can be used for
  testing configurations of actors.  It can also be used in programs that
  invoke Ptolemy models and wish to query the results after the model
  is run.  The input tokens are read in the postfire() method so that
  in domains with fixed-point semantics, only the final, settled value
  is recorded.  The current time is also recorded for each value.
- <p>
+ </p><p>
  The <i>capacity</i> parameter limits the size of the record.
  If the capacity is set to zero, then no tokens are recorded, but
  the total number of input tokens is counted.  You can access
  the count via the getCount() method.  If the capacity is 1,
  then only the most recently seen token on each channel is recorded.
  If the capacity is negative (the default), then the capacity
- is infinite.
+ is infinite.</p>
 
  @author Edward A. Lee
  @version $Id$

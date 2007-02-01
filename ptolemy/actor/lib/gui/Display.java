@@ -65,6 +65,7 @@ import ptolemy.kernel.util.Workspace;
 //// Display
 
 /**
+ <p>
  Display the values of the tokens arriving on the input channels in a
  text area on the screen.  Each input token is written on a
  separate line.  The input type can be of any type.
@@ -75,20 +76,20 @@ import ptolemy.kernel.util.Workspace;
  Tokens are read from the input only in
  the postfire() method, to allow them to settle in domains where they
  converge to a fixed point.
- <p>
+ </p><p>
  This actor has a <i>suppressBlankLines</i> parameter, whose default value
  is false. If this parameter is configured to be true, this actor does not
  put a blank line in the display.
- <p>
+ </p><p>
  Note that because of complexities in Swing, if you resize the display
  window, then, unlike the plotters, the new size will not be persistent.
  That is, if you save the model and then re-open it, the new size is
  forgotten.  To control the size, you should set the <i>rowsDisplayed</i>
  and <i>columnsDisplayed</i> parameters.
- <p>
+ </p><p>
  Note that this actor internally uses JTextArea, a Java Swing object
  that is known to consume large amounts of memory. It is not advisable
- to use this actor to log large output streams.
+ to use this actor to log large output streams.</p>
 
  @author  Yuhong Xiong, Edward A. Lee
  @version $Id$

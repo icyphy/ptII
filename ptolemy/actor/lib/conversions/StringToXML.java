@@ -39,10 +39,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// StringToXml
 
 /**
- This actor converts a string token to an xml token.
+ <p>This actor converts a string token to an xml token.
 
- <p>FIXME: The type of the output ports is set to XmlTOken for now.
- It should ???.
+ </p><p>FIXME: The type of the output ports is set to XmlTOken for now.
+ It should ???.</p>
 
  @author Yang Zhao
  @version $Id$
