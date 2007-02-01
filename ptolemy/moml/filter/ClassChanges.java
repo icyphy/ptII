@@ -239,6 +239,10 @@ public class ClassChanges implements MoMLFilter {
         // Moved HSFSMDirector
         _classChanges.put("ptolemy.domains.fsm.kernel.HSFSMDirector",
                 "ptolemy.domains.ct.kernel.HSFSMDirector");
+        
+        // Moved ParameterSet
+        _classChanges.put("ptolemy.data.expr.ParameterSet",
+                "ptolemy.actor.parameters.ParameterSet");
 
         // Look for Kepler's NamedObjId, and if we don't find it, then
         // add it to the filter.  This makes it much easier to open
