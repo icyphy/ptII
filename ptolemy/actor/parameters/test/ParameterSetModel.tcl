@@ -55,12 +55,12 @@ test ParameterSetModel-1.0 {Change the contents of the file read by ParameterSet
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
-    set fd [open TestParameterSet.txt w]
+    set fd [open TestParameterSetModel.txt w]
     puts $fd "a=11"
     close $fd
     set fileOrURL [java::cast ptolemy.data.expr.FileParameter \
  		       [$parameterSet getAttribute fileOrURL]]
-     set URL [[java::new java.io.File TestParameterSet.txt] \
+     set URL [[java::new java.io.File TestParameterSetModel.txt] \
  	toURL]
      $fileOrURL setExpression [$URL toString]
 
@@ -72,7 +72,7 @@ test ParameterSetModel-1.0 {Change the contents of the file read by ParameterSet
     [$e0 getManager] execute
     set r1 [enumToTokenValues [$rec getRecord 0]]
 
-    set fd [open TestParameterSet.txt w]
+    set fd [open TestParameterSetModel.txt w]
     puts $fd "a=42"
     close $fd
 
@@ -82,6 +82,6 @@ test ParameterSetModel-1.0 {Change the contents of the file read by ParameterSet
     [$e0 getManager] execute
     set r2 [enumToTokenValues [$rec getRecord 0]]
 
-    file delete -force TestParameterSet.txt
+    file delete -force TestParameterSetMode.txt
     list $r1 $r2	
 } {{11 11 11 11 11} {42 42 42 42 42}}
