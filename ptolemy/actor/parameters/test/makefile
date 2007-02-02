@@ -51,6 +51,7 @@ JSRCS =
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.
 JSIMPLE_TESTS = \
+	ParameterSet.tcl \
 	ParameterSetModel.tcl
 
 # Graphical Java tests that use Tcl.
@@ -65,6 +66,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) # $(JGRAPHICAL_TESTS)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	alljtests.tcl \
+	TestParameterSet.txt \
 	auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
