@@ -51,7 +51,6 @@ JSRCS = AttributeChanged.java
 JSIMPLE_TESTS = \
 	CParseTreeCodeGenerator.tcl \
 	Functions.tcl \
-	ParameterSet.tcl \
 	Parameter.tcl \
 	ParseTreeEvaluator.tcl \
 	ParseTreeTypeInference.tcl \
@@ -74,8 +73,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl \
-	TestParameterSet.txt
+MISC_FILES =	alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

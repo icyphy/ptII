@@ -92,7 +92,6 @@ JSRCS = \
         NamedConstantsScope.java \
         NestedScope.java \
 	Parameter.java \
-	ParameterSet.java \
 	ParseTreeDumper.java \
 	ParseTreeEvaluator.java \
 	ParseTreeFreeVariableCollector.java \
