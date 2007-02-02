@@ -155,6 +155,19 @@ Javadoc:
  <br>The Case actor has been further developed so that it is easier
 to build models that execute one of several refinements.
 
+<li> <a href="ptdoc:ptolemy.actor.lib.Publisher">Publisher</a>,
+<a href="ptdoc:ptolemy.actor.lib.Subscriber">Subscriber</a> and
+<a href="ptdoc:ptolemy.actor.lib.SubscriptionAggregator">SubscriptionAggregator</a>
+ <br>Primary Authors: Raymond Cardillo, Edward A. Lee 
+<br>These actors use publish/subscribe semantics to read
+and write tokens on a named channel.  
+ The tokens are
+ "tunneled" to any instance of Subscriber that names the same channel
+ and that is under the control of the same director. That is, it can
+ be at a different level of the hierarchy, or in an entirely different
+ composite actor, as long as the relevant composite actors are
+ transparent (have no director).
+
 <li> A Token can now be "nil", which means that the data is missing.
 If <a href="../../../doc/codeDoc/ptolemy/data/Token.html#nil()">Token.nil()</a> is
 called, it indicates that a token is a nil or missing token, which contains no data.
