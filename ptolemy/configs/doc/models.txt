@@ -146,6 +146,7 @@ $CLASSPATH/ptolemy/domains/ct/demo/Satellite/Satellite.xml
 $CLASSPATH/ptolemy/domains/ddf/demo/RandomWalk/RandomWalk.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/Spectrum/Spectrum.xml
 $CLASSPATH/ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradleAnimated.xml
+$CLASSPATH/ptolemy/domains/ct/demo/CTInsideDE/CTInsideDE.xml
 $CLASSPATH/ptolemy/actor/lib/comm/demo/Scrambler/Scrambler.xml
 $CLASSPATH/ptolemy/domains/ct/demo/SquareWave/SquareWave.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml
@@ -160,6 +161,7 @@ $CLASSPATH/ptolemy/domains/ct/demo/BouncingBall/BouncingBallWithoutGR.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.xml
 $CLASSPATH/ptolemy/domains/de/demo/Inspection/Inspection.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/MultipleRuns/MultipleRuns.xml
+$CLASSPATH/ptolemy/domains/sdf/demo/LogisticMap/LogisticMap.xml
 $CLASSPATH/ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradleComplicated.xml
 $CLASSPATH/ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradle.xml
 $CLASSPATH/ptolemy/domains/pn/demo/OrderedMerge/OrderedMerge.xml
