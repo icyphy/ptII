@@ -68,7 +68,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     /**
      * For each actor in this typed composite actor, determine which ports
      * need type conversion.
-     * @exception IllegalActionException Thrown if any of the helpers of the
+     * @exception IllegalActionException If any of the helpers of the
      * inside actors is unavailable.
      * @see ptolemy.codegen.kernel.CodeGeneratorHelper#analyzeTypeConvert
      */
