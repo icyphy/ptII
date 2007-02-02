@@ -127,3 +127,36 @@ test HSIFUtilities-2.2 {Convert the Thermostat example, connect it up and run it
 	     {0.0 0.1 0.4 0.7 1.0 1.3 1.6 1.9 2.00005 2.00005 0.0 0.0 0.15 0.3245003094091 0.50005 0.50005 0.0 0.0 0.1850538496783 0.4850538496783 0.7850538496783 1.0850538496783 1.3850538496783 1.6850538496783 1.9850538496783 2.00005 2.00005 0.0 0.0 0.0749807516087 0.2171049364913 0.362729538684 0.50005 0.50005 0.0 0.0 0.1526473346011 0.4526473346011 0.7526473346011 1.0526473346011 1.3526473346011 1.6526473346011 1.7294100010289 1.7294100010289 1.7294100010289 1.7294100010289 1.8044100010289 1.8709947624257 1.939059372547 2.0086883972304 2.0799551592338 2.1348835839393 2.1348835839393 0.0 0.0 0.0743044082791 0.3743044082791 0.6743044082791 0.9743044082791 1.2743044082791 1.5000510919693 1.5000510919693 1.5000510919693 1.5000510919693 1.5750510919693 1.6416358533661 1.7097004634873 1.7793294881708 1.8505962501741 1.9055246748796 1.9055246748796 0.0 0.0 0.0743044082791 0.3743044082791 0.6743044082791 0.9593917411791 0.9593917411791 0.9593917411791}] 
 } {{} {}}
 
+test HSIFUtilities-2.3 {Convert the HybridAutomatonNot example, connect it up and run it} {
+    java::call ptolemy.hsif.HSIFUtilities HSIFToMoML \
+	HybridAutomatonNot.xml HybridAutomatonNot_moml.xml
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser purgeModelRecord HybridAutomatonNot_moml.xml
+    set toplevel [java::cast ptolemy.actor.TypedCompositeActor \
+		      [$parser parseFile HybridAutomatonNot_moml.xml]]
+    set composite [java::cast ptolemy.actor.CompositeActor $toplevel]
+    set director [$composite getDirector]	
+
+    set relationX [$toplevel getRelation x]
+    set relationY [$toplevel getRelation y]
+
+    set clock [java::new ptolemy.domains.ct.lib.ContinuousClock $toplevel clock]
+
+    set clockOutput [java::field [java::cast ptolemy.actor.lib.Source $clock] output]
+    set p [getParameter $clock values]
+    $p setExpression {{true, false}}
+    $clockOutput link $relationX
+
+    set rec0 [java::new ptolemy.actor.lib.Recorder $toplevel rec0]
+    set rec0Input [java::field [java::cast ptolemy.actor.lib.Sink $rec0] input]
+    $rec0Input link $relationY
+
+
+    set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "myManager"]
+    $toplevel setManager $manager
+    [$toplevel getManager] execute
+
+    list \
+	[epsilonDiff [enumToTokenValues [$rec0 getRecord 0]] \
+	     {}]
+} {{}}
