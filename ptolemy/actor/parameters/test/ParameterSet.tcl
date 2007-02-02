@@ -44,44 +44,41 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test ParameterSetModel-1.0 {Change the contents of the file read by ParameterSet.  The new value should be re-read when the model is re-run} {
-    set e0 [sdfModel 5]
+test ParameterSet-1.0 {Read in fileReadingAttribute.txt} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set a [java::new ptolemy.actor.parameters.ParameterSet $e2 "a"]
+    #set a [java::new ptolemy.data.expr.ScopeExtendingAttribute $e2 "a"]
 
-    set parameterSet [java::new ptolemy.actor.parameters.ParameterSet $e0 "parameterSet"]
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
+    set p2 [java::new ptolemy.data.expr.Parameter $a "p"]
+    set p3 [java::new ptolemy.data.expr.Parameter $e2 "p"]
 
-    set const [java::new ptolemy.actor.lib.Const $e0 const]
-    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    $e0 connect \
-            [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
-            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    $p1 setExpression "5"
+    $p2 setExpression "7"
+    $p3 setExpression "p"
 
-    set fd [open TestParameterSet.txt w]
-    puts $fd "a=11"
-    close $fd
-    set fileOrURL [java::cast ptolemy.data.expr.FileParameter \
- 		       [$parameterSet getAttribute fileOrURL]]
-     set URL [[java::new java.io.File TestParameterSet.txt] \
- 	toURL]
-     $fileOrURL setExpression [$URL toString]
+    set r1 [list \
+		[[$p1 getToken] toString] \
+		[[$p2 getToken] toString] \
+		[[$p3 getToken] toString]]
+    set fileOrURL [java::cast ptolemy.data.expr.FileParameter [$a getAttribute fileOrURL]]
+    set URL [[java::new java.io.File TestParameterSet.txt] \
+	toURL]
+    $fileOrURL setExpression [$URL toString]
+    $a read
 
-    $parameterSet read
+    set r2 [list \
+		[[$p1 getToken] toString] \
+		[[$p2 getToken] toString] \
+		[[$p3 getToken] toString]]
 
-    set p [getParameter $const value]
-    $p setExpression "a"
+    $a setContainer $e2
 
-    [$e0 getManager] execute
-    set r1 [enumToTokenValues [$rec getRecord 0]]
+    set r3 [list \
+		[[$p1 getToken] toString] \
+		[[$p2 getToken] toString] \
+		[[$p3 getToken] toString]]
 
-    set fd [open TestParameterSet.txt w]
-    puts $fd "a=42"
-    close $fd
-
-    # Should not have to call read here
-    #$parameterSet read
-
-    [$e0 getManager] execute
-    set r2 [enumToTokenValues [$rec getRecord 0]]
-
-    file delete -force TestParameterSet.txt
-    list $r1 $r2	
-} {{11 11 11 11 11} {42 42 42 42 42}}
+    list $r1 $r2 $r3
+} {{5 7 7} {5 42 42} {5 42 42}}
