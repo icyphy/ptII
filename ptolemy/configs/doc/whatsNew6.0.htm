@@ -64,8 +64,8 @@ communication is also known as synchronous message passing, but we
 avoid this term to avoid confusion with the SR (synchronous/reactive)
 domain.
 <P><a href="../../../ptolemy/configs/doc/completeDemos.htm#rendezvous">Demonstrations</a> - 
-Javadoc: <a href="../../../doc/codeDoc/ptolemy/domains/rendezvous/kernel/package-summary.html>kernel</a>, 
-<a href="../../../doc/codeDoc/ptolemy/domains/rendezvous/lib/package-summary.html>lib</a>
+Javadoc: <a href="../../../doc/codeDoc/ptolemy/domains/rendezvous/kernel/package-summary.html">kernel</a>, 
+<a href="../../../doc/codeDoc/ptolemy/domains/rendezvous/lib/package-summary.html">lib</a>
 
 <li> <a href="../../../ptolemy/configs/viptos/intro.htm">Viptos</a> 
  <i>Visual editor, code generator, and simulator for TinyOS programs</i>.
@@ -154,6 +154,19 @@ Javadoc:
  <br>Primary Author: Edward A. Lee
  <br>The Case actor has been further developed so that it is easier
 to build models that execute one of several refinements.
+
+<li> <a href="ptdoc:ptolemy.actor.lib.Publisher">Publisher</a>,
+<a href="ptdoc:ptolemy.actor.lib.Subscriber">Subscriber</a> and
+<a href="ptdoc:ptolemy.actor.lib.SubscriptionAggregator">SubscriptionAggregator</a>
+ <br>Primary Author: Raymond Cardillo, Edward A. Lee 
+<br>These actors use publish/subscribe semantics to read
+and write tokens on a named channel.  
+ The tokens are
+ "tunneled" to any instance of Subscriber that names the same channel
+ and that is under the control of the same director. That is, it can
+ be at a different level of the hierarchy, or in an entirely different
+ composite actor, as long as the relevant composite actors are
+ transparent (have no director).
 
 <li> A Token can now be "nil", which means that the data is missing.
 If <a href="../../../doc/codeDoc/ptolemy/data/Token.html#nil()">Token.nil()</a> is
