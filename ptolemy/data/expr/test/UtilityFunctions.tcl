@@ -109,12 +109,12 @@ test UtilityFunctions-1.5 {Check readFile method} {
     set res [$tree evaluateParseTree]
 
     # This hack is necessary because of problems with crnl under windows
-    regsub -all [java::call System getProperty "line.separator"] \
-                [$res toString] "\n" output
+    # No longer necessary after changes to StringToken 1/07.
+    # regsub -all [java::call System getProperty "line.separator"] \
+    #           [$res toString] "\n" output
 
-    list $output
-} {{"Greetings...
-"}}
+    list [$res toString]
+} {{"Greetings...\r\n"}}
 
 ######################################################################
 ####
@@ -158,7 +158,7 @@ test UtilityFunctions-4.0 {Test property} {
     set res  [ $root evaluateParseTree ]
     set fileSeparator [$res toString]
     set results "not ok"
-    if { "$fileSeparator" == "\"/\"" || "$fileSeparator" == "\"\\\""} {
+    if { "$fileSeparator" == "\"/\"" || "$fileSeparator" == "\"\\\\\""} {
 	set results "ok"
     }
     list $results

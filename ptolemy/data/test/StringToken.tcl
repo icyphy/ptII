@@ -400,12 +400,12 @@ test StringToken-14.1 {Test embedded double quotes} {
     set tok2 [java::new {ptolemy.data.StringToken} "has embedded \""]
     set tok3 [java::new {ptolemy.data.StringToken} "has embedded \\\""]
     list [$tok1 toString] [$tok1 toString] [$tok3 toString] [$tok3 stringValue]
-} {{"has embedded \""} {"has embedded \""} {"has embedded \""} {has embedded \"}}
+} {{"has embedded \""} {"has embedded \""} {"has embedded \\\""} {has embedded \"}}
 
 test StringToken-14.2 {Test embedded double quotes preceded by backslash} {
     set tok3 [java::new {ptolemy.data.StringToken} "has embedded \\\""]
     list [$tok3 toString] [$tok3 stringValue]
-} {{"has embedded \""} {has embedded \"}}
+} {{"has embedded \\\""} {has embedded \"}}
 
 test StringToken-14.3 {To get the same values, construct a token by calling stringValue instead of toString} {
     set tok3 [java::new {ptolemy.data.StringToken} "has embedded \\\""]
@@ -417,4 +417,4 @@ test StringToken-14.3 {To get the same values, construct a token by calling stri
 	    [$tok3 toString] [$tok3 stringValue] \
 	    [$tok4 toString] [$tok4 stringValue] \
 	    [$tok5 toString] [$tok5 stringValue] \
-} {1 0 {"has embedded \""} {has embedded \"} {"has embedded \""} {has embedded \"} {"\"has embedded \"\""} {"has embedded \""}}
+} {1 0 {"has embedded \\\""} {has embedded \"} {"has embedded \\\""} {has embedded \"} {"\"has embedded \\\\\\\"\""} {"has embedded \\\""}}

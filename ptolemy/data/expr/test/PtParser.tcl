@@ -965,9 +965,10 @@ test PtParser-18.1 {Test expressions with backslashes.} {
     set p [java::new ptolemy.data.expr.PtParser]
     set root [ $p {generateParseTree String} " \" \\\\ \n \" "]
     set res  [ $root evaluateParseTree ]
-    list [$res toString]
-} {{" \ 
- "}}
+    list [[java::cast ptolemy.data.StringToken $res] stringValue] \
+    	[$res toString]
+} {{ \ 
+ } {" \\ \n "}}
 
 test PtParser-18.2 {Test expressions with backslashes.} {
     set p [java::new ptolemy.data.expr.PtParser]
@@ -1092,7 +1093,7 @@ test PtParser-19.9 {Test String mode with \0} {
     set root [$p generateStringParseTree {\0}]
     set res  [ $evaluator evaluateParseTree $root $scope]
     list [$res toString]
-} {{"\0"}}
+} {{"\\0"}}
 
 test PtParser-19.10 {Test String mode with {}} {
     set p [java::new ptolemy.data.expr.PtParser]

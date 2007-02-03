@@ -224,9 +224,7 @@ test Const-3.1 {check out ReadFile with a multiline file} {
     # This is sort of lame, the \n chars get converted to spaces in
     # PtParser.generateParseTree()
     enumToTokenValues [$rec getRecord 0]
-} {{"
-bar
-"}}
+} {{"\r\nbar\r\n"}}
 
 # FIXME: Need a mechanism to test a change in parameter during a run.
 
@@ -243,4 +241,4 @@ test Const-4.1 {Check out Strings with double quotes in them} {
     $p setToken $nt
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{"This has a double quote \" in it and a backslashed double quote \" in it"}}
+} {{"This has a double quote \" in it and a backslashed double quote \\\" in it"}}
