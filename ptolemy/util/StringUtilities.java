@@ -165,6 +165,37 @@ public class StringUtilities {
         string = substitute(string, "\r", "&#13;"); // Carriage return
         return string;
     }
+    
+    /** Given a string, return a string that when fed to the
+     *  Ptolemy expression parser, will turn into the argument
+     *  string. That is, replace all the instances of backslashes
+     *  with double backslashes, all quotation marks with \",
+     *  etc.
+     *  For example
+     *  <pre>
+     *  x"y becomes x\"y;
+     *  x\"y becomes x\\\"y;
+     *  x\y"z becomes x\\y\"z;
+     *  x\\y\"z becomes x\\\\y\\\"
+     *  </pre>
+     *  Similarly, this method replaces the following charaters
+     *  exactly as defined in Java strings: \n, \t, \b, \r, and \f.
+     *  @param string The string to escape.
+     *  @return A new string with that can be put between quotation marks.
+     */
+    public static String escapeString(String string) {
+        // Since the first string is a regular expression, it needs extra escaping.
+        // I have no idea why the extra escaping is needed on the second argument.
+        string = string.replaceAll("\\\\", "\\\\\\\\");
+        string = string.replaceAll("\"", "\\\\\"");
+        string = string.replaceAll("\n", "\\\\n");
+        string = string.replaceAll("\t", "\\\\t");
+        string = string.replaceAll("\b", "\\\\b");
+        string = string.replaceAll("\r", "\\\\r");
+        // Not needed.
+        // string = string.replaceAll("\'", "\\\\'");
+        return string;
+    }
 
     /** If the ptolemy.ptII.exitAfterWrapup property is not set, then 
      *  call System.exit().
