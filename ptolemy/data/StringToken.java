@@ -33,6 +33,7 @@ import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// StringToken
@@ -71,7 +72,11 @@ public class StringToken extends AbstractConvertibleToken {
         } else {
             _value = value;
         }
+        _toString = "\"" + StringUtilities.escapeString(_value) + "\"";
 
+        /* The following logic resulted in a bit too much "smarts"
+         * and toString() would not exactly get reversed by the expression
+         * parser.  EAL 2/1/07.
         // If a String token is "has an embedded " quote", then
         // toString() should return "has an embedded \" quote"
         if (_value.indexOf('"') == -1) {
@@ -100,6 +105,7 @@ public class StringToken extends AbstractConvertibleToken {
                         + "\"";
             }
         }
+        */
     }
 
     ///////////////////////////////////////////////////////////////////
