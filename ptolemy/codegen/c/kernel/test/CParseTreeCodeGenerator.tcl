@@ -233,16 +233,13 @@ test CParseTreeCodeGenerator-17.2 {Construct arrays with newline strings in them
  a test", "test two", "\\(regex\\)"}}
 } {{Entering node ptolemy.data.expr.ASTPtArrayConstructNode
   Entering node ptolemy.data.expr.ASTPtLeafNode
-  Node ptolemy.data.expr.ASTPtLeafNode evaluated to "this is
- a test"
+  Node ptolemy.data.expr.ASTPtLeafNode evaluated to "this is\n a test"
   Entering node ptolemy.data.expr.ASTPtLeafNode
   Node ptolemy.data.expr.ASTPtLeafNode evaluated to "test two"
   Entering node ptolemy.data.expr.ASTPtLeafNode
-  Node ptolemy.data.expr.ASTPtLeafNode evaluated to "\(regex\)"
-Node ptolemy.data.expr.ASTPtArrayConstructNode evaluated to {"this is
- a test", "test two", "\(regex\)"}
-} {$new(Array(3, 3, $new(String("this is\n a test")), $new(String("test two")), $new(String("\\(regex\\)")), TYPE_String))}}
-
+  Node ptolemy.data.expr.ASTPtLeafNode evaluated to "\\(regex\\)"
+Node ptolemy.data.expr.ASTPtArrayConstructNode evaluated to {"this is\n a test", "test two", "\\(regex\\)"}
+} {$new(Array(3, 3, $new(String("this is\\n a test")), $new(String("test two")), $new(String("\\\\(regex\\\\)")), TYPE_String))}}
 
 # I've commented this out. The ParseTreeCodeGenerator should not be 
 # tested this way. -- Gang
