@@ -176,8 +176,7 @@ CompositeActor: prefire returns: true
 Calling fire()
 Called fire()
 Calling postfire()
-Postfire returns (from director) true
-Called postfire()
+Postfire returns true
 Called wrapup()
 Called terminate()
 Called stop()
