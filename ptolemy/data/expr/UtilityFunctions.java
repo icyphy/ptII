@@ -247,7 +247,7 @@ public class UtilityFunctions {
      *  array for which the given predicate function returns true.
      *  If the given array has type {X}, then the given function should
      *  have type function(x:X)(boolean).  Example usage:
-     *  <p><code>even = function(x:int)(x%2==0)<br/>
+     *  <p><code>even = function(x:int)(x%2==0)
      *  filter(even,[1:1:20].toArray)</code></p>
      *  @param predicate A function that takes exactly one parameter (of the
      *   same type as the elements of the given array) and returns
@@ -273,7 +273,7 @@ public class UtilityFunctions {
      *  array for which the given predicate function returns true.
      *  If the given array has type {X}, then the given function should
      *  have type function(x:X)(boolean).  Example usage:
-     *  <p><code>even = function(x:int)(x%2==0)<br/>
+     *  <p><code>even = function(x:int)(x%2==0)
      *  filter(even,[1:1:20].toArray)</code></p>
      *  @param predicate A function that takes exactly one parameter (of the
      *   same type as the elements of the given array) and returns
