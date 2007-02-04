@@ -109,12 +109,13 @@ test UtilityFunctions-1.5 {Check readFile method} {
     set res [$tree evaluateParseTree]
 
     # This hack is necessary because of problems with crnl under windows
-    # No longer necessary after changes to StringToken 1/07.
-    # regsub -all [java::call System getProperty "line.separator"] \
-    #           [$res toString] "\n" output
+    # The file messages.txt is checked in -kkv, so sometimes it has \r\n
+    # and sometimes it has \n
+    regsub -all {\\r\\n} [$res toString] {\\n} output
 
-    list [$res toString]
-} {{"Greetings...\r\n"}}
+    list $output
+} {{"Greetings...\n"}}
+
 
 ######################################################################
 ####
