@@ -1,6 +1,6 @@
 /* Execute a command in a subprocess.
 
- Copyright (c) 2004-2006 The Regents of the University of California.
+ Copyright (c) 2004-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -93,7 +93,7 @@ import ptolemy.util.StringUtilities;
  this as the end of file marker and exit.</p>
 
  <p>For information about Runtime.exec(), see:
- <br/><a href="http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html" target="_top">http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>
+ <br/><a href="http://www.javaworld.com/javaworld/jw-12-2007/jw-1229-traps.html" target="_top">http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>
  <br/>and
  <br/><a href="http://mindprod.com/jgloss/exec.html" target="_top">http://mindprod.com/jgloss/exec.html</a>
  </p>

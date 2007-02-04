@@ -1,6 +1,6 @@
 /* An aggregation of typed actors.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 1997-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.graph.CPO;
 import ptolemy.data.expr.ScopeExtender;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Type;
@@ -49,6 +50,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -253,14 +255,20 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
              */
 
             if (constraintList.size() > 0) {
-                InequalitySolver solver = new InequalitySolver(TypeLattice
-                        .lattice());
+                CPO cpo = TypeLattice.lattice();
+                InequalitySolver solver = new InequalitySolver(cpo);
                 Iterator constraints = constraintList.iterator();
 
                 solver.addInequalities(constraints);
 
-                // Find the least solution (most specific types)
-                solver.solveLeast();
+                try {
+                    // Find the least solution (most specific types)
+                    solver.solveLeast();
+                } catch (InvalidStateException ex) {
+                    throw new InvalidStateException(topLevel, ex,
+                            "The basic type lattic was: "
+                            + TypeLattice.basicLattice());
+                }
 
                 // If some inequalities are not satisfied, or type variables
                 // are resolved to unacceptable types, such as
