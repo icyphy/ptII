@@ -68,7 +68,7 @@ import ptolemy.util.MessageHandler;
  The values are in the form:
  <pre>
  <i>attributeName</i> = <i>value</i>
- <pre>
+ </pre>
  where <code><i>variableName</i></code> is the name of the attribute
  in a format suitable for {@link ptolemy.kernel.util.NamedObj#setName(String)}
  (i.e., does not contain periods) and  <code><i>value</i></code> is

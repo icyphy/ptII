@@ -348,6 +348,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
          * @param majorTickSpacing the space between major ticks.
          * @param minorTickSpacing the space between minor ticks.
          * @param title the title.
+         * @return The slider panel.
          */
         public static JPanel createSliderPanel(int minimum, int maximum,
                 int majorTickSpacing, int minorTickSpacing, String title) {
