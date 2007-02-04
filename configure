@@ -4437,7 +4437,7 @@ echo "${ECHO_T}$TOOLS_JAR" >&6
 echo "$as_me: WARNING: Could not find tools.jar, checking for classes.jar" >&2;}
 	echo "$as_me:$LINENO: checking for classes.jar for use with doclets" >&5
 echo $ECHO_N "checking for classes.jar for use with doclets... $ECHO_C" >&6
-	TOOLS_JAR=${PTJAVA_HOME}/../Classes/classesXXX.jar
+	TOOLS_JAR=${PTJAVA_HOME}/../Classes/classes.jar
         if test -f "$TOOLS_JAR"; then
 	    echo "$as_me:$LINENO: result: $TOOLS_JAR" >&5
 echo "${ECHO_T}$TOOLS_JAR" >&6
@@ -8997,10 +8997,9 @@ for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
   # 1. Remove the extension, and $U if already installed.
   ac_i=`echo "$ac_i" |
 	 sed 's/\$U\././;s/\.o$//;s/\.obj$//'`
-  # 2. Prepend LIBOBJDIR.  When used with automake>=1.10 LIBOBJDIR
-  #    will be set to the directory where LIBOBJS objects are built.
-  ac_libobjs="$ac_libobjs \${LIBOBJDIR}$ac_i\$U.$ac_objext"
-  ac_ltlibobjs="$ac_ltlibobjs \${LIBOBJDIR}$ac_i"'$U.lo'
+  # 2. Add them.
+  ac_libobjs="$ac_libobjs $ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs $ac_i"'$U.lo'
 done
 LIBOBJS=$ac_libobjs
 
