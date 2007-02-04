@@ -332,6 +332,11 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/ptinyos"/>
             <file src="../../jar_dist/ptolemy/domains/ptinyos/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ptinyos/demo"/>
+
+            <!-- codegen under windows needs libjvm.dll.a at link time
+                 for plot actors -->
+            <file src="../../ptolemy/codegen/c/lib/win/libjvm.dll.a"
+                  targetdir="$INSTALL_PATH/ptolemy/codegen/c/lib/win/libjvm.dll.a"/>
         </pack>
 
         <pack name="Docs" required="no">
