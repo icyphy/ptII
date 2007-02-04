@@ -1042,7 +1042,7 @@ else
     else	
         AC_MSG_WARN([Could not find tools.jar, checking for classes.jar])
 	AC_MSG_CHECKING([for classes.jar for use with doclets])
-	TOOLS_JAR=${PTJAVA_HOME}/../Classes/classesXXX.jar
+	TOOLS_JAR=${PTJAVA_HOME}/../Classes/classes.jar
         if test -f "$TOOLS_JAR"; then
 	    AC_MSG_RESULT([$TOOLS_JAR])
 	    PTDOCLETS_DIR=doclets
