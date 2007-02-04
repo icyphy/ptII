@@ -54,25 +54,29 @@ import ptolemy.kernel.util.Workspace;
  a composite actor in an event-based domain. If it is a top-level
  director, it behaves exactly like a CTMultiSolverDirector. If it is
  embedded in an event-based domain, it will run ahead of the global
- time and prepare to roll back if necessary.
- </p><p>
- This director has an extra parameter compared to the CTMultiSolverDirector,
- the maximum run ahead of time length (<code>runAheadLength</code>).
- Its default value is 1.0.
- </p><p>
- The running ahead of time is achieved by the following mechanism.<br/>
+ time and prepare to roll back if necessary.</p>
+
+ <p> This director has an extra parameter compared to the
+ CTMultiSolverDirector, the maximum run ahead of time length
+ (<code>runAheadLength</code>).  Its default value is 1.0.</p>
+
+ <p>The running ahead of time is achieved by the following mechanism.</p>
+ 
  <ul>
  <li> At the initialize stage of an execution, the director requests
- a firing at the global current time.
- </li><li> At each prefire stage of the execution, the end time the the firing is
+ a firing at the global current time.</li>
+ <li> At each prefire stage of the execution, the end time the the firing is
  computed based on the current time of the executive director, t1, the next
  iteration time of the executive director, t2, and the value of the parameter
  <code>runAheadLength</code>, t3. The fire end time is t1 + min(t2, t3)
- </li><li> At the fire stage, the director will stop at the first of the
+ </li>
+ <li> At the fire stage, the director will stop at the first of the
  following two times, the fire end time and the time of the first detected
  event.
- </li></ul>
- </p><p>At the prefire stage, the local current time is compared with the
+ </li>
+ </ul>
+ 
+<p>At the prefire stage, the local current time is compared with the
  current time of the executive director. If the local time is later than
  the executive director time, then the directed system will rollback to a
  "known good" state. The "known good" state is the state of the system at

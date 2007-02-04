@@ -67,11 +67,11 @@ import ptolemy.util.MessageHandler;
  corresponding parameters in the container.
  The values are in the form:
  <pre>
- <i>attributeName</i> = <i>value<i>
+ <i>attributeName</i> = <i>value</i>
  <pre>
  where <code><i>variableName</i></code> is the name of the attribute
  in a format suitable for {@link ptolemy.kernel.util.NamedObj#setName(String)}
- (i.e., does not contain periods) and  <code><i>value<i></code> is
+ (i.e., does not contain periods) and  <code><i>value</i></code> is
  the expression in the Ptolemy expression language.
  Comments are lines that begin with the <code>#</code> character.
  Each line in the file is interpreted as a separate assignment.
@@ -207,6 +207,8 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
 
     /** Check to see whether the specified file has changed, and if so,
      *  re-read it.
+     *  @param count The number of iterations to perform, ignored by this
+     *  method.
      *  @exception IllegalActionException If re-reading the file fails.
      *  @return Executable.COMPLETED.
      */
@@ -247,6 +249,10 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
     /** Read the contents of the file named by this parameter and create
      *  attributes in the current scope.
      *  @exception IOException If there is a problem reading the file.
+     *  @exception IllegalActionException If there is a problem
+     *  reading the previous attribute or  validating the settables   
+     *  @exception NameDuplicationException If there is a problem removing
+     *  a previous attribute or creating a new variable.
      */
     public void read() throws IllegalActionException, NameDuplicationException,
             IOException {

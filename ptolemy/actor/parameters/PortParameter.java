@@ -97,8 +97,8 @@ import ptolemy.kernel.util.Workspace;
  <li> If it is used in a transparent composite actor, then a token provided
  to a PortParameter will never be read.  A transparent composite actor
  is one without a director.
-
- <br/>Workaround: Put a director in the composite.</li>
+ <br>Workaround: Put a director in the composite.</br>
+ </li>
 
  <li> Certain actors (such as the Integrator in CT) read parameter
  values only during initialization.  During initialization, a
@@ -107,9 +107,9 @@ import ptolemy.kernel.util.Workspace;
  Integrator is set to the value of the PortParameter, then it will
  see only the parameter value, never the value provided via the
  port.
-
- <br/>Workaround: Use a RunCompositeActor to contain the model with the
- Integrator.</li>
+ <br>Workaround: Use a RunCompositeActor to contain the model with the
+ Integrator.</br>
+ </li>
 
  </ol>
 
