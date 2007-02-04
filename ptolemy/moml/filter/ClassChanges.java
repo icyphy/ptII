@@ -1,6 +1,6 @@
 /* Filter for simple class name changes
 
- Copyright (c) 2002-2006 The Regents of the University of California.
+ Copyright (c) 2002-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -239,6 +239,10 @@ public class ClassChanges implements MoMLFilter {
         // Moved HSFSMDirector
         _classChanges.put("ptolemy.domains.fsm.kernel.HSFSMDirector",
                 "ptolemy.domains.ct.kernel.HSFSMDirector");
+        
+        // Moved ParameterSet
+        _classChanges.put("ptolemy.data.expr.ParameterSet",
+                "ptolemy.actor.parameters.ParameterSet");
 
         // Look for Kepler's NamedObjId, and if we don't find it, then
         // add it to the filter.  This makes it much easier to open
