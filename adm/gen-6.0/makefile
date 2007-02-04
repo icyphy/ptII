@@ -289,7 +289,7 @@ $(PTII_SRC): $(PTII_FULL)
 		cd ..; \
 		cd ptolemy/domains/ptinyos; find . -name jdom.jar -prune -o -name nesc.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ../../..; \
-		find doc -name "*.jar" -ls -exec rm {} \; ;\
+		find doc -name extractJarFileTest.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		rm -rf doc/codeDoc*; \
 		rm -rf `cat $(GENDIR)/src.ex`; \
 		echo "About to remove unneeded sources from `pwd`"; \
