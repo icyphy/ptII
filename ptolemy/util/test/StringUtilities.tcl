@@ -369,5 +369,3 @@ test StringUtilities-7.3 {escapeString} {
     set string "x\\\\y\\\"z"
     java::call ptolemy.util.StringUtilities escapeString $string
 } {x\\\\y\\\"z}
-
-     
