@@ -66,13 +66,25 @@ public class SystemJar {
                     + "core.jar");
             systemJar = new File(systemJarPathName2);
 
-            if (!systemJar.isFile()) {
-                throw new FileNotFoundException(systemJarPathName + " and "
-                    + systemJarPathName2
-                    + "either do not exist or are not readable");
-            }
 
-            systemJarPathName = systemJarPathName2;
+	    if (!systemJar.isFile()) {
+		// Search for Classes.jar on the mac
+		String systemJarPathName3 = System.getProperty("java.home")
+		    + File.separator + "../Classes"
+		    + File.separator + "classes.jar";
+		systemJar = new File(systemJarPathName3);
+
+		if (!systemJar.isFile()) {
+		    throw new FileNotFoundException(systemJarPathName + " and "
+                            + systemJarPathName2 + " and "
+                            + systemJarPathName3
+                            + " either do not exist or are not readable");
+		} else {
+		    systemJarPathName = systemJarPathName3;
+		}
+            } else {
+		systemJarPathName = systemJarPathName2;
+	    }
         }
 
         if (!systemJar.canRead()) {
