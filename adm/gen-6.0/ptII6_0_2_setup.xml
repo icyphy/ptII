@@ -336,7 +336,7 @@ The Ptiny pack is required.
             <!-- codegen under windows needs libjvm.dll.a at link time
                  for plot actors -->
             <file src="../../ptolemy/codegen/c/lib/win/libjvm.dll.a"
-                  targetdir="$INSTALL_PATH/ptolemy/codegen/c/lib/win/libjvm.dll.a"/>
+                  targetdir="$INSTALL_PATH/ptolemy/codegen/c/lib/win"/>
         </pack>
 
         <pack name="Docs" required="no">
