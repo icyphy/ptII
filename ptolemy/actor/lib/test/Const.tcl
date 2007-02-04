@@ -146,7 +146,7 @@ test Const-2.5 {test RecordToken containing ArrayToken} {
 
 test Const-2.6 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{anArray = arrayType(double,2), name = string, value = int}} {{anArray = arrayType(double,2), name = string, value = int}}}
+} {{{anArray = {double}, name = string, value = int}} {{anArray = {double}, name = string, value = int}}}
 
 test Const-2.7 {test an array of record} {
     # first record is {name = "foo", value = 5}
@@ -180,7 +180,7 @@ test Const-2.7 {test an array of record} {
 
 test Const-2.8 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{arrayType({name = string, value = int},2)} {arrayType({name = string, value = int},2)}}
+} {{{{name = string, value = int}}} {{{name = string, value = int}}}}
 
 
 test Const-3.0 {check out ReadFile} {
@@ -223,8 +223,16 @@ test Const-3.1 {check out ReadFile with a multiline file} {
     [$e0 getManager] execute
     # This is sort of lame, the \n chars get converted to spaces in
     # PtParser.generateParseTree()
-    enumToTokenValues [$rec getRecord 0]
-} {{"\r\nbar\r\n"}}
+    
+    # This hack is necessary because of problems with crnl under windows
+    # The file messages.txt is checked in -kkv, so sometimes it has \r\n
+    # and sometimes it has \n
+
+    regsub -all [java::call System getProperty "line.separator"] \
+              [enumToTokenValues [$rec getRecord 0]] "\n" output
+
+    list $output
+} {{{"\nbar\n"}}}
 
 # FIXME: Need a mechanism to test a change in parameter during a run.
 
