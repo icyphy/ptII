@@ -265,7 +265,7 @@
 </h3>
 
 
-<a name="164071"> </a>The Java code generator is implemented by the copernicus.java package. This code generator targets the generation of self-contained Java code optimized for code size, memory usage and execution speed. The Java code generator leverages the Soot compiler framework to parse the bytecode for each atomic actor in the model. The actors are then specialized according to their context in the model.<br>
+<a name="16.0.2"> </a>The Java code generator is implemented by the copernicus.java package. This code generator targets the generation of self-contained Java code optimized for code size, memory usage and execution speed. The Java code generator leverages the Soot compiler framework to parse the bytecode for each atomic actor in the model. The actors are then specialized according to their context in the model.<br>
 
 
 <p>
@@ -657,7 +657,7 @@ make compareAll<a name="171181"> </a>
 <ol type="1">
   <li value="1"><a name="165999"> </a>A set of compulsory entities is always required. This includes the System.initializeSystemClass()</font> method, all methods and fields of the java.lang.Object class (since it is the global superclass) and the main method of the main class to be compiled.
   <li value="2"><a name="166000"> </a>If a method<i> m</i> is required, the following also become required: the class declaring <i>m</i>, all methods that may possibly be called by <i>m</i>, all fields accessed in the body of <i>m</i>, the classes of all local variables and arguments of m, the classes corresponding to all exceptions that may be caught or thrown by <i>m</i>, and the method corresponding to <i>m</i> in all required subclasses of the class declaring <i>m</i>.
-  <li value="3"><a name="166001"> </a>If a field <i>f</i> is required, the following also become required: the class declaring <i>f</i>, the class corresponding to the type of <i>f</i> (if any) and the field corresponding to <i>f</i> in all required subclasses of the class declaring it.
+  <li value="3"><a name="16.0.2"> </a>If a field <i>f</i> is required, the following also become required: the class declaring <i>f</i>, the class corresponding to the type of <i>f</i> (if any) and the field corresponding to <i>f</i> in all required subclasses of the class declaring it.
   <li value="4"><a name="166002"> </a>If a class <i>c</i> is required, the following also become required: all superclasses of <i>c</i>, the class initialization method of <i>c</i>, and the instance initialization method of <i>c</i>.
 </ol>
 
@@ -685,7 +685,7 @@ make compareAll<a name="171181"> </a>
 <dl>
   <dt> <a name="166009"> </a>	 No support for threads.
   <dt> <a name="166010"> </a>	 GUI-based functions are currently not implemented.
-  <dt> <a name="166011"> </a>	 Certain java classes are not currently supported, because the native methods for them need to be coded. The list of these is maintained in the OverriddenMethodGenerator class.
+  <dt> <a name="16.0.2"> </a>	 Certain java classes are not currently supported, because the native methods for them need to be coded. The list of these is maintained in the OverriddenMethodGenerator class.
 </dl>
 
 <h4>
@@ -703,7 +703,7 @@ make compareAll<a name="171181"> </a>
   <dt> <a name="166018"> </a>	 lib: the path to the directory where library of generated files should be stored. 
   <dt> <a name="166019"> </a>	 gcDir: stores the path to the directory containing the garbage collector. Not using this option turns the collector off. 
   <dt> <a name="166020"> </a>	 target: The target platform. A blank refers to a generic POSIX-like system including Cygwin installations.<i> C6000</i> The TMS320C6xxx series of processors. 
-  <dt> <a name="166021"> </a>	 runtimeDir: The path to the runtime directory. 
+  <dt> <a name="16.0.2"> </a>	 runtimeDir: The path to the runtime directory. 
   <dt> <a name="166022"> </a>	 ptII: The path to the ptII directory. 
   <dt> <a name="166023"> </a>	 compulsoryMethods: A semicolon-separated list of methods for which code must always be generated. If more than one such entity is to be specified, the entire list may be enclosed within double quotes. The complete method subsignature of the form <i>returnType class.method(arg1, arg2, ...)</i> must be specified. 
   <dt> <a name="166024"> </a>	 cFlags: The GCC flags to be used in the makefile. 
@@ -721,7 +721,7 @@ make compareAll<a name="171181"> </a>
   <dt> <a name="166028"> </a>	 runtime: Contains a small amount of C code that provides basic functionality. This is linked in while generating the executables.
   <dt> <a name="166029"> </a>	 runtime/native_bodies: C code for native methods.
   <dt> <a name="166030"> </a>	 runtime/over_bodies: C code for methods with custom code.
-  <dt> <a name="166031"> </a>	 test: Various test programs.
+  <dt> <a name="16.0.2"> </a>	 test: Various test programs.
   <dt> <a name="166032"> </a>	 testOutput: Auto-generated C code.
 </dl>
 
@@ -746,7 +746,7 @@ make compareAll<a name="171181"> </a>
 
 
 <p>
-  <a name="166041"> </a>The dashed arrows in the UML diagram represent the coarse-grained code flow in copernicus.c. The entry class is JavaToC when used in stand-alone mode, and Main when copernicus.c is used as a ptolemy code-generation back-end.
+  <a name="16.0.2"> </a>The dashed arrows in the UML diagram represent the coarse-grained code flow in copernicus.c. The entry class is JavaToC when used in stand-alone mode, and Main when copernicus.c is used as a ptolemy code-generation back-end.
 </p>
 
 
@@ -802,7 +802,7 @@ make compareAll<a name="171181"> </a>
 
 
 <h5>
-  <a name="166051"> </a><i>Generating an executable from a Java ClassFile</i>
+  <a name="16.0.2"> </a><i>Generating an executable from a Java ClassFile</i>
 </h5>
 
 
@@ -850,7 +850,7 @@ make compareAll<a name="171181"> </a>
 
 
 <p>
-  <a name="166061"> </a>java ptolemy.copernicus.kernel.Copernicus -codeGenerator c &lt;model&gt;.xml
+  <a name="16.0.2"> </a>java ptolemy.copernicus.kernel.Copernicus -codeGenerator c &lt;model&gt;.xml
 </p>
 
 
@@ -885,7 +885,7 @@ make compareAll<a name="171181"> </a>
 </p>
 
 <ol type="1">
-  <li value="1"><a name="166071"> </a>Find the C name of that method (say <i>f00xx_abc</i>).
+  <li value="1"><a name="16.0.2"> </a>Find the C name of that method (say <i>f00xx_abc</i>).
   <li value="2"><a name="166072"> </a>Create a file by this name (<i>f00xx_abc.c</i>) in runtime/over_bodies, containing the code for that method.
   <li value="3"><a name="166073"> </a>Add this method to the list of overridden methods in OverriddenMethodGenerator.
 </ol>
