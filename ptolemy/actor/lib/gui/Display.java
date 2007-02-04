@@ -50,6 +50,7 @@ import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -403,12 +404,13 @@ public class Display extends Sink implements Placeable {
                     continue;
                 }
 
+                // The toString() method yields a string that can be parsed back
+                // in the expression language to get the original token.
+                // However, if the token is a StringToken, that probably is
+                // not what we want. So we treat StringToken separately.
                 String value = token.toString();
-
-                // If the value is a pure string, strip the quotation marks.
-                if ((value.length() > 1) && value.startsWith("\"")
-                        && value.endsWith("\"")) {
-                    value = value.substring(1, value.length() - 1);
+                if (token instanceof StringToken) {
+                    value = ((StringToken)token).stringValue();
                 }
 
                 // If the value is not an empty string, set the

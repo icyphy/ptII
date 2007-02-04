@@ -1,6 +1,6 @@
 /* A token that contains a string.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 1997-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -33,6 +33,7 @@ import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// StringToken
@@ -71,7 +72,11 @@ public class StringToken extends AbstractConvertibleToken {
         } else {
             _value = value;
         }
+        _toString = "\"" + StringUtilities.escapeString(_value) + "\"";
 
+        /* The following logic resulted in a bit too much "smarts"
+         * and toString() would not exactly get reversed by the expression
+         * parser.  EAL 2/1/07.
         // If a String token is "has an embedded " quote", then
         // toString() should return "has an embedded \" quote"
         if (_value.indexOf('"') == -1) {
@@ -100,6 +105,7 @@ public class StringToken extends AbstractConvertibleToken {
                         + "\"";
             }
         }
+        */
     }
 
     ///////////////////////////////////////////////////////////////////

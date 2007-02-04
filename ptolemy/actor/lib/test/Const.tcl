@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2005 The Regents of the University of California.
+# @Copyright (c) 1997-2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -146,7 +146,7 @@ test Const-2.5 {test RecordToken containing ArrayToken} {
 
 test Const-2.6 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{anArray = {double}, name = string, value = int}} {{anArray = {double}, name = string, value = int}}}
+} {{{anArray = arrayType(double,2), name = string, value = int}} {{anArray = arrayType(double,2), name = string, value = int}}}
 
 test Const-2.7 {test an array of record} {
     # first record is {name = "foo", value = 5}
@@ -180,7 +180,7 @@ test Const-2.7 {test an array of record} {
 
 test Const-2.8 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{{name = string, value = int}}} {{{name = string, value = int}}}}
+} {{arrayType({name = string, value = int},2)} {arrayType({name = string, value = int},2)}}
 
 
 test Const-3.0 {check out ReadFile} {
@@ -224,9 +224,7 @@ test Const-3.1 {check out ReadFile with a multiline file} {
     # This is sort of lame, the \n chars get converted to spaces in
     # PtParser.generateParseTree()
     enumToTokenValues [$rec getRecord 0]
-} {{"
-bar
-"}}
+} {{"\r\nbar\r\n"}}
 
 # FIXME: Need a mechanism to test a change in parameter during a run.
 
@@ -243,4 +241,4 @@ test Const-4.1 {Check out Strings with double quotes in them} {
     $p setToken $nt
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{"This has a double quote \" in it and a backslashed double quote \" in it"}}
+} {{"This has a double quote \" in it and a backslashed double quote \\\" in it"}}

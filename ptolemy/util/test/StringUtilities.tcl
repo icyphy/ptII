@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2005 The Regents of the University of California.
+# @Copyright (c) 1997-2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -350,3 +350,22 @@ test StringUtilities-6.2 {objectToSourceFileName with an inner class} {
 	$innerClassTest
 } {ptolemy/util/test/InnerClassTest.java}
 
+test StringUtilities-7.0 {escapeString} {
+    set string "x\"y"
+    java::call ptolemy.util.StringUtilities escapeString $string
+} {x\"y}
+
+test StringUtilities-7.1 {escapeString} {
+    set string "x\\\"y"
+    java::call ptolemy.util.StringUtilities escapeString $string
+} {x\\\"y}
+
+test StringUtilities-7.2 {escapeString} {
+    set string "x\\y\"z"
+    java::call ptolemy.util.StringUtilities escapeString $string
+} {x\\y\"z}
+
+test StringUtilities-7.3 {escapeString} {
+    set string "x\\\\y\\\"z"
+    java::call ptolemy.util.StringUtilities escapeString $string
+} {x\\\\y\\\"z}
