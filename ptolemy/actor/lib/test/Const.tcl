@@ -223,8 +223,15 @@ test Const-3.1 {check out ReadFile with a multiline file} {
     [$e0 getManager] execute
     # This is sort of lame, the \n chars get converted to spaces in
     # PtParser.generateParseTree()
-    enumToTokenValues [$rec getRecord 0]
-} {{"\r\nbar\r\n"}}
+    # This hack is necessary because of problems with crnl under windows
+    # The file messages.txt is checked in -kkv, so sometimes it has \r\n
+    # and sometimes it has \n
+
+    regsub -all [java::call System getProperty "line.separator"] \
+              [enumToTokenValues [$rec getRecord 0]] "\n" output
+
+    list $output
+} {{{"\nbar\n"}}}
 
 # FIXME: Need a mechanism to test a change in parameter during a run.
 
