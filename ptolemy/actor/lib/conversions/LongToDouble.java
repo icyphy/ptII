@@ -1,6 +1,6 @@
 /* An actor that converts a LongToken into a DoubleToken.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -38,11 +38,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// LongToDouble
 
 /**
- This actor converts a LongToken into a DoubleToken.
+ <p>This actor converts a LongToken into a DoubleToken.</p>
  <p>
  Note that a double cannot be losslessly converted to a long, and vice
- versa, as both have 64 bit representations in Java.
- <p>
+ versa, as both have 64 bit representations in Java.</p>
+
  @author Christopher Hylands
  @version $Id$
  @since Ptolemy II 2.0

@@ -1,6 +1,6 @@
 /* An actor that converts Cartesian coordinates to polar form.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,11 +39,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 /// CartesianToPolar
 
 /**
- Convert a Cartesian pair, which is represented by two double tokens (x and y),
+ <p>Convert a Cartesian pair, which is represented by two double tokens (x and y),
  to a polar form, which is also represented by two double tokens (magnitude
  and angle).  The angle is in radians.
- <p>
- The implementation uses java.lang.Math.atan2(double, double).
+ </p><p>
+ The implementation uses java.lang.Math.atan2(double, double).</p>
  @see java.lang.Math#atan2(double, double)
 
  @author Michael Leung, Edward A. Lee, Paul Whitaker

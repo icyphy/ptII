@@ -1,7 +1,7 @@
 /* An actor that reads an image from a FileParameter and outputs
  an AWTImageToken.
 
- @Copyright (c) 2001-2005 The Regents of the University of California.
+ @Copyright (c) 2001-2007 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -46,10 +46,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ImageReader
 
 /**
- This actor reads an Image from a FileParameter, and outputs it as an
- AWTImageToken.
+ <p>This actor reads an Image from a FileParameter, and outputs it as an
+ AWTImageToken.</p>
 
- <p>FIXME: It would be nice if we could read images from stdin.
+ <p>FIXME: It would be nice if we could read images from stdin.</p>
 
  @see FileParameter
  @see AWTImageToken

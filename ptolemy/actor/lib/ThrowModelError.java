@@ -1,6 +1,6 @@
 /* An actor that throws a model error when it receives a true token.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,17 +40,17 @@ import ptolemy.kernel.util.StringAttribute;
 //// ThrowModelError
 
 /**
- An actor that throws a model error when it receives a true token
+ <p>An actor that throws a model error when it receives a true token
  on any input channel.  The message reported in the model error is
  given by the <i>message</i> parameter.
  The inputs are read and checked in the postfire() method only.
- <p>
+ </p><p>
  A model error is an exception that is passed up the containment
  hierarchy rather than being immediately thrown. Any container
  in the containment hierarchy may choose to handle the error.
  By default, containers will pass and delegate the error to their
  container, if they have one, and throw an exception if they
- don't. But some containers might do more with the error.
+ don't. But some containers might do more with the error.</p>
 
  @author Haiyang Zheng
  @version $Id$

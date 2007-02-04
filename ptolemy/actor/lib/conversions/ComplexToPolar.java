@@ -1,6 +1,6 @@
 /* An actor that converts a complex token to polar coordinates.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,10 +41,12 @@ import ptolemy.math.Complex;
 /// ComplexToPolar
 
 /**
- Convert a complex token to polar coordinates, which are represented by two
- double tokens (magnitude and angle).  The output angle is in radians.
+ <p>Convert a complex token to polar coordinates, which are represented by two
+ double tokens (magnitude and angle).  The output angle is in radians.</p>
  <p>
  The implementation uses java.lang.Math.atan2(double, double).
+ </p>
+ 
  @see java.lang.Math#atan2(double, double)
 
  @author Michael Leung, Edward A. Lee, and Paul Whitaker

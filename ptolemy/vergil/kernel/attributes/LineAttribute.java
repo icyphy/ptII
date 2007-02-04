@@ -1,6 +1,6 @@
 /* An attribute with a reference to a line.
 
- Copyright (c) 2003-2006 The Regents of the University of California.
+ Copyright (c) 2003-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,9 +48,8 @@ import ptolemy.kernel.util.NamedObj;
  This contains two parameters, <i>x</i> and <i>y</i>, which control the
  run and rise, respectively, of the line.  Note that the origin is in the
  upper-left hand corner, so positive x values will extend to the right, and
- positive y values will extend downwards on the screen.
+ positive y values will extend downwards on the screen.</p>
  
- <p>
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0

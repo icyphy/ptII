@@ -1,6 +1,6 @@
 /* An actor that outputs data read from a URL.
 
- @Copyright (c) 2003-2005 The Regents of the University of California.
+ @Copyright (c) 2003-2007 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -39,10 +39,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// StringToXml
 
 /**
- This actor converts a string token to an xml token.
+ <p>This actor converts a string token to an xml token.
 
- <p>FIXME: The type of the output ports is set to XmlTOken for now.
- It should ???.
+ </p><p>FIXME: The type of the output ports is set to XmlTOken for now.
+ It should ???.</p>
 
  @author Yang Zhao
  @version $Id$

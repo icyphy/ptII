@@ -1,6 +1,6 @@
 /* An interpolator for a specified array of indexes and values.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,7 +43,7 @@ import ptolemy.math.Interpolation;
 //// Interpolator
 
 /**
- Produce an interpolation based on the parameters.
+ <p>Produce an interpolation based on the parameters.
  This class uses the Interpolation class in the math package to compute
  the interpolation.
  The <i>values</i> parameter specifies a sequence of values
@@ -62,15 +62,15 @@ import ptolemy.math.Interpolation;
  iteration count does not match an index in <i>indexes</i>.
  The Interpolation class currently supports zero, first, and third
  order interpolations. The default parameter are those set in the
- Interpolation class.
+ Interpolation class.</p>
  <p>
  This actor counts iterations.  Whenever the iteration count matches an entry
  in the <i>indexes</i> array, the corresponding entry (at the same position)
  in the <i>values</i> array is produced at the output.  Whenever the iteration
  count does not match a value in the <i>indexes</i> array, an interpolation
- of the values is produced at the output.
+ of the values is produced at the output.</p>
  <p>
- Output type is DoubleToken.
+ Output type is DoubleToken.</p>
 
  @author Sarah Packman, Yuhong Xiong
  @version $Id$

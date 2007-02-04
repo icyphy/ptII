@@ -1,7 +1,7 @@
 /* An actor that reads a token from each input channel to assemble a
  DoubleMatrixToken.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,16 +39,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// VectorAssembler
 
 /**
- On each firing, read exactly one token from each channel of the
+ <p>On each firing, read exactly one token from each channel of the
  <i>input</i> port and assemble the tokens into a DoubleMatrixToken
  with one column.  The DoubleMatrixToken is sent to the <i>output</i>
  port.  If there is no input token at any channel of the <i>input</i> port,
  then prefire() will return false.  Note that the elements in the
  vector are not copied.
 
- <p>For sequential domains like SDF, the combination of a Commutator
+ </p><p>For sequential domains like SDF, the combination of a Commutator
  and domains.sdf.lib.DoubleToMatrix is equivalent to this actor.
- However, that combination will not work in CT, so we need this actor.
+ However, that combination will not work in CT, so we need this actor.</p>
 
  @author Jie Liu, Elaine Cheong
  @version $Id$

@@ -1,6 +1,6 @@
 /* An actor that computes the dot product of two arrays.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 1997-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -50,15 +50,15 @@ import ptolemy.kernel.util.Workspace;
 //// DotProduct
 
 /**
- Compute the dot product of two arrays or matrices. This actor has two
+ <p>Compute the dot product of two arrays or matrices. This actor has two
  input ports, from which it receives two ArrayTokens or two Matrix
  Tokens. The elements of the ArrayTokens or MatrixTokens must be of
  type ScalarToken. The output is the dot product of the two arrays or
- matrices.
+ matrices.</p>
 
  <p> This actor requires that each input port have a token upon
  firing. On each firing, it produces exactly one token, which is of
- type ScalarToken.
+ type ScalarToken.</p>
 
  @author Jeff Tsay, Paul Whitaker, Adam Cataldo
  @version $Id$

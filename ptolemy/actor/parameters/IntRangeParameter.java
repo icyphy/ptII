@@ -1,6 +1,6 @@
 /* A parameter with type integer with a limited range.
 
- Copyright (c) 2001-2005 The Regents of the University of California.
+ Copyright (c) 2001-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NamedObj;
 //// IntRangeParameter
 
 /**
- This is a parameter with type integer with a limited range.
+ <p>This is a parameter with type integer with a limited range.
  Its value is an integer token that is constrained to lie
  within the boundaries specified by its two parameters,
  <i>min</i> and <i>max</i>.  These specify the minimum and maximum values.
@@ -48,7 +48,8 @@ import ptolemy.kernel.util.NamedObj;
  information to represent the parameter value using a slider.
  The default values for <i>min</i> and <i>max</i> are 0 and 100,
  respectively, and the default value for this parameter is 50.
- <p>
+ </p>
+ 
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 3.0

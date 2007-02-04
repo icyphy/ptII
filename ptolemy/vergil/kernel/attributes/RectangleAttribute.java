@@ -1,6 +1,6 @@
 /* An attribute with a reference to a rectangle.
 
- Copyright (c) 2003-2005 The Regents of the University of California.
+ Copyright (c) 2003-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,8 +43,9 @@ import ptolemy.kernel.util.NamedObj;
 //// RectangleAttribute
 
 /**
- This is an attribute that is rendered as a rectangle.
  <p>
+ This is an attribute that is rendered as a rectangle.
+ </p>
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0

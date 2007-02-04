@@ -1,6 +1,6 @@
 /* A parameter that is in string mode by default.
 
- Copyright (c) 2003-2005 The Regents of the University of California.
+ Copyright (c) 2003-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,17 +37,17 @@ import ptolemy.kernel.util.NamedObj;
 //// StringParameter
 
 /**
- This subclass of Parameter is almost identical to Parameter except that it
+ <p>This subclass of Parameter is almost identical to Parameter except that it
  sets itself to string mode in the constructor.
  In addition, there is a convenience method, stringValue(), that
  is equivalent to the following expression:
  <pre>
  ((StringToken)this.getToken()).stringValue()
  </pre>
- <p>
+ </p><p>
  This subclass is provided mainly
  so that string-mode parameters can be specified in MoML.  Consequently,
- the only constructor provided is the one needed by MoML.
+ the only constructor provided is the one needed by MoML.</p>
 
  @author Edward A. Lee
  @version $Id$

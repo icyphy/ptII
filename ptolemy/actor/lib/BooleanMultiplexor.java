@@ -1,6 +1,6 @@
 /* A polymorphic multiplexor with boolean select.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// BooleanMultiplexor
 
 /**
- A type polymorphic multiplexor with boolean valued select.
+ <p>A type polymorphic multiplexor with boolean valued select.</p>
  <p>If any input port has no token, the prefire method returns false and
  the fire method is not called. Tokens are only consumed in the fire method,
  where exactly one token is consumed from each input port, and one
@@ -50,10 +50,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  Because tokens are immutable, the same Token
  is sent to the output, rather than a copy.
  The <i>trueInput</i> and <i>falseInput</i> port may receive Tokens of
- any type.
+ any type.</p>
  <p> This actor is different from the BooleanSelect actor, which consumes
  one token from the control input and another token from either the
- trueInput or the falseInput in each firing.
+ trueInput or the falseInput in each firing.</p>
 
  @author Steve Neuendorffer
  @version $Id$
