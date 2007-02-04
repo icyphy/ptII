@@ -96,12 +96,20 @@ test StreamExec-2.3 {execute a command that does not exist, get stderr} {
     set result2 \
 	{IOException: java.io.IOException: CreateProcess: NotACommand error=2
 }
+    # Java 1.5.0_10 under Linux
+    set result3 \
+	{IOException: java.io.IOException: java.io.IOException: NotACommand: not found
+}
     set retval 0
-    if {"$stderr" == "$result1" || "$stderr" == "$result2"} {
+    if {"$stderr" == "$result1" || "$stderr" == "$result2" || "$stderr" == "$result3"} {
 	set retval 1
     } else {
 	puts "Did not match any of the known good results:\n----"
 	puts $stderr
+	puts "Known good results" 
+	puts $result1
+	puts $result2
+	puts $result3
 	puts "----"
     }
 
