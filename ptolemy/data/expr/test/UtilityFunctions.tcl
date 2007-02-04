@@ -111,10 +111,9 @@ test UtilityFunctions-1.5 {Check readFile method} {
     # This hack is necessary because of problems with crnl under windows
     # The file messages.txt is checked in -kkv, so sometimes it has \r\n
     # and sometimes it has \n
-    regsub -all [java::call System getProperty "line.separator"] \
-              [$res toString] "\n" output
+    regsub -all {\\r\\n} [$res toString] {\\n} output
 
-    list [$res toString]
+    list $output
 } {{"Greetings...\n"}}
 
 ######################################################################
