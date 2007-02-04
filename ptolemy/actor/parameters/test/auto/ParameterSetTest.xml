@@ -18,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 40}">
         </property>
     </property>
-    <property name="ParameterSet2" class="ptolemy.data.expr.ParameterSet">
+    <property name="ParameterSet2" class="ptolemy.actor.parameters.ParameterSet">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="ParameterSetData.txt">
         </property>
         <property name="_editorFactory" class="ptolemy.actor.gui.FileOrURLEditorFactory">

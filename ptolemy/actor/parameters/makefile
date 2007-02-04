@@ -55,6 +55,7 @@ JSRCS = \
 	IntRangeParameter.java \
 	LocationParameter.java \
 	ParameterPort.java \
+	ParameterSet.java \
 	PortParameter.java
 
 EXTRA_SRCS =	$(JSRCS)

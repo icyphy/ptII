@@ -18,7 +18,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <property name="ParameterSet" class="ptolemy.data.expr.ParameterSet">
+    <property name="ParameterSet" class="ptolemy.actor.parameters.ParameterSet">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="ParameterSetStringData.txt">
         </property>
         <property name="_editorFactory" class="ptolemy.actor.gui.FileOrURLEditorFactory">
