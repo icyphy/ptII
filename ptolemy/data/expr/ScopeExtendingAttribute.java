@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NamedObj;
 //// ScopeExtendingAttribute
 
 /**
- A attribute that extends its container's scope. Any
+ An attribute that extends its container's scope. Any
  parameter contained by such an attribute has the same
  visibility as parameters of the container of the attribute.
  They are shadowed, however, by parameters of the container.
