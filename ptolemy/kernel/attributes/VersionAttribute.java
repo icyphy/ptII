@@ -1,6 +1,6 @@
 /* Ptolemy II Version identifiers
 
- Copyright (c) 2001-2006 The Regents of the University of California.
+ Copyright (c) 2001-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -298,7 +298,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
 
     static {
         try {
-            CURRENT_VERSION = new VersionAttribute("6.0.1");
+            CURRENT_VERSION = new VersionAttribute("6.0.2");
         } catch (Exception ex) {
             throw new ExceptionInInitializerError(
                     "Failed to create CURRENT_VERSION: "
