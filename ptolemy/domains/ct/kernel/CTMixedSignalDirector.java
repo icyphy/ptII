@@ -228,11 +228,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  to synchronize time with the executive director. In particular,
      *  it will compare its local time, say t, with the current time
      *  of the executive director, say t0.
-     *  If t == t0, do nothing. <br/>
-     *  If t > t0, then rollback to the "known good" time (which should be
-     *  less than the outside time). <br/>
-     *  If t < t0, then throw an exception because the CT subsystem
-     *  should always run ahead of the outside event-based system. <br/>
+     *  <br>If t == t0, do nothing. </br>
+     *  <br>If t > t0, then rollback to the "known good" time (which should be
+     *  less than the outside time). </br>
+     *  <br>If t < t0, then throw an exception because the CT subsystem
+     *  should always run ahead of the outside event-based system. </br>
      *  </p><p>
      *  If this director is not a top-level director, the iteration end time is
      *  resolved from the current time of the outside system, say t1,
