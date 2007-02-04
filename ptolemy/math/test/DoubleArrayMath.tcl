@@ -54,6 +54,9 @@ set b1 [java::new {double[]} 3 [list -0.0000976 5832.61 -43.21]]
 
 set e1 [java::new {double[]} 4 [list -62.3 0.332 5.22 -0.03]]
 
+# An array with one element that is a NaN
+set nan1 [java::new {double[]} 4 [list -1 0 1 [java::field Double NaN]]]
+
 # ar is a double array used to store the results of tests
 
 ####################################################################
@@ -242,6 +245,19 @@ test DoubleArrayMath-7.6 {limit: Infinity top} {
 	    ]
     $da2 getrange 0
 } {1.0 2.0 -0.5 4.1 0.0 -0.0 0.0 Infinity -0.5 NaN 4.94065645841e-324 1.79769313486e+308}
+
+####################################################################
+test DoubleArrayMath-7.7 {limit: one element is a Nan} {
+    # An array with one element that is a NaN
+    set nan1 [java::new {double[]} 4 [list -1 0 1 [java::field Double NaN]]]
+
+    set da2 [java::call ptolemy.math.DoubleArrayMath limit \
+	    $nan1 \
+	    -0.5 \
+	    [java::field java.lang.Double POSITIVE_INFINITY] \
+	    ]
+    $da2 getrange 0
+} {-0.5 0.0 1.0 NaN}
 
 ####################################################################
 test DoubleArrayMath-11.1 {multiply} {
