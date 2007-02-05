@@ -8,7 +8,7 @@
 <body>
 <html>
 <h1>Code Generation</h1>
-This code generator is patterened after the Ptolemy Classic 
+This code generator is patterned after the Ptolemy Classic 
 code generator where actors have template files consisting
 of code blocks.  The code blocks are stitched together to create
 the resulting file.
@@ -25,7 +25,7 @@ the resulting file.
 <h2><a name="Simple Demo">Simple Demo</a></h2>
 <ol>
 <li>
-Open <a href="demo/Ramp/Ramp.xml"><code>$PTII/ptolemy/codegen/Demo/Ramp/Ramp.xml</code></a>
+Open <a href="demo/Ramp/RampDisplay.xml"><code>$PTII/ptolemy/codegen/Demo/Ramp/RampDisplay.xml</code></a>
 <li> Click on the StaticSchedulingCodeGeneratorIcon.
 <li> A dialog box will appear, click on "Generate"
 <li> The code will be generated, compiled, run and the results displayed.
@@ -52,6 +52,31 @@ $PTII/bin/vergil -codegen
 
 <h2><a name="FAQ">FAQ</a>
 <dl>
+<dt> Models that use a plotter fail to compile.
+<dd> Models that use the plotter use the Java Native Interface (JNI)
+to invoke the plotter from within the C process. This is done
+so that the plotter is interactive while the model is running
+as opposed to plotting the data after the model completes.
+The JNI facility requires that a Java Development Kit (JDK)
+be installed instead of a Java Runtime Environment (JRE).
+The Ptolemy II Windows installer includes a JRE which is optionally
+installed.  If the Windows installer is installed with the bunded
+JRE, then models that use the plotter will probably fail to compile
+with message like:
+<pre>
+make: *** [Ramp] Error 1
+</pre>
+
+<dt> Models that use the plotter require setup
+<dd> To properly run a model that has a plotter, you must have jvm.dll
+in your path.
+If you do not, then when you run the executable, it will immediately exit
+with no message!
+For example, place <pre>C:\Progra~1\Java\jdk1.5.0_11\jre\bin\client</pre>
+in your path.  If you are running Vergil from the command line as 
+$PTII/bin/ptinvoke, then this has been handled for you.
+If you are running via Eclipse, then you must update your path by hand.
+
 <dt> When in Windows, clicking on a .exe produced by the 
 code generator fails to start up.  The message is:
  <br>  The procedure entry point _impure_ptr could not be located in
