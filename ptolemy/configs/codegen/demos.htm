@@ -17,38 +17,50 @@ The reason that the xml files are upcased is so that if
 we do codegen, we get Foo.java instead of foo.java
 -->
 
+There are two classes of Codegen demos:
+<ul>
+<li>Those demos that <b>do not</b> use the plotter, and thus will work with
+a Java Runtime Environment (JRE), such as the JRE that is shipped
+with the Windows installer.
+<li>Those demos that <b>do</b> use the plotter, and thus
+<b>require</b> a Java Development Kit (JDK) that includes the
+Java .h files and librareis.  These demos <b>will not</b> work
+with the JRE that is included with the Windows installer.
+</ul>
+
+
 <h1>Ptolemy II Domains with Code Generation Demonstrations</h1>
 
 <h3><a name="fsm">Finite State Machine (FSM)</a></h3>
 <ul>
-<li> <a href="../../domains/fsm/demo/Blending/Blending.xml">Blending</a> (with codegen)
-<li> <a href="../../domains/fsm/demo/ModalBSC/ModalBSC.xml">Modal&nbsp;Binary Symmetric Channel</a> (with codegen)
+<li> <a href="../../domains/fsm/demo/Blending/Blending.xml">Blending</a> 
+<li> <a href="../../domains/fsm/demo/ModalBSC/ModalBSC.xml">Modal&nbsp;Binary Symmetric Channel</a>
 </ul>
 
 <h3><a name="hdf">Heterochronous Dataflow (HDF)</a></h3>
 <ul>
 <li><a href="../../domains/hdf/demo/AdaptiveCoding/AdaptiveCoding.xml">AdaptiveCoding</a>
-(With codegen in Ptolemy II 6.0)
 <li><a href="../../domains/hdf/demo/Hysteresis/Hysteresis.xml">Hysteresis</a> 
-(With codegen in Ptolemy II 6.0)
 <li><a href="../../domains/hdf/demo/Merge/Merge.xml">Merge</a>
-(With codegen in Ptolemy II 6.0)
+<i>This demo will work with the Windows installer, it does not require
+the JDK.</i>
 </ul>
 
 <h3><a name="sdf">Synchronous Data Flow (SDF)</a></h3>
 <ul>
 
-<li> <a href="../../actor/lib/hoc/demo/Case/Case.xml">Case</a>
- (New in Ptolemy II 6.0) (with codegen)
+<li><a href="../../domains/sdf/demo/Butterfly/Butterfly.xml">Butterfly</a>
+<li><a href="../../actor/lib/hoc/demo/Case/Case.xml">Case</a>
 
 <!-- SynthesizedVoice is not included in this release because we have
      not solved how SDF interacts with streaming data.
      ../../domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml -->
 
-<li><a href="../../domains/sdf/demo/Butterfly/Butterfly.xml">Butterfly</a>
-(with codegen)
 <li><a href="../../domains/sdf/demo/LogisticMap/LogisticMap.xml">LogisticMap</a>
-(with codegen)
+<li><a href="../../codegen/demo/Ramp/Ramp.xml">Ramp</a>
+<li><a href="../../codegen/demo/Ramp/RampDisplay.xml">RampDisplay</a>
+<i>This demo will work with the Windows installer, it does not require
+the JDK.</i>
 </ul>
 
 
