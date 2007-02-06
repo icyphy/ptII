@@ -58,6 +58,11 @@
     </property>
   </entity>
 
+  <entity name="SimpleALU" class="ptolemy.actor.lib.logic.SimpleALU">
+  </entity>
+
+  <entity name="StaticALU" class="ptolemy.actor.lib.logic.StaticALU">
+  </entity>
       </group>
     ?>
   </configure>
