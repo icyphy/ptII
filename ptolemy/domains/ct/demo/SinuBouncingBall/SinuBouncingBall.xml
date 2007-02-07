@@ -81,7 +81,7 @@
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.kernel.util.Attribute">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 197.5]">
         </property>
@@ -270,7 +270,7 @@
         </entity>
         <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="g" class="ptolemy.data.expr.Parameter" value="9.8">
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -289,7 +289,7 @@
                 </property>
             </property>
             <property name="x_offset" class="ptolemy.data.expr.Parameter" value="0.0">
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -310,7 +310,7 @@
             <property name="z_offset" class="ptolemy.data.expr.Parameter" value="0.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -339,7 +339,7 @@
                 </property>
             </property>
             <property name="y_offset" class="ptolemy.data.expr.Parameter" value="0.0">
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -360,7 +360,7 @@
             <property name="initialy_dot" class="ptolemy.data.expr.Parameter" value="2.8313206765247">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -379,7 +379,7 @@
             <property name="initialx_dot" class="ptolemy.data.expr.Parameter" value="0.5">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -398,7 +398,7 @@
             <property name="initialz_dot" class="ptolemy.data.expr.Parameter" value="-1.9719239689167">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -417,7 +417,7 @@
             <property name="initialy" class="ptolemy.data.expr.Parameter" value="1.0471975511966">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -436,7 +436,7 @@
             <property name="initialx" class="ptolemy.data.expr.Parameter" value="0.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -455,7 +455,7 @@
             <property name="initialz" class="ptolemy.data.expr.Parameter" value="2.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -726,7 +726,7 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{515.9081942336874, 384.8171471927162}">
             </property>
             <property name="g" class="ptolemy.data.expr.Parameter" value="9.8">
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -745,7 +745,7 @@
                 </property>
             </property>
             <property name="x_offset" class="ptolemy.data.expr.Parameter" value="0.0">
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -766,7 +766,7 @@
             <property name="z_offset" class="ptolemy.data.expr.Parameter" value="0.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -787,7 +787,7 @@
                 </property>
             </property>
             <property name="y_offset" class="ptolemy.data.expr.Parameter" value="0.0">
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -808,7 +808,7 @@
             <property name="initialy_dot" class="ptolemy.data.expr.Parameter" value="2.8313206765247">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -827,7 +827,7 @@
             <property name="initialx_dot" class="ptolemy.data.expr.Parameter" value="0.5">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -846,7 +846,7 @@
             <property name="initialz_dot" class="ptolemy.data.expr.Parameter" value="-1.9998053838625">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -865,7 +865,7 @@
             <property name="initialy" class="ptolemy.data.expr.Parameter" value="-2.3550678934959">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -884,7 +884,7 @@
             <property name="initialx" class="ptolemy.data.expr.Parameter" value="5.2453626401722">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -903,7 +903,7 @@
             <property name="initialz" class="ptolemy.data.expr.Parameter" value="-0.7079029564447">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
