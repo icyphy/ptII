@@ -27,7 +27,10 @@
  */
 package ptolemy.codegen.c.actor.lib.logic;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.actor.lib.logic.StaticALU. 
@@ -46,5 +49,25 @@ public class StaticALU extends CCodeGeneratorHelper {
      */
     public StaticALU(ptolemy.actor.lib.logic.StaticALU actor) {
         super(actor);
+    }
+    
+    /**
+     * Generate fire code.
+     * The method reads in <code>fireBlock</code> from Accumulator.c,
+     * replaces macros with their values and returns the processed code
+     * block.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+
+        StringBuffer code = new StringBuffer();
+        
+        code.append(super.generateFireCode());
+
+        /* Add code here */
+        
+        return processCode(code.toString());
     }
 }
