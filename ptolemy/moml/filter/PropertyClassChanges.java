@@ -101,7 +101,7 @@ public class PropertyClassChanges implements MoMLFilter {
         // is:
         // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
         // which will open up a large xml file and then close after 2 seconds.
-        //System.out.println("filterAttributeValue: " + container + "\t"
+        // System.out.println("<---filterAttributeValue: " + container + "\t"
         //  +  attributeName + "\t" + attributeValue);
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
@@ -136,7 +136,23 @@ public class PropertyClassChanges implements MoMLFilter {
         }
 
         if (attributeName.equals("class")) {
-            if (_actorsWithPropertyClassChanges.containsKey(attributeValue)) {
+           if (_currentlyProcessingActorWithPropertyClassChanges
+                    && _foundChange) {
+		// This if clause needs to be first so that we handle
+		// the PropertyClassChanges case where we have a 
+		// _tableauFactory in a ModalModel that is not
+		// a ModalTableauFactory, but should be.  An example
+		// of this is ct/demo/Pendulum3D/Pendulum3D.xml.
+                String temporaryNewClass = _newClass;
+
+                if (!attributeValue.equals(_newClass)) {
+                    MoMLParser.setModified(true);
+                }
+
+                _newClass = null;
+                _foundChange = false;
+                return temporaryNewClass;
+	    } else if (_actorsWithPropertyClassChanges.containsKey(attributeValue)) {
                 // We found a class with a property class change.
                 _currentlyProcessingActorWithPropertyClassChanges = true;
 
@@ -149,17 +165,6 @@ public class PropertyClassChanges implements MoMLFilter {
 
                 _propertyMap = (HashMap) _actorsWithPropertyClassChanges
                         .get(attributeValue);
-            } else if (_currentlyProcessingActorWithPropertyClassChanges
-                    && _foundChange) {
-                String temporaryNewClass = _newClass;
-
-                if (!attributeValue.equals(_newClass)) {
-                    MoMLParser.setModified(true);
-                }
-
-                _newClass = null;
-                _foundChange = false;
-                return temporaryNewClass;
             } else if (_currentlyProcessingActorWithPropertyClassChanges
                     && (container != null)
                     && !container.getFullName().equals(_currentActorFullName)
@@ -410,6 +415,10 @@ public class PropertyClassChanges implements MoMLFilter {
         // NOTE: Remove a property by setting the new class to null.
         modalModelClassChanges.put("_Director", null);
 
+	modalModelClassChanges.put("_tableauFactory", "ptolemy.vergil.fsm.modal.ModalTableauFactory");
+
+	// Note that we add ModalModel here then sometimes remove it
+	// in RemoveGraphical classes.
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.fsm.modal.ModalModel", modalModelClassChanges);
 
