@@ -109,7 +109,6 @@ PTII_TOPDIR=	.cshrc \
 		.eclipse.epf \
 		README.txt \
 		bin \
-		build.xml \
 		com/JLex \
 		com/makefile \
 		com/microstar \
@@ -286,7 +285,9 @@ $(PTII_SRC): $(PTII_FULL)
 		PTII=`pwd` ./configure; make -k clean; \
 		touch mk/ptII.mk.in; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
-		cd ptolemy; find . -name ptinyos -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		cd ptolemy; \
+		echo "About to remove jars in `pwd`"; \
+		find . -name ptinyos -prune -o -name jini -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		cd ptolemy/domains/ptinyos; \
 		echo "About to remove jars in `pwd`"; \
