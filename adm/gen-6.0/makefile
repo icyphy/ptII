@@ -76,6 +76,7 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 # 1.14 can be found at ftp://ftp.gnu.org/pub/gnu/tar
 # make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
+# make USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII6.0.2 PTIIADM=/cygdrive/c/tmp/cxh/ptII6.0.2/adm COMPRESS=gzip clean all src.jar TAR=/usr/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar 
@@ -287,9 +288,13 @@ $(PTII_SRC): $(PTII_FULL)
 		find . -name "*.class" -ls -exec rm {} \; ;\
 		cd ptolemy; find . -name ptinyos -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
-		cd ptolemy/domains/ptinyos; find . -name jdom.jar -prune -o -name nesc.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
-		cd ../../..; \
-		find doc -name extractJarFileTest.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		cd ptolemy/domains/ptinyos; \
+		echo "About to remove jars in `pwd`"; \
+		find . -name jdom.jar -prune -o -name nesc.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		cd ../../../doc; \
+		echo "About to remove jars in `pwd`"; \
+		find . -name extractJarFileTest.jar -prune -o -name "jini" -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		cd ..; \
 		rm -rf doc/codeDoc*; \
 		rm -rf `cat $(GENDIR)/src.ex`; \
 		echo "About to remove unneeded sources from `pwd`"; \
