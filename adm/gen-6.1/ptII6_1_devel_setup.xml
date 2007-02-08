@@ -372,7 +372,6 @@ The Ptiny pack is required.
 	    <!-- Can't just copy the directory, need to spec files -->
 	    <file src="src/ptII6.1.devel/README.txt" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII6.1.devel/bin" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII6.1.devel/build.xml" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII6.1.devel/com" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII6.1.devel/config" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII6.1.devel/configure" targetdir="$INSTALL_PATH"/>
