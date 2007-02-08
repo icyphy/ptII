@@ -144,7 +144,7 @@
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.kernel.util.Attribute">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 145.0]">
         </property>
@@ -362,7 +362,7 @@
         </entity>
         <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="acceleration" class="ptolemy.data.expr.Parameter" value="0.0">
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -383,7 +383,7 @@
             <property name="length" class="ptolemy.data.expr.Parameter" value="10.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -409,7 +409,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                 </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
@@ -433,7 +433,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                 </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
@@ -448,7 +448,7 @@
                 </property>
             </property>
             <property name="x_offset" class="ptolemy.data.expr.Parameter" value="0.0">
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -469,7 +469,7 @@
             <property name="y_offset" class="ptolemy.data.expr.Parameter" value="0.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -495,7 +495,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                 </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
@@ -519,7 +519,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                 </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
@@ -536,7 +536,7 @@
             <property name="z_offset" class="ptolemy.data.expr.Parameter" value="0.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.kernel.util.Attribute">
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
