@@ -143,8 +143,9 @@ ptinvoke: ptinvoke.in ../config.status
 	-chmod a+x ptinvoke
 
 # zip might not get the permissions of configure right, so we run /bin/sh
+# Avoid "configure: error: expected an absolute directory name for --exec_prefix: NONE"
 ../config.status: ../configure
-	(cd ..; /bin/sh ./configure)
+	-(cd ..; /bin/sh ./configure)
 
 install: all
 fast: all
