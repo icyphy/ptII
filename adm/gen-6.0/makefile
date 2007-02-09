@@ -686,7 +686,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 	   chmod a+rx configure util/testsuite/chkextra; \
 	)
 	# README_VIPTOS.txt
-	echo "Viptos $(VERSION) is an interface between TinyOS and Ptolemy II" \
+	echo "Viptos $(VIPTOS_VERSION) is an interface between TinyOS and Ptolemy II" \
 		> src_jar/viptos$(VIPTOS_VERSION)/README_VIPTOS.txt
 	echo "To get started, you must have the AVR tools, TinyOS and Nesc installed" \
 		>> src_jar/viptos$(VIPTOS_VERSION)/README_VIPTOS.txt
