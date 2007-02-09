@@ -31,12 +31,12 @@ for ($actorSymbol(i) = 1; $actorSymbol(i) <= $val(codedRate); $actorSymbol(i)++)
 }
 /**/
 
-/***readBlock($arg)***/
-$actorSymbol(result)[$arg] = $ref(input, $arg);
-/**/
+/***fireBlock***/
+//read
+for ($actorSymbol(i) = 0; $actorSymbol(i) < $val(codedRate); $actorSymbol(i)++) {
+    $actorSymbol(result)[$actorSymbol(i)] = $ref(input, $actorSymbol(i));
+}
 
-
-/***workBlock***/
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(order); $actorSymbol(i)++) {
     $actorSymbol(syndrome)[$actorSymbol(i)] = 0;
 }
@@ -57,8 +57,9 @@ $actorSymbol(eIndex) = $actorSymbol(index)[$actorSymbol(eValue)];
 if ($actorSymbol(eIndex) < $val(uncodedRate)) {
     $actorSymbol(result)[$actorSymbol(eIndex)] = !$actorSymbol(result)[$actorSymbol(eIndex)];
 }
-/**/
 
-/***writeBlock($arg)***/
-$ref(output, $arg) = $actorSymbol(result)[$arg];
+//write
+for ($actorSymbol(i) = 0; $actorSymbol(i) < $val(uncodedRate); $actorSymbol(i)++) {
+	$ref(output, $actorSymbol(i)) = $actorSymbol(result)[$actorSymbol(i)];
+}	
 /**/

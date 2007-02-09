@@ -25,13 +25,12 @@ for ($actorSymbol(i) = 1; $actorSymbol(i) <= $val(codedRate); $actorSymbol(i)++)
 }
 /**/
 
-/***readBlock($arg)***/
-$actorSymbol(result)[$arg] = $ref(input, $arg);
-/**/
+/***fireBlock***/
+//read
+for ($actorSymbol(i) = 0; $actorSymbol(i) < $val(uncodedRate); $actorSymbol(i)++) {
+    $actorSymbol(result)[$actorSymbol(i)] = $ref(input, $actorSymbol(i));
+}
 
-
-/***workBlock***/
-// Initialize.
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(order); $actorSymbol(i)++) {
     $actorSymbol(parity)[$actorSymbol(i)] = 0;
 }
@@ -45,8 +44,9 @@ for ($actorSymbol(i) = 0; $actorSymbol(i) < $val(uncodedRate); $actorSymbol(i)++
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(order); $actorSymbol(i)++) {
     $actorSymbol(result)[$actorSymbol(i) + $val(uncodedRate)] = ($actorSymbol(parity)[$actorSymbol(i)] == 1) ? 1 : 0;
 }
-/**/
 
-/***writeBlock($arg)***/
-$ref(output, $arg) = $actorSymbol(result)[$arg];
+//write
+for ($actorSymbol(i) = 0; $actorSymbol(i) < $val(codedRate); $actorSymbol(i)++) {
+	$ref(output, $actorSymbol(i)) = $actorSymbol(result)[$actorSymbol(i)];
+}
 /**/

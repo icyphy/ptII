@@ -53,35 +53,4 @@ public class HammingDecoder extends CCodeGeneratorHelper {
     public HammingDecoder(ptolemy.actor.lib.comm.HammingDecoder actor) {
         super(actor);
     }
-
-    /** Generate fire code.
-     *  The method reads in <code>fireBlock</code> from HammingDecoder.c,
-     *  replaces macros with their values and appends the processed code
-     *  block to the given code buffer.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code blocks.
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        ptolemy.actor.lib.comm.HammingDecoder actor = (ptolemy.actor.lib.comm.HammingDecoder) getComponent();
-
-        int uncodeSizeValue = ((IntToken) actor.codedRate.getToken())
-                .intValue();
-        for (int i = 0; i < uncodeSizeValue; i++) {
-            ArrayList args = new ArrayList();
-            args.add(new Integer(i));
-            code.append(_generateBlockCode("readBlock", args));
-        }
-        code.append(_generateBlockCode("workBlock"));
-        int codeSizeValue = ((IntToken) actor.uncodedRate.getToken())
-                .intValue();
-        for (int i = 0; i < codeSizeValue; i++) {
-            ArrayList args = new ArrayList();
-            args.add(new Integer(i));
-            code.append(_generateBlockCode("writeBlock", args));
-        }
-        return code.toString();
-    }
 }
