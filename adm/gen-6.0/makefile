@@ -86,7 +86,7 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.2 PTIIADM=/tmp/cxh/ptII6.0.2/adm TAR=/bin/tar JAR=/usr/java/jdk/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar clean all src.jar fortytwo_test
 #
-#make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.2 PTIIADM=/tmp/cxh/ptII6.0.2/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
 #gmake USER=bldmastr PTIIHOME=/export/home1/bldmastr/ptII PTIIADM=/export/home1/bldmastr/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar
 
@@ -648,7 +648,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 
 ###############
 # Viptos
-VIPTOS_VERSION=1.0.beta
+VIPTOS_VERSION=1.0.2
 VIPTOS_SRC_JAR = viptos$(VIPTOS_VERSION).src.jar
 
 # The Jar file that we create.
@@ -686,7 +686,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 	   chmod a+rx configure util/testsuite/chkextra; \
 	)
 	# README_VIPTOS.txt
-	echo "Viptos is an interface between TinyOS and Ptolemy II" \
+	echo "Viptos $(VERSION) is an interface between TinyOS and Ptolemy II" \
 		> src_jar/viptos$(VIPTOS_VERSION)/README_VIPTOS.txt
 	echo "To get started, you must have the AVR tools, TinyOS and Nesc installed" \
 		>> src_jar/viptos$(VIPTOS_VERSION)/README_VIPTOS.txt
