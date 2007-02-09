@@ -77,7 +77,7 @@ public class CaseDirector extends Director {
         ptolemy.actor.lib.hoc.Case container = (ptolemy.actor.lib.hoc.Case) getComponent()
                 .getContainer();
 
-        code.append("switch ("
+        code.append(_eol + _INDENT2 + "switch ("
                 + _codeGenerator.generateVariableName(container.control)
                 + ") {" + _eol);
 
@@ -86,10 +86,10 @@ public class CaseDirector extends Director {
             CompositeActor refinement = (CompositeActor) refinements.next();
             String refinementName = refinement.getName();
             if (!refinementName.equals("default")) {
-                code.append("case ");
+                code.append(_INDENT2 + "case " + refinementName + ":");
+            } else {
+                code.append(_INDENT2 + "default: ");
             }
-            code.append(refinementName + ":" + _eol);
-
             CodeGeneratorHelper refinementHelper = (CodeGeneratorHelper) _getHelper(refinement);
 
             // fire the refinement
@@ -101,10 +101,10 @@ public class CaseDirector extends Director {
                         + "();" + _eol);
             }
 
-            code.append("break;" + _eol);
+            code.append(_INDENT2 + "break;" + _eol + _eol);
         }
 
-        code.append("}");
+        code.append(_INDENT2 + "}" + _eol);
 
         return code.toString();
     }
