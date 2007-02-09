@@ -1,6 +1,6 @@
 # Makefile to create tar files for distribution
 # Version: $Id$
-# Copyright (c) 1994-2006 The Regents of the University of California.
+# Copyright (c) 1994-2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -523,6 +523,7 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 		doc/codeDocHyVisual.jar \
 		doc/codeDocVisualSense \
 		doc/codeDocVisualSense.jar \
+		ptolemy/actor/TypedCompositeActorWithCoSimulation.java \
 		ptolemy/configs/hyvisual \
 		ptolemy/codegen \
 		ptolemy/domains/ptinyDomains.xml \
@@ -713,6 +714,12 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 		> src_jar/viptos$(VIPTOS_VERSION)/bin/makefile.tmp
 	mv src_jar/viptos$(VIPTOS_VERSION)/bin/makefile.tmp \
 		src_jar/viptos$(VIPTOS_VERSION)/bin/makefile
+	# Fix up actor/makefile
+	egrep -v "TypedCompositeActorWithCoSimulation.java" \
+		src_jar/viptos$(VIPTOS_VERSION)/ptolemy/actor/makefile \
+		> src_jar/viptos$(VIPTOS_VERSION)/ptolemy/actor/makefile.tmp
+	mv src_jar/viptos$(VIPTOS_VERSION)/ptolemy/actor/makefile.tmp \
+		src_jar/viptos$(VIPTOS_VERSION)/ptolemy/actor/makefile
 	# Fix up actor/lib/makefile
 	egrep -v "comm.jar|javasound.jar|security.jar|xslt.jar" \
 		src_jar/viptos$(VIPTOS_VERSION)/ptolemy/actor/lib/makefile \
@@ -780,6 +787,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 		> src_jar/viptos$(VIPTOS_VERSION)/makefile.tmp
 	mv src_jar/viptos$(VIPTOS_VERSION)/makefile.tmp \
 		src_jar/viptos$(VIPTOS_VERSION)/makefile \
+	# Clean up
 	#cd src_jar/viptos$(VIPTOS_VERSION); $(FINDCLEAN))
 	(cd src_jar/viptos$(VIPTOS_VERSION); rm -rf `cat ../../src.ex`)
 
