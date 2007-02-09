@@ -87,7 +87,7 @@ public class UnaryMathFunction extends CCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
-        files.add("\"math.h\"");
+        files.add("<math.h>");
         return files;
     }
 }
