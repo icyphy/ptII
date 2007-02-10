@@ -82,8 +82,19 @@ public class TextEditor extends TableauFrame implements DocumentListener {
      *  @param document The document containing text, or null if none.
      */
     public TextEditor(String title, Document document) {
+        this(title, document, null);
+    }
+
+    /** Construct an empty text editor with the specified title and
+     *  document and associated placeable.  After constructing this, it is necessary
+     *  to call setVisible(true) to make the frame appear.
+     *  @param title The title to put in the title bar.
+     *  @param document The document containing text, or null if none.
+     *  @param placeable The associated placeable.
+     */
+    public TextEditor(String title, Document document, Placeable placeable) {
         // NOTE: Create with no status bar, since we have no use for it now.
-        super(null, null);
+        super(null, null, placeable);
         setTitle(title);
 
         text = new JTextArea(document);

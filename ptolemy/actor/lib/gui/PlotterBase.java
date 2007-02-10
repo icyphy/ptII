@@ -47,7 +47,6 @@ import ptolemy.actor.gui.PlotEffigy;
 import ptolemy.actor.gui.PlotTableau;
 import ptolemy.actor.gui.PlotTableauFrame;
 import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
@@ -594,41 +593,6 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** Version of Plot class that removes its association with the
-     *  plot upon closing, and also records the size of the plot window.
-     */
-    protected class PlotterPlotFrame extends PlotTableauFrame {
-        /** Construct a plot frame in the corresponding Tableau with the
-         *  specified instance of PlotBox.
-         *  After constructing this, it is necessary
-         *  to call setVisible(true) to make the plot appear.
-         *  @param tableau The tableau.
-         *  @param plotBox the plot object to put in the frame,
-         *   or null to create an instance of Plot.
-         */
-        public PlotterPlotFrame(Tableau tableau, PlotBox plotBox) {
-            super(tableau, plotBox);
-        }
-
-        /** Close the window.  This overrides the base class to remove
-         *  the association with the Display and to record window properties.
-         */
-        protected boolean _close() {
-            // Record the window properties before closing.
-            if (_frame != null) {
-                _windowProperties.recordProperties(_frame);
-            }
-
-            if (PlotterBase.this.plot != null) {
-                _plotSize.recordSize(PlotterBase.this.plot);
-            }
-
-            boolean result = super._close();
-            place(null);
-            return result;
-        }
-    }
-
     /** Tableau that creates a PlotterPlotFrame.
      */
     protected class PlotWindowTableau extends PlotTableau {
@@ -644,11 +608,11 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         public PlotWindowTableau(PlotEffigy container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
-            frame = new PlotterPlotFrame(this, plot);
+            frame = new PlotTableauFrame(this, plot, PlotterBase.this);
             setFrame(frame);
         }
 
         /** The frame. */
-        public PlotterPlotFrame frame;
+        public PlotTableauFrame frame;
     }
 }

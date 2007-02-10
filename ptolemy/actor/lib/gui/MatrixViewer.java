@@ -39,6 +39,8 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.AbstractPlaceableActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.MatrixPane;
@@ -79,7 +81,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (kienhuis)
  @Pt.AcceptedRating Red (kienhuis)
  */
-public class MatrixViewer extends Sink implements Placeable {
+public class MatrixViewer extends AbstractPlaceableActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -91,22 +93,21 @@ public class MatrixViewer extends Sink implements Placeable {
     public MatrixViewer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        input.setMultiport(false);
+        input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.MATRIX);
 
         width = new Parameter(this, "width", new IntToken(500));
         width.setTypeEquals(BaseType.INT);
         height = new Parameter(this, "height", new IntToken(300));
         height.setTypeEquals(BaseType.INT);
-
-        _windowProperties = new WindowPropertiesAttribute(this,
-                "_windowProperties");
-
-        _paneSize = new SizeAttribute(this, "_paneSize");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+    /** The input port.
+     */
+    public TypedIOPort input;
 
     /** The width of the table in pixels. This must contain an
      *  integer.  If the table is larger than this specified width,
@@ -131,8 +132,6 @@ public class MatrixViewer extends Sink implements Placeable {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        // NOTE: Do not react to changes in _windowProperties.
-        // Those properties are only used when originally opening a window.
         if (attribute == width) {
             _width = ((IntToken) width.getToken()).intValue();
         } else if (attribute == height) {
@@ -192,22 +191,12 @@ public class MatrixViewer extends Sink implements Placeable {
                     // and it causes a save-as to destroy the original window.
                     _effigy.identifier.setExpression(getFullName());
 
-                    _frame = new DisplayWindow();
+                    // The second argument prevents a status bar.
+                    _frame = new TableauFrame(null, null, this);
                     _tableau = new MatrixTokenTableau(_effigy, "tokenTableau",
-                            _frame);
-                    _frame.setTableau(_tableau);
-                    _windowProperties.setProperties(_frame);
-
-                    // Regrettably, since setSize() in swing doesn't actually
-                    // set the size of the frame, we have to also set the
-                    // size of the internal component.
-                    Component[] components = _frame.getContentPane()
-                            .getComponents();
-
-                    if (components.length > 0) {
-                        _paneSize.setSize(components[0]);
-                    }
-
+                            (TableauFrame)_frame);
+                    ((TableauFrame)_frame).setTableau(_tableau);
+                    setFrame(_frame);
                     _tableau.show();
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, null, ex,
@@ -328,36 +317,6 @@ public class MatrixViewer extends Sink implements Placeable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Write a MoML description of the contents of this object. This
-     *  overrides the base class to make sure that the current frame
-     *  properties, if there is a frame, are recorded.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @exception IOException If an I/O error occurs.
-     */
-    protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
-        // Make sure that the current position of the frame, if any,
-        // is up to date.
-        if (_frame != null) {
-            _windowProperties.recordProperties(_frame);
-
-            // Regrettably, have to also record the size of the contents
-            // because in Swing, setSize() methods do not set the size.
-            // Only the first component size is recorded.
-            Component[] components = _frame.getContentPane().getComponents();
-
-            if (components.length > 0) {
-                _paneSize.recordSize(components[0]);
-            }
-        }
-
-        super._exportMoMLContents(output, depth);
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Remove the display from the current container, if there is one.
@@ -387,65 +346,15 @@ public class MatrixViewer extends Sink implements Placeable {
     /** The effigy for the token data. */
     private TokenEffigy _effigy;
 
-    /** The frame, if one is used. */
-    private DisplayWindow _frame = null;
-
     /** Height of the matrix viewer in pixels. */
     private int _height;
 
     /** Pane with the matrix display. */
     private MatrixPane _pane = null;
 
-    /** A specification of the size of the pane if it's in its own window. */
-    private SizeAttribute _paneSize;
-
     /** The tableau with the display, if any. */
     private TokenTableau _tableau;
 
     /** Width of the matrix viewer in pixels. */
     private int _width;
-
-    /** A specification for the window properties of the frame. */
-    private WindowPropertiesAttribute _windowProperties;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** Version of TableauFrame that removes its association with the
-     *  MatrixViewer upon closing, and also records the size of the display.
-     */
-    private class DisplayWindow extends TableauFrame {
-        /** Construct an empty window.
-         *  After constructing this, it is necessary
-         *  to call setVisible(true) to make the frame appear
-         *  and setTableau() to associate it with a tableau.
-         */
-        public DisplayWindow() {
-            // The null second argument prevents a status bar.
-            super(null, null);
-        }
-
-        /** Close the window.  This overrides the base class to remove
-         *  the association with the MatrixViewer and to record window
-         *  properties.
-         *  @return True.
-         */
-        protected boolean _close() {
-            // Record the window properties before closing.
-            _windowProperties.recordProperties(this);
-
-            // Regrettably, have to also record the size of the contents
-            // because in Swing, setSize() methods do not set the size.
-            // Only the first component size is recorded.
-            Component[] components = getContentPane().getComponents();
-
-            if (components.length > 0) {
-                _paneSize.recordSize(components[0]);
-            }
-
-            super._close();
-            place(null);
-            return true;
-        }
-    }
 }

@@ -26,6 +26,7 @@
  */
 package ptolemy.actor.gui;
 
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -115,9 +116,27 @@ public class TableauFrame extends Top {
      *  @param statusBar The status bar, or null to not include one.
      */
     public TableauFrame(Tableau tableau, StatusBar statusBar) {
+        this(tableau, statusBar, null);
+    }
+
+    /** Construct an empty top-level frame managed by the specified
+     *  tableau with the specified status bar and associated Placeable
+     *  object. Associating an instance of Placeable with this
+     *  frame has the effect that when this frame is closed,
+     *  if the placeable contains instances of WindowSizeAttribute
+     *  and/or SizeAttribute, then the window sizes are recorded.
+     *  After constructing this,
+     *  it is necessary to call setVisible(true) to make the frame appear.
+     *  It may also be desirable to call centerOnScreen().
+     *  @param tableau The managing tableau.
+     *  @param statusBar The status bar, or null to not include one.
+     *  @param placeable The associated Placeable.
+     */
+    public TableauFrame(Tableau tableau, StatusBar statusBar, Placeable placeable) {
         super(statusBar);
         setTableau(tableau);
         setIconImage(_getDefaultIconImage());
+        _placeable = placeable;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -432,84 +451,113 @@ public class TableauFrame extends Top {
      *  @return False if the user cancels on a save query.
      */
     protected boolean _close() {
+        // Record window properties, if appropriate.
+        if (_placeable instanceof NamedObj) {
+            Iterator properties = ((NamedObj)_placeable)
+                    .attributeList(WindowPropertiesAttribute.class).iterator();
+            while (properties.hasNext()) {
+                WindowPropertiesAttribute windowProperties
+                        = (WindowPropertiesAttribute)properties.next();
+                windowProperties.recordProperties(this);
+            }
+            // Regrettably, have to also record the size of the contents
+            // because in Swing, setSize() methods do not set the size.
+            // Only the first component size is recorded.
+            properties = ((NamedObj)_placeable)
+                    .attributeList(SizeAttribute.class).iterator();
+            while (properties.hasNext()) {
+                SizeAttribute size = (SizeAttribute)properties.next();
+                Component[] components = getContentPane().getComponents();
+                if (components.length > 0) {
+                    size.recordSize(components[0]);
+                }
+            }
+        }
+        boolean result = true;
         // If we were given no tableau, then just close the window
         if (getEffigy() == null) {
-            return super._close();
-        }
-
-        Effigy masterEffigy = getEffigy().masterEffigy();
-
-        // If the top-level effigy has any open tableau that
-        // is not this one, and this one is not a master,
-        // then simply close.  No need to prompt
-        // for save, as that will be done when that tableau is closed.
-        if (!_tableau.isMaster()) {
-            List tableaux = masterEffigy.entityList(Tableau.class);
-            Iterator tableauxIterator = tableaux.iterator();
-
-            while (tableauxIterator.hasNext()) {
-                Tableau tableau = (Tableau) tableauxIterator.next();
-
-                if (!(tableau instanceof DialogTableau)
-                        && (tableau != _tableau)) {
-                    // NOTE: We use dispose() here rather than just hiding the
-                    // window.  This ensures that derived classes can react to
-                    // windowClosed events rather than overriding the
-                    // windowClosing behavior given here.
-                    dispose();
-                    return true;
-                }
-            }
-        }
-
-        // If we get here, there was no other tableau.
-        // NOTE: Do not use the superclass method so we can
-        // check for children of the model.
-        // NOTE: We use dispose() here rather than just hiding the
-        // window.  This ensures that derived classes can react to
-        // windowClosed events rather than overriding the
-        // windowClosing behavior given here.
-        if (isModified()) {
-            int reply = _queryForSave();
-
-            if ((reply == _DISCARDED) || (reply == _FAILED)) {
-                // If the model has children, then
-                // issue a warning that those children will
-                // persist.  Give the user the chance to cancel.
-                if (!_checkForDerivedObjects()) {
-                    return false;
-                }
-            }
-
-            if (reply == _SAVED) {
-                dispose();
-                return true;
-            } else if (reply == _DISCARDED) {
-                dispose();
-
-                // If the changes were discarded, then we want
-                // to mark the model unmodified, so we don't get
-                // asked again if somehow the model is re-opened.
-                setModified(false);
-
-                // Purge any record of the model, since we have
-                // chosen to not save the changes, so the next time
-                // this is opened, it should be read again from the file.
-                try {
-                    MoMLParser.purgeModelRecord(masterEffigy.uri.getURL());
-                } catch (MalformedURLException e) {
-                    // Ignore... Hopefully will be harmless.
-                }
-
-                return true;
-            }
-
-            return false;
+            result = super._close();
         } else {
-            // Window is not modified, so just dispose.
-            dispose();
-            return true;
+            Effigy masterEffigy = getEffigy().masterEffigy();
+
+            // If the top-level effigy has any open tableau that
+            // is not this one, and this one is not a master,
+            // then simply close.  No need to prompt
+            // for save, as that will be done when that tableau is closed.
+            if (!_tableau.isMaster()) {
+                List tableaux = masterEffigy.entityList(Tableau.class);
+                Iterator tableauxIterator = tableaux.iterator();
+
+                while (tableauxIterator.hasNext()) {
+                    Tableau tableau = (Tableau) tableauxIterator.next();
+
+                    if (!(tableau instanceof DialogTableau)
+                            && (tableau != _tableau)) {
+                        // NOTE: We use dispose() here rather than just hiding the
+                        // window.  This ensures that derived classes can react to
+                        // windowClosed events rather than overriding the
+                        // windowClosing behavior given here.
+                        dispose();
+                        if (_placeable != null) {
+                            _placeable.place(null);
+                        }
+                        return true;
+                    }
+                }
+            }
+
+            // If we get here, there was no other tableau.
+            // NOTE: Do not use the superclass method so we can
+            // check for children of the model.
+            // NOTE: We use dispose() here rather than just hiding the
+            // window.  This ensures that derived classes can react to
+            // windowClosed events rather than overriding the
+            // windowClosing behavior given here.
+            if (isModified()) {
+                int reply = _queryForSave();
+
+                if ((reply == _DISCARDED) || (reply == _FAILED)) {
+                    // If the model has children, then
+                    // issue a warning that those children will
+                    // persist.  Give the user the chance to cancel.
+                    if (!_checkForDerivedObjects()) {
+                        if (_placeable != null) {
+                            _placeable.place(null);
+                        }
+                        return false;
+                    }
+                }
+
+                if (reply == _SAVED) {
+                    dispose();
+                } else if (reply == _DISCARDED) {
+                    dispose();
+
+                    // If the changes were discarded, then we want
+                    // to mark the model unmodified, so we don't get
+                    // asked again if somehow the model is re-opened.
+                    setModified(false);
+
+                    // Purge any record of the model, since we have
+                    // chosen to not save the changes, so the next time
+                    // this is opened, it should be read again from the file.
+                    try {
+                        MoMLParser.purgeModelRecord(masterEffigy.uri.getURL());
+                    } catch (MalformedURLException e) {
+                        // Ignore... Hopefully will be harmless.
+                    }
+                } else {
+                    result = false;
+                }
+            } else {
+                // Window is not modified, so just dispose.
+                dispose();
+            }
         }
+        if (_placeable != null) {
+            _placeable.place(null);
+        }
+        return result;
     }
 
     /** Confirm that writing the specified model to the specified file is OK.
@@ -1031,6 +1079,9 @@ public class TableauFrame extends Top {
 
     // The singleton icon image used for all ptolemy frames.
     private static Image _defaultIconImage = null;
+    
+    /** Associated placeable. */
+    private Placeable _placeable;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

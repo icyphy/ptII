@@ -179,6 +179,11 @@ public class SizeAttribute extends Parameter implements ComponentListener {
                     ((JComponent) component).setPreferredSize(dimension);
                     ((JComponent) component).setMinimumSize(dimension);
                 }
+            } else {
+                // Unset the size.
+                if (component instanceof JComponent) {
+                    ((JComponent) component).setPreferredSize(null);
+                }
             }
 
             return true;

@@ -29,8 +29,6 @@ package ptolemy.actor.lib.gui;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.io.IOException;
-import java.io.Writer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
@@ -40,14 +38,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
 
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.AbstractPlaceableActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEditor;
 import ptolemy.actor.gui.TextEffigy;
-import ptolemy.actor.gui.WindowPropertiesAttribute;
-import ptolemy.actor.lib.Sink;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
@@ -98,7 +95,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (yuhong)
  @Pt.AcceptedRating Yellow (vogel)
  */
-public class Display extends Sink implements Placeable {
+public class Display extends AbstractPlaceableActor {
     /** Construct an actor with an input multiport of type GENERAL.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -111,7 +108,8 @@ public class Display extends Sink implements Placeable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Set the type of the input port.
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
         input.setTypeEquals(BaseType.GENERAL);
 
         rowsDisplayed = new Parameter(this, "rowsDisplayed");
@@ -125,9 +123,6 @@ public class Display extends Sink implements Placeable {
 
         title = new StringAttribute(this, "title");
         title.setExpression("");
-
-        _windowProperties = new WindowPropertiesAttribute(this,
-                "_windowProperties");
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-15\" " + "width=\"40\" height=\"30\" "
@@ -150,6 +145,10 @@ public class Display extends Sink implements Placeable {
      *  an integer, and defaults to 40.
      */
     public Parameter columnsDisplayed;
+
+    /** The input port, which is a multiport.
+     */
+    public TypedIOPort input;
 
     /** The vertical size of the display, in rows. This contains an
      *  integer, and defaults to 10.
@@ -178,8 +177,6 @@ public class Display extends Sink implements Placeable {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        // NOTE: Do not react to changes in _windowProperties.
-        // Those properties are only used when originally opening a window.
         if (attribute == rowsDisplayed) {
             int numRows = ((IntToken) rowsDisplayed.getToken()).intValue();
 
@@ -192,6 +189,10 @@ public class Display extends Sink implements Placeable {
                 _previousNumRows = numRows;
 
                 if (textArea != null) {
+                    // Unset any previously set size.
+                    _paneSize.setToken((Token)null);
+                    setFrame(_frame);
+                    
                     textArea.setRows(numRows);
 
                     if (_frame != null) {
@@ -213,9 +214,14 @@ public class Display extends Sink implements Placeable {
                 _previousNumColumns = numColumns;
 
                 if (textArea != null) {
+                    // Unset any previously set size.
+                    _paneSize.setToken((Token)null);
+                    setFrame(_frame);
+
                     textArea.setColumns(numColumns);
 
                     if (_frame != null) {
+                        _frame.pack();
                         _frame.show();
                     }
                 }
@@ -287,7 +293,7 @@ public class Display extends Sink implements Placeable {
                         "Error creating effigy and tableau");
             }
 
-            textArea = _frame.text;
+            textArea = ((TextEditor)_frame).text;
 
             int numRows = ((IntToken) rowsDisplayed.getToken()).intValue();
             textArea.setRows(numRows);
@@ -295,7 +301,7 @@ public class Display extends Sink implements Placeable {
             int numColumns = ((IntToken) columnsDisplayed.getToken())
                     .intValue();
             textArea.setColumns(numColumns);
-            _windowProperties.setProperties(_frame);
+            setFrame(_frame);
             _frame.pack();
         } else {
             // Erase previous text.
@@ -403,6 +409,10 @@ public class Display extends Sink implements Placeable {
                 if (textArea == null) {
                     continue;
                 }
+                
+                // FIXME: There is a race condition here.
+                // textArea can be set to null during execution of this method
+                // if another thread closes the display window.
 
                 // The toString() method yields a string that can be parsed back
                 // in the expression language to get the original token.
@@ -483,27 +493,6 @@ public class Display extends Sink implements Placeable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Write a MoML description of the contents of this object. This
-     *  overrides the base class to make sure that the current frame
-     *  properties, if there is a frame, are recorded.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @exception IOException If an I/O error occurs.
-     */
-    protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
-        // Make sure that the current position of the frame, if any,
-        // is up to date.
-        if (_frame != null) {
-            _windowProperties.recordProperties(_frame);
-        }
-
-        super._exportMoMLContents(output, depth);
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Remove the display from the current container, if there is one.
@@ -529,9 +518,6 @@ public class Display extends Sink implements Placeable {
     // The container for the text display, if there is one.
     private Container _container;
 
-    // The frame into which to put the text widget, if any.
-    private TextEditor _frame;
-
     // Record of previous columns.
     private int _previousNumColumns = 0;
 
@@ -544,40 +530,8 @@ public class Display extends Sink implements Placeable {
     // The flag indicating whether the blank lines will be suppressed.
     private boolean _suppressBlankLines = false;
 
-    // A specification for the window properties of the frame.
-    private WindowPropertiesAttribute _windowProperties;
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
-    /** Version of TextEditor that removes its association with the
-     *  Display upon closing, and also records the size of the display.
-     */
-    private class DisplayWindow extends TextEditor {
-        /** Construct an empty text editor with the specified title.
-         *  After constructing this, it is necessary
-         *  to call setVisible(true) to make the frame appear.
-         *  @param title The title to put in the title bar.
-         */
-        public DisplayWindow(String title) {
-            super(title);
-        }
-
-        /** Close the window.  This overrides the base class to remove
-         *  the association with the Display and to record window properties.
-         *  @return True.
-         */
-        protected boolean _close() {
-            // Record the window properties before closing.
-            if (_frame != null) {
-                _windowProperties.setProperties(_frame);
-            }
-
-            super._close();
-            place(null);
-            return true;
-        }
-    }
 
     /** Version of TextEditorTableau that creates DisplayWindow.
      */
@@ -601,7 +555,7 @@ public class Display extends Sink implements Placeable {
                 title = Display.this.getFullName();
             }
 
-            frame = new DisplayWindow(title);
+            frame = new TextEditor(title, null, Display.this);
 
             // Also need to set the title of this Tableau.
             setTitle(title);
@@ -613,6 +567,6 @@ public class Display extends Sink implements Placeable {
             frame.setTableau(this);
         }
 
-        public DisplayWindow frame;
+        public TextEditor frame;
     }
 }

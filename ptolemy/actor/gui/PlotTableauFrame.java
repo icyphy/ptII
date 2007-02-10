@@ -98,7 +98,19 @@ public class PlotTableauFrame extends TableauFrame {
      *   an instance of Plot.
      */
     public PlotTableauFrame(Tableau tableau, PlotBox plotBox) {
-        super(tableau, null);
+        this(tableau, plotBox, null);
+    }
+
+    /** Construct a plot frame with the specified title and by default
+     *  contains an instance of Plot. After constructing this, it is necessary
+     *  to call setVisible(true) to make the plot appear.
+     *  @param tableau The tableau where the window is placed.
+     *  @param plotBox the plot object to put in the frame, or null to create
+     *   an instance of Plot.
+     *  @param placeable The associated plot actor, or null if none.
+     */
+    public PlotTableauFrame(Tableau tableau, PlotBox plotBox, Placeable placeable) {
+        super(tableau, null, placeable);
         plot = plotBox;
 
         // Create a file filter that accepts .xml and .moml files.
