@@ -1352,8 +1352,8 @@ remote1doc:
 	@echo "`uptime`"
 	@echo "Setting up javax.comm.properties so that we can build under solaris"
 	-(cd $(REMOTE1PTIIDIST)/lib; rm javax.comm.properties; cp /usr/java/commapi/docs/javax.comm.properties .)
-	@echo "Removing vendors/sun/commapi so that we can build under solaris"
-	-rm $(REMOTE1PTIIDIST)/vendors/sun/commapi/*
+	#@echo "Removing vendors/sun/commapi so that we can build under solaris"
+	#-rm $(REMOTE1PTIIDIST)/vendors/sun/commapi/*
 	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE) install)
 
 # Remove the JavaScope instrumentation
@@ -2390,7 +2390,7 @@ $(PTII)/vendors/izpack:
 PTSETUP=ptII$(WINDOWS_VERSION)_setup
 # IzPack installer
 setup_jar: $(PTSETUP).jar
-$(PTSETUP).jar: $(PTSETUP).xml #ExtractJarFile.jar
+$(PTSETUP).jar: $(PTSETUP).xml ../../ptiny.exe #ExtractJarFile.jar
 	sh "$(IZPACK_COMPILE)" $<
 
 #	c:/cxh/src/izpack/izpack3.9.0/bin/compile $<
@@ -2443,20 +2443,17 @@ PTSETUP_DEPENDENCIES = \
 $(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) \
 			jre \
 			../../lib/matlabWindows.jar \
-			$(PTSETUP)_l4j.xml
-
+			$(PTSETUP)_l4j.xml \
 			$(PTSETUP).jar #ExtractJarFile.class
 		"$(L4JC)" `$(PTCYGPATH) $(PTSETUP)_l4j.xml`
 
-../../ptiny.exe:  ../../ptiny_l4j.xml
-
-../../ptiny_l4j.xml:
-	(cd ../..; $(MAKE) exes)
+../../ptiny.exe:
+	 $(MAKE) -C ../.. exes
 
 ../../jar_dist:
 	if [ ! -d "$@" ] ; then \
-	    echo "Running $(MAKE) jar_dist in $(PTII)"; \
-	    (cd ../..; $(MAKE) jar_dist); \
+	    echo "Running $(MAKE) -k  jar_dist in $(PTII)"; \
+	    (cd ../..; $(MAKE) -k jar_dist); \
 	fi
 
 ../../ptolemy/matlab/ptmatlab.dll: ../../lib/matlabWindows.jar
