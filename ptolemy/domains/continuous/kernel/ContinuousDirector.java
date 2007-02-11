@@ -93,7 +93,7 @@ import ptolemy.kernel.util.Settable;
  are the same) at all times except those
  on a discrete subset D.
  <p>
- A purely continouous signal has exactly one value at
+ A purely continuous signal has exactly one value at
  all times, meaning that the final value equals the initial
  value at all times.
  A purely discrete signal has
@@ -399,7 +399,11 @@ public class ContinuousDirector extends FixedPointDirector implements
                 // Although super.prefire() is called in the prefire() method,
                 // super.prefire() is called again here, because it may take 
                 // several iterations to complete an integration step. 
+                // As a side effect, all receivers are reset to unknown status.
+                // Therefore, we need to transfer the inputs from the 
+                // environment to inside again.
                 if (super.prefire()) {
+                    _transferInputsToInside();
                     super.fire();
                     if (iterations == 0) {
                         // Outputs need to be produced now, since the
@@ -421,10 +425,14 @@ public class ContinuousDirector extends FixedPointDirector implements
                 // Note that this doesn't change global model time.
                 // It only changes the local view of time.
                 double timeIncrement = _ODESolver._getRoundTimeIncrement();
-                _ODESolver._setRound(_ODESolver._getRound() + 1);
                 setModelTime(_iterationBeginTime.add(_currentStepSize
                         * timeIncrement));
+                _ODESolver._setRound(_ODESolver._getRound() + 1);
 
+                if (_debugging) {
+                    _debug("ODE solver solves the round #" 
+                            + _ODESolver._getRound());
+                }
                 // Increase the iteration count.
                 iterations++;
             }
@@ -943,6 +951,12 @@ public class ContinuousDirector extends FixedPointDirector implements
         return suggestedStep;
     }
 
+//    @Override
+//    public boolean transferInputs(IOPort port) throws IllegalActionException {
+//        // TODO Auto-generated method stub
+//        return super.transferInputs(port);
+//    }
+//
     /** Override the base class to do nothing. The fire() method of
      *  this director handles transfering outputs.
      *  @param port The port to transfer tokens from.
@@ -1689,6 +1703,20 @@ public class ContinuousDirector extends FixedPointDirector implements
                             + " at simulation time " + _iterationBeginTime);
                 }
             }
+        }
+    }
+
+    /** Transfer inputs from the environment to inside. 
+     *  @exception IllegalActionException If the transferInputs(Port)
+     *   method throws it.
+     */
+    private void _transferInputsToInside() throws IllegalActionException {
+        // If there are no input ports, this method does nothing.
+        CompositeActor container = (CompositeActor) getContainer();
+        Iterator inports = container.inputPortList().iterator();
+        while (inports.hasNext() && !_stopRequested) {
+            IOPort p = (IOPort) inports.next();
+            super.transferInputs(p);
         }
     }
 
