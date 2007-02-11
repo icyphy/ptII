@@ -78,10 +78,10 @@ demo: demo_ptolemy demo_vergil demo_applet
 demo_applet: $(PTCLASSJAR)
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" 	integrator1.xml integrator2.xml integrator3.xml integrator4.xml integrator5.xml
+	"$(PTII)/bin/ptolemy" 	integrator1.xml integrator2.xml integrator3.xml integrator5.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" integrator1.xml integrator2.xml integrator3.xml integrator4.xml integrator5.xml
+	"$(PTII)/bin/vergil" integrator1.xml integrator2.xml integrator3.xml integrator5.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
