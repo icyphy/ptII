@@ -1,6 +1,6 @@
 /* A static integer arithmetic logic unit.
 
- Copyright (c) 1997-2007 The Regents of the University of California.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -131,7 +131,7 @@ public class StaticALU extends TypedAtomicActor {
      *      2 - Subtraction (A - B)
      *      3 - Multiplication (A * B)
      *      4 - Division (A / B)
-     *  @throw IllegalActionException If the input operation code 
+     *  @throws IllegalActionException If the input operation code 
      *  is not supported.
      */
     public void fire() throws IllegalActionException {
