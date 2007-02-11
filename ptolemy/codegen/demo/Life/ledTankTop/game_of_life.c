@@ -57,10 +57,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //const unsigned char size_of_array = 84;
 //volatile unsigned char array [6][14]; 
 
-const unsigned char number_rows = 4;
-const unsigned char number_columns = 4; 
-const unsigned char size_of_array = 16;
-volatile unsigned char array [4][4]; 
+const unsigned char number_rows = 5;
+const unsigned char number_columns = 8; 
+const unsigned char size_of_array = 40;
+volatile unsigned char array [5][8]; 
 
 /* constants for resetting the values of the GOL array */
 const unsigned char on_next_on = 3;			//current state is on and next state is on

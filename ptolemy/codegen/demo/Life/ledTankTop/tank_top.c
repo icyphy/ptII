@@ -36,7 +36,8 @@ int main(void)
 	initialize_tank_pins_as_output ();
 	
 	//initialize LED array with a glider
-	glider(1,1);
+	//glider(2,2);
+        r_pentomino(1,1);
 	//all_off();
 	//run the game of life
 #ifdef __AVR__
@@ -46,7 +47,7 @@ int main(void)
         for(i = 0; i < 32; i++) { 
 #endif
             //loop_lights();
-                	gol();
+            gol();
 	}
 	return 0;
 }
