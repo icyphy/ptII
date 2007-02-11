@@ -196,6 +196,19 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             // Cannot do anything until these inputs are known.
             return;
         }
+        // Question: should the above go to the prefire() method?
+        // Answer: No, because of the design of the fixed point director.
+        // In particular, since this actor is a nonstrict actor, it is "ready 
+        // to fire". If this actor returns false from the prefire() method,
+        // then all outputs will be cleared (set to absent). This is not 
+        // what we want to do. In this case, we allow the actor to be fired,
+        // and the fire() method should do the right thing.
+        // Similar cases arise from any composite actor (including modal 
+        // models), which may contain some source actor inside while the 
+        // interface ports indicate the actor is a strict actor. Therefore, 
+        // the prefire() actor of any composite actor should return true
+        // at any time, and they should be ready to be fired at any time.
+
         ContinuousDirector dir = (ContinuousDirector) getDirector();
         double stepSize = dir.getCurrentStepSize();
 
@@ -228,8 +241,26 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             }
         }
 
+        // Prefire() resets receivers, also each firing of this actor changes
+        // the _tentativeState variable, therefore the following statements
+        // may broadcast the newly calcualted _tentativeState at a wrong time. 
+        // For example, an opaque composite actor containing an integrator is 
+        // scheduled to run multiple times during the same round. 
+
+        // Since prefire() can be called any number of times, and the semantics
+        // of prefire() requires the results not to be affected by the numbers
+        // of callings. Therefore, the following statements do not work.
+//        if (!state.isKnown()) {
+//            state.broadcast(new DoubleToken(getTentativeState()));
+//        }
+        // Instead, we use the round number to guard the outputs. 
         if (!state.isKnown()) {
-            state.broadcast(new DoubleToken(getTentativeState()));
+            int currentRound = dir._getODESolver()._getRound();
+            if (_lastRound < currentRound) {
+                _lastRound = currentRound;
+                _lastRoundOutput = getTentativeState();
+            }
+            state.broadcast(new DoubleToken(_lastRoundOutput));
         }
 
         if (derivative.isKnown() && derivative.hasToken(0)) {
@@ -308,8 +339,10 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         }
 
         super.initialize();
+        _lastRound = -1;
         _tentativeState = ((DoubleToken) initialState.getToken()).doubleValue();
         _state = _tentativeState;
+        _lastRoundOutput = _tentativeState;
 
         if (_debugging) {
             _debug("Initialize: initial state = " + _tentativeState);
@@ -350,6 +383,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      */
     public boolean postfire() throws IllegalActionException {
         _state = _tentativeState;
+        _lastRound = -1;
         if (_debugging) {
             _debug("Commiting the state: " + _state);
         }
@@ -394,6 +428,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  to the current state.
      */
     public void rollBackToCommittedState() {
+        _lastRound = -1;
         _tentativeState = _state;
     }
 
@@ -436,6 +471,12 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      */
     private double[] _auxVariables;
 
+    /** The last round this integrator is fired. */
+    private int _lastRound;
+    
+    /** The output of last round this integrator is fired. */
+    private double _lastRoundOutput;
+    
     /** The state of the integrator. */
     private double _state;
 
