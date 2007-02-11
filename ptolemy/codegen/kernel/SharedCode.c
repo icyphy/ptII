@@ -36,7 +36,7 @@ char* InttoString (int i) {
 
 char* LongtoString (long long l) {
     char* string = (char*) malloc(sizeof(char) * 22);
-    sprintf(string, "%d", l);
+    sprintf(string, "%ld", l);
     return string;       
 }
 
