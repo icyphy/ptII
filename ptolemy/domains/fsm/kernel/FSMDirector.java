@@ -630,37 +630,6 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         if (_debugging) {
             _debug("Prefire called at time: " + getModelTime());
         }
-
-        // Clear the inside receivers of all output ports of the container.
-        // FIXME: why here? should this happen at the postfire() method?
-        CompositeActor actor = (CompositeActor) getContainer();
-        Iterator outputPorts = actor.outputPortList().iterator();
-
-        while (outputPorts.hasNext()) {
-            IOPort p = (IOPort) outputPorts.next();
-            Receiver[][] insideReceivers = p.getInsideReceivers();
-
-            if (insideReceivers == null) {
-                continue;
-            }
-
-            for (int i = 0; i < insideReceivers.length; i++) {
-                if (insideReceivers[i] == null) {
-                    continue;
-                }
-
-                for (int j = 0; j < insideReceivers[i].length; j++) {
-                    try {
-                        if (insideReceivers[i][j].hasToken()) {
-                            insideReceivers[i][j].get();
-                        }
-                    } catch (NoTokenException ex) {
-                        throw new InternalErrorException(this, ex, null);
-                    }
-                }
-            }
-        }
-
         // Set the current time based on the enclosing class.
         super.prefire();
         return getController().prefire();
@@ -730,12 +699,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                     if ((insideReceivers != null)
                             && (insideReceivers[i] != null)) {
                         for (int j = 0; j < insideReceivers[i].length; j++) {
-                            if (insideReceivers[i][j].hasToken()) {
-                                insideReceivers[i][j].get();
-                            }
-
                             insideReceivers[i][j].put(t);
-
                             if (_debugging) {
                                 _debug(getFullName(),
                                         "transferring input from "
