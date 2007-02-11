@@ -51,7 +51,7 @@ import ptolemy.kernel.util.InvalidStateException;
  Once the status of a receiver becomes known, the value
  cannot be changed, nor can the status be changed from present to absent
  or vice versa. To change the value or the status, call reset() first.
- Normally, the reset() method is called only by the director.
+ Normally, the reset() method is called only by the director and constructors.
  <p>
  The isKnown() method returns true if the receiver has status known. 
  The hasRoom() method returns true if the receiver has status unknown. 
@@ -68,6 +68,13 @@ import ptolemy.kernel.util.InvalidStateException;
  @Pt.AcceptedRating Yellow (eal)
  */
 public class FixedPointReceiver extends AbstractReceiver {
+
+    /** Construct an FixedPointReceiver with unknown status.
+     *  This constructor does not need a director. 
+     */
+    public FixedPointReceiver() {
+        this(null);
+    }
 
     /** Construct an FixedPointReceiver with unknown status.
      *  @param director The director of this receiver.
@@ -94,7 +101,9 @@ public class FixedPointReceiver extends AbstractReceiver {
         } else {
             _token = null;
             _known = true;
-            _director._receiverChanged();
+            if (_director != null) {
+                _director._receiverChanged();
+            }
         }
     }
 
@@ -217,7 +226,9 @@ public class FixedPointReceiver extends AbstractReceiver {
         if (!isKnown()) {
             _token = token;
             _known = true;
-            _director._receiverChanged();
+            if (_director != null) {
+                _director._receiverChanged();
+            }
         } else {
             if (!hasToken()) {
                 throw new IllegalActionException(getContainer(),
@@ -235,7 +246,7 @@ public class FixedPointReceiver extends AbstractReceiver {
 
     /** Reset the receiver by deleting any contained tokens and setting
      *  the status of this receiver to unknown.  This is called
-     *  by the director, normally in its initialize() and postfire()
+     *  by the , normally in its initialize() and postfire()
      *  methods.
      */
     public void reset() {
@@ -244,8 +255,9 @@ public class FixedPointReceiver extends AbstractReceiver {
     }
 
     /** Set the container. This overrides the base class so that
-     *  if the container is being set to null, it removes the receiver
-     *  from the list in the director.
+     *  if the container is being set to null, and if the director of
+     *  this receiver is not null, this method removes the receiver
+     *  from the list in that director.
      *  @param port The container.
      *  @exception IllegalActionException If the container is not of
      *   an appropriate subclass of IOPort. Not thrown in this base class,
