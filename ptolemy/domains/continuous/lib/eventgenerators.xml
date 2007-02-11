@@ -10,6 +10,8 @@
       <group>
         <entity name="EventSource"
                 class="ptolemy.domains.continuous.lib.EventSource"/>
+        <entity name="LevelCrossingDetector"
+                class="ptolemy.domains.continuous.lib.LevelCrossingDetector"/>
       </group>
     ?>
   </configure>

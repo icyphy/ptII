@@ -50,7 +50,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	DiscreteClock.java \
 	EventSource.java \
-	Integrator.java 
+	Integrator.java \
+	LevelCrossingDetector.java \
+	ZeroOrderHold.java
 
 OTHER_FILES_TO_BE_JARED = \
 	continuousentities.xml \
@@ -58,7 +60,9 @@ OTHER_FILES_TO_BE_JARED = \
 	eventgenerators.xml \
 	EventSource.java \
 	integral.gif \
-	IntegratorIcon.xml 
+	IntegratorIcon.xml \
+	LevelCrossingDetectorIcon.xml \
+	wavegenerators.xml 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
