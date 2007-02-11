@@ -1,6 +1,6 @@
-# Makefile for Ptolemy II Continuous domain demos
+# Makefile for Ptolemy II Continuous Newton's Cradle demo
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
@@ -29,12 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/continuous/demo
+ME =		ptolemy/domains/continuous/demo/NewtonsCradle 
 
 # Root of the Java directory
-ROOT =		../../../..
-
-DIRS =		ContinuousInsideDE Integration Lorenz Sinusoid Switch
+ROOT =		../../../../../
 
 CLASSPATH =	$(ROOT)
 
@@ -43,39 +41,49 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTPACKAGE = 	NewtonsCradle
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	ContinuousInsideDE/ContinuousInsideDE.jar \
-	Integration/Integration.jar \
-	Lorenz/Lorenz.jar \
-	NewtonsCradle/NewtonsCradle.jar \
-	Sinusoid/Sinusoid.jar \
-	Switch/Switch.jar 
+JSRCS =
 
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	NewtonsCradle.xml \
+	NewtonsCradleAnimated.xml
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS =	index.htm
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	NewtonsCradle.htm \
+	NewtonsCradleVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	doc \
+	$(PTCLASSJAR) 
 
-all: jclass
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all
 
-demo: subdemo
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer NewtonsCradle.xml NewtonsCradleAnimated.xml 
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" NewtonsCradle.xml NewtonsCradleAnimated.xml 
+
+demo_vergil:
+	"$(PTII)/bin/vergil" NewtonsCradle.xml NewtonsCradleAnimated.xml 
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
