@@ -187,8 +187,11 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                 // If the actor has previously returned false in postfire(),
                 // do not fire it.
                 if (!_actorsFinishedExecution.contains(actor)) {
-                    _fireActor(actor);
-                    _actorsFired.add(actor);
+                    // check if the actor is ready to fire.
+                    if (_isReadyToFire(actor)) {
+                        _fireActor(actor);
+                        _actorsFired.add(actor);
+                    }
                 } else {
                     // The postfire() method of this actor returned false in
                     // some previous iteration, so here, for the benefit of
@@ -400,6 +403,9 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                     port.sendClearInside(i);
                 }
             }
+            // we do not explicit reset the receivers receiving inputs
+            // from this port because the fixedpoint director resets the
+            // receivers in its prefire() method.
         }
         return result;
     }
@@ -489,7 +495,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         return true;
     }
 
-    /** If the actor is ready to fire, call its prefire() method, and
+    /** Fire an actor. Call its prefire() method, and
      *  if that returns true, call its fire() method.
      *  @exception IllegalActionException If the prefire() method
      *   returns false having previously returned true in the same
@@ -497,53 +503,53 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *   throws it.
      */
     private void _fireActor(Actor actor) throws IllegalActionException {
-        if (_isReadyToFire(actor) && !_stopRequested) {
-            // Prefire the actor.
-            boolean prefireReturns = actor.prefire();
+        // Prefire the actor.
+        boolean prefireReturns = actor.prefire();
+        if (_debugging) {
+            _debug("FixedPointDirector: Prefiring: "
+                    + ((Nameable) actor).getFullName() + ", which returns "
+                    + prefireReturns);
+        }
+        // Check monotonicity constraint.
+        if (!prefireReturns && _actorsAllowedToFire.contains(actor)) {
+            throw new IllegalActionException(
+                    actor,
+                    "prefire() method returns false, but it"
+                    + " has previously returned true in this iteration.");
+        }
+        if (prefireReturns) {
+            _actorsAllowedToFire.add(actor);
+            
+            // Whether all inputs are known must be checked before
+            // firing to handle cases with self-loops, because the
+            // current firing may change the status of some input
+            // receivers from unknown to known.
+            boolean allInputsKnownBeforeFiring = _areAllInputsKnown(actor);
+            
             if (_debugging) {
-                _debug("FixedPointDirector: Prefiring: "
-                        + ((Nameable) actor).getFullName() + ", which returns "
-                        + prefireReturns);
-            }
-            // Check monotonicity constraint.
-            if (!prefireReturns && _actorsAllowedToFire.contains(actor)) {
-                throw new IllegalActionException(
-                        actor,
-                        "prefire() method returns false, but it"
-                                + " has previously returned true in this iteration.");
-            }
-            if (prefireReturns) {
-                _actorsAllowedToFire.add(actor);
-
-                // Whether all inputs are known must be checked before
-                // firing to handle cases with self-loops, because the
-                // current firing may change the status of some input
-                // receivers from unknown to known.
-                boolean allInputsKnownBeforeFiring = _areAllInputsKnown(actor);
-
-                if (_debugging) {
-                    if (allInputsKnownBeforeFiring) {
-                        _debug("Firing: " + ((Nameable) actor).getName()
-                                + ", which has all inputs known.");
-                    } else {
-                        _debug("Firing: " + ((Nameable) actor).getName()
-                                + ", which has some inputs unknown.");
-                    }
-                }
-
-                actor.fire();
-                // If all of the inputs of this actor were known before firing, firing
-                // the actor again in the current iteration is not necessary.
                 if (allInputsKnownBeforeFiring) {
-                    _actorsFinishedFiring.add(actor);
-                    _sendClearToAllUnknownOutputsOf(actor);
+                    _debug("Firing: " + ((Nameable) actor).getName()
+                            + ", which has all inputs known.");
+                } else {
+                    _debug("Firing: " + ((Nameable) actor).getName()
+                            + ", which has some inputs unknown.");
                 }
-            } else {
-                // If prefire() returned false, the actor declines
-                // to fire, meaning all its outputs are absent.
+            }
+            
+            actor.fire();
+            // If all of the inputs of this actor were known before firing, firing
+            // the actor again in the current iteration is not necessary.
+            if (allInputsKnownBeforeFiring) {
                 _actorsFinishedFiring.add(actor);
                 _sendClearToAllUnknownOutputsOf(actor);
             }
+        } else {
+            // If prefire() returned false, the actor declines
+            // to fire, meaning all its outputs are absent.
+            // Note that prefire() is executed only after all the inputs are
+            // known or the actor is non-strict.
+            _actorsFinishedFiring.add(actor);
+            _sendClearToAllUnknownOutputsOf(actor);
         }
     }
 
@@ -565,8 +571,15 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // to conclude the convergence of the iteration because if some 
         // receivers just become known, their containers (actors) need to be 
         // fired to react these new inputs. 
-        boolean converged = _lastNumberOfKnownReceivers == _currentNumberOfKnownReceivers;
+        boolean converged = 
+            _lastNumberOfKnownReceivers == _currentNumberOfKnownReceivers;
         _lastNumberOfKnownReceivers = _currentNumberOfKnownReceivers;
+        
+        // One might try to optimize this method by also considering the 
+        // _actorsFinishedFiring set.
+        // CompositeActor container = (CompositeActor) getContainer();
+        // converged = 
+        // _actorsFinishedFiring.size() == container.deepEntityList().size());
         return converged;
     }
 
