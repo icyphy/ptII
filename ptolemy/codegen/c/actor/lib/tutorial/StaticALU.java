@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.c.actor.lib.logic;
+package ptolemy.codegen.c.actor.lib.tutorial;
 
 import java.util.ArrayList;
 
@@ -47,7 +47,7 @@ public class StaticALU extends CCodeGeneratorHelper {
      * Construct the Comparator helper.
      * @param actor The associated actor.
      */
-    public StaticALU(ptolemy.actor.lib.logic.StaticALU actor) {
+    public StaticALU(ptolemy.actor.lib.tutorial.StaticALU actor) {
         super(actor);
     }
     
@@ -67,8 +67,8 @@ public class StaticALU extends CCodeGeneratorHelper {
         code.append(super.generateFireCode());
 
         /* Add code here */
-        ptolemy.actor.lib.logic.StaticALU actor =
-            (ptolemy.actor.lib.logic.StaticALU) getComponent();
+        ptolemy.actor.lib.tutorial.StaticALU actor =
+            (ptolemy.actor.lib.tutorial.StaticALU) getComponent();
                  
          int opcode = Integer.parseInt(
                 actor.operation.getExpression().substring(0, 1));

@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.c.actor.lib.logic;
+package ptolemy.codegen.c.actor.lib.tutorial;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
@@ -44,7 +44,7 @@ public class SimpleALU extends CCodeGeneratorHelper {
      * Construct the Comparator helper.
      * @param actor The associated actor.
      */
-    public SimpleALU(ptolemy.actor.lib.logic.SimpleALU actor) {
+    public SimpleALU(ptolemy.actor.lib.tutorial.SimpleALU actor) {
         super(actor);
     }
 }
