@@ -93,10 +93,6 @@ void initialize_tank_pins_as_output (void)
 	col7_output;
 	col8_output;
 	col9_output;
-	col10_output;
-	col11_output;
-	col12_output;
-	col13_output;
 }
 
 
@@ -128,6 +124,12 @@ void row_column_display (unsigned char i, unsigned char j)
 	else
 		if (i==5)
 			row5_low;
+	else
+		if (i==6)
+			row6_low;
+	else
+		if (i==7)
+			row7_low;
 	
 	if (j==0)
 		col0_high;
@@ -158,18 +160,6 @@ void row_column_display (unsigned char i, unsigned char j)
 	else
 		if (j==9)
 			col9_high;
-	else
-		if (j==10)
-			col10_high;
-	else
-		if (j==11)
-			col11_high;
-	else
-		if (j==12)
-			col12_high;
-	else
-		if (j==13)
-			col13_high;
 #endif
 	
 #ifdef _DELAY_MS
@@ -189,6 +179,8 @@ void column_display (unsigned char j)
 	row3_low;
 	row4_low;
 	row5_low;
+	row6_low;
+	row7_low;
 	
 	if (j==0)
 		col0_high;
@@ -219,18 +211,6 @@ void column_display (unsigned char j)
 	else
 		if (j==9)
 			col9_high;
-	else
-		if (j==10)
-			col10_high;
-	else
-		if (j==11)
-			col11_high;
-	else
-		if (j==12)
-			col12_high;
-	else
-		if (j==13)
-			col13_high;
 			
 #ifdef _DELAY_MS
 	_delay_ms(5);
@@ -253,6 +233,8 @@ void all_on (void)
 	row3_low;
 	row4_low;
 	row5_low;
+	row6_low;
+	row7_low;
 	
 	//columns high
 	col0_high;
@@ -265,10 +247,6 @@ void all_on (void)
 	col7_high;
 	col8_high;
 	col9_high;
-	col10_high;
-	col11_high;
-	col12_high;
-	col13_high;
 }
 
 /* turns off all the LEDs in the array */
@@ -281,6 +259,8 @@ void all_off (void)
 	row3_high;
 	row4_high;
 	row5_high;
+	row6_high;
+	row7_high;
 	
 	//columns low
 	col0_low;
@@ -293,10 +273,6 @@ void all_off (void)
 	col7_low;
 	col8_low;
 	col9_low;
-	col10_low;
-	col11_low;
-	col12_low;
-	col13_low;
 }
 
 /* loops through all of the LEDs in the array turning
