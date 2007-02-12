@@ -60,6 +60,7 @@ JSRCS = \
 	InteractiveShell.java \
 	LEDMatrix.java \
 	MatrixViewer.java \
+	ModelDisplay.java \
 	Plotter.java \
 	PlotterBase.java \
 	RealTimePlotter.java \
