@@ -1,4 +1,5 @@
 /***fireBlock***/
+///////////////////////////SimpleALU fireBlock//////////////////////////
 switch($ref(operation)) {
     case 0:
         $ref(output) = 0;
@@ -16,4 +17,5 @@ switch($ref(operation)) {
         $ref(output) = $ref(A) / $ref(B);
         break;
 }
+////////////////////////////////////////////////////////////////////////
 /**/
