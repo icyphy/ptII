@@ -6,11 +6,9 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.AbstractPlaceableActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.kernel.CompositeEntity;
@@ -20,7 +18,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 public class TableDisplay extends AbstractPlaceableActor {
     private JTable _table;
-    private TableauFrame _frame;
     private Tableau _tableau;
 
     public TableDisplay(CompositeEntity container, String name)
@@ -44,7 +41,7 @@ public class TableDisplay extends AbstractPlaceableActor {
             _frame.pack();
         }
         if (_frame != null) {
-            _frame.show();
+            ((TableauFrame)_frame).show();
             _frame.toFront();
         }
     }
@@ -56,10 +53,12 @@ public class TableDisplay extends AbstractPlaceableActor {
             }
             _frame = null;
             _table = null;
-            try {
-                _tableau.setContainer(null);
-            } catch (Exception e) {
-                throw new InternalErrorException(e);
+            if (_tableau != null) {
+                try {
+                    _tableau.setContainer(null);
+                } catch (Exception e) {
+                    throw new InternalErrorException(e);
+                }
             }
             _tableau = null;
         } else {
