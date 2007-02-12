@@ -131,6 +131,9 @@ public class ModelDisplay extends AbstractPlaceableActor
                     throw new IllegalActionException(this, ex,
                             "Failed to read model from: " + url);
                 }
+            } else {
+                // No URL given, so we should create a blank entity.
+                _createBlankEntity();
             }
             // Make sure there is no display of the old entity.
             place(null);
@@ -176,20 +179,10 @@ public class ModelDisplay extends AbstractPlaceableActor
     public void initialize() throws IllegalActionException {
         super.initialize();
         
-        // If no model has been specified, then create a simple
+        // If we have no entity at this point, then create a simple
         // top-level entity into which we can put attributes.
-        URL url = modelURL.asURL();
-        if (url == null) {
-            String moml = "<entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\"/>";
-            MoMLParser parser = new MoMLParser();
-            try {
-                _entity = parser.parse(null, moml);
-                ParserAttribute parserAttribute
-                        = new ParserAttribute(_entity, "_parser");
-                parserAttribute.setParser(parser);
-            } catch (Exception ex) {
-                throw new InternalErrorException(ex);
-            }
+        if (_entity == null) {
+            _createBlankEntity();
         }
 
         // If there is no graph display yet, then create a
@@ -203,8 +196,6 @@ public class ModelDisplay extends AbstractPlaceableActor
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e, "Failed to create tableau.");
             }
-            // FIXME: Should subclass this and override save to
-            // save the right model.
             _frame = new TableauFrame(_tableau);
             setFrame(_frame);
             _tableau.setFrame(_frame);
@@ -239,6 +230,11 @@ public class ModelDisplay extends AbstractPlaceableActor
             _graph = null;
         } else {
             ActorEditorGraphController controller = new ActorEditorGraphController();
+            // _entity might be null, in which case we have to make an empty model.
+            if (_entity == null) {
+                _createBlankEntity();
+            }
+
             ActorGraphModel graphModel = new ActorGraphModel(_entity);
             GraphPane graphPane = new GraphPane(controller, graphModel);
             _graph = new JGraph(graphPane);
@@ -259,6 +255,24 @@ public class ModelDisplay extends AbstractPlaceableActor
         }
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                       ////
+
+    /** Create a blank entity associated with this display.
+     */
+    private void _createBlankEntity() {
+        String moml = "<entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\"/>";
+        MoMLParser parser = new MoMLParser();
+        try {
+            _entity = parser.parse(null, moml);
+            ParserAttribute parserAttribute
+            = new ParserAttribute(_entity, "_parser");
+            parserAttribute.setParser(parser);
+        } catch (Exception ex) {
+            throw new InternalErrorException(ex);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
 
