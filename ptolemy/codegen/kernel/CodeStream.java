@@ -36,6 +36,9 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
@@ -275,9 +278,9 @@ public class CodeStream {
 
         Signature signature = new Signature(blockName, arguments.size());
 
-        StringBuffer codeBlock = _declarations.getCode(signature);
+        StringBuffer codeBlock = _declarations.getCode(signature, arguments);
 
-        ArrayList parameters = _declarations.getParameters(signature);
+        //List parameters = _declarations.getParameters(signature);
 
         // Cannot find a code block with the matching signature.
         if (codeBlock == null) {
@@ -288,22 +291,8 @@ public class CodeStream {
                         "Cannot find code block: \"" + signature + "\".");
             }
         }
-
-        // Text-substitute for each parameters.
-        for (int i = 0; i < arguments.size(); i++) {
-            String replaceString = arguments.get(i).toString();
-            try {
-                codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
-                        _checkParameterName(parameters.get(i).toString()),
-                        replaceString));
-            } catch (Exception ex) {
-                throw new IllegalActionException(null, ex, signature + " in "
-                        + _declarations.getFilePath(signature)
-                        + " problems replacing \""
-                        + parameters.get(i).toString() + "\" with \""
-                        + replaceString + "\"");
-            }
-        }
+        
+        //codeBlock = substituteParameters(arguments, signature, codeBlock);
 
         if (indentLevel > 0) {
             codeBlock = new StringBuffer(indent(indentLevel, codeBlock
@@ -311,6 +300,7 @@ public class CodeStream {
         }
         _stream.append(codeBlock);
     }
+
 
     /**
      * Append multiple code blocks whose names match the given regular
@@ -334,7 +324,7 @@ public class CodeStream {
             Signature signature = (Signature) allSignatures.next();
             if (signature.numParameters == 0
                     && signature.functionName.matches(nameExpression)) {
-                _stream.append(_declarations.getCode(signature));
+                _stream.append(_declarations.getCode(signature, new ArrayList()));
             }
         }
     }
@@ -363,7 +353,7 @@ public class CodeStream {
             Signature signature = (Signature) keys.next();
             buffer.append(signature.functionName);
 
-            ArrayList parameters = _declarations.getParameters(signature);
+            List parameters = _declarations.getParameters(signature);
 
             if ((parameters != null) && (parameters.size() > 0)) {
                 for (int i = 0; i < parameters.size(); i++) {
@@ -378,7 +368,7 @@ public class CodeStream {
             }
 
             buffer.append(":" + _eol);
-            buffer.append(_declarations.getCode(signature));
+            buffer.append(_declarations.getCode(signature, new ArrayList()));
             buffer.append(_eol + "-------------------------------" + _eol
                     + _eol);
         }
@@ -451,13 +441,14 @@ public class CodeStream {
 
             System.out.println(_eol + "----------Result-----------------------"
                     + _eol);
-            System.out.println(code.description());
+            //System.out.println(code.description());
             System.out.println(_eol + "----------Result-----------------------"
                     + _eol);
 
             ArrayList codeBlockArgs = new ArrayList();
             codeBlockArgs.add(Integer.toString(3));
-            code.appendCodeBlock("initBlock", codeBlockArgs, false);
+            //code.appendCodeBlock("initBlock", codeBlockArgs, false);
+            code.appendCodeBlock("preinitBlock1");
             System.out.println(code);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -781,37 +772,58 @@ public class CodeStream {
                     endIndex));
 
             signature = new Signature(name, 0);
+            
+            // Add an empty parameter list.
+            _declarations.putParameters(signature, new ArrayList());
+            
         } else {
             String name = _checkCodeBlockName(codeInFile.substring(_parseIndex,
                     parameterIndex));
 
             int parameterEndIndex = codeInFile.indexOf(")", _parseIndex);
 
-            ArrayList parameterList = new ArrayList();
-
-            // Keep parsing for extra parameters.
-            for (int commaIndex = codeInFile.indexOf(",", _parseIndex); commaIndex != -1
-                    && (commaIndex < parameterEndIndex); commaIndex = codeInFile
-                    .indexOf(",", commaIndex + 1)) {
-
-                String newParameter = codeInFile.substring(parameterIndex + 1,
-                        commaIndex);
-
-                parameterList.add(newParameter.trim());
-                parameterIndex = commaIndex;
-            }
-
-            String newParameter = codeInFile.substring(parameterIndex + 1,
-                    parameterEndIndex);
-            parameterList.add(newParameter.trim());
+            List parameterList = _parseParameterList(
+                    codeInFile, _parseIndex, parameterEndIndex);
 
             signature = new Signature(name, parameterList.size());
-
+            
             _declarations.putParameters(signature, parameterList);
         }
 
         _parseIndex = _HEADEREND.length() + endIndex;
         return signature;
+    }
+
+    /**
+     * @param codeInFile
+     * @param start
+     * @return
+     */
+    private static ArrayList _parseParameterList(StringBuffer codeInFile, int start, int end) {
+        int parameterIndex = codeInFile.indexOf("(", start);
+
+        ArrayList parameterList = new ArrayList();
+
+        // Keep parsing for extra parameters.
+        for (int commaIndex = codeInFile.indexOf(",", start); commaIndex != -1
+                && (commaIndex < end); commaIndex = codeInFile
+                .indexOf(",", commaIndex + 1)) {
+
+            String newParameter = codeInFile.substring(parameterIndex + 1,
+                    commaIndex);
+
+            parameterList.add(newParameter.trim());
+            parameterIndex = commaIndex;
+        }
+
+        String newParameter = 
+            codeInFile.substring(parameterIndex + 1, end);
+        
+        if (newParameter.trim().length() > 0) {
+            parameterList.add(newParameter.trim());
+        }
+
+        return parameterList;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -847,32 +859,140 @@ public class CodeStream {
                     "Cannot find code block: " + signature + ".");
         }
 
-        public StringBuffer getCode(Signature signature)
+        public StringBuffer getCode(Signature signature, List arguments)
                 throws IllegalActionException {
-            Iterator files = _codeTableList.iterator();
+            return getCode(signature, arguments, _codeTableList);
+        }
+        
+        private StringBuffer getCode(Signature signature, List arguments, List scopeList)
+                throws IllegalActionException {
+            
+            int size = scopeList.size();
 
-            while (files.hasNext()) {
-
-                Hashtable table = (Hashtable) files.next();
-
-                if (table.containsKey(signature)) {
-                    return (StringBuffer) ((Object[]) table.get(signature))[1];
-                }
+            if (size == 0) {
+                return null;
             }
-            return null;
+                
+            Hashtable table = (Hashtable) scopeList.get(0);
+
+            if (table.containsKey(signature)) {
+                Object[] codeObject = (Object[]) table.get(signature);
+                StringBuffer codeBlock = (StringBuffer) codeObject[1]; 
+                List parameters = (List) codeObject[2];
+                
+                String[] subBlocks = 
+                    codeBlock.toString().split("\\$super\\s*\\(.*\\)\\s*;");
+                
+                if (subBlocks.length > 1) {
+                    Pattern pattern = Pattern.compile("\\$super\\s*\\(.*\\)\\s*;");
+                    
+                    Matcher m = pattern.matcher(codeBlock);
+                    String superCall = "";
+                    
+                    if (m.find()) {
+                        superCall = m.group();
+                    }
+                    
+                    List argumentsForSuper = 
+                        CodeStream._parseParameterList(new StringBuffer(superCall), 0, superCall.length()-2);
+
+                    signature.numParameters = argumentsForSuper.size();
+                    
+                    StringBuffer superBlock = 
+                        getCode(signature, argumentsForSuper, scopeList.subList(1, size));
+                                        
+                    if (superBlock == null) {
+                        throw new IllegalActionException(_helper,
+                                "Cannot find super block for " + signature +
+                                " in " + codeObject[0]);
+                    }
+                    
+                    //superBlock.insert(0, "///////// Super Block ///////////////\n");
+                    //superBlock.append("///////// End of Super Block ////////\n");
+                    
+                    codeBlock = new StringBuffer (subBlocks[0]);
+                    for (int i = 1; i < subBlocks.length; i++) {
+                        codeBlock.append(superBlock);
+                        codeBlock.append(subBlocks[i]);
+                    }
+                }
+                codeBlock = substituteParameters(codeBlock, parameters, arguments);
+                return codeBlock;
+
+            } else {
+                return getCode(signature, arguments, scopeList.subList(1, size));
+            }
+        }
+        
+        /**
+         * @param arguments
+         * @param signature
+         * @param codeBlock
+         * @return
+         * @throws IllegalActionException
+         */
+        private StringBuffer substituteParameters(
+                StringBuffer codeBlock, List parameters, List arguments) 
+                    throws IllegalActionException {
+            // Text-substitute for each parameters.
+            for (int i = 0; i < arguments.size(); i++) {
+                String replaceString = arguments.get(i).toString();
+                
+                codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
+                        _checkParameterName(parameters.get(i).toString()),
+                        replaceString));
+            }
+            return codeBlock;
         }
 
         public void putCode(Signature signature, String filePath,
                 StringBuffer code) throws IllegalActionException {
-            Object[] codeBlock = new Object[2];
-
-            codeBlock[0] = filePath;
-            codeBlock[1] = code;
 
             Hashtable currentScope = (Hashtable) _codeTableList.getLast();
 
+            Object[] codeBlock = (Object[]) currentScope.get(signature);
+            codeBlock[0] = filePath;
+            codeBlock[1] = code;
+            
+            //currentScope.put(signature, codeBlock);
+        }
+
+        public List getParameters(Signature signature) {
+            return getParameters(signature, _codeTableList);
+        }
+
+        public List getParameters(Signature signature, List scopeList) {
+            if (scopeList.isEmpty()) {
+                return new ArrayList();
+            } 
+            
+            Hashtable currentScope = (Hashtable) scopeList.get(0);
+
             if (currentScope.containsKey(signature)) {
-                throw new IllegalActionException(
+                return (List) ((Object[]) currentScope.get(signature))[2];
+            } else {
+                return getParameters(signature, 
+                        scopeList.subList(1, scopeList.size()));
+            }
+        }
+
+        /**
+         * 
+         *
+         */
+        public void addScope() {
+            _codeTableList.addLast(new Hashtable());
+        }
+
+        public void putParameters(Signature signature, List parameters) 
+                throws IllegalActionException {
+            Hashtable currentScope = (Hashtable) _codeTableList.getLast();
+            currentScope.get(signature);
+            Object[] codeBlock = new Object[3];
+            codeBlock[2] = parameters;
+
+            if (currentScope.containsKey(signature)) {
+                throw new IllegalActionException (
                         "Multiple code blocks have the same signature: "
                                 + signature + " in " + _filePath);
             }
@@ -880,30 +1000,11 @@ public class CodeStream {
             currentScope.put(signature, codeBlock);
         }
 
-        public ArrayList getParameters(Signature signature) {
-            return (ArrayList) _parameterTable.get(signature);
-        }
-
-        public void addScope() {
-            _codeTableList.addLast(new Hashtable());
-        }
-
-        public void putParameters(Signature signature, ArrayList parameters) {
-            _parameterTable.put(signature, parameters);
-        }
-
         /**
          * LinkedList of Hashtable of code blocks. Each index of the
          * LinkedList represents a separate helper .c code block file. 
          */
         private LinkedList _codeTableList = new LinkedList();
-
-        /**
-         * The code block table that stores the code block parameters
-         * (ArrayList) with the code block names (Signature) as key.
-         */
-        private Hashtable _parameterTable = new Hashtable();
-
     }
 
     private class Signature {
