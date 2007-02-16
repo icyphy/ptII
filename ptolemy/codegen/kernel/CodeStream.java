@@ -831,20 +831,53 @@ public class CodeStream {
 
     private class CodeBlockTable {
 
+        /**
+         * Constructor for a code block table. It contains code objects,
+         * which consists of the file path of the code block, the code
+         * block content, and the parameter list. The table is represented
+         * using a LinkedList of scopes, where the first element is scope
+         * for the left child class and each latter element is parent
+         * scope of the prior. 
+         */
         public CodeBlockTable() {
         }
 
-        public Iterator keys() {
-            HashSet signatures = new HashSet();
-            Iterator files = _codeTableList.iterator();
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
 
-            while (files.hasNext()) {
-                Hashtable table = (Hashtable) files.next();
-                signatures.addAll(table.keySet());
-            }
-            return signatures.iterator();
+        /**
+         * Add a new scope to the code block table. This assumes parent
+         * scope is being added always add to the end of the list.
+         */
+        public void addScope() {
+            _codeTableList.addLast(new Hashtable());
         }
 
+        /**
+         * Return the code block content of the given signature and
+         * substitute parameters with the given list of arguments.
+         * This searches from the all scopes from the code block table. 
+         * @param signature The given code block signature.
+         * @param arguments The given list of arguments.
+         * @return The code block content.
+         * @exception IllegalActionException Thrown if 
+         *  getCode(Signature, List, List) throws it. 
+         */
+        public StringBuffer getCode(Signature signature, List arguments)
+                throws IllegalActionException {
+            return getCode(signature, arguments, _codeTableList);
+        }
+
+        /**
+         * Return the file path of the code template file that contains
+         * the given code block signature. It searches bottom-up in the class
+         * hierarchy to find the first scope that contains the signature.   
+         * @param signature The given code block signature.
+         * @return The file path of the code template file that contains
+         * the given code block signature.
+         * @throws IllegalActionException Thrown if there is no scopes that
+         *  contains the given signature. 
+         */
         public String getFilePath(Signature signature)
                 throws IllegalActionException {
             Iterator files = _codeTableList.iterator();
@@ -858,14 +891,75 @@ public class CodeStream {
             throw new IllegalActionException(_helper,
                     "Cannot find code block: " + signature + ".");
         }
-
-        public StringBuffer getCode(Signature signature, List arguments)
-                throws IllegalActionException {
-            return getCode(signature, arguments, _codeTableList);
-        }
         
-        private StringBuffer getCode(Signature signature, List arguments, List scopeList)
+        /**
+         * 
+         * @param signature
+         * @return
+         */
+        public List getParameters(Signature signature) {
+            return getParameters(signature, _codeTableList);
+        }
+
+        /**
+         * Put the given file path and code content into the current scope
+         * using the given signature as the key. It assumes the given
+         * signature already exists in the current scope.
+         * @param signature The given signature.
+         * @param filePath The given file path.
+         * @param code The given code content.
+         */
+        public void putCode(Signature signature, String filePath,
+                StringBuffer code) {
+
+            Hashtable currentScope = (Hashtable) _codeTableList.getLast();
+
+            Object[] codeBlock = (Object[]) currentScope.get(signature);
+            codeBlock[0] = filePath;
+            codeBlock[1] = code;
+        }
+
+        /**
+         * Put the given list parameters into the current scope using the
+         * given signature as the key.
+         * @param signature The given signature.
+         * @param parameters The given list of parameters.
+         * @throws IllegalActionException Thrown if the given signature
+         *  already exists in the current scope. 
+         */
+        public void putParameters(Signature signature, List parameters) 
                 throws IllegalActionException {
+            Hashtable currentScope = (Hashtable) _codeTableList.getLast();
+            currentScope.get(signature);
+            Object[] codeBlock = new Object[3];
+            codeBlock[2] = parameters;
+
+            if (currentScope.containsKey(signature)) {
+                throw new IllegalActionException (
+                        "Multiple code blocks have the same signature: "
+                                + signature + " in " + _filePath);
+            }
+
+            currentScope.put(signature, codeBlock);
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         private methods                   ////
+
+        /**
+         * Return the code block content of the given signature and
+         * substitute parameters with the given list of arguments.
+         * This searches from the specified list of scopes.
+         * @param signature The given signature.
+         * @param arguments The given list of arguments.
+         * @param scopeList The given list of scopes.
+         * @return The code block content of the given signature.
+         * @throws IllegalActionException Thrown if the code block for a
+         *  super call cannot be found, or if substituteParameters(
+         *  StringBuffer, List, List) throws it.
+         */
+        private StringBuffer getCode(Signature signature, List arguments,
+                List scopeList) throws IllegalActionException {
             
             int size = scopeList.size();
 
@@ -884,7 +978,8 @@ public class CodeStream {
                     codeBlock.toString().split("\\$super\\s*\\(.*\\)\\s*;");
                 
                 if (subBlocks.length > 1) {
-                    Pattern pattern = Pattern.compile("\\$super\\s*\\(.*\\)\\s*;");
+                    Pattern pattern = 
+                        Pattern.compile("\\$super\\s*\\(.*\\)\\s*;");
                     
                     Matcher m = pattern.matcher(codeBlock);
                     String superCall = "";
@@ -894,12 +989,13 @@ public class CodeStream {
                     }
                     
                     List argumentsForSuper = 
-                        CodeStream._parseParameterList(new StringBuffer(superCall), 0, superCall.length()-2);
+                        CodeStream._parseParameterList(new StringBuffer(
+                                superCall), 0, superCall.length() - 2);
 
                     signature.numParameters = argumentsForSuper.size();
                     
-                    StringBuffer superBlock = 
-                        getCode(signature, argumentsForSuper, scopeList.subList(1, size));
+                    StringBuffer superBlock = getCode(signature, 
+                            argumentsForSuper, scopeList.subList(1, size));
                                         
                     if (superBlock == null) {
                         throw new IllegalActionException(_helper,
@@ -911,25 +1007,73 @@ public class CodeStream {
                     //superBlock.append("///////// End of Super Block ////////\n");
                     
                     codeBlock = new StringBuffer (subBlocks[0]);
+
                     for (int i = 1; i < subBlocks.length; i++) {
                         codeBlock.append(superBlock);
                         codeBlock.append(subBlocks[i]);
                     }
                 }
-                codeBlock = substituteParameters(codeBlock, parameters, arguments);
+                codeBlock = 
+                    substituteParameters(codeBlock, parameters, arguments);
+
                 return codeBlock;
 
             } else {
-                return getCode(signature, arguments, scopeList.subList(1, size));
+                return getCode(signature, arguments, 
+                        scopeList.subList(1, size));
             }
+        }
+
+        /**
+         * 
+         * @param signature
+         * @param scopeList
+         * @return
+         */
+        private List getParameters(Signature signature, List scopeList) {
+            
+            if (scopeList.isEmpty()) {
+                return new ArrayList();
+            } 
+            Hashtable currentScope = (Hashtable) scopeList.get(0);
+
+            if (currentScope.containsKey(signature)) {
+                return (List) ((Object[]) currentScope.get(signature))[2];
+            
+            } else {
+                return getParameters(signature, 
+                        scopeList.subList(1, scopeList.size()));
+            }
+        }
+
+        /**
+         * Return all contained signature keys. This method is used for
+         * testing purposes.
+         * @return A Iterator of all contained signature keys.
+         */
+        private Iterator keys() {
+            HashSet signatures = new HashSet();
+
+            Iterator files = _codeTableList.iterator();
+
+            while (files.hasNext()) {
+                Hashtable table = (Hashtable) files.next();
+                signatures.addAll(table.keySet());
+            }
+            return signatures.iterator();
         }
         
         /**
-         * @param arguments
-         * @param signature
-         * @param codeBlock
-         * @return
-         * @throws IllegalActionException
+         * Substitute parameters. 
+         * This method searches all occurences of each parameter expressions
+         * in the given code block content and replace each with the given
+         * arguments using straight-forward text substitution.
+         * @param codeBlock The given code block content.
+         * @param parameters The given list of parameters.
+         * @param arguments The given list of arguments.
+         * @return The code block content after parameter substitutions.
+         * @exception IllegalActionException Thrown if 
+         *  _checkParameterName(String) throws it.
          */
         private StringBuffer substituteParameters(
                 StringBuffer codeBlock, List parameters, List arguments) 
@@ -945,61 +1089,6 @@ public class CodeStream {
             return codeBlock;
         }
 
-        public void putCode(Signature signature, String filePath,
-                StringBuffer code) throws IllegalActionException {
-
-            Hashtable currentScope = (Hashtable) _codeTableList.getLast();
-
-            Object[] codeBlock = (Object[]) currentScope.get(signature);
-            codeBlock[0] = filePath;
-            codeBlock[1] = code;
-            
-            //currentScope.put(signature, codeBlock);
-        }
-
-        public List getParameters(Signature signature) {
-            return getParameters(signature, _codeTableList);
-        }
-
-        public List getParameters(Signature signature, List scopeList) {
-            if (scopeList.isEmpty()) {
-                return new ArrayList();
-            } 
-            
-            Hashtable currentScope = (Hashtable) scopeList.get(0);
-
-            if (currentScope.containsKey(signature)) {
-                return (List) ((Object[]) currentScope.get(signature))[2];
-            } else {
-                return getParameters(signature, 
-                        scopeList.subList(1, scopeList.size()));
-            }
-        }
-
-        /**
-         * 
-         *
-         */
-        public void addScope() {
-            _codeTableList.addLast(new Hashtable());
-        }
-
-        public void putParameters(Signature signature, List parameters) 
-                throws IllegalActionException {
-            Hashtable currentScope = (Hashtable) _codeTableList.getLast();
-            currentScope.get(signature);
-            Object[] codeBlock = new Object[3];
-            codeBlock[2] = parameters;
-
-            if (currentScope.containsKey(signature)) {
-                throw new IllegalActionException (
-                        "Multiple code blocks have the same signature: "
-                                + signature + " in " + _filePath);
-            }
-
-            currentScope.put(signature, codeBlock);
-        }
-
         /**
          * LinkedList of Hashtable of code blocks. Each index of the
          * LinkedList represents a separate helper .c code block file. 
@@ -1010,10 +1099,12 @@ public class CodeStream {
     private class Signature {
 
         /**
-         * 
-         * @param functionName
-         * @param numParameters
-         * @exception IllegalActionException
+         * Constructor for a code block signature. It consists of the
+         * code block name and the number of parameters.
+         * @param functionName The given code block name.
+         * @param numParameters The number of parameters.
+         * @throw IllegalActionException Thrown if the given name is null,
+         *  or the number of parameters is less than zero.
          */
         public Signature(String functionName, int numParameters)
                 throws IllegalActionException {
@@ -1029,6 +1120,13 @@ public class CodeStream {
             this.numParameters = numParameters;
         }
 
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /**
+         * Return true if the given object is equal to this signature.
+         * @param object The given object.
+         */
         public boolean equals(Object object) {
             return object instanceof Signature
                     && functionName.equals(((Signature) object).functionName)
@@ -1058,8 +1156,14 @@ public class CodeStream {
             return result += ")";
         }
 
+        /**
+         * The code block name.
+         */
         public String functionName;
 
+        /**
+         * The number of parameters.
+         */
         public int numParameters;
     }
 
