@@ -1,5 +1,5 @@
 /*** preinitBlock ***/
-double $actorSymbol(seed);
+$super();
 boolean $actorSymbol(haveNextNextGaussian) = false;
 double $actorSymbol(nextNextGaussian);
     

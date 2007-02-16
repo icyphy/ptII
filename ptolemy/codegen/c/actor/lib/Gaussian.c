@@ -3,7 +3,8 @@
 // generates the same list of random numbers as the java.util.Random object.
 
 /*** preinitBlock ***/
-double $actorSymbol(seed);
+$super();
+double $actorSymbol(nextNextGaussian);
 boolean $actorSymbol(haveNextNextGaussian) = false;
 double $actorSymbol(nextNextGaussian);
 /**/
