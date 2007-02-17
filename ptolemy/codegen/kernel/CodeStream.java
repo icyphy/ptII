@@ -37,6 +37,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -795,9 +796,13 @@ public class CodeStream {
     }
 
     /**
-     * @param codeInFile
-     * @param start
-     * @return
+     * Return a list of parameter expression contains in the given string
+     * buffer. It parses comma-separated expressions and also understand
+     * nested parenthesis by matching open and close parenthesis pairs.
+     * @param codeInFile The given string buffer.
+     * @param start The given start index to start parsing. 
+     * @param end The given end index to stop parsing. 
+     * @return The list of parameter expressions.
      */
     private static ArrayList _parseParameterList(StringBuffer codeInFile, int start, int end) {
         int parameterIndex = codeInFile.indexOf("(", start);
@@ -805,15 +810,26 @@ public class CodeStream {
         ArrayList parameterList = new ArrayList();
 
         // Keep parsing for extra parameters.
-        for (int commaIndex = codeInFile.indexOf(",", start); commaIndex != -1
-                && (commaIndex < end); commaIndex = codeInFile
-                .indexOf(",", commaIndex + 1)) {
+        for (int commaIndex = codeInFile.indexOf(",", start); 
+        commaIndex != -1 && (commaIndex < end); 
+        commaIndex = codeInFile.indexOf(",", commaIndex + 1)) {
 
             String newParameter = codeInFile.substring(parameterIndex + 1,
                     commaIndex);
 
-            parameterList.add(newParameter.trim());
-            parameterIndex = commaIndex;
+            int openIndex = 0;
+            int closeIndex = 0;
+            do {
+                openIndex = newParameter.indexOf("(", openIndex + 1);
+                closeIndex = newParameter.indexOf(")", closeIndex + 1);                
+            } while (openIndex >= 0 && closeIndex >= 0);
+
+            // It matches the number of open and close parenthesis pairs
+            // in order to parse nested parenthesis.
+            if (openIndex < 0 && closeIndex < 0) {
+                parameterList.add(newParameter.trim());
+                parameterIndex = commaIndex;
+            }
         }
 
         String newParameter = 
@@ -829,15 +845,18 @@ public class CodeStream {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
+    /**
+     * The code block table class. A code block table contains 
+     * code objects, which consists of the file path of the code
+     * block, the code block content, and the parameter list. The
+     * table is represented using a LinkedList of scopes, where the
+     * first element is scope for the left child class and each latter
+     * element is parent scope of the prior. 
+     */
     private class CodeBlockTable {
 
         /**
-         * Constructor for a code block table. It contains code objects,
-         * which consists of the file path of the code block, the code
-         * block content, and the parameter list. The table is represented
-         * using a LinkedList of scopes, where the first element is scope
-         * for the left child class and each latter element is parent
-         * scope of the prior. 
+         * Constructor for a code block table. 
          */
         public CodeBlockTable() {
         }
@@ -981,11 +1000,11 @@ public class CodeStream {
                     Pattern pattern = 
                         Pattern.compile("\\$super\\s*\\(.*\\)\\s*;");
                     
-                    Matcher m = pattern.matcher(codeBlock);
+                    Matcher matcher = pattern.matcher(codeBlock);
                     String superCall = "";
                     
-                    if (m.find()) {
-                        superCall = m.group();
+                    if (matcher.find()) {
+                        superCall = matcher.group();
                     }
                     
                     List argumentsForSuper = 
