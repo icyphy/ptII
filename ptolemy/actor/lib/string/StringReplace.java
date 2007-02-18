@@ -59,7 +59,32 @@ import ptolemy.kernel.util.NameDuplicationException;
  For a reference on regular expression syntax see:
  <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
  http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>
-
+ <p>
+ The <i>replacement</i> string, as usual with string-valued parameters
+ in Ptolemy II, can include references to parameter values in scope.
+ E.g., if the enclosing composite actor has a parameter named "x"
+ with value 1, say, then the replacement string a${x}b will become
+ "a1b".
+ <p>
+ In addition, the <i>replacement</i> string can reference the pattern
+ that is matched using the syntax "$$0".  For example, the regular
+ expression "t[a-z]+" in <i>pattern</i> will match the character t followed by a
+ sequence of one or more lower-case letters.
+ If <i>replacement</i> is "p$$0" then "this is a test" becomes
+ "pthis is a ptest".
+ <p>
+ If the <i>pattern</i> containes parenthesized subpatterns, such
+ as "(t[a-z]+)|(T([a-z]+))", then the value of <i>replacement</i>
+ can reference the match of each parenthesized subpattern with
+ the syntax "$$n", where "n" is an integer between 1 and 9.
+ For example, if <i>pattern</i>="(t[a-z]+)|(T([a-z]+))"
+ and <i>replacement</i>="p$$1$$3", then "this is a Test" becomes
+ "pthis is a pest". The index "n" corresponds to the order
+ of opening parentheses in the pattern.
+ <p>
+ To get a "$" into the replacement string, use
+ "\$$".  To get a "\" into the replacement string, use "\\".
+ 
  @author Antonio Yordan-Nones, Neil E. Turner, Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0
