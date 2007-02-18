@@ -19,11 +19,19 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="TableDisplay" class="doc.tutorial.TableDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={450, 38, 507, 248}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={450, 38, 758, 243}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 165]">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[750, 160]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="TableDisplayWithConfigure" class="doc.tutorial.TableDisplayWithConfigure">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 240.0]">
         </property>
     </entity>
 </entity>

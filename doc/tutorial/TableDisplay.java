@@ -17,7 +17,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 public class TableDisplay extends AbstractPlaceableActor {
-    private JTable _table;
+    protected JTable _table;
     private Tableau _tableau;
 
     public TableDisplay(CompositeEntity container, String name)
