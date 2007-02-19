@@ -24,7 +24,7 @@ USER_CC_FLAGS =
 # default target when "make" is run w/o arguments
 all: @modelName@.rom
 
-AVR_OPT =  -02
+AVR_OPT =  -O2
 # compile @modelName@.c into @modelName@.o
 @modelName@.o: @modelName@.c
 	avr-gcc -c $(AVR_OPT) -DPT_NO_PRINTF -DPT_NO_STRDUP -DPT_NO_TIME_H -Wall -mmcu=atmega16 -I. @modelName@.c -o @modelName@.o
@@ -38,6 +38,7 @@ AVR_OPT =  -02
 @modelName@.rom: @modelName@.elf
 	avr-objcopy -O ihex @modelName@.elf @modelName@.rom
 	ls -l @modelName@.o @modelName@.elf @modelName@.rom 
+	avr-size -C --mcu=atmega16 @modelName@.rom
 
 # command to clean up junk (no source files) (invoked by running "make clean")
 clean:
