@@ -127,9 +127,7 @@ test CodeStream-3.4 {appendCodeBlock: arg name does not start with $} {
     $args add [java::call Integer toString 3]
     catch {$codeStream3_4 appendCodeBlock "initBlock" $args false 0} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: initBlock($) in file:./testCodeBlockBadArg.c problems replacing "doesNotStartWithDollar" with "3"
-Because:
-Parameter "doesNotStartWithDollar" is not well-formed.
+} {{ptolemy.kernel.util.IllegalActionException: Parameter "doesNotStartWithDollar" is not well-formed.
 Parameter name for code block needs to starts with '$'}}
 
 #####
@@ -179,19 +177,7 @@ test CodeStream-10.0 {main} {
 } {{
 ----------Result-----------------------
 
-initBlock($arg):
-if ($ref(input) != $arg) {
-    $ref(output) = $arg;
-}
-
--------------------------------
-
-
 
 ----------Result-----------------------
-
-if ($ref(input) != 3) {
-    $ref(output) = 3;
-}
 
 }}
