@@ -38,7 +38,7 @@ AVR_OPT =  -O2
 @modelName@.rom: @modelName@.elf
 	avr-objcopy -O ihex @modelName@.elf @modelName@.rom
 	ls -l @modelName@.o @modelName@.elf @modelName@.rom 
-	avr-size -C --mcu=atmega16 @modelName@.rom
+	avr-size -C --mcu=atmega16 @modelName@.elf
 
 # command to clean up junk (no source files) (invoked by running "make clean")
 clean:
