@@ -145,6 +145,8 @@ public class XSLTransformer extends Transformer {
         newObject.input.setTypeEquals(BaseType.XMLTOKEN);
         newObject.output.setTypeEquals(BaseType.STRING);
         try {
+            newObject.styleSheetParameterPort.setTypeAtMost(
+                    new RecordType(new String[0], new Type[0]));
             newObject.styleSheetParameter.setTypeAtMost(
                     new RecordType(new String[0], new Type[0]));
         } catch (Exception ex) {
