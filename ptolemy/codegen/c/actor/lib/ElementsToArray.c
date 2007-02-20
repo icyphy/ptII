@@ -15,5 +15,7 @@ $ref(output) = $actorSymbol(valueArray);
 /**/
 
 /*** wrapupBlock ***/
-Array_delete($actorSymbol(valueArray));
+//If an array contains other arrays, calling this function
+//on every array will cause problem (memory freed multiple times).
+//Array_delete($actorSymbol(valueArray));
 /**/
