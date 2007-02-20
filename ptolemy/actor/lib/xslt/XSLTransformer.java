@@ -104,7 +104,7 @@ public class XSLTransformer extends Transformer {
         styleSheetParameter.setTypeAtMost(new RecordType
                 (new String[0], new Type[0]));
         styleSheetParameter.setExpression("{}");
-        styleSheetFile = new FileParameter(this, "stylesheetFile");
+        styleSheetFile = new FileParameter(this, "styleSheetFile");
         
     }
 
@@ -144,6 +144,16 @@ public class XSLTransformer extends Transformer {
         XSLTransformer newObject = (XSLTransformer) super.clone(workspace);
         newObject.input.setTypeEquals(BaseType.XMLTOKEN);
         newObject.output.setTypeEquals(BaseType.STRING);
+        try {
+            newObject.styleSheetParameter.setTypeAtMost(
+                    new RecordType(new String[0], new Type[0]));
+        } catch (Exception ex) {
+            throw new CloneNotSupportedException(
+                    "Failed to set styleSheetParameter type: "
+                    + ex.getMessage());
+
+        }
+
         return newObject;
     }
 
