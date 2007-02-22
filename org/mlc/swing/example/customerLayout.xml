@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<containers>
+    <container name="panel"
+               columnSpecs="right:max(30dlu;pref),3dlu,80dlu,10dlu,right:max(30dlu;pref),3dlu,80dlu,1dlu:grow"
+               rowSpecs="pref,5dlu,pref,3dlu,pref,7dlu,pref,5dlu,pref,3dlu,pref,7dlu,pref,5dlu,100dlu:grow,7dlu,pref">
+        <cellconstraints name="firstNameLabel" gridX="5" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="newComponentPanel" gridX="1" gridY="1" gridWidth="8" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="lastNameText" gridX="3" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="lastNameLabel" gridX="1" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="firstNameText" gridX="7" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="nameSeparator" gridX="1" gridY="1" gridWidth="8" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="surnameLabel" gridX="1" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="surnameCombo" gridX="3" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="suffixLabel" gridX="5" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="suffixCombo" gridX="7" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="contactSeparator" gridX="1" gridY="7" gridWidth="8" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="homePhoneLabel" gridX="1" gridY="9" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="homePhoneText" gridX="3" gridY="9" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="workPhoneLabel" gridX="5" gridY="9" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="workPhoneText" gridX="7" gridY="9" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="faxLabel" gridX="1" gridY="11" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="faxText" gridX="3" gridY="11" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="emailLabel" gridX="5" gridY="11" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="emailText" gridX="7" gridY="11" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="ordersSeparator" gridX="1" gridY="13" gridWidth="8" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="orderTable" gridX="1" gridY="15" gridWidth="8" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="buttonBar" gridX="1" gridY="17" gridWidth="8" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+    </container>
+</containers>
