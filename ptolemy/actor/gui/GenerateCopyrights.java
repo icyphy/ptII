@@ -101,6 +101,9 @@ public class GenerateCopyrights {
 
         // Add the classnames and copyrights.
         // Alphabetical by className.
+        _addIfPresent(copyrightsMap, "com.jgoodies.forms.factories.DefaultComponentFactory",
+                "com/jgoodies/jgoodies-copyright.htm");
+
         _addIfPresent(copyrightsMap, "jni.GenericJNIActor",
                 "jni/launcher/launcher-copyright.htm");
 
