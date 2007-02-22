@@ -3919,6 +3919,54 @@ echo "$as_me: WARNING: Failed to find stdint.h
 fi
 
 #--------------------------------------------------------------------
+#       BSH is the Java Beanshell
+#       It is used by the Run Control panel that uses FormLayoutManager
+#	For more information, see
+#       http://www.beanshell.org
+#--------------------------------------------------------------------
+
+# PTBSH_DIR is set to run and used in
+# $PTII/ptolemy/actor/gui/makefile if Colt was found.
+PTBSH_DIR=
+
+# BSH jar files.  We ship $PTII/lib/bsh-2.0b4.jar.
+PTBSH_JARS=
+
+# We only need to look for if $PTII/ptolemy/actor/gui exists
+BSH_USER_DIR="$PTII/ptolemy/actor/gui"
+if test ! -d "$BSH_USER_DIR"; then
+    echo "$as_me:$LINENO: result: $BSH_USER_DIR is not present,
+    so we need not find BSH, the Java Bean Shell." >&5
+echo "${ECHO_T}$BSH_USER_DIR is not present,
+    so we need not find BSH, the Java Bean Shell." >&6
+else
+    echo "$as_me:$LINENO: checking for BSH, the Java Bean Shell" >&5
+echo $ECHO_N "checking for BSH, the Java Bean Shell... $ECHO_C" >&6
+    if test -f "$PTII/lib/bsh-2.0b4.jar"; then
+        echo "$as_me:$LINENO: result: $PTII/lib/bsh-2.0b4.jar" >&5
+echo "${ECHO_T}$PTII/lib/bsh-2.0b4.jar" >&6
+        PTBSH_JAR="$PTII/lib/bsh-2.0b4.jar"
+	PTBSH_DIR=colt
+	# PTBSH_PACKAGES is used in ptII/doc/makefile
+	PTBSH_PACKAGES="com.jgoodies.forms.builder com.jgoodies.forms.debug com.jgoodies.forms.factories com.jgoodies.forms.layout com.jgoodies.forms.util com.jgoodies.forms com.jgoodies org.mlc.swing.examples org.mlc.swing.layout"
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	        <classpathentry kind=\"lib\" path=\"$PTBSH_JAR\"/> "
+    else
+        { echo "$as_me:$LINENO: WARNING: Failed to find $PTII/lib/bsh-2.0b4.jar,
+    BSH is the Java Bean Shell, which is used by the
+    Ptolemy Run Control Panel.  BSH is optional." >&5
+echo "$as_me: WARNING: Failed to find $PTII/lib/bsh-2.0b4.jar,
+    BSH is the Java Bean Shell, which is used by the
+    Ptolemy Run Control Panel.  BSH is optional." >&2;}
+    fi
+fi
+
+if test -z "$PTBSH_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/colt/"
+fi
+
+
+#--------------------------------------------------------------------
 #       The CaffeineMark Kit is a Java benchmark kit
 #	that is used by C code generation
 #       See http://www-sor.inria.fr/~java/tools/cmkit
