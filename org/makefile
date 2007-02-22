@@ -1,4 +1,4 @@
-# Ptolemy makefile for mlc
+# Makefile org sources from outside of Ptolemy
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
@@ -29,45 +29,21 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME = 		org/mlc/swing/example
-
-DIRS =
+# configure sets PTBSH_MLC_DIR to mlc if BSH, the Java Bean Shell.
+DIRS = $(PTBSH_MLC_DIR)
 
 # Root of Ptolemy II directory
-ROOT =		../../../..
+ROOT =		..
 
-CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(PTBSH_JAR)
+# $(ME) is used in ptdir.mk
+ME =		org
+
+# True source directory
+VPATH =		$(ROOT)/$(ME)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	example
-PTCLASSJAR =	$(PTPACKAGE).jar
-
-JSRCS = \
-	CustomerPanel.java \
-	ExamplePanel.java
-
-OTHER_FILES_TO_BE_JARED = \
-	customerLayout.xml
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	$(DIRS)
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
-
-JCLASS = $(JSRCS:%.java=%.class)
-
-all: jclass
-install: jclass jars
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+# Include rules for directories that contain only subdirectories.
+include $(ROOT)/mk/ptdir.mk

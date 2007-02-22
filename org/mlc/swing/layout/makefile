@@ -36,14 +36,14 @@ DIRS =
 # Root of Ptolemy II directory
 ROOT =		../../../..
 
-CLASSPATH = 	$(ROOT)
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(PTBSH_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	example
+PTPACKAGE = 	layout
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
@@ -93,7 +93,51 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'ContainerLayout$$LocationScore.class' \
+	'FormEditor$$1.class' \
+	'FormEditor$$2.class' \
+	'FormEditor$$3.class' \
+	'FormEditor$$4.class' \
+	'FormEditor$$5.class' \
+	'FormEditor$$6.class' \
+	'FormEditor$$7.class' \
+	'FormEditor$$8.class' \
+	'FormEditor$$9.class' \
+	'FormEditor$$ColSpanSpinnerModel.class' \
+	'FormEditor$$ComponentListCellRenderer.class' \
+	'FormEditor$$ComponentPaletteListModel.class' \
+	'FormEditor$$ComponentPaletteListRenderer.class' \
+	'FormEditor$$ComponentSelectionListModel.class' \
+	'FormEditor$$ConstraintTableCellRenderer.class' \
+	'FormEditor$$DeleteColumnAction.class' \
+	'FormEditor$$DeleteRowAction.class' \
+	'FormEditor$$GridTableModel.class' \
+	'FormEditor$$InsertColumnAfterAction.class' \
+	'FormEditor$$InsertColumnBeforeAction.class' \
+	'FormEditor$$InsertRowAfterAction.class' \
+	'FormEditor$$InsertRowBeforeAction.class' \
+	'FormEditor$$NewComponentAction.class' \
+	'FormEditor$$NewComponentDialog0$$1.class' \
+	'FormEditor$$NewComponentDialog0$$2.class' \
+	'FormEditor$$NewComponentDialog0$$3.class' \
+	'FormEditor$$NewComponentDialog0$$PropertyTableModel.class' \
+	'FormEditor$$NewComponentDialog0.class' \
+	'FormEditor$$RemoveComponentAction.class' \
+	'FormEditor$$RowSpanSpinnerModel.class' \
+	'JTableComponentBuilder$$1.class' \
+	'LayoutConstraintsManager$$1.class' \
+	'LayoutFrame$$1.class' \
+	'LayoutFrame$$2.class' \
+	'LayoutFrame$$3.class' \
+	'LayoutFrame$$4.class' \
+	'LayoutFrame$$5.class' \
+	'LayoutFrame$$CodeDialog$$1.class' \
+	'LayoutFrame$$CodeDialog.class' \
+	'LayoutFrame$$XmlFileFilter.class' \
+	'NewComponentDialog$$1.class' \
+	'NewComponentDialog$$2.class' \
+	'NewComponentDialog$$3.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
