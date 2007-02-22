@@ -5,6 +5,7 @@
         kind="src" path=""/>
     <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+    <classpathentry kind="lib" path="lib/bsh-2.0b4.jar"/>
     <classpathentry kind="lib" path="lib/ptCal.jar"/>
     <classpathentry kind="lib" path="lib/java_cup.jar"/>
     <classpathentry kind="lib" path="lib/saxon8.jar"/>
