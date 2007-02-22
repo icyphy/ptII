@@ -29,6 +29,8 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
+ME = 		com/jgoodies/forms
+
 DIRS = 		builder debug factories layout util
 
 # Root of Ptolemy II directory
