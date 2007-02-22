@@ -107,6 +107,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "jni.GenericJNIActor",
                 "jni/launcher/launcher-copyright.htm");
 
+        _addIfPresent(copyrightsMap, "org.mlc.swing.layout.LayoutConstraintsManager",
+                "org/mlc/mlc-copyright.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.backtrack.ast.TypeAnalyzer",
                 "ptolemy/backtrack/ast/eclipse-copyright.htm");
 
