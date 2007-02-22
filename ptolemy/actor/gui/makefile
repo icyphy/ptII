@@ -100,6 +100,7 @@ JSRCS = \
 	HTMLViewer.java \
 	HTMLViewerTableau.java \
 	InsideEntityEditorPaneFactory.java \
+	InterfaceTableau.java \
 	JNLPUtilities.java \
 	JVMTableau.java \
 	LevelSkippingTableauFactory.java \
