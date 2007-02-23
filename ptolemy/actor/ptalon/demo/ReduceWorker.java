@@ -28,7 +28,6 @@
 package ptolemy.actor.ptalon.demo;
 
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -356,7 +355,7 @@ public class ReduceWorker extends TypedAtomicActor {
             }
         }
         try {
-            MapReduceAlgorithm algorithm = (MapReduceAlgorithm) reduceClass
+            /*MapReduceAlgorithm algorithm = (MapReduceAlgorithm) */ reduceClass
                     .newInstance();
         } catch (IllegalAccessException e) {
             throw new IllegalActionException(className
@@ -389,41 +388,41 @@ public class ReduceWorker extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                        private classes                    ////
 
-    private class ReduceIterator implements Iterator<String> {
-
-        public ReduceIterator(MapReduceAlgorithm algorithm) {
-            _algorithm = algorithm;
-        }
-
-        /**
-         * Return true if the iterator has another token.
-         * This may be unknown, in which case wait is called
-         * on the MapReduceAlgorithm associated with this
-         * iterator.
-         * @return true if this has another token.
-         */
-        public boolean hasNext() {
-
-            return false;
-        }
-
-        /* (non-Javadoc)
-         * @see java.util.Iterator#next()
-         */
-        public String next() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        /* (non-Javadoc)
-         * @see java.util.Iterator#remove()
-         */
-        public void remove() {
-            // TODO Auto-generated method stub
-
-        }
-
-        private MapReduceAlgorithm _algorithm;
-
-    }
+//    private class ReduceIterator implements Iterator<String> {
+//
+//        public ReduceIterator(MapReduceAlgorithm algorithm) {
+//            //_algorithm = algorithm;
+//        }
+//
+//        /**
+//         * Return true if the iterator has another token.
+//         * This may be unknown, in which case wait is called
+//         * on the MapReduceAlgorithm associated with this
+//         * iterator.
+//         * @return true if this has another token.
+//         */
+//        public boolean hasNext() {
+//
+//            return false;
+//        }
+//
+//        /* (non-Javadoc)
+//         * @see java.util.Iterator#next()
+//         */
+//        public String next() {
+//            // TODO Auto-generated method stub
+//            return null;
+//        }
+//
+//        /* (non-Javadoc)
+//         * @see java.util.Iterator#remove()
+//         */
+//        public void remove() {
+//            // TODO Auto-generated method stub
+//
+//        }
+//
+//        //private MapReduceAlgorithm _algorithm;
+//
+//    }
 }
