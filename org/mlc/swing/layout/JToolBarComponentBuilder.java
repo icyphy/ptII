@@ -29,18 +29,13 @@
  */
 package org.mlc.swing.layout;
 
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JToolBar;
-import javax.swing.JTree;
-import javax.swing.table.AbstractTableModel;
 
 /**
  * This is the ComponentBuilder that is used to build JToolBars.

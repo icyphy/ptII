@@ -37,13 +37,10 @@
 package org.mlc.swing.layout;
 
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Window;
-import java.util.prefs.*;
-
-import javax.swing.JWindow;
+import java.util.prefs.Preferences;
 
 /**
  * This is a singleton container for handling user preferences. These include

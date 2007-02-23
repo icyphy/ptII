@@ -29,10 +29,11 @@
  */
 package org.mlc.swing.layout;
 
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 /**
  * This is the component builder for the JGoodies Separator.

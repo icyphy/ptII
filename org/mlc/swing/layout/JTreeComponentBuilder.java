@@ -29,16 +29,12 @@
  */
 package org.mlc.swing.layout;
 
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTree;
-import javax.swing.table.AbstractTableModel;
 
 /**
  * This is the ComponentBuilder used to build JTrees!

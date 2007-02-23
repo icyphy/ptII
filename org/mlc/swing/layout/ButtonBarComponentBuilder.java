@@ -29,13 +29,15 @@
  */
 package org.mlc.swing.layout;
 
-import com.jgoodies.forms.factories.ButtonBarFactory;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.swing.JButton;
+
+import com.jgoodies.forms.factories.ButtonBarFactory;
 
 /**
  * This is the component builder for the JGoodies 

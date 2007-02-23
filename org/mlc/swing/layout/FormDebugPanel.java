@@ -14,7 +14,6 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.debug.FormDebugUtils;
 
 /**
  * [Taken from the FormLayout codebase. Hacked to work with @see ContainerLayout 

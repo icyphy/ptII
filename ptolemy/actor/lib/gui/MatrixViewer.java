@@ -29,11 +29,8 @@
 package ptolemy.actor.lib.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,13 +42,9 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.MatrixPane;
 import ptolemy.actor.gui.MatrixTokenTableau;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.TokenEffigy;
 import ptolemy.actor.gui.TokenTableau;
-import ptolemy.actor.gui.WindowPropertiesAttribute;
-import ptolemy.actor.lib.Sink;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;

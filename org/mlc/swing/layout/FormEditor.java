@@ -29,41 +29,64 @@
  */
 package org.mlc.swing.layout;
 
-import java.awt.*;
-//import java.awt.datatransfer.DataFlavor;
-//import java.awt.datatransfer.Transferable;
-//import java.awt.dnd.Autoscroll;
-//import java.awt.dnd.DnDConstants;
-//import java.awt.dnd.DragGestureEvent;
-//import java.awt.dnd.DragGestureListener;
-//import java.awt.dnd.DragSource;
-//import java.awt.dnd.DragSourceDragEvent;
-//import java.awt.dnd.DragSourceDropEvent;
-//import java.awt.dnd.DragSourceEvent;
-//import java.awt.dnd.DragSourceListener;
-//import java.awt.dnd.DropTarget;
-//import java.awt.dnd.DropTargetDragEvent;
-//import java.awt.dnd.DropTargetEvent;
-//import java.awt.dnd.DropTargetListener;
-import java.awt.event.*;
-//import java.awt.event.MouseAdapter;
-//import java.awt.event.MouseEvent;
-//import java.beans.BeanDescriptor;
-//import java.beans.BeanInfo;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import javax.swing.AbstractAction;
+import javax.swing.AbstractListModel;
+import javax.swing.AbstractSpinnerModel;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JToolBar;
+import javax.swing.JViewport;
+import javax.swing.KeyStroke;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
-
-//import beantest.util.BeanInfoFactory;
 
 import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.layout.CellConstraints;
-//import com.jgoodies.forms.layout.FormLayout;
 
 /**
  * This is the main panel that is used in LayoutFrame serving as the user

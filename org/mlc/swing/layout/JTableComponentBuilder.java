@@ -29,7 +29,6 @@
  */
 package org.mlc.swing.layout;
 
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
