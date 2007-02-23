@@ -58,17 +58,6 @@ public class PtParserTokenManager implements PtParserConstants {
         return pos + 1;
     }
 
-    private final int jjStartNfaWithStates_5(int pos, int kind, int state) {
-        jjmatchedKind = kind;
-        jjmatchedPos = pos;
-        try {
-            curChar = input_stream.readChar();
-        } catch (java.io.IOException e) {
-            return pos + 1;
-        }
-        return jjMoveNfa_5(state, pos + 1);
-    }
-
     private final int jjMoveStringLiteralDfa0_5() {
         switch (curChar) {
         case 36:
@@ -125,11 +114,6 @@ public class PtParserTokenManager implements PtParserConstants {
         do {
             jjCheckNAdd(jjnextStates[start]);
         } while (start++ != end);
-    }
-
-    private final void jjCheckNAddStates(int start) {
-        jjCheckNAdd(jjnextStates[start]);
-        jjCheckNAdd(jjnextStates[start + 1]);
     }
 
     static final long[] jjbitVec0 = { 0x0L, 0x0L, 0xffffffffffffffffL,

@@ -42,10 +42,6 @@ public class UParserTokenManager implements UParserConstants {
         }
     }
 
-    private final int jjStartNfa_0(int pos, long active0) {
-        return jjMoveNfa_0(jjStopStringLiteralDfa_0(pos, active0), pos + 1);
-    }
-
     private final int jjStopAtPos(int pos, int kind) {
         jjmatchedKind = kind;
         jjmatchedPos = pos;
@@ -116,141 +112,166 @@ public class UParserTokenManager implements UParserConstants {
         } while (start++ != end);
     }
 
-    private final void jjCheckNAddStates(int start) {
-        jjCheckNAdd(jjnextStates[start]);
-        jjCheckNAdd(jjnextStates[start + 1]);
-    }
-
     private final int jjMoveNfa_0(int startState, int curPos) {
-        int[] nextStates;
         int startsAt = 0;
         jjnewStateCnt = 28;
         int i = 1;
         jjstateSet[0] = startState;
-        int j, kind = 0x7fffffff;
+        int kind = 0x7fffffff;
         for (;;) {
-            if (++jjround == 0x7fffffff)
+            if (++jjround == 0x7fffffff) {
                 ReInitRounds();
+            }
             if (curChar < 64) {
                 long l = 1L << curChar;
                 MatchLoop: do {
                     switch (jjstateSet[--i]) {
                     case 0:
-                        if ((0x3ff000000000000L & l) != 0L)
+                        if ((0x3ff000000000000L & l) != 0L) {
                             jjCheckNAddStates(0, 6);
-                        else if (curChar == 36)
+                        } else if (curChar == 36) {
                             jjstateSet[jjnewStateCnt++] = 11;
-                        else if (curChar == 46)
+                        } else if (curChar == 46) {
                             jjCheckNAdd(3);
+                        }
                         if ((0x3fe000000000000L & l) != 0L) {
-                            if (kind > 14)
+                            if (kind > 14) {
                                 kind = 14;
+                            }
                             jjCheckNAdd(1);
                         }
                         break;
                     case 1:
-                        if ((0x3ff000000000000L & l) == 0L)
+                        if ((0x3ff000000000000L & l) == 0L) {
                             break;
-                        if (kind > 14)
+                        }
+                        if (kind > 14) {
                             kind = 14;
+                        }
                         jjCheckNAdd(1);
                         break;
                     case 2:
-                        if (curChar == 46)
+                        if (curChar == 46) {
                             jjCheckNAdd(3);
+                        }
                         break;
                     case 3:
-                        if ((0x3ff000000000000L & l) == 0L)
+                        if ((0x3ff000000000000L & l) == 0L) {
                             break;
-                        if (kind > 16)
+                        }
+                        if (kind > 16) {
                             kind = 16;
+                        }
                         jjCheckNAddStates(7, 9);
                         break;
                     case 5:
-                        if ((0x280000000000L & l) != 0L)
+                        if ((0x280000000000L & l) != 0L) {
                             jjCheckNAdd(6);
+                        }
                         break;
                     case 6:
-                        if ((0x3ff000000000000L & l) == 0L)
+                        if ((0x3ff000000000000L & l) == 0L) {
                             break;
-                        if (kind > 16)
+                        }
+                        if (kind > 16) {
                             kind = 16;
+                        }
                         jjCheckNAddTwoStates(6, 7);
                         break;
                     case 9:
-                        if ((0x3ff000000000000L & l) == 0L)
+                        if ((0x3ff000000000000L & l) == 0L) {
                             break;
-                        if (kind > 17)
+                        }
+                        if (kind > 17) {
                             kind = 17;
+                        }
                         jjstateSet[jjnewStateCnt++] = 9;
                         break;
                     case 10:
-                        if (curChar == 36)
+                        if (curChar == 36) {
                             jjstateSet[jjnewStateCnt++] = 11;
+                        }
                         break;
                     case 12:
-                        if ((0x3ff000000000000L & l) == 0L)
+                        if ((0x3ff000000000000L & l) == 0L) {
                             break;
-                        if (kind > 19)
+                        }
+                        if (kind > 19) {
                             kind = 19;
+                        }
                         jjstateSet[jjnewStateCnt++] = 12;
                         break;
                     case 13:
-                        if ((0x3ff000000000000L & l) != 0L)
+                        if ((0x3ff000000000000L & l) != 0L) {
                             jjCheckNAddStates(0, 6);
+                        }
                         break;
                     case 14:
-                        if ((0x3ff000000000000L & l) != 0L)
+                        if ((0x3ff000000000000L & l) != 0L) {
                             jjCheckNAddTwoStates(14, 15);
+                        }
                         break;
                     case 15:
-                        if (curChar == 46)
+                        if (curChar == 46) {
                             jjCheckNAdd(16);
+                        }
                         break;
                     case 16:
-                        if ((0x3ff000000000000L & l) == 0L)
+                        if ((0x3ff000000000000L & l) == 0L) {
                             break;
-                        if (kind > 16)
+                        }
+                        if (kind > 16) {
                             kind = 16;
+                        }
                         jjCheckNAddStates(10, 12);
                         break;
                     case 18:
-                        if ((0x280000000000L & l) != 0L)
+                        if ((0x280000000000L & l) != 0L) {
                             jjCheckNAdd(19);
+                        }
                         break;
                     case 19:
-                        if ((0x3ff000000000000L & l) == 0L)
+                        if ((0x3ff000000000000L & l) == 0L) {
                             break;
-                        if (kind > 16)
+                        }
+                        if (kind > 16) {
                             kind = 16;
+                        }
                         jjCheckNAddTwoStates(19, 7);
                         break;
                     case 20:
-                        if ((0x3ff000000000000L & l) != 0L)
+                        if ((0x3ff000000000000L & l) != 0L) {
                             jjCheckNAddTwoStates(20, 21);
+                        }
                         break;
                     case 22:
-                        if ((0x280000000000L & l) != 0L)
+                        if ((0x280000000000L & l) != 0L) {
                             jjCheckNAdd(23);
+                        }
                         break;
                     case 23:
-                        if ((0x3ff000000000000L & l) == 0L)
+                        if ((0x3ff000000000000L & l) == 0L) {
                             break;
-                        if (kind > 16)
+                        }
+                        if (kind > 16) {
                             kind = 16;
+                        }
                         jjCheckNAddTwoStates(23, 7);
                         break;
                     case 24:
-                        if ((0x3ff000000000000L & l) != 0L)
+                        if ((0x3ff000000000000L & l) != 0L) {
                             jjCheckNAddStates(13, 15);
+                        }
                         break;
                     case 26:
-                        if ((0x280000000000L & l) != 0L)
+                        if ((0x280000000000L & l) != 0L) {
                             jjCheckNAdd(27);
+                        }
                         break;
                     case 27:
-                        if ((0x3ff000000000000L & l) != 0L)
+                        if ((0x3ff000000000000L & l) != 0L) {
                             jjCheckNAddTwoStates(27, 7);
+                        }
                         break;
                     default:
                         break;
@@ -262,60 +283,71 @@ public class UParserTokenManager implements UParserConstants {
                     switch (jjstateSet[--i]) {
                     case 0:
                     case 8:
-                        if ((0x7fffffe87fffffeL & l) == 0L)
+                        if ((0x7fffffe87fffffeL & l) == 0L) {
                             break;
-                        if (kind > 17)
+                        }
+                        if (kind > 17) {
                             kind = 17;
+                        }
                         jjCheckNAddTwoStates(8, 9);
                         break;
                     case 4:
-                        if ((0x2000000020L & l) != 0L)
+                        if ((0x2000000020L & l) != 0L) {
                             jjAddStates(16, 17);
+                        }
                         break;
                     case 7:
-                        if ((0x5000000050L & l) != 0L && kind > 16)
+                        if ((0x5000000050L & l) != 0L && kind > 16) {
                             kind = 16;
+                        }
                         break;
                     case 9:
-                        if ((0x7fffffe87fffffeL & l) == 0L)
+                        if ((0x7fffffe87fffffeL & l) == 0L) {
                             break;
-                        if (kind > 17)
+                        }
+                        if (kind > 17) {
                             kind = 17;
+                        }
                         jjCheckNAdd(9);
                         break;
                     case 11:
-                        if ((0x7fffffe87fffffeL & l) == 0L)
+                        if ((0x7fffffe87fffffeL & l) == 0L) {
                             break;
-                        if (kind > 19)
+                        }
+                        if (kind > 19) {
                             kind = 19;
+                        }
                         jjCheckNAddTwoStates(11, 12);
                         break;
                     case 12:
-                        if ((0x7fffffe87fffffeL & l) == 0L)
+                        if ((0x7fffffe87fffffeL & l) == 0L) {
                             break;
-                        if (kind > 19)
+                        }
+                        if (kind > 19) {
                             kind = 19;
+                        }
                         jjCheckNAdd(12);
                         break;
                     case 17:
-                        if ((0x2000000020L & l) != 0L)
+                        if ((0x2000000020L & l) != 0L) {
                             jjAddStates(18, 19);
+                        }
                         break;
                     case 21:
-                        if ((0x2000000020L & l) != 0L)
+                        if ((0x2000000020L & l) != 0L) {
                             jjAddStates(20, 21);
+                        }
                         break;
                     case 25:
-                        if ((0x2000000020L & l) != 0L)
+                        if ((0x2000000020L & l) != 0L) {
                             jjAddStates(22, 23);
+                        }
                         break;
                     default:
                         break;
                     }
                 } while (i != startsAt);
             } else {
-                int i2 = (curChar & 0xff) >> 6;
-                long l2 = 1L << (curChar & 077);
                 MatchLoop: do {
                     switch (jjstateSet[--i]) {
                     default:
@@ -329,8 +361,9 @@ public class UParserTokenManager implements UParserConstants {
                 kind = 0x7fffffff;
             }
             ++curPos;
-            if ((i = jjnewStateCnt) == (startsAt = 28 - (jjnewStateCnt = startsAt)))
+            if ((i = jjnewStateCnt) == (startsAt = 28 - (jjnewStateCnt = startsAt))) {
                 return curPos;
+            }
             try {
                 curChar = input_stream.readChar();
             } catch (java.io.IOException e) {
@@ -361,9 +394,10 @@ public class UParserTokenManager implements UParserConstants {
     protected char curChar;
 
     public UParserTokenManager(SimpleCharStream stream) {
-        if (SimpleCharStream.staticFlag)
+        if (SimpleCharStream.staticFlag) {
             throw new Error(
                     "ERROR: Cannot use a static CharStream class with a non-static lexical analyzer.");
+        }
         input_stream = stream;
     }
 
@@ -382,8 +416,9 @@ public class UParserTokenManager implements UParserConstants {
     private final void ReInitRounds() {
         int i;
         jjround = 0x80000001;
-        for (i = 28; i-- > 0;)
+        for (i = 28; i-- > 0;) {
             jjrounds[i] = 0x80000000;
+        }
     }
 
     public void ReInit(SimpleCharStream stream, int lexState) {
@@ -392,12 +427,13 @@ public class UParserTokenManager implements UParserConstants {
     }
 
     public void SwitchTo(int lexState) {
-        if (lexState >= 1 || lexState < 0)
+        if (lexState >= 1 || lexState < 0) {
             throw new TokenMgrError("Error: Ignoring invalid lexical state : "
                     + lexState + ". State unchanged.",
                     TokenMgrError.INVALID_LEXICAL_STATE);
-        else
+        } else {
             curLexState = lexState;
+        }
     }
 
     protected Token jjFillToken() {
@@ -425,8 +461,6 @@ public class UParserTokenManager implements UParserConstants {
     int jjmatchedKind;
 
     public Token getNextToken() {
-        int kind;
-        Token specialToken = null;
         Token matchedToken;
         int curPos = 0;
 
@@ -441,8 +475,9 @@ public class UParserTokenManager implements UParserConstants {
 
             try {
                 input_stream.backup(0);
-                while (curChar <= 32 && (0x100002600L & (1L << curChar)) != 0L)
+                while (curChar <= 32 && (0x100002600L & (1L << curChar)) != 0L) {
                     curChar = input_stream.BeginToken();
+                }
             } catch (java.io.IOException e1) {
                 continue EOFLoop;
             }
@@ -450,8 +485,9 @@ public class UParserTokenManager implements UParserConstants {
             jjmatchedPos = 0;
             curPos = jjMoveStringLiteralDfa0_0();
             if (jjmatchedKind != 0x7fffffff) {
-                if (jjmatchedPos + 1 < curPos)
+                if (jjmatchedPos + 1 < curPos) {
                     input_stream.backup(curPos - jjmatchedPos - 1);
+                }
                 if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L) {
                     matchedToken = jjFillToken();
                     return matchedToken;
@@ -472,8 +508,9 @@ public class UParserTokenManager implements UParserConstants {
                 if (curChar == '\n' || curChar == '\r') {
                     error_line++;
                     error_column = 0;
-                } else
+                } else {
                     error_column++;
+                }
             }
             if (!EOFSeen) {
                 input_stream.backup(1);

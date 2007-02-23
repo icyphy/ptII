@@ -2966,8 +2966,6 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
 
     public boolean lookingAhead = false;
 
-    private boolean jj_semLA;
-
     private int jj_gen;
 
     final private int[] jj_la1 = new int[45];
