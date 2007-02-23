@@ -66,9 +66,6 @@ public class Multiplexor extends VHDLCodeGeneratorHelper {
 
         int latencyValue = ((IntToken) actor.latency.getToken()).intValue();
 
-        Precision precisionA = _getSourcePortPrecision(actor.A);
-        Precision precisionB = _getSourcePortPrecision(actor.B);
-
         if (latencyValue == 0) {
             _codeStream.appendCodeBlock("sharedBlock_lat0");
         } else {
@@ -94,9 +91,6 @@ public class Multiplexor extends VHDLCodeGeneratorHelper {
         ptolemy.actor.lib.vhdl.Multiplexor actor = (ptolemy.actor.lib.vhdl.Multiplexor) getComponent();
 
         int latencyValue = ((IntToken) actor.latency.getToken()).intValue();
-
-        Precision precisionA = _getSourcePortPrecision(actor.A);
-        Precision precisionB = _getSourcePortPrecision(actor.B);
 
         ArrayList args = new ArrayList();
 

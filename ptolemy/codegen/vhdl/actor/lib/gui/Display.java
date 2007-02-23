@@ -32,8 +32,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Precision;
@@ -77,9 +75,6 @@ public class Display extends VHDLCodeGeneratorHelper {
         }
 
         ArrayList args = new ArrayList();
-
-        TypedIOPort source = (TypedIOPort) actor.input.sourcePortList().get(0);
-        TypedAtomicActor sourceActor = (TypedAtomicActor) source.getContainer();
 
         Precision precision = _getSourcePortPrecision(actor.input);
 

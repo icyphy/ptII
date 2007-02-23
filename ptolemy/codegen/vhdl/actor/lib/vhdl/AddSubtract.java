@@ -32,8 +32,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.vhdl.kernel.VHDLCodeGeneratorHelper;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.util.IllegalActionException;
@@ -131,14 +129,6 @@ public class AddSubtract extends VHDLCodeGeneratorHelper {
         operation += (latencyValue == 0) ? "_lat0" : "";
 
         args.add(operation);
-
-        TypedIOPort source1 = (TypedIOPort) actor.A.sourcePortList().get(0);
-        TypedAtomicActor sourceActor1 = (TypedAtomicActor) source1
-                .getContainer();
-
-        TypedIOPort source2 = (TypedIOPort) actor.B.sourcePortList().get(0);
-        TypedAtomicActor sourceActor2 = (TypedAtomicActor) source2
-                .getContainer();
 
         int highA = precisionA.getIntegerBitLength() - 1;
         int lowA = -precisionA.getFractionBitLength();

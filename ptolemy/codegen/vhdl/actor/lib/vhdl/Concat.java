@@ -66,8 +66,7 @@ public class Concat extends VHDLCodeGeneratorHelper {
         super.generateFireCode();
 
         ArrayList args = new ArrayList();
-        ptolemy.actor.lib.vhdl.Concat actor = (ptolemy.actor.lib.vhdl.Concat) getComponent();
-
+     
         args.add("");
 
         args.add("");
