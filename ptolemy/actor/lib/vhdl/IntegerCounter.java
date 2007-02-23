@@ -228,5 +228,5 @@ public class IntegerCounter extends SynchronousFixTransformer {
 
     private int _currentCount = 0;
 
-    private boolean _consumed;
+    //private boolean _consumed;
 }
