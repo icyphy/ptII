@@ -39,7 +39,7 @@ ME =		ptolemy/actor/gui
 # $PTII/configure looks for Jython and sets PTJYTHON_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJYTHON_DIR is empty.
 
-DIRS = 		doc exec jnlp style unit test $(PTJACL_DIR) $(PTJYTHON_DIR)
+DIRS = 		doc exec jnlp run style unit test $(PTJACL_DIR) $(PTJYTHON_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
@@ -100,7 +100,6 @@ JSRCS = \
 	HTMLViewer.java \
 	HTMLViewerTableau.java \
 	InsideEntityEditorPaneFactory.java \
-	InterfaceTableau.java \
 	JNLPUtilities.java \
 	JVMTableau.java \
 	LevelSkippingTableauFactory.java \

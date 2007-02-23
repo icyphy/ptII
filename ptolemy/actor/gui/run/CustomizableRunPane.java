@@ -1,0 +1,386 @@
+/* A panel containing customizable controls for a Ptolemy II model.
+
+ Copyright (c) 1998-2006 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
+package ptolemy.actor.gui.run;
+
+import java.awt.Component;
+import java.awt.LayoutManager;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.mlc.swing.layout.LayoutConstraintsManager;
+import org.mlc.swing.layout.LayoutFrame;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
+import ptolemy.actor.gui.Configurer;
+import ptolemy.actor.gui.Placeable;
+import ptolemy.gui.CloseListener;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+
+import com.jgoodies.forms.factories.DefaultComponentFactory;
+
+//////////////////////////////////////////////////////////////////////////
+//// CustomizableRunPane
+
+/**
+
+ A panel for interacting with an executing Ptolemy II model.
+ This panel can be customized by inserting
+ 
+ FIXME: more
+ 
+ @see Placeable
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 6.2
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class CustomizableRunPane extends JPanel implements CloseListener {
+    
+    /** Construct a panel for interacting with the specified Ptolemy II model.
+     *  @param model The model to control.
+     *  @param xml The XML specification of the layout, or null to use the default.
+     *  @exception IllegalActionException If the XML to be parsed has errors.
+     */
+    public CustomizableRunPane(CompositeActor model, String xml) throws IllegalActionException {
+        super();
+        
+        _model = model;
+        
+        if (xml == null) {
+            xml = _defaultLayout();
+        }
+        // Parse the XML
+        // FIXME: The following class is deprecated, but there seems
+        // to be no other way to turn a string into an InputStream!!!!!
+        InputStream stream = new StringBufferInputStream(xml.toString());
+        Document dataDocument = null;
+        try {
+            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance()
+                  .newDocumentBuilder();
+            dataDocument = documentBuilder.parse(stream);
+        } catch (Exception e) {
+            throw new IllegalActionException(model, e, "Unable to parse layout specification.");
+        }
+        Node root = dataDocument.getDocumentElement();
+        _layoutConstraintsManager =
+                LayoutConstraintsManager.getLayoutConstraintsManager(root);
+        
+        setBorder(com.jgoodies.forms.factories.Borders.DIALOG_BORDER);
+        LayoutManager layout = _layoutConstraintsManager.createLayout("panel", this);
+        this.setLayout(layout);
+        
+        // Walk through the XML, creating an interface as specified in it.
+        // This assumes a very specific structure to the XML.
+        NodeList components = root.getChildNodes();
+        NodeList nodeList = components.item(0).getChildNodes();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            String name = node.getAttributes().getNamedItem("name").getNodeValue();
+            _addComponent(name, this);
+        }
+        // Now go through the subpanels, if any.
+        // If no subpanels were defined at the top level, then skip this.
+        if (components.getLength() > 1 && _subpanels != null) {
+            for (int i = 1; i < components.getLength(); i++) {
+                Node subpanelNode = components.item(i);
+                String subpanelName = subpanelNode.getAttributes().getNamedItem("name").getNodeValue();
+                JPanel panel = _subpanels.get(subpanelName);
+                if (panel == null) {
+                    throw new IllegalActionException(_model, 
+                            "No layout matching subpanel: " + subpanelName);
+                }
+                nodeList = subpanelNode.getChildNodes();
+                for (int j = 0; j < nodeList.getLength(); j++) {
+                    Node node = nodeList.item(j);
+                    String name = node.getAttributes().getNamedItem("name").getNodeValue();
+                    _addComponent(name, panel);
+                }                
+            }
+        }
+
+        // FIXME: Layout frame to edit the layout.
+        // This should be used by an attribute that can be placed in the model
+        // to customize the layout of the run control window.
+        LayoutFrame frame = new LayoutFrame(_layoutConstraintsManager);
+        frame.setVisible(true);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** If the model has a manager and is executing, then
+     *  pause execution by calling the pause() method of the manager.
+     *  If there is no manager, do nothing.
+     */
+    public void pauseRun() {
+        Manager manager = _model.getManager();
+        if (manager != null) {
+            manager.pause();
+        }
+    }
+
+    /** If the model has a manager and is not already running,
+     *  then execute the model in a new thread.  Otherwise, do nothing.
+     */
+    public void startRun() {
+        Manager manager = _model.getManager();
+        if (manager != null) {
+            try {
+                manager.startRun();
+            } catch (IllegalActionException ex) {
+                // Model is already running.  Ignore.
+            }
+        }
+    }
+
+    /** Notify the contained instances of PtolemyQuery that the window
+     *  has been closed, and remove all Placeable displays by calling
+     *  place(null).  This method is called if this pane is contained
+     *  within a container that supports such notification.
+     *  @param window The window that closed.
+     *  @param button The name of the button that was used to close the window.
+     */
+    public void windowClosed(Window window, String button) {
+        // FIXME: This is not getting invoked. Need to override
+        // TableauFrame above with an override to _close().
+        // Better yet, should use ModelFrame instead of TableauFrame,
+        // but then ModelPane needs to be converted to an interface
+        // so that this pane can be used instead.
+        if (_directorQuery != null) {
+            _directorQuery.windowClosed(window, button);
+        }
+
+        if (_parameterQuery != null) {
+            _parameterQuery.windowClosed(window, button);
+        }
+
+        if (_model != null) {
+            _closeDisplays();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Add a component with the specified name. The name is of the form
+     *  TYPE:DETAIL, where TYPE defines the type of component to add
+     *  and DETAIL specifies details.
+     *  @param name The name.
+     *  @param panel The panel into which to add the component.
+     *  @exception IllegalActionException If there is an error in the XML.
+     */
+    private void _addComponent(String name, JPanel panel) throws IllegalActionException {
+        // Figure out what type of component to create.
+        if (name.startsWith("Placeable:")) {
+            // Display of an actor that implements the Placeable
+            // interface is given with "Placeable:NAME" where
+            // NAME is the name of the actor relative to the model.
+            String actorName = name.substring(10);
+            ComponentEntity entity = _model.getEntity(actorName);
+            if (!(entity instanceof Placeable)) {
+                throw new IllegalActionException(_model,
+                       "Entity that does not implement Placeable is specified in a display.");
+            }
+            // Regrettably, it seems we need an intermediate JPanel.
+            JPanel dummy = new JPanel();
+            ((Placeable) entity).place(dummy);
+            panel.add(dummy, name);
+        } else if (name.startsWith("Separator:")) {
+            // Separator is given with "Separator:TEXT" where
+            // TEXT is the text of the separator.
+            String text = name.substring(10);
+            Component separator = DefaultComponentFactory.getInstance().createSeparator(text);
+            panel.add(separator, name);
+        } else if (name.startsWith("GoButton:")) {
+            // Go button is specified with "GoButton:TEXT", where TEXT
+            // is the text displayed in the button.
+            String text = name.substring(9);
+            _goButton = new JButton(text);
+            _goButton.setToolTipText("Execute the model");
+            _goButton.setAlignmentX(LEFT_ALIGNMENT);
+            panel.add(_goButton, name);
+            _goButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent event) {
+                    startRun();
+                }
+            });
+        } else if (name.startsWith("PauseButton:")) {
+            // Pause button is specified with "PauseButton:TEXT", where TEXT
+            // is the text displayed in the button.
+            String text = name.substring(12);
+            _pauseButton = new JButton(text);
+            _pauseButton.setToolTipText("Pause the model");
+            _pauseButton.setAlignmentX(LEFT_ALIGNMENT);
+            panel.add(_pauseButton, name);
+            _pauseButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent event) {
+                    pauseRun();
+                }
+            });
+        } else if (name.startsWith("Subpanel:")) {
+            // Subpanel is specified with "Subpanel:NAME", where NAME
+            // is the name of the the subpanel.
+            JPanel subpanel = new JPanel();
+            LayoutManager layout = _layoutConstraintsManager.createLayout(name, subpanel);
+            subpanel.setLayout(layout);
+            panel.add(subpanel, name);
+            if (_subpanels == null) {
+                _subpanels = new HashMap<String,JPanel>();
+            }
+            _subpanels.put(name, subpanel);
+        } else {
+            throw new IllegalActionException(_model,
+                    "Unrecognized entry in control panel layout: " + name);
+        }
+    }
+    /** Close any open displays by calling place(null).
+     */
+    private void _closeDisplays() {
+        if (_model != null) {
+            Iterator atomicEntities = _model.allAtomicEntityList().iterator();
+
+            while (atomicEntities.hasNext()) {
+                Object object = atomicEntities.next();
+
+                if (object instanceof Placeable) {
+                    ((Placeable) object).place(null);
+                }
+            }
+        }
+    }
+    
+    /** Create a default layout for the associated model. */
+    private String _defaultLayout() {
+        
+        // FIXME: This XML specification of the layout should
+        // be stored in an attribute in the model.
+        // Here, we create a default.
+        StringBuffer xml = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        xml.append("<containers>");
+        
+        // Top-level panel has two columns and one row.
+        xml.append("<container name=\"panel\" ");
+        xml.append("columnSpecs=\"default,3dlu,default:grow\" ");
+        xml.append("rowSpecs=\"default\">");
+        xml.append("<cellconstraints name=\"Subpanel:ControlPanel\" gridX=\"1\" gridY=\"1\" " +
+                "gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" " +
+                "verticalAlignment=\"default\" topInset=\"0\" bottomInset=\"0\" " +
+                "rightInset=\"0\" leftInset=\"0\"/>");
+        xml.append("<cellconstraints name=\"Subpanel:PlaceablePanel\" gridX=\"3\" gridY=\"1\" " +
+                "gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" " +
+                "verticalAlignment=\"default\" topInset=\"0\" bottomInset=\"0\" " +
+                "rightInset=\"0\" leftInset=\"0\"/>");
+   
+        xml.append("</container>");
+        
+        // Subpanel with the run control buttons
+        xml.append("<container name=\"Subpanel:ControlPanel\" ");
+        xml.append("columnSpecs=\"default,3dlu,default,3dlu,default,3dlu,default\" ");
+        xml.append("rowSpecs=\"default,5dlu,default\">");
+        xml.append("<cellconstraints name=\"Separator:Run Control\" gridX=\"1\" gridY=\"1\" gridWidth=\"7\" gridHeight=\"1\" horizontalAlignment=\"default\" verticalAlignment=\"default\" topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>");
+        xml.append("<cellconstraints name=\"GoButton:Execute\" gridX=\"1\" gridY=\"3\" gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" verticalAlignment=\"default\" topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>");
+        xml.append("<cellconstraints name=\"PauseButton:Pause\" gridX=\"3\" gridY=\"3\" gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" verticalAlignment=\"default\" topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>");
+        xml.append("</container>");
+
+        // Subpanel for each object that implements Placeable.
+        xml.append("<container name=\"Subpanel:PlaceablePanel\" ");
+        xml.append("columnSpecs=\"default,3dlu,default,3dlu,default,3dlu,default\" ");
+        xml.append("rowSpecs=\"default,5dlu,default\">");
+        if (_model != null) {
+            Iterator atomicEntities = _model.allAtomicEntityList().iterator();
+            int row = 1;
+            while (atomicEntities.hasNext()) {
+                Object object = atomicEntities.next();
+                if (object instanceof Placeable) {
+                    xml.append("<cellconstraints name=\"Placeable:");
+                    xml.append(((NamedObj)object).getName(_model));
+                    xml.append("\" gridX=\"3\" gridY=\"");
+                    xml.append(row);
+                    xml.append("\" gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" " +
+                            "verticalAlignment=\"default\" topInset=\"0\" bottomInset=\"0\" " +
+                            "rightInset=\"0\" leftInset=\"0\"/>");
+                    // FIXME: Need to calculate the number of rows to specify above!
+                    row = row + 2;
+                }
+            }
+        }
+        xml.append("</container>");
+
+        xml.append("</containers>");
+        return xml.toString();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The query box for the director parameters. */
+    private Configurer _directorQuery;
+
+    /** The go button. */
+    private JButton _goButton;
+    
+    /** The layout constraint manager. */
+    private LayoutConstraintsManager _layoutConstraintsManager;
+
+    /** The associated model. */
+    private CompositeActor _model;
+    
+    /** The query box for the top-level parameters. */
+    private Configurer _parameterQuery;
+    
+    /** The pause button. */
+    private JButton _pauseButton;
+    
+    /** A collection of subpanels. */
+    private HashMap<String,JPanel> _subpanels;
+}
