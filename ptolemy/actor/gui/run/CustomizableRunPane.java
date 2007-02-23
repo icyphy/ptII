@@ -42,19 +42,16 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.mlc.swing.layout.LayoutConstraintsManager;
-import org.mlc.swing.layout.LayoutFrame;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.gui.CloseListener;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
