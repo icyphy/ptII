@@ -31,8 +31,8 @@ import java.awt.LayoutManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -93,9 +93,7 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             xml = _defaultLayout();
         }
         // Parse the XML
-        // FIXME: The following class is deprecated, but there seems
-        // to be no other way to turn a string into an InputStream!!!!!
-        InputStream stream = new StringBufferInputStream(xml.toString());
+        InputStream stream = new ByteArrayInputStream(xml.toString().getBytes());
         Document dataDocument = null;
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance()
