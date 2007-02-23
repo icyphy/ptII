@@ -490,30 +490,30 @@ public class ContainerLayout implements LayoutManager2
     formLayout.addLayoutComponent(comp, cellConstraints);
   }
 
-  private class LocationScore implements Comparable<LocationScore>
-  {
-    public int score;
-
-    public int row;
-
-    public int col;
-
-    public int width;
-
-    public LocationScore(int score, int row, int col, int width)
-    {
-      this.score = score;
-      this.row = row;
-      this.col = col;
-      this.width = width;
-    }
-
-    public int compareTo(LocationScore testScore)
-    {
-      return this.score < testScore.score ? -1
-          : this.score > testScore.score ? 1 : 0;
-    }
-  }
+//  private class LocationScore implements Comparable<LocationScore>
+//  {
+//    public int score;
+//
+//    public int row;
+//
+//    public int col;
+//
+//    public int width;
+//
+//    public LocationScore(int score, int row, int col, int width)
+//    {
+//      this.score = score;
+//      this.row = row;
+//      this.col = col;
+//      this.width = width;
+//    }
+//
+//    public int compareTo(LocationScore testScore)
+//    {
+//      return this.score < testScore.score ? -1
+//          : this.score > testScore.score ? 1 : 0;
+//    }
+//  }
 
   public static void main(String[] args)
   {
