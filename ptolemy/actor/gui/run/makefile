@@ -51,19 +51,9 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	run
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# We do not include ptjacl/ptjacl.jar, it gets included separately 
-# because it requires lib/ptjacl.jar
-PTCLASSALLJARS = 
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-# Except: NOTE: HTMLEffigy has to come before Configuration
-# because its inner class, HTMLEffigy$Factory, is referenced.
 JSRCS = \
 	CustomizableRunPane.java \
 	InterfaceTableau.java
@@ -71,9 +61,6 @@ JSRCS = \
 # Files to be included in the jar file
 OTHER_FILES_TO_BE_JARED =
 
-# Note that PtolemyIISmallIcon.gif is also in doc/img.
-# We place a duplicate copy here to make it easy to ship
-# jar files that contain all the appropriate images.
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -88,28 +75,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 
-TableauFrame.class: HTMLEffigy.class
-
 install: jclass jars
-
-demo: all demo_ptolemy demo_vergil demo_caa
-demo_ptolemy: all
-	$(ROOT)/bin/ptolemy $(ROOT)/ptolemy/moml/demo/modulation.xml
-demo_vergil: all
-	$(ROOT)/bin/vergil $(ROOT)/ptolemy/moml/demo/modulation.xml
-
-# Demonstrate CompositeActorApplication
-demo_caa: all
-	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)" \
-	 "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication \
-	 -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
-
-# Demonstrate MoMLSimpleApplication, which does not necessarily
-# require graphics, though this demo does use the
-demo_momlsimple:
-	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)" \
-	 "$(JAVA)" ptolemy.actor.gui.MoMLSimpleApplication \
-		$(ROOT)/ptolemy/actor/gui/test/test.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
