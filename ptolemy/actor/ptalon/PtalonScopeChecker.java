@@ -51,8 +51,6 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
     public final void port_declaration(AST _t) throws RecognitionException,
             PtalonScopeException {
 
-        PtalonAST port_declaration_AST_in = (_t == ASTNULL) ? null
-                : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
         PtalonAST port_declaration_AST = null;
@@ -76,9 +74,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         case PORT: {
             AST __t353 = _t;
             PtalonAST tmp1_AST = null;
-            PtalonAST tmp1_AST_in = null;
-            tmp1_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-            tmp1_AST_in = (PtalonAST) _t;
+            tmp1_AST = (PtalonAST) astFactory.create(_t);
             astFactory.addASTChild(currentAST, tmp1_AST);
             ASTPair __currentAST353 = currentAST.copy();
             currentAST.root = currentAST.child;
@@ -92,7 +88,6 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                 switch (_t.getType()) {
                 case ID: {
                     a = (PtalonAST) _t;
-                    PtalonAST a_AST_in = null;
                     a_AST = (PtalonAST) astFactory.create(a);
                     astFactory.addASTChild(currentAST, a_AST);
                     match(_t, ID);
@@ -105,9 +100,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                 case DYNAMIC_NAME: {
                     AST __t355 = _t;
                     PtalonAST tmp2_AST = null;
-                    PtalonAST tmp2_AST_in = null;
-                    tmp2_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                    tmp2_AST_in = (PtalonAST) _t;
+                    tmp2_AST = (PtalonAST) astFactory.create(_t);
                     astFactory.addASTChild(currentAST, tmp2_AST);
                     ASTPair __currentAST355 = currentAST.copy();
                     currentAST.root = currentAST.child;
@@ -115,16 +108,12 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                     match(_t, DYNAMIC_NAME);
                     _t = _t.getFirstChild();
                     PtalonAST tmp3_AST = null;
-                    PtalonAST tmp3_AST_in = null;
-                    tmp3_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                    tmp3_AST_in = (PtalonAST) _t;
+                    tmp3_AST = (PtalonAST) astFactory.create(_t);
                     astFactory.addASTChild(currentAST, tmp3_AST);
                     match(_t, ID);
                     _t = _t.getNextSibling();
                     PtalonAST tmp4_AST = null;
-                    PtalonAST tmp4_AST_in = null;
-                    tmp4_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                    tmp4_AST_in = (PtalonAST) _t;
+                    tmp4_AST = (PtalonAST) astFactory.create(_t);
                     astFactory.addASTChild(currentAST, tmp4_AST);
                     match(_t, EXPRESSION);
                     _t = _t.getNextSibling();
@@ -147,9 +136,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         case INPORT: {
             AST __t356 = _t;
             PtalonAST tmp5_AST = null;
-            PtalonAST tmp5_AST_in = null;
-            tmp5_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-            tmp5_AST_in = (PtalonAST) _t;
+            tmp5_AST = (PtalonAST) astFactory.create(_t);
             astFactory.addASTChild(currentAST, tmp5_AST);
             ASTPair __currentAST356 = currentAST.copy();
             currentAST.root = currentAST.child;
@@ -163,7 +150,6 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                 switch (_t.getType()) {
                 case ID: {
                     b = (PtalonAST) _t;
-                    PtalonAST b_AST_in = null;
                     b_AST = (PtalonAST) astFactory.create(b);
                     astFactory.addASTChild(currentAST, b_AST);
                     match(_t, ID);
@@ -176,9 +162,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                 case DYNAMIC_NAME: {
                     AST __t358 = _t;
                     PtalonAST tmp6_AST = null;
-                    PtalonAST tmp6_AST_in = null;
-                    tmp6_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                    tmp6_AST_in = (PtalonAST) _t;
+                    tmp6_AST = (PtalonAST) astFactory.create(_t);
                     astFactory.addASTChild(currentAST, tmp6_AST);
                     ASTPair __currentAST358 = currentAST.copy();
                     currentAST.root = currentAST.child;
@@ -186,16 +170,12 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                     match(_t, DYNAMIC_NAME);
                     _t = _t.getFirstChild();
                     PtalonAST tmp7_AST = null;
-                    PtalonAST tmp7_AST_in = null;
-                    tmp7_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                    tmp7_AST_in = (PtalonAST) _t;
+                    tmp7_AST = (PtalonAST) astFactory.create(_t);
                     astFactory.addASTChild(currentAST, tmp7_AST);
                     match(_t, ID);
                     _t = _t.getNextSibling();
                     PtalonAST tmp8_AST = null;
-                    PtalonAST tmp8_AST_in = null;
-                    tmp8_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                    tmp8_AST_in = (PtalonAST) _t;
+                    tmp8_AST = (PtalonAST) astFactory.create(_t);
                     astFactory.addASTChild(currentAST, tmp8_AST);
                     match(_t, EXPRESSION);
                     _t = _t.getNextSibling();
@@ -218,9 +198,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         case OUTPORT: {
             AST __t359 = _t;
             PtalonAST tmp9_AST = null;
-            PtalonAST tmp9_AST_in = null;
-            tmp9_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-            tmp9_AST_in = (PtalonAST) _t;
+            tmp9_AST = (PtalonAST) astFactory.create(_t);
             astFactory.addASTChild(currentAST, tmp9_AST);
             ASTPair __currentAST359 = currentAST.copy();
             currentAST.root = currentAST.child;
@@ -234,7 +212,6 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                 switch (_t.getType()) {
                 case ID: {
                     c = (PtalonAST) _t;
-                    PtalonAST c_AST_in = null;
                     c_AST = (PtalonAST) astFactory.create(c);
                     astFactory.addASTChild(currentAST, c_AST);
                     match(_t, ID);
@@ -247,9 +224,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                 case DYNAMIC_NAME: {
                     AST __t361 = _t;
                     PtalonAST tmp10_AST = null;
-                    PtalonAST tmp10_AST_in = null;
-                    tmp10_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                    tmp10_AST_in = (PtalonAST) _t;
+                    tmp10_AST = (PtalonAST) astFactory.create(_t);
                     astFactory.addASTChild(currentAST, tmp10_AST);
                     ASTPair __currentAST361 = currentAST.copy();
                     currentAST.root = currentAST.child;
@@ -257,16 +232,12 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                     match(_t, DYNAMIC_NAME);
                     _t = _t.getFirstChild();
                     PtalonAST tmp11_AST = null;
-                    PtalonAST tmp11_AST_in = null;
-                    tmp11_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                    tmp11_AST_in = (PtalonAST) _t;
+                    tmp11_AST = (PtalonAST) astFactory.create(_t);
                     astFactory.addASTChild(currentAST, tmp11_AST);
                     match(_t, ID);
                     _t = _t.getNextSibling();
                     PtalonAST tmp12_AST = null;
-                    PtalonAST tmp12_AST_in = null;
-                    tmp12_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                    tmp12_AST_in = (PtalonAST) _t;
+                    tmp12_AST = (PtalonAST) astFactory.create(_t);
                     astFactory.addASTChild(currentAST, tmp12_AST);
                     match(_t, EXPRESSION);
                     _t = _t.getNextSibling();
@@ -289,9 +260,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         case MULTIPORT: {
             AST __t362 = _t;
             PtalonAST tmp13_AST = null;
-            PtalonAST tmp13_AST_in = null;
-            tmp13_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-            tmp13_AST_in = (PtalonAST) _t;
+            tmp13_AST = (PtalonAST) astFactory.create(_t);
             astFactory.addASTChild(currentAST, tmp13_AST);
             ASTPair __currentAST362 = currentAST.copy();
             currentAST.root = currentAST.child;
@@ -305,7 +274,6 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                 switch (_t.getType()) {
                 case ID: {
                     d = (PtalonAST) _t;
-                    PtalonAST d_AST_in = null;
                     d_AST = (PtalonAST) astFactory.create(d);
                     astFactory.addASTChild(currentAST, d_AST);
                     match(_t, ID);
@@ -318,9 +286,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                 case DYNAMIC_NAME: {
                     AST __t364 = _t;
                     PtalonAST tmp14_AST = null;
-                    PtalonAST tmp14_AST_in = null;
-                    tmp14_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                    tmp14_AST_in = (PtalonAST) _t;
+                    tmp14_AST = (PtalonAST) astFactory.create(_t);
                     astFactory.addASTChild(currentAST, tmp14_AST);
                     ASTPair __currentAST364 = currentAST.copy();
                     currentAST.root = currentAST.child;
@@ -328,16 +294,12 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                     match(_t, DYNAMIC_NAME);
                     _t = _t.getFirstChild();
                     PtalonAST tmp15_AST = null;
-                    PtalonAST tmp15_AST_in = null;
-                    tmp15_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                    tmp15_AST_in = (PtalonAST) _t;
+                    tmp15_AST = (PtalonAST) astFactory.create(_t);
                     astFactory.addASTChild(currentAST, tmp15_AST);
                     match(_t, ID);
                     _t = _t.getNextSibling();
                     PtalonAST tmp16_AST = null;
-                    PtalonAST tmp16_AST_in = null;
-                    tmp16_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                    tmp16_AST_in = (PtalonAST) _t;
+                    tmp16_AST = (PtalonAST) astFactory.create(_t);
                     astFactory.addASTChild(currentAST, tmp16_AST);
                     match(_t, EXPRESSION);
                     _t = _t.getNextSibling();
@@ -360,9 +322,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         case MULTIINPORT: {
             AST __t365 = _t;
             PtalonAST tmp17_AST = null;
-            PtalonAST tmp17_AST_in = null;
-            tmp17_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-            tmp17_AST_in = (PtalonAST) _t;
+            tmp17_AST = (PtalonAST) astFactory.create(_t);
             astFactory.addASTChild(currentAST, tmp17_AST);
             ASTPair __currentAST365 = currentAST.copy();
             currentAST.root = currentAST.child;
@@ -376,7 +336,6 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                 switch (_t.getType()) {
                 case ID: {
                     e = (PtalonAST) _t;
-                    PtalonAST e_AST_in = null;
                     e_AST = (PtalonAST) astFactory.create(e);
                     astFactory.addASTChild(currentAST, e_AST);
                     match(_t, ID);
@@ -389,9 +348,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                 case DYNAMIC_NAME: {
                     AST __t367 = _t;
                     PtalonAST tmp18_AST = null;
-                    PtalonAST tmp18_AST_in = null;
-                    tmp18_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                    tmp18_AST_in = (PtalonAST) _t;
+                    tmp18_AST = (PtalonAST) astFactory.create(_t);
                     astFactory.addASTChild(currentAST, tmp18_AST);
                     ASTPair __currentAST367 = currentAST.copy();
                     currentAST.root = currentAST.child;

@@ -93,9 +93,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
     }
 
     public Token nextToken() throws TokenStreamException {
-        Token theRetToken = null;
         tryAgain: for (;;) {
-            Token _token = null;
             int _ttype = Token.INVALID_TYPE;
             resetText();
             try { // for char stream error handling
@@ -103,52 +101,42 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
                     switch (LA(1)) {
                     case ',': {
                         mCOMMA(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case '.': {
                         mDOT(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case '{': {
                         mLCURLY(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case '(': {
                         mLPAREN(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case ']': {
                         mRBRACKET(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case '}': {
                         mRCURLY(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case ')': {
                         mRPAREN(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case ';': {
                         mSEMI(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case '=': {
                         mEQUALS(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case '\\': {
                         mESC(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case 'A':
@@ -205,7 +193,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
                     case 'y':
                     case 'z': {
                         mID(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case '0':
@@ -219,17 +206,14 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
                     case '8':
                     case '9': {
                         mNUMBER_LITERAL(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case '$': {
                         mATTRIBUTE_MARKER(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case '"': {
                         mSTRING_LITERAL(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case '\t':
@@ -238,40 +222,35 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
                     case '\r':
                     case ' ': {
                         mWHITE_SPACE(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     case '/': {
                         mCOMMENT(true);
-                        theRetToken = _returnToken;
                         break;
                     }
                     default:
                         if ((LA(1) == ':') && (LA(2) == '=')) {
                             mASSIGN(true);
-                            theRetToken = _returnToken;
                         } else if ((LA(1) == '[') && (LA(2) == '[')) {
                             mEXPRESSION(true);
-                            theRetToken = _returnToken;
                         } else if ((LA(1) == '[') && (true)) {
                             mLBRACKET(true);
-                            theRetToken = _returnToken;
                         } else if ((LA(1) == ':') && (true)) {
                             mCOLON(true);
-                            theRetToken = _returnToken;
                         } else {
                             if (LA(1) == EOF_CHAR) {
                                 uponEOF();
                                 _returnToken = makeToken(Token.EOF_TYPE);
                             } else {
                                 throw new NoViableAltForCharException(
-                                        (char) LA(1), getFilename(), getLine(),
+                                        LA(1), getFilename(), getLine(),
                                         getColumn());
                             }
                         }
                     }
-                    if (_returnToken == null)
+                    if (_returnToken == null) {
                         continue tryAgain; // found SKIP token
+                    }
                     _ttype = _returnToken.getType();
                     _returnToken.setType(_ttype);
                     return _returnToken;
@@ -296,8 +275,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = ASSIGN;
-        int _saveIndex;
-
         match(":=");
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
@@ -313,8 +290,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = COMMA;
-        int _saveIndex;
-
         match(',');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
@@ -330,8 +305,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = DOT;
-        int _saveIndex;
-
         match('.');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
@@ -348,8 +321,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = LBRACKET;
-        int _saveIndex;
-
         match('[');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
@@ -366,8 +337,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = LCURLY;
-        int _saveIndex;
-
         match('{');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
@@ -384,8 +353,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = LPAREN;
-        int _saveIndex;
-
         match('(');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
@@ -402,8 +369,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = RBRACKET;
-        int _saveIndex;
-
         match(']');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
@@ -420,8 +385,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = RCURLY;
-        int _saveIndex;
-
         match('}');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
@@ -438,8 +401,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = RPAREN;
-        int _saveIndex;
-
         match(')');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
@@ -455,8 +416,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = SEMI;
-        int _saveIndex;
-
         match(';');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
@@ -473,8 +432,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = EQUALS;
-        int _saveIndex;
-
         match('=');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
@@ -490,8 +447,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = COLON;
-        int _saveIndex;
-
         match(':');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
@@ -507,8 +462,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = ESC;
-        int _saveIndex;
-
         match('\\');
         {
             switch (LA(1)) {
@@ -541,7 +494,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
                 break;
             }
             default: {
-                throw new NoViableAltForCharException((char) LA(1),
+                throw new NoViableAltForCharException(LA(1),
                         getFilename(), getLine(), getColumn());
             }
             }
@@ -560,8 +513,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = ID;
-        int _saveIndex;
-
         {
             switch (LA(1)) {
             case 'a':
@@ -627,7 +578,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
                 break;
             }
             default: {
-                throw new NoViableAltForCharException((char) LA(1),
+                throw new NoViableAltForCharException(LA(1),
                         getFilename(), getLine(), getColumn());
             }
             }
@@ -732,8 +683,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = NUMBER_LITERAL;
-        int _saveIndex;
-
         {
             int _cnt801 = 0;
             _loop801: do {
@@ -743,7 +692,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
                     if (_cnt801 >= 1) {
                         break _loop801;
                     } else {
-                        throw new NoViableAltForCharException((char) LA(1),
+                        throw new NoViableAltForCharException(LA(1),
                                 getFilename(), getLine(), getColumn());
                     }
                 }
@@ -764,7 +713,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
                                 break _loop804;
                             } else {
                                 throw new NoViableAltForCharException(
-                                        (char) LA(1), getFilename(), getLine(),
+                                        LA(1), getFilename(), getLine(),
                                         getColumn());
                             }
                         }
@@ -791,8 +740,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = ATTRIBUTE_MARKER;
-        int _saveIndex;
-
         match('$');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
@@ -809,8 +756,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = STRING_LITERAL;
-        int _saveIndex;
-
         match('"');
         {
             _loop809: do {
@@ -970,8 +915,6 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = WHITE_SPACE;
-        int _saveIndex;
-
         {
             switch (LA(1)) {
             case ' ': {
@@ -1000,7 +943,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
                     match('\r');
                     newline();
                 } else {
-                    throw new NoViableAltForCharException((char) LA(1),
+                    throw new NoViableAltForCharException(LA(1),
                             getFilename(), getLine(), getColumn());
                 }
             }
@@ -1021,15 +964,14 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = EXPRESSION;
-        int _saveIndex;
-
         match('[');
         match('[');
         {
             _loop814: do {
                 // nongreedy exit test
-                if ((LA(1) == ']') && (LA(2) == ']') && (true))
+                if ((LA(1) == ']') && (LA(2) == ']') && (true)) {
                     break _loop814;
+                }
                 if (((LA(1) >= '\u0000' && LA(1) <= '\u007f'))
                         && ((LA(2) >= '\u0000' && LA(2) <= '\u007f'))
                         && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
@@ -1057,15 +999,14 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         Token _token = null;
         int _begin = text.length();
         _ttype = COMMENT;
-        int _saveIndex;
-
         match('/');
         match('*');
         {
             _loop817: do {
                 // nongreedy exit test
-                if ((LA(1) == '*') && (LA(2) == '/') && (true))
+                if ((LA(1) == '*') && (LA(2) == '/') && (true)) {
                     break _loop817;
+                }
                 if (((LA(1) >= '\u0000' && LA(1) <= '\u007f'))
                         && ((LA(2) >= '\u0000' && LA(2) <= '\u007f'))
                         && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {

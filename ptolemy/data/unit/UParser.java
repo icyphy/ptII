@@ -341,7 +341,7 @@ public class UParser implements UParserConstants {
 
     final public double number() throws ParseException {
         int len;
-        String tidied, x;
+        String x;
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
         case DOUBLE:
             jj_consume_token(DOUBLE);
@@ -600,8 +600,6 @@ public class UParser implements UParserConstants {
     private int jj_la;
 
     public boolean lookingAhead = false;
-
-    private boolean jj_semLA;
 
     private int jj_gen;
 

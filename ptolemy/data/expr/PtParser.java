@@ -205,8 +205,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         try {
             // Parse the expression to obtain the parse tree
             rootNode = startSimpleAssignment();
-            if (debug)
+            if (debug) {
                 rootNode.displayParseTree(" ");
+            }
         } catch (Throwable throwable) {
             throw new IllegalActionException(null, throwable,
                     "Error parsing expression \"" + stringIn + "\"");
@@ -443,8 +444,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             jjtree.closeNodeScope(jjtn000, true);
             jjtc000 = false;
             {
-                if (true)
+                if (true) {
                     return jjtn000;
+                }
             }
         } catch (Throwable jjte000) {
             if (jjtc000) {
@@ -455,19 +457,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte000 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte000;
+                    }
                 }
             }
             if (jjte000 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte000;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte000;
+                }
             }
         } finally {
             if (jjtc000) {
@@ -506,8 +511,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             jjtree.closeNodeScope(jjtn000, true);
             jjtc000 = false;
             {
-                if (true)
+                if (true) {
                     return map;
+                }
             }
         } catch (Throwable jjte000) {
             if (jjtc000) {
@@ -518,19 +524,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte000 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte000;
+                    }
                 }
             }
             if (jjte000 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte000;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte000;
+                }
             }
         } finally {
             if (jjtc000) {
@@ -559,19 +568,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte000 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte000;
+                    }
                 }
             }
             if (jjte000 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte000;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte000;
+                }
             }
         } finally {
             if (jjtc000) {
@@ -618,19 +630,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 }
                 if (jjte001 instanceof RuntimeException) {
                     {
-                        if (true)
+                        if (true) {
                             throw (RuntimeException) jjte001;
+                        }
                     }
                 }
                 if (jjte001 instanceof ParseException) {
                     {
-                        if (true)
+                        if (true) {
                             throw (ParseException) jjte001;
+                        }
                     }
                 }
                 {
-                    if (true)
+                    if (true) {
                         throw (Error) jjte001;
+                    }
                 }
             } finally {
                 if (jjtc001) {
@@ -641,8 +656,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             jjtree.closeNodeScope(jjtn000, true);
             jjtc000 = false;
             {
-                if (true)
+                if (true) {
                     return jjtn000;
+                }
             }
         } catch (Throwable jjte000) {
             if (jjtc000) {
@@ -653,19 +669,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte000 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte000;
+                    }
                 }
             }
             if (jjte000 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte000;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte000;
+                }
             }
         } finally {
             if (jjtc000) {
@@ -730,8 +749,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             jjtree.closeNodeScope(jjtn000, true);
             jjtc000 = false;
             {
-                if (true)
+                if (true) {
                     return jjtn000;
+                }
             }
         } catch (Throwable jjte000) {
             if (jjtc000) {
@@ -742,19 +762,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte000 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte000;
+                    }
                 }
             }
             if (jjte000 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte000;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte000;
+                }
             }
         } finally {
             if (jjtc000) {
@@ -822,19 +845,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte001 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte001;
+                    }
                 }
             }
             if (jjte001 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte001;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte001;
+                }
             }
         } finally {
             if (jjtc001) {
@@ -872,19 +898,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte001 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte001;
+                    }
                 }
             }
             if (jjte001 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte001;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte001;
+                }
             }
         } finally {
             if (jjtc001) {
@@ -922,19 +951,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte001 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte001;
+                    }
                 }
             }
             if (jjte001 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte001;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte001;
+                }
             }
         } finally {
             if (jjtc001) {
@@ -972,19 +1004,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte001 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte001;
+                    }
                 }
             }
             if (jjte001 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte001;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte001;
+                }
             }
         } finally {
             if (jjtc001) {
@@ -1022,19 +1057,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte001 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte001;
+                    }
                 }
             }
             if (jjte001 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte001;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte001;
+                }
             }
         } finally {
             if (jjtc001) {
@@ -1072,19 +1110,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte001 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte001;
+                    }
                 }
             }
             if (jjte001 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte001;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte001;
+                }
             }
         } finally {
             if (jjtc001) {
@@ -1132,19 +1173,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte001 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte001;
+                    }
                 }
             }
             if (jjte001 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte001;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte001;
+                }
             }
         } finally {
             if (jjtc001) {
@@ -1154,7 +1198,6 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
     }
 
     final public void power() throws ParseException {
-        Token x;
         ASTPtPowerNode jjtn001 = new ASTPtPowerNode(JJTPTPOWERNODE);
         boolean jjtc001 = true;
         jjtree.openNodeScope(jjtn001);
@@ -1181,19 +1224,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte001 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte001;
+                    }
                 }
             }
             if (jjte001 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte001;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte001;
+                }
             }
         } finally {
             if (jjtc001) {
@@ -1249,19 +1295,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte001 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte001;
+                    }
                 }
             }
             if (jjte001 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte001;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte001;
+                }
             }
         } finally {
             if (jjtc001) {
@@ -1312,19 +1361,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte001 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte001;
+                    }
                 }
             }
             if (jjte001 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte001;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte001;
+                }
             }
         } finally {
             if (jjtc001) {
@@ -1374,19 +1426,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte001 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte001;
+                    }
                 }
             }
             if (jjte001 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte001;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte001;
+                }
             }
         } finally {
             if (jjtc001) {
@@ -1440,19 +1495,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte001 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte001;
+                    }
                 }
             }
             if (jjte001 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte001;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte001;
+                }
             }
         } finally {
             if (jjtc001) {
@@ -1484,19 +1542,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 }
                 if (jjte001 instanceof RuntimeException) {
                     {
-                        if (true)
+                        if (true) {
                             throw (RuntimeException) jjte001;
+                        }
                     }
                 }
                 if (jjte001 instanceof ParseException) {
                     {
-                        if (true)
+                        if (true) {
                             throw (ParseException) jjte001;
+                        }
                     }
                 }
                 {
-                    if (true)
+                    if (true) {
                         throw (Error) jjte001;
+                    }
                 }
             } finally {
                 if (jjtc001) {
@@ -1524,19 +1585,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 }
                 if (jjte002 instanceof RuntimeException) {
                     {
-                        if (true)
+                        if (true) {
                             throw (RuntimeException) jjte002;
+                        }
                     }
                 }
                 if (jjte002 instanceof ParseException) {
                     {
-                        if (true)
+                        if (true) {
                             throw (ParseException) jjte002;
+                        }
                     }
                 }
                 {
-                    if (true)
+                    if (true) {
                         throw (Error) jjte002;
+                    }
                 }
             } finally {
                 if (jjtc002) {
@@ -1564,19 +1628,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 }
                 if (jjte003 instanceof RuntimeException) {
                     {
-                        if (true)
+                        if (true) {
                             throw (RuntimeException) jjte003;
+                        }
                     }
                 }
                 if (jjte003 instanceof ParseException) {
                     {
-                        if (true)
+                        if (true) {
                             throw (ParseException) jjte003;
+                        }
                     }
                 }
                 {
-                    if (true)
+                    if (true) {
                         throw (Error) jjte003;
+                    }
                 }
             } finally {
                 if (jjtc003) {
@@ -1703,19 +1770,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 }
                 if (jjte001 instanceof RuntimeException) {
                     {
-                        if (true)
+                        if (true) {
                             throw (RuntimeException) jjte001;
+                        }
                     }
                 }
                 if (jjte001 instanceof ParseException) {
                     {
-                        if (true)
+                        if (true) {
                             throw (ParseException) jjte001;
+                        }
                     }
                 }
                 {
-                    if (true)
+                    if (true) {
                         throw (Error) jjte001;
+                    }
                 }
             } finally {
                 if (jjtc001) {
@@ -1731,19 +1801,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte002 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte002;
+                    }
                 }
             }
             if (jjte002 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte002;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte002;
+                }
             }
         } finally {
             if (jjtc002) {
@@ -1773,9 +1846,10 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                     jjtn001._isConstant = true;
                 } catch (NumberFormatException ee) {
                     {
-                        if (true)
+                        if (true) {
                             throw new ParseException("Unable to convert token "
                                     + token.image + " to a complex number.");
+                        }
                     }
                 }
             } finally {
@@ -1812,9 +1886,10 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                     jjtn002._isConstant = true;
                 } catch (NumberFormatException ee) {
                     {
-                        if (true)
+                        if (true) {
                             throw new ParseException("Unable to convert token "
                                     + token.image + " to an float or double");
+                        }
                     }
                 }
             } finally {
@@ -1890,9 +1965,10 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                     jjtn003._isConstant = true;
                 } catch (NumberFormatException ee) {
                     {
-                        if (true)
+                        if (true) {
                             throw new ParseException("Unable to convert token "
                                     + token.image + " to an integer or long");
+                        }
                     }
                 }
             } finally {
@@ -1913,9 +1989,10 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 String start = token.image.substring(0, 1);
                 if (!token.image.endsWith(start)) {
                     {
-                        if (true)
+                        if (true) {
                             throw new ParseException(
                                     "Found unterminated string: " + token.image);
+                        }
                     }
                 }
 
@@ -1976,8 +2053,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                                 char c = tok.charAt(i);
                                 if (!(c == '0' || c == '1' || c == '2'
                                         || c == '3' || c == '4' || c == '5'
-                                        || c == '6' || c == '7'))
+                                        || c == '6' || c == '7')) {
                                     break;
+                                }
                             }
                             trailingCharIndex = i;
                             int octVal = Integer.parseInt(tok.substring(0,
@@ -1985,10 +2063,11 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                             x += (char) octVal;
                             break;
                         default: {
-                            if (true)
+                            if (true) {
                                 throw new ParseException(
                                         "Unknown backslash sequence: " + "\\"
                                                 + tok);
+                            }
                         }
                         }
                         if (trailingCharIndex < tok.length()) {
@@ -2005,10 +2084,11 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 }
                 if (escape) {
                     {
-                        if (true)
+                        if (true) {
                             throw new ParseException(
                                     "Unterminated backslash sequence in "
                                             + "string: " + token.image);
+                        }
                     }
                 }
 
@@ -2132,19 +2212,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte000 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte000;
+                    }
                 }
             }
             if (jjte000 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte000;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte000;
+                }
             }
         } finally {
             if (jjtc000) {
@@ -2225,19 +2308,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte000 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte000;
+                    }
                 }
             }
             if (jjte000 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte000;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte000;
+                }
             }
         } finally {
             if (jjtc000) {
@@ -2399,13 +2485,14 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                      first row. */
                     if (i != jjtn000._nColumns) {
                         {
-                            if (true)
+                            if (true) {
                                 throw new ParseException(
                                         "PtParser: error parsing matrix "
                                                 + "construction, the row "
                                                 + nRows
                                                 + " does not have the same number of "
                                                 + "terms as the first row.");
+                            }
                         }
                     }
                 }
@@ -2457,19 +2544,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte000 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte000;
+                    }
                 }
             }
             if (jjte000 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte000;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte000;
+                }
             }
         } finally {
             if (jjtc000) {
@@ -2516,19 +2606,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte000 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte000;
+                    }
                 }
             }
             if (jjte000 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte000;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte000;
+                }
             }
         } finally {
             if (jjtc000) {
@@ -2575,19 +2668,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte000 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte000;
+                    }
                 }
             }
             if (jjte000 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte000;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte000;
+                }
             }
         } finally {
             if (jjtc000) {
@@ -2627,19 +2723,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
             if (jjte000 instanceof RuntimeException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (RuntimeException) jjte000;
+                    }
                 }
             }
             if (jjte000 instanceof ParseException) {
                 {
-                    if (true)
+                    if (true) {
                         throw (ParseException) jjte000;
+                    }
                 }
             }
             {
-                if (true)
+                if (true) {
                     throw (Error) jjte000;
+                }
             }
         } finally {
             if (jjtc000) {
@@ -2773,68 +2872,83 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
     }
 
     final private boolean jj_3_8() {
-        if (jj_scan_token(OPENBRACE))
+        if (jj_scan_token(OPENBRACE)) {
             return true;
+        }
         return false;
     }
 
     final private boolean jj_3_7() {
-        if (jj_scan_token(OPENBRACE))
+        if (jj_scan_token(OPENBRACE)) {
             return true;
-        if (jj_scan_token(CLOSEBRACE))
+        }
+        if (jj_scan_token(CLOSEBRACE)) {
             return true;
+        }
         return false;
     }
 
     final private boolean jj_3_6() {
-        if (jj_scan_token(OPENUNION))
+        if (jj_scan_token(OPENUNION)) {
             return true;
+        }
         return false;
     }
 
     final private boolean jj_3_5() {
-        if (jj_scan_token(OPENBRACE))
+        if (jj_scan_token(OPENBRACE)) {
             return true;
-        if (jj_scan_token(ID))
+        }
+        if (jj_scan_token(ID)) {
             return true;
-        if (jj_scan_token(SETEQUALS))
+        }
+        if (jj_scan_token(SETEQUALS)) {
             return true;
+        }
         return false;
     }
 
     final private boolean jj_3_2() {
-        if (jj_scan_token(FUNCTION))
+        if (jj_scan_token(FUNCTION)) {
             return true;
-        if (jj_scan_token(OPENPAREN))
+        }
+        if (jj_scan_token(OPENPAREN)) {
             return true;
+        }
         return false;
     }
 
     final private boolean jj_3_4() {
-        if (jj_scan_token(OPENBRACKET))
+        if (jj_scan_token(OPENBRACKET)) {
             return true;
+        }
         return false;
     }
 
     final private boolean jj_3_3() {
-        if (jj_scan_token(OPENPAREN))
+        if (jj_scan_token(OPENPAREN)) {
             return true;
+        }
         return false;
     }
 
     final private boolean jj_3_1() {
-        if (jj_scan_token(ID))
+        if (jj_scan_token(ID)) {
             return true;
-        if (jj_scan_token(SETEQUALS))
+        }
+        if (jj_scan_token(SETEQUALS)) {
             return true;
+        }
         return false;
     }
 
     final private boolean jj_3_9() {
-        if (jj_scan_token(ID))
+        if (jj_scan_token(ID)) {
             return true;
-        if (jj_scan_token(OPENPAREN))
+        }
+        if (jj_scan_token(OPENPAREN)) {
             return true;
+        }
         return false;
     }
 
@@ -2915,10 +3029,12 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 45; i++)
+        for (int i = 0; i < 45; i++) {
             jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++)
+        }
+        for (int i = 0; i < jj_2_rtns.length; i++) {
             jj_2_rtns[i] = new JJCalls();
+        }
     }
 
     public void ReInit(java.io.InputStream stream) {
@@ -2936,10 +3052,12 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         jj_ntk = -1;
         jjtree.reset();
         jj_gen = 0;
-        for (int i = 0; i < 45; i++)
+        for (int i = 0; i < 45; i++) {
             jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++)
+        }
+        for (int i = 0; i < jj_2_rtns.length; i++) {
             jj_2_rtns[i] = new JJCalls();
+        }
     }
 
     public PtParser(java.io.Reader stream) {
@@ -2948,10 +3066,12 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 45; i++)
+        for (int i = 0; i < 45; i++) {
             jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++)
+        }
+        for (int i = 0; i < jj_2_rtns.length; i++) {
             jj_2_rtns[i] = new JJCalls();
+        }
     }
 
     public void ReInit(java.io.Reader stream) {
@@ -2961,10 +3081,12 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         jj_ntk = -1;
         jjtree.reset();
         jj_gen = 0;
-        for (int i = 0; i < 45; i++)
+        for (int i = 0; i < 45; i++) {
             jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++)
+        }
+        for (int i = 0; i < jj_2_rtns.length; i++) {
             jj_2_rtns[i] = new JJCalls();
+        }
     }
 
     public PtParser(PtParserTokenManager tm) {
@@ -2972,10 +3094,12 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 45; i++)
+        for (int i = 0; i < 45; i++) {
             jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++)
+        }
+        for (int i = 0; i < jj_2_rtns.length; i++) {
             jj_2_rtns[i] = new JJCalls();
+        }
     }
 
     public void ReInit(PtParserTokenManager tm) {
@@ -2984,18 +3108,21 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         jj_ntk = -1;
         jjtree.reset();
         jj_gen = 0;
-        for (int i = 0; i < 45; i++)
+        for (int i = 0; i < 45; i++) {
             jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++)
+        }
+        for (int i = 0; i < jj_2_rtns.length; i++) {
             jj_2_rtns[i] = new JJCalls();
+        }
     }
 
     final private Token jj_consume_token(int kind) throws ParseException {
         Token oldToken;
-        if ((oldToken = token).next != null)
+        if ((oldToken = token).next != null) {
             token = token.next;
-        else
+        } else {
             token = token.next = token_source.getNextToken();
+        }
         jj_ntk = -1;
         if (token.kind == kind) {
             jj_gen++;
@@ -3004,8 +3131,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 for (int i = 0; i < jj_2_rtns.length; i++) {
                     JJCalls c = jj_2_rtns[i];
                     while (c != null) {
-                        if (c.gen < jj_gen)
+                        if (c.gen < jj_gen) {
                             c.first = null;
+                        }
                         c = c.next;
                     }
                 }
@@ -3041,21 +3169,25 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 i++;
                 tok = tok.next;
             }
-            if (tok != null)
+            if (tok != null) {
                 jj_add_error_token(kind, i);
+            }
         }
-        if (jj_scanpos.kind != kind)
+        if (jj_scanpos.kind != kind) {
             return true;
-        if (jj_la == 0 && jj_scanpos == jj_lastpos)
+        }
+        if (jj_la == 0 && jj_scanpos == jj_lastpos) {
             throw jj_ls;
+        }
         return false;
     }
 
     final public Token getNextToken() {
-        if (token.next != null)
+        if (token.next != null) {
             token = token.next;
-        else
+        } else {
             token = token.next = token_source.getNextToken();
+        }
         jj_ntk = -1;
         jj_gen++;
         return token;
@@ -3064,19 +3196,21 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
     final public Token getToken(int index) {
         Token t = lookingAhead ? jj_scanpos : token;
         for (int i = 0; i < index; i++) {
-            if (t.next != null)
+            if (t.next != null) {
                 t = t.next;
-            else
+            } else {
                 t = t.next = token_source.getNextToken();
+            }
         }
         return t;
     }
 
     final private int jj_ntk() {
-        if ((jj_nt = token.next) == null)
+        if ((jj_nt = token.next) == null) {
             return (jj_ntk = (token.next = token_source.getNextToken()).kind);
-        else
+        } else {
             return (jj_ntk = jj_nt.kind);
+        }
     }
 
     private java.util.Vector jj_expentries = new java.util.Vector();
@@ -3090,8 +3224,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
     private int jj_endpos;
 
     private void jj_add_error_token(int kind, int pos) {
-        if (pos >= 100)
+        if (pos >= 100) {
             return;
+        }
         if (pos == jj_endpos + 1) {
             jj_lasttokens[jj_endpos++] = kind;
         } else if (jj_endpos != 0) {
@@ -3111,14 +3246,17 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                             break;
                         }
                     }
-                    if (exists)
+                    if (exists) {
                         break;
+                    }
                 }
             }
-            if (!exists)
+            if (!exists) {
                 jj_expentries.addElement(jj_expentry);
-            if (pos != 0)
+            }
+            if (pos != 0) {
                 jj_lasttokens[(jj_endpos = pos) - 1] = kind;
+            }
         }
     }
 
