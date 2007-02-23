@@ -51,8 +51,6 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void port_declaration(AST _t) throws RecognitionException,
             PtalonRuntimeException {
 
-        PtalonAST port_declaration_AST_in = (_t == ASTNULL) ? null
-                : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
         PtalonAST port_declaration_AST = null;
@@ -101,9 +99,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
             case PORT: {
                 AST __t431 = _t;
                 PtalonAST tmp1_AST = null;
-                PtalonAST tmp1_AST_in = null;
-                tmp1_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                tmp1_AST_in = (PtalonAST) _t;
+                tmp1_AST = (PtalonAST) astFactory.create(_t);
                 astFactory.addASTChild(currentAST, tmp1_AST);
                 ASTPair __currentAST431 = currentAST.copy();
                 currentAST.root = currentAST.child;
@@ -117,7 +113,6 @@ public class PtalonPopulator extends antlr.TreeParser implements
                     switch (_t.getType()) {
                     case ID: {
                         a = (PtalonAST) _t;
-                        PtalonAST a_AST_in = null;
                         a_AST = (PtalonAST) astFactory.create(a);
                         astFactory.addASTChild(currentAST, a_AST);
                         match(_t, ID);
@@ -132,10 +127,8 @@ public class PtalonPopulator extends antlr.TreeParser implements
                     case DYNAMIC_NAME: {
                         AST __t433 = _t;
                         PtalonAST tmp2_AST = null;
-                        PtalonAST tmp2_AST_in = null;
                         tmp2_AST = (PtalonAST) astFactory
-                                .create((PtalonAST) _t);
-                        tmp2_AST_in = (PtalonAST) _t;
+                                .create(_t);
                         astFactory.addASTChild(currentAST, tmp2_AST);
                         ASTPair __currentAST433 = currentAST.copy();
                         currentAST.root = currentAST.child;
@@ -143,13 +136,11 @@ public class PtalonPopulator extends antlr.TreeParser implements
                         match(_t, DYNAMIC_NAME);
                         _t = _t.getFirstChild();
                         g = (PtalonAST) _t;
-                        PtalonAST g_AST_in = null;
                         g_AST = (PtalonAST) astFactory.create(g);
                         astFactory.addASTChild(currentAST, g_AST);
                         match(_t, ID);
                         _t = _t.getNextSibling();
                         h = (PtalonAST) _t;
-                        PtalonAST h_AST_in = null;
                         h_AST = (PtalonAST) astFactory.create(h);
                         astFactory.addASTChild(currentAST, h_AST);
                         match(_t, EXPRESSION);
@@ -187,9 +178,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
             case INPORT: {
                 AST __t434 = _t;
                 PtalonAST tmp3_AST = null;
-                PtalonAST tmp3_AST_in = null;
-                tmp3_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                tmp3_AST_in = (PtalonAST) _t;
+                tmp3_AST = (PtalonAST) astFactory.create(_t);
                 astFactory.addASTChild(currentAST, tmp3_AST);
                 ASTPair __currentAST434 = currentAST.copy();
                 currentAST.root = currentAST.child;
@@ -203,7 +192,6 @@ public class PtalonPopulator extends antlr.TreeParser implements
                     switch (_t.getType()) {
                     case ID: {
                         b = (PtalonAST) _t;
-                        PtalonAST b_AST_in = null;
                         b_AST = (PtalonAST) astFactory.create(b);
                         astFactory.addASTChild(currentAST, b_AST);
                         match(_t, ID);
@@ -218,10 +206,8 @@ public class PtalonPopulator extends antlr.TreeParser implements
                     case DYNAMIC_NAME: {
                         AST __t436 = _t;
                         PtalonAST tmp4_AST = null;
-                        PtalonAST tmp4_AST_in = null;
                         tmp4_AST = (PtalonAST) astFactory
-                                .create((PtalonAST) _t);
-                        tmp4_AST_in = (PtalonAST) _t;
+                                .create(_t);
                         astFactory.addASTChild(currentAST, tmp4_AST);
                         ASTPair __currentAST436 = currentAST.copy();
                         currentAST.root = currentAST.child;
@@ -229,13 +215,11 @@ public class PtalonPopulator extends antlr.TreeParser implements
                         match(_t, DYNAMIC_NAME);
                         _t = _t.getFirstChild();
                         i = (PtalonAST) _t;
-                        PtalonAST i_AST_in = null;
                         i_AST = (PtalonAST) astFactory.create(i);
                         astFactory.addASTChild(currentAST, i_AST);
                         match(_t, ID);
                         _t = _t.getNextSibling();
                         j = (PtalonAST) _t;
-                        PtalonAST j_AST_in = null;
                         j_AST = (PtalonAST) astFactory.create(j);
                         astFactory.addASTChild(currentAST, j_AST);
                         match(_t, EXPRESSION);
@@ -273,9 +257,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
             case OUTPORT: {
                 AST __t437 = _t;
                 PtalonAST tmp5_AST = null;
-                PtalonAST tmp5_AST_in = null;
                 tmp5_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
-                tmp5_AST_in = (PtalonAST) _t;
                 astFactory.addASTChild(currentAST, tmp5_AST);
                 ASTPair __currentAST437 = currentAST.copy();
                 currentAST.root = currentAST.child;
