@@ -319,6 +319,9 @@ PTBSH_JAR = @PTBSH_JAR@
 # Set to mlc and used in $PTII/org/makefile if Java Bean Shell is found.
 PTBSH_MLC_DIR = @PTBSH_MLC_DIR@
 
+# Set to the packages that require bsh and used in $PTII/doc/makefile
+PTBSH_PACKAGES = @PTBSH_PACKAGES@
+
 # PTBSH_RUN_DIR is set to "run" and used in
 # $PTII/ptolemy/actor/gui/makefile if bsh.jar was found.
 PTBSH_RUN_DIR= @PTBSH_RUN_DIR@
