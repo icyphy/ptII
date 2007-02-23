@@ -43,7 +43,7 @@ DIRS =
 ROOT =		../../../..
 
 # PlotTableauFrame.java requires diva.jar
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(PTBSH_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
