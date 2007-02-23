@@ -48,7 +48,6 @@ import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
 import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetContext;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
@@ -225,13 +224,13 @@ class DnDTable extends JTable implements DragSourceListener,
 
   public void dragOver(java.awt.dnd.DropTargetDragEvent dropTargetDragEvent)
   {
-    DropTargetContext context = dropTargetDragEvent.getDropTargetContext();
+    //DropTargetContext context = dropTargetDragEvent.getDropTargetContext();
     
     try
     {
-      java.awt.Point location = dropTargetDragEvent.getLocation();
-      int col = columnAtPoint(location);
-      int row = rowAtPoint(location);
+      //java.awt.Point location = dropTargetDragEvent.getLocation();
+      //int col = columnAtPoint(location);
+      //int row = rowAtPoint(location);
       
       if (dropTargetDragEvent.isDataFlavorSupported(new DataFlavor(
             DataFlavor.javaJVMLocalObjectMimeType)))
