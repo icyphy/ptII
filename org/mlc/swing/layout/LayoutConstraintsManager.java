@@ -654,7 +654,7 @@ public class LayoutConstraintsManager
     LayoutConstraintsManager l = LayoutConstraintsManager
         .getLayoutConstraintsManager(LayoutConstraintsManager.class
             .getResourceAsStream("editableLayoutConstraints.xml"));
-    ContainerLayout cl = l.getContainerLayout("mainLayout");
+    /*ContainerLayout cl =*/ l.getContainerLayout("mainLayout");
   }
 
 }
